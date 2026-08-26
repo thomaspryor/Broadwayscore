@@ -85,6 +85,20 @@ function isLondonMarket(category) {
 }
 
 /**
+ * Show-entry `market` field for a given `category` — the actual string
+ * value shows.json stores (NOT getMarketPool's 'nyc'/'london' dedup-pool
+ * label, which folds 'regional' into 'nyc'). Verified against the live
+ * catalog: every broadway/off-broadway show carries market:'broadway',
+ * every west-end/off-west-end show carries market:'west-end', every
+ * regional show carries market:'regional' (2026-08-26 census, 2790 shows).
+ */
+function marketForCategory(category) {
+  if (category === 'regional') return 'regional';
+  if (category === 'west-end' || category === 'off-west-end') return 'west-end';
+  return 'broadway';
+}
+
+/**
  * Broadway category predicate for Node scripts — deliberately permissive,
  * unlike src/lib/data-core.ts's isBroadwayShow() (made strict in #1428 for
  * UI symmetry with getOffBroadwayShows()).
@@ -260,4 +274,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

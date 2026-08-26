@@ -1,8 +1,0 @@
-[bsc-next] tab duplicate check failed (continuing): Command failed: /Applications/cmux.app/Contents/Resources/bin/cmux list-workspaces
-Error: ERROR: Access denied — only processes started inside cmux can connect
-
-[bsc-next] headless job starting on #803: BSC Daily: Credits: ScrapingDog (model sonnet)
-[bsc-next] headless job 803-mscenknp FAILED (implementer-error)
-  log: /Users/tompryor/Library/Logs/bsc-jobs/803-mscenknp.log
-  resume: (cd /Users/tompryor/Broadwayscore/.claude/worktrees/job-803-mscenknp && claude --resume e3575dcd-935f-484b-aec9-5cd05b63bfb3)
-  verify: node scripts/check-health-row-absent.js --row-b64 Q3JlZGl0czogU2NyYXBpbmdEb2c

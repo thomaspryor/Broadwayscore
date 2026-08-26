@@ -12,6 +12,11 @@ const { buildRegionalShowEntry, decideRegionalPromotion, buildShowEntry, decideO
 const { feederVenueCity, classifyVenueMarket } =
   require('../../scripts/lib/aggregator-candidate-extract.js');
 
+const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+
+// reviewCount: 3 — BRO-125 (owner rule 2026-07-30) requires 3+ distinct
+// review outlets on top of the roundup-exists checks below; see the
+// below-threshold tests further down for the rejection path.
 const ROUNDUP_CANDIDATE = {
   title: 'Testshow: The Fake Musical',
   venue: 'Goodman Theatre',
@@ -21,6 +26,7 @@ const ROUNDUP_CANDIDATE = {
   articlePublishedAt: '2026-07-01T10:39:17-04:00',
   discoveredAt: '2026-07-03T15:27:32.001Z',
   category: 'regional',
+  reviewCount: 3,
 };
 
 test('decideRegionalPromotion: roundup-sourced feeder-venue candidate is confirmed', () => {
@@ -45,6 +51,26 @@ test('decideRegionalPromotion: non-regional and non-feeder candidates never conf
   assert.equal(decideRegionalPromotion(null).confirmed, false);
 });
 
+// BRO-125 (owner rule 2026-07-30): "It's only important to catch shows that
+// get 3+ reviews... otherwise there's very little critical or audience
+// signal to be useful." A roundup existing is no longer sufficient on its
+// own — it must also name 3+ distinct review outlets.
+test('decideRegionalPromotion: a roundup naming fewer than 3 distinct reviews does NOT confirm', () => {
+  const r = decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: 2 });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /only 2 distinct review outlet/);
+});
+
+test('decideRegionalPromotion: a roundup with an unknown/unparseable reviewCount does NOT confirm (fails closed)', () => {
+  assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: undefined }).confirmed, false);
+  assert.equal(decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: null }).confirmed, false);
+});
+
+test('decideRegionalPromotion: exactly 3 distinct reviews confirms; venue/source checks still gate first', () => {
+  const r = decideRegionalPromotion({ ...ROUNDUP_CANDIDATE, reviewCount: 3, venue: "St. Luke's Theatre" });
+  assert.equal(r.confirmed, false, 'non-feeder venue still rejects regardless of review count');
+});
+
 test('buildRegionalShowEntry: id/slug carry -regional-<article year>, market fail-closed', () => {
   const e = buildRegionalShowEntry(ROUNDUP_CANDIDATE);
   assert.equal(e.id, 'testshow-the-fake-musical-regional-2026');
@@ -57,9 +83,14 @@ test('buildRegionalShowEntry: id/slug carry -regional-<article year>, market fai
 });
 
 test('buildRegionalShowEntry: status open + openingDate from the roundup publish date', () => {
-  const e = buildRegionalShowEntry(ROUNDUP_CANDIDATE);
+  // articlePublishedAt must be run-relative (BRO-279 time-bomb fix): ROUNDUP_CANDIDATE's
+  // fixed 2026-07-01 ages past the 90-day open/closed cutoff below and flips this
+  // assertion to 'closed' with no commit in between — daysAgoISO(1) keeps it inside
+  // the window regardless of when the suite runs (same fix shape as review-guards.test.mjs).
+  const freshPublishedAt = daysAgoISO(1);
+  const e = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, articlePublishedAt: `${freshPublishedAt}T10:39:17-04:00` });
   assert.equal(e.status, 'open', 'a roundup only exists after press night');
-  assert.equal(e.openingDate, '2026-07-01');
+  assert.equal(e.openingDate, freshPublishedAt);
   assert.equal(e.openingDateSource, 'aggregator-roundup');
 });
 
@@ -70,6 +101,16 @@ test('buildRegionalShowEntry: venue gets the feeder city suffix; type detected f
   const play = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, title: 'A Serious Drama', slug: 'a-serious-drama', venue: 'Arena Stage' });
   assert.equal(play.type, null, 'no musical keyword → type stays null (validate-data allows null)');
   assert.equal(play.venue, 'Arena Stage, Washington, DC');
+});
+
+// Card #1921 (cousin of BRO-160): buildRegionalShowEntry writes raw
+// candidate.venue instead of routing through sanitizeVenueForWrite (card
+// #994). A placeholder/neighbourhood-blob venue must be refused (venue:
+// null) BEFORE the city-suffix concatenation, not smuggled through as
+// "Midtown E, Chicago, IL".
+test('buildRegionalShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: null), not silently promoted', () => {
+  const e = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, venue: 'Midtown E' });
+  assert.equal(e.venue, null, 'card #994 write-time guard — the promotion loop in main() must skip a null-venue entry');
 });
 
 test('buildRegionalShowEntry: unparseable article date falls back to current year, null openingDate', () => {
@@ -207,6 +248,14 @@ test('buildOffBroadwayAggregatorShowEntry: status open + real openingDate, unlik
   assert.match(e.id, /-off-broadway-\d{4}$/);
   assert.equal(e.provisional, true);
   assert.equal(e.discoverySource, 'aggregator-roundup:bww-roundup');
+});
+
+// Card #1921 (cousin of BRO-160): buildOffBroadwayAggregatorShowEntry wrote
+// raw candidate.venue instead of routing through sanitizeVenueForWrite
+// (card #994).
+test('buildOffBroadwayAggregatorShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: null), not silently promoted', () => {
+  const e = buildOffBroadwayAggregatorShowEntry({ ...OB_ROUNDUP_CANDIDATE, venue: 'Midtown E' });
+  assert.equal(e.venue, null, 'card #994 write-time guard — the promotion loop in main() must skip a null-venue entry');
 });
 
 test('buildOffBroadwayAggregatorShowEntry: unparseable date still stays visible (status open, no closed-guess)', () => {

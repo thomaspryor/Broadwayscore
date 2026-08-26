@@ -75,6 +75,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
+const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
@@ -527,19 +528,43 @@ function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
     .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
 }
 
+// Pure — extracts the category a Linear issue inherited from its Notion
+// import. notion-tasks-sync.js (fmt:2) writes a meta line shaped
+// "[notion:<id>] <priority> · <status> · <category>" — linear-import.js
+// carries that line straight into the issue description verbatim, so it
+// survives the migration unchanged (BRO-2245: the two Marketing cards that
+// slipped through the owner-judgment gate both literally read
+// "P1 Next · Not started · Marketing").
+//
+// Unlike autonomous-eligibility.js's categoryOf() (which anchors to line 1
+// for the Notion task-mirror shape, where the marker is always first),
+// this searches the WHOLE description with the multiline flag: per
+// linear-import-rules.js's extractNotionId comment, the marker is not
+// always line 1 on the Linear side — zombie-sweep re-opens and other
+// prefixes push it down.
+const LINEAR_CATEGORY_LINE_RE = /^\[notion:[^\]]+\]\s*(.+)$/m;
+function categoryOfLinearIssue(description) {
+  const m = LINEAR_CATEGORY_LINE_RE.exec(String(description || ''));
+  if (!m) return null;
+  const parts = m[1].split('·').map(s => s.trim());
+  return parts.length >= 3 ? parts[parts.length - 1] : null;
+}
+
 // Pure — normalizes a full linear.getIssue() result into the {id, name,
 // notes, tags, category} shape enrichOneCard() expects (the same shape
 // audit-card-verifiability.js's evaluateCard() produces for a Notion card).
-// category is always null: Linear has no Notion-category equivalent, which
-// isCardEligible() already treats as fail-closed (applies the human-action
-// title filter without the Notion "no-category" 5-word bound) — the same
-// conservative posture a "no-category" Notion card gets today.
+// category comes from categoryOfLinearIssue() above when the issue was
+// imported from Notion; issues with no such marker (native Linear cards)
+// get null, which isCardEligible() already treats as fail-closed (applies
+// the human-action title filter without the Notion "no-category" 5-word
+// bound) — the same conservative posture a "no-category" Notion card gets
+// today.
 // Pure — true when a freshly-fetched Linear issue has reached a terminal
 // state since the sweep snapshot was taken. See runLinearLeg's call site for
 // why this must be checked before ever writing.
 function isLinearIssueTerminal(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  return stateType === 'completed' || stateType === 'canceled';
+  return isTerminalStateType(stateType);
 }
 
 function normalizeLinearIssue(issue) {
@@ -548,7 +573,7 @@ function normalizeLinearIssue(issue) {
     name: issue.title,
     notes: issue.description || '',
     tags: ((issue.labels && issue.labels.nodes) || []).map(l => l.name),
-    category: null,
+    category: categoryOfLinearIssue(issue.description),
     identifier: issue.identifier,
     url: issue.url || null,
   };
@@ -989,5 +1014,5 @@ module.exports = {
   // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are
   // pure; makeLinearWriteCard takes an injectable client).
   writeBack, selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard,
-  linearIssueNumber, isLinearIssueTerminal,
+  linearIssueNumber, isLinearIssueTerminal, categoryOfLinearIssue,
 };

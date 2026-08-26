@@ -124,6 +124,8 @@ const PORT_DONE_CALLED_IN_LINEAR = [
   'findUnresolvedDispatchComment', // G1
   'hasLiveLedgerEntry',       // G1
   'runJob',                   // G2–G4
+  'workBranchCollisionGuard', // A5 (BRO-278)
+  'listWorkBranchStatuses',   // A5 (BRO-278)
 ];
 
 test('PORT — done rows are actually called by scripts/linear-next.js', () => {
@@ -138,8 +140,6 @@ test('PORT — done rows are actually called by scripts/linear-next.js', () => {
 // When you port one, this fails on purpose — move the row to PORT — done and drop
 // the symbol from this list.
 const PORT_TODO_ABSENT_IN_LINEAR = [
-  'workBranchCollisionGuard', // A5
-  'listWorkBranchStatuses',   // A5
   'detectLauncherOutage',     // C6
   'successionRefusal',        // D1
   'runAmend',                 // E1

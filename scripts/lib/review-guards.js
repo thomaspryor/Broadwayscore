@@ -9,6 +9,7 @@
  */
 
 const crypto = require('crypto');
+const { isNonEvidenceFailure, isStrictFailureReason } = require('./failed-fetch-policy');
 
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
@@ -2550,48 +2551,65 @@ function shouldRetryUrlDiscovery(show, review) {
   const isNoUrl = ir === 'no_url';
   const isWrongContent = ir === 'wrong_content';
   const isFabricated = !!review.fabricatedEntry;
+  // Tier 2 stale wrongProduction recovery (BRO-53): callers pass this
+  // incompleteReason (transiently, not persisted as the file's real
+  // incompleteReason) to reuse this same lifecycle-aware retry-count/cooldown
+  // SHAPE for a THIRD failure class — a stored URL that's from the wrong
+  // calendar window, not missing/wrong-kind content. Uses its OWN state
+  // fields (staleWpRetryCount/staleWpRetryAfter/
+  // staleWrongProductionRecoveryAbandoned), NOT the shared serpRetryCount/
+  // serpRetryAfter/serpDiscoveryAbandoned — those mean "all URL discovery is
+  // exhausted" for no_url/wrong_content callers (collect-review-texts.js,
+  // gather-reviews.js, etc.), and a Tier 2 exhaustion must not silently
+  // block a LATER, unrelated no_url/wrong_content retry on the same file
+  // (or vice versa) just because they'd otherwise share one counter.
+  const isStaleWrongProduction = ir === 'stale_wrong_production';
+  const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
+  const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
+  const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
 
   // Not in a gated state → let callers proceed (e.g. collector-flagged
   // wrongShow retries via existing wrongShowRetryAt path are not this gate's
   // responsibility).
-  if (!isNoUrl && !isWrongContent && !isFabricated) {
+  if (!isNoUrl && !isWrongContent && !isFabricated && !isStaleWrongProduction) {
     return { shouldRetry: true, reason: 'not_gated' };
   }
 
   // Permanent gate — once set, only a human unsets.
-  if (review.serpDiscoveryAbandoned === true) {
+  if (review[abandonedField] === true) {
     return { shouldRetry: false, reason: 'abandoned' };
   }
 
   const lifecycle = classifyLifecycle(show);
-  const count = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+  const count = typeof review[countField] === 'number' ? review[countField] : 0;
 
-  // wrong_content: hard retry cap
-  if (isWrongContent) {
+  // wrong_content / stale_wrong_production: hard retry cap
+  if (isWrongContent || isStaleWrongProduction) {
     const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
     if (count >= max) {
       return {
         shouldRetry: false,
         reason: 'max_retries_reached',
-        updates: { serpDiscoveryAbandoned: true },
+        updates: { [abandonedField]: true },
       };
     }
   }
 
-  // Cooldown gate (applies to both no_url and wrong_content under max)
-  if (review.serpRetryAfter) {
-    const after = new Date(review.serpRetryAfter).getTime();
+  // Cooldown gate (applies to no_url, wrong_content, and stale_wrong_production under max)
+  if (review[afterField]) {
+    const after = new Date(review[afterField]).getTime();
     if (!isNaN(after) && Date.now() < after) {
       return {
         shouldRetry: false,
         reason: 'cooldown',
-        nextAttemptAt: review.serpRetryAfter,
+        nextAttemptAt: review[afterField],
       };
     }
   }
 
   // Allow retry — tag reason for logging
   if (isWrongContent) return { shouldRetry: true, reason: 'wrong_content_retry' };
+  if (isStaleWrongProduction) return { shouldRetry: true, reason: 'stale_wrong_production_retry' };
   return { shouldRetry: true, reason: isFabricated ? 'fabricated_retry' : 'no_url_retry' };
 }
 
@@ -2615,28 +2633,319 @@ function recordSerpAttempt(show, review) {
   const ir = review.incompleteReason;
   const isNoUrl = ir === 'no_url' || !!review.fabricatedEntry;
   const isWrongContent = ir === 'wrong_content';
-  if (!isNoUrl && !isWrongContent) return {};
+  // See shouldRetryUrlDiscovery's comment: stale_wrong_production uses its
+  // OWN namespaced state fields, not the shared serpRetryCount/serpRetryAfter/
+  // serpDiscoveryAbandoned, so its exhaustion can't cross-contaminate the
+  // no_url/wrong_content gate (or vice versa) on the same file.
+  const isStaleWrongProduction = ir === 'stale_wrong_production';
+  if (!isNoUrl && !isWrongContent && !isStaleWrongProduction) return {};
 
-  const prevCount = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+  const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
+  const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
+  const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
+
+  const prevCount = typeof review[countField] === 'number' ? review[countField] : 0;
   const newCount = prevCount + 1;
-  const updates = { serpRetryCount: newCount };
+  const updates = { [countField]: newCount };
 
   const lifecycle = classifyLifecycle(show);
 
-  // wrong_content: check if this attempt just hit the cap → abandon
-  if (isWrongContent) {
+  // wrong_content / stale_wrong_production: check if this attempt just hit the cap → abandon
+  if (isWrongContent || isStaleWrongProduction) {
     const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
     if (newCount >= max) {
-      updates.serpDiscoveryAbandoned = true;
+      updates[abandonedField] = true;
       return updates;
     }
   }
 
   // Still have retries → set next cooldown
   const cooldown = COOLDOWN_MS[lifecycle] ?? (7 * DAY_MS);
-  updates.serpRetryAfter = new Date(Date.now() + cooldown).toISOString();
+  updates[afterField] = new Date(Date.now() + cooldown).toISOString();
 
   return updates;
+}
+
+// ---------------------------------------------------------------------------
+// Fetch retry guard (BRO-787) — lifecycle cooldown for failed-fetches.json
+// ---------------------------------------------------------------------------
+//
+// Same pathology as the SERP guard above, applied to fetch attempts instead
+// of SERP calls: scripts/lib/failed-fetch-policy.js's isPermanentlyFailed()
+// caps retries at a flat 3 (dead/garbage) or 5 (everything else) regardless
+// of show lifecycle. A closed show whose review URL 404s gets the same
+// retry budget as an opening-night show, burning Browserbase (~$0.10/
+// session) + Bright Data + ScrapingBee spend on URLs that will never
+// succeed.
+//
+// Shape mirrors shouldRetryUrlDiscovery/recordSerpAttempt exactly:
+// shouldRetryFetch is the PURE query, recordFetchAttempt is the PURE
+// compute-the-state-patch — both leave all I/O to the caller
+// (collect-review-texts.js). Reuses classifyLifecycle (same lifecycle
+// buckets as the SERP guard) and failed-fetch-policy.js's
+// isStrictFailureReason (same dead/garbage-vs-everything-else split
+// isPermanentlyFailed uses) as the SINGLE source of truth for failure
+// classification — a second, independently-tuned classification here would
+// silently drift from the ledger's own threshold (exactly the two-source
+// bug failed-fetch-policy.js was extracted to prevent).
+//
+// New protected fields on review files (synced in review-write-guard.js +
+// push-review-texts action.yml ACTION_EXTRA + restore-protected-fields.js
+// MANUAL_FIELDS):
+//   - fetchRetryAfter (ISO timestamp — don't re-fetch before this)
+//   - fetchDiscoveryAbandoned (bool — permanent gate, only cleared manually)
+
+// Max additional fetch attempts once a failure is on record, keyed by show
+// lifecycle. "Strict" reasons (confirmed-dead 404/410, garbage_content) use
+// the tighter table; everything else uses the looser one. Open-lifecycle
+// buckets keep TODAY's flat isPermanentlyFailed thresholds (3 / 5)
+// unchanged — only closed shows get tightened, since a closed show's dead
+// URL stays dead forever while an opening-night show's URL may still
+// resolve once the outlet finishes publishing.
+const MAX_RETRIES_FETCH_STRICT = Object.freeze({
+  previews: 3,
+  openWindow: 3,
+  openRecent: 3,
+  openMature: 3,
+  closedRecent: 2,
+  closedOld: 0,
+  unknown: 3,
+});
+const MAX_RETRIES_FETCH_LENIENT = Object.freeze({
+  previews: 5,
+  openWindow: 5,
+  openRecent: 5,
+  openMature: 5,
+  closedRecent: 3,
+  closedOld: 2,
+  unknown: 5,
+});
+
+// Cooldown between fetch attempts while still under the tiered max. Shorter
+// than the SERP guard's COOLDOWN_MS — collect-review-texts.js runs multiple
+// times a day, and a fetch attempt is far cheaper to retry sooner than a
+// SERP call.
+const FETCH_COOLDOWN_MS = Object.freeze({
+  previews: 6 * 3600 * 1000,       // 6h
+  openWindow: 6 * 3600 * 1000,     // 6h
+  openRecent: 24 * 3600 * 1000,    // 24h
+  openMature: 3 * DAY_MS,          // 3 days
+  closedRecent: 7 * DAY_MS,        // 7 days
+  closedOld: 30 * DAY_MS,          // 30 days (moot for strict reasons — max is 0)
+  unknown: 24 * 3600 * 1000,       // 24h safe default
+});
+
+/**
+ * Decide whether a failed fetch should be retried, given show lifecycle.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review-text file data (reads fetchRetryAfter/fetchDiscoveryAbandoned)
+ * @param {{failureReason?: string, failureCount?: number}|null} failureEntry - the
+ *   failed-fetches.json ledger entry for this review, or null/undefined if this
+ *   is a first attempt (nothing to gate).
+ * @returns {{ shouldRetry: boolean, reason: string, nextAttemptAt?: string, updates?: Object }}
+ */
+function shouldRetryFetch(show, review, failureEntry) {
+  if (!review || typeof review !== 'object') return { shouldRetry: true, reason: 'not_gated' };
+  if (!failureEntry) return { shouldRetry: true, reason: 'not_gated' };
+
+  // Permanent gate — once set, only a human unsets.
+  if (review.fetchDiscoveryAbandoned === true) {
+    return { shouldRetry: false, reason: 'abandoned' };
+  }
+
+  const failureReason = failureEntry.failureReason || '';
+
+  // budget_capped etc. — we chose not to pay for that attempt; it is not
+  // evidence the URL is dead, so it must not consume retry budget or gate
+  // the next attempt (same reasoning as isPermanentlyFailed's carve-out).
+  if (isNonEvidenceFailure(failureReason)) {
+    return { shouldRetry: true, reason: 'not_gated' };
+  }
+
+  const isStrict = isStrictFailureReason(failureReason);
+  const lifecycle = classifyLifecycle(show);
+  const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
+  const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
+  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+
+  if (count >= max) {
+    return {
+      shouldRetry: false,
+      reason: 'max_retries_reached',
+      updates: { fetchDiscoveryAbandoned: true },
+    };
+  }
+
+  if (review.fetchRetryAfter) {
+    const after = new Date(review.fetchRetryAfter).getTime();
+    if (!isNaN(after) && Date.now() < after) {
+      return {
+        shouldRetry: false,
+        reason: 'cooldown',
+        nextAttemptAt: review.fetchRetryAfter,
+      };
+    }
+  }
+
+  return { shouldRetry: true, reason: isStrict ? 'strict_retry' : 'lenient_retry' };
+}
+
+/**
+ * Compute the state updates to apply to a review file AFTER a fetch attempt
+ * has failed and the failed-fetches.json ledger has already been updated
+ * (failureEntry.failureCount reflects THIS attempt, i.e. post-increment).
+ *
+ * Call this only on failure — a successful fetch has no retry state to
+ * advance (and clear-on-success is handled separately by clearFailureFlags).
+ *
+ * Returns { fetchRetryAfter } or { fetchDiscoveryAbandoned: true } — a patch
+ * the caller merges into the review file before writing.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review-text file data (pre-update; unused today, kept
+ *   for signature parity with recordSerpAttempt and future use)
+ * @param {{failureReason?: string, failureCount?: number}} failureEntry - the
+ *   ledger entry AFTER this attempt's failure was recorded
+ * @returns {Object} Patch to apply
+ */
+function recordFetchAttempt(show, review, failureEntry) {
+  if (!failureEntry) return {};
+
+  const failureReason = failureEntry.failureReason || '';
+  if (isNonEvidenceFailure(failureReason)) return {};
+
+  const isStrict = isStrictFailureReason(failureReason);
+  const lifecycle = classifyLifecycle(show);
+  const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
+  const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
+  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+
+  if (count >= max) {
+    return { fetchDiscoveryAbandoned: true };
+  }
+
+  const cooldown = FETCH_COOLDOWN_MS[lifecycle] ?? (24 * 3600 * 1000);
+  return { fetchRetryAfter: new Date(Date.now() + cooldown).toISOString() };
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Tier 2 stale wrongProduction recovery (BRO-53)
+ *
+ * getWrongProductionReasonFromUrl correctly excludes files where the stored
+ * URL belongs to an old archive (a prior production, a tour leg, a
+ * pre-transfer run) — but the pipeline never goes back and asks "so where's
+ * the CURRENT review by this critic+outlet?". The critic and outlet are
+ * real; a current review likely exists on the open web; nothing ever
+ * targeted a search for it, because a file with real fullText already
+ * "counts" as retrieved everywhere else in the pipeline.
+ *
+ * Eligibility is derived STRUCTURALLY — by re-running the canonical date
+ * guard against the file's own stored url right now — rather than by
+ * matching wrongProductionReason/wrongProductionNote text. There are 15+
+ * call sites across scripts/ that set wrongProduction with their own reason
+ * phrasing into one of two different fields (grep `wrongProductionReason =`
+ * / `wrongProductionNote =`), so text-matching would either miss most of
+ * them or require chasing every producer's wording. Re-deriving from the URL
+ * is exactly the question BRO-53 asks ("is the URL we hold from the wrong
+ * calendar window?") and stays correct regardless of which script or field
+ * originally set the flag.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Tier 2 recovery eligibility gate.
+ *
+ * True only when: wrongProduction is set, the file's OWN stored url still
+ * fails the URL-date guard today (re-derived via getWrongProductionReasonFromUrl,
+ * not read from a reason string), no human has already adjudicated the file,
+ * no prior recovery attempt already ran (recovered or abandoned), and
+ * there's a named critic + outlet to search for.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} [show] - shows.json entry
+ * @returns {boolean}
+ */
+function isEligibleForStaleWrongProductionRecovery(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show) return false;
+
+  // A human already adjudicated this file — don't second-guess.
+  if (data.wrongProductionManualClear === true) return false;
+  if (data.wrongProductionOverride === true) return false;
+  if (data.humanReviewedWrongProduction === false) return false;
+
+  // Recovery already ran (found the current review, or exhausted retries).
+  if (data.staleWrongProductionRecovered === true) return false;
+  if (data.staleWrongProductionRecoveryAbandoned === true) return false;
+
+  // Needs a real critic byline to search "critic + outlet + show" for.
+  const critic = String(data.criticName || '').trim().toLowerCase();
+  if (!critic || critic === 'unknown' || critic === 'staff') return false;
+
+  if (!data.outletId && !data.outlet) return false;
+
+  // Structural check: does the stored url STILL fail the date guard today?
+  const url = data.url || data.sourceUrl || '';
+  if (!getWrongProductionReasonFromUrl(url, show)) return false;
+
+  return true;
+}
+
+/**
+ * Given a URL discovered via a targeted "critic + outlet + show title" SERP
+ * search, decide whether it represents genuine recovery of the CURRENT
+ * review — as opposed to re-finding the same stale archive URL, or a second
+ * out-of-window hit for a different prior production.
+ *
+ * Pure — no I/O. The caller (a sibling script, modeled on
+ * scripts/retry-wrong-urls.js) is responsible for actually running the SERP
+ * search — scripts/lib/url-discovery.js's discoverCorrectUrl already builds
+ * a critic+outlet+title query — and for gating retry frequency via
+ * shouldRetryUrlDiscovery/recordSerpAttempt with
+ * incompleteReason: 'stale_wrong_production' (reuses the existing
+ * lifecycle-aware retry-count/cooldown SHAPE, under its own namespaced state
+ * fields — see that function's comment).
+ *
+ * Deliberately does NOT itself clear wrongProduction or return a
+ * ready-to-write patch: clearing the flag safely requires also correcting
+ * the embedded contentVerification sub-object (or rebuild-all-reviews.js's
+ * CV pre-pass silently re-flags it on the next rebuild) and dropping the
+ * stale content/score fields fetched from the OLD url (or a rebuild that
+ * runs before the refetch can admit old-production text as current). Both
+ * are the caller's job via the existing scripts/lib/wrong-production-clear.js
+ * clearWrongProductionFlags() helper — this function only decides WHETHER a
+ * discovered URL qualifies as genuine recovery and WHICH url to use.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {string|null} discoveredUrl - URL returned by the targeted SERP search
+ * @param {object} [show] - shows.json entry
+ * @returns {{url: string, oldUrl: string}|null} the recovery decision, or null if not qualifying
+ */
+function resolveStaleWrongProductionRecovery(data, discoveredUrl, show) {
+  if (!data || !discoveredUrl || typeof discoveredUrl !== 'string') return null;
+  if (!isEligibleForStaleWrongProductionRecovery(data, show)) return null;
+
+  const oldUrl = String(data.url || '').trim();
+  if (discoveredUrl === oldUrl) return null; // same stale URL — not recovery
+
+  // The candidate must itself pass the date guard, i.e. land INSIDE the
+  // show's window. If it's still flagged, it's just another out-of-window
+  // hit (e.g. a different prior production), not the current review.
+  const stillFlagged = getWrongProductionReasonFromUrl(discoveredUrl, show);
+  if (stillFlagged) return null;
+
+  // Defense in depth: discoverCorrectUrl already host-checks its candidates
+  // internally, but clearing wrongProduction is a stronger, harder-to-undo
+  // action than a plain URL swap (retry-wrong-urls.js's case) — re-validate
+  // the outlet's own domain before trusting the candidate. Lazy require:
+  // url-discovery.js already requires this file at load time, so a top-level
+  // require here would be circular.
+  const { validateUrlDomain } = require('./url-discovery');
+  const outletId = data.outletId || '';
+  const domainCheck = validateUrlDomain(discoveredUrl, outletId);
+  if (domainCheck.valid === false) return null;
+
+  return { url: discoveredUrl, oldUrl };
 }
 
 /**
@@ -2842,11 +3151,17 @@ function explainExclusion(data, show, filePath) {
   // (every flag lives in the central guard).
 
   // wrongProduction — excluded unless cleared by one of three override flags
+  // or a freshness-bounded self-heal auto-clear (BRO-167/task #1017 follow-up:
+  // this is the 4th copy-pasted wpCleared check, checked FIRST of the 4, and
+  // was missed by both task #1017 fix commits (e8f88878b24, aa65ba15880),
+  // which only touched the 3 downstream gates below. A file with a fresh
+  // auto-clear stamp never reached those — it was excluded right here.)
   if (data.wrongProduction === true) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     if (!cleared) return 'wrongProduction';
   }
 
@@ -2865,6 +3180,31 @@ function explainExclusion(data, show, filePath) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
+  // outletDomainUnvalidated (task #1926, paranormal-activity-2026 incident):
+  // outletId is a REGISTERED outlet whose domain/domainAliases don't match
+  // data.url's host — an operator-supplied outletId (submit-review-form /
+  // audit-aggregator-gap auto-ingest) borrowing a registered outlet's tier
+  // weight. Recomputed FRESH every call rather than trusting the stored
+  // domainUnvalidated/domainUnvalidatedReason flags — the real specimen's
+  // stored reason still names an outletId a later merge overwrote without
+  // re-validating, so gating on the stale flag would have missed it. Escape
+  // hatch: explainOutletDomainMismatch honors allowUnvalidatedDomain + reason
+  // + the same 8-field manual-protection set ingest-manual-review.js stamps
+  // (memory/feedback_manual_review_protection_fields.md) — an operator who
+  // wants to legitimize a borrowed-tier domain mismatch must carry the same
+  // verification signals as any other manually-cleared review, not a
+  // narrower one-off pair.
+  //
+  // This is a MIRROR, not the sole gate: rebuild-all-reviews.js's actual
+  // scoring-corpus loop calls explainOutletDomainMismatch directly (its own
+  // inline check, same pattern as its isNonReview/wrongShow checks a few
+  // lines up in that file) — see that file's comment for why this function
+  // alone doesn't stop the real rebuild.
+  {
+    const { explainOutletDomainMismatch } = require('./outlet-domain-validation');
+    const { loadOutletRegistry } = require('./review-normalization');
+    if (explainOutletDomainMismatch(data, loadOutletRegistry())) return 'outletDomainUnvalidated';
+  }
   // Pre-opening temporal gate: a never-opened show cannot carry reviews
   // published long before its own previews window (helper honors priorRuns +
   // every manual-clear/early-date override — see its docstring).
@@ -2876,7 +3216,7 @@ function explainExclusion(data, show, filePath) {
   // pre-fix the LLM scorer skipped both, leaving the kept file unscored and
   // absent from reviews.json. When filePath is undefined we fall back to the
   // historical "skip on any duplicateOf" behavior — recovery is opt-in.
-  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 1685-1730.
+  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 2269-2431.
   if (data.duplicateOf) {
     if (!filePath) return 'duplicateOf';
     const pathMod = require('path');
@@ -2894,13 +3234,25 @@ function explainExclusion(data, show, filePath) {
       refData = undefined;
     }
     if (refData !== undefined) {
-      const refDupOf = refData && (refData.duplicateOf || refData.duplicateTextOf);
-      const isCircular = refDupOf === thisFile;
+      // isCircular checks BOTH fields independently (not an OR'd single value)
+      // — matches rebuild-all-reviews.js's `refData.duplicateOf === file ||
+      // refData.duplicateTextOf === file`. Codex ship-check finding (BRO-2317):
+      // the previous `refData.duplicateOf || refData.duplicateTextOf` form
+      // short-circuits on the first truthy field, so a refData carrying an
+      // unrelated duplicateOf would never even look at duplicateTextOf, missing
+      // a real circular back-pointer through that field.
+      const isCircular = !!(refData.duplicateOf === thisFile || refData.duplicateTextOf === thisFile);
+      // sameUrl is a strictly stronger same-article signal than the fingerprint
+      // and must count as circularSameText too — mirrors rebuild-all-reviews.js
+      // (see its comment for why the fingerprint alone is fragile to a scrape
+      // artifact prepended to just one copy, e.g. task #1627's Times
+      // quiz-widget prefix on this SAME show family).
+      const sameUrl = !!(data.url && refData.url && data.url === refData.url);
       if (isCircular && data.fullText && refData.fullText) {
         const { computeContentFingerprint } = require('./content-quality');
         const a = computeContentFingerprint(data.fullText);
         const b = computeContentFingerprint(refData.fullText);
-        const circularSameText = !!(a && b && a === b);
+        const circularSameText = !!(a && b && a === b) || sameUrl;
         if (circularSameText) {
           // Tiebreak: keep lexicographically-LOWER filename. Matches rebuild's
           // `file > data.duplicateOf` skip condition (we skip when greater).
@@ -2911,12 +3263,41 @@ function explainExclusion(data, show, filePath) {
           // separate reviews (duplicateOf wrongly set). Both sides kept.
           // Fall through.
         }
-      } else if (refDupOf) {
-        // Reference also a dupe but pointing elsewhere (not back at us) —
-        // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+      } else if (isCircular && sameUrl) {
+        // Circular + confirmed same URL but missing fullText on one/both
+        // sides — same-URL alone is enough to tiebreak (matches rebuild).
+        if (thisFile > data.duplicateOf) return 'duplicateOfCircularTiebreak';
+      } else if (isCircular) {
+        // Circular but no fingerprint or URL confirmation available — can't
+        // confirm true duplication, so fall through rather than guess.
       } else {
-        // Reference exists and is NOT also flagged → legitimate dup, skip.
-        return 'duplicateOf';
+        // Non-circular: does refData carry its OWN unresolved duplicateOf
+        // verdict? BRO-2317: the reference's duplicateTextOf field is
+        // deliberately EXCLUDED from this check. duplicateTextOf is a
+        // TEXT-STORAGE annotation set by collect-review-texts.js's own
+        // content-fingerprint dedup pass — it means "my content also matches
+        // some sibling", not "I am excluded/at risk", and never by itself
+        // triggers refData's OWN exclusion (this function does not check
+        // `data.duplicateTextOf` anywhere as a self-exclusion trigger — see
+        // this function's docstring, "Intentionally NOT excluded"). Folding
+        // it into "reference is also a dupe, recover me" was the root cause
+        // of BRO-2317: a cluster winner that legitimately holds its own
+        // fullText AND carries a duplicateTextOf pointing at one of its own
+        // losers (from that same dedup pass) made every OTHER, non-circular
+        // loser in the cluster look like it pointed at "a dupe pointing
+        // elsewhere" and silently fall through unexcluded — reviews.json got
+        // duplicate URLs and validate-data.js's NEW-duplicate-URL gate failed
+        // on main + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
+        // 2026-08-26). refData.duplicateOf, by contrast, IS a real unresolved
+        // verdict regardless of content, so it always still counts.
+        if (refData.duplicateOf) {
+          // Reference also a dupe but pointing elsewhere (not back at us) —
+          // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+        } else {
+          // Reference exists and carries no unresolved duplicateOf of its
+          // own → legitimate dup, skip.
+          return 'duplicateOf';
+        }
       }
     }
   }
@@ -3832,6 +4213,10 @@ module.exports = {
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
+  shouldRetryFetch,
+  recordFetchAttempt,
+  isEligibleForStaleWrongProductionRecovery,
+  resolveStaleWrongProductionRecovery,
   pickRerouteTarget,
   isIncludableForRebuild,
   explainExclusion,

@@ -91,6 +91,33 @@ function normalizePriorityTier(raw) {
 const TIER_TO_LINEAR = { P0: 1, P1: 2, P2: 3, P3: 4 };
 
 /**
+ * Is this mirror task already represented on the Linear board? A hit on
+ * EITHER identity key counts — see BRO-2468.
+ *
+ *   - `mapping[task.id]` — the legacy JSON (data/linear-import-mapping.json),
+ *     keyed on the LOCAL MIRROR task id. That id is not stable: the mirror
+ *     RENUMBERS it on resync (measured: Notion page 39c637c5-…a6b8 was taskId
+ *     53 when it was imported as BRO-29, and came back as taskId 1884, which
+ *     the mapping had never seen — so it was imported again as BRO-2399).
+ *   - `pageIdIndex.has(notionId)` — the append-only pageId ledger
+ *     (data/linear-import-mapping.jsonl, via import-ledger.js's
+ *     indexByPageId()), keyed on the Notion page id. That id never changes,
+ *     so it is the identity to prefer.
+ *
+ * A legacy row whose page id could not be recovered (see migrateLegacy()'s
+ * `unresolved`) has no pageId to check and falls back to the taskId hit
+ * alone — unchanged behaviour for that carve-out.
+ *
+ * `pageIdIndex` is whatever import-ledger.js's indexByPageId() returns (a Map)
+ * or any object exposing a compatible `.has(id)`.
+ */
+function isAlreadyImported(task, notionId, mapping, pageIdIndex) {
+  if (mapping[task.id]) return true;
+  if (notionId && pageIdIndex && pageIdIndex.has(notionId)) return true;
+  return false;
+}
+
+/**
  * Accepts any legacy spelling, not just the three canonical ones.
  *
  * A card with no usable priority maps to 0 (No priority) rather than 4 (Low).
@@ -482,6 +509,7 @@ module.exports = {
   deterministicUuidV4,
   deriveIssueId,
   isAlreadyExistsError,
+  isAlreadyImported,
   mapNotionStatusToLinearState,
   normalizeLabelName,
   recordTags,

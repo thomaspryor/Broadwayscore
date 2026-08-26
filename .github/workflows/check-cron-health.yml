@@ -122,6 +122,11 @@ jobs:
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
             "opening-night-checklist.yml|3|Opening Night Checklist"
+            # Same-night Express retry dispatcher (card #1889); hourly at :50.
+            # 3h = 2 missed runs = alert. A dead cron here means a queued
+            # same-night retry never dispatches — the exact silent-miss this
+            # card fixed — and the queue's own alerts can't fire either.
+            "opening-night-express-retry-check.yml|3|Opening Night Express Retry Check"
             # Hourly trade-press RSS recoupment poll; 3h = 2 missed runs = alert.
             # Powers ≤1h detection latency for Variety/Deadline recoupment news.
             "commercial-rss-poll.yml|3|Commercial RSS Poll"
@@ -580,8 +585,12 @@ jobs:
             for (const name of names) {
               resolveCondition(`cron-health:${name}`);
               // Also re-arm the 3-day chronic escalation (card #647): without
-              // this a cron that flaps would sit out the previous incident's
-              // 168h cooldown before its NEXT multi-day outage could escalate.
+              // this a cron that flaps would sit out the prior-incident 168h
+              // cooldown before its NEXT multi-day outage could escalate.
+              // (No apostrophes in this comment — this whole node -e body is
+              // inside a bash single-quoted string, which has no escape for
+              // a literal quote; one here silently truncated the script and
+              // broke resolveCondition() on every run, see BRO-450.)
               resolveCondition(`cron-health-chronic:${name}`);
             }
           '

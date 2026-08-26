@@ -256,7 +256,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/enrich-stubhub-prices.js
+        run: node scripts/enrich-stubhub-prices.js --time-budget-min=4
         continue-on-error: true
         timeout-minutes: 5
 
@@ -280,7 +280,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/enrich-fallback-ticket-links.js --limit=10
+        run: node scripts/enrich-fallback-ticket-links.js --limit=10 --time-budget-min=8
         continue-on-error: true
         timeout-minutes: 10
 
@@ -628,6 +628,18 @@ jobs:
           git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
+          # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):
+          # this is the ONLY step that runs discover-new-shows.js
+          # --include-off-broadway --include-west-end, which is the only writer
+          # of these 3 files — none were previously in this step's git-add list,
+          # so every candidate staged/counted here was silently discarded at job
+          # end (the OB staging gate has been non-durable since it shipped;
+          # ob-venue-counts.json's 7-day anomaly baseline never had a chance to
+          # persist). owe-venue-candidates.json is new (this fix); the other two
+          # close a pre-existing gap in the same step.
+          git add data/audit/ob-venue-candidates.json 2>/dev/null || true
+          git add data/audit/ob-venue-counts.json 2>/dev/null || true
+          git add data/audit/owe-venue-candidates.json 2>/dev/null || true
 
           # Only commit if there are staged changes
           if git diff --staged --quiet; then
@@ -1778,7 +1790,7 @@ jobs:
             if (/^Pre-validate /i.test(step)) {
               hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (not just a non-zero exit). continue-on-error should swallow a clean exit-1, so a real failure here means an uncaught throw or process crash.";
             } else if (/^Commit gate/i.test(step)) {
-              hint = "Discovery/enrichment introduced a NEW validation error not present before this run (task #649 set-diff) — a pre-existing, unrelated error alone no longer blocks the commit. Check data/audit/discovery-blocked/ (new_errors_preview) or the run's step summary for the specific error.";
+              hint = "Discovery/enrichment introduced a NEW validation error not present before this run (task #649 set-diff) — a pre-existing, unrelated error alone no longer blocks the commit. Check data/audit/discovery-blocked/ (new_errors_preview) or the run step summary for the specific error.";
             } else if (/^Discover new shows$/i.test(step)) {
               hint = "discover-new-shows.js itself failed. Check TodayTix API availability, Playbill scraping, and ScrapingBee/Bright Data credits.";
             } else if (/^Update show statuses$/i.test(step)) {

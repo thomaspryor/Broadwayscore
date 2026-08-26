@@ -129,4 +129,19 @@ function parseDate(dateStr) {
   return new Date(normalized + 'T00:00:00Z');
 }
 
-module.exports = { normalizeDate, parseDate, stripOrdinals, validateCalendarDate };
+/**
+ * Strip ordinal suffixes and parse into a Date object, WITHOUT normalizeDate()'s
+ * 1970-2030 calendar-year floor (validateCalendarDate). Use this instead of
+ * parseDate() for code that scans pre-2005/historical shows, where a genuine
+ * 1950s-1960s review publishDate would otherwise silently become null.
+ *
+ * @param {string|null|undefined} dateStr
+ * @returns {Date|null}
+ */
+function parseHistoricalDate(dateStr) {
+  if (!dateStr || typeof dateStr !== 'string') return null;
+  const d = new Date(stripOrdinals(dateStr.trim()));
+  return isNaN(d.getTime()) ? null : d;
+}
+
+module.exports = { normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate };

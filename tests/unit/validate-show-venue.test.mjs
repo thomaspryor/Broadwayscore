@@ -125,6 +125,53 @@ test('compareShow flags an opening-date delta beyond the 30-day threshold', () =
   assert.ok(mismatches.some(m => m.field === 'openingDate'));
 });
 
+// BRO-2023: Playbill's genre tag-line ("Broadway | Play | Revival" /
+// "... | Original") is authoritative over both corpus title cross-reference
+// and title heuristics — it catches a prior production this corpus never
+// recorded AND a same-title cross-market transfer wrongly read as a revival.
+test('compareShow flags isRevival mismatch when Playbill says Revival but shows.json says false (Gloria — missing prior production)', () => {
+  const gloria = { id: 'gloria-2026', title: 'Gloria', venue: 'Helen Hayes Theater', category: 'broadway', isRevival: false };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Play', 'Dark Comedy', 'Revival'], market: 'Broadway', showType: 'play', revivalStatus: 'revival' },
+  };
+  const mismatches = compareShow(gloria, parsed, 'https://playbill.com/production/gloria-broadway-helen-hayes-theater-2027');
+  const m = mismatches.find(x => x.field === 'isRevival');
+  assert.ok(m, 'expected an isRevival mismatch');
+  assert.equal(m.shows, false);
+  assert.equal(m.playbill, true);
+});
+
+test('compareShow flags isRevival mismatch when Playbill says Original but shows.json says true (transfer misread as revival)', () => {
+  const interAlia = { id: 'inter-alia-broadway-2026', title: 'Inter Alia', venue: 'Music Box Theatre', category: 'broadway', isRevival: true };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Play', 'Drama', 'One Act', 'Original'], market: 'Broadway', showType: 'play', revivalStatus: 'original' },
+  };
+  const mismatches = compareShow(interAlia, parsed, 'https://playbill.com/production/inter-alia-broadway-music-box-theatre-2026');
+  const m = mismatches.find(x => x.field === 'isRevival');
+  assert.ok(m, 'expected an isRevival mismatch');
+  assert.equal(m.shows, true);
+  assert.equal(m.playbill, false);
+});
+
+test('compareShow does not flag isRevival when Playbill tag line is absent/unknown', () => {
+  const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', isRevival: false };
+  const parsed = { titleParse: null, dates: {}, tagLine: { tags: [], market: null, showType: null, revivalStatus: 'unknown' } };
+  const mismatches = compareShow(show, parsed, 'https://playbill.com/production/x-2026');
+  assert.ok(!mismatches.some(m => m.field === 'isRevival'));
+});
+
+test('compareShow agrees — no isRevival mismatch when shows.json already matches Playbill', () => {
+  const fantasticks = { id: 'the-fantasticks-2026', title: 'The Fantasticks', venue: 'Helen Hayes Theater', category: 'broadway', isRevival: true };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Musical', 'Revival'], market: 'Broadway', showType: 'musical', revivalStatus: 'revival' },
+  };
+  const mismatches = compareShow(fantasticks, parsed, 'https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026');
+  assert.ok(!mismatches.some(m => m.field === 'isRevival'));
+});
+
 test('isProvisional flags manual-user-request entries like Bronco Billy for validation', () => {
   assert.equal(isProvisional({ discoverySource: 'manual-user-request', provisional: true }), true);
   assert.equal(isProvisional({ discoverySource: 'todaytix-sync', provisional: false }), false);

@@ -36,13 +36,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
+const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
-const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./lib/venue-classification');
+const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { venuesMatch } = require('./lib/deduplication');
 
@@ -77,8 +78,11 @@ const adminPromoteAll = args.includes('--admin-promote-all');
 // fetches for either, no venue-page-sourced OB promotions (those keep the
 // operator-run path via health-check). Both classes validate off the
 // aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
-// Review Roundup page IS the go-live signal). Name kept for backward compat
-// with existing CI invocations even though it now covers a second class.
+// Review Roundup page IS the go-live signal) — for the regional class, the
+// roundup must ALSO name 3+ distinct review outlets (owner rule 2026-07-30,
+// BRO-125: see decideRegionalPromotion / scripts/lib/review-threshold.js).
+// Name kept for backward compat with existing CI invocations even though it
+// now covers a second class.
 const regionalOnly = args.includes('--regional-only');
 // --email: send the owner a "went live" notification for promoted regional /
 // off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
@@ -104,24 +108,78 @@ function logEntry(entry) {
   }
 }
 
+/**
+ * Resolve the category for a generic (non-regional, non-aggregator-roundup)
+ * candidate. This promoter is OB-ONLY: it must never return anything but
+ * 'off-broadway' or null. A codebase-aware adversarial review (Codex,
+ * BRO-160) caught the first cut of this function trusting a candidate.category
+ * of 'west-end'/'off-west-end'/'broadway' verbatim — combined with
+ * --admin-promote-all bypassing confirmation, that would have turned this
+ * OB-scoped pipeline into an unvalidated cross-market writer: its dedup pool
+ * only preloads existing off-broadway/regional shows (main()'s
+ * `existingCandidates` filter), so a West End candidate could promote as a
+ * duplicate the dedicated, correctly-scoped promoter
+ * (scripts/promote-we-aggregator-candidates.js) would have caught. A venue
+ * that classifies as West End is therefore a MISROUTE, not a value to trust
+ * — returns null so the caller rejects the candidate outright rather than
+ * promoting it mislabeled. The venue check runs BEFORE trusting an explicit
+ * 'off-broadway' category: a candidate that mislabels itself off-broadway at
+ * a genuinely West End venue must still be rejected, not waved through on
+ * its own say-so.
+ * @param {object} candidate
+ * @returns {'off-broadway'|null}
+ */
+function resolveCandidateCategory(candidate) {
+  if (isWestEndVenue(candidate.venue)) return null;
+  if (candidate.category === 'off-broadway') return 'off-broadway';
+  // Any other category value (missing, a routing bug like a stray
+  // 'regional'/'broadway', or a bogus string) plus every venue the West End
+  // list doesn't recognize default to off-broadway — matches every current
+  // producer of this staging file (venue-listing-discover.js's
+  // OB_VENUE_CONFIGS, aggregator-candidate-extract.js's classifyVenueMarket,
+  // decideCriticListingPromotion) and preserves promotion coverage for a
+  // genuine new Off-Broadway house not yet in data/off-broadway-venues.json.
+  return 'off-broadway';
+}
+
+// Loose YYYY-MM-DD check — candidate.openingDate/previewsStartDate/
+// closingDate are trusted input from a hand-edited staging entry or a
+// future producer (no current producer of this file sets them), never a
+// value this script itself derives, so a malformed string must fail closed
+// to null rather than write straight through (Codex ship-check finding,
+// BRO-160) — matches the validated-shape discipline buildRegionalShowEntry/
+// buildOffBroadwayAggregatorShowEntry already apply to articlePublishedAt.
+function validDateOrNull(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+}
+
 function buildShowEntry(candidate) {
-  // Build a minimal show entry. openingDate intentionally null so the
-  // opening-night orchestrator doesn't fire on a venue-only stub
-  // (see V-T9 — orchestrator must skip null-openingDate).
+  // openingDate/previewsStartDate/closingDate default to null so the
+  // opening-night orchestrator doesn't fire on a venue-only stub (see V-T9
+  // — orchestrator must skip null-openingDate) — but a candidate that DOES
+  // carry a well-formed date (--admin-force on a hand-verified entry, or a
+  // future producer) has it preserved rather than discarded (BRO-160).
   const year = new Date().getFullYear();
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const category = resolveCandidateCategory(candidate);
   const id = `${slugBase}-off-broadway-${year}`;
   return {
     id,
     title: candidate.title,
     slug: slugBase,
-    venue: candidate.venue,
-    openingDate: null,
-    previewsStartDate: null,
-    closingDate: null,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // every other venue-write site in scripts/ routes through this; this
+    // builder was the one write site BRO-160 found skipping it. Returns
+    // null on a placeholder venue; the caller below refuses to promote
+    // rather than write a garbage venue string. Also null when `category`
+    // above is null (West End misroute) — same refusal path, one check.
+    venue: category ? sanitizeVenueForWrite(candidate.venue) : null,
+    openingDate: validDateOrNull(candidate.openingDate),
+    previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+    closingDate: validDateOrNull(candidate.closingDate),
     status: 'announced',
-    category: 'off-broadway',
-    market: 'broadway',
+    category: category || 'off-broadway',
+    market: marketForCategory(category || 'off-broadway'),
     type: null,
     discoverySource: candidate.source,
     discoveredAt: candidate.discoveredAt,
@@ -136,7 +194,18 @@ function buildShowEntry(candidate) {
 // the validation: it only exists once professional reviews are out.
 const AGGREGATOR_ROUNDUP_SOURCES = new Set(['bww-roundup', 'playbill-verdict']);
 
-/** Pure promotion rule for regional candidates (testable, CLAUDE.md §15). */
+/**
+ * Pure promotion rule for regional candidates (testable, CLAUDE.md §15).
+ *
+ * BRO-125 (owner rule 2026-07-30): "roundup exists" alone is no longer
+ * sufficient — a roundup naming only 1-2 critics carries "very little
+ * critical or audience signal to be useful." The roundup-source + feeder-
+ * venue checks below stay (they establish this candidate is a real,
+ * in-scope regional production at all); decideReviewThresholdPromotion adds
+ * the actual signal check on top, using candidate.reviewCount — the count of
+ * distinct registered outlets aggregator-candidate-extract.js's
+ * countDistinctReviewOutlets() found in that same roundup article.
+ */
 function decideRegionalPromotion(candidate) {
   if (!candidate || candidate.category !== 'regional') {
     return { confirmed: false, reason: 'not a regional candidate' };
@@ -149,7 +218,11 @@ function decideRegionalPromotion(candidate) {
     // only fires on stale staged entries written before the venue table existed.
     return { confirmed: false, reason: `venue "${candidate.venue}" not in the feeder-venue table` };
   }
-  return { confirmed: true, reason: 'aggregator roundup page exists (regional feeder venue)', source: 'aggregator-roundup' };
+  const reviewThreshold = decideReviewThresholdPromotion(candidate);
+  if (!reviewThreshold.confirmed) {
+    return { confirmed: false, reason: `roundup exists but ${reviewThreshold.reason}` };
+  }
+  return { confirmed: true, reason: `aggregator roundup page exists (regional feeder venue) — ${reviewThreshold.reason}`, source: 'aggregator-roundup' };
 }
 
 /**
@@ -289,7 +362,11 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
     id,
     title: candidate.title,
     slug: slugBase,
-    venue: candidate.venue,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
+    // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+    // promote rather than write a garbage venue string.
+    venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
     openingDateSource: openingDate ? 'aggregator-roundup' : null,
     previewsStartDate: null,
@@ -321,7 +398,16 @@ function buildRegionalShowEntry(candidate) {
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const id = `${slugBase}-regional-${year}`;
+  // City lookup stays on the raw candidate venue — feederVenueCity keys off
+  // the feeder-venue table's own spelling, unaffected by sanitization.
   const city = feederVenueCity(candidate.venue);
+  // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+  // cousin of BRO-160's buildShowEntry fix (card #1921). Sanitize BEFORE the
+  // city-suffix concatenation so a placeholder venue can't smuggle itself
+  // through as "Spring Gala 2026, Chicago, IL" — returns null on a
+  // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+  // promote rather than write a garbage venue string.
+  const sanitizedVenue = sanitizeVenueForWrite(candidate.venue);
   // Regional runs are limited engagements (6-10 weeks). A fresh roundup ⇒ the
   // show just opened ⇒ 'open'. A roundup older than ~90 days reaching this
   // code is a backfill/seed — the run is almost certainly over, and 'open'
@@ -332,7 +418,7 @@ function buildRegionalShowEntry(candidate) {
     id,
     title: candidate.title,
     slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
-    venue: city ? `${candidate.venue}, ${city}` : candidate.venue,
+    venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
     openingDate,
     openingDateSource: 'aggregator-roundup',
     previewsStartDate: null,
@@ -508,6 +594,20 @@ async function main() {
     const entry = c.category === 'regional' ? buildRegionalShowEntry(c)
       : isOBAggregatorRoundup ? buildOffBroadwayAggregatorShowEntry(c)
       : buildShowEntry(c);
+    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+    // string rather than silently promoting it (BRO-160). Stays in staging:
+    // a later scrape of the same venue page may resolve a real venue string.
+    if (!entry.venue) {
+      const misroute = !isOBAggregatorRoundup && c.category !== 'regional' && isWestEndVenue(c.venue);
+      const reason = misroute
+        ? `venue "${c.venue}" classifies as West End — use scripts/promote-we-aggregator-candidates.js instead`
+        : `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
+      skipped.push({ candidate: c, reason });
+      remainingStaged.push(c);
+      logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });
+      continue;
+    }
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
@@ -529,7 +629,10 @@ async function main() {
     if (!venuesMatch(entry.venue, c.venue)) {
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });
     }
-    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
+    // reviewCount recorded for regional promotions only — it's the actual
+    // number decideReviewThresholdPromotion gated on (BRO-125); other
+    // sources don't compute it, so a bare `undefined` there just means N/A.
+    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : undefined });
   }
 
   console.log('');
@@ -558,11 +661,23 @@ async function main() {
   // (candidate's show since added to shows.json by hand — the regional flow)
   // leave staging via remainingStaged, and that cleanup has to land even on a
   // zero-promotion run or stale entries linger forever (QA 2026-07-08).
+  // BRO-158 (the #788 class): `staged` was read at the very start of main(),
+  // before the Playbill/Lortel fetches above — a run that takes a while can
+  // easily overlap another producer staging fresh candidates. Writing
+  // `remainingStaged` directly used to overwrite the whole file with that
+  // stale snapshot, silently dropping anything staged concurrently. Instead,
+  // express this run's outcome as a removal set (the hashes promoted or
+  // dedupe-skipped out of `staged`) and apply it through updateStaging(),
+  // which re-reads the file fresh under an exclusive lock — so concurrent
+  // additions survive and only the hashes this run actually resolved are
+  // removed.
   const rewriteStaging = () => {
-    const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
-    fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
-    fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
-    console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+    const remainingHashes = new Set(remainingStaged.map((c) => c.candidateHash));
+    const removedHashes = new Set(
+      staged.filter((c) => !remainingHashes.has(c.candidateHash)).map((c) => c.candidateHash)
+    );
+    const next = updateStaging((current) => current.filter((c) => !removedHashes.has(c.candidateHash)));
+    console.log(`Staging file: ${next.length} unpromoted candidates remain.`);
   };
 
   if (promoted.length === 0) {
@@ -656,4 +771,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };
+module.exports = { buildShowEntry, resolveCandidateCategory, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };

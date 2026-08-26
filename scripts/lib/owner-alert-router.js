@@ -70,7 +70,7 @@ const { isPageWorthy } = require('./page-worthy-alerts');
 // BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
 // shelling out to the linear-brain.js CLI — see linear-issue-create.js's
 // header for why this is the natural repoint target.
-const { createLinearIssue } = require('./linear-issue-create');
+const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-create');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -95,7 +95,14 @@ function isCIExecution() {
 }
 const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
   || (isCIExecution() ? TRACKED_LEDGER_PATH : LOCAL_LEDGER_PATH);
-const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
+// Overridable like ALERT_LEDGER_PATH above (tests / ad-hoc verification runs
+// need to point this somewhere disposable too) — added after BRO-1699's
+// verification run wrote two throwaway rows into the REAL tracked file
+// because, unlike the ledger, this path had no override and no write-time
+// guard. Same incident CLASS as the 2026-08-02 ledger one (saveLedger()'s
+// NODE_TEST_CONTEXT guard below), just not yet caught for this file.
+const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
 // records successes (a failed dispatch is deliberately not written there, so
@@ -105,7 +112,12 @@ const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-qu
 // incident every single dispatch failed, so the ledger would have shown ZERO
 // activity all week even though the router was attempting (and silently
 // failing) auto-dispatch on every run.
-const ATTEMPTS_LOG_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
+// Overridable + guarded like the ledger and digest queue above (BRO-1699
+// what-else finding, systematic pass: this is the third tracked file this
+// module writes and had the same gap as the digest queue did before this
+// pass).
+const ATTEMPTS_LOG_PATH = process.env.ALERT_ATTEMPTS_LOG_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
 const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 
 const DISPOSITIONS = ['auto', 'digest', 'human'];
@@ -133,17 +145,28 @@ function loadLedger() {
   return { conditions: {} };
 }
 
-function saveLedger(ledger) {
-  // Tests must NEVER write a real ledger. 2026-08-02: the tracked
-  // data/audit/alert-ledger.json was found carrying this module's own test
-  // conditions ('test:unwritable-ledger', a fake on-monitor-launch-failed-*
-  // with cardId 'fake-card-id'), swept into main by an unrelated wholesale
-  // data commit — and the same commit rolled back the REAL opening-night SLA
-  // state, causing a duplicate owner page. Guarded at write time (not
-  // require time) so read-only tests of the path-resolution logic still load.
-  if (process.env.NODE_TEST_CONTEXT && !process.env.ALERT_LEDGER_PATH) {
-    throw new Error('owner-alert-router: refusing to write a REAL alert ledger under node:test — set ALERT_LEDGER_PATH to a temp file (see loadRouterWithFakes)');
+// Shared guard for both tracked-state files this module owns (the ledger and
+// the digest queue): tests, and ad-hoc verification runs under node:test,
+// must NEVER write the REAL file unless the caller explicitly overrode its
+// path. 2026-08-02: the tracked data/audit/alert-ledger.json was found
+// carrying this module's own test conditions ('test:unwritable-ledger', a
+// fake on-monitor-launch-failed-* with cardId 'fake-card-id'), swept into
+// main by an unrelated wholesale data commit — and the same commit rolled
+// back the REAL opening-night SLA state, causing a duplicate owner page.
+// Extended to the digest queue (BRO-1699 what-else finding): the queue had
+// no equivalent guard and no override, so a direct verification run of
+// routeAlert()'s digest path wrote two throwaway rows straight into the
+// real tracked file — same incident class, just not yet caught here.
+// Guarded at write time (not require time) so read-only tests of the
+// path-resolution logic still load.
+function assertRealFileWriteIsSafeUnderTest(kind, overrideEnvVar) {
+  if (process.env.NODE_TEST_CONTEXT && !process.env[overrideEnvVar]) {
+    throw new Error(`owner-alert-router: refusing to write a REAL ${kind} under node:test — set ${overrideEnvVar} to a temp file (see loadRouterWithFakes)`);
   }
+}
+
+function saveLedger(ledger) {
+  assertRealFileWriteIsSafeUnderTest('alert ledger', 'ALERT_LEDGER_PATH');
   fs.mkdirSync(path.dirname(LEDGER_PATH), { recursive: true });
   // Atomic write: a kill mid-write must not truncate the ledger and drop
   // every condition's open/silent state (same pattern as notion-action-poll.js).
@@ -210,6 +233,12 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
 // prunes entries older than ATTEMPTS_LOG_RETENTION_DAYS. Never throws —
 // logging the attempt must not itself become a new silent-failure vector.
 function logDispatchAttempt({ conditionKey, title, ok, error }) {
+  // Outside the try, like saveLedger/queueDigestLine: under node:test without
+  // ALERT_ATTEMPTS_LOG_PATH set, this must throw all the way out to fail the
+  // test loudly, not be swallowed by the catch below and merely
+  // console.error'd (the refusal itself IS the signal a real file write was
+  // about to happen under test).
+  assertRealFileWriteIsSafeUnderTest('alert-router attempts log', 'ALERT_ATTEMPTS_LOG_PATH');
   try {
     const cutoff = Date.now() - ATTEMPTS_LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
     let lines = [];
@@ -311,7 +340,49 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
-    return { ok: false, error: err.message };
+    // BRO-281: a USAGE_LIMIT_EXCEEDED failure is not an ordinary dispatch
+    // failure that can just retry next call — it means the Linear intake
+    // front door is jammed for EVERY conditionKey's 'auto' disposition until
+    // the workspace is archived or upgraded (BRO-10), not just this one. The
+    // Notion-era router degraded this to the same logged-warning path as any
+    // other failure, which is exactly how the ceiling went unnoticed on
+    // 2026-08-12.
+    //
+    // This must page (not silently log), but it must page ONCE per incident,
+    // not once per failed dispatchCard() call: a failed dispatch is
+    // deliberately never written to the ledger (see the "not recorded as
+    // notified" comment below dispatchCard's caller), specifically so the
+    // NEXT attempt retries instead of going silent — which means an unthrottled
+    // page here would fire a fresh critical email for every single 'auto'
+    // alert across every conditionKey, every call, for as long as the cap
+    // stays hit (a same-day inbox storm, confirmed by both ship-check
+    // reviewers on the first version of this fix, which called sendAlert()
+    // directly with no cooldown of its own).
+    //
+    // Fix: route through routeAlert() itself, under ITS OWN fixed
+    // conditionKey ('alert-router:usage-limit-exceeded', on the page-worthy
+    // allowlist as a meta self-test — see page-worthy-alerts.js) and
+    // disposition:'human'. That's a DIFFERENT conditionKey than the one that
+    // failed to dispatch, so it gets its own ledger entry and cooldown —
+    // one page per incident, silent re-fires for cooldownHours after, same
+    // guarantee every other alert in this file gets. No recursion risk:
+    // disposition:'human' never calls dispatchCard(), only 'auto' does.
+    const usageLimitExceeded = isUsageLimitExceeded(err);
+    if (usageLimitExceeded) {
+      try {
+        await routeAlert({
+          conditionKey: 'alert-router:usage-limit-exceeded',
+          title: 'Linear usage limit hit — automated alert filing is silently failing',
+          description: `dispatchCard() could not file "${title}" (condition "${conditionKey}"): ${err.message}. Every 'auto' disposition alert will keep failing the same way until this is resolved — archive stale issues (scripts/linear-archive-done.js) or upgrade the plan (BRO-10).`,
+          severity: 'critical',
+          disposition: 'human',
+          cooldownHours: 24,
+        });
+      } catch (escalationErr) {
+        console.error(`[alert-router] USAGE_LIMIT_EXCEEDED escalation page itself failed: ${escalationErr.message}`);
+      }
+    }
+    return { ok: false, error: err.message, usageLimitExceeded };
   }
 }
 
@@ -356,7 +427,7 @@ function headStandsAlone(description, subject) {
 // auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
-function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model }) {
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields }) {
   // Non-throwing (card #1078): an alert must still reach the owner even if
   // its own head would clip badly — this is a loud warning, not a gate.
   // description renders as "<b>title</b> — description" (autonomous-email-
@@ -383,8 +454,13 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   queue.push({
     conditionKey, title, description, severity, url: url || null,
     decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
+    // routeAlert's caller-supplied fields ([{name,value}]) — dispatchCard and
+    // sendAlert both carry these through (e.g. the 'Shows' list on overdue/
+    // checklist/drift alerts); the digest path was silently dropping them.
+    fields: Array.isArray(fields) ? fields : [],
     queuedAt: new Date().toISOString(),
   });
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
 }
@@ -406,6 +482,7 @@ function peekDigestQueue() {
 
 // Clears the queue. Call only AFTER the peeked lines are durably persisted.
 function clearDigestQueue() {
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
 }
@@ -421,6 +498,7 @@ function removeDigestLines(conditionKeys) {
   const queue = peekDigestQueue();
   const kept = queue.filter(q => !q || !keys.has(q.conditionKey));
   if (kept.length !== queue.length) {
+    assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
     fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
     fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(kept, null, 2) + '\n');
   }
@@ -555,9 +633,10 @@ async function routeAlert(opts) {
     // callers — the E2E canary, health-check.js's dispatchedCards mapping —
     // can surface the true underlying failure instead of re-guessing one.
     if (!dispatch.ok) result.dispatchError = dispatch.error;
+    if (dispatch.usageLimitExceeded) result.usageLimitExceeded = true;
     notifyOk = dispatch.ok;
   } else if (effectiveDisposition === 'digest') {
-    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model });
+    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
   } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
     result.delivered = delivered;

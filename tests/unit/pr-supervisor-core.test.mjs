@@ -274,6 +274,29 @@ test('PR supervisor — the additive exemption must be EARNED', async (t) => {
   });
 });
 
+test('PR supervisor — .github/workflows/test.yml is an additive registry (2026-08-23 fix)', async (t) => {
+  // A live replay of the real open-PR set found this file's `on: push: paths:`
+  // block driving 49 collision-instances across 8 PRs — the single biggest
+  // cause of the digest's "23 need a decision" alarm — because every PR that
+  // adds a new top-level script/test must append one path line here. Same
+  // false-positive shape already fixed once for tests/unit-test-manifest.txt.
+  const WORKFLOW = '.github/workflows/test.yml';
+
+  await t.test('two purely-additive appends to the paths block do NOT collide', () => {
+    const a = { number: 20, files: [WORKFLOW], fileStats: { [WORKFLOW]: { additions: 1, deletions: 0 } } };
+    const b = { number: 21, files: [WORKFLOW], fileStats: { [WORKFLOW]: { additions: 1, deletions: 0 } } };
+    assert.deepEqual(buildCollisionIndex([a, b]).get(20), []);
+  });
+
+  await t.test('an edit that deletes from the paths block still collides', () => {
+    const a = { number: 22, files: [WORKFLOW], fileStats: { [WORKFLOW]: { additions: 1, deletions: 0 } } };
+    const c = { number: 23, files: [WORKFLOW], fileStats: { [WORKFLOW]: { additions: 0, deletions: 1 } } };
+    const idx = buildCollisionIndex([a, c]);
+    assert.deepEqual(idx.get(23).map((x) => x.number), [22], 'the deleting PR still collides');
+    assert.deepEqual(idx.get(22).map((x) => x.number), [23], 'and the additive PR sees it too');
+  });
+});
+
 test('PR supervisor — rollupCheckState fails toward red, never toward green', async (t) => {
   const run = (conclusion, status = 'COMPLETED') => ({ __typename: 'CheckRun', status, conclusion });
 

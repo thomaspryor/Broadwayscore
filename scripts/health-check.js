@@ -39,6 +39,7 @@ const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
+const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
@@ -2371,14 +2372,37 @@ function checkDigestInvariantFail() {
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
-// lives in scripts/lib/push-retry-deadman.js's header. This wrapper reuses
-// readJsonlLedgerOrNull() (above) so this is the third gitignored-ledger check
-// in this file to share the same null-means-absent read path, not a fourth
-// slightly-different variant of it.
+// lives in scripts/lib/push-retry-deadman.js's header.
+//
+// SOURCE (task: push-retry-failure telemetry, 2026-08-23, Phase 0 of the
+// push-contention systemic fix): the LOCAL data/audit/push-retry-
+// failures.jsonl this used to read is gitignored and dies with the runner
+// whenever the failed push is the only write in a CI job — which is exactly
+// why this row reported "Cannot measure" for months. record_push_failure()
+// (scripts/lib/push-with-retry.sh) now ALSO durably records to a dedicated
+// `push-retry-failures` git branch via the generalized scripts/lib/
+// push-ledger-store.js (same CAS-branch pattern proven by the push-ledger
+// success stream). Reads from THAT branch now, not the local file — same
+// null-means-absent contract as readJsonlLedgerOrNull() above (any read/
+// fetch error, including the branch not existing yet, returns null so this
+// row still says "cannot measure" rather than falsely reporting zero
+// failures).
+function readPushRetryFailureLedgerOrNull() {
+  try {
+    const { readLedger } = require('./lib/push-ledger-store.js');
+    const { parseLedgerLines } = require('./lib/push-ledger.js');
+    const cwd = path.join(__dirname, '..');
+    const { content, fetchFailed } = readLedger(cwd, { branch: 'push-retry-failures', file: 'failures.jsonl' });
+    if (fetchFailed) return null;
+    return parseLedgerLines(content, ['reason', 'ts']);
+  } catch {
+    return null;
+  }
+}
+
 function checkPushRetryDeadman() {
   const { assessPushRetryDeadman } = require('./lib/push-retry-deadman.js');
-  const logPath = path.join(AUDIT_DIR, 'push-retry-failures.jsonl');
-  return [assessPushRetryDeadman(readJsonlLedgerOrNull(logPath))];
+  return [assessPushRetryDeadman(readPushRetryFailureLedgerOrNull())];
 }
 
 // --- Category I3: Infra-review gate telemetry (task #1095) ---
@@ -3006,22 +3030,38 @@ async function getWorkflowRunSummary() {
     // part of the cache key — it's "last 24h from call time" either way, and
     // pinning the key lets concurrent callers within the TTL window share
     // one result instead of each computing a distinct since= and missing.
-    const results = await cachedFetch('workflow-run-summary-24h', async () => {
+    const { runs: results, partial } = await cachedFetch('workflow-run-summary-24h', async () => {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       // Use REST API with per_page=100 (covers most days in 1-2 calls)
       const runs = [];
       let page = 1;
       const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
+      let partial = false;
 
       while (page <= maxPages) {
         const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-        const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+        let response;
+        try {
+          response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+        } catch (pageErr) {
+          // A failure on page 2+ must not discard page 1's already-fetched
+          // runs (fetchGitHubJSON throws on non-2xx, unlike the old fetchJSON
+          // which silently parsed whatever body came back) — degrade to
+          // "partial results" instead of losing everything. A page-1 failure
+          // means zero data was ever fetched — keep propagating that to the
+          // outer catch so it reports skipped/error rather than a false "0
+          // failures" clean read.
+          if (page === 1) throw pageErr;
+          console.error(`[Workflows] page ${page} fetch failed, using ${runs.length} run(s) from earlier pages: ${pageErr.message}`);
+          partial = true;
+          break;
+        }
         if (!response || !response.workflow_runs) break;
         runs.push(...response.workflow_runs);
         if (response.workflow_runs.length < 100) break;
         page++;
       }
-      return runs;
+      return { runs, partial };
     });
 
     const completed = results.filter(r => r.status === 'completed');
@@ -3075,6 +3115,7 @@ async function getWorkflowRunSummary() {
       })),
       repeatFailures,
       skipped: false,
+      partial,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);
@@ -3135,7 +3176,7 @@ async function getOpenFeedbackReviewIssues() {
     const url = 'https://api.github.com/repos/thomaspryor/Broadwayscore/issues?labels=needs-manual-review&state=open&per_page=100';
     // Cached (shared across every concurrently-dispatched session on this Mac).
     const response = await cachedFetch('needs-manual-review-issues',
-      () => fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' }));
+      () => fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } }));
     if (!Array.isArray(response)) return { skipped: true, issues: [] };
     return {
       skipped: false,
@@ -3292,6 +3333,26 @@ function reverseDiscoveryBacklogResults(report) {
     status: 'warn',
     message: `${report.candidates.length} aggregator-reviewed show(s) not in the catalogue. First: "${first.title}" (${first.source})`,
     hint: 'Review data/audit/reverse-discovery-candidates.json; validate each via node scripts/validate-show-venue.js, then add per CLAUDE.md §3.',
+  }];
+}
+
+// Freshness/backfill visibility for reverse-discovery (BRO-114): the audit's
+// own state-diff design naturally "backfills" a missed run's window on the
+// next run, EXCEPT when downtime exceeds BWW's ~5-day rolling window — that
+// failure mode was previously silent (see scripts/lib/reverse-discovery-
+// freshness.js for the full rationale). This surfaces it in the same daily
+// digest as reverseDiscoveryBacklogResults, independent of candidate count
+// (a stale-but-empty candidates file is exactly the dangerous case: it looks
+// clean but may just not have run).
+function reverseDiscoveryFreshnessResults(report, nowMs) {
+  const { checkReverseDiscoveryFreshness } = require('./lib/reverse-discovery-freshness');
+  const stale = checkReverseDiscoveryFreshness(report, nowMs);
+  if (!stale) return [];
+  return [{
+    name: 'Data: BWW reverse-discovery audit stale',
+    status: stale.severity,
+    message: `reverse-discovery-candidates.json is ${stale.hoursStale.toFixed(1)}h old (audit-reverse-discovery.yml runs every 6h) — a delayed/skipped run risks missing a BWW roundup that rotates out of its ~5-day window before ever being seen.`,
+    hint: 'Check audit-reverse-discovery.yml run history; dispatch manually if the cron is stuck: gh workflow run audit-reverse-discovery.yml. See docs/bww-reverse-discovery-backfill-visibility.md.',
   }];
 }
 
@@ -3473,28 +3534,6 @@ function pushFallbackUsageResults(entries) {
     message: `${entries.length} push(es) landed via the API fallback instead of a normal local push in the last 24h — ${parts}.`,
     hint: 'Expected now that the fallback defaults on fleet-wide (task #1847). A sudden jump, or a jump concentrated on one workflow, means contention got materially worse there — check data/audit/*.json glob scope (reconcile-merged-json.js MANAGED list), or set PUSH_API_FALLBACK_DISABLE=1 for that caller if it needs to opt back out.',
   }];
-}
-
-// Simple HTTPS GET that returns parsed JSON
-function fetchJSON(url, headers) {
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(url);
-    const req = require('https').request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: 'GET',
-      headers: { ...headers, 'Accept': 'application/json' },
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); } catch { resolve(null); }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Timeout')); });
-    req.end();
-  });
 }
 
 // --- Email Digest ---
@@ -4065,6 +4104,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       <h3 style="color:#aaa;margin:24px 0 8px;">Workflow Runs (24h)</h3>
       <p style="color:#ccc;margin:4px 0;">
         ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total)
+        ${workflowSummary.partial ? ' <span style="color:#f1c40f;">(partial — a later page of results failed to load, counts may undercount)</span>' : ''}
       </p>
       ${failedList ? `<ul style="padding-left:20px;margin:4px 0;">${failedList}</ul>` : ''}
     `;
@@ -4078,7 +4118,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     ? `
       <h3 style="color:#aaa;margin:24px 0 8px;">Automation (queued)</h3>
       <ul style="padding-left:20px;margin:4px 0;">
-        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}</li>`).join('')}
+        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}${Array.isArray(q.fields) && q.fields.length ? ` (${q.fields.map(f => `${escapeHtml(f.name)}: ${escapeHtml(f.value)}`).join(', ')})` : ''}</li>`).join('')}
       </ul>
     `
     : '';
@@ -4197,7 +4237,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     // persists it, but projecting it away here made renderHealthDigestBlock's
     // link unreachable in production — a digest line whose whole point is
     // "go look at this page" (regional show going live) arrived unclickable.
-    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null })),
+    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null, fields: Array.isArray(q.fields) ? q.fields : [] })),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
@@ -4456,6 +4496,7 @@ async function main() {
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
+      allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     try {
@@ -4587,4 +4628,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };

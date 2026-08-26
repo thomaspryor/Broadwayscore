@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { isPermanentlyFailed } = require('./lib/failed-fetch-policy');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -50,18 +51,6 @@ const DEAD_DOMAINS = new Set([
 // retirement-threshold path handle genuinely dead URLs instead of silently
 // wrong_content-flagging every failed NYTG fetch.
 const AGGREGATOR_DOMAINS = new Set([]);
-
-// Retirement thresholds (must match collect-review-texts.js lines 4896-4901)
-const THRESHOLDS = {
-  url_dead_404: 3,
-  url_dead_410: 3,
-  garbage_content: 3,
-  default: 5,
-};
-
-function getThreshold(reason) {
-  return THRESHOLDS[reason] || THRESHOLDS.default;
-}
 
 function getDomain(url) {
   try {
@@ -219,9 +208,7 @@ for (let i = 0; i < entries.length; i++) {
   const key = entry.reviewId + '::' + (entry.lastFailedAt || '');
   if (removeReasons.has(key) || duplicateIndices.has(i)) continue;
 
-  const count = entry.failureCount || 1;
-  const threshold = getThreshold(entry.failureReason);
-  if (count >= threshold) {
+  if (isPermanentlyFailed({ failureReason: entry.failureReason, failureCount: entry.failureCount || 1 })) {
     removeReasons.set(key, 'past_threshold');
     stats.pastThreshold++;
   }

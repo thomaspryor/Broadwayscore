@@ -7,7 +7,31 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const mod = require('./send-opening-night-broadcast.js');
-const { recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH } = mod;
+const {
+  recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH,
+  findShowsMissingConsensus, filterShowsWithConsensus,
+} = mod;
+
+// Stubs process.exit so filterShowsWithConsensus's exit path can be observed
+// without actually killing the test runner. process.exit itself doesn't throw,
+// so real code after the call would keep running in prod — the sentinel throw
+// here is a test-only device to unwind the stack and catch the exit code.
+function withStubbedExit(fn) {
+  const realExit = process.exit;
+  const realError = console.error;
+  const calls = { exitCodes: [], errors: [] };
+  process.exit = (code) => { calls.exitCodes.push(code); throw new Error('__EXIT__'); };
+  console.error = (...args) => { calls.errors.push(args.join(' ')); };
+  try {
+    fn(calls);
+  } catch (err) {
+    if (err.message !== '__EXIT__') throw err;
+  } finally {
+    process.exit = realExit;
+    console.error = realError;
+  }
+  return calls;
+}
 
 // BRO-60: real Resend draft creation called saveSentData() (local disk only) but
 // never syncTrackerToOrigin() — only the --send-to preview path synced. A
@@ -163,4 +187,67 @@ test('recordDraftCompletion: still saves locally (SENT_PATH) in addition to sync
 test('SYNC_REPO / SYNC_REMOTE_PATH point at the private data repo root (sanity check for the fake-gh harness)', () => {
   assert.equal(SYNC_REPO, 'thomaspryor/broadway-scorecard-data');
   assert.equal(SYNC_REMOTE_PATH, 'opening-night-sent.json');
+});
+
+// BRO-227: gate-logic.ts getTriggerCopy() promises subscribers "the CriticScore and a
+// one-line critics' verdict. Nothing else." Previously the script only console.warn'd
+// when critic-consensus.json was missing for a show and continued to create/send the
+// draft anyway, breaking that promise. These prove it now drops that show instead —
+// PER SHOW, not the whole batch (adversarial review 2026-08-26 caught the first version
+// blocking an entire coalesced multi-show run over one straggler, reopening the exact
+// same-night-batch bug the workflow's own readiness_gate was rewritten to fix on
+// 2026-04-08 — see .github/workflows/opening-night-broadcast.yml's readiness_gate step).
+
+test('findShowsMissingConsensus: flags shows with no consensusText', () => {
+  const shows = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+    { showId: 'other-2026', showTitle: 'Other Show', consensusText: null },
+  ];
+  const missing = findShowsMissingConsensus(shows);
+  assert.equal(missing.length, 1);
+  assert.equal(missing[0].showId, 'other-2026');
+});
+
+test('findShowsMissingConsensus: empty when every show has consensus', () => {
+  const shows = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+  ];
+  assert.equal(findShowsMissingConsensus(shows).length, 0);
+});
+
+test('filterShowsWithConsensus: exits non-zero and does not return when the ONLY show lacks consensus', () => {
+  const showsForEmail = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: null },
+  ];
+  const calls = withStubbedExit(() => {
+    filterShowsWithConsensus(showsForEmail);
+    assert.fail('filterShowsWithConsensus should not return when nothing in the batch has consensus');
+  });
+  assert.deepEqual(calls.exitCodes, [1], 'expected exactly one process.exit(1) call');
+  assert.ok(
+    calls.errors.some(msg => msg.includes('Giant')),
+    'expected the missing show to be named in the error output'
+  );
+});
+
+test('filterShowsWithConsensus: does not exit when every show has consensus, returns input unchanged', () => {
+  const showsForEmail = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+  ];
+  const calls = withStubbedExit(() => {
+    const result = filterShowsWithConsensus(showsForEmail);
+    assert.deepEqual(result, showsForEmail);
+  });
+  assert.deepEqual(calls.exitCodes, [], 'expected no process.exit call when consensus is present');
+});
+
+test('filterShowsWithConsensus: coalesced batch — drops only the show missing consensus, sends the rest, does NOT exit', () => {
+  const ready = { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' };
+  const notReady = { showId: 'other-2026', showTitle: 'Other Show', consensusText: null };
+  const calls = withStubbedExit(() => {
+    const result = filterShowsWithConsensus([ready, notReady]);
+    assert.deepEqual(result, [ready], 'expected the ready show to survive and the straggler to be dropped');
+  });
+  assert.deepEqual(calls.exitCodes, [], 'a ready show in the batch must still send even if another show is not ready');
+  assert.ok(calls.errors.some(msg => msg.includes('Other Show')), 'expected the dropped show to be named');
 });

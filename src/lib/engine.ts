@@ -89,6 +89,10 @@ export interface RawShow {
   // Regional→Broadway transfer pair (reciprocal ids; validate-data enforces).
   transferOf?: string | null;           // on the Broadway show: id of its regional tryout
   transferredTo?: string | null;        // on the regional show: id of its Broadway transfer
+  // Multi-venue regional tryout (e.g. a national pre-Broadway tour with a
+  // stop per city). Set on each per-venue leg; points at the aggregate show
+  // that rolls up all legs' reviews into one combined score.
+  tourParent?: string | null;
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
@@ -240,6 +244,7 @@ export interface ComputedShow {
   season?: string;
   transferOf?: string | null;
   transferredTo?: string | null;
+  tourParent?: string | null;
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
   homepageExclude?: boolean;
@@ -792,6 +797,7 @@ export function computeShowData(
     season: show.season,
     transferOf: show.transferOf,
     transferredTo: show.transferredTo,
+    tourParent: show.tourParent,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
     // Scores

@@ -25,11 +25,14 @@ const fs = require('fs');
 const path = require('path');
 const { fetchWithFallback, flattenComments } = require('./lib/reddit-api');
 const { VOICE_CHARACTERISTICS } = require('./lib/voice-characteristics');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
+// Usage: node scripts/reddit-engagement-digest.js [--dry-run] [--verbose] [--time-budget-min=N]
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const HISTORY_PATH = path.join(DATA_DIR, 'reddit-digest-history.json');
@@ -211,7 +214,12 @@ async function enrichWithComments(threads) {
   console.log(`Fetching comments for ${threads.length} threads...`);
   const enriched = [];
 
-  for (const post of threads) {
+  for (let ti = 0; ti < threads.length; ti++) {
+    const post = threads[ti];
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${threads.length - ti} thread(s) skipped this run.`);
+      break;
+    }
     try {
       const url = `https://www.reddit.com/r/${SUBREDDIT}/comments/${post.id}.json?limit=${MAX_COMMENTS_PER_THREAD}&depth=2&raw_json=1`;
       const response = await fetchWithFallback(url);

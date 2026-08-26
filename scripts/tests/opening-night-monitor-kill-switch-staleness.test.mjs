@@ -1,3 +1,11 @@
+// timebomb-audit-exempt: "pageIfKillSwitchStale: fresh KILL_FILE pages nobody"
+//   writes the kill-switch file with fs.writeFileSync right before asserting, so
+//   its mtime is the REAL wall clock. audit-time-bomb-tests.js shifts only the
+//   PROCESS clock, so under a shifted run the file reads as artificially old and
+//   the assertion flips. Not a real time bomb — production compares two readings
+//   of the same real clock (same class as tests/unit/ttl-cache.test.mjs and
+//   dispatch-watchdog-staleness.test.mjs).
+//
 // Regression test for task #1777 (card #1773): opening-night-monitor-launch.js's
 // KILL_FILE/ON_MONITOR_DISABLED kill switch has the same no-staleness-alarm gap
 // card #1543 fixed for dispatch-watchdog-off and card #1720 fixed for

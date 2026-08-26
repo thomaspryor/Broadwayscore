@@ -107,6 +107,84 @@ describe('resolveCanonicalOutletId — edge cases', () => {
   });
 });
 
+describe('resolveCanonicalOutletId — task #1926 outlet-domain-borrowing fixture', () => {
+  // Real incident (2026-08-26): review-texts/paranormal-activity-2026/
+  // vulture--sandy-macdonald.json was ingested with outletId "vulture" (T1,
+  // weight 1.0) but a url on newyorknotebook.substack.com — a host that
+  // matches none of vulture's registered domains (vulture.com, domainAliases
+  // nymag.com/newyorkmetro.com). normalizeOutlet('newyorknotebook') fuzzy-
+  // matches vulture's "newyork"/"nymag" alias fragments, and Case B used to
+  // trust that blind. This is exactly the "New York Notebook class" the
+  // provisionalOutletIdFromHost docstring above already names.
+  // FIXTURE ROTATED 2026-08-26: New York Notebook has since been REGISTERED in
+  // outlet-registry.json (canonical "new-york-notebook", domain
+  // newyorknotebook.substack.com), so the original fixture no longer reaches
+  // the slug-fallback branch at all — it now resolves by domain, which is the
+  // better outcome and is asserted separately below. This test reddened main
+  // once the registry entry landed, expecting the pre-registration id.
+  //
+  // The borrowing-refusal branch still needs coverage, so it moved to a host
+  // that fuzzy-matches vulture's "newyork" alias fragment but is NOT in the
+  // registry. If newyorkbulletin.substack.com is ever registered as a real
+  // outlet, rotate this fixture again rather than deleting the case — the
+  // branch under test is "refuse to borrow", not this particular hostname.
+  test('operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorkbulletin',
+      url: 'https://newyorkbulletin.substack.com/p/paranormal-activity',
+    });
+    assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
+    assert.strictEqual(r.outletId, 'newyorkbulletin');
+    assert.strictEqual(r.source, 'slug-fallback');
+    assert.ok(r.warning);
+    assert.match(r.warning, /vulture/);
+  });
+
+  // The original #1926 incident case, kept as a regression guard on the thing
+  // that actually mattered: this URL must never resolve to vulture (T1, weight
+  // 1.0). Registration changed HOW that is achieved — domain match instead of
+  // a provisional slug — but not WHETHER it holds.
+  test('the registered New York Notebook resolves by its own domain and still never borrows vulture', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorknotebook',
+      url: 'https://newyorknotebook.substack.com/p/paranormal-activity',
+    });
+    assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
+    assert.strictEqual(r.outletId, 'new-york-notebook');
+    assert.strictEqual(r.source, 'url');
+  });
+
+  test('operator input matching a registered outlet AND a matching host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'vulture',
+      url: 'https://www.vulture.com/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+
+  test('operator input matching a registered outlet via a domainAlias host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'nymag',
+      url: 'https://nymag.com/vulture/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+
+  // Adversarial-review finding on this same fix: the Case B domain-mismatch
+  // guard above has no wire-service exemption, so a legitimate AP submission
+  // syndicated on a non-apnews.com partner site would get wrongly demoted to
+  // a bogus host-derived provisional outlet — the exact false-positive class
+  // the sibling outlet-domain-validation.js gate exempts wire services from.
+  test('wire-service outlet (AP) with a partner-syndication host is NOT demoted to a provisional outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'ap',
+      url: 'https://www.somepartnersite.example/ap-review-of-a-show',
+    });
+    assert.strictEqual(r.outletId, 'ap');
+    assert.strictEqual(r.source, 'alias');
+  });
+});
+
 describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BRO-247)', () => {
   // silent-exclusion-detectors.js (#1254) and review-normalization.js's
   // buildDomainToOutletIndex (BRO-247, PR #573) both had the same bug: they

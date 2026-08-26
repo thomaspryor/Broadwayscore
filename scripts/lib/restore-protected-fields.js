@@ -6,9 +6,12 @@
  * by keeping the CI's version. This silently drops manual corrections
  * (humanReviewScore, manualContentTier, etc.) that were pushed to origin.
  *
- * This script compares each JSON file between the remote ref and HEAD.
- * If the remote version had manual correction fields that are now missing,
- * it restores them into the local file.
+ * This script compares each JSON file between the remote ref and HEAD, and
+ * (when available) against ORIG_HEAD (the pre-rebase local commit). If either
+ * source had manual correction fields that are now missing, it restores them
+ * into the local file. The ORIG_HEAD source (#1916) covers the case where a
+ * content-length tie-break discarded our whole commit for a file, dropping a
+ * freshly-set MANUAL_FIELDS value that remote never had either.
  *
  * Usage: node scripts/lib/restore-protected-fields.js <remote-ref>
  *
@@ -115,6 +118,15 @@ const MANUAL_FIELDS = [
   'serpRetryCount',
   'serpRetryAfter',
   'wrongShowRetryAt',
+  // (b) Durable fetch retry lifecycle gate state (BRO-787) — same reasoning
+  // as the SERP fields above, applied to failed-fetches.json retries. Losing
+  // fetchDiscoveryAbandoned on rebase resurrects a closed-old show's
+  // confirmed-dead URL into the retry pool and burns the exact spend this
+  // guard exists to stop.
+  'fetchDiscoveryAbandoned',
+  'fetchAbandonmentReason',
+  'fetchAbandonmentDate',
+  'fetchRetryAfter',
 ];
 
 // Nested fields under contentVerification that are manually set, mapped to the
@@ -220,26 +232,51 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   let modified = false;
   const notes = [];
 
-  // Restore top-level manual fields
+  // Restore top-level manual fields. Two independent sources, checked in
+  // order, because either side can be the one that had the field and lost it:
+  //   1. remote — the original case (e.g. a `-X theirs` rebase dropped a
+  //      local value origin already had).
+  //   2. ours (pre-rebase HEAD) — #1916: push-review-texts' action.yml
+  //      tie-break resolves a JSON conflict by fullText length and keeps
+  //      "theirs" (remote) whenever OUR_LEN <= THEIR_LEN, discarding our
+  //      whole commit for that file — including a MANUAL_FIELDS value (e.g.
+  //      wrongShowOverride/wrongShowManualClear from clear-stale-wrong-show-
+  //      flags.js) that the tie-break's fullText-only comparison never looks
+  //      at. Since local now equals remote for that file, the remote-vs-local
+  //      check above is a no-op even though our own field just got dropped;
+  //      ours (ORIG_HEAD) is the only place it still exists.
   for (const field of MANUAL_FIELDS) {
-    if (
-      remote[field] !== undefined &&
-      remote[field] !== null &&
-      (local[field] === undefined || local[field] === null)
-    ) {
-      // Intentional-clear exception: if the LOCAL record deliberately
-      // cleared this field and carries the canonical breadcrumb (e.g. a
-      // human wrongProductionManualClear / humanReviewedWrongProduction:false,
-      // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
-      // the empty value is not data-loss — honor it instead of resurrecting
-      // the remote flag. Without this guard the remote's stale `true` comes
-      // right back on every rebase. Mirrors the action.yml restore skip and
-      // review-guards.js is-cleared semantics. (2026-06-05)
-      if (isIntentionalClear(field, local, remote)) continue;
-      local[field] = remote[field];
-      modified = true;
-      notes.push(`Restored ${field}`);
+    if (local[field] !== undefined && local[field] !== null) continue;
+
+    let source = null;
+    if (remote[field] !== undefined && remote[field] !== null) {
+      source = remote;
+    } else if (ours && ours[field] !== undefined && ours[field] !== null) {
+      source = ours;
     }
+    if (!source) continue;
+
+    // Intentional-clear exception: if the LOCAL record deliberately
+    // cleared this field and carries the canonical breadcrumb (e.g. a
+    // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+    // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+    // the empty value is not data-loss — honor it instead of resurrecting
+    // the remote flag. Without this guard the remote's stale `true` comes
+    // right back on every rebase. Mirrors the action.yml restore skip and
+    // review-guards.js is-cleared semantics. (2026-06-05)
+    //
+    // Caveat when source===ours (adversarial review, #1916): the
+    // _urlChangeCleared "same era" un-suppress inside isIntentionalClear
+    // assumes its committedData argument can be FRESHER than localData (a
+    // legitimate newer write re-derived the value after a URL change). ours
+    // is the pre-rebase commit, i.e. OLDER than local by construction, so
+    // that assumption is inverted here — it only misfires if both local and
+    // ours carry a matching _urlChangedClear breadcrumb, a compound edge
+    // case with no known instance. Left as-is; not a #1916 blocker.
+    if (isIntentionalClear(field, local, source)) continue;
+    local[field] = source[field];
+    modified = true;
+    notes.push(`Restored ${field}${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
   }
 
   // Restore richer content from OURS (pre-rebase HEAD). Titanique postmortem:
@@ -317,27 +354,32 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     }
   }
 
-  // Restore nested contentVerification manual fields
-  if (remote.contentVerification) {
-    for (const key of MANUAL_CV_FIELDS) {
-      const remoteVal = remote.contentVerification[key];
-      if (remoteVal === undefined || remoteVal === null) continue;
+  // Restore nested contentVerification manual fields. Same two-source
+  // fallback as the top-level MANUAL_FIELDS loop above (#1916 cousin): a
+  // tie-break that discards our whole commit for a file drops a freshly-set
+  // nested CV flag too, and remote alone can't see it if remote never had it.
+  for (const key of MANUAL_CV_FIELDS) {
+    const localVal = local.contentVerification && local.contentVerification[key];
+    if (localVal !== undefined && localVal !== null) continue;
 
-      // Intentional-clear exception (mirrors the top-level loop): if the
-      // governing top-level field was deliberately cleared, do NOT resurrect
-      // the nested CV flag — the rebuild pre-pass would re-promote it and
-      // silently re-exclude the review.
-      if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, remote)) continue;
-
-      if (!local.contentVerification) local.contentVerification = {};
-      const localVal = local.contentVerification[key];
-
-      if (localVal === undefined || localVal === null) {
-        local.contentVerification[key] = remoteVal;
-        modified = true;
-        notes.push(`Restored contentVerification.${key}`);
-      }
+    let cvSource = null;
+    if (remote.contentVerification && remote.contentVerification[key] !== undefined && remote.contentVerification[key] !== null) {
+      cvSource = remote.contentVerification;
+    } else if (ours && ours.contentVerification && ours.contentVerification[key] !== undefined && ours.contentVerification[key] !== null) {
+      cvSource = ours.contentVerification;
     }
+    if (!cvSource) continue;
+
+    // Intentional-clear exception (mirrors the top-level loop): if the
+    // governing top-level field was deliberately cleared, do NOT resurrect
+    // the nested CV flag — the rebuild pre-pass would re-promote it and
+    // silently re-exclude the review.
+    if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, cvSource === remote.contentVerification ? remote : ours)) continue;
+
+    if (!local.contentVerification) local.contentVerification = {};
+    local.contentVerification[key] = cvSource[key];
+    modified = true;
+    notes.push(`Restored contentVerification.${key}${cvSource === (ours && ours.contentVerification) ? ' (from pre-rebase HEAD)' : ''}`);
   }
 
   return { modified, notes };
