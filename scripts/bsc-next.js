@@ -483,7 +483,9 @@ function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = 
 // header comment), so it is now a real, if narrow, race rather than a purely
 // theoretical one. Not fixed here: closing it needs an ownership check
 // (compare pid/nonce before rm, not just taskId) which is a separate,
-// testable change of its own.
+// testable change of its own. The gap now lives in scripts/lib/atomic-claim.js's
+// releaseClaim (task #1896 extraction) and applies to the new dispatch claim
+// too — see that file's own KNOWN GAP comment.
 function releaseSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR) {
   releaseClaim(lockDir, taskId);
 }

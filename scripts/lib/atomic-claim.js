@@ -55,6 +55,14 @@ function acquireClaim(dir, key, opts = {}) {
   }
 }
 
+// KNOWN GAP (inherited from bsc-next.js's pre-extraction acquireSuccessionLock,
+// BRO-2251): release is keyed on `key` alone, not an ownership token
+// (pid/nonce). If a holder's own attempt runs past staleMs before releasing,
+// a second caller's stale-takeover can acquire the "same" claim, and the
+// FIRST holder's deferred release then deletes the second holder's claim out
+// from under it. Not fixed here (both succession's and this module's every
+// caller inherit it) — closing it needs an ownership check (compare pid/nonce
+// before rm, not just key), a separate, testable change of its own.
 function releaseClaim(dir, key) {
   try { fs.rmSync(path.join(dir, `${key}.claim`), { recursive: true, force: true }); } catch { /* next attempt's staleness check recovers */ }
 }
