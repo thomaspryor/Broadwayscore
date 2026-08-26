@@ -817,10 +817,9 @@ jobs:
               // old generic message. Only claim "missing" once the file actually parsed.
               if (!why) {
                 try {
+                  const { getShowConsensusText } = require('./scripts/lib/critic-consensus-lookup');
                   const consensus = JSON.parse(fs.readFileSync('data/critic-consensus.json', 'utf8'));
-                  const consensusShows = consensus.shows || consensus;
-                  const showConsensus = consensusShows[id] || (s && consensusShows[s.slug]);
-                  if (!showConsensus || !(showConsensus.text || showConsensus.consensus)) {
+                  if (!getShowConsensusText(consensus, id, s && s.slug)) {
                     why = ' — blocked by missing critic-consensus (critic-consensus.json)';
                   }
                 } catch (err) {

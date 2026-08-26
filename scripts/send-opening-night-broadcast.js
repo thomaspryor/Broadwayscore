@@ -37,6 +37,7 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const {
   syncTrackerToOrigin: syncTrackerToOriginShared,
@@ -462,9 +463,7 @@ async function main() {
   // Build show data for email template
   let showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
-    const consensusShows = consensus.shows || consensus;
-    const showConsensus = consensusShows[showId] || consensusShows[show.slug];
-    const consensusText = showConsensus?.text || showConsensus?.consensus || null;
+    const consensusText = getShowConsensusText(consensus, showId, show.slug);
 
     // Use pre-computed score from per-show public JSON (same as live site)
     const showJson = showJsonMap.get(showId);
