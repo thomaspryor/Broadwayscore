@@ -70,7 +70,7 @@ const { isPageWorthy } = require('./page-worthy-alerts');
 // BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
 // shelling out to the linear-brain.js CLI — see linear-issue-create.js's
 // header for why this is the natural repoint target.
-const { createLinearIssue } = require('./linear-issue-create');
+const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-create');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -340,7 +340,49 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
-    return { ok: false, error: err.message };
+    // BRO-281: a USAGE_LIMIT_EXCEEDED failure is not an ordinary dispatch
+    // failure that can just retry next call — it means the Linear intake
+    // front door is jammed for EVERY conditionKey's 'auto' disposition until
+    // the workspace is archived or upgraded (BRO-10), not just this one. The
+    // Notion-era router degraded this to the same logged-warning path as any
+    // other failure, which is exactly how the ceiling went unnoticed on
+    // 2026-08-12.
+    //
+    // This must page (not silently log), but it must page ONCE per incident,
+    // not once per failed dispatchCard() call: a failed dispatch is
+    // deliberately never written to the ledger (see the "not recorded as
+    // notified" comment below dispatchCard's caller), specifically so the
+    // NEXT attempt retries instead of going silent — which means an unthrottled
+    // page here would fire a fresh critical email for every single 'auto'
+    // alert across every conditionKey, every call, for as long as the cap
+    // stays hit (a same-day inbox storm, confirmed by both ship-check
+    // reviewers on the first version of this fix, which called sendAlert()
+    // directly with no cooldown of its own).
+    //
+    // Fix: route through routeAlert() itself, under ITS OWN fixed
+    // conditionKey ('alert-router:usage-limit-exceeded', on the page-worthy
+    // allowlist as a meta self-test — see page-worthy-alerts.js) and
+    // disposition:'human'. That's a DIFFERENT conditionKey than the one that
+    // failed to dispatch, so it gets its own ledger entry and cooldown —
+    // one page per incident, silent re-fires for cooldownHours after, same
+    // guarantee every other alert in this file gets. No recursion risk:
+    // disposition:'human' never calls dispatchCard(), only 'auto' does.
+    const usageLimitExceeded = isUsageLimitExceeded(err);
+    if (usageLimitExceeded) {
+      try {
+        await routeAlert({
+          conditionKey: 'alert-router:usage-limit-exceeded',
+          title: 'Linear usage limit hit — automated alert filing is silently failing',
+          description: `dispatchCard() could not file "${title}" (condition "${conditionKey}"): ${err.message}. Every 'auto' disposition alert will keep failing the same way until this is resolved — archive stale issues (scripts/linear-archive-done.js) or upgrade the plan (BRO-10).`,
+          severity: 'critical',
+          disposition: 'human',
+          cooldownHours: 24,
+        });
+      } catch (escalationErr) {
+        console.error(`[alert-router] USAGE_LIMIT_EXCEEDED escalation page itself failed: ${escalationErr.message}`);
+      }
+    }
+    return { ok: false, error: err.message, usageLimitExceeded };
   }
 }
 
@@ -591,6 +633,7 @@ async function routeAlert(opts) {
     // callers — the E2E canary, health-check.js's dispatchedCards mapping —
     // can surface the true underlying failure instead of re-guessing one.
     if (!dispatch.ok) result.dispatchError = dispatch.error;
+    if (dispatch.usageLimitExceeded) result.usageLimitExceeded = true;
     notifyOk = dispatch.ok;
   } else if (effectiveDisposition === 'digest') {
     queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
