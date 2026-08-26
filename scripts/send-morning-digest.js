@@ -191,7 +191,11 @@ function localPrSupervisorMessage() {
 // cmux, so this surfaces it in the one channel read every day regardless.
 // Same null-if-absent shape as the readers above: no watchdog on this
 // machine, or a heartbeat not yet written, is unknown, not an alarm.
+// 3h staleness bar matches localLinearDelegationMessage's above — a dead
+// watchdog (crashed right after recording a leak) must not keep surfacing a
+// stale "leaking" line forever with no way to tell it apart from a live one.
 const WATCHDOG_HEARTBEAT_PATH = path.join(os.homedir(), '.claude', 'state', 'dispatch-watchdog.json');
+const { LAUNCHER_LEAK_HOLD_PREFIX } = require('./lib/dispatch-watchdog-core.js');
 function localDispatchWatchdogLeakMessage() {
   let hb;
   try {
@@ -199,8 +203,10 @@ function localDispatchWatchdogLeakMessage() {
   } catch {
     return null; // no watchdog heartbeat on this machine yet — unknown, not dead
   }
+  const ageH = (Date.now() - Date.parse(hb.ts)) / 3600000;
+  if (!Number.isFinite(ageH) || ageH > 3) return null; // stale/unparseable heartbeat — unknown, not an alarm
   const holds = Array.isArray(hb.holds) ? hb.holds : [];
-  return holds.find(h => /cmux launcher leaking/.test(String(h))) || null;
+  return holds.find(h => String(h).startsWith(LAUNCHER_LEAK_HOLD_PREFIX)) || null;
 }
 
 function localRunnerHealthMessage() {
