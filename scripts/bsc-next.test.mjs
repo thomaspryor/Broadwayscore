@@ -724,6 +724,13 @@ test('main(): resolved model reaches the real launchCmux() call (dispatch comman
       launchCmux: (task, seed, override, model, project) => { calls.push({ task, model, project }); return { ok: true, ref: 'workspace:1' }; },
       appendLedgerEntry: () => {},
       readLedgerEntries: () => [],
+      // Task #1896: MUST be stubbed — the dispatch claim is real mkdir I/O
+      // against the production data/audit/dispatch-claims dir when unstubbed,
+      // and this test dispatches the SAME task id #9001 twice in one process
+      // (no intervening process exit to release it), which would make the
+      // second call spuriously refused as "still claimed" by the first.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
   };
 
@@ -1027,6 +1034,12 @@ test('main(): --id refuses to dispatch when a local worktree branch already carr
       launchCmux: () => { throw new Error('launchCmux must never be called once the worktree-branch guard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the worktree-branch guard refuses'); },
+      // Task #1896: this reaches (and releases, via the exit handler, since
+      // the guard below refuses) the real dispatch claim otherwise — stub it
+      // so this test never touches the production data/audit/dispatch-claims
+      // dir at all.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -1155,6 +1168,11 @@ test('main(): a REOPEN-SUSPECT card (falsely reopened over completed work) is re
       launchCmux: () => { throw new Error('launchCmux must never be called once predispatchGuard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once predispatchGuard refuses'); },
+      // Task #1896: stubbed so this test never touches the production
+      // data/audit/dispatch-claims dir (this guard runs downstream of the
+      // claim, so unstubbed it would acquire-then-release for real).
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
     assert.fail('expected process.exit');
   } catch (e) {
@@ -1197,6 +1215,13 @@ test('main(): --allow-reopen-suspect dispatches a REOPEN-SUSPECT card anyway, re
       cmuxAvailable: () => false,
       launchCmux: () => ({ ok: true, ref: 'workspace:1801' }),
       appendLedgerEntry: (e) => ledgerEntries.push(e),
+      // Task #1896: MUST be stubbed — this is a real (non-force) dispatch
+      // that succeeds, so unstubbed it would mkdir a REAL claim dir under
+      // the production data/audit/dispatch-claims path and (correctly, by
+      // design, since dispatchConfirmed becomes true) never release it,
+      // leaking a stale claim across separate test runs of this file.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
   } finally {
     console.log = origLog;
@@ -1348,4 +1373,138 @@ test('pickTask: --force reaches the Linear-owned task by ordinal again', () => {
   assert.equal(pickTask(owned, { pick: '1' }, undefined, mapping).id, '201', 'filtered by default');
   assert.equal(pickTask(owned, { pick: '1', force: true }, undefined, mapping).id, '200',
     '--force restores the unfiltered ordinal, matching the guard bypass');
+});
+
+// ── Mirror-staleness dispatch claim wiring (task #1896) ─────────────────────
+// Unit coverage for dispatchClaimGuard's own logic lives in
+// scripts/lib/dispatch-guards.test.mjs; acquireClaim's race-simulation lives
+// in scripts/lib/dispatch-overlap-check.test.mjs. This covers the thing
+// neither of those can: that main() actually WIRES the claim in ahead of
+// every other fresh-dispatch guard, and bypasses it exactly where the other
+// guards do — the class of gap dispatch-guards.js's own header says it was
+// extracted to prevent (guard logic drifting from guard WIRING).
+function makeClaimWiringTask(id) {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-claim-wiring-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, `${id}.json`), JSON.stringify({
+    id, subject: 'claim wiring test task', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  return { tmp, dir };
+}
+
+test('main(): a held dispatch claim refuses BEFORE any cmux/branch-collision I/O ever runs', () => {
+  const { tmp, dir } = makeClaimWiringTask('9101');
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '9101'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      fetchCard: () => null,
+      acquireDispatchClaim: () => false, // "another attempt already holds it"
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => { throw new Error('listWorkBranchStatuses must never be called once the claim guard refuses'); },
+      cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — the claim guard runs before it'); },
+      launchCmux: () => { throw new Error('launchCmux must never be called once the claim guard refuses'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the claim guard refuses'); },
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #9101/.test(e) && /mirror-staleness race/.test(e)),
+    `expected a mirror-staleness claim refusal, got: ${errors.join(' | ')}`);
+});
+
+test('main(): --force bypasses the dispatch claim entirely (acquireDispatchClaim never even called)', () => {
+  const { tmp, dir } = makeClaimWiringTask('9102');
+  let claimCalled = false;
+  const origExit = process.exit;
+  let exitCode = null;
+  const origError = console.error;
+  console.error = () => {};
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '9102', '--force'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      fetchCard: () => null,
+      acquireDispatchClaim: () => { claimCalled = true; return false; },
+      releaseDispatchClaim: () => {},
+      cmuxAvailable: () => false,
+      launchCmux: () => ({ ok: true, ref: 'workspace:1' }),
+      appendLedgerEntry: () => {},
+    });
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(claimCalled, false, '--force must skip claim acquisition entirely, matching every sibling guard\'s carve-out');
+});
+
+test('main(): --dry-run bypasses the dispatch claim entirely (no side-effecting claim I/O during a preview)', () => {
+  const { tmp, dir } = makeClaimWiringTask('9103');
+  let claimCalled = false;
+  const logs = [];
+  const origLog = console.log;
+  console.log = (msg) => logs.push(String(msg));
+  try {
+    main(['--id', '9103', '--dry-run'], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      fetchCard: () => null,
+      acquireDispatchClaim: () => { claimCalled = true; return true; },
+      releaseDispatchClaim: () => {},
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must never be called on a --dry-run preview'); },
+    });
+  } finally {
+    console.log = origLog;
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(claimCalled, false, '--dry-run must never acquire a real claim');
+  assert.ok(logs.some(l => /would launch on: #9103/.test(l)));
+});
+
+test('main(): --succession never touches the fresh-dispatch claim (it has its own separate succession lock)', () => {
+  const { tmp, dir } = makeClaimWiringTask('9104');
+  let claimCalled = false;
+  const origExit = process.exit;
+  process.exit = (code) => { throw new Error('__EXIT__'); };
+  const origError = console.error;
+  console.error = () => {};
+  const handoff = require('path').join(tmp, 'handoff.md');
+  fs.writeFileSync(handoff, 'checkpoint brief');
+  try {
+    main(['--id', '9104', '--succession', '--handoff', handoff], {
+      loadTasks: () => require('./bsc-next.js').loadTasks(dir),
+      fetchCard: () => null,
+      acquireDispatchClaim: () => { claimCalled = true; return true; },
+      releaseDispatchClaim: () => {},
+      launchCmux: () => ({ ok: true, ref: 'workspace:1' }),
+      appendLedgerEntry: () => {},
+      readLedgerEntries: () => [],
+    });
+  } catch (e) {
+    // acceptable either way — succession has its own refusal/success paths;
+    // this test only cares whether the FRESH-dispatch claim fn was touched.
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(claimCalled, false, '--succession must never call the fresh-dispatch acquireDispatchClaim');
 });

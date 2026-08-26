@@ -168,3 +168,12 @@ Three distinct rc-inflation defects, all from ingest paths that skip the triage 
 **Triage recipe when rc is higher than your census outlet count:** list `data/review-texts/<show>/`, group files by `url` (exact match) and by domain-vs-critic-name; any group of size >1 is a duplicate pair, any file whose url is an aggregator `/shows/<slug>/` path is a phantom.
 
 **Trap that costs a whole pass:** `audit-duplicate-of-url-mismatch.js --fix` nulls a manually-set `duplicateOf` whenever the two files' URLs differ, and it reads NO protection field — `manuallyVerified` / `protectedFromAutoFlagging` / `doNotAutoFlag` are all inert against it (it leaves a `duplicateClearReason` naming itself). So legitimate CROSS-DOMAIN duplicates (syndication, critic reposts) cannot be marked by hand at all. Workaround that holds: `git rm` the loser file. Identical-URL pairs (People, Theater Pizzazz) are safe to mark, since matching URLs is exactly what the auditor checks for.
+
+## Gate: local fetchPage silently skips every paid tier (no dotenv) — 2026-08-26, monitor pass 13
+`scripts/lib/scraper.js` has **no `require('dotenv')`** (nor does `scripts/ingest-review-from-url.js`). Run locally, it sees every scraper key as undefined, skips Scrapingdog/ScrapingBee/Bright Data/Browserbase without a word, and drops to bare Playwright with a `networkidle` wait. JS-heavy outlets never reach networkidle, so it times out at 30s and prints "All scraping methods failed" — which reads as *the review is unreachable* when the truth is *no working tier was ever tried*. CI is immune (secrets are exported), which is why it hid for months.
+
+Controlled A/B, same URL and script four minutes apart: without env → `Trying Playwright (last resort)` as the only tier → timeout. With `set -a; . ./.env; set +a` → `Trying Scrapingdog...` → HTTP 200, 1 credit, first try.
+
+**Workaround when recovering a review locally:** `set -a; . ./.env; set +a` before any script that calls `fetchPage()`.
+**Tell:** the log line `→ Trying Playwright (last resort)...` appearing FIRST. If Playwright is the first tier you see, your env is not loaded — never conclude the outlet is unreachable.
+Falsely blamed three outlets across monitor passes 10 (DTLI), 12 (NYTG) and 13 (Blogcritics). Card: "P1: scraper.js never loads dotenv — all paid fetch tiers silently skipped in local runs" (3c8637c5-416f-8176-9b3e-ecb9b1b7c7e4).
