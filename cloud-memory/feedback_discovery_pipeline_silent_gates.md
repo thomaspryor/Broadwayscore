@@ -228,3 +228,12 @@ The staybook incident above is the *junk-content* face of this gate. The worse f
 **Opening-night detection:** `grep -rl domainUnvalidated data/review-texts`, then compare each file's URL host to its `outletId`'s registry `domain`/`domainAliases`. Sweep on 2026-08-26: 221 files carry the field, 2 mismatched, 0 includable — rare enough to never surface in review, which is why it needs a CI gate not vigilance.
 
 **Manual block (until #1926 ships):** `contentTier: invalid` + `manualContentTier: invalid` + `incompleteReason: outlet_misattribution` + `outletMisattribution`/`Reason`/`VerifiedBy`. Do NOT delete — a misattributed genuine review should score at its true tier once its domain is registered.
+
+## Gate: outletDomainUnvalidated — critic-name outlet lookup on a substack/personal domain (2026-08-25, paranormal-activity-2026)
+**Symptom:** a real published review is ingested, gets a T1 outletId it does not belong to, and is then silently blocked. Review never reaches reviews.json; nothing in the pipeline surfaces it.
+**Mechanism:** `submit-review-form` / discovery resolves outletId by CRITIC NAME, not by URL domain. Sandy MacDonald publishes at `newyorknotebook.substack.com`; the registry knows her via Vulture, so the file was written as `vulture--sandy-macdonald.json`. The outlet-domain guard correctly refuses a `vulture.com` attribution on a `substack.com` URL → `outletDomainUnvalidated`. Correct guard, wrong upstream input. It re-ingests the same wrong attribution every cycle, so it never self-heals.
+**Detection (this is what caught it — keep doing it every pass):**
+`git -C data/review-texts log origin/main --since="3 hours ago" --name-only -- <show-id>/` then diagnose any touched file not live on prod.
+**Fix tonight (data layer):** re-attribute the file — rename to `<real-outlet>--<critic>.json`, set `outletId`/`outlet` to the domain's true outlet, keep the URL. Commit 01538871665. Then rebuild → score → rebuild → deploy. Result: prod rc 21 → 22.
+**Systemic fix:** BRO-2459 (resolve outletId from URL domain first; critic name only disambiguates within a matching domain; never fall back to a critic's best-known outlet; emit a `data/audit/` row whenever outletDomainUnvalidated fires so blocked reviews stop being invisible). Distinct from #1926, which hardened the guard rather than the upstream assignment.
+**Generalizes to:** any critic publishing on Substack, Medium, or a personal domain — increasingly common for T1-affiliated freelancers.
