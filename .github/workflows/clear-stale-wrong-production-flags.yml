@@ -20,12 +20,13 @@ name: Clear Stale wrongProduction Flags
 # surge-guarded (script refuses >50 clears without --force-bulk).
 on:
   schedule:
-    # Weekly on Saturdays at 9 AM UTC (day after clear-wrong-show-blockers'
-    # Thursday 9 AM slot; Wed=misattribution, Thu=wrong-show-blockers,
-    # Sat=wrong-production — spreads the weekly review-texts cleanup writes
-    # across the week). review-refresh.yml already runs daily at 9 AM UTC and
-    # also writes review-texts; push-review-texts' rebase+retry handles the
-    # ordinary case, same latent exposure the existing siblings already carry.
+    # Weekly on Saturdays at 9 AM UTC — two days after clear-stale-wrong-
+    # show-flags' Friday 9 AM slot (Wed=misattribution, Thu=wrong-show-
+    # blockers, Fri=wrong-show, Sat=wrong-production), spreading the weekly
+    # review-texts cleanup writes across the week. review-refresh.yml already
+    # runs daily at 9 AM UTC and also writes review-texts; push-review-texts'
+    # rebase+retry handles the ordinary case, same latent exposure the
+    # existing siblings already carry.
     - cron: '0 9 * * 6'
   workflow_dispatch:
     inputs:
@@ -114,7 +115,7 @@ jobs:
             if [ "${{ inputs.dry_run }}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
-              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+              echo "**Mode:** script exited non-zero (surge guard refusal, or a total LLM-verification outage) — see the sweep step log above, then investigate before re-running with force_bulk=true"
             elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
               echo "**Mode:** no fix needed"
             else

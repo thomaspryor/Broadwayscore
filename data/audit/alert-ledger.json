@@ -134,17 +134,16 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-26T15:31:30.187Z",
-      "lastNotifiedAt": "2026-08-26T09:17:45.158Z",
-      "notifyCount": 47,
+      "lastSeen": "2026-08-26T17:08:47.755Z",
+      "lastNotifiedAt": "2026-08-26T17:08:47.755Z",
+      "notifyCount": 48,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 4
+      "linearIdentifier": null
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -774,16 +773,15 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "Main test.yml red — no confirmed-green run in 9.6h",
+      "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-26T15:31:30.186Z",
-      "lastNotifiedAt": "2026-08-24T07:46:20.285Z",
-      "notifyCount": 23,
+      "lastSeen": "2026-08-26T17:08:46.378Z",
+      "lastNotifiedAt": "2026-08-26T17:08:46.378Z",
+      "notifyCount": 24,
       "cardId": null,
-      "linearIdentifier": "BRO-296",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-296"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1468,12 +1466,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Paranormal Activity",
       "firstSeen": "2026-08-23T02:02:50.903Z",
-      "lastSeen": "2026-08-26T12:39:41.327Z",
+      "lastSeen": "2026-08-26T17:03:22.134Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "cron-health:Enrich Off-Broadway Dates": {
       "status": "open",
@@ -1563,12 +1561,12 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Paranormal Activity",
       "firstSeen": "2026-08-25T09:54:54.016Z",
-      "lastSeen": "2026-08-26T12:39:41.329Z",
+      "lastSeen": "2026-08-26T17:03:22.138Z",
       "lastNotifiedAt": "2026-08-25T09:54:54.016Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "cron-health-chronic:Commercial Friday Refresh": {
       "status": "open",

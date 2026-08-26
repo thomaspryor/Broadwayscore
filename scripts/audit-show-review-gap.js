@@ -1228,7 +1228,10 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   try {
     // Capture stdout: the child's `⚠️  Skipped: <reason>` line is the ONLY
     // signal that separates a benign no-op from a data conflict (both exit 0).
-    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000 }) || '');
+    // killSignal: on timeout, execFileSync's default SIGTERM leaves the
+    // child's own grandchildren (a stuck fetch/browser subprocess) as
+    // orphans that outlive this process (task #361 gap-audit finding).
+    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
   } catch (e) {
     return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
