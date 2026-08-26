@@ -339,6 +339,18 @@ function gitDiffHasChanges(files) {
 // printCannotAutoVerifyBanner below) instead of a clean "safe to proceed" —
 // regardless of what Phase A/B replay finds, because decideInclusion() simply
 // never runs the changed code.
+//
+// KNOWN RESIDUAL GAP (code review, task #1929): this is a textual proximity
+// heuristic anchored on logExclusion( calls, not a semantic replay of the
+// loop. It cannot see an inclusion-affecting change with NO logExclusion(
+// call anywhere nearby — e.g. rebuild-all-reviews.js's `if (scoreResult ===
+// null) { ...; return; }` branch has no logExclusion call at all, so widening
+// that condition would not trigger this detector. Closing that class would
+// mean extracting the real per-file decision chain into a pure function
+// shared by rebuild-all-reviews.js and this replay — a larger refactor than
+// this fix, tracked separately. This detector's guarantee is narrower: any
+// diff near an EXISTING (or newly-added) logExclusion( call site — the shape
+// of the actual task #1926 incident — cannot silently report "safe".
 const REBUILD_LOOP_FILE = 'scripts/rebuild-all-reviews.js';
 const EXCLUSION_PROXIMITY_WINDOW = 12; // lines of slack around a logExclusion( call
 
@@ -378,11 +390,12 @@ function parseUnifiedHunks(diffText) {
 // verdicts, so an inspection failure must never be silently read as "safe".
 function detectRebuildLoopTouch() {
   const absPath = path.join(REPO_ROOT, REBUILD_LOOP_FILE);
-  let newContent;
+  let newContent = null;
+  let newExisted = true;
   try {
     newContent = fs.readFileSync(absPath, 'utf8');
   } catch {
-    return { touched: false, sites: [] }; // file doesn't exist in working tree — nothing to touch
+    newExisted = false; // deleted or renamed away in the working tree
   }
 
   let oldContent = null;
@@ -393,6 +406,24 @@ function detectRebuildLoopTouch() {
     });
   } catch {
     oldExisted = false; // new file at BASE_REF (or BASE_REF predates it)
+  }
+
+  if (!oldExisted && !newExisted) return { touched: false, sites: [] }; // never existed on either side
+
+  if (!newExisted) {
+    // Deleted (or renamed under a path this constant doesn't track) relative
+    // to BASE_REF — the entire real exclusion loop, sites and all, is gone
+    // from where this tool looks. The initial version of this detector
+    // returned touched=false here (fail OPEN on the one input this fix exists
+    // to guard), which combined with guardsIdentical staying true would have
+    // let a full deletion of the exclusion loop print a clean "decisions
+    // identical" verdict — caught in code review before ship. Fail closed.
+    return {
+      touched: true,
+      sites: oldExisted
+        ? findLogExclusionSites(oldContent).map(s => ({ ...s, side: 'deleted' }))
+        : [{ line: 0, statKey: `(${REBUILD_LOOP_FILE} not found in working tree) — inspect manually`, side: 'unknown' }],
+    };
   }
 
   if (oldExisted && oldContent === newContent) return { touched: false, sites: [] };
@@ -477,6 +508,12 @@ function printCannotAutoVerifyBanner(rebuildLoopTouch) {
   console.log('     explainOutletDomainMismatch over the full corpus.)');
   console.log('  3. Paste the corpus-scan count to the user before merging — this tool\'s');
   console.log('     flip count above does not cover this change.');
+  console.log('');
+  console.log('Note: this check is anchored on logExclusion(...) call sites specifically —');
+  console.log('it cannot see an inclusion-affecting change with NO logExclusion(...) call');
+  console.log('nearby at all (e.g. widening a bare `return;` guard). If this diff touches');
+  console.log('exclusion-shaped logic without a nearby logExclusion(...) call, do the corpus');
+  console.log('scan above regardless of whether this banner fired.');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }
 

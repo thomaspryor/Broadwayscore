@@ -109,4 +109,42 @@ describe('computeTouchedSites', () => {
   test('returns untouched when there are no hunks at all', () => {
     assert.deepStrictEqual(computeTouchedSites(oldContent, oldContent, []), { touched: false, sites: [] });
   });
+
+  // Site is at line 100. For a 1-line hunk at oldStart=X, oldHi = X + 1 + 12,
+  // oldLo = X - 12 — so X=87..112 touches, X=86/113 does not. These pin the
+  // inclusive boundary so a future window-math refactor can't silently widen
+  // or narrow it without a test failing.
+  test('flags a hunk exactly at the proximity window boundary (12 lines away)', () => {
+    const newContent = oldContent.replace('// line 88', '// line 88 EDITED');
+    const result = computeTouchedSites(oldContent, newContent, [{ oldStart: 87, oldLen: 1, newStart: 87, newLen: 1 }]);
+    assert.strictEqual(result.touched, true, 'a hunk 12 lines before the site (inclusive boundary) should still touch');
+  });
+
+  test('does not flag a hunk one line beyond the proximity window', () => {
+    const newContent = oldContent.replace('// line 87', '// line 87 EDITED');
+    const result = computeTouchedSites(oldContent, newContent, [{ oldStart: 86, oldLen: 1, newStart: 86, newLen: 1 }]);
+    assert.strictEqual(result.touched, false, 'a hunk 13 lines before the site should be just outside the window');
+  });
+
+  test('deduplicates when multiple overlapping hunks all land on the same site', () => {
+    const newContent = oldContent.replace('// line 95', '// line 95 EDITED').replace('// line 97', '// line 97 EDITED');
+    const hunks = [
+      { oldStart: 95, oldLen: 1, newStart: 95, newLen: 1 },
+      { oldStart: 97, oldLen: 1, newStart: 97, newLen: 1 },
+    ];
+    const result = computeTouchedSites(oldContent, newContent, hunks);
+    const matches = result.sites.filter(s => s.statKey === 'skippedPreOpening' && s.side === 'old');
+    assert.strictEqual(matches.length, 1, `expected exactly one deduped entry, got ${matches.length}`);
+  });
+
+  test('flags a pure-deletion hunk (newLen: 0) near a logExclusion( site', () => {
+    // Mirrors the pure-insertion case above (oldLen: 0) for the opposite
+    // direction: lines removed near a site, nothing added at that spot.
+    const lines = oldContent.split('\n');
+    lines.splice(94, 1); // remove the line at old line 95 (0-indexed 94)
+    const newContent = lines.join('\n');
+    const hunks = [{ oldStart: 95, oldLen: 1, newStart: 94, newLen: 0 }];
+    const result = computeTouchedSites(oldContent, newContent, hunks);
+    assert.strictEqual(result.touched, true, 'a deletion near a logExclusion( site should still be flagged');
+  });
 });
