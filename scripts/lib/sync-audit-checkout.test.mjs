@@ -399,3 +399,83 @@ test('a backup owned by a LIVE process is left alone (concurrent instances)', ()
     );
   });
 });
+
+// ── hardening added after the pre-ship adversarial review ────────────────────
+
+test('a backup naming an UNTRACKED path is never written (filename is untrusted input)', () => {
+  withTmp((root) => {
+    const { clone } = setupPair(root, 'evil');
+    const backupDir = path.join(clone, '.git', 'sync-ledger-backups');
+    fs.mkdirSync(backupDir, { recursive: true });
+    // A stale or hand-dropped .bak can name any repo-relative path; the drain
+    // must not turn that into a write.
+    fs.writeFileSync(path.join(backupDir, `${'other-untracked.txt'.replaceAll('/', '%')}.999999.bak`), 'pwned\n');
+
+    const { code, out } = trySync(clone, 'evil');
+    assert.equal(code, 0, out);
+    assert.equal(fs.existsSync(path.join(clone, 'other-untracked.txt')), false, 'no file created');
+    assert.match(out, /untracked path/, 'and it says why it refused');
+  });
+});
+
+test('a backup whose path lost its merge=union attribute is not unioned', () => {
+  withTmp((root) => {
+    // score-history.jsonl is tracked here but has no union attribute, so
+    // concatenating both sides is no longer a sanctioned resolution for it.
+    const { clone } = setupPair(root, 'noattr');
+    fs.writeFileSync(path.join(clone, 'data/audit/score-history.jsonl'), '{"ts":1}\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'add score-history');
+    const backupDir = path.join(clone, '.git', 'sync-ledger-backups');
+    fs.mkdirSync(backupDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(backupDir, `${'data/audit/score-history.jsonl'.replaceAll('/', '%')}.999999.bak`),
+      '{"ts":1}\n{"ts":"injected"}\n',
+    );
+
+    const { code, out } = trySync(clone, 'noattr');
+    assert.equal(code, 0, out);
+    assert.equal(
+      fs.readFileSync(path.join(clone, 'data/audit/score-history.jsonl'), 'utf8'), '{"ts":1}\n',
+      'the non-union ledger was left exactly as it was',
+    );
+    assert.match(out, /no longer merge=union/);
+  });
+});
+
+test('PID reuse cannot strand a backup forever (age fallback)', () => {
+  withTmp((root) => {
+    // A recovery lasts seconds. A backup older than an hour whose PID now
+    // resolves to some unrelated long-lived process must still be drained.
+    const { clone } = setupPair(root, 'pidreuse');
+    const backupDir = path.join(clone, '.git', 'sync-ledger-backups');
+    fs.mkdirSync(backupDir, { recursive: true });
+    const bak = path.join(backupDir, `${LEDGER.replaceAll('/', '%')}.${process.pid}.bak`);
+    fs.writeFileSync(bak, 'a\nb\nc\nstranded-row\n');
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    fs.utimesSync(bak, twoHoursAgo, twoHoursAgo);
+
+    const { code, out } = trySync(clone, 'pidreuse');
+    assert.equal(code, 0, out);
+    assert.equal(count(lines(path.join(clone, LEDGER)), 'stranded-row'), 1, 'the row came back');
+  });
+});
+
+test('a STAGED ledger is still staged after recovery (checkout HEAD -- clears the index)', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'staged');
+    advanceOrigin(root, origin, 'via-staged', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+    git(clone, 'add', '--', LEDGER); // another session staged it
+
+    const { code, out } = trySync(clone, 'staged');
+    assert.equal(code, 0, out);
+    assert.notEqual(
+      git(clone, 'diff', '--cached', '--name-only').trim(), '',
+      "the gate must not silently unstage another session's staged ledger",
+    );
+    assert.equal(count(lines(path.join(clone, LEDGER)), 'local-only'), 1);
+  });
+});

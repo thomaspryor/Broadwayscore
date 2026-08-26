@@ -157,28 +157,60 @@ union_restore_ledger() {
       console.error(`::error::[${tag}] union of ${target} would shrink it (${merged.length} < max(${base.length}, ${extra.length})) — refusing`);
       process.exit(1);
     }
-    fs.writeFileSync(target, merged.length ? merged.join("\n") + "\n" : "");
+    // Atomic write: a partial write here would leave a ledger that neither
+    // the backup nor origin can fully reconstruct — the next run drain can
+    // only re-add the LOCAL rows, never the origin-side ones. rename(2)
+    // within the same directory is atomic, so a reader or appender sees
+    // either the old file or the complete new one, never a truncated one.
+    const tmp = `${target}.sync-tmp.${process.pid}`;
+    fs.writeFileSync(tmp, merged.length ? merged.join("\n") + "\n" : "");
+    fs.renameSync(tmp, target);
     console.log(`[${tag}]   ${target}: ${stats.base} line(s) from origin + ${stats.added} local-only = ${stats.total}`);
   '
 }
 
+# Was this path STAGED before we touched it? `git checkout HEAD -- <p>` clears
+# the index entry as well as the working tree, and a plain `cp` restore only
+# puts the bytes back — so without this, a recovery (or a failed recovery)
+# would silently unstage another session's `git add`ed ledger. The existing
+# regenerable-snapshot reset at the top of this script already had to learn
+# the index/worktree distinction the hard way (task #732).
+ledger_was_staged() { ! git diff --cached --quiet -- "$1" 2>/dev/null; }
+
 # Stage 0: a previous run that was killed between "clean the ledger" and
 # "union the local rows back in" leaves its local rows ONLY in its backup.
-# Drain those (owner process gone) before touching anything else. Unioning
-# into the live file never truncates it, so this is idempotent and safe to
-# run against a backup of any age.
+# Drain those before touching anything else. Unioning into the live file never
+# truncates it, so this is idempotent and safe against a backup of any age.
+#
+# A backup is only ever applied to a path that is STILL tracked and STILL
+# declared merge=union — the filename is an untrusted input (a stale or
+# hand-dropped .bak could otherwise name any repo-relative path and have this
+# script write to it), and a path that lost its union attribute is no longer
+# safe to concatenate.
 if [ -d "$LEDGER_BACKUP_DIR" ]; then
   for bak in "$LEDGER_BACKUP_DIR"/*.bak; do
     [ -e "$bak" ] || continue
     base=$(basename "$bak" .bak)
     pid="${base##*.}"
     rel=$(printf '%s' "${base%.*}" | tr '%' '/')
-    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
-      continue  # owner still running — its own restore will handle it
+    # Owner still alive → its own restore will handle it. The mtime fallback
+    # covers PID reuse: a recovery lasts seconds, so a backup older than an
+    # hour whose PID now resolves to some unrelated long-lived process would
+    # otherwise sit undrained forever, silently withholding those rows.
+    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null && [ -z "$(find "$bak" -mmin +60 2>/dev/null)" ]; then
+      continue
+    fi
+    if ! git ls-files --error-unmatch -- "$rel" >/dev/null 2>&1; then
+      echo "::error::[$TAG] backup $bak names an untracked path ($rel) — refusing to write it; move it aside by hand"
+      continue
+    fi
+    if [ "$(git check-attr merge -- "$rel" 2>/dev/null | sed 's/.*: //')" != "union" ]; then
+      echo "::error::[$TAG] backup $bak names $rel, which is no longer merge=union — refusing to union it; move it aside by hand"
+      continue
     fi
     echo "[$TAG] draining orphaned ledger backup from pid $pid: $rel"
     if union_restore_ledger "$rel" "$bak"; then
-      rm -f "$bak"
+      rm -f "$bak" || echo "::error::[$TAG] drained $bak but could not remove it — it will be re-applied next run"
     else
       echo "::error::[$TAG] could not drain $bak — leaving it in place for the next run"
     fi
@@ -270,6 +302,15 @@ if [ -n "$REMAINING_DIRTY" ]; then
     git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 || continue
     attr=$(git check-attr merge -- "$p" 2>/dev/null | sed 's/.*: //')
     [ "$attr" = "union" ] || continue
+    # The decision is carried to node as newline-joined text and back as
+    # pipe-joined text, and backup filenames encode '/' as '%'. A path holding
+    # '|' or '%', or with edge whitespace that the transport would trim, cannot
+    # round-trip faithfully — and a mis-decoded path is a write to the wrong
+    # file. None of the real ledgers look like this; if one ever does, it falls
+    # through to the ordinary refusal rather than being silently mangled.
+    case "$p" in
+      *"|"*|*"%"*|" "*|*" ") echo "::error::[$TAG] $p cannot be safely round-tripped by the recovery stage — refusing it"; continue ;;
+    esac
     UNION_PATHS="${UNION_PATHS}${p}\n"
   done <<EOF
 $REMAINING_DIRTY
@@ -310,8 +351,11 @@ if [ "$ACTION" = "union-recover" ] && [ -n "$UNION_BLOCKING" ]; then
   echo "$UNION_BLOCKING" | sed "s/^/[$TAG]   /"
   mkdir -p "$LEDGER_BACKUP_DIR"
   BACKUP_OK=1
+  STAGED_LEDGERS=""
   while IFS= read -r L; do
     [ -n "$L" ] || continue
+    ledger_was_staged "$L" && STAGED_LEDGERS="${STAGED_LEDGERS}${L}
+"
     cp "$L" "$(ledger_backup_path "$L" "$$")" || { BACKUP_OK=0; break; }
   done <<EOF
 $UNION_BLOCKING
@@ -335,9 +379,18 @@ EOF
 $UNION_BLOCKING
 EOF
     if [ "$RESTORE_OK" -eq 1 ]; then
+      # Put back any index entry `git checkout HEAD --` cleared, so another
+      # session's staged ledger is not silently unstaged by this gate.
       while IFS= read -r L; do
         [ -n "$L" ] || continue
-        rm -f "$(ledger_backup_path "$L" "$$")"
+        git add -- "$L" || echo "::error::[$TAG] could not re-stage $L after recovery"
+      done <<EOF
+$STAGED_LEDGERS
+EOF
+      while IFS= read -r L; do
+        [ -n "$L" ] || continue
+        rm -f "$(ledger_backup_path "$L" "$$")" \
+          || echo "::error::[$TAG] could not remove backup for $L — the next run will re-apply it (harmless: union is idempotent)"
       done <<EOF
 $UNION_BLOCKING
 EOF
@@ -353,15 +406,31 @@ EOF
   else
     # Could not clean or could not merge. Put every ledger back byte-for-byte
     # and fall through to the normal refusal — never leave a truncated ledger.
+    ROLLBACK_OK=1
     while IFS= read -r L; do
       [ -n "$L" ] || continue
       B="$(ledger_backup_path "$L" "$$")"
       [ -f "$B" ] || continue
-      cp "$B" "$L" && rm -f "$B"
+      if cp "$B" "$L"; then
+        rm -f "$B" || echo "::error::[$TAG] restored $L but could not remove its backup"
+      else
+        ROLLBACK_OK=0
+        echo "::error::[$TAG] FAILED to restore $L from $B — the backup is intact, restore it by hand"
+      fi
     done <<EOF
 $UNION_BLOCKING
 EOF
-    echo "::error::[$TAG] merge=union ledger recovery could not complete — ledgers restored verbatim"
+    while IFS= read -r L; do
+      [ -n "$L" ] || continue
+      git add -- "$L" || echo "::error::[$TAG] could not re-stage $L after rollback"
+    done <<EOF
+$STAGED_LEDGERS
+EOF
+    if [ "$ROLLBACK_OK" -eq 1 ]; then
+      echo "::error::[$TAG] merge=union ledger recovery could not complete — ledgers restored verbatim"
+    else
+      echo "::error::[$TAG] merge=union ledger recovery could not complete AND rollback was incomplete — see the FAILED lines above"
+    fi
     REASON="dirty-unresolved"
   fi
 fi
