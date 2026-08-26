@@ -1,5 +1,5 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: reads real outlet-registry.json/shows.json as
-// fixture input for a pure classifier; no factual pins on review counts/scores.
+// TESTS-VS-DERIVED-DATA-EXEMPT: reads real reviews.json/shows.json/outlet-registry.json
+// as fixture input for a pure classifier; no factual pins on review counts/scores.
 /**
  * Regression test for BRO-45 (Notion 363637c5-416f-81bb-b3f6-ca7ccf03f524):
  * validate-data.js's reverse cross-market check (validateCrossMarketContamination
@@ -12,13 +12,15 @@
  * "Test Suite" workflow reports on.
  *
  * scripts/lib/cross-market-guard.test.mjs already covers classifyReverseCrossMarket's
- * general level matrix with synthetic inputs (including the exact "Tier 3 London
- * outlet on Broadway is ADVISORY" case). This file adds the piece that matrix can't
- * catch: whether the REAL outlet-registry.json + shows.json entries for this specific
- * show/outlet pair still resolve to the non-error levels the classifier promises —
- * i.e. a registry edit that retiers "artsdesk" to Tier 1/2, or a shows.json edit that
- * reclassifies Tristan's category to 'broadway'/null, would silently reintroduce the
- * CI-red regression without this test catching it.
+ * general level matrix with synthetic inputs (including the Tier-3-London-on-Broadway
+ * ADVISORY case). This file only adds the piece that matrix can't catch: whether the
+ * REAL reviews.json/shows.json/outlet-registry.json entries for this specific show
+ * still resolve to 'warning' — i.e. a registry edit that retiers "artsdesk" or flips
+ * it isDualMarket, or a shows.json edit that reclassifies Tristan's category, would
+ * silently reintroduce the CI-red regression without this test catching it. It walks
+ * the SAME path validateCrossMarketContamination() does (find the review in
+ * reviews.json, derive its outlet id, classify) rather than assuming the outlet id —
+ * so a moved/renamed/deleted review fails the test loudly instead of vacuously passing.
  */
 
 import { test } from 'node:test';
@@ -34,49 +36,44 @@ const { isBroadwayCategory } = require('../../scripts/lib/venue-classification.j
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const SHOWS_FILE = join(ROOT, 'data/shows.json');
+const REVIEWS_FILE = join(ROOT, 'data/reviews.json');
 const REGISTRY_FILE = join(ROOT, 'data/outlet-registry.json');
 const SHOW_ID = 'tristan-und-isolde-off-broadway-2026';
-const OUTLET_ID = 'artsdesk';
+const OUTLET_DISPLAY_NAME = 'The Arts Desk';
 
-test('BRO-45: pure classifier — Tier 3 London outlet on an off-Broadway opera is a WARNING, never an error', () => {
-  // Same shape validateCrossMarketContamination() feeds the classifier for a
-  // London-Tier-3, non-dual-market outlet on a category:'off-broadway' show.
-  const v = classifyReverseCrossMarket({
-    region: 'london',
-    isDualMarket: false,
-    isTier12: false,
-    isBroadway: false,
-  });
-  assert.equal(v.level, 'warning', `expected non-blocking warning, got '${v.level}': ${v.reason}`);
-});
-
-test('BRO-45: live-data regression — the actual Tristan/Arts Desk pair resolves to a non-error level', (t) => {
-  if (!existsSync(SHOWS_FILE) || !existsSync(REGISTRY_FILE)) {
-    t.skip('data/shows.json or data/outlet-registry.json not present in this context');
-    return;
+test('BRO-45: live-data regression — Tristan/Arts Desk review classifies as WARNING, not error or skip', (t) => {
+  for (const f of [SHOWS_FILE, REVIEWS_FILE, REGISTRY_FILE]) {
+    if (!existsSync(f)) {
+      t.skip(`${f} not present in this context (no core-data checkout) — cannot exercise the live-data path`);
+      return;
+    }
   }
 
   const showsData = JSON.parse(readFileSync(SHOWS_FILE, 'utf8'));
   const shows = showsData.shows || showsData;
   const show = shows.find((s) => s.id === SHOW_ID);
-  if (!show) {
-    t.skip(`${SHOW_ID} not present in data/shows.json — nothing to regression-check`);
-    return;
-  }
+  assert.ok(show, `${SHOW_ID} not found in data/shows.json — the canary show for this regression is missing`);
 
+  const reviewsData = JSON.parse(readFileSync(REVIEWS_FILE, 'utf8'));
+  const reviews = reviewsData.reviews || reviewsData;
+  const review = reviews.find((r) => r.showId === SHOW_ID && (r.outlet || '').toLowerCase() === OUTLET_DISPLAY_NAME.toLowerCase());
+  assert.ok(review, `No "${OUTLET_DISPLAY_NAME}" review found for ${SHOW_ID} in data/reviews.json — the canary review for this regression is missing`);
+
+  // Same derivation validateCrossMarketContamination() uses: outletId||outlet, lowercased.
+  const oid = (review.outletId || review.outlet || '').toLowerCase();
   const reg = JSON.parse(readFileSync(REGISTRY_FILE, 'utf8'));
   const { outletRegionMap, dualMarket, tier12Outlets } = buildOutletMaps(reg);
 
   const isBroadway = isBroadwayCategory(show);
   const v = classifyReverseCrossMarket({
-    region: outletRegionMap[OUTLET_ID],
-    isDualMarket: dualMarket.has(OUTLET_ID),
-    isTier12: tier12Outlets.has(OUTLET_ID),
+    region: outletRegionMap[oid],
+    isDualMarket: dualMarket.has(oid),
+    isTier12: tier12Outlets.has(oid),
     isBroadway,
   });
 
-  assert.notEqual(v.level, 'error',
-    `${SHOW_ID} (category=${JSON.stringify(show.category)}) vs outlet "${OUTLET_ID}" now classifies as 'error' `
-    + `(${v.reason}) — this is the BRO-45 regression: check outlet-registry.json tier/isDualMarket for `
-    + `"${OUTLET_ID}" and shows.json category for "${SHOW_ID}"`);
+  assert.equal(v.level, 'warning',
+    `${SHOW_ID} (category=${JSON.stringify(show.category)}) vs outlet "${oid}" now classifies as '${v.level}', not 'warning' `
+    + `(${v.reason}) — this is the BRO-45 regression: check outlet-registry.json tier/region/isDualMarket for `
+    + `"${oid}" and shows.json category for "${SHOW_ID}"`);
 });
