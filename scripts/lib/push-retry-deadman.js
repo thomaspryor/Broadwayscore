@@ -22,9 +22,12 @@
  * git branch that scripts/record-push-retry-failure.js writes to
  * SYNCHRONOUSLY (independent of whether the failing push itself ever lands),
  * via scripts/lib/push-ledger-store.js's CAS pattern. The `entries === null`
- * case below now means "the branch could not be fetched/read this run"
- * (network error, or the branch doesn't exist yet), not "file absent by
- * design" — see readPushRetryFailureLedgerOrNull() in health-check.js.
+ * case below now means "the branch fetch genuinely failed this run" (a real
+ * network/auth error) — NOT "the branch doesn't exist yet", which readLedger()
+ * treats as fetchFailed=false/empty-content (a brand-new branch reads as a
+ * clean, empty ledger, not an error) — see readPushRetryFailureLedgerOrNull()
+ * in health-check.js and readLedger()'s fetchFailed contract in
+ * scripts/lib/push-ledger-store.js.
  *
  * ABSENT-VS-EMPTY (BRO-231 / task #1221): the original version of this check
  * could not tell "ledger unreadable" from "ledger present with 0 recent
@@ -51,7 +54,7 @@ function assessPushRetryDeadman(entries, opts = {}) {
     return {
       name: NAME,
       status: 'warn',
-      message: 'Cannot measure push-retry failures from this environment — the durable push-retry-failures ledger branch could not be read (fetch failed, or the branch does not exist yet). This row cannot judge push health from here.',
+      message: 'Cannot measure push-retry failures from this environment — the durable push-retry-failures ledger branch could not be fetched (a real fetch error, not the branch simply not existing yet — see readLedger()\'s fetchFailed contract in scripts/lib/push-ledger-store.js). This row cannot judge push health from here.',
       hint: 'Run `git fetch origin push-retry-failures && git show origin/push-retry-failures:failures.jsonl` to check the branch directly, or re-run `node scripts/health-check.js` from an environment with network access to origin.',
     };
   }
