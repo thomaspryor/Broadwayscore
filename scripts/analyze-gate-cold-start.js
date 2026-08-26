@@ -99,14 +99,33 @@ async function main() {
   say(`FLAG HEALTH: ${health.ok ? '✅ active, 50/50, 100% rollout' : `🛑 ${health.problem}`}`);
   if (!health.ok) say('  → fix the flag BEFORE reading any numbers below; data during the broken window is contaminated.');
 
-  // Person → arm from the FIRST flag response in-window (sticky assignment
-  // means later responses should agree; first-wins makes the mapping stable).
+  // Person → arm from the FIRST RESOLVED flag response in-window (sticky
+  // assignment means later responses should agree; first-wins makes the
+  // mapping stable). CRITICAL: must exclude unresolved responses from the
+  // argMin, not just from the final arm mapping. PostHog's getFeatureFlag()
+  // fires $feature_flag_called on EVERY call, including the ones the client
+  // makes before the flags network request has returned (ProGateContext's
+  // poll loop calls getFeatureFlag every 250ms until it gets a real value) —
+  // for the overwhelming majority of real sessions that FIRST call resolves
+  // to null a fraction of a second before the real 'control'/'cold-start'
+  // value lands on the very next call. Taking argMin over ALL responses
+  // (2026-07-21 – 2026-08-26 version) picked that premature null as "the"
+  // arm for ~95%+ of genuinely-exposed people, misclassifying them as
+  // 'unexposed' and excluding them from the whole comparison — diagnosed via
+  // scripts/diagnose-gate-cold-start-join.js (2026-08-26), which found 2,014
+  // real control-arm + 813 real cold-start-arm people with client-stamped
+  // gate_modal_shown events against only 51 + 49 "exposed" by this query.
+  // Restricting the argMin candidates to resolved responses only fixes this
+  // while preserving the existing behavior for someone whose flag truly
+  // never resolves (every row null) — they still fall through to unmapped/
+  // 'unexposed' below, which is correct.
   const exposure = await hogql(`
     SELECT person_id,
       argMin(JSONExtractString(properties,'$feature_flag_response'), timestamp) AS arm
     FROM events
     WHERE event = '$feature_flag_called'
       AND JSONExtractString(properties,'$feature_flag') = '${FLAG_KEY}'
+      AND JSONExtractString(properties,'$feature_flag_response') IN ('control', 'cold-start')
       AND ${WINDOW} AND ${REAL_USERS}
     GROUP BY person_id`);
   const personArm = new Map(exposure.map(([pid, arm]) => [pid, arm]));

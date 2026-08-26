@@ -28,3 +28,7 @@ jobs:
         env:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
         run: node scripts/diagnose-gate-cold-start-join.js
+      - name: Run corrected canonical readout
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/analyze-gate-cold-start.js --days=40
