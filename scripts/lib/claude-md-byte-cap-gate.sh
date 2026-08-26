@@ -30,6 +30,6 @@ command -v node >/dev/null 2>&1 || exit 0
 TMP_MD="$(mktemp)"
 trap 'rm -f "$TMP_MD"' EXIT
 
-git show "$REF:CLAUDE.md" >"$TMP_MD" 2>/dev/null || exit 0
+git -C "$REPO_ROOT" show "$REF:CLAUDE.md" >"$TMP_MD" 2>/dev/null || exit 0
 
 node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$REPO_ROOT/scripts/lib/claude-md-anchors.json" <"$TMP_MD"

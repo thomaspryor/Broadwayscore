@@ -15,12 +15,15 @@
 //     non-zero, node exits 0 on empty stdin, and pipefail would report the
 //     pipeline as failed anyway, falsely BLOCKING a deletion).
 //
-// Three layers:
+// Four layers:
 //   1. Unit tests against checkByteCap() directly — fast, no subprocess.
 //   2. CLI smoke tests for check-claude-md-byte-cap.js's stdin/argv wiring.
 //   3. Git-fixture integration tests against claude-md-byte-cap-gate.sh — the
 //      exact command scripts/hooks/pre-push runs, including the deletion
 //      case that motivated the temp-file-not-a-pipe design.
+//   4. Full-hook integration tests: the real scripts/hooks/pre-push end to
+//      end, proving it fires the byte-cap check only when CLAUDE.md is
+//      actually part of the push.
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -28,6 +31,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
@@ -228,8 +232,8 @@ test('regression pin: a pipe-based rewrite of gate.sh (no temp file) wrongly BLO
   const buggy = original
     .replace(/^set -u$/m, 'set -uo pipefail')
     .replace(
-      /git show "\$REF:CLAUDE\.md" >"\$TMP_MD" 2>\/dev\/null \|\| exit 0\n\nnode[^\n]*<"\$TMP_MD"\n/,
-      'git show "$REF:CLAUDE.md" 2>/dev/null | node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$REPO_ROOT/scripts/lib/claude-md-anchors.json"\n'
+      /git -C "\$REPO_ROOT" show "\$REF:CLAUDE\.md" >"\$TMP_MD" 2>\/dev\/null \|\| exit 0\n\nnode[^\n]*<"\$TMP_MD"\n/,
+      'git -C "$REPO_ROOT" show "$REF:CLAUDE.md" 2>/dev/null | node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$REPO_ROOT/scripts/lib/claude-md-anchors.json"\n'
     );
   assert.notEqual(buggy, original, 'the buggy-rewrite regex no longer matches gate.sh — update this pin to match its current form');
   const buggyPath = path.join(fixtureDir, '..', `gate-buggy-${path.basename(fixtureDir)}.sh`);
@@ -258,4 +262,132 @@ test('scripts/lib/claude-md-byte-cap-gate.sh invokes check-claude-md-byte-cap.js
   const gateSrc = fs.readFileSync(GATE_PATH, 'utf8');
   assert.match(gateSrc, /check-claude-md-byte-cap\.js/, 'gate script no longer wires in the byte-cap decision fn');
   assert.match(gateSrc, /claude-md-anchors\.json/, 'gate script no longer passes claude-md-anchors.json to the byte-cap check');
+});
+
+test('gate.sh: resolves CLAUDE.md via `git -C $REPO_ROOT`, not the caller\'s cwd (codebase-review finding)', skipNoFixture, () => {
+  // Run with cwd deliberately OUTSIDE fixtureDir — only REPO_ROOT (argv[1])
+  // should matter for resolving the git ref.
+  const r = spawnSync('bash', [GATE_PATH, fixtureDir, refInCap], {
+    cwd: os.tmpdir(),
+    encoding: 'utf8',
+    timeout: GIT_TIMEOUT_MS,
+    killSignal: 'SIGKILL',
+  });
+  assert.equal(r.status, 0, `cwd-independence broke: stdout: ${r.stdout} stderr: ${r.stderr}`);
+});
+
+// ── full-hook integration: scripts/hooks/pre-push's OWN trigger condition ──
+//
+// Everything above exercises claude-md-byte-cap-gate.sh directly. This
+// section instead runs the real scripts/hooks/pre-push end-to-end (the exact
+// command git invokes at push time), to prove pre-push's own
+// `echo "$range_files" | grep -q "^CLAUDE.md$"` trigger (scripts/hooks/
+// pre-push, in the CLAUDE.md guard block) correctly gates WHEN the byte-cap
+// check fires — a codebase-review finding: the tests above only cover
+// gate.sh's behavior once invoked, not whether pre-push invokes it at the
+// right time. This needs a full working tree (not the bare-bones fixture
+// above) because pre-push unconditionally also runs this repo's other real
+// push audits (scripts/lib/run-push-audits.sh) once it gets past the
+// CLAUDE.md guard.
+//
+// The fixture worktree is built off THIS repo's own current HEAD (the branch
+// this test file itself lives on), NOT origin/main — pre-push resolves its
+// OWN REPO_ROOT dynamically via `git rev-parse --show-toplevel` on the
+// caller's cwd, so a worktree checked out from main (which doesn't have
+// claude-md-byte-cap-gate.sh committed yet) would run the real edited hook
+// SCRIPT but have it look for its own support files in a checkout that
+// doesn't have them — the byte-cap block's `[ -f ... ] || exit 0` fail-open
+// then silently no-ops the whole check, which is exactly what happened in an
+// earlier draft of this fixture (looked like a pass-through, was actually
+// "nothing ran"). HEAD is used deliberately, not the worktree's on-disk
+// state (which can have unrelated uncommitted changes) — same reasoning as
+// scripts/tests/merge-gate-hook.test.mjs's BASE_REF resolution, adapted to
+// point at this branch instead of main since the files under test only
+// exist on this branch so far.
+//
+// A `git worktree add` off a local ref shares this repo's object store
+// instead of copying it — ~6s locally vs. ~40s for an equivalent `git
+// clone`, and no network (never fetches).
+
+const HOOK_PATH = path.join(REPO_ROOT, 'scripts', 'hooks', 'pre-push');
+const HOOK_TIMEOUT_MS = 90_000;
+const HOOK_WT_BRANCH = `pre-push-test-hookwt-${randomUUID().slice(0, 8)}`;
+let hookWorktreeDir = null;
+let hookWorktreeError = null;
+
+let shaUntouched = null;
+let shaOversized = null;
+
+function commitInClone(relPath, content, message) {
+  const full = path.join(hookWorktreeDir, relPath);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, content);
+  spawnSync('git', ['add', '-A'], { cwd: hookWorktreeDir, timeout: GIT_TIMEOUT_MS });
+  spawnSync('git', ['-c', 'user.email=test@example.com', '-c', 'user.name=Test', 'commit', '-q', '-m', message, '--no-verify'], {
+    cwd: hookWorktreeDir,
+    timeout: GIT_TIMEOUT_MS,
+  });
+  return gitOut(hookWorktreeDir, ['rev-parse', 'HEAD']);
+}
+
+before(() => {
+  try {
+    hookWorktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre-push-hook-wt-'));
+    fs.rmSync(hookWorktreeDir, { recursive: true, force: true }); // `git worktree add` wants a non-existent path
+    spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+    const added = spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'add', '-q', '-b', HOOK_WT_BRANCH, hookWorktreeDir, 'HEAD'], {
+      encoding: 'utf8',
+      timeout: HOOK_TIMEOUT_MS,
+      killSignal: 'SIGKILL',
+    });
+    if (added.status !== 0) throw new Error(`worktree add failed (status ${added.status}): ${added.stderr}`);
+
+    // Both fixture commits are built HERE, sequentially, rather than inside
+    // individual test() bodies — node's test runner does not guarantee
+    // top-level tests execute one-at-a-time, and two tests mutating the same
+    // shared worktree's git index concurrently corrupted a commit in an
+    // earlier draft of this file (one test's `git add`/`commit` interleaved
+    // with the other's file write).
+    shaUntouched = commitInClone('bro124-scratch-untouched.md', '# scratch\n', 'unrelated file, CLAUDE.md untouched');
+    const current = fs.readFileSync(path.join(hookWorktreeDir, 'CLAUDE.md'), 'utf8');
+    shaOversized = commitInClone('CLAUDE.md', current + 'x'.repeat(20000), 'oversized CLAUDE.md');
+  } catch (err) {
+    hookWorktreeError = err;
+  }
+});
+
+after(() => {
+  if (hookWorktreeDir) {
+    spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'remove', '--force', hookWorktreeDir], { timeout: GIT_TIMEOUT_MS });
+    fs.rmSync(hookWorktreeDir, { recursive: true, force: true });
+  }
+  spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+});
+
+const skipNoHookClone = { get skip() { return (!hookWorktreeDir || !shaUntouched || !shaOversized) && `worktree fixture failed to build: ${hookWorktreeError}`; } };
+
+function runFullHook(sha, branchName) {
+  const stdin = `refs/heads/${branchName} ${sha} refs/heads/${branchName} 0000000000000000000000000000000000000000\n`;
+  return spawnSync('bash', [HOOK_PATH], {
+    cwd: hookWorktreeDir,
+    input: stdin,
+    encoding: 'utf8',
+    timeout: HOOK_TIMEOUT_MS,
+    killSignal: 'SIGKILL',
+  });
+}
+
+test('full hook: byte-cap block does NOT fire when CLAUDE.md is not part of the push', skipNoHookClone, () => {
+  const r = runFullHook(shaUntouched, 'bro124-untouched-test');
+  assert.doesNotMatch(
+    r.stdout + r.stderr,
+    /CLAUDE\.md exceeds byte cap/,
+    `byte-cap block fired even though CLAUDE.md was not touched — stdout: ${r.stdout} stderr: ${r.stderr}`
+  );
+});
+
+test('full hook: byte-cap block DOES fire and BLOCKS when the push includes an oversized CLAUDE.md', skipNoHookClone, () => {
+  const r = runFullHook(shaOversized, 'bro124-oversized-test');
+  assert.equal(r.status, 1, `stdout: ${r.stdout} stderr: ${r.stderr}`);
+  assert.match(r.stdout + r.stderr, /PRE-PUSH BLOCKED: CLAUDE\.md exceeds byte cap/);
 });
