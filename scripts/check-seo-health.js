@@ -1358,23 +1358,29 @@ const RICH_RESULTS_SLUGS = [
   'dog-day-afternoon',
 ];
 
+// A renamed/retired slug 404s and GSC reports verdict:UNKNOWN with no detected
+// items — indistinguishable from "hasn't been recrawled yet" unless we check
+// the slug is still real. That's exactly how 'death-of-a-salesman-2024'
+// silently checked nothing for months (BRO-528) instead of erroring loudly.
+// Pure and separately testable (CLAUDE.md rule 15) so the guard doesn't
+// require a live network call to verify.
+function findStaleSlugs(slugs, shows) {
+  const validSlugs = new Set((Array.isArray(shows) ? shows : []).map(s => s.slug));
+  return slugs.filter(slug => !validSlugs.has(slug));
+}
+
 async function checkRichResults(token) {
   console.log('\n--- Rich Results Verdict ---');
   const results = [];
 
-  // A renamed/retired slug 404s and GSC reports verdict:UNKNOWN with no
-  // detected items — indistinguishable from "hasn't been recrawled yet"
-  // unless we check the slug is still real. That's exactly how
-  // 'death-of-a-salesman-2024' silently checked nothing for months
-  // (BRO-528) instead of erroring loudly.
-  let validSlugs = null;
+  let staleSlugSet = null;
   try {
     const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-    validSlugs = new Set((data.shows || data).map(s => s.slug));
+    staleSlugSet = new Set(findStaleSlugs(RICH_RESULTS_SLUGS, data.shows || data));
   } catch { /* if shows.json can't be read, skip the validity guard rather than block the check */ }
 
   for (const slug of RICH_RESULTS_SLUGS) {
-    if (validSlugs && !validSlugs.has(slug)) {
+    if (staleSlugSet && staleSlugSet.has(slug)) {
       console.log(`  ${slug}: STALE_SLUG — no show in shows.json has this slug (renamed or retired?)`);
       results.push({ slug, verdict: 'STALE_SLUG', error: 'slug not found in shows.json' });
       continue;
@@ -1526,6 +1532,20 @@ async function main() {
     });
   }
 
+  // A STALE_SLUG (renamed/retired show) silently checks nothing forever unless
+  // it reaches this same alert path — logging it to an unattended cron's console
+  // is not "erroring loudly" (BRO-528: 'death-of-a-salesman-2024' did exactly
+  // that for months before anyone noticed).
+  const staleSlugs = richResults.results.filter(r => r.verdict === 'STALE_SLUG');
+  if (staleSlugs.length > 0) {
+    anomalies.push({
+      type: 'rich_results_stale_slug',
+      severity: 'warning',
+      message: `${staleSlugs.length} RICH_RESULTS_SLUGS entr${staleSlugs.length > 1 ? 'ies' : 'y'} no longer match a show in shows.json (renamed/retired?): ${staleSlugs.map(r => r.slug).join(', ')}`,
+      pages: staleSlugs.map(r => r.slug),
+    });
+  }
+
   if (!dryRun) {
     saveSnapshot(healthData, performance);
   } else {
@@ -1563,4 +1583,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { detectAnomalies, detectCWVAnomalies, sampleShowPages, buildCWVPages };
+module.exports = { detectAnomalies, detectCWVAnomalies, sampleShowPages, buildCWVPages, findStaleSlugs, RICH_RESULTS_SLUGS };
