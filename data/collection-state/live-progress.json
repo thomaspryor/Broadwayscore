@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T21:18:17.657Z",
-  "processed": 23,
-  "failed": 80,
-  "successRate": "22.3%",
+  "updatedAt": "2026-08-26T21:47:53.224Z",
+  "processed": 41,
+  "failed": 178,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 40,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 4,
+    "browserbase": 2,
+    "directCookies": 2,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 10
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -82,6 +82,29 @@
       "t": "2026-08-26T21:16:08.162Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T21:19:03.623Z",
+      "event": "bb-session",
+      "session": "d1233a28",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-26T21:19:26.433Z",
+      "event": "bb-session",
+      "session": "fafc593d",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-26T21:42:20.453Z",
+      "event": "bb-session",
+      "session": "0580aae8",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-26T21:42:21.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

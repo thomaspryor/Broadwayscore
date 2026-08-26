@@ -52,6 +52,7 @@ function siteFileExists(showId) {
 // Returns 0 when the show already qualifies for score display.
 function reviewsRemainingForScore(reviewCount, category, tier1And2Count) {
   const MIN = category === 'off-broadway' ? 3
+    : category === 'off-off-broadway' ? 3
     : category === 'off-west-end' ? 3
     : category === 'west-end' ? 5
     : 5;

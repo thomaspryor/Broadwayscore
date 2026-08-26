@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T20:14:44.890Z",
+  "timestamp": "2026-08-26T21:36:19.597Z",
   "stats": {
-    "totalReviews": 41953,
-    "alreadyFlagged": 17565,
+    "totalReviews": 41970,
+    "alreadyFlagged": 17568,
     "dateGuardCatches": 227,
-    "directorMismatch": 1017,
+    "directorMismatch": 1018,
     "tvFilmSignals": 1235,
     "londonSignals": 934,
     "offBroadwaySignals": 495,
     "yearMismatch": 90,
-    "noPublishDate": 3583
+    "noPublishDate": 3582
   },
   "findings": [
     {
@@ -17657,6 +17657,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0a9659c8b63",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },

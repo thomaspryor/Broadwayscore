@@ -31,6 +31,7 @@ const T3_ONLY_EXTRA = 2;
 function getMarketMinReviews(category) {
   switch (category) {
     case 'off-broadway':
+    case 'off-off-broadway':
     case 'regional':
       return MIN_REVIEWS_OFF_BROADWAY;
     case 'off-west-end':

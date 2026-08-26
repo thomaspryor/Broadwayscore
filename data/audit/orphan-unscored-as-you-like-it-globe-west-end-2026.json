@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "as-you-like-it-globe-west-end-2026",
   "openingDate": "2026-08-21",
-  "detectedAt": "2026-08-26T20:14:35.252Z",
+  "detectedAt": "2026-08-26T21:36:06.804Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "financialtimes--sarah-hemming.json",
+      "outletId": "financialtimes",
+      "criticName": "Sarah Hemming",
+      "url": "https://www.ft.com/content/d83c1015-24e7-428c-848d-67c5944230aa?syn-25a6b1a6=1",
+      "fullTextLen": 3196,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "letterboxd--unknown.json",
       "outletId": "letterboxd",
@@ -48,6 +62,20 @@
       "eligibilityReason": null
     },
     {
+      "file": "thestage--tom-wicker.json",
+      "outletId": "thestage",
+      "criticName": "Tom Wicker",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+      "fullTextLen": 2850,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "times-uk--rachel-halliburton.json",
       "outletId": "times-uk",
       "criticName": "Rachel Halliburton",
@@ -76,8 +104,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 5,
+  "orphanCount": 7,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-08-26T21:36:06.804Z"
 }
