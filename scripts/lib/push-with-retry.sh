@@ -794,6 +794,25 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/audit/alert-digest-queue.json)
+        # BRO-257: 12+ independent workflows call queueDigestLine() and push
+        # through this file (data-health-check.yml, scrape-new-aggregators.yml,
+        # process-feedback.yml, audit-aggregator-gap.yml, check-arm-yield.yml,
+        # weekly-affiliate-report.yml, promote-we-aggregator.yml,
+        # opening-night-broadcast.yml, ...). Unlike the per-run-independent
+        # audit/ logs in the generic arm below, this queue accumulates lines
+        # across runs — a whole-file keep-local here would silently drop
+        # whichever writer lost the rebase/push race's newly-queued (or
+        # newly-cleared) digest line. Same class as feedback-request-ledger.json
+        # and express-retry-queue.json above.
+        echo "  Auto-resolving (alert-digest-queue merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::alert-digest-queue merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"
@@ -953,15 +972,39 @@ restore_protected_fields() {
 # Fail-OPEN like restore_protected_fields — a reconciliation error must never
 # block an otherwise-good push.
 reconcile_merged_json() {
-  [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ] || return 0
   command -v node >/dev/null 2>&1 || return 0
   [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] || return 0
-  # ONE invocation: stdout is one changed repo-relative path per line (empty =
-  # nothing to do), stderr streams to the job log. Running it twice (once for
-  # the log, once for the list) would report empty the second time — the
-  # first pass has already written the merged files.
-  local out
-  out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
+
+  # ONE invocation per target set: stdout is one changed repo-relative path
+  # per line (empty = nothing to do), stderr streams to the job log. Running
+  # the SAME target set twice (once for the log, once for the list) would
+  # report empty the second time — the first pass has already written the
+  # merged files.
+  local out=""
+  if [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ]; then
+    out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || out=""
+  fi
+
+  # BRO-257: unconditional — NOT gated behind PUSH_RECONCILE_MERGED_JSON like
+  # the opt-in sweep above. data/audit/alert-digest-queue.json's own case arm
+  # in resolve_conflicts() only fires when git actually reports a conflict,
+  # but two writers appending a new entry at the same position (the common
+  # case: queueDigestLine() always appends at the end) hit exactly the hole
+  # this whole module exists for — `git rebase -X theirs` auto-resolves that
+  # add/add hunk in favour of our replayed commit WITHOUT ever reporting a
+  # conflict, so resolve_conflicts() never runs. Most of this file's 12+
+  # writer workflows never set PUSH_RECONCILE_MERGED_JSON (confirmed via
+  # grep across .github/workflows/*.yml), and its registry entry is
+  # deliberately optInReconcile:false (reconciled via the case arm, not the
+  # opt-in sweep) — so without this second, targeted call it would be
+  # silently unprotected on the common path. Scoped to exactly this one file;
+  # does not change the opt-in default for any other MANAGED file or caller.
+  local ledger_out
+  ledger_out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json) || ledger_out=""
+  if [ -n "$ledger_out" ]; then
+    out="${out}${out:+$'\n'}${ledger_out}"
+  fi
+
   [ -n "$out" ] || return 0
 
   # `git add` exactly the reconciled paths — NEVER `-A` (task #574 ship-check/
