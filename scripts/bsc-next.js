@@ -179,7 +179,13 @@ const {
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
+  dispatchClaimGuard,
 } = require('./lib/dispatch-guards.js');
+// Shared atomic per-key claim primitive (task #1896) — also backs
+// acquireSuccessionLock/releaseSuccessionLock below. See its own header for
+// why this is the right module for it and not dispatch-overlap-check.js
+// (which stays pure/no-I/O by convention) or a bespoke copy in-line here.
+const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 // Task #1800: predispatchGuard wires the fleet's REOPEN-SUSPECT/DO-NOT-DISPATCH
 // classifier (predispatch-guard.js) into the real dispatch path — until now
 // classifyCandidate was only reachable by a human running
@@ -449,22 +455,21 @@ function pageSuccessionCapExceeded(task, attemptedDepth) {
 const SUCCESSION_LOCK_DIR = path.join(REPO, 'data', 'audit', 'succession-locks');
 const SUCCESSION_LOCK_STALE_MS = 8 * 60 * 1000;
 
+// Fresh-dispatch claim (task #1896), separate dir/lock family from
+// succession's above — a fresh dispatch and a succession continuation of a
+// DIFFERENT task must never contend for the same claim. Same 8-minute
+// staleMs as succession's, for the same reason (cmux-launch.js's
+// slowBootCapSec allows up to 6 minutes of boot).
+const DISPATCH_CLAIM_DIR = path.join(REPO, 'data', 'audit', 'dispatch-claims');
+const DISPATCH_CLAIM_STALE_MS = 8 * 60 * 1000;
+
+// Delegates to scripts/lib/atomic-claim.js (task #1896 extraction — this was
+// the second hand-copy of the mkdir/EEXIST/staleness idiom in this tree
+// before that module existed; it's now the shared primitive both this and
+// the new per-task dispatch-claim guard sit on). Behavior/signature
+// unchanged — existing callers and tests are untouched by this refactor.
 function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = SUCCESSION_LOCK_STALE_MS) {
-  try { fs.mkdirSync(lockDir, { recursive: true }); } catch { /* best-effort — mkdirSync below still fails informatively */ }
-  const p = path.join(lockDir, `${taskId}.lock`);
-  try {
-    fs.mkdirSync(p); // atomic: fails EEXIST iff another holder already has it
-    fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() }));
-    return true;
-  } catch (e) {
-    if (e.code !== 'EEXIST') return 'error';
-    try {
-      const meta = JSON.parse(fs.readFileSync(path.join(p, 'meta.json'), 'utf8'));
-      if (Date.now() - meta.ts < staleMs) return false; // fresh — genuinely held elsewhere
-      fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() })); // stale — take over
-      return true;
-    } catch { return 'error'; } // unreadable meta — fail closed (refuse), never guess it's free
-  }
+  return acquireClaim(lockDir, taskId, { staleMs });
 }
 
 // KNOWN GAP (Codex adversarial review, BRO-2251): release is keyed on taskId
@@ -480,7 +485,7 @@ function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = 
 // (compare pid/nonce before rm, not just taskId) which is a separate,
 // testable change of its own.
 function releaseSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR) {
-  try { fs.rmSync(path.join(lockDir, `${taskId}.lock`), { recursive: true, force: true }); } catch { /* next attempt's staleness check recovers */ }
+  releaseClaim(lockDir, taskId);
 }
 
 // Side-effecting succession dispatch, split out of main() so the CI-red-
@@ -887,6 +892,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
     appendCiRedClaim: appendCiRedClaimFn = appendClaim,
     loadLinearMirrorMapping: loadLinearMirrorMappingFn = loadLinearMirrorMapping,
     listWorkBranchStatuses: listWorkBranchStatusesFn = listWorkBranchStatuses,
+    // Task #1896: injectable so tests can simulate "another attempt already
+    // holds this task's claim" without touching the real filesystem dir.
+    acquireDispatchClaim: acquireDispatchClaimFn = (taskId, opts) => acquireClaim(DISPATCH_CLAIM_DIR, taskId, opts),
+    releaseDispatchClaim: releaseDispatchClaimFn = (taskId) => releaseClaim(DISPATCH_CLAIM_DIR, taskId),
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -1016,6 +1025,43 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (!args.id) { console.error('[bsc-next] --succession requires --id <taskId> (never auto-picks a task).'); process.exit(1); }
     runSuccessionDispatch(task, args, { launchCmux: launchCmuxFn, readLedgerEntries: readLedgerEntriesFn, appendLedgerEntry: appendLedgerEntryFn, fetchCard: fetchCardFn });
     return;
+  }
+
+  // Mirror-staleness dispatch claim (task #1896): placed as early as possible
+  // in the fresh-dispatch path — before EVERY guard below, including the
+  // cross-task overlap check it's patching a gap in — so a second bsc-next.js
+  // process racing on this SAME task id (the exact class that let #1893
+  // dispatch 4x in ~8 minutes on 2026-08-26, including two successful
+  // launches only 30s apart) is refused here instead of independently
+  // passing every guard below on an equally stale snapshot. See
+  // dispatch-guards.js's dispatchClaimGuard header for the full race
+  // analysis. `dispatchConfirmed` guards the process.on('exit', ...) release
+  // below — set to true only at this task's two real dispatch-success points
+  // (the cmux `res.ok` branch and the headless branch, once the job is
+  // actually spawned) so the claim survives long enough to block a
+  // near-simultaneous second success, while any guard refusal or failed
+  // launch after claiming releases immediately so a legitimate same-session
+  // retry (e.g. after a dead cmux boot) isn't blocked for the full staleMs.
+  //
+  // process.on('exit', ...) rather than try/finally: this file already has a
+  // CONFIRMED-LIVE finding (BRO-2251, see runSuccessionDispatch's header
+  // comment above) that process.exit() skips pending finally blocks entirely
+  // — refactoring every process.exit(1) between here and the launch branches
+  // to return codes instead (as runSuccessionDispatchLocked was refactored
+  // to do) is out of scope for this fix and risky to attempt blind across
+  // this much dispatch-layer control flow. process.on('exit', cb) is a
+  // DIFFERENT mechanism, unaffected by that finding: Node runs 'exit'
+  // listeners synchronously as an explicit part of process.exit()'s own
+  // implementation (the standard idiom lock-file libraries use for exactly
+  // this reason), so it needs no changes to any existing guard's exit sites.
+  let dispatchConfirmed = false;
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    const claimResult = acquireDispatchClaimFn(task.id, { staleMs: DISPATCH_CLAIM_STALE_MS });
+    const claimErr = dispatchClaimGuard(task, claimResult, args);
+    if (claimErr) { console.error(`[bsc-next] ${claimErr}`); process.exit(1); }
+    if (claimResult === true) {
+      process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(task.id); });
+    }
   }
 
   // Card #955: task-store-archive.js can archive an in_progress task
@@ -1282,6 +1328,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
           process.exitCode = 1;
           return;
         }
+        // Task #1896: only NOW (not before runJob() was even called) is this
+        // a real dispatch — 'lease-held' above means nothing was actually
+        // spawned, and the dispatch claim must release immediately in that
+        // case rather than sit held for the full staleMs window blocking a
+        // legitimate retry.
+        dispatchConfirmed = true;
         console.log(`[bsc-next] headless job ${r.jobId} ${r.ok ? 'DONE' : `FAILED (${r.stage})`}`);
         console.log(`  log: ${r.logFile}`);
         if (r.sessionId) console.log(`  resume: (cd ${r.cwd} && claude --resume ${r.sessionId})`);
@@ -1346,6 +1398,11 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const res = launchCmuxFn(task, seed, undefined, model, project);
   if (res.ok) {
+    // Task #1896: this is a real dispatch — hold the claim (let it expire via
+    // staleMs) instead of releasing on exit, so a near-simultaneous second
+    // dispatch attempt (e.g. a headless job racing this same cmux launch,
+    // exactly what happened to #1893) still sees it held.
+    dispatchConfirmed = true;
     // Report the TAB TITLE, not the workspace number — the owner's cmux
     // sidebar shows titles only, so "workspace:165" is unfindable for them
     // (owner feedback 2026-07-30, repeat complaint across sessions).
