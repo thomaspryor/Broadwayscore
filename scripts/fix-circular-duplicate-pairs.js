@@ -81,6 +81,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { parseDate } = require('./lib/date-utils');
 const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
+const { isPlaceholderByline } = require('./lib/placeholder-byline');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -204,11 +205,26 @@ function chooseCanonical(aName, aData, bName, bData) {
   if (aScoreable && !bScoreable) return pick(aName, bName, 'recovery: only this member is scoreable');
   if (bScoreable && !aScoreable) return pick(bName, aName, 'recovery: only this member is scoreable');
 
-  // 2. Byline quality.
+  // 2. Byline quality. Two independent checks, either one enough to flag a
+  // placeholder: the filename-slug comparison (isUnknownByline, outletId vs
+  // filename byline slug) and the data-field comparison (isPlaceholderByline,
+  // criticName vs outlet DISPLAY name). The two can disagree — a file named
+  // `times-uk--the-times.json` has slug "the-times" vs outletSlug "times-uk"
+  // (never equal), while its criticName "The Times" equals its outlet display
+  // name "The Times (UK)" (placeholder). Card #1907: relying on the slug check
+  // alone let that exact shape survive as canonical.
+  //
+  // The data-field check only fires when criticName is ACTUALLY PRESENT on
+  // the record. A record with no criticName field at all (byline identity
+  // conveyed only by the filename, e.g. every real corpus review) must fall
+  // back to the slug check alone — isPlaceholderByline(undefined, …) is
+  // vacuously true (empty criticName == placeholder), which would otherwise
+  // make every filename-slug-only comparison return "both unknown."
   const aOutlet = outletSlug(aName), bOutlet = outletSlug(bName);
   const aSlug = bylineSlug(aName), bSlug = bylineSlug(bName);
-  const aUnknown = isUnknownByline(aSlug, aOutlet);
-  const bUnknown = isUnknownByline(bSlug, bOutlet);
+  const dataSaysPlaceholder = (d) => !!(d && typeof d.criticName === 'string' && d.criticName.trim() && isPlaceholderByline(d.criticName, d.outlet));
+  const aUnknown = isUnknownByline(aSlug, aOutlet) || dataSaysPlaceholder(aData);
+  const bUnknown = isUnknownByline(bSlug, bOutlet) || dataSaysPlaceholder(bData);
   if (!aUnknown && bUnknown) return pick(aName, bName, 'byline: named human beats unknown/placeholder');
   if (!bUnknown && aUnknown) return pick(bName, aName, 'byline: named human beats unknown/placeholder');
 
