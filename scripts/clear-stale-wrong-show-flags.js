@@ -44,6 +44,7 @@ const path = require('path');
 const { isLikelyStaleWrongShow } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
 
 const FIX_SURGE_THRESHOLD = 25;
 
@@ -190,7 +191,7 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
     return;
   }
 
-  if (toClear.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+  if (shouldRefuseSurge(toClear.length, FIX_SURGE_THRESHOLD, FORCE_BULK)) {
     console.error(`::error::Refusing to auto-clear ${toClear.length} stale wrongShow flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means the predicate or LLM second-opinion regressed, not routine drift — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
     process.exit(1);
   }
