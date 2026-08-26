@@ -46,6 +46,7 @@ const STATES = Object.freeze({
   SLOW_BOOT_TIMEOUT: 'slow-boot-timeout',   // wrapper still alive at the cap — alive, just not verifiable yet
   WRAPPER_GONE_TAG_ALIVE: 'wrapper-gone-tag-alive', // wrapper not in ps, but cmux still reports a live claude
   SURFACE_NOT_FOUND: 'surface-not-found',   // wrapper+tag both said REGISTERED, but read-screen confirmed no terminal surface exists (card #1829)
+  TERMINAL_RUNTIME_MISSING: 'terminal-runtime-missing', // cmux never attached a terminal to this workspace — the command CANNOT run here (task #1904)
 });
 
 // Human-readable reason per terminal state, for the launch result and logs.
@@ -58,6 +59,7 @@ const REASONS = Object.freeze({
   [STATES.SLOW_BOOT_TIMEOUT]: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
   [STATES.WRAPPER_GONE_TAG_ALIVE]: 'launch wrapper is gone from the process table but cmux still reports a live claude in the workspace — ambiguous, left alone',
   [STATES.SURFACE_NOT_FOUND]: 'wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session',
+  [STATES.TERMINAL_RUNTIME_MISSING]: 'cmux created the workspace but never attached a terminal to it, so the typed command can never run there (cmux is at its terminal-runtime ceiling — close finished tabs or restart cmux)',
 });
 
 /**
@@ -78,6 +80,14 @@ const REASONS = Object.freeze({
  * @param {number}  [s.maxAttempts]     attempts allowed in total
  * @param {number}  [s.injectionGraceSec]
  * @param {number}  [s.slowBootCapSec]
+ * @param {boolean} [s.surfaceConfirmedMissing] cmux's own read-screen says this
+ *                                  workspace has NO terminal surface (task #1904).
+ *                                  Confirmed-missing only — an ordinary read
+ *                                  error or a surface with nothing painted yet
+ *                                  must arrive here as false.
+ * @param {boolean} [s.atTerminalCapacity] the pre-create probe found cmux at its
+ *                                  observed terminal-runtime ceiling, so no new
+ *                                  workspace can get a terminal until one frees.
  * @returns {{action: 'ok'|'wait'|'retry'|'fail', state: string, reason: string|null}}
  */
 function decideLaunchWait({
@@ -91,6 +101,8 @@ function decideLaunchWait({
   maxAttempts = 2,
   injectionGraceSec = DEFAULT_INJECTION_GRACE_SEC,
   slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC,
+  surfaceConfirmedMissing = false,
+  atTerminalCapacity = false,
 } = {}) {
   const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
   const booting = Number.isFinite(bootElapsedSec) ? Math.max(0, bootElapsedSec) : elapsed;
@@ -123,13 +135,50 @@ function decideLaunchWait({
   //    one non-injection case where a fresh attempt is the right move.
   if (wrapperEverSeen) return terminal(STATES.WRAPPER_EXITED, attempt, maxAttempts);
 
+  // 3b. cmux never attached a TERMINAL to this workspace, and the pre-create
+  //     probe already found the app at its terminal-runtime ceiling. Task
+  //     #1904, root-caused live 2026-08-26: past that cap cmux still creates
+  //     the workspace and still accepts the --command, but the surface gets
+  //     ghostty=nil / runtime=0 and the command can never run there. Nothing
+  //     inside cmux fixes it — set-app-focus, open -a, simulate-app-active,
+  //     refresh-surfaces, select-workspace, new-surface, send and a fresh
+  //     WINDOW were all tested against a doomed workspace and did nothing.
+  //     Only a runtime freeing (a tab closing) does.
+  //
+  //     So this is 'fail', never 'retry': the cap is app-wide, so a second
+  //     new-workspace is equally doomed — retrying just doubles the wasted
+  //     tabs, which is what turned a 31% dead rate into a 58% one.
+  //
+  //     BOTH signals are required. surfaceConfirmedMissing alone is not
+  //     enough: measured runtime-attach lag on healthy launches was 0.1s x7
+  //     but also 35.5s and 39.9s, so a workspace can legitimately be
+  //     surface-less for half a minute. Acting on one signal here would be
+  //     the short-timeout-then-retry mistake this file's own header opens
+  //     with (#705, three identical crowned sessions in half an hour).
+  if (surfaceConfirmedMissing && atTerminalCapacity) {
+    return { action: 'fail', state: STATES.TERMINAL_RUNTIME_MISSING, reason: REASONS[STATES.TERMINAL_RUNTIME_MISSING] };
+  }
+
   // 4. No wrapper has ever been seen. Inside the grace window the keystrokes
   //    may still be landing (cmux types into a pane that is itself still
   //    booting), so waiting costs nothing and a retry costs a duplicate.
   if (elapsed < injectionGraceSec) return { action: 'wait', state: STATES.AWAITING_INJECTION, reason: null };
 
-  // 5. Grace expired with nothing ever running: the injection was swallowed.
-  return terminal(STATES.INJECTION_NEVER_RAN, attempt, maxAttempts);
+  // 5. Grace expired with nothing ever running. The surface signal only
+  //    changes the DIAGNOSIS here, never the retry policy: this is the
+  //    uncorroborated case (capacity said we had room, or said nothing at
+  //    all), so "no terminal" might be this one workspace's problem rather
+  //    than the app's, and a fresh attempt may well work. Dropping the retry
+  //    on one signal would be a behavior regression smuggled in under a
+  //    capacity fix (ship-check catch) — `terminal()` keeps the exact
+  //    attempt budget INJECTION_NEVER_RAN has always had.
+  //
+  //    The better label still earns its keep: it is what the caller records
+  //    as a ceiling OBSERVATION, and two such observations are what arm the
+  //    pre-create gate. Branch 3b above is the corroborated case, and it is
+  //    the only one that skips the retry.
+  return terminal(surfaceConfirmedMissing ? STATES.TERMINAL_RUNTIME_MISSING : STATES.INJECTION_NEVER_RAN,
+    attempt, maxAttempts);
 }
 
 function terminal(state, attempt, maxAttempts) {

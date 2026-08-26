@@ -20,11 +20,12 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const { buildScoreMap } = require('./lib/related-shows-scores');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
-const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 const OUTPUT_FILE = path.join(ROOT, 'data', 'related-shows.json');
 
 // Parse CLI args
@@ -75,7 +76,10 @@ for (const [a, b] of COMPARISON_PAIRS) {
 // ─── Load data ───
 const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
 const consensusData = fs.existsSync(CONSENSUS_FILE) ? JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf8')) : { shows: {} };
-const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8'));
+// loadReviewsWithBlog() (not a raw data/reviews.json read) so a show scored
+// only via blog-reviews-for-scoring.json still gets a real avg here (#1906,
+// same drift class BRO-339 fixed in generate-search-shows.js).
+const reviews = loadReviewsWithBlog();
 
 // Build lookup maps
 const showById = new Map();
@@ -91,21 +95,13 @@ for (const s of showsData.shows) {
 
 // Build review count map
 const reviewCountMap = new Map();
-for (const r of reviewsData.reviews) {
+for (const r of reviews) {
   const count = reviewCountMap.get(r.showId) || 0;
   reviewCountMap.set(r.showId, count + 1);
 }
 
 // Build score map
-const scoreMap = new Map();
-for (const s of showsData.shows) {
-  // Compute a simple average from reviews
-  const showReviews = reviewsData.reviews.filter(r => r.showId === s.id && r.assignedScore != null);
-  if (showReviews.length >= 5) {
-    const avg = showReviews.reduce((sum, r) => sum + r.assignedScore, 0) / showReviews.length;
-    scoreMap.set(s.id, Math.round(avg));
-  }
-}
+const scoreMap = buildScoreMap(reviews, showsData.shows);
 
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
 // statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all

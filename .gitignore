@@ -97,6 +97,20 @@ data/opening-night-monitor/night-state-*.json
 data/opening-night-monitor/session-state-*.json
 data/opening-night-monitor/*.log
 data/opening-night-monitor/*.err
+# Per-attempt debug snapshots (attempt-N-noop.json etc) — missed by the
+# state/log patterns above, which is why one kept surfacing as untracked and
+# blocking sync-audit-checkout.sh's ff-only merge for launchd jobs sharing
+# this checkout (found via 2026-08-26 email triage: predispatch-queue-audit
+# and backlog-drain both stuck since 2026-08-20 on "dirty-outside-audit").
+data/opening-night-monitor/attempt-*.json
+
+# Sunday newsletter review launcher's runtime log/lock — same class of bug as
+# opening-night-monitor above (local-fs-only state that isn't read via git/CI
+# but kept getting committed, which then blocked sync-audit-checkout.sh the
+# same way). Untracked from here on (2026-08-26 email triage).
+data/audit/digest-autofix-logs/
+data/newsletter-drafts/*.log
+data/newsletter-drafts/sunday-review-lock.json
 
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
