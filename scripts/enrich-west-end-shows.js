@@ -11,7 +11,8 @@ const path = require('path');
 const https = require('https');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isPlaceholderVenue } = require('./audit-placeholder-venues');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `enrich-west-end-shows.js — Enrich West End shows with images and venue data from TodayTix London API.
@@ -85,6 +86,31 @@ async function fetchAllTodayTixShows() {
   return allShows;
 }
 
+/**
+ * Decide whether/what to update a show's venue to from TodayTix data.
+ * Returns { venue: <sanitized venue to write> | null, reason: <skip reason
+ * when a TodayTix venue was refused> | null }. Only updates when the current
+ * venue is missing/TBA/Unknown; the TodayTix venue is refused when it fails
+ * sanitizeVenueForWrite (card #994 write-time guard — a placeholder or
+ * neighbourhood-blob string must not be written, card #1922 cousin of #1921).
+ */
+function decideVenueUpdate(currentVenue, rawTtVenue) {
+  if (!rawTtVenue || typeof rawTtVenue !== 'string' || !rawTtVenue.trim()) {
+    return { venue: null, reason: null };
+  }
+  // Canonical placeholder check (audit-placeholder-venues.js — same predicate
+  // sanitizeVenueForWrite reuses) rather than a hardcoded TBA/Unknown list, so
+  // a current venue of "TBD"/"N/A"/a neighbourhood blob is also eligible for
+  // replacement, not just the two literal strings (ship-check finding).
+  const needsUpdate = isPlaceholderVenue(currentVenue).placeholder;
+  if (!needsUpdate) return { venue: null, reason: null };
+  const sanitized = sanitizeVenueForWrite(rawTtVenue.trim());
+  if (!sanitized) {
+    return { venue: null, reason: `venue "${rawTtVenue.trim()}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)` };
+  }
+  return { venue: sanitized, reason: null };
+}
+
 function matchShow(ttShow, weShows) {
   const ttSlug = slugify(ttShow.displayName);
   // Try exact slug match first
@@ -129,13 +155,13 @@ async function main() {
     console.log(`  MATCH: "${tt.displayName}" → ${showId}`);
 
     // Update venue if missing or TBA
-    if (tt.venue && typeof tt.venue === 'string' && tt.venue.trim()) {
-      const currentVenue = show.venue;
-      if (!currentVenue || currentVenue === 'TBA' || currentVenue === 'Unknown') {
-        console.log(`    Venue: "${currentVenue}" → "${tt.venue.trim()}"`);
-        if (!DRY_RUN) show.venue = tt.venue.trim();
-        venuesUpdated++;
-      }
+    const venueDecision = decideVenueUpdate(show.venue, tt.venue);
+    if (venueDecision.venue) {
+      console.log(`    Venue: "${show.venue}" → "${venueDecision.venue}"`);
+      if (!DRY_RUN) show.venue = venueDecision.venue;
+      venuesUpdated++;
+    } else if (venueDecision.reason) {
+      console.log(`    Venue SKIPPED: ${venueDecision.reason}`);
     }
 
     // Download images
@@ -225,4 +251,8 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+}
+
+module.exports = { decideVenueUpdate };
