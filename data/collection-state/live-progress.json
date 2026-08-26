@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T00:40:45.631Z",
+  "updatedAt": "2026-08-26T00:41:51.347Z",
   "processed": 94,
-  "failed": 1186,
+  "failed": 1196,
   "successRate": "7.3%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 11,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -42,6 +42,17 @@
       "t": "2026-08-25T10:36:32.537Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T00:41:42.360Z",
+      "event": "bb-session",
+      "session": "590f0d44",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-26T00:41:42.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
