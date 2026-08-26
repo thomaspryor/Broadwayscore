@@ -23,6 +23,10 @@
  *   node scripts/gather-reviews.js --shows=show-id-1,show-id-2
  *   node scripts/gather-reviews.js --shows=all-out-2025
  *   node scripts/gather-reviews.js --shows=show-id --validate-urls  # Content-check roundup URLs
+ *   node scripts/gather-reviews.js --shows=show-id --opening-night  # Forces fresh aggregator
+ *     fetches and rejects SERP hits whose embedded URL year doesn't match the
+ *     show's opening year (BRO-736) — for revivals/transfers, use on the show's
+ *     actual opening day so an undeclared prior production's press can't leak in.
  *
  * Environment Variables:
  *   SCRAPINGBEE_API_KEY - Required for SERP-based outlet discovery
@@ -75,6 +79,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
@@ -498,7 +503,7 @@ function getDomainMarketMap() {
  * discoverCorrectUrl will append the name as an unquoted boost term so the SERP
  * returns that critic's review URL rather than only the highest-ranked one.
  */
-async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown' } = {}) {
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown', openingNight = false } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
     return { unavailable: true };
   }
@@ -517,6 +522,10 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     brightDataKey,
     log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
     forceHistorical: historical,
+    // opening-night discovery is time-sensitive — ScrapingBee-first sync chain
+    // (see url-discovery.js's preferSpeed doc: "time-sensitive flows like
+    // opening night polling").
+    preferSpeed: openingNight,
   });
 
   if (result === '__SERP_UNAVAILABLE__') {
@@ -1993,9 +2002,12 @@ async function searchBWWRoundup(show, year, options = {}) {
   }
 
   // Priority 2: Check for existing valid archive (less than 30 days old)
-  // Skip cache near opening night — BWW roundups are updated with new reviews on opening day
-  const isNearOpeningNight = show.openingDate &&
-    Math.abs(Date.now() - new Date(show.openingDate).getTime()) < 2 * 24 * 60 * 60 * 1000; // within 48h
+  // Skip cache near opening night — BWW roundups are updated with new reviews on opening day.
+  // options.openingNight (--opening-night, BRO-736) forces this even when the automatic
+  // 48h-window date math doesn't trigger — e.g. an operator running it deliberately on
+  // the actual opening day slightly outside that window.
+  const isNearOpeningNight = options.openingNight || (show.openingDate &&
+    Math.abs(Date.now() - new Date(show.openingDate).getTime()) < 2 * 24 * 60 * 60 * 1000); // within 48h
   const archivePath = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${showId}.html`);
   if (!isNearOpeningNight && fs.existsSync(archivePath)) {
     const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
@@ -4058,7 +4070,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     health.bww.skipped = true;
     console.log(`    [SKIP] BWW roundups disabled for off-Broadway (URL patterns are Broadway-specific)`);
   }
-  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
+  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year, { openingNight: options.openingNight });
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
     const validation = await validatePageMatchesShow(bwwResult.html, show.title, {
@@ -4750,6 +4762,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       health.siteSearch.hits = siteSearchResults.length;
 
       for (const result of siteSearchResults) {
+        // Site search is a second, structurally-separate discovery path (outlet-native
+        // search, not Google) — it got none of STEP 2's wrong-production filtering.
+        // Apply the same opening-night guard here so a revival/transfer can't absorb
+        // an undeclared earlier production's review through this path instead (BRO-736).
+        if (options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+          console.log(`  ✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+          health.rejections.wrongProduction++;
+          continue;
+        }
         const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
         const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
         foundReviews.push({
@@ -4877,13 +4898,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, {
               historical: options.historical,
               criticName: critic,
+              openingNight: options.openingNight,
             });
             if (result && result.unavailable) {
               console.log('✗ (SERP providers unavailable — aborting SERP phase)');
               serpUnavailable = true;
               break;
             }
-            if (result && result.url) {
+            if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+              console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+              health.rejections.wrongProduction++;
+            } else if (result && result.url) {
               const urlKey = _normalizeUrlForDedup(result.url);
               if (seenUrlsForOutlet.has(urlKey)) {
                 console.log(`⟳ dup URL`);
@@ -4915,10 +4940,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           if (outletHits === 0 && !aggregatorCovered && serpCallCount < SERP_BUDGET) {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
-            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
+            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
             if (result && result.unavailable) {
               console.log('✗ (SERP providers unavailable — aborting SERP phase)');
               serpUnavailable = true;
+            } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+              console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+              health.rejections.wrongProduction++;
             } else if (result && result.url) {
               health.serp.hits++;
               console.log('✓');
@@ -4949,11 +4977,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         process.stdout.write(`  ${outlet.name}... `);
         serpCallCount++;
 
-        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
+        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
 
         if (result && result.unavailable) {
           console.log('✗ (SERP providers unavailable — aborting SERP phase)');
           serpUnavailable = true;
+        } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+          console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+          health.rejections.wrongProduction++;
         } else if (result && result.url) {
           health.serp.hits++;
           // For single-critic outlets, default to that critic so saveReview doesn't route
@@ -4979,6 +5010,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       health.serp.calls = serpCallCount;
       console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
+
+      if (options.openingNight) {
+        const { serpCount, aggregatorCount, total, serpRatio } = computeSerpShare(foundReviews);
+        health.serp.openingNightShare = { serpCount, aggregatorCount, total, serpRatio };
+        if (exceedsOpeningNightSerpBudget(serpRatio)) {
+          console.log(`  ⚠ Opening-night SERP budget exceeded: ${serpCount}/${total} reviews (${Math.round(serpRatio * 100)}%) came from SERP, not aggregators (BRO-736 target: ≤20%)`);
+          health.serp.openingNightShare.overBudget = true;
+        } else {
+          console.log(`  ✓ Opening-night SERP share: ${serpCount}/${total} reviews (${Math.round(serpRatio * 100)}%)`);
+        }
+      }
     }
   }
 
@@ -5278,17 +5320,17 @@ async function rebuildReviewsJson() {
 async function main() {
   const args = process.argv.slice(2);
 
-  // Parse --shows argument
-  const showsArg = args.find(a => a.startsWith('--shows='));
-  if (!showsArg) {
+  const flags = parseGatherReviewsFlags(args);
+  if (!flags.showIds) {
     console.log('Usage: node scripts/gather-reviews.js --shows=show-id-1,show-id-2');
     console.log('Example: node scripts/gather-reviews.js --shows=all-out-2025');
     process.exit(1);
   }
 
-  const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
-  const aggregatorsOnly = args.includes('--aggregators-only');
-  const validateUrls = args.includes('--validate-urls');
+  const showIds = flags.showIds;
+  const aggregatorsOnly = flags.aggregatorsOnly;
+  const validateUrls = flags.validateUrls;
+  const openingNight = flags.openingNight;
   /**
    * NOTE: For historical shows where SERP yields few/no hits (typically pre-2010
    * Broadway, where Google has deindexed older outlet archives), do NOT implement
@@ -5313,7 +5355,7 @@ async function main() {
    * second discovery path to maintain. See plan-review notes from Joe Turner
    * 2009 historical recovery (2026-04-26).
    */
-  const historical = args.includes('--historical');
+  const historical = flags.historical;
 
   console.log('========================================');
   console.log('Broadway Review Gatherer');
@@ -5322,6 +5364,9 @@ async function main() {
   console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
   if (historical) {
     console.log('Historical mode: ON (date filter skipped from first query — better for pre-2005 shows)');
+  }
+  if (openingNight) {
+    console.log('Opening-night mode: ON (aggregators checked first, forced-fresh; SERP results with a mismatched embedded year are rejected)');
   }
   if (validateUrls) {
     console.log('URL validation: ON (roundup-sourced URLs will be content-checked)');
@@ -5336,7 +5381,7 @@ async function main() {
   for (const showId of showIds) {
     let result;
     try {
-      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical });
+      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });
     } catch (err) {
       console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };

@@ -251,6 +251,7 @@ jobs:
           node scripts/gather-reviews.js \
             --shows="${{ inputs.show_id }}" \
             --from-post-opening \
+            --opening-night \
             $BWW_FLAG
           echo "Gather complete."
 

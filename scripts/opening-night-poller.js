@@ -44,6 +44,7 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -1262,7 +1263,15 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
       );
 
       const url = (result && result !== '__SERP_UNAVAILABLE__') ? result : null;
-      if (url && !knownUrls.has(url)) {
+      // The ±14d/7d dateRange above filters Google's indexing metadata, which
+      // can be stale/wrong for an old article; this is an independent check
+      // against the URL itself. Zero-grace (unlike discoverCorrectUrl's own
+      // -3y-grace isUrlYearOutsideWindow) — every call here IS an opening-night
+      // poll, so a mismatched embedded year is always the wrong production
+      // unless a declared priorRuns/tourLegs window says otherwise (BRO-736).
+      if (url && isSerpUrlWrongProductionForOpeningNight(url, show)) {
+        console.log(`rejected — embedded URL year doesn't match opening year (opening-night guard, BRO-736): ${url}`);
+      } else if (url && !knownUrls.has(url)) {
         console.log('found');
         results.push({
           showId: show.id,
