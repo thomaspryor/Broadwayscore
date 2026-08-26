@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-26T22:47:21.867Z",
+  "updatedAt": "2026-08-26T22:48:41.276Z",
   "processed": 41,
-  "failed": 228,
-  "successRate": "15.2%",
+  "failed": 238,
+  "successRate": "14.7%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 0,
     "archive": 10
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-26T20:51:11.926Z",
-      "event": "bb-session",
-      "session": "34a7c266",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-26T20:51:12.317Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-08-26T20:54:51.124Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "a612736d",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-26T22:47:46.688Z",
+      "event": "bb-session",
+      "session": "cc325e0c",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-26T22:47:47.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
