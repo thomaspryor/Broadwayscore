@@ -37,7 +37,16 @@ const {
   ffBlockingPaths, classifyBlock, unionLedgerLines, stripTornTrailingLine, unionIsSafe,
 } = require(path.join(HERE, 'sync-audit-decision.js'));
 
-const LEDGER = 'data/audit/stage-latency.jsonl';
+// Deliberately FIXTURE names, not the real data/audit/stage-latency.jsonl and
+// score-history.jsonl. These paths are only ever written inside a mkdtemp
+// throwaway clone, but scripts/test-data-write-guard.js (rightly) refuses to
+// distinguish that from a write to the real tracked file — a test naming a
+// real tracked data path is the exact hazard tasks #1649/#1662 exist for. The
+// realism these tests need comes from the .jsonl extension plus the
+// merge=union attribute, never from the filename, so fixture names cost
+// nothing. Do not "restore" the real names.
+const LEDGER = 'data/audit/fixture-union-ledger.jsonl';       // merge=union
+const PLAIN_LEDGER = 'data/audit/fixture-plain-ledger.jsonl'; // NO union attribute
 const GITATTRS = `${LEDGER} merge=union\n`;
 
 // ── pure decision layer ──────────────────────────────────────────────────────
@@ -73,7 +82,7 @@ test('ffBlockingPaths keeps an untracked path origin ADDS (it does block ff-only
 
 test('classifyBlock names the real blocker, not the first non-data/audit path', () => {
   const d = classifyBlock({
-    blockingPaths: ['data/audit/score-history.jsonl'],
+    blockingPaths: [PLAIN_LEDGER],
     aheadCount: 0,
     unionMergePaths: [],
   });
@@ -157,8 +166,14 @@ function git(dir, ...args) {
 }
 
 function setupPair(root, name, { attributes = GITATTRS, ledgerLines = ['a', 'b', 'c'] } = {}) {
-  const origin = path.join(root, `${name}-origin`);
-  const clone = path.join(root, `${name}-clone`);
+  // mkdtempSync HERE, not path.join off a parameter: scripts/test-data-write-
+  // guard.js traces a write target back to a tmp base by static analysis, and
+  // it cannot follow a directory handed in as a function argument. Rooting the
+  // pair in its own mkdtemp makes every write below provably temp-scoped —
+  // which it always was, just not visibly to the guard.
+  const base = fs.mkdtempSync(path.join(root, `${name}-`));
+  const origin = path.join(base, 'origin');
+  const clone = path.join(base, 'clone');
   execFileSync('git', ['init', '-q', '--bare', origin]);
   execFileSync('git', ['init', '-q', '-b', 'main', clone]);
   git(clone, 'config', 'user.email', 't@t.t');
@@ -310,27 +325,27 @@ test('the refusal snapshot names the file that actually blocked ff-only', () => 
     // A dirty NON-union ledger blocks; an unrelated untracked file origin
     // never adds does not. The old classifier reported the latter.
     const { origin, clone } = setupPair(root, 'reason');
-    fs.writeFileSync(path.join(clone, 'data/audit/score-history.jsonl'), '{"ts":1}\n');
+    fs.writeFileSync(path.join(clone, PLAIN_LEDGER), '{"ts":1}\n');
     git(clone, 'add', '-A');
     git(clone, 'commit', '-q', '-m', 'add score-history');
     git(clone, 'push', '-q', 'origin', 'main');
     advanceOrigin(root, origin, 'via-reason', (via) => {
-      fs.writeFileSync(path.join(via, 'data/audit/score-history.jsonl'), '{"ts":1}\n{"ts":2}\n');
+      fs.writeFileSync(path.join(via, PLAIN_LEDGER), '{"ts":1}\n{"ts":2}\n');
     });
-    fs.writeFileSync(path.join(clone, 'data/audit/score-history.jsonl'), '{"ts":1}\n{"ts":"local"}\n');
+    fs.writeFileSync(path.join(clone, PLAIN_LEDGER), '{"ts":1}\n{"ts":"local"}\n');
     fs.writeFileSync(path.join(clone, 'unrelated-job-output.log'), 'noise\n');
 
     const { code } = trySync(clone, 'reason');
     assert.equal(code, 1, 'a non-union dirty ledger must still refuse');
     const snap = JSON.parse(fs.readFileSync(path.join(clone, 'data/audit/sync-refused-reason.json'), 'utf8'));
     assert.equal(snap.reason, 'dirty-jsonl-ledger', `misclassified as ${snap.reason}`);
-    assert.deepEqual(snap.blockingFiles, ['data/audit/score-history.jsonl']);
+    assert.deepEqual(snap.blockingFiles, [PLAIN_LEDGER]);
     assert.ok(
       snap.dirtyFiles.includes('unrelated-job-output.log'),
       'the full dirty list is still reported, it just no longer drives the reason',
     );
     assert.equal(
-      fs.readFileSync(path.join(clone, 'data/audit/score-history.jsonl'), 'utf8'),
+      fs.readFileSync(path.join(clone, PLAIN_LEDGER), 'utf8'),
       '{"ts":1}\n{"ts":"local"}\n',
       'the refused ledger is never touched',
     );
@@ -423,20 +438,20 @@ test('a backup whose path lost its merge=union attribute is not unioned', () => 
     // score-history.jsonl is tracked here but has no union attribute, so
     // concatenating both sides is no longer a sanctioned resolution for it.
     const { clone } = setupPair(root, 'noattr');
-    fs.writeFileSync(path.join(clone, 'data/audit/score-history.jsonl'), '{"ts":1}\n');
+    fs.writeFileSync(path.join(clone, PLAIN_LEDGER), '{"ts":1}\n');
     git(clone, 'add', '-A');
     git(clone, 'commit', '-q', '-m', 'add score-history');
     const backupDir = path.join(clone, '.git', 'sync-ledger-backups');
     fs.mkdirSync(backupDir, { recursive: true });
     fs.writeFileSync(
-      path.join(backupDir, `${'data/audit/score-history.jsonl'.replaceAll('/', '%')}.999999.bak`),
+      path.join(backupDir, `${PLAIN_LEDGER.replaceAll('/', '%')}.999999.bak`),
       '{"ts":1}\n{"ts":"injected"}\n',
     );
 
     const { code, out } = trySync(clone, 'noattr');
     assert.equal(code, 0, out);
     assert.equal(
-      fs.readFileSync(path.join(clone, 'data/audit/score-history.jsonl'), 'utf8'), '{"ts":1}\n',
+      fs.readFileSync(path.join(clone, PLAIN_LEDGER), 'utf8'), '{"ts":1}\n',
       'the non-union ledger was left exactly as it was',
     );
     assert.match(out, /no longer merge=union/);
