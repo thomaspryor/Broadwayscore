@@ -507,6 +507,42 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
     `isn't already covering this before dispatching a duplicate. Re-run with --force to dispatch anyway.`;
 }
 
+// Mirror-staleness dispatch claim (task #1896): exactTitleOverlapGuard above
+// only sees a duplicate once the OTHER task's local mirror already says
+// in_progress — and nothing flips a task's mirror status to in_progress
+// until the dispatched session itself gets around to calling notion-brain.js,
+// which can be MINUTES after cmux/headless already launched (confirmed live
+// 2026-08-26: task #1893 was independently launched 4x in ~8 minutes,
+// including two successful dispatches — a cmux tab and a headless job — only
+// 30 seconds apart). This guard closes that gap for THIS SAME task id: the
+// caller acquires an atomic per-task claim (scripts/lib/atomic-claim.js)
+// BEFORE running the rest of the fresh-dispatch guard chain, and this
+// function turns the claim's result into a refusal. Pure, like every other
+// guard here — the mkdir/EEXIST I/O happens at the call site (bsc-next.js),
+// this only interprets its outcome. `claimResult` is exactly acquireClaim()'s
+// return value: true (claimed — proceed), false (genuinely held elsewhere,
+// not stale), or 'error' (existing claim unreadable/corrupt — fail closed).
+//
+// Deliberately NOT added to GUARD_NAMES below: every guard listed there is a
+// pure evaluation the queue-audit CLI wrapper can safely "what would this
+// say" simulate against every queued task without side effects. This guard's
+// precondition is a real mkdir claim (acquireClaim) — simulating it across
+// the whole backlog would mutate claim state for tasks nobody is actually
+// dispatching, which is exactly the bug this guard exists to prevent.
+function dispatchClaimGuard(task, claimResult, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  if (claimResult === true) return null;
+  if (claimResult === 'error') {
+    return `REFUSING to dispatch #${task.id}: could not acquire the per-task dispatch claim (claim dir ` +
+      `unreadable/corrupt) — failing closed rather than risk a concurrent double-dispatch.`;
+  }
+  return `REFUSING to dispatch #${task.id}: another dispatch attempt for this exact task claimed it very ` +
+    `recently and hasn't released it yet — this is the mirror-staleness race (task #1896): the local task ` +
+    `mirror won't show this task as in_progress until the OTHER dispatch's session gets around to marking it, ` +
+    `which can be minutes away. Wait for that attempt to resolve (a workspace/job should appear shortly), ` +
+    `verify it actually died first, or re-run with --force to dispatch anyway.`;
+}
+
 // Session-tracking clone refusal (task #1672, defect 2): worker sessions
 // routinely create a SECOND Notion card to track their own in-flight
 // implementation of a pre-existing card ("Session tracking card for task
@@ -757,6 +793,7 @@ module.exports = {
   liveLinearCounterpart,
   linearMirrorGuard,
   exactTitleOverlapGuard,
+  dispatchClaimGuard,
   sessionTrackingCloneGuard,
   resolveCloneParentTask,
   extractCloneParentRef,
