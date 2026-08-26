@@ -9,6 +9,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { inferPressNightFromReviews } = require('./infer-press-night-from-reviews.js');
 
+// Fixed clock for the reverse branch's not-yet-opened guard. Every reverse
+// fixture below stores a 2025-11 date, comfortably in this "past".
+const NOW = new Date('2026-08-26T00:00:00Z').getTime();
+
 // Build N reviews all published on `date` for a show.
 function reviewsOn(showId, date, n) {
   return Array.from({ length: n }, (_, i) => ({
@@ -124,7 +128,7 @@ test('collapsed show with a review cluster BEFORE the stored date IS corrected',
     ...reviewsOn(showId, '2025-11-13', 15),
     ...reviewsOn(showId, '2025-11-20', 1),
   ];
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 1, 'should infer one correction');
   assert.equal(out[0].direction, 'reverse');
   assert.equal(out[0].gapDays, 16, 'cluster sits 16 days before the stored date');
@@ -133,7 +137,8 @@ test('collapsed show with a review cluster BEFORE the stored date IS corrected',
   const prev = out[0].changes.find(c => c.field === 'previewsStartDate');
   assert.equal(prev.new, null, 'preview start is cleared, never fabricated');
   const src = out[0].changes.find(c => c.field === 'openingDateSource');
-  assert.equal(src.new, 'inferred-from-reviews');
+  assert.equal(src.new, 'inferred-from-reviews-reverse',
+    'reverse gets its own source string, deliberately off the press-night-trust whitelist');
 });
 
 test('NON-collapsed show with the same before-the-date cluster is NOT touched', () => {
@@ -150,11 +155,11 @@ test('NON-collapsed show with the same before-the-date cluster is NOT touched', 
     ...reviewsOn('we-noncollapsed-reverse-2025', '2025-11-12', 3),
     ...reviewsOn('we-noncollapsed-reverse-2025', '2025-11-13', 15),
   ];
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'pre-date reviews on a non-collapsed show read as contamination, not a date bug');
 });
 
-test('reverse: single early outlier before the stored date does not trigger', () => {
+test('reverse: fewer than 3 clustered pre-date reviews does not trigger', () => {
   const show = {
     id: 'we-reverse-outlier-2025',
     title: 'Reverse Outlier',
@@ -164,14 +169,91 @@ test('reverse: single early outlier before the stored date does not trigger', ()
     previewsStartDate: '2025-11-28',
     openingDateSource: 'todaytix',
   };
-  // Earliest pre-date review is alone; the real mass is 10 days later but the
-  // cluster probe only ever anchors on the earliest date (same as forward).
+  // Best 3-day window holds 2 reviews — under REVERSE_MIN_CLUSTER (3). Going
+  // backwards there is no known-wrong-direction anchor, so one corroborator
+  // (the forward floor) is not enough evidence.
   const reviews = [
     ...reviewsOn('we-reverse-outlier-2025', '2025-11-05', 1),
     ...reviewsOn('we-reverse-outlier-2025', '2025-11-20', 2),
   ];
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
-  assert.equal(out.length, 0, 'single early outlier is not a press cluster');
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'a 2-review window is not a press night');
+});
+
+test('reverse: the BIGGEST pre-date cluster wins, not the earliest', () => {
+  const show = {
+    id: 'we-reverse-anchor-2025',
+    title: 'Three Runs',
+    slug: 'we-reverse-anchor-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // 3 stale reviews from an earlier run + the real 10-outlet press wave.
+  // Anchoring on the earliest date (the forward probe's rule) would pick the
+  // stale trio; the reverse probe must pick the dominant wave.
+  const reviews = [
+    ...reviewsOn('we-reverse-anchor-2025', '2025-10-02', 3),
+    ...reviewsOn('we-reverse-anchor-2025', '2025-11-10', 10),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].earliestReviewIso, '2025-11-10');
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-10');
+});
+
+test('reverse: a not-yet-opened show is never back-dated', () => {
+  const show = {
+    id: 'we-reverse-future-2026',
+    title: 'Not Open Yet',
+    slug: 'we-reverse-future-2026',
+    category: 'west-end',
+    openingDate: '2026-12-16',
+    previewsStartDate: '2026-12-16',
+    openingDateSource: 'todaytix',
+  };
+  // Contaminated ingest: three reviews attached to a show that has not opened.
+  const reviews = reviewsOn('we-reverse-future-2026', '2026-10-01', 5);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'back-dating an unopened show would shut its pre-opening polling window');
+});
+
+test('reverse: month-only publishDates never fabricate a press night', () => {
+  const show = {
+    id: 'we-reverse-partial-2025',
+    title: 'Partial Dates',
+    slug: 'we-reverse-partial-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // reviews.json carries 123 month-only publishDates; new Date('2025-11')
+  // resolves to the 1st, which would invent a press night nobody published on.
+  const reviews = reviewsOn('we-reverse-partial-2025', '2025-11', 5);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'month-only dates are not evidence of a press night');
+});
+
+test('reverse: a stale prior-run cluster cannot outvote the rest of the corpus', () => {
+  const show = {
+    id: 'we-reverse-priorrun-mixed-2025',
+    title: 'Mixed Corpus',
+    slug: 'we-reverse-priorrun-mixed-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // Three separate 3-review waves — no dominant one, so nothing is inferred.
+  const reviews = [
+    ...reviewsOn('we-reverse-priorrun-mixed-2025', '2025-09-15', 3),
+    ...reviewsOn('we-reverse-priorrun-mixed-2025', '2025-10-15', 3),
+    ...reviewsOn('we-reverse-priorrun-mixed-2025', '2025-11-15', 3),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'no wave outweighs the rest → no correction');
 });
 
 test('reverse: gap < 2 days is a no-op', () => {
@@ -185,7 +267,7 @@ test('reverse: gap < 2 days is a no-op', () => {
     openingDateSource: 'todaytix',
   };
   const reviews = reviewsOn('we-reverse-gap1-2025', '2025-11-27', 3); // gap 1
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'gap 1 → press night ≈ stored date, skip');
 });
 
@@ -201,7 +283,7 @@ test('reverse: cluster more than 90 days before the stored date is a no-op', () 
   };
   // Out-of-town tryout reviews wrongly attached — 5 months earlier.
   const reviews = reviewsOn('we-reverse-priorrun-2025', '2025-06-20', 6);
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'a cluster that far back is contamination, not a date bug');
 });
 
@@ -219,7 +301,7 @@ test('forward wins when both a before- and an after-cluster qualify', () => {
     ...reviewsOn('we-both-directions-2025', '2025-11-12', 3),
     ...reviewsOn('we-both-directions-2025', '2025-12-05', 3),
   ];
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 1, 'exactly one correction, never two for the same show');
   assert.equal(out[0].direction, 'forward');
   const opening = out[0].changes.find(c => c.field === 'openingDate');
@@ -244,6 +326,6 @@ test('reverse: a small pre-date cluster loses to a bigger wave on/after the stor
     ...reviewsOn('we-reverse-dominance-2025', '2025-11-20', 3),
     ...reviewsOn('we-reverse-dominance-2025', '2025-11-29', 10),
   ];
-  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'the larger later wave means the stored date is roughly right');
 });

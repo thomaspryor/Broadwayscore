@@ -18,16 +18,19 @@
  * opened yet at research time, so there was no press night to look up; they
  * fall through to the generic not-yet-opened reason below). This module
  * handles that residual cohort: shows too small/obscure for Theatremonkey to
- * list, plus one blind spot in
- * the review-inference heuristic worth noting here — that heuristic only
- * looks at review publish dates AFTER the stored openingDate (it assumes
- * TodayTix's date is too EARLY). The Hunger Games On Stage is the opposite
- * case in this cohort: the stored date (2025-11-28) is LATER than the real
- * press night (2025-11-12), with the review cluster arriving before the
- * stored date, so the shared heuristic silently skips it. Rather than widen
- * that shared heuristic on a single instance, this module carries a
- * manually-verified corrections map (each entry backed by a citable source
- * gathered for BRO-626) and applies it directly.
+ * list. This module carries a manually-verified corrections map (each entry
+ * backed by a citable source gathered for BRO-626) and applies it directly.
+ *
+ * The Hunger Games On Stage was originally in this map for a second reason:
+ * the shared heuristic only looked at review publish dates AFTER the stored
+ * openingDate (it assumed TodayTix's date was always too EARLY), and Hunger
+ * Games is the opposite case — stored date 2025-11-28, real press night
+ * 2025-11-12, review cluster arriving BEFORE the stored date. BRO-2280
+ * (2026-08-26) widened the shared heuristic to cover that direction, so future
+ * backward-collapsed shows are caught by the daily cron rather than needing a
+ * hand-verified entry here. The Hunger Games entry stays because a cited manual
+ * date outranks an inference — and because its openingDateSource is now
+ * 'manual:bro-626-2026-08-21', which the inference will not overwrite.
  *
  * Never fabricates a date: a collapsed show with no reliable independent
  * source, or one where research surfaced a DIFFERENT unresolved data problem
