@@ -1,11 +1,11 @@
 ---
 name: feedback_git_trace_curl_diagnoses_push_hangs
-description: GIT_TRACE_CURL (not GIT_TRACE/GIT_TRACE_PERFORMANCE) is the way to tell a genuinely-stalled git push from local pack-building slowness — use it before guessing a fix for a mysterious CI git push timeout.
+description: GIT_TRACE_CURL (not GIT_TRACE/GIT_TRACE_PERFORMANCE) is the way to tell a genuinely-stalled git push from local pack-building slowness — use it before guessing a fix for a mysterious CI git push timeout. Also covers a distinct signature — api.github.com unreachable while github.com (git-over-HTTPS) works fine — seen in a headless/cloud sandbox.
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 646f94c5-6245-4989-bcb9-8da3602f8f89
-  modified: 2026-08-20T16:53:27.756Z
+  modified: 2026-08-26T14:25:55.534Z
 ---
 
 When a `git push` hangs for exactly a configured timeout with no other symptom, don't guess between "network stall" and "local computation slow" — instrument with `GIT_TRACE_CURL=1` (+ `GIT_TRACE_CURL_NO_DATA=1` to suppress the pack payload dump) and read where the trace goes silent. `GIT_TRACE`/`GIT_TRACE_PERFORMANCE` show git's internal phase timers but not HTTP/TLS transport detail, so they can't make this distinction.
