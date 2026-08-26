@@ -5,21 +5,32 @@
 // reconciliation paths for this file agree on what "newer" means.
 //
 // Field list is deliberately a CONTENT-CHANGE timestamp allowlist, not
-// "every timestamp-shaped field on the record". `lastReconciledAt`
-// (scripts/lib/broadcast-state.js applyResendStatusUpdate) is set on every
-// reconciler poll, including no-op polls where draftStatus didn't change —
-// it is an *observation* timestamp, not a *content* timestamp. Including it
-// here would let a stale-but-recently-polled record (Resend hasn't yet
-// reflected a send that just happened) outrank a genuinely newer `sentAt`
-// write from a different writer (e.g. send-opening-night-broadcast.js),
-// silently reverting draftStatus from 'sent' back to 'draft'/'queued' on
-// origin — the exact clobber this comparator exists to prevent (adversarial
-// review of the first draft of this fix caught it; see task #1914).
+// "every timestamp-shaped field on the record". Two fields that look like
+// candidates are deliberately EXCLUDED because they are *observation*
+// timestamps (when something happened to notice/touch the record), not
+// *content* timestamps (when the record's real-world state changed) — both
+// caught by adversarial review of earlier drafts of this fix (task #1914):
+//   - `lastReconciledAt` (scripts/lib/broadcast-state.js
+//     applyResendStatusUpdate) is set on every reconciler poll, including
+//     no-op polls where draftStatus didn't change. Including it would let a
+//     stale-but-recently-polled record outrank a genuinely newer `sentAt`
+//     write from a different writer, silently reverting draftStatus from
+//     'sent' back to 'draft'/'queued' on origin.
+//   - `_migratedAt` (scripts/lib/broadcast-state.js migrateSentRecord) is
+//     stamped with "now" the moment a pre-#1853 legacy record (one with no
+//     draftStatus field yet) happens to get touched by migration-aware code
+//     — which can be long after that record's real content last changed.
+//     Including it would let an old, genuinely-stale legacy record that
+//     just got migrated look artificially fresher than a real concurrent
+//     write, purely because the migration ran recently. (migrateSentRecord
+//     already backfills `sentAt` from `draftCreatedAt` for the one legacy
+//     shape where a real content timestamp exists, so sentAt/draftCreatedAt
+//     alone cover every case that has genuine recency information.)
 //
 // If a future writer adds a new content-defining field to a record shape in
 // this file, add it here too — this list is the single point that both
 // merge paths trust.
-const RECENCY_FIELDS = ['sentAt', 'draftCreatedAt', '_migratedAt'];
+const RECENCY_FIELDS = ['sentAt', 'draftCreatedAt'];
 
 /**
  * Newest parseable timestamp among RECENCY_FIELDS present on `record`, in

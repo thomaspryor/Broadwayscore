@@ -39,6 +39,18 @@ test('recordRecencyMs: lastReconciledAt is deliberately excluded (observation st
   assert.equal(recordRecencyMs(record), 0);
 });
 
-test('RECENCY_FIELDS does not include lastReconciledAt', () => {
+test('recordRecencyMs: _migratedAt is deliberately excluded (stamps when a legacy record was touched, not when its content changed)', () => {
+  // A pre-#1853 legacy record that just got migrated (stamped with "now")
+  // must not out-rank a record with no timestamp at all — the migration
+  // event tells you nothing about when this record's real-world state last
+  // changed, so treating it as content recency would let a genuinely-stale
+  // legacy record win purely because it happened to get migrated recently.
+  const record = { draftStatus: 'sent', completed: true, _migratedAt: '2026-04-11T23:59:00Z' };
+  assert.equal(recordRecencyMs(record), 0);
+});
+
+test('RECENCY_FIELDS excludes both observation-stamp fields (lastReconciledAt, _migratedAt)', () => {
   assert.equal(RECENCY_FIELDS.includes('lastReconciledAt'), false);
+  assert.equal(RECENCY_FIELDS.includes('_migratedAt'), false);
+  assert.deepEqual(RECENCY_FIELDS, ['sentAt', 'draftCreatedAt']);
 });
