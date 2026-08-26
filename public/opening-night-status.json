@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T09:15:01.069Z",
+  "generatedAt": "2026-08-26T14:30:43.259Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,23 +12,23 @@
       "status": "open",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "siteScore": 78.97,
+      "siteScore": 79.33,
       "liveScore": 79,
-      "scoreDrift": 0.030000000000001137,
+      "scoreDrift": -0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
+      "total": 20,
       "t1": 4,
-      "t2": 14,
+      "t2": 13,
       "t3": 3,
-      "positive": 16,
+      "positive": 15,
       "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -62,6 +62,10 @@
           "isDualMarket": false
         },
         {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
           "name": "Los Angeles Times",
           "isDualMarket": false
         },
@@ -88,14 +92,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
           "name": "USA Today",
           "isDualMarket": false
         },
@@ -106,10 +102,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -328,6 +320,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-26T14:30:43.259Z",
+          "rc": 20,
+          "s": 79.33,
+          "t1": 4,
+          "t2": 13,
+          "t3": 3,
+          "p": 15,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -341,27 +345,26 @@
       "status": "open",
       "slug": "the-real-ivanov-off-broadway",
       "thumbnail": "/images/shows/the-real-ivanov-off-broadway-2026/thumbnail.webp",
-      "siteScore": 47.67,
-      "liveScore": 48,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 54.05,
+      "liveScore": 54,
+      "scoreDrift": -0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 13,
       "t1": 0,
-      "t2": 4,
-      "t3": 2,
-      "positive": 1,
+      "t2": 8,
+      "t3": 5,
+      "positive": 4,
       "mixed": 1,
-      "negative": 4,
+      "negative": 8,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
           "T1:0/3",
-          "hi-conf:3/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -501,15 +504,7 @@
           "isDualMarket": false
         },
         {
-          "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
           "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
           "isDualMarket": false
         },
         {
@@ -700,6 +695,18 @@
           "p": 1,
           "m": 1,
           "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-26T14:30:43.259Z",
+          "rc": 13,
+          "s": 54.05,
+          "t1": 0,
+          "t2": 8,
+          "t3": 5,
+          "p": 4,
+          "m": 1,
+          "n": 8,
           "bc": "waiting"
         }
       ]
