@@ -265,8 +265,26 @@ jobs:
       # reviews.json. NOT continue-on-error: this is the "fail the job loudly"
       # backstop for the class of bug this guard exists for (see
       # scripts/check-rebuild-staleness.js header for what it checks and why).
+      # BRO-545: fails loud on the first stale-checkout race, same as before.
+      # After 2 consecutive failures it auto-recovers (exits 0, job stays
+      # green) and routes an escalating owner-alert-router 'human' alert
+      # instead — see scripts/lib/guard-escalation.js. Needs RESEND/OWNER_EMAIL
+      # so that alert can actually deliver (not just log-and-skip locally).
+      # `force_write=true` (the same override the alert message quotes) also
+      # bypasses this guard immediately via --force — without it, the
+      # "override command" in the escalation alert would just be a plain
+      # re-run, not an actual way to unblock before the streak hits 2.
       - name: Verify no scoreable review vanished during checkout drift
-        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt $FORCE_FLAG
 
       # NOTE: do NOT overwrite /tmp/core-data-snapshot/ with rebuilt files. Since the
       # 2026-07-12 push-core-data fix (2beb6617c58), the snapshot is the CHECKOUT-TIME
@@ -473,7 +491,18 @@ jobs:
             TRIAGE_CHANGED=true
             echo "Changes detected in data/audit/triage/ (alert state)"
           fi
-          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ]; then
+          # BRO-545 guard-escalation streak state must ride this commit even on
+          # a no-diff rebuild — same class of bug as the triage/ case above
+          # (Codex adversarial review finding): without this, a run where the
+          # stale-checkout guard blocks but reviews.json content happens not to
+          # differ from HEAD never persists its streak, so the next fresh
+          # checkout restarts the count at 0 and escalation can never fire.
+          GUARD_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null)" ]; then
+            GUARD_STATE_CHANGED=true
+            echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
+          fi
+          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
