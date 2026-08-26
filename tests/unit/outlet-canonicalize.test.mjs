@@ -143,6 +143,20 @@ describe('resolveCanonicalOutletId — task #1926 outlet-domain-borrowing fixtur
     });
     assert.strictEqual(r.outletId, 'vulture');
   });
+
+  // Adversarial-review finding on this same fix: the Case B domain-mismatch
+  // guard above has no wire-service exemption, so a legitimate AP submission
+  // syndicated on a non-apnews.com partner site would get wrongly demoted to
+  // a bogus host-derived provisional outlet — the exact false-positive class
+  // the sibling outlet-domain-validation.js gate exempts wire services from.
+  test('wire-service outlet (AP) with a partner-syndication host is NOT demoted to a provisional outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'ap',
+      url: 'https://www.somepartnersite.example/ap-review-of-a-show',
+    });
+    assert.strictEqual(r.outletId, 'ap');
+    assert.strictEqual(r.source, 'alias');
+  });
 });
 
 describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BRO-247)', () => {
