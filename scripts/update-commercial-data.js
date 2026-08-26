@@ -1977,6 +1977,51 @@ async function createDeepResearchConflictIssue(conflicts) {
     return;
   }
 
+  // BRO-532: dedup against already-open conflict issues. Without this check,
+  // every run re-detects the same still-unresolved conflict (the guardian
+  // blocks it again, by design, until a human updates verifiedFields) and
+  // files a brand-new issue — 8 duplicates piled up between 2026-02-03 and
+  // 2026-03-25 (#37,#41,#47,#60,#145,#159,#207,#217) all flagging the same
+  // chess/death-becomes-her disagreement. One open tracking issue is enough;
+  // append a comment with the latest snapshot instead of opening another.
+  try {
+    const openIssues = await httpsRequest({
+      hostname: 'api.github.com',
+      path: '/repos/thomaspryor/Broadwayscore/issues?labels=deep-research-conflict&state=open',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'User-Agent': 'BroadwayScorecard-Bot',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }, null);
+
+    if (Array.isArray(openIssues) && openIssues.length > 0) {
+      const existing = openIssues[0];
+      console.log(`\n  [Note] Open Deep Research conflict issue already exists (#${existing.number}) - adding comment instead of creating a duplicate`);
+
+      const commentBody = `## New conflict snapshot (${new Date().toISOString().slice(0, 10)})\n\n${conflicts.length} change(s) still blocked:\n\n| Show | Field | Verified Value | Proposed Value | Severity |\n|------|-------|----------------|----------------|----------|\n` +
+        conflicts.map(c => `| ${c.slug} | ${c.field} | ${JSON.stringify(c.conflict.verifiedValue)} | ${JSON.stringify(c.conflict.proposedValue)} | ${c.conflict.severity} |`).join('\n');
+
+      await httpsRequest({
+        hostname: 'api.github.com',
+        path: `/repos/thomaspryor/Broadwayscore/issues/${existing.number}/comments`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'User-Agent': 'BroadwayScorecard-Bot',
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }, JSON.stringify({ body: commentBody }));
+
+      return;
+    }
+  } catch (e) {
+    console.error(`  Failed to check for existing Deep Research conflict issues: ${e.message}`);
+    // Fall through to creating a new issue - better a possible duplicate than a silently dropped alert
+  }
+
   const title = `[Deep Research Conflict] ${conflicts.length} automated change(s) blocked`;
 
   let body = `## Deep Research Conflict Alert
@@ -2582,7 +2627,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {
