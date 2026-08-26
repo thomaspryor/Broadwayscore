@@ -1364,8 +1364,16 @@ const RICH_RESULTS_SLUGS = [
 // silently checked nothing for months (BRO-528) instead of erroring loudly.
 // Pure and separately testable (CLAUDE.md rule 15) so the guard doesn't
 // require a live network call to verify.
+//
+// `shows` must be a real array to produce a trustworthy result: a malformed
+// read (e.g. `{}` instead of `{shows: [...]}`, matching
+// scripts/lib/list-running-shows.js's shape check) must NOT silently become
+// an empty catalog, or every slug would false-positive as STALE_SLUG (adversarial
+// review of the first cut of this fix, BRO-528). Returns null — not [] — to
+// let the caller distinguish "no stale slugs" from "couldn't check".
 function findStaleSlugs(slugs, shows) {
-  const validSlugs = new Set((Array.isArray(shows) ? shows : []).map(s => s.slug));
+  if (!Array.isArray(shows)) return null;
+  const validSlugs = new Set(shows.map(s => s.slug));
   return slugs.filter(slug => !validSlugs.has(slug));
 }
 
@@ -1376,8 +1384,15 @@ async function checkRichResults(token) {
   let staleSlugSet = null;
   try {
     const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-    staleSlugSet = new Set(findStaleSlugs(RICH_RESULTS_SLUGS, data.shows || data));
-  } catch { /* if shows.json can't be read, skip the validity guard rather than block the check */ }
+    const stale = findStaleSlugs(RICH_RESULTS_SLUGS, data.shows || data);
+    if (stale === null) {
+      console.log(`  WARN: ${SHOWS_PATH} did not contain a shows array — skipping the stale-slug validity guard for this run`);
+    } else {
+      staleSlugSet = new Set(stale);
+    }
+  } catch (err) {
+    console.log(`  WARN: could not read ${SHOWS_PATH} (${err.message}) — skipping the stale-slug validity guard for this run`);
+  }
 
   for (const slug of RICH_RESULTS_SLUGS) {
     if (staleSlugSet && staleSlugSet.has(slug)) {
