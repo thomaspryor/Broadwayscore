@@ -636,11 +636,38 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const res = launchCmuxFn({
     title, seed, seedKey: taskId.replace(/[^a-zA-Z0-9-]/g, '_'), cwd: REPO, model,
     focus: true, autoColor: !!project,
+    // Task #1904: --force must actually reach the terminal-capacity preflight
+    // — it is the documented escape hatch from a ceiling learned too low, and
+    // the refusal message advertises it. It does NOT weaken the reclaim or
+    // liveness checks; see launchCmuxSession's @param note.
+    force: !!args.force,
     // Same launch-verification budget bsc-next.js uses (card #503/#705): 90s
     // for the typed command to start, 360s slow-boot cap, 60s late-adopt
     // grace. NOT re-tuned here — this is the same primitive, same host.
     verifyTimeoutSec: 90, lateAdoptSec: 60, slowBootCapSec: 360,
   });
+
+  if (!res.ok && res.refusedForCapacity && !res.workspaceRef) {
+    // Task #1904: a REFUSAL, not a failure. cmux is at its terminal-runtime
+    // ceiling, so nothing was created — there is no workspace to journal and
+    // no dead attempt to burn against this issue.
+    console.error(`[linear-next] LAUNCH REFUSED — ${res.reason}`);
+    console.error(`  Nothing was created for ${identifier}. Past this ceiling cmux opens the workspace and accepts the`);
+    console.error('  command but never attaches a terminal, so the command can never run there.');
+    console.error(`    node scripts/linear-next.js --id ${identifier} --headless   # needs no cmux terminal (0 dead in 158 launches)`);
+    console.error('    node scripts/bsc-prune.js                                    # owner-run: close finished tabs to free a runtime');
+    try {
+      appendLedgerEntryFn({
+        // 'launch-refused', not 'launch-failed' — see bsc-next.js's identical
+        // branch: 'launch-failed' is a START_EVENT in
+        // audit-archived-in-progress.js, and nothing started here.
+        event: 'launch-refused', taskId, subject: pseudoTask.subject, workspaceRef: null, model,
+        failureReason: res.reason, refusedForCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        terminalCeiling: res.terminalCeiling ?? null, linearId: issue.identifier, correlationId,
+      });
+    } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
+    process.exit(1);
+  }
 
   if (!res.ok) {
     console.error(`[linear-next] LAUNCH NOT VERIFIED (${res.reason}).`);
@@ -672,6 +699,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
+      // Task #1904 — see bsc-next.js's identical field for why the live cmux
+      // terminal-runtime count is worth carrying on every launch row.
+      liveRuntimes: res.liveRuntimes ?? null,
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 
