@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-08-21T07:05:44.179Z",
+  "generatedAt": "2026-08-26T20:08:23.394Z",
   "summary": {
-    "total": 3,
-    "high": 0,
-    "medium": 2,
+    "total": 7,
+    "high": 2,
+    "medium": 4,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+      "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514",
+      "candidates": [
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-off-broadway-2024",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "June 20th, 2024",
+          "openingDate": "2024-06-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 but also 10 days from cats-the-jellicle-ball-off-broadway-2024",
+      "confidence": "medium"
+    },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -87,6 +114,87 @@
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
+      "normalizedUrl": "https://hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531",
+      "candidates": [
+        {
+          "showId": "little-bear-ridge-road-2025",
+          "file": "hollywood-reporter--david-rooney.json",
+          "publishDate": "2025-10-31",
+          "openingDate": "2025-10-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "showId": "little-bear-ridge-road-regional-2024",
+          "file": "hollywood-reporter--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-06-24",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "hollywood-reporter"
+        }
+      ],
+      "suggestedWinner": "little-bear-ridge-road-2025",
+      "reason": "publishDate 2025-10-31 is 1 days from little-bear-ridge-road-2025 opening (2025-10-30)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.theatrely.com/post/paranormal-activity-is-a-terrifying-delight-review",
+      "normalizedUrl": "https://theatrely.com/post/paranormal-activity-is-a-terrifying-delight-review",
+      "candidates": [
+        {
+          "showId": "paranormal-activity-2026",
+          "file": "theatrely--kobi-kassal.json",
+          "publishDate": "2026-08-25T20:51:56-04:00",
+          "openingDate": "2026-08-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        },
+        {
+          "showId": "paranormal-activity-west-end-2025",
+          "file": "theatrely--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-12-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theatrely"
+        }
+      ],
+      "suggestedWinner": "paranormal-activity-2026",
+      "reason": "publishDate 2026-08-25T20:51:56-04:00 is 0 days from paranormal-activity-2026 opening (2026-08-25)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
+      "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
+      "candidates": [
+        {
+          "showId": "stereophonic-2024",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": "2024-04-19",
+          "openingDate": "2024-04-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "dailybeast"
+        },
+        {
+          "showId": "stereophonic-off-broadway-2023",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": "2023-10-30",
+          "openingDate": "2023-10-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "dailybeast"
+        }
+      ],
+      "suggestedWinner": "stereophonic-2024",
+      "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
+      "confidence": "medium"
     }
   ]
 }

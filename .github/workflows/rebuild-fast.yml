@@ -44,7 +44,13 @@ jobs:
   rebuild-fast:
     name: Fast rebuild reviews.json
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 20->25 (card #1891, 2026-08-26): "Commit and push changes" below is
+    # raised from push-with-retry.sh's shared 240s default to a 600s deadline
+    # + MAX_RETRIES=20 (see that step's comment). Successful runs took
+    # 6.6-7.3min and failed ones 11.4-11.6min under the OLD 240s budget, so
+    # the new ~600s worst case plus this job's other steps lands well inside
+    # 25min with real margin.
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
@@ -274,8 +280,36 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Rebuild Reviews (Fast) — push changes"
 
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1891, 2026-08-26):
+      # this step lost 4 consecutive push races overnight under CI contention
+      # (runs 32930921311, 32931727848, 32932598421 — "overall deadline 240s
+      # exceeded" after exhausting the shared default MAX_RETRIES=7). Sizing
+      # follows task #1842's data-health-check.yml precedent, not a bare
+      # deadline raise: push-with-retry.sh's backoff (WAIT=3+i*2+jitter, sums
+      # to N^2+4N over N attempts) means MAX_RETRIES, not PUSH_DEADLINE_SEC,
+      # is usually the binding constraint — #1842 proved a deadline-only
+      # raise left 4 real fetch->rebase->retry cycles (~720s) still hitting
+      # "All push attempts failed after 7 attempts" nowhere near the deadline.
+      # 20 attempts sums to ~480s of backoff, landing under this step's 600s
+      # budget with ~120s margin (job timeout-minutes raised 20->25 above to
+      # cover it).
+      #
+      # PUSH_RECONCILE_MERGED_JSON='1': a separate, real correctness fix
+      # riding along — zero effect on the deadline incident above. `git
+      # rebase -X theirs` can resolve a conflicting hunk in favour of our
+      # replayed commits WITHOUT reporting a conflict, silently dropping a
+      # concurrent writer's edit to a MANAGED union-merge file this step
+      # stages via `git add -u data/audit/` — e.g.
+      # data/audit/scraper-spend-ledger.jsonl (merge-scraper-spend-ledger.js
+      # is a registered MANAGED merger in core-data-merge-registry.js, and
+      # that ledger has many concurrent writers). This is a real safety net
+      # that can actually engage here, not a no-op — fails open like the
+      # rest of push-with-retry.sh's reconciliation.
       - name: Commit and push changes
         if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -326,7 +360,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 20 main
 
       - name: Push core data to private repo
         id: push-core-data

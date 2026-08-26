@@ -4,12 +4,20 @@
  * findWorkBranchCollisions, workBranchCollisionGuard) live in
  * dispatch-guards.js alongside the other six dispatch guards, per that
  * file's own header rationale ("so a second dispatcher never re-derives —
- * and inevitably drifts from — these refusals"). NOTE: as of this writing
- * linear-next.js does NOT yet call workBranchCollisionGuard — its headless
- * job/linear-BRO-* branches are still unguarded by this check. Living in
- * dispatch-guards.js only means linear-next.js CAN adopt it with one
- * require() line; it does not mean it already has (ship-check adversarial
- * review, 2026-08-14 — an earlier draft of this comment overclaimed that).
+ * and inevitably drifts from — these refusals").
+ *
+ * BRO-278 (2026-08-26): linear-next.js now calls workBranchCollisionGuard
+ * too (docs/dispatcher-safety-port-table.md row A5, PORT — done). Porting it
+ * alone wasn't enough — matchesTaskWorkBranch matched the RAW ledger taskId
+ * (`linear:BRO-278`) against branch names, but bsc-runner.js's gitSafeJobId()
+ * sanitizes that git-illegal colon to a dash before the branch is ever
+ * created (`job/linear-BRO-278-<suffix>`), so the match could never fire for
+ * a Linear dispatch even once wired in. Fixed by sanitizing with the same
+ * gitSafeJobId inside matchesTaskWorkBranch — see that function's own
+ * comment in dispatch-guards.js. This was the root cause of the 2026-08-12
+ * incident (three cmux workspaces independently working the identical
+ * Linear issue, undetected).
+ *
  * This file only shells out to git to build the {name, unlandedCommits}
  * list those pure functions consume.
  *

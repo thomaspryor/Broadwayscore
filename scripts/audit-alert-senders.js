@@ -35,12 +35,15 @@
  *
  * The baseline is a {relPath: directCallCount} map, NOT a flat file list (its
  * sibling gate, audit-help-flag-safety.js's baseline, is per-file boolean; this
- * one needs counts because audit-t1-silent-gaps.js has 2 sites and a new bypass
+ * one needs counts because a file can have multiple sites and a new bypass
  * added to an already-baselined file must still fail). Never stores line
- * numbers — they churn. Baselined debt is tracked: audit-t1-silent-gaps.js
- * drain is card #531; opening-night-broadcast.yml + opening-night-poller.js are
- * the two permanent real-time-critical senders (CLAUDE.md rule 14's critical
- * workflows) and stay in the baseline deliberately.
+ * numbers — they churn. As of BRO-1699 the baseline is empty (0 direct
+ * senders): audit-t1-silent-gaps.js drained under card #531, and
+ * opening-night-broadcast.yml + opening-night-poller.js (previously treated
+ * as permanent real-time-critical exceptions under CLAUDE.md rule 14) were
+ * migrated onto routeAlert() — see scripts/lib/page-worthy-alerts.js's header
+ * for why "must page even if the router is broken" wasn't actually a safety
+ * property worth keeping.
  *
  * Known accepted limitations:
  * - Within a baselined file, swapping one direct call for a different one
@@ -606,6 +609,7 @@ function main() {
 
 module.exports = {
   scanFile,
+  collectFindings,
   buildDirectCounts,
   buildHumanDigestCounts,
   compareToBaseline,

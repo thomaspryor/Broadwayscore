@@ -1,41 +1,18 @@
 {
-  "updatedAt": "2026-08-21T08:58:37.424Z",
-  "processed": 21,
-  "failed": 79,
-  "successRate": "21.0%",
+  "updatedAt": "2026-08-26T20:05:38.741Z",
+  "processed": 1,
+  "failed": 2,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-08-21T08:44:41.582Z",
-      "event": "bb-session",
-      "session": "cd41f63c",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-21T08:44:42.338Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-21T08:53:21.356Z",
-      "event": "bb-session",
-      "session": "60e644dc",
-      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
-    },
-    {
-      "t": "2026-08-21T08:53:22.123Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }

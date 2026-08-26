@@ -8,21 +8,33 @@ name: Newsletter Draft Refresh (Sunday)
 # "rave" to "strong"; Hamilton 92->91; Titanique 75->76; EBT 80->79). The
 # drafts sat stale until a manual refresh-drafts.sh run. Card #481.
 #
-# This refreshes both weekly drafts in place, Sunday late morning, ONLY IF
-# still unsent: a read-only --status check (GET /broadcasts, via the
-# sanctioned wrapper — no raw curl) decides whether to pay for a regenerate.
-# If the owner already sent, or nothing was ever drafted, this no-ops.
+# This refreshes both weekly drafts in place, Sunday late morning, keyed off
+# a read-only --status check (GET /broadcasts, via the sanctioned wrapper —
+# no raw curl): "draft" -> regenerate + PATCH in place (drift refresh, the
+# original card #481 purpose below). "sent" -> no-op (owner already sent).
+# "none" -> Saturday's newsletter-draft.yml never got as far as creating a
+# draft at all (task #recovery-2026-08-23: both editions died at the
+# "Verify data freshness" hard gate on 2026-08-22 because rebuild-reviews.yml
+# lost a push race under contention for 24+h — nobody was notified because
+# notify-failure severity here is 'warning', digest-only). For "none" this
+# workflow now DISPATCHES newsletter-draft.yml itself (same pattern
+# we-newsletter-draft.yml already uses to fan out the WE edition) rather than
+# silently doing nothing — that reuses the full, tested creation pipeline
+# (including the regression-test step this refresh workflow doesn't have)
+# instead of duplicating it here, and still sends the owner's [DRAFT] preview
+# so a fully-missed week doesn't go unnoticed a second day running.
 #
-# Never sends. Same generate -> pre-send -> overflow -> PATCH chain
-# refresh-drafts.sh uses locally (card #478), just running against fresh CI
-# data instead of a developer's local checkout.
+# Never sends. The "draft" path is the same generate -> pre-send -> overflow
+# -> PATCH chain refresh-drafts.sh uses locally (card #478), just running
+# against fresh CI data instead of a developer's local checkout.
 #
-# Known limitation (shared with refresh-drafts.sh, not new here): this does a
-# plain regenerate, so it does NOT thread through any workflow_dispatch
-# editorial overrides (subjectOverride, ledeOverride, obLead, dropSections)
-# the owner may have hand-applied via a manual newsletter-draft.yml run after
-# Saturday — a Sunday refresh would silently regenerate over those. Rare in
-# practice (overrides aren't persisted anywhere for a refresh to pick up).
+# Known limitation (shared with refresh-drafts.sh, not new here): the "draft"
+# regenerate path does NOT thread through any workflow_dispatch editorial
+# overrides (subjectOverride, ledeOverride, obLead, dropSections) the owner
+# may have hand-applied via a manual newsletter-draft.yml run after Saturday
+# — a Sunday refresh would silently regenerate over those. Rare in practice
+# (overrides aren't persisted anywhere for a refresh to pick up). The "none"
+# recovery dispatch below has the same limitation for the same reason.
 
 on:
   schedule:
@@ -45,6 +57,10 @@ on:
         description: "Set to 1 to keep featured openings whose reviews are uncollected (skips the coverage-gap swap). Empty = swap as usual."
         required: false
         default: ''
+
+permissions:
+  contents: write
+  actions: write
 
 concurrency:
   group: newsletter-draft
@@ -184,8 +200,34 @@ jobs:
           node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
             --create --audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}"
 
-      - name: No-op (already sent or nothing drafted yet)
-        if: steps.status.outputs.status != 'draft'
+      # Recovery path: Saturday's newsletter-draft.yml never reached "Create
+      # Resend broadcast draft" (e.g. the data-freshness gate blocked it, or
+      # any other early failure) — no draft exists for this week at all. Fire
+      # the exact same dispatch we-newsletter-draft.yml uses for the WE
+      # edition, so this week gets the FULL creation pipeline (generate,
+      # pre-send-check, mobile overflow gate, regression-test, owner preview
+      # send, Resend draft creation) instead of a second, drifted copy of it
+      # living in this file. Runs async — this job doesn't wait for it, and
+      # doesn't need to: the dispatched run shares this workflow's
+      # `newsletter-draft` concurrency group, so it simply queues behind this
+      # job rather than racing it. The subjectPrefix flags it as a recovered
+      # send so the owner can tell it didn't arrive on the normal Saturday
+      # schedule.
+      - name: Dispatch full creation pipeline (recovery — no draft exists yet)
+        if: steps.status.outputs.status == 'none'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run newsletter-draft.yml \
+            --ref main \
+            -f edition="${{ matrix.edition }}" \
+            -f weekStart="${{ steps.week.outputs.weekStart }}" \
+            -f audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}" \
+            -f subjectPrefix="[DRAFT] (Sunday recovery)"
+          echo "Dispatched newsletter-draft.yml for ${{ matrix.edition }} — Saturday never created a draft for ${{ steps.week.outputs.weekStart }}."
+
+      - name: No-op (already sent)
+        if: steps.status.outputs.status == 'sent'
         run: |
           echo "No refresh needed for ${{ matrix.edition }} (status=${{ steps.status.outputs.status }})."
 

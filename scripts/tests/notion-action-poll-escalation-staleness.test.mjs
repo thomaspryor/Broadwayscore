@@ -1,3 +1,11 @@
+// timebomb-audit-exempt: "pageIfKillSwitchStale: fresh escalation-off file pages
+//   nobody" writes the kill-switch file with fs.writeFileSync right before
+//   asserting, so its mtime is the REAL wall clock. audit-time-bomb-tests.js
+//   shifts only the PROCESS clock, so under a shifted run the file reads as
+//   artificially old and the assertion flips. Not a real time bomb — production
+//   compares two readings of the same real clock (same class as
+//   tests/unit/ttl-cache.test.mjs and dispatch-watchdog-staleness.test.mjs).
+//
 // Regression test for task #1720: the notion-action-poll.js escalation-off
 // kill switch (~/.claude-action-dispatcher/escalation-off) has the same
 // no-staleness-alarm gap card #1543 fixed for dispatch-watchdog-off — if

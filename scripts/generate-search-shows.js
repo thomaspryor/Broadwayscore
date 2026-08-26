@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { buildShowsWithScores } = require('./lib/search-shows-scores');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -28,13 +29,13 @@ const reviewsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'
 const shows = showsData.shows;
 const reviews = reviewsData.reviews;
 
-// Build set of show IDs that have at least one scored review
-const showsWithScores = new Set();
-for (const review of reviews) {
-  if (review.assignedScore != null) {
-    showsWithScores.add(review.showId);
-  }
-}
+// Build set of show IDs that have at least one scored review — unioned with
+// ids whose public/data/shows/{id}.json already carries a real rendered
+// Critic Score, since reviews.json alone can miss score sources folded in
+// later in the pipeline (BRO-339). See scripts/lib/search-shows-scores.js.
+// The slim files are already fresh here: generate-mobile-show-details.js
+// always runs immediately before this script in prebuild.sh.
+const showsWithScores = buildShowsWithScores(reviews, shows, path.join(outputDir, 'shows'));
 
 // Regional (non-NYC US) shows are hidden from the search index until the `regional`
 // feature flag is enabled — mirrors data-core regionalSlugAllowed() so search,

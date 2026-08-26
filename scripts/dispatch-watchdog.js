@@ -46,6 +46,8 @@ const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
+const flowHealth = require('./lib/dispatch-flow-health.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Hardcoded canonical repo (same rationale as dispatch-ledger.js: this tool
@@ -311,6 +313,17 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
       cooldownHours: 6,
     });
   }
+  // BRO-2318: independent of the outage page above — fires even when the
+  // launcher looks "recovered" (a success always follows the next death),
+  // because a sustained ~1-in-3 injection-failure rate was invisible until now.
+  if (plan.failureRate.leaking) {
+    pageOwner({
+      conditionKey: 'watchdog-launcher-leak',
+      title: 'cmux launcher leaking — a third-ish of dispatches never start',
+      description: `Watchdog: ${plan.failureRate.failureCount}/${plan.failureRate.totalLaunches} launches (${Math.round(plan.failureRate.rate * 100)}%) died with "injection never ran" over the last 6h across tasks ${plan.failureRate.taskIds.join(', ')}. This is NOT the sustained-outage alarm — cmux keeps producing occasional verified successes, which is exactly why it never trips that one. Dispatched work is silently not running at this rate; check cmux responsiveness.`,
+      cooldownHours: 6,
+    });
+  }
   return results;
 }
 
@@ -327,6 +340,12 @@ function summarize(plan) {
     awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
+    // BRO-2462: `holds` mixes policy pauses with failure-detection signals
+    // (see dispatch-watchdog-core.js) — surfaced separately so `--status
+    // --json` lets a human see directly whether health()'s tab-count/
+    // queue-depth pager is currently gated, instead of re-deriving it from
+    // the holds strings.
+    pausedByPolicy: plan.budgets.pausedByPolicy,
   };
 }
 
@@ -515,6 +534,25 @@ function pageIfKillSwitchStale(filePath, { conditionKey, label, clearHint, now =
   return { stale, ageMs };
 }
 
+// I/O boundary for the flow-dead check (task #1915). Reads the ledger file
+// directly rather than via dispatchLedger.readEntries(), which fails closed
+// to [] on any read error — that would collapse "genuinely zero launches"
+// and "ledger unreadable" into the same signal, losing the -1 fail-safe
+// sentinel isDispatchFlowDead relies on to tell "confirmed dead" from
+// "cannot prove dead".
+function launchesInFlowWindow(now) {
+  let raw;
+  try { raw = fs.readFileSync(dispatchLedger.LEDGER_PATH, 'utf8'); }
+  catch { return -1; }
+  const entries = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { entries.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return dispatchLedger.countRecentLaunches(entries, { now, windowMs: flowHealth.FLOW_WINDOW_MS });
+}
+
 function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
@@ -536,7 +574,80 @@ function health() {
   }
   const age = heartbeatAgeMs();
   const stale = age === null || age > HEALTH_STALE_MS;
-  if (!stale) { console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old`); return 0; }
+  if (!stale) {
+    // Heartbeat-healthy is exactly the blind spot task #1915 closes: the
+    // watchdog can heartbeat forever while dispatching ZERO work. cmux
+    // calls are best-effort here (same rationale as ensureTab() below —
+    // --health runs OUTSIDE cmux via launchd, which can't reach the socket
+    // pre-restart) — a cmux failure means "cannot observe," which must
+    // fail safe to "cannot prove dead," not silently page.
+    // Distinct suffixes on the two success paths below are deliberate: this
+    // is the only launchd-outside-cmux code path in the file, and without a
+    // visible marker for "the flow check actually ran" vs. "it silently
+    // skipped (cmux unobservable)", ~/Library/Logs/dispatch-watchdog-health.log
+    // can't prove which one happened on a given tick.
+    let flowSuffix = ' (flow check skipped: cmux unobservable)';
+    try {
+      const now = Date.now();
+      const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
+      const launchesLast45m = launchesInFlowWindow(now);
+      // BRO-409: only trust a real queue depth when dispatch is actually
+      // enabled AND no other legitimate hold explains zero launches — a
+      // deliberate dispatch pause (NO_DISPATCH_FILE), or the watchdog's own
+      // day budget / concurrency / global-auto-tab cap being spent
+      // (planSweep's `holds`, dispatch-watchdog-core.js), routinely
+      // produces zero launches with a deep, still-growing p01Queue and must
+      // not page — that's expected pacing, not a stall (ship-check adversarial
+      // catch: day-budget-spent was the LIVE state — 12/12 used, 199 queued —
+      // when this was reviewed, so this isn't a hypothetical). -1 is the
+      // existing "don't trust this" sentinel, so leaving it at -1 here
+      // reduces to the pre-BRO-409 tab-count-only check. Unchanged by
+      // BRO-2462 below — deliberately: widening this path's trust condition
+      // too (e.g. to trust it during a detected outage) is a separate,
+      // untested behavior change outside this ticket's scope.
+      //
+      // BRO-2462: dispatchEnabled() read once into dispatchEnabledNow and
+      // reused for both the init and the guard below — two separate reads
+      // could disagree if NO_DISPATCH_FILE is created in between (Codex
+      // adversarial catch). dispatchPaused gates the tab-count path too, but
+      // ONLY on a genuine policy pause (plan.budgets.pausedByPolicy) — never
+      // on a detected failure (launcher outage, failure-rate leak, claim
+      // outage). Those still appear in plan.budgets.holds (which
+      // pausedByPolicy is deliberately narrower than) precisely because a
+      // real stall must still page through the tab-count path, not get
+      // silenced by its own symptom. If buildPlan() throws, dispatchPaused
+      // stays at !dispatchEnabledNow (the cheap, non-throwing signal) — a
+      // transient plan-build error deliberately fails toward the old
+      // unconditional tab-count behavior (paging), not toward silently
+      // suppressing it; an unknown state must never look like a known pause.
+      let eligibleQueueDepth = -1;
+      const dispatchEnabledNow = dispatchEnabled();
+      let dispatchPaused = !dispatchEnabledNow;
+      if (dispatchEnabledNow) {
+        try {
+          const plan = buildPlan(now);
+          dispatchPaused = plan.budgets.pausedByPolicy;
+          if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
+        } catch (e) { console.error(`[watchdog] queue-depth check skipped (${e.message})`); }
+      }
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused })) {
+        pageOwner({
+          conditionKey: 'dispatch-flow-dead',
+          title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
+          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min (eligible P0/P1 queue depth: ${eligibleQueueDepth}). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
+          severity: 'error',
+          cooldownHours: 24,
+        });
+        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
+        return 1;
+      }
+      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth})`;
+    } catch (e) {
+      console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
+    }
+    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
+    return 0;
+  }
   pageOwner({
     conditionKey: 'watchdog-heartbeat-stale',
     title: 'Dispatch watchdog is DOWN — nobody owns in-flight dispatches',

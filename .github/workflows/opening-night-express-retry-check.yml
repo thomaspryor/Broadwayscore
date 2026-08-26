@@ -1,0 +1,83 @@
+name: Opening Night Express Retry Check
+
+# Same-night retry backstop for card #1889 (Opening Night Express fires too
+# early for evening openings and never retries when it finds 0 real reviews).
+#
+# opening-night-express.yml's "Evaluate full-text coverage for same-night
+# retry" step queues an entry in data/audit/express-retry-queue.json when its
+# own run finds coverage too thin to trust. This workflow is the other half:
+# hourly, it checks that queue for entries whose dueAt has passed and
+# dispatches opening-night-express.yml again (is_retry=true) for each one —
+# skipping the dispatch (but still marking attempted) if isShowCoverageComplete()
+# says some other path (the hourly poller, audit-aggregator-gap, the local
+# opening-night monitor) already closed the gap.
+#
+# A failed dispatch call leaves its entry un-attempted so the NEXT hourly tick
+# retries the dispatch itself — never silently swallowed.
+
+on:
+  schedule:
+    # :50 — distinct offset from the other hourly opening-night crons
+    # (opening-night-checklist.yml :17, opening-night-completeness-check.yml
+    # every 15 min) so they don't all contend for runner minutes at once.
+    - cron: '50 * * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: opening-night-express-retry-check
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  dispatch-due-retries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Dispatch due retries
+        env:
+          GITHUB_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/express-retry-queue.js dispatch-due
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git status --porcelain data/audit/express-retry-queue.json 2>/dev/null | grep -q .; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/express-retry-queue.json
+          git commit -m "chore: Opening Night Express retry-check — dispatch due retries
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Express Retry Check Failed'
+          severity: 'warning'

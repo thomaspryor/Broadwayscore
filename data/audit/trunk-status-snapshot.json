@@ -1,35 +1,26 @@
 {
-  "generatedAt": "2026-08-21T07:35:43.794Z",
+  "generatedAt": "2026-08-26T12:44:25.699Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "ce82075ca7b247adfe45e18a56d40d4e8684d766",
+  "latestRunHeadSha": "022ce15b7701a8d6c77459ec2e70a71ef2371603",
   "state": "RED",
-  "consecutiveFailures": 6,
+  "consecutiveFailures": 1,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-21T06:47:12Z",
-  "redForHours": 0.8088316666666666,
+  "redSince": "2026-08-24T07:00:36Z",
+  "redForHours": 53.730471944444446,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-21T05:59:21Z",
-  "latestFailedRunId": "32457948444",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32457948444",
-  "decidedRuns": 71,
+  "lastSuccessAt": "2026-08-23T22:10:38Z",
+  "latestFailedRunId": "32699645957",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32699645957",
+  "decidedRuns": 90,
   "failingJobs": [
-    {
-      "name": "Lint Workflows",
-      "steps": [
-        "Audit — no orphan unit tests"
-      ]
-    },
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation",
-        "Audit review contamination",
-        "Audit flag-vs-CV contradictions",
-        "Validate review-text files"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -41,11 +32,11 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/verify-reroute-migration.test.mjs",
-      "job": "Lint Workflows",
-      "step": "Audit — no orphan unit tests",
-      "evidence": "❌ 1 orphan test file(s) — not referenced in any .github/workflows/*.yml:"
+      "path": "scripts/validate-mobile-shows.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
     }
   ],
-  "topFailingJob": "Lint Workflows"
+  "topFailingJob": "Data Validation"
 }

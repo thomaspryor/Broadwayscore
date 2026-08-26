@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { parseHistoricalDate } = require('./lib/date-utils');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `unflag-wrong-production-fps.js — Unflag false-positive wrongProduction reviews
@@ -73,8 +74,8 @@ function extractDates(data) {
   const result = { publishDate: null, urlDate: null, urlYears: null };
 
   if (data.publishDate) {
-    const d = new Date(data.publishDate);
-    if (!isNaN(d.getTime())) result.publishDate = d;
+    const d = parseHistoricalDate(data.publishDate);
+    if (d) result.publishDate = d;
   }
 
   if (data.url) {

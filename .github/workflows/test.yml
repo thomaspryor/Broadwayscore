@@ -36,6 +36,12 @@ on:
       # would trigger zero CI without this entry (task #1581, same gap class
       # as scripts/check-orphan-commits.js above).
       - 'scripts/audit-workflow-concurrency.js'
+      # scripts/audit-push-retry-budgets.js (card #1910, 2026-08-26): same
+      # thin-CLI-wrapper-outside-scripts/lib/ gap shape as
+      # scripts/audit-workflow-concurrency.js above — its logic lives in
+      # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
+      # file itself needs its own entry.
+      - 'scripts/audit-push-retry-budgets.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
@@ -89,6 +95,11 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/migrate-reroute-backlog.js'
       - 'scripts/verify-reroute-migration.test.mjs'
+      # BRO-2267: scripts/lib/unabandon-fetch-cycles.test.mjs (already covered
+      # by the scripts/lib/** glob above) execFileSync-shells out to this
+      # root-level script — needs its own entry so a solo edit to the script
+      # alone still triggers CI (same gap class as recover-serp-text.js above).
+      - 'scripts/unabandon-fetch-cycles.js'
       # BRO-735: root-level scripts/*.js + *.test.mjs trio (no scripts/**
       # broad glob) — opening-night-pipeline-verify.js is the CLI glue that
       # wraps scripts/lib/opening-night-pipeline-stages.js (already covered
@@ -97,6 +108,14 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-544: root-level regression guard scanning scripts/**, src/**, and
+      # .github/workflows|actions/** for the deleted mcp_browser/
+      # scraping_browser Bright Data zone being sent through the HTTP
+      # /request API (it's a WebSocket-only browser_api zone). No lib
+      # dependency (self-contained fs scan) — registered in
+      # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI
+      # (root-level scripts/*.test.mjs is NOT globbed).
+      - 'scripts/bright-data-websocket.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -122,6 +141,11 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # BRO-65: countStrictHits/STRICT_CLASSES regression test. Depends on
+      # scripts/lib/contamination-gate.js (already globbed above) plus this
+      # top-level script itself (listed just above) — needs its own entry
+      # (no scripts/** broad glob) so a solo edit to the test triggers CI.
+      - 'scripts/audit-review-contamination.test.mjs'
       # Placeholder-venue guard (card 3b2637c5/#994): sanitizeVenueForWrite
       # (venue-classification.js) reuses isPlaceholderVenue (the census script)
       # to fail closed on ShowScore neighbourhood-blob venues at write time.
@@ -198,6 +222,13 @@ on:
       # allow-list failure mode in memory/feedback_test_yml_push_path_allowlist.md.
       - 'scripts/check-seo-health.js'
       - 'scripts/check-seo-health.test.mjs'
+      # scripts/print-sample-show-urls.js (card #1919): thin CLI wrapper around
+      # scripts/lib/sample-show-pages.js (globbed above) used by
+      # lighthouse-post-deploy.yml. Root-level scripts/*.js + *.test.mjs pair
+      # is NOT globbed (registered in tests/unit-test-manifest.txt) — path-
+      # listed so a solo edit triggers CI.
+      - 'scripts/print-sample-show-urls.js'
+      - 'scripts/print-sample-show-urls.test.mjs'
       # Rolling-window history files ("keep last N entries") assume one entry
       # per day; CI runs the producer many times a day, so the window silently
       # collapses — bundle-size-history.json held 50 entries covering 9 days,
@@ -475,6 +506,22 @@ on:
       # fault-injects the default arm and reproduces the incident's own
       # documented end-state. Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.content-drop.test.sh'
+      # Task: push-retry-failure telemetry, 2026-08-23. Bash integration test
+      # for record_push_failure()'s shell->CLI argv handoff (pure schema/CAS
+      # logic runs in tests/unit/push-retry-failure-ledger.test.mjs, covered
+      # by the tests/** glob). Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh'
+      # Task #1849: the shallow-fetch bound (_shallow_base_epoch) is memoized
+      # ONCE per run — correct when a bounded fetch SUCCEEDS (avoids the
+      # window creeping wider for no benefit) but wrong when it FAILS
+      # outright: every retry recomputed and reissued the identical bound,
+      # producing 25/25 identical rc=128 failures in a real incident
+      # (data-health-check.yml run 32399332590). Bash integration reproduces
+      # a remote that rejects the first-choice bound and asserts the fix
+      # escalates to a wider one on the next retry instead of repeating it.
+      # Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
+      - 'scripts/lib/shallow-fetch-args.js'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
       # content, so a concurrent writer that reverted our lines (leaving the
       # path in place) passed every check and the script reported success —
@@ -569,6 +616,10 @@ on:
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/audit-regex-patterns.js'
+      # BRO-181: colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
+      # solo edit to either triggers CI.
+      - 'scripts/audit-regex-patterns.test.mjs'
       - 'scripts/audit-broadway-category-predicate.js'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
@@ -658,6 +709,12 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # BRO-160: buildShowEntry() category/market/date resolution — root-level
+      # scripts/*.js + *.test.mjs pair (no scripts/** broad glob), needs its
+      # own entry so a solo edit triggers CI. Registered in
+      # tests/unit-test-manifest.txt too (required for a root-level
+      # scripts/*.test.mjs to actually execute in CI).
+      - 'scripts/promote-ob-venue-candidates.test.mjs'
       # West End aggregator-listing auto-promotion backstop (task #1466) —
       # the WE analogue of the block above. Its shared dedup + discovery/
       # venue-matching lib dependencies are covered by scripts/lib/**;
@@ -675,6 +732,15 @@ on:
       # to any of them gets ZERO CI.
       - 'scripts/llm-scoring/index.ts'
       - 'tests/unit/rescore-lifecycle.test.mjs'
+      # Rescore-flagging (card #1902, 2026-08-26): the SET side of the same
+      # lifecycle — raising needsRescore when fullText is added after an
+      # excerpt-based score or a wrongProduction false-positive clears on an
+      # already-scored file. scripts/audit-stale-score-input.js and its test
+      # are also path-listed so a solo edit to any of the four gets CI (no
+      # broad scripts/** glob covers audit-stale-score-input.js).
+      - 'scripts/lib/rescore-flagging.js'
+      - 'tests/unit/rescore-flagging.test.mjs'
+      - 'scripts/audit-stale-score-input.js'
       # Canonical cascade-gate queue counts (task #652). llm-ensemble-score.yml
       # gates phases 2-4 on UNSCORED == 0; its old inline counter drifted looser
       # than the scorer's own selection filter and starved the cascade for
@@ -1027,6 +1093,10 @@ on:
       # tests/unit-test-manifest.txt and path-listed here so a solo edit
       # triggers CI.
       - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
+      # task #1929: rebuild-all-reviews.js exclusion-loop-touch detector added
+      # to scoring-delta.js — same root-level scripts/*.test.mjs registration
+      # requirement as the entry above.
+      - 'scripts/scoring-delta-rebuild-loop-touch.test.mjs'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
@@ -1134,6 +1204,12 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Run-budget coverage guard (#425, extended BRO-109 for script->lib-helper
+      # budget-threading gaps). Colocated test registered in
+      # tests/unit-test-manifest.txt — root-level scripts/*.test.mjs is NOT
+      # covered by any broad glob, so this needs its own entry or a solo edit
+      # to the test gets zero CI.
+      - 'scripts/audit-run-budget-coverage.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -1200,6 +1276,21 @@ on:
       # command; without these path entries a solo edit triggers ZERO CI.
       - 'scripts/audit-direct-provider-calls.js'
       - 'scripts/config/direct-provider-calls-allowlist.json'
+      # Venue-write-guard CI guard (card #1923, follow-up to card #994's
+      # sanitizeVenueForWrite() write-time guard): flags scripts/**
+      # `venue:`/`.venue =` sites that skip sanitizeVenueForWrite(...), same
+      # baseline+--strict advisory shape as audit-direct-provider-calls.js
+      # above. scripts/lib/venue-write-guard-detector.js is NOT listed here —
+      # already covered by the scripts/lib/** glob. Without these 2 entries a
+      # solo edit to the audit script or its baseline gets ZERO CI.
+      - 'scripts/audit-venue-write-guard.js'
+      - 'scripts/audit-venue-write-guard.test.mjs'
+      - 'data/audit/venue-write-guard-baseline.json'
+      # BRO-2472: scripts/triage-unopened-shows.mjs (BRO-80 prior-run triage
+      # CLI) lives at scripts/ root, outside the scripts/lib/** glob, and had
+      # no path entry of its own — a solo edit to it got ZERO CI, same gap
+      # shape as every other scripts/ root file on this list.
+      - 'scripts/triage-unopened-shows.mjs'
       # Email-capture gate logic (cooldown + mobile-timing A/B) + its tsx-batch test.
       - 'src/lib/gate-logic.ts'
       - 'src/config/email-capture.ts'
@@ -1576,6 +1667,14 @@ on:
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/reconcile-dead-completions.js'
       - 'scripts/reconcile-dead-completions.test.mjs'
+      # reconcile-broadcast-state.js was missing from this list entirely (task
+      # #1853 follow-up finding) — a solo push touching it triggered ZERO CI.
+      # Colocated test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a solo
+      # edit to either side triggers CI (feedback_test_yml_push_path_allowlist).
+      # tests/unit/reconcile-broadcast-state.test.mjs already rides 'tests/**'.
+      - 'scripts/reconcile-broadcast-state.js'
+      - 'scripts/reconcile-broadcast-state.test.mjs'
       # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
       # renders a terminal surface, so the injected command never runs. The
       # retry layer hides it from every individual session, so only the
@@ -1964,6 +2063,16 @@ on:
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/linear-next-overlap-guards.test.mjs'
+      # Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
+      # Phase 2 completion): dispatches issues owner-alert-router.js's
+      # dispatchCard() filed and parked, via linear-next.js's own --headless
+      # path. Its pure selection predicate (scripts/lib/linear-drain-
+      # parked.js) is already covered by the scripts/lib/** glob above; this
+      # top-level CLI wrapper is not, so it needs explicit listing
+      # (feedback_test_yml_push_path_allowlist). Colocated test
+      # (tests/unit/linear-drain-parked.test.mjs) is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/linear-drain-parked.js'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -2245,6 +2354,19 @@ jobs:
         # workflow with # hygiene-audit-persist-ok: <reason>.
         run: node scripts/audit-push-core-data-audit-gap.js
 
+      - name: Audit — errexit-unguarded command substitution (advisory)
+        # Task #97, follow-up to #676/#678: a composite-action step declared
+        # shell: bash runs as `bash -e -o pipefail` — an unguarded
+        # `VAR=$(node ...)` assignment or `git commit --amend` that can
+        # legitimately exit non-zero trips errexit and kills the WHOLE
+        # script, not just that line, silently defeating any retry loop the
+        # step was inside. #676's push-core-data crash (Opening Night
+        # Poller dead on iteration 1, almost every run, for a week) and the
+        # 5 cousin instances fixed in #678/this PR are exactly this shape.
+        # Heuristic, non-blocking — always exits 0 (see script header for
+        # why). Exempt a file with # hygiene-errexit-guard-ok: <reason>.
+        run: node scripts/audit-errexit-unguarded-substitution.js
+
       - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
         # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
         # PROTECTED_FIELDS field in a job that also calls push-review-texts
@@ -2273,6 +2395,22 @@ jobs:
         # why). Exempt a reviewed false positive with
         # // breadcrumb-delete-ok: <reason> in the script.
         run: node scripts/audit-delete-without-breadcrumb.js
+
+      - name: Audit — push-with-retry.sh budget undersizing (advisory, card #1918)
+        # Card #1918 wires card #1910's scripts/audit-push-retry-budgets.js into
+        # CI so the #1842/#1891 undersizing class (retries exhausting well
+        # before PUSH_DEADLINE_SEC, or a push step's worst-case budget leaving
+        # under 15% job-timeout margin) surfaces on every push instead of
+        # waiting for the next live incident. Advisory only (owner-judgment
+        # call, card #1918's acceptance criteria) — no flag severity fails the
+        # build: the scan is heuristic (YAML-shape parsing can under-count —
+        # see the audit's own under-parsed-file cross-check) and #1910
+        # deliberately left ~190 shared-default-shape call sites unfixed by
+        # design (prioritize by contention, don't blanket-raise), so failing
+        # the build on "flagged" would block unrelated PRs on pre-existing,
+        # already-triaged debt. Script wraps main() in try/catch so a crash
+        # can't turn "advisory" into an accidental hard gate (see its header).
+        run: node scripts/audit-push-retry-budgets.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
@@ -2333,6 +2471,19 @@ jobs:
         # data/audit/direct-provider-calls-baseline.json and never fails CI; only
         # a genuinely NEW direct-provider-call site fails under --strict.
         run: node scripts/audit-direct-provider-calls.js --strict
+
+      - name: Audit — venue-write guard coverage (card #1923)
+        # Card #994's sanitizeVenueForWrite() (scripts/lib/venue-classification.js)
+        # fails closed on placeholder/junk venue strings before they reach
+        # shows.json — a real incident (junk venue text tripping the
+        # opening-night orchestrator + a live subscriber broadcast). Three
+        # separate discovery rounds (BRO-160, cards #1921/#1922) each found MORE
+        # show-entry builders / venue-writing scripts skipping it, all found via
+        # ad-hoc grep. This automates that grep. Advisory-first, identical shape
+        # to the direct-provider-calls audit above: pre-existing debt is frozen
+        # in data/audit/venue-write-guard-baseline.json and never fails CI; only
+        # a genuinely NEW unguarded `venue:`/`.venue =` site fails under --strict.
+        run: node scripts/audit-venue-write-guard.js --strict
 
       - name: Audit — fetchPage() cleanup on success path (advisory)
         # Prevents the #438/#914 bug class recurring: fetchWithPlaywright() in
@@ -2471,11 +2622,13 @@ jobs:
         # sender in a file not in scripts/.alert-sender-baseline.json, or a
         # baselined file's per-file count growing (a count map, not a file
         # list — offsetting regressions inside an already-listed file must
-        # still fail). Baselined debt: opening-night-broadcast.yml +
-        # opening-night-poller.js are permanent real-time-critical senders
-        # (CLAUDE.md rule 14); audit-t1-silent-gaps.js drain is card #531;
-        # audit-opening-night-coverage.js drain is carded (see card body).
-        # Shrink the baseline as migrations land: --update-baseline.
+        # still fail). As of BRO-1699 the baseline is empty (0 direct
+        # senders) — opening-night-broadcast.yml + opening-night-poller.js,
+        # previously treated as permanent real-time-critical exceptions under
+        # CLAUDE.md rule 14, are now migrated onto the owner-alert-router
+        # helper; locked by scripts/tests/alert-sender-bypass.test.mjs.
+        # Shrink the baseline again as any future migration lands:
+        # --update-baseline.
         # NOTE: the step NAME deliberately avoids quoting the flagged pattern
         # verbatim — a name: line is not a YAML comment, so the scanner would
         # flag this very step as a phantom direct sender.
@@ -3375,6 +3528,31 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.content-drop.test.sh
 
+      - name: Run push-with-retry failure-telemetry shellquote test (bash integration)
+        # Task: push-retry-failure telemetry, 2026-08-23. Asserts
+        # record_push_failure()'s exact `"--reason=$reason"` bash
+        # interpolation round-trips the real reason-string shapes
+        # push-with-retry.sh's 6 call sites actually produce (including
+        # '(' and ')') through scripts/record-push-retry-failure.js's
+        # argv parsing into the durable push-retry-failures ledger branch,
+        # without needing a live git-conflict harness to reach one of the
+        # real call sites.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.failure-telemetry-shellquote.test.sh
+
+      - name: Run push-with-retry shallow-retry-escalation test (bash integration)
+        # Task #1849: data-health-check.yml run 32399332590 (2026-08-20) ran
+        # all 25 retries of its "Commit health check + triage data" step over
+        # ~14 real minutes and NEVER succeeded — every attempt failed
+        # identically at rc=128, because the shallow-fetch bound
+        # (_shallow_base_epoch) is memoized once per run and was reissued
+        # byte-identical on every retry even after the bound itself was
+        # rejected. Simulates a remote that rejects the first-choice bound
+        # but accepts a wider one, and asserts the fix escalates instead of
+        # repeating the identical failing bound forever.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.shallow-retry-escalation.test.sh
+
       - name: Run merge-worktree-to-main content-drop test (bash integration)
         # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's
         # per-file verify was `git cat-file -e origin/main:$f` — EXISTENCE
@@ -3535,7 +3713,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
+        with:
+          # fetch-depth: 300 (task #466 root-cause fix, 2026-08-22): default
+          # depth-1 gave push-with-retry.sh's final "Commit scraper-spend
+          # ledger" step (if: always(), the job's LAST step, ~15-20+ min after
+          # this checkout runs — checkout-core-data + checkout-aggregator-
+          # archive + the full validation/gate suite all happen first) too
+          # little headroom. push-with-retry.sh bounds its post-conflict fetch
+          # to a `--shallow-since` window anchored on THIS checkout's single
+          # boundary commit (scripts/lib/shallow-fetch-args.js), then widens
+          # once (1 day) before aborting with "fetch could not restore
+          # ancestry to the shallow checkout's original boundary" if that
+          # boundary still isn't an ancestor of the fetched tip — confirmed
+          # hitting this job twice, identical error, not caused by any PR
+          # diff (this repo lands ~150 commits/hour from many concurrent
+          # bots/sessions). Considered `fetch-depth: 0` (a full clone, which
+          # skips push-with-retry.sh's shallow-checkout code path entirely —
+          # the error message's own suggested escalation) but REJECTED it
+          # after finding 3 in-repo measurements of its real cost on this
+          # ~2.2GB/165k-commit history: guard-no-orphan-commit.yml ("took >5
+          # min and got cancelled"), sweep-we-aggregators.yml (task #1813,
+          # "~22-23 min TWICE in real dispatches"), update-show-status.yml
+          # (task #1810, "~17-25 min per run") — all only viable because
+          # those jobs carry 90-130 min timeouts. This job's 30-min timeout is
+          # deliberate (line above: "guarantees a conclusion even if a step
+          # wedges"); a 17-25 min checkout would consume most of that budget
+          # before any of the ~15 min of actual validation work runs. A
+          # bounded `fetch-depth: 300` is still a fast shallow clone (same
+          # cost class as the default depth 1 — GitHub negotiates a fixed
+          # small depth efficiently regardless of N), but gives push-with-
+          # retry.sh's ALREADY-GENERIC ancestry logic (it computes the
+          # boundary as "the oldest local commit" with no assumption of
+          # exactly 1 commit — see its own "SHALLOW checkout ($N local
+          # commit(s))" log line) a boundary commit ~300 commits further back
+          # in time, i.e. ~2 hours of churn headroom at this repo's measured
+          # rate — far more than this job's actual ~15-20 min runtime. No
+          # scripts/lib/push-with-retry.sh changes needed; it already handles
+          # N>1 shallow checkouts correctly. Second-opinion review (session
+          # recorded via review-gate.mjs --query=record-plan) rejected the
+          # fetch-depth:0 option specifically because of the measurements
+          # above.
+          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data

@@ -61,6 +61,13 @@ const fs = require('fs');
 const path = require('path');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
+// gitSafeJobId only (no lease/runJob I/O pulled in) — matchesTaskWorkBranch
+// needs the identical git-ref sanitization bsc-runner.js applies to a jobId
+// before it ever becomes part of a branch name (BRO-278). Same require
+// direction scripts/backlog-drain.js already uses for the same reason; no
+// cycle (bsc-runner.js's own requires — dispatch-ledger.js, claude-cli.js,
+// worktree-gc-reclaim.js — never reach back to this file).
+const { gitSafeJobId } = require('./bsc-runner.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
@@ -428,11 +435,25 @@ function loadLinearMirrorMapping(mappingPath = LINEAR_MAPPING_PATH) {
 // signal (e.g. stamping the task id into the ledger at EnterWorktree time).
 const WORK_BRANCH_PREFIXES = ['worktree-', 'job/'];
 
+// BRO-278: a Linear-issue taskId (`linear:BRO-278`, linear-next.js's
+// ledgerTaskId()) is NOT what ends up in the branch name — git rejects the
+// colon, so bsc-runner.js's gitSafeJobId() sanitizes it to `linear-BRO-278`
+// before `job/${safe}` is ever created (verified live: this session's own
+// branch is `job/linear-BRO-278-mtaf33qe`). Matching the RAW taskId against
+// branch names therefore could never match a single Linear dispatch — the
+// colon/dash mismatch made workBranchCollisionGuard structurally blind to
+// every Linear-issue collision, exactly the cross-session collision BRO-278
+// reports (three cmux workspaces on the identical issue, undetected).
+// Sanitizing here with the SAME function closes that gap; for bsc-next.js's
+// plain numeric ids gitSafeJobId is a no-op (digits are already git-ref
+// safe), so this is a pure generalization, not a behavior change for the
+// existing caller.
 function matchesTaskWorkBranch(branchName, taskId) {
   const id = String(taskId == null ? '' : taskId).trim();
   if (!id) return false;
   const name = String(branchName || '');
-  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const safeId = gitSafeJobId(id);
+  const escaped = safeId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // Anchored on both ends (a trailing "-" after a prefix match, or a leading
   // "-" before a suffix match) so task #123 can never match a branch for
   // task #1233 (or vice versa) on a bare numeric-substring coincidence.
@@ -505,6 +526,42 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
     `#${exact.card.id} ("${exact.card.subject}") — a byte-for-byte subject match against live in_progress ` +
     `work isn't suggestive, it's proof the same work is already being dispatched. Confirm #${exact.card.id} ` +
     `isn't already covering this before dispatching a duplicate. Re-run with --force to dispatch anyway.`;
+}
+
+// Mirror-staleness dispatch claim (task #1896): exactTitleOverlapGuard above
+// only sees a duplicate once the OTHER task's local mirror already says
+// in_progress — and nothing flips a task's mirror status to in_progress
+// until the dispatched session itself gets around to calling notion-brain.js,
+// which can be MINUTES after cmux/headless already launched (confirmed live
+// 2026-08-26: task #1893 was independently launched 4x in ~8 minutes,
+// including two successful dispatches — a cmux tab and a headless job — only
+// 30 seconds apart). This guard closes that gap for THIS SAME task id: the
+// caller acquires an atomic per-task claim (scripts/lib/atomic-claim.js)
+// BEFORE running the rest of the fresh-dispatch guard chain, and this
+// function turns the claim's result into a refusal. Pure, like every other
+// guard here — the mkdir/EEXIST I/O happens at the call site (bsc-next.js),
+// this only interprets its outcome. `claimResult` is exactly acquireClaim()'s
+// return value: true (claimed — proceed), false (genuinely held elsewhere,
+// not stale), or 'error' (existing claim unreadable/corrupt — fail closed).
+//
+// Deliberately NOT added to GUARD_NAMES below: every guard listed there is a
+// pure evaluation the queue-audit CLI wrapper can safely "what would this
+// say" simulate against every queued task without side effects. This guard's
+// precondition is a real mkdir claim (acquireClaim) — simulating it across
+// the whole backlog would mutate claim state for tasks nobody is actually
+// dispatching, which is exactly the bug this guard exists to prevent.
+function dispatchClaimGuard(task, claimResult, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  if (claimResult === true) return null;
+  if (claimResult === 'error') {
+    return `REFUSING to dispatch #${task.id}: could not acquire the per-task dispatch claim (claim dir ` +
+      `unreadable/corrupt) — failing closed rather than risk a concurrent double-dispatch.`;
+  }
+  return `REFUSING to dispatch #${task.id}: another dispatch attempt for this exact task claimed it very ` +
+    `recently and hasn't released it yet — this is the mirror-staleness race (task #1896): the local task ` +
+    `mirror won't show this task as in_progress until the OTHER dispatch's session gets around to marking it, ` +
+    `which can be minutes away. Wait for that attempt to resolve (a workspace/job should appear shortly), ` +
+    `verify it actually died first, or re-run with --force to dispatch anyway.`;
 }
 
 // Session-tracking clone refusal (task #1672, defect 2): worker sessions
@@ -757,6 +814,7 @@ module.exports = {
   liveLinearCounterpart,
   linearMirrorGuard,
   exactTitleOverlapGuard,
+  dispatchClaimGuard,
   sessionTrackingCloneGuard,
   resolveCloneParentTask,
   extractCloneParentRef,

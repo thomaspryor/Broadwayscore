@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getTourStops } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards } from '@/lib/data-awards';
@@ -256,15 +256,22 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined);
 
+  // null when no browse page exists for this show's format (opera/special) —
+  // drop that breadcrumb level rather than link to a mismatched page.
+  const browseSlug = getBrowseSlug(show.category, show.type);
+  const breadcrumbHome = { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL };
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
         { name: 'Home', url: BASE_URL },
         { name: 'Opera', url: `${BASE_URL}/opera` },
         { name: show.title, url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}` },
       ])
-    : generateBreadcrumbSchema([
-        { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
-        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
+    : generateBreadcrumbSchema(browseSlug ? [
+        breadcrumbHome,
+        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
+        { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+      ] : [
+        breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
   const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null);
@@ -417,9 +424,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           { label: 'Home', href: '/' },
           { label: 'Opera', href: '/opera' },
           { label: show.title },
+        ] : browseSlug ? [
+          { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
+          { label: showFormatPlural(show.type), href: `/browse/${browseSlug}` },
+          { label: show.title },
         ] : [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
-          { label: showFormatPlural(show.type), href: `/browse/${getBrowseSlug(show.category, show.type)}` },
           { label: show.title },
         ]} />
 
@@ -534,7 +544,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
                 const scoreBox = (
                   <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
-                    <span className="text-2xl sm:text-4xl font-extrabold">
+                    <span className="text-3xl font-extrabold">
                       {showTBD ? 'TBD' : roundedScore}
                     </span>
                   </div>
@@ -660,7 +670,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   lives on Broadway Scorecard so first-time search arrivals don't bounce.
                   When the tryout has a linked Broadway transfer (transferredTo), say so. */}
               {isRegional && (() => {
-                const transfer = (featureFlags.regional && show.transferredTo) ? getShowById(show.transferredTo) : null;
+                // A leg of a multi-venue tour doesn't carry transferredTo itself
+                // (only the aggregate does) — fall back to the parent's link so
+                // this line stays accurate instead of reading as untransferred.
+                const parent = show.tourParent ? getShowById(show.tourParent) : null;
+                const transferTargetId = show.transferredTo || parent?.transferredTo;
+                const transfer = (featureFlags.regional && transferTargetId) ? getShowById(transferTargetId) : null;
                 return (
                   <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
                     <span className="font-semibold">Regional production</span>
@@ -680,12 +695,60 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 );
               })()}
 
+              {/* Leg of a multi-venue tour: point at the aggregate show that
+                  rolls this leg's reviews (and its siblings') into one score. */}
+              {isRegional && show.tourParent && (() => {
+                const tour = getShowById(show.tourParent);
+                if (!tour) return null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tour-parent-line">
+                    <span className="font-semibold">Part of a national tour</span>
+                    <span className="text-gray-400">
+                      {' '}— see how this show landed across all its pre-Broadway stops.{' '}
+                      <Link href={`/show/${tour.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="tour-parent-link">
+                        See the combined tour reviews →
+                      </Link>
+                    </span>
+                  </p>
+                );
+              })()}
+
+              {/* Aggregate tour show: list the individual per-city legs whose
+                  reviews were rolled up into this combined score. */}
+              {isRegional && !show.tourParent && (() => {
+                const stops = getTourStops(show.id);
+                if (stops.length === 0) return null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tour-stops-line">
+                    <span className="font-semibold">Tour stops</span>
+                    <span className="text-gray-400">
+                      {' '}—{' '}
+                      {stops.map((stop, i) => (
+                        <span key={stop.id}>
+                          <Link href={`/show/${stop.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="tour-stop-link">
+                            {(stop.venue || '').split(',')[0]}
+                          </Link>
+                          {i < stops.length - 1 ? ', ' : '.'}
+                        </span>
+                      ))}
+                    </span>
+                  </p>
+                );
+              })()}
+
               {/* Broadway side of a regional→Broadway transfer pair: surface the
                   tryout's critic score (often the only pre-Broadway signal). */}
               {!isRegional && featureFlags.regional && show.transferOf && (() => {
                 const tryout = getShowById(show.transferOf);
                 if (!tryout) return null;
-                const tryoutVenue = (tryout.venue || '').split(',')[0];
+                // A tryout can itself be an aggregate rolling up several
+                // per-city legs (a national tour) — venue is a summary phrase
+                // in that case, not a single theater, so don't truncate it
+                // at the first comma the way a single-venue tryout's is.
+                const tourStopCount = getTourStops(tryout.id).length;
+                const tryoutVenue = tourStopCount > 0
+                  ? `its ${tourStopCount}-city national tour`
+                  : (tryout.venue || '').split(',')[0];
                 // Same TBD gate as everywhere else — never broadcast a score the
                 // tryout's own page would show as TBD. (ship-check P2)
                 const tCount = tryout.criticScore?.reviewCount || 0;

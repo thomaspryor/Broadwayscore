@@ -564,3 +564,64 @@ test('a later legitimate needsRescore re-flag is a non-empty write, so no reset 
   };
   assert.equal(wouldRestore('needsRescore', reflagged, { needsRescore: false }), false);
 });
+
+// ── BRO-2429: rescoreCompletedAt (rescore-lifecycle.js markRescoreComplete(),
+// the NORMAL ensemble-scoring success path — NOT the audit-fix path above).
+// 18 days of nightly drains never decreased the needsRescore queue because no
+// breadcrumb recognized this stamp: markRescoreComplete() deletes needsRescore
+// and stamps rescoreCompletedAt in the same write, and the same-job
+// push-review-texts restore (both the merge-mode loop here and the
+// action.yml/restore-protected-fields.js git-level restore) saw committed HEAD
+// still carrying needsRescore:true and resurrected it every time. Same
+// freshness-gated shape as stuckRescoreCleared above. ──
+
+const rescoreCompletedToday = new Date().toISOString();
+
+test('isIntentionalClear: fresh rescoreCompletedAt covers needsRescore', () => {
+  const cleared = { rescoreCompletedAt: rescoreCompletedToday };
+  assert.equal(isIntentionalClear('needsRescore', cleared), true);
+  // No stamp does NOT suppress the restore.
+  assert.equal(isIntentionalClear('needsRescore', {}), false);
+});
+
+test('isIntentionalClear: STALE rescoreCompletedAt (>3d old) does NOT suppress restore', () => {
+  const stale = { rescoreCompletedAt: new Date(Date.now() - 10 * 86400000).toISOString() };
+  assert.equal(isIntentionalClear('needsRescore', stale), false);
+});
+
+test('isIntentionalClear: FUTURE-dated rescoreCompletedAt does NOT suppress restore (mirrors codex review, task #1237)', () => {
+  const future = { rescoreCompletedAt: new Date(Date.now() + 30 * 86400000).toISOString() };
+  assert.equal(isIntentionalClear('needsRescore', future), false);
+});
+
+test('rescoreCompletedAt breadcrumb does NOT extend to rescoreReason/lateStarAnchorBand (markRescoreComplete preserves rescoreReason and never touches lateStarAnchorBand)', () => {
+  const cleared = { rescoreCompletedAt: rescoreCompletedToday };
+  assert.equal(isIntentionalClear('rescoreReason', cleared), false);
+  assert.equal(isIntentionalClear('lateStarAnchorBand', cleared), false);
+});
+
+test('restore decision: markRescoreComplete() success path is NOT reverted by the same-job restore (BRO-2429 regression)', () => {
+  // Reproduces the llm-ensemble-score.yml shape: the drain calls
+  // markRescoreComplete() (deletes needsRescore, stamps rescoreCompletedAt) in
+  // the SAME checkout whose HEAD (committed) still carries needsRescore:true —
+  // the exact "committed has content, local is empty" pattern the restore
+  // treated as data loss before this breadcrumb existed.
+  const { markRescoreComplete } = require(path.join(repoRoot, 'scripts/lib/rescore-lifecycle.js'));
+  const local = markRescoreComplete({ needsRescore: true, assignedScore: 90 }, rescoreCompletedToday);
+  const committed = { needsRescore: true, rescoreReason: 'bw-v6-decompression' };
+  assert.equal(wouldRestore('needsRescore', local, committed), false,
+    'a freshly-completed rescore must NOT have needsRescore resurrected by the same-job restore');
+});
+
+test('a genuine FUTURE re-flag still queues once the rescoreCompletedAt stamp is present but the re-flag write is non-empty', () => {
+  // Mirrors the stuckRescoreCleared sibling test: every producer that
+  // RE-FLAGS needsRescore writes a real, non-empty `true`. wouldRestore only
+  // ever fires when the LOCAL field is empty, so a later legitimate re-flag —
+  // even while rescoreCompletedAt from the prior run is still on the record —
+  // is never suppressed; it is written directly.
+  const reflagged = {
+    needsRescore: true,
+    rescoreCompletedAt: rescoreCompletedToday,
+  };
+  assert.equal(wouldRestore('needsRescore', reflagged, { needsRescore: false }), false);
+});

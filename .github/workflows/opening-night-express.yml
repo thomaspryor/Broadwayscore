@@ -62,6 +62,16 @@ on:
         required: false
         type: boolean
         default: false
+      is_retry:
+        description: 'Internal: this run is a same-night retry (card #1889) — never re-enqueues another retry'
+        required: false
+        type: boolean
+        default: false
+      retry_delay_hours:
+        description: 'Same-night retry delay in hours, when this run finds coverage too thin to trust (card #1889)'
+        required: false
+        type: string
+        default: '16'
 
 permissions:
   contents: write
@@ -241,6 +251,7 @@ jobs:
           node scripts/gather-reviews.js \
             --shows="${{ inputs.show_id }}" \
             --from-post-opening \
+            --opening-night \
             $BWW_FLAG
           echo "Gather complete."
 
@@ -282,6 +293,25 @@ jobs:
             --aggressive \
             --max-reviews=50
           echo "Collection complete."
+
+      # Card #1889: Express auto-fires once, immediately, on the previews->open
+      # transition — for an evening opening that can land hours before curtain,
+      # finding next to nothing, with no retry. If this run's collected text
+      # looks too thin to trust (isIncludableForRebuild-scoreable records
+      # mostly stub/excerpt, not real text), queue a same-night retry rather
+      # than leaving the show to the weekly recollect-for-scores.yml cron.
+      # Writes data/audit/express-retry-queue.json when a retry is warranted —
+      # picked up by the existing "Check for changes"/"Commit and push" steps
+      # below, no separate push needed. is_retry=true runs never re-enqueue;
+      # if a retry run is STILL thin, this routes an alert instead.
+      - name: Evaluate full-text coverage for same-night retry
+        if: inputs.dry_run != true
+        run: |
+          node scripts/express-retry-queue.js evaluate \
+            --show="${{ inputs.show_id }}" \
+            --market="${{ inputs.market }}" \
+            --is-retry="${{ inputs.is_retry }}" \
+            --retry-delay-hours="${{ inputs.retry_delay_hours }}"
 
       - name: Push review texts to private repo
         if: inputs.dry_run != true
@@ -382,10 +412,11 @@ jobs:
               runId: '${{ github.run_id }}',
               reviewCount: showReviews.length,
               scoredCount: showReviews.filter(r => r.compositeScore > 0).length,
+              isRetry: ${{ inputs.is_retry }},
             };
             fs.writeFileSync(filePath, JSON.stringify(existing, null, 2) + '\n');
-            console.log('Express completion record written: ' + showReviews.length + ' reviews, ' +
-              showReviews.filter(r => r.compositeScore > 0).length + ' scored');
+            console.log('Express completion record written' + (${{ inputs.is_retry }} ? ' (retry)' : '') + ': ' +
+              showReviews.length + ' reviews, ' + showReviews.filter(r => r.compositeScore > 0).length + ' scored');
           "
 
       - name: Check for changes
@@ -432,8 +463,9 @@ jobs:
           AFTER=${{ steps.after.outputs.count }}
           DIFF=$((AFTER - BEFORE))
           DIFF_STR=$([ $DIFF -ge 0 ] && echo "+$DIFF" || echo "$DIFF")
+          RETRY_TAG=$([ "${{ inputs.is_retry }}" = "true" ] && echo " (retry)" || echo "")
 
-          git commit -m "data: Opening Night Express — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)
+          git commit -m "data: Opening Night Express$RETRY_TAG — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)
 
           Show: ${{ inputs.show_id }}
           Reviews: $BEFORE → $AFTER

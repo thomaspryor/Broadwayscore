@@ -61,6 +61,29 @@
  *   node scripts/audit-time-bomb-tests.js --days=90
  *   node scripts/audit-time-bomb-tests.js --json          # machine-readable
  *   node scripts/audit-time-bomb-tests.js --strict        # exit 1 on findings
+ *   node scripts/audit-time-bomb-tests.js --alert         # file a Linear issue per bomb
+ *   node scripts/audit-time-bomb-tests.js --out=report.json  # also write JSON to a file
+ *
+ * --alert routes each newly-found bomb (capped at ALERT_DISPATCH_CAP genuinely
+ * NEW dispatches per run — an already-tracked bomb that's still open doesn't
+ * consume a cap slot) through routeAlert(disposition:'auto') — same "auto-file,
+ * don't page" posture as audit-uncollected-live-reviews.js's --alert.
+ * conditionKey is per-bomb (`time-bomb-tests:<suite>:<file>::<name>`), so
+ * routeAlert's own 7-day cooldown ledger dedupes a weekly cron re-finding the
+ * same still-armed bomb without suppressing a genuinely NEW one found the same
+ * week. A bomb that stops reproducing gets resolveCondition()'d so a future
+ * recurrence (e.g. fixed, then re-broken a different way) notifies immediately
+ * instead of waiting out a stale cooldown. A real dispatch failure (not a
+ * cooldown-silent skip) exits 3, distinct from exit 2's "run itself was
+ * unreliable" — both should fail the calling job so notify-failure fires.
+ *
+ * --out writes the SAME JSON report --json prints to stdout to a file instead
+ * (or in addition — the two are independent). Use this rather than redirecting
+ * `--json > file` when also passing --alert: routeAlert can itself write
+ * informational lines to stdout (e.g. the cross-system Linear-dedupe log),
+ * which would otherwise land inside a `--json`-redirected file and corrupt it.
+ * Purely additive: omitting --alert/--out changes nothing about --json/--strict
+ * output or exit codes.
  *
  * Fix a finding by making the stamp relative to run time, e.g.
  *   const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
@@ -164,13 +187,22 @@ const SUITES = [
 // treated as "did not really run" rather than "found nothing".
 const MIN_SHIFTED_TEST_RATIO = 0.95;
 
+// A real burst (many bombs found in one run) should file a handful of issues
+// immediately and let the rest catch the next weekly tick, not flood Linear in
+// one shot — same cap convention as audit-uncollected-live-reviews.js's
+// ALERT_DISPATCH_CAP.
+const ALERT_DISPATCH_CAP = 10;
+
 function parseArgs(argv) {
-  const opts = { days: 30, json: false, strict: false };
+  const opts = { days: 30, json: false, strict: false, alert: false, out: null };
   for (const arg of argv.slice(2)) {
     const m = /^--days=(\d+)$/.exec(arg);
+    const outM = /^--out=(.+)$/.exec(arg);
     if (m) opts.days = Number(m[1]);
+    else if (outM) opts.out = outM[1];
     else if (arg === '--json') opts.json = true;
     else if (arg === '--strict') opts.strict = true;
+    else if (arg === '--alert') opts.alert = true;
     else if (arg === '--help' || arg === '-h') opts.help = true;
     else {
       console.error(`Unknown argument: ${arg}`);
@@ -266,7 +298,7 @@ function runSuite(command, baseArgs, files, shiftDays) {
   return { failures, totals, status: res.status, sawTap, unlocated };
 }
 
-function main() {
+async function main() {
   const opts = parseArgs(process.argv);
   if (opts.help) {
     console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0]);
@@ -372,29 +404,29 @@ function main() {
 
   const totalUnlocated = results.reduce((n, r) => n + r.base.unlocated + r.shifted.unlocated, 0);
 
+  // Built once so --json (stdout) and --out (file) always agree, and so
+  // neither channel is required to reconstruct it a second time.
+  const reportObj = {
+    shiftDays: opts.days,
+    filesChecked: allFiles.length,
+    suites: results.map((r) => ({
+      suite: r.suite,
+      label: r.label,
+      baseline: { tests: r.base.totals.tests, fail: r.base.totals.fail, unlocatedFailures: r.base.unlocated },
+      shifted: {
+        tests: r.shifted.totals.tests,
+        fail: r.shifted.totals.fail,
+        unlocatedFailures: r.shifted.unlocated,
+      },
+    })),
+    exempted,
+    timeBombs: bombs,
+  };
+
+  if (opts.out) fs.writeFileSync(opts.out, JSON.stringify(reportObj, null, 2));
+
   if (opts.json) {
-    console.log(
-      JSON.stringify(
-        {
-          shiftDays: opts.days,
-          filesChecked: allFiles.length,
-          suites: results.map((r) => ({
-            suite: r.suite,
-            label: r.label,
-            baseline: { tests: r.base.totals.tests, fail: r.base.totals.fail, unlocatedFailures: r.base.unlocated },
-            shifted: {
-              tests: r.shifted.totals.tests,
-              fail: r.shifted.totals.fail,
-              unlocatedFailures: r.shifted.unlocated,
-            },
-          })),
-          exempted,
-          timeBombs: bombs,
-        },
-        null,
-        2
-      )
-    );
+    console.log(JSON.stringify(reportObj, null, 2));
   } else {
     console.log('');
     for (const r of results) {
@@ -422,7 +454,72 @@ function main() {
     }
   }
 
+  let alertDispatchFailed = false;
+  if (opts.alert) {
+    const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-router');
+    const CONDITION_PREFIX = 'time-bomb-tests:';
+    const currentKeys = new Set(bombs.map((b) => `${CONDITION_PREFIX}${b.suite}:${b.file}::${b.name}`));
+
+    // A bomb that stopped reproducing (fixed, or the whole file/test went
+    // away) gets its cooldown cleared so a future recurrence — even a
+    // different way of the same test breaking — notifies right away instead
+    // of silently waiting out a stale 7-day window.
+    const ledger = loadLedger();
+    for (const key of Object.keys(ledger.conditions)) {
+      if (!key.startsWith(CONDITION_PREFIX)) continue;
+      if (ledger.conditions[key].status !== 'open') continue;
+      if (currentKeys.has(key)) continue;
+      resolveCondition(key);
+    }
+
+    // Cap counts genuinely NEW dispatches only — a bomb still covered by
+    // routeAlert's cooldown (action:'silent') doesn't consume a slot, so a
+    // handful of long-lived, already-tracked bombs can never starve out a
+    // freshly-found one.
+    let filed = 0;
+    let i = 0;
+    for (; i < bombs.length && filed < ALERT_DISPATCH_CAP; i++) {
+      const b = bombs[i];
+      try {
+        const result = await routeAlert({
+          conditionKey: `${CONDITION_PREFIX}${b.suite}:${b.file}::${b.name}`,
+          title: `Time-bomb test armed: ${b.file} — ${b.name}`,
+          // Front-loaded (clip-safety audit, 2026-08-26): a digest clips the
+          // head of this field, and a leading "[suite]" tag clipped to a bare
+          // "[" — an unreadable fragment naming nothing. The file and test
+          // name must be the opening words; the suite rides along inline.
+          description: `${b.file} — "${b.name}" (${b.suite} suite) passes today but fails once the clock moves +${opts.days}d, with no code change in between. Found by \`node scripts/audit-time-bomb-tests.js --days=${opts.days}\`.`,
+          hint: `Make the stamp relative to run time (e.g. daysAgoISO(1)) instead of a hardcoded literal — do NOT widen the production freshness window to fit the literal. If genuinely clock-coupled by design, add a "// ${EXEMPT_MARKER} <reason>" comment to the test file instead.`,
+          severity: 'warning',
+          disposition: 'auto',
+          cardAction: 'Fix',
+        });
+        if (result.action !== 'silent') {
+          filed++;
+          if (result.dispatchOk === false) {
+            console.error(`[alert] dispatch failed for ${b.file}::${b.name}: ${result.dispatchError || 'unknown error'}`);
+            alertDispatchFailed = true;
+          }
+        }
+      } catch (err) {
+        console.error(`[alert] routeAlert threw for ${b.file}::${b.name}: ${err.message}`);
+        alertDispatchFailed = true;
+      }
+    }
+    if (i < bombs.length) {
+      console.error(`${bombs.length - i} additional bomb(s) deferred to next run (${ALERT_DISPATCH_CAP} new dispatch(es)/run cap reached).`);
+    }
+  }
+
   if (bombs.length > 0 && opts.strict) process.exit(1);
+  // Distinct from exit 2 ("the audit run itself was unreliable"): the audit
+  // ran fine, but --alert failed to actually tell anyone about a real
+  // finding. Both should fail the calling job so notify-failure fires —
+  // a green run here would otherwise look identical to "nothing to report".
+  if (alertDispatchFailed) process.exit(3);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(2);
+});

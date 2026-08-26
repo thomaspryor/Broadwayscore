@@ -90,7 +90,16 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 60->100 (card #1910 audit, 2026-08-26): raising 2 push steps below to
+    # 600s/20-retries (from #1842/#1891's undersizing pattern) pushed this
+    # job's worst-case summed step budget — all 6 push-with-retry.sh steps
+    # (2x600s + 4x240s = 2160s) plus every OTHER step's own explicit
+    # timeout-minutes (2880s) — to 5040s (84min), which the OLD 60min
+    # (3600s) timeout couldn't cover even before this fix (the job was
+    # already undersized on a worst-case run; this audit is what surfaced
+    # it, not something the 2 step edits introduced). 100min leaves ~16min
+    # (16%) of real margin over the 84min worst case.
+    timeout-minutes: 100
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -389,6 +398,10 @@ jobs:
           # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
           # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
           # data/data/audit/... path and silently no-op the reconciliation it's here for.
+          # alert-ledger.json is tracked in the public repo, so it always exists
+          # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
+          # this early exit unreachable. git diff --cached --quiet below still
+          # short-circuits correctly; dropped the dead clause.
           if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
@@ -419,12 +432,28 @@ jobs:
           # runner, so attributedPct reads artificially low for exactly the traffic #752
           # exists to name.
           { [ -f data/audit/scraper-spend-ledger.jsonl ] && git add data/audit/scraper-spend-ledger.jsonl; } || true
+          # BRO-1699: the SERP-burst tripwire now calls routeAlert()
+          # (scripts/lib/owner-alert-router.js), which writes the CI-tracked
+          # ledger at this path. Must be committed in this same job or the
+          # tripwireAlerted-style dedup the router provides resets every run
+          # (alert-ledger-commit-check.js CI gate).
+          { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
 
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # this is one of only 2 genuinely hard-fail push steps in this job (the
+      # other 4 "Commit ..." steps below are wrapped in `|| echo` or
+      # `continue-on-error: true`) — a failed push here silently drops newly
+      # discovered opening-night reviews. Same #1842/#1891-class undersizing:
+      # the shared 5-retries/240s default backoff-sums to only 45s
+      # (N^2+4N), far under the deadline. Sized to the same 20/600s pairing
+      # as rebuild-fast.yml's #1891 fix (ratio ~0.8).
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -432,7 +461,7 @@ jobs:
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
-          bash ../../scripts/lib/push-with-retry.sh 5 main
+          bash ../../scripts/lib/push-with-retry.sh 20 main
 
       - name: Collect full text inline
         id: collect
@@ -441,6 +470,16 @@ jobs:
           SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
+          # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
+          # loop cleanly with a checkpoint well before the step's own
+          # timeout-minutes below, so a big backlog exits 0 instead of being
+          # externally SIGKILLed (which the fail-fast verify step below
+          # correctly treats as a crash worth paging on — but a graceful
+          # "ran out of time this run" isn't one; task #1911 follow-up,
+          # 2026-08-23). 9 min leaves ~3 min for an in-flight review
+          # (90s REVIEW_TIMEOUT + up to 90s browser-restart recovery) plus
+          # the final checkpoint commit/push to land before the 12-min cap.
+          MAX_DURATION_MS: '540000'
           ARCHIVE_FIRST: 'true'
           RETRY_FAILED: 'true'
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -484,7 +523,7 @@ jobs:
           BD_OPENING_NIGHT: '1'
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 12
 
       - name: Commit collected texts
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
@@ -659,8 +698,17 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
 
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # the other genuinely hard-fail push step in this job (see "Commit new
+      # review files" above) — this one gates the deploy-trigger step right
+      # after it, so a failed push here silently blocks the fast-path deploy
+      # on a live opening night. Was on the bare shared default (7 retries/
+      # 240s, backoffSum 77s). Same 20/600s pairing as rebuild-fast.yml's
+      # #1891 fix.
       - name: Commit and push rebuilt data (fast_path)
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -670,7 +718,7 @@ jobs:
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
           git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }
           git commit -m "data: Opening night poller (fast path) — inline rebuild"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 20 main
 
       - name: Push core data to private repo (fast_path)
         if: always() && inputs.fast_path && steps.fast_rebuild.outcome == 'success'

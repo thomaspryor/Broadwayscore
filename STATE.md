@@ -1,28 +1,67 @@
-# BRO-848 session state (handoff)
+# BRO-318 — main test.yml STILL red — session state (interrupted, resumed, interrupted again)
 
-## Done
-- Root-caused + fixed a real gating bug in `scripts/migrate-reroute-backlog.js --cross-market`: it pre-filtered on the same-market `pickRerouteTarget()` decision before `classifyCandidate()` ever ran, so cross-market-flagged reviews never got a shot at West-End-sibling routing.
-- Broadened + then re-tightened (after Codex ship-check review) two year-detection regexes.
-- Closed a TOCTOU race in `--execute`'s write-target step (`{flag:'wx'}` + `targetWrittenByUs` gate on cleanup).
-- Found + closed a real copyright leak: the migration's plan/log JSON wrote full review `fullText` into the *public* repo's `data/` dir, outside the CI "no copyrighted content" guard's scope. Added `.gitignore` entries.
-- Generated + executed a 47-entry cross-market reroute plan against the live corpus (44/47 already scored). Committed + pushed to the private `broadway-review-texts` repo: commit `1f810c1204e`.
-- Added `scripts/verify-reroute-migration.test.mjs` (delegates to `--verify`), registered in `test.yml` push-paths + `tests/unit-test-manifest.txt`. Fixed it once more after finding a real edge case live (present-but-empty log = skip, not fail).
-- All commits merged to `main` and pushed: `104a688c5ec`, `7ce229a5d23`.
-- Commented on Linear BRO-848 with full findings (the specific hamlet/godot/sunset-boulevard-1994 examples from the original card have no valid West End sibling show — separate task) and moved it to **In Review**.
-- Dispatched a manual rebuild so the 47 fixed reviews actually land on the live site (nothing else would have triggered it — a direct `git push` to the private review-texts repo doesn't fire `rebuild-reviews.yml`'s `workflow_run` trigger, which only listens for "Collect Review Texts" completing).
+## Root cause found
+`data-validation` job in test.yml fails on every main push with:
+"Found 1 NEW duplicate URL(s) within same show+outlet in reviews.json:
+queen-versailles-2025: Vulture | .../theater-review-the-queen-of-versailles-broadway-... (Sara Holdren, David Fox)"
 
-## In flight — NEEDS FOLLOW-UP
-- **GH Actions run 32456719610** ("Rebuild Reviews Data", dispatched ~07:00 UTC 2026-08-21) was still `pending`/running when this session hit its time budget. A resumed session should:
-  1. `gh run view 32456719610 --json status,conclusion` (or `scripts/lib/wait-for-run.sh 32456719610`, NOT `gh run watch`)
-  2. If green: verify the collision-drops metric and that the 47 moved reviews are now scoring — check e.g. `romeo-and-juliet-off-broadway-2026`'s review count/score on prod (may need `scripts/check-prod-deploy.js` + the next Vercel deploy cycle too, since a rebuild alone doesn't deploy).
-  3. If red/failed: diagnose from the run log — nothing about my fix should make rebuild fail (the 47 moved files are ordinary, keyword-verified, already-scored reviews), so a failure is more likely unrelated ambient corpus flap; don't assume it's caused by this session's changes without checking.
+`data/reviews.json` (public repo, derived) contains TWO Vulture entries for queen-versailles-2025
+(criticName "Sara Holdren" and criticName "David Fox"), both with `duplicateOf: null` — i.e. NOT
+deduped.
 
-## Not done (scoped as follow-up, not this ticket)
-- `sunset-boulevard-1994`, `waiting-for-godot-2009/2013/2025`: no West End sibling show exists in `shows.json` at all. Their flagged reviews are mostly correctly-excluded exact-URL duplicates of copies already filed at the right Broadway target. A few (e.g. the 1993 London premiere AP wire review) need a **new show entry** (editorial judgment + Playbill/venue verification per CLAUDE.md rule 3) before they can be routed anywhere — out of scope for a pure reroute-execution task.
-- `hamlet-1975/1995/2009`: already fixed via **BRO-867**, which landed on `main` mid-session via a parallel worktree (flag+exclude, since no valid target existed for the Eddie Izzard solo show or the pre-transfer Oct 2025 National Theatre run).
-- `rollback-reroute-backlog.js` still hardcodes the non-cross-market log path only — would need a `--cross-market` flag mirroring `migrate-reroute-backlog.js` if a cross-market run ever needs rolling back. Minor, not urgent (the executed 47-move log is `data/reroute-migration-log-cross-market.json`, gitignored, still present locally on this machine at `/Users/tompryor/Broadwayscore/data/`).
+But the private repo source of truth (`~/broadway-review-texts/queen-versailles-2025/`) already has
+the correct flags, committed 2026-08-15 in `76b9ad9cf07` "fix: collapse 59 byline-explosion clusters
+(task #1627)":
+- `vulture--sara-holdren-and-jesse-david-fox.json` — canonical, `duplicateOf: null` (the keeper)
+- `vulture--david-fox.json` — `duplicateOf: vulture--sara-holdren-and-jesse-david-fox.json`
+- `vulture--sara-holdren.json` — `duplicateOf: ...`, `wrongProduction: true`
+- `vulture--jackson-mchenry.json` — `duplicateOf: ...`
 
-## Next command for a resumed session
-```
-gh run view 32456719610 --json status,conclusion,url
-```
+So `reviews.json` is simply STALE relative to the fixed source files — it was never rebuilt with the
+post-8/15 state for this show. `rebuild-all-reviews.js`'s duplicateOf exclusion logic
+(scripts/lib/review-guards.js ~L2880) looks correct on inspection; I did not find a code bug in the
+20 min available — the leading theory is a stale rebuild, not broken dedup logic. **Needs
+confirmation**: check whether rebuild-fast.yml/rebuild-reviews.yml runs since 2026-08-15 actually
+touched queen-versailles-2025 (grep their run logs / commit diffs for the show), or whether they've
+been silently no-op'ing / failing for this show specifically.
+
+## Action taken this session
+Dispatched `gh workflow run "Rebuild Reviews Data" -f reason="BRO-318: fix stale reviews.json..."`
+→ run https://github.com/thomaspryor/Broadwayscore/actions/runs/32271630295
+
+**NOT YET VERIFIED** — session was killed before the run could be checked. Also note: `gh run list
+--workflow=test.yml --branch=main` returns STALE data (last entry 2026-08-05) — use
+`gh api repos/thomaspryor/Broadwayscore/actions/workflows/227151982/runs?branch=main&event=push`
+instead (workflow id 227151982 confirmed via `gh api .../actions/workflows`). This CLI staleness
+bug is itself worth a quick look if it recurs (possibly a gh CLI cache issue, unconfirmed).
+
+## Next steps (exact commands)
+1. Check the rebuild run's outcome:
+   `gh run view 32271630295 --json status,conclusion`
+   (or `gh api repos/thomaspryor/Broadwayscore/actions/runs/32271630295`)
+2. If it succeeded, re-check reviews.json for the duplicate:
+   `git -C ~/broadway-scorecard-data pull && python3 -c "import json; d=json.load(open('/Users/tompryor/broadway-scorecard-data/reviews.json')); print([r for r in d['reviews'] if r.get('showId')=='queen-versailles-2025' and 'vulture' in json.dumps(r).lower()])"`
+   Expect exactly ONE vulture entry now (criticName "Sara Holdren and Jesse David Fox"), not two.
+3. If still duplicated after a successful rebuild → THAT is the real bug (dedup logic issue) —
+   re-read `scripts/lib/review-guards.js` around `duplicateOfCircularTiebreak` (~L2906) and
+   `rebuild-all-reviews.js` L1599/L1653 (cascade-clear before unlink) for why these 2 particular
+   files aren't being excluded. Also check `data/audit/same-url-duplicate-baseline.json` — do NOT
+   add this pair to the baseline (that's the wrong fix per the validator's own error message).
+4. Once reviews.json is fixed and pushed, push a trivial commit to main (or wait for next
+   scheduled push) to get a fresh main test.yml run, and confirm streak resolves:
+   `node scripts/health-check.js` should no longer list "main test.yml STILL red — auto-dispatch
+   did not resolve it".
+5. Run acceptance check:
+   `node scripts/check-health-row-absent.js --row-b64 bWFpbiB0ZXN0LnltbCBTVElMTCByZWQg4oCUIGF1dG8tZGlzcGF0Y2ggZGlkIG5vdCByZXNvbHZlIGl0`
+6. Prevention (CLAUDE.md rule 4 — fix root cause + prevention): once confirmed root cause, consider
+   whether rebuild-fast/rebuild-reviews needs a guard that fails loudly (not silently) if a show's
+   review-text duplicateOf flags don't match its reviews.json state — i.e. a drift detector between
+   source flags and derived output, so stale-rebuild bugs like this surface immediately instead of
+   redenning main for 4+ days.
+7. Comment on Linear BRO-318 with outcome, set state to "In Review" only once verified fixed and
+   ship-check run. If still investigating, leave as "In Progress" and comment what's blocking.
+
+## Not yet done
+- No code changes made yet (investigation only).
+- /ship-check not run (nothing to ship yet).
+- Linear comment not yet posted for this final state — DO THIS FIRST on resume if not already done.

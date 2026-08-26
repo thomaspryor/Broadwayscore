@@ -1,28 +1,16 @@
 {
-  "generatedAt": "2026-08-17T13:05:27.209Z",
-  "verdict": "inconclusive",
-  "gapCount": 0,
-  "gapShows": [],
-  "trendEntries": 4,
+  "generatedAt": "2026-08-24T13:12:50.849Z",
+  "verdict": "gaps-found",
+  "gapCount": 3,
+  "gapShows": [
+    "the-gin-game-2026",
+    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+  ],
+  "trendEntries": 5,
   "acceptance": {
     "accepted": false,
-    "reason": "2026-08-05 found 6 gap(s) (hit-machine-off-west-end-2026, why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026, tender-off-west-end-2026, disruption-off-broadway-2026) — streak reset",
+    "reason": "2026-08-10 found 4 gap(s) (the-family-album-regional-2026, the-wind-in-the-willows-theatre-on-kew-off-west-end-2026) — streak reset",
     "consideredRuns": [
-      {
-        "date": "2026-08-05",
-        "generatedAt": "2026-08-05T16:17:31.345Z",
-        "sampleSize": 5,
-        "verdict": "gaps-found",
-        "measured": 5,
-        "gapCount": 6,
-        "gapShows": [
-          "hit-machine-off-west-end-2026",
-          "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
-          "tender-off-west-end-2026",
-          "disruption-off-broadway-2026"
-        ],
-        "reason": null
-      },
       {
         "date": "2026-08-10",
         "generatedAt": "2026-08-10T12:32:28.852Z",
@@ -35,17 +23,33 @@
           "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
         ],
         "reason": null
+      },
+      {
+        "date": "2026-08-24",
+        "generatedAt": "2026-08-24T13:12:50.849Z",
+        "sampleSize": 5,
+        "verdict": "gaps-found",
+        "measured": 5,
+        "gapCount": 3,
+        "gapShows": [
+          "the-gin-game-2026",
+          "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+        ],
+        "reason": null
       }
     ]
   },
   "latest": {
-    "date": "2026-08-17",
-    "generatedAt": "2026-08-17T13:05:27.209Z",
+    "date": "2026-08-24",
+    "generatedAt": "2026-08-24T13:12:50.849Z",
     "sampleSize": 5,
-    "verdict": "inconclusive",
+    "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 0,
-    "gapShows": [],
-    "reason": "provider outage — only 0/5 naive-query attempt(s) returned any raw result; the SERP chain is down, not the pipeline"
+    "gapCount": 3,
+    "gapShows": [
+      "the-gin-game-2026",
+      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+    ],
+    "reason": null
   }
 }

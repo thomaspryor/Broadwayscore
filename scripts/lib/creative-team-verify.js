@@ -12,11 +12,6 @@
  */
 
 const { foldDiacritics } = require('./title-match');
-const { serpQuery } = require('./url-discovery');
-
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
 
 // Canonical role label written into show.creativeTeam. src/lib/data-creative.ts
 // ROLE_TO_CATEGORIES is exact-case — writing "playwright" or "Book writer"
@@ -158,94 +153,4 @@ function serpTextConfirms(serpResults, phrases, name, opts = {}) {
   });
 }
 
-/**
- * Shared SERP-verification gate for creative-team writes — network call.
- *
- * 2026-05-26: previously non-director roles proposed by the LLM were accepted
- * without verification. Result: LLM hallucinated "Martyna Majok (Book Writer)"
- * for Liberation (correct: Bess Wohl, Playwright) and reached production. Now
- * ALL roles require SERP confirmation; unrecognized roles (design/tech
- * credits with no reliable "<verb> <name>" attribution phrase — Scenic
- * Design, Orchestrations, etc.) are rejected rather than trusted verbatim.
- *
- * BRO-102 (2026-08-20): the auto-fix-show-data.js IBDB scrape path previously
- * took ibdb.creativeTeam verbatim — a wrong table cell or stale IBDB entry
- * would repeat the wrong-attribution pattern for any Broadway show with an
- * ibdbUrl. It now routes through this same gate before writing. Extracted
- * here (BRO-102 follow-up, task #1863) so every other ibdb.creativeTeam
- * writer (discover-new-shows.js, enrich-ibdb-dates.js,
- * backfill-playwright-credits.js) can import it without pulling in
- * auto-fix-show-data.js's other dependencies.
- *
- * Cost: up to ~7 SERP calls (one per verifiable role) per call. Callers that
- * run over large batches (e.g. enrich-ibdb-dates.js's weekly cron) should
- * watch SB SERP credit headroom — see memory/feedback_sb_serp_invisible_burn.md.
- *
- * Scope note: this SERP check confirms "<verb> <name>" for the show's TITLE,
- * not its specific production year — it can't tell a 2026 revival's director
- * from a same-titled 1990s production's director if both are attributable
- * online. Callers should pair this with an upstream production-year gate
- * (e.g. lookupIBDBDates()'s openingYear check in lib/ibdb-dates.js) rather
- * than assume this function verifies production identity, only name+role
- * attribution.
- *
- * @param {object} show - must have .title; .openingDate not required (pass year separately)
- * @param {Array<{name: string, role: string}>} proposed - candidate credits to verify
- * @param {string} year - production year for the SERP query (or 'upcoming')
- * @param {string} sourceTag - stamped onto each verified member's _source field
- */
-async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag) {
-  const verified = [];
-  const seen = new Set(); // name+role dedup — a shared gate can't assume every caller pre-dedupes
-  for (const member of proposed) {
-    const name = String(member.name || '').trim();
-    if (!name) {
-      console.log(`    ❌ Blank/missing name for role "${member.role}" — rejecting`);
-      continue;
-    }
-    const role = String(member.role || '').toLowerCase();
-    const dedupeKey = `${role}::${name.toLowerCase()}`;
-    if (seen.has(dedupeKey)) continue;
-    seen.add(dedupeKey);
-
-    const verb = roleVerb(role);
-    if (!verb) {
-      console.log(`    ❌ Unrecognized role "${member.role}" for ${name} — rejecting (cannot SERP-verify)`);
-      continue;
-    }
-    const canonRole = ROLE_CANON[role] || member.role;
-    // "Music & Lyrics" is published inconsistently ("music and lyrics by" vs
-    // "music & lyrics by") — accept either spelling for this one role rather
-    // than widening every role to roleVerbVariants (which would weaken the
-    // single-verb hallucination signal the other roles rely on).
-    const phrases = role === 'music & lyrics' ? [verb, 'music & lyrics by'] : [verb];
-
-    const query = `"${show.title}" ${year} "${verb} ${name}"`;
-    console.log(`    🔍 Verifying: ${name} (${member.role}) via SERP...`);
-    try {
-      await sleep(500);
-      const serpResults = await serpQuery(query);
-      if (serpResults && serpResults.length > 0) {
-        // Require the full phrase "directed by [name]" in a snippet — not just
-        // the name — anchored to a segment naming this show (see the
-        // serpTextConfirms doc comment above for the snippet-stitching failure
-        // mode).
-        const confirmed = serpTextConfirms(serpResults, phrases, name, { title: show.title });
-        if (confirmed) {
-          console.log(`    ✅ SERP confirmed: ${name} (${member.role})`);
-          verified.push({ ...member, name, role: canonRole, _source: sourceTag });
-        } else {
-          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
-        }
-      } else {
-        console.log(`    ❌ No SERP results for ${member.name} (${member.role}) — rejecting`);
-      }
-    } catch (e) {
-      console.log(`    ⚠️  SERP verification failed for ${member.name}: ${e.message}`);
-    }
-  }
-
-  return verified;
-}
-
-module.exports = { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch, verifyCreativeTeamViaSerp };
+module.exports = { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch };

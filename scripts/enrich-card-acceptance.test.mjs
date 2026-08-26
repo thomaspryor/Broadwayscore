@@ -609,9 +609,10 @@ test('linearIssueNumber: parses the trailing number, non-numeric identifiers sor
 
 // ship-check/Codex finding (task #1830): a stale "open" snapshot must never
 // let a write resurrect an issue that reached Done/Canceled since the sweep.
-test('isLinearIssueTerminal: true for completed/canceled state types, false otherwise', () => {
+test('isLinearIssueTerminal: true for completed/canceled/duplicate state types, false otherwise', () => {
   assert.equal(isLinearIssueTerminal({ state: { type: 'completed', name: 'Done' } }), true);
   assert.equal(isLinearIssueTerminal({ state: { type: 'canceled', name: 'Canceled' } }), true);
+  assert.equal(isLinearIssueTerminal({ state: { type: 'duplicate', name: 'Duplicate' } }), true);
   assert.equal(isLinearIssueTerminal({ state: { type: 'started', name: 'In Progress' } }), false);
   assert.equal(isLinearIssueTerminal({ state: { type: 'unstarted', name: 'Todo' } }), false);
   assert.equal(isLinearIssueTerminal({}), false);

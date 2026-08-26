@@ -1,0 +1,74 @@
+{
+  "runDate": "2026-08-26T20:05:53.554Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "paranormal-activity-2026,the-real-ivanov-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "33.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "paranormal-activity-2026/nytimes--helen-shaw.json"
+  ],
+  "failed": [
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "paranormal-activity-2026/deadline--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
