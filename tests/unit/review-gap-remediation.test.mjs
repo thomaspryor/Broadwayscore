@@ -28,6 +28,7 @@ import path from 'node:path';
 const require = createRequire(import.meta.url);
 const { classifyReviewUrl, hostOf } = require('../../scripts/lib/non-review-url-patterns.js');
 const { sameOutletUrlVariant, _buildDomainMap } = require('../../scripts/lib/outlet-canonicalize.js');
+const { resolveReviewTextsDir } = require('../../scripts/lib/review-texts-dir.js');
 
 const REPO_ROOT = path.join(import.meta.dirname, '..', '..');
 
@@ -97,18 +98,37 @@ describe('NYT Teeman attribution (task #1180)', () => {
     assert.ok(entry.knownOutlets.includes('nytimes'), 'nytimes must be in Teeman\'s knownOutlets');
   });
 
-  it('the Disruption NYT/Teeman review in reviews.json is not flagged wrongAttribution', () => {
+  it('the source-of-truth review file (data/review-texts/disruption-off-broadway-2026/nytimes--tim-teeman.json) is not flagged wrongAttribution', () => {
+    // Source-of-truth first, per-file, not the aggregated derived output —
+    // review-texts is what rebuild-all-reviews.js reads FROM to produce
+    // reviews.json, so a pin against the derived file alone can silently
+    // rot if a rebuild changes without the source record changing too.
+    const reviewTextsDir = resolveReviewTextsDir();
+    const sourcePath = path.join(reviewTextsDir, 'disruption-off-broadway-2026', 'nytimes--tim-teeman.json');
+    let source;
+    try {
+      source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
+    } catch {
+      return; // review-texts (private repo) not checked out in this environment — nothing to assert
+    }
+    assert.equal(source.criticName, 'Tim Teeman');
+    assert.notEqual(source.wrongAttribution, true);
+    assert.ok(
+      /not fabricated/i.test(source.crossOutletVerifiedNote || ''),
+      'expected the task #1180 correction note confirming the live-page byline is genuine'
+    );
+
+    // Cross-check against the derived output reviews.json rolls up from this
+    // same source file — if they disagree, the rebuild pipeline itself is
+    // the bug, and that is worth failing loudly on too.
     const reviewsPath = path.join(REPO_ROOT, 'data', 'reviews.json');
     let arr;
     try {
       const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
       arr = Array.isArray(raw) ? raw : (raw.reviews || Object.values(raw));
     } catch {
-      return; // reviews.json not populated in this environment — nothing to assert
+      return; // reviews.json not populated in this environment — nothing further to assert
     }
-    // Scoped to the specific show (not "first Teeman/NYT row found") so this
-    // actually proves the Disruption record's attribution, not some other
-    // show's, and a rename/reorder of reviews.json can't quietly satisfy it.
     const teeman = arr.find(r => r.showId === 'disruption-off-broadway-2026' && r.criticName === 'Tim Teeman');
     assert.ok(teeman, 'expected a Tim Teeman review for disruption-off-broadway-2026 in data/reviews.json');
     assert.ok(/nytimes\.com/.test(teeman.url || ''), 'expected the Disruption Teeman review to be an nytimes.com URL');

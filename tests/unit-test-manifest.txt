@@ -173,6 +173,7 @@ tests/unit/backfill-unknown-critics-locked.test.mjs
 tests/unit/bd-telemetry.test.mjs
 tests/unit/block-review-cli.test.mjs
 tests/unit/board-card-marker.test.mjs
+tests/unit/board-gate-failopen.test.mjs
 tests/unit/board-probe.test.mjs
 tests/unit/branch-protection.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
@@ -653,4 +654,3 @@ tests/unit/worktree-live-lease-check.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs
 tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
-tests/unit/board-gate-failopen.test.mjs
