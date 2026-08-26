@@ -1180,6 +1180,14 @@ on:
       - 'scripts/deep-research-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
       - 'scripts/gather-reviews.js'
+      # Colocated regression test for quickDateCheck/verifyProduction (date-range +
+      # venue filters that gather-reviews.js relies on via production-verifier.js) —
+      # registered in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+      # isn't globbed there), but ALSO needs this push-path entry since this job
+      # only fires on paths matching this allow-list; a solo edit to just the test
+      # file would otherwise ship with zero CI (same class as scripts/discover-new-shows.js
+      # + .test.mjs above).
+      - 'scripts/gather-reviews.test.mjs'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
@@ -1286,6 +1294,11 @@ on:
       - 'scripts/audit-venue-write-guard.js'
       - 'scripts/audit-venue-write-guard.test.mjs'
       - 'data/audit/venue-write-guard-baseline.json'
+      # BRO-2472: scripts/triage-unopened-shows.mjs (BRO-80 prior-run triage
+      # CLI) lives at scripts/ root, outside the scripts/lib/** glob, and had
+      # no path entry of its own — a solo edit to it got ZERO CI, same gap
+      # shape as every other scripts/ root file on this list.
+      - 'scripts/triage-unopened-shows.mjs'
       # Email-capture gate logic (cooldown + mobile-timing A/B) + its tsx-batch test.
       - 'src/lib/gate-logic.ts'
       - 'src/config/email-capture.ts'
@@ -1512,6 +1525,11 @@ on:
       # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
       # side triggers CI.
       - 'scripts/enrich-ibdb-dates.test.mjs'
+      # BRO-626: WE todaytix-collapsed press-night enrichment. scripts/lib/
+      # counterpart is covered by the scripts/lib/**.test.mjs glob; this
+      # root-level pair is NOT globbed, so it's path-listed here too.
+      - 'scripts/enrich-todaytix-press-nights.js'
+      - 'scripts/enrich-todaytix-press-nights.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
       - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery

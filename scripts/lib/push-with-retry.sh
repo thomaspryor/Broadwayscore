@@ -794,6 +794,23 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/audit/ob-venue-candidates.json)
+        # BRO-158 ("the #788 class"): 4 independent producers, each in its
+        # own GitHub Actions checkout. Falling to the generic keep-local case
+        # below would silently drop every candidate the OTHER run staged or
+        # pruned this push cycle — the exact real merge conflict this ticket
+        # was filed against (2026-08-03). mergeObVenueCandidates unions both
+        # sides by candidateHash; ours wins on shared keys. (The likelier
+        # non-conflicting-rebase shape of this same race is covered by
+        # reconcile_merged_json() instead — see this file's registry entry.)
+        echo "  Auto-resolving (ob-venue-candidates merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::ob-venue-candidates merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"

@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { parseDate } = require('./lib/date-utils');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -138,8 +139,8 @@ function runBeforeOpeningMode(openingDateStr, showId) {
 
     // Must have a publishDate to compare
     if (!data.publishDate) { skipped++; continue; }
-    const pubDate = new Date(data.publishDate);
-    if (isNaN(pubDate.getTime())) { skipped++; continue; }
+    const pubDate = parseDate(data.publishDate);
+    if (!pubDate) { skipped++; continue; }
 
     // Only target reviews published 30+ days before opening (prior production contamination)
     if (pubDate >= cutoff) { skipped++; continue; }

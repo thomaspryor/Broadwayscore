@@ -875,7 +875,7 @@ function decideInclusion(review, show, guards) {
       // Same predicate the rebuild inclusion pass calls (parity by construction,
       // incl. the priorRuns/tourLegs exemptions the legacy sim branch below lacked).
       const pw = evalPreWindow({
-        pubDate: new Date(review.publishDate),
+        pubDate: parseDate(review.publishDate),
         showEarliest: new Date(show.earliestDate),
         isFlexCategory: isOB || isLondon,
         priorRuns: show.priorRuns,

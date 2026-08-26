@@ -665,7 +665,14 @@ function resolveLibSrcs(scriptSrc) {
   return map;
 }
 
-function main() {
+/**
+ * Scans the live .github/workflows/ + scripts/ corpus and returns the raw
+ * findings ({ files, warnings, threadingWarnings }) with no printing/exit
+ * behavior — the pure core that both main() and the colocated end-to-end
+ * regression test call (CLAUDE.md §15: tests require() the real function,
+ * never re-implement its scan logic).
+ */
+function collectFindings() {
   const files = fs
     .readdirSync(WORKFLOW_DIR)
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
@@ -732,6 +739,12 @@ function main() {
     }
   }
 
+  return { files, warnings, threadingWarnings };
+}
+
+function main() {
+  const { files, warnings, threadingWarnings } = collectFindings();
+
   if (warnings.length === 0 && threadingWarnings.length === 0) {
     console.log(`✅ Run-budget coverage guard: no candidates flagged (${files.length} workflows checked).`);
     return;
@@ -777,6 +790,7 @@ function main() {
 if (require.main === module) main();
 
 module.exports = {
+  collectFindings,
   hasRiskyLoop,
   riskyLoopIn,
   stripComments,

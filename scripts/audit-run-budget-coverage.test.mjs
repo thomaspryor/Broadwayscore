@@ -17,6 +17,7 @@ const {
   stripComments,
   hasRiskyLoop,
   extractBracedBody,
+  collectFindings,
 } = require('./audit-run-budget-coverage.js');
 
 // --- regex-literal awareness in findMatching / stripComments -------------
@@ -462,4 +463,20 @@ test('returns [] when the script has no local lib requires', () => {
 test('returns [] when a required lib file was not resolvable (not in the provided map)', () => {
   const scriptSrc = `const { foo } = require('./lib/missing-lib');\nfoo();`;
   assert.deepEqual(findBudgetThreadingGaps(scriptSrc, {}), []);
+});
+
+// --- collectFindings: end-to-end regression against the live corpus (BRO-107) ---
+
+// The job-vs-step blind-spot fix (#425, commits 6b849750994/50958ae36ca)
+// re-run against the live .github/workflows/ corpus surfaced 8 scripts
+// missing scripts/lib/run-budget.js plus one script→lib-helper threading
+// gap (audit-opening-dates.js -> closing-date-discovery.js#discoverAnnouncedDate).
+// BRO-107 wired run-budget.js into all of them (see git history for the list).
+// This asserts the audit now sees the live corpus as clean — a regression
+// here means either a wiring reverted or a new unguarded candidate was added
+// without run-budget.js.
+test('collectFindings reports zero candidates against the live .github/workflows/ + scripts/ corpus', () => {
+  const { warnings, threadingWarnings } = collectFindings();
+  assert.deepEqual(warnings, []);
+  assert.deepEqual(threadingWarnings, []);
 });
