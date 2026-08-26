@@ -40,7 +40,7 @@ const { execFileSync } = require('child_process');
 
 const {
   classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX,
-  gapCardKey, classifyGapCardState, dedupeGapCards, GAP_CARD_STATE,
+  classifyGapCardState, dedupeGapCards, otherAlertPathKey, GAP_CARD_STATE,
 } = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
@@ -55,7 +55,7 @@ const {
 } = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+const { routeAlert, resolveCondition, loadLedger } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -296,28 +296,30 @@ async function main() {
         }
       }
 
+      // BRO-341: a file that is no longer a gap may have a previously-filed
+      // card still open for it (the sweep used to have no way to notice a
+      // gap resolved). Close it the moment the file turns terminal —
+      // 'collected' (the review reached the score) or 'no-review' (an
+      // editorial verdict says the absence is correct, not a fetch failure).
+      // resolveCondition() is a no-op when no card is tracked. Keys stay the
+      // NATIVE 'gap:'/'backstop:' prefixes each alert path has always used
+      // (never gapCardKey()'s unified format) — those are the exact strings
+      // already embedded in every existing open card's body, so this is what
+      // actually closes them; a new key format would just look untracked.
+      const closeCardIfTerminal = (fileData) => {
+        if (DRY_RUN) return;
+        const terminal = classifyGapCardState({ file: fileData, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
+        if (terminal !== GAP_CARD_STATE.COLLECTED && terminal !== GAP_CARD_STATE.NO_REVIEW) return;
+        const closedGap = resolveCondition(`gap:${show.id}/${f}`);
+        const closedBackstop = resolveCondition(`backstop:${show.id}/${f}`);
+        if (closedGap || closedBackstop) {
+          console.log(`  ✅ closed gap card for ${show.id}/${f} (${terminal})`);
+        }
+      };
+
       let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
       if (!gap) {
-        // BRO-341: a file that is no longer a gap may have a previously-filed
-        // card still open for it (the sweep used to have no way to notice a
-        // gap resolved). Close it the moment the file turns terminal —
-        // 'collected' (the review reached the score) or 'no-review' (an
-        // editorial verdict says the absence is correct, not a fetch
-        // failure). resolveCondition() is a no-op when no card is tracked.
-        // Legacy keys are resolved too so cards filed before this fix (under
-        // the old 'gap:'/'backstop:' conditionKey prefixes) also close.
-        if (!DRY_RUN) {
-          const terminal = classifyGapCardState({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
-          if (terminal === GAP_CARD_STATE.COLLECTED || terminal === GAP_CARD_STATE.NO_REVIEW) {
-            const key = gapCardKey({ showId: show.id, outletId, file: f });
-            const closedNew = resolveCondition(key);
-            const closedLegacyGap = resolveCondition(`gap:${show.id}/${f}`);
-            const closedLegacyBackstop = resolveCondition(`backstop:${show.id}/${f}`);
-            if (closedNew || closedLegacyGap || closedLegacyBackstop) {
-              console.log(`  ✅ closed gap card for ${show.id}/${f} (${terminal})`);
-            }
-          }
-        }
+        closeCardIfTerminal(d);
         continue;
       }
 
@@ -362,6 +364,7 @@ async function main() {
         });
           if (fresh && freshGap == null) {
             console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
+            closeCardIfTerminal(fresh);
             continue;
           }
         }
@@ -540,9 +543,20 @@ async function main() {
       // Record what actually dispatched so the >24h backstop won't re-file it.
       for (const g of toDispatch) pagedGapOutletKeys.add(`${g.showId}/${g.outletId}`);
       const dispatchedOutletKeys = new Set();
+      // BRO-341: cross-path dedupe. This same file may already have an open
+      // tracker filed by the >24h BACKSTOP path on an earlier run (the
+      // #1070/#1114 duplicate pattern) — read the ledger once, skip any file
+      // the other path already tracks instead of filing a second card.
+      const ledgerForUrgent = loadLedger();
       for (const g of toDispatch) {
+        const backstopKey = otherAlertPathKey(g.showId, g.file, 'gap');
+        if (ledgerForUrgent.conditions[backstopKey]?.status === 'open') {
+          console.log(`  ⏭️  skipping urgent gap alert for ${g.showId}/${g.file} — already tracked via backstop (${backstopKey})`);
+          dispatchedOutletKeys.add(`${g.showId}/${g.outletId}`);
+          continue;
+        }
         const result = await routeAlert({
-          conditionKey: gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file }),
+          conditionKey: `gap:${g.showId}/${g.file}`,
           title: `T1/T2 silent gap on near-opening show: ${g.title || g.showId} — ${g.outletId}`,
           description: `Review file ${g.file} (T${g.tier}, ${g.type}) will not reach the composite score and is not legitimately excluded. URL on file: ${g.url || 'none'}. If the fix command keeps failing, check whether the URL is actually a review page (show/ticket hub URLs can never recover) and whether the outlet has published a review at all.`,
           hint: g.fix,
@@ -644,7 +658,7 @@ async function main() {
     if (agedDupes.length > 0) {
       console.log(`  🧹 ${agedDupes.length} duplicate aged gap file(s) collapsed onto their show+outlet's primary backstop card.`);
     }
-    const dueB = aged.filter((g) => shouldBackstopAlert(state[gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file })], now));
+    const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
     if (dueB.length > 0) {
       // Each gap already names its own exact recovery command (fixCommand())
       // — that's a machine-investigable condition, not one that needs owner
@@ -655,8 +669,18 @@ async function main() {
       // files a Notion Action Queue card that notion-action-poll.js works
       // hands-free. Capped at 5/run so a bad run can't flood the queue.
       const toFile = dueB.slice(0, 5);
+      // BRO-341: cross-path dedupe — skip a file the near-opening 'gap:' path
+      // already has an open tracker for (filed on an earlier run, before this
+      // file aged into the backstop window). See the matching check above.
+      const ledgerForBackstop = loadLedger();
       for (const g of toFile) {
-        const conditionKey = gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file });
+        const gapKey = otherAlertPathKey(g.showId, g.file, 'backstop');
+        if (ledgerForBackstop.conditions[gapKey]?.status === 'open') {
+          console.log(`  ⏭️  skipping backstop alert for ${g.showId}/${g.file} — already tracked via the near-opening path (${gapKey})`);
+          state[`backstop:${g.showId}/${g.file}`] = now.toISOString();
+          continue;
+        }
+        const conditionKey = `backstop:${g.showId}/${g.file}`;
         const result = await routeAlert({
           conditionKey,
           title: `T1/T2 review stuck >24h: ${g.title || g.showId} — ${g.outletId}`,

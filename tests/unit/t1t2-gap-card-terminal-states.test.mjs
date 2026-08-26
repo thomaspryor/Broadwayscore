@@ -14,7 +14,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  classifyGapCardState, gapCardKey, dedupeGapCards, GAP_CARD_STATE,
+  classifyGapCardState, gapCardKey, otherAlertPathKey, dedupeGapCards, GAP_CARD_STATE,
 } = require('../../scripts/lib/t1-silent-gap.js');
 
 const NOW = new Date('2026-08-14T12:00:00Z');
@@ -70,6 +70,18 @@ describe('terminal state: no-review-exists (#839/#1141)', () => {
       GAP_CARD_STATE.NO_REVIEW
     );
   });
+
+  test('content-garbage (contentTier: invalid) is terminal, not merely "not eligible"', () => {
+    // classifySilentGap itself never treats an 'invalid' stub as a
+    // recoverable empty-body gap (re-ingesting the same URL can only
+    // re-fetch garbage) — a stale card for a file later reclassified this
+    // way must still close, not sit open forever as an unlabeled null.
+    const file = { url: 'https://www.wsj.com/x', contentTier: 'invalid', fullText: '' };
+    assert.equal(
+      classifyGapCardState({ file, show: SHOW, tier: 1, outletScored: false, now: NOW }),
+      GAP_CARD_STATE.NO_REVIEW
+    );
+  });
 });
 
 describe('terminal state: still open (must NOT close a live card)', () => {
@@ -101,7 +113,7 @@ describe('terminal state: still open (must NOT close a live card)', () => {
   });
 });
 
-describe('dedupe key (#1114 dup of #1070, #1179 dup of #1082)', () => {
+describe('dedupe key: within-run identity (#1114 dup of #1070, #1179 dup of #1082)', () => {
   test('identical show+outlet+file always produces the identical key', () => {
     const a = gapCardKey({ showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--unknown.json' });
     const b = gapCardKey({ showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--unknown.json' });
@@ -115,32 +127,74 @@ describe('dedupe key (#1114 dup of #1070, #1179 dup of #1082)', () => {
     assert.notEqual(key, gapCardKey({ ...base, file: 'wsj--jane-doe.json' }));
     assert.notEqual(key, gapCardKey({ ...base, showId: 'hamilton-west-end-2026' }));
   });
+});
 
-  test('two independent gap-generating paths (the old gap:/backstop: prefixes) now converge on one key', () => {
-    // Before BRO-341 the urgent-alert path used `gap:${showId}/${file}` and
-    // the >24h backstop path used `backstop:${showId}/${file}` — two
-    // different conditionKeys for the identical underlying file, which is
-    // exactly how #1070/#1114 ended up as two cards for one gap.
-    const args = { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--unknown.json' };
-    const urgentPathKey = gapCardKey(args);
-    const backstopPathKey = gapCardKey(args);
-    assert.equal(urgentPathKey, backstopPathKey);
+describe('otherAlertPathKey: cross-path duplicate prevention (#1070/#1114, #1082/#1179)', () => {
+  // #1070/#1114 and #1082/#1179 were each filed once via the near-opening
+  // 'gap:' alert path and once via the >24h 'backstop:' path for the
+  // IDENTICAL file, on different runs — same-run dedupe (dedupeGapCards)
+  // can't catch that. audit-t1-silent-gaps.js checks otherAlertPathKey()
+  // against the alert-router ledger before dispatching down either path;
+  // these tests pin the key format that check depends on. Deliberately NOT
+  // the same string as gapCardKey() — see gapCardKey's header for why the
+  // native, unmigrated 'gap:'/'backstop:' prefixes must stay exactly as
+  // every already-open Linear card has them embedded.
+  test('from the urgent path, the other key is the backstop-prefixed native key', () => {
+    assert.equal(
+      otherAlertPathKey('now-you-see-me-live-west-end-2026', 'the-stage--unknown.json', 'gap'),
+      'backstop:now-you-see-me-live-west-end-2026/the-stage--unknown.json'
+    );
+  });
+
+  test('from the backstop path, the other key is the gap-prefixed native key', () => {
+    assert.equal(
+      otherAlertPathKey('now-you-see-me-live-west-end-2026', 'the-stage--unknown.json', 'backstop'),
+      'gap:now-you-see-me-live-west-end-2026/the-stage--unknown.json'
+    );
   });
 });
 
 describe('dedupeGapCards: one card per show+outlet per run', () => {
   test('two files for the same show+outlet collapse to one primary + one duplicate', () => {
     const gaps = [
-      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--unknown.json', type: 'empty-body' },
-      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--jane-doe.json', type: 'unscored' },
+      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--unknown.json', url: 'https://x/1', type: 'empty-body' },
+      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--jane-doe.json', url: 'https://x/2', type: 'unscored' },
     ];
     const { primary, duplicates } = dedupeGapCards(gaps);
     assert.equal(primary.length, 1);
-    assert.equal(primary[0].file, 'the-stage--unknown.json');
     assert.equal(duplicates.length, 1);
-    assert.equal(duplicates[0].file, 'the-stage--jane-doe.json');
     assert.equal(duplicates[0].cardState, GAP_CARD_STATE.DUPLICATE);
-    assert.equal(duplicates[0].duplicateOfFile, 'the-stage--unknown.json');
+    assert.equal(duplicates[0].duplicateOfFile, primary[0].file);
+  });
+
+  test('a URL-bearing (actionable) candidate always wins over a URL-less one, regardless of scan order', () => {
+    // The URL-less file happens to sort first alphabetically AND appears
+    // first in the input array — without the URL preference it would
+    // silently become primary, leaving the directly-fixable sibling dropped.
+    const gaps = [
+      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--aaa-no-url.json', url: null },
+      { showId: 'now-you-see-me-live-west-end-2026', outletId: 'the-stage', file: 'the-stage--zzz-has-url.json', url: 'https://www.thestage.co.uk/reviews/x' },
+    ];
+    const { primary, duplicates } = dedupeGapCards(gaps);
+    assert.equal(primary.length, 1);
+    assert.equal(primary[0].file, 'the-stage--zzz-has-url.json');
+    assert.equal(duplicates.length, 1);
+    assert.equal(duplicates[0].file, 'the-stage--aaa-no-url.json');
+    assert.equal(duplicates[0].duplicateOfFile, 'the-stage--zzz-has-url.json');
+  });
+
+  test('primary selection is deterministic (filename tiebreak) when neither/both candidates have a URL', () => {
+    const withoutUrls = [
+      { showId: 's', outletId: 'o', file: 'o--zzz.json' },
+      { showId: 's', outletId: 'o', file: 'o--aaa.json' },
+    ];
+    assert.equal(dedupeGapCards(withoutUrls).primary[0].file, 'o--aaa.json');
+
+    const bothWithUrls = [
+      { showId: 's', outletId: 'o', file: 'o--zzz.json', url: 'https://x/1' },
+      { showId: 's', outletId: 'o', file: 'o--aaa.json', url: 'https://x/2' },
+    ];
+    assert.equal(dedupeGapCards(bothWithUrls).primary[0].file, 'o--aaa.json');
   });
 
   test('gaps for different outlets on the same show are never collapsed', () => {

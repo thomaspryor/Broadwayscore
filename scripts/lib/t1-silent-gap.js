@@ -232,13 +232,16 @@ function shouldEmailUnscoredGap(lastDispatchAt, now) {
 // carrying terminal isNonReview/isRoundupArticle/wrongProduction flags whose
 // own suggested fix command could never succeed).
 //
-// The functions below give the sweep a stable card identity (gapCardKey) and
-// a terminal-state classification (classifyGapCardState) so it can:
-//   - reuse the SAME card key across runs and across the urgent/backstop
-//     alert paths, instead of minting a new tracker under a different
-//     conditionKey prefix for the identical show+outlet+file (root cause of
-//     the #1070/#1114 and #1082/#1179 exact-duplicate pairs — those alerted
-//     once via the 'gap:' prefix and again via the 'backstop:' prefix), and
+// The functions below give the sweep a within-run card identity
+// (gapCardKey/dedupeGapCards), a cross-path duplicate check
+// (otherAlertPathKey), and a terminal-state classification
+// (classifyGapCardState) so it can:
+//   - collapse several candidate files for the same show+outlet to ONE card
+//     per run instead of one per file (byline-explosion clusters), and skip
+//     dispatching down one alert path when the OTHER path already tracks the
+//     identical file — the actual root cause of the #1070/#1114 and
+//     #1082/#1179 exact-duplicate pairs (filed once via the near-opening
+//     'gap:' path, once via the >24h 'backstop:' path, on different runs), and
 //   - resolveCondition() a previously-open card the moment its file's state
 //     turns terminal, instead of leaving it open forever.
 
@@ -249,14 +252,38 @@ const GAP_CARD_STATE = {
   DUPLICATE: 'duplicate',
 };
 
-// Stable card identity for one show+outlet+file gap. Used as the
-// routeAlert() conditionKey by BOTH the near-opening ('gap:') and >24h
-// ('backstop:') alert paths in audit-t1-silent-gaps.js — unifying those two
-// previously-distinct prefixes onto one key is what makes a second run (or a
-// later backstop pass over the same still-open file) reuse the existing
-// tracker instead of minting a duplicate.
+// Stable identity for one show+outlet+file gap. Used WITHIN a single run to
+// collapse multiple candidate files for the same outlet to one card
+// (dedupeGapCards below) — it deliberately is NOT used as the routeAlert()
+// conditionKey. The near-opening ('gap:showId/file') and >24h backstop
+// ('backstop:showId/file') alert paths in audit-t1-silent-gaps.js keep their
+// own native, unmigrated prefixes: routeAlert()'s ledger cooldown AND its
+// cross-system Linear dedupe (findLinearDuplicate → a plain substring search
+// for `[conditionKey:<key>]` inside EXISTING card bodies) both key off the
+// exact conditionKey string. Every gap card filed before this fix has its
+// old prefix baked verbatim into its Linear issue body — switching the
+// dispatched conditionKey format here would make every already-open gap
+// invisible to both dedupe mechanisms on the very next run (ledger sees "no
+// record", Linear search finds no substring match), so the first post-deploy
+// pass over any real corpus would re-file a duplicate card for every single
+// currently-open gap — exactly the bug this fix exists to close. (Caught in
+// review before ship: see otherAlertPathKey() below, which handles the
+// actual near-opening/backstop duplicate case without renaming the key.)
 function gapCardKey({ showId, outletId, file }) {
   return `t1gap:${showId}/${outletId}/${file}`;
+}
+
+// Given the conditionKey prefix one alert path is ABOUT to dispatch under
+// ('gap' or 'backstop'), returns the OTHER path's native conditionKey for
+// the identical show+file. audit-t1-silent-gaps.js checks whether that key
+// is already 'open' in the alert-router ledger before dispatching — the
+// actual fix for the #1070/#1114 and #1082/#1179 duplicate pairs: those were
+// filed once via the urgent 'gap:' path and once via the >24h 'backstop:'
+// path for the identical file, on different runs (so same-run dedupe alone
+// can't catch it).
+function otherAlertPathKey(showId, file, thisPathPrefix) {
+  const otherPrefix = thisPathPrefix === 'gap' ? 'backstop' : 'gap';
+  return `${otherPrefix}:${showId}/${file}`;
 }
 
 /**
@@ -276,7 +303,11 @@ function gapCardKey({ showId, outletId, file }) {
  *                 wrongProduction, wrongShow, duplicateOf, …), not a fetch
  *                 failure. No command can recover a review that was never
  *                 published. A previously-open card should close: the
- *                 "gap" was never a real one.
+ *                 "gap" was never a real one. Content-garbage
+ *                 (contentTier: 'invalid') files fall in this bucket too —
+ *                 classifySilentGap already treats them as un-actionable
+ *                 (re-ingesting the same URL can only re-fetch garbage), so
+ *                 a stale card for one should close the same way.
  *   'open'      — still a live, unresolved gap (empty-body / unscored /
  *                 rejected-unscoreable). A previously-open card should stay
  *                 open.
@@ -294,7 +325,13 @@ function classifyGapCardState({ file, show, tier, outletScored, now }) {
   if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return GAP_CARD_STATE.NO_REVIEW;
   if (isRoundupPageAsReview(file)) return GAP_CARD_STATE.NO_REVIEW;
   const gap = classifySilentGap({ file, show, tier, outletScored, now });
-  return gap ? GAP_CARD_STATE.OPEN : null;
+  if (gap) return GAP_CARD_STATE.OPEN;
+  // classifySilentGap's own final branch excludes contentTier:'invalid' from
+  // ever counting as a recoverable empty-body gap — mirror that exclusion
+  // here as a terminal state rather than plain "not eligible" so a stale
+  // card for a file that was later reclassified as garbage still closes.
+  if (file.contentTier === 'invalid') return GAP_CARD_STATE.NO_REVIEW;
+  return null;
 }
 
 /**
@@ -304,28 +341,46 @@ function classifyGapCardState({ file, show, tier, outletScored, now }) {
  * without this, each file mints its own card for what is, from the owner's
  * perspective, one missing review.
  *
- * `gaps` items need at minimum { showId, outletId, file }; any extra fields
- * are preserved on output. Order is preserved — the FIRST gap seen per
- * show+outlet is kept as primary; later ones are returned as duplicates,
- * each carrying cardState: 'duplicate' and duplicateOfFile pointing at the
- * kept file, so a caller can still report/log them without dispatching a
- * second card.
+ * `gaps` items need at minimum { showId, outletId, file }; a `url` field is
+ * used for primary selection when present, and all extra fields are
+ * preserved on output. Duplicates carry cardState: 'duplicate' and
+ * duplicateOfFile pointing at the kept file, so a caller can still
+ * report/log them without dispatching a second card.
+ *
+ * Primary selection is deterministic, not scan-order-dependent: a candidate
+ * with a usable `url` (an actionable fix command) is always preferred over
+ * one without, and ties break on filename. Without this, whichever file
+ * `fs.readdirSync()` happened to return first would win — a URL-less file
+ * could become primary while a directly-fixable sibling gets silently
+ * dropped as a duplicate, and a later directory re-scan (a sibling file
+ * added/removed) could flip which file is primary from run to run, which
+ * would leave the PREVIOUS primary's card open forever (still a real gap,
+ * just no longer the one being tracked) while filing a new card for the new
+ * primary — review finding, BRO-341.
  *
  * @param {Array<object>} gaps
  * @returns {{ primary: Array<object>, duplicates: Array<object> }}
  */
 function dedupeGapCards(gaps) {
-  const seen = new Map(); // show+outlet key -> primary file name
-  const primary = [];
-  const duplicates = [];
+  const groups = new Map(); // show+outlet key -> all gaps in that group
   for (const g of gaps || []) {
     const key = `${g.showId}/${g.outletId}`;
-    const existingFile = seen.get(key);
-    if (existingFile === undefined) {
-      seen.set(key, g.file);
-      primary.push(g);
-    } else {
-      duplicates.push({ ...g, cardState: GAP_CARD_STATE.DUPLICATE, duplicateOfFile: existingFile });
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(g);
+  }
+  const primary = [];
+  const duplicates = [];
+  for (const group of groups.values()) {
+    const sorted = [...group].sort((a, b) => {
+      const aHasUrl = a.url ? 1 : 0;
+      const bHasUrl = b.url ? 1 : 0;
+      if (aHasUrl !== bHasUrl) return bHasUrl - aHasUrl;
+      return String(a.file).localeCompare(String(b.file));
+    });
+    const [best, ...rest] = sorted;
+    primary.push(best);
+    for (const g of rest) {
+      duplicates.push({ ...g, cardState: GAP_CARD_STATE.DUPLICATE, duplicateOfFile: best.file });
     }
   }
   return { primary, duplicates };
@@ -342,6 +397,7 @@ module.exports = {
   DISPATCH_RETRY_HOURS,
   GAP_CARD_STATE,
   gapCardKey,
+  otherAlertPathKey,
   classifyGapCardState,
   dedupeGapCards,
 };
