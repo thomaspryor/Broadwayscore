@@ -58,6 +58,21 @@ function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workfl
   });
 }
 
+// Detects whether the current process is running inside a GitHub Actions
+// runner, for the `ci` field on buildFailureEntry() above (task #1901).
+// Deliberately narrower than the repo's other CI-detection helpers (e.g.
+// owner-alert-router.js's isCIExecution(), which also checks the generic
+// `CI` var) — this one exists ONLY to mirror scripts/lib/push-with-retry.sh's
+// own bash check (`[ -n "${GITHUB_ACTIONS:-}" ]`), which record_push_failure()
+// uses for both the local PUSH_FAILURE_LOG line and the --ci arg passed to
+// scripts/record-push-retry-failure.js. Keeping the two checks structurally
+// identical (both GITHUB_ACTIONS-only) is the point — a caller wanting the
+// broader CI||GITHUB_ACTIONS check should use isCIExecution() instead, not
+// this function.
+function isGithubActionsRunner(env = process.env) {
+  return Boolean(env && env.GITHUB_ACTIONS);
+}
+
 // Parses JSONL content into entries, silently skipping blank/malformed lines
 // (a single corrupted line — e.g. a partial write from a killed runner —
 // must never take down the whole ledger). `requiredFields` (all must be
@@ -116,6 +131,7 @@ function pruneToWindow(entries, { nowMs, maxAgeMs }) {
 module.exports = {
   buildLedgerEntry,
   buildFailureEntry,
+  isGithubActionsRunner,
   parseLedgerLines,
   serializeEntries,
   selectEntriesInWindow,

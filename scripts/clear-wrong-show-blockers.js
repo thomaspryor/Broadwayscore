@@ -2,32 +2,48 @@
 /**
  * Clear wrongShow slot-blockers: delete files that have wrongShow=true and contain
  * no useful data (no score, no LLM score, no aggregator data, no meaningful text).
- * These files block gather-reviews from re-discovering correct URLs.
+ * These files block gather-reviews from re-discovering the correct URLs.
  *
- * Usage: node scripts/clear-wrong-show-blockers.js [--dry-run] [--include-scored]
+ * Usage: node scripts/clear-wrong-show-blockers.js [--apply] [--include-scored] [--force-bulk]
  *
- * --dry-run: Print what would be deleted without actually deleting
- * --include-scored: Also delete wrongShow files that have scores (more aggressive)
+ * Default (no --apply) is a dry run: prints what would be deleted without writing.
+ * --apply: actually delete the files.
+ * --include-scored: also delete wrongShow files that have scores (more aggressive;
+ *   NOT enabled in the scheduled workflow — needs separate human review).
+ * --force-bulk: override the surge guard (see FIX_SURGE_THRESHOLD below).
  */
 
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { shouldDeleteWrongShowBlocker, shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `clear-wrong-show-blockers.js — Clear wrongShow slot-blockers: delete files that have wrongShow=true and contain.
+const USAGE = `clear-wrong-show-blockers.js — Clear wrongShow slot-blockers: delete files that have wrongShow=true and contain no useful data.
 
 Usage:
   node scripts/clear-wrong-show-blockers.js [options]
   node scripts/clear-wrong-show-blockers.js --help, -h    print this usage and exit
+
+Options:
+  --apply            Actually delete files (default is dry-run/report-only)
+  --include-scored   Also delete wrongShow files that have scores (aggressive; not used by the scheduled workflow)
+  --force-bulk       Override the >100-file surge guard
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
-const dryRun = args.includes('--dry-run');
+const APPLY = args.includes('--apply');
 const includeScored = args.includes('--include-scored');
+const forceBulk = args.includes('--force-bulk');
+
+// Surge guard (card #1828, mirrors card #1610's clear-stale-suspected-
+// misattribution-flags.js pattern): this now runs unattended and weekly.
+// A batch this large usually means the deletion predicate regressed, not
+// routine catch-up drift — refuse and require a deliberate --force-bulk.
+const FIX_SURGE_THRESHOLD = 100;
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -35,6 +51,7 @@ let deleted = 0;
 let kept = 0;
 let total = 0;
 const deletedByShow = {};
+const toDelete = [];
 
 for (const showDir of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
@@ -49,24 +66,8 @@ for (const showDir of listShowDirs(REVIEW_TEXTS_DIR)) {
       if (!data.wrongShow) continue;
       total++;
 
-      // Check for useful data worth preserving
-      const hasScore = !!(data.assignedScore || data.originalScore);
-      const hasLlmScore = !!data.llmScore;
-      const hasAggData = !!(data.bwwScore || data.bwwExcerpt || data.showScoreRating || data.showScoreExcerpt);
-      const hasText = (data.fullText || data.text || '').length > 100;
-
-      const hasUsefulData = hasScore || hasLlmScore || hasAggData;
-
-      // In default mode: only delete pure junk (no scores, no text)
-      // In --include-scored mode: delete even files with scores (they're for the wrong show anyway)
-      const shouldDelete = includeScored ? true : (!hasUsefulData && !hasText);
-
-      if (shouldDelete) {
-        if (!dryRun) {
-          fs.unlinkSync(filepath);
-        }
-        deleted++;
-        deletedByShow[showDir] = (deletedByShow[showDir] || 0) + 1;
+      if (shouldDeleteWrongShowBlocker(data, includeScored)) {
+        toDelete.push({ filepath, showDir });
       } else {
         kept++;
       }
@@ -76,7 +77,25 @@ for (const showDir of listShowDirs(REVIEW_TEXTS_DIR)) {
   }
 }
 
-console.log(`\n${dryRun ? '[DRY RUN] ' : ''}wrongShow cleanup results:`);
+deleted = toDelete.length;
+
+if (APPLY && shouldRefuseSurge(deleted, FIX_SURGE_THRESHOLD, forceBulk)) {
+  console.error(`::error::Refusing to delete ${deleted} wrongShow blocker files (> ${FIX_SURGE_THRESHOLD}). A batch this large usually means the deletion predicate regressed, not routine drift — re-run with --force-bulk if this is a legitimate large backlog cleanup.`);
+  process.exit(1);
+}
+
+if (APPLY) {
+  for (const { filepath, showDir } of toDelete) {
+    fs.unlinkSync(filepath);
+    deletedByShow[showDir] = (deletedByShow[showDir] || 0) + 1;
+  }
+} else {
+  for (const { showDir } of toDelete) {
+    deletedByShow[showDir] = (deletedByShow[showDir] || 0) + 1;
+  }
+}
+
+console.log(`\n${APPLY ? '' : '[DRY RUN] '}wrongShow cleanup results:`);
 console.log(`  Total wrongShow files: ${total}`);
 console.log(`  Deleted: ${deleted}`);
 console.log(`  Kept (has useful data): ${kept}`);
@@ -89,4 +108,8 @@ if (deleted > 0) {
   sorted.slice(0, 10).forEach(([show, count]) => {
     console.log(`    ${show}: ${count} deleted`);
   });
+}
+
+if (!APPLY) {
+  console.log('\nPass --apply to write changes.');
 }
