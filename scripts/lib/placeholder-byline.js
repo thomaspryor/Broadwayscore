@@ -46,15 +46,32 @@ function normalizeForCompare(s) {
  * True when criticName is a placeholder rather than a real byline: empty,
  * purely numeric, a known generic desk/staff term, or the outlet's own name
  * (after normalization) with nothing else attached.
+ *
+ * SELF-BRANDED CRITICS (Codex adversarial review, card #1907): some solo
+ * review sites are named after their one real critic — outlet-registry.json
+ * has "carole-di-tosti" (displayName "Carole Di Tosti", defaultCritic
+ * "Carole Di Tosti"), plus "carey-purcell", "oscar-e-moore". For those, the
+ * criticName-equals-outlet-name coincidence is the OPPOSITE of a placeholder:
+ * it's registry-confirmed proof of the real byline. `opts.defaultCritic` is
+ * the outlet-registry's own authoritative claim for who writes there — when
+ * criticName matches it, this is NEVER a placeholder, full stop, whatever the
+ * outlet-name comparison below would otherwise say. The caller resolves
+ * `defaultCritic` from outlet-registry.json (this function stays pure — no
+ * I/O — the caller injects the registry-derived context).
+ *
  * Pure — no I/O, safe for unit tests and use inside a canonical chooser.
  *
  * @param {string|null|undefined} criticName
  * @param {string|null|undefined} outlet display name (e.g. "The Times (UK)")
+ * @param {{defaultCritic?: string|null}} [opts] outlet-registry.json's
+ *   outlets[outletId].defaultCritic for this record's outlet, if resolvable
  * @returns {boolean}
  */
-function isPlaceholderByline(criticName, outlet) {
+function isPlaceholderByline(criticName, outlet, opts = {}) {
   const norm = normalizeForCompare(criticName);
   if (!norm) return true;
+  const normDefaultCritic = normalizeForCompare(opts.defaultCritic);
+  if (normDefaultCritic && norm === normDefaultCritic) return false;
   if (/^\d+$/.test(norm.replace(/\s+/g, ''))) return true;
   if (GENERIC_BYLINE_TERMS.has(norm)) return true;
   const normOutlet = normalizeForCompare(outlet);
@@ -62,4 +79,26 @@ function isPlaceholderByline(criticName, outlet) {
   return false;
 }
 
-module.exports = { isPlaceholderByline, normalizeForCompare, GENERIC_BYLINE_TERMS };
+/**
+ * isPlaceholderByline() applied to a review-text record, with the shared
+ * "criticName must actually be present" guard both callers need: a record
+ * with NO criticName field at all (byline identity conveyed only by the
+ * filename — every fixture in this codebase's tests, never a real corpus
+ * record) is NOT judged a placeholder from data alone — isPlaceholderByline
+ * treats an empty criticName as vacuously true, which would wrongly flag
+ * every filename-only real byline. Centralizing this guard here (instead of
+ * two separate ad-hoc copies in fix-circular-duplicate-pairs.js and
+ * dedupe-same-url-bylines.js) is what keeps the two callers from silently
+ * drifting out of sync (Codex adversarial review, card #1907).
+ * Pure — no I/O.
+ *
+ * @param {{criticName?: string|null, outlet?: string|null}} data
+ * @param {{defaultCritic?: string|null}} [opts]
+ * @returns {boolean}
+ */
+function isPlaceholderRecord(data, opts = {}) {
+  if (!data || typeof data.criticName !== 'string' || !data.criticName.trim()) return false;
+  return isPlaceholderByline(data.criticName, data.outlet, opts);
+}
+
+module.exports = { isPlaceholderByline, isPlaceholderRecord, normalizeForCompare, GENERIC_BYLINE_TERMS };

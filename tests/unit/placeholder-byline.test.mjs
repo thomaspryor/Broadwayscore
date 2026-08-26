@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isPlaceholderByline, normalizeForCompare } = require('../../scripts/lib/placeholder-byline.js');
+const { isPlaceholderByline, isPlaceholderRecord, normalizeForCompare } = require('../../scripts/lib/placeholder-byline.js');
 
 test('isPlaceholderByline: outlet-name-as-byline, various real corpus shapes', () => {
   assert.equal(isPlaceholderByline('The Times', 'The Times (UK)'), true);
@@ -55,4 +55,40 @@ test('normalizeForCompare: strips parenthetical qualifiers and punctuation, case
   assert.equal(normalizeForCompare('Financial Times'), 'financial times');
   assert.equal(normalizeForCompare(''), '');
   assert.equal(normalizeForCompare(null), '');
+});
+
+// ---------------------------------------------------------------------------
+// defaultCritic override — self-branded solo critics (Codex adversarial
+// review, card #1907): outlet-registry.json has outlets whose displayName IS
+// their one real critic's name (carole-di-tosti, carey-purcell,
+// oscar-e-moore — displayName === defaultCritic). Without this override,
+// isPlaceholderByline's outlet-name-equality check would wrongly flag every
+// one of them as a placeholder.
+// ---------------------------------------------------------------------------
+test('isPlaceholderByline: defaultCritic override — a self-branded critic whose name equals the outlet name is NEVER a placeholder', () => {
+  assert.equal(isPlaceholderByline('Carole Di Tosti', 'Carole Di Tosti', { defaultCritic: 'Carole Di Tosti' }), false);
+  assert.equal(isPlaceholderByline('Oscar E Moore', 'Oscar E Moore', { defaultCritic: 'Oscar E Moore' }), false);
+  // Without the override, the same input is a placeholder by outlet-name equality.
+  assert.equal(isPlaceholderByline('Carole Di Tosti', 'Carole Di Tosti'), true);
+});
+
+test('isPlaceholderByline: defaultCritic override does not suppress OTHER placeholder signals (generic terms, empty)', () => {
+  assert.equal(isPlaceholderByline('Unknown', 'Variety', { defaultCritic: 'Someone Else' }), true);
+  assert.equal(isPlaceholderByline('', 'Variety', { defaultCritic: 'Someone Else' }), true);
+});
+
+test('isPlaceholderRecord: shared guard used by both callers — no criticName field on the record is never a placeholder', () => {
+  assert.equal(isPlaceholderRecord({ outlet: 'The Times (UK)' }), false, 'filename-only byline, no criticName field at all');
+  assert.equal(isPlaceholderRecord({ criticName: null, outlet: 'Metro' }), false);
+  assert.equal(isPlaceholderRecord({ criticName: '   ', outlet: 'Metro' }), false);
+  assert.equal(isPlaceholderRecord(null), false);
+});
+
+test('isPlaceholderRecord: applies the same placeholder + defaultCritic-override logic as isPlaceholderByline', () => {
+  assert.equal(isPlaceholderRecord({ criticName: 'The Times', outlet: 'The Times (UK)' }), true);
+  assert.equal(isPlaceholderRecord({ criticName: 'Clive Davis', outlet: 'The Times (UK)' }), false);
+  assert.equal(isPlaceholderRecord(
+    { criticName: 'Carole Di Tosti', outlet: 'Carole Di Tosti' },
+    { defaultCritic: 'Carole Di Tosti' },
+  ), false);
 });

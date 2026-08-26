@@ -68,11 +68,21 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild, areSameCriticFuzzy } = require('./lib/review-guards');
-const { normalizeUrl } = require('./lib/review-normalization');
+const { normalizeUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
-const { isPlaceholderByline } = require('./lib/placeholder-byline');
+const { isPlaceholderRecord } = require('./lib/placeholder-byline');
+
+// See fix-circular-duplicate-pairs.js's identical helper — self-branded solo
+// critics (carole-di-tosti, carey-purcell, oscar-e-moore) have outlet
+// displayName === defaultCritic, so isPlaceholderRecord needs this override
+// to not flag them as placeholders (Codex adversarial review, card #1907).
+function _defaultCriticFor(outletId) {
+  if (!outletId) return null;
+  const registry = loadOutletRegistry();
+  return (registry && registry.outlets && registry.outlets[outletId] && registry.outlets[outletId].defaultCritic) || null;
+}
 
 const USAGE = `dedupe-same-url-bylines.js — Fixes the same-URL / multi-byline double-count class (Notion 2026-07-12,.
 
@@ -224,7 +234,7 @@ function rebuildAlreadyCollapses(names, datas) {
  * @param {Array<{criticName?:string, outlet?:string}>} datas includable members
  */
 function hasPlaceholderVsRealSplit(datas) {
-  const flags = datas.map(d => isPlaceholderByline(d && d.criticName, d && d.outlet));
+  const flags = datas.map(d => isPlaceholderRecord(d, { defaultCritic: _defaultCriticFor(d && d.outletId) }));
   return flags.some(Boolean) && flags.some(f => !f);
 }
 
@@ -325,12 +335,23 @@ function audit() {
       // double-count.
       if (!forceResolve && rebuildAlreadyCollapses(incl, datas)) continue;
       if (isCohesiveGroup(datas)) {
-        // fold chooseCanonicalForRebuild across the group to pick one survivor
+        // fold chooseCanonicalForRebuild across the group to pick one survivor.
+        // A `skip:true` pairwise result means chooseCanonicalForRebuild found
+        // BOTH members class-A cross-market contaminated and explicitly said
+        // "leave this pair suppressed, don't canonicalize either side"
+        // (fix-circular-duplicate-pairs.js's own audit() honors this by
+        // `continue`-ing past the pair entirely). Folding blindly through
+        // `c.canonical` here would ignore that safety verdict and could
+        // unsuppress a known wrong-production review — Codex adversarial
+        // review, card #1907. Abort the WHOLE group on any skip.
         let canonName = incl[0];
+        let skipped = false;
         for (let i = 1; i < incl.length; i++) {
           const c = chooseCanonicalForRebuild(canonName, load(canonName), incl[i], load(incl[i]), showDir);
+          if (c.skip) { skipped = true; break; }
           canonName = c.canonical;
         }
+        if (skipped) continue;
         cohesive.push({ showId, canonical: canonName, losers: incl.filter(f => f !== canonName) });
       } else {
         let minJ = 1;
