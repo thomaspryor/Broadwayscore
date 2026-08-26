@@ -38,6 +38,22 @@ on:
       # glob) so a solo edit triggers CI.
       - 'scripts/fix-platform-ticket-links.js'
       - 'scripts/fix-platform-ticket-links.test.mjs'
+      # Gaps found by the new scripts/audit-toplevel-script-test-yml-coverage.js
+      # (BRO-172 follow-up): each of these has a test.mjs registered in
+      # tests/unit-test-manifest.txt (so CI is meant to run it) but was
+      # missing its own — or its sibling source's — push-path entry, meaning
+      # a solo push touching only that file triggered zero CI.
+      - 'scripts/audit-cross-outlet-attributions.test.mjs'
+      - 'scripts/audit-errexit-unguarded-substitution.js'
+      - 'scripts/audit-errexit-unguarded-substitution.test.mjs'
+      - 'scripts/check-cross-outlet-attribution-drift.js'
+      - 'scripts/check-cross-outlet-attribution-drift.test.mjs'
+      - 'scripts/fetch-show-images-auto.test.mjs'
+      - 'scripts/send-opening-night-broadcast.test.mjs'
+      - 'scripts/verify-contamination-gate.js'
+      - 'scripts/verify-contamination-gate.test.mjs'
+      - 'scripts/audit-toplevel-script-test-yml-coverage.js'
+      - 'scripts/audit-toplevel-script-test-yml-coverage.test.mjs'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
@@ -2258,6 +2274,25 @@ jobs:
         # array without a matching entry here. Heuristic (regex array-literal
         # parsing), non-blocking — always exits 0 (see script header for why).
         run: node scripts/audit-review-texts-test-yml-coverage.js
+
+      - name: Audit — top-level scripts/*.test files missing from test.yml push-path allowlist (advisory, BRO-172)
+        # General version of the two guards directly above, for scripts/
+        # (not scripts/lib/, not the review-texts migration list): a
+        # manifest-registered scripts/*.test.mjs proves a test exists and is
+        # meant to run in CI, but that alone means nothing if neither it nor
+        # its sibling source file has a push-path entry — a solo push
+        # touching only that file then triggers zero CI. Found and fixed 6
+        # real gaps at introduction (scripts/audit-errexit-unguarded-
+        # substitution.js, scripts/check-cross-outlet-attribution-drift.js,
+        # scripts/verify-contamination-gate.js — missing entirely — plus 3
+        # test-file-only gaps on already-covered source files). Motivated by
+        # scripts/fix-platform-ticket-links.js having had ZERO CI coverage
+        # (not even this narrower gap — no test existed at all) which let a
+        # region-mismatch bug in its Ticketmaster SERP re-verification
+        # regress shows.json at least 6 times undetected. Heuristic
+        # (manifest + push-path string matching, no dependency chasing),
+        # non-blocking — always exits 0 (see script header for why).
+        run: node scripts/audit-toplevel-script-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
         # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
