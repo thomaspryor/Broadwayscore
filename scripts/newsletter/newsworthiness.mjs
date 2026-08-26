@@ -63,6 +63,11 @@ export const WEIGHTS = {
   RECOUPMENT_FAST_BUMP: 6,            // <12 weeks-to-recoup is genuinely notable
   BUZZ_NEW_NUM_ONE: 48,               // social rotates fast; less stable signal
   BUZZ_HOLD_NUM_ONE: 25,
+  // Tie-break epsilon for the weGoldOpenings loop below (see
+  // weOpeningStoriesCap) — deliberately tiny (not a category-scale penalty)
+  // so it only ever resolves order WITHIN the West End opening list itself,
+  // never bumping a WE opening below an unrelated candidate kind.
+  WE_OPENING_RANK_EPSILON: 0.01,
 };
 
 const SCORE_GOLD_MIN_NYC = 83;
@@ -149,6 +154,18 @@ export function scoreCandidates(input) {
 
   // 1b. West End Gold openings — only Critical Gold WE shows enter the scorer.
   // Non-gold WE shows stay in London Openings but never lead the subject line.
+  // weOpeningStoriesCap tracks the lowest weight assigned so far in THIS list
+  // — enforced below as a hard ceiling for every later item, so weGoldOpenings'
+  // input order (weOpeningStories() in generate.mjs — most-reviewed-first,
+  // tier-first, the SAME order that drives the londonSection() card stack)
+  // always wins ties and can never be inverted by a later item's own gold
+  // bump. Uses a vanishingly small epsilon rather than a fixed penalty so it
+  // only ever breaks ties WITHIN this list — it must not push a later WE
+  // opening below an unrelated candidate kind (a closing, a recoupment) the
+  // way a category-scale penalty would (owner, 2026-08-02: Tao of Glass led
+  // weOpeningStories() on review count, but Brainiac Live's gold bump won the
+  // subject — cards led with one show, the subject named another).
+  let weOpeningStoriesCap = Infinity;
   for (const item of (input.weGoldOpenings || [])) {
     const s = item.show || item;
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
@@ -162,9 +179,11 @@ export function scoreCandidates(input) {
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
     const isWestEndVenue = s.category === 'west-end';
     const gold = isGoldTier(score, s.category);
-    const weWeight = isWeEdition
+    let weWeight = isWeEdition
       ? (isWestEndVenue ? WEIGHTS.WE_OPENING_BASE : WEIGHTS.OFF_WE_OPENING_BASE) + (gold ? (isWestEndVenue ? WEIGHTS.WE_OPENING_GOLD_BUMP : WEIGHTS.OFF_WE_OPENING_GOLD_BUMP) : 0)
       : (isWestEndVenue ? WEIGHTS.WE_OPENING_SECONDARY_BASE : WEIGHTS.OFF_WE_OPENING_SECONDARY_BASE);
+    if (weWeight > weOpeningStoriesCap) weWeight = weOpeningStoriesCap - WEIGHTS.WE_OPENING_RANK_EPSILON;
+    weOpeningStoriesCap = weWeight;
     // "in London" is useful context in the US edition, but redundant in the
     // West End edition (the whole email IS the West End) — drop it there so it
     // reads "opens to strong reviews", not "opens in London..." (user 2026-07-12).
