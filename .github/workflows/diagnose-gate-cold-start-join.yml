@@ -1,0 +1,28 @@
+name: Diagnose gate-cold-start join (one-off)
+
+# Manual, read-only diagnostic (2026-08-26 email triage follow-up). Not
+# scheduled, never gates anything, never writes to the repo. Runs
+# scripts/diagnose-gate-cold-start-join.js to find why analyze-gate-cold-
+# start.js reports 0.00% captures/exposed in both arms since experiment
+# start while the overall email-gate funnel shows healthy modal volume over
+# the same window — see docs/experiments/gate-cold-start.md.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run join diagnostic
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/diagnose-gate-cold-start-join.js
