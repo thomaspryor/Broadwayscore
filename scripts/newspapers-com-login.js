@@ -124,12 +124,17 @@ async function login(page, email, password) {
 
 async function extractPage(page, url, index) {
   log(`Loading page ${index + 1}: ${url}`);
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
-  await page.waitForTimeout(2000);
 
   const result = { url, hasTextLayer: false, textLayerSample: null, screenshotPath: null, ocrTextLength: 0, ocrTextPath: null, error: null };
 
   try {
+    // networkidle can hang on ad/tracker-heavy pages (same risk documented in
+    // gather-reviews.js and test-paywalled-access.js) — kept inside this try
+    // so one page's timeout doesn't abort the whole run and lose every other
+    // page's results before verdict.json gets written.
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+    await page.waitForTimeout(2000);
+
     // Some page-image viewers ship a hidden OCR'd text layer for copy/search.
     const textLayer = await page.locator('[class*="text-layer" i], [class*="ocr" i], .textLayer').allInnerTexts().catch(() => []);
     const joined = textLayer.join(' ').trim();
