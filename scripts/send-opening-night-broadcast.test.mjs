@@ -9,10 +9,10 @@ const require = createRequire(import.meta.url);
 const mod = require('./send-opening-night-broadcast.js');
 const {
   recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH,
-  findShowsMissingConsensus, assertConsensusReadyOrExit,
+  findShowsMissingConsensus, filterShowsWithConsensus,
 } = mod;
 
-// Stubs process.exit so assertConsensusReadyOrExit's exit path can be observed
+// Stubs process.exit so filterShowsWithConsensus's exit path can be observed
 // without actually killing the test runner. process.exit itself doesn't throw,
 // so real code after the call would keep running in prod — the sentinel throw
 // here is a test-only device to unwind the stack and catch the exit code.
@@ -192,7 +192,11 @@ test('SYNC_REPO / SYNC_REMOTE_PATH point at the private data repo root (sanity c
 // BRO-227: gate-logic.ts getTriggerCopy() promises subscribers "the CriticScore and a
 // one-line critics' verdict. Nothing else." Previously the script only console.warn'd
 // when critic-consensus.json was missing for a show and continued to create/send the
-// draft anyway, breaking that promise. These prove it now hard-fails instead.
+// draft anyway, breaking that promise. These prove it now drops that show instead —
+// PER SHOW, not the whole batch (adversarial review 2026-08-26 caught the first version
+// blocking an entire coalesced multi-show run over one straggler, reopening the exact
+// same-night-batch bug the workflow's own readiness_gate was rewritten to fix on
+// 2026-04-08 — see .github/workflows/opening-night-broadcast.yml's readiness_gate step).
 
 test('findShowsMissingConsensus: flags shows with no consensusText', () => {
   const shows = [
@@ -211,13 +215,13 @@ test('findShowsMissingConsensus: empty when every show has consensus', () => {
   assert.equal(findShowsMissingConsensus(shows).length, 0);
 });
 
-test('assertConsensusReadyOrExit: exits non-zero and does not return when a show lacks consensus', () => {
+test('filterShowsWithConsensus: exits non-zero and does not return when the ONLY show lacks consensus', () => {
   const showsForEmail = [
     { showId: 'giant-2026', showTitle: 'Giant', consensusText: null },
   ];
   const calls = withStubbedExit(() => {
-    assertConsensusReadyOrExit(showsForEmail);
-    assert.fail('assertConsensusReadyOrExit should not return when consensus is missing');
+    filterShowsWithConsensus(showsForEmail);
+    assert.fail('filterShowsWithConsensus should not return when nothing in the batch has consensus');
   });
   assert.deepEqual(calls.exitCodes, [1], 'expected exactly one process.exit(1) call');
   assert.ok(
@@ -226,12 +230,24 @@ test('assertConsensusReadyOrExit: exits non-zero and does not return when a show
   );
 });
 
-test('assertConsensusReadyOrExit: does not exit when every show has consensus', () => {
+test('filterShowsWithConsensus: does not exit when every show has consensus, returns input unchanged', () => {
   const showsForEmail = [
     { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
   ];
   const calls = withStubbedExit(() => {
-    assertConsensusReadyOrExit(showsForEmail);
+    const result = filterShowsWithConsensus(showsForEmail);
+    assert.deepEqual(result, showsForEmail);
   });
   assert.deepEqual(calls.exitCodes, [], 'expected no process.exit call when consensus is present');
+});
+
+test('filterShowsWithConsensus: coalesced batch — drops only the show missing consensus, sends the rest, does NOT exit', () => {
+  const ready = { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' };
+  const notReady = { showId: 'other-2026', showTitle: 'Other Show', consensusText: null };
+  const calls = withStubbedExit(() => {
+    const result = filterShowsWithConsensus([ready, notReady]);
+    assert.deepEqual(result, [ready], 'expected the ready show to survive and the straggler to be dropped');
+  });
+  assert.deepEqual(calls.exitCodes, [], 'a ready show in the batch must still send even if another show is not ready');
+  assert.ok(calls.errors.some(msg => msg.includes('Other Show')), 'expected the dropped show to be named');
 });

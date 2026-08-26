@@ -811,7 +811,10 @@ jobs:
               // BRO-227: send-opening-night-broadcast.js now refuses to send without a
               // critic-consensus verdict (exit 1, swallowed by run_market's \`|| true\`).
               // Surface that as the reason here so a stuck-on-consensus show doesn't read
-              // as an unexplained pipeline hang.
+              // as an unexplained pipeline hang. Adversarial review 2026-08-26: don't let a
+              // read/parse failure (e.g. a partial core-data checkout) mislabel EVERY overdue
+              // show as consensus-blocked — that's a confident wrong answer, worse than the
+              // old generic message. Only claim "missing" once the file actually parsed.
               if (!why) {
                 try {
                   const consensus = JSON.parse(fs.readFileSync('data/critic-consensus.json', 'utf8'));
@@ -820,7 +823,9 @@ jobs:
                   if (!showConsensus || !(showConsensus.text || showConsensus.consensus)) {
                     why = ' — blocked by missing critic-consensus (critic-consensus.json)';
                   }
-                } catch { why = ' — blocked by missing critic-consensus (critic-consensus.json)'; }
+                } catch (err) {
+                  why = ' — could not check critic-consensus.json (' + err.message + ')';
+                }
               }
               return { id, line: (s ? s.title : id) + why };
             });

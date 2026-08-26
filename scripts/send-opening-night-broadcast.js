@@ -246,17 +246,28 @@ function findShowsMissingConsensus(showsForEmail) {
 
 // BRO-227: the email-capture modal (gate-logic.ts getTriggerCopy) promises subscribers
 // "the CriticScore and a one-line critics' verdict. Nothing else." Sending without
-// consensus for any show in the batch breaks that promise, so this gates the send —
-// exits non-zero instead of warning-and-continuing. Returns normally (no-op) when every
-// show has consensus text.
-function assertConsensusReadyOrExit(showsForEmail) {
+// consensus for a show breaks that promise, so this drops it from the batch rather than
+// warning-and-continuing. Filters PER SHOW rather than aborting the whole batch — the
+// workflow's own readiness_gate learned this the hard way (2026-04-08: a single not-ready
+// West End show blocked an otherwise-ready Broadway show on the same coalesced run).
+// Exits non-zero only when NOTHING in the batch has consensus, since then there is
+// nothing left this run can honor the promise for. Returns the shows that DO have
+// consensus (may be the full input) otherwise.
+function filterShowsWithConsensus(showsForEmail) {
   const missingConsensus = findShowsMissingConsensus(showsForEmail);
-  if (missingConsensus.length === 0) return;
+  if (missingConsensus.length === 0) return showsForEmail;
+
   console.error(`\n❌ Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
   console.error(`   critic-consensus.json is not generated yet for ${missingConsensus.length === 1 ? 'this show' : 'these shows'}.`);
-  console.error(`   Refusing to send — the signup modal promises a critics' verdict on every opening-night email.`);
-  console.error(`   Wait for critic-consensus.json, then re-run (add --recreate-draft if a draft already exists).`);
-  process.exit(1);
+  console.error(`   Refusing to send for ${missingConsensus.length === 1 ? 'it' : 'them'} — the signup modal promises a critics' verdict on every opening-night email.`);
+
+  const ready = showsForEmail.filter(s => s.consensusText);
+  if (ready.length === 0) {
+    console.error(`   No show in this batch has consensus yet — nothing to send this run.`);
+    process.exit(1);
+  }
+  console.error(`   Continuing with ${ready.length} show(s) that do have consensus; the rest will retry next run.`);
+  return ready;
 }
 
 function buildBroadcastName(siteName, shows) {
@@ -449,7 +460,7 @@ async function main() {
   }
 
   // Build show data for email template
-  const showsForEmail = readyShows.map(({ show, stats }) => {
+  let showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
     const consensusShows = consensus.shows || consensus;
     const showConsensus = consensusShows[showId] || consensusShows[show.slug];
@@ -494,7 +505,19 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
-  assertConsensusReadyOrExit(showsForEmail);
+  // BRO-227: --send-to is the owner's own private preview (never reaches subscribers —
+  // a transactional /emails call, not a /broadcasts draft), so let it through with just a
+  // warning: blocking it would leave the owner unable to even see the draft they'd need to
+  // judge whether to wait for consensus. The real draft/broadcast path (below) is where the
+  // signup-modal promise actually applies, and stays hard-gated.
+  if (SEND_TO) {
+    const missingConsensus = findShowsMissingConsensus(showsForEmail);
+    if (missingConsensus.length > 0) {
+      console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')} (preview only — the real broadcast will wait for consensus)`);
+    }
+  } else {
+    showsForEmail = filterShowsWithConsensus(showsForEmail);
+  }
 
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
   // actual subscriber broadcast. The preview-only subject is derived separately below
@@ -799,7 +822,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, assertConsensusReadyOrExit };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {
