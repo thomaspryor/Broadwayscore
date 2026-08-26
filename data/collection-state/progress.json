@@ -2312,7 +2312,17 @@
     "a-midsummer-nights-dream-globe-west-end-2026/newsday--linda-winer.json",
     "a-midsummer-nights-dream-globe-west-end-2026/andrzej-lukowski--andrzej-lukowski.json",
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/latimes--charles-mcnulty.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2428,7 +2438,8 @@
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
       "the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
-      "data/review-texts/slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json"
+      "data/review-texts/slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -2502,7 +2513,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+  "lastProcessed": "avenue-q-west-end-2026/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -2705,6 +2716,17 @@
       "event": "bb-session",
       "session": "e3b1b4d5",
       "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047/replacement-c"
+    },
+    {
+      "t": "2026-08-26T06:37:43.462Z",
+      "event": "bb-session",
+      "session": "057099f9",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-26T06:37:43.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
