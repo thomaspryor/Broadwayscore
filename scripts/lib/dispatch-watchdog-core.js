@@ -41,6 +41,12 @@ const WATCHDOG_EVENTS = Object.freeze({
   PARK: 'watchdog-park',
 });
 
+// BRO-2318: the fixed lead-in of the failureRate hold string below, exported
+// so send-morning-digest.js's localDispatchWatchdogLeakMessage() can match
+// against the SAME literal instead of a second regex copy that silently
+// drifts if this wording ever changes.
+const LAUNCHER_LEAK_HOLD_PREFIX = 'cmux launcher leaking';
+
 // How long the dispatch-watchdog-off kill switch can sit engaged before
 // --health pages the owner ("is this still intentional?") — distinct from
 // the stale-HEARTBEAT page in health(), which only fires while the watchdog
@@ -416,7 +422,7 @@ function planSweep(entries, tasks, opts) {
   if (!dispatchEnabled) holds.push('dispatch kill-switch set');
   if (!cmuxObserved) holds.push('cmux unobservable — report-only');
   if (outage.outage) holds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
-  if (failureRate.leaking) holds.push(`cmux launcher leaking (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
+  if (failureRate.leaking) holds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
   if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
   if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
@@ -526,7 +532,7 @@ function renderNarrative(plan) {
 }
 
 module.exports = {
-  WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER,
+  WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
