@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { scanVenueWrites, findUnguardedVenueWrites, isHardcodedStringRhs, isGuardCallDefeatedByFallback } = require('./lib/venue-write-guard-detector.js');
+const { scanVenueWrites, findUnguardedVenueWrites, isHardcodedStringRhs, isGuardCallDefeatedByFallback, isNullLiteralRhs } = require('./lib/venue-write-guard-detector.js');
 const { computeNewFindings, siteKey } = require('./audit-venue-write-guard.js');
 
 // --- acceptance criteria: guarded passes, unguarded fails ---
@@ -187,6 +187,33 @@ test('a ternary with the guard call in one branch is NOT mistaken for the revers
   assert.equal(isGuardCallDefeatedByFallback('cond ? sanitizeVenueForWrite(x) : null'), false);
   const src = `const entry = { venue: category ? sanitizeVenueForWrite(candidate.venue) : null };`;
   assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
+test('sanitizeVenueForWrite(a) || sanitizeVenueForWrite(b) is a legitimate chained guard, not a defeat', () => {
+  // Real shape found live in production (card #1922's promote-ob-historical.js
+  // fix, caught as a false positive against the ORIGINAL fallback-defeat
+  // check): sanitizing each source separately before combining, specifically
+  // because combining raw first and sanitizing once would let a placeholder
+  // in the first source suppress a genuinely valid second source.
+  assert.equal(isGuardCallDefeatedByFallback('sanitizeVenueForWrite(a) || sanitizeVenueForWrite(b)'), false);
+  const src = `const entry = { venue: sanitizeVenueForWrite(r.parsed?.titleParse?.venue) || sanitizeVenueForWrite(r.venue) };`;
+  assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
+// --- a bare null/undefined RHS is never a placeholder value (adversarial-review finding) ---
+
+test('venue: null is not flagged — it is the exact safe value sanitizeVenueForWrite() itself returns', () => {
+  // Real shape found live: guarded builders early-return { venue: null,
+  // reason: ... } before there is anything to sanitize yet.
+  const src = `function go(raw) { if (!raw) return { venue: null, reason: null }; return { venue: sanitizeVenueForWrite(raw), reason: null }; }`;
+  assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
+test('isNullLiteralRhs: true for null/undefined, false for anything else', () => {
+  assert.equal(isNullLiteralRhs('null'), true);
+  assert.equal(isNullLiteralRhs(' undefined '), true);
+  assert.equal(isNullLiteralRhs('candidate.venue'), false);
+  assert.equal(isNullLiteralRhs('"null"'), false); // the STRING "null", not the literal
 });
 
 // --- hardcoded placeholder-marker strings are NOT treated as safe (adversarial-review finding) ---

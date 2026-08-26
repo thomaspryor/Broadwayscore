@@ -101,7 +101,17 @@ function isGuardCallDefeatedByFallback(rhs) {
   if (!tail) return false; // nothing after the call — not defeated
   const fallbackMatch = /^\|\|\s*([\s\S]*)$/.exec(tail) || /^\?\?\s*([\s\S]*)$/.exec(tail);
   if (!fallbackMatch) return false; // some other trailing expression (e.g. `?.trim()`) — not a fallback defeat we can reason about; don't flag
-  return !SAFE_FALLBACK_RE.test(fallbackMatch[1].trim());
+  const fallback = fallbackMatch[1].trim();
+  // A fallback that is ITSELF (or contains) a sanitizeVenueForWrite(...) call
+  // is a legitimate chained-guard pattern, not a defeat — e.g.
+  // `sanitizeVenueForWrite(a) || sanitizeVenueForWrite(b)` tries a second raw
+  // source only after the first is independently rejected, both sanitized.
+  // Found live: card #1922's promote-ob-historical.js fix uses exactly this
+  // shape (sanitizing each source separately before combining, specifically
+  // BECAUSE combining first and sanitizing once would let a placeholder
+  // first-source suppress a genuinely valid second one) — flagged as a false
+  // positive against the ORIGINAL version of this check.
+  return !SAFE_FALLBACK_RE.test(fallback) && !GUARD_CALL_RE.test(fallback);
 }
 
 function findMatchingParen(source, openIdx) {
@@ -139,6 +149,16 @@ function isHardcodedStringRhs(rhs) {
   if (!STRING_LITERAL_RE.test(trimmed) && !TEMPLATE_LITERAL_NO_INTERP_RE.test(trimmed)) return false;
   const inner = trimmed.slice(1, -1).trim().toLowerCase();
   return !UNKNOWN_MARKERS.has(inner);
+}
+
+// A bare `null`/`undefined` RHS (`venue: null`) can never carry junk data —
+// it's the exact safe output sanitizeVenueForWrite() itself returns on
+// rejection. Found live: guarded builders commonly early-return
+// `{ venue: null, reason: ... }` before ever calling the sanitizer (there is
+// nothing yet TO sanitize), which the original version of this check flagged
+// as an unguarded write.
+function isNullLiteralRhs(rhs) {
+  return SAFE_FALLBACK_RE.test(rhs.trim());
 }
 
 function lineOf(source, index) {
@@ -283,7 +303,7 @@ function scanVenueWrites(source) {
         line: lineOf(scanSrc, match.index),
         kind,
         snippet: lineText(source, match.index).slice(0, 160),
-        guarded: (GUARD_CALL_RE.test(rhs) && !isGuardCallDefeatedByFallback(rhs)) || isHardcodedStringRhs(rhs),
+        guarded: (GUARD_CALL_RE.test(rhs) && !isGuardCallDefeatedByFallback(rhs)) || isHardcodedStringRhs(rhs) || isNullLiteralRhs(rhs),
       });
     }
   }
@@ -303,6 +323,7 @@ module.exports = {
   scanRhs,
   isHardcodedStringRhs,
   isGuardCallDefeatedByFallback,
+  isNullLiteralRhs,
   blankStringsAndComments,
   stripComments,
   FILE_EXEMPTION,
