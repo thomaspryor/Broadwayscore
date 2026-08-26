@@ -13,12 +13,14 @@ scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-regex-patterns.test.mjs
+scripts/audit-review-contamination.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
+scripts/audit-venue-write-guard.test.mjs
 scripts/auto-fix-show-data.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-core-data-guard.test.mjs
@@ -157,6 +159,7 @@ tests/unit/audience-coverage-gaps.test.mjs
 tests/unit/audience-full-snapshot.test.mjs
 tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
+tests/unit/audit-cross-show-excerpt-contamination.test.mjs
 tests/unit/audit-delete-without-breadcrumb.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-ensemble-rejections.test.mjs
@@ -375,6 +378,7 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/ledger-future-timestamp.test.mjs
 tests/unit/linear-brain-done-gate.test.mjs
 tests/unit/linear-cap.test.mjs
 tests/unit/linear-client-archived-issue.test.mjs
@@ -483,6 +487,7 @@ tests/unit/preview-placeholder-merge.test.mjs
 tests/unit/prior-run-discovery-window.test.mjs
 tests/unit/progress-watch.test.mjs
 tests/unit/promote-dedup-jaccard.test.mjs
+tests/unit/promote-historical-auto.test.mjs
 tests/unit/promote-regional-auto.test.mjs
 tests/unit/promote-we-aggregator-auto.test.mjs
 tests/unit/protected-field-lock.test.mjs

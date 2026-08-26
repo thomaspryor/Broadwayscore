@@ -217,3 +217,14 @@ Systemic fix carded: Notion `3c8637c5-416f-81d7-80d6-e421d9c37ef6`.
 **Diagnostic:** when a review is missing but its file is clean, grep the show dir for OTHER files with the same critic slug — the killer is a sibling, not the file itself.
 **Re-ingestion loop:** deleting a review-texts file leaves no URL tombstone, so discovery re-ingests the same syndication URL on the next sweep (happened 3x here). Expect to delete it again until the tombstone list ships.
 **Systemic fix carded:** Notion 3c8637c5-416f-81c7-b585-da3eb8f37f07 (P1, parked).
+
+## Same field, WORSE variant: `domainUnvalidated` laundering onto a REGISTERED T1 outlet
+**2026-08-26, paranormal-activity-2026, monitor pass 27. Carded task #1926 ("P1: submit-review-form outlet attribution is never validated against the URL host — any domain can be ingested as a T1"), dispatched.**
+
+The staybook incident above is the *junk-content* face of this gate. The worse face: the submitted `outletId` can be an outlet that IS registered. `newyorknotebook.substack.com` (a critic's personal Substack) was ingested as `outletId: vulture` — T1, weight 1.0 — with `contentTier: complete`, zero flags, `explainExclusion() => null`. The body was a GENUINE review of the correct production, so no content-quality guard could ever catch it; the defect is purely the borrowed tier, on a show whose real Vulture review was already live. One rebuild from double-counting a T1.
+
+`domainUnvalidated: true` is written by the ingester and **read by nothing**. A field named `<x>Unvalidated` is not a guard, it is a TODO that looks handled.
+
+**Opening-night detection:** `grep -rl domainUnvalidated data/review-texts`, then compare each file's URL host to its `outletId`'s registry `domain`/`domainAliases`. Sweep on 2026-08-26: 221 files carry the field, 2 mismatched, 0 includable — rare enough to never surface in review, which is why it needs a CI gate not vigilance.
+
+**Manual block (until #1926 ships):** `contentTier: invalid` + `manualContentTier: invalid` + `incompleteReason: outlet_misattribution` + `outletMisattribution`/`Reason`/`VerifiedBy`. Do NOT delete — a misattributed genuine review should score at its true tier once its domain is registered.

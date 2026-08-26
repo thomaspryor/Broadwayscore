@@ -348,6 +348,15 @@ test('findStaleSlugs returns empty when every slug matches a show', () => {
   assert.deepEqual(findStaleSlugs(['hamilton', 'wicked'], shows), []);
 });
 
+// Adversarial review of the first cut of this fix (BRO-528): a malformed
+// shows.json (e.g. `{}` instead of `{shows: [...]}`) must not silently become
+// an empty catalog — that would false-positive EVERY slug as STALE_SLUG.
+test('findStaleSlugs returns null (not empty) for a malformed/non-array shows value', () => {
+  assert.equal(findStaleSlugs(['hamilton'], {}), null);
+  assert.equal(findStaleSlugs(['hamilton'], undefined), null);
+  assert.equal(findStaleSlugs(['hamilton'], null), null);
+});
+
 test('the current RICH_RESULTS_SLUGS all resolve against the real shows.json', () => {
   const shows = require('../data/shows.json').shows;
   const stale = findStaleSlugs(RICH_RESULTS_SLUGS, shows);

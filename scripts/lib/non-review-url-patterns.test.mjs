@@ -179,6 +179,18 @@ test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article review
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/shows/Oliver!-335212.html').reason, 'aggregator-internal-nav');
 });
 
+test('classifyReviewUrl: bare Playbill/BWW section roots rejected, real article paths pass (task #361)', () => {
+  // Bare section roots match the keyword regex (news/theater/etc) but are
+  // category-listing pages, not reviews — 2+ path segments required.
+  assert.equal(classifyReviewUrl('https://www.playbill.com/news').reason, 'aggregator-section-root');
+  assert.equal(classifyReviewUrl('https://www.playbill.com/news/').reason, 'aggregator-section-root');
+  assert.equal(classifyReviewUrl('https://www.broadwayworld.com/theater').reason, 'aggregator-section-root');
+  assert.equal(
+    classifyReviewUrl('https://www.playbill.com/article/theater-review-paranormal-activity').ok,
+    true,
+  );
+});
+
 test('classifyReviewUrl: static assets + unparseable rejected, real outlet reviews pass', () => {
   assert.equal(classifyReviewUrl('https://maxcdn.bootstrapcdn.com/bootstrap.min.css').ok, false);
   assert.equal(classifyReviewUrl('not-a-url').ok, false);

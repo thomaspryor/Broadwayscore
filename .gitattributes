@@ -39,6 +39,19 @@ data/audit/alert-router-attempts.jsonl merge=union
 # union semantics. merge=union concatenates both sides losslessly, same as
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
+# Newline-delimited registry of unit-test files, appended to by nearly every
+# worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
+# Two branches each registering a different test past a common ancestor is a
+# REAL conflict under plain `git merge` — verified 2026-08-26 with
+# `git merge-tree origin/main origin/job/linear-BRO-65-mt1sa3d6`, which is the
+# sole conflict blocking PR 616 and had survived two manual resolutions.
+# Every line is an independent registration and duplicates are harmless (the
+# manifest is read as a set), so merge=union keeps BOTH sides' tests instead of
+# silently dropping whichever one the resolver didn't notice. This is the same
+# append-only-registry shape as the ledgers above, not audit churn — the audit
+# state files in this PR's sibling (636) are deliberately merge-coverage=exempt
+# and are NOT given a driver here.
+tests/unit-test-manifest.txt merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours
 data/audit/opening-night-completeness-state.json merge=ours

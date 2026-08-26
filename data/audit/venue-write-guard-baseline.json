@@ -1,0 +1,965 @@
+{
+  "generatedAt": "2026-08-26",
+  "sites": {
+    "scripts/add-requested-show.js::const hash = candidateHash({ title: candidate.title, venue: candidate.venue });": {
+      "file": "scripts/add-requested-show.js",
+      "line": 250,
+      "kind": "literal",
+      "snippet": "const hash = candidateHash({ title: candidate.title, venue: candidate.venue });"
+    },
+    "scripts/audit-creative-team.js::venue: show.venue,": {
+      "file": "scripts/audit-creative-team.js",
+      "line": 250,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/audit-critic-listing-parity.js::const candidate = { title: p.title, venue: p.venue };": {
+      "file": "scripts/audit-critic-listing-parity.js",
+      "line": 84,
+      "kind": "literal",
+      "snippet": "const candidate = { title: p.title, venue: p.venue };"
+    },
+    "scripts/audit-critic-listing-parity.js::diffs.push({ id: p.id, title: p.title, venue: p.venue, originalSource: p.confirmationSource, newReason: r.reason });": {
+      "file": "scripts/audit-critic-listing-parity.js",
+      "line": 87,
+      "kind": "literal",
+      "snippet": "diffs.push({ id: p.id, title: p.title, venue: p.venue, originalSource: p.confirmationSource, newReason: r.reason });"
+    },
+    "scripts/audit-critic-listing-parity.js::venue: p.venue,": {
+      "file": "scripts/audit-critic-listing-parity.js",
+      "line": 98,
+      "kind": "literal",
+      "snippet": "venue: p.venue,"
+    },
+    "scripts/audit-critic-listing-parity.js::if (r.confirmed) wouldConfirmSynthetic.push({ id: p.id, title: p.title, venue: p.venue });": {
+      "file": "scripts/audit-critic-listing-parity.js",
+      "line": 105,
+      "kind": "literal",
+      "snippet": "if (r.confirmed) wouldConfirmSynthetic.push({ id: p.id, title: p.title, venue: p.venue });"
+    },
+    "scripts/audit-cross-production.js::venue: s.venue || null,": {
+      "file": "scripts/audit-cross-production.js",
+      "line": 124,
+      "kind": "literal",
+      "snippet": "venue: s.venue || null,"
+    },
+    "scripts/audit-duplicate-shows.js::a: { id: a.id, venue: a.venue, opening: a.openingDate, reviews: ra },": {
+      "file": "scripts/audit-duplicate-shows.js",
+      "line": 182,
+      "kind": "literal",
+      "snippet": "a: { id: a.id, venue: a.venue, opening: a.openingDate, reviews: ra },"
+    },
+    "scripts/audit-duplicate-shows.js::b: { id: b.id, venue: b.venue, opening: b.openingDate, reviews: rb },": {
+      "file": "scripts/audit-duplicate-shows.js",
+      "line": 183,
+      "kind": "literal",
+      "snippet": "b: { id: b.id, venue: b.venue, opening: b.openingDate, reviews: rb },"
+    },
+    "scripts/audit-duplicate-shows.js::a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },": {
+      "file": "scripts/audit-duplicate-shows.js",
+      "line": 203,
+      "kind": "literal",
+      "snippet": "a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },"
+    },
+    "scripts/audit-duplicate-shows.js::b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },": {
+      "file": "scripts/audit-duplicate-shows.js",
+      "line": 204,
+      "kind": "literal",
+      "snippet": "b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },"
+    },
+    "scripts/audit-images-llm.js::const systemPrompt = buildVerificationPrompt({ market, venue: showContext.venue });": {
+      "file": "scripts/audit-images-llm.js",
+      "line": 157,
+      "kind": "literal",
+      "snippet": "const systemPrompt = buildVerificationPrompt({ market, venue: showContext.venue });"
+    },
+    "scripts/audit-multi-production-titles.js::venue: s.venue || null,": {
+      "file": "scripts/audit-multi-production-titles.js",
+      "line": 28,
+      "kind": "literal",
+      "snippet": "venue: s.venue || null,"
+    },
+    "scripts/audit-placeholder-venues.js::if (placeholder) flagged.push({ id: s.id, title: s.title, venue: s.venue ?? null, reason, category: s.category });": {
+      "file": "scripts/audit-placeholder-venues.js",
+      "line": 151,
+      "kind": "literal",
+      "snippet": "if (placeholder) flagged.push({ id: s.id, title: s.title, venue: s.venue ?? null, reason, category: s.category });"
+    },
+    "scripts/audit-review-url-clusters.js::show: { id: show.id, title: show.title, venue: show.venue, openingDate: show.openingDate },": {
+      "file": "scripts/audit-review-url-clusters.js",
+      "line": 214,
+      "kind": "literal",
+      "snippet": "show: { id: show.id, title: show.title, venue: show.venue, openingDate: show.openingDate },"
+    },
+    "scripts/audit-show-score-urls.js::venue: show.venue, status: show.status,": {
+      "file": "scripts/audit-show-score-urls.js",
+      "line": 120,
+      "kind": "literal",
+      "snippet": "venue: show.venue, status: show.status,"
+    },
+    "scripts/audit-show-score-urls.js::show: { title: show.title, venue: show.venue, status: show.status, openingDate: show.openingDate, closingDate: show.closingDate },": {
+      "file": "scripts/audit-show-score-urls.js",
+      "line": 170,
+      "kind": "literal",
+      "snippet": "show: { title: show.title, venue: show.venue, status: show.status, openingDate: show.openingDate, closingDate: show.closingDate },"
+    },
+    "scripts/audit-slug-match-routing.js::fromShow: { title: fromShow.title, venue: fromShow.venue || null, openingDate: fromShow.openingDate || null, status: fromShow.status || null, category: fromShow": {
+      "file": "scripts/audit-slug-match-routing.js",
+      "line": 185,
+      "kind": "literal",
+      "snippet": "fromShow: { title: fromShow.title, venue: fromShow.venue || null, openingDate: fromShow.openingDate || null, status: fromShow.status || null, category: fromShow"
+    },
+    "scripts/audit-slug-match-routing.js::toShow: { title: toShow.title, venue: toShow.venue || null, openingDate: toShow.openingDate || null, status: toShow.status || null, category: toShow.category ||": {
+      "file": "scripts/audit-slug-match-routing.js",
+      "line": 186,
+      "kind": "literal",
+      "snippet": "toShow: { title: toShow.title, venue: toShow.venue || null, openingDate: toShow.openingDate || null, status: toShow.status || null, category: toShow.category ||"
+    },
+    "scripts/audit-stale-announced-shows.js::venue: show.venue || null,": {
+      "file": "scripts/audit-stale-announced-shows.js",
+      "line": 147,
+      "kind": "literal",
+      "snippet": "venue: show.venue || null,"
+    },
+    "scripts/audit-touring-contamination.js::venue: obj.venue || null,": {
+      "file": "scripts/audit-touring-contamination.js",
+      "line": 700,
+      "kind": "literal",
+      "snippet": "venue: obj.venue || null,"
+    },
+    "scripts/audit-touring-contamination.js::venue: null,": {
+      "file": "scripts/audit-touring-contamination.js",
+      "line": 712,
+      "kind": "literal",
+      "snippet": "venue: null,"
+    },
+    "scripts/audit-touring-contamination.js::venue: parsed.venue,": {
+      "file": "scripts/audit-touring-contamination.js",
+      "line": 949,
+      "kind": "literal",
+      "snippet": "venue: parsed.venue,"
+    },
+    "scripts/audit-touring-contamination.js::venue: v.venue,": {
+      "file": "scripts/audit-touring-contamination.js",
+      "line": 1021,
+      "kind": "literal",
+      "snippet": "venue: v.venue,"
+    },
+    "scripts/audit-wrong-production-reviews.js::venue: show.venue || null,": {
+      "file": "scripts/audit-wrong-production-reviews.js",
+      "line": 169,
+      "kind": "literal",
+      "snippet": "venue: show.venue || null,"
+    },
+    "scripts/backfill-cast.js::venue: show.venue,": {
+      "file": "scripts/backfill-cast.js",
+      "line": 184,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/backfill-playwright-credits.js::venue: show.venue": {
+      "file": "scripts/backfill-playwright-credits.js",
+      "line": 278,
+      "kind": "literal",
+      "snippet": "venue: show.venue"
+    },
+    "scripts/cloud-stub-data.js::venue: s.v || 'Unknown Theatre',": {
+      "file": "scripts/cloud-stub-data.js",
+      "line": 61,
+      "kind": "literal",
+      "snippet": "venue: s.v || 'Unknown Theatre',"
+    },
+    "scripts/collect-review-texts.js::venue: showMeta?.venue || null,": {
+      "file": "scripts/collect-review-texts.js",
+      "line": 6363,
+      "kind": "literal",
+      "snippet": "venue: showMeta?.venue || null,"
+    },
+    "scripts/compute-gold-lists.js::season, venue: show.venue, type: show.type,": {
+      "file": "scripts/compute-gold-lists.js",
+      "line": 161,
+      "kind": "literal",
+      "snippet": "season, venue: show.venue, type: show.type,"
+    },
+    "scripts/compute-gold-lists.js::season, venue: show.venue, type: show.type, thumbnail: show.images?.thumbnail || null,": {
+      "file": "scripts/compute-gold-lists.js",
+      "line": 283,
+      "kind": "literal",
+      "snippet": "season, venue: show.venue, type: show.type, thumbnail: show.images?.thumbnail || null,"
+    },
+    "scripts/detect-show-changes.js::venue: show?.venue || null,": {
+      "file": "scripts/detect-show-changes.js",
+      "line": 184,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || null,"
+    },
+    "scripts/discover-historical-shows-we.js::venue: venueMatch ? venueMatch[1].trim() : null,": {
+      "file": "scripts/discover-historical-shows-we.js",
+      "line": 123,
+      "kind": "literal",
+      "snippet": "venue: venueMatch ? venueMatch[1].trim() : null,"
+    },
+    "scripts/discover-historical-shows-we.js::return shows.filter(s => s.title && s.venue).map(s => ({ title: s.title, venue: s.venue }));": {
+      "file": "scripts/discover-historical-shows-we.js",
+      "line": 174,
+      "kind": "literal",
+      "snippet": "return shows.filter(s => s.title && s.venue).map(s => ({ title: s.title, venue: s.venue }));"
+    },
+    "scripts/discover-historical-shows-we.js::byKey.push({ title: r.title, venue: r.venue, openingDate: r.openingDate });": {
+      "file": "scripts/discover-historical-shows-we.js",
+      "line": 204,
+      "kind": "literal",
+      "snippet": "byKey.push({ title: r.title, venue: r.venue, openingDate: r.openingDate });"
+    },
+    "scripts/discover-historical-shows-we.js::venue: base.venue,": {
+      "file": "scripts/discover-historical-shows-we.js",
+      "line": 230,
+      "kind": "literal",
+      "snippet": "venue: base.venue,"
+    },
+    "scripts/discover-historical-shows.js::venue: sanitizedVenue,": {
+      "file": "scripts/discover-historical-shows.js",
+      "line": 321,
+      "kind": "literal",
+      "snippet": "venue: sanitizedVenue,"
+    },
+    "scripts/discover-historical-shows.js::venue: show.venue, reason: venueValidation.reason": {
+      "file": "scripts/discover-historical-shows.js",
+      "line": 478,
+      "kind": "literal",
+      "snippet": "venue: show.venue, reason: venueValidation.reason"
+    },
+    "scripts/discover-historical-shows.js::show.venue = venueValidation.canonical;": {
+      "file": "scripts/discover-historical-shows.js",
+      "line": 483,
+      "kind": "assignment",
+      "snippet": "show.venue = venueValidation.canonical;"
+    },
+    "scripts/discover-historical-shows.js::venue: show.venue,": {
+      "file": "scripts/discover-historical-shows.js",
+      "line": 649,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/discover-historical-shows.js::id: s.id, title: s.title, slug: s.slug, venue: s.venue,": {
+      "file": "scripts/discover-historical-shows.js",
+      "line": 695,
+      "kind": "literal",
+      "snippet": "id: s.id, title: s.title, slug: s.slug, venue: s.venue,"
+    },
+    "scripts/discover-new-shows.js::const name = typeof venue === 'string' ? venue : venue?.name;": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 268,
+      "kind": "literal",
+      "snippet": "const name = typeof venue === 'string' ? venue : venue?.name;"
+    },
+    "scripts/discover-new-shows.js::venue: bwayVenue,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 373,
+      "kind": "literal",
+      "snippet": "venue: bwayVenue,"
+    },
+    "scripts/discover-new-shows.js::venue: obVenue,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 407,
+      "kind": "literal",
+      "snippet": "venue: obVenue,"
+    },
+    "scripts/discover-new-shows.js::venue: { name: e.venue || VENUE_PLACEHOLDER },": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 524,
+      "kind": "literal",
+      "snippet": "venue: { name: e.venue || VENUE_PLACEHOLDER },"
+    },
+    "scripts/discover-new-shows.js::const genre = classifyGenre({ title, venue: weVenue, description });": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 658,
+      "kind": "literal",
+      "snippet": "const genre = classifyGenre({ title, venue: weVenue, description });"
+    },
+    "scripts/discover-new-shows.js::venue: weVenue,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 665,
+      "kind": "literal",
+      "snippet": "venue: weVenue,"
+    },
+    "scripts/discover-new-shows.js::venue: venue.name,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 1230,
+      "kind": "literal",
+      "snippet": "venue: venue.name,"
+    },
+    "scripts/discover-new-shows.js::const genre = classifyGenre({ title, venue: venueName, description: ttShow.description || '' });": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 1647,
+      "kind": "literal",
+      "snippet": "const genre = classifyGenre({ title, venue: venueName, description: ttShow.description || '' });"
+    },
+    "scripts/discover-new-shows.js::venue: venueName,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 1654,
+      "kind": "literal",
+      "snippet": "venue: venueName,"
+    },
+    "scripts/discover-new-shows.js::venue: s.venue": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 2269,
+      "kind": "literal",
+      "snippet": "venue: s.venue"
+    },
+    "scripts/discover-new-shows.js::venue: show.venue,": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 2592,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/discover-ob-historical.js::venue: cfg.label,": {
+      "file": "scripts/discover-ob-historical.js",
+      "line": 247,
+      "kind": "literal",
+      "snippet": "venue: cfg.label,"
+    },
+    "scripts/discover-ob-historical.js::filter: { venue: venueArg, monthsBack, limit: limit || null },": {
+      "file": "scripts/discover-ob-historical.js",
+      "line": 279,
+      "kind": "literal",
+      "snippet": "filter: { venue: venueArg, monthsBack, limit: limit || null },"
+    },
+    "scripts/enrich-ibdb-dates.js::venue: s.venue,": {
+      "file": "scripts/enrich-ibdb-dates.js",
+      "line": 231,
+      "kind": "literal",
+      "snippet": "venue: s.venue,"
+    },
+    "scripts/enrich-ob-dates-from-showscore.js::if (!dryRun) show.venue = ssData.venue;": {
+      "file": "scripts/enrich-ob-dates-from-showscore.js",
+      "line": 129,
+      "kind": "assignment",
+      "snippet": "if (!dryRun) show.venue = ssData.venue;"
+    },
+    "scripts/enrich-west-end-shows.js::if (!DRY_RUN) show.venue = tt.venue.trim();": {
+      "file": "scripts/enrich-west-end-shows.js",
+      "line": 136,
+      "kind": "assignment",
+      "snippet": "if (!DRY_RUN) show.venue = tt.venue.trim();"
+    },
+    "scripts/extract-theatre-record.js::venue: venue?.textContent?.trim() || '',": {
+      "file": "scripts/extract-theatre-record.js",
+      "line": 716,
+      "kind": "literal",
+      "snippet": "venue: venue?.textContent?.trim() || '',"
+    },
+    "scripts/fetch-show-images-auto.js::venue: show.venue,": {
+      "file": "scripts/fetch-show-images-auto.js",
+      "line": 2618,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/generate-commercial-export.js::venue: show?.venue || null,": {
+      "file": "scripts/generate-commercial-export.js",
+      "line": 81,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || null,"
+    },
+    "scripts/generate-diary-data.js::if (show.venue) entry.venue = show.venue;": {
+      "file": "scripts/generate-diary-data.js",
+      "line": 57,
+      "kind": "assignment",
+      "snippet": "if (show.venue) entry.venue = show.venue;"
+    },
+    "scripts/generate-guide-editorials.js::venue: s.venue,": {
+      "file": "scripts/generate-guide-editorials.js",
+      "line": 108,
+      "kind": "literal",
+      "snippet": "venue: s.venue,"
+    },
+    "scripts/generate-homepage-archive.js::venue: show.venue || '',": {
+      "file": "scripts/generate-homepage-archive.js",
+      "line": 169,
+      "kind": "literal",
+      "snippet": "venue: show.venue || '',"
+    },
+    "scripts/generate-review-og-images.js::venue: data.venue,": {
+      "file": "scripts/generate-review-og-images.js",
+      "line": 152,
+      "kind": "literal",
+      "snippet": "venue: data.venue,"
+    },
+    "scripts/generate-search-shows.js::if (show.venue) entry.venue = show.venue;": {
+      "file": "scripts/generate-search-shows.js",
+      "line": 62,
+      "kind": "assignment",
+      "snippet": "if (show.venue) entry.venue = show.venue;"
+    },
+    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },": {
+      "file": "scripts/generate-social-post.js",
+      "line": 358,
+      "kind": "literal",
+      "snippet": "imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },"
+    },
+    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },": {
+      "file": "scripts/generate-social-post.js",
+      "line": 323,
+      "kind": "literal",
+      "snippet": "imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },"
+    },
+    "scripts/generate-social-post.js::imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },": {
+      "file": "scripts/generate-social-post.js",
+      "line": 426,
+      "kind": "literal",
+      "snippet": "imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },"
+    },
+    "scripts/lib/aggregator-candidate-extract.js::if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };": {
+      "file": "scripts/lib/aggregator-candidate-extract.js",
+      "line": 80,
+      "kind": "literal",
+      "snippet": "if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };"
+    },
+    "scripts/lib/aggregator-candidate-extract.js::try { doc = new JSDOM(html).window.document; } catch { return { title: null, venue: null, date: null }; }": {
+      "file": "scripts/lib/aggregator-candidate-extract.js",
+      "line": 213,
+      "kind": "literal",
+      "snippet": "try { doc = new JSDOM(html).window.document; } catch { return { title: null, venue: null, date: null }; }"
+    },
+    "scripts/lib/aggregator-candidate-extract.js::venue: venue || null,": {
+      "file": "scripts/lib/aggregator-candidate-extract.js",
+      "line": 264,
+      "kind": "literal",
+      "snippet": "venue: venue || null,"
+    },
+    "scripts/lib/aggregator-candidate-extract.js::venue: fields.venue,": {
+      "file": "scripts/lib/aggregator-candidate-extract.js",
+      "line": 1088,
+      "kind": "literal",
+      "snippet": "venue: fields.venue,"
+    },
+    "scripts/lib/discovery-reconcile.js::patch.venue = candidate.venue;": {
+      "file": "scripts/lib/discovery-reconcile.js",
+      "line": 72,
+      "kind": "assignment",
+      "snippet": "patch.venue = candidate.venue;"
+    },
+    "scripts/lib/generate-market-archive.js::venue: show.venue || '',": {
+      "file": "scripts/lib/generate-market-archive.js",
+      "line": 142,
+      "kind": "literal",
+      "snippet": "venue: show.venue || '',"
+    },
+    "scripts/lib/ibdb-dates.js::venue: show.venue,": {
+      "file": "scripts/lib/ibdb-dates.js",
+      "line": 695,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/lib/list-running-shows.js::venue: s.venue || null,": {
+      "file": "scripts/lib/list-running-shows.js",
+      "line": 54,
+      "kind": "literal",
+      "snippet": "venue: s.venue || null,"
+    },
+    "scripts/lib/market-routing.js::venue: s.venue || null,": {
+      "file": "scripts/lib/market-routing.js",
+      "line": 76,
+      "kind": "literal",
+      "snippet": "venue: s.venue || null,"
+    },
+    "scripts/lib/market-routing.js::venue: x.venue || null,": {
+      "file": "scripts/lib/market-routing.js",
+      "line": 87,
+      "kind": "literal",
+      "snippet": "venue: x.venue || null,"
+    },
+    "scripts/lib/market-routing.js::{ openingDate: sibData.openingDate, closingDate: sibData.closingDate, venue: sibData.venue },": {
+      "file": "scripts/lib/market-routing.js",
+      "line": 355,
+      "kind": "literal",
+      "snippet": "{ openingDate: sibData.openingDate, closingDate: sibData.closingDate, venue: sibData.venue },"
+    },
+    "scripts/lib/playbill-ob-schedule.js::venue: extractVenue(plain),": {
+      "file": "scripts/lib/playbill-ob-schedule.js",
+      "line": 186,
+      "kind": "literal",
+      "snippet": "venue: extractVenue(plain),"
+    },
+    "scripts/lib/reverse-discovery.js::return { title, url, venue: venue || null, outOfTown: isNytheaterOutOfTown(lead) };": {
+      "file": "scripts/lib/reverse-discovery.js",
+      "line": 218,
+      "kind": "literal",
+      "snippet": "return { title, url, venue: venue || null, outOfTown: isNytheaterOutOfTown(lead) };"
+    },
+    "scripts/lib/reverse-discovery.js::entries.push({ title: parsed.title, venue: parsed.venue, url: parsed.url, month, day, date });": {
+      "file": "scripts/lib/reverse-discovery.js",
+      "line": 291,
+      "kind": "literal",
+      "snippet": "entries.push({ title: parsed.title, venue: parsed.venue, url: parsed.url, month, day, date });"
+    },
+    "scripts/lib/show-duplicate-detection.js::venue: v,": {
+      "file": "scripts/lib/show-duplicate-detection.js",
+      "line": 89,
+      "kind": "literal",
+      "snippet": "venue: v,"
+    },
+    "scripts/lib/url-discovery.js::venue: showEntry.venue || showEntry.theater || null,": {
+      "file": "scripts/lib/url-discovery.js",
+      "line": 243,
+      "kind": "literal",
+      "snippet": "venue: showEntry.venue || showEntry.theater || null,"
+    },
+    "scripts/lib/url-discovery.js::venue: null,": {
+      "file": "scripts/lib/url-discovery.js",
+      "line": 267,
+      "kind": "literal",
+      "snippet": "venue: null,"
+    },
+    "scripts/lib/venue-classification.js::const name = typeof venue === 'string' ? venue : venue?.name;": {
+      "file": "scripts/lib/venue-classification.js",
+      "line": 48,
+      "kind": "literal",
+      "snippet": "const name = typeof venue === 'string' ? venue : venue?.name;"
+    },
+    "scripts/lib/venue-listing-discover.js::venue: venue.name,": {
+      "file": "scripts/lib/venue-listing-discover.js",
+      "line": 295,
+      "kind": "literal",
+      "snippet": "venue: venue.name,"
+    },
+    "scripts/lib/venue-title-dedup-pool.js::.map(s => ({ title: s.title, venue: s.venue }));": {
+      "file": "scripts/lib/venue-title-dedup-pool.js",
+      "line": 29,
+      "kind": "literal",
+      "snippet": ".map(s => ({ title: s.title, venue: s.venue }));"
+    },
+    "scripts/lib/verify-image.js::const systemPrompt = buildVerificationPrompt({ market: options.market, venue: options.venue });": {
+      "file": "scripts/lib/verify-image.js",
+      "line": 374,
+      "kind": "literal",
+      "snippet": "const systemPrompt = buildVerificationPrompt({ market: options.market, venue: options.venue });"
+    },
+    "scripts/lib/we-listing-discover.js::.map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\\s+/g, '-') }))": {
+      "file": "scripts/lib/we-listing-discover.js",
+      "line": 75,
+      "kind": "literal",
+      "snippet": ".map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\\s+/g, '-') }))"
+    },
+    "scripts/lib/we-listing-discover.js::return venue.length >= 3 && venue.length <= 60 ? venue : null;": {
+      "file": "scripts/lib/we-listing-discover.js",
+      "line": 132,
+      "kind": "literal",
+      "snippet": "return venue.length >= 3 && venue.length <= 60 ? venue : null;"
+    },
+    "scripts/lib/we-listing-discover.js::return { venue: venueFromWetDescription(description), articlePublishedAt: datePublished };": {
+      "file": "scripts/lib/we-listing-discover.js",
+      "line": 210,
+      "kind": "literal",
+      "snippet": "return { venue: venueFromWetDescription(description), articlePublishedAt: datePublished };"
+    },
+    "scripts/lib/we-listing-discover.js::venue: venueMatch.venue,": {
+      "file": "scripts/lib/we-listing-discover.js",
+      "line": 304,
+      "kind": "literal",
+      "snippet": "venue: venueMatch.venue,"
+    },
+    "scripts/llm-scoring/ensemble-scorer.ts::venue: (reviewFile as any).venue,": {
+      "file": "scripts/llm-scoring/ensemble-scorer.ts",
+      "line": 510,
+      "kind": "literal",
+      "snippet": "venue: (reviewFile as any).venue,"
+    },
+    "scripts/llm-scoring/index.ts::venue: string | null;": {
+      "file": "scripts/llm-scoring/index.ts",
+      "line": 298,
+      "kind": "literal",
+      "snippet": "venue: string | null;"
+    },
+    "scripts/llm-scoring/index.ts::venue: show.venue || null,": {
+      "file": "scripts/llm-scoring/index.ts",
+      "line": 316,
+      "kind": "literal",
+      "snippet": "venue: show.venue || null,"
+    },
+    "scripts/llm-scoring/index.ts::reviewFile.venue = showMeta.venue ?? undefined;": {
+      "file": "scripts/llm-scoring/index.ts",
+      "line": 1882,
+      "kind": "assignment",
+      "snippet": "reviewFile.venue = showMeta.venue ?? undefined;"
+    },
+    "scripts/llm-scoring/test-helen-shaw-fixture.ts::venue: string;": {
+      "file": "scripts/llm-scoring/test-helen-shaw-fixture.ts",
+      "line": 50,
+      "kind": "literal",
+      "snippet": "venue: string;"
+    },
+    "scripts/llm-scoring/test-helen-shaw-fixture.ts::venue: fixture.source.venue,": {
+      "file": "scripts/llm-scoring/test-helen-shaw-fixture.ts",
+      "line": 129,
+      "kind": "literal",
+      "snippet": "venue: fixture.source.venue,"
+    },
+    "scripts/llm-scoring/test-prompt-structural-ab.ts::function loadShowsIndex(): Map<string, { title: string; category: string; venue: string | null }> {": {
+      "file": "scripts/llm-scoring/test-prompt-structural-ab.ts",
+      "line": 128,
+      "kind": "literal",
+      "snippet": "function loadShowsIndex(): Map<string, { title: string; category: string; venue: string | null }> {"
+    },
+    "scripts/llm-scoring/test-prompt-structural-ab.ts::const map = new Map<string, { title: string; category: string; venue: string | null }>();": {
+      "file": "scripts/llm-scoring/test-prompt-structural-ab.ts",
+      "line": 129,
+      "kind": "literal",
+      "snippet": "const map = new Map<string, { title: string; category: string; venue: string | null }>();"
+    },
+    "scripts/llm-scoring/test-prompt-structural-ab.ts::venue: show.venue || null,": {
+      "file": "scripts/llm-scoring/test-prompt-structural-ab.ts",
+      "line": 137,
+      "kind": "literal",
+      "snippet": "venue: show.venue || null,"
+    },
+    "scripts/llm-scoring/test-prompt-structural-ab.ts::venue: data.venue || showInfo?.venue || undefined,": {
+      "file": "scripts/llm-scoring/test-prompt-structural-ab.ts",
+      "line": 808,
+      "kind": "literal",
+      "snippet": "venue: data.venue || showInfo?.venue || undefined,"
+    },
+    "scripts/llm-scoring/test-prompt-structural-ab.ts::venue: raw.source.venue,": {
+      "file": "scripts/llm-scoring/test-prompt-structural-ab.ts",
+      "line": 340,
+      "kind": "literal",
+      "snippet": "venue: raw.source.venue,"
+    },
+    "scripts/migrate-reviews-to-sanity.js::venue: data.venue,": {
+      "file": "scripts/migrate-reviews-to-sanity.js",
+      "line": 183,
+      "kind": "literal",
+      "snippet": "venue: data.venue,"
+    },
+    "scripts/normalize-venues.js::show.venue = finalName;": {
+      "file": "scripts/normalize-venues.js",
+      "line": 47,
+      "kind": "assignment",
+      "snippet": "show.venue = finalName;"
+    },
+    "scripts/ob-expansion-final-report.js::id, title: show.title, venue: show.venue, status: show.status,": {
+      "file": "scripts/ob-expansion-final-report.js",
+      "line": 85,
+      "kind": "literal",
+      "snippet": "id, title: show.title, venue: show.venue, status: show.status,"
+    },
+    "scripts/promote-historical-we.js::venue: candidate.venue,": {
+      "file": "scripts/promote-historical-we.js",
+      "line": 75,
+      "kind": "literal",
+      "snippet": "venue: candidate.venue,"
+    },
+    "scripts/promote-historical-we.js::knownShows.push({ title: entry.title, venue: entry.venue });": {
+      "file": "scripts/promote-historical-we.js",
+      "line": 133,
+      "kind": "literal",
+      "snippet": "knownShows.push({ title: entry.title, venue: entry.venue });"
+    },
+    "scripts/promote-historical-we.js::logEntry({ kind: 'promote-historical-we', id: entry.id, title: entry.title, venue: entry.venue, season: entry.season });": {
+      "file": "scripts/promote-historical-we.js",
+      "line": 160,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'promote-historical-we', id: entry.id, title: entry.title, venue: entry.venue, season: entry.season });"
+    },
+    "scripts/promote-ob-historical.js::venue: r.parsed?.titleParse?.venue || r.venue,": {
+      "file": "scripts/promote-ob-historical.js",
+      "line": 88,
+      "kind": "literal",
+      "snippet": "venue: r.parsed?.titleParse?.venue || r.venue,"
+    },
+    "scripts/promote-ob-historical.js::knownShows.push({ title: entry.title, venue: entry.venue });": {
+      "file": "scripts/promote-ob-historical.js",
+      "line": 136,
+      "kind": "literal",
+      "snippet": "knownShows.push({ title: entry.title, venue: entry.venue });"
+    },
+    "scripts/promote-ob-historical.js::logEntry({ kind: 'promote-historical', id: entry.id, title: entry.title, venue: entry.venue });": {
+      "file": "scripts/promote-ob-historical.js",
+      "line": 163,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'promote-historical', id: entry.id, title: entry.title, venue: entry.venue });"
+    },
+    "scripts/promote-ob-venue-candidates.js::venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 421,
+      "kind": "literal",
+      "snippet": "venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,"
+    },
+    "scripts/promote-ob-venue-candidates.js::.map(s => ({ id: s.id, title: s.title, venue: s.venue }));": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 486,
+      "kind": "literal",
+      "snippet": ".map(s => ({ id: s.id, title: s.title, venue: s.venue }));"
+    },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 539,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });"
+    },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, reason });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 584,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, reason });"
+    },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 608,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });"
+    },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 613,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });"
+    },
+    "scripts/promote-ob-venue-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 628,
+      "kind": "literal",
+      "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });"
+    },
+    "scripts/promote-ob-venue-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 630,
+      "kind": "literal",
+      "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });"
+    },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : u": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 635,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : u"
+    },
+    "scripts/promote-we-aggregator-candidates.js::out.push({ title: c.title, venue: c.venue, sourceUrl: c.sourceUrl, articlePublishedAt: null, category: 'west-end', source: 'lbo-sitemap', discoveredAt });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 217,
+      "kind": "literal",
+      "snippet": "out.push({ title: c.title, venue: c.venue, sourceUrl: c.sourceUrl, articlePublishedAt: null, category: 'west-end', source: 'lbo-sitemap', discoveredAt });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::venue: venueInfo.venue,": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 243,
+      "kind": "literal",
+      "snippet": "venue: venueInfo.venue,"
+    },
+    "scripts/promote-we-aggregator-candidates.js::.map(s => ({ id: s.id, title: s.title, venue: s.venue }));": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 279,
+      "kind": "literal",
+      "snippet": ".map(s => ({ id: s.id, title: s.title, venue: s.venue }));"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, source: c.source, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 293,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, source: c.source, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-limit', title: c.title, venue: c.venue, source: c.source });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 304,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-limit', title: c.title, venue: c.venue, source: c.source });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, source: c.source, reason: r.reason });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 315,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, source: c.source, reason: r.reason });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 329,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 334,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 339,
+      "kind": "literal",
+      "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, source: p.candidate.source });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 389,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, source: p.candidate.source });"
+    },
+    "scripts/refresh-mezzanine-catalog.js::existing.venue = entry.venue || existing.venue;": {
+      "file": "scripts/refresh-mezzanine-catalog.js",
+      "line": 115,
+      "kind": "assignment",
+      "snippet": "existing.venue = entry.venue || existing.venue;"
+    },
+    "scripts/reverify-era-venue-wrongprod.js::venue: show.venue || null,": {
+      "file": "scripts/reverify-era-venue-wrongprod.js",
+      "line": 88,
+      "kind": "literal",
+      "snippet": "venue: show.venue || null,"
+    },
+    "scripts/reverify-nulled-cv-promoted.js::venue: show?.venue || null,": {
+      "file": "scripts/reverify-nulled-cv-promoted.js",
+      "line": 186,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || null,"
+    },
+    "scripts/reverify-stale-cv-promoted.js::venue: show?.venue || null,": {
+      "file": "scripts/reverify-stale-cv-promoted.js",
+      "line": 154,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || null,"
+    },
+    "scripts/reverify-with-haiku.js::venue: show?.venue || '',": {
+      "file": "scripts/reverify-with-haiku.js",
+      "line": 101,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || '',"
+    },
+    "scripts/scan-we-cross-market.ts::category: show.category, venue: show.venue,": {
+      "file": "scripts/scan-we-cross-market.ts",
+      "line": 75,
+      "kind": "literal",
+      "snippet": "category: show.category, venue: show.venue,"
+    },
+    "scripts/scrape-reddit-sentiment.js::venue: show.venue || '',": {
+      "file": "scripts/scrape-reddit-sentiment.js",
+      "line": 303,
+      "kind": "literal",
+      "snippet": "venue: show.venue || '',"
+    },
+    "scripts/scrape-stagedoor-critics.js::const result = verifyAggregatorUrl({ url, html: null, show: { id: s.id, title: s.title, venue: s.venue, openingDate: s.openingDate } });": {
+      "file": "scripts/scrape-stagedoor-critics.js",
+      "line": 432,
+      "kind": "literal",
+      "snippet": "const result = verifyAggregatorUrl({ url, html: null, show: { id: s.id, title: s.title, venue: s.venue, openingDate: s.openingDate } });"
+    },
+    "scripts/scrape-theatr-audience.js::venue: r.venue || null,": {
+      "file": "scripts/scrape-theatr-audience.js",
+      "line": 431,
+      "kind": "literal",
+      "snippet": "venue: r.venue || null,"
+    },
+    "scripts/send-daily-digest.js::venue: currShow.v, market,": {
+      "file": "scripts/send-daily-digest.js",
+      "line": 143,
+      "kind": "literal",
+      "snippet": "venue: currShow.v, market,"
+    },
+    "scripts/send-opening-night-broadcast.js::venue: show.venue,": {
+      "file": "scripts/send-opening-night-broadcast.js",
+      "line": 465,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/social-infographics/gather-post-data.js::venue: master.venue,": {
+      "file": "scripts/social-infographics/gather-post-data.js",
+      "line": 60,
+      "kind": "literal",
+      "snippet": "venue: master.venue,"
+    },
+    "scripts/sweep-we-aggregators.js::venue: show.venue,": {
+      "file": "scripts/sweep-we-aggregators.js",
+      "line": 325,
+      "kind": "literal",
+      "snippet": "venue: show.venue,"
+    },
+    "scripts/test-deduplication.js::slug: 'the-truth-west-end', venue: 'TBA', openingDate: '2026-06-18',": {
+      "file": "scripts/test-deduplication.js",
+      "line": 173,
+      "kind": "literal",
+      "snippet": "slug: 'the-truth-west-end', venue: 'TBA', openingDate: '2026-06-18',"
+    },
+    "scripts/test-deduplication.js::venue: '',": {
+      "file": "scripts/test-deduplication.js",
+      "line": 517,
+      "kind": "literal",
+      "snippet": "venue: '',"
+    },
+    "scripts/test-discovery-flow.js::venue: { name: 'Lyric Theatre' },": {
+      "file": "scripts/test-discovery-flow.js",
+      "line": 30,
+      "kind": "literal",
+      "snippet": "venue: { name: 'Lyric Theatre' },"
+    },
+    "scripts/test-discovery-flow.js::venue: { name: 'Broadway Theatre' },": {
+      "file": "scripts/test-discovery-flow.js",
+      "line": 46,
+      "kind": "literal",
+      "snippet": "venue: { name: 'Broadway Theatre' },"
+    },
+    "scripts/test-discovery-flow.js::venue: { name: 'Shubert Theatre' },": {
+      "file": "scripts/test-discovery-flow.js",
+      "line": 63,
+      "kind": "literal",
+      "snippet": "venue: { name: 'Shubert Theatre' },"
+    },
+    "scripts/test-discovery-flow.js::venue: todaytixShow.venue?.name || 'TBA',": {
+      "file": "scripts/test-discovery-flow.js",
+      "line": 86,
+      "kind": "literal",
+      "snippet": "venue: todaytixShow.venue?.name || 'TBA',"
+    },
+    "scripts/test-discovery-flow.js::venue: newShow.venue,": {
+      "file": "scripts/test-discovery-flow.js",
+      "line": 170,
+      "kind": "literal",
+      "snippet": "venue: newShow.venue,"
+    },
+    "scripts/update-show-status.js::if (!dryRun) show.venue = ssData.venue;": {
+      "file": "scripts/update-show-status.js",
+      "line": 583,
+      "kind": "assignment",
+      "snippet": "if (!dryRun) show.venue = ssData.venue;"
+    },
+    "scripts/validate-archive-productions.js::expected: { year: expectedYear, venue: show.venue },": {
+      "file": "scripts/validate-archive-productions.js",
+      "line": 125,
+      "kind": "literal",
+      "snippet": "expected: { year: expectedYear, venue: show.venue },"
+    },
+    "scripts/validate-archive-productions.js::expected: { venue: show.venue || 'Broadway' },": {
+      "file": "scripts/validate-archive-productions.js",
+      "line": 210,
+      "kind": "literal",
+      "snippet": "expected: { venue: show.venue || 'Broadway' },"
+    },
+    "scripts/validate-show-venue.js::if (!m) return { rawTitle: t, market: null, venue: null, year: null };": {
+      "file": "scripts/validate-show-venue.js",
+      "line": 218,
+      "kind": "literal",
+      "snippet": "if (!m) return { rawTitle: t, market: null, venue: null, year: null };"
+    },
+    "scripts/validate-show-venue.js::return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };": {
+      "file": "scripts/validate-show-venue.js",
+      "line": 219,
+      "kind": "literal",
+      "snippet": "return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };"
+    },
+    "scripts/validate-show-venue.js::id: show.id, title: show.title, venue: show.venue,": {
+      "file": "scripts/validate-show-venue.js",
+      "line": 368,
+      "kind": "literal",
+      "snippet": "id: show.id, title: show.title, venue: show.venue,"
+    },
+    "scripts/validate-show-venue.js::venue: c.venue,": {
+      "file": "scripts/validate-show-venue.js",
+      "line": 384,
+      "kind": "literal",
+      "snippet": "venue: c.venue,"
+    },
+    "scripts/verify-existing-reviews.js::venue: show?.venue || '',": {
+      "file": "scripts/verify-existing-reviews.js",
+      "line": 288,
+      "kind": "literal",
+      "snippet": "venue: show?.venue || '',"
+    }
+  }
+}

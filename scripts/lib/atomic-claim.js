@@ -48,7 +48,15 @@ function acquireClaim(dir, key, opts = {}) {
     if (e.code !== 'EEXIST') return 'error';
     try {
       const existing = JSON.parse(fs.readFileSync(path.join(p, 'meta.json'), 'utf8'));
-      if (now - existing.ts < staleMs) return false; // fresh — genuinely held elsewhere
+      // BRO-395: existing.ts <= now is required, not just now - existing.ts <
+      // staleMs — a future-dated (corrupt/clock-skewed) existing.ts would
+      // otherwise make `now - existing.ts` negative, always < staleMs, and
+      // read as "fresh" forever, wedging this claim permanently instead of
+      // letting a stale-takeover ever happen. A future existing.ts is treated
+      // as untrustworthy, not fresh, so it falls straight to takeover below —
+      // same direction as the file's own KNOWN GAP above: takeover here is
+      // already not ownership-token-gated, so this doesn't introduce new risk.
+      if (existing.ts <= now && now - existing.ts < staleMs) return false; // fresh — genuinely held elsewhere
       fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify(meta)); // stale — take over
       return true;
     } catch (readErr) {
