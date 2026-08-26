@@ -1345,18 +1345,40 @@ async function sendAlerts(healthData, anomalies) {
 }
 
 // Show pages to monitor for rich results verdict (confirmed verdict:FAIL before 2026-06-07 fix)
+// 'death-of-a-salesman-2024' 404s — the real slug has never had a year suffix
+// (BRO-528, 2026-08-26). It silently read verdict:UNKNOWN/types:none in every
+// run since this check was added (2026-06-07) instead of erroring loudly,
+// because checkRichResults() has no 404/URL-validity guard — a monitor
+// checking 5 pages was actually only checking 4.
 const RICH_RESULTS_SLUGS = [
   'schmigadoon',
   'the-lost-boys',
   'cats-the-jellicle-ball',
-  'death-of-a-salesman-2024',
+  'death-of-a-salesman',
   'dog-day-afternoon',
 ];
 
 async function checkRichResults(token) {
   console.log('\n--- Rich Results Verdict ---');
   const results = [];
+
+  // A renamed/retired slug 404s and GSC reports verdict:UNKNOWN with no
+  // detected items — indistinguishable from "hasn't been recrawled yet"
+  // unless we check the slug is still real. That's exactly how
+  // 'death-of-a-salesman-2024' silently checked nothing for months
+  // (BRO-528) instead of erroring loudly.
+  let validSlugs = null;
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    validSlugs = new Set((data.shows || data).map(s => s.slug));
+  } catch { /* if shows.json can't be read, skip the validity guard rather than block the check */ }
+
   for (const slug of RICH_RESULTS_SLUGS) {
+    if (validSlugs && !validSlugs.has(slug)) {
+      console.log(`  ${slug}: STALE_SLUG — no show in shows.json has this slug (renamed or retired?)`);
+      results.push({ slug, verdict: 'STALE_SLUG', error: 'slug not found in shows.json' });
+      continue;
+    }
     const inspectionUrl = `${SITE_HOST}/show/${slug}`;
     try {
       const res = await fetchT('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
