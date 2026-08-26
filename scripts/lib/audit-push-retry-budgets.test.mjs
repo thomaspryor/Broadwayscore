@@ -74,6 +74,23 @@ test('findPushRetryCalls: a real call is still found even when a misleading comm
   assert.equal(calls[0].maxRetries, 5);
 });
 
+test('findPushRetryCalls: a prose mention of the bare filename inside a shell string is NOT a ghost call (ship-check regression, test.yml:4532 shape)', () => {
+  // Real bug found live: a step whose run: text has BOTH a real invocation
+  // AND, later, an error-message string mentioning the bare filename (no
+  // path prefix) used to be double-counted as 2 calls.
+  const runText = [
+    'if bash scripts/lib/push-with-retry.sh; then',
+    '  echo ok',
+    'else',
+    '  MSG="Check run for the push-with-retry.sh output."',
+    '  echo "$MSG"',
+    'fi',
+  ].join('\n');
+  const calls = findPushRetryCalls(runText);
+  assert.equal(calls.length, 1, 'the prose mention must not be counted as a second call');
+  assert.equal(calls[0].maxRetries, DEFAULT_MAX_RETRIES);
+});
+
 test('findPushRetryCalls: no call present returns empty', () => {
   assert.deepEqual(findPushRetryCalls('git commit -m "no push here"\n'), []);
 });

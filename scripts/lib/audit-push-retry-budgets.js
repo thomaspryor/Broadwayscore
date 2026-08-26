@@ -270,10 +270,23 @@ function stripCommentLines(text) {
 // Extract push-with-retry.sh invocations from a step's run text. Handles the
 // two shapes seen in this repo: bare `bash scripts/lib/push-with-retry.sh`
 // (MAX_RETRIES defaults to 7) and `bash scripts/lib/push-with-retry.sh N
-// [branch]` (positional retries arg). PUSH_DEADLINE_SEC as an inline env
-// prefix (`PUSH_DEADLINE_SEC=900 bash ...`) is also recognized even though no
-// current caller uses that form — only the step-level `env:` block form does
-// (see parseWorkflow above) — for forward compatibility.
+// [branch]` (positional retries arg).
+//
+// GHOST-CALL FIX (ship-check adversarial review, card #1910): every real
+// invocation in this repo references the script by PATH — `scripts/lib/
+// push-with-retry.sh` or `../../scripts/lib/push-with-retry.sh` — so the
+// match REQUIRES an immediately-preceding `/`. Without that guard, this
+// regex also matched plain-English mentions of the filename inside a log/
+// error string on the same run: block as a real call (e.g. test.yml:4532's
+// `MSG="...Check run ... for the push-with-retry.sh output."`), which
+// double-counted that step as having 2 calls instead of 1 — confirmed live
+// via `node scripts/audit-push-retry-budgets.js --json` before this fix.
+// The `/` requirement also means an inline `PUSH_DEADLINE_SEC=900 bash
+// push-with-retry.sh` env-prefix form (no current caller uses it — every
+// override goes through the step-level `env:` block parsed in
+// parseWorkflow) is no longer separately recognized; `inlineDeadlineSec` is
+// kept in the returned shape (always null) rather than removed, so callers
+// don't have to branch on its absence.
 //
 // Each call also reports `softFail`: true when the same physical line trails
 // the invocation with `|| echo` or `|| true` — push-with-retry.sh's own exit
@@ -285,18 +298,35 @@ function stripCommentLines(text) {
 function findPushRetryCalls(runText) {
   const cleaned = stripCommentLines(runText);
   const calls = [];
-  const re = /(?:PUSH_DEADLINE_SEC=(\d+)\s+)?push-with-retry\.sh(?:\s+(\d+))?/g;
+  const re = /(?<=\/)push-with-retry\.sh(?:\s+(\d+))?/g;
   let m;
   while ((m = re.exec(cleaned))) {
     const lineEnd = cleaned.indexOf('\n', m.index);
     const restOfLine = cleaned.slice(m.index, lineEnd === -1 ? cleaned.length : lineEnd);
     calls.push({
-      inlineDeadlineSec: m[1] ? parseInt(m[1], 10) : null,
-      maxRetries: m[2] ? parseInt(m[2], 10) : DEFAULT_MAX_RETRIES,
+      inlineDeadlineSec: null,
+      maxRetries: m[1] ? parseInt(m[1], 10) : DEFAULT_MAX_RETRIES,
       softFail: /\|\|\s*(echo|true)\b/.test(restOfLine),
     });
   }
   return calls;
+}
+
+// Whole-file, comment-stripped count of "push-with-retry.sh" mentions —
+// independent of parseWorkflow's job/step structure. SECOND-OPINION-CLASS
+// FINDING (ship-check adversarial review, card #1910): parseWorkflow never
+// throws on a shape it can't handle (YAML anchors, folded scalars, an `id:`
+// before `name:`, etc.) — it just silently returns fewer/no steps for that
+// job, which would make auditWorkflowText silently under-count real call
+// sites with no error signal. This raw count is a cross-check: the CLI
+// compares it against the structured call count per file and warns on
+// divergence, so a parser gap surfaces as a visible warning instead of a
+// quietly-incomplete audit. Deliberately coarse (can overcount a mention
+// inside an unrelated string) — it only needs to catch UNDER-counting.
+function countRawCallSites(fileText) {
+  const cleaned = stripCommentLines(fileText);
+  const matches = cleaned.match(/push-with-retry\.sh/g);
+  return matches ? matches.length : 0;
 }
 
 // N^2+4N: sum_{i=1..N} (3 + 2i), push-with-retry.sh's WAIT=3+i*2+jitter
@@ -500,6 +530,7 @@ module.exports = {
   RETRY_DEADLINE_RATIO_THRESHOLD,
   parseWorkflow,
   findPushRetryCalls,
+  countRawCallSites,
   computeBackoffSum,
   touchesManagedFile,
   managedFileInfo,

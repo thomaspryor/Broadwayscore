@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { auditWorkflowText } = require('./lib/audit-push-retry-budgets.js');
+const { auditWorkflowText, countRawCallSites } = require('./lib/audit-push-retry-budgets.js');
 
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
 
@@ -30,10 +30,20 @@ function main() {
 
   let allResults = [];
   let filesWithPushCalls = 0;
+  // Completeness cross-check (ship-check adversarial review finding, card
+  // #1910): parseWorkflow never throws on a YAML shape it can't handle — it
+  // silently returns fewer/no steps, which would make the structured audit
+  // quietly under-count real push-with-retry.sh call sites with no error
+  // signal. Compare against a coarse whole-file raw count per file and warn
+  // on any file where the structured parse found FEWER calls than the raw
+  // scan — that's the "audit silently skipped a real caller" failure mode.
+  const underParsedFiles = [];
   for (const file of files) {
     const text = fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf8');
     const results = auditWorkflowText(text, file);
     if (results.length > 0) filesWithPushCalls++;
+    const rawCount = countRawCallSites(text);
+    if (results.length < rawCount) underParsedFiles.push({ file, parsed: results.length, raw: rawCount });
     allResults = allResults.concat(results);
   }
 
@@ -41,12 +51,18 @@ function main() {
   const ranked = [...flagged].sort((a, b) => b.contentionScore - a.contentionScore);
 
   if (jsonOut) {
-    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, ranked }, null, 2));
+    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, underParsedFiles, ranked }, null, 2));
     return;
   }
 
   console.log(`Scanned ${files.length} workflow files, ${filesWithPushCalls} with push-with-retry.sh calls (${allResults.length} total call sites).`);
   console.log(`${flagged.length} flagged (retries-undersized-vs-deadline and/or job-timeout-margin-undersized).\n`);
+
+  if (underParsedFiles.length > 0) {
+    console.log(`⚠️  ${underParsedFiles.length} file(s) may have UNDER-PARSED push-with-retry.sh calls (structured parse found fewer than a raw text scan — verify by hand):`);
+    for (const u of underParsedFiles) console.log(`     ${u.file}: parsed=${u.parsed} raw=${u.raw}`);
+    console.log('');
+  }
 
   console.log(`Top ${Math.min(topN, ranked.length)} by contention score (managed-file writes + cron frequency + severity):\n`);
   for (const r of ranked.slice(0, topN)) {
