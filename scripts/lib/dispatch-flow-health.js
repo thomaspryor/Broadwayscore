@@ -23,6 +23,17 @@
  * supplying a real eligibleQueueDepth when dispatch is actually enabled —
  * see its dispatchEnabled() gate — so a deliberate dispatch pause (which
  * legitimately produces zero launches and a growing queue) never pages.
+ *
+ * BRO-2462: that gate only ever covered the NEW eligibleQueueDepth path. The
+ * original tab-count term (liveAutoWorkspaces < MIN_LIVE_AUTO_WORKSPACES)
+ * predates BRO-409 and paged unconditionally — including during the exact
+ * same deliberate-pause / day-budget-spent hold BRO-409 carved an exception
+ * for on the other path. dispatchPaused now gates BOTH paths: true only for
+ * a genuine policy pause (kill-switch, day budget, concurrency cap, tab
+ * ceiling) — NOT for a detected failure (launcher outage, failure-rate leak,
+ * claim outage), which must still page through the tab-count path even when
+ * it also appears in the caller's `holds` list. See dispatch-watchdog-core.js's
+ * `pausedByPolicy` for the split.
  */
 'use strict';
 
@@ -45,9 +56,13 @@ const STALL_QUEUE_DEPTH_THRESHOLD = 20;
 // paused (see this file's header) — same fail-safe: an unknown/not-trusted
 // queue depth must never itself trip the alarm, it only ever widens
 // detection when the caller supplies a real, dispatch-enabled count.
-function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth = -1 }) {
+// dispatchPaused (BRO-2462) short-circuits BOTH trip paths — the caller
+// must only set it true for a genuine policy pause, never for a detected
+// failure (that must still page through the tab-count path below).
+function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth = -1, dispatchPaused = false }) {
   if (launchesLast45m === -1) return false;
   if (launchesLast45m !== 0) return false;
+  if (dispatchPaused) return false;
   if (liveAutoWorkspaces < MIN_LIVE_AUTO_WORKSPACES) return true;
   return eligibleQueueDepth !== -1 && eligibleQueueDepth > STALL_QUEUE_DEPTH_THRESHOLD;
 }

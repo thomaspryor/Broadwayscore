@@ -435,6 +435,21 @@ function planSweep(entries, tasks, opts) {
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
   if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
 
+  // BRO-2462: `holds` mixes deliberate/mundane pauses (kill-switch, budget,
+  // concurrency, tab ceiling) with failure-DETECTION signals (outage,
+  // failure-rate leak, claimOutage) that mean the launcher looks wedged, not
+  // paused. A caller that wants to know "does zero launches have an
+  // innocent explanation" must not treat an outage as innocent — that's
+  // backwards, it's the strongest signal something is actually dead. Keep
+  // this narrower flag for that use (see dispatch-watchdog.js health()); the
+  // full `holds` array stays as-is for the sweep budget gate above and for
+  // narrative display, where "don't dispatch more work right now" correctly
+  // covers both categories.
+  const pausedByPolicy = !dispatchEnabled ||
+    usedToday >= CAPS.perDay ||
+    liveNow >= CAPS.watchdogConcurrent ||
+    (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
+
   let budget = 0;
   if (!holds.length) {
     budget = Math.min(
@@ -465,7 +480,7 @@ function planSweep(entries, tasks, opts) {
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
-    budgets: { usedToday, liveNow, autoTabs, budget, holds, caps: CAPS },
+    budgets: { usedToday, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
