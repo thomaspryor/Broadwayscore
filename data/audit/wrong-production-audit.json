@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T21:36:19.597Z",
+  "timestamp": "2026-08-26T23:49:44.968Z",
   "stats": {
     "totalReviews": 41970,
-    "alreadyFlagged": 17568,
+    "alreadyFlagged": 17582,
     "dateGuardCatches": 227,
-    "directorMismatch": 1018,
+    "directorMismatch": 1019,
     "tvFilmSignals": 1235,
     "londonSignals": 934,
     "offBroadwaySignals": 495,
     "yearMismatch": 90,
-    "noPublishDate": 3582
+    "noPublishDate": 3571
   },
   "findings": [
     {
@@ -3013,6 +3013,7 @@
     {
       "showId": "between-the-river-and-the-sea-west-end-2026",
       "file": "standard--unknown.json",
+      "score": 59,
       "publishDate": "2026-04-21",
       "url": "https://www.standard.co.uk/culture/theatre/between-the-river-and-the-sea-review-b1279502.html",
       "findings": [
@@ -9533,6 +9534,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "herald--pa-news-agency.json",
+      "score": 81,
       "publishDate": "2026-08-10",
       "url": "https://www.heraldscotland.com/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
       "findings": [
@@ -16099,6 +16101,20 @@
       ]
     },
     {
+      "showId": "kramerfauci-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 78,
+      "publishDate": "2026-02-15",
+      "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel fish\" from kramerfauci-st-anns-off-broadway-2026"
+        }
+      ]
+    },
+    {
       "showId": "la-cage-aux-folles-2010",
       "file": "broadwayworld--michael-dale.json",
       "score": 71,
@@ -17663,9 +17679,9 @@
     {
       "showId": "master-haroldand-the-boys-2003",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 77,
       "publishDate": "June 2, 2003",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0a9659c8b63",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26725,6 +26741,7 @@
     {
       "showId": "the-children-off-west-end-2026",
       "file": "london-box-office--andrew-bewley.json",
+      "score": 77,
       "publishDate": "2016-12-04",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-the-children",
       "findings": [
