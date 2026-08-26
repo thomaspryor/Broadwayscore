@@ -66,7 +66,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
-const { buildFailureEntry } = require('./lib/push-ledger');
+const { buildFailureEntry, isGithubActionsRunner } = require('./lib/push-ledger');
 const { readLedger, writeLedger } = require('./lib/push-ledger-store');
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -145,7 +145,11 @@ async function main() {
     branch: args.branch || 'main',
     remote: args.remote || '',
     workflow: args.workflow || process.env.GITHUB_WORKFLOW || '',
-    ci: args.ci === 'true' || Boolean(process.env.GITHUB_ACTIONS),
+    // Canonical detection is isGithubActionsRunner() (task #1901, tested by
+    // scripts/lib/push-retry-ci-detection.test.mjs); args.ci is an OR-fallback
+    // for the --ci=true/false the bash caller already computed identically
+    // (push-with-retry.sh:217), not a second independent source of truth.
+    ci: isGithubActionsRunner(process.env) || args.ci === 'true',
     ts: new Date().toISOString(),
   });
 
