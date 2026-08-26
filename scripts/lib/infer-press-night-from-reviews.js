@@ -28,8 +28,24 @@
 'use strict';
 
 const { isUnconfirmedDateSource } = require('./date-source-confidence');
+const { normalizeDate } = require('./date-utils');
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
 const DAY_MS = 86400000;
+
+// Day-precision publish dates only. The corpus is 17,625 bare YYYY-MM-DD plus
+// 123 month-only values ('2015-07'); both `new Date('2015-07')` and
+// date-utils' normalizeDate() resolve a month-only value to the 1st, which
+// would invent a press night on a day nobody published. So the raw string has
+// to carry an explicit day BEFORE it is normalized. normalizeDate then does
+// the calendar validation and takes the literal date part of an ISO timestamp,
+// so a timezone offset can never shift the day.
+const DAY_PRECISION_RE = /^\d{4}-\d{2}-\d{2}(?:[T ]|$)/;
+
+function dayPrecisionDate(raw) {
+  if (typeof raw !== 'string' || !DAY_PRECISION_RE.test(raw.trim())) return null;
+  return normalizeDate(raw);
+}
 
 // Minimum gap (days) between the current openingDate and the inferred press
 // night before we apply a correction.
@@ -116,13 +132,6 @@ function findEarliestCluster(sortedDates) {
   return { earliestIso, earliestMs, clusterSize: nearEarliest.length };
 }
 
-// Review publish dates are normally bare YYYY-MM-DD, but 123 entries in
-// reviews.json are month-only ('2015-07'). `new Date('2015-07')` silently
-// resolves to the 1st, which would let the reverse branch fabricate a
-// press night on a day nobody published. The forward branch predates this
-// check and is left byte-identical on purpose (see FORWARD_OFFSET_DAYS);
-// BRO-2489 tracks applying it to both directions.
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}/;
 
 /**
  * Reverse-direction cluster probe. Unlike findEarliestCluster (which anchors on
@@ -131,27 +140,34 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}/;
  * window, breaking ties toward the latest.
  *
  * Anchoring on the earliest date is wrong going backwards: the earliest
- * pre-date reviews are the most likely to be contamination — a prior run or an
+ * pre-date reviews are the likeliest contamination — a prior run or an
  * out-of-town tryout wrongly attached to the show entry (see
  * the-enormous-crocodile-west-end-2026, which carries reviews from three
  * separate runs). The real press wave is the dominant cluster, not the oldest.
  *
- * @param {Array<string>} sortedDates - ascending ISO date strings.
- * @returns {{anchorIso:string, anchorMs:number, clusterSize:number}|null}
+ * Cluster size is counted in DISTINCT OUTLETS, not rows. A press night is a
+ * multi-outlet event; three re-ingested rows from one outlet are not one, and
+ * the corpus does carry same-outlet duplicates (scripts/lib/merge-reviews-json.js
+ * has dedicated same-identity dedup for exactly this reason).
+ *
+ * @param {Array<{date:string, outlet:string}>} entries - ascending by date.
+ * @returns {{anchorIso:string, anchorMs:number, clusterSize:number, rowCount:number}|null}
  */
-function findDominantCluster(sortedDates) {
-  if (sortedDates.length < 3) return null;
+function findDominantCluster(entries) {
+  if (entries.length < 3) return null;
 
   let best = null;
-  for (const anchor of sortedDates) {
-    const anchorIso = new Date(anchor).toISOString().split('T')[0];
+  for (const { date: anchorIso } of entries) {
     const anchorMs = new Date(anchorIso).getTime();
-    const size = sortedDates.filter(d => {
-      const ms = new Date(d).getTime();
+    const inWindow = entries.filter(e => {
+      const ms = new Date(e.date).getTime();
       return ms >= anchorMs && ms <= anchorMs + 3 * DAY_MS;
-    }).length;
-    // `>=` so a tie resolves to the LATEST anchor (sortedDates is ascending).
-    if (!best || size >= best.clusterSize) best = { anchorIso, anchorMs, clusterSize: size };
+    });
+    const outlets = new Set(inWindow.map(e => e.outlet)).size;
+    // `>=` so a tie resolves to the LATEST anchor (entries are ascending).
+    if (!best || outlets >= best.clusterSize) {
+      best = { anchorIso, anchorMs, clusterSize: outlets, rowCount: inWindow.length };
+    }
   }
   return best;
 }
@@ -215,8 +231,8 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // reverse branch below are gated on it.
     const isCollapsed = !!show.previewsStartDate && show.openingDate === show.previewsStartDate;
 
-    const showDates = reviews
-      .filter(r => r.showId === show.id)
+    const showReviews = reviews.filter(r => r.showId === show.id);
+    const showDates = showReviews
       .map(r => r.publishDate)
       .filter(d => d && !Number.isNaN(new Date(d).getTime()));
 
@@ -269,9 +285,24 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // the show is open either way, so the downside collapses to a wrong date.
     if (openingMs > now) continue;
 
-    const strictDates = showDates.filter(d => ISO_DATE_RE.test(d));
-    const beforeDates = strictDates.filter(d => new Date(d).getTime() < openingMs).sort();
-    const cluster = findDominantCluster(beforeDates);
+    // dayPrecisionDate (see above) instead of raw new Date(): month-only values
+    // cannot anchor a press night and timezone offsets cannot shift the day.
+    // The forward branch predates this and is left byte-identical on purpose
+    // (see FORWARD_OFFSET_DAYS); BRO-2489 tracks applying it to both directions.
+    //
+    // Reviews inside a declared priorRuns / tourLegs window are dropped up
+    // front: those legitimately predate this run's press night and are NOT
+    // evidence that the stored date is wrong. Every other date-sensitive guard
+    // in this codebase makes the same exemption (date-guard.js:92,
+    // date-plausibility.js:92) — omitting it here would let a returning
+    // production's earlier run overwrite the current run's opening date.
+    const beforeEntries = showReviews
+      .map(r => ({ date: dayPrecisionDate(r.publishDate), outlet: r.outlet || r.outletId || r.url || 'unknown' }))
+      .filter(e => e.date && new Date(e.date).getTime() < openingMs)
+      .filter(e => !isWithinPriorRun(e.date, show.priorRuns) && !isWithinTourLeg(e.date, show.tourLegs))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    const cluster = findDominantCluster(beforeEntries);
     if (!cluster) continue;
     if (cluster.clusterSize < REVERSE_MIN_CLUSTER) continue;
 
@@ -286,10 +317,12 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // review dates are common enough (preview-period notices, prior runs,
     // imprecise historical publishDates) that "some reviews exist before the
     // stored date" is not on its own sufficient evidence.
-    const restOfBefore = beforeDates.length - cluster.clusterSize;
-    const atOrAfterCount = strictDates.filter(d => new Date(d).getTime() >= openingMs).length;
-    if (cluster.clusterSize < restOfBefore) continue;
-    if (cluster.clusterSize < atOrAfterCount) continue;
+    const restOfBefore = beforeEntries.length - cluster.rowCount;
+    const atOrAfterCount = showReviews
+      .map(r => dayPrecisionDate(r.publishDate))
+      .filter(d => d && new Date(d).getTime() >= openingMs).length;
+    if (cluster.rowCount < restOfBefore) continue;
+    if (cluster.rowCount < atOrAfterCount) continue;
 
     // gapDays is how far BEFORE the stored date the cluster sits (positive).
     const gapDays = Math.round((openingMs - cluster.anchorMs) / DAY_MS);
@@ -312,8 +345,12 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // unopened show. A reverse inference is a weaker claim built on reviews
     // that could belong to another production, so it stays off that whitelist
     // (unlisted sources default to untrusted there) and stays greppable for
-    // audit. It is still absent from date-source-confidence.js's unconfirmed
-    // set, so the next cron run will not re-infer over it.
+    // audit. It IS on date-source-confidence.js's unconfirmed list, so a later
+    // Theatremonkey/Playbill entry can still overwrite it — a wrong reverse
+    // inference self-corrects the moment an authoritative source appears
+    // instead of being terminal. That does not re-fire this branch: the
+    // corrected show is no longer collapsed (previewsStartDate is null), and
+    // the whole cluster now sits on/after the new openingDate.
     inferred.push({
       id: show.id,
       title: show.title,
@@ -344,4 +381,5 @@ module.exports = {
   // Exported for tests / debug only — call sites use inferPressNightFromReviews.
   findEarliestCluster,
   findDominantCluster,
+  dayPrecisionDate,
 };

@@ -13,12 +13,15 @@ const { inferPressNightFromReviews } = require('./infer-press-night-from-reviews
 // fixture below stores a 2025-11 date, comfortably in this "past".
 const NOW = new Date('2026-08-26T00:00:00Z').getTime();
 
-// Build N reviews all published on `date` for a show.
-function reviewsOn(showId, date, n) {
+// Build N reviews all published on `date` for a show, each from a DISTINCT
+// outlet — the reverse branch counts distinct outlets, not rows, because a
+// press night is a multi-outlet event. Pass `outlet` to force same-outlet rows.
+function reviewsOn(showId, date, n, outlet) {
   return Array.from({ length: n }, (_, i) => ({
     showId,
     id: `${showId}-r${i}`,
     publishDate: date,
+    outlet: outlet || `${showId}-outlet-${date}-${i}`,
   }));
 }
 
@@ -328,4 +331,57 @@ test('reverse: a small pre-date cluster loses to a bigger wave on/after the stor
   ];
   const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
   assert.equal(out.length, 0, 'the larger later wave means the stored date is roughly right');
+});
+
+test('reverse: three rows from ONE outlet is not a press night', () => {
+  const show = {
+    id: 'we-reverse-oneoutlet-2025',
+    title: 'Single Outlet',
+    slug: 'we-reverse-oneoutlet-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // Same outlet re-ingested 6 times — the corpus does carry same-identity
+  // duplicates (scripts/lib/merge-reviews-json.js dedups them).
+  const reviews = reviewsOn('we-reverse-oneoutlet-2025', '2025-11-12', 6, 'The Same Paper');
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'one outlet, however many rows, is not a multi-outlet press wave');
+});
+
+test('reverse: reviews inside a declared priorRun window are not evidence', () => {
+  const show = {
+    id: 'we-reverse-priorrun-declared-2025',
+    title: 'Returning Production',
+    slug: 'we-reverse-priorrun-declared-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+    priorRuns: [{ openingDate: '2025-10-01', closingDate: '2025-10-31', venue: 'Some Other Theatre' }],
+  };
+  // A full 8-outlet press wave — but it belongs to the declared earlier run,
+  // so it must not drag this run's opening date backwards.
+  const reviews = reviewsOn('we-reverse-priorrun-declared-2025', '2025-10-05', 8);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, "a prior run's press wave is not this run's press night");
+});
+
+test('reverse: ISO timestamps do not shift the calendar day', () => {
+  const show = {
+    id: 'we-reverse-timestamp-2025',
+    title: 'Timestamped',
+    slug: 'we-reverse-timestamp-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // 20:00 New York time on 2025-11-12 is 2025-11-13 in UTC; normalizeDate takes
+  // the literal date part, so the press night stays on the 12th.
+  const reviews = reviewsOn('we-reverse-timestamp-2025', '2025-11-12T20:00:00-05:00', 5);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
 });
