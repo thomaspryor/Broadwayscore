@@ -278,6 +278,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # card's acceptance criteria), so it must be committed or CI fails on a
 # missing file rather than on the thing the test is guarding.
 !/docs/BRO-373-codex-lane-decision.md
+# BRO-517: documents why the Codex ship-check reviewer's data preflight
+# (AGENTS.md) is now diff-scoped instead of unconditional. The card's
+# acceptance criteria is literally `test -f
+# docs/codex-ship-check-reviewer-instructions.md`, so it must be committed.
+!/docs/codex-ship-check-reviewer-instructions.md
 /memory/
 /data/deep-research/
 /data/theater-research/
