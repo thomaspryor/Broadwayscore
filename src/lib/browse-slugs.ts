@@ -15,7 +15,16 @@
 
 import type { ComputedShow } from '@/lib/data-types';
 
-export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string {
+/**
+ * Returns null for `opera` and `special` (concerts, galas, immersive
+ * experiences, cabaret, dance) — no browse page lists those pools yet, and
+ * the binary `isMusical` check used to silently fall through to the
+ * plays/dramas page, which is wrong for a concert or opera. Callers must
+ * treat null as "no browse page exists" and render the breadcrumb/link
+ * unlinked rather than guessing a mismatched destination.
+ */
+export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string | null {
+  if (type === 'opera' || type === 'special') return null;
   const isMusical = type === 'musical';
   switch (category) {
     case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';

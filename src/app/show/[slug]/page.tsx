@@ -256,15 +256,22 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined);
 
+  // null when no browse page exists for this show's format (opera/special) —
+  // drop that breadcrumb level rather than link to a mismatched page.
+  const browseSlug = getBrowseSlug(show.category, show.type);
+  const breadcrumbHome = { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL };
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
         { name: 'Home', url: BASE_URL },
         { name: 'Opera', url: `${BASE_URL}/opera` },
         { name: show.title, url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}` },
       ])
-    : generateBreadcrumbSchema([
-        { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
-        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
+    : generateBreadcrumbSchema(browseSlug ? [
+        breadcrumbHome,
+        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
+        { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+      ] : [
+        breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
   const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null);
@@ -417,9 +424,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           { label: 'Home', href: '/' },
           { label: 'Opera', href: '/opera' },
           { label: show.title },
+        ] : browseSlug ? [
+          { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
+          { label: showFormatPlural(show.type), href: `/browse/${browseSlug}` },
+          { label: show.title },
         ] : [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
-          { label: showFormatPlural(show.type), href: `/browse/${getBrowseSlug(show.category, show.type)}` },
           { label: show.title },
         ]} />
 
