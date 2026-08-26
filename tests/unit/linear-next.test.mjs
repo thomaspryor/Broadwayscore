@@ -29,7 +29,7 @@ import {
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
 } from '../../scripts/lib/linear-dispatch.js';
-import { parseArgs, ledgerTaskId, main } from '../../scripts/linear-next.js';
+import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
@@ -662,4 +662,73 @@ test('pickStateForMode accepts both bare-array and {nodes} connection shapes', a
   assert.equal(pickStateForMode(states, 'dispatch').id, 's2');
   assert.equal(pickStateForMode({ nodes: states }, 'dispatch').id, 's2');
   assert.equal(pickStateForMode({ nodes: states }, 'park').id, 's1');
+});
+
+// BRO-287: reportDispatchOnIssue (scripts/linear-next.js) must move the
+// issue to "In Progress" regardless of which shape getTeam() returns
+// team.states in (bare array or GraphQL {nodes: [...]} connection) — the
+// same {nodes}-shape class as pickStateForMode above, fixed here on
+// 2026-08-12 but never given its own regression test until now. (A prior
+// version of this fix duplicated the shape-check locally before handing off
+// to lsr.pickStateByName/pickStateByType, which already normalize both
+// shapes internally — that duplicate line was dead code, verified by
+// deleting it and confirming these tests still pass unchanged; it has since
+// been removed in favor of relying on lsr's normalization directly.) Drives
+// the real function through its injected `deps.linear` seam, so no live
+// Linear API call is made, for both shapes getTeam() can return.
+function makeStubLinear(states, updateCalls) {
+  return {
+    createComment: async () => {},
+    getTeam: async () => ({ states }),
+    updateIssue: async (id, patch) => updateCalls.push({ id, patch }),
+    TEAM_KEY: 'BRO',
+  };
+}
+
+test('reportDispatchOnIssue: picks "In Progress" when getTeam() returns a bare states array', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+    { linear: makeStubLinear(states, updateCalls) }
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].id, 'issue-1');
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
+});
+
+test('reportDispatchOnIssue: picks "In Progress" when getTeam() returns the {nodes} connection shape', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+    { linear: makeStubLinear({ nodes: states }, updateCalls) }
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].id, 'issue-1');
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
+});
+
+test('reportDispatchOnIssue: no started-type state in the {nodes} shape leaves the issue untouched (warns, does not crash)', async () => {
+  const states = [{ id: 'done-1', name: 'Done', type: 'completed' }];
+  const updateCalls = [];
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await reportDispatchOnIssue(
+      { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+      { linear: makeStubLinear({ nodes: states }, updateCalls) }
+    );
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(updateCalls.length, 0);
+  assert.match(errors.join('\n'), /no 'started'-type workflow state/);
 });

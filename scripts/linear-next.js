@@ -230,13 +230,14 @@ async function runList() {
 // into a reported failure — the dispatch already happened and is already
 // journaled locally (BEFORE this runs — see the header's ordering note).
 // Logs and moves on.
-async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
+async function reportDispatchOnIssue(issue, ref, mode, correlationId, deps = {}) {
+  const linearClient = deps.linear || linear; // test seam — see reportDispatchOnIssue tests in tests/unit/linear-next.test.mjs
   try {
     const body = ld.buildDispatchComment({ ref, ts: new Date().toISOString(), mode, correlationId });
-    await linear.createComment(issue.id, body);
+    await linearClient.createComment(issue.id, body);
   } catch (e) { console.error(`[linear-next] WARN could not post dispatch comment on ${issue.identifier}: ${e.message}`); }
   try {
-    const team = await linear.getTeam();
+    const team = await linearClient.getTeam();
     // Team BRO has TWO states of type 'started' (In Progress, In Review) —
     // the old `.find(s => s.type === 'started')` picked whichever one the
     // API happened to return first, order-dependent and unverified against a
@@ -245,11 +246,18 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
     // "In Review" with zero work done on it). Prefer the literal "In
     // Progress" name; fall back to the first started-type state only if that
     // exact name doesn't exist on this team.
-    const stateList = Array.isArray(team.states) ? team.states : (team.states && team.states.nodes) || []; // getTeam() returns the GraphQL {nodes} connection shape (same class as linear-issue-create's 2026-08-12 fix)
+    // team.states can be a bare array or getTeam()'s raw GraphQL {nodes: [...]}
+    // connection shape — pickStateByName/pickStateByType normalize either via
+    // their own normalizeStates(), so team.states is passed through as-is
+    // rather than re-normalized here (BRO-287: an earlier inline
+    // normalization duplicating that logic was provably dead — pickStateByName
+    // already unwraps {nodes} internally, so the duplicate had no effect on
+    // behavior and made the {nodes}-shape regression test it was meant to
+    // guard untestable).
     const started =
-      lsr.pickStateByName(stateList, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(stateList, 'started');
-    if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linear.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
-    await linear.updateIssue(issue.id, { stateId: started.id });
+      lsr.pickStateByName(team.states, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(team.states, 'started');
+    if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linearClient.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
+    await linearClient.updateIssue(issue.id, { stateId: started.id });
   } catch (e) { console.error(`[linear-next] WARN could not move ${issue.identifier} to In Progress: ${e.message}`); }
 }
 
@@ -653,4 +661,8 @@ module.exports = {
   // scripts/tests/linear-next-overlap-guards.test.mjs (CLAUDE.md rule 15 —
   // the test require()s these real functions rather than restating them).
   buildOverlapComparisonPool, checkLinearOverlapGuards, loadNotionMirrorTasks, TASKS_DIR,
+  // BRO-287: exported so tests/unit/linear-next.test.mjs can drive its
+  // {nodes}-shape state normalization via the injected `deps.linear` seam
+  // without a live Linear API call.
+  reportDispatchOnIssue,
 };
