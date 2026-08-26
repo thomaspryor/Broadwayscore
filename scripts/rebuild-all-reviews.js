@@ -2718,6 +2718,12 @@ showDirs.forEach(showId => {
           data.wrongProductionSelfHealed = true;
           data.wrongProductionSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says wrongProduction=false + confident ensemble score — cleared stale CV-promoted flag`;
           stats.cvStaleWrongProductionSelfHealed = (stats.cvStaleWrongProductionSelfHealed || 0) + 1;
+          // Card #1905 (cousin of #1902): this clear can un-exclude a file
+          // that was already scored before the flag went on — same shape as
+          // the dateless-revival/priorRuns sites #1902 wired.
+          if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+            markRescoreNeeded(data, 'wrongProduction CV self-heal cleared a stale promotion');
+          }
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
 
@@ -2737,6 +2743,11 @@ showDirs.forEach(showId => {
           data.wrongShowSelfHealed = true;
           data.wrongShowSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says isValid/not-wrong — cleared stale CV-promoted wrongShow flag`;
           stats.cvStaleWrongShowSelfHealed = (stats.cvStaleWrongShowSelfHealed || 0) + 1;
+          // Card #1905 (cousin of #1902): same rescore-staleness gate as the
+          // wrongProduction self-heal above.
+          if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+            markRescoreNeeded(data, 'wrongShow CV self-heal cleared a stale promotion');
+          }
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
       }
