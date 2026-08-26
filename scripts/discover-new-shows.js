@@ -110,7 +110,7 @@ const NON_THEATER_PATTERNS = [
   'comedy club', 'comedy night', 'stand-up', 'standup',
   'magic show:', 'magick', 'bubble show', // NOT 'magic' alone (false-positive: Magic Mike, The Magic Show, Magic/Bird)
   'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
-  'quartet', 'quintet', 'ensemble',
+  'quintet', 'ensemble', // NOT 'quartet' alone (false-positive: Million Dollar Quartet — corpus-audited, task BRO-181)
   'the metropolitan opera', // Met Opera productions (Turandot, La Boheme, etc.)
   'royal opera', 'opera house', // London opera
   'selected shorts', 'book club', 'in conversation with',
@@ -145,7 +145,10 @@ const NON_THEATER_PATTERNS = [
 const WE_EXTRA_PATTERNS = [
   'dining experience', 'candlelight', 'by candlelight',
   'discovering dinosaurs', 'prehistoric planet',
-  'classic penguins', // comedy fringe acts
+  // REMOVED 2026-08-26 (BRO-181 corpus audit): 'classic penguins' matched
+  // "Garry Starr: Classic Penguins", now a tracked Off-Broadway play
+  // (garry-starr-classic-penguins-off-broadway-2026) — the fringe-act
+  // assumption in the original comment no longer holds.
 ];
 // REMOVED 2026-07-31: WE_SOLO_PERFORMER_PATTERN (/^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/,
 // "FirstName LastName" ⇒ skip as a presumed solo concert). Audited against the live
@@ -1054,9 +1057,12 @@ const VENUE_LISTING_PAGES = [
 // Backward-compat alias — old name retained for any external callers/tests.
 const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west-end');
 
-// Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
+// Patterns to exclude from venue page scraping (workshops, masterclasses, walking tours, etc.)
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
-  'masterclass', 'workshop', 'tour', 'walking tour', 'rapid write',
+  'masterclass', 'workshop', 'walking tour', 'rapid write',
+  // NOT bare 'tour' alone (false-positive: "Armory Public Tours",
+  // "September L. Davis: The Apology Tour" — corpus-audited, task BRO-181).
+  // 'walking tour' above already covers the literal backstage-tour case.
   'work in progress', 'scratch night', 'open mic', 'poetry slam',
   // Bare 'gala' substring-matches "Via Galactica" (1972 Broadway show) — use the
   // multi-word variants, matching the NON_THEATER_PATTERNS precedent above.
@@ -2719,6 +2725,8 @@ module.exports = {
   resolveTodayTixVenue,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
+  WE_EXTRA_PATTERNS,
+  VENUE_PAGE_EXCLUDE_PATTERNS,
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
   shouldExcludeVenueShow,
