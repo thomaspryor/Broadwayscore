@@ -1195,6 +1195,12 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Run-budget coverage guard (#425, extended BRO-109 for script->lib-helper
+      # budget-threading gaps). Colocated test registered in
+      # tests/unit-test-manifest.txt — root-level scripts/*.test.mjs is NOT
+      # covered by any broad glob, so this needs its own entry or a solo edit
+      # to the test gets zero CI.
+      - 'scripts/audit-run-budget-coverage.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
