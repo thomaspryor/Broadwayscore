@@ -74,8 +74,10 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
 } = require('./lib/wrong-production-autoclear');
+const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1347,6 +1349,7 @@ const crossShowFingerprints = new Map();
   let datelessRevivalFlagged = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
+  let anticipatoryGraceAutoCleared = 0;
   let awaitingRefetchSkipped = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
@@ -1466,6 +1469,42 @@ const crossShowFingerprints = new Map();
             safeWriteReview(fp, d, { force: true });
             staleDateGuardAutoCleared++;
             // Fall through — file may still need other guards (duplicateOf etc.)
+          }
+        }
+
+        // Stale anticipatory-gate auto-clear (BRO-39): collect-review-texts.js's
+        // ingest gate never re-runs on an already-flagged file, so a file flagged
+        // while the show's category lookup fell through to the 2-day Broadway
+        // default (or before an openingDate correction landed) can carry a
+        // permanently stale anticipatory_pre_opening_post flag even though the
+        // SAME gate, re-run today with the show's CURRENT category/openingDate,
+        // no longer rejects it. reviewDate is null-guarded — isAnticipatoryPreviewPost
+        // short-circuits rejected:false on a missing publishDate, which would be
+        // exactly backwards here (an unparseable date must never read as "passes").
+        if (reviewDate && d.wrongProduction === true && d.wrongProductionReason === 'anticipatory_pre_opening_post') {
+          const anticipRecheck = isAnticipatoryPreviewPost(
+            reviewDate.toISOString().slice(0, 10),
+            showRecord && showRecord.openingDate,
+            d.outletId,
+            { category: showRecord && showRecord.category }
+          );
+          if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected })) {
+            const wasDetail = d.wrongProductionDetail || '(no detail)';
+            d.wrongProduction = false;
+            d.wrongProductionAutoCleared = `rebuild: anticipatory gate re-evaluated in-grace (was: ${wasDetail})`;
+            d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            delete d.wrongProductionReason;
+            delete d.wrongProductionDetail;
+            delete d.wrongProductionDetectedAt;
+            delete d.wrongProductionDetectedBy;
+            delete d.anticipatoryGateOutletCategory;
+            delete d.anticipatoryGateDaysBeforeOpening;
+            if (isStaleScoreInput(d, showRecord, fp)) {
+              markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
+            }
+            safeWriteReview(fp, d, { force: true });
+            anticipatoryGraceAutoCleared++;
+            // Fall through — file may still need other guards
           }
         }
 
@@ -1595,12 +1634,16 @@ const crossShowFingerprints = new Map();
   if (staleDateGuardAutoCleared > 0) {
     console.log(`Pre-opening guard: auto-cleared ${staleDateGuardAutoCleared} stale flags (date corrected, now in-window)\n`);
   }
+  if (anticipatoryGraceAutoCleared > 0) {
+    console.log(`Pre-opening guard: auto-cleared ${anticipatoryGraceAutoCleared} stale anticipatory-gate flags (re-evaluated in-grace)\n`);
+  }
   stats.preOpeningFlagged = preOpenFlagged;
   stats.priorRunAutoCleared = priorRunAutoCleared;
   stats.priorRunSkipped = priorRunSkipped;
   stats.datelessRevivalFlagged = datelessRevivalFlagged;
   stats.datelessRevivalAutoCleared = datelessRevivalAutoCleared;
   stats.staleDateGuardAutoCleared = staleDateGuardAutoCleared;
+  stats.anticipatoryGraceAutoCleared = anticipatoryGraceAutoCleared;
 }
 
 // Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,
