@@ -154,6 +154,13 @@ jobs:
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: same root cause as commercial-friday.yml — MANAGED-file
+          # push disqualified from the Git Data API fallback, default 240s
+          # deadline self-aborting after ~2 real cycles under main's commit
+          # churn. This job runs hourly with only a 15min timeout (poll+LLM
+          # steps use ~4min), so 420s (not the 600s used elsewhere) to leave
+          # real buffer against the job timeout.
+          PUSH_DEADLINE_SEC: '420'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh
