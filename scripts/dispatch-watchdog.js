@@ -340,6 +340,12 @@ function summarize(plan) {
     awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
+    // BRO-2462: `holds` mixes policy pauses with failure-detection signals
+    // (see dispatch-watchdog-core.js) — surfaced separately so `--status
+    // --json` lets a human see directly whether health()'s tab-count/
+    // queue-depth pager is currently gated, instead of re-deriving it from
+    // the holds strings.
+    pausedByPolicy: plan.budgets.pausedByPolicy,
   };
 }
 
