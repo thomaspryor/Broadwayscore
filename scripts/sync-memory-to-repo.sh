@@ -27,7 +27,11 @@ SRC="$HOME/.claude/projects/-Users-tompryor-Broadwayscore/memory"
 # Always sync to the main Broadwayscore repo (not whatever worktree cwd happens
 # to be in when SessionStop fires). Cloud-memory/ lives in main; worktree
 # branches will see it on next pull/merge.
-DEST="$HOME/Broadwayscore/cloud-memory"
+# MEMORY_SYNC_REPO overrides the target repo for manual testing against a
+# scratch clone (see scripts/lib/memory-sync-pull.test.mjs and the card #1893
+# manual acceptance step) — production callers never set this.
+REPO="${MEMORY_SYNC_REPO:-$HOME/Broadwayscore}"
+DEST="$REPO/cloud-memory"
 
 if [ ! -d "$SRC" ]; then
   echo "sync-memory-to-repo: source $SRC does not exist — likely running from cloud sandbox; skipping" >&2
@@ -71,7 +75,6 @@ fi
 # under cloud-memory/ from the MAIN checkout on the main branch. Push failures
 # never fail the hook — the commit stays local and rides out with later traffic.
 if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
-  REPO="$HOME/Broadwayscore"
   LOCK="$REPO/.git/cloud-memory-sync.lock"
   # Clear a stale lock from a crashed run (>10 min old)
   find "$LOCK" -maxdepth 0 -mmin +10 -exec rmdir {} \; 2>/dev/null || true
@@ -84,10 +87,17 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
       git -C "$REPO" add cloud-memory/
       if git -C "$REPO" commit -q -m "chore: sync cloud-memory (session-stop auto-commit)" -- cloud-memory/; then
         if ! git -C "$REPO" push -q origin main 2>/dev/null; then
-          # Behind origin (CI commits constantly) — rebase and retry once.
-          git -C "$REPO" pull --rebase --autostash -q origin main 2>/dev/null || true
-          git -C "$REPO" push -q origin main 2>/dev/null ||
-            echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+          # Behind origin (CI commits constantly) — reconcile via merge, never
+          # rebase (repo policy: scripts/merge-worktree-to-main.sh), and never
+          # leave conflict residue on the shared checkout (task #1893: a
+          # rebase left `.git/rebase-merge` behind here and wedged every other
+          # session's push via push-with-retry.sh's BRO-142 guard).
+          if node "$REPO/scripts/lib/memory-sync-pull.js" --repo "$REPO"; then
+            git -C "$REPO" push -q origin main 2>/dev/null ||
+              echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+          else
+            echo "sync-memory-to-repo: could not reconcile with origin/main — commit stays local, checkout left clean, will retry next session-stop" >&2
+          fi
         fi
         echo "sync-memory-to-repo: cloud-memory committed to main" >&2
       fi
