@@ -151,3 +151,20 @@ test('acquireClaim: unreadable/corrupt claim metadata fails closed, never guesse
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// Real CI catch (task #1896, live in the "Unit Tests" job): mkdirSync(p) and
+// the meta.json write are two separate syscalls, not one atomic unit — a
+// concurrent reader can win the EEXIST race against a winner that hasn't
+// finished writing meta.json yet. That's "held, try again shortly", not
+// corruption, and must NOT return 'error' (which reads as fail-closed/
+// permanent to dispatchClaimGuard's caller) — distinct from the genuinely
+// corrupt-JSON case above.
+test('acquireClaim: a claim dir that exists but has no meta.json YET (winner mid-write) is treated as held, not corrupt', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    fs.mkdirSync(path.join(dir, '1893.claim')); // directory exists; meta.json not written yet
+    assert.equal(acquireClaim(dir, '1893'), false, 'must read as "held, not stale", never as an error');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

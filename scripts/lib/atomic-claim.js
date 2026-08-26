@@ -51,7 +51,20 @@ function acquireClaim(dir, key, opts = {}) {
       if (now - existing.ts < staleMs) return false; // fresh — genuinely held elsewhere
       fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify(meta)); // stale — take over
       return true;
-    } catch { return 'error'; } // unreadable meta — fail closed
+    } catch (readErr) {
+      // ENOENT specifically (task #1896 CI catch): mkdirSync(p) and the
+      // meta.json write are two separate syscalls, not one atomic unit — a
+      // concurrent reader can win the EEXIST race against a WINNER that
+      // hasn't finished writing its meta.json yet. That's a legitimate
+      // "held, try again shortly" case, not corruption: the directory exists
+      // (someone won), there's just nothing to read YET. Observed live: two
+      // real dispatchers hitting the same task id in the same instant, one
+      // read this exact window and got told "corrupt" when the correct
+      // answer was "held, not stale". Any OTHER read failure (malformed
+      // JSON, EACCES) still means a genuinely unreadable claim — fail closed.
+      if (readErr.code === 'ENOENT') return false;
+      return 'error'; // unreadable meta — fail closed
+    }
   }
 }
 
