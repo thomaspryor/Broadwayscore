@@ -2378,7 +2378,7 @@ showDirs.forEach(showId => {
             // incl. the priorRuns exemption) — a threshold drift here would let a
             // duplicate's excluded reference block the surviving copy's recovery.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -2486,7 +2486,7 @@ showDirs.forEach(showId => {
             // paths must agree on whether a reference is excluded or recovery
             // depends on which duplicate field happened to be set.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -3554,8 +3554,8 @@ showDirs.forEach(showId => {
         }
         // Fall back to publishDate only if it looks like a real date (ISO format with time, or matches URL)
         if (!effectiveDate && data.publishDate) {
-          const pd = new Date(data.publishDate);
-          if (!isNaN(pd.getTime())) {
+          const pd = parseDate(data.publishDate);
+          if (pd && !isNaN(pd.getTime())) {
             // Only trust publishDate if it contains a timestamp (T or time component) — bulk imports are plain dates
             const hasTimestamp = /T\d|:\d/.test(data.publishDate);
             if (hasTimestamp) { effectiveDate = pd; dateSource = 'publishDate'; }
