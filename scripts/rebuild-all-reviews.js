@@ -2300,23 +2300,26 @@ showDirs.forEach(showId => {
         let nCycleExcludeFile = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          // refAlsoDupe deliberately does NOT feed isCircular below — narrowing
-          // this alone must not change circularity detection (BRO-2317
-          // ship-check finding: doing so silently skips the fingerprint/
-          // same-URL tiebreak for a cluster member the reference directly
-          // names). duplicateTextOf is a TEXT-STORAGE pointer, not a duplicate
-          // verdict, so it only counts as "reference is ALSO a dupe" when the
-          // reference has no content of its own — a winner that already holds
-          // its own fullText (or an aggregatorStars rating) has no legitimate
-          // reason to also carry duplicateTextOf, and a stale one there must
-          // not silently disable exclusion for every OTHER file in the cluster
-          // that points at it (loves-labours-lost-globe-west-end-2026,
-          // 2026-08-26 — a 3-file same-URL Times cluster whose winner carried
-          // a stale duplicateTextOf pointing at one of the two losers took
-          // main red and failed all 17 open PRs). duplicateOf, in contrast, IS
-          // a real verdict regardless of content, so it always still counts.
-          const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
-          refAlsoDupe = !!refData.duplicateOf || (!refHoldsOwnContent && !!refData.duplicateTextOf);
+          // refAlsoDupe deliberately checks ONLY refData.duplicateOf, not
+          // refData.duplicateTextOf (BRO-2317). duplicateTextOf is a
+          // TEXT-STORAGE annotation this file's own content-fingerprint dedup
+          // pass (above, "1C. Content hash dedup" in collect-review-texts.js)
+          // sets on a file that legitimately holds its OWN fullText — it means
+          // "my content also matches some sibling", not "I am excluded/at
+          // risk", and it never by itself excludes refData (nothing in
+          // isIncludableForRebuild/explainExclusion checks bare
+          // data.duplicateTextOf as a self-exclusion trigger). Folding it into
+          // "reference is ALSO a dupe, recover me" was the root cause: a
+          // cluster winner that legitimately holds its own fullText AND
+          // carries a duplicateTextOf pointing at one of its own losers (from
+          // that same dedup pass) made every OTHER, non-circular loser in the
+          // cluster look like it pointed at "a dupe pointing elsewhere" and
+          // silently fall through unexcluded — reviews.json got duplicate
+          // URLs and validate-data.js's NEW-duplicate-URL gate failed on main
+          // + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
+          // 2026-08-26). refData.duplicateOf, by contrast, IS a real
+          // unresolved verdict regardless of content, so it always counts.
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
           // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
           // identical source URL (same show+outlet+url can never legitimately be
@@ -2448,11 +2451,9 @@ showDirs.forEach(showId => {
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           // Mirrors the duplicateOf block's BRO-2317 narrowing above: refAlsoDupe
-          // must NOT feed isCircular, and duplicateTextOf only counts as "reference
-          // is ALSO a dupe" when the reference holds no content of its own — see
+          // checks ONLY refData.duplicateOf, never refData.duplicateTextOf — see
           // that block's comment for the full incident.
-          const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
-          refAlsoDupe = (!refHoldsOwnContent && !!refData.duplicateTextOf) || !!refData.duplicateOf;
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
           // Same-URL is a strictly stronger same-article signal than the fingerprint
           // and must count as circularSameText too — mirrors the duplicateOf block

@@ -3021,7 +3021,7 @@ function explainExclusion(data, show, filePath) {
   // pre-fix the LLM scorer skipped both, leaving the kept file unscored and
   // absent from reviews.json. When filePath is undefined we fall back to the
   // historical "skip on any duplicateOf" behavior — recovery is opt-in.
-  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 2269-2428.
+  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 2269-2431.
   if (data.duplicateOf) {
     if (!filePath) return 'duplicateOf';
     const pathMod = require('path');
@@ -3039,20 +3039,25 @@ function explainExclusion(data, show, filePath) {
       refData = undefined;
     }
     if (refData !== undefined) {
-      // rawRefDupOf drives ONLY circularity detection (does refData point
-      // straight back at me?) and must NOT be narrowed by refHoldsOwnContent
-      // below — narrowing it too would silently skip the circular-tiebreak
-      // branch for a cluster member the winner's back-pointer directly names
-      // (BRO-2317 ship-check finding: doing so changes isCircular itself and
-      // routes that file through the plain 'duplicateOf' return instead of
-      // the fingerprint/same-URL tiebreak it's supposed to get).
-      const rawRefDupOf = refData && (refData.duplicateOf || refData.duplicateTextOf);
-      const isCircular = rawRefDupOf === thisFile;
+      // isCircular checks BOTH fields independently (not an OR'd single value)
+      // — matches rebuild-all-reviews.js's `refData.duplicateOf === file ||
+      // refData.duplicateTextOf === file`. Codex ship-check finding (BRO-2317):
+      // the previous `refData.duplicateOf || refData.duplicateTextOf` form
+      // short-circuits on the first truthy field, so a refData carrying an
+      // unrelated duplicateOf would never even look at duplicateTextOf, missing
+      // a real circular back-pointer through that field.
+      const isCircular = !!(refData.duplicateOf === thisFile || refData.duplicateTextOf === thisFile);
+      // sameUrl is a strictly stronger same-article signal than the fingerprint
+      // and must count as circularSameText too — mirrors rebuild-all-reviews.js
+      // (see its comment for why the fingerprint alone is fragile to a scrape
+      // artifact prepended to just one copy, e.g. task #1627's Times
+      // quiz-widget prefix on this SAME show family).
+      const sameUrl = !!(data.url && refData.url && data.url === refData.url);
       if (isCircular && data.fullText && refData.fullText) {
         const { computeContentFingerprint } = require('./content-quality');
         const a = computeContentFingerprint(data.fullText);
         const b = computeContentFingerprint(refData.fullText);
-        const circularSameText = !!(a && b && a === b);
+        const circularSameText = !!(a && b && a === b) || sameUrl;
         if (circularSameText) {
           // Tiebreak: keep lexicographically-LOWER filename. Matches rebuild's
           // `file > data.duplicateOf` skip condition (we skip when greater).
@@ -3063,29 +3068,39 @@ function explainExclusion(data, show, filePath) {
           // separate reviews (duplicateOf wrongly set). Both sides kept.
           // Fall through.
         }
+      } else if (isCircular && sameUrl) {
+        // Circular + confirmed same URL but missing fullText on one/both
+        // sides — same-URL alone is enough to tiebreak (matches rebuild).
+        if (thisFile > data.duplicateOf) return 'duplicateOfCircularTiebreak';
       } else if (isCircular) {
-        // Circular but missing fullText on one/both sides — can't confirm via
-        // fingerprint, so (unchanged from before BRO-2317) fall through rather
-        // than guess.
+        // Circular but no fingerprint or URL confirmation available — can't
+        // confirm true duplication, so fall through rather than guess.
       } else {
-        // Non-circular: does refData still look like a live, unresolved dupe
-        // pointer of its OWN? duplicateTextOf is a TEXT-STORAGE pointer, not a
-        // duplicate verdict — it only means "my fullText lives elsewhere" and
-        // is meaningless once refData already holds its own content (fullText
-        // or an aggregatorStars rating). BRO-2317: a winner that holds its own
-        // fullText but carries a stale duplicateTextOf pointing at one of the
-        // OTHER cluster members previously made every other loser look like it
-        // pointed at "a reference that's also a dupe, elsewhere" and silently
-        // fall through unexcluded. duplicateOf, in contrast, IS a real verdict
-        // regardless of content, so it always still counts.
-        const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
-        const refStillLooksLikeADupe = !!(refData.duplicateOf || (!refHoldsOwnContent && refData.duplicateTextOf));
-        if (refStillLooksLikeADupe) {
+        // Non-circular: does refData carry its OWN unresolved duplicateOf
+        // verdict? BRO-2317: the reference's duplicateTextOf field is
+        // deliberately EXCLUDED from this check. duplicateTextOf is a
+        // TEXT-STORAGE annotation set by collect-review-texts.js's own
+        // content-fingerprint dedup pass — it means "my content also matches
+        // some sibling", not "I am excluded/at risk", and never by itself
+        // triggers refData's OWN exclusion (this function does not check
+        // `data.duplicateTextOf` anywhere as a self-exclusion trigger — see
+        // this function's docstring, "Intentionally NOT excluded"). Folding
+        // it into "reference is also a dupe, recover me" was the root cause
+        // of BRO-2317: a cluster winner that legitimately holds its own
+        // fullText AND carries a duplicateTextOf pointing at one of its own
+        // losers (from that same dedup pass) made every OTHER, non-circular
+        // loser in the cluster look like it pointed at "a dupe pointing
+        // elsewhere" and silently fall through unexcluded — reviews.json got
+        // duplicate URLs and validate-data.js's NEW-duplicate-URL gate failed
+        // on main + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
+        // 2026-08-26). refData.duplicateOf, by contrast, IS a real unresolved
+        // verdict regardless of content, so it always still counts.
+        if (refData.duplicateOf) {
           // Reference also a dupe but pointing elsewhere (not back at us) —
           // rebuild's `refAlsoDupe` branch lets this through. Fall through.
         } else {
-          // Reference exists, holds its own content, and is NOT also a live
-          // dupe → legitimate dup, skip.
+          // Reference exists and carries no unresolved duplicateOf of its
+          // own → legitimate dup, skip.
           return 'duplicateOf';
         }
       }
