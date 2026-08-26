@@ -149,6 +149,29 @@ test('parse: real git subcommands that merely contain "merge" as a substring (me
   assert.equal(ingress.isMerge, false);
 });
 
+test('parse: "sudo /usr/bin/git merge <branch>" (absolute-path git, not a bare "git" token) still fails closed', () => {
+  // Codex adversarial review, BRO-2436: the catch-all's git-token check used
+  // exact string equality, so an absolute-path git ('/usr/bin/git') never
+  // matched 'git' and this real merge fell all the way through to
+  // notMerge() — allowed:true, the exact bug class this ticket exists to
+  // close. Fixed by matching on basename() like the wrapper check already did.
+  const ingress = parseMergeIngress('sudo /usr/bin/git merge feature', { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.unparsedFailClosed, true);
+});
+
+test('parse: known documented trade-off — a quoted DATA argument that happens to equal the wrapper path also fails closed', () => {
+  // printf's format-string argument here is DATA, not an invocation — but
+  // tokenize() drops which tokens were quoted before this function ever sees
+  // them, and a quoted COMMAND name is legal shell that must still be caught
+  // (see the comment above looksLikeUnparsedMergeIngress's call site). This
+  // pins the accepted cost so it reads as a documented decision, not an
+  // overlooked regression, per the adversarial review that raised it.
+  const ingress = parseMergeIngress("printf '%s\\n' 'scripts/merge-worktree-to-main.sh'", { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.unparsedFailClosed, true);
+});
+
 test('parse: known documented trade-off — an UNQUOTED echo of the literal words "git" then "merge" fails closed too', () => {
   // No real merge happens here — this is the deliberate, safe-direction cost
   // of the token-level catch-all: it cannot distinguish "these two words

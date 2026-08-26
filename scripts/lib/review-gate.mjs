@@ -954,7 +954,12 @@ function basename(p) {
 function looksLikeUnparsedMergeIngress(tokens) {
   for (let i = 0; i < tokens.length; i++) {
     if (basename(tokens[i]) === MERGE_WRAPPER_BASENAME) return true;
-    if (tokens[i] !== 'git') continue;
+    // basename(), not exact equality — `sudo /usr/bin/git merge feat` is a
+    // real merge that exact-string `tokens[i] !== 'git'` let through (Codex
+    // adversarial review): classifySegment only ever looks at toks[0], so
+    // `sudo` alone already sent this segment to this catch-all, and an
+    // absolute-path git must be caught here just like a bare one.
+    if (basename(tokens[i]) !== 'git') continue;
     let j = i + 1;
     while (j < tokens.length) {
       const t = tokens[j];
@@ -1175,6 +1180,18 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
   // tokenizer already lost the quoting that would tell "git merge" the
   // command from "git"/"merge" as bash -c's own $0/$1, and guessing here is
   // the one case this file already decided is worse than failing open.
+  //
+  // KNOWN, ACCEPTED cost (Codex adversarial review, BRO-2436): tokenize()
+  // drops which tokens were quoted before this function ever sees them, so
+  // `printf '%s\n' 'scripts/merge-worktree-to-main.sh'` — a quoted DATA
+  // argument that happens to equal the wrapper's basename, not an actual
+  // invocation of it — reads identically to a real one and fails closed.
+  // Deliberately not "fixed" by excluding quoted tokens: a quoted COMMAND
+  // name (`"scripts/merge-worktree-to-main.sh" branch`) is legal shell and
+  // must still be caught, and this file has nothing that tells "quoted
+  // because it's a path with spaces" apart from "quoted because it's a
+  // sentence." Erring toward the recoverable failure (NO-SHIP-CHECK /
+  // REVIEW_GATE_DISABLE) beats erring toward the unrecoverable one.
   if (nonEmptySegments.some((seg, i) => classified[i]?.kind !== 'opaque' && looksLikeUnparsedMergeIngress(seg))) {
     return {
       isMerge: true, targetsMain: true, sources: [], via: 'unparsed', destination: defaultBranch,
