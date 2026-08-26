@@ -3336,6 +3336,26 @@ function reverseDiscoveryBacklogResults(report) {
   }];
 }
 
+// Freshness/backfill visibility for reverse-discovery (BRO-114): the audit's
+// own state-diff design naturally "backfills" a missed run's window on the
+// next run, EXCEPT when downtime exceeds BWW's ~5-day rolling window — that
+// failure mode was previously silent (see scripts/lib/reverse-discovery-
+// freshness.js for the full rationale). This surfaces it in the same daily
+// digest as reverseDiscoveryBacklogResults, independent of candidate count
+// (a stale-but-empty candidates file is exactly the dangerous case: it looks
+// clean but may just not have run).
+function reverseDiscoveryFreshnessResults(report, nowMs) {
+  const { checkReverseDiscoveryFreshness } = require('./lib/reverse-discovery-freshness');
+  const stale = checkReverseDiscoveryFreshness(report, nowMs);
+  if (!stale) return [];
+  return [{
+    name: 'Data: BWW reverse-discovery audit stale',
+    status: stale.severity,
+    message: `reverse-discovery-candidates.json is ${stale.hoursStale.toFixed(1)}h old (audit-reverse-discovery.yml runs every 6h) — a delayed/skipped run risks missing a BWW roundup that rotates out of its ~5-day window before ever being seen.`,
+    hint: 'Check audit-reverse-discovery.yml run history; dispatch manually if the cron is stuck: gh workflow run audit-reverse-discovery.yml. See docs/bww-reverse-discovery-backfill-visibility.md.',
+  }];
+}
+
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
 // uncollected-live-reviews.json, written hourly by
 // audit-uncollected-live-reviews.js — card #1408). That script's own --alert
@@ -4476,6 +4496,7 @@ async function main() {
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
+      allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     try {
@@ -4607,4 +4628,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
