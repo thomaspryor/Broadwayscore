@@ -2208,3 +2208,185 @@
 [2026-08-21 01:49:46] DIGEST: 21 unmerged worktree(s) untouched >3d holding stranded work: 1233-infra-vs-substantive-dead agent-a70b3646af63ee6bc agent-a9acef27cd4a6802b bro-286-intake-repoint car-man-completeness-874 claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s3 fix-merge-stash-pop-conflict inbox-sweep-cv-hash job-1014-mser17le job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 p0-dispatch-ledger-exports scraping-v2-t12-ship-check-fixes silent-exclusion-detectors-1188 task-653-corpus-determinism workspace-title-task-number
 [2026-08-21 01:49:46] DONE  removed=0 kept=58 skipped=20 freed=0KB (dry_run=0)
 [2026-08-26 10:34:37] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress
+[2026-08-26 10:43:40] ALERT: disk free 2GB below floor 20GB — running emergency cleanup
+[2026-08-26 10:43:42] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-26 10:43:42] DIGEST: disk-floor cleanup freed 0KB — free space 2GB -> 2GB (floor 20GB)
+[2026-08-26 10:43:43] KEEP  1233-infra-vs-substantive-dead — 1 unmerged commit(s) on worktree-1233-infra-vs-substantive-dead
+[2026-08-26 10:43:46] SKIP  1543-watchdog-killswitch-staleness — merged but worktree dirty; not forcing
+[2026-08-26 10:43:46] KEEP  1902-rescore-flagging — 1 unmerged commit(s) on worktree-1902-rescore-flagging
+[2026-08-26 10:43:47] KEEP  1905-cv-selfheal-rescore — 1 unmerged commit(s) on worktree-1905-cv-selfheal-rescore
+[2026-08-26 10:43:47] SKIP  action-c368a6498bbd — notion-action-poll worktree, owner-managed
+[2026-08-26 10:43:48] KEEP  agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-08-26 10:43:49] KEEP  agent-a9acef27cd4a6802b — 1 unmerged commit(s) on worktree-agent-a9acef27cd4a6802b
+[2026-08-26 10:43:51] SKIP  blog-reviews-showslug-fix — worktree-blog-reviews-showslug-fix merged but a live process has this worktree as its cwd
+[2026-08-26 10:43:51] KEEP  bro-120-fix-manifest-sort — 1 unmerged commit(s) on worktree-bro-120-fix-manifest-sort
+[2026-08-26 10:43:54] SKIP  bro-282-owner-approval-channel — merged but worktree dirty; not forcing
+[2026-08-26 10:43:55] KEEP  bro-286-intake-repoint — 1 unmerged commit(s) on worktree-bro-286-intake-repoint
+[2026-08-26 10:43:57] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-26 10:43:59] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-26 10:44:03] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-26 10:44:06] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-26 10:44:07] KEEP  cmux-terminal-runtime-ceiling-1904 — 1 unmerged commit(s) on worktree-cmux-terminal-runtime-ceiling-1904
+[2026-08-26 10:44:08] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-26 10:44:10] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-26 10:44:13] SKIP  diary-phase0c — merged but worktree dirty; not forcing
+[2026-08-26 10:44:15] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-26 10:44:16] KEEP  inbox-sweep-cv-hash — 3 unmerged commit(s) on worktree-inbox-sweep-cv-hash
+[2026-08-26 10:44:18] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-26 10:44:20] KEEP  job-1850-mt1uvnig — 3 unmerged commit(s) on job/1850-mt1uvnig
+[2026-08-26 10:44:24] SKIP  job-1853-mta72xcr — job/1853-mta72xcr merged but a live process has this worktree as its cwd
+[2026-08-26 10:44:25] KEEP  job-1862-mt1xnomc — 2 unmerged commit(s) on job/1862-mt1xnomc
+[2026-08-26 10:44:26] KEEP  job-1863-mt1ymjbm — 2 unmerged commit(s) on job/1863-mt1ymjbm
+[2026-08-26 10:44:28] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-26 10:44:32] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-26 10:44:36] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-26 10:44:38] KEEP  job-linear-BRO-1011-mt2iochh — 2 unmerged commit(s) on job/linear-BRO-1011-mt2iochh
+[2026-08-26 10:44:40] KEEP  job-linear-BRO-102-mt1wx1za — 2 unmerged commit(s) on job/linear-BRO-102-mt1wx1za
+[2026-08-26 10:44:42] KEEP  job-linear-BRO-108-mt1wx8h7 — 2 unmerged commit(s) on job/linear-BRO-108-mt1wx8h7
+[2026-08-26 10:44:45] KEEP  job-linear-BRO-109-mt1y0g2v — 6 unmerged commit(s) on job/linear-BRO-109-mt1y0g2v
+[2026-08-26 10:44:46] KEEP  job-linear-BRO-112-mt1y0vsk — 2 unmerged commit(s) on job/linear-BRO-112-mt1y0vsk
+[2026-08-26 10:44:47] KEEP  job-linear-BRO-117-mt20evxl — 2 unmerged commit(s) on job/linear-BRO-117-mt20evxl
+[2026-08-26 10:44:48] KEEP  job-linear-BRO-119-mt20h7df — 2 unmerged commit(s) on job/linear-BRO-119-mt20h7df
+[2026-08-26 10:44:51] KEEP  job-linear-BRO-125-mt1qd7eg — 4 unmerged commit(s) on job/linear-BRO-125-mt1qd7eg
+[2026-08-26 10:44:52] KEEP  job-linear-BRO-130-mt1qcg5s — 2 unmerged commit(s) on job/linear-BRO-130-mt1qcg5s
+[2026-08-26 10:44:54] KEEP  job-linear-BRO-140-mt1qdy68 — 2 unmerged commit(s) on job/linear-BRO-140-mt1qdy68
+[2026-08-26 10:44:55] KEEP  job-linear-BRO-141-mt23eofu — 5 unmerged commit(s) on job/linear-BRO-141-mt23eofu
+[2026-08-26 10:44:56] KEEP  job-linear-BRO-1699-mt2hapu2 — 5 unmerged commit(s) on job/linear-BRO-1699-mt2hapu2
+[2026-08-26 10:44:57] KEEP  job-linear-BRO-176-mta6dn75 — 1 unmerged commit(s) on job/linear-BRO-176-mta6dn75
+[2026-08-26 10:44:57] KEEP  job-linear-BRO-179-mta5zbiz — 1 unmerged commit(s) on job/linear-BRO-179-mta5zbiz
+[2026-08-26 10:44:58] KEEP  job-linear-BRO-181-mta5x1zu — 2 unmerged commit(s) on job/linear-BRO-181-mta5x1zu
+[2026-08-26 10:44:59] SKIP  job-linear-BRO-183-mta70t7x — job/linear-BRO-183-mta70t7x merged but a live process has this worktree as its cwd
+[2026-08-26 10:44:59] KEEP  job-linear-BRO-1959-mt2had7n — 2 unmerged commit(s) on job/linear-BRO-1959-mt2had7n
+[2026-08-26 10:45:00] KEEP  job-linear-BRO-2004-mt2g7sj3 — 1 unmerged commit(s) on job/linear-BRO-2004-mt2g7sj3
+[2026-08-26 10:45:02] KEEP  job-linear-BRO-2023-mt2g7klk — 8 unmerged commit(s) on job/linear-BRO-2023-mt2g7klk
+[2026-08-26 10:45:03] KEEP  job-linear-BRO-2215-mt27p9h1 — 2 unmerged commit(s) on job/linear-BRO-2215-mt27p9h1
+[2026-08-26 10:45:04] KEEP  job-linear-BRO-2218-mt25i4vg — 2 unmerged commit(s) on job/linear-BRO-2218-mt25i4vg
+[2026-08-26 10:45:06] KEEP  job-linear-BRO-2226-mt27p5mt — 1 unmerged commit(s) on job/linear-BRO-2226-mt27p5mt
+[2026-08-26 10:45:07] KEEP  job-linear-BRO-2232-mt1tckri — 2 unmerged commit(s) on job/linear-BRO-2232-mt1tckri
+[2026-08-26 10:45:09] KEEP  job-linear-BRO-2243-mt219hge — 2 unmerged commit(s) on job/linear-BRO-2243-mt219hge
+[2026-08-26 10:45:12] KEEP  job-linear-BRO-2244-mt21ze48 — 2 unmerged commit(s) on job/linear-BRO-2244-mt21ze48
+[2026-08-26 10:45:14] KEEP  job-linear-BRO-2251-mt28z3sc — 2 unmerged commit(s) on job/linear-BRO-2251-mt28z3sc
+[2026-08-26 10:45:15] KEEP  job-linear-BRO-2266-mt2nf58g — 1 unmerged commit(s) on job/linear-BRO-2266-mt2nf58g
+[2026-08-26 10:45:17] KEEP  job-linear-BRO-2267-mt2nixlc — 6 unmerged commit(s) on job/linear-BRO-2267-mt2nixlc
+[2026-08-26 10:45:18] KEEP  job-linear-BRO-2317-mta6pv5d — 1 unmerged commit(s) on job/linear-BRO-2317-mta6pv5d
+[2026-08-26 10:45:19] SKIP  job-linear-BRO-2318-mta79vcn — job/linear-BRO-2318-mta79vcn merged but a live process has this worktree as its cwd
+[2026-08-26 10:45:19] SKIP  job-linear-BRO-2319-mta7dpqn — job/linear-BRO-2319-mta7dpqn merged but a live process has this worktree as its cwd
+[2026-08-26 10:45:19] KEEP  job-linear-BRO-287-mta5xt05 — 2 unmerged commit(s) on job/linear-BRO-287-mta5xt05
+[2026-08-26 10:45:20] KEEP  job-linear-BRO-318-mt095ynz — 1 unmerged commit(s) on job/linear-BRO-318-mt095ynz
+[2026-08-26 10:45:21] KEEP  job-linear-BRO-339-mta66beb — 3 unmerged commit(s) on job/linear-BRO-339-mta66beb
+[2026-08-26 10:45:21] KEEP  job-linear-BRO-344-mta5vhai — 3 unmerged commit(s) on job/linear-BRO-344-mta5vhai
+[2026-08-26 10:45:22] KEEP  job-linear-BRO-53-mt0cd96t — 4 unmerged commit(s) on job/linear-BRO-53-mt0cd96t
+[2026-08-26 10:45:23] KEEP  job-linear-BRO-54-mt1uscas — 2 unmerged commit(s) on job/linear-BRO-54-mt1uscas
+[2026-08-26 10:45:26] KEEP  job-linear-BRO-554-mt1savkf — 1 unmerged commit(s) on job/linear-BRO-554-mt1savkf
+[2026-08-26 10:45:29] KEEP  job-linear-BRO-57-mt1tmc2x — 2 unmerged commit(s) on job/linear-BRO-57-mt1tmc2x
+[2026-08-26 10:45:30] KEEP  job-linear-BRO-573-mt2qivx0 — 4 unmerged commit(s) on job/linear-BRO-573-mt2qivx0
+[2026-08-26 10:45:31] KEEP  job-linear-BRO-580-mt2q9od2 — 2 unmerged commit(s) on job/linear-BRO-580-mt2q9od2
+[2026-08-26 10:45:32] KEEP  job-linear-BRO-591-mt2q8uen — 4 unmerged commit(s) on job/linear-BRO-591-mt2q8uen
+[2026-08-26 10:45:33] KEEP  job-linear-BRO-626-mt2qjssb — 3 unmerged commit(s) on job/linear-BRO-626-mt2qjssb
+[2026-08-26 10:45:34] KEEP  job-linear-BRO-65-mt1sa3d6 — 2 unmerged commit(s) on job/linear-BRO-65-mt1sa3d6
+[2026-08-26 10:45:35] KEEP  job-linear-BRO-712-mt2q808f — 1 unmerged commit(s) on job/linear-BRO-712-mt2q808f
+[2026-08-26 10:45:36] KEEP  job-linear-BRO-719-mt2q1l3g — 1 unmerged commit(s) on job/linear-BRO-719-mt2q1l3g
+[2026-08-26 10:45:38] KEEP  job-linear-BRO-723-mt2oukmg — 1 unmerged commit(s) on job/linear-BRO-723-mt2oukmg
+[2026-08-26 10:45:39] KEEP  job-linear-BRO-725-mt2ouh1f — 4 unmerged commit(s) on job/linear-BRO-725-mt2ouh1f
+[2026-08-26 10:46:02] ALERT: disk free 2GB below floor 20GB — running emergency cleanup
+[2026-08-26 10:46:03] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-26 10:46:03] DIGEST: disk-floor cleanup freed 0KB — free space 2GB -> 2GB (floor 20GB)
+[2026-08-26 10:46:04] KEEP  1233-infra-vs-substantive-dead — 1 unmerged commit(s) on worktree-1233-infra-vs-substantive-dead
+[2026-08-26 10:46:07] SKIP  1543-watchdog-killswitch-staleness — merged but worktree dirty; not forcing
+[2026-08-26 10:46:08] KEEP  1902-rescore-flagging — 1 unmerged commit(s) on worktree-1902-rescore-flagging
+[2026-08-26 10:46:08] KEEP  1905-cv-selfheal-rescore — 2 unmerged commit(s) on worktree-1905-cv-selfheal-rescore
+[2026-08-26 10:46:08] SKIP  action-c368a6498bbd — notion-action-poll worktree, owner-managed
+[2026-08-26 10:46:09] KEEP  agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-08-26 10:46:10] KEEP  agent-a9acef27cd4a6802b — 1 unmerged commit(s) on worktree-agent-a9acef27cd4a6802b
+[2026-08-26 10:46:11] SKIP  blog-reviews-showslug-fix — worktree-blog-reviews-showslug-fix merged but a live process has this worktree as its cwd
+[2026-08-26 10:46:12] KEEP  bro-120-fix-manifest-sort — 1 unmerged commit(s) on worktree-bro-120-fix-manifest-sort
+[2026-08-26 10:46:14] SKIP  bro-282-owner-approval-channel — merged but worktree dirty; not forcing
+[2026-08-26 10:46:15] KEEP  bro-286-intake-repoint — 1 unmerged commit(s) on worktree-bro-286-intake-repoint
+[2026-08-26 10:46:17] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-26 10:46:19] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-26 10:46:21] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-26 10:46:23] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-26 10:46:24] KEEP  cmux-terminal-runtime-ceiling-1904 — 1 unmerged commit(s) on worktree-cmux-terminal-runtime-ceiling-1904
+[2026-08-26 10:46:25] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-26 10:46:28] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-26 10:46:30] SKIP  diary-phase0c — merged but worktree dirty; not forcing
+[2026-08-26 10:46:32] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-26 10:46:34] KEEP  inbox-sweep-cv-hash — 3 unmerged commit(s) on worktree-inbox-sweep-cv-hash
+[2026-08-26 10:46:36] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-26 10:46:38] KEEP  job-1850-mt1uvnig — 3 unmerged commit(s) on job/1850-mt1uvnig
+[2026-08-26 10:46:39] SKIP  job-1853-mta72xcr — job/1853-mta72xcr merged but a live process has this worktree as its cwd
+[2026-08-26 10:46:40] KEEP  job-1862-mt1xnomc — 2 unmerged commit(s) on job/1862-mt1xnomc
+[2026-08-26 10:46:42] KEEP  job-1863-mt1ymjbm — 2 unmerged commit(s) on job/1863-mt1ymjbm
+[2026-08-26 10:46:46] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-26 10:46:49] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-26 10:46:51] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-26 10:46:53] KEEP  job-linear-BRO-1011-mt2iochh — 2 unmerged commit(s) on job/linear-BRO-1011-mt2iochh
+[2026-08-26 10:46:54] KEEP  job-linear-BRO-102-mt1wx1za — 2 unmerged commit(s) on job/linear-BRO-102-mt1wx1za
+[2026-08-26 10:46:56] KEEP  job-linear-BRO-108-mt1wx8h7 — 2 unmerged commit(s) on job/linear-BRO-108-mt1wx8h7
+[2026-08-26 10:46:58] KEEP  job-linear-BRO-109-mt1y0g2v — 6 unmerged commit(s) on job/linear-BRO-109-mt1y0g2v
+[2026-08-26 10:47:03] KEEP  job-linear-BRO-112-mt1y0vsk — 2 unmerged commit(s) on job/linear-BRO-112-mt1y0vsk
+[2026-08-26 10:47:05] KEEP  job-linear-BRO-117-mt20evxl — 2 unmerged commit(s) on job/linear-BRO-117-mt20evxl
+[2026-08-26 10:47:06] KEEP  job-linear-BRO-119-mt20h7df — 2 unmerged commit(s) on job/linear-BRO-119-mt20h7df
+[2026-08-26 10:47:08] KEEP  job-linear-BRO-125-mt1qd7eg — 4 unmerged commit(s) on job/linear-BRO-125-mt1qd7eg
+[2026-08-26 10:47:09] KEEP  job-linear-BRO-130-mt1qcg5s — 2 unmerged commit(s) on job/linear-BRO-130-mt1qcg5s
+[2026-08-26 10:47:10] KEEP  job-linear-BRO-140-mt1qdy68 — 2 unmerged commit(s) on job/linear-BRO-140-mt1qdy68
+[2026-08-26 10:47:11] KEEP  job-linear-BRO-141-mt23eofu — 5 unmerged commit(s) on job/linear-BRO-141-mt23eofu
+[2026-08-26 10:47:13] KEEP  job-linear-BRO-1699-mt2hapu2 — 5 unmerged commit(s) on job/linear-BRO-1699-mt2hapu2
+[2026-08-26 10:47:13] KEEP  job-linear-BRO-176-mta6dn75 — 1 unmerged commit(s) on job/linear-BRO-176-mta6dn75
+[2026-08-26 10:47:14] KEEP  job-linear-BRO-179-mta5zbiz — 1 unmerged commit(s) on job/linear-BRO-179-mta5zbiz
+[2026-08-26 10:47:14] KEEP  job-linear-BRO-181-mta5x1zu — 2 unmerged commit(s) on job/linear-BRO-181-mta5x1zu
+[2026-08-26 10:47:14] KEEP  job-linear-BRO-183-mta70t7x — 1 unmerged commit(s) on job/linear-BRO-183-mta70t7x
+[2026-08-26 10:47:14] KEEP  job-linear-BRO-1959-mt2had7n — 2 unmerged commit(s) on job/linear-BRO-1959-mt2had7n
+[2026-08-26 10:47:15] KEEP  job-linear-BRO-2004-mt2g7sj3 — 1 unmerged commit(s) on job/linear-BRO-2004-mt2g7sj3
+[2026-08-26 10:47:17] KEEP  job-linear-BRO-2023-mt2g7klk — 8 unmerged commit(s) on job/linear-BRO-2023-mt2g7klk
+[2026-08-26 10:47:18] KEEP  job-linear-BRO-2215-mt27p9h1 — 2 unmerged commit(s) on job/linear-BRO-2215-mt27p9h1
+[2026-08-26 10:47:19] KEEP  job-linear-BRO-2218-mt25i4vg — 2 unmerged commit(s) on job/linear-BRO-2218-mt25i4vg
+[2026-08-26 10:47:21] KEEP  job-linear-BRO-2226-mt27p5mt — 1 unmerged commit(s) on job/linear-BRO-2226-mt27p5mt
+[2026-08-26 10:47:22] KEEP  job-linear-BRO-2232-mt1tckri — 2 unmerged commit(s) on job/linear-BRO-2232-mt1tckri
+[2026-08-26 10:47:23] KEEP  job-linear-BRO-2243-mt219hge — 2 unmerged commit(s) on job/linear-BRO-2243-mt219hge
+[2026-08-26 10:47:24] KEEP  job-linear-BRO-2244-mt21ze48 — 2 unmerged commit(s) on job/linear-BRO-2244-mt21ze48
+[2026-08-26 10:47:25] KEEP  job-linear-BRO-2251-mt28z3sc — 2 unmerged commit(s) on job/linear-BRO-2251-mt28z3sc
+[2026-08-26 10:47:26] KEEP  job-linear-BRO-2266-mt2nf58g — 1 unmerged commit(s) on job/linear-BRO-2266-mt2nf58g
+[2026-08-26 10:47:27] KEEP  job-linear-BRO-2267-mt2nixlc — 6 unmerged commit(s) on job/linear-BRO-2267-mt2nixlc
+[2026-08-26 10:47:28] KEEP  job-linear-BRO-2317-mta6pv5d — 1 unmerged commit(s) on job/linear-BRO-2317-mta6pv5d
+[2026-08-26 10:47:29] SKIP  job-linear-BRO-2318-mta79vcn — job/linear-BRO-2318-mta79vcn merged but a live process has this worktree as its cwd
+[2026-08-26 10:47:29] SKIP  job-linear-BRO-2319-mta7dpqn — job/linear-BRO-2319-mta7dpqn merged but a live process has this worktree as its cwd
+[2026-08-26 10:47:29] KEEP  job-linear-BRO-287-mta5xt05 — 2 unmerged commit(s) on job/linear-BRO-287-mta5xt05
+[2026-08-26 10:47:30] KEEP  job-linear-BRO-318-mt095ynz — 1 unmerged commit(s) on job/linear-BRO-318-mt095ynz
+[2026-08-26 10:47:30] KEEP  job-linear-BRO-339-mta66beb — 3 unmerged commit(s) on job/linear-BRO-339-mta66beb
+[2026-08-26 10:47:31] KEEP  job-linear-BRO-344-mta5vhai — 3 unmerged commit(s) on job/linear-BRO-344-mta5vhai
+[2026-08-26 10:47:31] KEEP  job-linear-BRO-53-mt0cd96t — 4 unmerged commit(s) on job/linear-BRO-53-mt0cd96t
+[2026-08-26 10:47:32] KEEP  job-linear-BRO-54-mt1uscas — 2 unmerged commit(s) on job/linear-BRO-54-mt1uscas
+[2026-08-26 10:47:33] KEEP  job-linear-BRO-554-mt1savkf — 1 unmerged commit(s) on job/linear-BRO-554-mt1savkf
+[2026-08-26 10:47:34] KEEP  job-linear-BRO-57-mt1tmc2x — 2 unmerged commit(s) on job/linear-BRO-57-mt1tmc2x
+[2026-08-26 10:47:36] KEEP  job-linear-BRO-573-mt2qivx0 — 4 unmerged commit(s) on job/linear-BRO-573-mt2qivx0
+[2026-08-26 10:47:37] KEEP  job-linear-BRO-580-mt2q9od2 — 2 unmerged commit(s) on job/linear-BRO-580-mt2q9od2
+[2026-08-26 10:47:38] KEEP  job-linear-BRO-591-mt2q8uen — 4 unmerged commit(s) on job/linear-BRO-591-mt2q8uen
+[2026-08-26 10:47:39] KEEP  job-linear-BRO-626-mt2qjssb — 3 unmerged commit(s) on job/linear-BRO-626-mt2qjssb
+[2026-08-26 10:47:40] KEEP  job-linear-BRO-65-mt1sa3d6 — 2 unmerged commit(s) on job/linear-BRO-65-mt1sa3d6
+[2026-08-26 10:47:41] KEEP  job-linear-BRO-712-mt2q808f — 1 unmerged commit(s) on job/linear-BRO-712-mt2q808f
+[2026-08-26 10:47:42] KEEP  job-linear-BRO-719-mt2q1l3g — 1 unmerged commit(s) on job/linear-BRO-719-mt2q1l3g
+[2026-08-26 10:47:43] KEEP  job-linear-BRO-723-mt2oukmg — 1 unmerged commit(s) on job/linear-BRO-723-mt2oukmg
+[2026-08-26 10:47:44] KEEP  job-linear-BRO-725-mt2ouh1f — 4 unmerged commit(s) on job/linear-BRO-725-mt2ouh1f
+[2026-08-26 10:47:45] KEEP  job-linear-BRO-730-mt2oubwt — 2 unmerged commit(s) on job/linear-BRO-730-mt2oubwt
+[2026-08-26 10:47:45] KEEP  job-linear-BRO-736-mt2mvo64 — 4 unmerged commit(s) on job/linear-BRO-736-mt2mvo64
+[2026-08-26 10:47:46] KEEP  job-linear-BRO-749-mt2mvixt — 4 unmerged commit(s) on job/linear-BRO-749-mt2mvixt
+[2026-08-26 10:47:47] KEEP  job-linear-BRO-75-mt1vuvn1 — 3 unmerged commit(s) on job/linear-BRO-75-mt1vuvn1
+[2026-08-26 10:47:47] KEEP  job-linear-BRO-764-mt2lmngn — 1 unmerged commit(s) on job/linear-BRO-764-mt2lmngn
+[2026-08-26 10:47:48] KEEP  job-linear-BRO-787-mt2lmgu8 — 2 unmerged commit(s) on job/linear-BRO-787-mt2lmgu8
+[2026-08-26 10:47:49] KEEP  job-linear-BRO-79-mt1wwhg4 — 4 unmerged commit(s) on job/linear-BRO-79-mt1wwhg4
+[2026-08-26 10:47:52] KEEP  job-linear-BRO-80-mt0f77ei — 2 unmerged commit(s) on job/linear-BRO-80-mt0f77ei
+[2026-08-26 10:47:52] KEEP  job-linear-BRO-849-mt2kipsu — 1 unmerged commit(s) on job/linear-BRO-849-mt2kipsu
+[2026-08-26 10:47:54] KEEP  job-linear-BRO-853-mt2kii08 — 1 unmerged commit(s) on job/linear-BRO-853-mt2kii08
+[2026-08-26 10:47:55] KEEP  job-linear-BRO-86-mt0fwfx7 — 2 unmerged commit(s) on job/linear-BRO-86-mt0fwfx7
+[2026-08-26 10:47:55] KEEP  job-linear-BRO-898-mt2jt1kx — 1 unmerged commit(s) on job/linear-BRO-898-mt2jt1kx
+[2026-08-26 10:47:57] KEEP  job-linear-BRO-93-mt1wwpva — 2 unmerged commit(s) on job/linear-BRO-93-mt1wwpva
+[2026-08-26 10:47:58] KEEP  p0-dispatch-ledger-exports — 1 unmerged commit(s) on worktree-p0-dispatch-ledger-exports
+[2026-08-26 10:47:59] SKIP  push-deadline-1891 — worktree-push-deadline-1891 merged but a live process has this worktree as its cwd
+[2026-08-26 10:47:59] SKIP  s4-t3b-gate-fail-open — worktree-s4-t3b-gate-fail-open merged but a live process has this worktree as its cwd
+[2026-08-26 10:48:00] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-26 10:48:01] KEEP  silent-exclusion-detectors-1188 — 2 unmerged commit(s) on worktree-silent-exclusion-detectors-1188
+[2026-08-26 10:48:03] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-26 10:48:05] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-26 10:48:08] DIGEST: 76 unmerged worktree(s) untouched >3d holding stranded work: 1233-infra-vs-substantive-dead agent-a70b3646af63ee6bc agent-a9acef27cd4a6802b bro-120-fix-manifest-sort bro-286-intake-repoint car-man-completeness-874 claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s3 fix-merge-stash-pop-conflict inbox-sweep-cv-hash job-1014-mser17le job-1850-mt1uvnig job-1862-mt1xnomc job-1863-mt1ymjbm job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-linear-BRO-1011-mt2iochh job-linear-BRO-102-mt1wx1za job-linear-BRO-108-mt1wx8h7 job-linear-BRO-109-mt1y0g2v job-linear-BRO-112-mt1y0vsk job-linear-BRO-117-mt20evxl job-linear-BRO-119-mt20h7df job-linear-BRO-125-mt1qd7eg job-linear-BRO-130-mt1qcg5s job-linear-BRO-140-mt1qdy68 job-linear-BRO-141-mt23eofu job-linear-BRO-1699-mt2hapu2 job-linear-BRO-1959-mt2had7n job-linear-BRO-2004-mt2g7sj3 job-linear-BRO-2023-mt2g7klk job-linear-BRO-2215-mt27p9h1 job-linear-BRO-2218-mt25i4vg job-linear-BRO-2226-mt27p5mt job-linear-BRO-2232-mt1tckri job-linear-BRO-2243-mt219hge job-linear-BRO-2244-mt21ze48 job-linear-BRO-2251-mt28z3sc job-linear-BRO-2266-mt2nf58g job-linear-BRO-2267-mt2nixlc job-linear-BRO-318-mt095ynz job-linear-BRO-53-mt0cd96t job-linear-BRO-54-mt1uscas job-linear-BRO-554-mt1savkf job-linear-BRO-57-mt1tmc2x job-linear-BRO-573-mt2qivx0 job-linear-BRO-580-mt2q9od2 job-linear-BRO-591-mt2q8uen job-linear-BRO-626-mt2qjssb job-linear-BRO-65-mt1sa3d6 job-linear-BRO-712-mt2q808f job-linear-BRO-719-mt2q1l3g job-linear-BRO-723-mt2oukmg job-linear-BRO-725-mt2ouh1f job-linear-BRO-730-mt2oubwt job-linear-BRO-736-mt2mvo64 job-linear-BRO-749-mt2mvixt job-linear-BRO-75-mt1vuvn1 job-linear-BRO-764-mt2lmngn job-linear-BRO-787-mt2lmgu8 job-linear-BRO-79-mt1wwhg4 job-linear-BRO-80-mt0f77ei job-linear-BRO-849-mt2kipsu job-linear-BRO-853-mt2kii08 job-linear-BRO-86-mt0fwfx7 job-linear-BRO-898-mt2jt1kx job-linear-BRO-93-mt1wwpva p0-dispatch-ledger-exports scraping-v2-t12-ship-check-fixes silent-exclusion-detectors-1188 task-653-corpus-determinism workspace-title-task-number
+[2026-08-26 10:48:08] DONE  removed=0 kept=87 skipped=10 freed=0KB (dry_run=0)
