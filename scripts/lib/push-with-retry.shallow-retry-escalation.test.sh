@@ -75,6 +75,29 @@ gitc "$TMP/seed" branch -M main; gitc "$TMP/seed" push -q "$TMP/origin.git" main
 git clone -q --depth=1 --no-tags "file://$TMP/origin.git" "$TMP/runner"
 gitc "$TMP/runner" config user.email t@t.t; gitc "$TMP/runner" config user.name t
 
+# ── PRECONDITION: the runner clone MUST actually be shallow ───────────────────
+# Every assertion below is about how push-with-retry.sh bounds a fetch on a
+# SHALLOW repo. If the clone came out full, the script correctly takes its
+# non-shallow path, no "--shallow-since" ever appears, and FAIL[1..3] all fire
+# naming the escalation logic — pointing at production code that is working
+# fine. That is exactly how this read on CI (2026-08-26): the runner's clone
+# was not shallow, so the suite reported three escalation failures for an
+# environment problem.
+#
+# --depth over a local path is the fragile step (git ignores --depth for plain
+# local clones; the file:// form above is what normally makes it stick), so
+# repair it explicitly rather than trusting the clone, then assert. A hard
+# failure here names the real cause instead of blaming the escalation code.
+if [ "$(gitc "$TMP/runner" rev-parse --is-shallow-repository)" != "true" ]; then
+  gitc "$TMP/runner" fetch -q --depth=1 "file://$TMP/origin.git" main 2>/dev/null || true
+fi
+if [ "$(gitc "$TMP/runner" rev-parse --is-shallow-repository)" != "true" ]; then
+  echo "FAIL[0]: fixture precondition — the runner clone is NOT shallow, so this suite cannot exercise shallow-fetch bounding at all."
+  echo "         git $(git --version | awk '{print $3}') refused to make a shallow clone of file://$TMP/origin.git."
+  echo "         This is an ENVIRONMENT failure, not a regression in push-with-retry.sh."
+  exit 1
+fi
+
 # ── Concurrent writer advances origin AFTER checkout (the push-rejection) ─────
 printf '{"c":1}\n' > "$TMP/seed/other.json"
 gitc "$TMP/seed" add -A; gitc "$TMP/seed" commit -q -m concurrent-commit
