@@ -564,6 +564,12 @@ function health() {
     // --health runs OUTSIDE cmux via launchd, which can't reach the socket
     // pre-restart) — a cmux failure means "cannot observe," which must
     // fail safe to "cannot prove dead," not silently page.
+    // Distinct suffixes on the two success paths below are deliberate: this
+    // is the only launchd-outside-cmux code path in the file, and without a
+    // visible marker for "the flow check actually ran" vs. "it silently
+    // skipped (cmux unobservable)", ~/Library/Logs/dispatch-watchdog-health.log
+    // can't prove which one happened on a given tick.
+    let flowSuffix = ' (flow check skipped: cmux unobservable)';
     try {
       const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
       const launchesLast45m = launchesInFlowWindow(Date.now());
@@ -578,10 +584,11 @@ function health() {
         console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}) — owner paged`);
         return 1;
       }
+      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m})`;
     } catch (e) {
       console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
     }
-    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old`);
+    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
     return 0;
   }
   pageOwner({
