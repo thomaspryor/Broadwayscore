@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T00:43:49.215Z",
-  "processed": 94,
-  "failed": 1256,
-  "successRate": "7.0%",
+  "updatedAt": "2026-08-26T01:39:39.620Z",
+  "processed": 109,
+  "failed": 1573,
+  "successRate": "6.5%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 65,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 1,
-    "scrapingbee": 11,
-    "brightdata": 8,
+    "scrapingbee": 14,
+    "brightdata": 12,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -53,6 +53,24 @@
       "t": "2026-08-26T00:41:42.898Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-26T01:34:20.905Z",
+      "event": "bb-session",
+      "session": "d8c6fe31",
+      "url": "https://deadline.com/2026/08/jason-blum-hosts-paranormal-activity-broadway-perfo"
+    },
+    {
+      "t": "2026-08-26T01:38:54.532Z",
+      "event": "bb-session",
+      "session": "078434f8",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-26T01:39:13.781Z",
+      "event": "bb-session",
+      "session": "911a794d",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
     }
   ]
 }
