@@ -684,6 +684,12 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # BRO-160: buildShowEntry() category/market/date resolution — root-level
+      # scripts/*.js + *.test.mjs pair (no scripts/** broad glob), needs its
+      # own entry so a solo edit triggers CI. Registered in
+      # tests/unit-test-manifest.txt too (required for a root-level
+      # scripts/*.test.mjs to actually execute in CI).
+      - 'scripts/promote-ob-venue-candidates.test.mjs'
       # West End aggregator-listing auto-promotion backstop (task #1466) —
       # the WE analogue of the block above. Its shared dedup + discovery/
       # venue-matching lib dependencies are covered by scripts/lib/**;
