@@ -148,7 +148,10 @@
     "jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json",
     "the-snowman-west-end-2026/express-uk--neil-norman.json",
     "much-ado-about-nothing-2026/guardian--arifa-akbar.json",
-    "much-ado-about-nothing-2026/london-theatre--matt-wolf.json"
+    "much-ado-about-nothing-2026/london-theatre--matt-wolf.json",
+    "nine-night-off-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "nine-night-off-west-end-2026/london-box-office--phil-willmott.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -2032,7 +2035,14 @@
     "much-ado-about-nothing-2026/standard--nick-curtis.json",
     "much-ado-about-nothing-2026/telegraph--dominic-cavendish.json",
     "much-ado-about-nothing-2026/times-uk--clive-davis.json",
-    "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json"
+    "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json",
+    "one-day-the-musical-west-end-2026/london-box-office--stuart-king.json",
+    "sylvia-off-west-end-2026/daily-mail--patrick-marmion.json",
+    "sylvia-off-west-end-2026/london-box-office--stuart-king.json",
+    "orlando-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "orlando-off-west-end-2026/thestage--sam-marlowe.json",
+    "orlando-off-west-end-2026/times-uk--clive-davis.json",
+    "orlando-off-west-end-2026/times-uk--quentin-letts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2123,7 +2133,9 @@
       "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json",
       "the-snowman-west-end-2026/express-uk--neil-norman.json",
       "much-ado-about-nothing-2026/guardian--arifa-akbar.json",
-      "much-ado-about-nothing-2026/london-theatre--matt-wolf.json"
+      "much-ado-about-nothing-2026/london-theatre--matt-wolf.json",
+      "nine-night-off-west-end-2026/london-box-office--nastazja-domaradzka.json",
+      "nine-night-off-west-end-2026/london-box-office--phil-willmott.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2136,7 +2148,9 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
-      "cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json"
+      "cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -2209,7 +2223,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -2377,6 +2391,12 @@
       "event": "bb-session",
       "session": "171100b5",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/cinderella-theater-11"
+    },
+    {
+      "t": "2026-08-26T05:56:01.341Z",
+      "event": "bb-session",
+      "session": "2e1a467b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
