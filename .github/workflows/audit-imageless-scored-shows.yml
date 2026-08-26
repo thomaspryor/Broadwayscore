@@ -114,6 +114,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/imageless-scored-shows.json 2>/dev/null || true
+          # This script also calls routeAlert(disposition:'auto') on escalation
+          # (scripts/audit-imageless-scored-shows.js:134-159), which writes
+          # routeAlert's cooldown ledger + attempt log — without staging those
+          # too, every run starts with a cold ledger and the 7-day cooldown
+          # never actually holds across runs (same bug class as BRO-2441 /
+          # audit-time-bomb-tests.yml, caught there by an adversarial review).
+          git add data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes"
           else
