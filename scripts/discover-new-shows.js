@@ -72,6 +72,9 @@ const {
   scrapeVenueListing,
   writeStagingCandidates,
 } = require('./lib/venue-listing-discover');
+const {
+  writeStagingCandidates: writeOweStagingCandidates,
+} = require('./lib/owe-venue-staging');
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -1078,6 +1081,10 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'youth theatre', 'writing lab',
 ];
 
+// Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
+// regression on a venue page can't flood staging with garbage.
+const OWE_VENUE_CAP = 30;
+
 async function fetchShowsFromVenueListings(category) {
   const venues = VENUE_LISTING_PAGES.filter(v => v.category === category);
   const label = category === 'off-broadway' ? 'Off-Broadway' : 'Off-West End';
@@ -1094,6 +1101,14 @@ async function fetchShowsFromVenueListings(category) {
     const venue = venues[i];
     const result = results[i];
     if (result.status === 'fulfilled' && result.value.length > 0) {
+      if (result.value.length > OWE_VENUE_CAP) {
+        console.error(`::error::Venue ${venue.name} returned ${result.value.length} candidates (cap: ${OWE_VENUE_CAP}) — likely parser regression. Skipping this venue's candidates.`);
+        process.exitCode = 1;
+        continue;
+      }
+      // Per-venue rolling-median anomaly gate (same lib the OB path uses).
+      // Fail-soft: warns + sets exitCode but keeps discovering other venues.
+      checkVenueAnomaly(venue.name, result.value.length);
       successCount++;
       allShows.push(...result.value);
       console.log(`  ${venue.name}: ${result.value.length} shows`);
@@ -1922,10 +1937,18 @@ async function discoverShows() {
       console.log(`Found ${ltShows.length} OWE shows via LondonTheatre.co.uk`);
     }
 
+    // OWE venue-page candidates are staged, NOT pushed into discoveredShows
+    // (BRO-182 — these are unvalidated scrapes of venue what's-on pages,
+    // which list one-night talks/tribute concerts alongside real productions.
+    // Mirrors the Off-Broadway venue-listing gate above: candidates land in
+    // data/audit/owe-venue-candidates.json and only reach shows.json via
+    // scripts/promote-owe-venue-candidates.js).
     if (venueResult.status === 'rejected') {
       console.log(`⚠️  OWE venue pages failed (${venueResult.reason?.message}), continuing with other sources`);
     } else if (venueShows.length > 0) {
-      console.log(`Found ${venueShows.length} shows via OWE venue pages`);
+      console.log(`Found ${venueShows.length} candidates via OWE venue pages → staging`);
+      if (!dryRun) writeOweStagingCandidates(venueShows);
+      else console.log(`  (dry-run: would stage ${venueShows.length} candidates)`);
     }
 
     if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0 && ltShows.length === 0) {
@@ -1942,8 +1965,10 @@ async function discoverShows() {
     sourceCounts.londonTheatre = ltShows.length;
     sourceCounts.oweVenues = venueShows.length;
 
-    // TodayTix first (richer metadata), OLT second, TM third, LT fourth, venue pages last — dedup prefers earlier entries
-    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows, ...venueShows);
+    // TodayTix first (richer metadata), OLT second, TM third, LT fourth —
+    // venue-page candidates are staged above, not merged here. Dedup prefers
+    // earlier entries among the sources that DO write directly.
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
     console.log('');
   }
 
