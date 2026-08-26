@@ -46,11 +46,27 @@ const { stripAutoPrefix } = require('./workspace-naming.js');
 // was opened).
 const DEAD_ATTEMPT_LIMIT = 2;
 
+// BRO-395: `{ ts: new Date().toISOString(), ...entry }` below means an entry
+// that carries its OWN `ts` field silently overrides the safe self-stamped
+// default — no current caller does this (every appendEntry() call site in
+// scripts/ was grepped), but nothing stopped it, and a single bad row is
+// enough to poison every `now - t < window` freshness check downstream
+// forever (a future ts makes `now - t` negative, which is always < any
+// positive window). 5 minutes matches the CLOCK_SKEW_TOLERANCE_MS /
+// STATUS_CLOCK_SKEW_TOLERANCE_MS convention already used elsewhere in this
+// codebase (cmux-terminal-capacity.js, pr-supervisor-core.js) for "how much
+// clock skew is plausible, versus corrupt input."
+const FUTURE_TS_GRACE_MS = 5 * 60 * 1000;
+
 function appendEntry(entry, ledgerPath = LEDGER_PATH) {
   if (!entry || typeof entry.event !== 'string' || !entry.event || !entry.taskId) {
     throw new Error('dispatch-ledger entry requires an event string and a taskId');
   }
   const line = { ts: new Date().toISOString(), ...entry };
+  const lineTs = Date.parse(line.ts);
+  if (Number.isFinite(lineTs) && lineTs - Date.now() > FUTURE_TS_GRACE_MS) {
+    throw new Error(`dispatch-ledger entry has a future ts (${line.ts}) — refusing to write corrupt input`);
+  }
   fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
   fs.appendFileSync(ledgerPath, JSON.stringify(line) + '\n');
   return line;
@@ -761,7 +777,12 @@ function countRecentLaunches(entries, { now, windowMs }) {
   for (const e of entries) {
     if (e.event !== 'launch' || !e.ts) continue;
     const ts = Date.parse(e.ts);
-    if (Number.isFinite(ts) && ts > cutoff) n++;
+    // ts <= now (BRO-395): a future-dated row must never count as "recent" —
+    // `ts > cutoff` alone is satisfied forever by a future timestamp, since
+    // now-t is negative and always < any positive window. This is the exact
+    // mechanism that gave dispatch-watchdog's flow-dead check three
+    // consecutive false "still alive" readings against a real dead flow.
+    if (Number.isFinite(ts) && ts > cutoff && ts <= now) n++;
   }
   return n;
 }
@@ -1072,4 +1093,5 @@ module.exports = {
   openTaskWorkspaceLaunches,
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
   detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
+  FUTURE_TS_GRACE_MS,
 };

@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { isRegionMismatch, showRegion } = require('./lib/ticket-link-discovery.js');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -93,13 +94,19 @@ function httpGet(url, options = {}) {
  * Uses allowlist of valid TM path patterns instead of strict regex.
  * Returns { status, newUrl?, reason? } or null if no results to evaluate.
  */
-function matchTicketmasterFromResults(results, showTitle, existingUrl) {
+function matchTicketmasterFromResults(results, showTitle, existingUrl, show) {
   // Allowlist of valid Ticketmaster path patterns
   const validPaths = ['/event/', '/artist/', '/venue/', '/tickets/'];
 
   for (const r of results) {
     const url = r.url || r.link;
-    if (!url || !url.includes('ticketmaster.com')) continue;
+    if (!url || !(url.includes('ticketmaster.com') || url.includes('ticketmaster.co.uk'))) continue;
+    // Never adopt a storefront that cannot sell this show's market — this is
+    // how a-christmas-carol-west-end-2026 (Old Vic) kept getting the US
+    // "A Christmas Carol (NY)" artist page: the .com-only domain filter above
+    // couldn't even see the verified .co.uk link, and a half-title SERP match
+    // replaced it (task #1002 class; gate: scripts/tests/tm-gap-links.test.mjs).
+    if (show && isRegionMismatch(url, show)) continue;
     // Must match at least one valid path pattern
     if (!validPaths.some(p => url.includes(p))) continue;
     // Reject search/listing/category pages
@@ -115,7 +122,9 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl) {
     });
 
     if (matched) {
-      const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
+      const cleanUrl = url.replace(/^http:/, 'https:')
+        .replace('://ticketmaster.com', '://www.ticketmaster.com')
+        .replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
       if (cleanUrl === existingUrl) {
         return { status: 'ok' };
       }
@@ -128,8 +137,14 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl) {
 
 // SERP functions removed — using shared serpQuery from url-discovery.js
 
-async function serpVerifyTicketmaster(showTitle, existingUrl) {
-  const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
+async function serpVerifyTicketmaster(show, existingUrl) {
+  const showTitle = show.title;
+  // Search the storefront that can actually sell this market: a UK show
+  // queried as `site:ticketmaster.com ... broadway` can ONLY return
+  // wrong-region results (the original clobber vector).
+  const query = showRegion(show) === 'uk'
+    ? `site:ticketmaster.co.uk "${showTitle}" tickets`
+    : `site:ticketmaster.com "${showTitle}" broadway tickets`;
 
   const results = await serpQuery(query);
 
@@ -139,7 +154,7 @@ async function serpVerifyTicketmaster(showTitle, existingUrl) {
   }
 
   console.log(`    (${results.length} results)`);
-  const match = matchTicketmasterFromResults(results, showTitle, existingUrl);
+  const match = matchTicketmasterFromResults(results, showTitle, existingUrl, show);
   if (match) return match;
 
   return { status: 'not_found', reason: 'no matching SERP result' };
@@ -228,11 +243,19 @@ async function main() {
 
     // SERP re-verify
     console.log(`${show.id}: verifying via SERP...`);
-    const result = await serpVerifyTicketmaster(show.title, tmLink.url);
+    const result = await serpVerifyTicketmaster(show, tmLink.url);
 
     if (result.status === 'ok') {
       console.log(`  ✓ URL confirmed`);
     } else if (result.status === 'updated') {
+      // Defense-in-depth: the matcher already region-filters, but never let a
+      // future matcher edit write a cross-region storefront (tm-gap-links gate).
+      if (isRegionMismatch(result.newUrl, show)) {
+        console.log(`  ⚠ Rejected region-mismatched candidate: ${result.newUrl} (keeping existing URL)`);
+        stats.ticketmasterSkipped++;
+        await new Promise(r => setTimeout(r, 500));
+        continue;
+      }
       console.log(`  → Updated: ${result.newUrl}`);
       if (!DRY_RUN) tmLink.url = result.newUrl;
       stats.ticketmasterFixed++;
@@ -271,7 +294,13 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+// Exported for scripts/tests/fix-platform-ticket-links.test.mjs (CLAUDE.md §15:
+// tests require() the real decision function, never a copy).
+module.exports = { matchTicketmasterFromResults };
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}

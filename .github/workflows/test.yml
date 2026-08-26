@@ -1195,6 +1195,12 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Run-budget coverage guard (#425, extended BRO-109 for script->lib-helper
+      # budget-threading gaps). Colocated test registered in
+      # tests/unit-test-manifest.txt — root-level scripts/*.test.mjs is NOT
+      # covered by any broad glob, so this needs its own entry or a solo edit
+      # to the test gets zero CI.
+      - 'scripts/audit-run-budget-coverage.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -2592,11 +2598,13 @@ jobs:
         # sender in a file not in scripts/.alert-sender-baseline.json, or a
         # baselined file's per-file count growing (a count map, not a file
         # list — offsetting regressions inside an already-listed file must
-        # still fail). Baselined debt: opening-night-broadcast.yml +
-        # opening-night-poller.js are permanent real-time-critical senders
-        # (CLAUDE.md rule 14); audit-t1-silent-gaps.js drain is card #531;
-        # audit-opening-night-coverage.js drain is carded (see card body).
-        # Shrink the baseline as migrations land: --update-baseline.
+        # still fail). As of BRO-1699 the baseline is empty (0 direct
+        # senders) — opening-night-broadcast.yml + opening-night-poller.js,
+        # previously treated as permanent real-time-critical exceptions under
+        # CLAUDE.md rule 14, are now migrated onto the owner-alert-router
+        # helper; locked by scripts/tests/alert-sender-bypass.test.mjs.
+        # Shrink the baseline again as any future migration lands:
+        # --update-baseline.
         # NOTE: the step NAME deliberately avoids quoting the flagged pattern
         # verbatim — a name: line is not a YAML comment, so the scanner would
         # flag this very step as a phantom direct sender.

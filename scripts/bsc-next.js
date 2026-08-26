@@ -274,6 +274,28 @@ function linearOwned(tasks, mapping = {}) {
 // re-delivers a corrected card to an already-running session regardless of
 // ownership. That is pre-existing and arguably right (amend launches nothing),
 // but it is not "the guard always refuses an --id", so do not claim that.
+// BRO-271: `--id ""` (e.g. an empty shell var from a failed grep) parses to
+// the empty string, which is JS-falsy — pickTask()'s `if (opts.id)` guard
+// below then treats it as "no --id given" and silently falls through to the
+// default top-of-queue pick, a misdispatch onto whatever task happens to be
+// first (2026-07-24 incident: dispatched task #382, unrelated human-territory
+// work). A bare `--id` flag with no value parses to `opts.id === true`
+// (truthy) and a non-empty non-numeric value like `--id nope` is also
+// truthy — both already enter pickTask's id branch, match nothing, and
+// return null, which main()'s existing `if (!task)` already turns into an
+// exit-1 error (see the `pickTask --id selects that task even if completed`
+// test's `{ id: 'nope' } -> null` case). So this validator only needs to
+// close the empty-string gap; it's deliberately kept pure and called from
+// main() BEFORE pickTask() runs, rather than folded into pickTask() itself,
+// so pickTask's existing contract (and the tests pinning it) stay unchanged.
+function validateIdArg(opts) {
+  if (!('id' in opts) || opts.id === true) return null;
+  if (String(opts.id).trim() === '') {
+    return `--id was given an empty value — refusing to guess which task you meant (this used to silently dispatch the top of the queue instead).`;
+  }
+  return null;
+}
+
 function pickTask(tasks, opts, dir, mapping = {}) {
   if (opts.id) {
     const live = tasks.find(t => String(t.id) === String(opts.id));
@@ -937,6 +959,8 @@ function main(argv = process.argv.slice(2), deps = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
 
   const args = parseArgs(argv);
+  const idErr = validateIdArg(args);
+  if (idErr) { console.error(`[bsc-next] ${idErr}`); process.exit(1); }
   const tasks = loadTasksFn(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
@@ -1565,4 +1589,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };

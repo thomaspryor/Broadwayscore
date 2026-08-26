@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
+const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
 const { matchesTaskWorkBranch, findWorkBranchCollisions, workBranchCollisionGuard } = require('./lib/dispatch-guards.js');
@@ -126,6 +126,44 @@ test('pickTask --pick with no value (true) or non-numeric defaults to top task',
 test('pickTask --id selects that task even if completed', () => {
   assert.equal(pickTask(TASKS, { id: '3' }).id, '3');
   assert.equal(pickTask(TASKS, { id: 'nope' }), null);
+});
+
+// BRO-271: `--id ""` used to be JS-falsy and silently fall through to the
+// default top-of-queue pick instead of erroring (2026-07-24 misdispatch of
+// task #382 from an empty shell var). validateIdArg() closes that gap.
+test('validateIdArg: empty --id value is refused', () => {
+  assert.match(validateIdArg({ id: '' }), /empty value/);
+  assert.match(validateIdArg({ id: '   ' }), /empty value/);
+});
+
+test('validateIdArg: --id absent, bare flag, or a real value are all fine (unchanged behavior)', () => {
+  assert.equal(validateIdArg({}), null);           // no --id at all
+  assert.equal(validateIdArg({ id: true }), null); // bare --id flag, no value — already handled by pickTask -> null -> exit 1
+  assert.equal(validateIdArg({ id: '12' }), null);
+  assert.equal(validateIdArg({ id: 'nope' }), null); // non-numeric non-empty — already handled by pickTask -> null -> exit 1
+});
+
+test('main() exits 1 with an [bsc-next] error on --id "" instead of dispatching the top task', () => {
+  const calls = [];
+  const throwIfCalled = (name) => (...args) => { calls.push(name); throw new Error(`${name} should not run for an invalid --id`); };
+  let exitCode = null;
+  const origExit = process.exit;
+  const origError = console.error;
+  const errors = [];
+  process.exit = (code) => { exitCode = code; throw new Error('__exit__'); };
+  console.error = (msg) => errors.push(msg);
+  try {
+    assert.throws(() => main(['--id', ''], {
+      loadTasks: throwIfCalled('loadTasks'),
+      launchCmux: throwIfCalled('launchCmux'),
+    }), /__exit__/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.equal(calls.length, 0, 'must exit before ever loading tasks or launching');
+  assert.match(errors.join('\n'), /empty value/);
 });
 
 test('completedLaunchGuard blocks launching a completed task without --force', () => {

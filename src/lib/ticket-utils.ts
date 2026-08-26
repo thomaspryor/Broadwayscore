@@ -1,66 +1,28 @@
-// ─── Ticket link sorting ────────────────────────────────
-// Priority order for ticket platforms. Lower number = shown first.
-// Affiliate-enabled platforms get priority to maximize revenue.
-// TodayTix has highest coverage (185+ shows) and now has live affiliate tracking.
-// Official box office platforms (Telecharge, Ticketmaster) rank next,
-// then resale/secondary platforms.
-const TICKET_PLATFORM_PRIORITY: Record<string, number> = {
-  TodayTix: 1,
-  Telecharge: 2,
-  Ticketmaster: 2,
-  SeatPlan: 3,
-  StubHub: 3,
-  'Vivid Seats': 3,
-  SeatGeek: 3,
-  'London Theatre Direct': 3,
-};
+// ─── Ticket link rendering config ──────────────────────────
+// src/config/affiliate-platforms.json's "rendering" section is the single
+// source of truth for platform sort priority and visibility (unified with
+// the affiliate "platforms" section 2026-08-26 — see its _renderingComment
+// for field semantics and each platform's hiddenReason for why it's hidden).
+// Edit the JSON, not this file, when priority or hidden state change.
+import affiliatePlatforms from '@/config/affiliate-platforms.json';
 
-// ─── Hidden platforms ─────────────────────────────────────
-// Platforms in this set are stripped from all ticket-link rendering — the
-// URL stays in shows.json (so we can re-enable quickly) but no button is
-// shown on show cards, show pages, or anywhere sortTicketLinks() is called.
-//
-// StubHub hidden 2026-04-11: 56 clicks over 180 days, 0 conversions. Stale
-// performer IDs (now replaced with /search?q= fallback URLs) combined with
-// extra-click search-page friction means every StubHub click was opportunity
-// cost vs TodayTix's proven $0.614 EPC. Will re-enable when Partnerize/
-// StubHub approves API access for direct deep-link lookups.
-// See memory/feedback_stubhub_hidden.md for the decision rationale.
-//
-// Ticketmaster hidden 2026-06-29: 63 Impact-tracked clicks over 90 days,
-// 0 conversions (0 ever). NOT an attribution bug — program is Active and our
-// deep link matches Impact's official TrackingLink exactly; Impact records the
-// clicks (TodayTix click counts parity-match PostHog, confirming tracking works).
-// The 0 is real: Ticketmaster's program excludes/stand-downs the sales and the
-// fee-heavy checkout bounces users. Only renders on 11 evergreen shows, all of
-// which keep TodayTix + Official Site (whose marketing sites route to
-// Ticketmaster anyway), so no official buy path is lost. $0 earned, so hiding
-// it removes CTA clutter and may nudge clicks to revenue-producing TodayTix.
-//
-// Telecharge hidden 2026-07-19: no affiliate program exists (never in
-// AFFILIATE_CONFIG), so every click is unpaid opportunity cost vs TodayTix.
-// 25 shows carry the link; 24 also show TodayTix, and Shubert shows keep an
-// Official Site button whose marketing pages route to Telecharge anyway, so
-// no official buy path is lost. Only the-balusters-2026 (closed) had
-// Telecharge as its sole visible link. Same consolidation logic as the
-// Ticketmaster hide above.
-const HIDDEN_PLATFORMS: Set<string> = new Set([
-  'StubHub',
-  'Ticketmaster',
-  'Telecharge',
-]);
+interface PlatformRenderingConfig {
+  priority: number;
+  hidden?: boolean;
+  hiddenUnlessNoTodayTix?: boolean;
+  hiddenReason?: string;
+}
 
-// Ticketmaster un-hidden 2026-08-03 for the TodayTix-gap backfill (task #956):
-// the 2026-06-29 hide was scoped to 11 evergreen shows that ALL kept
-// TodayTix + Official Site — TM was pure redundancy there, hence 0
-// conversions. The ~52 shows with no TodayTix link at all are a different
-// population: TM is often the only real affiliate-tracked buy path they
-// have. getVisibleTicketLinks() now renders Ticketmaster whenever a show
-// has no TodayTix link, regardless of what else is present (Venue Box
-// Office / SeatPlan / OvationTix links don't carry affiliate tracking, so
-// they don't compete with TM for the same revenue). Ticketmaster stays
-// hidden as before on any show that DOES carry TodayTix.
-const HIDDEN_UNLESS_NO_TODAYTIX: Set<string> = new Set(['Ticketmaster']);
+const RENDERING_CONFIG: Record<string, PlatformRenderingConfig> =
+  affiliatePlatforms.rendering as Record<string, PlatformRenderingConfig>;
+
+const HIDDEN_PLATFORMS: Set<string> = new Set(
+  Object.entries(RENDERING_CONFIG).filter(([, cfg]) => cfg.hidden).map(([platform]) => platform)
+);
+
+const HIDDEN_UNLESS_NO_TODAYTIX: Set<string> = new Set(
+  Object.entries(RENDERING_CONFIG).filter(([, cfg]) => cfg.hiddenUnlessNoTodayTix).map(([platform]) => platform)
+);
 
 export interface TicketLinkData {
   platform: string;
@@ -106,7 +68,7 @@ export function sortTicketLinks(links: TicketLinkData[], overrideFirstPlatform?:
         if (a.platform === overrideFirstPlatform && b.platform !== overrideFirstPlatform) return -1;
         if (b.platform === overrideFirstPlatform && a.platform !== overrideFirstPlatform) return 1;
       }
-      return (TICKET_PLATFORM_PRIORITY[a.platform] ?? 99) - (TICKET_PLATFORM_PRIORITY[b.platform] ?? 99);
+      return (RENDERING_CONFIG[a.platform]?.priority ?? 99) - (RENDERING_CONFIG[b.platform]?.priority ?? 99);
     });
 }
 
