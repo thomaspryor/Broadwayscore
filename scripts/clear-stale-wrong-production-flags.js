@@ -32,10 +32,10 @@
  *
  * Surge guard (card #1610, 2026-08-19): refuses to clear more than
  * FIX_SURGE_THRESHOLD files in one run without --force-bulk. This flag is
- * scheduled weekly (clear-stale-wrong-production-flags.yml, currently
- * report-only pending a track record) and writes unattended to the private
- * review-texts corpus — a spike this size usually means the predicate or
- * the LLM verification regressed, not routine catch-up drift.
+ * scheduled weekly (clear-stale-wrong-production-flags.yml, card #1917,
+ * always --apply) and writes unattended to the private review-texts corpus —
+ * a spike this size usually means the predicate or the LLM verification
+ * regressed, not routine catch-up drift.
  */
 const fs = require('fs');
 const path = require('path');

@@ -1,0 +1,134 @@
+name: Clear Stale wrongProduction Flags
+
+# Scheduled cleanup for stale `wrongProduction` flags in data/review-texts/.
+# Background (card #1917, Notion 3c8637c5-416f-8124): scripts/clear-stale-wrong-production-flags.js
+# has existed since Notion 34e637c5-416f-811d (predicate + Sonnet high-confidence
+# second opinion) but was only ever run manually — once 2026-04-26 (175 cleared),
+# once 2026-08-19 (150 candidates, 76 LLM-confirmed, never applied). A dry-run on
+# 2026-08-26 found 79 stale-flagged files silently excluded from scoring. This
+# workflow closes that gap and keeps the backlog from reaccumulating.
+#
+# Replaces audit-stale-wrong-production.yml's report-only weekly sweep (same
+# script, same schedule slot family) now that this workflow does the real
+# apply — running both would double the weekly Sonnet-per-candidate spend on
+# the same corpus for no benefit.
+#
+# wrongProduction is a larger, riskier corpus than its wrongShow sibling
+# (~16k flagged, most CORRECTLY flagged — tours, regional tryouts, revivals,
+# cross-Atlantic transfers), so this always runs --llm (the script itself
+# refuses --apply without --llm — predicate alone is too weak) and is
+# surge-guarded (script refuses >50 clears without --force-bulk).
+on:
+  schedule:
+    # Weekly on Saturdays at 9 AM UTC (day after clear-wrong-show-blockers'
+    # Thursday 9 AM slot; Wed=misattribution, Thu=wrong-show-blockers,
+    # Sat=wrong-production — spreads the weekly review-texts cleanup writes
+    # across the week). review-refresh.yml already runs daily at 9 AM UTC and
+    # also writes review-texts; push-review-texts' rebase+retry handles the
+    # ordinary case, same latent exposure the existing siblings already carry.
+    - cron: '0 9 * * 6'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >50 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-stale-wrong-production-flags
+  cancel-in-progress: false
+
+jobs:
+  clear-stale:
+    name: Clear stale wrongProduction flags
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run sweep (report)
+        id: sweep
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm 2>&1)
+          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT" | tail -300
+          COUNT=$(echo "$OUT" | grep -oE 'APPLIED — cleared [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          WOULD=$(echo "$OUT" | grep -oE 'Would clear: [0-9]+' | head -1 | grep -oE '[0-9]+')
+          WOULD=${WOULD:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "would=$WOULD" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.sweep.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: auto-clear ${{ steps.sweep.outputs.count }} stale wrongProduction flags [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## wrongProduction Stale-Flag Sweep"
+            echo ""
+            echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
+            echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+            elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.sweep.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Stale wrongProduction Flags Failed'
+          severity: 'warning'
