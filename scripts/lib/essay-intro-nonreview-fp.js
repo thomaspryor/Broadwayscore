@@ -49,6 +49,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 // Types the gemini classifier assigns that are structurally close to "essay/
 // interview framing wrapped around a genuine review" — as opposed to content
 // that is definitively NOT a review no matter how it reads.
@@ -104,8 +106,7 @@ const MIN_WORD_COUNT = 400;
 const ENDING_WINDOW_FRACTION = 0.35;
 
 function normalizeForMatch(str) {
-  return String(str || '')
-    .toLowerCase()
+  return foldDiacritics(String(str || '').toLowerCase())
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
