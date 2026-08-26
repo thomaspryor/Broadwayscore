@@ -385,3 +385,157 @@ test('reverse: ISO timestamps do not shift the calendar day', () => {
   assert.equal(out.length, 1);
   assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
 });
+
+// --- Regressions found by the pre-ship QA pass ---
+
+test('reverse: a correction is idempotent — the next weekly run is a no-op', () => {
+  // The highest-value test in this file. Before the REVERSE_SOURCE guard, run 2
+  // saw a no-longer-collapsed show, applied the forward branch's 8-day default
+  // floor, and re-dated it onto a straggler wave — stamping the confirmed
+  // 'inferred-from-reviews', which made the wrong date permanent.
+  const show = {
+    id: 'we-reverse-idempotent-2025',
+    title: 'Twice Round',
+    slug: 'we-reverse-idempotent-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  const reviews = [
+    ...reviewsOn('we-reverse-idempotent-2025', '2025-11-12', 5),   // the press wave
+    ...reviewsOn('we-reverse-idempotent-2025', '2025-11-22', 3),   // stragglers, +10d
+  ];
+
+  const run1 = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(run1.length, 1);
+  assert.equal(run1[0].direction, 'reverse');
+  assert.equal(run1[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+
+  // Apply run 1 exactly as scripts/enrich-west-end-dates.js does.
+  const corrected = { ...show };
+  for (const ch of run1[0].changes) corrected[ch.field] = ch.new;
+  assert.equal(corrected.previewsStartDate, null);
+  assert.equal(corrected.openingDateSource, 'inferred-from-reviews-reverse');
+
+  const run2 = inferPressNightFromReviews({ candidateShows: [corrected], reviews, now: NOW });
+  assert.equal(run2.length, 0, 'only Phase 3 authoritative sources may revise a reverse inference');
+});
+
+test('reverse: an early stray does not drag the press night backwards', () => {
+  const show = {
+    id: 'we-reverse-stray-2025',
+    title: 'Early Bird',
+    slug: 'we-reverse-stray-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // One outlet jumps the gun 3 days early. Anchoring on the winning window's
+  // first day would emit 2025-11-09; the press night is the first day that
+  // carries ≥2 outlets.
+  const reviews = [
+    ...reviewsOn('we-reverse-stray-2025', '2025-11-09', 1),
+    ...reviewsOn('we-reverse-stray-2025', '2025-11-12', 15),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+});
+
+test('reverse: a wave smeared one-outlet-per-day is not a press night', () => {
+  const show = {
+    id: 'we-reverse-smear-2025',
+    title: 'Smeared',
+    slug: 'we-reverse-smear-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  const reviews = [
+    ...reviewsOn('we-reverse-smear-2025', '2025-11-10', 1),
+    ...reviewsOn('we-reverse-smear-2025', '2025-11-11', 1),
+    ...reviewsOn('we-reverse-smear-2025', '2025-11-12', 1),
+    ...reviewsOn('we-reverse-smear-2025', '2025-11-13', 1),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'no single day carried 2 outlets — that is background coverage');
+});
+
+test('reverse: reviews inside a declared tourLeg window are not evidence', () => {
+  const show = {
+    id: 'we-reverse-tourleg-2025',
+    title: 'On Tour',
+    slug: 'we-reverse-tourleg-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+    tourLegs: [{ startDate: '2025-10-01', endDate: '2025-10-31', venue: 'Regional Playhouse' }],
+  };
+  const reviews = reviewsOn('we-reverse-tourleg-2025', '2025-10-05', 8);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, "a tour leg's press wave is not this run's press night");
+});
+
+test('reverse: rows with a null publishDate are ignored', () => {
+  const show = {
+    id: 'we-reverse-nulldate-2025',
+    title: 'Undated',
+    slug: 'we-reverse-nulldate-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // 2,382 rows in reviews.json carry a null publishDate.
+  const reviews = [
+    ...reviewsOn('we-reverse-nulldate-2025', '2025-11-12', 4),
+    { showId: 'we-reverse-nulldate-2025', id: 'n1', publishDate: null, outlet: 'No Date A' },
+    { showId: 'we-reverse-nulldate-2025', id: 'n2', publishDate: undefined, outlet: 'No Date B' },
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 1, 'undated rows neither block nor feed the inference');
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+});
+
+test('reverse: a dominance tie still passes', () => {
+  const show = {
+    id: 'we-reverse-tie-2025',
+    title: 'Dead Heat',
+    slug: 'we-reverse-tie-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // 4 rows in the winning cluster, 4 on/after the stored date — the guard is
+  // `<`, so an exact tie is a correction, not a veto. The later wave sits at
+  // gap 1, inside the forward branch's collapsed floor, so forward declines it
+  // and control actually reaches the reverse dominance check.
+  const reviews = [
+    ...reviewsOn('we-reverse-tie-2025', '2025-11-12', 4),
+    ...reviewsOn('we-reverse-tie-2025', '2025-11-29', 4),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 1, 'tie goes to the correction');
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+});
+
+test('reverse: the default `now` is the real clock (no injection needed)', () => {
+  const show = {
+    id: 'we-reverse-defaultnow-2025',
+    title: 'Default Clock',
+    slug: 'we-reverse-defaultnow-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28', // safely in the past
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  const reviews = reviewsOn('we-reverse-defaultnow-2025', '2025-11-12', 5);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  assert.equal(out.length, 1, 'omitting `now` must not disable the branch');
+  assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+});

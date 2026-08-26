@@ -82,6 +82,13 @@ const REVERSE_MIN_GAP_DAYS = 2;
 // so the reverse wave has to be a genuine multi-outlet press night.
 const REVERSE_MIN_CLUSTER = 3;
 
+// Source stamp written by the reverse branch. It is on
+// date-source-confidence.js's ALWAYS_UNCONFIRMED list, but that is so an
+// AUTHORITATIVE source (Theatremonkey / Playbill, enrich-west-end-dates.js
+// Phase 3) can overwrite it — NOT so this heuristic can second-guess itself.
+// See the guard in the loop below.
+const REVERSE_SOURCE = 'inferred-from-reviews-reverse';
+
 // Widest gap we still treat as the same production's press wave (both
 // directions). Beyond this the reviews are almost certainly a prior run /
 // out-of-town tryout wrongly attached to this show entry, not a date bug.
@@ -150,6 +157,10 @@ function findEarliestCluster(sortedDates) {
  * the corpus does carry same-outlet duplicates (scripts/lib/merge-reviews-json.js
  * has dedicated same-identity dedup for exactly this reason).
  *
+ * The returned anchorIso is the earliest day INSIDE the winning window that
+ * carries ≥2 distinct outlets — not the window's first day, which is often a
+ * single early outlet (see the comment in the body).
+ *
  * @param {Array<{date:string, outlet:string}>} entries - ascending by date.
  * @returns {{anchorIso:string, anchorMs:number, clusterSize:number, rowCount:number}|null}
  */
@@ -157,19 +168,47 @@ function findDominantCluster(entries) {
   if (entries.length < 3) return null;
 
   let best = null;
-  for (const { date: anchorIso } of entries) {
-    const anchorMs = new Date(anchorIso).getTime();
+  for (const { date: windowStart } of entries) {
+    const startMs = new Date(windowStart).getTime();
     const inWindow = entries.filter(e => {
       const ms = new Date(e.date).getTime();
-      return ms >= anchorMs && ms <= anchorMs + 3 * DAY_MS;
+      return ms >= startMs && ms <= startMs + 3 * DAY_MS;
     });
     const outlets = new Set(inWindow.map(e => e.outlet)).size;
-    // `>=` so a tie resolves to the LATEST anchor (entries are ascending).
+    // `>=` so a tie resolves to the LATEST window (entries are ascending).
     if (!best || outlets >= best.clusterSize) {
-      best = { anchorIso, anchorMs, clusterSize: outlets, rowCount: inWindow.length };
+      best = { windowStart, inWindow, clusterSize: outlets, rowCount: inWindow.length };
     }
   }
-  return best;
+  if (!best) return null;
+
+  // The press night is NOT the window start. Adding an earlier stray to a
+  // window strictly increases its outlet count, so the winning window's first
+  // day is often a single outlet that published ahead of the wave — emitting it
+  // would drag the date up to 3 days early. Take the EARLIEST day inside the
+  // window that is itself a press signal: ≥2 distinct outlets on one day.
+  // (UK embargoes lift the evening of press night, so a handful publish that
+  // night and the bulk the next morning — the earliest qualifying day is press
+  // night, not the biggest day.)
+  const outletsByDay = new Map();
+  for (const e of best.inWindow) {
+    if (!outletsByDay.has(e.date)) outletsByDay.set(e.date, new Set());
+    outletsByDay.get(e.date).add(e.outlet);
+  }
+  const anchorIso = [...outletsByDay.entries()]
+    .filter(([, outlets]) => outlets.size >= 2)
+    .map(([day]) => day)
+    .sort()[0];
+  // No single day carried ≥2 outlets — a wave smeared 1-per-day is not a press
+  // night, it is background coverage.
+  if (!anchorIso) return null;
+
+  return {
+    anchorIso,
+    anchorMs: new Date(anchorIso).getTime(),
+    clusterSize: best.clusterSize,
+    rowCount: best.rowCount,
+  };
 }
 
 /**
@@ -221,6 +260,15 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     if (skipShowIds.has(show.id)) continue;
     if (!isUnconfirmedDateSource(show)) continue;
     if (!show.openingDate) continue;
+
+    // Never re-infer over our own reverse inference. A reverse-corrected show
+    // is no longer collapsed (previewsStartDate was cleared), so on the next
+    // weekly run the FORWARD branch would apply its 8-day default floor and
+    // re-date the show to any straggler wave ≥8 days after the inferred press
+    // night — stamping 'inferred-from-reviews', which is NOT on the unconfirmed
+    // list, making that wrong date permanent. Only Phase 3's authoritative
+    // sources may revise a reverse inference.
+    if (show.openingDateSource === REVERSE_SOURCE) continue;
 
     const openingMs = new Date(show.openingDate).getTime();
     if (Number.isNaN(openingMs)) continue;
@@ -318,9 +366,14 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // imprecise historical publishDates) that "some reviews exist before the
     // stored date" is not on its own sufficient evidence.
     const restOfBefore = beforeEntries.length - cluster.rowCount;
+    // Same priorRuns/tourLegs exemption as beforeEntries — an asymmetric
+    // denominator would inflate this side on touring shows and veto real
+    // corrections.
     const atOrAfterCount = showReviews
       .map(r => dayPrecisionDate(r.publishDate))
-      .filter(d => d && new Date(d).getTime() >= openingMs).length;
+      .filter(d => d && new Date(d).getTime() >= openingMs)
+      .filter(d => !isWithinPriorRun(d, show.priorRuns) && !isWithinTourLeg(d, show.tourLegs))
+      .length;
     if (cluster.rowCount < restOfBefore) continue;
     if (cluster.rowCount < atOrAfterCount) continue;
 
@@ -363,7 +416,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
       changes: [
         { field: 'previewsStartDate', old: show.previewsStartDate, new: null },
         { field: 'openingDate', old: show.openingDate, new: pressNightIso },
-        { field: 'openingDateSource', old: show.openingDateSource, new: 'inferred-from-reviews-reverse' },
+        { field: 'openingDateSource', old: show.openingDateSource, new: REVERSE_SOURCE },
       ],
     });
   }
@@ -377,6 +430,7 @@ module.exports = {
   COLLAPSED_MIN_GAP_DAYS,
   REVERSE_MIN_GAP_DAYS,
   REVERSE_MIN_CLUSTER,
+  REVERSE_SOURCE,
   MAX_GAP_DAYS,
   // Exported for tests / debug only — call sites use inferPressNightFromReviews.
   findEarliestCluster,
