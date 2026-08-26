@@ -190,7 +190,24 @@ function outcomeText(keptTitle) {
   );
 }
 
+// `list --include-notes` returns raw property previews capped at ~1800
+// chars (notion-brain.js's own documented overflow gotcha) — a RECHECK-AFTER
+// stamp or real writeup living past that cutoff would not show up there and
+// could slip an untouched-looking card past isUntouched(). `get` stitches
+// the full page-body overflow back in, so it is re-checked here, right
+// before the write, on just the handful of candidates instead of on all
+// ~2000 open cards (too slow to do universally).
+function fetchFullCard(id) {
+  const r = spawnSync('node', [NOTION_BRAIN, 'get', id], { encoding: 'utf8', timeout: NOTION_TIMEOUT_MS });
+  if (r.status !== 0) throw new Error(`notion-brain get ${id} failed: ${r.stderr || r.stdout}`);
+  return JSON.parse(r.stdout);
+}
+
 function closeCard(id, keptTitle, { dryRun }) {
+  const full = fetchFullCard(id);
+  if (!isUntouched(full)) {
+    return { id, status: 'skipped-on-full-recheck' };
+  }
   if (dryRun) return { id, status: 'dry-run' };
   const r = spawnSync(
     'node',
