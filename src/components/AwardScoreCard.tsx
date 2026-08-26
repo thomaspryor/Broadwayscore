@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { computeSiteAwardScore, categoryToMarket, classifyCategory } from '@/lib/awards-scoring';
 import type { ShowAwards } from '@/lib/data-types';
 import { ChevronIcon, PulitzerIcon, TrophyIconLine, StarIconLine } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
@@ -16,6 +16,11 @@ interface AwardScoreCardProps {
   showId: string;
   awards: ShowAwards | undefined;
   openingDate?: string;
+  /** Show's market category (show.category, e.g. 'west-end'). Selects which
+   *  Olivier weight table computeSiteAwardScore applies — West End shows use
+   *  the higher olivier_we table so their marquee award isn't under-scored
+   *  against the olivier_bway table sized for Broadway transfers. */
+  category?: string;
   /** Map of Tony category → [person names]. Computed server-side from
    *  data/tony-nominations.json. When present, the expanded Tony category
    *  list surfaces the performer/creative behind each category subtly inline
@@ -29,6 +34,26 @@ function toFullSeasonLabel(season: string): string {
   const endPart = parseInt(parts[1], 10);
   const fullEnd = endPart < 100 ? 2000 + endPart : endPart;
   return `${parts[0]}-${fullEnd}`;
+}
+
+// Tony-only: TONY_CATEGORY_ORDER/MAJOR_CATEGORIES in @/config/awards are
+// hardcoded Tony strings ("Best Musical", "Best Direction of a Musical")
+// that don't match Olivier's own naming ("Best New Musical", "Best
+// Director"), so sortByImportance/isMajorCategory silently treat every
+// Olivier category as unranked/minor. These two derive the same shape of
+// ranking from classifyCategory's ceremony-agnostic S/A+/A/B/C tiers
+// instead, so Olivier marquee wins get correct sort order + bold styling.
+const OLIVIER_TIER_RANK: Record<string, number> = { S: 0, 'A+': 1, A: 2, B: 3, C: 4 };
+function sortOlivierByImportance(items: string[]): string[] {
+  return [...items].sort((a, b) => {
+    const ra = OLIVIER_TIER_RANK[classifyCategory(a)?.tier ?? ''] ?? 999;
+    const rb = OLIVIER_TIER_RANK[classifyCategory(b)?.tier ?? ''] ?? 999;
+    return ra - rb;
+  });
+}
+function isMajorOlivierCategory(category: string): boolean {
+  const tier = classifyCategory(category)?.tier;
+  return tier === 'S' || tier === 'A+' || tier === 'A';
 }
 
 // "Best Direction of a Musical" → "Best Direction (Musical)" so mobile lines
@@ -47,15 +72,22 @@ function shortCategory(c: string): string {
 function buildSublabel(awards: ShowAwards | undefined, badge: string, inProgress: boolean): string {
   const tonyWins = sortByImportance(awards?.tony?.wins ?? []);
   const tonyNoms = sortByImportance(awards?.tony?.nominatedFor ?? []);
+  const olivierWins = sortOlivierByImportance(awards?.olivier?.wins ?? []);
+  const olivierNoms = sortOlivierByImportance(awards?.olivier?.nominatedFor ?? []);
   if (tonyWins.length > 0) {
     const top = shortCategory(tonyWins[0]);
     return tonyWins.length > 1 ? `Won ${top} + ${tonyWins.length - 1} more` : `Won ${top}`;
+  }
+  if (olivierWins.length > 0) {
+    const top = shortCategory(olivierWins[0]);
+    return olivierWins.length > 1 ? `Won ${top} + ${olivierWins.length - 1} more` : `Won ${top}`;
   }
   if (inProgress && tonyNoms.length > 0) {
     return `Nominated for ${shortCategory(tonyNoms[0])}`;
   }
   if (inProgress) return 'Awards season in progress';
   if (tonyNoms.length > 0) return `Nominated for ${shortCategory(tonyNoms[0])}`;
+  if (olivierNoms.length > 0) return `Nominated for ${shortCategory(olivierNoms[0])}`;
   if (badge === 'eligible') return 'Eligible for awards';
   return '';
 }
@@ -191,6 +223,95 @@ function TonyAwardsPanel({
       {/* Inline 'See {season} Tony predictions' link removed 2026-05-19 —
           the bottom-of-card 'See all award scores' link handles cross-page
           navigation; this duplicated and pulled focus off the data. */}
+    </div>
+  );
+}
+
+// Olivier Awards panel — West End's Tony equivalent, same rich treatment
+// (win/nom counts + expandable category list) as TonyAwardsPanel above, so
+// West End show pages don't fall back to the generic "Award Recognition"
+// list that other precursor ceremonies get.
+function OlivierAwardsPanel({
+  olivier,
+}: {
+  olivier: NonNullable<ShowAwards['olivier']>;
+}) {
+  const wins = olivier.wins ?? [];
+  const nominatedFor = olivier.nominatedFor ?? [];
+  const nominationsOnly = nominatedFor.filter(n => !wins.includes(n));
+  const totalCount = wins.length + nominationsOnly.length;
+  const [expanded, setExpanded] = useState(totalCount > 0 && totalCount <= 5);
+  const sortedWins = sortOlivierByImportance(wins);
+  const sortedNoms = sortOlivierByImportance(nominationsOnly);
+
+  return (
+    <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
+      <div className="mb-3">
+        <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+          Olivier Awards {olivier.season && `(${olivier.season})`}
+        </span>
+      </div>
+
+      <div className="flex items-center flex-wrap gap-x-3 gap-y-1.5 text-sm">
+        <div className="flex items-baseline gap-1.5">
+          <TrophyIconLine className="text-amber-400 self-center" />
+          <span className="text-white font-bold text-lg tabular-nums leading-none">{wins.length}</span>
+          <span className="text-gray-400">win{wins.length === 1 ? '' : 's'}</span>
+        </div>
+        {totalCount > 0 && (
+          <span className="text-gray-500">of</span>
+        )}
+        {totalCount > 0 && (
+          <div className="flex items-baseline gap-1.5">
+            <StarIconLine className="text-gray-400 self-center" />
+            <span className="text-white font-bold text-lg tabular-nums leading-none">{totalCount}</span>
+            <span className="text-gray-400">nom{totalCount === 1 ? '' : 's'}</span>
+          </div>
+        )}
+      </div>
+
+      {totalCount > 0 && (
+        <div className="border-t border-white/5 pt-3 mt-3">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="w-full flex items-center justify-between text-left group"
+            aria-expanded={expanded}
+          >
+            <span className="text-sm font-medium text-gray-300">
+              See all categories ({totalCount})
+            </span>
+            <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+          </button>
+          {expanded && (
+            <ul className="mt-3 space-y-2">
+              {sortedWins.map((cat, idx) => {
+                const major = isMajorOlivierCategory(cat);
+                return (
+                  <li key={`w-${idx}`} className="flex items-center gap-2 text-sm">
+                    <TrophyIconLine className="text-amber-400 flex-shrink-0" />
+                    <span className={`flex-1 ${major ? 'text-white font-medium' : 'text-amber-200'}`}>
+                      {cat}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-wide text-amber-400/70 font-semibold">Won</span>
+                  </li>
+                );
+              })}
+              {sortedNoms.map((cat, idx) => {
+                const major = isMajorOlivierCategory(cat);
+                return (
+                  <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
+                    <StarIconLine className="text-gray-500 flex-shrink-0" />
+                    <span className={`flex-1 ${major ? 'text-gray-300' : 'text-gray-500'}`}>
+                      {cat}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -334,8 +455,8 @@ function OtherAwardsPanel({
   );
 }
 
-export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesByCategory }: AwardScoreCardProps) {
-  const result = computeSiteAwardScore(showId, 'broadway');
+export default function AwardScoreCard({ showId, awards, openingDate, category, tonyNamesByCategory }: AwardScoreCardProps) {
+  const result = computeSiteAwardScore(showId, categoryToMarket(category));
 
   if (result.displayScore === 0 && !result.inProgress) {
     const openingMs = openingDate ? new Date(openingDate).getTime() : 0;
@@ -351,6 +472,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
   const sublabel = buildSublabel(awards, result.badge, result.inProgress);
 
   const hasTony = !!awards?.tony && ((awards.tony.wins?.length ?? 0) > 0 || (awards.tony.nominatedFor?.length ?? 0) > 0);
+  const hasOlivier = !!awards?.olivier && ((awards.olivier.wins?.length ?? 0) > 0 || (awards.olivier.nominatedFor?.length ?? 0) > 0 || (awards.olivier.nominations ?? 0) > 0);
 
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
 
@@ -359,8 +481,8 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       {/* Unified scorecard chrome — typography matches audience/critic/box-office/etc. */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="awards-scorecard-heading-v2" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
-        {awards?.tony?.season && (
-          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0 whitespace-nowrap">{awards.tony.season} season</span>
+        {(awards?.tony?.season || awards?.olivier?.season) && (
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0 whitespace-nowrap">{awards?.tony?.season ?? awards?.olivier?.season} season</span>
         )}
       </header>
 
@@ -397,13 +519,21 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
         <TonyAwardsPanel tony={awards.tony} inProgress={result.inProgress} tonyNamesByCategory={tonyNamesByCategory} />
       )}
 
+      {hasOlivier && awards?.olivier && (
+        <div className={hasTony ? 'mt-4' : ''}>
+          <OlivierAwardsPanel olivier={awards.olivier} />
+        </div>
+      )}
+
       {awards && <OtherAwardsPanel awards={awards} />}
 
       {(() => {
-        // Show breakdown fallback when the standard panels (Tony, OtherAwards) have nothing
-        // to display. OtherAwardsPanel covers Drama Desk/OCC/DramaLeague/NYDCC from shows.json —
-        // it silently renders nothing for Olivier/Obie/Lortel/etc. (OB/WE-specific ceremonies).
-        const hasStandardContent = awards?.tony || awards?.dramadesk || awards?.outerCriticsCircle
+        // Show breakdown fallback when the standard panels (Tony, Olivier,
+        // OtherAwards) have nothing to display. OtherAwardsPanel covers Drama
+        // Desk/OCC/DramaLeague/NYDCC from shows.json — it silently renders
+        // nothing for Obie/Lortel/etc. (OB-specific ceremonies not yet given
+        // their own panel).
+        const hasStandardContent = awards?.tony || awards?.olivier || awards?.dramadesk || awards?.outerCriticsCircle
           || awards?.dramaLeague || awards?.nyDramaCritics;
         if (hasStandardContent || result.breakdown.length === 0) return null;
         return (

@@ -161,6 +161,16 @@ jobs:
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: this MANAGED-file push is disqualified from the Git Data
+          # API fallback (see push-with-retry.sh), so under normal main-branch
+          # commit churn the default 240s deadline was self-aborting after
+          # only ~2 real fetch/rebase/push cycles (task #458's documented
+          # failure mode — "All push attempts failed after 7 attempts" was
+          # misleading; only 2 ever ran). Job has 45min timeout with ~20min
+          # headroom past this step; 600s is smaller than the 1200s override
+          # update-show-status.yml uses for the same root cause (that job has
+          # a much bigger timeout budget).
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git add data/commercial-pending-review.json data/recoupment-calibration-anchors.json 2>/dev/null || true
           bash scripts/lib/stage-data-changes.sh

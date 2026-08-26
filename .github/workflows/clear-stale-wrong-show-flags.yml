@@ -1,0 +1,134 @@
+name: Clear Stale wrongShow Flags
+
+# Scheduled cleanup for stale `wrongShow` flags in data/review-texts/.
+# Background (card #1909, Notion 3c8637c5-416f-81d6): scripts/clear-stale-wrong-show-flags.js
+# has existed since the Giant 2026-04-22 incident (LLM mis-rejected real
+# Broadway reviews because it knew "Giant the musical" from training and
+# called the play wrong-show) but was never scheduled. A manual dry-run on
+# 2026-08-26 found 66 stale-flagged files silently excluded from scoring —
+# this workflow closes that gap and keeps the backlog from reaccumulating.
+#
+# Unlike its siblings (clear-stale-suspected-misattribution-flags.yml runs
+# predicate-only, deterministically), this script's own docstring says the
+# predicate alone is only ~75% precision — an LLM second-opinion (Sonnet) is
+# required to reach ~95%+ before an unattended write. This workflow always
+# runs with --llm.
+#
+# Surge-guarded (script refuses >25 clears without --force-bulk) since this
+# writes unattended to the private review-texts corpus.
+on:
+  schedule:
+    # Weekly on Fridays at 9 AM UTC (day after clear-wrong-show-blockers'
+    # Thursday 9 AM slot, which is the day after clear-stale-suspected-
+    # misattribution-flags' Wednesday 9 AM slot — spreads the three weekly
+    # review-texts cleanup writes across three days). Note review-refresh.yml
+    # already runs daily at 9 AM UTC and also writes review-texts, so this
+    # slot isn't collision-free in an absolute sense — push-review-texts'
+    # rebase+retry handles the ordinary case, same latent exposure the two
+    # existing siblings already carry.
+    - cron: '0 9 * * 5'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >25 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-stale-wrong-show-flags
+  cancel-in-progress: false
+
+jobs:
+  clear-stale:
+    name: Clear stale wrongShow flags
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run sweep (report)
+        id: sweep
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm 2>&1)
+          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'APPLIED — cleared [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          WOULD=$(echo "$OUT" | grep -oE 'Would clear: [0-9]+' | head -1 | grep -oE '[0-9]+')
+          WOULD=${WOULD:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "would=$WOULD" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.sweep.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: auto-clear ${{ steps.sweep.outputs.count }} stale wrongShow flags [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## wrongShow Stale-Flag Sweep"
+            echo ""
+            echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
+            echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+            elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.sweep.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Stale wrongShow Flags Failed'
+          severity: 'warning'

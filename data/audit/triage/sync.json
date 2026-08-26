@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-08-19T14:07:12.819Z",
+  "lastChecked": "2026-08-24T07:46:40.491Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "42776 files, 19818 reviews (surplus: 22958)"
+      "message": "42658 files, 19941 reviews (surplus: 22717)"
     },
     {
       "name": "Sync: open show coverage",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "1 empty cast: Paranormal Activity"
+      "status": "pass",
+      "message": "26 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19818 vs baseline 19823"
+      "message": "Reviews dropped: 19941 vs baseline 20033"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 8/9/2026 (10d ago)"
+      "message": "weekEnding 8/16/2026 (8d ago)"
     }
   ]
 }

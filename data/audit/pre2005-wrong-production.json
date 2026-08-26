@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-21T07:14:57.686Z",
+    "generatedAt": "2026-08-26T20:11:21.337Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 82,
+    "totalFlagged": 84,
     "highConfidence": 6,
-    "mediumConfidence": 76,
+    "mediumConfidence": 78,
     "lowConfidence": 0,
     "reassignable": 35
   },
@@ -332,6 +332,7 @@
       "confidence": "medium",
       "suggestedShowId": "the-lion-king-west-end-2021",
       "signals": [
+        "publishDate 2012 is 15 years after original opening 1997",
         "year 1998 in text matches revival the-lion-king-west-end-2021"
       ],
       "textSnippet": "Director-designer Julie Taymor’s visionary reimagining of Disney’s animated movie is an expedition through gorgeous new terrain. The parts of the show involving comic relief remain tethered to a theme"
@@ -612,6 +613,7 @@
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
+        "publishDate 2014 is 26 years after original opening 1988",
         "modern references: twitter"
       ],
       "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $26\n Buy Tickets\n\nCititour.com Review\n The chandelier still swings over the audie"
@@ -630,6 +632,21 @@
         "publishDate 2015 is 27 years after original opening 1988"
       ],
       "textSnippet": "By Tulis McCall\n\nJames Barbour as The Phantom; credit Joan Marcus\n\nJoin me for a little jaunt down memory lane to a magical place that is alive and well. Andrew Lloyd Webber’s THE PHANTOM OF THE OPERA"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "nypost--clive-barnes.json",
+      "outlet": "New York Post",
+      "criticName": "Clive Barnes",
+      "publishDate": "February 4th, 2004",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2004 is 16 years after original opening 1988"
+      ],
+      "textSnippet": "Majestic Theater. 247 W. 44th St., (212) 239-6200. FOR a show that turned 16 last week, “The Phantom of the Opera” seems band- box fresh. Harold Prince’s powerful operatic-style staging is terrific, r"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -660,6 +677,21 @@
         "publishDate 2018 is 30 years after original opening 1988"
       ],
       "textSnippet": "Long ago, children, when I was an editor of Theatre Crafts Magazine, I interviewed the technical crew who were installing the massive scenery for The Phantom of the Opera at the Majestic Theatre. I re"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "nytimes--charles-isherwood.json",
+      "outlet": "The New York Times",
+      "criticName": "Charles Isherwood",
+      "publishDate": "August 17th, 2014",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2014 is 26 years after original opening 1988"
+      ],
+      "textSnippet": "https://www.nytimes.com/2014/08/18/theater/the-phantom-of-the-opera-retains-its-luster.htmlGive this articleAdvertisement\n\nIs there a truism more rarely true than the notion that absence makes the hea"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",

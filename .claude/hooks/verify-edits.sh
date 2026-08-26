@@ -59,7 +59,7 @@ fi
 export VE_LAST_MSG=$(echo "$input" | jq -r '.last_assistant_message // empty' 2>/dev/null)
 
 result=$(python3 - "$transcript" <<'PYEOF'
-import hashlib, json, sys, os
+import hashlib, json, sys, os, re, shlex
 
 CODE_EXTS = ('.js', '.ts', '.tsx', '.mjs', '.cjs', '.py', '.sh', '.rb', '.go')
 # Paths that don't need execution verification.
@@ -88,6 +88,105 @@ EXEMPT_SUBSTRINGS = (
 #   - .claude/plugins/**/*.{js,ts,sh,py} → same
 # Markdown skill files (.claude/commands/*.md, .claude/skills/**/*.md) are naturally
 # skipped because .md is not in CODE_EXTS — they're prompt templates, not code.
+
+# Strip heredoc bodies before scanning. Heredoc bodies are *data*, not
+# executed commands, so `cat > /tmp/test.jsonl << 'EOF' ... sed -i ...
+# data/review-texts/... ... EOF` is NOT an audit sweep — its actual side
+# effect is writing to /tmp/. Without this, hook self-tests and any other
+# heredoc that mentions both `sed -i` and `review-texts` in the body
+# falsely tripped the gate. Recurred 3x in a single session 2026-05-16.
+#
+# The open-tag regex requires EXACTLY two '<' via lookbehind/lookahead —
+# `<<<TAG` here-strings (a single token, no multi-line body at all) must NOT
+# be treated as a heredoc open. The prior version matched at a here-string's
+# second '<' and then DOTALL-greedily consumed forward to the next line that
+# happened to equal TAG, silently swallowing real command text — including a
+# genuine `sed -i .../review-texts/...` write — as fake heredoc body. Same
+# false-negative class fixed in stripHeredocBodies() in
+# scripts/lib/infra-review-scope.js (task #1557); ported here (task #1606).
+#
+# KNOWN GAP (pre-existing, unchanged by task #1606 — /ship-check adversarial
+# review 2026-08-15): this is a regex heuristic, not a shell parser. It does
+# not track quoting, comments, or arithmetic-expansion context, so `<<TAG`
+# text inside a single-quoted string (e.g. `printf '%s' '<<EOF'`) or a
+# `(( x << EOF ))` arithmetic shift can still be misread as a heredoc open,
+# and text following it stripped as fake body. Confirmed this predates task
+# #1606 (the pre-fix regex had the identical blind spot) and is shared by the
+# JS reference (scripts/lib/infra-review-scope.js) this was ported from — not
+# a regression here. A real fix needs a shell tokenizer; per that file's own
+# KNOWN_GAPS list, documenting is cheaper than chasing until this is observed
+# to matter in practice, and the push-time gate (pre-push-review-gate.sh)
+# still sees the resulting diff either way.
+#
+# Hoisted here (2026-08-25, wrap-up-gate redesign) from its original spot
+# further down near the audit-sweep detector — the wrap-up-close-out check
+# below now also depends on it, and needs it defined before that gate's
+# `try:` block executes (top-level Python heredoc statements run in file
+# order; a forward reference would NameError and silently fail the gate open
+# via its except-Exception, the exact class of bug that already bit the two
+# gates added earlier today via a late `import re`).
+_heredoc_open_re = re.compile(
+    r"(?<!<)<<(?!<)(-)?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_.-]*)\2"
+)
+def _strip_heredocs(cmd: str) -> str:
+    if '<<' not in cmd:
+        return cmd
+    lines = cmd.split('\n')
+    out = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        out.append(lines[i])
+        i += 1
+        tags = [(m.group(3), bool(m.group(1))) for m in _heredoc_open_re.finditer(lines[i - 1])]
+        for tag, dashed in tags:
+            # Plain `<<TAG` requires the line to be EXACTLY the tag (no
+            # trim()); `<<-TAG` additionally permits leading TABS (not
+            # spaces) before the tag. A body line that merely trims down to
+            # the tag text must not end the strip early.
+            while i < n and (lines[i].lstrip('\t') if dashed else lines[i]) != tag:
+                i += 1
+            if i >= n:
+                break  # unterminated — nothing left to strip precisely
+            i += 1  # drop the terminator line, continue with the next tag's body
+    return '\n'.join(out)
+
+# Extracts the --status value from a `notion-brain.js update` Bash command,
+# or None if this command isn't one. Used by the wrap-up-close-out gate below
+# to require concrete evidence a session's Notion card was actually closed
+# out (Done/Paused), not just that a Skill tool_use named 'wrap-up' appeared
+# somewhere (found insufficient — a plan /second-opinion review, 2026-08-25,
+# showed a bare regex `.*--status[= ]+"?(done|paused)"?` search across the
+# raw command string is exploitable: this repo's own docs/session text
+# routinely quotes the literal example `--status Done` INSIDE a --outcome/
+# --notes argument's prose value, e.g. `--outcome "...documented as e.g.
+# \`notion-brain.js update <id> --status Done\`..."` — a session (very
+# plausibly one editing this exact gate) could satisfy a whole-string regex
+# on quoted example text with a real --status of "In progress". Tokenizing
+# with shlex closes this: a quoted --outcome/--notes value collapses to ONE
+# token, so text "--status Done" embedded inside it is part of that token's
+# string content, never two separate top-level `--status`/`Done` tokens —
+# only a REAL, unquoted `--status` flag can ever match `tok == '--status'`
+# below. Heredoc-stripping runs first because shlex can't parse unbalanced
+# quotes inside heredoc-wrapped prose (this repo's own convention for long
+# --outcome/--notes values, per CLAUDE.md's heredoc commit-message rule) —
+# without it, shlex.split would raise on essentially every real invocation.
+def _notion_closeout_status(cmd):
+    if not cmd or 'notion-brain.js' not in cmd or 'update' not in cmd:
+        return None
+    stripped = _strip_heredocs(cmd)
+    try:
+        tokens = shlex.split(stripped)
+    except ValueError:
+        return None  # unparseable quoting — treat as no match, don't crash the gate
+    if not any(t.endswith('notion-brain.js') for t in tokens) or 'update' not in tokens:
+        return None
+    for i, tok in enumerate(tokens):
+        if tok == '--status' and i + 1 < len(tokens):
+            return tokens[i + 1].strip().lower()
+        if tok.startswith('--status='):
+            return tok.split('=', 1)[1].strip().lower()
+    return None
 
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
@@ -173,6 +272,211 @@ for i in range(len(events) - 1, -1, -1):
         last_edit_idx = i
         last_edit_file = fp
 
+# ─── Session status-line gate (added 2026-08-23) ─────────────────────────────
+# The local ~/.claude/hooks/exit-status-gate.sh enforces a "SAFE TO EXIT" /
+# "NOT SAFE TO EXIT" closing line (and refuses the SAFE claim when a DECISION
+# NEEDED block is still pending) — see .claude/commands/wrap-up.md. It is a
+# user-level hook that was never ported to cloud (named in CLOUD.md's list of
+# "12 other user-level hooks [that] DO NOT fire in cloud"), so cloud/iOS
+# sessions had zero enforcement of it — root cause of 8 iOS sessions in one
+# day never saying whether it was safe to end the conversation, and punting
+# decisions back to a non-technical owner instead of making the call.
+#
+# This is a deliberately smaller reimplementation, NOT a full port: the real
+# hook also runs Gate W/T (workspace/task-ref resolution against the local
+# ~/.claude/tasks store, which this sandbox doesn't have — see
+# scripts/lib/exit-status-gate-taskref.test.mjs for what that covers). Only
+# the two checks that explain today's actual failures are implemented here.
+#
+# Scope: only fires once the session did something worth reporting on (a
+# qualifying code edit, a push/commit, or a GitHub MCP write) — never gates
+# an ordinary conversational turn. Kill switch: SESSION_STATUS_GATE_DISABLE=1.
+if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
+    try:
+        did_substantial_work = total_qualifying_edits > 0
+        if not did_substantial_work:
+            for _kind, _payload in events:
+                if _kind != 'tool':
+                    continue
+                _name, _inp, _tid = _payload
+                if _name in (
+                    'mcp__github__create_pull_request',
+                    'mcp__github__merge_pull_request',
+                    'mcp__github__push_files',
+                    'mcp__github__create_or_update_file',
+                ):
+                    did_substantial_work = True
+                    break
+                if _name == 'Bash':
+                    _cmd = _inp.get('command') or ''
+                    if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
+                        did_substantial_work = True
+                        break
+        # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
+        # adversarial review, task a7d9c07f) — a turn whose last action is a tool call
+        # with no closing text has _last_msg == '' and genuinely has no status line.
+        # Treating empty as "skip" would silently defeat the whole gate on exactly the
+        # turn shape (tool-call-only ending) most likely to skip a wrap-up in practice.
+        if did_substantial_work and 'NO-VERIFY:' not in (_last_msg or ''):
+            _stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+            _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
+            # wrap-up.md's own SESSION STATUS block puts a decorative divider
+            # rule AFTER the status line ("must be the last content line (the
+            # closing rule is fine)") — drop trailing divider-only lines so a
+            # correctly-formatted wrap-up isn't misread as having no status line.
+            _divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+            while _content_lines and _divider_re.match(_content_lines[-1]):
+                _content_lines.pop()
+            _last_line = _content_lines[-1] if _content_lines else ''
+            _has_status_line = bool(re.match(r'^(NOT )?SAFE TO EXIT\b', _last_line))
+            _claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _last_line))
+            # Line-anchored + colon-suffixed to match the canonical template
+            # token exactly (wrap-up.md's "DECISION NEEDED:" block header) —
+            # a bare substring match wrongly tripped on prose like "there's no
+            # DECISION NEEDED here" (ship-check adversarial review).
+            _has_decision_needed = bool(re.search(r'^DECISION NEEDED:', _stripped, re.MULTILINE))
+            if not _has_status_line:
+                print("NOSTATUSLINE")
+                sys.exit(0)
+            if _has_decision_needed and _claims_safe:
+                print("FALSESAFE")
+                sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── PR follow-through gate (added 2026-08-23) ───────────────────────────────
+# Cloud sessions have no `gh` CLI (see .claude/CLOUD.md) and create/merge PRs
+# via the GitHub MCP connector (mcp__github__create_pull_request /
+# mcp__github__merge_pull_request) — tool names none of pre-push-review-gate.sh
+# / pre-merge-review-gate.sh (matcher: "Bash" only) ever see. This project's
+# own memory rule is explicit that the owner does not review PRs
+# (cloud-memory/feedback_no_review_offers_user_not_technical.md, 2026-08-22
+# addendum: "once a PR's own CI is green ... mark it ready and merge it
+# yourself ... A draft PR sitting untouched is the same failure as asking
+# should I commit or do you want to review"). Nothing enforced that before
+# this. Kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1.
+if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
+    try:
+        _opened_pr = False
+        _merged_pr = False
+        for _kind, _payload in events:
+            if _kind != 'tool':
+                continue
+            _name, _inp, _tid = _payload
+            if _name == 'mcp__github__create_pull_request':
+                _opened_pr = True
+            elif _name == 'mcp__github__merge_pull_request':
+                _merged_pr = True
+        if _opened_pr and not _merged_pr and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            # Strip fences here too (ship-check adversarial review found this
+            # asymmetric with the status gate above) — a quoted example
+            # containing blocker-shaped text must not satisfy the check.
+            # Bare "blocked" dropped in favor of "blocked on" — too generic on
+            # its own (matched unrelated "the cron is blocked on rate limits").
+            _pr_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
+            _blocker_re = re.compile(
+                r'\b(CI(\s+is)?\s+red|merge conflict|blocked on|DECISION NEEDED:|NOT SAFE TO EXIT|draft (by design|pending))\b',
+                re.IGNORECASE,
+            )
+            if not _blocker_re.search(_pr_stripped):
+                print("PRUNMERGED")
+                sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Wrap-up-close-out gate (added 2026-08-25, redesigned same day) ──────────
+# Real-world evidence: a session's final message read "SAFE TO EXIT — fix
+# confirmed live in production, nothing outstanding" — a perfectly formatted
+# status line — but when directly asked "did you run /wrap-up and /what-else?"
+# the session admitted it had run neither. The session-status-line gate above
+# only checks the LINE'S TEXT SHAPE; it has no way to know whether the
+# mandatory close-out skill actually ran.
+#
+# v1 of this gate (shipped same day, PR #708) checked for a `Skill` tool_use
+# with skill=='wrap-up' after the last substantial-work event. The owner
+# rejected that as too weak: invoking the skill only loads its instructions
+# into context — it doesn't verify the session actually DID anything wrap-up
+# mandates, so a token Skill call would satisfy the gate while changing
+# nothing about the real failure mode (the evidence session never touched
+# Notion). Redesigned to check for the concrete ARTIFACT wrap-up.md's Phase 4
+# requires instead of the tool-name gesture: this session's Notion tracking
+# card actually set to Done or Paused via `notion-brain.js update` — the one
+# phase CLAUDE.md §6 independently mandates for every session regardless of
+# size ("Session end: ... -> Done/Paused"), unlike /what-else (Phase 2, which
+# Quick sessions skip) or the async-op check (Phase 3, not tractable to infer
+# from a transcript without false positives — both deliberately out of scope
+# for this gate; see PR description). Satisfying this check IS the required
+# outcome, not a proxy for it — it can't be gamed by going through empty
+# motions the way a bare Skill call can.
+#
+# Detection is position-aware (mirrors the ship-check gate's scan_start
+# convention: the close-out must appear STRICTLY AFTER the last
+# substantial-work event, so an early close-out can't cover later, uncovered
+# work — /second-opinion review, task adae199b, found this exact gaming path
+# in the first "anywhere in session" draft) and tokenizes the Bash command
+# with shlex rather than regex-searching the raw string (a second
+# /second-opinion review of THIS redesign found the naive regex exploitable:
+# this repo's own docs/commit conventions routinely quote the literal example
+# `--status Done` INSIDE an unrelated --outcome/--notes argument's prose, and
+# a whole-string regex can't tell that from a real flag — see
+# _notion_closeout_status()'s comment near the top of this script for the
+# fix). Deliberately a separate, self-contained block (not nested in the
+# session-status-line gate above, and NOT reusing its locals) so
+# SESSION_STATUS_GATE_DISABLE can't accidentally also disable this gate via a
+# NameError-then-fail-open path. Kill switch: WRAPUP_GATE_DISABLE=1 (kept
+# from v1 — same gate, stronger check).
+if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
+    try:
+        _last_work_idx = None
+        for _i, (_kind, _payload) in enumerate(events):
+            if _kind != 'tool':
+                continue
+            _name, _inp, _tid = _payload
+            _is_work = False
+            if _name in ('Edit', 'Write', 'NotebookEdit'):
+                _fp = _inp.get('file_path', '') or ''
+                if _fp.endswith(CODE_EXTS) and not any(s in _fp for s in EXEMPT_SUBSTRINGS):
+                    _is_work = True
+            elif _name in (
+                'mcp__github__create_pull_request',
+                'mcp__github__merge_pull_request',
+                'mcp__github__push_files',
+                'mcp__github__create_or_update_file',
+            ):
+                _is_work = True
+            elif _name == 'Bash':
+                _cmd = _inp.get('command') or ''
+                if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
+                    _is_work = True
+            if _is_work:
+                _last_work_idx = _i
+
+        if _last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            _wu_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
+            _wu_lines = [ln.strip() for ln in _wu_stripped.strip().splitlines() if ln.strip()]
+            _wu_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+            while _wu_lines and _wu_divider_re.match(_wu_lines[-1]):
+                _wu_lines.pop()
+            _wu_last_line = _wu_lines[-1] if _wu_lines else ''
+            _wu_claims_safe = bool(re.match(r'^SAFE TO EXIT\b', _wu_last_line))
+            if _wu_claims_safe:
+                _wrapup_closed_out = False
+                for _i2 in range(_last_work_idx + 1, len(events)):
+                    _kind2, _payload2 = events[_i2]
+                    if _kind2 != 'tool':
+                        continue
+                    _name2, _inp2, _tid2 = _payload2
+                    if _name2 == 'Bash':
+                        _status_val = _notion_closeout_status(_inp2.get('command') or '')
+                        if _status_val in ('done', 'paused'):
+                            _wrapup_closed_out = True
+                            break
+                if not _wrapup_closed_out:
+                    print("NOWRAPUP")
+                    sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
 # Detect audit sweeps: sessions that edit data/review-texts/ flag fields via Bash
 # (not Edit tool). These bypass the is_scoring_edit gate because last_edit_file never
 # matches SCORING_LOGIC_SUBSTRINGS. Detect by presence of 'review-texts' in any Bash cmd.
@@ -181,61 +485,11 @@ for i in range(len(events) - 1, -1, -1):
 # git log string) is NOT a sweep — those tripped this flag for the entire session
 # and slapped the scoring-delta gate onto every unrelated edit. Require both:
 # the path appears AND a write primitive appears in the same command.
-import re
-
-# Strip heredoc bodies before scanning. Heredoc bodies are *data*, not
-# executed commands, so `cat > /tmp/test.jsonl << 'EOF' ... sed -i ...
-# data/review-texts/... ... EOF` is NOT an audit sweep — its actual side
-# effect is writing to /tmp/. Without this, hook self-tests and any other
-# heredoc that mentions both `sed -i` and `review-texts` in the body
-# falsely tripped the gate. Recurred 3x in a single session 2026-05-16.
 #
-# The open-tag regex requires EXACTLY two '<' via lookbehind/lookahead —
-# `<<<TAG` here-strings (a single token, no multi-line body at all) must NOT
-# be treated as a heredoc open. The prior version matched at a here-string's
-# second '<' and then DOTALL-greedily consumed forward to the next line that
-# happened to equal TAG, silently swallowing real command text — including a
-# genuine `sed -i .../review-texts/...` write — as fake heredoc body. Same
-# false-negative class fixed in stripHeredocBodies() in
-# scripts/lib/infra-review-scope.js (task #1557); ported here (task #1606).
-#
-# KNOWN GAP (pre-existing, unchanged by task #1606 — /ship-check adversarial
-# review 2026-08-15): this is a regex heuristic, not a shell parser. It does
-# not track quoting, comments, or arithmetic-expansion context, so `<<TAG`
-# text inside a single-quoted string (e.g. `printf '%s' '<<EOF'`) or a
-# `(( x << EOF ))` arithmetic shift can still be misread as a heredoc open,
-# and text following it stripped as fake body. Confirmed this predates task
-# #1606 (the pre-fix regex had the identical blind spot) and is shared by the
-# JS reference (scripts/lib/infra-review-scope.js) this was ported from — not
-# a regression here. A real fix needs a shell tokenizer; per that file's own
-# KNOWN_GAPS list, documenting is cheaper than chasing until this is observed
-# to matter in practice, and the push-time gate (pre-push-review-gate.sh)
-# still sees the resulting diff either way.
-_heredoc_open_re = re.compile(
-    r"(?<!<)<<(?!<)(-)?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_.-]*)\2"
-)
-def _strip_heredocs(cmd: str) -> str:
-    if '<<' not in cmd:
-        return cmd
-    lines = cmd.split('\n')
-    out = []
-    i = 0
-    n = len(lines)
-    while i < n:
-        out.append(lines[i])
-        i += 1
-        tags = [(m.group(3), bool(m.group(1))) for m in _heredoc_open_re.finditer(lines[i - 1])]
-        for tag, dashed in tags:
-            # Plain `<<TAG` requires the line to be EXACTLY the tag (no
-            # trim()); `<<-TAG` additionally permits leading TABS (not
-            # spaces) before the tag. A body line that merely trims down to
-            # the tag text must not end the strip early.
-            while i < n and (lines[i].lstrip('\t') if dashed else lines[i]) != tag:
-                i += 1
-            if i >= n:
-                break  # unterminated — nothing left to strip precisely
-            i += 1  # drop the terminator line, continue with the next tag's body
-    return '\n'.join(out)
+# The heredoc-body-stripping helper used below is now defined near the top
+# of the script (hoisted 2026-08-25 so the wrap-up-close-out gate can also
+# use it before this point in the file executes) — see that definition's
+# comment for the stripping rationale and known gaps.
 
 # Each alternation requires BOTH the write primitive AND the review-texts path
 # to be locally adjacent in the same statement. Bare `sed -i` is no longer
@@ -1013,6 +1267,26 @@ fi
 if [[ "$result" == UNSHIPCHECKED:* ]]; then
   fname="${result#UNSHIPCHECKED:}"
   echo "🛑 BLOCKED: edit to \`${fname}\` (scripts/lib/ or .github/workflows/) without ship-check. Satisfy via /ship-check, codex exec, GPT-4o curl, or Agent with 'review'/'audit' in description. Bypass: NO-VERIFY: <why this can't break anything>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOSTATUSLINE" ]]; then
+  echo "🛑 BLOCKED: session did real work (edit/commit/push/PR) but the final message has no closing SAFE TO EXIT / NOT SAFE TO EXIT line. Close with the SESSION STATUS block per .claude/commands/wrap-up.md. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "FALSESAFE" ]]; then
+  echo "🛑 BLOCKED: message has a DECISION NEEDED block but claims SAFE TO EXIT — a pending decision is always NOT SAFE TO EXIT. If it's a technical/implementation call, decide it yourself instead (cloud-memory/feedback_decide_technical_calls_myself.md) rather than asking. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "PRUNMERGED" ]]; then
+  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never merged, with no stated blocker. This project's owner does not review PRs — merge it yourself once CI is green, or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOWRAPUP" ]]; then
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after doing real work, but no evidence this session's Notion card was actually closed out (a 'node scripts/notion-brain.js update ... --status Done' or '--status Paused' call after that work). Run /wrap-up for real — a well-formatted status line, or even having invoked the /wrap-up skill, is not proof its mandatory Notion close-out (CLAUDE.md §6) actually happened. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

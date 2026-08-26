@@ -70,6 +70,8 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
    You can READ this repository — use Read/Grep on the actual files the plan touches. Generic advice is failure; every finding must cite a specific file:line or pattern from the codebase.
 
+   Do NOT run `npm run data:check`, `npm install`, `setup-local-data.sh`, or any other setup/preflight command — this is a pure read-only critique of the plan below, no show/review data is needed, and worktree sessions do not have the full local data clone available. If CLAUDE.md's session-start convention would normally tell you to run a data-check preflight, that convention does not apply here: read the plan and the repository files directly and critique them.
+
    **PRODUCTION LENS** — Find what will fail:
    1. What will fail in production? (deployments, data corruption, partial failures, rollback gaps)
    2. Security vulnerabilities (injection, leaked secrets, unsanitized input)

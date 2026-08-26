@@ -52,7 +52,21 @@ concurrency:
 jobs:
   broadcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15->20 (card #1910 audit, 2026-08-26): raising this job's 2 hard-fail
+    # push steps to 300s/14-retries each (from the shared 240s/7-retries
+    # default) pushed the summed worst-case push budget (300+300+240=840s)
+    # to only 6.7% margin against the old 900s timeout. 20min (1200s) clears
+    # the 15% margin threshold with real headroom.
+    # 20->24 (BRO-2435, 2026-08-26): splitting "Commit orphan-rescore-requeue
+    # state" into two independent push-with-retry.sh calls (one per file, so
+    # the single-writer orphan-rescore-requeue-state.json alone qualifies for
+    # the Git Data API fallback — see that step's own comment) added a THIRD
+    # 300s/14-retries push call site to this job's worst case
+    # (300+300+300+240=1140s), pushing margin back under the 15% floor
+    # (60s/5% at 20min). `node scripts/audit-push-retry-budgets.js` confirmed
+    # the regression and confirms 24min (1440s, margin 300s/20.8%) clears it
+    # again — re-run that script before changing any of these numbers.
+    timeout-minutes: 24
     # Skip if triggered by a failed scoring run
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
@@ -546,12 +560,12 @@ jobs:
             echo "blocked=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit orphan-rescore-requeue state (early — before the job's 15-min budget can time out)
+      - name: Commit orphan-rescore-requeue state (early — before the job's 24-min budget can time out)
         # Writes Before Pushes (.github/workflows/CLAUDE.md): the "Commit data"
         # step near the end of this job only runs on success/always(), which
         # does NOT fire on cancellation — and this job runs consensus
         # generation (Claude calls) + broadcast send after this point, well
-        # within reach of the 15-min job timeout on a multi-show day. A
+        # within reach of the 24-min job timeout on a multi-show day. A
         # cancellation between here and the late commit would silently lose
         # the attempt/alert-ledger state this self-heal depends on, resetting
         # the 2-attempt/24h budget and re-arming an alert that already fired
@@ -559,17 +573,64 @@ jobs:
         # Committing right after the state is written removes that window;
         # the late "Commit data" step re-stages the same paths as a no-op
         # defense-in-depth if nothing changed since.
+        #
+        # BRO-2435 (2026-08-26): this step was hard-failing on EVERY run
+        # (push-retry "retries-exhausted" on this genuinely single-writer
+        # file bundled with the 19-writer alert-ledger.json), which skipped
+        # every later step including "Create broadcast draft" — the entire
+        # point of a scheduled run. Split into two independent commit+push
+        # steps below so orphan-rescore-requeue-state.json (this repo's ONLY
+        # writer — grepped across every .github/workflows/*.yml) can use
+        # push-with-retry.sh's Git Data API fallback (registered
+        # apiFallbackSafe in scripts/lib/core-data-merge-registry.js); the
+        # genuinely multi-writer alert-ledger.json stays on the slow local
+        # fetch+rebase+push path, unblocked from this one's failures.
+        # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+        # 2026-08-26): was on the bare shared default (7 retries/240s,
+        # backoffSum 77s, ratio 0.32) — this and "Commit data" below are the
+        # only genuinely hard-fail push steps in this 24-min job (the
+        # other, "Record indexing quota usage", is already `|| echo`-
+        # wrapped). Sized smaller than the 20/600s pairing used elsewhere in
+        # this audit because these hard-fail steps share this job's tight
+        # 24-min budget — see the timeout-minutes comment below for the
+        # combined math. `node scripts/audit-push-retry-budgets.js` reports
+        # no flags on either step at this sizing (ratio 0.84, well inside
+        # margin) — re-confirm with that script before changing these numbers.
         if: steps.check.outputs.pending_shows != ''
+        env:
+          PUSH_DEADLINE_SEC: '300'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json data/audit/alert-ledger.json
+
+          # ship-check/Codex adversarial finding (2026-08-26): GitHub Actions
+          # runs `run:` blocks as `bash -e`, so a bare push-with-retry.sh call
+          # that exits 1 would terminate this script immediately — the SECOND
+          # file's commit+push below would never even run. `|| STATUS=1`
+          # keeps each push independent (matching the whole point of the
+          # split: one file's failure must not block the other's) while
+          # `exit $STATUS` at the end still surfaces a real failure — this
+          # step must stay hard-fail-capable per the "writes before pushes"
+          # rationale above, not become silently non-fatal.
+          STATUS=0
+
+          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json
           if git diff --cached --quiet; then
-            echo "No orphan-rescore-requeue state changes to commit"
-            exit 0
+            echo "No orphan-rescore-requeue-state.json changes to commit"
+          else
+            git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
           fi
-          git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
-          bash scripts/lib/push-with-retry.sh
+
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json
+          if git diff --cached --quiet; then
+            echo "No alert-ledger.json changes to commit"
+          else
+            git commit -m "chore: Update alert-ledger state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+
+          exit $STATUS
 
       - name: Sync subscribers (Formspree → local)
         if: steps.check.outputs.pending_shows != ''
@@ -739,7 +800,7 @@ jobs:
           # Alert if a show's opening-night reviews should exist by now but broadcast hasn't sent.
           # Reference: 4 AM UTC day after opening (~11 PM ET + 5h for gather/score pipeline).
           # Dedup: only alert once per show per day via opening-night-sent.json.
-          OVERDUE=$(node -e "
+          OVERDUE_RAW=$(node -e "
             const fs = require('fs');
             const { hasRecentOverdueAlert } = require('./scripts/lib/preview-dedup');
             const shows = require('./data/shows.json').shows;
@@ -792,27 +853,55 @@ jobs:
                   why = ' — blocked by unscored: ' + orphan.orphans.map(o => (o.outletId || o.file) + (o.rescoreBlockedReason ? ' (' + o.rescoreBlockedReason + ')' : '')).join(', ');
                 }
               } catch { /* no orphan snapshot — generic message stands */ }
+              // BRO-227: send-opening-night-broadcast.js now refuses to send without a
+              // critic-consensus verdict (exit 1, swallowed by run_market's \`|| true\`).
+              // Surface that as the reason here so a stuck-on-consensus show doesn't read
+              // as an unexplained pipeline hang. Adversarial review 2026-08-26: don't let a
+              // read/parse failure (e.g. a partial core-data checkout) mislabel EVERY overdue
+              // show as consensus-blocked — that's a confident wrong answer, worse than the
+              // old generic message. Only claim "missing" once the file actually parsed.
+              if (!why) {
+                try {
+                  const { getShowConsensusText } = require('./scripts/lib/critic-consensus-lookup');
+                  const consensus = JSON.parse(fs.readFileSync('data/critic-consensus.json', 'utf8'));
+                  if (!getShowConsensusText(consensus, id, s && s.slug)) {
+                    why = ' — blocked by missing critic-consensus (critic-consensus.json)';
+                  }
+                } catch (err) {
+                  why = ' — could not check critic-consensus.json (' + err.message + ')';
+                }
+              }
               return { id, line: (s ? s.title : id) + why };
             });
 
-            // Mark alerted shows so we don't spam. ONLY the ids that are
-            // actually overdue this run: stamping every pending id started a
-            // 24h cooldown for shows that had not yet had their first
-            // legitimate overdue moment, delaying their first real alert by
-            // up to a day (2026-08-02 email-noise session finding).
-            if (overdue.length > 0) {
-              const sentData = { shows: sent };
-              try { Object.assign(sentData, JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8'))); } catch {}
-              if (!sentData.shows) sentData.shows = {};
-              for (const o of overdue) {
-                const alertKey = 'overdue-alert:' + o.id;
-                sentData.shows[alertKey] = { sentAt: new Date().toISOString() };
-              }
-              fs.writeFileSync('data/opening-night-sent.json', JSON.stringify(sentData, null, 2));
-            }
+            // NOTE: the 'overdue-alert:ID' stamp used to be written HERE,
+            // unconditionally once overdue.length>0 — before the alert was
+            // even attempted. Moved into the routeAlert() .then() below
+            // (BRO-1699 ship-check finding): this file's OWN checklist/drift
+            // gates above already stamp state only after confirmed delivery
+            // ("blocked=true is written from INSIDE the node call, only once
+            // we know the owner was actually informed") specifically because
+            // writing first and notifying second means a delivery failure
+            // gets silently marked as handled, suppressing the real retry for
+            // up to cooldownHours. Same discipline applied here.
 
-            if (overdue.length) console.log(overdue.map(o => o.line).join(' | '));
+            // Single JSON line (not two positional stdout lines — a future
+            // diagnostic console.log anywhere above this, including a
+            // module-load log in a required lib, would silently shift the
+            // sed -n '1p'/'2p' split this used to rely on: conditionKey
+            // becomes unstable garbage and the per-show stamp below writes
+            // wrong keys). ids: sorted for a stable routeAlert conditionKey
+            // (same overdue combination within the cooldown window dedupes to
+            // one email, mirroring BREACHED_LIST above); line: the display
+            // string bash already relied on.
+            console.log(JSON.stringify({
+              ids: overdue.map(o => o.id).sort().join(','),
+              line: overdue.map(o => o.line).join(' | '),
+            }));
           ")
+
+          OVERDUE_IDS=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').ids || '')")
+          OVERDUE=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').line || '')")
 
           if [ -n "$OVERDUE" ]; then
             echo "::warning::Broadcast overdue for: $OVERDUE"
@@ -840,15 +929,48 @@ jobs:
             # single-quoted literal, the step exits 1 with NO alert sent, and
             # the cooldown stamped above suppresses the retry — silent
             # permanent suppression. Same pattern as BREACHED_LIST above.
-            OVERDUE_LIST="$OVERDUE" node -e "
-              const { sendAlert } = require('./scripts/lib/discord-notify.js');
-              sendAlert({
+            #
+            # Routed through owner-alert-router (BRO-1699 migration): this used
+            # to call sendAlert(email:true) directly, bypassing the ACTION-only
+            # policy and the alert ledger's dedup — the two direct-bypass senders
+            # this card exists to close. conditionKey is the sorted overdue-ID
+            # list (same pattern as the checklist/drift gates' BREACHED_LIST) so
+            # a recurring identical overdue set within cooldownHours collapses to
+            # one email instead of re-firing every ~2.8h retry.
+            OVERDUE_LIST="$OVERDUE" OVERDUE_IDS="$OVERDUE_IDS" node -e "
+              const fs = require('fs');
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast:overdue:' + (process.env.OVERDUE_IDS || 'unknown'),
                 title: 'Opening Night Broadcast Overdue',
                 description: 'These shows opened 6+ hours ago but the broadcast has not sent. Each line names the blocking unscored file when the orphan gate is the cause; otherwise the pipeline (gather/rebuild/score) may be stuck.',
                 severity: 'error',
-                email: true,
+                disposition: 'human',
+                cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.OVERDUE_LIST || '?' }],
-              });
+              }).then((result) => {
+                // Same 'informed' definition as the checklist/drift gates above:
+                // silent (already notified, cooldown open) / digest (queued,
+                // durable) / auto (filed, durable) all count; 'human' only
+                // counts if sendAlert() actually delivered. Stamp the per-show
+                // dedup key ONLY when informed — an unconfirmed delivery must
+                // leave the retry path open for the next run.
+                const informed = result.action === 'silent' || result.action === 'digest' || result.action === 'auto' || (result.action === 'human' && result.delivered);
+                if (!informed) {
+                  console.error('::warning::overdue-broadcast alert delivery unconfirmed — not stamping overdue-alert keys, next run will retry');
+                  return;
+                }
+                const sentPath = 'data/opening-night-sent.json';
+                let sentData = {};
+                try { sentData = JSON.parse(fs.readFileSync(sentPath, 'utf8')); } catch {}
+                if (!sentData.shows) sentData.shows = {};
+                const ids = (process.env.OVERDUE_IDS || '').split(',').filter(Boolean);
+                for (const id of ids) {
+                  sentData.shows['overdue-alert:' + id] = { sentAt: new Date().toISOString() };
+                }
+                fs.writeFileSync(sentPath, JSON.stringify(sentData, null, 2));
+                console.log('[alert-router] overdue-broadcast alert routed: ' + result.action);
+              }).catch(e => { console.error('::warning::routeAlert failed (non-fatal): ' + e.message); });
             "
           fi
 
@@ -919,8 +1041,90 @@ jobs:
               -f "title=$TITLE" || echo "Push dispatch failed for $SLUG — non-critical"
           done
 
+      # BRO-2455 (2026-08-26): this used to be one "Commit data" step
+      # bundling orphan-rescore-requeue-state.json (single-writer,
+      # apiFallbackSafe) with 3 disqualifying multi-writer files in one
+      # push-with-retry.sh call — the mixed-safety-bundle shape BRO-2435
+      # already fixed in the earlier "Commit orphan-rescore-requeue state"
+      # step above. Split into 2 SEPARATE steps (not just 2 calls in one
+      # step) so each gets its own `env: PUSH_DEADLINE_SEC` that
+      # scripts/lib/audit-push-retry-budgets.js can actually see — an inline
+      # `PUSH_DEADLINE_SEC=N bash push-with-retry.sh` prefix on one call
+      # within a shared step is real at runtime but is a deliberately
+      # unrecognized shape for that audit (see its findPushRetryCalls()
+      # comment: "inlineDeadlineSec is kept ... always null"), so it would
+      # silently keep charging the step-level 300s against this job's
+      # margin math for a call that's actually smaller.
+      - name: Commit orphan-rescore-requeue state (late — defense-in-depth for a stranded early push)
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '60'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # #356: orphan-unscored self-heal attempt tracking. Must be
+          # committed here (this workflow is the caller) or the next run's
+          # checkout starts fresh and re-notifies/re-attempts from zero. In
+          # its own step (not bundled with the multi-writer files below) so
+          # it keeps the Git Data API fallback (BRO-2455).
+          #
+          # Sized DOWN from the other hard-fail steps' 300s/14 (MAX_RETRIES=5
+          # below) because this file's real job here is narrow: the early
+          # "Commit orphan-rescore-requeue state" step (above) already
+          # commits+pushes it, and its only writer
+          # (dispatch-orphan-rescore-requeue.js) runs BEFORE that early step,
+          # not between the two — so under normal operation nothing NEW is
+          # staged here. This step exists purely to flush a commit stranded
+          # by a failed EARLY push (rare: single-writer, grepped every
+          # workflow — see core-data-merge-registry.js's entry — so genuine
+          # rebase conflicts are rare), and apiFallbackSafe kicks in after
+          # ceil((5+1)/2)=3 local attempts, well inside this smaller budget.
+          # `node scripts/audit-push-retry-budgets.js` reports no flags at
+          # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
+          # restored to ~17%) — re-confirm with that script before changing.
+          #
+          # BRO-2435: a dirty index isn't the only reason to push here. The
+          # early "Commit orphan-rescore-requeue state" step commits BEFORE
+          # pushing (by design), so if its own push-with-retry.sh call
+          # hard-failed (retries-exhausted), the commit it made is still
+          # sitting on local HEAD, unpushed — push-with-retry.sh's
+          # restore_head_if_moved() preserves an advanced HEAD rather than
+          # resetting it (task #769), it just never reached origin. The old
+          # `git diff --cached --quiet` gate alone can't see that: nothing
+          # NEW is staged here (the file was already committed), so it
+          # exited 0 and silently left the commit stranded — the exact gap
+          # that let origin/main's orphan-rescore-requeue-state.json sit
+          # stale at its 2026-08-01 version despite local runs "succeeding"
+          # at writing it. Push whenever EITHER this step staged something
+          # new OR local HEAD already sits ahead of origin/main.
+          if [ -f data/audit/orphan-rescore-requeue-state.json ]; then
+            git add data/audit/orphan-rescore-requeue-state.json
+            echo "Staged orphan-rescore-requeue-state.json"
+          fi
+          if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
+            echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits — skipping push"
+            exit 0
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update orphan-rescore-requeue state [skip ci]"
+          else
+            echo "No new orphan-rescore-requeue-state.json changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+      # 2026-08-26): see "Commit orphan-rescore-requeue state" (early) above
+      # for the sizing rationale — this is the last of this job's hard-fail
+      # push steps sharing the same tight 24-min job budget. Unchanged from
+      # pre-BRO-2455 sizing: this is the same call that existed before,
+      # minus orphan-rescore-requeue-state.json (moved to its own step
+      # above) — the config that already worked standalone, still handling
+      # alert-ledger.json's real multi-writer contention.
       - name: Commit data
         if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '300'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -933,25 +1137,26 @@ jobs:
             git add data/audit/opening-night-express-completed.json
             echo "Staged opening-night-express-completed.json (broadcast handoff)"
           fi
-          # #356: orphan-unscored self-heal attempt tracking + the
-          # owner-alert-router ledger it writes through on escalation. Must
-          # be committed here (this workflow is the caller) or the next run's
-          # checkout starts fresh and re-notifies/re-attempts from zero.
-          if [ -f data/audit/orphan-rescore-requeue-state.json ]; then
-            git add data/audit/orphan-rescore-requeue-state.json
-            echo "Staged orphan-rescore-requeue-state.json"
-          fi
           if [ -f data/audit/alert-ledger.json ]; then
             git add data/audit/alert-ledger.json
             echo "Staged alert-ledger.json"
           fi
-          # Skip push if nothing to commit (avoids push race failures)
+          # A 'human' disposition not on the page-worthy allowlist (or any
+          # conditionKey routeAlert downgrades) falls through to
+          # queueDigestLine(), which writes this file — without staging it
+          # here the queued line only ever exists on the ephemeral runner and
+          # is lost the moment the job ends (the update-mezzanine.yml
+          # incident this file's dedup logic exists to prevent).
+          if [ -f data/audit/alert-digest-queue.json ]; then
+            git add data/audit/alert-digest-queue.json
+            echo "Staged alert-digest-queue.json"
+          fi
           if git diff --cached --quiet; then
-            echo "No changes to commit — skipping push"
+            echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit"
             exit 0
           fi
           git commit -m "data: Update opening-night broadcast audit state"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 14 main
 
 
       - name: Push core data to private repo

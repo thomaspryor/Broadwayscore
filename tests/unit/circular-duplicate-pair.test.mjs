@@ -126,6 +126,37 @@ test('isUnknownByline: placeholders / outlet-name / numeric are unknown; real na
   assert.equal(isUnknownByline('ben-brantley', 'nytimes'), false);
 });
 
+test('chooseCanonical: a placeholder byline never wins canonical over a real byline, even when the filename slug check misses it (card #1907)', () => {
+  // times-uk--the-times.json: outletSlug (from the filename PREFIX/outletId)
+  // is "times-uk", byline slug is "the-times" — isUnknownByline alone sees
+  // two different strings and misses this. The data-field check catches it:
+  // criticName "The Times" normalizes to the same string as outlet display
+  // name "The Times (UK)". Exact shape of the loves-labours-lost-globe-
+  // west-end-2026 same-URL cluster that turned main red on 2026-08-26.
+  const c = chooseCanonical(
+    'times-uk--clive-davis.json', { url: 'u', outlet: 'The Times (UK)', criticName: 'Clive Davis' },
+    'times-uk--the-times.json', { url: 'u', outlet: 'The Times (UK)', criticName: 'The Times' },
+  );
+  assert.equal(c.canonical, 'times-uk--clive-davis.json', 'real byline must win, not the outlet-name placeholder');
+  assert.match(c.reason, /byline/);
+});
+
+test('chooseCanonical: placeholder-vs-real holds regardless of argument order', () => {
+  const c = chooseCanonical(
+    'financialtimes--financial-times.json', { url: 'u', outlet: 'Financial Times', criticName: 'Financial Times' },
+    'financialtimes--brendan-lemon.json', { url: 'u', outlet: 'Financial Times', criticName: 'Brendan Lemon' },
+  );
+  assert.equal(c.canonical, 'financialtimes--brendan-lemon.json', 'real byline must win, not the outlet-name placeholder');
+});
+
+test('chooseCanonical: "Unknown" criticName never wins canonical over a real byline', () => {
+  const c = chooseCanonical(
+    'vulture--unknown.json', { url: 'u', outlet: 'Vulture', criticName: 'Unknown' },
+    'vulture--jackson-mchenry.json', { url: 'u', outlet: 'Vulture', criticName: 'Jackson McHenry' },
+  );
+  assert.equal(c.canonical, 'vulture--jackson-mchenry.json');
+});
+
 test('recovery guard: the only scoreable member is canonical even if it is "unknown"', () => {
   // The 3 real conflict cases (end-of-the-rainbow/masquerade/spamalot): bylined
   // file has NO score, unknown sibling carries the llm/assigned score.

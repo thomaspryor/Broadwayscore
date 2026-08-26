@@ -38,8 +38,16 @@ const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 // Also builds domainAliases map for domain matching (e.g., 1minutecritic.com → oneminutecritic.com)
 const { foldDiacritics } = require('./title-match');
 
+// Worktrees never have their own data/ (gitignored + symlinked in the main
+// checkout, not copied on EnterWorktree), so the __dirname-relative path below
+// resolves to a worktree root with no outlet-registry.json. Fall back to the
+// canonical repo — same idiom audit-placeholder-venues.js's loadShows() uses
+// (task #983).
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+
 function buildOutletDomains() {
-  const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+  const local = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+  const registryPath = fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'outlet-registry.json');
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const outlets = registry.outlets || registry;
   const map = {};
@@ -1295,6 +1303,16 @@ function earliestTourLegStart(show) {
   return earliest;
 }
 
+// Year as a standalone path token, delimited by "/" OR "-": WordPress dates
+// give /2015/07/29/, but slug-style permalinks give -2015- or /2015-the-car-
+// man-review/. The slash-only form left 481 dash-form URLs on disk invisible
+// to readmission — including one on a show that DOES declare the run
+// (ship-check 2026-08-02, #872). Anchored on both sides so an article ID
+// like /a12019x/ can't be read as a year. Exported so callers needing the
+// same URL-year extraction (e.g. scripts/lib/opening-night-discovery.js)
+// share one pattern instead of a copy that can silently drift (BRO-736).
+const URL_YEAR_PATTERN = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
+
 /**
  * Does a URL's embedded /YYYY/ fall inside a year a declared prior run spans?
  *
@@ -1310,13 +1328,7 @@ function earliestTourLegStart(show) {
  */
 function isUrlYearInPriorRun(url, priorRuns) {
   if (!url || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
-  // Year as a standalone path token, delimited by "/" OR "-": WordPress dates
-  // give /2015/07/29/, but slug-style permalinks give -2015- or /2015-the-car-
-  // man-review/. The slash-only form left 481 dash-form URLs on disk invisible
-  // to this readmission — including one on a show that DOES declare the run
-  // (ship-check 2026-08-02, #872). Anchored on both sides so an article ID
-  // like /a12019x/ can't be read as a year.
-  const m = String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/);
+  const m = String(url).match(URL_YEAR_PATTERN);
   if (!m) return false;
   const urlYear = parseInt(m[1], 10);
   for (const run of priorRuns) {
@@ -1341,7 +1353,7 @@ function isUrlYearInPriorRun(url, priorRuns) {
  */
 function isUrlYearInTourLeg(url, tourLegs) {
   if (!url || !Array.isArray(tourLegs) || tourLegs.length === 0) return false;
-  const m = String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/);
+  const m = String(url).match(URL_YEAR_PATTERN);
   if (!m) return false;
   const urlYear = parseInt(m[1], 10);
   for (const leg of tourLegs) {
@@ -1651,6 +1663,7 @@ module.exports = {
   isUrlYearInPriorRun,
   earliestTourLegStart,
   isUrlYearInTourLeg,
+  URL_YEAR_PATTERN,
   buildDateTbs,
   validateUrlDomain,
   getTryoutRejectionStats,

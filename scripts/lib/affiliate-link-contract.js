@@ -16,6 +16,7 @@
  */
 
 const PLATFORMS = require('../../src/config/affiliate-platforms.json').platforms;
+const RENDERING = require('../../src/config/affiliate-platforms.json').rendering;
 
 /**
  * Parse an Impact deep link:
@@ -100,9 +101,10 @@ function validateImpactLink(url, platformName, platforms = PLATFORMS) {
  * platform must carry a complete, numeric Impact identity. Catches the
  * "someone enabled SeatGeek with empty IDs" class at test time.
  * @param {object} [platforms]
+ * @param {object} [rendering] affiliate-platforms.json's "rendering" section
  * @returns {Array<string>} problems (empty = valid)
  */
-function validatePlatformConfig(platforms = PLATFORMS) {
+function validatePlatformConfig(platforms = PLATFORMS, rendering = RENDERING) {
   const problems = [];
   for (const [name, cfg] of Object.entries(platforms)) {
     if (!cfg.enabled) continue;
@@ -122,6 +124,14 @@ function validatePlatformConfig(platforms = PLATFORMS) {
     if (cfg.enabled && !cfg.revenueReporting) {
       problems.push(`${name}: enabled but revenueReporting=false — its affiliate traffic would report as unmonetized`);
     }
+    // Coherence: an enabled affiliate platform with no "rendering" entry
+    // silently falls back to lowest sort priority (99) and un-hidden in
+    // src/lib/ticket-utils.ts, rather than a deliberate choice — the exact
+    // "added in one config, forgotten in the other" drift BRO-174 unified
+    // the two configs to prevent.
+    if (cfg.enabled && !rendering[name]) {
+      problems.push(`${name}: enabled affiliate platform has no "rendering" entry in affiliate-platforms.json — add one (even just { "priority": N }) so its sort/visibility is a deliberate choice`);
+    }
   }
   return problems;
 }
@@ -140,6 +150,7 @@ function extractImpactLinks(html, platforms = PLATFORMS) {
 
 module.exports = {
   PLATFORMS,
+  RENDERING,
   parseImpactLink,
   validateImpactLink,
   validatePlatformConfig,

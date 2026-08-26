@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyFullTextContent } = require('./lib/content-quality');
+const { parseHistoricalDate } = require('./lib/date-utils');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -401,14 +402,14 @@ if (!TASK_FILTER || TASK_FILTER === '2D') {
       continue;
     }
 
-    const pubDate = new Date(entryWithDate.publishDate);
+    const pubDate = parseHistoricalDate(entryWithDate.publishDate);
 
     // Find the production whose opening date is closest to (but before) the publish date
     let bestDir = null;
     let bestDiff = Infinity;
 
     for (const entry of fileEntries) {
-      if (!entry.openingDate) continue;
+      if (!entry.openingDate || !pubDate) continue;
       const openDate = new Date(entry.openingDate);
       const diff = pubDate - openDate;
 

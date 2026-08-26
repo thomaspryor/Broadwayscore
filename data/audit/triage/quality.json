@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-19T14:07:12.819Z",
+  "lastChecked": "2026-08-24T07:46:40.492Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: cleansed-off-west-end-2026 The Mail 5/5 stars→100 vs LLM 53, gap 47)"
+      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: follies-2011 Time Out New York 1/5→20 vs LLM 88, gap 68); 1 star-won-hiding"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (19818/20092)"
+      "message": "98.6% scored (19941/20215)"
     },
     {
       "name": "Quality: corpus drift",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "1 unregistered host(s) name-match a registered outlet (e.g. theatrereviews.design → theatre-reviews-limited) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 190 unregistered host(s)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1140 outlet(s), 42725 review(s)"
+      "message": "No broken-extractor signature in 1138 outlet(s), 42607 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "warn",
-      "message": "3 outlet(s) show a broken-extractor signature (worst: metrmag — 5/5 recent invalid, 100% vs 0% baseline)"
+      "message": "4 outlet(s) show a broken-extractor signature (worst: theater-mirror — 5/5 recent invalid, 100% vs 50% baseline)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -54,7 +54,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "warn",
-      "message": "Heartbeat monitor last ran 9d ago (>8d)"
+      "message": "Heartbeat monitor last ran 14d ago (>8d)"
     }
   ]
 }

@@ -1,159 +1,811 @@
 {
-  "generatedAt": "2026-08-17T11:59:00.900Z",
+  "generatedAt": "2026-08-24T12:02:22.884Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
     "shows": 5,
     "excluded": [],
     "undatedCandidates": 2,
-    "truthUrls": 54,
-    "scopedUrls": 0,
-    "naiveUrls": 0,
-    "onDiskUrls": 54,
-    "newFromNaive": 0,
+    "truthUrls": 125,
+    "scopedUrls": 17,
+    "naiveUrls": 37,
+    "onDiskUrls": 117,
+    "newFromNaive": 6,
     "perArm": {
       "naive-p0": {
-        "found": 0,
+        "found": 20,
         "queries": 5,
         "failed": 0,
-        "recall": 0
+        "recall": 0.16
       },
       "naive-p1": {
-        "found": 0,
+        "found": 17,
         "queries": 5,
         "failed": 0,
-        "recall": 0
+        "recall": 0.136
       },
       "onDisk": {
-        "found": 54,
+        "found": 117,
         "queries": 5,
         "failed": 0,
-        "recall": 1
+        "recall": 0.936
       },
       "scoped-q0": {
-        "found": 0,
+        "found": 10,
         "queries": 5,
         "failed": 0,
-        "recall": 0
+        "recall": 0.08
       },
       "scoped-q1": {
-        "found": 0,
+        "found": 13,
         "queries": 5,
         "failed": 0,
-        "recall": 0
+        "recall": 0.104
       },
       "scoped-q2": {
-        "found": 0,
-        "queries": 1,
+        "found": 3,
+        "queries": 2,
         "failed": 0,
-        "recall": 0
+        "recall": 0.024
       }
     },
     "perFamily": {
       "naive": {
-        "found": 0,
+        "found": 37,
         "arms": 2,
         "failed": 0,
-        "recall": 0
+        "recall": 0.296
       },
       "onDisk": {
-        "found": 54,
+        "found": 117,
         "arms": 1,
         "failed": 0,
-        "recall": 1
+        "recall": 0.936
       },
       "scoped": {
-        "found": 0,
+        "found": 17,
         "arms": 3,
         "failed": 0,
-        "recall": 0
+        "recall": 0.136
       }
     },
     "byCategory": {
       "off-broadway": {
-        "shows": 3,
-        "truthUrls": 26,
+        "shows": 1,
+        "truthUrls": 7,
         "families": {
           "naive": {
-            "found": 0,
+            "found": 4,
             "arms": 2,
             "failed": 0,
-            "recall": 0
+            "recall": 0.571
+          },
+          "onDisk": {
+            "found": 6,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.857
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.143
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 3,
+        "truthUrls": 91,
+        "families": {
+          "naive": {
+            "found": 31,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.341
+          },
+          "onDisk": {
+            "found": 85,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.934
+          },
+          "scoped": {
+            "found": 14,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.154
+          }
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 27,
+        "families": {
+          "naive": {
+            "found": 2,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.074
           },
           "onDisk": {
             "found": 26,
             "arms": 1,
             "failed": 0,
-            "recall": 1
+            "recall": 0.963
           },
           "scoped": {
-            "found": 0,
+            "found": 2,
             "arms": 3,
             "failed": 0,
-            "recall": 0
-          }
-        }
-      },
-      "off-west-end": {
-        "shows": 2,
-        "truthUrls": 28,
-        "families": {
-          "naive": {
-            "found": 0,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0
-          },
-          "onDisk": {
-            "found": 28,
-            "arms": 1,
-            "failed": 0,
-            "recall": 1
-          },
-          "scoped": {
-            "found": 0,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0
+            "recall": 0.074
           }
         }
       }
     },
-    "scopedRecall": 0,
-    "naiveRecall": 0
+    "scopedRecall": 0.136,
+    "naiveRecall": 0.296
   },
   "shows": [
     {
-      "showId": "anansi-the-spider-west-end-2026",
-      "title": "Anansi the Spider",
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
       "market": "off-west-end",
-      "openingDate": "2026-08-15",
+      "openingDate": "2026-08-21",
       "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
+      "sampleReason": "opened 4d ago",
       "geo": "gb",
-      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
+      "naiveQuery": "As You Like It - Globe Shakespeare's Globe review",
       "counts": {
-        "truth": 10,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 10
+        "truth": 42,
+        "scoped": 2,
+        "naive": 11,
+        "onDisk": 38
       },
       "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
+        "scoped": 0.048,
+        "naive": 0.262,
+        "onDisk": 0.905,
+        "censusPlusDisk": 0.905
+      },
+      "newFromNaive": [
+        "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+        "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
+        "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
+        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/"
+      ],
+      "missedByCensus": [
+        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+        "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+        "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
+        "https://www.britishtheatreguide.info/reviews/as-you-like-it-shakespeare-s-g-25910",
+        "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+        "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
+        "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
+        "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
+        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+        "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
+        "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
+        "https://www.bestoftheatre.co.uk/blog/post/review-roundup-as-you-like-it-shakespeares-globe",
+        "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+        "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
+        "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
+        "https://inews.co.uk/culture/arts/as-you-like-it-sohoplace-review-rose-ayling-ellis-charming-west-end-debut-2033245",
+        "https://www.jackstage.co.uk/post/as-you-like-it-review-elizabethan-evenings-with-a-playful-musical-edge",
+        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
+        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
+        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
+        "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
+        "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
+        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+        "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+        "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
+        "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
+        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
+        "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
+        "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+        "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+        "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+        "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
+        "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
+        "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong-shakespeare-slxr8w27f",
+        "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2",
+        "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"As You Like It - Globe\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+            "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"As You Like It - Globe\" review shakespeare",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+            "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"As You Like It - Globe\" Shakespeare review",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+            "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "As You Like It - Globe Shakespeare's Globe review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 5,
+          "urls": [
+            "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+            "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+            "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+            "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
+            "https://www.britishtheatreguide.info/reviews/as-you-like-it-shakespeare-s-g-25910"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "As You Like It - Globe Shakespeare's Globe review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 6,
+          "urls": [
+            "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+            "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
+            "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
+            "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+            "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
+            "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 38,
+          "accepted": 38,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
+            "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
+            "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
+            "https://www.bestoftheatre.co.uk/blog/post/review-roundup-as-you-like-it-shakespeares-globe",
+            "https://www.britishtheatreguide.info/reviews/as-you-like-it-shakespeare-s-g-25910",
+            "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+            "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+            "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
+            "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
+            "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+            "https://inews.co.uk/culture/arts/as-you-like-it-sohoplace-review-rose-ayling-ellis-charming-west-end-debut-2033245",
+            "https://www.jackstage.co.uk/post/as-you-like-it-review-elizabethan-evenings-with-a-playful-musical-edge",
+            "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
+            "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
+            "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
+            "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+            "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
+            "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+            "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+            "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+            "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
+            "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
+            "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+            "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
+            "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
+            "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
+            "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+            "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
+            "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
+            "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+            "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+            "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+            "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
+            "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
+            "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong-shakespeare-slxr8w27f",
+            "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2",
+            "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "spellbound-off-broadway-2026",
+      "title": "Spellbound",
+      "market": "off-broadway",
+      "openingDate": "2026-08-19",
+      "sampleState": "measured",
+      "sampleReason": "opened 6d ago",
+      "geo": "us",
+      "naiveQuery": "Spellbound SoHo Playhouse review",
+      "counts": {
+        "truth": 7,
+        "scoped": 1,
+        "naive": 4,
+        "onDisk": 6
+      },
+      "recall": {
+        "scoped": 0.143,
+        "naive": 0.571,
+        "onDisk": 0.857,
+        "censusPlusDisk": 0.857
+      },
+      "newFromNaive": [
+        "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller"
+      ],
+      "missedByCensus": [
+        "https://www.sohoplayhouse.com/see-a-show/spellbound",
+        "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
+        "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller",
+        "https://sohotheatre.com/events/suhani-shah-spellbound/",
+        "https://list.co.uk/news/suhani-shah-spellbound-magic-review-predictably-brilliant-46251",
+        "https://theweereview.com/review/suhani-shah-spellbound-2-0/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Spellbound\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Spellbound\" review soho",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://events.amny.com/event/spellbound/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Spellbound SoHo Playhouse review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/spellbound",
+            "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
+            "https://stagebuddy.com/theater/theater-review/ny-critics-held-spellbound-penn-teller"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Spellbound SoHo Playhouse review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://sohotheatre.com/events/suhani-shah-spellbound/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 6,
+          "accepted": 6,
+          "urls": [
+            "https://events.amny.com/event/spellbound/",
+            "https://shorefire.com/releases/entry/leading-mentalist-suhani-shah-returns-to-nyc-with-spellbound-soho-playhouse",
+            "https://www.sohoplayhouse.com/see-a-show/spellbound",
+            "https://sohotheatre.com/events/suhani-shah-spellbound/",
+            "https://list.co.uk/news/suhani-shah-spellbound-magic-review-predictably-brilliant-46251",
+            "https://theweereview.com/review/suhani-shah-spellbound-2-0/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "title": "Abigail’s Party",
+      "market": "west-end",
+      "openingDate": "2026-08-19",
+      "sampleState": "measured",
+      "sampleReason": "opened 6d ago",
+      "geo": "gb",
+      "naiveQuery": "Abigail’s Party Harold Pinter Theatre review",
+      "counts": {
+        "truth": 27,
+        "scoped": 2,
+        "naive": 2,
+        "onDisk": 26
+      },
+      "recall": {
+        "scoped": 0.074,
+        "naive": 0.074,
+        "onDisk": 0.963,
         "censusPlusDisk": 1
       },
       "newFromNaive": [],
       "missedByCensus": [
-        "https://www.bestoftheatre.co.uk/anansi-the-spider",
-        "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
-        "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
-        "https://openairtheatre.com/production/anansi-the-spider",
+        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+        "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+        "https://ayoungishperspective.co.uk/2026/08/21/review-abigails-party-2/",
+        "https://theartsdesk.com/theatre/abigails-party-harold-pinter-theatre-review-raucous-randy-and-ridiculous",
+        "https://www.broadwayworld.com/westend/article/Review-ABIGAILS-PARTY-Starring-Tamsin-Outhwaite-Harold-Pinter-Theatre-20260820",
+        "https://www.dailymail.com/tvshowbiz/article-16059613/Tamzin-Outhwaite-frolics-stage-transforms-character-West-End-Abigails-Party.html",
+        "https://www.ft.com/content/544dee79-62af-4118-9392-dded7f52c33f",
+        "https://www.theguardian.com/stage/2026/aug/20/abigails-party-review-tamzin-outhewaite",
+        "https://inews.co.uk/culture/arts/abigails-party-sexually-frustrated-generation-of-women-4719397",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/abigails-party-review-tamzin-outhwaite-b3036215.html",
+        "https://liamodell.com/2026/08/21/abigails-party-review-west-end-harold-pinter-theatre-london-cast-tamzin-outhwaite/",
+        "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
+        "https://www.london-unattached.com/abigails-party/",
+        "https://monstagigz.com/2026/08/16/theatre-review-abigails-party-starring-tamzin-outhwaite-at-harold-pinter-theatre/",
+        "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
+        "https://www.standard.co.uk/culture/theatre/abigails-party-at-harold-pinter-theatre-review-b1294045.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/tamzin-outhwaite-abigails-party-still-goes-with-a-swing/",
+        "https://www.thereviewshub.com/abigails-party-harold-pinter-theatre-london/",
+        "https://www.thestage.co.uk/reviews/abigails-party-review-theatre-royal-stratford-east-mike-leigh-nadia-fall-tamzin-outhwaite-kevin-bishop",
+        "https://www.thestage.co.uk/reviews/abigails-party-review-harold-pinter-theatre-london-tamzin-outhwaite",
+        "https://www.timeout.com/london/theatre/abigails-party-5-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
+        "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p",
+        "https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Abigail’s Party\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Abigail’s Party\" review harold",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Abigail’s Party\" Leigh review",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.show-score.com/uk/london/off-west-end-shows/abigail-s-party-richmond-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Abigail’s Party Harold Pinter Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+            "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Abigail’s Party Harold Pinter Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 26,
+          "accepted": 26,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/08/21/review-abigails-party-2/",
+            "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
+            "https://theartsdesk.com/theatre/abigails-party-harold-pinter-theatre-review-raucous-randy-and-ridiculous",
+            "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+            "https://www.broadwayworld.com/westend/article/Review-ABIGAILS-PARTY-Starring-Tamsin-Outhwaite-Harold-Pinter-Theatre-20260820",
+            "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+            "https://www.dailymail.com/tvshowbiz/article-16059613/Tamzin-Outhwaite-frolics-stage-transforms-character-West-End-Abigails-Party.html",
+            "https://www.ft.com/content/544dee79-62af-4118-9392-dded7f52c33f",
+            "https://www.theguardian.com/stage/2026/aug/20/abigails-party-review-tamzin-outhewaite",
+            "https://inews.co.uk/culture/arts/abigails-party-sexually-frustrated-generation-of-women-4719397",
+            "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/abigails-party-review-tamzin-outhwaite-b3036215.html",
+            "https://liamodell.com/2026/08/21/abigails-party-review-west-end-harold-pinter-theatre-london-cast-tamzin-outhwaite/",
+            "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
+            "https://www.london-unattached.com/abigails-party/",
+            "https://monstagigz.com/2026/08/16/theatre-review-abigails-party-starring-tamzin-outhwaite-at-harold-pinter-theatre/",
+            "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
+            "https://www.standard.co.uk/culture/theatre/abigails-party-at-harold-pinter-theatre-review-b1294045.html",
+            "https://www.telegraph.co.uk/theatre/what-to-see/abigails-party-royal-stratford-review-tamzin-outhwaite/",
+            "https://www.telegraph.co.uk/theatre/what-to-see/tamzin-outhwaite-abigails-party-still-goes-with-a-swing/",
+            "https://www.thereviewshub.com/abigails-party-harold-pinter-theatre-london/",
+            "https://www.thestage.co.uk/reviews/abigails-party-review-theatre-royal-stratford-east-mike-leigh-nadia-fall-tamzin-outhwaite-kevin-bishop",
+            "https://www.thestage.co.uk/reviews/abigails-party-review-harold-pinter-theatre-london-tamzin-outhwaite",
+            "https://www.timeout.com/london/theatre/abigails-party-5-review",
+            "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
+            "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p",
+            "https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "title": "Jeeves Takes Charge",
+      "market": "off-west-end",
+      "openingDate": "2026-08-18",
+      "sampleState": "measured",
+      "sampleReason": "opened 7d ago",
+      "geo": "gb",
+      "naiveQuery": "Jeeves Takes Charge Charing Cross Theatre review",
+      "counts": {
+        "truth": 34,
+        "scoped": 9,
+        "naive": 11,
+        "onDisk": 33
+      },
+      "recall": {
+        "scoped": 0.265,
+        "naive": 0.324,
+        "onDisk": 0.971,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
+        "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/jeeves-takes-charge-review-charing-cross-theatre",
+        "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
+        "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
+        "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+        "https://www.bestoftheatre.co.uk/blog/post/first-look-at-sam-harrison-in-jeeves-takes-charge",
+        "https://www.broadwayworld.com/westend/article/Review-JEEVES-TAKES-CHARGE-Charing-Cross-Theatre-20260819",
+        "https://firstnightmagazine.com/2026/08/19/review-of-jeeves-takes-charge-return-of-the-valet-caters-to-its-audience-but-the-comedy-isnt-fully-serviced/",
+        "https://www.londontheatredirect.com/play/jeeves-takes-charge-tickets",
+        "https://northwestend.com/jeeves-takes-charge-charing-cross-theatre/",
+        "https://readaboutstuff.com/2026/08/21/review-jeeves-takes-charge-charing-cross-theatre-london/",
+        "https://www.songsbehindthemusic.com/step-behind-the-stage-jeeves-takes-charge/",
+        "https://southlondon.co.uk/lifestyle/jeeves-takes-charge-of-charing-cross-theatre/",
+        "https://staybook.in/activities/jeeves-takes-charge",
+        "https://thespyinthestalls.com/2026/08/jeeves-takes-charge/",
+        "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
+        "https://www.theatremonkey.com/show/jeeves-takes-charge/",
+        "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026",
+        "https://thetheatreplaybook.co.uk/jeeves-takes-charge-at-charing-cross-theatre/",
+        "https://www.unmissabletheatre.co.uk/reviews/review-jeeves-takes-charge-at-charing-cross-theatre",
+        "https://www.westendbestfriend.co.uk/news/review-jeeves-takes-charge-charing-cross-theatre",
+        "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
+        "https://www.whatsonstage.com/news/jeeves-takes-charge-at-ustinov-studio-bath-review_1657988/",
+        "https://www.whatsonstage.com/news/jeeves-takes-charge-to-return-to-london-and-embark-on-new-tour_1721291/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Jeeves Takes Charge\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 6,
+          "urls": [
+            "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+            "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+            "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
+            "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
+            "https://onin.london/jeeves-takes-charge-review/",
+            "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Jeeves Takes Charge\" review charing",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 6,
+          "urls": [
+            "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+            "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+            "https://www.allthatdazzles.co.uk/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Jeeves Takes Charge Charing Cross Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+            "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/",
+            "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
+            "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Jeeves Takes Charge Charing Cross Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 6,
+          "urls": [
+            "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://stagedtheatre.co.uk/blogs/theatre-reviews/jeeves-takes-charge-review-charing-cross-theatre",
+            "https://www.allthatdazzles.co.uk/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
+            "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
+            "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 33,
+          "accepted": 33,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/08/19/review-jeeves-takes-charge/",
+            "https://www.allthatdazzles.co.uk/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://www.bestoftheatre.co.uk/blog/post/first-look-at-sam-harrison-in-jeeves-takes-charge",
+            "https://www.broadwayworld.com/westend/article/Review-JEEVES-TAKES-CHARGE-Charing-Cross-Theatre-20260819",
+            "https://fairypoweredproductions.com/jeeves-takes-charge-review/",
+            "https://firstnightmagazine.com/2026/08/19/review-of-jeeves-takes-charge-return-of-the-valet-caters-to-its-audience-but-the-comedy-isnt-fully-serviced/",
+            "https://www.jackstage.co.uk/post/jeeves-takes-charge-review-chaos-and-bewilderment-in-the-world-of-wodehouse",
+            "https://www.londonbornandbred.co.uk/post/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "https://www.londontheatre1.com/reviews/jeeves-takes-charge-charing-cross-theatre/",
+            "https://www.londontheatredirect.com/play/jeeves-takes-charge-tickets",
+            "https://northwestend.com/jeeves-takes-charge-charing-cross-theatre/",
+            "https://onin.london/jeeves-takes-charge-review/",
+            "https://www.pinkprincetheatre.com/post/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://readaboutstuff.com/2026/08/21/review-jeeves-takes-charge-charing-cross-theatre-london/",
+            "https://www.songsbehindthemusic.com/step-behind-the-stage-jeeves-takes-charge/",
+            "https://southlondon.co.uk/lifestyle/jeeves-takes-charge-of-charing-cross-theatre/",
+            "https://stagedtheatre.co.uk/blogs/theatre-reviews/jeeves-takes-charge-review-charing-cross-theatre",
+            "https://staybook.in/activities/jeeves-takes-charge",
+            "https://thespyinthestalls.com/2026/08/jeeves-takes-charge/",
+            "https://theatresoutheast.com/jeeves-takes-charge-charing-cross-theatre-review/",
+            "https://theatreweekly.com/review-jeeves-takes-charge-at-charing-cross-theatre/",
+            "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
+            "https://www.theatremonkey.com/show/jeeves-takes-charge/",
+            "https://thelivereview.co.uk/jeeves-takes-charge-review-charing-cross-theatre/",
+            "https://www.thereviewshub.com/jeeves-takes-charge-charing-cross-theatre-london/",
+            "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-theatre-london-sam-harrison-wodehouse",
+            "https://www.thetheatreflyer.co.uk/review-jeeves-takes-charge-at-charing-cross-theatre-2026",
+            "https://thetheatreplaybook.co.uk/jeeves-takes-charge-at-charing-cross-theatre/",
+            "https://www.unmissabletheatre.co.uk/reviews/review-jeeves-takes-charge-at-charing-cross-theatre",
+            "https://www.westendbestfriend.co.uk/news/review-jeeves-takes-charge-charing-cross-theatre",
+            "https://www.westendtheatre.com/354539/news/jeeves-takes-charge-london-revival/",
+            "https://www.whatsonstage.com/news/jeeves-takes-charge-at-ustinov-studio-bath-review_1657988/",
+            "https://www.whatsonstage.com/news/jeeves-takes-charge-to-return-to-london-and-embark-on-new-tour_1721291/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "title": "Anansi the Spider",
+      "market": "off-west-end",
+      "openingDate": "2026-08-18",
+      "sampleState": "measured",
+      "sampleReason": "opened 7d ago",
+      "geo": "gb",
+      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
+      "counts": {
+        "truth": 15,
+        "scoped": 3,
+        "naive": 9,
+        "onDisk": 14
+      },
+      "recall": {
+        "scoped": 0.2,
+        "naive": 0.6,
+        "onDisk": 0.933,
+        "censusPlusDisk": 0.933
+      },
+      "newFromNaive": [
+        "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/"
+      ],
+      "missedByCensus": [
+        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
+        "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
         "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
+        "https://openairtheatre.com/production/anansi-the-spider",
         "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+        "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
         "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-        "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
+        "https://www.bestoftheatre.co.uk/anansi-the-spider",
+        "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
+        "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
         "https://www.unicorntheatre.com/archived-events/anansi-the-spider-2-2",
         "https://www.whatsonstage.com/news/review-anansi-the-spider-unicorn-theatre_49987/"
       ],
@@ -163,9 +815,12 @@
           "query": "\"Anansi the Spider\" West End review 2026",
           "page": 0,
           "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
+            "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre"
+          ],
           "ok": true,
           "error": null
         },
@@ -174,9 +829,13 @@
           "query": "\"Anansi the Spider\" review regent",
           "page": 0,
           "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
+            "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre",
+            "https://www.adventuresintheatreland.com/post/anansi-the-spider-regent-s-park-open-air-theatre"
+          ],
           "ok": true,
           "error": null
         },
@@ -185,9 +844,15 @@
           "query": "Anansi the Spider Regent's Park Open Air Theatre review",
           "page": 0,
           "geo": "gb",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
+            "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
+            "https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/",
+            "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
+            "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre"
+          ],
           "ok": true,
           "error": null
         },
@@ -196,9 +861,14 @@
           "query": "Anansi the Spider Regent's Park Open Air Theatre review",
           "page": 1,
           "geo": "gb",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://openairtheatre.com/production/anansi-the-spider",
+            "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+            "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+            "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+          ],
           "ok": true,
           "error": null
         },
@@ -207,17 +877,21 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 10,
-          "accepted": 10,
+          "raw": 14,
+          "accepted": 14,
           "urls": [
+            "https://www.adventuresintheatreland.com/post/anansi-the-spider-regent-s-park-open-air-theatre",
             "https://www.bestoftheatre.co.uk/anansi-the-spider",
             "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
+            "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
+            "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre",
             "https://makeitmarylebone.co.uk/event/anansi-the-spider-regents-park-open-air-theatre/",
             "https://openairtheatre.com/production/anansi-the-spider",
             "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
             "https://www.primarytimes.co.uk/north_london/listings/anansi-the-spider-585842",
+            "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
             "https://www.theatremonkey.com/show/anansi-the-spider-2/",
-            "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
+            "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
             "https://www.unicorntheatre.com/archived-events/anansi-the-spider-2-2",
             "https://www.whatsonstage.com/news/review-anansi-the-spider-unicorn-theatre_49987/"
           ],
@@ -225,475 +899,46 @@
           "error": null
         }
       ]
-    },
-    {
-      "showId": "the-house-of-the-negro-insane-off-broadway-2026",
-      "title": "The House of the Negro Insane",
-      "market": "off-broadway",
-      "openingDate": "2026-08-14",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "us",
-      "naiveQuery": "The House of the Negro Insane 59E59 Theaters review",
-      "counts": {
-        "truth": 0,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 0
-      },
-      "recall": {
-        "scoped": 1,
-        "naive": 1,
-        "onDisk": 1,
-        "censusPlusDisk": 1
-      },
-      "newFromNaive": [],
-      "missedByCensus": [],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The House of the Negro Insane\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The House of the Negro Insane\" review 59e59",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The House of the Negro Insane 59E59 Theaters review",
-          "page": 0,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The House of the Negro Insane 59E59 Theaters review",
-          "page": 1,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
-      "market": "off-west-end",
-      "openingDate": "2026-08-14",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "gb",
-      "naiveQuery": "As You Like It - Globe Shakespeare's Globe review",
-      "counts": {
-        "truth": 18,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 18
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
-      },
-      "newFromNaive": [],
-      "missedByCensus": [
-        "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
-        "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
-        "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
-        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
-        "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-shakespeares-globe",
-        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
-        "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
-        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
-        "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
-        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-        "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
-        "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
-        "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
-        "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
-        "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
-        "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"As You Like It - Globe\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"As You Like It - Globe\" review shakespeare",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "As You Like It - Globe Shakespeare's Globe review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "As You Like It - Globe Shakespeare's Globe review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 18,
-          "accepted": 18,
-          "urls": [
-            "https://www.amazon.com/William-Shakespeare-As-You-Like/dp/B003H0ZGWW",
-            "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes",
-            "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
-            "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/",
-            "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-shakespeares-globe",
-            "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
-            "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
-            "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-            "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
-            "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
-            "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-            "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
-            "https://www.telegraph.co.uk/theatre/what-to-see/like-sohoplace-review-full-marks-strictlys-rose-ayling-ellis/",
-            "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
-            "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
-            "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
-            "https://www.thetimes.co.uk/article/as-you-like-it-review-cerebral-and-playful-theres-a-lot-to-like-n9whq8c5l",
-            "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "marlise-off-broadway-2026",
-      "title": "Marlise",
-      "market": "off-broadway",
-      "openingDate": "2026-08-13",
-      "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "geo": "us",
-      "naiveQuery": "Marlise The Players Theatre review",
-      "counts": {
-        "truth": 1,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
-      },
-      "newFromNaive": [],
-      "missedByCensus": [
-        "https://donyc.com/events/2026/8/6/marlise-tickets"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Marlise\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Marlise\" review players",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Marlise The Players Theatre review",
-          "page": 0,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Marlise The Players Theatre review",
-          "page": 1,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 1,
-          "accepted": 1,
-          "urls": [
-            "https://donyc.com/events/2026/8/6/marlise-tickets"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-winters-tale-off-broadway-2026",
-      "title": "The Winter's Tale",
-      "market": "off-broadway",
-      "openingDate": "2026-08-12",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "us",
-      "naiveQuery": "The Winter's Tale Delacorte Theater review",
-      "counts": {
-        "truth": 25,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 25
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
-      },
-      "newFromNaive": [],
-      "missedByCensus": [
-        "https://www.amny.com/entertainment/theater/review-the-winters-tale-public-theater/",
-        "https://cititour.com/NYC_Broadway/The-Winters-Tale/1390",
-        "https://culturesauce.com/winters-tale-central-park-2026-off-broadway-review/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-11814823/Now-Shylocks-East-End-matriarch-PATRICK-MARMION-reviews-Merchant-Venice-1936.html",
-        "https://www.theguardian.com/stage/2023/feb/23/the-winters-tale-review-sam-wanamaker-playhouse-shakespeares-globe",
-        "https://www.independent.co.uk/independentpremium/culture/winters-tale-shakespeares-globe-review-b2288077.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNU91",
-        "https://www.nysun.com/article/lily-rabe-brings-summer-magic-to-shakespeares-winters-tale",
-        "https://nystagereview.com/2026/08/14/the-winters-tale-shakespeares-romance-right-for-summer/",
-        "https://www.newyorktheatreguide.com/reviews/the-winters-tale-off-broadway-review-lily-rabe-raul-esparza",
-        "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-the-park.html",
-        "https://www.offoffonline.com/offoffonline/2026/8/6/the-winters-tale",
-        "https://1minutecritic.com/winters-tale-public-theater-central-park-review-2026/",
-        "https://stageandcinema.com/2026/08/11/winters-tale-shakespeare-in-the-park-review/",
-        "https://www.talkinbroadway.com/page/ob/08_12_26.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/winters-tale-sam-wanamaker-playhouse-shakespeares-globe-review/",
-        "https://therecs.co.uk/the-winters-tale-shakespeare-in-the-park/",
-        "https://theaterlife.com/the-winters-tale/",
-        "https://theaterpizzazz.com/the-winters-tale-second-chances/",
-        "https://www.theatermania.com/news/review-a-problem-play-not-this-winters-tale-starring-raul-esparza-and-lily-rabe_1848887/",
-        "https://www.thestage.co.uk/reviews/reviews/the-winters-tale-review-at-sam-wanamaker-playhouse-and-globe-theatre-london",
-        "https://www.timeout.com/london/theatre/the-winters-tale-review-1",
-        "https://www.thetimes.co.uk/article/the-winters-tale-review-a-jolly-caper-that-needs-to-find-its-heart-qnkv8jlnk",
-        "https://www.vulture.com/article/theater-review-the-winters-tale-in-central-park.html",
-        "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shakespeare-in-the-park-5b36a9da"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Winter's Tale\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The Winter's Tale\" review delacorte",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"The Winter's Tale\" Shakespeare review",
-          "page": 0,
-          "geo": null,
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Winter's Tale Delacorte Theater review",
-          "page": 0,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Winter's Tale Delacorte Theater review",
-          "page": 1,
-          "geo": "us",
-          "raw": 0,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 25,
-          "accepted": 25,
-          "urls": [
-            "https://www.amny.com/entertainment/theater/review-the-winters-tale-public-theater/",
-            "https://cititour.com/NYC_Broadway/The-Winters-Tale/1390",
-            "https://culturesauce.com/winters-tale-central-park-2026-off-broadway-review/",
-            "https://www.dailymail.co.uk/tvshowbiz/article-11814823/Now-Shylocks-East-End-matriarch-PATRICK-MARMION-reviews-Merchant-Venice-1936.html",
-            "https://www.theguardian.com/stage/2023/feb/23/the-winters-tale-review-sam-wanamaker-playhouse-shakespeares-globe",
-            "https://www.independent.co.uk/independentpremium/culture/winters-tale-shakespeares-globe-review-b2288077.html",
-            "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJNU91",
-            "https://www.nysun.com/article/lily-rabe-brings-summer-magic-to-shakespeares-winters-tale",
-            "https://nystagereview.com/2026/08/14/the-winters-tale-shakespeares-romance-right-for-summer/",
-            "https://www.newyorktheatreguide.com/reviews/the-winters-tale-off-broadway-review-lily-rabe-raul-esparza",
-            "https://www.nytimes.com/2026/08/12/theater/winters-tale-review-shakespeare-in-the-park.html",
-            "https://www.offoffonline.com/offoffonline/2026/8/6/the-winters-tale",
-            "https://1minutecritic.com/winters-tale-public-theater-central-park-review-2026/",
-            "https://stageandcinema.com/2026/08/11/winters-tale-shakespeare-in-the-park-review/",
-            "https://www.talkinbroadway.com/page/ob/08_12_26.html",
-            "https://www.telegraph.co.uk/theatre/what-to-see/winters-tale-sam-wanamaker-playhouse-shakespeares-globe-review/",
-            "https://therecs.co.uk/the-winters-tale-shakespeare-in-the-park/",
-            "https://theaterlife.com/the-winters-tale/",
-            "https://theaterpizzazz.com/the-winters-tale-second-chances/",
-            "https://www.theatermania.com/news/review-a-problem-play-not-this-winters-tale-starring-raul-esparza-and-lily-rabe_1848887/",
-            "https://www.thestage.co.uk/reviews/reviews/the-winters-tale-review-at-sam-wanamaker-playhouse-and-globe-theatre-london",
-            "https://www.timeout.com/london/theatre/the-winters-tale-review-1",
-            "https://www.thetimes.co.uk/article/the-winters-tale-review-a-jolly-caper-that-needs-to-find-its-heart-qnkv8jlnk",
-            "https://www.vulture.com/article/theater-review-the-winters-tale-in-central-park.html",
-            "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shakespeare-in-the-park-5b36a9da"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
     }
   ],
-  "providerOutage": true,
+  "providerOutage": false,
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-08-17",
-      "generatedAt": "2026-08-17T11:59:00.900Z",
+      "date": "2026-08-24",
+      "generatedAt": "2026-08-24T12:02:22.884Z",
       "naivePages": 2,
       "shows": 5,
       "excluded": {},
-      "truthUrls": 54,
-      "onDiskUrls": 54,
-      "newFromNaive": 0,
+      "truthUrls": 125,
+      "onDiskUrls": 117,
+      "newFromNaive": 6,
       "families": {
-        "naive": 0,
-        "onDisk": 1,
-        "scoped": 0
+        "naive": 0.296,
+        "onDisk": 0.936,
+        "scoped": 0.136
       },
       "arms": {
-        "naive-p0": 0,
-        "naive-p1": 0,
-        "onDisk": 1,
-        "scoped-q0": 0,
-        "scoped-q1": 0,
-        "scoped-q2": 0
+        "naive-p0": 0.16,
+        "naive-p1": 0.136,
+        "onDisk": 0.936,
+        "scoped-q0": 0.08,
+        "scoped-q1": 0.104,
+        "scoped-q2": 0.024
       },
-      "combinedRecall": 1,
+      "combinedRecall": 0.952,
       "familyYield": {
-        "naive": 0,
-        "onDisk": 10.8,
-        "scoped": 0
+        "naive": 7.4,
+        "onDisk": 23.4,
+        "scoped": 3.4
       },
       "armYield": {
-        "naive-p0": 0,
-        "naive-p1": 0,
-        "onDisk": 10.8,
-        "scoped-q0": 0,
-        "scoped-q1": 0,
-        "scoped-q2": 0
+        "naive-p0": 4,
+        "naive-p1": 3.4,
+        "onDisk": 23.4,
+        "scoped-q0": 2,
+        "scoped-q1": 2.6,
+        "scoped-q2": 0.6
       },
       "armsFailed": {
         "naive-p0": 0,
@@ -706,38 +951,129 @@
       "unavailableArms": [],
       "byCategory": {
         "off-broadway": {
-          "shows": 3,
-          "truthUrls": 26,
+          "shows": 1,
+          "truthUrls": 7,
           "families": {
-            "naive": 0,
-            "onDisk": 1,
-            "scoped": 0
+            "naive": 0.571,
+            "onDisk": 0.857,
+            "scoped": 0.143
           }
         },
         "off-west-end": {
-          "shows": 2,
-          "truthUrls": 28,
+          "shows": 3,
+          "truthUrls": 91,
           "families": {
-            "naive": 0,
-            "onDisk": 1,
-            "scoped": 0
+            "naive": 0.341,
+            "onDisk": 0.934,
+            "scoped": 0.154
+          }
+        },
+        "west-end": {
+          "shows": 1,
+          "truthUrls": 27,
+          "families": {
+            "naive": 0.074,
+            "onDisk": 0.963,
+            "scoped": 0.074
           }
         }
       },
       "sampleIds": [
-        "anansi-the-spider-west-end-2026",
-        "the-house-of-the-negro-insane-off-broadway-2026",
         "as-you-like-it-globe-west-end-2026",
-        "marlise-off-broadway-2026",
-        "the-winters-tale-off-broadway-2026"
+        "spellbound-off-broadway-2026",
+        "abigails-party-west-end-2026",
+        "jeeves-takes-charge-west-end-2026",
+        "anansi-the-spider-west-end-2026"
       ]
     },
     "judgement": {
-      "verdict": "blind",
-      "reason": "0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend",
+      "verdict": "ok",
+      "reason": "3 search method(s) within 0.15 of their 2-run median",
       "regressions": [],
-      "latest": null,
-      "comparedArms": 0
+      "latest": {
+        "date": "2026-08-24",
+        "generatedAt": "2026-08-24T12:02:22.884Z",
+        "naivePages": 2,
+        "shows": 5,
+        "excluded": {},
+        "truthUrls": 125,
+        "onDiskUrls": 117,
+        "newFromNaive": 6,
+        "families": {
+          "naive": 0.296,
+          "onDisk": 0.936,
+          "scoped": 0.136
+        },
+        "arms": {
+          "naive-p0": 0.16,
+          "naive-p1": 0.136,
+          "onDisk": 0.936,
+          "scoped-q0": 0.08,
+          "scoped-q1": 0.104,
+          "scoped-q2": 0.024
+        },
+        "combinedRecall": 0.952,
+        "familyYield": {
+          "naive": 7.4,
+          "onDisk": 23.4,
+          "scoped": 3.4
+        },
+        "armYield": {
+          "naive-p0": 4,
+          "naive-p1": 3.4,
+          "onDisk": 23.4,
+          "scoped-q0": 2,
+          "scoped-q1": 2.6,
+          "scoped-q2": 0.6
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0,
+          "scoped-q2": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 1,
+            "truthUrls": 7,
+            "families": {
+              "naive": 0.571,
+              "onDisk": 0.857,
+              "scoped": 0.143
+            }
+          },
+          "off-west-end": {
+            "shows": 3,
+            "truthUrls": 91,
+            "families": {
+              "naive": 0.341,
+              "onDisk": 0.934,
+              "scoped": 0.154
+            }
+          },
+          "west-end": {
+            "shows": 1,
+            "truthUrls": 27,
+            "families": {
+              "naive": 0.074,
+              "onDisk": 0.963,
+              "scoped": 0.074
+            }
+          }
+        },
+        "sampleIds": [
+          "as-you-like-it-globe-west-end-2026",
+          "spellbound-off-broadway-2026",
+          "abigails-party-west-end-2026",
+          "jeeves-takes-charge-west-end-2026",
+          "anansi-the-spider-west-end-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
     }
   }
 }

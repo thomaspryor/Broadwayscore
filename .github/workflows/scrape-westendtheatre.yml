@@ -120,6 +120,15 @@ jobs:
         # reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: pushes to broadway-review-texts, which push-with-retry.sh
+          # categorically excludes from the Git Data API fallback (no
+          # protected-field reconciliation there yet) — the local
+          # fetch/rebase/push loop is the only path, and the default 240s
+          # deadline was self-aborting after ~2 real cycles under this repo's
+          # commit churn ("All push attempts failed after 5 attempts" was
+          # misleading; only 2 ever ran — task #458's documented failure
+          # mode). Job has 35min timeout with ~13min headroom past this step.
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

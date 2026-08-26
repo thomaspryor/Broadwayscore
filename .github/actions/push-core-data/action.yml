@@ -211,6 +211,15 @@ runs:
           # a backoff + retry of the push itself when rate-limited; any other
           # failure falls through to the existing reconciliation dance below,
           # unchanged.
+          # Guarded with `|| DECISION=stop:decision-error`: this runs under
+          # `bash -e`, and a bare `DECISION=$(...)` assignment DOES trigger
+          # errexit if the command substitution exits non-zero (e.g.
+          # github-rate-limit-retry.js throws — missing/unreadable module,
+          # unexpected stderr shape). Unguarded, that would kill the entire
+          # retry loop on attempt 1 of ANY push conflict, before the existing
+          # fetch/rebase/reconcile fallback below ever runs — the same
+          # "one bad command kills all 5 retries" bug class as the amend
+          # guards above (task #1911 second-opinion review).
           DECISION=$(PUSH_STDERR_FILE="$PUSH_STDERR_FILE" ATTEMPT="$i" node -e "
             const fs = require('fs');
             const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
@@ -218,7 +227,7 @@ runs:
             const attempt = Number(process.env.ATTEMPT);
             const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
             console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
-          ")
+          ") || DECISION="stop:decision-error"
           rm -f "$PUSH_STDERR_FILE"
 
           case "$DECISION" in
@@ -341,6 +350,27 @@ runs:
               git show origin/main:"$f" > "/tmp/remote-core-data/$f" 2>/dev/null || true
             fi
           done < /tmp/.core-data-registry-files
+
+          # Defensive: `git pull --rebase` refuses OUTRIGHT ("You have
+          # unstaged changes") on any dirty working tree, before it even
+          # attempts a rebase. Live incident (task #1911 follow-up, run
+          # 32614795280, 2026-08-23): iteration 1 reconciled+amended cleanly,
+          # but iteration 2's rebase call refused this way every time,
+          # burning all 5 attempts with no actual conflict ever in play. This
+          # exact class of failure could never surface before the amend
+          # guards above existed — any earlier amend refusal ("would make it
+          # empty") crashed the whole script on iteration 1, so the loop
+          # never lived long enough to reach a SECOND iteration and expose
+          # it. Whatever leaves the tree dirty between iterations (a
+          # reconciliation write not fully folded into its amend is the
+          # leading suspect, but unconfirmed from CI logs alone), folding it
+          # into the current commit — or, if that somehow still fails,
+          # hard-resetting to the last known-good commit — guarantees a
+          # clean tree before every rebase attempt regardless of cause.
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git add -A
+            git commit --amend --no-edit --allow-empty 2>/dev/null || git reset --hard HEAD
+          fi
 
           # Rebase with -X ours: our version wins on conflicts.
           # Post-rebase reconciliation below restores any remote-only changes
@@ -511,10 +541,38 @@ runs:
               ' 2>&1 || true
             fi
 
-            # Re-stage and amend if audience-buzz reconciliation changed the file
+            # Re-stage and amend if audience-buzz reconciliation changed the file.
+            # When the reconciled content converges back to exactly HEAD^'s
+            # tree (our contribution fully superseded by a concurrent push),
+            # git refuses an amend that would be empty. Left unguarded, that
+            # refusal (exit 1) runs under this step's `bash -e` and kills the
+            # ENTIRE retry loop on the spot — task #1911 traced the Opening
+            # Night Poller's week-long nightly failure streak to exactly this
+            # (reviews.json/critic-registry.json reconciling to a no-op
+            # almost every run, since the poller fires every ~15-45 min and
+            # frequently finds nothing new).
+            #
+            # UPDATED (task #1911 follow-up): originally guarded with plain
+            # `2>/dev/null || true` instead of --allow-empty, reasoning that
+            # HEAD already matches what we'd be committing so there was
+            # nothing to gain by amending. That reasoning missed that `git
+            # add` above ALREADY staged the new content before this line
+            # runs — a refused, swallowed amend leaves the index dirty
+            # (file staged but never committed) instead of leaving nothing
+            # to commit at all. That dirty state then makes the NEXT loop
+            # iteration's `git pull --rebase` refuse outright with "You have
+            # unstaged changes," burning the rest of the retry budget on a
+            # failure with no real push conflict in it (confirmed live, run
+            # 32614795280, 2026-08-23 — reachable in all 6 per-file amend
+            # blocks in this file, not just this one). `--allow-empty`
+            # closes that gap: the amend always succeeds, so `git add`ed
+            # content is always folded into a real commit and the tree
+            # stays clean. The tradeoff (occasional true no-op commits in
+            # the private repo's history) is strictly preferable to a
+            # retry loop that can no longer make progress.
             if ! git diff --quiet audience-buzz.json 2>/dev/null; then
               git add audience-buzz.json
-              git commit --amend --no-edit
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled audience-buzz.json"
             fi
           fi
@@ -522,7 +580,7 @@ runs:
           # Re-stage shows.json if reconciliation changed it (outside audience-buzz guard)
           if ! git diff --quiet shows.json 2>/dev/null; then
             git add shows.json
-            git commit --amend --no-edit
+            git commit --amend --no-edit --allow-empty 2>/dev/null || true
             echo "Amended commit with reconciled shows.json"
           fi
 
@@ -550,7 +608,9 @@ runs:
             ' 2>&1 || true
             if ! git diff --quiet commercial.json 2>/dev/null; then
               git add commercial.json
-              git commit --amend --no-edit
+              # See audience-buzz.json amend above for why this is guarded
+              # with `2>/dev/null || true` instead of left to crash the loop.
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled commercial.json"
             fi
           fi
@@ -572,7 +632,7 @@ runs:
             ' 2>&1 || true
             if ! git diff --quiet commercial-pending-review.json 2>/dev/null; then
               git add commercial-pending-review.json
-              git commit --amend --no-edit
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled commercial-pending-review.json"
             fi
           fi
@@ -604,7 +664,7 @@ runs:
             ' 2>&1 || true
             if ! git diff --quiet diary-shows.json 2>/dev/null; then
               git add diary-shows.json
-              git commit --amend --no-edit
+              git commit --amend --no-edit --allow-empty 2>/dev/null || true
               echo "Amended commit with reconciled diary-shows.json"
             fi
           fi
@@ -626,7 +686,12 @@ runs:
                 [ -n "$f" ] && [ -f "$f" ] && git add "$f"
               done < /tmp/.reconciled-registry-files
               if ! git diff --staged --quiet; then
-                git commit --amend --no-edit
+                # Same no-op-amend guard as the per-file blocks above — this
+                # is the block that most often hits it in practice (reviews.json
+                # via scripts/lib/merge-reviews-json.js reconciles to a byte-
+                # identical no-op almost every time two high-frequency writers
+                # like opening-night-poller race each other).
+                git commit --amend --no-edit --allow-empty 2>/dev/null || true
                 echo "Amended commit with reconciled: $(tr '\n' ' ' < /tmp/.reconciled-registry-files)"
               fi
             fi

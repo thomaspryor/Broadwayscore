@@ -14,21 +14,29 @@
  * record already means SOME run landed a later commit carrying the log, so
  * the state is recoverable.
  *
- * PERSISTENCE CAVEAT: when a failed push is the ONLY write in a CI job, the
- * log dies with the runner and never reaches origin — so this row is a
- * best-effort backstop (it reliably catches local runs and jobs that land a
- * later push), not a guarantee. The definitive protection remains the fix +
- * the ::error:: annotation.
+ * SOURCE (task: push-retry-failure telemetry, 2026-08-23): originally read
+ * the LOCAL data/audit/push-retry-failures.jsonl, which is gitignored and
+ * dies with the runner whenever a failed push is the only write in a CI job
+ * — this row reported "cannot measure" for months as a result. As of
+ * 2026-08-23, health-check.js instead reads a dedicated `push-retry-failures`
+ * git branch that scripts/record-push-retry-failure.js writes to
+ * SYNCHRONOUSLY (independent of whether the failing push itself ever lands),
+ * via scripts/lib/push-ledger-store.js's CAS pattern. The `entries === null`
+ * case below now means "the branch fetch genuinely failed this run" (a real
+ * network/auth error) — NOT "the branch doesn't exist yet", which readLedger()
+ * treats as fetchFailed=false/empty-content (a brand-new branch reads as a
+ * clean, empty ledger, not an error) — see readPushRetryFailureLedgerOrNull()
+ * in health-check.js and readLedger()'s fetchFailed contract in
+ * scripts/lib/push-ledger-store.js.
  *
- * ABSENT-VS-EMPTY (BRO-231 / task #1221): the ledger is gitignored/per-machine
- * — a fresh CI checkout never has it. The original version of this check
- * could not tell "file absent" from "file present with 0 recent failures"
- * and reported PASS for both, which is exactly the vacuous-gate class that
- * let 59 real local push failures render green in the CI-generated morning
- * digest. Callers MUST pass `null` (never `[]`) when the ledger could not be
- * read — health-check.js's readJsonlLedgerOrNull() already establishes this
- * null-means-absent contract for the sibling autofix-canary/throughput rows,
- * and this function follows the same rule.
+ * ABSENT-VS-EMPTY (BRO-231 / task #1221): the original version of this check
+ * could not tell "ledger unreadable" from "ledger present with 0 recent
+ * failures" and reported PASS for both, which is exactly the vacuous-gate
+ * class that let 59 real local push failures render green in the
+ * CI-generated morning digest. Callers MUST pass `null` (never `[]`) when the
+ * ledger could not be read — health-check.js's readJsonlLedgerOrNull() already
+ * establishes this null-means-absent contract for the sibling autofix-canary/
+ * throughput rows, and this function follows the same rule.
  */
 
 const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -46,8 +54,8 @@ function assessPushRetryDeadman(entries, opts = {}) {
     return {
       name: NAME,
       status: 'warn',
-      message: 'Cannot measure push-retry failures from this environment — data/audit/push-retry-failures.jsonl is gitignored, per-machine, and absent here. This row cannot judge push health from here.',
-      hint: 'Run `node scripts/health-check.js` on a machine where scripts/lib/push-with-retry.sh actually writes this log (or track the ledger) so push-retry failures become visible where the digest is generated.',
+      message: 'Cannot measure push-retry failures from this environment — the durable push-retry-failures ledger branch could not be fetched (a real fetch error, not the branch simply not existing yet — see readLedger()\'s fetchFailed contract in scripts/lib/push-ledger-store.js). This row cannot judge push health from here.',
+      hint: 'Run `git fetch origin push-retry-failures && git show origin/push-retry-failures:failures.jsonl` to check the branch directly, or re-run `node scripts/health-check.js` from an environment with network access to origin.',
     };
   }
 
