@@ -484,7 +484,11 @@ async function main() {
         const result = await routeAlert({
           conditionKey: `${CONDITION_PREFIX}${b.suite}:${b.file}::${b.name}`,
           title: `Time-bomb test armed: ${b.file} — ${b.name}`,
-          description: `[${b.suite}] ${b.file} — "${b.name}" passes today but fails once the clock moves +${opts.days}d, with no code change in between. Found by \`node scripts/audit-time-bomb-tests.js --days=${opts.days}\`.`,
+          // Front-loaded (clip-safety audit, 2026-08-26): a digest clips the
+          // head of this field, and a leading "[suite]" tag clipped to a bare
+          // "[" — an unreadable fragment naming nothing. The file and test
+          // name must be the opening words; the suite rides along inline.
+          description: `${b.file} — "${b.name}" (${b.suite} suite) passes today but fails once the clock moves +${opts.days}d, with no code change in between. Found by \`node scripts/audit-time-bomb-tests.js --days=${opts.days}\`.`,
           hint: `Make the stamp relative to run time (e.g. daysAgoISO(1)) instead of a hardcoded literal — do NOT widen the production freshness window to fit the literal. If genuinely clock-coupled by design, add a "// ${EXEMPT_MARKER} <reason>" comment to the test file instead.`,
           severity: 'warning',
           disposition: 'auto',
