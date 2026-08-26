@@ -83,6 +83,7 @@ let flagged = 0;
 let predicateMatches = 0;
 let llmConfirmed = 0;
 let llmRejected = 0;
+let llmErrors = 0;
 let cleared = 0;
 const candidates = [];
 
@@ -190,12 +191,26 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
       } catch (e) {
         decisions.push({ c, v: null, verdict: false, error: e.message });
         llmRejected++;
+        llmErrors++;
         console.log(`  ${i + 1}/${candidates.length} ${c.showId}/${c.file} → ERROR: ${e.message}`);
       }
       await new Promise(r => setTimeout(r, 1000));
     }
   } else {
     for (const c of candidates) decisions.push({ c, v: null, verdict: true });
+  }
+
+  // Fail LOUD, not quiet, on a total LLM outage (task/ship-check finding,
+  // card #1917): every candidate erroring (API down, key revoked, etc.) was
+  // previously indistinguishable from a legitimate "nothing confirmed" run —
+  // both print "Would clear: 0" and exit 0. That was tolerable when this
+  // script only ever ran attended; scheduled unattended (clear-stale-wrong-
+  // production-flags.yml, weekly) it would silently look like a clean no-op
+  // week after week during an outage instead of tripping the workflow's
+  // existing failure/notify path.
+  if (USE_LLM && candidates.length > 0 && llmErrors === candidates.length) {
+    console.error(`::error::All ${llmErrors} LLM verification call(s) errored (see ERROR lines above) — this looks like a total API outage or bad credential, not routine rejections. Refusing to report a false "nothing to clear" result. Investigate ANTHROPIC_API_KEY / API status, then re-run.`);
+    process.exit(1);
   }
 
   const toClear = decisions.filter(d => d.verdict);

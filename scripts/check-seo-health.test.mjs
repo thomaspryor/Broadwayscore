@@ -20,7 +20,7 @@ const {
   summarizeBotQueries,
   botDropExplainsDecline,
 } = require('./lib/seo-bot-query-signature.js');
-const { detectAnomalies, buildCWVPages } = require('./check-seo-health.js');
+const { detectAnomalies, buildCWVPages, findStaleSlugs, RICH_RESULTS_SLUGS } = require('./check-seo-health.js');
 
 // Real queries pulled from GSC for sc-domain:broadwayscorecard.com, 2026-07-01..14.
 const REAL_BOT_QUERIES = [
@@ -328,4 +328,37 @@ test('the real shows.json produces a diverse, non-hamilton-only sample', () => {
     !(showPages.length === 1 && showPages[0].endsWith('/show/hamilton')),
     'must not regress to sampling exactly one hardcoded show page'
   );
+});
+
+// --- findStaleSlugs (BRO-528) ---
+//
+// RICH_RESULTS_SLUGS hardcoded 'death-of-a-salesman-2024', which 404s (the
+// real slug has no year suffix) — checkRichResults() silently read
+// verdict:UNKNOWN for it every week instead of erroring. findStaleSlugs()
+// is the guard that catches this class of drift going forward.
+
+test('findStaleSlugs flags a slug with no matching show', () => {
+  const shows = [{ slug: 'hamilton' }, { slug: 'wicked' }];
+  const stale = findStaleSlugs(['hamilton', 'death-of-a-salesman-2024'], shows);
+  assert.deepEqual(stale, ['death-of-a-salesman-2024']);
+});
+
+test('findStaleSlugs returns empty when every slug matches a show', () => {
+  const shows = [{ slug: 'hamilton' }, { slug: 'wicked' }];
+  assert.deepEqual(findStaleSlugs(['hamilton', 'wicked'], shows), []);
+});
+
+// Adversarial review of the first cut of this fix (BRO-528): a malformed
+// shows.json (e.g. `{}` instead of `{shows: [...]}`) must not silently become
+// an empty catalog — that would false-positive EVERY slug as STALE_SLUG.
+test('findStaleSlugs returns null (not empty) for a malformed/non-array shows value', () => {
+  assert.equal(findStaleSlugs(['hamilton'], {}), null);
+  assert.equal(findStaleSlugs(['hamilton'], undefined), null);
+  assert.equal(findStaleSlugs(['hamilton'], null), null);
+});
+
+test('the current RICH_RESULTS_SLUGS all resolve against the real shows.json', () => {
+  const shows = require('../data/shows.json').shows;
+  const stale = findStaleSlugs(RICH_RESULTS_SLUGS, shows);
+  assert.deepEqual(stale, [], `these RICH_RESULTS_SLUGS entries no longer match a show: ${stale.join(', ')}`);
 });
