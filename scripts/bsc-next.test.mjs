@@ -1009,6 +1009,18 @@ test('matchesTaskWorkBranch: known gap — a branch that never mentions the task
   assert.ok(!matchesTaskWorkBranch('worktree-dead-dispatch-cap-infra-split', 1233));
 });
 
+// BRO-278: a Linear-namespaced taskId (`linear:BRO-278`) carries a git-illegal
+// colon that bsc-runner.js's gitSafeJobId() sanitizes to a dash BEFORE the
+// branch is created (`job/linear-BRO-278-<suffix>`) — matching the raw taskId
+// made this guard structurally blind to every Linear dispatch. Full coverage
+// of this fix + the end-to-end cross-session collision scenario lives in
+// tests/unit/dispatch-guard.test.mjs (the acceptance-criteria path for BRO-278);
+// this case just confirms bsc-next.js's own numeric-id path stays intact.
+test('matchesTaskWorkBranch: Linear-namespaced ids (colon sanitized to dash in the real branch name) also match — BRO-278', () => {
+  assert.ok(matchesTaskWorkBranch('job/linear-BRO-278-mtaf33qe', 'linear:BRO-278'));
+  assert.ok(!matchesTaskWorkBranch('job/linear-BRO-278-mtaf33qe', 'linear:BRO-27'));
+});
+
 test('findWorkBranchCollisions: only branches matching the task id AND carrying unlanded commits count', () => {
   const statuses = [
     { name: 'worktree-1233-infra-death-cap', unlandedCommits: ['abc123 fix the thing'] },
