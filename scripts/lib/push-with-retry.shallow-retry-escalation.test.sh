@@ -101,7 +101,7 @@ else
   echo "PASS[1]: first attempt used the smart --shallow-since bound"
 fi
 
-if ! grep -q "Escalating for the next retry" <<<"$out"; then
+if ! grep -q "Escalating to --deepen=2000 for the next retry" <<<"$out"; then
   echo "FAIL[2]: escalation warning never fired after the first bound was rejected. Output:"; echo "$out" | sed 's/^/    /'; fail=1
 else
   echo "PASS[2]: escalation triggered after the first bound failed fast (not a timeout)"
