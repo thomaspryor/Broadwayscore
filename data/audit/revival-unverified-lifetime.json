@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-25T07:44:44.557Z",
-  "scanned": 2023,
-  "showsWithViolations": 43,
-  "totalViolations": 43,
+  "updatedAt": "2026-08-26T12:44:25.650Z",
+  "scanned": 2024,
+  "showsWithViolations": 44,
+  "totalViolations": 44,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "as-you-like-it-globe-west-end-2026"
+    "the-real-ivanov-off-broadway-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -50,6 +50,7 @@
     "the-smile-of-her-off-west-end-2026",
     "abigails-party-west-end-2026",
     "disruption-off-broadway-2026",
+    "the-real-ivanov-off-broadway-2026",
     "hungry-women-off-broadway-2026"
   ],
   "hits": [
@@ -427,6 +428,15 @@
       "title": "Disruption",
       "openingDate": "2026-08-02",
       "message": "disruption-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-real-ivanov-off-broadway-2026",
+      "title": "The Real Ivanov",
+      "openingDate": "2026-08-25",
+      "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
