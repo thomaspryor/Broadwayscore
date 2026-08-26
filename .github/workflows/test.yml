@@ -2330,6 +2330,22 @@ jobs:
         # // breadcrumb-delete-ok: <reason> in the script.
         run: node scripts/audit-delete-without-breadcrumb.js
 
+      - name: Audit — push-with-retry.sh budget undersizing (advisory, card #1918)
+        # Card #1918 wires card #1910's scripts/audit-push-retry-budgets.js into
+        # CI so the #1842/#1891 undersizing class (retries exhausting well
+        # before PUSH_DEADLINE_SEC, or a push step's worst-case budget leaving
+        # under 15% job-timeout margin) surfaces on every push instead of
+        # waiting for the next live incident. Advisory only (owner-judgment
+        # call, card #1918's acceptance criteria) — no flag severity fails the
+        # build: the scan is heuristic (YAML-shape parsing can under-count —
+        # see the audit's own under-parsed-file cross-check) and #1910
+        # deliberately left ~190 shared-default-shape call sites unfixed by
+        # design (prioritize by contention, don't blanket-raise), so failing
+        # the build on "flagged" would block unrelated PRs on pre-existing,
+        # already-triaged debt. Script wraps main() in try/catch so a crash
+        # can't turn "advisory" into an accidental hard gate (see its header).
+        run: node scripts/audit-push-retry-budgets.js
+
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         # Blocking: a shared chokepoint nobody is forced to use changes
         # nothing (8 Linear issues filed via a hand-rolled issueCreate call,
