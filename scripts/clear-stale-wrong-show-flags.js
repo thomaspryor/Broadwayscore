@@ -27,10 +27,17 @@
  *   node scripts/clear-stale-wrong-show-flags.js --llm --apply  # write to disk
  *   node scripts/clear-stale-wrong-show-flags.js --show=ID      # filter to one show
  *   node scripts/clear-stale-wrong-show-flags.js --dir=PATH     # alt review-texts dir
+ *   node scripts/clear-stale-wrong-show-flags.js --llm --apply --force-bulk  # override surge guard
  *
  * Without --llm the predicate is the only gate — useful for high-confidence
  * subsets (e.g. files with manualClear=true that just need the disk flag
  * cleared so future scans match).
+ *
+ * Surge guard: refuses to --apply more than FIX_SURGE_THRESHOLD clears in one
+ * run without --force-bulk, same pattern as
+ * clear-stale-suspected-misattribution-flags.js / clear-wrong-show-blockers.js
+ * — a spike this large usually means the predicate or LLM regressed, not
+ * routine drift, and this writes unattended to the private review-texts corpus.
  */
 const fs = require('fs');
 const path = require('path');
@@ -38,9 +45,12 @@ const { isLikelyStaleWrongShow } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
+const FIX_SURGE_THRESHOLD = 25;
+
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const USE_LLM = args.includes('--llm');
+const FORCE_BULK = args.includes('--force-bulk');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const SHOWS_OVERRIDE = (args.find(a => a.startsWith('--shows=')) || '').split('=')[1] || '';
@@ -180,12 +190,18 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
     return;
   }
 
+  if (toClear.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+    console.error(`::error::Refusing to auto-clear ${toClear.length} stale wrongShow flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means the predicate or LLM second-opinion regressed, not routine drift — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
+    process.exit(1);
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
   for (const d of toClear) {
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
     const note = USE_LLM
-      ? `[2026-04-26 cleared stale wrongShow — predicate + Sonnet confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-8121]`
-      : `[2026-04-26 cleared stale wrongShow — predicate-only — Notion 34e637c5-416f-8121]`;
+      ? `[${today} cleared stale wrongShow — predicate + Sonnet confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-8121]`
+      : `[${today} cleared stale wrongShow — predicate-only — Notion 34e637c5-416f-8121]`;
     clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-show-flags.js', reason: note, wrongShowOnly: true });
     d.c.data.wrongShowClearedNote = note;
     fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (hadTrailingNewline ? '\n' : ''));
