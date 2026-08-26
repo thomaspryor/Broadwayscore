@@ -113,49 +113,65 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
     if [ "$BRANCH" != "main" ]; then
       echo "sync-memory-to-repo: main checkout is on '$BRANCH', not main — skipping commit" >&2
     elif [ -n "$(git -C "$REPO" status --porcelain -- cloud-memory/ 2>/dev/null)" ]; then
-      git -C "$REPO" add cloud-memory/
-      if git -C "$REPO" commit -q -m "chore: sync cloud-memory (session-stop auto-commit)" -- cloud-memory/; then
-        PUSHED=""
-        if git -C "$REPO" push -q origin main 2>/dev/null; then
-          PUSHED=1
-        else
-          # Behind origin (CI commits constantly) — merge (NEVER rebase; the
-          # repo's own policy, see merge-worktree-to-main.sh — `pull --rebase`
-          # silently drops merge commits) and retry once, under the shared
-          # push-mutex. Marker check runs AFTER acquiring the mutex (BRO-142
-          # ordering) so a marker that appears is genuinely foreign, not a
-          # race with this run's own check. On conflict, memory-sync-pull.js
-          # aborts cleanly instead of leaving .git/rebase-merge residue that
-          # wedges every OTHER session's push via push-with-retry.sh's own
-          # BRO-142 guard (task #1893).
-          command -v push_mutex_acquire >/dev/null 2>&1 && push_mutex_acquire
+      # Acquire the mutex and check for a pre-existing marker BEFORE the
+      # first git mutation, not just before the reconcile-on-push-failure
+      # branch — task #1893 follow-up (ship-check + manual repro): a
+      # pathspec-limited `git commit -q ... -- cloud-memory/` FAILS OUTRIGHT
+      # ("cannot do a partial commit during a merge") the instant MERGE_HEAD
+      # already exists, before this script's own reconcile logic ever runs.
+      # REBASE_HEAD is worse: `git commit` does NOT refuse for it, so a stray
+      # in-progress rebase from elsewhere would silently get an unrelated
+      # cloud-memory commit landed on top of it mid-resolution. Checking once,
+      # upfront, under the mutex (closing the same TOCTOU window
+      # push-with-retry.sh's ordering closes) avoids both.
+      command -v push_mutex_acquire >/dev/null 2>&1 && push_mutex_acquire
 
-          BLOCKED_MARKER=""
-          if command -v marker_staleness >/dev/null 2>&1; then
-            for _marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
-              _result=$(marker_staleness "$REPO" "$_marker")
-              _status="${_result%% *}"
-              if [ "$_status" != "none" ]; then
-                BLOCKED_MARKER="$_marker"
-                marker_staleness_message "$REPO" "$_marker" "$_status" "${_result#* }" >&2
-                break
-              fi
-            done
+      BLOCKED_MARKER=""
+      if command -v marker_staleness >/dev/null 2>&1; then
+        for _marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+          _result=$(marker_staleness "$REPO" "$_marker")
+          _status="${_result%% *}"
+          if [ "$_status" != "none" ]; then
+            BLOCKED_MARKER="$_marker"
+            echo "sync-memory-to-repo: existing $_marker found before this run touched anything — refusing to touch the checkout (BRO-142)." >&2
+            marker_staleness_message "$REPO" "$_marker" "$_status" "${_result#* }" >&2
+            break
           fi
+        done
+      fi
+      unset _result _status _marker
 
-          if [ -z "$BLOCKED_MARKER" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/memory-sync-pull.js" ]; then
-            node "$SCRIPT_DIR/lib/memory-sync-pull.js" "$REPO" >&2 || true
+      if [ -n "$BLOCKED_MARKER" ]; then
+        echo "sync-memory-to-repo: cloud-memory mirror left uncommitted — will retry next session-stop" >&2
+        command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
+      else
+        git -C "$REPO" add cloud-memory/
+        if git -C "$REPO" commit -q -m "chore: sync cloud-memory (session-stop auto-commit)" -- cloud-memory/; then
+          PUSHED=""
+          if git -C "$REPO" push -q origin main 2>/dev/null; then
+            PUSHED=1
+          else
+            # Behind origin (CI commits constantly) — merge (NEVER rebase;
+            # the repo's own policy, see merge-worktree-to-main.sh —
+            # `pull --rebase` silently drops merge commits) and retry once,
+            # still under the same mutex hold from above (no re-check needed:
+            # nothing else could have started an operation here without
+            # first taking this mutex). On conflict, memory-sync-pull.js
+            # aborts cleanly instead of leaving .git/rebase-merge residue
+            # that wedges every OTHER session's push via
+            # push-with-retry.sh's own BRO-142 guard (task #1893).
+            if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/memory-sync-pull.js" ]; then
+              node "$SCRIPT_DIR/lib/memory-sync-pull.js" "$REPO" >&2 || true
+            fi
+            if git -C "$REPO" push -q origin main 2>/dev/null; then PUSHED=1; fi
           fi
-
-          command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
-
-          if git -C "$REPO" push -q origin main 2>/dev/null; then PUSHED=1; fi
+          if [ -n "$PUSHED" ]; then
+            echo "sync-memory-to-repo: cloud-memory committed and pushed to main" >&2
+          else
+            echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+          fi
         fi
-        if [ -n "$PUSHED" ]; then
-          echo "sync-memory-to-repo: cloud-memory committed and pushed to main" >&2
-        else
-          echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
-        fi
+        command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
       fi
     fi
   else
