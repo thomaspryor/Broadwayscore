@@ -49,7 +49,11 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-    "chat-noir-off-west-end-2026/standard--unknown.json"
+    "chat-noir-off-west-end-2026/standard--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theatrely--juan-a-ramirez.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
   ],
   "failed": [
     "paranormal-activity-2026/deadline--erik-pedersen.json",
@@ -284,7 +288,13 @@
     "the-lost-boys-2026/bloomberg--chris-rovzar.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
-    "the-rocky-horror-show-2026/british-theatre--unknown.json"
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/vulture--sara-holdren.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -324,11 +334,13 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "chat-noir-off-west-end-2026/standard--unknown.json"
+      "chat-noir-off-west-end-2026/standard--unknown.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -338,7 +350,9 @@
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "schmigadoon-2026/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -351,11 +365,12 @@
       "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "the-rocky-horror-show-2026/british-theatre--unknown.json",
+  "lastProcessed": "avenue-q-west-end-2026/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -436,6 +451,17 @@
       "event": "bb-session",
       "session": "fafc593d",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-26T21:42:50.603Z",
+      "event": "bb-session",
+      "session": "39b34211",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-26T21:42:50.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
