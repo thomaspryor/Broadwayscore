@@ -59,6 +59,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
 // gitSafeJobId for matchesTaskWorkBranch's git-ref sanitization (BRO-278);
@@ -400,9 +401,68 @@ function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claud
 // must read as "not alive," because the failure cost is inverted — this
 // signal only ever SUPPRESSES a dead-dispatch refusal, so erring toward
 // "alive" would let a truly-dead task dodge the guard it exists to enforce.
-function sessionAliveForTask(taskId, { readLeaseFn = readLease, isAliveFn = pidLooksLikeClaude } = {}) {
+//
+// pidLooksLikeClaude ALONE is not enough here (adversarial review, two
+// independent passes converged on the same finding — Codex + a Claude
+// codebase review, 2026-08-26): it only re-checks that the pid's CURRENT
+// argv looks like `claude`, never that it's the SAME process the lease was
+// written for. A lease left behind by a hard crash (no releaseLease() ever
+// ran) is stale; if the OS later recycles that exact pid number onto an
+// unrelated claude process (e.g. the owner opening a manual session),
+// isAliveFn alone would say "alive" and this function would silently erase
+// every historical 'dead' breadcrumb for the task, un-refusing a redispatch
+// with zero downstream net to catch it — bsc-next.js's cmux-tab dispatch
+// path has no independent lease check the way the headless path's own
+// acquireLease() does. pidStartedNear cross-checks the pid's actual process
+// start time against the lease's acquiredAt: a legitimate holder's process
+// starts within seconds of its own lease write (acquireLease() writes the
+// lease immediately before spawn); a later, recycled pid necessarily starts
+// well after. Fails safe toward "not confirmed" (false) on any ps error or
+// unparseable timestamp — same fail-direction as the rest of this function.
+const PID_START_GRACE_MS = 10 * 60 * 1000; // spawn + boot time, generous
+
+// `ps -o etime=` (elapsed time, `[[dd-]hh:]mm:ss`) rather than `lstart=`
+// (absolute local-time-with-no-offset, e.g. "Wed Aug 26 15:00:03 2026") —
+// lstart is unparseable against an ISO/UTC lease timestamp without knowing
+// the machine's local offset, which bit the first cut of this function
+// (macOS EDT vs. lease.acquiredAt's UTC read 4 hours "late" and false-failed
+// every real case). etime is a pure duration, immune to timezone entirely.
+function parseElapsedMs(etime) {
+  const s = String(etime).trim();
+  const dashIdx = s.indexOf('-');
+  const days = dashIdx === -1 ? 0 : parseInt(s.slice(0, dashIdx), 10);
+  const rest = dashIdx === -1 ? s : s.slice(dashIdx + 1);
+  const parts = rest.split(':').map((n) => parseInt(n, 10));
+  if (Number.isNaN(days) || parts.some(Number.isNaN) || (parts.length !== 2 && parts.length !== 3)) return null;
+  const [h, m, sec] = parts.length === 3 ? parts : [0, parts[0], parts[1]];
+  return (((days * 24 + h) * 60 + m) * 60 + sec) * 1000;
+}
+
+function pidStartedNear(pid, sinceIso, { execFn = execFileSync, nowMs = Date.now() } = {}) {
+  if (!pid || !sinceIso) return false;
+  const since = Date.parse(sinceIso);
+  if (Number.isNaN(since)) return false;
+  let out;
+  try {
+    out = execFn('ps', ['-o', 'etime=', '-p', String(pid)], { encoding: 'utf8' });
+  } catch { return false; }
+  const elapsedMs = parseElapsedMs(out);
+  if (elapsedMs == null) return false;
+  const started = nowMs - elapsedMs;
+  // A tiny negative slop (clock skew / lease written a beat after spawn on
+  // some paths) is tolerated; only "started well AFTER the lease" is treated
+  // as a mismatch — that's the recycled-pid shape this guards against.
+  return started - since < PID_START_GRACE_MS;
+}
+
+function sessionAliveForTask(taskId, { readLeaseFn = readLease, isAliveFn = pidLooksLikeClaude, pidStartedNearFn = pidStartedNear } = {}) {
   const lease = readLeaseFn(taskId);
-  return Boolean(lease && lease.pid && isAliveFn(lease.pid));
+  if (!lease || !lease.pid || !isAliveFn(lease.pid)) return false;
+  // No acquiredAt on the lease (shouldn't happen — acquireLease() always
+  // stamps one) means we can't cross-check identity; fail toward not-alive
+  // rather than trusting a bare pid match.
+  if (!lease.acquiredAt) return false;
+  return pidStartedNearFn(lease.pid, lease.acquiredAt);
 }
 
 // Notion-mirror convenience: extract an embedded `[notion:<uuid>]` tag from a
@@ -860,6 +920,7 @@ module.exports = {
   CLOSED_CARD_STATUSES,
   checkDeadDispatch,
   sessionAliveForTask,
+  pidStartedNear,
   notionIdOf,
   loadLinearMirrorMapping,
   liveLinearCounterpart,

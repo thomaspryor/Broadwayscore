@@ -415,11 +415,16 @@ test('checkDeadDispatch: Linear-namespaced taskId (linear:BRO-N) gets the same s
   assert.equal(refusal, null);
 });
 
-test('sessionAliveForTask: true only when a lease exists AND its pid is confirmed alive; false on missing lease, missing pid, or a dead/recycled pid', () => {
-  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => null, isAliveFn: () => true }), false);
-  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: null }), isAliveFn: () => true }), false);
-  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123 }), isAliveFn: () => false }), false);
-  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123 }), isAliveFn: (pid) => pid === 123 }), true);
+// Full coverage (including the pidStartedNear recycled-pid cross-check)
+// lives in scripts/lib/dispatch-guards.test.mjs, where sessionAliveForTask
+// is actually defined — this is just a boundary smoke test confirming the
+// bsc-next.js re-export wires the same behavior.
+test('sessionAliveForTask: true only when a lease exists, its pid is confirmed alive, AND it started near the lease; false otherwise', () => {
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => null, isAliveFn: () => true, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: null, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: () => true, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: () => false, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123 }), isAliveFn: () => true, pidStartedNearFn: () => true }), false); // no acquiredAt
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: (pid) => pid === 123, pidStartedNearFn: () => true }), true);
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {
