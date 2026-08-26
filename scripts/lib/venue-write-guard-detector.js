@@ -83,6 +83,17 @@ const SAFE_FALLBACK_RE = /^(?:null|undefined)$/i;
 function isGuardCallDefeatedByFallback(rhs) {
   const idx = rhs.search(GUARD_CALL_RE);
   if (idx === -1) return false;
+
+  // Reversed form: `raw || sanitizeVenueForWrite(raw)` — the guard call is
+  // ITSELF the fallback of an earlier `||`/`??`. JS short-circuits, so a
+  // truthy `raw` writes unsanitized and the guard call never even runs —
+  // found live by a second adversarial-review pass, after the tail-fallback
+  // check below was already fixed for the forward form. Checked by looking
+  // at what immediately precedes the call (ignoring whitespace): if it's
+  // `||`/`??`, the call is a fallback, not the primary expression.
+  const before = rhs.slice(0, idx);
+  if (/(?:\|\||\?\?)\s*$/.test(before)) return true;
+
   const afterCallStart = rhs.indexOf('(', idx);
   const closeIdx = findMatchingParen(rhs, afterCallStart);
   if (closeIdx === -1) return false;

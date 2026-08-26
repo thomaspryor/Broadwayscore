@@ -169,6 +169,26 @@ test('isGuardCallDefeatedByFallback: true for || <non-null>, false for bare call
   assert.equal(isGuardCallDefeatedByFallback('candidate.venue'), false);
 });
 
+test('raw || sanitizeVenueForWrite(raw) is ALSO defeated — the guard call is the fallback, JS short-circuits around it', () => {
+  // Reversed form of the same bug, found by a second adversarial-review
+  // pass after the forward form (`guard(x) || x`) was already fixed: if
+  // `raw` is truthy, `sanitizeVenueForWrite(raw)` never even runs, so the
+  // unsanitized value is written directly.
+  const src = `function go(raw) { return { venue: raw || sanitizeVenueForWrite(raw) }; }`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+  assert.equal(isGuardCallDefeatedByFallback('raw || sanitizeVenueForWrite(raw)'), true);
+  assert.equal(isGuardCallDefeatedByFallback('a ?? sanitizeVenueForWrite(a)'), true);
+});
+
+test('a ternary with the guard call in one branch is NOT mistaken for the reversed-fallback shape', () => {
+  // `cond ? sanitizeVenueForWrite(x) : null` has non-`||`/`??` text before
+  // the call (`cond ? `) — must stay guarded.
+  assert.equal(isGuardCallDefeatedByFallback('cond ? sanitizeVenueForWrite(x) : null'), false);
+  const src = `const entry = { venue: category ? sanitizeVenueForWrite(candidate.venue) : null };`;
+  assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
 // --- hardcoded placeholder-marker strings are NOT treated as safe (adversarial-review finding) ---
 
 test('a hardcoded "TBA" literal is flagged — it is exactly the placeholder value sanitizeVenueForWrite() rejects', () => {
