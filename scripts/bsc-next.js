@@ -629,6 +629,11 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         succession: true,
         successionOf: (typeof args['succession-of'] === 'string' && args['succession-of']) || null,
         successionDepth: newDepth,
+        // Task #1904 — the same live cmux terminal-runtime count both
+        // fresh-dispatch launch rows carry. Omitted here originally, which
+        // left every succession launch out of the ledger correlation between
+        // dead launches and terminal-runtime pressure.
+        liveRuntimes: res.liveRuntimes ?? null,
       });
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else if (res.refusedForCapacity && !res.workspaceRef) {

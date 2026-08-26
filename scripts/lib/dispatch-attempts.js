@@ -82,6 +82,36 @@ const CMUX_LANE = 'workspace';
 // and would otherwise keep inflating the dead rate for another week.
 const RECONCILING_EVENTS = new Set(['vanished', 'prune-closed', 'remapped']);
 
+// The one `dead` writer the reconciling rule must NOT disown (/code-review
+// finding 6, decided deliberately 2026-08-26 — this module feeds the very
+// metric card #1904 is judged on, so quietly deflating it would be the worst
+// possible place to be wrong).
+//
+// Enumerated every writer of a `dead` row before deciding:
+//  1. dispatch-ledger.js failedLaunchEntries — shape 1, resolved by the pair
+//     window ABOVE this rule, so already immune.
+//  2. dispatch-ledger.js deadBreadcrumbs — only ever journals refs cmux STILL
+//     LISTS, so a vanished/prune-closed row on that ref necessarily means cmux
+//     recycled it and the death belongs to the next occupant. Its writer-side
+//     guard now refuses to emit new ones at all.
+//  3. bsc-prune.js's no-payload reaper — CLOSES the workspace itself and then
+//     writes {event:'dead', reason:'no-payload'}. This is the only writer that
+//     can legitimately produce a real death sitting behind a reconciling row
+//     on its own ref, so it is the only one exempted.
+//
+// Measured on the real ledger (8,822 rows) at decision time: 18 dead rows are
+// currently excluded by the reconciling rule — 13 targeting a verified launch,
+// 5 an unverified one — and their launch→death gaps run from 9 hours to 31
+// DAYS, i.e. every one is a recycled ref. Two candidate discriminators were
+// rejected on that data: excluding only `unverified` attempts, and requiring
+// the reconciling row to postdate the launch by more than the verify budget.
+// Both would have re-attributed multi-week-stale recycled-ref deaths to
+// long-finished tasks, INFLATING the rate with false deaths — the opposite of
+// the failure they were meant to prevent. All 5 no-payload rows in the ledger
+// today are already attributed, so this exemption changes no current number;
+// it is purely a guard against the one shape that could go wrong.
+const SELF_CLOSING_DEAD_REASONS = new Set(['no-payload']);
+
 // Any workspaceRef without a "prefix:" shape (the real ledger has
 // "live-session-manual"). Bucketed rather than dropped so byLane always
 // accounts for every launch.
@@ -195,7 +225,11 @@ function foldAttempts(entries) {
     // isn't this attempt's, and there is no launch row for the current
     // occupant — so it joins unattributedDeadCount (surfaced, never folded
     // into the rate) rather than being silently dropped.
-    const reconciledTs = (reconciledByRef.get(ref) || [])
+    // …with ONE exemption: a writer that closed the workspace ITSELF and then
+    // journaled the death owns that death outright, whatever reconciling row
+    // its own close left on the ref. See SELF_CLOSING_DEAD_REASONS.
+    const selfClosed = SELF_CLOSING_DEAD_REASONS.has(e.reason);
+    const reconciledTs = !selfClosed && (reconciledByRef.get(ref) || [])
       .some((t) => t !== null && t >= attempts[target].ts && t <= deadTs);
     if (reconciledTs) { unattributedDeadCount++; continue; }
     if (!attempts[target].dead) {
