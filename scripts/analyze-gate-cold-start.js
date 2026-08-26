@@ -101,24 +101,24 @@ async function main() {
 
   // Person → arm from the FIRST RESOLVED flag response in-window (sticky
   // assignment means later responses should agree; first-wins makes the
-  // mapping stable). CRITICAL: must exclude unresolved responses from the
-  // argMin, not just from the final arm mapping. PostHog's getFeatureFlag()
-  // fires $feature_flag_called on EVERY call, including the ones the client
-  // makes before the flags network request has returned (ProGateContext's
-  // poll loop calls getFeatureFlag every 250ms until it gets a real value) —
-  // for the overwhelming majority of real sessions that FIRST call resolves
-  // to null a fraction of a second before the real 'control'/'cold-start'
-  // value lands on the very next call. Taking argMin over ALL responses
-  // (2026-07-21 – 2026-08-26 version) picked that premature null as "the"
-  // arm for ~95%+ of genuinely-exposed people, misclassifying them as
-  // 'unexposed' and excluding them from the whole comparison — diagnosed via
-  // scripts/diagnose-gate-cold-start-join.js (2026-08-26), which found 2,014
-  // real control-arm + 813 real cold-start-arm people with client-stamped
-  // gate_modal_shown events against only 51 + 49 "exposed" by this query.
-  // Restricting the argMin candidates to resolved responses only fixes this
-  // while preserving the existing behavior for someone whose flag truly
-  // never resolves (every row null) — they still fall through to unmapped/
-  // 'unexposed' below, which is correct.
+  // mapping stable). Excludes unresolved (null) responses from the argMin
+  // candidates — PostHog's getFeatureFlag() fires $feature_flag_called on
+  // every call, including the ones ProGateContext's poll loop makes before
+  // the flags network response lands, so an unfiltered argMin can pick a
+  // premature null over the real value a moment later.
+  //
+  // ROOT CAUSE (2026-08-26, diagnosed via scripts/diagnose-gate-cold-start-
+  // join.js after this script reported 0.00% captures/exposed in BOTH arms
+  // since launch): NOT the null-argMin issue above (real, worth keeping, but
+  // it barely moved the count). The actual cause is that PostHog's HogQL
+  // query API silently caps GROUP BY result sets at ~100 rows when no LIMIT
+  // is given — every GROUP BY query in this file was returning ~100 rows
+  // regardless of the true cardinality (confirmed: the exact same query with
+  // an explicit `LIMIT 100000` returned 21,234 rows — control:10,648 /
+  // cold-start:10,586 real exposed people, not 51/49). Every hogql() call
+  // below that returns MULTIPLE rows (GROUP BY) needs an explicit LIMIT well
+  // above any realistic result size; count(DISTINCT ...) scalar aggregates
+  // (a single row) were never affected.
   const exposure = await hogql(`
     SELECT person_id,
       argMin(JSONExtractString(properties,'$feature_flag_response'), timestamp) AS arm
@@ -127,7 +127,8 @@ async function main() {
       AND JSONExtractString(properties,'$feature_flag') = '${FLAG_KEY}'
       AND JSONExtractString(properties,'$feature_flag_response') IN ('control', 'cold-start')
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY person_id`);
+    GROUP BY person_id
+    LIMIT 1000000`);
   const personArm = new Map(exposure.map(([pid, arm]) => [pid, arm]));
 
   // ALL modal events per person in-window (label-agnostic — see header).
@@ -139,7 +140,8 @@ async function main() {
     WHERE ((event IN ('gate_modal_shown','gate_modal_dismissed') AND JSONExtractString(properties,'ab_cold_start') != '')
         OR (event = 'email_captured' AND JSONExtractString(properties,'trigger') != ''))
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY person_id, event`);
+    GROUP BY person_id, event
+    LIMIT 1000000`);
 
   const arms = { control: {}, 'cold-start': {}, unexposed: {} };
   const seen = { control: new Set(), 'cold-start': new Set(), unexposed: new Set() };
