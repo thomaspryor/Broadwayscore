@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-08-20T05:31:07.203Z",
-    "completedAt": "2026-08-20T05:35:36.691Z",
-    "totalReviews": 42767,
-    "processed": 45,
-    "skipped": 42534,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 273511,
-      "output": 15541,
-      "total": 697970
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-08-20T05:59:14.080Z",
-    "completedAt": "2026-08-20T05:59:16.643Z",
-    "totalReviews": 42766,
-    "processed": 0,
-    "skipped": 42765,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 109,
-      "total": 10929
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-20T06:25:17.255Z",
     "completedAt": "2026-08-20T06:25:20.163Z",
     "totalReviews": 42766,
@@ -293588,6 +293560,45 @@
       "input": 5584,
       "output": 340,
       "total": 14285
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-26T05:28:59.148Z",
+    "completedAt": "2026-08-26T05:46:28.349Z",
+    "totalReviews": 42777,
+    "processed": 9,
+    "skipped": 42761,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 72092,
+      "output": 3637,
+      "total": 188733
+    },
+    "errorDetails": [
+      {
+        "showId": "hungry-women-off-broadway-2026",
+        "outletId": "melissamaney",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "moulin-rouge-2019",
+        "outletId": "billboard",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-26T05:46:42.693Z",
+    "completedAt": "2026-08-26T05:50:52.665Z",
+    "totalReviews": 42777,
+    "processed": 48,
+    "skipped": 42519,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 277881,
+      "output": 15479,
+      "total": 705143
     },
     "errorDetails": []
   }
