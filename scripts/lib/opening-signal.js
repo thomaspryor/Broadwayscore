@@ -27,6 +27,7 @@
 const MIN_REVIEWS_BY_CATEGORY = {
   broadway: 5,
   'off-broadway': 3,
+  'off-off-broadway': 3,
   'west-end': 5,
   'off-west-end': 3,
   regional: 3,

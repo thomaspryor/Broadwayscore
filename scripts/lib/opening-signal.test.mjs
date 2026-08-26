@@ -41,6 +41,14 @@ test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () 
   assert.equal(minReviewsForCategory(undefined), 5, 'unknown category falls back to the strict default');
 });
 
+// BRO-159: this table used to have no 'off-off-broadway' key, so an enumerated
+// off-off-broadway show would fall through the `?? MIN_REVIEWS_DEFAULT` to the
+// Broadway threshold (5) instead of 3 — delaying its previews->open auto-flip.
+test('MIN_REVIEWS_BY_CATEGORY / minReviewsForCategory: off-off-broadway gets the Off-Broadway threshold', () => {
+  assert.equal(MIN_REVIEWS_BY_CATEGORY['off-off-broadway'], 3);
+  assert.equal(minReviewsForCategory('off-off-broadway'), 3);
+});
+
 test('reviewsRemainingForScore ports the score-buckets.ts logic, incl. T3-only +2', () => {
   // Plain category thresholds (tier1And2 undefined → no T3 penalty).
   assert.equal(reviewsRemainingForScore(3, 'off-broadway', undefined, false), 0);

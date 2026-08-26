@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 const mod = require('./send-opening-night-broadcast.js');
 const {
   recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH,
-  findShowsMissingConsensus, filterShowsWithConsensus,
+  findShowsMissingConsensus, filterShowsWithConsensus, findRecentlyOpenedShows,
 } = mod;
 
 // Stubs process.exit so filterShowsWithConsensus's exit path can be observed
@@ -239,6 +239,39 @@ test('filterShowsWithConsensus: does not exit when every show has consensus, ret
     assert.deepEqual(result, showsForEmail);
   });
   assert.deepEqual(calls.exitCodes, [], 'expected no process.exit call when consensus is present');
+});
+
+// BRO-159: findRecentlyOpenedShows' Broadway branch used to be a denylist
+// (exclude off-broadway/regional/London), so any future category value —
+// e.g. an enumerated 'off-off-broadway' — would default to Broadway-eligible
+// and reach real Broadway subscribers. Now it's an allowlist (category must
+// equal 'broadway' exactly), matching the West End branch's existing shape.
+test('findRecentlyOpenedShows: a hypothetical off-off-broadway category is NOT Broadway-broadcast-eligible', () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const shows = [
+    { showId: 'oob-show', status: 'open', openingDate: today, category: 'off-off-broadway', type: 'play' },
+  ];
+  const result = findRecentlyOpenedShows(shows, 2);
+  assert.deepEqual(result.map(s => s.showId), [], 'an off-off-broadway show must not enter the Broadway broadcast set');
+});
+
+test('findRecentlyOpenedShows: still includes true Broadway shows (allowlist did not break the golden path)', () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const shows = [
+    { showId: 'bway-show', status: 'open', openingDate: today, category: 'broadway', type: 'play' },
+  ];
+  const result = findRecentlyOpenedShows(shows, 2);
+  assert.deepEqual(result.map(s => s.showId), ['bway-show']);
+});
+
+test('findRecentlyOpenedShows: still excludes off-broadway and regional (pre-existing behavior preserved)', () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const shows = [
+    { showId: 'ob-show', status: 'open', openingDate: today, category: 'off-broadway', type: 'play' },
+    { showId: 'regional-show', status: 'open', openingDate: today, category: 'regional', type: 'play' },
+  ];
+  const result = findRecentlyOpenedShows(shows, 2);
+  assert.deepEqual(result.map(s => s.showId), []);
 });
 
 test('filterShowsWithConsensus: coalesced batch — drops only the show missing consensus, sends the rest, does NOT exit', () => {
