@@ -36,6 +36,29 @@ for (const review of reviews) {
   }
 }
 
+// Union with public/data/shows/{id}.json's `cs` field (the actual rendered
+// Critic Score — see scripts/lib/canonical-critic-scores.ts). reviews.json
+// alone is not the full picture: it doesn't carry blog-reviews-for-scoring.json
+// injections (see scripts/lib/load-reviews-with-blog.js, whose consumer list
+// this script was never added to) or any other future score input. Reading the
+// per-show slim files closes that class rather than one instance of it — and
+// they're already fresh here since generate-mobile-show-details.js always runs
+// immediately before this script in prebuild.sh (BRO-339).
+const slimShowsDir = path.join(outputDir, 'shows');
+if (fs.existsSync(slimShowsDir)) {
+  for (const show of shows) {
+    if (showsWithScores.has(show.id)) continue;
+    const slimPath = path.join(slimShowsDir, `${show.id}.json`);
+    if (!fs.existsSync(slimPath)) continue;
+    try {
+      const slim = JSON.parse(fs.readFileSync(slimPath, 'utf-8'));
+      if (typeof slim.cs === 'number') showsWithScores.add(show.id);
+    } catch {
+      // Corrupt/partial slim file — fall back to reviews.json-only signal
+    }
+  }
+}
+
 // Regional (non-NYC US) shows are hidden from the search index until the `regional`
 // feature flag is enabled — mirrors data-core regionalSlugAllowed() so search,
 // detail page, sitemap, and OG all light up together (never an orphaned indexed page).
