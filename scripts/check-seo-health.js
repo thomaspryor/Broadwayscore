@@ -55,18 +55,70 @@ const TARGET_KEYWORDS = [
   'broadway shows for tourists',
 ];
 
-// Key pages to check Core Web Vitals for (covers main page types)
-const CWV_PAGES = [
+// Static key pages to check Core Web Vitals for (covers main page types).
+// Show pages are appended dynamically — see sampleShowPages() below.
+const CWV_STATIC_PAGES = [
   `${SITE_HOST}/`,
   // /browse/best-broadway-musicals now 308-redirects to /guides/best-broadway-musicals
   // (guides feature migration) — PSI/Lighthouse was scoring the redirect stub, not the
   // real page, which is a plausible contributor to the erratic scores that triggered
   // card #311 (2026-07-21 CWV regression false-alarm investigation).
   `${SITE_HOST}/guides/best-broadway-musicals`,
-  `${SITE_HOST}/show/hamilton`,
   `${SITE_HOST}/west-end`,
   `${SITE_HOST}/off-broadway`,
 ];
+
+// Show pages are ~2800 of ~2900 routes and the heaviest page type on the site,
+// but CWV_PAGES used to hardcode exactly one of them (/show/hamilton) — so the
+// same single page got checked every week and every other show page's CWV was
+// unmonitored. Card #419: hamilton was found carrying 645KB of RSC payload;
+// sibling show pages had the identical defect with nothing to catch it.
+//
+// sampleShowPages() picks a rotating, stratified sample instead: bucketed by
+// category (broadway/off-broadway/west-end/off-west-end/regional, so every
+// market segment is represented every run) and rotated by ISO week number, so
+// re-running within the same week is reproducible (stable for tests/debugging)
+// while successive weeks work through the full catalog over time.
+const SHOW_PAGE_SAMPLE_SIZE = 12;
+
+function getIsoWeekNumber(date = new Date()) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function sampleShowPages(shows, { sampleSize = SHOW_PAGE_SAMPLE_SIZE, weekIndex = getIsoWeekNumber() } = {}) {
+  const eligible = (Array.isArray(shows) ? shows : []).filter(s => s && s.slug);
+  if (eligible.length === 0) return [];
+
+  const byCategory = new Map();
+  for (const show of eligible) {
+    const cat = show.category || 'unknown';
+    if (!byCategory.has(cat)) byCategory.set(cat, []);
+    byCategory.get(cat).push(show);
+  }
+  // Stable sort within each bucket so the rotation is reproducible run to run.
+  for (const list of byCategory.values()) list.sort((a, b) => a.slug.localeCompare(b.slug));
+
+  const categories = [...byCategory.keys()].sort();
+  const perCategory = Math.max(1, Math.floor(sampleSize / categories.length));
+  const picks = [];
+  for (const cat of categories) {
+    const list = byCategory.get(cat);
+    for (let i = 0; i < perCategory; i++) {
+      picks.push(list[(weekIndex * perCategory + i) % list.length].slug);
+    }
+  }
+  // De-dupe (small categories can wrap onto the same slug twice in one run).
+  return [...new Set(picks)].slice(0, sampleSize);
+}
+
+function buildCWVPages(shows) {
+  const showPages = sampleShowPages(shows).map(slug => `${SITE_HOST}/show/${slug}`);
+  return [...CWV_STATIC_PAGES, ...showPages];
+}
 
 // Google's "Good" CWV absolute thresholds
 const CWV_ABSOLUTE = {
@@ -845,6 +897,15 @@ async function checkCoreWebVitals() {
   // calls would just burn it 3x faster for no benefit.
   const RUNS_PER_URL = psKey ? 3 : 1;
 
+  let shows = [];
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    shows = data.shows || data;
+  } catch (err) {
+    console.log('  Could not read shows.json, skipping show-page CWV sampling');
+  }
+  const cwvPages = buildCWVPages(shows);
+
   const fetchOnce = async (url) => {
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
     // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
@@ -888,7 +949,7 @@ async function checkCoreWebVitals() {
     };
   };
 
-  for (const url of CWV_PAGES) {
+  for (const url of cwvPages) {
     try {
       let best = null;
       let rateLimited = false;
@@ -1518,4 +1579,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { detectAnomalies, detectCWVAnomalies };
+module.exports = { detectAnomalies, detectCWVAnomalies, sampleShowPages, buildCWVPages };

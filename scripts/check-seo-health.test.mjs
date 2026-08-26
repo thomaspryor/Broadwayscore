@@ -20,7 +20,7 @@ const {
   summarizeBotQueries,
   botDropExplainsDecline,
 } = require('./lib/seo-bot-query-signature.js');
-const { detectAnomalies } = require('./check-seo-health.js');
+const { detectAnomalies, sampleShowPages, buildCWVPages } = require('./check-seo-health.js');
 
 // Real queries pulled from GSC for sc-domain:broadwayscorecard.com, 2026-07-01..14.
 const REAL_BOT_QUERIES = [
@@ -294,4 +294,73 @@ test('a missing botSignature falls back to the old clicks+position guard', () =>
     history({ clicks: 1150, impressions: 89000, position: 9.4 })
   );
   assert.deepEqual(issues.map(i => i.type), [], 'clicks flat + position flat still suppresses');
+});
+
+// --- sampleShowPages / buildCWVPages (BRO-175) ---
+//
+// CWV_PAGES used to hardcode exactly one show page (/show/hamilton) out of
+// ~2800 show routes. These pin sampleShowPages() to pick a diverse,
+// reproducible-per-week set spanning every show category instead.
+
+const FIXTURE_SHOWS = [
+  ...Array.from({ length: 6 }, (_, i) => ({ slug: `bway-${i}`, category: 'broadway' })),
+  ...Array.from({ length: 6 }, (_, i) => ({ slug: `off-bway-${i}`, category: 'off-broadway' })),
+  ...Array.from({ length: 6 }, (_, i) => ({ slug: `we-${i}`, category: 'west-end' })),
+  ...Array.from({ length: 6 }, (_, i) => ({ slug: `owe-${i}`, category: 'off-west-end' })),
+  ...Array.from({ length: 6 }, (_, i) => ({ slug: `regional-${i}`, category: 'regional' })),
+];
+
+test('sampleShowPages picks more than one show page', () => {
+  const picks = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 3 });
+  assert.ok(picks.length > 1, `expected a diverse sample, got ${picks.length}`);
+});
+
+test('sampleShowPages spans every category present, not just one', () => {
+  const picks = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 3 });
+  const categories = new Set(
+    picks.map(slug => FIXTURE_SHOWS.find(s => s.slug === slug).category)
+  );
+  assert.equal(categories.size, 5, `expected all 5 categories represented, got ${[...categories]}`);
+});
+
+test('sampleShowPages is reproducible for the same weekIndex', () => {
+  const a = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 7 });
+  const b = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 7 });
+  assert.deepEqual(a, b);
+});
+
+test('sampleShowPages rotates its picks across different weekIndex values', () => {
+  const a = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 1 });
+  const b = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 2 });
+  assert.notDeepEqual(a, b, 'consecutive weeks should not pick the identical sample forever');
+});
+
+test('sampleShowPages never exceeds the requested sample size', () => {
+  const picks = sampleShowPages(FIXTURE_SHOWS, { weekIndex: 5, sampleSize: 10 });
+  assert.ok(picks.length <= 10);
+});
+
+test('sampleShowPages returns an empty array for empty/invalid input', () => {
+  assert.deepEqual(sampleShowPages([]), []);
+  assert.deepEqual(sampleShowPages(null), []);
+  assert.deepEqual(sampleShowPages(undefined), []);
+});
+
+test('buildCWVPages includes the static pages plus a diverse set of show pages', () => {
+  const pages = buildCWVPages(FIXTURE_SHOWS);
+  const showPages = pages.filter(url => url.includes('/show/'));
+  assert.ok(showPages.length > 1, `expected multiple show pages, got ${showPages.length}`);
+  assert.ok(pages.some(url => url.endsWith('/west-end')), 'static west-end page must survive');
+  assert.ok(pages.some(url => url.endsWith('/off-broadway')), 'static off-broadway page must survive');
+});
+
+test('the real shows.json produces a diverse, non-hamilton-only sample', () => {
+  const shows = require('../data/shows.json').shows;
+  const pages = buildCWVPages(shows);
+  const showPages = pages.filter(url => url.includes('/show/'));
+  assert.ok(showPages.length > 1, `expected multiple show pages sampled, got ${showPages.length}`);
+  assert.ok(
+    !(showPages.length === 1 && showPages[0].endsWith('/show/hamilton')),
+    'must not regress to sampling exactly one hardcoded show page'
+  );
 });
