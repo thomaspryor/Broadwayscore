@@ -237,3 +237,19 @@ The staybook incident above is the *junk-content* face of this gate. The worse f
 **Fix tonight (data layer):** re-attribute the file — rename to `<real-outlet>--<critic>.json`, set `outletId`/`outlet` to the domain's true outlet, keep the URL. Commit 01538871665. Then rebuild → score → rebuild → deploy. Result: prod rc 21 → 22.
 **Systemic fix:** BRO-2459 (resolve outletId from URL domain first; critic name only disambiguates within a matching domain; never fall back to a critic's best-known outlet; emit a `data/audit/` row whenever outletDomainUnvalidated fires so blocked reviews stop being invisible). Distinct from #1926, which hardened the guard rather than the upstream assignment.
 **Generalizes to:** any critic publishing on Substack, Medium, or a personal domain — increasingly common for T1-affiliated freelancers.
+
+## Gate: ensemble-scoreability-check rejects paywall stubs as `not_a_review` (2026-08-26, Paranormal Activity opening night)
+
+**Symptom:** prod review count drops silently hours after opening night (rc 22→21, cs 79.2→79.15). The lost review is a T1 whose body is a paywall bot stub.
+
+**Cause:** an LLM ensemble scoring run stamps `rejectionReason=not_a_review` / `rejectedBy=ensemble-scoreability-check` on a review-texts file. Both models reject on TRUNCATION, not content ("text is a preview"; gemini quotes the bot-stub boilerplate). The file's own `contentTierReason` already said `Truncation detected: nyt_bot_stub` — the pipeline knew and rejected anyway. The review's score was THUMB-derived (`dtliThumb=Up`, `scoreSource=thumb`) and never depended on the body.
+
+**Why the escape hatch didn't fire:** `hasIndependentExcerptScore()` in `scripts/lib/review-guards.js` requires `data.aggregatorStars != null`. It does not recognise `dtliThumb`/`bwwThumb`. Every thumb-scored paywalled T1 (NYT, WSJ, New Yorker, The Times) is one ensemble run away from vanishing.
+
+**Detection:** only the opening-night monitor's prod-vs-census diff caught it. No gate, alert or audit fired.
+
+**Data-level fix (repeatable tonight):** clear `rejectionReason`/`rejectedAt`/`rejectedBy`/`rejectionReasoning`, set `rejectionClearReason` + `manualReviewCleared` + all 8 protection fields, corroborate production identity from the census source (URL slug, publishDate==openingDate, venue named in body), then confirm `explainExclusion()===null` and `isIncludableForRebuild()===true` against the on-disk file. **This is not durable** — nothing stops a re-run re-stamping the same rejection.
+
+**Code fix:** BRO-2495. Extend `hasIndependentExcerptScore()` to accept thumb-derived scores; and make the ensemble scoreability check SKIP files whose `contentTierReason` matches a known bot-stub/truncation signal instead of classifying them non-reviews.
+
+**Related trap:** the same file was earlier nulled by a Weekly refresh (benign — thumb survived), which looked like a one-off. The narrow trigger ("score fields nulled") was the wrong thing to watch; the durable signal is *any* write to a thumb-scored paywalled T1.
