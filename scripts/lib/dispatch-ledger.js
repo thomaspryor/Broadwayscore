@@ -745,6 +745,27 @@ function openWorkspaceLaunchCount(entries, { epochTs, now } = {}) {
   return n;
 }
 
+// Raw count of 'launch' entries within a trailing window (task #1915,
+// dispatch-watchdog's flow-dead check). Deliberately simpler than
+// openWorkspaceLaunchCount above — that function answers "how many OPEN
+// tasks have an unreconciled launch," folding in terminal-event
+// resolution and the historical-exclusion grace period; this one answers
+// "did ANY launch happen recently at all," which needs none of that. A
+// dead flow (zero launches in the window) can't be masked by an event
+// happening to be terminal — a terminal entry is itself proof something
+// dispatched.
+function countRecentLaunches(entries, { now, windowMs }) {
+  if (!Number.isFinite(now)) throw new Error('countRecentLaunches requires now (ms epoch)');
+  const cutoff = now - windowMs;
+  let n = 0;
+  for (const e of entries) {
+    if (e.event !== 'launch' || !e.ts) continue;
+    const ts = Date.parse(e.ts);
+    if (Number.isFinite(ts) && ts > cutoff) n++;
+  }
+  return n;
+}
+
 // Conservative on purpose (owner escalation 2026-08-03 is the incident this
 // exists to prevent): a false "looks like restart" only costs one extra
 // sweep before parking resumes; a false "not a restart" wrongly parks live
@@ -1000,7 +1021,7 @@ module.exports = {
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
-  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
+  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,
   looksLikeRestart, RESTART_MIN_COUNT, RESTART_FRACTION,
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
   remapEntries,
