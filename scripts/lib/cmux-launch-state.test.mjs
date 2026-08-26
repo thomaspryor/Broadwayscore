@@ -128,3 +128,63 @@ test('the full 2026-07-31 timeline resolves to ONE workspace, adopted late', () 
   assert.deepEqual(actions, ['wait', 'wait', 'wait', 'wait', 'wait', 'ok']);
   assert.equal(actions.includes('retry'), false, 'a retry anywhere in this timeline is a duplicate session');
 });
+
+// ── Task #1904: cmux's terminal-runtime ceiling ────────────────────────────
+// Root-caused live 2026-08-26. Past ~29 live terminal runtimes cmux still
+// creates the workspace and still accepts the --command, but never attaches a
+// terminal (debug-terminals: runtime=0 ghostty=nil), so the command can never
+// run there. Nothing inside cmux rescues it; only a runtime freeing does.
+
+test('surface confirmed missing WHILE at the ceiling → fail immediately, never retry', () => {
+  const d = decideLaunchWait({
+    elapsedSec: 5, surfaceConfirmedMissing: true, atTerminalCapacity: true,
+    attempt: 1, maxAttempts: 2,
+  });
+  assert.equal(d.action, 'fail', 'the cap is app-wide, so a second workspace is equally doomed');
+  assert.equal(d.state, STATES.TERMINAL_RUNTIME_MISSING);
+  assert.match(d.reason, /never attached a terminal/);
+});
+
+test('a missing surface ALONE keeps waiting — healthy launches attach up to ~40s late', () => {
+  // Measured on the real machine: runtime-attach lag was 0.1s on seven
+  // dispatched tabs but 35.5s and 39.9s on two others. Failing on one signal
+  // here would be the #705 short-timeout-then-retry duplicate factory.
+  for (const elapsedSec of [1, 10, 35, 40, 89]) {
+    const d = decideLaunchWait({ elapsedSec, surfaceConfirmedMissing: true, atTerminalCapacity: false });
+    assert.equal(d.action, 'wait', `${elapsedSec}s with capacity available must keep waiting`);
+    assert.equal(d.state, STATES.AWAITING_INJECTION);
+  }
+});
+
+test('being at the ceiling alone never fails a launch that is actually working', () => {
+  // A workspace that got its terminal before the app filled up must not be
+  // killed by a capacity reading taken at create time.
+  assert.equal(decideLaunchWait({ elapsedSec: 5, atTerminalCapacity: true }).action, 'wait');
+  assert.equal(decideLaunchWait({ wrapperAlive: true, elapsedSec: 200, atTerminalCapacity: true, surfaceConfirmedMissing: true }).action, 'wait');
+  assert.equal(decideLaunchWait({ claudeRegistered: true, atTerminalCapacity: true, surfaceConfirmedMissing: true }).action, 'ok');
+});
+
+test('grace expiry splits swallowed injection from a missing terminal runtime', () => {
+  // Same elapsed time, same absent wrapper — only the surface signal differs,
+  // and it decides whether a second workspace is worth opening.
+  const swallowed = decideLaunchWait({ elapsedSec: 91, attempt: 1, maxAttempts: 2 });
+  assert.deepEqual([swallowed.action, swallowed.state], ['retry', STATES.INJECTION_NEVER_RAN]);
+
+  const noTerminal = decideLaunchWait({ elapsedSec: 91, attempt: 1, maxAttempts: 2, surfaceConfirmedMissing: true });
+  assert.deepEqual([noTerminal.action, noTerminal.state], ['fail', STATES.TERMINAL_RUNTIME_MISSING]);
+});
+
+test('a wrapper that ran and exited is still WRAPPER_EXITED, not a runtime problem', () => {
+  // If the wrapper ever ran, a terminal existed — whatever read-screen says now.
+  const d = decideLaunchWait({
+    elapsedSec: 120, wrapperEverSeen: true, surfaceConfirmedMissing: true, atTerminalCapacity: true,
+    attempt: 1, maxAttempts: 2,
+  });
+  assert.equal(d.state, STATES.WRAPPER_EXITED);
+});
+
+test('TERMINAL_RUNTIME_MISSING is a confirmed death, not a slow boot', () => {
+  // isSlowBootFailure drives deadConfirmed in cmux-launch.js: a slow boot must
+  // not be journaled as a corpse, but a workspace with no terminal is one.
+  assert.equal(isSlowBootFailure(STATES.TERMINAL_RUNTIME_MISSING), false);
+});

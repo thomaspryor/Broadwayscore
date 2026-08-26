@@ -79,6 +79,17 @@ function baseProbes(overrides = {}) {
     // path it was written for, not a real (and here undefined-behavior)
     // read-screen call against a fabricated workspace ref.
     terminalSurfaceAlive: () => true,
+    // Task #1904: MUST be stubbed for the same reason as cmuxExists/wake/
+    // terminalSurfaceAlive above — the default shells out to the real
+    // `cmux debug-terminals` and consults this MACHINE's learned ceiling, so
+    // once a real dispatch here has hit the cap, every launch in this file
+    // would be refused at the preflight and these tests would fail for a
+    // reason that has nothing to do with what they assert. "Capacity
+    // available, ceiling unknown" is the neutral answer that keeps each test
+    // exercising exactly the path it was written for.
+    terminalCapacity: () => ({ hasCapacity: true, known: false, liveRuntimes: null, ceiling: null, reason: 'stubbed', surfaces: null }),
+    // Nothing in this file should teach the real machine's ceiling file.
+    recordCapacityOutcome: () => ({ ceiling: null, changed: false, reason: 'stubbed' }),
     ...overrides,
   };
 }
@@ -400,4 +411,104 @@ test('readLaunchJournalEntry: a corrupt/non-object journal file reads as no entr
   } finally {
     try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
   }
+});
+
+// ── Task #1904: the terminal-runtime capacity preflight ────────────────────
+// Past cmux's ceiling, `new-workspace` still succeeds and still accepts
+// --command; it just never attaches a terminal, so the command can never run.
+// The only correct move is to not create the workspace at all.
+
+const AT_CAPACITY = {
+  hasCapacity: false, known: true, liveRuntimes: 29, ceiling: 29,
+  reason: 'cmux is at its terminal-runtime ceiling: 29 live terminal(s), cap observed at 29. Close finished tabs (bsc-prune) or restart cmux to free a runtime.',
+  surfaces: null,
+};
+
+test('launchCmuxSession: at the terminal-runtime ceiling it creates NOTHING and says why', () => {
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9100\n', stderr: '' }));
+  const res = launchCmuxSession({
+    title: 'capacity refusal', seed: 'seed text', seedKey: 'capacity-1904-a',
+    cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+    verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+    probes: { ...baseProbes(), newWorkspace: newWorkspaceMock, terminalCapacity: () => AT_CAPACITY },
+  });
+
+  assert.equal(res.ok, false);
+  assert.equal(res.atTerminalCapacity, true);
+  assert.equal(newWorkspaceMock.mock.callCount(), 0,
+    'creating a workspace that can never run its command is the whole waste this gate removes');
+  assert.equal(res.workspaceRef, null,
+    'no workspace means failedLaunchEntries() writes nothing — no phantom dead row, no burned dispatch attempt');
+  assert.match(res.reason, /ceiling/i);
+  assert.match(res.reason, /bsc-prune|restart cmux/, 'the refusal must name what actually frees a runtime');
+});
+
+test('launchCmuxSession: --force overrides the capacity gate, because the ceiling is a LEARNED number', () => {
+  // A learned number has to stay disprovable: if cmux ships a higher cap, the
+  // only evidence that can raise the ceiling is a launch that succeeds above
+  // it, and the gate is what would otherwise prevent that launch forever.
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9101\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    const res = launchCmuxSession({
+      title: 'forced past capacity', seed: 'seed text', seedKey: 'capacity-1904-b', force: true,
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: { ...baseProbes(), newWorkspace: newWorkspaceMock, terminalCapacity: () => AT_CAPACITY },
+    });
+    assert.equal(newWorkspaceMock.mock.callCount() > 0, true, 'force must reach cmux');
+    assert.equal(res.atTerminalCapacity, undefined, 'a forced launch is judged on what it actually did, not on the estimate');
+  } finally { listMock.mock.restore(); }
+});
+
+test('launchCmuxSession: an UNKNOWN capacity reading never blocks a launch', () => {
+  // debug-terminals is an undocumented command. If it vanishes or changes
+  // shape, dispatch must behave exactly as it does today.
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9102\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    launchCmuxSession({
+      title: 'unknown capacity', seed: 'seed text', seedKey: 'capacity-1904-c',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: newWorkspaceMock,
+        terminalCapacity: () => ({ hasCapacity: true, known: false, liveRuntimes: null, ceiling: null, reason: 'unknown', surfaces: null }),
+      },
+    });
+    assert.equal(newWorkspaceMock.mock.callCount() > 0, true);
+  } finally { listMock.mock.restore(); }
+});
+
+test('launchCmuxSession: a workspace with no terminal is reported dead-confirmed and NOT retried', () => {
+  // The bootstrap path: no ceiling is known yet, so the launch goes ahead, the
+  // surface is confirmed missing, and the grace expires with nothing ever
+  // running. That verdict must (a) be a confirmed death, (b) not spend a
+  // second workspace on an app-wide cap, and (c) teach the ceiling.
+  const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9103\n', stderr: '' }));
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  const learned = [];
+  try {
+    const res = launchCmuxSession({
+      title: 'no terminal attached', seed: 'seed text', seedKey: 'capacity-1904-d',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: newWorkspaceMock,
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 29, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => true,
+        atTerminalCapacity: () => false, // nothing learned yet — this is the FIRST hit
+        terminalSurfaceAlive: () => false,
+        recordCapacityOutcome: (o) => { learned.push(o); return { ceiling: o.liveRuntimesBefore, changed: true, reason: 'learned' }; },
+      },
+    });
+    assert.equal(res.ok, false);
+    assert.equal(res.state, 'terminal-runtime-missing');
+    assert.equal(res.deadConfirmed, true, 'a workspace with no terminal is a corpse, not a slow boot');
+    assert.equal(newWorkspaceMock.mock.callCount(), 1, 'the cap is app-wide — a second workspace would be equally doomed');
+    assert.deepEqual(learned, [{ liveRuntimesBefore: 29, outcome: 'runtime-missing' }],
+      'the first launch to hit the cap is what arms the preflight for every later dispatch');
+  } finally { listMock.mock.restore(); }
 });

@@ -607,6 +607,25 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     verifyTimeoutSec: 90, lateAdoptSec: 60, slowBootCapSec: 360,
   });
 
+  if (!res.ok && res.atTerminalCapacity) {
+    // Task #1904: a REFUSAL, not a failure. cmux is at its terminal-runtime
+    // ceiling, so nothing was created — there is no workspace to journal and
+    // no dead attempt to burn against this issue.
+    console.error(`[linear-next] LAUNCH REFUSED — ${res.reason}`);
+    console.error(`  Nothing was created for ${identifier}. Past this ceiling cmux opens the workspace and accepts the`);
+    console.error('  command but never attaches a terminal, so the command can never run there.');
+    console.error(`    node scripts/linear-next.js --id ${identifier} --headless   # needs no cmux terminal (0 dead in 158 launches)`);
+    console.error('    node scripts/bsc-prune.js                                    # owner-run: close finished tabs to free a runtime');
+    try {
+      appendLedgerEntryFn({
+        event: 'launch-failed', taskId, subject: pseudoTask.subject, workspaceRef: null, model,
+        failureReason: res.reason, atTerminalCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        terminalCeiling: res.terminalCeiling ?? null, linearId: issue.identifier, correlationId,
+      });
+    } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
+    process.exit(1);
+  }
+
   if (!res.ok) {
     console.error(`[linear-next] LAUNCH NOT VERIFIED (${res.reason}).`);
     try {
@@ -637,6 +656,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
+      // Task #1904 — see bsc-next.js's identical field for why the live cmux
+      // terminal-runtime count is worth carrying on every launch row.
+      liveRuntimes: res.liveRuntimes ?? null,
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 

@@ -33,6 +33,7 @@ const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
 const { preflightAuth } = require('./claude-cli.js');
 const { ensureAutoTitle } = require('./workspace-naming.js');
+const terminalCapacity = require('./cmux-terminal-capacity.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const CMUX_APP = '/Applications/cmux.app';
@@ -460,6 +461,15 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
     if (!startedFile) return false;
     try { return fs.existsSync(startedFile); } catch { return false; }
   });
+  // Task #1904. The two signals that separate "cmux never attached a terminal
+  // to this workspace" from "the injection is just slow": read-screen's
+  // confirmed-missing verdict (the EXISTING primitive — cmux-workspaces.js's
+  // terminalSurfaceConfirmedMissing, which is fail-OPEN, so a transient socket
+  // error reads as "not confirmed missing") and the app-wide runtime count.
+  const surfaceMissingProbe = probes.surfaceConfirmedMissing
+    || (ref => cmuxws.terminalSurfaceConfirmedMissing(ref));
+  const capacityProbe = probes.atTerminalCapacity
+    || (() => terminalCapacity.probeTerminalCapacity().hasCapacity === false);
   // probes.wake is the TEST seam and wins; wakeFn is how launchCmuxSession
   // observes fire-time (it must learn a wake happened even if this wait is
   // later interrupted by a throw — outcome-based tracking would leak the
@@ -479,6 +489,13 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   let wakeAttempted = false;
   let nextWakeAtSec = wakeAfterSec;
   let effectiveGraceSec = injectionGraceSec;
+  // Capacity is asked ONCE — the first poll at which the surface is confirmed
+  // missing — and cached. It is a whole-app property, so re-asking every 3s
+  // for six minutes would be ~120 pointless cmux round trips, and the answer
+  // only matters at the moment we are deciding whether this workspace can
+  // ever get a terminal.
+  let atTerminalCapacity = false;
+  let capacityAsked = false;
   for (;;) {
     const sampleAlive = wrapperProbe(marker);
     if (sampleAlive) missStreak = 0; else missStreak += 1;
@@ -529,9 +546,25 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
       nextWakeAtSec = elapsedSec + REWAKE_INTERVAL_SEC;
       wake(isFirstWake);
     }
+    // Only asked while nothing of this launch has ever run — once the wrapper
+    // has been seen, a terminal demonstrably exists and the whole question is
+    // moot (and decideLaunchWait resolves WRAPPER_EXITED before it looks at
+    // these anyway).
+    let surfaceConfirmedMissing = false;
+    if (!wrapperEverSeen && ws) {
+      surfaceConfirmedMissing = !!surfaceMissingProbe(ws.ref);
+      if (surfaceConfirmedMissing && !capacityAsked) {
+        capacityAsked = true;
+        atTerminalCapacity = !!capacityProbe();
+        if (atTerminalCapacity) {
+          console.error(`[cmux-launch] ${ws.ref}: no terminal surface AND cmux is at its terminal-runtime ceiling — this workspace can never run its command (task #1904). Not retrying: the cap is app-wide.`);
+        }
+      }
+    }
     const d = decideLaunchWait({
       claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
       attempt, maxAttempts, injectionGraceSec: effectiveGraceSec, slowBootCapSec,
+      surfaceConfirmedMissing, atTerminalCapacity,
     });
     if (d.action !== 'wait') return { ...d, wrapperAlive, tagAlive, wakeAttempted, elapsedSec: Math.round(elapsedSec) };
     if (d.state !== announced) {
@@ -549,6 +582,21 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
 // after the verify window, not never.
 function shouldAdoptLateStart(result, isAlive) {
   return !!(result && !result.ok && result.workspaceRef && isAlive);
+}
+
+// Fold a launch's verdict into the learned terminal-runtime ceiling (task
+// #1904). Best-effort by construction: a scratch-file write must never be
+// able to fail a launch that otherwise worked, and a ceiling that fails to
+// persist just means the next dispatch re-learns it. The probe seam mirrors
+// the wrapperAlive/claudeTagAlive convention used throughout this file.
+function recordCapacityOutcome(liveRuntimesBefore, outcome, probes = {}) {
+  if (!Number.isInteger(liveRuntimesBefore)) return null;
+  const record = probes.recordCapacityOutcome || terminalCapacity.recordLaunchOutcome;
+  try {
+    const learned = record({ liveRuntimesBefore, outcome });
+    if (learned && learned.changed) console.error(`[cmux-launch] ${learned.reason}`);
+    return learned;
+  } catch { return null; }
 }
 
 // Pure gate decision for the auth preflight (card #856) — extracted so the
@@ -669,6 +717,16 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 force means "I've confirmed the orphan is
  *                                 dead", never "skip checking whether it's
  *                                 alive" (card #1706 suggested approach).
+ *                                 It DOES bypass the terminal-capacity
+ *                                 preflight (task #1904): that gate refuses
+ *                                 on a LEARNED number, and a learned number
+ *                                 has to stay disprovable by a human who
+ *                                 decides to launch anyway. The launch then
+ *                                 either succeeds — which raises the ceiling
+ *                                 — or fails and confirms it. Bypassing a
+ *                                 capacity estimate is not the same class of
+ *                                 act as bypassing a liveness check, which is
+ *                                 why one is forceable and the other is not.
  * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
  *   seedFile/command are null only for the argument-validation refusals
  *   (BRO-2251) — those return before either is computed, since no seed/cmd
@@ -708,11 +766,10 @@ function pageAuthPreflightFailure(detail) {
 }
 
 function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
-  // force is intentionally unread here — see the @param note above. It exists
-  // as an explicit opt (rather than callers threading arbitrary extra fields
-  // through) so a test can assert the reclaim check below runs the same way
-  // whether or not it's set.
-  void force;
+  // force is deliberately NOT consulted by the reclaim check below — see the
+  // @param note. Its one effect is bypassing the terminal-capacity preflight
+  // (task #1904); everything between here and there behaves identically with
+  // or without it, which is what the reclaim tests assert.
 
   // Fail fast on a malformed call (BRO-2251) — before writing anything or
   // creating a workspace. See describeLaunchArgError's header for the exact
@@ -834,6 +891,43 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     }
   }
 
+  // Terminal-runtime capacity preflight (task #1904, root-caused live
+  // 2026-08-26). Deliberately here, beside the auth preflight, and NOT in
+  // bsc-next/linear-next: this is the one chokepoint every cmux dispatch
+  // already funnels through (both CLIs, the opening-night monitor launcher,
+  // and probe-cmux-launch.js), and duplicating a guard into two CLIs is the
+  // divergence linear-next.js's own header calls out.
+  //
+  // Past cmux's terminal-runtime ceiling, `new-workspace` still SUCCEEDS and
+  // still accepts --command — it just never attaches a terminal, so the
+  // command can never run. Creating the workspace anyway is pure waste: it
+  // burns a dead-attempt against the task, leaves a corpse tab, and (before
+  // this) spent up to four minutes discovering it. Refusing costs one ~100ms
+  // read-only probe and creates nothing, so failedLaunchEntries() writes
+  // nothing either (it returns [] with no workspaceRef).
+  //
+  // Fails OPEN in every uncertain case (see cmux-terminal-capacity.js) and
+  // carries the same kill-switch convention as the auth preflight above.
+  const capacity = (probes.terminalCapacity || terminalCapacity.probeTerminalCapacity)();
+  if (process.env.CMUX_CAPACITY_PREFLIGHT_DISABLED !== '1' && capacity.hasCapacity === false && !force) {
+    console.error(`[cmux-launch] REFUSING launch "${title}": ${capacity.reason}`);
+    return {
+      ok: false,
+      reason: capacity.reason,
+      atTerminalCapacity: true,
+      liveRuntimes: capacity.liveRuntimes,
+      terminalCeiling: capacity.ceiling,
+      // No workspace was created, so there is nothing to journal a death
+      // against and nothing to adopt later.
+      workspaceRef: null,
+      seedFile, command,
+    };
+  }
+  // The count that DECIDES the outcome is the one from before this launch's
+  // own workspace exists — comparing a post-create count would include this
+  // launch's runtime on the success path and not on the failure path.
+  const liveRuntimesBefore = capacity.liveRuntimes;
+
   // The SURVIVING workspace — the one attempt 2 left open. Deliberately reset
   // per attempt (Opus ship-check blocker, Codex): carrying attempt 1's ref
   // forward with `lastWs = ws || lastWs` meant that if attempt 2 could not
@@ -917,7 +1011,10 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
       if (surfaceAliveFn(ws.ref) !== false) {
         if (autoColor) setAutoColor(ws.ref);
-        return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
+        // cmux DID attach a terminal at this live-runtime count, which is the
+        // only evidence that can raise a ceiling learned too low (task #1904).
+        recordCapacityOutcome(liveRuntimesBefore, 'runtime-created', probes);
+        return { ok: true, ref: ws.ref, state: outcome.state, liveRuntimes: liveRuntimesBefore, seedFile, command };
       }
       // Confirmed dead by the one authoritative signal that disagrees with
       // wrapper+tag. Do NOT close it here — that is the same owner-approved
@@ -977,9 +1074,17 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     break; // 'fail' — keep survivingWs for the caller (and the late-adopt watch)
   }
   const slowBoot = isSlowBootFailure(outcome && outcome.state);
+  const noTerminal = (outcome && outcome.state) === STATES.TERMINAL_RUNTIME_MISSING;
+  // Learn the ceiling from the one verdict that proves it (task #1904). This
+  // is the bootstrap: the FIRST dispatch to hit the cap pays for the whole
+  // fleet, because the preflight above then refuses every subsequent one
+  // instead of opening another workspace that can never run its command.
+  if (noTerminal) recordCapacityOutcome(liveRuntimesBefore, 'runtime-missing', probes);
   const failed = {
     ok: false,
     state: (outcome && outcome.state) || STATES.INJECTION_NEVER_RAN,
+    atTerminalCapacity: noTerminal || undefined,
+    liveRuntimes: liveRuntimesBefore,
     // Distinct reasons, so callers and logs stop reporting every slow launch
     // as "cmux is dead" (card #705: that conflation is what made the owner
     // see "cmux breaks at least once a day").

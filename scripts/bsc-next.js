@@ -1430,8 +1430,35 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+      // Task #1904: the live cmux terminal-runtime count at create time. Until
+      // now the ceiling correlation could only be established by live
+      // experiment on the machine — recording it makes every future dispatch a
+      // data point, so "the rate climbs as the app fills up" is checkable from
+      // the ledger instead of re-derived by hand.
+      liveRuntimes: res.liveRuntimes ?? null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+  } else if (res.atTerminalCapacity) {
+    // Task #1904. Nothing was created, so there is no workspace to journal, no
+    // dead attempt to burn, and nothing for a sweep to find. This is a REFUSAL,
+    // not a failure, and it must read as one — a launch that never happened
+    // reported as a death is what let a 31% dead rate hide for a week.
+    console.error(`[bsc-next] LAUNCH REFUSED — ${res.reason}`);
+    console.error(`  Nothing was created for #${task.id}: past this ceiling cmux opens the workspace and accepts the`);
+    console.error('  command, but never attaches a terminal, so the command can never run there (verified live 2026-08-26:');
+    console.error('  set-app-focus, open -a, refresh-surfaces, select-workspace, new-surface and send all fail to rescue it).');
+    console.error('  Do one of these:');
+    console.error(`    node scripts/bsc-next.js --id ${task.id} --headless    # the headless lane needs no cmux terminal (0 dead in 158 launches)`);
+    console.error('    node scripts/bsc-prune.js                              # owner-run: close finished tabs to free a runtime');
+    console.error(`    node scripts/bsc-next.js --id ${task.id} --force       # launch anyway; the ceiling is a learned number and a success raises it`);
+    try {
+      appendLedgerEntryFn({
+        event: 'launch-failed', taskId: String(task.id), subject: task.subject, workspaceRef: null, model,
+        failureReason: res.reason, atTerminalCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        terminalCeiling: res.terminalCeiling ?? null, notionId: pid || null,
+      });
+    } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+    process.exit(1);
   } else {
     // Card #705: report WHICH failure this is. "LAUNCH NOT VERIFIED" for a
     // session that is merely booting slowly is what taught the owner (and

@@ -361,15 +361,38 @@ function launchByRef(workspaceRef, entries) {
 // for it — the opposite failure from first-match, but just as poisonous,
 // since a genuinely dying later task would then never trip
 // deadAttemptsForTask at all.
+// ANY terminal event, not just 'dead' (task #1904, 2026-08-26). cmux RECYCLES
+// workspace refs, and this function's only question was "is there already a
+// death for this ref since its launch?" — so once a finished dispatch's ref
+// was handed to a brand-new, unrelated tab, the next sweep that found that tab
+// idle journaled a death against the OLD task, hours after it had completed.
+// Live: #1887 and #1888 both finished (prune-closed, ✅ titles, 05:03Z/05:16Z)
+// and were journaled dead at 13:19:55Z on refs cmux had reassigned to
+// ZZ-probe tabs; 11 such rows since 08-19. Those rows are not merely a
+// metric artifact — deadAttemptsForTask() counts RAW 'dead' rows by taskId, so
+// each one burns one of the task's two DEAD_ATTEMPT_LIMIT dispatch attempts.
+// This is the rule vanishedEntries() below already states for itself ("Only
+// launches with no terminal entry recorded after them, which is what makes
+// ✅-then-closed workspaces (prune-closed) immune"); deadBreadcrumbs was the
+// one ref-reconciling function in this file still gating on a bare
+// already-dead check instead of TERMINAL_LAUNCH_EVENTS.
+//
+// Still scoped to the CURRENT launch, never the ref (card #960): the
+// comparison is against THIS launch's ts, so one stale terminal row from an
+// earlier occupant of a recycled ref cannot suppress a genuinely dying later
+// task's breadcrumb.
 function deadBreadcrumbs(idleWorkspaces, entries) {
   const out = [];
+  const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   for (const w of idleWorkspaces) {
     const launch = launchByRef(w.ref, entries);
     if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
-    const alreadyDead = entries.some(e =>
-      e.event === 'dead' && e.workspaceRef === w.ref && (!e.ts || !launch.ts || e.ts >= launch.ts)
-    );
-    if (alreadyDead) continue;
+    const term = lastTerminal.get(w.ref);
+    // A launch with no ts can't be ordered against anything; treat any
+    // terminal row for the ref as already-reconciled rather than guessing —
+    // the pre-existing `!e.ts || !launch.ts` fallback made the same choice.
+    const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
+    if (reconciled) continue;
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;
