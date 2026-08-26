@@ -79,6 +79,12 @@ function classifyFileSurvival({ baseBlob, localBlob, finalBlob }) {
 // of inferring it from whole-file identity, and works regardless of what
 // else changed in the file.
 
+// Retained for its own direct unit tests only — the CLI no longer uses this
+// as the source of `addedLines` (see computeAddedLines below, task BRO-2449).
+// Diff-text '+' lines can include lines base and local AGREE on verbatim,
+// re-emitted as a redundant -/+ pair purely because git's diff algorithm
+// realigned hunks elsewhere in the same file. computeAddedLines answers the
+// same question directly from full file content instead.
 /**
  * @param {string} patch unified diff text for a single file (base..local)
  * @returns {string[]} non-blank lines the patch ADDED, with the leading '+' stripped
@@ -117,7 +123,8 @@ function lineCounts(content) {
 }
 
 /**
- * @param {string[]} addedLines lines our commit(s) added (from extractAddedLines)
+ * @param {string[]} addedLines lines our commit(s) genuinely added beyond base
+ *   (from computeAddedLines — a net-new occurrence per repeated entry)
  * @param {string|null} baseContent the file's full content BEFORE our commit (pre-edit)
  * @param {string|null} finalContent the file's full content at the ref we just pushed
  * @returns {boolean} true if OUR added lines are still present in finalContent BEYOND
@@ -146,6 +153,67 @@ function addedLinesSurvived(addedLines, baseContent, finalContent) {
     if ((final.get(line) || 0) < required) return false;
   }
   return true;
+}
+
+// Task BRO-2449: a stale branch (forked long before an unrelated main-side
+// improvement landed) was reported FAILED/REVERTED for a file where nothing
+// was actually clobbered. Root cause: the old CLI wiring fed addedLinesSurvived
+// lines pulled from extractAddedLines(patch) — raw '+' lines out of the
+// base..local unified diff TEXT. When a branch's commit(s) touch OTHER parts
+// of the same file, git's diff algorithm can re-emit a line that base and
+// local AGREE on verbatim as a redundant -/+ pair, purely from hunk
+// realignment. That line was never genuinely new content from this branch —
+// but if origin/main has since legitimately replaced that same
+// never-touched-by-us line with an improved version, addedLinesSurvived()
+// required it to still be present beyond base's own count, and flagged
+// 'reverted' for content that was never ours to lose. Live incident
+// (2026-08-26): job/linear-BRO-736 flagged scripts/lib/url-discovery.js this
+// way — the branch's only "added" line was the pre-#983 form of a line main
+// had since replaced with a 9-line worktree-fallback block; nothing was
+// clobbered.
+//
+// Fix: compute genuinely-added lines from CONTENT (base vs local full text),
+// not diff TEXT. A line counts as added only if local has strictly more
+// occurrences of it than base did — immune to diff-algorithm realignment
+// noise, since it's derived straight from the content-addressed blobs
+// (baseBlob/localBlob) rather than a rendered patch. This intentionally does
+// NOT just skip any line that merely appears somewhere in base (that would
+// break the addedLinesSurvived 'duplicate-line' guard below: a line that
+// already exists once in the file and is genuinely duplicated by this
+// branch, where that specific new copy gets clobbered, must still be caught)
+// — it nets the occurrence delta instead, which handles both shapes.
+//
+// Known scope limit (ship-check adversarial finding, not a regression — see
+// below): a same-commit MOVE of a line (removed from one spot, re-added
+// elsewhere, net delta zero) is invisible to this net-delta check, same as it
+// would be to a pure content-multiset diff of the whole file. If a concurrent
+// edit then drops that moved line entirely, this stays 'ambiguous' (visible
+// AMBIGUOUS warning, not silently swallowed) rather than 'reverted'. This is
+// the correct scope, not a gap: this guard verifies "did content OUR COMMIT
+// actually contributed survive", not "did content our commit merely carried
+// forward from base survive" — the latter is base's/main's own content, not
+// ours to lose. A diff-TEXT check can't fix this either: a real move produces
+// the exact same -/+ shape as the stale-branch realignment artifact above, so
+// "fix" would just reintroduce the false positive this function exists to
+// remove (both cases are genuinely indistinguishable from content alone).
+/**
+ * @param {string|null} baseContent full content just before the run's commit(s)
+ * @param {string|null} localContent full content IN the run's own commit
+ * @returns {string[]} lines local has strictly more occurrences of than base,
+ *   each repeated once per net-new occurrence (e.g. base has 1, local has 3
+ *   -> that line appears twice in the result). Empty when localContent is
+ *   unavailable (e.g. file absent from the run's own commit).
+ */
+function computeAddedLines(baseContent, localContent) {
+  if (localContent == null) return [];
+  const base = lineCounts(baseContent);
+  const local = lineCounts(localContent);
+  const result = [];
+  for (const [line, localCount] of local) {
+    const net = localCount - (base.get(line) || 0);
+    for (let i = 0; i < net; i++) result.push(line);
+  }
+  return result;
 }
 
 /**
@@ -198,6 +266,7 @@ module.exports = {
   classifyFileSurvival,
   classifyFileSurvivalDeep,
   extractAddedLines,
+  computeAddedLines,
   addedLinesSurvived,
   classifyAll,
   anyReverted,
@@ -275,10 +344,10 @@ if (require.main === module) {
 
   // Deep-check only the 'ambiguous' bucket (task #833): survived/reverted/
   // unchanged are already fully decided by the cheap blob comparison, so
-  // only pay for the extra patch + file-content reads where they matter.
+  // only pay for the extra file-content reads where they matter.
   //
-  // Content is read via the ALREADY-RESOLVED blob SHAs (e.baseBlob/e.finalBlob),
-  // not by re-resolving `checkRef:file` a second time (adversarial review
+  // Content is read via the ALREADY-RESOLVED blob SHAs (e.baseBlob/e.localBlob/
+  // e.finalBlob), not by re-resolving `checkRef:file` a second time (adversarial review
   // finding, task #833 follow-up): `checkRef` is a moving ref
   // (origin/$PULL_BRANCH), so a second `git show checkRef:file` call could
   // observe a DIFFERENT commit than the one `finalBlob` was rev-parsed
@@ -289,9 +358,9 @@ if (require.main === module) {
   // bytes that blob was computed from, eliminating the race entirely.
   for (const e of entries) {
     if (classifyFileSurvival(e) !== 'ambiguous') continue;
-    const patch = gitTry(['diff', `${baseSha}..${beforeSha}`, '--', e.file]);
-    e.addedLines = extractAddedLines(patch);
     e.baseContent = e.baseBlob ? gitTry(['show', e.baseBlob]) : null;
+    const localContent = e.localBlob ? gitTry(['show', e.localBlob]) : null;
+    e.addedLines = computeAddedLines(e.baseContent, localContent);
     e.finalContent = e.finalBlob ? gitTry(['show', e.finalBlob]) : null;
     e.pushedBlob = pushedSha ? gitTry(['rev-parse', `${pushedSha}:${e.file}`]) : null;
   }

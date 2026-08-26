@@ -12,6 +12,7 @@ const {
   classifyFileSurvival,
   classifyFileSurvivalDeep,
   extractAddedLines,
+  computeAddedLines,
   addedLinesSurvived,
   classifyAll,
   anyReverted,
@@ -74,6 +75,45 @@ test('extractAddedLines: pulls + lines from a unified diff, skips the +++ header
 test('extractAddedLines: empty/null patch -> no added lines', () => {
   assert.deepEqual(extractAddedLines(''), []);
   assert.deepEqual(extractAddedLines(null), []);
+});
+
+// ── computeAddedLines (task BRO-2449) ────────────────────────────────────
+// extractAddedLines(patch) reads raw '+' lines out of diff TEXT, which can
+// include a line base and local agree on verbatim, re-emitted as a redundant
+// -/+ pair purely from hunk realignment elsewhere in the file. computeAddedLines
+// answers "does local have MORE occurrences of this line than base" straight
+// from full file content instead — immune to that diff-text artifact. This is
+// what the CLI now feeds into addedLinesSurvived (see the CLI section below).
+test('computeAddedLines: only lines local has strictly more of than base count as added', () => {
+  assert.deepEqual(computeAddedLines('A\n', 'A\nB\n'), ['B']);
+});
+
+test('computeAddedLines: a line unchanged between base and local is never "added", even if the file differs elsewhere', () => {
+  // Same registryPath line on both sides; only the unrelated 'header' line changed.
+  const base = 'header\nconst registryPath = OLD;\nfooter\n';
+  const local = 'header-branch-edit\nconst registryPath = OLD;\nfooter\n';
+  assert.deepEqual(computeAddedLines(base, local), ['header-branch-edit']);
+});
+
+test('computeAddedLines: nets duplicates correctly (base has 1, local has 3 -> 2 net-new)', () => {
+  const base = 'x\nx\n';
+  const local = 'x\nx\nx\nx\n';
+  assert.deepEqual(computeAddedLines(base, local), ['x', 'x']);
+});
+
+test('computeAddedLines: null localContent -> empty (file absent from our own commit)', () => {
+  assert.deepEqual(computeAddedLines('base', null), []);
+});
+
+// The old patch-based extraction relied on `git diff` text, which degrades to
+// "Binary files differ" (no '+' lines, fails open) for binary content. The
+// new content-based path reads raw `git show <blob>` output directly, so it
+// must not throw or hang on binary-looking content — a null byte is just
+// another character to String#split('\n').
+test('computeAddedLines: does not throw on binary-looking content (null bytes)', () => {
+  const binary = 'PK\x00\x00\x03\x04\nsome-binary-line\x00\n';
+  assert.doesNotThrow(() => computeAddedLines(binary, binary + 'extra\n'));
+  assert.deepEqual(computeAddedLines(binary, binary + 'extra\n'), ['extra']);
 });
 
 test('addedLinesSurvived: true when every added line is present in final content', () => {
@@ -153,6 +193,24 @@ test('classifyFileSurvivalDeep: ambiguous + added lines MISSING -> downgraded to
     finalContent: 'line1\nsome-other-concurrent-edit\n',
   });
   assert.equal(status, 'reverted');
+});
+
+// Task BRO-2449: stale-branch shape at the classifier level. The branch never
+// touched `const registryPath = OLD;` (base and local agree on it); it only
+// added an unrelated line elsewhere. Origin/main has since replaced the
+// registryPath line with an improved version while carrying the branch's
+// genuinely-new line forward (a legitimate merge outcome). addedLines here is
+// exactly what computeAddedLines would produce for this shape — it does NOT
+// include the registryPath line, so its disappearance from final must not
+// downgrade this to 'reverted'.
+test('classifyFileSurvivalDeep: stale-branch shape (unrelated line legitimately superseded on main) stays ambiguous, not reverted', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['branch-new-line'], // registryPath line correctly excluded — base and local agree on it
+    baseContent: 'header\nconst registryPath = OLD;\nfooter\n',
+    finalContent: 'header\nconst registryPath = NEW_IMPROVED;\nfooter\nbranch-new-line\n',
+  });
+  assert.equal(status, 'ambiguous');
 });
 
 // ── CLI: full end-state repro of the task #833 signature ────────────────────
@@ -238,6 +296,57 @@ test('CLI: a genuine 3-way merge (our lines AND a concurrent edit both survive) 
   ]);
   assert.equal(code, 0, `expected a clean exit — our lines survived alongside the concurrent edit. Output:\n${out}`);
   assert.match(out, /AMBIGUOUS/);
+});
+
+// Task BRO-2449: CLI end-to-end repro of the live incident (2026-08-26,
+// job/linear-BRO-736 merging scripts/lib/url-discovery.js). The branch never
+// touches the registryPath line — base and local are byte-identical there —
+// it only adds genuinely-new unrelated content elsewhere. Origin/main has
+// independently replaced the registryPath line with an improved version by
+// the time we check, while the merge outcome still carries the branch's
+// genuinely-new content forward. This must NOT be reported REVERTED/FAILED,
+// and the CLI must exit 0 (which is what suppresses merge-worktree-to-main.sh's
+// harmful "re-apply our version: git checkout $BRANCH -- <file>" recovery text).
+test('CLI: stale-branch shape (branch never touched the line main later improved) is NOT reported reverted, exits 0', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-stale-branch-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  const registryLine = "const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');";
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\n${registryLine}\nfunction unrelatedFn() { return 1; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Branch's own commit: leaves registryPath completely untouched, adds a
+  // genuinely new unrelated function (this is the branch's real contribution).
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\n${registryLine}\nfunction unrelatedFn() { return 1; }\nfunction branchNewFn() { return 2; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'stale branch: add branchNewFn');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Origin/main by the time of the merge: independently replaced registryPath
+  // with a worktree-aware fallback (the real #983 shape), and the merge outcome
+  // carries the branch's genuinely-new function forward.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  const improved = "const CANONICAL_REPO = '/x';\nconst registryPath = fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'outlet-registry.json');";
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\nconst fs = require('fs');\n${improved}\nfunction unrelatedFn() { return 1; }\nfunction branchNewFn() { return 2; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'main: #983 worktree-aware fallback (independent, legitimate improvement) + merge of branch');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected the stale-branch shape to pass, not be reported reverted. Output:\n${out}`);
+  assert.doesNotMatch(out, /REVERTED/);
+  assert.doesNotMatch(out, /FAILED/);
 });
 
 // ── CLI + a real repo reproducing the incident's own end-state ──────────
