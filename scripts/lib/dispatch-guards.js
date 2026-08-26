@@ -61,6 +61,13 @@ const fs = require('fs');
 const path = require('path');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
+// gitSafeJobId only (no lease/runJob I/O pulled in) — matchesTaskWorkBranch
+// needs the identical git-ref sanitization bsc-runner.js applies to a jobId
+// before it ever becomes part of a branch name (BRO-278). Same require
+// direction scripts/backlog-drain.js already uses for the same reason; no
+// cycle (bsc-runner.js's own requires — dispatch-ledger.js, claude-cli.js,
+// worktree-gc-reclaim.js — never reach back to this file).
+const { gitSafeJobId } = require('./bsc-runner.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
@@ -428,11 +435,25 @@ function loadLinearMirrorMapping(mappingPath = LINEAR_MAPPING_PATH) {
 // signal (e.g. stamping the task id into the ledger at EnterWorktree time).
 const WORK_BRANCH_PREFIXES = ['worktree-', 'job/'];
 
+// BRO-278: a Linear-issue taskId (`linear:BRO-278`, linear-next.js's
+// ledgerTaskId()) is NOT what ends up in the branch name — git rejects the
+// colon, so bsc-runner.js's gitSafeJobId() sanitizes it to `linear-BRO-278`
+// before `job/${safe}` is ever created (verified live: this session's own
+// branch is `job/linear-BRO-278-mtaf33qe`). Matching the RAW taskId against
+// branch names therefore could never match a single Linear dispatch — the
+// colon/dash mismatch made workBranchCollisionGuard structurally blind to
+// every Linear-issue collision, exactly the cross-session collision BRO-278
+// reports (three cmux workspaces on the identical issue, undetected).
+// Sanitizing here with the SAME function closes that gap; for bsc-next.js's
+// plain numeric ids gitSafeJobId is a no-op (digits are already git-ref
+// safe), so this is a pure generalization, not a behavior change for the
+// existing caller.
 function matchesTaskWorkBranch(branchName, taskId) {
   const id = String(taskId == null ? '' : taskId).trim();
   if (!id) return false;
   const name = String(branchName || '');
-  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const safeId = gitSafeJobId(id);
+  const escaped = safeId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   // Anchored on both ends (a trailing "-" after a prefix match, or a leading
   // "-" before a suffix match) so task #123 can never match a branch for
   // task #1233 (or vice versa) on a bare numeric-substring coincidence.

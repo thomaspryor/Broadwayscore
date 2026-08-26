@@ -453,6 +453,10 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
       // never touches the real data/audit/linear-dispatch-claims dir.
       acquireDispatchClaim: () => true,
       releaseDispatchClaim: () => {},
+      // BRO-278's work-branch collision check also runs before the
+      // duplicate-tab guard this test exercises — stub it so this subprocess
+      // never shells out to real git (fetch/branch/cherry) against this repo.
+      listWorkBranchStatuses: () => [],
     });
   `;
   const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
