@@ -30,8 +30,14 @@ const DEFAULT_REMINDER_EVERY = 4;
  *     REGRESSION GUARD (a >2% drop logs to data/audit/rebuild-regression.json
  *     and writes reviews.json anyway; --force-write only silences the log).
  *   - 'review-count-drift' — check-review-count-drift.js's default report
- *     mode (exit 0); only its --strict mode, used solely by the opening-night
- *     broadcast gate (a different pipeline), can fail a job.
+ *     mode (exit 0); only its --strict mode can fail a job. NOTE (found during
+ *     BRO-545's /what-else pass): --strict is NOT limited to the opening-night
+ *     broadcast gate as originally documented here — check-review-count-drift.yml
+ *     passes it on every SCHEDULED (daily cron) run too, so that workflow's
+ *     daily job can genuinely hard-exit(2) on a breach. Its escalation is
+ *     `severity: 'warning'` (digest-only, no page) — the same shape BRO-545
+ *     fixed for check-rebuild-staleness.js. Not fixed here (out of BRO-545's
+ *     scope, a different workflow) — tracked as a follow-up.
  * Listed here as the single source of truth for that decision so a future
  * edit that accidentally reintroduces a hard block is at least documented
  * against, and so isSoftWarnGuard()/shouldAutoRecover() below have one place
