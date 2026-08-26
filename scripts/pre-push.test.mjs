@@ -155,6 +155,7 @@ let fixtureDir = null;
 let refInCap = null;
 let refOverCap = null;
 let refDeleted = null;
+let refConfigChanged = null;
 let fixtureError = null;
 
 function git(cwd, args) {
@@ -189,6 +190,20 @@ before(() => {
     git(fixtureDir, ['add', '-A']);
     commit('delete CLAUDE.md');
     refDeleted = gitOut(fixtureDir, ['rev-parse', 'HEAD']);
+
+    // Committed: CLAUDE.md restored to 30B, byteLimit shrunk to 10 (30 > 10,
+    // over cap). Then an UNCOMMITTED bump to byteLimit=999999 in the working
+    // tree — simulates a local config edit that never made it into the push.
+    // gate.sh must judge refConfigChanged using the COMMITTED byteLimit=10,
+    // not this working-tree value, or a stale/uncommitted config bump would
+    // silently rescue an over-cap commit locally while CI (which only ever
+    // sees the committed ref) still fails it.
+    fs.writeFileSync(path.join(fixtureDir, 'CLAUDE.md'), 'x'.repeat(30));
+    fs.writeFileSync(path.join(fixtureDir, 'scripts', 'lib', 'claude-md-anchors.json'), JSON.stringify({ anchors: [], byteLimit: 10 }));
+    git(fixtureDir, ['add', '-A']);
+    commit('shrink byteLimit to 10 (CLAUDE.md is 30B, now over cap)');
+    refConfigChanged = gitOut(fixtureDir, ['rev-parse', 'HEAD']);
+    fs.writeFileSync(path.join(fixtureDir, 'scripts', 'lib', 'claude-md-anchors.json'), JSON.stringify({ anchors: [], byteLimit: 999999 }));
   } catch (err) {
     fixtureError = err;
   }
@@ -198,7 +213,7 @@ after(() => {
   if (fixtureDir) fs.rmSync(fixtureDir, { recursive: true, force: true });
 });
 
-const skipNoFixture = { get skip() { return (!fixtureDir || !refInCap || !refOverCap || !refDeleted) && `fixture repo failed to build: ${fixtureError}`; } };
+const skipNoFixture = { get skip() { return (!fixtureDir || !refInCap || !refOverCap || !refDeleted || !refConfigChanged) && `fixture repo failed to build: ${fixtureError}`; } };
 
 function runGate(ref) {
   return spawnSync('bash', [GATE_PATH, fixtureDir, ref], {
@@ -224,16 +239,36 @@ test('gate.sh: exits 0 (fails open) for a ref that DELETES CLAUDE.md — the pip
   assert.equal(r.status, 0, `a deleted CLAUDE.md must never block a push; got exit ${r.status}, stdout: ${r.stdout} stderr: ${r.stderr}`);
 });
 
+test('gate.sh: reads byteLimit from the COMMITTED ref, not an uncommitted working-tree bump (Codex adversarial-review finding)', skipNoFixture, () => {
+  // Working tree's claude-md-anchors.json has byteLimit=999999 (uncommitted).
+  // refConfigChanged committed byteLimit=10 with a 30B CLAUDE.md — over cap.
+  // If gate.sh read the working-tree file instead of the ref, this would
+  // wrongly pass (30 < 999999).
+  const r = runGate(refConfigChanged);
+  assert.equal(
+    r.status,
+    1,
+    `should BLOCK using the committed byteLimit=10 even though the working tree has an uncommitted byteLimit=999999 — stdout: ${r.stdout} stderr: ${r.stderr}`
+  );
+});
+
 // Negative control: prove the deletion test above has teeth by reintroducing
 // the exact pipe-based bug (`git show ... | node ...` under pipefail) in a
 // patched copy of the gate and confirming it WOULD wrongly block a deletion.
 test('regression pin: a pipe-based rewrite of gate.sh (no temp file) wrongly BLOCKS a CLAUDE.md deletion under pipefail', skipNoFixture, () => {
   const original = fs.readFileSync(GATE_PATH, 'utf8');
+  const claudeMdFetchLine = 'git -C "$REPO_ROOT" show "$REF:CLAUDE.md" >"$TMP_MD" 2>/dev/null || exit 0\n';
+  const finalNodeInvocation = 'node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$TMP_ANCHORS" <"$TMP_MD"\n';
+  assert.ok(original.includes(claudeMdFetchLine), 'the temp-file CLAUDE.md fetch line no longer matches gate.sh verbatim — update this pin to match its current form');
+  assert.ok(original.includes(finalNodeInvocation), 'the final node invocation line no longer matches gate.sh verbatim — update this pin to match its current form');
   const buggy = original
     .replace(/^set -u$/m, 'set -uo pipefail')
+    .replace(claudeMdFetchLine, '') // drop the safe temp-file fetch...
     .replace(
-      /git -C "\$REPO_ROOT" show "\$REF:CLAUDE\.md" >"\$TMP_MD" 2>\/dev\/null \|\| exit 0\n\nnode[^\n]*<"\$TMP_MD"\n/,
-      'git -C "$REPO_ROOT" show "$REF:CLAUDE.md" 2>/dev/null | node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$REPO_ROOT/scripts/lib/claude-md-anchors.json"\n'
+      finalNodeInvocation,
+      // ...and reintroduce the pipe it replaced, same anchors-config path as
+      // before (only the CLAUDE.md-content path is under test here).
+      'git -C "$REPO_ROOT" show "$REF:CLAUDE.md" 2>/dev/null | node "$REPO_ROOT/scripts/lib/check-claude-md-byte-cap.js" "$TMP_ANCHORS"\n'
     );
   assert.notEqual(buggy, original, 'the buggy-rewrite regex no longer matches gate.sh — update this pin to match its current form');
   const buggyPath = path.join(fixtureDir, '..', `gate-buggy-${path.basename(fixtureDir)}.sh`);
