@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T06:33:39.614Z",
+  "generatedAt": "2026-08-26T05:45:14.127Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,31 +9,26 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-08-25",
-      "status": "previews",
+      "status": "open",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "siteScore": 78.34,
+      "liveScore": 78,
+      "scoreDrift": -0.3400000000000034,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "total": 21,
+      "t1": 4,
+      "t2": 13,
+      "t3": 4,
+      "positive": 16,
+      "mixed": 4,
+      "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -43,21 +38,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
@@ -76,14 +59,6 @@
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -113,28 +88,8 @@
           "isDualMarket": false
         },
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
         },
         {
           "name": "Chicago Tribune",
@@ -142,10 +97,6 @@
         },
         {
           "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
           "isDualMarket": false
         },
         {
@@ -162,30 +113,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -285,15 +212,7 @@
           "isDualMarket": false
         },
         {
-          "name": "Exeunt Magazine",
-          "isDualMarket": false
-        },
-        {
           "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
           "isDualMarket": false
         },
         {
@@ -384,6 +303,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-08-26T05:45:14.127Z",
+          "rc": 21,
+          "s": 78.34,
+          "t1": 4,
+          "t2": 13,
+          "t3": 4,
+          "p": 16,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        }
       ]
     }
   ],
@@ -398,6 +331,31 @@
       "status": "previews",
       "slug": "electra-persona-west-end",
       "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-02",
+      "status": "previews",
+      "slug": "a-month-in-the-country-west-end",
+      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {

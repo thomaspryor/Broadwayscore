@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-25T06:33:34.469Z",
+  "timestamp": "2026-08-26T05:45:08.127Z",
   "stats": {
-    "totalReviews": 42426,
-    "alreadyFlagged": 18121,
-    "dateGuardCatches": 189,
+    "totalReviews": 42483,
+    "alreadyFlagged": 18132,
+    "dateGuardCatches": 188,
     "directorMismatch": 998,
-    "tvFilmSignals": 1228,
-    "londonSignals": 930,
+    "tvFilmSignals": 1230,
+    "londonSignals": 932,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3570
+    "noPublishDate": 3582
   },
   "findings": [
     {
@@ -19740,6 +19740,20 @@
       ]
     },
     {
+      "showId": "paranormal-activity-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 64,
+      "publishDate": "2026-08-25T20:51:56-04:00",
+      "url": "https://www.vulture.com/article/paranormal-activity-play-review-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "nysr--bob-verini.json",
       "score": 78,
@@ -29148,6 +29162,20 @@
       ]
     },
     {
+      "showId": "the-real-ivanov-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 62,
+      "publishDate": "2026-08-25",
+      "url": "https://www.nysun.com/article/a-muddled-real-ivanov-strains-for-modern-resonance",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-real-thing-2014",
       "file": "deadline--jeremy-gerard.json",
       "score": 34,
@@ -34883,17 +34911,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
-        }
-      ]
-    },
-    {
-      "showId": "brainiac-live-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 132d before show (2026-03-16 vs 2026-07-26)"
         }
       ]
     },
@@ -43599,6 +43616,20 @@
       ]
     },
     {
+      "showId": "paranormal-activity-2026",
+      "file": "amny--matt-windman.json",
+      "score": 67,
+      "publishDate": "August 25, 2026",
+      "url": "https://www.amny.com/entertainment/broadway/review-paranormal-activity/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "paranormal-activity-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
       "score": 41,
@@ -43907,6 +43938,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "variety--naman-ramachandran.json",
+      "publishDate": "2026-08-25",
+      "url": "https://variety.com/2026/theater/news/pride-musical-bridge-theatre-transfer-november-1236841452/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
