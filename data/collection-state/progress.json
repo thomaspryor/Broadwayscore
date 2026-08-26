@@ -19,7 +19,10 @@
     "brainiac-live-west-end-2026/theatre-weekly--unknown.json",
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "spellbound-off-broadway-2026/amny--alexa-lutter.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "masticate-off-broadway-2026/nyu--unknown.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -111,7 +114,14 @@
     "spellbound-off-broadway-2026/broadwayworld--rachel-stone.json",
     "marlise-off-broadway-2026/donyc--unknown.json",
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "an-american-daughter-off-broadway-2026/off-off-online--charles-wright.json",
+    "an-american-daughter-off-broadway-2026/off-off-online--unknown.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+    "masticate-off-broadway-2026/donyc--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -130,7 +140,9 @@
       "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "brainiac-live-west-end-2026/theatre-weekly--unknown.json",
-      "spellbound-off-broadway-2026/amny--alexa-lutter.json"
+      "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "masticate-off-broadway-2026/nyu--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -140,9 +152,12 @@
     "scrapingbee": [
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -152,6 +167,18 @@
     ]
   },
   "startTime": "2026-08-26T10:18:02.686Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
-  "log": []
+  "lastProcessed": "masticate-off-broadway-2026/nyu--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-26T10:37:15.146Z",
+      "event": "bb-session",
+      "session": "65e85086",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-26T10:37:15.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
