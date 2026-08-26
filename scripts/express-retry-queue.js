@@ -24,7 +24,23 @@
  *     leaves the entry un-attempted so the next hourly tick retries the
  *     DISPATCH itself (never silently swallowed — memory/
  *     feedback_silent_workflow_failures.md). Prunes entries older than 3
- *     days, writes the queue back to disk.
+ *     days, alerting first for any that never successfully dispatched
+ *     (persistent failure, not a transient blip). Writes the queue back to
+ *     disk.
+ *
+ * The queue file is only committed AFTER a dispatch call succeeds (same
+ * dispatch-then-mark tradeoff as scripts/dispatch-orphan-rescore-requeue.js):
+ * if this job dies between a successful dispatch and the commit landing, the
+ * next tick sees the entry as still due and dispatches again. A duplicate
+ * Express run for the same show is wasted scraper spend, not data corruption
+ * — Express's own per-show concurrency group queues it rather than racing.
+ *
+ * showId is whatever value opening-night-express.yml was originally invoked
+ * with (inputs.show_id) — it flows unchanged from the auto-fire dispatch
+ * through evaluate's enqueue into dispatch-due's re-dispatch, so it's never
+ * independently re-resolved as an id vs. a slug mid-flight. loadShow()'s
+ * id-or-slug lookup is only for the isShowCoverageComplete() guard's `show`
+ * argument, not the queue key.
  */
 
 'use strict';
@@ -177,8 +193,20 @@ async function cmdDispatchDue() {
     entries = markAttempted(entries, entry.showId, entry.queuedAt, nowIso);
   }
 
-  entries = pruneStale(entries, nowIso);
-  writeQueueEntries(entries);
+  const pruned = pruneStale(entries, nowIso);
+  // An entry can only reach here un-attempted if EVERY hourly dispatch
+  // attempt failed for 3 straight days (a persistently broken token/API, not
+  // a transient blip) — pruneStale would otherwise have silently dropped it
+  // with zero operator visibility right as this tick was about to try again.
+  const droppedWithoutDispatch = entries.filter(
+    (e) => !e.attempted && !pruned.some((p) => p.showId === e.showId && p.queuedAt === e.queuedAt)
+  );
+  for (const entry of droppedWithoutDispatch) {
+    console.error(`[express-retry-queue] ${entry.showId}: queued ${entry.queuedAt} never dispatched after 3 days — dropping and alerting`);
+    await routeStillThinAlert(entry.showId, entry.market, 'retry dispatch failed on every attempt for 3 days — never fired');
+  }
+
+  writeQueueEntries(pruned);
 }
 
 async function main() {
