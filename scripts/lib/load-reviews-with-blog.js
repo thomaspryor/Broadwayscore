@@ -19,6 +19,7 @@
  *   - scripts/generate-mobile-data.js
  *   - scripts/generate-homepage-archive.js
  *   - scripts/generate-social-post.js
+ *   - scripts/generate-related-shows.js
  */
 
 const fs = require('fs');
