@@ -354,6 +354,10 @@ tmp/
 # never actually gitignored before now.
 /data/audit/dispatch-claims/
 /data/audit/succession-locks/
+# linear-next.js's own fresh-dispatch claim dir (task #1898) — separate id
+# space from bsc-next.js's dispatch-claims/ above, same ephemeral mkdir-
+# marker-lock class.
+/data/audit/linear-dispatch-claims/
 # Predispatch queue backlog digest metric (task #1801) — Mac-local, same
 # reasoning as backlog-drain-metric.json above (producer
 # scripts/predispatch-queue-audit.js + consumer send-morning-digest.js both

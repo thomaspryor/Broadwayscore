@@ -89,9 +89,13 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
-  exactTitleOverlapGuard, sessionTrackingCloneGuard,
+  exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
+// Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
+// task #1896 fix) — same shared primitive, separate claim dir/id-space (see
+// DISPATCH_CLAIM_DIR below).
+const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 
 // Hardcoded, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
@@ -101,6 +105,15 @@ const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 const REPO = '/Users/tompryor/Broadwayscore';
 
 const CLI_NAME = 'scripts/linear-next.js';
+
+// Fresh-dispatch claim (task #1898, mirrors bsc-next.js's DISPATCH_CLAIM_DIR
+// from task #1896) — a SEPARATE dir from bsc-next.js's own dispatch-claims/,
+// since Linear issue ids (`BRO-123`) and Notion task ids are different id
+// spaces that could theoretically collide as bare strings. Same 8-minute
+// staleMs as bsc-next.js's, for the same reason (cmux-launch.js's
+// slowBootCapSec allows up to 6 minutes of boot).
+const DISPATCH_CLAIM_DIR = path.join(REPO, 'data', 'audit', 'linear-dispatch-claims');
+const DISPATCH_CLAIM_STALE_MS = 8 * 60 * 1000;
 
 const USAGE = `linear-next — fetch a Linear issue and dispatch a Claude Code worker on it.
 
@@ -263,6 +276,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // an explicit invariant).
     listOpenIssuesWithDescriptions: listOpenIssuesWithDescriptionsFn = linear.listOpenIssuesWithDescriptions,
     loadNotionMirrorTasks: loadNotionMirrorTasksFn = loadNotionMirrorTasks,
+    // Task #1898: injectable so tests can simulate "another attempt already
+    // holds this issue's claim" without touching the real filesystem dir.
+    acquireDispatchClaim: acquireDispatchClaimFn = (id, opts) => acquireClaim(DISPATCH_CLAIM_DIR, id, opts),
+    releaseDispatchClaim: releaseDispatchClaimFn = (id) => releaseClaim(DISPATCH_CLAIM_DIR, id),
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -382,6 +399,51 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (process.env.LINEAR_NEXT_DISABLED === '1') {
     console.error('[linear-next] LINEAR_NEXT_DISABLED=1 — this dispatcher is switched off (cmux and headless both); rerun once it is re-enabled.');
     process.exit(1);
+  }
+
+  // Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
+  // task #1896 fix — see that file's own claim block for the full race
+  // analysis and dispatchClaimGuard's header in dispatch-guards.js). Placed
+  // after the terminal-state guard and kill switch above (both read freshly-
+  // fetched live state, not a stale local mirror, so they're not part of the
+  // race and gain nothing from running after the claim) but before every
+  // guard below that DOES read a locally-cached snapshot (the overlap check,
+  // idempotency, parked, dead-dispatch/duplicate-tab) — a second
+  // linear-next.js process racing on this SAME issue is refused here instead
+  // of independently passing every guard below on an equally stale snapshot.
+  // Keyed on the bare `identifier` (e.g. "BRO-123"), not the ledger-
+  // namespaced `taskId` ("linear:BRO-123") — dispatchClaimGuard's refusal
+  // text prints `#${task.id}` verbatim, and this file's own top-level
+  // refusals (terminal-state, kill switch, idempotency's console lines)
+  // already print the bare identifier that way; the `linear:` prefix exists
+  // to avoid collision in the SHARED dispatch-ledger.jsonl (and the guards
+  // imported from dispatch-guards.js that build messages from pseudoTask.id
+  // still print the namespaced form — that's pre-existing, unrelated to this
+  // claim), which DISPATCH_CLAIM_DIR (a separate directory from bsc-next.js's
+  // own) doesn't need.
+  // `dispatchConfirmed` guards the process.on('exit', ...) release below —
+  // set true only at this issue's two real dispatch-success points (the
+  // headless branch once a job is actually spawned, and the cmux `res.ok`
+  // branch) so the claim survives long enough to block a near-simultaneous
+  // second success, while any guard refusal or failed launch after claiming
+  // releases immediately so a legitimate same-session retry isn't blocked
+  // for the full staleMs window.
+  //
+  // process.on('exit', ...) rather than try/finally, matching bsc-next.js's
+  // identical reasoning: this file has many process.exit(1) calls between
+  // here and the launch branches below, and process.exit() skips pending
+  // finally blocks — process.on('exit', cb) is a DIFFERENT mechanism, run
+  // synchronously as an explicit part of process.exit()'s own implementation
+  // (the standard idiom lock-file libraries use for exactly this reason), so
+  // it needs no changes to any existing guard's exit sites.
+  let dispatchConfirmed = false;
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    const claimResult = acquireDispatchClaimFn(identifier, { staleMs: DISPATCH_CLAIM_STALE_MS });
+    const claimErr = dispatchClaimGuard({ id: identifier }, claimResult, args);
+    if (claimErr) { console.error(`[linear-next] ${claimErr}`); process.exit(1); }
+    if (claimResult === true) {
+      process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(identifier); });
+    }
   }
 
   await runOverlapCheck();
@@ -518,6 +580,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exitCode = 1;
       return;
     }
+    // Task #1898: only NOW (not before runJob() was even called) is this a
+    // real dispatch — 'lease-held' above means nothing was actually spawned,
+    // and the dispatch claim must release immediately in that case rather
+    // than sit held for the full staleMs window blocking a legitimate retry.
+    dispatchConfirmed = true;
     console.log(`[linear-next] headless job ${res.jobId} ${res.ok ? 'DONE' : `FAILED (${res.stage})`}`);
     if (res.logFile) console.log(`  log: ${res.logFile}`);
     if (!res.ok) { process.exitCode = 1; return; }
@@ -556,6 +623,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Task #1898: this is a real dispatch — hold the claim (let it expire via
+  // staleMs) instead of releasing on exit, so a near-simultaneous second
+  // dispatch attempt still sees it held.
+  dispatchConfirmed = true;
   console.log(`[linear-next] opened Cmux tab "${title}" (${res.ref}) on ${identifier} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''}, correlation ${correlationId})`);
   // Ledger write BEFORE the Linear comment/state mutation — see this file's
   // header for why (crash-safety: a crash here still leaves a live ledger
