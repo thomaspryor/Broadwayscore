@@ -123,16 +123,80 @@ function classifyPushFallbackSafety(filePath) {
   return { isApiFallbackSafe, disqualifiesFallback };
 }
 
+// Shared token filter for both extraction passes below: keeps only literal
+// `data/...` path arguments, dropping flags (`-u`, `--force`), shell
+// variables (`$f`, `"${arr[@]}"`), and bare directory adds (trailing `/` —
+// can't be resolved to specific files statically).
+function pathTokensFrom(text, into) {
+  for (const tokRaw of text.trim().split(/\s+/)) {
+    if (!tokRaw) continue;
+    const tok = tokRaw.replace(/^['"]|['"]$/g, '');
+    if (tok.startsWith('-')) continue;
+    if (tok.includes('$')) continue;
+    if (tok.endsWith('/')) continue;
+    if (!tok.startsWith('data/')) continue;
+    into.add(tok);
+  }
+}
+
+// `for f in data/audit/a.json data/audit/b.json; do ... git add "$f" ...;
+// done` — the loop-staged idiom used across ~9 real workflows (BRO-2446
+// second-opinion review finding: both the Codex adversarial pass and the
+// Claude QA subagent independently flagged this as a live blind spot,
+// e.g. audit-census-recall.yml, audit-aggregator-gap.yml,
+// audit-critic-coverage.yml). The `git add "$f"` line itself references a
+// shell variable and is unresolvable on its own (pathTokensFrom deliberately
+// drops any token containing '$'), but the literal `data/...` paths the loop
+// iterates over sit on the `for ... in` header, not the git-add line. Gated
+// on the loop body actually referencing `git add ... $VAR` for the SAME loop
+// variable so an unrelated for-loop's arguments are never misattributed as
+// staged paths. Does not handle nested loops (finds the first `done` after
+// the loop body starts) — no such shape exists in this repo's push-staging
+// loops today.
+function extractLoopStagedPaths(cleaned, paths) {
+  const forRe = /for\s+(\w+)\s+in\s+([\s\S]*?);\s*do\b/g;
+  let m;
+  while ((m = forRe.exec(cleaned))) {
+    const varName = m[1];
+    const listText = m[2].replace(/\\\s*\n/g, ' ');
+    const bodyStart = forRe.lastIndex;
+    const doneIdx = cleaned.indexOf('\ndone', bodyStart);
+    const body = cleaned.slice(bodyStart, doneIdx === -1 ? cleaned.length : doneIdx);
+    const addsVar = new RegExp(`git\\s+add\\b[^\\n]*\\$\\{?${varName}\\}?\\b`).test(body);
+    if (!addsVar) continue;
+    pathTokensFrom(listText, paths);
+  }
+}
+
 // Extract literal `data/...` file-path arguments staged in `runText` via
-// `git-add-existing.sh` or plain `git add` invocations (the two shapes used
-// across every workflow — see BRO-2446 evidence grep). Best-effort/advisory,
-// matching this module's existing parse philosophy: flags (`-u`, `--force`,
-// …), shell variables (`$f`, `"${arr[@]}"`), and bare directory adds
-// (`data/audit/`, trailing slash — can't be resolved to specific files
-// statically) are skipped rather than guessed at, so this only ever
+// `git-add-existing.sh`, plain `git add`, or a `for f in <paths>; do git add
+// "$f"; done` loop (the three shapes used across every workflow — see
+// BRO-2446 evidence grep). Best-effort/advisory, matching this module's
+// existing parse philosophy: flags (`-u`, `--force`, …), shell variables not
+// resolved by extractLoopStagedPaths, and bare directory adds (`data/audit/`,
+// trailing slash) are skipped rather than guessed at, so this only ever
 // UNDER-reports staged paths, never fabricates one. Runs against the WHOLE
 // runText (not one line) since real workflows stage several files across
 // separate `git add` lines before a single commit+push.
+//
+// KNOWN, DOCUMENTED BLIND SPOTS (second-opinion review, BRO-2446) — verified
+// via grep to have NO live overlap with any apiFallbackSafe file today, so
+// these are structural gaps, not live false negatives, as of this writing:
+//   - `bash scripts/lib/stage-data-changes.sh` bulk-stages all of `data/`
+//     (minus copyrighted-content exclusions) with no literal paths in the
+//     invocation itself — used by 12 workflows (e.g. commercial-weekly.yml's
+//     "Commit applied data + audit" step), none of which explicitly stage an
+//     apiFallbackSafe file elsewhere in the same step today.
+//   - Bash globs (`git add data/audit/*.json`) are treated as one opaque,
+//     non-`data/`-prefix-matching-safe literal token rather than shell-
+//     expanded to the files they'd actually match.
+// Resolving either would require simulating `git status` against the
+// checked-out tree, not just parsing YAML/shell source text — out of scope
+// for this module's static-analysis design (every other flag here works the
+// same way). If a future apiFallbackSafe file is ever staged behind either
+// shape, this audit will silently miss it; re-run the grep above (`git grep
+// stage-data-changes.sh .github/workflows | xargs grep -l <apiFallbackSafe
+// basenames>`) periodically, or when adding a new apiFallbackSafe entry.
 function extractStagedPaths(runText) {
   const cleaned = stripCommentLines(runText);
   const paths = new Set();
@@ -143,17 +207,10 @@ function extractStagedPaths(runText) {
       let rest = m[1];
       const stopMatch = rest.match(/\|\||&&|;|(?:^|\s)#/);
       if (stopMatch) rest = rest.slice(0, stopMatch.index);
-      for (const tokRaw of rest.trim().split(/\s+/)) {
-        if (!tokRaw) continue;
-        const tok = tokRaw.replace(/^['"]|['"]$/g, '');
-        if (tok.startsWith('-')) continue;
-        if (tok.includes('$')) continue;
-        if (tok.endsWith('/')) continue;
-        if (!tok.startsWith('data/')) continue;
-        paths.add(tok);
-      }
+      pathTokensFrom(rest, paths);
     }
   }
+  extractLoopStagedPaths(cleaned, paths);
   return [...paths];
 }
 

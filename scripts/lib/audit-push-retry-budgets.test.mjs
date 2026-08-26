@@ -451,6 +451,59 @@ test('auditWorkflowText: a single push call bundling an apiFallbackSafe file wit
   ]);
 });
 
+// ── for-loop staged paths (second-opinion finding, BRO-2446: both the Codex
+// adversarial review and the Claude QA subagent independently flagged this
+// as a live blind spot in 9 real workflows) ─────────────────────────────────
+
+test('extractStagedPaths: `for f in <paths>; do git add "$f"; done` loop staging is recognized (real idiom, e.g. audit-census-recall.yml)', () => {
+  const runText = [
+    'for f in data/audit/imageless-scored-shows.json \\',
+    '         data/audit/alert-ledger.json; do',
+    '  [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"',
+    'done',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText).sort(), [
+    'data/audit/alert-ledger.json',
+    'data/audit/imageless-scored-shows.json',
+  ]);
+});
+
+test('extractStagedPaths: single-line `for f in a b; do ... git add "$f" ...; done` is also recognized', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do [ -e "$f" ] && git add "$f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText).sort(), ['data/audit/a.json', 'data/audit/b.json']);
+});
+
+test('extractStagedPaths: a for-loop whose body does NOT git-add the loop variable is ignored (not every for-loop stages files)', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do echo "checking $f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText), []);
+});
+
+const FIXTURE_LOOP_MIXED_BUNDLE = `
+name: Fixture Loop Mixed Bundle
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit audit files
+        run: |
+          for f in data/audit/imageless-scored-shows.json \\
+                   data/audit/some-totally-unregistered-file.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh
+`;
+
+test('auditWorkflowText: a mixed bundle staged entirely via the for-loop idiom is flagged mixed-safety-bundle', () => {
+  const results = auditWorkflowText(FIXTURE_LOOP_MIXED_BUNDLE, 'fixture-loop-mixed-bundle.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].mixedSafetyBundle, true);
+  assert.deepEqual(results[0].mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
+  assert.deepEqual(results[0].mixedSafetyBundleDisqualifyingFiles, ['data/audit/some-totally-unregistered-file.json']);
+});
+
 const FIXTURE_BRO_2435_SPLIT = `
 name: Fixture BRO-2435 Split
 on:
