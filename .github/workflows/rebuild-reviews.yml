@@ -48,7 +48,18 @@ jobs:
       github.event_name != 'workflow_run'
       || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 30->40 (card #1891 follow-up, 2026-08-26, adversarial ship-check
+    # finding): "Commit and push changes" below can now take up to 900s
+    # (15min) vs the OLD 240s (4min) worst case — an added ~11min of
+    # possible step duration. Stacked against this job's other explicit
+    # step budget ("Extract pull quotes for new reviews", timeout-minutes:
+    # 12 below) that alone is 12+15=27 of the OLD 30min ceiling, leaving
+    # near-zero room for checkout/rebuild/push-core-data/deploy-trigger and
+    # every other unbounded step in this ~35-step job. Raised the same way
+    # data-health-check.yml's job timeout was (task #1842): give real
+    # headroom past the new internal push-step deadline, not just past the
+    # old one.
+    timeout-minutes: 40
 
     steps:
       - name: Checkout repository
@@ -480,8 +491,25 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Rebuild Reviews Data — Commit and push changes"
+      # PUSH_DEADLINE_SEC='900' + MAX_RETRIES=25 (card #1891, 2026-08-26):
+      # same push-deadline-exhaustion class as rebuild-fast.yml's equivalent
+      # step (see its comment for the incident + backoff-math rationale).
+      # These exact numbers are NOT re-derived here — they're task #1842's
+      # own live-verified data-health-check.yml values (25 attempts sums to
+      # ~725s of backoff under a 900s deadline, ~175s margin), reused
+      # directly since this job's timeout-minutes is already 30 (more
+      # headroom than rebuild-fast.yml's 25, so no change needed there).
+      #
+      # PUSH_RECONCILE_MERGED_JSON='1': a separate, real correctness fix
+      # riding along — zero effect on the deadline incident above. See
+      # rebuild-fast.yml's equivalent step for the full rationale
+      # (data/audit/scraper-spend-ledger.jsonl is a registered MANAGED
+      # union-merge file this step also stages via `git add -u data/audit/`).
       - name: Commit and push changes
         if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -540,7 +568,7 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 25 main
 
 
       - name: Push core data to private repo

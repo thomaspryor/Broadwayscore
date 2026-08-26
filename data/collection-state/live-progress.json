@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T13:03:49.081Z",
-  "processed": 67,
-  "failed": 971,
-  "successRate": "6.5%",
+  "updatedAt": "2026-08-26T14:18:57.149Z",
+  "processed": 107,
+  "failed": 1615,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 3,
-    "scrapingbee": 8,
-    "brightdata": 6,
+    "browserbase": 8,
+    "directCookies": 2,
+    "scrapingbee": 17,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 9
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -61,16 +61,38 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-26T12:59:37.297Z",
+      "t": "2026-08-26T14:12:51.893Z",
       "event": "bb-session",
-      "session": "3eb4e36e",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+      "session": "9c6de683",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
     },
     {
-      "t": "2026-08-26T12:59:57.065Z",
+      "t": "2026-08-26T14:12:52.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T14:15:39.283Z",
       "event": "bb-session",
-      "session": "36ac4c6f",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+      "session": "b372412c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-26T14:16:20.788Z",
+      "event": "bb-session",
+      "session": "d527688d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+    },
+    {
+      "t": "2026-08-26T14:18:33.719Z",
+      "event": "bb-session",
+      "session": "a217caba",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-26T14:18:34.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

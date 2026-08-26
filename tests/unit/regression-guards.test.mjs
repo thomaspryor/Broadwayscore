@@ -211,6 +211,11 @@ const CRITICAL_PATTERNS = [
     pattern: 'loadReviewsWithBlog',
     description: 'generate-status-page must use loadReviewsWithBlog() so public/opening-night-status.json scores match show-page scores.',
   },
+  {
+    file: 'scripts/generate-related-shows.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-related-shows must use loadReviewsWithBlog() so related-shows ranking scores match show-page scores (#1906).',
+  },
 ];
 
 /**

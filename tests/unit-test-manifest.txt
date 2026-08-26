@@ -12,6 +12,7 @@ scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
+scripts/audit-regex-patterns.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
@@ -46,11 +47,13 @@ scripts/enrich-fallback-ticket-links.test.mjs
 scripts/enrich-ibdb-dates.test.mjs
 scripts/enrich-wikipedia-synopsis.test.mjs
 scripts/export-notion-outcome-history.test.mjs
+scripts/fetch-show-images-auto.test.mjs
 scripts/flag-wrong-production-by-date.test.mjs
 scripts/import-notion-to-linear.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/cli-help.test.mjs
+scripts/lib/cmux-workspaces.test.mjs
 scripts/lib/collect-time-budget.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
 scripts/lib/cyrus-runner-health.test.mjs
@@ -66,6 +69,7 @@ scripts/lib/linear.test.mjs
 scripts/lib/notion-outcome-history.test.mjs
 scripts/lib/opening-night-scored-check.test.mjs
 scripts/lib/pre-send-banner.test.mjs
+scripts/lib/prune-closeable.test.mjs
 scripts/lib/push-content-survival.test.mjs
 scripts/lib/serp-review-census.test.mjs
 scripts/lib/workspace-naming.test.mjs
@@ -81,6 +85,7 @@ scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/opening-night-pipeline.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/reconcile-broadcast-state.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/recover-serp-text.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
@@ -225,6 +230,7 @@ tests/unit/clear-failure-flags.test.mjs
 tests/unit/cluster-canonical.test.mjs
 tests/unit/cmux-launch-guard.test.mjs
 tests/unit/cmux-launch-wake.test.mjs
+tests/unit/codex-delegation.test.mjs
 tests/unit/collect-review-texts-rename-helper.test.mjs
 tests/unit/collection-starvation.test.mjs
 tests/unit/combined-review-pipeline.test.mjs
@@ -277,6 +283,7 @@ tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
 tests/unit/discovery-production-match.test.mjs
 tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
+tests/unit/dispatch-capacity-force-threading.test.mjs
 tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
 tests/unit/dispatch-prompt-review-rule.test.mjs
@@ -296,6 +303,7 @@ tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/exact-title-and-clone-guards.test.mjs
 tests/unit/exclusion-logger.test.mjs
+tests/unit/exclusion-rule-consumption.test.mjs
 tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
@@ -322,6 +330,7 @@ tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-rebuild-trigger.test.mjs
 tests/unit/gemini-calibration-ema.test.mjs
 tests/unit/gemini-thinking-budget-guard.test.mjs
+tests/unit/generate-search-shows-closed-scored.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
@@ -402,6 +411,7 @@ tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
 tests/unit/notion-brain-create-notes.test.mjs
+tests/unit/notion-brain-parse-args.test.mjs
 tests/unit/notion-corpus-io.test.mjs
 tests/unit/notion-corpus.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
@@ -495,6 +505,8 @@ tests/unit/reddit-api-scrapingdog.test.mjs
 tests/unit/reddit-grosses.test.mjs
 tests/unit/regression-guards.test.mjs
 tests/unit/rescore-actionable-depth.test.mjs
+tests/unit/rescore-flagging.test.mjs
+tests/unit/rescore-lifecycle.test.mjs
 tests/unit/rescore-queue-depth.test.mjs
 tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs

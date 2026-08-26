@@ -54,6 +54,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
+const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -1392,6 +1393,13 @@ const crossShowFingerprints = new Map();
           d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete d.wrongProductionNote;
           if (d.wrongProductionReason === 'dateless-revival') delete d.wrongProductionReason;
+          // Card #1902: a wrongProduction clear can un-exclude a file that
+          // was already scored before the flag went on. isStaleScoreInput
+          // gates on assignedScore + isScoreable, so a never-scored file or
+          // one that's still non-includable (wrongShow etc.) is untouched.
+          if (isStaleScoreInput(d, showRecord, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (dateless-revival)');
+          }
           safeWriteReview(fp, d, { force: true });
           datelessRevivalAutoCleared++;
           // Fall through — file may still need the dated pre-opening guard.
@@ -1423,6 +1431,10 @@ const crossShowFingerprints = new Map();
             delete d.anticipatoryGateDaysBeforeOpening;
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
+          }
+          // Card #1902: see the dateless-revival auto-clear above — same gate.
+          if (isStaleScoreInput(d, showRecord, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (priorRuns/tourLegs)');
           }
           safeWriteReview(fp, d, { force: true });
           priorRunAutoCleared++;
@@ -2300,7 +2312,26 @@ showDirs.forEach(showId => {
         let nCycleExcludeFile = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+          // refAlsoDupe deliberately checks ONLY refData.duplicateOf, not
+          // refData.duplicateTextOf (BRO-2317). duplicateTextOf is a
+          // TEXT-STORAGE annotation this file's own content-fingerprint dedup
+          // pass (above, "1C. Content hash dedup" in collect-review-texts.js)
+          // sets on a file that legitimately holds its OWN fullText — it means
+          // "my content also matches some sibling", not "I am excluded/at
+          // risk", and it never by itself excludes refData (nothing in
+          // isIncludableForRebuild/explainExclusion checks bare
+          // data.duplicateTextOf as a self-exclusion trigger). Folding it into
+          // "reference is ALSO a dupe, recover me" was the root cause: a
+          // cluster winner that legitimately holds its own fullText AND
+          // carries a duplicateTextOf pointing at one of its own losers (from
+          // that same dedup pass) made every OTHER, non-circular loser in the
+          // cluster look like it pointed at "a dupe pointing elsewhere" and
+          // silently fall through unexcluded — reviews.json got duplicate
+          // URLs and validate-data.js's NEW-duplicate-URL gate failed on main
+          // + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
+          // 2026-08-26). refData.duplicateOf, by contrast, IS a real
+          // unresolved verdict regardless of content, so it always counts.
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
           // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
           // identical source URL (same show+outlet+url can never legitimately be
@@ -2431,7 +2462,10 @@ showDirs.forEach(showId => {
         let refInheritedFlag = null;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Mirrors the duplicateOf block's BRO-2317 narrowing above: refAlsoDupe
+          // checks ONLY refData.duplicateOf, never refData.duplicateTextOf — see
+          // that block's comment for the full incident.
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
           // Same-URL is a strictly stronger same-article signal than the fingerprint
           // and must count as circularSameText too — mirrors the duplicateOf block
@@ -2706,6 +2740,12 @@ showDirs.forEach(showId => {
           data.wrongProductionSelfHealed = true;
           data.wrongProductionSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says wrongProduction=false + confident ensemble score — cleared stale CV-promoted flag`;
           stats.cvStaleWrongProductionSelfHealed = (stats.cvStaleWrongProductionSelfHealed || 0) + 1;
+          // Card #1905 (cousin of #1902): this clear can un-exclude a file
+          // that was already scored before the flag went on — same shape as
+          // the dateless-revival/priorRuns sites #1902 wired.
+          if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+            markRescoreNeeded(data, 'wrongProduction CV self-heal cleared a stale promotion');
+          }
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
 
@@ -2725,6 +2765,11 @@ showDirs.forEach(showId => {
           data.wrongShowSelfHealed = true;
           data.wrongShowSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says isValid/not-wrong — cleared stale CV-promoted wrongShow flag`;
           stats.cvStaleWrongShowSelfHealed = (stats.cvStaleWrongShowSelfHealed || 0) + 1;
+          // Card #1905 (cousin of #1902): same rescore-staleness gate as the
+          // wrongProduction self-heal above.
+          if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+            markRescoreNeeded(data, 'wrongShow CV self-heal cleared a stale promotion');
+          }
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
       }

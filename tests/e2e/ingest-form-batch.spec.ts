@@ -39,10 +39,11 @@ async function mockShowSearch(page: Page) {
   );
 }
 
-// Mocks /api/admin/ingest-review: succeeds for any URL containing "ok",
-// otherwise returns a generic server-side rejection (never reached by
-// malformed/duplicate slots — those are skipped client-side and never hit
-// the network at all, which is itself part of what these tests verify).
+// Mocks /api/admin/ingest-review: succeeds for any URL containing
+// "ok-review", otherwise returns a generic server-side rejection (never
+// reached by malformed/duplicate slots — those are skipped client-side and
+// never hit the network at all, which is itself part of what these tests
+// verify).
 async function mockIngestReview(page: Page) {
   await page.route('**/api/admin/ingest-review', async route => {
     const body = route.request().postDataJSON() as { url?: string };
@@ -79,12 +80,14 @@ async function goToBatchForm(page: Page) {
   await mockIngestReview(page);
   await mockDispatchRebuild(page);
   await page.goto(FIXTURE_URL);
+  await page.waitForSelector('button:has-text("Paste a batch")');
   await page.getByRole('button', { name: 'Paste a batch' }).click();
   await selectShow(page);
+  await page.waitForSelector('[data-testid="batch-form"]');
 }
 
 function statusRows(page: Page) {
-  return page.locator('ul.space-y-1 > li');
+  return page.locator('[data-testid="status-row"]');
 }
 
 test.describe('BatchPasteForm submit wiring', () => {
