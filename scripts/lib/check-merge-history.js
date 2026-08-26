@@ -45,9 +45,10 @@ function isShallowClone(cwd, gitFn = runGit) {
  * Deepens `cwd` to full history when it's shallow. No-ops on the
  * full-history-but-blobless clone the workflow normally produces (a blob
  * filter does not set the shallow boundary). Returns whether a fetch ran,
- * for logging/testing — never throws: a failed deepen falls through to
- * countPriorMergesInHistory()'s best-effort scan on whatever history IS
- * present rather than crashing the merge.
+ * for logging/testing. Never throws itself — a failed deepen is reported
+ * back via `error` so countPriorMergesInHistory() can decide whether the
+ * clone is STILL shallow afterward (see below) rather than silently
+ * counting on a possibly-incomplete history.
  */
 function ensureFullHistory(cwd, { gitFn = runGit, log = () => {} } = {}) {
   if (!isShallowClone(cwd, gitFn)) return { deepened: false };
@@ -64,18 +65,37 @@ function ensureFullHistory(cwd, { gitFn = runGit, log = () => {} } = {}) {
 /**
  * Counts commits reachable from `ref` whose message contains `trailer`
  * (fixed-string match — trailers are never regexes). Ensures full history
- * first via ensureFullHistory(). Returns 0 on any git failure (unknown
- * ref, not a repo, etc.) rather than throwing — matches the
- * gitOrNull-swallows-errors behavior countPriorMerges() relied on before
- * this extraction.
+ * first via ensureFullHistory().
+ *
+ * FAILS CLOSED (throws) rather than returning a possibly-wrong count,
+ * because this value gates the oscillation breaker's "2+ prior merges is a
+ * hard stop, never auto-revert" — an undercounted 0 or 1 here would let a
+ * broken card merge a 3rd time with no signal to the owner (adversarial
+ * review, BRO-423: the original best-effort "swallow to 0" version of this
+ * function was flagged as silently unsafe on exactly this path). Two throw
+ * cases: (a) the clone is STILL shallow after ensureFullHistory's deepen
+ * attempt — partial history must never be counted as if it were complete;
+ * (b) the `git log --grep` scan itself fails (corrupt ref, missing object,
+ * etc.) — that also means the count can't be trusted. Both surface as a CI
+ * job failure (autonomous-merge.js's main().catch → non-zero exit → the
+ * workflow's Notify-on-failure step), which is the safe direction: no
+ * merge happens, and the owner is alerted instead of an undercounted
+ * approval sailing through silently.
  */
 function countPriorMergesInHistory(trailer, ref, cwd, { gitFn = runGit, log = () => {} } = {}) {
   ensureFullHistory(cwd, { gitFn, log });
+  if (isShallowClone(cwd, gitFn)) {
+    throw new Error(
+      'oscillation scan aborted: clone is shallow and could not be deepened to full history — ' +
+      'refusing to count prior merges on partial history (would risk silently undercounting the ' +
+      '"2+ prior merges" hard stop). Check the checkout step (fetch-depth: 0) and network access to origin.'
+    );
+  }
   let out;
   try {
     out = gitFn(['log', '--fixed-strings', '--grep', trailer, '--format=%H', ref], cwd);
-  } catch {
-    return 0;
+  } catch (err) {
+    throw new Error(`oscillation scan aborted: git log --grep against ${ref} failed: ${String(err.message || err).slice(0, 300)}`);
   }
   return String(out || '').trim().split('\n').filter(Boolean).length;
 }

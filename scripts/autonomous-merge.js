@@ -481,7 +481,21 @@ async function approve(cardId, branch) {
   // unreachable-from-CI) ledger — see scripts/lib/autonomous-merge-core.js.
   git(['fetch', 'origin', 'main']);
   const trailer = oscillationTrailerFor(cardId);
-  const priorMerges = countPriorMerges(cardId);
+  let priorMerges;
+  try {
+    priorMerges = countPriorMerges(cardId);
+  } catch (err) {
+    // check-merge-history.js's countPriorMergesInHistory fails CLOSED (never
+    // returns a possibly-wrong count) — a thrown error here means the
+    // guard can't be trusted, not that there are zero prior merges. Route
+    // it through the same reverifyFail note as every other pre-merge
+    // refusal so the owner sees WHY, instead of an uncaught fatal.
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote(`oscillation guard could not verify merge history: ${String(err.message).slice(0, 300)}`)]);
+    console.error(`[merge] RE-VERIFY FAILED: ${err.message}`);
+    process.exitCode = 1;
+    return;
+  }
   if (shouldEscalateOscillation(priorMerges)) {
     transition('approved', 'merge.oscillation');
     notionUpdate(cardId, ['--auto', 'failed', '--outcome', buildEscalationNote(cardId, priorMerges)]);
@@ -642,7 +656,17 @@ async function approveDataCard(cardId, branch, card, evidence) {
   // data-card merge commit lands on scorecard-data/review-texts main, never
   // on Broadwayscore's.
   const trailer = oscillationTrailerFor(cardId);
-  const priorMerges = countPriorMerges(cardId, dir);
+  let priorMerges;
+  try {
+    priorMerges = countPriorMerges(cardId, dir);
+  } catch (err) {
+    // Same fail-closed rationale as approve()'s Tier-1 call site above.
+    transition('approved', 'merge.reverify-fail');
+    notionUpdate(cardId, ['--auto', 'needs-approval', '--outcome', buildReverifyFailNote(`oscillation guard could not verify merge history in ${repoKey}: ${String(err.message).slice(0, 300)}`)]);
+    console.error(`[merge] RE-VERIFY FAILED (data/${repoKey}): ${err.message}`);
+    process.exitCode = 1;
+    return;
+  }
   if (shouldEscalateOscillation(priorMerges)) {
     transition('approved', 'merge.oscillation');
     notionUpdate(cardId, ['--auto', 'failed', '--outcome', buildEscalationNote(cardId, priorMerges)]);

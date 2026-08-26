@@ -88,22 +88,45 @@ test('countPriorMergesInHistory: deepens a shallow clone before counting (regres
   // This is the case BRO-423 exists to prevent: if a workflow edit ever
   // reintroduces a shallow checkout, the oscillation scan must not silently
   // undercount — it must deepen first so the "2+ prior merges" hard stop
-  // still fires reliably.
-  const gitFn = fakeGit({
-    'rev-parse --is-shallow-repository': 'true\n',
-    'fetch --unshallow origin': '',
-    "log --fixed-strings --grep Auto-merge-card: BRO-1 --format=%H origin/main": 'aaa\nbbb\nccc\n',
-  });
+  // still fires reliably. Stateful gitFn: shallow until `fetch --unshallow`
+  // actually "runs", mirroring what a real deepen does to `.git/shallow`.
+  let shallow = true;
+  const calls = [];
+  const gitFn = (args, cwd) => {
+    calls.push({ args, cwd });
+    const key = args.join(' ');
+    if (key === 'rev-parse --is-shallow-repository') return shallow ? 'true\n' : 'false\n';
+    if (key === 'fetch --unshallow origin') { shallow = false; return ''; }
+    if (key === 'log --fixed-strings --grep Auto-merge-card: BRO-1 --format=%H origin/main') return 'aaa\nbbb\nccc\n';
+    throw new Error(`no script entry for "${key}"`);
+  };
   const n = countPriorMergesInHistory('Auto-merge-card: BRO-1', 'origin/main', '/repo', { gitFn });
   assert.equal(n, 3);
-  assert.ok(gitFn.calls.some((c) => c.args.join(' ') === 'fetch --unshallow origin'));
+  assert.ok(calls.some((c) => c.args.join(' ') === 'fetch --unshallow origin'));
 });
 
-test('countPriorMergesInHistory: returns 0 (never throws) when the log call itself fails', () => {
+test('countPriorMergesInHistory: FAILS CLOSED (throws) when the clone is still shallow after a failed deepen', () => {
+  // The adversarial-review finding this exists to fix: a network/auth
+  // failure mid-deepen must not fall through to counting on partial
+  // history — an undercount here silently defeats the "2+ prior merges"
+  // hard stop.
+  const gitFn = fakeGit({
+    'rev-parse --is-shallow-repository': 'true\n',
+    'fetch --unshallow origin': new Error('network unreachable'),
+  });
+  assert.throws(
+    () => countPriorMergesInHistory('Auto-merge-card: BRO-1', 'origin/main', '/repo', { gitFn }),
+    /shallow and could not be deepened/,
+  );
+});
+
+test('countPriorMergesInHistory: FAILS CLOSED (throws) when the log call itself fails', () => {
   const gitFn = fakeGit({
     'rev-parse --is-shallow-repository': 'false\n',
     "log --fixed-strings --grep Auto-merge-card: BRO-1 --format=%H origin/main": new Error('unknown revision'),
   });
-  const n = countPriorMergesInHistory('Auto-merge-card: BRO-1', 'origin/main', '/repo', { gitFn });
-  assert.equal(n, 0);
+  assert.throws(
+    () => countPriorMergesInHistory('Auto-merge-card: BRO-1', 'origin/main', '/repo', { gitFn }),
+    /git log --grep against origin\/main failed/,
+  );
 });
