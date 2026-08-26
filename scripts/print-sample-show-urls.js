@@ -3,53 +3,58 @@
  * Thin CLI wrapper for lighthouse-post-deploy.yml (card #1919): prints 1-2
  * rotating show-page URLs for interpolation into that workflow's bash URLS
  * array, so the per-deploy Lighthouse gate isn't structurally blind to every
- * show page except /show/wicked. Reuses sampleShowPages() (BRO-175,
- * scripts/lib/sample-show-pages.js) rather than re-deriving its sampling
- * logic — see CLAUDE.md rule 15.
+ * show page except /show/wicked.
  *
- * Rotation is deliberately INDEPENDENT of check-seo-health.js's weekly index:
- * this workflow fires on every push to main plus a daily cron, far more often
- * than the weekly SEO health check, so a day-granularity rotation index (vs.
- * check-seo-health.js's week-granularity one) works through the catalog
- * faster on this higher-frequency gate. The output is also a rotating WINDOW
- * over sampleShowPages()'s picks (not always its first `count` entries), so
- * this gate doesn't pin to whichever category sorts alphabetically first.
+ * Reads the LIVE sitemap (scripts/lib/live-show-slugs.js) rather than
+ * checking out the private core-data repo: every picked slug is guaranteed
+ * to be an actually-deployed route, and this workflow — which previously had
+ * zero data dependencies beyond hitting production URLs — needs no new
+ * secret or private-repo checkout. Rotates by day (days-since-epoch), so
+ * across the daily cron this gate works through the live catalog over time.
+ *
+ * Falls back to FALLBACK_SLUG if the sitemap fetch fails or returns nothing
+ * (network hiccup, robots.txt/sitemap shape change) — this gate must never
+ * silently drop to zero show-page coverage.
  *
  * Usage: node scripts/print-sample-show-urls.js [count]   (default 2)
  */
 
-const path = require('path');
-const { sampleShowPages } = require('./lib/sample-show-pages');
+const { fetchLiveShowSlugs } = require('./lib/live-show-slugs');
 const { SITE_HOST } = require('./submit-google-indexing');
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const FALLBACK_SLUG = 'wicked';
 
 function getDayIndex(date = new Date()) {
   return Math.floor(date.getTime() / MS_PER_DAY);
 }
 
-function pickRotatingShowSlugs(shows, count, dayIndex = getDayIndex()) {
-  // sampleShowPages()'s `weekIndex` option is just an opaque rotation modulus —
-  // deliberately feeding it a day-granularity value here (not a bug to "fix").
-  const picks = sampleShowPages(shows, { weekIndex: dayIndex });
-  if (picks.length === 0) return [];
-  const start = dayIndex % picks.length;
+function pickRotatingWindow(slugs, count, dayIndex = getDayIndex()) {
+  if (slugs.length === 0) return [FALLBACK_SLUG];
+  const start = dayIndex % slugs.length;
   const window = [];
-  for (let i = 0; i < count && i < picks.length; i++) {
-    window.push(picks[(start + i) % picks.length]);
+  for (let i = 0; i < count && i < slugs.length; i++) {
+    window.push(slugs[(start + i) % slugs.length]);
   }
   return window;
 }
 
-function main() {
+async function main() {
   const count = Math.max(1, parseInt(process.argv[2], 10) || 2);
-  const shows = require(path.join(__dirname, '../data/shows.json')).shows;
-  const slugs = pickRotatingShowSlugs(shows, count);
-  for (const slug of slugs) {
+  const slugs = await fetchLiveShowSlugs(SITE_HOST);
+  if (slugs.length === 0) {
+    console.error(`::warning::print-sample-show-urls.js found 0 live show slugs — falling back to /show/${FALLBACK_SLUG}`);
+  }
+  for (const slug of pickRotatingWindow(slugs, count)) {
     console.log(`${SITE_HOST}/show/${slug}`);
   }
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch(err => {
+    console.error(`::warning::print-sample-show-urls.js failed (${err.message}) — falling back to /show/${FALLBACK_SLUG}`);
+    console.log(`${SITE_HOST}/show/${FALLBACK_SLUG}`);
+  });
+}
 
-module.exports = { pickRotatingShowSlugs, getDayIndex };
+module.exports = { pickRotatingWindow, getDayIndex, FALLBACK_SLUG };

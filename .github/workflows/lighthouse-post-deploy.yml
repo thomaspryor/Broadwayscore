@@ -25,19 +25,17 @@ jobs:
           node-version: '20'
       - name: Install Lighthouse
         run: npm install -g lighthouse chrome-launcher
-      - name: Checkout core data (for show-page sampling)
-        uses: ./.github/actions/checkout-core-data
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Pick rotating show pages
         # Show pages are ~2800 of ~2900 routes but this gate used to hardcode
-        # exactly one (/show/wicked) forever (card #1919). Reuses
-        # sampleShowPages() (scripts/lib/sample-show-pages.js, BRO-175) via a
-        # thin CLI wrapper — see scripts/print-sample-show-urls.js for the
-        # rotation rationale. Soft-fails to an empty file (falls back to just
-        # the static pages below) rather than blocking the whole audit on a
-        # data-checkout hiccup.
-        run: node scripts/print-sample-show-urls.js 2 > /tmp/sample-show-urls.txt || true
+        # exactly one (/show/wicked) forever (card #1919). Reads the LIVE
+        # sitemap (scripts/lib/live-show-slugs.js) via a thin CLI wrapper —
+        # see scripts/print-sample-show-urls.js — so every picked slug is
+        # guaranteed to be an actually-deployed route, with no new private-
+        # repo/secret dependency for this job. The script itself always
+        # prints at least one URL (falling back to /show/wicked if the live
+        # sitemap fetch fails or returns nothing), so this step never needs
+        # to fail the job.
+        run: node scripts/print-sample-show-urls.js 2 > /tmp/sample-show-urls.txt
       - name: Run Lighthouse audits
         id: audit
         run: |
