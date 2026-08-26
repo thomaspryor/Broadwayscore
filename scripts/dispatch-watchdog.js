@@ -340,6 +340,12 @@ function summarize(plan) {
     awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
+    // BRO-2462: `holds` mixes policy pauses with failure-detection signals
+    // (see dispatch-watchdog-core.js) — surfaced separately so `--status
+    // --json` lets a human see directly whether health()'s tab-count/
+    // queue-depth pager is currently gated, instead of re-deriving it from
+    // the holds strings.
+    pausedByPolicy: plan.budgets.pausedByPolicy,
   };
 }
 
@@ -589,23 +595,42 @@ function health() {
       // enabled AND no other legitimate hold explains zero launches — a
       // deliberate dispatch pause (NO_DISPATCH_FILE), or the watchdog's own
       // day budget / concurrency / global-auto-tab cap being spent
-      // (planSweep's `holds`, dispatch-watchdog-core.js:428-436), routinely
+      // (planSweep's `holds`, dispatch-watchdog-core.js), routinely
       // produces zero launches with a deep, still-growing p01Queue and must
       // not page — that's expected pacing, not a stall (ship-check adversarial
       // catch: day-budget-spent was the LIVE state — 12/12 used, 199 queued —
       // when this was reviewed, so this isn't a hypothetical). -1 is the
       // existing "don't trust this" sentinel, so leaving it at -1 here
-      // reduces to the pre-BRO-409 tab-count-only check. The pre-existing
-      // tab-count path below is unaffected by any of this — it still fires
-      // unconditionally, exactly as it did before this fix.
+      // reduces to the pre-BRO-409 tab-count-only check. Unchanged by
+      // BRO-2462 below — deliberately: widening this path's trust condition
+      // too (e.g. to trust it during a detected outage) is a separate,
+      // untested behavior change outside this ticket's scope.
+      //
+      // BRO-2462: dispatchEnabled() read once into dispatchEnabledNow and
+      // reused for both the init and the guard below — two separate reads
+      // could disagree if NO_DISPATCH_FILE is created in between (Codex
+      // adversarial catch). dispatchPaused gates the tab-count path too, but
+      // ONLY on a genuine policy pause (plan.budgets.pausedByPolicy) — never
+      // on a detected failure (launcher outage, failure-rate leak, claim
+      // outage). Those still appear in plan.budgets.holds (which
+      // pausedByPolicy is deliberately narrower than) precisely because a
+      // real stall must still page through the tab-count path, not get
+      // silenced by its own symptom. If buildPlan() throws, dispatchPaused
+      // stays at !dispatchEnabledNow (the cheap, non-throwing signal) — a
+      // transient plan-build error deliberately fails toward the old
+      // unconditional tab-count behavior (paging), not toward silently
+      // suppressing it; an unknown state must never look like a known pause.
       let eligibleQueueDepth = -1;
-      if (dispatchEnabled()) {
+      const dispatchEnabledNow = dispatchEnabled();
+      let dispatchPaused = !dispatchEnabledNow;
+      if (dispatchEnabledNow) {
         try {
           const plan = buildPlan(now);
+          dispatchPaused = plan.budgets.pausedByPolicy;
           if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
         } catch (e) { console.error(`[watchdog] queue-depth check skipped (${e.message})`); }
       }
-      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth })) {
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused })) {
         pageOwner({
           conditionKey: 'dispatch-flow-dead',
           title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
