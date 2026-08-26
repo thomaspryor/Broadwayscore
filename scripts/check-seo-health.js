@@ -26,6 +26,7 @@ const {
 const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
 const { summarizeBotQueries, botDropExplainsDecline, isBotQueryRow } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
+const { sampleShowPages } = require('./lib/sample-show-pages');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -55,18 +56,31 @@ const TARGET_KEYWORDS = [
   'broadway shows for tourists',
 ];
 
-// Key pages to check Core Web Vitals for (covers main page types)
-const CWV_PAGES = [
+// Static key pages to check Core Web Vitals for (covers main page types).
+// Show pages are appended dynamically — see sampleShowPages() below.
+const CWV_STATIC_PAGES = [
   `${SITE_HOST}/`,
   // /browse/best-broadway-musicals now 308-redirects to /guides/best-broadway-musicals
   // (guides feature migration) — PSI/Lighthouse was scoring the redirect stub, not the
   // real page, which is a plausible contributor to the erratic scores that triggered
   // card #311 (2026-07-21 CWV regression false-alarm investigation).
   `${SITE_HOST}/guides/best-broadway-musicals`,
-  `${SITE_HOST}/show/hamilton`,
   `${SITE_HOST}/west-end`,
   `${SITE_HOST}/off-broadway`,
 ];
+
+// Show pages are ~2800 of ~2900 routes and the heaviest page type on the site,
+// but CWV_PAGES used to hardcode exactly one of them (/show/hamilton) — so the
+// same single page got checked every week and every other show page's CWV was
+// unmonitored. Card #419: hamilton was found carrying 645KB of RSC payload;
+// sibling show pages had the identical defect with nothing to catch it.
+// sampleShowPages() (rotating, category-stratified sample) now lives in
+// scripts/lib/sample-show-pages.js so lighthouse-post-deploy.yml's per-deploy
+// gate (card #1919) can reuse it instead of duplicating the logic.
+function buildCWVPages(shows) {
+  const showPages = sampleShowPages(shows).map(slug => `${SITE_HOST}/show/${slug}`);
+  return [...CWV_STATIC_PAGES, ...showPages];
+}
 
 // Google's "Good" CWV absolute thresholds
 const CWV_ABSOLUTE = {
@@ -845,6 +859,15 @@ async function checkCoreWebVitals() {
   // calls would just burn it 3x faster for no benefit.
   const RUNS_PER_URL = psKey ? 3 : 1;
 
+  let shows = [];
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    shows = data.shows || data;
+  } catch (err) {
+    console.log('  Could not read shows.json, skipping show-page CWV sampling');
+  }
+  const cwvPages = buildCWVPages(shows);
+
   const fetchOnce = async (url) => {
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
     // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
@@ -888,7 +911,7 @@ async function checkCoreWebVitals() {
     };
   };
 
-  for (const url of CWV_PAGES) {
+  for (const url of cwvPages) {
     try {
       let best = null;
       let rateLimited = false;
@@ -1518,4 +1541,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { detectAnomalies, detectCWVAnomalies };
+module.exports = { detectAnomalies, detectCWVAnomalies, sampleShowPages, buildCWVPages };
