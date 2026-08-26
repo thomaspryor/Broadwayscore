@@ -200,10 +200,26 @@ if [ -d "$LEDGER_BACKUP_DIR" ]; then
     if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null && [ -z "$(find "$bak" -mmin +60 2>/dev/null)" ]; then
       continue
     fi
+    # A backup older than a day must NOT be replayed. These ledgers are ring
+    # buffers (provider-telemetry.js:69 keeps the newest 20,000 lines), so
+    # appending day-old rows makes rows rotation already discarded the
+    # "newest" and displaces genuinely newer ones on the next rotate —
+    # a corruption unionIsSafe cannot see because the count only grows.
+    # Park it instead: nothing is destroyed, nothing is replayed, and the
+    # error prints once rather than every run (found in pre-ship review).
+    if [ -n "$(find "$bak" -mmin +1440 2>/dev/null)" ]; then
+      mv "$bak" "$bak.stale" 2>/dev/null \
+        && echo "::error::[$TAG] $bak is over a day old — too stale to union into a rotating ledger. Parked at $bak.stale; apply by hand if those rows matter."
+      continue
+    fi
     if ! git ls-files --error-unmatch -- "$rel" >/dev/null 2>&1; then
       echo "::error::[$TAG] backup $bak names an untracked path ($rel) — refusing to write it; move it aside by hand"
       continue
     fi
+    case "$rel" in *.jsonl) : ;; *)
+      echo "::error::[$TAG] backup $bak names a non-jsonl path ($rel) — refusing to union it; move it aside by hand"
+      continue ;;
+    esac
     if [ "$(git check-attr merge -- "$rel" 2>/dev/null | sed 's/.*: //')" != "union" ]; then
       echo "::error::[$TAG] backup $bak names $rel, which is no longer merge=union — refusing to union it; move it aside by hand"
       continue
@@ -300,6 +316,14 @@ if [ -n "$REMAINING_DIRTY" ]; then
   while IFS= read -r p; do
     [ -n "$p" ] || continue
     git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 || continue
+    # merge=union alone is NOT enough. .gitattributes also marks
+    # tests/unit-test-manifest.txt and data/opening-night-timeline/*.jsonl as
+    # union, and for a manifest a union RESURRECTS a line origin deliberately
+    # deleted — union is only the right resolution for a file where every line
+    # is an independent appended event that nothing ever removes. Requiring
+    # *.jsonl as well keeps this stage on the append-only ledgers it was built
+    # for (found in pre-ship review).
+    case "$p" in *.jsonl) : ;; *) continue ;; esac
     attr=$(git check-attr merge -- "$p" 2>/dev/null | sed 's/.*: //')
     [ "$attr" = "union" ] || continue
     # The decision is carried to node as newline-joined text and back as
@@ -374,7 +398,15 @@ EOF
     RESTORE_OK=1
     while IFS= read -r L; do
       [ -n "$L" ] || continue
-      union_restore_ledger "$L" "$(ledger_backup_path "$L" "$$")" || RESTORE_OK=0
+      B="$(ledger_backup_path "$L" "$$")"
+      if ! union_restore_ledger "$L" "$B"; then
+        RESTORE_OK=0
+        # Do not leave THIS ledger sitting at origin-only content until the
+        # next launchd tick drains it — anything that reads it, or `git add
+        # -A`s it, in the meantime sees the short version. Put the local rows
+        # back verbatim now; the backup stays so the drain can still reconcile.
+        [ -f "$B" ] && { cp "$B" "$L" || echo "::error::[$TAG] FAILED to restore $L from $B — restore it by hand"; }
+      fi
     done <<EOF
 $UNION_BLOCKING
 EOF

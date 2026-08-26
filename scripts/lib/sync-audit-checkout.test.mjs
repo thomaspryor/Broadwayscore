@@ -479,3 +479,86 @@ test('a STAGED ledger is still staged after recovery (checkout HEAD -- clears th
     assert.equal(count(lines(path.join(clone, LEDGER)), 'local-only'), 1);
   });
 });
+
+test('merge=union alone is not enough — a non-jsonl union path is never recovered', () => {
+  withTmp((root) => {
+    // .gitattributes marks tests/unit-test-manifest.txt merge=union too, and
+    // unioning a manifest RESURRECTS a line origin deliberately deleted. Only
+    // append-only *.jsonl ledgers belong in the recovery stage.
+    const MANIFEST = 'unit-test-manifest.txt';
+    const { origin, clone } = setupPair(root, 'manifest', {
+      attributes: `${LEDGER} merge=union\n${MANIFEST} merge=union\n`,
+    });
+    fs.writeFileSync(path.join(clone, MANIFEST), 'keep-a\ndelete-me\n');
+    git(clone, 'add', '-A'); git(clone, 'commit', '-q', '-m', 'add manifest');
+    git(clone, 'push', '-q', 'origin', 'main');
+    advanceOrigin(root, origin, 'via-manifest', (via) => {
+      fs.writeFileSync(path.join(via, MANIFEST), 'keep-a\n'); // origin DELETED a line
+    });
+    fs.writeFileSync(path.join(clone, MANIFEST), 'keep-a\ndelete-me\nlocal\n');
+
+    const { code } = trySync(clone, 'manifest');
+    assert.equal(code, 1, 'a non-jsonl union file must refuse, not be unioned');
+    assert.equal(
+      fs.readFileSync(path.join(clone, MANIFEST), 'utf8'), 'keep-a\ndelete-me\nlocal\n',
+      'and it is left untouched — no resurrection of the deleted line',
+    );
+  });
+});
+
+test('a day-old backup is parked, not replayed into a rotating ledger', () => {
+  withTmp((root) => {
+    // Rotation keeps the newest tail; appending day-old rows would make rows
+    // rotation already discarded the "newest" and displace genuinely newer ones.
+    const { clone } = setupPair(root, 'stale');
+    const backupDir = path.join(clone, '.git', 'sync-ledger-backups');
+    fs.mkdirSync(backupDir, { recursive: true });
+    const bak = path.join(backupDir, `${LEDGER.replaceAll('/', '%')}.999999.bak`);
+    fs.writeFileSync(bak, 'a\nb\nc\nancient-row\n');
+    const twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    fs.utimesSync(bak, twoDaysAgo, twoDaysAgo);
+
+    const { code, out } = trySync(clone, 'stale');
+    assert.equal(code, 0, out);
+    assert.equal(count(lines(path.join(clone, LEDGER)), 'ancient-row'), 0, 'not replayed');
+    assert.equal(fs.existsSync(`${bak}.stale`), true, 'parked, not destroyed');
+    assert.equal(fs.existsSync(bak), false, 'and not re-tried every run');
+  });
+});
+
+test('if the recovery stage cannot even start, the ledger is never truncated', () => {
+  withTmp((root) => {
+    // Force BACKUP_OK=0 by making the backup directory un-creatable (a plain
+    // file sits where the dir must go). This is the rollback/refuse branch:
+    // the promise is that no ledger is left cleaned-but-unrestored.
+    const { origin, clone } = setupPair(root, 'nobackup');
+    advanceOrigin(root, origin, 'via-nobackup', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+    fs.writeFileSync(path.join(clone, '.git', 'sync-ledger-backups'), 'not a directory\n');
+
+    const { code } = trySync(clone, 'nobackup');
+    assert.equal(code, 1, 'must refuse rather than proceed without a backup');
+    assert.equal(
+      fs.readFileSync(path.join(clone, LEDGER), 'utf8'), 'a\nb\nc\nlocal-only\n',
+      'the ledger is exactly as it was — never cleaned, never truncated',
+    );
+  });
+});
+
+test("the recovery label 'dirty-union-ledger' can never reach a refusal snapshot", () => {
+  // classifyBlock only ever pairs that reason with the union-recover action,
+  // and the shell forces REASON=dirty-unresolved on both exits of the recovery
+  // block — so the digest can never render a reason nobody has copy for.
+  const paths = ['data/audit/stage-latency.jsonl'];
+  const d = classifyBlock({ blockingPaths: paths, aheadCount: 0, unionMergePaths: paths });
+  assert.equal(d.reason, 'dirty-union-ledger');
+  assert.equal(d.action, 'union-recover', 'that reason is a RECOVERY label, never a refusal');
+  for (const ahead of [1, 2]) {
+    assert.notEqual(
+      classifyBlock({ blockingPaths: paths, aheadCount: ahead, unionMergePaths: paths }).reason,
+      'dirty-union-ledger',
+    );
+  }
+});
