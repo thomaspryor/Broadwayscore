@@ -79,7 +79,7 @@ function fileOnMain(relPath) {
   }
 }
 
-function liveComposite(showId) {
+function localCheckoutComposite(showId) {
   const p = path.join(REPO_ROOT, 'public', 'data', 'shows', `${showId}.json`);
   if (!existsSync(p)) return { found: false };
   const data = JSON.parse(readFileSync(p, 'utf8'));
@@ -87,40 +87,63 @@ function liveComposite(showId) {
   return { found: true, cs: data.cs ?? null, reviewCount: data.rc ?? null };
 }
 
+// This process's local `main` ref may be behind origin if nothing in this
+// session has fetched recently — report its age so a stale "MISS"/"not yet
+// merged" reading isn't mistaken for current truth. Doesn't fetch: a
+// diagnostic script silently mutating refs is its own hazard.
+function mainRefFreshness() {
+  const sha = gitLog(['-1', '--format=%h', 'main']);
+  const iso = gitLog(['-1', '--format=%cI', 'main']);
+  const ageHours = Math.round((Date.now() - new Date(iso).getTime()) / 3_600_000);
+  return { sha, committedAt: iso, ageHours };
+}
+
 async function main() {
   const report = { notionCards: [], toolingFiles: {}, smokeTestShows: {}, git: {} };
+  let hadErrors = false;
 
   section('Notion cards');
   for (const card of NOTION_CARDS) {
     const result = tryRun(() => getNotionCard(card.id), (err) => ({ error: err.message }));
+    if (result.error) hadErrors = true;
     report.notionCards.push({ ...card, ...result });
     if (!JSON_OUT) {
       if (result.error) {
         console.log(`  [ERROR] ${card.label}: ${result.error}`);
       } else {
-        console.log(`  ${card.label}: ${result.status} (${result.url})`);
+        // Print the card's actual current title alongside our hardcoded
+        // label — ids are stable but a page can be renamed/repurposed, and
+        // an automated string-match here would just be a second guess to
+        // verify; showing the real title lets a human eyeball it directly.
+        console.log(`  ${card.label}: ${result.status} — "${result.name}" (${result.url})`);
       }
     }
   }
 
   section('S1/S2 tooling files (present on main?)');
+  report.git.mainRef = tryRun(mainRefFreshness, (err) => ({ error: err.message }));
   for (const f of TOOLING_FILES) {
     const onMain = fileOnMain(f);
     report.toolingFiles[f] = onMain;
     if (!JSON_OUT) console.log(`  ${onMain ? 'OK  ' : 'MISS'} ${f}`);
   }
+  if (!JSON_OUT && report.git.mainRef && !report.git.mainRef.error) {
+    const { sha, ageHours } = report.git.mainRef;
+    console.log(`  (checked against local main@${sha}, last commit ${ageHours}h ago — run "git fetch origin main" first if that's stale)`);
+  }
 
-  section('Smoke-test shows (live composite)');
+  section('Smoke-test shows (local checkout composite — NOT a live-prod check)');
   for (const id of SMOKE_TEST_SHOWS) {
-    const state = liveComposite(id);
+    const state = localCheckoutComposite(id);
     report.smokeTestShows[id] = state;
     if (!JSON_OUT) {
-      console.log(state.found ? `  ${id}: cs=${state.cs}, reviews=${state.reviewCount}` : `  ${id}: NOT FOUND in public/data/shows/`);
+      console.log(state.found ? `  ${id}: cs=${state.cs}, reviews=${state.reviewCount}` : `  ${id}: NOT FOUND in local public/data/shows/`);
     }
   }
 
   section('git: BRO-255 lost-update-race fix on main');
   report.git.bro255 = tryRun(() => gitLog(['--oneline', 'main', '--grep=BRO-255']), (err) => ({ error: err.message }));
+  if (report.git.bro255 && report.git.bro255.error) hadErrors = true;
   if (!JSON_OUT) console.log(report.git.bro255 || '  (no matching commits found)');
 
   section('git: worktree-we-historical-s1-s2 branch vs main');
@@ -135,21 +158,33 @@ async function main() {
     } else if (typeof ahead === 'string') {
       console.log(`  Branch has commits NOT on main:\n${ahead}`);
     } else {
+      hadErrors = true;
       console.log(`  [ERROR] ${ahead.error}`);
     }
   }
+
+  report.hadErrors = hadErrors;
 
   if (JSON_OUT) {
     console.log(JSON.stringify(report, null, 2));
   } else {
     console.log('\n=== Summary ===');
+    if (hadErrors) {
+      console.log('⚠️  One or more checks above ERRORED (see [ERROR] lines) — this report is');
+      console.log('INCOMPLETE. Re-run after fixing the underlying issue (network, auth) before');
+      console.log('trusting a "Done"/"OK" reading anywhere else in this output.');
+    }
     console.log('Read the sections above before doing any new work: the WE historical pilot');
     console.log('has repeatedly turned out to be further along than a fresh session assumes.');
-    console.log('If Notion cards above are all "Done" and both smoke-test shows have a live');
-    console.log('cs, S0.5 + S1/S2 tooling are complete — the open question is whether the');
-    console.log('owner has approved the full 2024-25 season dispatch (~50 shows, real spend),');
-    console.log('which is a scope/cost decision this script does not make for you.');
+    console.log('If Notion cards above are all "Done" and both smoke-test shows have a');
+    console.log('non-null cs in the LOCAL checkout, S0.5 + S1/S2 tooling are complete there —');
+    console.log('confirm against production (check-prod-deploy.js or the live show page)');
+    console.log('before treating a local reading as deployed truth. The remaining open item is');
+    console.log('whether the owner has approved the full 2024-25 season dispatch (~50 shows,');
+    console.log('real spend), which is a scope/cost decision this script does not make for you.');
   }
+
+  if (hadErrors) process.exitCode = 1;
 }
 
 main().catch((err) => {
