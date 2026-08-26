@@ -95,6 +95,11 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/migrate-reroute-backlog.js'
       - 'scripts/verify-reroute-migration.test.mjs'
+      # BRO-2267: scripts/lib/unabandon-fetch-cycles.test.mjs (already covered
+      # by the scripts/lib/** glob above) execFileSync-shells out to this
+      # root-level script — needs its own entry so a solo edit to the script
+      # alone still triggers CI (same gap class as recover-serp-text.js above).
+      - 'scripts/unabandon-fetch-cycles.js'
       # BRO-735: root-level scripts/*.js + *.test.mjs trio (no scripts/**
       # broad glob) — opening-night-pipeline-verify.js is the CLI glue that
       # wraps scripts/lib/opening-night-pipeline-stages.js (already covered
