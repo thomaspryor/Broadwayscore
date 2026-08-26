@@ -346,20 +346,40 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     // the workspace is archived or upgraded (BRO-10), not just this one. The
     // Notion-era router degraded this to the same logged-warning path as any
     // other failure, which is exactly how the ceiling went unnoticed on
-    // 2026-08-12. Page immediately, bypassing the caller's own disposition
-    // and the page-worthy allowlist gate entirely (this is not a per-condition
-    // alert, it's "the alert router itself is broken").
+    // 2026-08-12.
+    //
+    // This must page (not silently log), but it must page ONCE per incident,
+    // not once per failed dispatchCard() call: a failed dispatch is
+    // deliberately never written to the ledger (see the "not recorded as
+    // notified" comment below dispatchCard's caller), specifically so the
+    // NEXT attempt retries instead of going silent — which means an unthrottled
+    // page here would fire a fresh critical email for every single 'auto'
+    // alert across every conditionKey, every call, for as long as the cap
+    // stays hit (a same-day inbox storm, confirmed by both ship-check
+    // reviewers on the first version of this fix, which called sendAlert()
+    // directly with no cooldown of its own).
+    //
+    // Fix: route through routeAlert() itself, under ITS OWN fixed
+    // conditionKey ('alert-router:usage-limit-exceeded', on the page-worthy
+    // allowlist as a meta self-test — see page-worthy-alerts.js) and
+    // disposition:'human'. That's a DIFFERENT conditionKey than the one that
+    // failed to dispatch, so it gets its own ledger entry and cooldown —
+    // one page per incident, silent re-fires for cooldownHours after, same
+    // guarantee every other alert in this file gets. No recursion risk:
+    // disposition:'human' never calls dispatchCard(), only 'auto' does.
     const usageLimitExceeded = isUsageLimitExceeded(err);
     if (usageLimitExceeded) {
       try {
-        await sendAlert({
-          title: 'Linear issue cap hit — automated alert filing is now silently failing',
-          description: `dispatchCard() could not file "${title}" (condition "${conditionKey}"): ${err.message}. The Linear workspace has hit its free-tier issue cap — every 'auto' disposition alert will keep failing the same way until stale issues are archived (scripts/linear-archive-done.js) or the plan is upgraded (BRO-10).`,
+        await routeAlert({
+          conditionKey: 'alert-router:usage-limit-exceeded',
+          title: 'Linear usage limit hit — automated alert filing is silently failing',
+          description: `dispatchCard() could not file "${title}" (condition "${conditionKey}"): ${err.message}. Every 'auto' disposition alert will keep failing the same way until this is resolved — archive stale issues (scripts/linear-archive-done.js) or upgrade the plan (BRO-10).`,
           severity: 'critical',
-          email: true,
+          disposition: 'human',
+          cooldownHours: 24,
         });
       } catch (escalationErr) {
-        console.error(`[alert-router] USAGE_LIMIT_EXCEEDED escalation email itself failed: ${escalationErr.message}`);
+        console.error(`[alert-router] USAGE_LIMIT_EXCEEDED escalation page itself failed: ${escalationErr.message}`);
       }
     }
     return { ok: false, error: err.message, usageLimitExceeded };
