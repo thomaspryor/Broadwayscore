@@ -49,20 +49,16 @@ function splitLines(value) {
     .filter(Boolean);
 }
 
-function main() {
+async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
     console.log(USAGE);
     return 0;
   }
+  const { readState, writeState } = await import('./lib/cron-health-state.mjs');
   const fileArg = process.argv.slice(2).find((a) => a.startsWith('--state-file='));
   const stateFile = fileArg ? fileArg.slice('--state-file='.length) : process.env.STATE_FILE || DEFAULT_STATE_FILE;
 
-  let prev = null;
-  try {
-    prev = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
-  } catch {
-    /* missing or corrupt — treat as a fresh start */
-  }
+  const prev = readState(stateFile);
 
   const currentStale = splitLines(process.env.CURRENT_STALE);
   const redispatched = splitLines(process.env.REDISPATCHED_NOW);
@@ -76,10 +72,7 @@ function main() {
     staleStreak,
     updatedAt: new Date().toISOString(),
   };
-  fs.mkdirSync(path.dirname(stateFile), { recursive: true });
-  const tmp = `${stateFile}.tmp.${process.pid}`;
-  fs.writeFileSync(tmp, JSON.stringify(next, null, 2) + '\n');
-  fs.renameSync(tmp, stateFile);
+  writeState(next, stateFile);
 
   for (const name of currentStale) {
     const days = (staleStreak[name] || {}).days || 0;
@@ -98,6 +91,6 @@ function main() {
   return 0;
 }
 
-if (require.main === module) process.exit(main());
+if (require.main === module) main().then((code) => process.exit(code));
 
 module.exports = { splitLines };
