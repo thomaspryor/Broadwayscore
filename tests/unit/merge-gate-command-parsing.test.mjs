@@ -115,3 +115,50 @@ test('parse: a quoted commit message merely naming "git merge" is not treated as
   const ingress = parseMergeIngress('git commit -m "docs: explain how git merge works"', { currentBranch: 'main' });
   assert.equal(ingress.isMerge, false);
 });
+
+// ── Adversarial-review follow-ups (hand-traced by /ship-check, now pinned) ──
+
+test('parse: stacked wrappers ("timeout N nohup <wrapper>") unwrap all the way through', () => {
+  const ingress = parseMergeIngress(`timeout 900 nohup ${WRAPPER_CMD}`, { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.via, 'wrapper');
+  assert.equal(ingress.targetsMain, true);
+});
+
+test('parse: "nice -n10 <wrapper>" (attached short-flag value, no space) still reaches the wrapper', () => {
+  const ingress = parseMergeIngress(`nice -n10 ${WRAPPER_CMD}`, { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.via, 'wrapper');
+});
+
+test('parse: "stdbuf -oL <wrapper>" (attached short-flag value, no space) still reaches the wrapper', () => {
+  const ingress = parseMergeIngress(`stdbuf -oL ${WRAPPER_CMD}`, { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.via, 'wrapper');
+});
+
+test('parse: "command -p git merge <branch>" (command builtin\'s own flag) still classifies as git-merge', () => {
+  const ingress = parseMergeIngress('command -p git merge feature', { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.via, 'git-merge');
+  assert.equal(ingress.targetsMain, true);
+});
+
+test('parse: real git subcommands that merely contain "merge" as a substring (merge-base) are not misread', () => {
+  const ingress = parseMergeIngress('git merge-base main feature', { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, false);
+});
+
+test('parse: known documented trade-off — an UNQUOTED echo of the literal words "git" then "merge" fails closed too', () => {
+  // No real merge happens here — this is the deliberate, safe-direction cost
+  // of the token-level catch-all: it cannot distinguish "these two words
+  // appear in an echoed status line" from "this file is a wrapper this
+  // parser doesn't recognise." Failing closed (recoverable via the hook's
+  // NO-SHIP-CHECK/REVIEW_GATE_DISABLE escape hatches) is the intentional
+  // trade-off per the issue's non-negotiable; a QUOTED echo argument (the
+  // realistic case — see the commit-message test above) is unaffected,
+  // because tokenize() keeps a quoted string as one token.
+  const ingress = parseMergeIngress('echo git merge test', { currentBranch: 'main' });
+  assert.equal(ingress.isMerge, true);
+  assert.equal(ingress.unparsedFailClosed, true);
+});
