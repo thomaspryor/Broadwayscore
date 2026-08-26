@@ -3,50 +3,50 @@ name: Vercel Build Guard
 # Self-healing check: ensures git-triggered builds stay blocked on Vercel.
 # Without this, every pipeline commit triggers a Vercel build ($0.015/min).
 # 39,176 accidental builds cost $3,500 in Feb 2026 before this was caught.
+# BRO-2424: the setting-drift self-heal (PATCH auto-restore) is unchanged in
+# behavior — ported to scripts/check-vercel-build-guard.js so it can reuse
+# guard-escalation.js (BRO-545 pattern) for the double-failure path: setting
+# drifted AND the auto-restore PATCH itself also failed. That path used to
+# fail loud every 30 min forever with no real escalation (this step's
+# notify-failure call had no `severity` override — defaults to 'low', a
+# no-op for anything but 'critical', see .github/actions/notify-failure).
 
 on:
   schedule:
     - cron: '*/30 * * * *'  # Every 30 minutes
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: vercel-build-guard
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
       - name: Check Vercel build guard setting
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/check-vercel-build-guard.js
+
+      - name: Commit guard-escalation state
+        if: always()
         run: |
-          PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
-
-          SETTING=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v9/projects/$PROJECT_ID" \
-            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'NOT SET')")
-
-          echo "Current setting: '$SETTING'"
-
-          if [ "$SETTING" = "exit 0" ]; then
-            echo "Build guard is active. All good."
-            exit 0
-          fi
-
-          echo "::error::Build guard is NOT 'exit 0' — it is '$SETTING'. Restoring now..."
-
-          # Auto-fix: restore the guard
-          RESULT=$(curl -s -X PATCH \
-            -H "Authorization: Bearer $VERCEL_TOKEN" \
-            -H "Content-Type: application/json" \
-            "https://api.vercel.com/v9/projects/$PROJECT_ID" \
-            -d '{"commandForIgnoringBuildStep":"exit 0"}')
-
-          VERIFY=$(echo "$RESULT" | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'FAILED')")
-          echo "After fix: '$VERIFY'"
-
-          if [ "$VERIFY" = "exit 0" ]; then
-            echo "::warning::Build guard was missing and has been restored. Check Vercel billing for unwanted builds."
-          else
-            echo "::error::Failed to restore build guard! Manual intervention required."
-            exit 1
+          if git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null | grep -q .; then
+            git add data/audit/guard-escalation-state.json
+            git commit -m "chore: vercel-build-guard escalation state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Notify on failure
@@ -54,4 +54,4 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Vercel Build Guard Failed'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          severity: 'warning'
