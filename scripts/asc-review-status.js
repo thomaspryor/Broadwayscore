@@ -1,42 +1,7 @@
 #!/usr/bin/env node
 // Query App Store Connect for current app review status and rejection details
 
-const crypto = require('crypto');
-const fs = require('fs');
-const https = require('https');
-
-const KEY_ID = '7MPPJ2254M';
-const ISSUER_ID = '2d03cc88-e016-4fb7-8d89-a70a4a912875';
-const P8_PATH = process.env.ASC_KEY_PATH || `${process.env.HOME}/.keys/AuthKey_${KEY_ID}.p8`;
-
-function makeJWT() {
-  const header = Buffer.from(JSON.stringify({ alg: 'ES256', kid: KEY_ID, typ: 'JWT' })).toString('base64url');
-  const now = Math.floor(Date.now() / 1000);
-  const payload = Buffer.from(JSON.stringify({ iss: ISSUER_ID, iat: now, exp: now + 1200, aud: 'appstoreconnect-v1' })).toString('base64url');
-  const toSign = `${header}.${payload}`;
-  const privateKey = crypto.createPrivateKey(fs.readFileSync(P8_PATH));
-  const sig = crypto.sign(null, Buffer.from(toSign), { key: privateKey, dsaEncoding: 'ieee-p1363' }).toString('base64url');
-  return `${toSign}.${sig}`;
-}
-
-function ascGet(path) {
-  return new Promise((resolve, reject) => {
-    const token = makeJWT();
-    const options = {
-      hostname: 'api.appstoreconnect.apple.com',
-      path,
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    https.get(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(new Error(`Parse error: ${data}`)); }
-      });
-    }).on('error', reject);
-  });
-}
+const { ascGet } = require('./lib/asc-client.js');
 
 async function main() {
   // 1. Find the Broadway Scorecard app
