@@ -23,6 +23,8 @@
 
 'use strict';
 
+const { isTerminalStateType } = require('./linear-state-types.js');
+
 // Warn well under the 250 hard cap so there's runway to archive before a
 // createIssue() call fails with USAGE_LIMIT_EXCEEDED.
 const WARN_THRESHOLD = 200;
@@ -81,7 +83,7 @@ function isCapEnforced(subscription, now = Date.now()) {
 // would archive on the wrong (older) timestamp, undercutting the 48h reopen
 // buffer for the transition that actually made it terminal.
 function isArchivableIssue(issue, now, ageHours = ARCHIVE_AGE_HOURS) {
-  if (!issue || (issue.stateType !== 'completed' && issue.stateType !== 'canceled')) return false;
+  if (!issue || !isTerminalStateType(issue.stateType)) return false;
   const closedAt = issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
   if (!closedAt) return false;
   const ageMs = now - new Date(closedAt).getTime();
