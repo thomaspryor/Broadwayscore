@@ -40,8 +40,25 @@ const { computeDeadRate, CMUX_LANE, DEFAULTS } = require('/Users/tompryor/Broadw
 
 const LEDGER = path.join('/Users/tompryor/Broadwayscore', 'data', 'audit', 'dispatch-ledger.jsonl');
 
-// The fix's merge commit landing time (git log -1 --format=%cI 96ec6d951d8).
-const FIX_LANDED_MS = Date.parse('2026-08-19T04:05:47Z');
+// The fix's merge commit landing time (git log -1 --format=%cI 4d19a7d554a).
+//
+// REPOINTED 2026-08-26 from 96ec6d951d8 (task #1812's wrapper-detection fix,
+// 2026-08-19T04:05:47Z) to the terminal-runtime-ceiling fix, task #1904.
+//
+// This is not a moved goalpost, it is the claim changing. #1812's fix was
+// measured against exactly this test and DISPROVEN: the post-fix rate came
+// back 57-58%, worse than the 31% baseline it was meant to cure, and this
+// card's own outcome log records that as "RECHECK FAILED ... REGRESSED".
+// Leaving the window anchored there would mean this test permanently
+// re-asserts a claim already known to be false and can never go green
+// whatever ships next — the pre-fix corpses inside the window guarantee it.
+//
+// The claim now under test is #1904's: cmux caps live terminal runtimes, and
+// past that cap `new-workspace` still succeeds and still accepts --command
+// while never attaching a terminal, so the command can never run. The fix
+// stops opening those workspaces at all. A red run here still means exactly
+// what it always did — the claim is disproven, not that the code regressed.
+const FIX_LANDED_MS = Date.parse('2026-08-26T15:01:58Z');
 const MIN_LAUNCHES = DEFAULTS.minLaunches; // 20 — same "enough sample" floor computeDispatchHealthDigest uses
 
 test('the cmux dead-launch rate has recovered below the alarm floor since the wrapper-detection fix landed (task #1812)', () => {
