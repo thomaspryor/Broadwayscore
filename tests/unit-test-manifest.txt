@@ -12,6 +12,7 @@ scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
+scripts/audit-regex-patterns.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
@@ -281,6 +282,7 @@ tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
 tests/unit/discovery-production-match.test.mjs
 tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
+tests/unit/dispatch-capacity-force-threading.test.mjs
 tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
 tests/unit/dispatch-prompt-review-rule.test.mjs
@@ -300,6 +302,7 @@ tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/exact-title-and-clone-guards.test.mjs
 tests/unit/exclusion-logger.test.mjs
+tests/unit/exclusion-rule-consumption.test.mjs
 tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
@@ -326,6 +329,7 @@ tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-rebuild-trigger.test.mjs
 tests/unit/gemini-calibration-ema.test.mjs
 tests/unit/gemini-thinking-budget-guard.test.mjs
+tests/unit/generate-search-shows-closed-scored.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
