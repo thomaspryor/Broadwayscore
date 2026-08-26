@@ -176,7 +176,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   closedCardGuard,
-  checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
+  checkDeadDispatch, sessionAliveForTask, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
   dispatchClaimGuard,
@@ -945,6 +945,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
     claudeAliveIn: claudeAliveInFn = cmuxws.claudeAliveIn,
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    sessionAliveForTask: sessionAliveForTaskFn = sessionAliveForTask,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     appendCiRedClaim: appendCiRedClaimFn = appendClaim,
@@ -1441,7 +1442,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // for bsc-prune.js's own (typically once/day) sweep to write the
       // breadcrumb.
       try {
-        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args);
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args, sessionAliveForTaskFn);
         freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
@@ -1469,6 +1470,33 @@ function main(argv = process.argv.slice(2), deps = {}) {
           process.exit(1);
         }
       } catch (e) { console.error(`[bsc-next] duplicate check failed (continuing): ${e.message}`); }
+
+      // BRO-268 ship-check finding: findLiveWorkspaceForTask above only scans
+      // cmux workspace TITLES — a task dispatched headlessly (bsc-runner.js
+      // runJob, or resumed by bsc-reconcile.js) never had a cmux workspace at
+      // all, so that check alone always misses it. Before this session's
+      // sessionAliveFn fix, an actually-alive headless session on this task
+      // was accidentally still protected here: its stale 'dead' breadcrumbs
+      // kept deadDispatchGuard refusing (for the wrong reason). Once
+      // checkDeadDispatch above correctly clears those breadcrumbs for a
+      // confirmed-live session, THIS is the only remaining guard that can
+      // catch "don't open a second cmux tab onto a task a live headless
+      // session is already working" — so it has to exist independently of
+      // the dead-dispatch check, not just inherit its old accidental cover.
+      //
+      // The lease-read itself gets its own narrow try/catch (fail OPEN on an
+      // I/O error, matching every sibling guard in this block); the refusal
+      // + process.exit sit OUTSIDE it — same shape as workBranchCollisionGuard
+      // just above — so a test's process.exit stub (which THROWS to simulate
+      // termination) isn't itself caught and misread as "the check failed."
+      let sessionAlive = false;
+      try { sessionAlive = sessionAliveForTaskFn(task.id); }
+      catch (e) { console.error(`[bsc-next] headless-session duplicate check failed (continuing): ${e.message}`); }
+      if (sessionAlive) {
+        console.error(`[bsc-next] task #${task.id} already has a live headless session (lease-confirmed) — opening a cmux tab here would run two sessions on the same task.`);
+        console.error(`  Check it: node scripts/bsc-status.js — or re-run with --force to launch a second workspace anyway.`);
+        process.exit(1);
+      }
     }
   }
 
@@ -1589,4 +1617,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, sessionAliveForTask, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };

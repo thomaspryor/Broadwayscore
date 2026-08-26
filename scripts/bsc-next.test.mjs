@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
+const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, sessionAliveForTask, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
 const { matchesTaskWorkBranch, findWorkBranchCollisions, workBranchCollisionGuard } = require('./lib/dispatch-guards.js');
@@ -318,6 +318,113 @@ test('checkDeadDispatch: does NOT count a workspace as dead when terminalSurface
   const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {});
   assert.deepEqual(freshDead.map(d => d.workspaceRef), ['workspace:229']);
   assert.equal(refusal, null); // only 1 dead, under DEAD_ATTEMPT_LIMIT
+});
+
+// BRO-268: even both workspace-shaped signals (claudeAliveIn + surfaceAliveIn)
+// agreeing "not alive" can be wrong — they only see inside THIS workspace's
+// own pty, not a headless/resumed session doing the real work elsewhere.
+// sessionAliveFn (defaults to bsc-runner's per-task lease check) is the
+// session-shaped signal that catches that blind spot.
+test('checkDeadDispatch: a workspace both workspace-shaped signals call dead is NOT counted dead when sessionAliveFn says the task has a live session', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [{ event: 'launch', taskId: '297', workspaceRef: 'workspace:227' }];
+  const workspaces = [{ ref: 'workspace:227', title: 'T1-retrieval Sprint 2' }];
+  const isDoneTitle = () => false;
+  const claudeAliveIn = () => false;
+  const surfaceAliveIn = () => false;
+  const sessionAliveIn = () => true; // headless/resumed session verified alive via lease pid
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {}, sessionAliveIn);
+  assert.equal(freshDead.length, 0);
+  assert.equal(refusal, null);
+});
+
+test('checkDeadDispatch: sessionAliveFn returning false leaves the pre-existing dead-counting behavior unchanged', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [{ event: 'launch', taskId: '297', workspaceRef: 'workspace:227' }];
+  const workspaces = [{ ref: 'workspace:227', title: 'T1-retrieval Sprint 2' }];
+  const isDoneTitle = () => false;
+  const claudeAliveIn = () => false;
+  const surfaceAliveIn = () => false;
+  const sessionAliveIn = () => false; // no live lease for this task
+  const { freshDead, refusal } = checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {}, sessionAliveIn);
+  assert.equal(freshDead.length, 1);
+  assert.equal(refusal, null); // still under DEAD_ATTEMPT_LIMIT
+});
+
+test('checkDeadDispatch: one task\'s live session does NOT suppress a different task\'s idle-workspace breadcrumb in the same self-heal batch', () => {
+  const taskA = { id: 'A', subject: 'Task A' };
+  const ledgerEntries = [
+    { event: 'launch', taskId: 'A', workspaceRef: 'workspace:1' },
+    { event: 'launch', taskId: 'B', workspaceRef: 'workspace:2' },
+  ];
+  const workspaces = [
+    { ref: 'workspace:1', title: 'Task A' },
+    { ref: 'workspace:2', title: 'Task B' },
+  ];
+  const isDoneTitle = () => false;
+  const claudeAliveIn = () => false;
+  const surfaceAliveIn = () => false;
+  const sessionAliveIn = (taskId) => taskId === 'A'; // only A has a live session
+  const { freshDead, refusal } = checkDeadDispatch(taskA, workspaces, ledgerEntries, isDoneTitle, claudeAliveIn, surfaceAliveIn, {}, sessionAliveIn);
+  assert.deepEqual(freshDead.map(d => d.taskId), ['B']); // A's own breadcrumb suppressed, B's is not
+  assert.equal(refusal, null);
+});
+
+// The core acceptance shape: freshDead-only filtering would NOT close this —
+// deadDispatchGuard reads dispatchCapDecision(task.id, ledgerEntries.concat(
+// freshDead)), which counts every dead-shaped row for task.id across the
+// WHOLE array with no fresh-vs-historical distinction. A task already sitting
+// at DEAD_ATTEMPT_LIMIT (2) from PAST (mistaken) breadcrumbs must un-refuse
+// once its live session is provable, or "the original workspace is no longer
+// present" (the card's own acceptance wording) never actually recovers.
+test('checkDeadDispatch: a task already at DEAD_ATTEMPT_LIMIT from historical ledger entries is un-refused once sessionAliveFn confirms a live session', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:227' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:229' },
+  ];
+  const sessionAliveIn = () => true;
+  // No live workspaces at all — "the original workspace is no longer present".
+  const { freshDead, refusal } = checkDeadDispatch(task, [], ledgerEntries, () => false, () => false, () => false, {}, sessionAliveIn);
+  assert.equal(freshDead.length, 0);
+  assert.equal(refusal, null, 'a confirmed-live session must override historical dead breadcrumbs, not just fresh ones');
+});
+
+test('checkDeadDispatch: without a live session, the same historical DEAD_ATTEMPT_LIMIT breadcrumbs still refuse (regression guard)', () => {
+  const task = { id: '297', subject: 'T1-retrieval Sprint 2' };
+  const ledgerEntries = [
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:227' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:229' },
+  ];
+  const sessionAliveIn = () => false;
+  const { refusal } = checkDeadDispatch(task, [], ledgerEntries, () => false, () => false, () => false, {}, sessionAliveIn);
+  assert.match(refusal, /died 2x already/);
+});
+
+// linear-next.js dispatches with a `linear:BRO-N`-namespaced taskId — the
+// lease lookup (keyed by raw taskId, no gitSafeJobId sanitization) and the
+// String(taskId) comparisons here must handle that shape identically.
+test('checkDeadDispatch: Linear-namespaced taskId (linear:BRO-N) gets the same session-alive override', () => {
+  const task = { id: 'linear:BRO-42', subject: 'Linear task' };
+  const ledgerEntries = [
+    { event: 'dead', taskId: 'linear:BRO-42', workspaceRef: 'workspace:227' },
+    { event: 'dead', taskId: 'linear:BRO-42', workspaceRef: 'workspace:229' },
+  ];
+  const sessionAliveIn = (taskId) => taskId === 'linear:BRO-42';
+  const { refusal } = checkDeadDispatch(task, [], ledgerEntries, () => false, () => false, () => false, {}, sessionAliveIn);
+  assert.equal(refusal, null);
+});
+
+// Full coverage (including the pidStartedNear recycled-pid cross-check)
+// lives in scripts/lib/dispatch-guards.test.mjs, where sessionAliveForTask
+// is actually defined — this is just a boundary smoke test confirming the
+// bsc-next.js re-export wires the same behavior.
+test('sessionAliveForTask: true only when a lease exists, its pid is confirmed alive, AND it started near the lease; false otherwise', () => {
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => null, isAliveFn: () => true, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: null, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: () => true, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: () => false, pidStartedNearFn: () => true }), false);
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123 }), isAliveFn: () => true, pidStartedNearFn: () => true }), false); // no acquiredAt
+  assert.equal(sessionAliveForTask('t1', { readLeaseFn: () => ({ pid: 123, acquiredAt: '2026-08-26T15:00:00.000Z' }), isAliveFn: (pid) => pid === 123, pidStartedNearFn: () => true }), true);
 });
 
 test('notionIdOf extracts the embedded page id, null when absent', () => {
@@ -784,6 +891,98 @@ test('main(): resolved model reaches the real launchCmux() call (dispatch comman
   } finally {
     fs2.rmSync(tmp, { recursive: true, force: true });
   }
+});
+
+// ship-check finding (2026-08-26): findLiveWorkspaceForTask only scans cmux
+// workspace TITLES, so it always misses a task that was dispatched headlessly
+// (bsc-runner.js runJob, no cmux workspace at all). Before BRO-268's session-
+// alive fix, an actually-alive headless session was accidentally still
+// protected here — its stale 'dead' breadcrumbs kept deadDispatchGuard
+// refusing (for the wrong reason). Once checkDeadDispatch correctly clears
+// those breadcrumbs for a confirmed-live session, main() needs its OWN
+// lease-aware duplicate-dispatch check, or a second cmux tab opens onto a
+// task a live headless session is already working.
+test('main(): refuses to open a cmux tab when sessionAliveForTask confirms a live headless session on this task, never reaching launchCmux', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-headless-dup-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '9002.json'), JSON.stringify({
+    id: '9002', subject: 'Headless duplicate-dispatch guard test task', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '9002'], {
+      loadTasks: () => loadTasks(dir),
+      fetchCard: () => null,
+      loadLinearMirrorMapping: () => ({}),
+      listWorkBranchStatuses: () => [],
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], // no matching cmux workspace at all — the headless-job shape
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      sessionAliveForTask: (taskId) => taskId === '9002', // lease-confirmed alive
+      launchCmux: () => { throw new Error('launchCmux must never be called once the headless-session guard refuses'); },
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /already has a live headless session/.test(e)), `expected a headless-session duplicate refusal, got: ${errors.join(' | ')}`);
+});
+
+test('main(): --force bypasses the headless-session duplicate guard too', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-headless-dup-guard-force-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '9003.json'), JSON.stringify({
+    id: '9003', subject: 'Headless duplicate-dispatch guard force-bypass test', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const calls = [];
+  try {
+    main(['--id', '9003', '--force'], {
+      loadTasks: () => loadTasks(dir),
+      fetchCard: () => null,
+      loadLinearMirrorMapping: () => ({}),
+      listWorkBranchStatuses: () => [],
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      sessionAliveForTask: () => true,
+      launchCmux: () => { calls.push(1); return { ok: true, ref: 'workspace:1' }; },
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+    });
+  } finally {
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(calls.length, 1, '--force must reach launchCmux even with a live headless session');
 });
 
 // resolveModel()'s own resolution-order tests (fable-exclusion, size->model,
