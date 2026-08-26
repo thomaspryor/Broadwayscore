@@ -208,3 +208,12 @@ two different `outletId`s is a syndication duplicate. Keep the higher-tier
 outlet, `git rm` the other, push, and re-check the following pass — it comes back.
 
 Systemic fix carded: Notion `3c8637c5-416f-81d7-80d6-e421d9c37ef6`.
+
+## Gate: same-critic dedupe picks a survivor that a LATER gate then excludes (2026-08-26)
+**Symptom:** a review-texts file that is provably clean (`explainExclusion() => null`, `isIncludableForRebuild() => true`) has NO entry in reviews.json and is absent from prod. Nothing in the audit logs names it.
+**Cause:** rebuild's same-critic/same-outlet dedupe runs BEFORE the exclusion gates and picks the survivor by longest body. When the survivor is subsequently excluded by another gate, the loser is never re-promoted — both copies vanish.
+**Real incident:** paranormal-activity-2026, Chris Jones. A `chicagotribune--chris-jones.json` syndication copy (4771 chars) beat `nydailynews--chris-jones.json` (4086 chars); the Tribune copy died at a later gate; the NYDN review (llmScore 86, T2) left prod entirely, rc 21 -> 20.
+**Tonight's workaround:** `git rm` the syndication copy, commit to review-texts, re-run rebuild-reviews.yml. Restored rc=21 cs=79.77.
+**Diagnostic:** when a review is missing but its file is clean, grep the show dir for OTHER files with the same critic slug — the killer is a sibling, not the file itself.
+**Re-ingestion loop:** deleting a review-texts file leaves no URL tombstone, so discovery re-ingests the same syndication URL on the next sweep (happened 3x here). Expect to delete it again until the tombstone list ships.
+**Systemic fix carded:** Notion 3c8637c5-416f-81c7-b585-da3eb8f37f07 (P1, parked).
