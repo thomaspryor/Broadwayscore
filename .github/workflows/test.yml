@@ -680,6 +680,15 @@ on:
       # to any of them gets ZERO CI.
       - 'scripts/llm-scoring/index.ts'
       - 'tests/unit/rescore-lifecycle.test.mjs'
+      # Rescore-flagging (card #1902, 2026-08-26): the SET side of the same
+      # lifecycle — raising needsRescore when fullText is added after an
+      # excerpt-based score or a wrongProduction false-positive clears on an
+      # already-scored file. scripts/audit-stale-score-input.js and its test
+      # are also path-listed so a solo edit to any of the four gets CI (no
+      # broad scripts/** glob covers audit-stale-score-input.js).
+      - 'scripts/lib/rescore-flagging.js'
+      - 'tests/unit/rescore-flagging.test.mjs'
+      - 'scripts/audit-stale-score-input.js'
       # Canonical cascade-gate queue counts (task #652). llm-ensemble-score.yml
       # gates phases 2-4 on UNSCORED == 0; its old inline counter drifted looser
       # than the scorer's own selection filter and starved the cascade for

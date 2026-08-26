@@ -1,137 +1,29 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-26T09:24:30.270Z",
+    "generatedAt": "2026-08-26T14:45:48.586Z",
     "windowDays": 3,
     "minChurn": 30,
-    "degraded": false,
+    "degraded": true,
     "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 1,
-    "exemptCount": 8,
-    "coveredCount": 16,
-    "highChurnTracked": 25
+    "flaggedCount": 0,
+    "exemptCount": 0,
+    "coveredCount": 2,
+    "highChurnTracked": 2
   },
-  "flagged": [
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 30
-    }
-  ],
-  "exempt": [
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 63
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 63
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 63
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 62
-    },
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 55
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 47
-    },
-    {
-      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 44
-    },
-    {
-      "path": "public/data/shows/abigails-party-west-end-2026.json",
-      "churn": 30
-    }
-  ],
+  "flagged": [],
+  "exempt": [],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1012,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 967,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 387,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 387,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 252,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 166,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 109,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/needs-human-review.json",
-      "churn": 109,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/rebuild-score-drift.json",
-      "churn": 109,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 78,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 70,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 63,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 47,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 30,
+      "churn": 42,
       "mergeAttr": "ours"
     }
   ]
