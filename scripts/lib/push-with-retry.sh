@@ -135,6 +135,35 @@ git_push() {
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
 }
 
+# Strips embedded userinfo (e.g. https://x-access-token:TOKEN@github.com/...,
+# used by the review-texts/private-repo callers of this shared script) out of
+# any text before it's echoed to CI logs. Applied to captured git stderr below.
+_redact_creds() {
+  sed -E 's#://[^/@[:space:]]*@#://***@#g'
+}
+
+# Task #1849: the shallow-fetch block's two retry-loop fetch attempts
+# (explicit-refspec + bare-form fallback) both swallowed stderr via
+# `2>/dev/null`, so a real incident (data-health-check.yml run 32399332590,
+# 2026-08-20: all 25 retries failed identically at rc=128) left CI logs with
+# only the rc code, never the actual git error — impossible to root-cause
+# without reproducing live. This wrapper captures stderr to a temp file and
+# echoes its (redacted, truncated) tail whenever the fetch fails, so the next
+# failure is diagnosable from its own log instead of requiring a fresh
+# incident. Success path is unaffected — no output beyond what callers already
+# print. Always cleans up its temp file, on both outcomes.
+_fetch_with_captured_stderr() {
+  local errfile
+  errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-fetch-err.$$.$RANDOM")
+  git_fetch "$@" 2>"$errfile"
+  local rc=$?
+  if [ "$rc" -ne 0 ] && [ -s "$errfile" ]; then
+    echo "  fetch stderr: $(tail -c 800 "$errfile" | _redact_creds | tr '\n' ' ')"
+  fi
+  rm -f "$errfile" 2>/dev/null || true
+  return $rc
+}
+
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
 # abandoned — either the no-op-rebase abort or full retry exhaustion below — so
 # repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
@@ -1216,29 +1245,55 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 
   FETCH_DEPTH_ARGS=()
   if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
-    # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
-    # only a handful of commits). This is the commit that must remain an
-    # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
-    # captured above, before the unshallow attempt — reused here, not
-    # recomputed (still memoized the same way if this repo was never touched
-    # by that block, e.g. inside GITHUB_ACTIONS).
-    if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
-      # None of the emitted args can contain whitespace (asserted in the test),
-      # so unquoted word-splitting into the array is safe here.
-      # shellcheck disable=SC2207
-      FETCH_DEPTH_ARGS=($(node "$SCRIPT_DIR/shallow-fetch-args.js" \
-        --is-shallow=true \
-        --oldest-epoch="${_shallow_base_epoch:-}" \
-        --slack-sec="${SHALLOW_SINCE_SLACK_SEC:-1800}" 2>/dev/null || true))
+    if [ "${_shallow_bound_escalation:-0}" -ge 1 ]; then
+      # Task #1849: a PRIOR iteration's shallow-bounded fetch already failed
+      # FAST (rejected outright — rc != 124, not a timeout) using this exact
+      # memoized bound (_shallow_base_epoch is captured ONCE for the whole
+      # run, see above and its "Computed ONCE" comment below) — reusing the
+      # identical bound here would just repeat the identical rejection on
+      # every remaining retry, which is exactly the incident this fixes
+      # (data-health-check.yml run 32399332590: 25/25 identical rc=128
+      # failures, main never pushed). Skip the node computation entirely and
+      # widen with a plain --deepen instead. Starts at 2000, not 200: the
+      # bare-form fallback below already tries --deepen=200 once at
+      # escalation 0 regardless of the initial bound, so restarting this
+      # ladder at 200 would just replay that same already-failed value
+      # (second-opinion review finding, task #1849). --deepen never SHORTENS
+      # existing history (see shallow-fetch-args.js's DEFAULT_FALLBACK_DEPTH
+      # comment), so it's safe to reissue verbatim on later iterations too —
+      # once escalated we stay escalated for the rest of this run, same as
+      # _shallow_base_sha/_shallow_base_epoch's own memoization above.
+      case "${_shallow_bound_escalation:-0}" in
+        1) FETCH_DEPTH_ARGS=(--deepen=2000) ;;
+        2) FETCH_DEPTH_ARGS=(--deepen=8000) ;;
+        *) FETCH_DEPTH_ARGS=(--deepen=20000) ;;
+      esac
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — prior bound(s) were REJECTED outright (not a timeout); escalating to ${FETCH_DEPTH_ARGS[*]} instead of repeating the identical failing bound (task #1849)"
+    else
+      # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
+      # only a handful of commits). This is the commit that must remain an
+      # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
+      # captured above, before the unshallow attempt — reused here, not
+      # recomputed (still memoized the same way if this repo was never touched
+      # by that block, e.g. inside GITHUB_ACTIONS).
+      if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
+        # None of the emitted args can contain whitespace (asserted in the test),
+        # so unquoted word-splitting into the array is safe here.
+        # shellcheck disable=SC2207
+        FETCH_DEPTH_ARGS=($(node "$SCRIPT_DIR/shallow-fetch-args.js" \
+          --is-shallow=true \
+          --oldest-epoch="${_shallow_base_epoch:-}" \
+          --slack-sec="${SHALLOW_SINCE_SLACK_SEC:-1800}" 2>/dev/null || true))
+      fi
+      # Fail CLOSED, not open: if node is missing or the helper crashed, an empty
+      # array would silently restore the unbounded fetch this block exists to
+      # prevent. A fixed depth is still bounded (and the ancestry check below
+      # escalates if that depth doesn't reach our base).
+      if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
+        FETCH_DEPTH_ARGS=(--deepen=200)
+      fi
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
     fi
-    # Fail CLOSED, not open: if node is missing or the helper crashed, an empty
-    # array would silently restore the unbounded fetch this block exists to
-    # prevent. A fixed depth is still bounded (and the ancestry check below
-    # escalates if that depth doesn't reach our base).
-    if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
-      FETCH_DEPTH_ARGS=(--deepen=200)
-    fi
-    echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
   fi
   # NOTE on the ${arr[@]+"${arr[@]}"} expansions below: bash 3.2 (stock
   # /usr/bin/bash on macOS) treats "${arr[@]}" on an EMPTY array as an unbound
@@ -1246,7 +1301,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # checkout. Same guard scripts/hooks/pre-push uses for PUSH_SPECS.
   fetch_ok=false
   fetch_start=$SECONDS
-  if git_fetch ${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"} origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
+  if _fetch_with_captured_stderr ${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"} origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH"; then
     fetch_ok=true
     echo "  fetch(explicit-refspec) OK in $((SECONDS - fetch_start))s"
   else
@@ -1264,17 +1319,38 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # which is the whole point of this block (ship-check finding).
       _fallback_depth_args=()
       if [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ]; then
-        _fallback_depth_args=(--deepen=200)
-        echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
+        if [ "${_shallow_bound_escalation:-0}" -ge 1 ]; then
+          # Already escalated past 200 above (task #1849) — reissue that same
+          # wider bound on the bare form instead of regressing to --deepen=200,
+          # which already failed once at escalation 0.
+          _fallback_depth_args=("${FETCH_DEPTH_ARGS[@]}")
+          echo "  Bare-form fallback reuses the escalated bound ${_fallback_depth_args[*]} (not regressing to --deepen=200, which already failed — task #1849)"
+        else
+          _fallback_depth_args=(--deepen=200)
+          echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
+        fi
       fi
       fetch_start=$SECONDS
-      if git_fetch ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH" 2>/dev/null; then
+      if _fetch_with_captured_stderr ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH"; then
         fetch_ok=true
         echo "  fetch(bare-form fallback) OK in $((SECONDS - fetch_start))s"
       else
         echo "  fetch(bare-form fallback) FAILED in $((SECONDS - fetch_start))s (rc=$?)"
       fi
     fi
+  fi
+
+  # Task #1849: both fetch attempts above were shallow-bounded and both
+  # failed FAST (not a 124 timeout — a timeout means "still too slow", not
+  # "bound rejected", and already gets fresh network budget next iteration
+  # via the ordinary retry/backoff path, no escalation needed). A repeat of
+  # this exact iteration next time would recompute the identical memoized
+  # bound and fail identically forever (the incident this whole block
+  # exists to fix) — escalate so the NEXT iteration's FETCH_DEPTH_ARGS
+  # computation above takes the widening branch instead.
+  if [ "$fetch_ok" != "true" ] && [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ] && [ "${explicit_fetch_rc:-0}" -ne 124 ]; then
+    _shallow_bound_escalation=$(( ${_shallow_bound_escalation:-0} + 1 ))
+    echo "  ::warning::push-with-retry: shallow-bounded fetch failed fast (rc=${explicit_fetch_rc:-?}, not a timeout) — the bound itself was likely rejected, not just slow. Escalating for the next retry instead of repeating this identical bound (task #1849). Escalation level now $_shallow_bound_escalation."
   fi
 
   # Ancestry escalation (task #466). A depth-bounded fetch is only correct if it
