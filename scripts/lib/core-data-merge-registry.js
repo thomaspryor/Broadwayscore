@@ -67,6 +67,7 @@ const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
+const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -108,6 +109,41 @@ const CORE_DATA_MERGE_REGISTRY = [
     // reasoning as feedback-request-ledger.json above); not opted into the
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
+    optInReconcile: false,
+  },
+  {
+    file: 'audit/alert-digest-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertDigestQueue,
+    format: 'json',
+    newline: true,
+    // BRO-257: 12+ independent workflows call queueDigestLine() and push
+    // through this surface — the generic `data/collection-state/*|data/audit/*`
+    // whole-file keep-local arm silently dropped whichever writer lost the
+    // rebase/push race. Same multi-writer-ledger shape and same fix as
+    // feedback-request-ledger.json / express-retry-queue.json above.
+    // Reconciled via TWO mechanisms (unlike those two siblings, which rely
+    // on the case-arm alone): (1) resolve_conflicts()'s case arm, for the
+    // conflicts git DOES report (e.g. modify/delete); (2) push-with-retry.sh's
+    // reconcile_merged_json(), which makes an UNCONDITIONAL single-file call
+    // for this path regardless of PUSH_RECONCILE_MERGED_JSON. (2) exists
+    // because two independent writers appending a new entry at the same
+    // array position (the common case — queueDigestLine() always appends at
+    // the end) is an add/add hunk that `git rebase -X theirs` auto-resolves
+    // WITHOUT ever reporting a conflict — confirmed live: the case arm alone
+    // did not pass tests/unit/alert-digest-queue.test.mjs's real end-to-end
+    // reproduction. `optInReconcile: false` below still correctly means "not
+    // part of the opt-in whole-MANAGED-sweep" — mechanism (2) is a separate,
+    // deliberately single-file-scoped call, not that sweep.
+    // NOT apiFallbackSafe: genuinely multi-writer, so the Git Data API
+    // fallback's fail-closed "ours wins outright" bypass would be wrong here
+    // (see the "NOT added, deliberately" note below) — this file's protection
+    // is the real per-key merge above, not that bypass. Confirmed the Git
+    // Data API fallback disqualifier (push-with-retry.sh's isManaged/
+    // isApiFallbackSafe check) correctly SKIPS the fallback for this file
+    // rather than using it unsafely, since it is data/audit/*, not MANAGED,
+    // and not apiFallbackSafe.
     optInReconcile: false,
   },
 
@@ -324,11 +360,17 @@ const CORE_DATA_MERGE_REGISTRY = [
   },
   // NOT added, deliberately: data/audit/triage/ (also written by
   // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
-  // data/audit/alert-digest-queue.json (8 writers — the exact file the
-  // comment above this block warns about), data/audit/alert-router-
-  // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
-  // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
-  // path available for them.
+  // data/audit/alert-router-attempts.jsonl (3 writers). These stay in the
+  // bulk "Commit health check + triage data" step with no apiFallbackSafe
+  // path — genuinely multi-writer, so that fail-closed "ours wins outright"
+  // bypass would be wrong for them. data/audit/alert-digest-queue.json (12+
+  // writers — the exact file the comment above this block warns about) is
+  // ALSO genuinely multi-writer and so is likewise NOT apiFallbackSafe, but
+  // as of BRO-257 it is no longer unprotected on the ordinary rebase/merge
+  // path: it has its own real per-conditionKey merge registered above
+  // (status: 'active', case-arm-dispatched in push-with-retry.sh), the same
+  // fix already applied to feedback-request-ledger.json and
+  // express-retry-queue.json.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
