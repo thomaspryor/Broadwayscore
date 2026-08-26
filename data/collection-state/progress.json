@@ -1,7 +1,9 @@
 {
   "processed": [
     "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
     "paranormal-activity-2026/deadline--erik-pedersen.json",
@@ -14,31 +16,59 @@
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
   "log": [
     {
       "t": "2026-08-26T20:34:06.722Z",
       "event": "bb-session",
       "session": "8c132387",
       "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-26T20:34:07.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-26T20:38:50.978Z",
+      "event": "bb-session",
+      "session": "6a1aaea2",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-26T20:39:00.641Z",
+      "event": "bb-session",
+      "session": "58e81ca1",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
