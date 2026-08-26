@@ -38,8 +38,16 @@ const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 // Also builds domainAliases map for domain matching (e.g., 1minutecritic.com → oneminutecritic.com)
 const { foldDiacritics } = require('./title-match');
 
+// Worktrees never have their own data/ (gitignored + symlinked in the main
+// checkout, not copied on EnterWorktree), so the __dirname-relative path below
+// resolves to a worktree root with no outlet-registry.json. Fall back to the
+// canonical repo — same idiom audit-placeholder-venues.js's loadShows() uses
+// (task #983).
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+
 function buildOutletDomains() {
-  const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+  const local = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+  const registryPath = fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'outlet-registry.json');
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const outlets = registry.outlets || registry;
   const map = {};

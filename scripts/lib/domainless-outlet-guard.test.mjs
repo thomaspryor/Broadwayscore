@@ -6,7 +6,11 @@ import { fileURLToPath } from 'node:url';
 import { isOutletEligibleForSerpDiscovery, OUTLET_DOMAINS } from './url-discovery.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+// Worktrees never have their own data/ — fall back to the canonical repo,
+// same idiom as url-discovery.js's buildOutletDomains() (task #983).
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const localRegistryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+const registryPath = fs.existsSync(localRegistryPath) ? localRegistryPath : path.join(CANONICAL_REPO, 'data', 'outlet-registry.json');
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 const outlets = registry.outlets || registry;
 
