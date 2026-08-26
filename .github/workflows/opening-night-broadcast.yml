@@ -1041,39 +1041,48 @@ jobs:
               -f "title=$TITLE" || echo "Push dispatch failed for $SLUG — non-critical"
           done
 
-      # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
-      # 2026-08-26): see "Commit orphan-rescore-requeue state" above for the
-      # sizing rationale — this is the last of this job's hard-fail push
-      # steps sharing the same tight 24-min job budget.
-      - name: Commit data
+      # BRO-2455 (2026-08-26): this used to be one "Commit data" step
+      # bundling orphan-rescore-requeue-state.json (single-writer,
+      # apiFallbackSafe) with 3 disqualifying multi-writer files in one
+      # push-with-retry.sh call — the mixed-safety-bundle shape BRO-2435
+      # already fixed in the earlier "Commit orphan-rescore-requeue state"
+      # step above. Split into 2 SEPARATE steps (not just 2 calls in one
+      # step) so each gets its own `env: PUSH_DEADLINE_SEC` that
+      # scripts/lib/audit-push-retry-budgets.js can actually see — an inline
+      # `PUSH_DEADLINE_SEC=N bash push-with-retry.sh` prefix on one call
+      # within a shared step is real at runtime but is a deliberately
+      # unrecognized shape for that audit (see its findPushRetryCalls()
+      # comment: "inlineDeadlineSec is kept ... always null"), so it would
+      # silently keep charging the step-level 300s against this job's
+      # margin math for a call that's actually smaller.
+      - name: Commit orphan-rescore-requeue state (late — defense-in-depth for a stranded early push)
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
-          PUSH_DEADLINE_SEC: '300'
+          PUSH_DEADLINE_SEC: '60'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # BRO-2455: split into 2 independent commit+push blocks — same
-          # STATUS=0/||STATUS=1/exit $STATUS idiom as the earlier "Commit
-          # orphan-rescore-requeue state" step above (BRO-2435), needed
-          # because GitHub Actions runs `run:` as `bash -e`, so a bare
-          # failing push-with-retry.sh call would abort this script before
-          # the second block ever ran. Only orphan-rescore-requeue-state.json
-          # is apiFallbackSafe (single-writer, registered in
-          # scripts/lib/core-data-merge-registry.js); bundling it into the
-          # SAME push-with-retry.sh call as the 3 disqualifying (multi-writer/
-          # unaudited) files below defeats the Git Data API fallback for ALL
-          # of them on retries-exhaustion — the exact BRO-2435 failure shape,
-          # just at this later point in the same job. Bundling the 3
-          # disqualifying files with EACH OTHER loses no fallback (none of
-          # them are apiFallbackSafe today), so they stay in one block.
-          STATUS=0
-
           # #356: orphan-unscored self-heal attempt tracking. Must be
           # committed here (this workflow is the caller) or the next run's
-          # checkout starts fresh and re-notifies/re-attempts from zero.
-          # Kept in its own push call so it retains the Git Data API
-          # fallback (BRO-2455).
+          # checkout starts fresh and re-notifies/re-attempts from zero. In
+          # its own step (not bundled with the multi-writer files below) so
+          # it keeps the Git Data API fallback (BRO-2455).
+          #
+          # Sized DOWN from the other hard-fail steps' 300s/14 (MAX_RETRIES=5
+          # below) because this file's real job here is narrow: the early
+          # "Commit orphan-rescore-requeue state" step (above) already
+          # commits+pushes it, and its only writer
+          # (dispatch-orphan-rescore-requeue.js) runs BEFORE that early step,
+          # not between the two — so under normal operation nothing NEW is
+          # staged here. This step exists purely to flush a commit stranded
+          # by a failed EARLY push (rare: single-writer, grepped every
+          # workflow — see core-data-merge-registry.js's entry — so genuine
+          # rebase conflicts are rare), and apiFallbackSafe kicks in after
+          # ceil((5+1)/2)=3 local attempts, well inside this smaller budget.
+          # `node scripts/audit-push-retry-budgets.js` reports no flags at
+          # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
+          # restored to ~17%) — re-confirm with that script before changing.
           #
           # BRO-2435: a dirty index isn't the only reason to push here. The
           # early "Commit orphan-rescore-requeue state" step commits BEFORE
@@ -1087,23 +1096,38 @@ jobs:
           # exited 0 and silently left the commit stranded — the exact gap
           # that let origin/main's orphan-rescore-requeue-state.json sit
           # stale at its 2026-08-01 version despite local runs "succeeding"
-          # at writing it. Push whenever EITHER this block staged something
+          # at writing it. Push whenever EITHER this step staged something
           # new OR local HEAD already sits ahead of origin/main.
           if [ -f data/audit/orphan-rescore-requeue-state.json ]; then
             git add data/audit/orphan-rescore-requeue-state.json
             echo "Staged orphan-rescore-requeue-state.json"
           fi
           if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
-            echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits"
-          else
-            if ! git diff --cached --quiet; then
-              git commit -m "data: Update orphan-rescore-requeue state [skip ci]"
-            else
-              echo "No new orphan-rescore-requeue-state.json changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
-            fi
-            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+            echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits — skipping push"
+            exit 0
           fi
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update orphan-rescore-requeue state [skip ci]"
+          else
+            echo "No new orphan-rescore-requeue-state.json changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
+          bash scripts/lib/push-with-retry.sh 5 main
 
+      # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+      # 2026-08-26): see "Commit orphan-rescore-requeue state" (early) above
+      # for the sizing rationale — this is the last of this job's hard-fail
+      # push steps sharing the same tight 24-min job budget. Unchanged from
+      # pre-BRO-2455 sizing: this is the same call that existed before,
+      # minus orphan-rescore-requeue-state.json (moved to its own step
+      # above) — the config that already worked standalone, still handling
+      # alert-ledger.json's real multi-writer contention.
+      - name: Commit data
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '300'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           # Core data files (including opening-night-sent.json) pushed to the
           # private repo by the "Push core data to private repo" step below —
           # untracked+ignored in the public repo (task #1759), same as every
@@ -1129,12 +1153,10 @@ jobs:
           fi
           if git diff --cached --quiet; then
             echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit"
-          else
-            git commit -m "data: Update opening-night broadcast audit state"
-            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+            exit 0
           fi
-
-          exit $STATUS
+          git commit -m "data: Update opening-night broadcast audit state"
+          bash scripts/lib/push-with-retry.sh 14 main
 
 
       - name: Push core data to private repo
