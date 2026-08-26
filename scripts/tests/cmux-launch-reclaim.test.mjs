@@ -45,6 +45,7 @@ const cmuxws = require(path.join(REPO_ROOT, 'scripts/lib/cmux-workspaces.js'));
 const {
   launchCmuxSession, readLaunchJournalEntry, writeLaunchJournalEntry, clearLaunchJournalEntry,
 } = cmuxLaunch;
+const { CAPACITY_PROBE_MAX_ATTEMPTS } = require(path.join(REPO_ROOT, 'scripts/lib/cmux-launch-state.js'));
 
 function tmpJournalPath() {
   return path.join(os.tmpdir(), `bsc-cmux-launch-journal-test-${process.pid}-${Math.random().toString(36).slice(2)}.json`);
@@ -523,5 +524,240 @@ test('launchCmuxSession: a workspace with no terminal is dead-confirmed, attribu
     assert.equal(newWorkspaceMock.mock.callCount(), 1, 'exactly one workspace, never a relaunch over a possibly-live tab');
     assert.deepEqual(learned, [{ liveRuntimesBefore: 29, outcome: 'runtime-missing' }],
       'the first launch to hit the cap is what arms the preflight for every later dispatch');
+  } finally { listMock.mock.restore(); }
+});
+
+// ── /code-review follow-ups on the capacity gate (task #1904) ──────────────
+
+test('capacity: an UNKNOWN probe is re-asked, not cached as "plenty of room"', () => {
+  // Finding 2. The probe fires while the surface reads missing — seconds after
+  // new-workspace, exactly when the cmux socket is briefly unavailable BECAUSE
+  // it is busy creating workspaces (four consecutive probes returned nothing
+  // in that window on this machine). Caching that null as "not at capacity"
+  // left the state machine's at-capacity branch close to unreachable in
+  // precisely the degraded state it exists for.
+  let calls = 0;
+  const capacityProbe = () => {
+    calls += 1;
+    return calls <= 2 ? { atCapacity: false, known: false } : { atCapacity: true, known: true };
+  };
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  const learned = [];
+  try {
+    const res = launchCmuxSession({
+      title: 'unknown then at capacity', seed: 'seed', seedKey: 'capacity-1904-reprobe',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 120, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9200\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 26, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => true,
+        atTerminalCapacity: capacityProbe,
+        terminalSurfaceAlive: () => false,
+        recordCapacityOutcome: (o) => { learned.push(o); return { changed: false, reason: 'stubbed' }; },
+      },
+    });
+    assert.equal(calls > 1, true, 'a blind reading must be re-asked, not latched');
+    assert.equal(res.state, 'terminal-runtime-missing');
+    assert.deepEqual(learned, [{ liveRuntimesBefore: 26, outcome: 'runtime-missing' }]);
+  } finally { listMock.mock.restore(); }
+});
+
+test('capacity: probing is bounded in TOTAL — no re-ask storm across a long wait', () => {
+  // A known answer is NOT cached forever: a dozen sessions dispatch on this
+  // host and can fill the last runtime mid-wait. What keeps the cost sane is
+  // the total budget, not a "first answer wins" rule.
+  let calls = 0;
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    launchCmuxSession({
+      title: 'bounded probing', seed: 'seed', seedKey: 'capacity-1904-cached',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 200, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9201\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 10, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => true,
+        atTerminalCapacity: () => { calls += 1; return { atCapacity: false, known: true }; },
+        terminalSurfaceAlive: () => false,
+      },
+    });
+    assert.equal(calls <= CAPACITY_PROBE_MAX_ATTEMPTS, true,
+      `capacity asked ${calls} times across a 200s wait — must stay inside the ${CAPACITY_PROBE_MAX_ATTEMPTS}-probe budget`);
+    assert.equal(calls > 1, true, 'and a stale known answer must be refreshed at least once');
+  } finally { listMock.mock.restore(); }
+});
+
+test('a surface that REAPPEARS clears the missing verdict — it is carried, not latched', () => {
+  // The throttled verdict has to survive between probes (it is the sole trigger
+  // for ceiling learning), but latching it forever is the opposite error: a
+  // healthy launch's runtime attach was measured as slow as 39.9s on this
+  // machine, so a legitimate "no surface yet" early on would still read as
+  // missing after the surface had actually appeared, and the at-capacity branch
+  // could kill a launch that was merely slow.
+  // The order matters: on the FIRST probe the surface reads missing but the
+  // capacity answer is still unknown (the cmux socket is busy right after
+  // new-workspace), so branch 3b cannot fire yet. By the time capacity reports
+  // "at capacity", the surface has actually appeared. Latched, the stale
+  // missing verdict would meet the fresh at-capacity reading and kill a launch
+  // whose terminal was already attached.
+  let surfCalls = 0;
+  let capCalls = 0;
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    const res = launchCmuxSession({
+      title: 'surface comes back', seed: 'seed', seedKey: 'capacity-1904-unlatch',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 120, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9207\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 28, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => { surfCalls += 1; return surfCalls === 1; },
+        atTerminalCapacity: () => { capCalls += 1; return capCalls === 1 ? { atCapacity: false, known: false } : { atCapacity: true, known: true }; },
+        terminalSurfaceAlive: () => false,
+      },
+    });
+    assert.equal(surfCalls > 1, true, 'the throttle must still re-probe, or nothing can clear the verdict');
+    assert.equal(res.state, 'injection-never-ran',
+      'a surface that came back must NOT be reported as terminal-runtime-missing, even at capacity');
+  } finally { listMock.mock.restore(); }
+});
+
+test('capacity: a THROWING in-loop probe cannot fail the launch (finding 8)', () => {
+  // The preflight call carries a try/catch with an explicit "an uncaught throw
+  // would fail the launch outright — the one outcome the fail-open design
+  // exists to rule out". The identical in-loop call had none.
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    const res = launchCmuxSession({
+      title: 'throwing probes', seed: 'seed', seedKey: 'capacity-1904-throw',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 30, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9202\n', stderr: '' }),
+        surfaceConfirmedMissing: () => { throw new Error('read-screen exploded'); },
+        atTerminalCapacity: () => { throw new Error('debug-terminals exploded'); },
+        terminalSurfaceAlive: () => false,
+      },
+    });
+    // It fails verification (nothing ever ran), but it FAILS NORMALLY — the
+    // throw never escapes, and a throwing surface probe reads as "not
+    // confirmed missing", so the label stays the pre-capacity one.
+    assert.equal(res.ok, false);
+    assert.equal(res.state, 'injection-never-ran');
+    assert.equal(res.workspaceRef, 'workspace:9202', 'the corpse stays attributable');
+  } finally { listMock.mock.restore(); }
+});
+
+test('a boolean atTerminalCapacity seam is honoured, not silently read as "not at capacity"', () => {
+  // Destructuring {atCapacity} out of a bare boolean yields undefined — falsy,
+  // no throw, no failing test, gate silently off. The seam predates the object
+  // shape, so it has to keep working.
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  const learned = [];
+  try {
+    const res = launchCmuxSession({
+      title: 'boolean seam', seed: 'seed', seedKey: 'capacity-1904-bool',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 30, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9203\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 29, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => true,
+        atTerminalCapacity: () => true, // bare boolean: AT capacity
+        terminalSurfaceAlive: () => false,
+        recordCapacityOutcome: (o) => { learned.push(o); return { changed: false, reason: 'stubbed' }; },
+      },
+    });
+    assert.equal(res.state, 'terminal-runtime-missing');
+    assert.equal(res.terminalRuntimeMissing, true);
+    assert.deepEqual(learned, [{ liveRuntimesBefore: 29, outcome: 'runtime-missing' }]);
+  } finally { listMock.mock.restore(); }
+});
+
+test('a LATE-ADOPTED launch disproves its own runtime-missing observation (finding 3)', () => {
+  // recordCapacityOutcome('runtime-missing') persists BEFORE the lateAdoptSec
+  // watch. Without a compensating 'runtime-created' the false low observation
+  // survives and its disproof never does — one-directional learning, which is
+  // how a wrong number gets onto disk and stays there for the full TTL.
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  const learned = [];
+  try {
+    const res = launchCmuxSession({
+      title: 'late adopt teaches back', seed: 'seed', seedKey: 'capacity-1904-lateadopt',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 5, lateAdoptSec: 30, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9204\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 21, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => true,
+        atTerminalCapacity: () => ({ atCapacity: true, known: true }),
+        terminalSurfaceAlive: () => false,
+        strictlyAlive: () => true, // the late-adopt watch finds it alive after all
+        recordCapacityOutcome: (o) => { learned.push(o); return { changed: false, reason: 'stubbed' }; },
+      },
+    });
+    assert.equal(res.ok, true, 'the workspace came alive inside the late-adopt watch');
+    assert.equal(res.adoptedLate, true);
+    assert.equal(res.liveRuntimes, 21, 'finding 9: the ledger row must carry the count, not null');
+    assert.deepEqual(learned, [
+      { liveRuntimesBefore: 21, outcome: 'runtime-missing' },
+      { liveRuntimesBefore: 21, outcome: 'runtime-created' },
+    ], 'the disproof must be recorded, not just the observation');
+  } finally { listMock.mock.restore(); }
+});
+
+test('a CROSS-INVOCATION reclaim disproves the prior invocation observation, at ITS count', () => {
+  // The reclaim path runs before this invocation's own capacity probe, so the
+  // only honest count is the one the journal carries from the launch that
+  // actually created the workspace.
+  const journalPath = tmpJournalPath();
+  writeLaunchJournalEntry('task-1904-reclaim', {
+    workspaceRef: 'workspace:9205', marker: 'bsc-cmd-x', state: 'terminal-runtime-missing',
+    liveRuntimes: 17, timestamp: new Date().toISOString(),
+  }, journalPath);
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  const learned = [];
+  try {
+    const res = launchCmuxSession({
+      title: 'reclaim teaches back', seed: 'seed', seedKey: 'capacity-1904-reclaim', workKey: 'task-1904-reclaim',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 5, lateAdoptSec: 0, journalPath,
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => { throw new Error('a reclaim must never create a workspace'); },
+        strictlyAlive: () => true,
+        recordCapacityOutcome: (o) => { learned.push(o); return { changed: false, reason: 'stubbed' }; },
+      },
+    });
+    assert.equal(res.ok, true);
+    assert.equal(res.reclaimedAcrossInvocation, true);
+    assert.equal(res.liveRuntimes, 17, 'finding 9: reclaimed rows journaled null before this');
+    assert.deepEqual(learned, [{ liveRuntimesBefore: 17, outcome: 'runtime-created' }]);
+  } finally { listMock.mock.restore(); }
+});
+
+test('a failed launch journals its live-runtime count so a later reclaim can disprove it', () => {
+  const journalPath = tmpJournalPath();
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    launchCmuxSession({
+      title: 'journal carries the count', seed: 'seed', seedKey: 'capacity-1904-journalcount',
+      workKey: 'task-1904-journalcount',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9206\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 23, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+      },
+    });
+    assert.equal(readLaunchJournalEntry('task-1904-journalcount', journalPath).liveRuntimes, 23);
   } finally { listMock.mock.restore(); }
 });
