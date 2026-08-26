@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T21:07:00.227Z",
-  "processed": 14,
-  "failed": 39,
-  "successRate": "26.4%",
+  "updatedAt": "2026-08-26T21:36:11.960Z",
+  "processed": 40,
+  "failed": 163,
+  "successRate": "19.7%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 27,
     "amp": 0,
     "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 3,
+    "directCookies": 1,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -59,6 +59,41 @@
       "t": "2026-08-26T21:02:05.313Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T21:14:20.721Z",
+      "event": "bb-session",
+      "session": "fe2fab4f",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-26T21:14:39.163Z",
+      "event": "bb-session",
+      "session": "d3497bfa",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-26T21:16:07.765Z",
+      "event": "bb-session",
+      "session": "eef54c88",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-26T21:16:08.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T21:19:03.623Z",
+      "event": "bb-session",
+      "session": "d1233a28",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-26T21:19:26.433Z",
+      "event": "bb-session",
+      "session": "fafc593d",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }

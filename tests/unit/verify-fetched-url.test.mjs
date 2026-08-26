@@ -262,6 +262,165 @@ describe('verifyFetchedUrl', () => {
     });
   });
 
+  // Regressions for BRO-151: audit of url-mismatch-suspects.json top hosts for
+  // Variety-class (task #6) fixable permalink drift — same article, unstable
+  // path structure, but a stable identifying token survives the redirect.
+  describe('BRO-151: additional Variety-class permalink drift hosts', () => {
+    test('ft.com legacy /cms/s/ UUID → modern /content/ UUID → verified true', () => {
+      // Real audit entry: ft.com's pre-2016 /cms/s/<n>/<uuid>.html permalink
+      // redirects to /content/<uuid> — entirely different directory depth,
+      // same content UUID.
+      const html = '<html><head><link rel="canonical" href="https://www.ft.com/content/b3bf1f32-c955-11e3-bba1-00144feabdc0"></head></html>';
+      const url = 'https://www.ft.com/cms/s/2/b3bf1f32-c955-11e3-bba1-00144feabdc0.html#axzz2zf02IMhe';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'post_id_match');
+    });
+
+    test('ft.com UUID with trailing ",Authorised=false.html" cruft still matches', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.ft.com/content/ec544b46-6bea-11e4-b939-00144feabdc0"></head></html>';
+      const url = 'https://www.ft.com/cms/s/ec544b46-6bea-11e4-b939-00144feabdc0,Authorised=false.html?siteedition=uk';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'post_id_match');
+    });
+
+    test('ft.com different UUIDs on the same host → still url_mismatch', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.ft.com/content/aaaaaaaa-1111-2222-3333-444444444444"></head></html>';
+      const url = 'https://www.ft.com/cms/s/2/bbbbbbbb-1111-2222-3333-444444444444.html';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('ft.com post-ID match is host-scoped: same UUID shape on another host does not false-accept', () => {
+      const html = '<html><head><link rel="canonical" href="https://example.com/content/b3bf1f32-c955-11e3-bba1-00144feabdc0"></head></html>';
+      const url = 'https://example.com/cms/s/2/b3bf1f32-c955-11e3-bba1-00144feabdc0.html';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    // Adversarial review finding (BRO-151): the FT extractor must require the
+    // ACTUAL/modern segment to be nothing but the bare UUID — real ft.com
+    // /content/<uuid> paths never carry a suffix, so this rules out a
+    // hypothetical future /content/<uuid>-related slug false-accepting on a
+    // shared UUID prefix.
+    test('ft.com does not false-accept a hypothetical suffixed modern UUID slug', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.ft.com/content/b3bf1f32-c955-11e3-bba1-00144feabdc0-related"></head></html>';
+      const url = 'https://www.ft.com/cms/s/2/b3bf1f32-c955-11e3-bba1-00144feabdc0.html';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('show-score.com re-categorized show (broadway-shows → uk off-west-end) → verified true', () => {
+      // Real audit entry: show-score.com moved the show from a Broadway
+      // category directory to a London off-West-End one, keeping the same
+      // show slug.
+      const html = '<html><head><link rel="canonical" href="https://www.show-score.com/uk/london/off-west-end-shows/the-car-man"></head></html>';
+      const url = 'https://www.show-score.com/broadway-shows/the-car-man';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'category_redirect');
+    });
+
+    test('show-score.com off-broadway → off-off-broadway re-categorization → verified true', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.show-score.com/off-off-broadway-shows/camping"></head></html>';
+      const url = 'https://www.show-score.com/off-broadway-shows/camping';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'category_redirect');
+    });
+
+    test('show-score.com category-drift requires an EXACT slug match, not a word-boundary suffix', () => {
+      // Different show slug sharing a prefix ("bull" vs "bulletproof") must
+      // NOT false-accept just because a category directory also changed.
+      const html = '<html><head><link rel="canonical" href="https://www.show-score.com/uk/london/off-west-end-shows/bulletproof"></head></html>';
+      const url = 'https://www.show-score.com/broadway-shows/bull';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    // Two independent adversarial reviews (BRO-151) flagged that a
+    // word-boundary suffix allowance here (unlike suffix_redirect, this rule
+    // has no matching-parent-directory backstop) risks colliding two
+    // DIFFERENT same-titled productions, e.g. a numbered revival "bull-2"
+    // sharing a prefix with "bull". Exact match closes that off entirely,
+    // even at a numeric-suffix boundary that suffix_redirect itself would
+    // accept for a same-directory case.
+    test('show-score.com category-drift rejects a numeric-suffix near-miss ("bull" vs "bull-2")', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.show-score.com/uk/london/off-west-end-shows/bull-2"></head></html>';
+      const url = 'https://www.show-score.com/broadway-shows/bull';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    // Trade-off documented alongside CATEGORY_DRIFT_HOSTS: one real audit
+    // suspect (show-score appends "-offline-productions" as well as
+    // re-categorizing) is deliberately left as a mismatch rather than
+    // widening the match beyond exact-slug-equality.
+    test('show-score.com category-drift does not match when show-score ALSO appends a suffix', () => {
+      const html = '<html><head><link rel="canonical" href="https://www.show-score.com/off-broadway-shows/a-midsummer-nights-dream-offline-productions"></head></html>';
+      const url = 'https://www.show-score.com/broadway-shows/a-midsummer-nights-dream';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('show-score.com category-drift rule does not apply to other hosts', () => {
+      const html = '<html><head><link rel="canonical" href="https://example.com/off-off-broadway-shows/camping"></head></html>';
+      const url = 'https://example.com/off-broadway-shows/camping';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    // Adversarial review finding (BRO-151): resolving a relative canonical/
+    // og:url against expectedUrl must NOT extend to query-only or
+    // fragment-only references, which would silently inherit the REQUEST's
+    // path — a wrong/redirected page with a vacuous canonical tag like
+    // `og:url="?x"` would otherwise falsely verify against whatever we asked
+    // for, regardless of what page was actually served.
+    test('query-only relative og:url does not inherit the request path (would falsely verify)', () => {
+      const html = '<html><head><meta property="og:url" content="?utm_source=twitter"></head></html>';
+      const url = 'https://example.com/article/proof';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('fragment-only relative og:url does not inherit the request path (would falsely verify)', () => {
+      const html = '<html><head><meta property="og:url" content="#top"></head></html>';
+      const url = 'https://example.com/article/proof';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('todaytix.com relative og:url with query params resolves against the request URL → verified true', () => {
+      // Real audit entry: todaytix.com's og:url tag is a bare relative path
+      // (no scheme/host) plus experiment-flag query params. Previously
+      // `new URL(actualUrl)` threw on the relative string, so it was compared
+      // as a raw lowercased string against a full hostname+path and always
+      // failed even though the underlying page matched exactly.
+      const html = '<html><head><meta property="og:url" content="/nyc/shows/46224-loves-labours-lost?tt-web-enable-new-homepage=off&amp;viewport=desktop"></head></html>';
+      const url = 'https://www.todaytix.com/nyc/shows/46224-loves-labours-lost';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+    });
+
+    test('todaytix.com relative og:url pointing to a genuinely different show still rejects', () => {
+      const html = '<html><head><meta property="og:url" content="/nyc/shows/46801-fish"></head></html>';
+      const url = 'https://www.todaytix.com/nyc/shows/46801-ish';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+  });
+
   describe('edge cases', () => {
     test('missing input → not verified', () => {
       assert.equal(verifyFetchedUrl('', 'https://example.com/foo').verified, false);
