@@ -1,6 +1,7 @@
 'use strict';
 
 const { isRegisteredOutlet, normalizeOutlet } = require('./review-normalization');
+const { foldDiacritics } = require('./title-match');
 
 /**
  * roundup-digest.js — detect a review record that is actually a REVIEW-ROUNDUP
@@ -106,7 +107,10 @@ const ATTRIBUTION_RE = /\b([A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,3}),\s+([
 const CONSENSUS_INTRO_TEXT = /critical consensus|here'?s what (?:the )?critics (?:are saying|had to say)|reviews are in for/i;
 
 function normalizeNameForCompare(name) {
-  return (name || '').toLowerCase().trim().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ');
+  // Fold diacritics BEFORE the ASCII strip: without the fold, /[^a-z\s]/
+  // DELETES accented letters outright ("Libération" -> "libration"), so an
+  // accented byline never matches its unaccented attribution-block spelling.
+  return foldDiacritics(name || '').toLowerCase().trim().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ');
 }
 
 // True when candidateName plausibly refers to the same person as byline —
