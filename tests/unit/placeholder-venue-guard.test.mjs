@@ -40,6 +40,28 @@ test('isPlaceholderVenue rejects missing/null/non-string values', () => {
   assert.equal(isPlaceholderVenue(42).placeholder, true);
 });
 
+// /what-else finding (card #1922 follow-up, ship-check adversarial review
+// 2026-08-26): a digits-only string ("123") passed the length<3 check as
+// "too_short" only catches 1-2 chars — a bare street number/postcode
+// fragment sailed through sanitizeVenueForWrite as if it were a real venue.
+test('isPlaceholderVenue rejects digits-only strings', () => {
+  // 1-2 digit strings ('4', '42') are already caught by the length<3
+  // "too_short" check above — these cases are 3+ digits, long enough to
+  // clear that check but still not a venue name.
+  for (const v of ['123', '000', '  4567  ']) {
+    const result = isPlaceholderVenue(v);
+    assert.equal(result.placeholder, true, `expected "${v}" to be a placeholder`);
+    assert.equal(result.reason, 'numeric_only');
+  }
+});
+
+test('isPlaceholderVenue still ACCEPTS real venues that contain digits alongside letters', () => {
+  for (const v of ['92Y', 'Studio 54', 'Theatre 71']) {
+    const result = isPlaceholderVenue(v);
+    assert.equal(result.placeholder, false, `expected "${v}" to be accepted, got reason: ${result.reason}`);
+  }
+});
+
 test('isPlaceholderVenue ACCEPTS real venues that substring-match a neighbourhood blob', () => {
   // The exact-match design (not substring) is the whole point: these three
   // are real venue names containing a neighbourhood word and must pass.
