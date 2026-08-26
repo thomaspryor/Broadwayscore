@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-25T04:24:28.800Z",
+    "generatedAt": "2026-08-26T09:40:36.693Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 352,
+  "totalGaps": 357,
   "errorSeverity": 262,
-  "warningSeverity": 90,
+  "warningSeverity": 95,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1043,6 +1043,15 @@
       "severity": "error"
     },
     {
+      "showId": "hamilton-west-end-2021",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
+    },
+    {
       "showId": "hamlet-2026",
       "category": "off-broadway",
       "expected": 9,
@@ -1493,6 +1502,15 @@
       "severity": "error"
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
+    },
+    {
       "showId": "liberation-2025",
       "category": "broadway",
       "expected": 18,
@@ -1727,6 +1745,15 @@
       "severity": "error"
     },
     {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
+    },
+    {
       "showId": "mr-saturday-night-2022",
       "category": "broadway",
       "expected": 24,
@@ -1950,6 +1977,15 @@
       "gap": 11,
       "ratio": 0.42,
       "severity": "error"
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
     },
     {
       "showId": "parade-2023",
@@ -2814,6 +2850,15 @@
       "gap": 45,
       "ratio": 0.15,
       "severity": "error"
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "category": "west-end",
+      "expected": 12,
+      "extracted": 8,
+      "gap": 4,
+      "ratio": 0.67,
+      "severity": "warning"
     },
     {
       "showId": "the-prom-2018",
