@@ -1266,6 +1266,13 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // No guard sits between here and the spawn below — exec has no
     // duplicate-dispatch check of its own — so this is already the
     // confirmed-dispatch point.
+    //
+    // Task #1896: deliberately does NOT set dispatchConfirmed. spawnSync
+    // below blocks synchronously for the ENTIRE interactive session, so by
+    // the time this process reaches process.exit(), the dispatched work is
+    // already fully done — there is nothing left "in flight" for the claim
+    // to protect, and releasing it immediately (the exit handler's default)
+    // is correct here, not an oversight.
     recordCiRedClaim();
     // Run an interactive claude on the seed in this terminal (no Cmux).
     const r = spawnSync('claude', ['--model', model, '--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });

@@ -1034,6 +1034,12 @@ test('main(): --id refuses to dispatch when a local worktree branch already carr
       launchCmux: () => { throw new Error('launchCmux must never be called once the worktree-branch guard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the worktree-branch guard refuses'); },
+      // Task #1896: this reaches (and releases, via the exit handler, since
+      // the guard below refuses) the real dispatch claim otherwise — stub it
+      // so this test never touches the production data/audit/dispatch-claims
+      // dir at all.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
       fetchCard: () => null,
     });
     assert.fail('expected process.exit');
@@ -1162,6 +1168,11 @@ test('main(): a REOPEN-SUSPECT card (falsely reopened over completed work) is re
       launchCmux: () => { throw new Error('launchCmux must never be called once predispatchGuard refuses'); },
       cmuxAvailable: () => { throw new Error('cmux availability must never even be checked — this guard runs before it'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once predispatchGuard refuses'); },
+      // Task #1896: stubbed so this test never touches the production
+      // data/audit/dispatch-claims dir (this guard runs downstream of the
+      // claim, so unstubbed it would acquire-then-release for real).
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
     assert.fail('expected process.exit');
   } catch (e) {
