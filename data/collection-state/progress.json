@@ -97,7 +97,8 @@
     "the-sound-of-music-2027/maryland-theatre-guide--teniola-ayoola.json",
     "evita-2026/whatsonstage--sarah-crompton.json",
     "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
-    "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -1623,7 +1624,16 @@
     "orlando-off-west-end-2026/thestage--sam-marlowe.json",
     "orlando-off-west-end-2026/times-uk--clive-davis.json",
     "orlando-off-west-end-2026/times-uk--quentin-letts.json",
-    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1696,7 +1706,9 @@
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -1748,7 +1760,7 @@
     ]
   },
   "startTime": "2026-08-26T10:18:02.686Z",
-  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+  "lastProcessed": "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -1805,6 +1817,12 @@
       "t": "2026-08-26T14:12:52.779Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T14:15:39.283Z",
+      "event": "bb-session",
+      "session": "b372412c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
