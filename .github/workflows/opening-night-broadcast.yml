@@ -808,6 +808,20 @@ jobs:
                   why = ' — blocked by unscored: ' + orphan.orphans.map(o => (o.outletId || o.file) + (o.rescoreBlockedReason ? ' (' + o.rescoreBlockedReason + ')' : '')).join(', ');
                 }
               } catch { /* no orphan snapshot — generic message stands */ }
+              // BRO-227: send-opening-night-broadcast.js now refuses to send without a
+              // critic-consensus verdict (exit 1, swallowed by run_market's \`|| true\`).
+              // Surface that as the reason here so a stuck-on-consensus show doesn't read
+              // as an unexplained pipeline hang.
+              if (!why) {
+                try {
+                  const consensus = JSON.parse(fs.readFileSync('data/critic-consensus.json', 'utf8'));
+                  const consensusShows = consensus.shows || consensus;
+                  const showConsensus = consensusShows[id] || (s && consensusShows[s.slug]);
+                  if (!showConsensus || !(showConsensus.text || showConsensus.consensus)) {
+                    why = ' — blocked by missing critic-consensus (critic-consensus.json)';
+                  }
+                } catch { why = ' — blocked by missing critic-consensus (critic-consensus.json)'; }
+              }
               return { id, line: (s ? s.title : id) + why };
             });
 
