@@ -585,8 +585,12 @@ jobs:
             for (const name of names) {
               resolveCondition(`cron-health:${name}`);
               // Also re-arm the 3-day chronic escalation (card #647): without
-              // this a cron that flaps would sit out the previous incident's
-              // 168h cooldown before its NEXT multi-day outage could escalate.
+              // this a cron that flaps would sit out the prior-incident 168h
+              // cooldown before its NEXT multi-day outage could escalate.
+              // (No apostrophes in this comment — this whole node -e body is
+              // inside a bash single-quoted string, which has no escape for
+              // a literal quote; one here silently truncated the script and
+              // broke resolveCondition() on every run, see BRO-450.)
               resolveCondition(`cron-health-chronic:${name}`);
             }
           '

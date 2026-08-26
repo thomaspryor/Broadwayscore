@@ -119,6 +119,19 @@
  *     mode)" step in data-health-check.yml (5-min step timeout deliberately
  *     outlives its own 3-min script budget).
  *
+ * (j) SINGLE-QUOTE-APOSTROPHE (BRO-450): a multi-line `<cmd> -e '` ... `'`
+ *     shell argument (the inline `node -e '...'` convention used throughout
+ *     this repo) whose body contains a stray apostrophe/single-quote before
+ *     the line meant to close it. Bash single-quoted strings have no escape
+ *     mechanism, so the first embedded `'` — even inside a JS comment
+ *     ("previous incident's cooldown") — ends the string early and the rest
+ *     is fed to the shell as loose tokens, producing a parse-time
+ *     `SyntaxError` in the embedded script. check-cron-health.yml's
+ *     "Resolve recovered cron conditions" step shipped exactly this bug: it
+ *     failed on every single invocation, so `resolveCondition()` never ran
+ *     and the cron-health-chronic escalation condition could never self-clear
+ *     (run 32253007200).
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -128,6 +141,7 @@
  *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
+ *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -144,7 +158,9 @@ const {
   findCoreFileWritesWithoutPush,
   findDeadCommitSteps,
   findPipefailDeadExitCodeEcho,
+  extractSingleQuotedEvalBodies,
 } = require('./lib/audit-workflow-hygiene-rules');
+const { execFileSync } = require('child_process');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const REPO = 'thomaspryor/Broadwayscore';
@@ -188,6 +204,38 @@ function getCoreFilesFromPushAction() {
     throw new Error(`Could not find CORE_FILES="..." in ${actionPath}`);
   }
   return match[1].split(/\s+/).filter(Boolean);
+}
+
+/**
+ * Rule (j): validate every embedded `-e '...'`/`-p '...'` eval body — EXACTLY
+ * as bash would parse it, via extractSingleQuotedEvalBodies's real quote-
+ * splitting (not a line-oriented guess) — as syntactically valid JS via
+ * `node --check`. A stray apostrophe/single-quote anywhere in the body
+ * (prose in a comment is the common case) closes the bash string early and
+ * always leaves a broken JS fragment behind, which fails `node --check` with
+ * a real SyntaxError — this is what broke check-cron-health.yml's
+ * `resolveCondition()` call on every single run in BRO-450 (run 32253007200:
+ * `SyntaxError: Unexpected end of input`). Needs a live `node` binary
+ * (process access — why this lives here, not in the pure rules lib).
+ */
+function findUnescapedApostrophesInSingleQuotedEval(raw) {
+  const violations = [];
+  for (const { startLine, body, esm } of extractSingleQuotedEvalBodies(raw)) {
+    if (!body.trim()) continue;
+    const args = esm ? ['--input-type=module', '--check', '-'] : ['--check', '-'];
+    try {
+      execFileSync(process.execPath, args, {
+        input: body,
+        stdio: ['pipe', 'ignore', 'pipe'],
+      });
+    } catch (err) {
+      const stderr = err.stderr ? err.stderr.toString() : err.message;
+      const firstMeaningfulLine =
+        stderr.split('\n').find((l) => /Error/.test(l)) || stderr.split('\n')[0] || 'node --check failed';
+      violations.push({ startLine, message: firstMeaningfulLine.trim() });
+    }
+  }
+  return violations;
 }
 
 const DEFAULT_PUSH_DEADLINE_SEC = 240; // push-with-retry.sh's own PUSH_DEADLINE_SEC default
@@ -392,6 +440,7 @@ async function main() {
     coreDataPush: [],
     deadCommit: [],
     shortPushTimeout: [],
+    quoteApostrophe: [],
   };
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
@@ -476,6 +525,14 @@ async function main() {
         violations.shortPushTimeout.push({ file, hits });
       }
     }
+
+    // ── Rule (j): stray apostrophe inside a multi-line single-quoted `-e '...'` eval ─
+    if (!raw.includes('hygiene-quote-apostrophe-ok:')) {
+      const hits = findUnescapedApostrophesInSingleQuotedEval(raw);
+      if (hits.length > 0) {
+        violations.quoteApostrophe.push({ file, hits });
+      }
+    }
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
@@ -508,7 +565,8 @@ async function main() {
     violations.echoExitcode.length +
     violations.coreDataPush.length +
     violations.deadCommit.length +
-    violations.shortPushTimeout.length;
+    violations.shortPushTimeout.length +
+    violations.quoteApostrophe.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -649,6 +707,24 @@ async function main() {
     console.error("Exempt (legitimate): add  # hygiene-push-timeout-ok: <reason>  anywhere in the file.\n");
   }
 
+  if (violations.quoteApostrophe.length) {
+    console.error('── (j) Stray apostrophe inside a multi-line single-quoted `-e \'...\'` eval ─');
+    console.error('Bash single-quoted strings have no escape mechanism — the first embedded `\'`');
+    console.error('(even inside a JS comment) ends the string early, and the rest is fed to the');
+    console.error('shell as loose tokens, producing a SyntaxError in the embedded script every');
+    console.error('single run (BRO-450: check-cron-health.yml\'s recovered-condition resolver was');
+    console.error('broken this way for every cron, permanently, until fixed).\n');
+    for (const { file, hits } of violations.quoteApostrophe) {
+      console.error(`  • ${file}`);
+      for (const h of hits) {
+        console.error(`      eval body starting near line ${h.startLine}: ${h.message}`);
+      }
+    }
+    console.error('\nFix: reword the offending line to remove the embedded apostrophe/single-quote');
+    console.error('(a rephrase, not an escape — bash single-quotes cannot escape anything).');
+    console.error("Exempt (legitimate): add  # hygiene-quote-apostrophe-ok: <reason>  anywhere in the file.\n");
+  }
+
   process.exit(1);
 }
 
@@ -663,6 +739,7 @@ module.exports = {
   findMissingGitIdentityCommits,
   findPipefailDeadExitCodeEcho,
   findShortPushTimeoutSteps,
+  findUnescapedApostrophesInSingleQuotedEval,
 };
 
 if (require.main === module) {
