@@ -2049,6 +2049,16 @@ on:
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/linear-next-overlap-guards.test.mjs'
+      # Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
+      # Phase 2 completion): dispatches issues owner-alert-router.js's
+      # dispatchCard() filed and parked, via linear-next.js's own --headless
+      # path. Its pure selection predicate (scripts/lib/linear-drain-
+      # parked.js) is already covered by the scripts/lib/** glob above; this
+      # top-level CLI wrapper is not, so it needs explicit listing
+      # (feedback_test_yml_push_path_allowlist). Colocated test
+      # (tests/unit/linear-drain-parked.test.mjs) is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/linear-drain-parked.js'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
