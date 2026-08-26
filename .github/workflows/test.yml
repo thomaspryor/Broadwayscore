@@ -204,6 +204,13 @@ on:
       # allow-list failure mode in memory/feedback_test_yml_push_path_allowlist.md.
       - 'scripts/check-seo-health.js'
       - 'scripts/check-seo-health.test.mjs'
+      # scripts/print-sample-show-urls.js (card #1919): thin CLI wrapper around
+      # scripts/lib/sample-show-pages.js (globbed above) used by
+      # lighthouse-post-deploy.yml. Root-level scripts/*.js + *.test.mjs pair
+      # is NOT globbed (registered in tests/unit-test-manifest.txt) — path-
+      # listed so a solo edit triggers CI.
+      - 'scripts/print-sample-show-urls.js'
+      - 'scripts/print-sample-show-urls.test.mjs'
       # Rolling-window history files ("keep last N entries") assume one entry
       # per day; CI runs the producer many times a day, so the window silently
       # collapses — bundle-size-history.json held 50 entries covering 9 days,
