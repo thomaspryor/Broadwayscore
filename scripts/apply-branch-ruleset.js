@@ -49,6 +49,7 @@
 
 const { execFileSync } = require('child_process');
 const { buildRulesetPayload, RULESET_NAME } = require('./lib/branch-ruleset-paths.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO = process.env.GH_REPO || 'thomaspryor/Broadwayscore';
 
@@ -76,6 +77,16 @@ function parseArgs(argv) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(`Usage: node scripts/apply-branch-ruleset.js [--enforcement=evaluate|active] [--status] [--delete]
+
+Idempotently create/update/inspect/delete the "${RULESET_NAME}" ruleset on
+main. See the PLATFORM BLOCKER note at the top of this file before running
+--enforcement=active or --enforcement=evaluate: as of 2026-08-26 both 422 on
+this repo (push rulesets require an org-owned repo on this GitHub plan).
+--status and --delete are always safe to run.`);
+    return;
+  }
   const { enforcement, status, delete: doDelete } = parseArgs(process.argv.slice(2));
   const existing = findExistingRuleset();
 
