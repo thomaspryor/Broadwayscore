@@ -18,6 +18,19 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
+
+// Structural assertions must read CODE, not prose. The first version of this
+// file searched the raw source and matched the guard's own explanatory comment
+// — which necessarily quotes `notion.pages.create(` and the word REJECTED —
+// so it reported the guard as mis-ordered when the code was correct. Strip
+// comments first; a test that can be fooled by a comment proves nothing.
+function stripComments(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .split('\n')
+    .map((line) => line.replace(/(^|\s)\/\/.*$/, ''))
+    .join('\n');
+}
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..');
 const { notionCreateVerdict, ESCAPE_ENV } = require(join(HERE, 'notion-write-guard.js'));
@@ -57,8 +70,38 @@ test('the ordinary allowed path carries no reason to log', () => {
   assert.equal(notionCreateVerdict({}).allowed, false);
 });
 
+test('the guard runs BEFORE every validation gate, not just before the API call', () => {
+  // Regression for a wedge that hit a live session twice. The guard originally
+  // sat just above notion.pages.create(), AFTER the notes-length /
+  // acceptance-verifiability / disposition checks. Any card that failed one of
+  // those emitted "REJECTED", which writes /tmp/notion-create-failed-<sid>, and
+  // notion-create-block.sh then blocks every Bash call until a create SUCCEEDS
+  // — impossible under read-only. Refusing first means read-only never emits
+  // REJECTED at all.
+  const src = stripComments(readFileSync(join(REPO, 'scripts', 'notion-brain.js'), 'utf8'));
+  const fnIdx = src.indexOf('async function createCard(args) {');
+  assert.ok(fnIdx > 0, 'createCard must exist');
+  const guardIdx = src.indexOf('notionCreateVerdict(process.env)', fnIdx);
+  assert.ok(guardIdx > 0, 'guard must be called inside createCard');
+
+  // No REJECTED-emitting validation may precede the guard.
+  const preamble = src.slice(fnIdx, guardIdx);
+  assert.ok(
+    !/REJECTED/.test(preamble),
+    'a validation that can emit REJECTED runs before the read-only guard — that is the wedge this test exists to prevent'
+  );
+  // And it must be within the first few lines of the function.
+  // Count CODE lines: stripComments leaves the comment's blank lines behind, so
+  // a raw line count here would fail on a well-documented guard.
+  const codeLines = preamble.split('\n').map((l) => l.trim()).filter(Boolean);
+  assert.ok(
+    codeLines.length < 4,
+    `the guard drifted away from the top of createCard (${codeLines.length} code lines precede it); validation can now run first`
+  );
+});
+
 test('notion-brain.js actually consults the guard at its create call site', () => {
-  const src = readFileSync(join(REPO, 'scripts', 'notion-brain.js'), 'utf8');
+  const src = stripComments(readFileSync(join(REPO, 'scripts', 'notion-brain.js'), 'utf8'));
   assert.match(src, /require\(['"]\.\/lib\/notion-write-guard['"]\)/, 'guard must be required');
 
   const createIdx = src.indexOf('notion.pages.create(');
@@ -72,7 +115,7 @@ test('notion-brain.js actually consults the guard at its create call site', () =
 });
 
 test('updates and archives are deliberately NOT gated', () => {
-  const src = readFileSync(join(REPO, 'scripts', 'notion-brain.js'), 'utf8');
+  const src = stripComments(readFileSync(join(REPO, 'scripts', 'notion-brain.js'), 'utf8'));
   // Exactly one guard call: gating pages.update too would make
   // notion-action-poll.js reprocess actions forever (see the guard's header).
   const calls = src.match(/notionCreateVerdict\(/g) || [];

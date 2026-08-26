@@ -445,6 +445,34 @@ function armingWarning(notesStr) {
 // ── Commands ────────────────────────────────────────────────────────────
 
 async function createCard(args) {
+  // Linear migration Phase 1 (BRO-377): Notion is read-only for NEW pages.
+  //
+  // FIRST STATEMENT IN THE FUNCTION, deliberately — this guard originally sat
+  // just above notion.pages.create(), which is far too late. Everything between
+  // here and there is validation (notes length, acceptance verifiability,
+  // disposition), and a validation REJECT writes
+  // /tmp/notion-create-failed-${session_id}. notion-create-block.sh then blocks
+  // every subsequent Bash call until a create SUCCEEDS — which under read-only
+  // can never happen. A caller whose card would have failed validation was
+  // therefore wedged permanently, and told to "fix the --notes" when the real
+  // answer is "file it in Linear". That wedged a live owner session twice
+  // before this moved. Refusing before any validation runs means read-only
+  // never emits REJECTED at all, so the breadcrumb is never written.
+  //
+  // Scope is creates only; updates and archives stay allowed. See
+  // scripts/lib/notion-write-guard.js for why gating updates would make
+  // notion-action-poll.js reprocess forever.
+  const writeVerdict = notionCreateVerdict(process.env);
+  if (!writeVerdict.allowed) {
+    console.error(`\n❌ REFUSED — ${writeVerdict.reason}\n`);
+    process.exit(6);
+  }
+  if (writeVerdict.reason) {
+    // Never silent: an unlogged bypass is how a one-off exception becomes the
+    // new normal.
+    console.error(`⚠️  ${writeVerdict.reason}`);
+  }
+
   const title = args._positional[1];
   if (!title) {
     console.error('Usage: notion-brain create "Card title" [--status ...] [--priority ...] ...');
@@ -591,23 +619,6 @@ async function createCard(args) {
   // size, so a truncated/piped log still shows which card and why) before
   // propagating to main()'s catch, which exits nonzero. Reporting success
   // below is gated on verifyCardCreated actually finding the page.
-  // Linear migration Phase 1 (BRO-377): Notion is read-only for NEW pages.
-  // Refused here, at the single create call, rather than in each of the ~5
-  // callers that shell out to this CLI — a guard the callers have to remember
-  // is a guard that gets forgotten. Updates and closes are deliberately still
-  // allowed; see scripts/lib/notion-write-guard.js for why blocking those too
-  // would make notion-action-poll.js reprocess forever.
-  const writeVerdict = notionCreateVerdict(process.env);
-  if (!writeVerdict.allowed) {
-    console.error(`\n❌ REFUSED — ${writeVerdict.reason}\n`);
-    process.exit(6);
-  }
-  if (writeVerdict.reason) {
-    // Never silent: an unlogged bypass is how a one-off exception becomes the
-    // new normal.
-    console.error(`⚠️  ${writeVerdict.reason}`);
-  }
-
   let page;
   try {
     page = await notion.pages.create({
