@@ -4,10 +4,12 @@
  * The card's bar: the alert-sender audit reports ZERO direct-bypass call
  * sites (sendAlert(email:true) calls that skip owner-alert-router.js's
  * ACTION-only policy + ledger dedup). Requires the REAL exported scanner
- * (scripts/audit-alert-senders.js's scanFile/buildDirectCounts) per CLAUDE.md
- * rule 15 — never re-lists the regex patterns here, so a future direct
+ * (scripts/audit-alert-senders.js's collectFindings/buildDirectCounts) per
+ * CLAUDE.md rule 15 — never re-lists SCAN_DIRS/SCAN_EXTENSIONS/walk() or the
+ * regex patterns here, so a future scan-dir/skip addition or a new direct
  * sendAlert(email:true) bypass fails this test the same way it fails the
- * scanner, instead of two copies silently drifting apart.
+ * CI gate (audit-alert-senders.js --check), instead of two copies silently
+ * drifting apart.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,35 +20,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const { scanFile, buildDirectCounts } = require(path.join(REPO, 'scripts/audit-alert-senders.js'));
-
-const SCAN_DIRS = ['scripts', '.github/workflows'];
-const SCAN_EXTENSIONS = new Set(['.js', '.mjs', '.yml', '.yaml']);
-const SKIP_DIR_NAMES = new Set(['node_modules', '.git', '.next', 'dist', 'build']);
-
-function walk(dir, files) {
-  let entries;
-  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
-  for (const entry of entries) {
-    if (SKIP_DIR_NAMES.has(entry.name)) continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full, files);
-    else if (SCAN_EXTENSIONS.has(path.extname(entry.name))) files.push(full);
-  }
-}
-
-function collectFindings() {
-  const files = [];
-  for (const dir of SCAN_DIRS) walk(path.join(REPO, dir), files);
-  let all = [];
-  for (const absPath of files) {
-    const relPath = path.relative(REPO, absPath).split(path.sep).join('/');
-    if (relPath.endsWith('.test.mjs') || relPath.endsWith('.test.js')) continue;
-    if (relPath === 'scripts/audit-alert-senders.js') continue;
-    all = all.concat(scanFile(absPath, relPath));
-  }
-  return all;
-}
+const { collectFindings, buildDirectCounts } = require(path.join(REPO, 'scripts/audit-alert-senders.js'));
 
 test('alert-sender audit reports zero direct-bypass call sites', () => {
   const findings = collectFindings();
@@ -66,9 +40,37 @@ test('the two historical BRO-1699 bypass sites are migrated onto routeAlert()', 
     'utf8'
   );
   const pollerJs = fs.readFileSync(path.join(REPO, 'scripts/opening-night-poller.js'), 'utf8');
+  // BRO-2438 finding 2 extracted the tripwire's routeAlert() call out of
+  // opening-night-poller.js into scripts/lib/serp-burst-tripwire.js (so the
+  // write-after-notify fix is directly unit-testable) — the real call site
+  // now lives there, not inline in the poller.
+  const tripwireLib = fs.readFileSync(path.join(REPO, 'scripts/lib/serp-burst-tripwire.js'), 'utf8');
 
-  assert.match(broadcastYml, /routeAlert/, 'opening-night-broadcast.yml no longer calls routeAlert()');
-  assert.match(pollerJs, /routeAlert/, 'opening-night-poller.js no longer calls routeAlert()');
+  // Anchored on the actual call shape (routeAlert({ ... conditionKey: '<the
+  // migrated key>' ...), not a bare /routeAlert/ match — that would also hit
+  // this file's own long BRO-1699 comments, so a revert of the real call
+  // back to sendAlert(email:true) that left the comments in place would
+  // still have passed.
+  assert.match(
+    broadcastYml,
+    /routeAlert\(\{[^}]*conditionKey:\s*'broadcast:overdue:'/s,
+    "opening-night-broadcast.yml's overdue alert does not call routeAlert({ conditionKey: 'broadcast:overdue:' ... })"
+  );
+  assert.match(
+    tripwireLib,
+    /routeAlert\(\{[^}]*conditionKey:\s*'serp-burst:tripwire'/s,
+    "scripts/lib/serp-burst-tripwire.js does not call routeAlert({ conditionKey: 'serp-burst:tripwire' ... })"
+  );
+  assert.match(
+    pollerJs,
+    /maybeAlertSerpBurstTripwire\(\{/,
+    "opening-night-poller.js no longer wires up the extracted serp-burst-tripwire alert"
+  );
+  assert.doesNotMatch(
+    pollerJs,
+    /sendAlert\(\{[^}]*email:\s*true/s,
+    'opening-night-poller.js must not call sendAlert(email:true) directly — route through routeAlert() / maybeAlertSerpBurstTripwire'
+  );
 });
 
 test('both migrated conditionKeys stay on the page-worthy allowlist (no silent digest downgrade)', () => {

@@ -885,19 +885,23 @@ jobs:
             // gets silently marked as handled, suppressing the real retry for
             // up to cooldownHours. Same discipline applied here.
 
-            // Two lines: sorted IDs (stable routeAlert conditionKey — same
-            // overdue combination within the cooldown window dedupes to one
-            // email; a different combination gets its own incident, mirroring
-            // the BREACHED_LIST pattern used by the checklist/drift gates
-            // above) then the display line bash already relied on.
-            if (overdue.length) {
-              console.log(overdue.map(o => o.id).sort().join(','));
-              console.log(overdue.map(o => o.line).join(' | '));
-            }
+            // Single JSON line (not two positional stdout lines — a future
+            // diagnostic console.log anywhere above this, including a
+            // module-load log in a required lib, would silently shift the
+            // sed -n '1p'/'2p' split this used to rely on: conditionKey
+            // becomes unstable garbage and the per-show stamp below writes
+            // wrong keys). ids: sorted for a stable routeAlert conditionKey
+            // (same overdue combination within the cooldown window dedupes to
+            // one email, mirroring BREACHED_LIST above); line: the display
+            // string bash already relied on.
+            console.log(JSON.stringify({
+              ids: overdue.map(o => o.id).sort().join(','),
+              line: overdue.map(o => o.line).join(' | '),
+            }));
           ")
 
-          OVERDUE_IDS=$(echo "$OVERDUE_RAW" | sed -n '1p')
-          OVERDUE=$(echo "$OVERDUE_RAW" | sed -n '2p')
+          OVERDUE_IDS=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').ids || '')")
+          OVERDUE=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').line || '')")
 
           if [ -n "$OVERDUE" ]; then
             echo "::warning::Broadcast overdue for: $OVERDUE"
@@ -1068,6 +1072,16 @@ jobs:
           if [ -f data/audit/alert-ledger.json ]; then
             git add data/audit/alert-ledger.json
             echo "Staged alert-ledger.json"
+          fi
+          # A 'human' disposition not on the page-worthy allowlist (or any
+          # conditionKey routeAlert downgrades) falls through to
+          # queueDigestLine(), which writes this file — without staging it
+          # here the queued line only ever exists on the ephemeral runner and
+          # is lost the moment the job ends (the update-mezzanine.yml
+          # incident this file's dedup logic exists to prevent).
+          if [ -f data/audit/alert-digest-queue.json ]; then
+            git add data/audit/alert-digest-queue.json
+            echo "Staged alert-digest-queue.json"
           fi
           # BRO-2435: a dirty index isn't the only reason to push here. The
           # early "Commit orphan-rescore-requeue state" step commits BEFORE

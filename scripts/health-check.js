@@ -4098,7 +4098,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     ? `
       <h3 style="color:#aaa;margin:24px 0 8px;">Automation (queued)</h3>
       <ul style="padding-left:20px;margin:4px 0;">
-        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}</li>`).join('')}
+        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}${Array.isArray(q.fields) && q.fields.length ? ` (${q.fields.map(f => `${escapeHtml(f.name)}: ${escapeHtml(f.value)}`).join(', ')})` : ''}</li>`).join('')}
       </ul>
     `
     : '';
@@ -4217,7 +4217,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     // persists it, but projecting it away here made renderHealthDigestBlock's
     // link unreachable in production — a digest line whose whole point is
     // "go look at this page" (regional show going live) arrived unclickable.
-    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null })),
+    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null, fields: Array.isArray(q.fields) ? q.fields : [] })),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
