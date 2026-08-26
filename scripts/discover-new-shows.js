@@ -1057,7 +1057,7 @@ const VENUE_LISTING_PAGES = [
 // Backward-compat alias — old name retained for any external callers/tests.
 const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west-end');
 
-// Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
+// Patterns to exclude from venue page scraping (workshops, masterclasses, walking tours, etc.)
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'masterclass', 'workshop', 'walking tour', 'rapid write',
   // NOT bare 'tour' alone (false-positive: "Armory Public Tours",
