@@ -2300,7 +2300,23 @@ showDirs.forEach(showId => {
         let nCycleExcludeFile = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+          // refAlsoDupe deliberately does NOT feed isCircular below — narrowing
+          // this alone must not change circularity detection (BRO-2317
+          // ship-check finding: doing so silently skips the fingerprint/
+          // same-URL tiebreak for a cluster member the reference directly
+          // names). duplicateTextOf is a TEXT-STORAGE pointer, not a duplicate
+          // verdict, so it only counts as "reference is ALSO a dupe" when the
+          // reference has no content of its own — a winner that already holds
+          // its own fullText (or an aggregatorStars rating) has no legitimate
+          // reason to also carry duplicateTextOf, and a stale one there must
+          // not silently disable exclusion for every OTHER file in the cluster
+          // that points at it (loves-labours-lost-globe-west-end-2026,
+          // 2026-08-26 — a 3-file same-URL Times cluster whose winner carried
+          // a stale duplicateTextOf pointing at one of the two losers took
+          // main red and failed all 17 open PRs). duplicateOf, in contrast, IS
+          // a real verdict regardless of content, so it always still counts.
+          const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
+          refAlsoDupe = !!refData.duplicateOf || (!refHoldsOwnContent && !!refData.duplicateTextOf);
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
           // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
           // identical source URL (same show+outlet+url can never legitimately be
@@ -2431,7 +2447,12 @@ showDirs.forEach(showId => {
         let refInheritedFlag = null;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Mirrors the duplicateOf block's BRO-2317 narrowing above: refAlsoDupe
+          // must NOT feed isCircular, and duplicateTextOf only counts as "reference
+          // is ALSO a dupe" when the reference holds no content of its own — see
+          // that block's comment for the full incident.
+          const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
+          refAlsoDupe = (!refHoldsOwnContent && !!refData.duplicateTextOf) || !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
           // Same-URL is a strictly stronger same-article signal than the fingerprint
           // and must count as circularSameText too — mirrors the duplicateOf block

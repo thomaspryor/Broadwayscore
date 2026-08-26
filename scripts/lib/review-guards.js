@@ -3021,7 +3021,7 @@ function explainExclusion(data, show, filePath) {
   // pre-fix the LLM scorer skipped both, leaving the kept file unscored and
   // absent from reviews.json. When filePath is undefined we fall back to the
   // historical "skip on any duplicateOf" behavior — recovery is opt-in.
-  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 1685-1730.
+  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 2269-2428.
   if (data.duplicateOf) {
     if (!filePath) return 'duplicateOf';
     const pathMod = require('path');
@@ -3039,8 +3039,15 @@ function explainExclusion(data, show, filePath) {
       refData = undefined;
     }
     if (refData !== undefined) {
-      const refDupOf = refData && (refData.duplicateOf || refData.duplicateTextOf);
-      const isCircular = refDupOf === thisFile;
+      // rawRefDupOf drives ONLY circularity detection (does refData point
+      // straight back at me?) and must NOT be narrowed by refHoldsOwnContent
+      // below — narrowing it too would silently skip the circular-tiebreak
+      // branch for a cluster member the winner's back-pointer directly names
+      // (BRO-2317 ship-check finding: doing so changes isCircular itself and
+      // routes that file through the plain 'duplicateOf' return instead of
+      // the fingerprint/same-URL tiebreak it's supposed to get).
+      const rawRefDupOf = refData && (refData.duplicateOf || refData.duplicateTextOf);
+      const isCircular = rawRefDupOf === thisFile;
       if (isCircular && data.fullText && refData.fullText) {
         const { computeContentFingerprint } = require('./content-quality');
         const a = computeContentFingerprint(data.fullText);
@@ -3056,12 +3063,31 @@ function explainExclusion(data, show, filePath) {
           // separate reviews (duplicateOf wrongly set). Both sides kept.
           // Fall through.
         }
-      } else if (refDupOf) {
-        // Reference also a dupe but pointing elsewhere (not back at us) —
-        // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+      } else if (isCircular) {
+        // Circular but missing fullText on one/both sides — can't confirm via
+        // fingerprint, so (unchanged from before BRO-2317) fall through rather
+        // than guess.
       } else {
-        // Reference exists and is NOT also flagged → legitimate dup, skip.
-        return 'duplicateOf';
+        // Non-circular: does refData still look like a live, unresolved dupe
+        // pointer of its OWN? duplicateTextOf is a TEXT-STORAGE pointer, not a
+        // duplicate verdict — it only means "my fullText lives elsewhere" and
+        // is meaningless once refData already holds its own content (fullText
+        // or an aggregatorStars rating). BRO-2317: a winner that holds its own
+        // fullText but carries a stale duplicateTextOf pointing at one of the
+        // OTHER cluster members previously made every other loser look like it
+        // pointed at "a reference that's also a dupe, elsewhere" and silently
+        // fall through unexcluded. duplicateOf, in contrast, IS a real verdict
+        // regardless of content, so it always still counts.
+        const refHoldsOwnContent = !!(refData.fullText || refData.aggregatorStars);
+        const refStillLooksLikeADupe = !!(refData.duplicateOf || (!refHoldsOwnContent && refData.duplicateTextOf));
+        if (refStillLooksLikeADupe) {
+          // Reference also a dupe but pointing elsewhere (not back at us) —
+          // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+        } else {
+          // Reference exists, holds its own content, and is NOT also a live
+          // dupe → legitimate dup, skip.
+          return 'duplicateOf';
+        }
       }
     }
   }
