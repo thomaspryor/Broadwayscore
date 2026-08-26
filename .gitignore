@@ -303,6 +303,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
 # — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
 /data/audit/wrongproduction-seen-files.json
+# BRO-176: exclusion-rule-census.js snapshot — regenerated every run from the
+# review-texts corpus, same reasoning as the ledger above.
+/data/audit/exclusion-rule-census.json
 /data/integrity-report.md
 /data/review-reports/
 
