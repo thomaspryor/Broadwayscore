@@ -14,22 +14,26 @@
  * mirrors that weight exactly, so whichever show sorts to position 0 here is
  * also the one newsworthiness.mjs picks first among same-category openings.
  *
- * @param {number|null} score raw composite/avg score (assignedScore avg)
- * @param {number} goldMin gold-tier threshold for the show's category
+ * `isGoldFn` is caller-supplied (not a threshold constant owned by this
+ * module) so callers reuse their OWN canonical gold-tier check — generate.mjs
+ * already has one (isGoldTier()/scoreTier(), goldMin 83 NYC / 85 WE) that
+ * newsworthiness.mjs's SCORE_GOLD_MIN_NYC/WE mirror. A threshold duplicated
+ * here too would be a fourth copy of the same number with nothing enforcing
+ * they agree — exactly the kind of drift that reintroduces this bug.
+ * @param {object|null} agg a score-aggregate object (see compareOpeningStories)
+ * @returns {boolean}
  */
-function isGoldScore(score, goldMin) {
-  return typeof score === 'number' && score >= goldMin;
-}
 
 /**
  * Compares two `{ avg, raw, count }` score-aggregate objects (the shape
  * generate.mjs's aggregateScore() returns) for newsworthiness order: gold
- * tier first, then raw score desc, then review count desc as a tiebreak when
- * the displayed (rounded) score ties.
+ * tier first (per the caller's `isGoldFn(agg)` predicate), then raw score
+ * desc, then review count desc as a tiebreak when the displayed (rounded)
+ * score ties.
  */
-function compareOpeningStories(aAgg, bAgg, goldMin) {
-  const ag = isGoldScore(aAgg?.avg, goldMin) ? 1 : 0;
-  const bg = isGoldScore(bAgg?.avg, goldMin) ? 1 : 0;
+function compareOpeningStories(aAgg, bAgg, isGoldFn) {
+  const ag = isGoldFn(aAgg) ? 1 : 0;
+  const bg = isGoldFn(bAgg) ? 1 : 0;
   if (ag !== bg) return bg - ag;
   const ar = aAgg?.raw ?? aAgg?.avg ?? 0;
   const br = bAgg?.raw ?? bAgg?.avg ?? 0;
@@ -41,8 +45,8 @@ function compareOpeningStories(aAgg, bAgg, goldMin) {
  * Sorts `items` (any shape) into newsworthiness order using `getAgg(item)` to
  * read each item's score aggregate. Returns a new array; input is untouched.
  */
-function sortOpeningStoriesByNewsworthiness(items, getAgg, goldMin) {
-  return [...items].sort((a, b) => compareOpeningStories(getAgg(a), getAgg(b), goldMin));
+function sortOpeningStoriesByNewsworthiness(items, getAgg, isGoldFn) {
+  return [...items].sort((a, b) => compareOpeningStories(getAgg(a), getAgg(b), isGoldFn));
 }
 
-module.exports = { isGoldScore, compareOpeningStories, sortOpeningStoriesByNewsworthiness };
+module.exports = { compareOpeningStories, sortOpeningStoriesByNewsworthiness };

@@ -246,11 +246,6 @@ function getImage(show) {
   return null;
 }
 
-// Matches newsworthiness.mjs's SCORE_GOLD_MIN_NYC — broadwayOpenings()'s sort
-// (scripts/lib/opening-story-order.js) must use the same threshold or its
-// gold-first order can disagree with which show earns the subject's gold bump.
-const SCORE_GOLD_MIN_BROADWAY = 83;
-
 function scoreTier(score, category) {
   if (score == null) return null;
   const goldMin = (category === 'west-end' || category === 'off-west-end') ? 85 : 83;
@@ -675,7 +670,7 @@ function broadwayOpenings() {
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
-  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), SCORE_GOLD_MIN_BROADWAY));
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
