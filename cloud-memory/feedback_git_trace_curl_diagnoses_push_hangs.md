@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 646f94c5-6245-4989-bcb9-8da3602f8f89
-  modified: 2026-08-26T14:25:55.534Z
+  modified: 2026-08-26T14:26:06.145Z
 ---
 
 When a `git push` hangs for exactly a configured timeout with no other symptom, don't guess between "network stall" and "local computation slow" — instrument with `GIT_TRACE_CURL=1` (+ `GIT_TRACE_CURL_NO_DATA=1` to suppress the pack payload dump) and read where the trace goes silent. `GIT_TRACE`/`GIT_TRACE_PERFORMANCE` show git's internal phase timers but not HTTP/TLS transport detail, so they can't make this distinction.
@@ -19,3 +19,5 @@ When a `git push` hangs for exactly a configured timeout with no other symptom, 
 git -c credential.helper= -c http.extraHeader="Authorization: Basic $(printf 'x-access-token:%s' "$(gh auth token)" | base64)" push ...
 ```
 Don't burn time on `GIT_TRACE_CURL` for this signature — the trace won't even show a stalled HTTP request, since the hang is credential-helper-side, before curl opens the connection.
+
+**Third signature (headless/cloud sandbox, `gh pr create`/`gh api` specifically):** `git push` to `https://github.com/...` and plain `curl https://github.com` both succeed normally, but `curl https://api.github.com` times out (exit 28) on every attempt over a multi-minute session, and `gh pr create`/`gh api`/`gh auth status` all fail or hang the same way (BRO-344 session, 2026-08-26 — a Broadwayscore headless dispatch worktree). `nslookup` resolves both hosts fine, and `curl -v https://github.com` shows a normal TLS handshake — this is a sandbox network policy that allows the `github.com` host (used for git's smart-HTTP protocol) but blocks `api.github.com` (used for the REST/GraphQL API `gh` and the GitHub MCP connector both depend on), not a DNS or credential issue. Don't loop retrying `gh pr create` — 3-4 spaced attempts over a few minutes is enough to confirm it's not transient. Fix: push the branch (that path works), then hand off PR creation — post the exact `gh pr create --fill` command in a comment on the tracking issue (Linear/Notion) so a session with API access (or the user) can open it, rather than blocking completion on a PR that can't be created from this sandbox.
