@@ -31,13 +31,14 @@
  *   - Notion card per run (dedup against open card with same prefix)
  *
  * Usage:
- *   node scripts/audit-opening-dates.js [--dry-run] [--shows=id1,id2]
+ *   node scripts/audit-opening-dates.js [--dry-run] [--shows=id1,id2] [--time-budget-min=N]
  */
 
 const fs = require('fs');
 const path = require('path');
 const { discoverAnnouncedDate } = require('./lib/closing-date-discovery');
 const { cleanup } = require('./lib/scraper');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'opening-date-discrepancies.json');
@@ -47,6 +48,7 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
+const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
 
 // Cap discovery attempts per run to bound cost. Each show needing both
 // opening + previews-start checks costs up to 2 SERP + ~10 article fetches +
@@ -183,6 +185,10 @@ async function main() {
   const errors = [];
 
   for (const show of candidates) {
+    if (timeBudget.exceeded()) {
+      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
+      break;
+    }
     const title = show.name || show.title || show.id;
     console.log(`[${show.id}] ${title} — stored opening=${show.openingDate || 'null'}, previews=${show.previewsStartDate || 'null'}`);
 
@@ -190,7 +196,7 @@ async function main() {
       const storedKey = fieldType === 'opening' ? 'openingDate' : 'previewsStartDate';
       const stored = show[storedKey] || null;
       try {
-        const discovered = await discoverAnnouncedDate(title, fieldType, { log: msg => console.log(msg) });
+        const discovered = await discoverAnnouncedDate(title, fieldType, { log: msg => console.log(msg) }, timeBudget);
         if (!discovered) {
           continue;  // No press signal; can't conclude anything
         }

@@ -50,6 +50,8 @@
  *                        only — burns ~120 SERP+fetch on a daily cron. Default
  *                        Phase 3 scope is openingDate==previewsStartDate or
  *                        missing openingDate (the auto-apply class).
+ *   --time-budget-min=N  Wall-clock budget in minutes for Phase 3's per-show
+ *                        loop (0/omitted = unlimited).
  *
  * Audit output: data/audit/date-enrichment-corrections.json (per-script entries
  * appended each run; uniform schema across WE + OB scripts).
@@ -68,6 +70,7 @@ const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `enrich-off-broadway-dates.js — Off-Broadway Date Enrichment Script.
 
@@ -111,6 +114,7 @@ const phase3Broad = args.includes('--phase3-broad');
 const missingOnly = !force && !fixUnconfirmed;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 // =========================================================
 // PARSE HELPERS
@@ -531,6 +535,10 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   };
 
   for (const show of queue) {
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${queue.length - queue.indexOf(show)} shows deferred to next run.`);
+      break;
+    }
     let url = urlCache.shows?.[show.id];
     let usedCache = !!url;
     if (!url) {

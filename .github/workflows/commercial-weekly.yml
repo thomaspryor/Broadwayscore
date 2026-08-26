@@ -301,7 +301,7 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -f data/commercial-pending-review.json ]; then
-            node scripts/reconcile-recoupment-claims.js
+            node scripts/reconcile-recoupment-claims.js --time-budget-min=25
           fi
 
       - name: Self-heal resurrected duplicate key pairs

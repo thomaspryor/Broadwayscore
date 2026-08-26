@@ -248,9 +248,12 @@ function clusterDates(extractions, opts = {}) {
 
 /**
  * Generic field discovery. fieldType in {'closing','opening','previews-start'}.
+ * `budget` (optional) is a scripts/lib/run-budget.js budget object — when it
+ * reports exceeded(), the per-candidate fetch/extract loop below stops early
+ * instead of working through the remaining candidates.
  * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...], fieldType }
  */
-async function discoverAnnouncedDate(showTitle, fieldType, opts = {}) {
+async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = null) {
   // Fail fast on missing/unknown fieldType — silently defaulting to 'closing'
   // would run a closing-date SERP/prompt on an opening-date call site and
   // return plausibly-wrong data. Caller MUST pass an explicit fieldType.
@@ -282,6 +285,10 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}) {
 
   const extractions = [];
   for (const c of candidates) {
+    if (budget && budget.exceeded()) {
+      log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — ${candidates.length - extractions.length} candidate(s) skipped`);
+      break;
+    }
     try {
       const page = await fetchPage(c.url, { source: `audit-${fieldType}-dates` });
       if (!page || !page.content) continue;
