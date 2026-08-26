@@ -167,8 +167,9 @@ jobs:
           # only ~2 real fetch/rebase/push cycles (task #458's documented
           # failure mode — "All push attempts failed after 7 attempts" was
           # misleading; only 2 ever ran). Job has 45min timeout with ~20min
-          # headroom past this step; 600s matches the override already used
-          # by update-show-status.yml for the same root cause.
+          # headroom past this step; 600s is smaller than the 1200s override
+          # update-show-status.yml uses for the same root cause (that job has
+          # a much bigger timeout budget).
           PUSH_DEADLINE_SEC: '600'
         run: |
           git add data/commercial-pending-review.json data/recoupment-calibration-anchors.json 2>/dev/null || true
