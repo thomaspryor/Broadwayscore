@@ -60,6 +60,21 @@ function getRichTextValue(prop) {
   return prop.rich_text.map(t => t.plain_text).join('');
 }
 
+// Same defensive shape as --name's validation below: parseArgs now passes an
+// explicit empty value through as '' rather than coercing it to boolean true
+// (BRO-344). For select/multi-select fields there is no clear-token
+// convention (unlike --outcome/--notes/--due-date/--auto), so a bare
+// `--flag ''` — almost always `--flag --other-flag` typo'd — must fail
+// loudly rather than silently skip the property update or write a bogus
+// select option.
+function requireNonEmptyFlag(name, value) {
+  if (typeof value !== 'string' || !value.trim()) {
+    console.error(`--${name} requires a non-empty value (got no value — did you write ` +
+      `\`--${name} --other-flag\`?)`);
+    process.exit(1);
+  }
+}
+
 // Canonical Notion Priority select options. Bare "P0"/"P1"/"P2" silently create
 // a NEW select option that notion-tasks-sync's "P0 Now,P1 Next" filter ignores
 // (2026-07-25: a P1 card never mirrored to the task list, so auto-dispatch
@@ -507,25 +522,34 @@ async function createCard(args) {
   // ('Paused' — distinct from 'In progress' so a parked card never reads as
   // actively worked). --status still overrides both for callers that need a
   // specific value (e.g. update-time Done), same as before.
-  if (args.status) {
+  if (args.status !== undefined) {
+    requireNonEmptyFlag('status', args.status);
     properties.Status = { status: { name: args.status } };
   } else {
     properties.Status = { status: { name: disposition.mode === 'dispatch' ? 'In progress' : 'Paused' } };
   }
 
-  if (args.priority) {
+  // Same defensive shape as --name/--status above: a bare empty value
+  // (almost always `--flag --other-flag` typo'd — BRO-344, parseArgs no
+  // longer coerces it to boolean true) must fail loudly rather than
+  // silently write a bogus select option or omit the property.
+  if (args.priority !== undefined) {
+    requireNonEmptyFlag('priority', args.priority);
     properties.Priority = { select: { name: normalizePriority(args.priority) } };
   }
 
-  if (args.category) {
+  if (args.category !== undefined) {
+    requireNonEmptyFlag('category', args.category);
     properties.Category = { select: { name: args.category } };
   }
 
-  if (args.type) {
+  if (args.type !== undefined) {
+    requireNonEmptyFlag('type', args.type);
     properties.Type = { select: { name: args.type } };
   }
 
-  if (args.tags) {
+  if (args.tags !== undefined) {
+    requireNonEmptyFlag('tags', args.tags);
     properties.Tags = {
       multi_select: args.tags.split(',').map(t => ({ name: t.trim() })),
     };
@@ -874,23 +898,28 @@ async function updateCard(args) {
     properties.Name = { title: [{ text: { content: args.name.trim() } }] };
   }
 
-  if (args.status) {
+  if (args.status !== undefined) {
+    requireNonEmptyFlag('status', args.status);
     properties.Status = { status: { name: args.status } };
   }
 
-  if (args.priority) {
+  if (args.priority !== undefined) {
+    requireNonEmptyFlag('priority', args.priority);
     properties.Priority = { select: { name: normalizePriority(args.priority) } };
   }
 
-  if (args.category) {
+  if (args.category !== undefined) {
+    requireNonEmptyFlag('category', args.category);
     properties.Category = { select: { name: args.category } };
   }
 
-  if (args.type) {
+  if (args.type !== undefined) {
+    requireNonEmptyFlag('type', args.type);
     properties.Type = { select: { name: args.type } };
   }
 
-  if (args.tags) {
+  if (args.tags !== undefined) {
+    requireNonEmptyFlag('tags', args.tags);
     properties.Tags = {
       multi_select: args.tags.split(',').map(t => ({ name: t.trim() })),
     };
@@ -963,10 +992,14 @@ async function updateCard(args) {
     }
   }
 
-  if (args['key-files']) {
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(args['key-files']);
-    properties['Key Files'] = propertyValue;
-    if (bodyText) overflow['key-files'] = bodyText;
+  if (args['key-files'] !== undefined) {
+    if (args['key-files'] === '' || args['key-files'] === 'none' || args['key-files'] === 'clear') {
+      properties['Key Files'] = { rich_text: [] };
+    } else {
+      const { propertyValue, bodyText } = buildRichTextWithOverflow(args['key-files']);
+      properties['Key Files'] = propertyValue;
+      if (bodyText) overflow['key-files'] = bodyText;
+    }
   }
 
   if (args['completed-date']) {
@@ -1374,11 +1407,15 @@ Options (create/update):
   --category Product        Category: Product, Marketing, Partnerships, Admin
   --type "New Feature"      Type: New Feature, Fix, Data Quality, Market Expansion
   --tags scoring,scraping   Tags (comma-separated)
+                            --status/--priority/--category/--type/--tags have no
+                            clear form — a bare empty value errors loudly (usually
+                            a "--flag --other-flag" typo)
   --notes "## Problem..."   Notes field — REQUIRED on create, validated for quality
                             On update: "", "none", or "clear" empties Notes
   --outcome "## Summary"    Outcome (prepends to existing by default)
                             "", "none", or "clear" empties Outcome instead
   --key-files "file.js"     Key Files field
+                            On update: "", "none", or "clear" empties Key Files
   --auto STATE              (update only) Autonomous-loop state select: queued,
                             attempted, needs-approval, approved, merged,
                             rejected, failed, split-proposed. "clear" unsets.
