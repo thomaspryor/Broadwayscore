@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-26T20:36:09.992Z",
+    "generatedAt": "2026-08-26T22:18:56.328Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,33 +16,33 @@
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 45
+      "churn": 46
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 126
+      "churn": 134
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 73
+      "churn": 75
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 73
+      "churn": 75
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 73
+      "churn": 75
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 68
+      "churn": 69
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 54
+      "churn": 56
     },
     {
       "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
@@ -50,49 +50,49 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 47
+      "churn": 46
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 35
+      "churn": 38
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 32
+      "churn": 31
     },
     {
       "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 32
+      "churn": 31
     },
     {
       "path": "public/data/shows/abigails-party-west-end-2026.json",
-      "churn": 31
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1115,
+      "churn": 1131,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1077,
+      "churn": 1094,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 387,
+      "churn": 396,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 378,
+      "churn": 383,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 257,
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
@@ -102,57 +102,57 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 119,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 119,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 119,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 79,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 79,
+      "churn": 86,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 81,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 73,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 64,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 60,
+      "churn": 64,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 34,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 33,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 32,
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
