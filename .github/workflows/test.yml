@@ -36,6 +36,12 @@ on:
       # would trigger zero CI without this entry (task #1581, same gap class
       # as scripts/check-orphan-commits.js above).
       - 'scripts/audit-workflow-concurrency.js'
+      # scripts/audit-push-retry-budgets.js (card #1910, 2026-08-26): same
+      # thin-CLI-wrapper-outside-scripts/lib/ gap shape as
+      # scripts/audit-workflow-concurrency.js above — its logic lives in
+      # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
+      # file itself needs its own entry.
+      - 'scripts/audit-push-retry-budgets.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
