@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-26T14:11:35.096Z",
+  "updatedAt": "2026-08-26T14:13:38.412Z",
   "processed": 97,
-  "failed": 1465,
+  "failed": 1475,
   "successRate": "6.2%",
   "tierBreakdown": {
     "playwright": 61,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -59,6 +59,17 @@
       "t": "2026-08-26T11:48:11.664Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-26T14:12:51.893Z",
+      "event": "bb-session",
+      "session": "9c6de683",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-26T14:12:52.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

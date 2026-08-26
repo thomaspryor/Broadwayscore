@@ -1563,7 +1563,17 @@
     "billy-elliot-the-musical-west-end-2027/times-uk--dominic-maxwell.json",
     "billy-elliot-the-musical-west-end-2027/west-end-best-friend--laura-lott.json",
     "dolly-an-original-musical-2026/hollywood-reporter--frank-scheck.json",
-    "dolly-an-original-musical-2026/newsday--barbara-schuler.json"
+    "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
+    "dolly-an-original-musical-2026/nydailynews--joe-dziemianowicz.json",
+    "christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json",
+    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+    "christmas-carol-goes-wrong-west-end-2026/thestage--unknown.json",
+    "cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
+    "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+    "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cinderella-west-end-2026/observer--david-cote.json",
+    "cinderella-west-end-2026/bloomberg--chris-rovzar.json",
+    "cinderella-west-end-2026/financialtimes--sarah-hemming.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1687,7 +1697,7 @@
     ]
   },
   "startTime": "2026-08-26T10:18:02.686Z",
-  "lastProcessed": "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
+  "lastProcessed": "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -1733,6 +1743,17 @@
       "t": "2026-08-26T11:48:11.664Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-26T14:12:51.893Z",
+      "event": "bb-session",
+      "session": "9c6de683",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-26T14:12:52.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
