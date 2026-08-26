@@ -113,6 +113,61 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
     });
   });
 
+  test('Guard E4: "critical consensus" pull-quote compilation (outlet-agnostic) → isRoundupArticle=true (task #1888, newyorktheater.me shape)', () => {
+    withTempReviewTextsDir('paranormal-activity-2026', (tmp) => {
+      const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
+      const fullText = 'A new horror play opened tonight at the August Wilson Theatre. That is the critical consensus, as indicated below: '
+        + 'Helen Shaw, New York Times. A confident, unsettling piece of theater that earns its scares. '
+        + 'Jackson McHenry, Vulture. The design team pulls off tricks that leave the audience gasping. '
+        + "Howard Miller, Talkin' Broadway. A tightly wound thriller with a starry cast. "
+        + 'Johnny Oleksinski, New York Post. Genuinely frightening in a way few Broadway shows manage.';
+      const result = createOrMergeReviewFile('paranormal-activity-2026', {
+        outletId: 'nyt-theater',
+        outlet: 'New York Theater',
+        criticName: 'Jonathan Mandell',
+        url: 'https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/',
+        source: 'rss-discovery',
+        fields: {
+          publishDate: '2026-08-26',
+          fullText,
+          contentTier: 'complete',
+        },
+      }, { reviewTextsDir: tmp });
+
+      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
+      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
+      assert.equal(written.isRoundupArticle, true, 'Guard E4 must auto-flag a pull-quote compilation bylined to an uninvolved compiler');
+      assert.match(written.roundupArticleReason || '', /pull-quote compilation/i);
+    });
+  });
+
+  test('Guard E4 does NOT flag a real review whose byline critic is one of the quoted critics', () => {
+    withTempReviewTextsDir('miss-saigon-1991', (tmp) => {
+      const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
+      const fullText = "Here are what the critics said after Thursday's opening: "
+        + 'Frank Rich, New York Times. A gripping entertainment that earns its long run. '
+        + 'David Patrick Stearn, USA Today. Worth the high ticket price for the visual thrills alone. '
+        + 'Michael Kuchwara, Associated Press. The central performance carries the whole show. '
+        + "Howard Kissel, New York Daily News. Apart from some impressive performances, there's not much else to make this worthwhile.";
+      const result = createOrMergeReviewFile('miss-saigon-1991', {
+        outletId: 'nydailynews',
+        outlet: 'New York Daily News',
+        criticName: 'Howard Kissel',
+        url: 'https://www.nydailynews.com/1991/04/13/miss-saigon-review/',
+        source: 'newspapers-com-ocr',
+        fields: {
+          publishDate: '1991-04-13',
+          fullText,
+          contentTier: 'complete',
+        },
+      }, { reviewTextsDir: tmp });
+
+      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
+      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
+      assert.notEqual(written.isRoundupArticle, true, 'must not flag a wire digest that carries the byline critic\'s own verdict');
+    });
+  });
+
   test('Review-Roundup pattern is case-insensitive', () => {
     withTempReviewTextsDir('test-show-2026', (tmp) => {
       const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
