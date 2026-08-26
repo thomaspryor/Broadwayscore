@@ -19,19 +19,29 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { recordRecencyMs } = require('./tracker-record-recency');
 
 const SYNC_REPO = 'thomaspryor/broadway-scorecard-data';
 const SYNC_REMOTE_PATH = 'opening-night-sent.json';
 
 /**
- * Pure merge helper — exposed for unit tests. Remote entries are preserved, local
- * entries win on conflict (the caller just wrote them, so its entries are newest).
+ * Pure merge helper — exposed for unit tests. Remote entries are preserved;
+ * on a key conflict, local wins by default (the caller just wrote it from a
+ * fresh observation) UNLESS remote's recorded content is strictly newer per
+ * recordRecencyMs (task #1914) — the case where a different writer already
+ * pushed a newer state for this key (e.g. this caller observed 'queued'
+ * before a concurrent send flipped it to 'sent' and landed first).
  */
 function mergeTrackerEntries(remoteParsed, localParsed) {
-  const merged = { ...(remoteParsed || {}) };
-  if (!merged.shows) merged.shows = {};
+  const remoteShows = (remoteParsed && remoteParsed.shows) || {};
   const localShows = (localParsed && localParsed.shows) || {};
+  const merged = { ...(remoteParsed || {}) };
+  merged.shows = { ...remoteShows };
   for (const [k, v] of Object.entries(localShows)) {
+    const remoteRec = remoteShows[k];
+    if (remoteRec && recordRecencyMs(remoteRec) > recordRecencyMs(v)) {
+      continue; // remote already has a newer observation for this key — keep it.
+    }
     merged.shows[k] = v;
   }
   return merged;
@@ -50,9 +60,9 @@ function mergeTrackerEntries(remoteParsed, localParsed) {
  * committed; workflow fired at 12:21 UTC reading stale state).
  *
  * Strategy: fetch the current file from origin/main, parse it, merge in our in-memory
- * entries (caller's write wins on conflict — it just ran, so its entries are newest),
- * PUT back with the fetched sha. If the sha is stale due to concurrent write, retry
- * once with a fresh fetch.
+ * entries (caller's write wins on conflict unless remote is recency-newer — see
+ * mergeTrackerEntries), PUT back with the fetched sha. If the sha is stale due to
+ * concurrent write, retry once with a fresh fetch.
  *
  * Skipped when:
  *   - Running in GitHub Actions (the workflow commits separately).

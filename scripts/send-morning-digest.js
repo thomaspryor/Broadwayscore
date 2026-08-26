@@ -183,6 +183,32 @@ function localPrSupervisorMessage() {
   return assessSupervisorStatus(payload).message;
 }
 
+// BRO-2318: dispatch-watchdog.js writes its heartbeat (HEARTBEAT_PATH there)
+// on THIS machine every sweep, including a `holds: string[]` field — the same
+// strings that hold the crowned tab's dispatch budget. A leaky-launcher hold
+// (~1-in-3 dispatches dying at cmux injection) can sit there indefinitely
+// without ever escalating past the tab title if the owner isn't looking at
+// cmux, so this surfaces it in the one channel read every day regardless.
+// Same null-if-absent shape as the readers above: no watchdog on this
+// machine, or a heartbeat not yet written, is unknown, not an alarm.
+// 3h staleness bar matches localLinearDelegationMessage's above — a dead
+// watchdog (crashed right after recording a leak) must not keep surfacing a
+// stale "leaking" line forever with no way to tell it apart from a live one.
+const WATCHDOG_HEARTBEAT_PATH = path.join(os.homedir(), '.claude', 'state', 'dispatch-watchdog.json');
+const { LAUNCHER_LEAK_HOLD_PREFIX } = require('./lib/dispatch-watchdog-core.js');
+function localDispatchWatchdogLeakMessage() {
+  let hb;
+  try {
+    hb = JSON.parse(fs.readFileSync(WATCHDOG_HEARTBEAT_PATH, 'utf8'));
+  } catch {
+    return null; // no watchdog heartbeat on this machine yet — unknown, not dead
+  }
+  const ageH = (Date.now() - Date.parse(hb.ts)) / 3600000;
+  if (!Number.isFinite(ageH) || ageH > 3) return null; // stale/unparseable heartbeat — unknown, not an alarm
+  const holds = Array.isArray(hb.holds) ? hb.holds : [];
+  return holds.find(h => String(h).startsWith(LAUNCHER_LEAK_HOLD_PREFIX)) || null;
+}
+
 function localRunnerHealthMessage() {
   let state;
   try {
@@ -400,6 +426,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const supervisorMsg = localPrSupervisorMessage();
   if (supervisorMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
+  }
+  const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
+  if (watchdogLeakMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
@@ -896,4 +926,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, localDispatchWatchdogLeakMessage };

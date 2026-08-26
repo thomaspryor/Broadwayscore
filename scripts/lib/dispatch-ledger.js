@@ -745,6 +745,27 @@ function openWorkspaceLaunchCount(entries, { epochTs, now } = {}) {
   return n;
 }
 
+// Raw count of 'launch' entries within a trailing window (task #1915,
+// dispatch-watchdog's flow-dead check). Deliberately simpler than
+// openWorkspaceLaunchCount above — that function answers "how many OPEN
+// tasks have an unreconciled launch," folding in terminal-event
+// resolution and the historical-exclusion grace period; this one answers
+// "did ANY launch happen recently at all," which needs none of that. A
+// dead flow (zero launches in the window) can't be masked by an event
+// happening to be terminal — a terminal entry is itself proof something
+// dispatched.
+function countRecentLaunches(entries, { now, windowMs }) {
+  if (!Number.isFinite(now)) throw new Error('countRecentLaunches requires now (ms epoch)');
+  const cutoff = now - windowMs;
+  let n = 0;
+  for (const e of entries) {
+    if (e.event !== 'launch' || !e.ts) continue;
+    const ts = Date.parse(e.ts);
+    if (Number.isFinite(ts) && ts > cutoff) n++;
+  }
+  return n;
+}
+
 // Conservative on purpose (owner escalation 2026-08-03 is the incident this
 // exists to prevent): a false "looks like restart" only costs one extra
 // sweep before parking resumes; a false "not a restart" wrongly parks live
@@ -863,6 +884,50 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
     count: deaths.length,
     taskIds,
     sinceTs: oldestDeathTs,
+  };
+}
+
+// ── Leaky-launcher failure-rate detector (BRO-2318) ─────────────────────────
+// detectLauncherOutage above is tuned for a SUSTAINED outage — it deliberately
+// calls a run "recovered" the moment one verified launch lands after the
+// newest injection death, because that is real evidence the launcher is
+// healthy again RIGHT NOW (see the 2026-08-03 Codex-review comment above).
+// That rule is correct for the failure mode it targets and must not change.
+// But it is blind to a different regime: a launcher that drops roughly one
+// dispatch in three, where a verified success always follows the next death
+// within minutes. Every such window has a success newer than the newest
+// death, so `recovered` is always true — and nobody is told that a third of
+// dispatches never start. This is an independent signal, not a replacement:
+// a launcher can be leaky without ever sustaining an outage, and vice versa.
+//
+// Denominator is every cmux-tab launch attempt (isWorkspaceRef), verified or
+// not — failedLaunchEntries() always pairs a 'dead' with an unverified
+// 'launch', so this counts every attempt exactly once. Restricting to
+// isWorkspaceRef on BOTH sides matters: headless/linear-prefixed launches
+// never go through cmux injection at all, so folding them into the
+// denominator only dilutes the rate with attempts that were never at risk of
+// this failure mode (confirmed against the live ledger: including them pulls
+// an 8/25 ≈ 32% cmux-only rate down to 8/62 ≈ 13%, silently masking the leak).
+const FAILURE_RATE_LOOKBACK_MS = 6 * 60 * 60 * 1000; // wide enough to see a slow leak across a normal dispatch cadence; OUTAGE_LOOKBACK_MS's 30min is tuned for a tight sustained-outage cluster instead
+const FAILURE_RATE_MIN_LAUNCHES = 8; // below this a single bad dispatch swings the rate past any threshold — not enough sample to alarm on
+const FAILURE_RATE_THRESHOLD = 0.2; // the observed incident ran 29-36%; 1-in-5 sustained is already worth paging
+
+// entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
+// is unavailable in workflow scripts, callers pass it explicitly).
+function detectLauncherFailureRate(entries, { now, lookbackMs = FAILURE_RATE_LOOKBACK_MS, minLaunches = FAILURE_RATE_MIN_LAUNCHES, rateThreshold = FAILURE_RATE_THRESHOLD } = {}) {
+  if (!Number.isFinite(now)) throw new Error('detectLauncherFailureRate requires now (ms epoch)');
+  const cutoff = now - lookbackMs;
+  const inWindow = e => e && e.ts && Date.parse(e.ts) >= cutoff;
+  const totalLaunches = entries.filter(e => e.event === 'launch' && isWorkspaceRef(e.workspaceRef) && inWindow(e)).length;
+  const failures = entries.filter(e => e.event === 'dead' && isWorkspaceRef(e.workspaceRef) && inWindow(e) &&
+    OUTAGE_REASON_RE.test(String(e.failureReason || '')));
+  const rate = totalLaunches > 0 ? failures.length / totalLaunches : 0;
+  return {
+    leaking: totalLaunches >= minLaunches && rate >= rateThreshold,
+    rate,
+    failureCount: failures.length,
+    totalLaunches,
+    taskIds: [...new Set(failures.map(e => String(e.taskId)))],
   };
 }
 
@@ -1000,10 +1065,11 @@ module.exports = {
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
-  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
+  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,
   looksLikeRestart, RESTART_MIN_COUNT, RESTART_FRACTION,
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
   remapEntries,
   openTaskWorkspaceLaunches,
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
+  detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
 };

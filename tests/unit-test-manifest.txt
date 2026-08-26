@@ -173,6 +173,7 @@ tests/unit/backfill-unknown-critics-locked.test.mjs
 tests/unit/bd-telemetry.test.mjs
 tests/unit/block-review-cli.test.mjs
 tests/unit/board-card-marker.test.mjs
+tests/unit/board-gate-failopen.test.mjs
 tests/unit/board-probe.test.mjs
 tests/unit/branch-protection.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
@@ -271,6 +272,8 @@ tests/unit/curated-historical-min-reviews.test.mjs
 tests/unit/cv-stale-wrongproduction-selfheal.test.mjs
 tests/unit/date-utils.test.mjs
 tests/unit/dedupe-byline-preference.test.mjs
+tests/unit/dedupe-same-url-bylines-classA-skip.test.mjs
+tests/unit/dedupe-same-url-bylines-double-clear.test.mjs
 tests/unit/dedupe-same-url-bylines-stale-canonical.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
@@ -279,6 +282,7 @@ tests/unit/digest-row-clip.test.mjs
 tests/unit/digest-sync-refused-reporting.test.mjs
 tests/unit/discover-historical-shows-category.test.mjs
 tests/unit/discover-new-shows-gates.test.mjs
+tests/unit/discover-new-shows-owe.test.mjs
 tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
 tests/unit/discovery-production-match.test.mjs
 tests/unit/discovery-source-coverage.test.mjs
@@ -461,6 +465,7 @@ tests/unit/pending-gap-classification.test.mjs
 tests/unit/pending-promote-validation.test.mjs
 tests/unit/pending-strand-routing.test.mjs
 tests/unit/per-category-precursor-warnings.test.mjs
+tests/unit/placeholder-byline.test.mjs
 tests/unit/placeholder-images.test.mjs
 tests/unit/placeholder-venue-guard.test.mjs
 tests/unit/plan-ready.test.mjs
@@ -644,6 +649,8 @@ tests/unit/wet-title-extraction.test.mjs
 tests/unit/whatsonstage-extractor.test.mjs
 tests/unit/workflow-line-length.test.mjs
 tests/unit/workflow-run-coverage.test.mjs
+tests/unit/worktree-gc-reclaim.test.mjs
+tests/unit/worktree-live-lease-check.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs
 tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs

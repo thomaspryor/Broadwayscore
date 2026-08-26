@@ -343,7 +343,53 @@ flush() {
   else
     unmerged=$(echo "$cherry_raw" | grep -c '^+')
   fi
-  if [ "$unmerged" != "0" ]; then
+  local is_ancestor has_unmerged has_live_lease removable
+  is_ancestor=0
+  [ "$landed_status" = "0" ] && is_ancestor=1
+  has_unmerged=0
+  [ "$unmerged" != "0" ] && has_unmerged=1
+
+  # Live-lease guard (BRO-2319): a data/audit/job-leases/* lease with a live
+  # pid pointed at this exact path means a job is actively using it RIGHT
+  # NOW — never remove it, whatever the merge status says (a resumed job can
+  # keep committing to an already-landed branch). Exit-code contract matches
+  # gc-worktree-liveness.js below: 0 = live (do not remove), 1 = clear. Same
+  # narrow TOCTOU window as that lsof-based check — a lease acquired between
+  # this check and `git worktree remove` running is possible but not
+  # something either check can close; git's own dirty-tree refusal is the
+  # last line of defense for that gap. Scope: this only protects job-*
+  # worktrees dispatched via bsc-runner.js's lease; other worktrees (e.g.
+  # autonomous-run.js's auto-*) rely solely on the lsof-based check below.
+  has_live_lease=0
+  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/worktree-live-lease-check.js" ]; then
+    node "$REPO/scripts/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
+    [ "$?" = "0" ] && has_live_lease=1
+  else
+    log "WARN  live-lease guard unavailable (node or worktree-live-lease-check.js missing) — skipping for $(basename "$path")"
+  fi
+
+  # Single decision point (worktree-gc-decide.js -> decideWorktreeReclaim in
+  # scripts/lib/worktree-gc-reclaim.js): the three signals gathered above
+  # (ancestor check, unmerged count, live-lease scan) all funnel through the
+  # SAME function this file's own unit tests exercise, instead of bash
+  # re-deciding with its own parallel `if` chain.
+  removable=1
+  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/worktree-gc-decide.js" ]; then
+    node "$REPO/scripts/lib/worktree-gc-decide.js" \
+      --is-ancestor="$is_ancestor" --has-unmerged="$has_unmerged" --has-live-lease="$has_live_lease" >/dev/null 2>&1
+    [ "$?" != "0" ] && removable=0
+  else
+    log "WARN  decision helper unavailable (node or worktree-gc-decide.js missing) — falling back to unmerged-only check"
+    [ "$has_unmerged" = "1" ] && removable=0
+  fi
+
+  if [ "$has_live_lease" = "1" ]; then
+    log "SKIP  $(basename "$path") — $branch has a live job-lease using this worktree as its cwd"
+    skipped=$((skipped+1))
+    path="" branch=""; return
+  fi
+
+  if [ "$removable" != "1" ]; then
     log "KEEP  $(basename "$path") — $unmerged unmerged commit(s) on $branch"
     kept=$((kept+1))
     # Never delete unmerged worktrees — they may hold stranded work (task
