@@ -31,7 +31,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir, snapshotShowImageDir, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
+const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -2297,63 +2297,22 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   const showImageDir = path.join(outputBase, show.id);
   const dirBefore = snapshotShowImageDir(showImageDir);
 
-  // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback
+  // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback.
   //
-  // try/finally, NOT a plain await: a throw between a mkdir (~1629/1798) and its
-  // write — a sharp failure, an OOM, a disk error — would otherwise propagate
-  // straight out of here, Promise.allSettled in the batch loop would record a
-  // rejection, and the freshly created EMPTY directory would survive as false
-  // coverage. Running the cleanup only on the resolve path left the exact
-  // failure case it exists for uncovered.
-  let images = null;
-  try {
-    images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
-  } finally {
-    // Cleanup must never throw: on the exception path that would replace the
-    // real error with a filesystem one and lose the actual cause.
-    try {
-      cleanUpFailedFetch(images, showImageDir, dirBefore, show.id);
-    } catch (cleanupErr) {
-      console.log(`   ⚠ image-dir cleanup failed for ${show.id}: ${cleanupErr.message}`);
-    }
-  }
+  // runFetchWithCleanup wraps this in try/finally so a throw between a mkdir
+  // (~1629/1798) and its write — a sharp failure, an OOM, a disk error — still
+  // reaches discardFailedFetchArtifacts instead of propagating straight out
+  // (which would leave Promise.allSettled recording a rejection and the
+  // freshly created EMPTY directory surviving as false coverage). See
+  // scripts/lib/show-image-coverage.js for the cleanup logic and tests.
+  const images = await runFetchWithCleanup(
+    () => fetchShowImages(show, todayTixInfo, apiData, verifyCtx),
+    showImageDir,
+    dirBefore,
+    show.id
+  );
 
   return { show, images, apiSourced: !!apiData };
-}
-
-/**
- * Undo anything a failed fetch left behind for one show.
- *
- * A failed fetch must leave NOTHING that reads as coverage. Two shapes:
- *   (a) an EMPTY directory, because several paths mkdir before they know any
- *       candidate will verify;
- *   (b) a REAL FILE written before verification and then rejected — worse,
- *       because it satisfies every file-based coverage check while shows.json
- *       still has no image, so the page renders "Images coming soon"
- *       (Brainiac Live; The Gin Game before it).
- *
- * Called from processOneShow's finally block — the single point every caller
- * funnels through, and the only one that also covers the throw path. An
- * end-of-run sweep is skipped by early returns (--audit-existing), by
- * process.exit (--fill-heroes), by throws and by timeouts; a batch-loop hook
- * missed --show=<id> entirely (verified live: the empty dir survived until this
- * moved here). Scoped to THIS show, and only to entries that appeared during
- * this run, so previously archived art can never be destroyed.
- *
- * @param {object|null} images fetch result; truthy means success — leave it alone
- * @param {string} showImageDir
- * @param {Set<string>} dirBefore snapshot taken before the fetch
- * @param {string} showId for logging
- */
-function cleanUpFailedFetch(images, showImageDir, dirBefore, showId) {
-  if (images) return;
-  const { removed, prunedDir } = discardFailedFetchArtifacts(showImageDir, dirBefore);
-  if (removed.length > 0) {
-    console.log(`   🧹 discarded ${removed.length} rejected candidate file(s) for ${showId} (${removed.join(', ')}) — they would have read as coverage`);
-  }
-  if (prunedDir) {
-    console.log(`   🧹 removed empty image dir for ${showId} (would otherwise read as coverage)`);
-  }
 }
 
 // Process shows in batches with concurrency.
