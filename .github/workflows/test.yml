@@ -574,6 +574,10 @@ on:
       # research pipeline (2026-07-14 market-vs-category leak). Colocated test
       # runs in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/audit-regex-patterns.js'
+      # BRO-181: colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
+      # solo edit to either triggers CI.
+      - 'scripts/audit-regex-patterns.test.mjs'
       - 'scripts/audit-broadway-category-predicate.js'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
@@ -1590,6 +1594,14 @@ on:
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/reconcile-dead-completions.js'
       - 'scripts/reconcile-dead-completions.test.mjs'
+      # reconcile-broadcast-state.js was missing from this list entirely (task
+      # #1853 follow-up finding) — a solo push touching it triggered ZERO CI.
+      # Colocated test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a solo
+      # edit to either side triggers CI (feedback_test_yml_push_path_allowlist).
+      # tests/unit/reconcile-broadcast-state.test.mjs already rides 'tests/**'.
+      - 'scripts/reconcile-broadcast-state.js'
+      - 'scripts/reconcile-broadcast-state.test.mjs'
       # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
       # renders a terminal surface, so the injected command never runs. The
       # retry layer hides it from every individual session, so only the

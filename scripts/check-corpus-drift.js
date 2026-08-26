@@ -239,11 +239,12 @@ const AUDITS = [
     // 278-file unscoreable residue never reaches 0); gate on `fixable` only,
     // which ratchets toward 0 as the backfill (audit-stale-score-input.js
     // --fix) drains and the write-time hook now catches new drift as it
-    // happens. --max=379 is the measured baseline itself (audit run
-    // 2026-08-26, outlet-registry.json loaded) so this entry is non-blocking
-    // at launch; lower it as the backfill (--fix) drains the queue.
+    // happens. Backfill drained the 379-file baseline to 0 on 2026-08-26;
+    // --max=25 is a small cushion for in-flight churn (mirrors
+    // audit-stuck-rescore-flags.js's steady-state cushion above), not the
+    // measured baseline anymore.
     script: 'audit-stale-score-input.js',
-    args: ['--gate', '--max=379'],
+    args: ['--gate', '--max=25'],
     crashCodes: [2],           // 0/under / 1 = fixable grew above baseline / 2 = corpus missing
   },
 ];
