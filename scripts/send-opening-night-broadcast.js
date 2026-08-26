@@ -239,6 +239,26 @@ function getReviewStats(reviews, showId, market) {
  * Pure + exported for unit testing.
  */
 const RESEND_NAME_MAX = 70;
+// BRO-227: returns the showsForEmail entries lacking a critic-consensus verdict.
+function findShowsMissingConsensus(showsForEmail) {
+  return showsForEmail.filter(s => !s.consensusText);
+}
+
+// BRO-227: the email-capture modal (gate-logic.ts getTriggerCopy) promises subscribers
+// "the CriticScore and a one-line critics' verdict. Nothing else." Sending without
+// consensus for any show in the batch breaks that promise, so this gates the send —
+// exits non-zero instead of warning-and-continuing. Returns normally (no-op) when every
+// show has consensus text.
+function assertConsensusReadyOrExit(showsForEmail) {
+  const missingConsensus = findShowsMissingConsensus(showsForEmail);
+  if (missingConsensus.length === 0) return;
+  console.error(`\n❌ Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
+  console.error(`   critic-consensus.json is not generated yet for ${missingConsensus.length === 1 ? 'this show' : 'these shows'}.`);
+  console.error(`   Refusing to send — the signup modal promises a critics' verdict on every opening-night email.`);
+  console.error(`   Wait for critic-consensus.json, then re-run (add --recreate-draft if a draft already exists).`);
+  process.exit(1);
+}
+
 function buildBroadcastName(siteName, shows) {
   const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
   const prefix = `${siteName} opening night`;
@@ -474,16 +494,7 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
-  // Warn if any show is missing consensus — critic-consensus.json may not be generated yet.
-  // The email will still be created, but without the Critics' Take section. If consensus
-  // arrives later, use --recreate-draft to replace the draft with a complete version.
-  const missingConsensus = showsForEmail.filter(s => !s.consensusText);
-  if (missingConsensus.length > 0) {
-    console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
-    console.warn(`   critic-consensus.json may not be generated yet.`);
-    console.warn(`   Continuing — email will send without Critics' Take.`);
-    console.warn(`   Once consensus is available, run again with --recreate-draft to replace this draft.`);
-  }
+  assertConsensusReadyOrExit(showsForEmail);
 
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
   // actual subscriber broadcast. The preview-only subject is derived separately below
@@ -788,7 +799,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, assertConsensusReadyOrExit };
 
 if (require.main === module) {
   main().catch(err => {

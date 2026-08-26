@@ -7,7 +7,31 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const mod = require('./send-opening-night-broadcast.js');
-const { recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH } = mod;
+const {
+  recordDraftCompletion, SYNC_REPO, SYNC_REMOTE_PATH, SENT_PATH,
+  findShowsMissingConsensus, assertConsensusReadyOrExit,
+} = mod;
+
+// Stubs process.exit so assertConsensusReadyOrExit's exit path can be observed
+// without actually killing the test runner. process.exit itself doesn't throw,
+// so real code after the call would keep running in prod — the sentinel throw
+// here is a test-only device to unwind the stack and catch the exit code.
+function withStubbedExit(fn) {
+  const realExit = process.exit;
+  const realError = console.error;
+  const calls = { exitCodes: [], errors: [] };
+  process.exit = (code) => { calls.exitCodes.push(code); throw new Error('__EXIT__'); };
+  console.error = (...args) => { calls.errors.push(args.join(' ')); };
+  try {
+    fn(calls);
+  } catch (err) {
+    if (err.message !== '__EXIT__') throw err;
+  } finally {
+    process.exit = realExit;
+    console.error = realError;
+  }
+  return calls;
+}
 
 // BRO-60: real Resend draft creation called saveSentData() (local disk only) but
 // never syncTrackerToOrigin() — only the --send-to preview path synced. A
@@ -163,4 +187,51 @@ test('recordDraftCompletion: still saves locally (SENT_PATH) in addition to sync
 test('SYNC_REPO / SYNC_REMOTE_PATH point at the private data repo root (sanity check for the fake-gh harness)', () => {
   assert.equal(SYNC_REPO, 'thomaspryor/broadway-scorecard-data');
   assert.equal(SYNC_REMOTE_PATH, 'opening-night-sent.json');
+});
+
+// BRO-227: gate-logic.ts getTriggerCopy() promises subscribers "the CriticScore and a
+// one-line critics' verdict. Nothing else." Previously the script only console.warn'd
+// when critic-consensus.json was missing for a show and continued to create/send the
+// draft anyway, breaking that promise. These prove it now hard-fails instead.
+
+test('findShowsMissingConsensus: flags shows with no consensusText', () => {
+  const shows = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+    { showId: 'other-2026', showTitle: 'Other Show', consensusText: null },
+  ];
+  const missing = findShowsMissingConsensus(shows);
+  assert.equal(missing.length, 1);
+  assert.equal(missing[0].showId, 'other-2026');
+});
+
+test('findShowsMissingConsensus: empty when every show has consensus', () => {
+  const shows = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+  ];
+  assert.equal(findShowsMissingConsensus(shows).length, 0);
+});
+
+test('assertConsensusReadyOrExit: exits non-zero and does not return when a show lacks consensus', () => {
+  const showsForEmail = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: null },
+  ];
+  const calls = withStubbedExit(() => {
+    assertConsensusReadyOrExit(showsForEmail);
+    assert.fail('assertConsensusReadyOrExit should not return when consensus is missing');
+  });
+  assert.deepEqual(calls.exitCodes, [1], 'expected exactly one process.exit(1) call');
+  assert.ok(
+    calls.errors.some(msg => msg.includes('Giant')),
+    'expected the missing show to be named in the error output'
+  );
+});
+
+test('assertConsensusReadyOrExit: does not exit when every show has consensus', () => {
+  const showsForEmail = [
+    { showId: 'giant-2026', showTitle: 'Giant', consensusText: 'Critics are raving.' },
+  ];
+  const calls = withStubbedExit(() => {
+    assertConsensusReadyOrExit(showsForEmail);
+  });
+  assert.deepEqual(calls.exitCodes, [], 'expected no process.exit call when consensus is present');
 });
