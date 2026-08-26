@@ -218,5 +218,71 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-26T10:30:37.657Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-paranormal-activity-2026",
+    "title": "Review URL cross-show mismatch on Paranormal Activity",
+    "description": "Review URL for talkinbroadway/Howard Miller does not mention show slug (checked: paranormal-activity, paranormal, activity): https://www.talkinbroadway.com/page/world/ParanormalActivity.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:41.328Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-real-ivanov-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on The Real Ivanov",
+    "description": "nytg/Austin Fimmano (nytg--austin-fimmano.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'The Real Ivanov — https://www.newyorktheatreguide.com/reviews/the-real-ivanov-off-broadway-review-chekhovs-classic-gets-a-thrilling-update",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:43.765Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-real-ivanov-off-broadway-2026",
+    "title": "Shipped review missing publishDate on The Real Ivanov",
+    "description": "lighting-and-sound-america/David Barbour SHIPPED with no publishDate — cannot confirm post-opening: http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I\nthis-week-in-new-york/Mark Rifkin SHIPPED with no publishDate — cannot confirm post-opening: https://twi-ny.com/tag/the-real-ivanov/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:43.767Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-the-real-ivanov-off-broadway-2026",
+    "title": "Unverified revival on The Real Ivanov",
+    "description": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:43.768Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-the-real-ivanov-off-broadway-2026",
+    "title": "Review URL cross-show mismatch on The Real Ivanov",
+    "description": "Review URL for lighting-and-sound-america/David Barbour does not mention show slug (checked: the-real-ivanov-off-broadway, the-real-ivanov, real, ivanov): http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I\nReview URL for talkinbroadway/James Wilson does not mention show slug (checked: the-real-ivanov-off-broadway, the-real-ivanov, real, ivanov): https://www.talkinbroadway.com/page/ob/08_24_26.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:44.013Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-real-ivanov-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on The Real Ivanov",
+    "description": "the-real-ivanov-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-real-ivanov-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T12:39:44.014Z"
   }
 ]
