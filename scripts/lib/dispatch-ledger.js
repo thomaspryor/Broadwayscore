@@ -887,6 +887,50 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
   };
 }
 
+// ── Leaky-launcher failure-rate detector (BRO-2318) ─────────────────────────
+// detectLauncherOutage above is tuned for a SUSTAINED outage — it deliberately
+// calls a run "recovered" the moment one verified launch lands after the
+// newest injection death, because that is real evidence the launcher is
+// healthy again RIGHT NOW (see the 2026-08-03 Codex-review comment above).
+// That rule is correct for the failure mode it targets and must not change.
+// But it is blind to a different regime: a launcher that drops roughly one
+// dispatch in three, where a verified success always follows the next death
+// within minutes. Every such window has a success newer than the newest
+// death, so `recovered` is always true — and nobody is told that a third of
+// dispatches never start. This is an independent signal, not a replacement:
+// a launcher can be leaky without ever sustaining an outage, and vice versa.
+//
+// Denominator is every cmux-tab launch attempt (isWorkspaceRef), verified or
+// not — failedLaunchEntries() always pairs a 'dead' with an unverified
+// 'launch', so this counts every attempt exactly once. Restricting to
+// isWorkspaceRef on BOTH sides matters: headless/linear-prefixed launches
+// never go through cmux injection at all, so folding them into the
+// denominator only dilutes the rate with attempts that were never at risk of
+// this failure mode (confirmed against the live ledger: including them pulls
+// an 8/25 ≈ 32% cmux-only rate down to 8/62 ≈ 13%, silently masking the leak).
+const FAILURE_RATE_LOOKBACK_MS = 6 * 60 * 60 * 1000; // wide enough to see a slow leak across a normal dispatch cadence; OUTAGE_LOOKBACK_MS's 30min is tuned for a tight sustained-outage cluster instead
+const FAILURE_RATE_MIN_LAUNCHES = 8; // below this a single bad dispatch swings the rate past any threshold — not enough sample to alarm on
+const FAILURE_RATE_THRESHOLD = 0.2; // the observed incident ran 29-36%; 1-in-5 sustained is already worth paging
+
+// entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
+// is unavailable in workflow scripts, callers pass it explicitly).
+function detectLauncherFailureRate(entries, { now, lookbackMs = FAILURE_RATE_LOOKBACK_MS, minLaunches = FAILURE_RATE_MIN_LAUNCHES, rateThreshold = FAILURE_RATE_THRESHOLD } = {}) {
+  if (!Number.isFinite(now)) throw new Error('detectLauncherFailureRate requires now (ms epoch)');
+  const cutoff = now - lookbackMs;
+  const inWindow = e => e && e.ts && Date.parse(e.ts) >= cutoff;
+  const totalLaunches = entries.filter(e => e.event === 'launch' && isWorkspaceRef(e.workspaceRef) && inWindow(e)).length;
+  const failures = entries.filter(e => e.event === 'dead' && isWorkspaceRef(e.workspaceRef) && inWindow(e) &&
+    OUTAGE_REASON_RE.test(String(e.failureReason || '')));
+  const rate = totalLaunches > 0 ? failures.length / totalLaunches : 0;
+  return {
+    leaking: totalLaunches >= minLaunches && rate >= rateThreshold,
+    rate,
+    failureCount: failures.length,
+    totalLaunches,
+    taskIds: [...new Set(failures.map(e => String(e.taskId)))],
+  };
+}
+
 // Tasks currently parked by an owner tab-close. A later 'launch' clears the
 // park on purpose: dispatching anyway (bsc-next --force) IS the unpark, so the
 // state is self-healing rather than a trap only a remembered flag escapes.
@@ -1027,4 +1071,5 @@ module.exports = {
   remapEntries,
   openTaskWorkspaceLaunches,
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
+  detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
 };
