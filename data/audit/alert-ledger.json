@@ -1447,12 +1447,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-25T12:35:46.500Z",
+      "lastSeen": "2026-08-26T12:37:29.970Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1565,11 +1565,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-25T12:35:43.960Z",
+      "lastSeen": "2026-08-26T12:37:29.968Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2303"
+      "linearIdentifier": "BRO-2303",
+      "silentRefires": 1
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1582,6 +1583,30 @@
       "cardId": null,
       "linearIdentifier": "BRO-2304",
       "silentRefires": 1
+    },
+    "cron-health:Commercial RSS Poll": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial RSS Poll",
+      "firstSeen": "2026-08-26T12:37:29.919Z",
+      "lastSeen": "2026-08-26T12:37:29.919Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.919Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Scrape WestEndTheatre": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Scrape WestEndTheatre",
+      "firstSeen": "2026-08-26T12:37:29.921Z",
+      "lastSeen": "2026-08-26T12:37:29.921Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.921Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
