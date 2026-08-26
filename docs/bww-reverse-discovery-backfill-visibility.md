@@ -64,6 +64,17 @@ into a digest row and is called unconditionally alongside
 `reverse-discovery-candidates.json` read site — so it fires even when
 `candidates` is empty, covering the dangerous silent case above.
 
+**Relationship to the existing `Cron: Reverse Discovery` check:**
+`health-check.js`'s `CRITICAL_CRONS` list already has an
+`audit-reverse-discovery.yml` entry (24h threshold) that checks via the
+GitHub Actions API whether the workflow *ran* recently. That's a different
+signal from this one — it can miss a run that executed but wrote a stale or
+empty result (e.g. every source's fetch failed and it exited before writing
+`generatedAt`), and it goes dark itself when GitHub API rate-limit headroom
+is low (`hasLowHeadroom()` short-circuits it). This check reads the local
+`generatedAt` stamp directly, so it still catches staleness when the
+GH-API-based check can't run at all.
+
 ## How to verify visibility of backfilled data
 
 1. **Check the audit's own freshness stamp:**
