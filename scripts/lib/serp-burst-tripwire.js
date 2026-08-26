@@ -48,6 +48,17 @@ async function maybeAlertSerpBurstTripwire({ ledger, config, routeAlert, writeSe
       disposition: 'human',
       cooldownHours: 1,
     });
+    // `delivered !== false`, not `=== true`: routeAlert's OTHER two "the
+    // owner already knows" outcomes — action:'silent' (ledger cooldown
+    // short-circuit) and action:'digest' (page-worthy gate downgrade) —
+    // never set `.delivered` at all, so it stays undefined here, not false.
+    // Treating undefined as "informed" matches this exact file's sibling
+    // gates (opening-night-broadcast.yml's checklist/drift/overdue .then()
+    // callbacks: "action==='digest' ... counts as informed too"). The digest
+    // downgrade case specifically is guarded separately, not by this check:
+    // 'serp-burst:tripwire' staying on the page-worthy allowlist is locked
+    // in by scripts/tests/alert-sender-bypass.test.mjs, so a regression that
+    // would make a 'digest' downgrade reachable here fails that test first.
     if (alertResult.delivered !== false) {
       ledger.tripwireAlerted = true;
       writeSerpBurstLedger(ledger);
