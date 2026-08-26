@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T01:51:23.580Z",
+  "updatedAt": "2026-08-26T02:47:35.993Z",
   "processed": 109,
-  "failed": 1593,
+  "failed": 1603,
   "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 7,
     "directCookies": 1,
     "scrapingbee": 14,
     "brightdata": 12,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -92,6 +92,28 @@
     },
     {
       "t": "2026-08-26T01:45:09.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-26T02:44:32.221Z",
+      "event": "bb-session",
+      "session": "b28648b0",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-lond"
+    },
+    {
+      "t": "2026-08-26T02:44:32.579Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T02:45:56.023Z",
+      "event": "bb-session",
+      "session": "8331d1c2",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-26T02:45:56.405Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
