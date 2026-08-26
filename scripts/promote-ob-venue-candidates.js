@@ -38,7 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
-const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./lib/venue-classification');
+const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
@@ -108,24 +108,78 @@ function logEntry(entry) {
   }
 }
 
+/**
+ * Resolve the category for a generic (non-regional, non-aggregator-roundup)
+ * candidate. This promoter is OB-ONLY: it must never return anything but
+ * 'off-broadway' or null. A codebase-aware adversarial review (Codex,
+ * BRO-160) caught the first cut of this function trusting a candidate.category
+ * of 'west-end'/'off-west-end'/'broadway' verbatim — combined with
+ * --admin-promote-all bypassing confirmation, that would have turned this
+ * OB-scoped pipeline into an unvalidated cross-market writer: its dedup pool
+ * only preloads existing off-broadway/regional shows (main()'s
+ * `existingCandidates` filter), so a West End candidate could promote as a
+ * duplicate the dedicated, correctly-scoped promoter
+ * (scripts/promote-we-aggregator-candidates.js) would have caught. A venue
+ * that classifies as West End is therefore a MISROUTE, not a value to trust
+ * — returns null so the caller rejects the candidate outright rather than
+ * promoting it mislabeled. The venue check runs BEFORE trusting an explicit
+ * 'off-broadway' category: a candidate that mislabels itself off-broadway at
+ * a genuinely West End venue must still be rejected, not waved through on
+ * its own say-so.
+ * @param {object} candidate
+ * @returns {'off-broadway'|null}
+ */
+function resolveCandidateCategory(candidate) {
+  if (isWestEndVenue(candidate.venue)) return null;
+  if (candidate.category === 'off-broadway') return 'off-broadway';
+  // Any other category value (missing, a routing bug like a stray
+  // 'regional'/'broadway', or a bogus string) plus every venue the West End
+  // list doesn't recognize default to off-broadway — matches every current
+  // producer of this staging file (venue-listing-discover.js's
+  // OB_VENUE_CONFIGS, aggregator-candidate-extract.js's classifyVenueMarket,
+  // decideCriticListingPromotion) and preserves promotion coverage for a
+  // genuine new Off-Broadway house not yet in data/off-broadway-venues.json.
+  return 'off-broadway';
+}
+
+// Loose YYYY-MM-DD check — candidate.openingDate/previewsStartDate/
+// closingDate are trusted input from a hand-edited staging entry or a
+// future producer (no current producer of this file sets them), never a
+// value this script itself derives, so a malformed string must fail closed
+// to null rather than write straight through (Codex ship-check finding,
+// BRO-160) — matches the validated-shape discipline buildRegionalShowEntry/
+// buildOffBroadwayAggregatorShowEntry already apply to articlePublishedAt.
+function validDateOrNull(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+}
+
 function buildShowEntry(candidate) {
-  // Build a minimal show entry. openingDate intentionally null so the
-  // opening-night orchestrator doesn't fire on a venue-only stub
-  // (see V-T9 — orchestrator must skip null-openingDate).
+  // openingDate/previewsStartDate/closingDate default to null so the
+  // opening-night orchestrator doesn't fire on a venue-only stub (see V-T9
+  // — orchestrator must skip null-openingDate) — but a candidate that DOES
+  // carry a well-formed date (--admin-force on a hand-verified entry, or a
+  // future producer) has it preserved rather than discarded (BRO-160).
   const year = new Date().getFullYear();
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const category = resolveCandidateCategory(candidate);
   const id = `${slugBase}-off-broadway-${year}`;
   return {
     id,
     title: candidate.title,
     slug: slugBase,
-    venue: candidate.venue,
-    openingDate: null,
-    previewsStartDate: null,
-    closingDate: null,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // every other venue-write site in scripts/ routes through this; this
+    // builder was the one write site BRO-160 found skipping it. Returns
+    // null on a placeholder venue; the caller below refuses to promote
+    // rather than write a garbage venue string. Also null when `category`
+    // above is null (West End misroute) — same refusal path, one check.
+    venue: category ? sanitizeVenueForWrite(candidate.venue) : null,
+    openingDate: validDateOrNull(candidate.openingDate),
+    previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+    closingDate: validDateOrNull(candidate.closingDate),
     status: 'announced',
-    category: 'off-broadway',
-    market: 'broadway',
+    category: category || 'off-broadway',
+    market: marketForCategory(category || 'off-broadway'),
     type: null,
     discoverySource: candidate.source,
     discoveredAt: candidate.discoveredAt,
@@ -527,6 +581,20 @@ async function main() {
     const entry = c.category === 'regional' ? buildRegionalShowEntry(c)
       : isOBAggregatorRoundup ? buildOffBroadwayAggregatorShowEntry(c)
       : buildShowEntry(c);
+    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+    // string rather than silently promoting it (BRO-160). Stays in staging:
+    // a later scrape of the same venue page may resolve a real venue string.
+    if (!entry.venue) {
+      const misroute = !isOBAggregatorRoundup && c.category !== 'regional' && isWestEndVenue(c.venue);
+      const reason = misroute
+        ? `venue "${c.venue}" classifies as West End — use scripts/promote-we-aggregator-candidates.js instead`
+        : `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
+      skipped.push({ candidate: c, reason });
+      remainingStaged.push(c);
+      logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });
+      continue;
+    }
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
@@ -678,4 +746,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };
+module.exports = { buildShowEntry, resolveCandidateCategory, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };

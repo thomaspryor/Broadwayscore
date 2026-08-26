@@ -342,27 +342,32 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     }
   }
 
-  // Restore nested contentVerification manual fields
-  if (remote.contentVerification) {
-    for (const key of MANUAL_CV_FIELDS) {
-      const remoteVal = remote.contentVerification[key];
-      if (remoteVal === undefined || remoteVal === null) continue;
+  // Restore nested contentVerification manual fields. Same two-source
+  // fallback as the top-level MANUAL_FIELDS loop above (#1916 cousin): a
+  // tie-break that discards our whole commit for a file drops a freshly-set
+  // nested CV flag too, and remote alone can't see it if remote never had it.
+  for (const key of MANUAL_CV_FIELDS) {
+    const localVal = local.contentVerification && local.contentVerification[key];
+    if (localVal !== undefined && localVal !== null) continue;
 
-      // Intentional-clear exception (mirrors the top-level loop): if the
-      // governing top-level field was deliberately cleared, do NOT resurrect
-      // the nested CV flag — the rebuild pre-pass would re-promote it and
-      // silently re-exclude the review.
-      if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, remote)) continue;
-
-      if (!local.contentVerification) local.contentVerification = {};
-      const localVal = local.contentVerification[key];
-
-      if (localVal === undefined || localVal === null) {
-        local.contentVerification[key] = remoteVal;
-        modified = true;
-        notes.push(`Restored contentVerification.${key}`);
-      }
+    let cvSource = null;
+    if (remote.contentVerification && remote.contentVerification[key] !== undefined && remote.contentVerification[key] !== null) {
+      cvSource = remote.contentVerification;
+    } else if (ours && ours.contentVerification && ours.contentVerification[key] !== undefined && ours.contentVerification[key] !== null) {
+      cvSource = ours.contentVerification;
     }
+    if (!cvSource) continue;
+
+    // Intentional-clear exception (mirrors the top-level loop): if the
+    // governing top-level field was deliberately cleared, do NOT resurrect
+    // the nested CV flag — the rebuild pre-pass would re-promote it and
+    // silently re-exclude the review.
+    if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, cvSource === remote.contentVerification ? remote : ours)) continue;
+
+    if (!local.contentVerification) local.contentVerification = {};
+    local.contentVerification[key] = cvSource[key];
+    modified = true;
+    notes.push(`Restored contentVerification.${key}${cvSource === (ours && ours.contentVerification) ? ' (from pre-rebase HEAD)' : ''}`);
   }
 
   return { modified, notes };
