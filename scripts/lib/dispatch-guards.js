@@ -449,10 +449,17 @@ function pidStartedNear(pid, sinceIso, { execFn = execFileSync, nowMs = Date.now
   const elapsedMs = parseElapsedMs(out);
   if (elapsedMs == null) return false;
   const started = nowMs - elapsedMs;
-  // A tiny negative slop (clock skew / lease written a beat after spawn on
-  // some paths) is tolerated; only "started well AFTER the lease" is treated
-  // as a mismatch — that's the recycled-pid shape this guards against.
-  return started - since < PID_START_GRACE_MS;
+  // Symmetric bound (ship-check finding, 2026-08-26): a genuine lease holder
+  // can only start AT OR AFTER its own acquiredAt (acquireLease() writes the
+  // lease immediately before spawn) — under normal pid-recycling semantics
+  // "started before the lease" should be impossible, but nothing in this
+  // function enforced that; a lease written late relative to spawn on some
+  // path, or clock skew, could otherwise let a `started` far in the past
+  // still read as "near" through the one-sided upper-bound-only check this
+  // replaced. Requiring BOTH directions stay inside the grace window costs
+  // nothing for the real case (a legitimate holder's start time sits within
+  // seconds of acquiredAt) and closes the gap outright.
+  return Math.abs(started - since) < PID_START_GRACE_MS;
 }
 
 function sessionAliveForTask(taskId, { readLeaseFn = readLease, isAliveFn = pidLooksLikeClaude, pidStartedNearFn = pidStartedNear } = {}) {

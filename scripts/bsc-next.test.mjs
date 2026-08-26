@@ -893,6 +893,98 @@ test('main(): resolved model reaches the real launchCmux() call (dispatch comman
   }
 });
 
+// ship-check finding (2026-08-26): findLiveWorkspaceForTask only scans cmux
+// workspace TITLES, so it always misses a task that was dispatched headlessly
+// (bsc-runner.js runJob, no cmux workspace at all). Before BRO-268's session-
+// alive fix, an actually-alive headless session was accidentally still
+// protected here — its stale 'dead' breadcrumbs kept deadDispatchGuard
+// refusing (for the wrong reason). Once checkDeadDispatch correctly clears
+// those breadcrumbs for a confirmed-live session, main() needs its OWN
+// lease-aware duplicate-dispatch check, or a second cmux tab opens onto a
+// task a live headless session is already working.
+test('main(): refuses to open a cmux tab when sessionAliveForTask confirms a live headless session on this task, never reaching launchCmux', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-headless-dup-guard-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '9002.json'), JSON.stringify({
+    id: '9002', subject: 'Headless duplicate-dispatch guard test task', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const origExit = process.exit;
+  let exitCode = null;
+  const errors = [];
+  const origError = console.error;
+  console.error = (msg) => errors.push(String(msg));
+  process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+  try {
+    main(['--id', '9002'], {
+      loadTasks: () => loadTasks(dir),
+      fetchCard: () => null,
+      loadLinearMirrorMapping: () => ({}),
+      listWorkBranchStatuses: () => [],
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], // no matching cmux workspace at all — the headless-job shape
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      sessionAliveForTask: (taskId) => taskId === '9002', // lease-confirmed alive
+      launchCmux: () => { throw new Error('launchCmux must never be called once the headless-session guard refuses'); },
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+    });
+    assert.fail('expected process.exit');
+  } catch (e) {
+    assert.equal(e.message, '__EXIT__');
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /already has a live headless session/.test(e)), `expected a headless-session duplicate refusal, got: ${errors.join(' | ')}`);
+});
+
+test('main(): --force bypasses the headless-session duplicate guard too', () => {
+  const os2 = require('os');
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const tmp = fs2.mkdtempSync(path2.join(os2.tmpdir(), 'bsc-next-headless-dup-guard-force-'));
+  const dir = path2.join(tmp, 'tasks');
+  fs2.mkdirSync(dir, { recursive: true });
+  fs2.writeFileSync(path2.join(dir, '9003.json'), JSON.stringify({
+    id: '9003', subject: 'Headless duplicate-dispatch guard force-bypass test', description: 'no notion id here',
+    activeForm: 'Working on it', status: 'pending', blocks: [], blockedBy: [],
+  }));
+  const calls = [];
+  try {
+    main(['--id', '9003', '--force'], {
+      loadTasks: () => loadTasks(dir),
+      fetchCard: () => null,
+      loadLinearMirrorMapping: () => ({}),
+      listWorkBranchStatuses: () => [],
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      sessionAliveForTask: () => true,
+      launchCmux: () => { calls.push(1); return { ok: true, ref: 'workspace:1' }; },
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+    });
+  } finally {
+    fs2.rmSync(tmp, { recursive: true, force: true });
+  }
+  assert.equal(calls.length, 1, '--force must reach launchCmux even with a live headless session');
+});
+
 // resolveModel()'s own resolution-order tests (fable-exclusion, size->model,
 // hint precedence) live in scripts/lib/bsc-next-model.test.mjs — this only
 // checks that bsc-next.js wires the explicit --model flag through untouched
