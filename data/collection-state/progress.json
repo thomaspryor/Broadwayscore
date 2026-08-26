@@ -1782,7 +1782,17 @@
     "how-the-other-half-loves-west-end-2026/monstagigz--unknown.json",
     "death-note-the-musical-west-end-2026/london-theatre-reviews--james-dix.json",
     "death-note-the-musical-west-end-2026/london-theatre-reviews--unknown.json",
-    "death-note-the-musical-west-end-2026/barbican--unknown.json"
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1866,6 +1876,7 @@
       "paranormal-activity-2026/deadline--unknown.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
@@ -1923,7 +1934,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "death-note-the-musical-west-end-2026/barbican--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -2085,6 +2096,40 @@
       "event": "bb-session",
       "session": "cea6ecd4",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-26T05:11:18.999Z",
+      "event": "bb-session",
+      "session": "16969d9c",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-26T05:11:38.337Z",
+      "event": "bb-session",
+      "session": "93fd5fe2",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-26T05:14:01.002Z",
+      "event": "bb-session",
+      "session": "44434e08",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-lond"
+    },
+    {
+      "t": "2026-08-26T05:14:01.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T05:15:12.705Z",
+      "event": "bb-session",
+      "session": "0fb0ad9f",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-26T05:15:13.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
