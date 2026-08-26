@@ -87,6 +87,13 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   // Aug 5 cron). BD web_unlocker2 fetches IBDB fine — let it go straight there.
   'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
   'broadway.org',       // Playbill/closing dates — public HTML
+  'playbill.com',       // Production pages — public static HTML, but the "last
+                         // resort" Playwright tier waits for networkidle, and
+                         // playbill.com's ad/analytics XHRs never let it settle
+                         // (times out at 30s, same failure mode as Signature
+                         // Theatre). Fast domcontentloaded works fine (BRO-2023).
+  'web.playbill.com',   // Same site, alternate hostname seen in cached URLs
+                         // (data/playbill-urls.json) — same fix applies.
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
   // talkinbroadway.com removed — behind Cloudflare managed challenge since ~2026-04;

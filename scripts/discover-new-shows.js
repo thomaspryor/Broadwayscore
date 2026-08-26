@@ -77,6 +77,8 @@ const {
 } = require('./lib/owe-venue-staging');
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
+const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -2369,22 +2371,7 @@ async function discoverShows() {
   console.log('-'.repeat(40));
 
   // Build title index from existing shows for cross-reference revival detection
-  // Use full normalized title (no subtitle stripping) to avoid false positives
-  // e.g. "Seagull: True Story" should NOT match "The Seagull"
-  const normalizeTitle = (t) => t.toLowerCase()
-    .replace(/^(the|a|an)\s+/i, '')
-    .replace(/['']/g, "'")
-    .replace(/[^a-z0-9' ]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  const existingTitleMap = new Map(); // normalized title → { type, id, category }
-  for (const s of data.shows) {
-    const norm = normalizeTitle(s.title);
-    if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
-    if (!existingTitleMap.has(norm)) {
-      existingTitleMap.set(norm, { type: s.type, id: s.id, category: s.category, title: s.title });
-    }
-  }
+  const existingTitleMap = buildExistingTitleMap(data.shows);
 
   // Analyze shows for revival detection
   const revivalDetection = newShows.map(show => {
@@ -2401,36 +2388,14 @@ async function discoverShows() {
       isRevival = true;
       confidence = 'high';
     } else {
-      // Cross-reference against existing shows in shows.json
-      // Try full normalized title first, then base title (before colon/parens) for 5+ char bases
-      const norm = normalizeTitle(show.title);
-      let match = existingTitleMap.get(norm);
-      if (!match || match.id === show.id) {
-        // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
-        const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
-        const normBase = normalizeTitle(base);
-        if (normBase.length >= 5 && normBase !== norm) {
-          match = existingTitleMap.get(normBase);
-        }
-      }
-      // A same-title match in a DIFFERENT market (e.g. a West End production
-      // transferring to Broadway, like Inter Alia 2026) is a transfer, not a
-      // revival — only same-market matches are real revival evidence.
-      // (Inter Alia Broadway shipped isRevival:true 2026-08-14 solely because
-      // the West End "Inter Alia" entry already existed in shows.json.)
-      // Broadway is stored 3 ways in shows.json (absent key / null / 'broadway'
-      // string, per isBroadwayCategory's own doc comment) — compare via that
-      // predicate rather than raw === so a match against a null/'broadway'
-      // legacy entry isn't wrongly treated as cross-market (2026-08-14 review).
-      const normMarket = (cat) => isBroadwayCategory({ category: cat }) ? 'broadway' : cat;
-      const sameMarket = match && normMarket(match.category) === normMarket(show.category);
-      if (match && match.id !== show.id && sameMarket) {
+      const xref = detectRevivalByTitleCrossReference(show, existingTitleMap);
+      if (xref.isRevival) {
         isRevival = true;
-        detectedType = match.type || detectedType;
-        confidence = 'high';
-        console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${match.title}" (${match.id})`);
-      } else if (match && match.id !== show.id) {
-        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${match.title}" (${match.category || 'broadway'}, ${match.id}) — treating as transfer`);
+        detectedType = xref.detectedType || detectedType;
+        confidence = xref.confidence;
+        console.log(`  📋 Revival detected via cross-reference: "${show.title}" matches existing "${xref.match.title}" (${xref.match.id})`);
+      } else if (xref.isTransfer) {
+        console.log(`  ↔️  Cross-market title match (not revival): "${show.title}" (${show.category || 'broadway'}) vs existing "${xref.match.title}" (${xref.match.category || 'broadway'}, ${xref.match.id}) — treating as transfer`);
       }
     }
 
@@ -2462,12 +2427,85 @@ async function discoverShows() {
       confidence = 'medium';
     }
 
-    return { show, detectedType, isRevival, confidence };
+    return { show, detectedType, isRevival, confidence, revivalSource: isRevival ? (knownCheck.isKnown ? 'known-show' : 'title-crossref') : null };
   });
 
-  // Stage 3: IBDB revival detection for shows not yet identified as revivals
-  // Only for OB/WE shows where known-shows and cross-reference didn't find a match
-  const undetected = revivalDetection.filter(d => !d.isRevival && d.detectedType !== 'special');
+  // Playbill's market tag ("Broadway"/"Off-Broadway"/"London") vs a show's
+  // shows.json category — belt-and-suspenders cross-check for Stage 2 below.
+  function playbillMarketMatchesCategory(pbMarket, category) {
+    const m = pbMarket.toLowerCase();
+    if (m === 'broadway') return isBroadwayCategory({ category });
+    if (m === 'off-broadway') return category === 'off-broadway';
+    if (m === 'london') return isLondonMarket(category);
+    return true; // unrecognized label (e.g. "Tour") — don't block on it
+  }
+
+  // Stage 2: Playbill tag-line check (BRO-2023). Playbill prints "Revival" or
+  // "Original" on every production page it has classified — authoritative,
+  // not a title heuristic — so unlike Stage 1's cross-reference it resolves a
+  // prior production this corpus never recorded (e.g. Gloria's 2015
+  // Off-Broadway run at the Vineyard, absent from shows.json, silently read
+  // as isRevival:false before this check existed). Runs for every
+  // not-yet-special show, not just undetected ones, so it also catches a
+  // Stage-1 false positive (a same-title cross-market transfer wrongly
+  // flagged, since Playbill would print "Original" for both productions).
+  const playbillCandidates = revivalDetection.filter(d => d.detectedType !== 'special');
+  if (playbillCandidates.length > 0 && !dryRun) {
+    console.log(`\n🔍 Stage 2: Checking Playbill production pages for ${playbillCandidates.length} show(s)...`);
+    for (let i = 0; i < playbillCandidates.length; i++) {
+      if (timeBudget.exceeded()) {
+        console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${playbillCandidates.length - i} show(s) left unchecked against Playbill, will retry next run.`);
+        break;
+      }
+      const det = playbillCandidates[i];
+      try {
+        // det.show.isRevival is never set at this point in discovery (Stage 1's
+        // call is tracked on the `det` wrapper, not the raw show object) — so
+        // without this, compareShow()'s isRevival check always compares
+        // Playbill against `undefined` and reports a spurious mismatch for
+        // every revival, regardless of what Stage 1 actually found
+        // (ship-check finding).
+        det.show.isRevival = det.isRevival;
+        const result = await validatePlaybillProduction(det.show, () => {});
+        const tagLine = result?.parsed?.tagLine;
+        // Ship-check finding: findPlaybillUrl's SERP match is scored, not
+        // exact — a venue/opening-year mismatch means the page validateOne
+        // fetched is probably the WRONG production (a different staging of
+        // the same title), so its tag line must not be trusted here.
+        const wrongPage = (result?.mismatches || []).some(m => m.field === 'venue' || m.field === 'opening-year');
+        // Cross-check Playbill's own market label against the show's market
+        // — belt-and-suspenders against the same wrong-page risk when the
+        // venue/year happen to coincide.
+        const marketMismatch = tagLine?.market && !playbillMarketMatchesCategory(tagLine.market, det.show.category);
+        if (wrongPage || marketMismatch) {
+          console.log(`  ⚠️  Playbill page for "${det.show.title}" looks like a different production (${wrongPage ? (result.mismatches.map(m => m.field).join('/') + ' mismatch') : `market ${tagLine.market} vs ${det.show.category || 'broadway'}`}) — ignoring its tag line`);
+        } else if (tagLine && tagLine.revivalStatus !== 'unknown') {
+          const playbillIsRevival = tagLine.revivalStatus === 'revival';
+          if (det.isRevival !== playbillIsRevival) {
+            console.log(`  📋 Playbill override: "${det.show.title}" isRevival ${det.isRevival} → ${playbillIsRevival} (${tagLine.tags.join(' | ')})`);
+          }
+          det.isRevival = playbillIsRevival;
+          det.confidence = 'high';
+          det.revivalSource = 'playbill-tag';
+          det.revivalSourceUrl = result.playbillUrl || null;
+          if (tagLine.showType) det.detectedType = tagLine.showType;
+        } else if (result?.playbillUrl) {
+          console.log(`  ℹ️  Playbill page found for "${det.show.title}" but no genre tag line parsed (markup may have changed) — ${result.playbillUrl}`);
+        }
+      } catch (e) {
+        console.log(`  ⚠️  Playbill tag-line check failed for "${det.show.title}": ${e.message}`);
+      }
+      if (i < playbillCandidates.length - 1) {
+        await new Promise(r => setTimeout(r, 400));
+      }
+    }
+    console.log('');
+  }
+
+  // Stage 3: IBDB revival detection for shows Playbill didn't resolve
+  // (no cached/discoverable Playbill page yet, e.g. announced-but-unbuilt
+  // production pages) and that aren't already flagged as revivals.
+  const undetected = revivalDetection.filter(d => !d.isRevival && d.detectedType !== 'special' && d.revivalSource !== 'playbill-tag');
   if (undetected.length > 0 && !dryRun) {
     console.log(`\n🔍 Stage 3: Checking IBDB for prior productions of ${undetected.length} undetected show(s)...`);
     const RATE_LIMIT_MS = 1500;
@@ -2483,6 +2521,7 @@ async function discoverShows() {
       if (result.isRevival) {
         det.isRevival = true;
         if (result.confidence === 'high') det.confidence = 'high';
+        det.revivalSource = 'ibdb';
         console.log(`  🔄 IBDB revival confirmed: "${det.show.title}" (${result.priorProductionCount} prior productions)`);
       }
       // Mark as checked so nightly runs don't re-query
@@ -2492,6 +2531,17 @@ async function discoverShows() {
       }
     }
     console.log('');
+  }
+
+  // Tri-state marker (BRO-2023): a show with no signal from ANY of the three
+  // stages above is a genuine unknown, not a confirmed "new production" — the
+  // structural defect the issue named ("a missing prior record produces a
+  // CONFIDENT false, not an 'unknown'"). Downstream Tony-eligibility review
+  // can filter on this flag instead of trusting a silent isRevival:false.
+  for (const det of revivalDetection) {
+    if (!det.isRevival && !det.revivalSource && det.detectedType !== 'special') {
+      det.show.revivalStatusUnconfirmed = true;
+    }
   }
 
   for (const { show, detectedType, isRevival, confidence } of revivalDetection) {
@@ -2607,6 +2657,17 @@ async function discoverShows() {
         ticketLinks: [],
         cast: [],
         creativeTeam: show.creativeTeam || [],
+        // BRO-2023: no stage (title cross-reference, Playbill tag-line, IBDB)
+        // produced ANY revival evidence — isRevival:false here is a genuine
+        // unknown, not a confirmed "new production". Flagged for manual
+        // review rather than silently rendered as new.
+        ...(show.revivalStatusUnconfirmed ? { revivalStatusUnconfirmed: true } : {}),
+        // Provenance for the isRevival call above (ship-check finding: a
+        // future bad Playbill parse/page match needs to be selectively
+        // findable and revertable, not silently indistinguishable from a
+        // title-crossref or known-show call).
+        ...(detection.revivalSource ? { revivalSource: detection.revivalSource } : {}),
+        ...(detection.revivalSourceUrl ? { revivalSourceUrl: detection.revivalSourceUrl } : {}),
       };
 
       // Persist TodayTix category for future type detection (backfill on re-runs)
@@ -2648,7 +2709,7 @@ async function discoverShows() {
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
       shows: newShows.map(s => {
-        const { _showScoreUrl, _source, ...clean } = s;
+        const { _showScoreUrl, _source, _ibdbRevivalChecked, ...clean } = s;
         return clean;
       }),
     }, null, 2));
