@@ -47,6 +47,7 @@ const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
@@ -71,6 +72,9 @@ const {
   scrapeVenueListing,
   writeStagingCandidates,
 } = require('./lib/venue-listing-discover');
+const {
+  writeStagingCandidates: writeOweStagingCandidates,
+} = require('./lib/owe-venue-staging');
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
@@ -111,7 +115,7 @@ const NON_THEATER_PATTERNS = [
   'comedy club', 'comedy night', 'stand-up', 'standup',
   'magic show:', 'magick', 'bubble show', // NOT 'magic' alone (false-positive: Magic Mike, The Magic Show, Magic/Bird)
   'orchestra', 'symphony', 'symphonic', 'philharmonic', 'chamber music',
-  'quartet', 'quintet', 'ensemble',
+  'quintet', 'ensemble', // NOT 'quartet' alone (false-positive: Million Dollar Quartet — corpus-audited, task BRO-181)
   'the metropolitan opera', // Met Opera productions (Turandot, La Boheme, etc.)
   'royal opera', 'opera house', // London opera
   'selected shorts', 'book club', 'in conversation with',
@@ -146,7 +150,10 @@ const NON_THEATER_PATTERNS = [
 const WE_EXTRA_PATTERNS = [
   'dining experience', 'candlelight', 'by candlelight',
   'discovering dinosaurs', 'prehistoric planet',
-  'classic penguins', // comedy fringe acts
+  // REMOVED 2026-08-26 (BRO-181 corpus audit): 'classic penguins' matched
+  // "Garry Starr: Classic Penguins", now a tracked Off-Broadway play
+  // (garry-starr-classic-penguins-off-broadway-2026) — the fringe-act
+  // assumption in the original comment no longer holds.
 ];
 // REMOVED 2026-07-31: WE_SOLO_PERFORMER_PATTERN (/^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/,
 // "FirstName LastName" ⇒ skip as a presumed solo concert). Audited against the live
@@ -1055,9 +1062,12 @@ const VENUE_LISTING_PAGES = [
 // Backward-compat alias — old name retained for any external callers/tests.
 const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west-end');
 
-// Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
+// Patterns to exclude from venue page scraping (workshops, masterclasses, walking tours, etc.)
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
-  'masterclass', 'workshop', 'tour', 'walking tour', 'rapid write',
+  'masterclass', 'workshop', 'walking tour', 'rapid write',
+  // NOT bare 'tour' alone (false-positive: "Armory Public Tours",
+  // "September L. Davis: The Apology Tour" — corpus-audited, task BRO-181).
+  // 'walking tour' above already covers the literal backstage-tour case.
   'work in progress', 'scratch night', 'open mic', 'poetry slam',
   // Bare 'gala' substring-matches "Via Galactica" (1972 Broadway show) — use the
   // multi-word variants, matching the NON_THEATER_PATTERNS precedent above.
@@ -1072,6 +1082,10 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'directing lab', 'friday company', 'coffee concert', 'on screen',
   'youth theatre', 'writing lab',
 ];
+
+// Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
+// regression on a venue page can't flood staging with garbage.
+const OWE_VENUE_CAP = 30;
 
 async function fetchShowsFromVenueListings(category) {
   const venues = VENUE_LISTING_PAGES.filter(v => v.category === category);
@@ -1089,6 +1103,14 @@ async function fetchShowsFromVenueListings(category) {
     const venue = venues[i];
     const result = results[i];
     if (result.status === 'fulfilled' && result.value.length > 0) {
+      if (result.value.length > OWE_VENUE_CAP) {
+        console.error(`::error::Venue ${venue.name} returned ${result.value.length} candidates (cap: ${OWE_VENUE_CAP}) — likely parser regression. Skipping this venue's candidates.`);
+        process.exitCode = 1;
+        continue;
+      }
+      // Per-venue rolling-median anomaly gate (same lib the OB path uses).
+      // Fail-soft: warns + sets exitCode but keeps discovering other venues.
+      checkVenueAnomaly(venue.name, result.value.length);
       successCount++;
       allShows.push(...result.value);
       console.log(`  ${venue.name}: ${result.value.length} shows`);
@@ -1729,6 +1751,27 @@ function saveShows(data) {
   showsWriteGuard.saveShows(data);
 }
 
+// BRO-102 follow-up (task #1863): this is the first-write path for every
+// newly-discovered Broadway show's creative team — the highest-risk of the
+// IBDB creativeTeam consumers, since a bad write here ships before
+// auto-fix-show-data.js's own IBDB step ever sees the show (that step only
+// fires when the team is empty/1-entry, which won't be true once this
+// write lands). Splits combined credits first so each individual name gets
+// its own SERP query (a combined "John Doe & Jane Smith" name would never
+// match a "directed by John Doe" snippet). Mutates show.creativeTeam only
+// when at least one member survives verification — leaves it unset
+// otherwise so a later enrichment pass can retry.
+async function applyVerifiedIbdbCreativeTeam(show, ibdbCreativeTeam) {
+  const { result } = splitCombinedCredits(ibdbCreativeTeam);
+  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const verified = await verifyCreativeTeamViaSerp(show, result, year, 'serp-verified-ibdb-discovery');
+  if (verified.length > 0) {
+    show.creativeTeam = verified;
+  } else {
+    console.log(`    ⚠️  "${show.title}": No IBDB creative-team members passed SERP verification — leaving unset`);
+  }
+}
+
 async function discoverShows() {
   console.log('='.repeat(60));
   console.log(includeWestEnd ? 'BROADWAY + WEST END SHOW DISCOVERY' : 'BROADWAY SHOW DISCOVERY');
@@ -1896,10 +1939,18 @@ async function discoverShows() {
       console.log(`Found ${ltShows.length} OWE shows via LondonTheatre.co.uk`);
     }
 
+    // OWE venue-page candidates are staged, NOT pushed into discoveredShows
+    // (BRO-182 — these are unvalidated scrapes of venue what's-on pages,
+    // which list one-night talks/tribute concerts alongside real productions.
+    // Mirrors the Off-Broadway venue-listing gate above: candidates land in
+    // data/audit/owe-venue-candidates.json and only reach shows.json via
+    // scripts/promote-owe-venue-candidates.js).
     if (venueResult.status === 'rejected') {
       console.log(`⚠️  OWE venue pages failed (${venueResult.reason?.message}), continuing with other sources`);
     } else if (venueShows.length > 0) {
-      console.log(`Found ${venueShows.length} shows via OWE venue pages`);
+      console.log(`Found ${venueShows.length} candidates via OWE venue pages → staging`);
+      if (!dryRun) writeOweStagingCandidates(venueShows);
+      else console.log(`  (dry-run: would stage ${venueShows.length} candidates)`);
     }
 
     if (todayTixWEShows.length === 0 && oltShows.length === 0 && tmShows.length === 0 && ltShows.length === 0) {
@@ -1916,8 +1967,10 @@ async function discoverShows() {
     sourceCounts.londonTheatre = ltShows.length;
     sourceCounts.oweVenues = venueShows.length;
 
-    // TodayTix first (richer metadata), OLT second, TM third, LT fourth, venue pages last — dedup prefers earlier entries
-    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows, ...venueShows);
+    // TodayTix first (richer metadata), OLT second, TM third, LT fourth —
+    // venue-page candidates are staged above, not merged here. Dedup prefers
+    // earlier entries among the sources that DO write directly.
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
     console.log('');
   }
 
@@ -2277,8 +2330,7 @@ async function discoverShows() {
         // pattern.
         if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0
             && (!show.creativeTeam || show.creativeTeam.length === 0)) {
-          const { result } = splitCombinedCredits(ibdb.creativeTeam);
-          show.creativeTeam = result;
+          await applyVerifiedIbdbCreativeTeam(show, ibdb.creativeTeam);
         }
 
         // Use IBDB show type classification if available
@@ -2759,7 +2811,10 @@ module.exports = {
   resolveTodayTixVenue,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
+  WE_EXTRA_PATTERNS,
+  VENUE_PAGE_EXCLUDE_PATTERNS,
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
   shouldExcludeVenueShow,
+  applyVerifiedIbdbCreativeTeam,
 };

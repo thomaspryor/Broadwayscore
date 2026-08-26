@@ -27,7 +27,17 @@ const {
   computeDeadRate, computeDispatchHealthDigest, CMUX_LANE, DEFAULTS,
 } = require('./lib/dispatch-health.js');
 
-const LEDGER = path.join(__dirname, '..', 'data', 'audit', 'dispatch-ledger.jsonl');
+// Canonical repo root, NOT __dirname-relative (task #1904). Dispatches and
+// sessions routinely run from worktrees under .claude/worktrees/, and a
+// relative path resolves into the WORKTREE's own empty data/audit — so this
+// tool, the human-facing read of the dead rate and the command this card's
+// own recheck instructions name, printed "Nothing to measure from this
+// environment" and exited 2 wherever it was actually run. Same hardcoded
+// convention, for the same reason, as scripts/lib/dispatch-ledger.js:38 and
+// scripts/verify-dispatch-dead-rate-recovery.test.mjs, both of which already
+// documented that the ledger is one shared per-machine file.
+const REPO = '/Users/tompryor/Broadwayscore';
+const LEDGER = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
 
 function arg(name, fallback) {
   const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -68,7 +78,14 @@ function main() {
   console.log(`\nDispatch dead-launch rate — lane "${lane}", last ${windowDays}d (since ${stats.windowStartIso.slice(0, 16).replace('T', ' ')}Z)\n`);
   console.log(`  ${stats.dead}/${stats.launches} launches never ran = ${pct}%   [${row.status.toUpperCase()}]`);
   if (stats.unverified) console.log(`  ${stats.unverified} launch(es) left unverified (outcome unknown — counted as neither)`);
-  if (stats.unattributedDeadCount) console.log(`  ${stats.unattributedDeadCount} death(s) whose launch predates this ledger (excluded from the rate)`);
+  // Wording corrected 2026-08-26 (task #1904): this bucket used to be
+  // exclusively "the launch is older than the ledger", and on the real ledger
+  // it read 0. It now also holds deaths on a RECYCLED workspace ref whose
+  // current occupant has no launch row of its own — 18 of them at the time of
+  // writing, every one recycled and none pre-ledger. Calling all of them
+  // "predates this ledger" would send whoever reads this number looking for a
+  // rotation problem that isn't there.
+  if (stats.unattributedDeadCount) console.log(`  ${stats.unattributedDeadCount} death(s) not attributable to any launch in this ledger — recycled workspace refs, or a launch older than the ledger (excluded from the rate)`);
 
   console.log('\n  Per day:');
   for (const d of stats.perDay) {

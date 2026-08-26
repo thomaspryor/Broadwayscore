@@ -311,4 +311,14 @@ function main() {
   // Advisory only — never fails CI (see header).
 }
 
-main();
+// Advisory-only means "never fails the gate" — that promise only holds on the
+// happy path. Same guard as scripts/audit-push-core-data-audit-gap.js /
+// scripts/audit-push-retry-budgets.js: an unreadable workflow file or an
+// unexpected parsed-shape edge case would otherwise crash main() with a
+// nonzero exit, silently turning this into an accidental hard gate on
+// lint-workflows (card #1918 pattern-recognition finding, 2026-08-26).
+try {
+  main();
+} catch (err) {
+  console.log(`ℹ️  run-budget coverage audit crashed (advisory, not failing CI): ${err.message}`);
+}

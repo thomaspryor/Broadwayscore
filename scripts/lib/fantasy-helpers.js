@@ -304,6 +304,63 @@ function computeLeaderboard(entries, showScores, showConfig) {
   return leaderboard;
 }
 
+// ── Weekly movers (for fantasy-weekly-email.js) ─────────────────────
+
+/**
+ * Diff two weekly fantasy-scores.json snapshots to find biggest point
+ * swings and plain-language reasons a show's points changed.
+ *
+ * @param {object|null} prevShowScores — showScores from the prior week's
+ *   snapshot (fantasy-scores-prev.json), or null/undefined on the first
+ *   scored week (no prior snapshot exists yet).
+ * @param {object} currShowScores      — showScores from the current snapshot
+ * @param {object} shows                — fantasy-league.json shows (id → show)
+ * @param {number} [limit=5]            — max movers to return
+ * @returns {{ movers: Array<{showId, title, deltaPoints}>, events: Array<{showId, title, reason}> }}
+ */
+function computeWeeklyMovers(prevShowScores, currShowScores, shows, limit = 5) {
+  if (!prevShowScores) return { movers: [], events: [] };
+
+  const deltas = [];
+  const events = [];
+
+  for (const [showId, curr] of Object.entries(currShowScores)) {
+    const prev = prevShowScores[showId];
+    const title = shows[showId]?.title ?? showId;
+    const deltaPoints = Math.round(((curr.totalPoints ?? 0) - (prev?.totalPoints ?? 0)) * 100) / 100;
+
+    if (deltaPoints !== 0) {
+      deltas.push({ showId, title, deltaPoints });
+    }
+
+    // Plain-language reasons: new grosses weeks, CriticScore tier change,
+    // AudienceGrade change, or new awards since last week.
+    if (!prev) continue;
+
+    const currBreak = curr.breakdown || {};
+    const prevBreak = prev.breakdown || {};
+
+    if (currBreak.boxOfficeWeeks > (prevBreak.boxOfficeWeeks ?? 0)) {
+      events.push({ showId, title, reason: `new grosses posted (${currBreak.boxOfficeTotal ?? 'updated'})` });
+    }
+    if (currBreak.criticTier && currBreak.criticTier !== prevBreak.criticTier) {
+      events.push({ showId, title, reason: `CriticScore tier moved: ${prevBreak.criticTier ?? 'unscored'} → ${currBreak.criticTier}` });
+    }
+    if (currBreak.audienceGrade && currBreak.audienceGrade !== prevBreak.audienceGrade) {
+      events.push({ showId, title, reason: `AudienceGrade changed: ${prevBreak.audienceGrade ?? 'ungraded'} → ${currBreak.audienceGrade}` });
+    }
+    const prevAwards = new Set(prevBreak.awards || []);
+    const newAwards = (currBreak.awards || []).filter(a => !prevAwards.has(a));
+    for (const award of newAwards) {
+      events.push({ showId, title, reason: award });
+    }
+  }
+
+  deltas.sort((a, b) => Math.abs(b.deltaPoints) - Math.abs(a.deltaPoints));
+
+  return { movers: deltas.slice(0, limit), events };
+}
+
 /** Mask email for public display: tom@gmail.com → t***@gmail.com */
 function maskEmail(email) {
   if (!email) return '***';
@@ -505,6 +562,7 @@ module.exports = {
   computeAwardsPoints,
   fetchFantasyEntries,
   computeLeaderboard,
+  computeWeeklyMovers,
   maskEmail,
   sumGrossesInRange,
   projectRemainingGrosses,

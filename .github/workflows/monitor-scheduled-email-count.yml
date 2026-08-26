@@ -1,11 +1,17 @@
 name: Monitor Scheduled Email Count
 
-# Card #510: verifies the owner's "exactly 1 scheduled digest email/day" goal
-# (cards #364/#497) actually holds, by reading real Resend send history
-# instead of trusting code comments. Runs after every known scheduled digest
-# would have fired: Overnight (~07:30 UTC), opening-digest (11:00 UTC),
-# daily-digest (12:00 UTC), reddit-engagement-digest (13:00 & 01:00 UTC).
-# 15:00 UTC gives margin over all of them.
+# Card #510 / BRO-1690: verifies the owner's "exactly 1 scheduled digest
+# email/day" goal (cards #364/#497) actually holds, by reading real Resend
+# send history instead of trusting code comments. Runs after every known
+# scheduled digest would have fired: Overnight (~07:30 UTC), opening-digest
+# (11:00 UTC), daily-digest (12:00 UTC), reddit-engagement-digest (13:00 &
+# 01:00 UTC). 15:00 UTC gives margin over all of them.
+#
+# Also regenerates data/audit/alert-sender-inventory.json every run and
+# asserts against scripts/.alert-sender-baseline.json (BRO-1690's second
+# half: senders that bypass owner-alert-router entirely, invisible to the
+# digest count above) — see the header comment in
+# scripts/monitor-scheduled-email-count.js.
 on:
   schedule:
     - cron: '0 15 * * *'
@@ -62,6 +68,12 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # Skip on a manual dry-run — the monitor still regenerates this file
+          # locally (part (a) of the goal needs a FRESH scan every check, dry
+          # run included), but "report only" must not push a commit to main.
+          if [ "${{ inputs.dry_run }}" != "true" ]; then
+            git add data/audit/alert-sender-inventory.json 2>/dev/null || true
+          fi
           if ! git diff --cached --quiet; then
             git commit -m "data: Update scheduled-email-count monitor state [skip ci]"
             bash scripts/lib/push-with-retry.sh

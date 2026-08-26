@@ -70,27 +70,26 @@ function findGaps({ testSource, ymlSource } = {}) {
 
 function main() {
   const asJson = process.argv.includes('--json');
-  let gaps;
   try {
-    gaps = findGaps();
+    const gaps = findGaps();
+    if (asJson) {
+      console.log(JSON.stringify({ gaps }, null, 2));
+    } else if (gaps.length === 0) {
+      console.log('audit-review-texts-test-yml-coverage: no gaps found — every MIGRATED_SCRIPTS entry is in test.yml\'s push-path allow-list.');
+    } else {
+      console.log(`::warning::audit-review-texts-test-yml-coverage: ${gaps.length} script(s) in MIGRATED_SCRIPTS are NOT in test.yml's on.push.paths allow-list (a solo push touching only that file triggers zero CI):`);
+      for (const g of gaps) console.log(`  ${g}`);
+      console.log('Add the missing path(s) to on.push.paths in .github/workflows/test.yml.');
+    }
   } catch (err) {
     // The MIGRATED_SCRIPTS/push-paths parsing is a regex heuristic, not a JS
-    // parser (see file header) — a hand-edit outside its usual shape must
-    // degrade to a warning, not an uncaught throw, or this "always exits 0"
-    // advisory guard would itself start failing CI on the exact class of
-    // future edit it exists to catch elsewhere.
-    console.log(`::warning::audit-review-texts-test-yml-coverage: could not parse (${err.message}) — skipping this run.`);
-    process.exit(0);
-  }
-
-  if (asJson) {
-    console.log(JSON.stringify({ gaps }, null, 2));
-  } else if (gaps.length === 0) {
-    console.log('audit-review-texts-test-yml-coverage: no gaps found — every MIGRATED_SCRIPTS entry is in test.yml\'s push-path allow-list.');
-  } else {
-    console.log(`::warning::audit-review-texts-test-yml-coverage: ${gaps.length} script(s) in MIGRATED_SCRIPTS are NOT in test.yml's on.push.paths allow-list (a solo push touching only that file triggers zero CI):`);
-    for (const g of gaps) console.log(`  ${g}`);
-    console.log('Add the missing path(s) to on.push.paths in .github/workflows/test.yml.');
+    // parser (see file header) — a hand-edit outside its usual shape, or any
+    // other error anywhere in this function, must degrade to a warning, not
+    // an uncaught throw, or this "always exits 0" advisory guard would itself
+    // start failing CI (card #1918 pattern-recognition finding, 2026-08-26 —
+    // the original try only wrapped findGaps(), leaving the render block
+    // below it unguarded).
+    console.log(`::warning::audit-review-texts-test-yml-coverage: could not complete (${err.message}) — skipping this run.`);
   }
   process.exit(0); // advisory — never fails CI (see file header)
 }

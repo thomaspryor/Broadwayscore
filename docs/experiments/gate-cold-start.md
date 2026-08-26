@@ -74,3 +74,17 @@ Per arm: `EXPOSED` (distinct persons whose first flag response = arm),
 Pure, testable, and the actual source of truth for the numbers above:
 `scripts/lib/gate-cold-start-rules.js` (guardrail thresholds + alerting) and
 `scripts/analyze-gate-cold-start.js` (attribution + metric computation).
+
+## Amendments
+
+- **2026-08-21 (BRO-1959)**: raised `exitIntent.minTimeOnPageSec` 5 -> 30 in
+  `src/config/email-capture.ts` (aggressive preset) and its lock in
+  `tests/unit/gate-logic.test.mjs`. The experiment cleared its pre-registered
+  28-day minimum runtime on 2026-08-18 (start 2026-07-21); the last automated
+  monitor run before that date (`data/audit/gate-cold-start-monitor-state.json`,
+  2026-08-17) showed `flagHealthy: true` and no capture-collapse guardrail
+  trips. This value is shared across both arms (not the treatment lever —
+  `minPageViewsForPassiveGate` is), so raising it doesn't advantage either arm;
+  it brings desktop's exit-intent dwell floor in line with the mobile
+  scroll-gate raise from task #586. All other locked values are unchanged and
+  the experiment (`minPageViewsForPassiveGate` treatment split) remains live.

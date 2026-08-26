@@ -66,6 +66,7 @@ const { mergeOpeningNightSent } = require('./merge-opening-night-sent');
 const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
+const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -92,6 +93,228 @@ const CORE_DATA_MERGE_REGISTRY = [
     optInReconcile: false,
   },
   { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl' },
+  {
+    file: 'audit/express-retry-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeExpressRetryQueue,
+    format: 'json',
+    newline: true,
+    // opening-night-express.yml uses a PER-SHOW concurrency group (see its
+    // own comment on `concurrency:`), so multiple shows opening the same
+    // night dispatch concurrently and can each append a retry entry to this
+    // file around the same time — same multi-writer shape as
+    // social-post-history.json. Reconciled ONLY via the case-arm path (same
+    // reasoning as feedback-request-ledger.json above); not opted into the
+    // post-rebase reconcile pass since the case-arm fires unconditionally on
+    // an actual conflict, which two near-simultaneous appends reliably cause.
+    optInReconcile: false,
+  },
+
+  // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
+  // push-race hardening, session 2026-08-22, incident run 32559247279) ──────
+  // `status: 'single-writer'` alone is NOT sufficient to license push-with-
+  // retry.sh's Git Data API fallback (a fail-closed, "ours wins outright"
+  // whole-file overwrite on a CRITICAL-tier push path) — that status has
+  // exactly one existing consumer today (core-data-registry-coverage.js's
+  // presence check, which doesn't even branch on the value) and was verified
+  // to a much looser bar ("no real race", e.g. grosses.json's two writers
+  // sharing a concurrency group) than "safe for a live compare-and-swap
+  // bypass" requires. `apiFallbackSafe: true` is a SEPARATE, narrower claim,
+  // consulted ONLY by push-with-retry.sh's disqualifier check (via
+  // reconcile-merged-json.js's API_FALLBACK_SAFE export below) — never by
+  // activeEntriesFor() or any other existing consumer of this registry.
+  // Required fields on every apiFallbackSafe entry:
+  //   concurrencyGroup — the GitHub Actions `concurrency.group` of the ONE
+  //     workflow that writes this file, so overlapping runs of that SAME
+  //     workflow (workflow_dispatch racing its own cron, a retry racing the
+  //     original) queue instead of racing each other into the fallback —
+  //     without this, "ours wins outright" can silently let a stale run
+  //     clobber a fresher one with no error anywhere (plan-review finding,
+  //     4-way cross-reviewer agreement: user-impact/pre-mortem/gpt-5.4-mini/
+  //     gemini-2.5-flash).
+  //   verifiedBy — when/how the single-writer claim was checked (grep across
+  //     ALL .github/workflows/*.yml, not just the one workflow's own
+  //     comments — a plan-review reviewer caught data/audit/alert-digest-
+  //     queue.json wrongly seeded as single-writer from exactly that mistake:
+  //     its OWN comment in data-health-check.yml said "single writer" but 12
+  //     other workflows also write it).
+  // Grow this list ONE entry at a time, each independently verified the same
+  // way — do NOT batch-add unaudited data/audit/* paths on the strength of
+  // an in-workflow comment alone.
+  //
+  // TO ROLL BACK one entry: flip `apiFallbackSafe: true` to `false` (or
+  // delete the field). The runtime behavior reverts immediately and safely —
+  // reconcile-merged-json.js's API_FALLBACK_SAFE export and push-with-
+  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed,
+  // no other file touched (ship-check finding: this is NOT a zero-file
+  // revert though — core-data-merge-registry.test.mjs's "sanity: exactly the
+  // seeded apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
+  // live-repo regression test both hardcode "expect >=1 entry" and will fail
+  // loudly until updated to match — deliberately, so removing the last entry
+  // is a reviewed two-line PR, not a silent, unnoticed policy change).
+  {
+    file: 'audit/health-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+    note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
+  },
+  {
+    file: 'audit/imageless-scored-shows.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-imageless-scored-shows',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/audit-imageless-scored-shows.js writes it, invoked only by audit-imageless-scored-shows.yml\'s "Commit audit ledger" step; that workflow now declares concurrency: {group: audit-imageless-scored-shows, cancel-in-progress: false} (added alongside this entry — it had none before) so its own cron and a manual workflow_dispatch queue instead of racing each other into the fallback.',
+    note: 'card #1456 self-heal ledger (cooldown/escalation state for scored shows missing images) — its commit step was losing the local fetch+rebase+push race under main-branch churn on ~20 of its last 25 runs (confirmed via run history) before this fix',
+  },
+  // 2026-08-23 follow-up (same originating incident, run 32625283171): the
+  // apiFallbackSafe fix above only isolated health-digest-snapshot.json —
+  // data-health-check.yml's "Commit health check + triage data" step still
+  // bundled these 15 files (plus 4 genuinely multi-writer ones left in that
+  // step) into ONE commit, and that commit still lost its push race and
+  // hard-failed the job, re-firing the exact same "Daily Data Health Check
+  // Crashed" alert the digest fix was meant to stop. All 15 verified via
+  // scripts/lib/api-fallback-writer-drift.js's findWritingWorkflows() against
+  // the real .github/workflows/*.yml files (not the inline comments alone,
+  // learning from the alert-digest-queue.json mistake documented above):
+  // each has exactly ONE writer (data-health-check.yml) sharing that
+  // workflow's own concurrency group ('data-health-check',
+  // cancel-in-progress: false). Moved into their own isolated commit+push
+  // step ("Commit health check audit snapshots (apiFallbackSafe)",
+  // immediately after "Commit digest snapshot") so they get the same Git
+  // Data API fallback protection.
+  {
+    file: 'audit/health-check-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/time-to-publish-sla.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/workflow-run-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/provider-spend-daily.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/provider-spend-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
+  // match on data-health-check.yml's `git add data/audit/digest-history.json`
+  // line initially looked like a 15th single-writer candidate, but a deeper
+  // check (ship-check review, 2026-08-23) found NO script anywhere writes
+  // this path — it's orphaned dead weight (the workflow's line has always
+  // been a permanent no-op via `2>/dev/null || true`), not a real file this
+  // job produces. Left un-isolated and un-registered; harmless either way
+  // since it never has staged content, but registering it would misleadingly
+  // claim "verified single-writer" for a file with zero writers.
+  {
+    file: 'audit/affiliate-health.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/linear-archive-done.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/trunk-status-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/cross-outlet-attribution-drift.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/cv-wrongproduction-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/fulltext-mentions-show-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/slug-mismatch-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/roundup-url-mismatch-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/revival-unverified-lifetime.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  // NOT added, deliberately: data/audit/triage/ (also written by
+  // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
+  // data/audit/alert-digest-queue.json (8 writers — the exact file the
+  // comment above this block warns about), data/audit/alert-router-
+  // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
+  // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
+  // path available for them.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
@@ -209,4 +432,16 @@ function activeEntriesFor(surface) {
   return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.status === 'active' && e.optInReconcile !== false);
 }
 
-module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor };
+/** Entries explicitly marked `apiFallbackSafe: true` for one surface — see
+ * the header comment on the first such entry above for what this claim
+ * means and why it is a SEPARATE, narrower field from `status`. Returns
+ * DOCUMENTATION CLAIMS (hand-verified at the `verifiedBy` note's time), not
+ * a live safety guarantee — callers that grant a real bypass on the
+ * strength of this list (push-with-retry.sh, via reconcile-merged-json.js's
+ * API_FALLBACK_SAFE export) are trusting the verification process this
+ * registry entry documents, not re-deriving it. */
+function apiFallbackSafeEntriesFor(surface) {
+  return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackSafe === true);
+}
+
+module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor };

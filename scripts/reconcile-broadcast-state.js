@@ -32,6 +32,7 @@ const {
   migrateSentRecord,
   applyResendStatusUpdate,
 } = require('./lib/broadcast-state');
+const { syncTrackerToOrigin } = require('./lib/opening-night-tracker-sync');
 
 const args = process.argv.slice(2);
 const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -112,6 +113,18 @@ async function main() {
   let skipped = 0;
   let failed = 0;
 
+  // Only entries this run actually re-verified against Resend go to origin —
+  // NOT the full local `shows` table. A local CLI run's disk copy can be
+  // stale relative to origin (it's gitignored, not refreshed by `git pull`,
+  // and the hourly cron keeps writing other shows' state to origin the whole
+  // time). mergeTrackerEntries does whole-key last-write-wins, so syncing the
+  // full stale table would silently roll back every OTHER show's freshest
+  // origin state back to this machine's old local copy — the same class of
+  // state-divergence incident (2026-04-11) this sync exists to prevent, just
+  // inverted. Scoping the payload to freshly-polled keys makes that
+  // impossible: an untouched key is never part of the merge's local side.
+  const touchedShows = {};
+
   const entries = Object.entries(shows);
 
   for (const [key, rec] of entries) {
@@ -151,6 +164,7 @@ async function main() {
 
     const updatedRec = applyResendStatusUpdate(rec, response.data);
     shows[key] = updatedRec;
+    touchedShows[key] = updatedRec;
     if (updatedRec !== rec) updated++;
   }
 
@@ -159,6 +173,19 @@ async function main() {
   if (!dryRun) {
     fs.writeFileSync(SENT_PATH, JSON.stringify(raw, null, 2) + '\n');
     log(`\nWrote ${path.relative(REPO_ROOT, SENT_PATH)}`);
+
+    // Manual/CLI runs (e.g. `--show=X` corrections) write this file locally
+    // with no other commit path back to origin/main — unlike the hourly cron,
+    // which relies on the workflow's push-core-data step. Without this sync,
+    // a local correction is invisible to CI until the next scheduled run
+    // overwrites it (racily) or a human pushes the private data repo by hand.
+    // No-ops under GITHUB_ACTIONS=true (the workflow's own commit step
+    // handles that path) — see scripts/lib/opening-night-tracker-sync.js.
+    if (Object.keys(touchedShows).length > 0) {
+      syncTrackerToOrigin({ shows: touchedShows });
+    } else {
+      log('  (nothing freshly polled — skipping origin sync)');
+    }
   } else {
     log('\n(dry-run — no file written)');
   }
@@ -173,4 +200,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, parseBroadcastResponse };
+module.exports = { main, parseBroadcastResponse, SENT_PATH };

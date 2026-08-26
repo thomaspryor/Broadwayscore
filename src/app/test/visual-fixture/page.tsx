@@ -86,7 +86,7 @@ export default function VisualFixturePage() {
               <div className="space-y-3" data-testid="show-score-section">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 score-great">
-                    <span className="text-2xl sm:text-4xl font-extrabold">78</span>
+                    <span className="text-3xl font-extrabold">78</span>
                   </div>
                   <div>
                     <div className="text-base sm:text-lg font-bold text-score-high">Recommended</div>

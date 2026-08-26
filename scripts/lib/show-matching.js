@@ -806,7 +806,14 @@ function titleWordsMatch(showTitle, candidateText) {
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
   showSlugWords = [...new Set(showSlugWords)];
 
-  const candidateLower = candidateText.toLowerCase();
+  // Strip a cast-billing suffix ("Starring X Y", "Featuring X Y") before matching —
+  // actor names are not evidence for or against which show a headline is about, but
+  // previously counted as "extra distinctive words" against the short-title guard
+  // below, false-rejecting real full-title matches like "Once Upon a Mattress
+  // Starring Sutton Foster" (pre-existing, found while testing the 2026-08-24 fix
+  // for the inverse failure — "Rhinoceros Starring Paul Giamatti And John Turturro"
+  // false-matching "The Ballad of John and Paul" on the actors' first names alone).
+  const candidateLower = candidateText.toLowerCase().replace(/\s+(?:starring|featuring)\s+.+$/, '');
 
   if (showSlugWords.length === 0) {
     // Fallback: raw first word with word-boundary check (not substring)
@@ -826,10 +833,15 @@ function titleWordsMatch(showTitle, candidateText) {
   if (matchCount < threshold) return false;
 
   // Short-title guard: titles with <=3 meaningful words are vulnerable to containment
-  // matches (e.g., "Happy Ending" matching "Maybe Happy Ending"). If all show words match
-  // but the candidate has extra DISTINCTIVE words (not venue/review context), reject —
-  // the candidate is likely a different, longer-titled show.
-  if (showSlugWords.length <= 3 && matchCount === showSlugWords.length) {
+  // matches (e.g., "Happy Ending" matching "Maybe Happy Ending"). If the candidate has
+  // extra DISTINCTIVE words (not venue/review context), reject — the candidate is likely
+  // a different, longer-titled show. Applies whenever the word-overlap threshold is met,
+  // not only on a full match: "The Ballad of John and Paul" (3 words: ballad/john/paul)
+  // cleared the 50% threshold (2/3) against "Rhinoceros Starring Paul Giamatti And John
+  // Turturro" on the "john"+"paul" actor-name overlap alone, with "ballad" never present
+  // and "rhinoceros"/"giamatti"/"turturro" as unexplained extra words — a real production
+  // silently dropped from regional auto-promotion (2026-08-24, #playbill-verdict).
+  if (showSlugWords.length <= 3 && matchCount >= threshold) {
     // Context words that commonly appear in URLs/titles alongside show names
     // but don't indicate a different show (venues, review terms, markets)
     const CONTEXT_WORDS = new Set([
@@ -848,7 +860,15 @@ function titleWordsMatch(showTitle, candidateText) {
       .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
     const showWordsClean = new Set(fullTitleWords);
-    const candidateWords = candidateLower.split(/[\s,\-_/]+/)
+    // No hyphen in the split (unlike fullTitleWords' pattern would need none either) —
+    // splitting on '-' here while fullTitleWords keeps hyphenated words intact broke
+    // matching for titles like "A-Changin'"/"Court-Martial": normalizeWord() already
+    // strips the hyphen from an intact token ("a-changin'" -> "achangin"), but
+    // pre-splitting on '-' instead produces two separate tokens ("a", "changin") that
+    // never equal the show's single "achangin" token — so a real hyphenated word was
+    // always flagged as an unexplained "extra" word once the guard below started
+    // running on partial matches too (2026-08-24).
+    const candidateWords = candidateLower.split(/[\s,_/]+/)
       .map(normalizeWord)
       .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
         && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)

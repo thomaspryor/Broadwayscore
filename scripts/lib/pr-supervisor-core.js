@@ -80,10 +80,22 @@ function severityOf(v) {
  * one PR can un-ignore content another assumes is still protected. So a file only
  * earns the exemption when the PR's edit to it has ZERO deletions; a deletion
  * makes it a normal collision and escalates.
+ *
+ * `.github/workflows/test.yml` added 2026-08-23: same shape again. Its
+ * `on: push: paths:` block is a line-appended registry — every PR that adds a
+ * new top-level script/test must append one path so CI picks it up. A live
+ * replay of the real 2026-08-23 open-PR set (39 PRs) found this file driving
+ * 49 collision-instances across 8 PRs — by far the largest single cause of
+ * the "23 need a decision" digest alarm — and 6 of those 8 were purely
+ * additive appends colliding with each other for no editorial reason. The
+ * other 2 (#649, #647) had real deletions in that block and correctly kept
+ * escalating even after this fix, since the exemption is pairwise, not
+ * unconditional.
  */
 const ADDITIVE_REGISTRY_FILES = new Set([
   'tests/unit-test-manifest.txt',
   '.gitignore',
+  '.github/workflows/test.yml',
 ]);
 
 /**

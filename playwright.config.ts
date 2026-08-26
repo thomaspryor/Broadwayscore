@@ -20,6 +20,7 @@ export default defineConfig({
         '**/ugc-interactive-qa*',
         '**/ugc-visual-regression*',
         '**/ugc-visual-baselines*',
+        '**/ingest-form-batch*',
       ],
 
   // Run tests in parallel

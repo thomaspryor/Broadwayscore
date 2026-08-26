@@ -86,14 +86,42 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
-        run: npx vercel build --token=$VERCEL_TOKEN
+        run: |
+          # /what-else sweep after card #90 (vercel-deploy.yml): this job has
+          # NO job-level timeout-minutes at all, so if Vercel server-side
+          # cancels this build's deployment (its "latest wins" dedup) while
+          # the CLI hangs waiting on it instead of exiting, this job could
+          # run for GH's default 6-HOUR job timeout with zero alert — a
+          # bigger blast radius than the production case card #90 fixed.
+          # Same inline-timeout + explicit-exit fix, not step-level
+          # timeout-minutes (reports conclusion=cancelled, which any future
+          # if:failure() step here would silently skip).
+          timeout 900 npx vercel build --token=$VERCEL_TOKEN
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel build timed out after 15m (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel build failed (exit $status)"
+            fi
+            exit 1
+          fi
 
       - name: Deploy Preview
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          URL=$(npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
+          URL=$(timeout 600 npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel deploy timed out after 10m (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel deploy failed (exit $status)"
+            fi
+            exit 1
+          fi
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "::notice::Preview URL: $URL"
 

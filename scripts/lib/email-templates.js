@@ -143,6 +143,8 @@ function getChangeAnchor(changeType) {
     case 'cast-change': return '#cast-updates-heading';
     case 'new-reviews':
     case 'score-change': return '#critic-reviews';
+    case 'social-tier-buzzing':
+    case 'social-tier-troubled': return '#social-buzz';
     default: return '';
   }
 }

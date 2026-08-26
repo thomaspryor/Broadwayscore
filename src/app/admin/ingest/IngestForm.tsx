@@ -212,7 +212,7 @@ function LogRow({ entry }: { entry: LogEntry }) {
   const detectionWarningCount = entry.warningCount && entry.warningCount > 0 ? entry.warningCount : null;
 
   return (
-    <li className="flex items-start gap-2 text-xs">
+    <li className="flex items-start gap-2 text-xs" data-testid="status-row">
       <span className={`${tone} mt-0.5 shrink-0 w-4`} title={displayStatus}>{meta.icon}</span>
       <div className="flex-1 min-w-0">
         <div className={`${tone} truncate flex items-center gap-1.5`}>
@@ -867,7 +867,7 @@ function BatchPasteForm({
     // runs. buildSubmissionPlan already re-implements the same URL-validity
     // check in JS, so it — not the browser — is what decides what's
     // submittable (Card #1604, caught via manual QA of this fix).
-    <form onSubmit={handleSubmitAll} noValidate className="space-y-5">
+    <form onSubmit={handleSubmitAll} noValidate className="space-y-5" data-testid="batch-form">
       {/* Show picker */}
       <Field label="Show" required hint="All reviews in this batch will be attached to this show.">
         {selectedShow ? (

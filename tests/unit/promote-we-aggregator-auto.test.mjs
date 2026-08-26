@@ -110,6 +110,16 @@ test('buildWestEndAggregatorShowEntry: status open + real openingDate, category/
   assert.equal(e.provisional, true);
 });
 
+// Card #1921 (cousin of BRO-160): buildWestEndAggregatorShowEntry wrote raw
+// candidate.venue instead of routing through sanitizeVenueForWrite (card
+// #994). decideWestEndAggregatorPromotion's canonical-venue check already
+// makes this unreachable via main()'s normal path, but the builder itself
+// must still refuse a placeholder venue as defense in depth.
+test('buildWestEndAggregatorShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: null), not silently promoted', () => {
+  const e = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, venue: 'Midtown E' });
+  assert.equal(e.venue, null, 'card #994 write-time guard — main() must skip a null-venue entry');
+});
+
 test('buildWestEndAggregatorShowEntry: unparseable date falls back to current year, null openingDate', () => {
   const e = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, articlePublishedAt: 'garbage' });
   assert.equal(e.openingDate, null);

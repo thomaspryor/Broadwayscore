@@ -1,38 +1,155 @@
 {
-  "generatedAt": "2026-08-17T13:05:27.209Z",
+  "generatedAt": "2026-08-24T13:12:50.849Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "rosie-odonnell-common-knowledge-off-broadway-2026",
-    "anansi-the-spider-west-end-2026",
-    "matilda-the-musical-theatre-row-off-broadway-2026",
-    "hungry-women-off-broadway-2026",
-    "the-smile-of-her-off-west-end-2026"
+    "the-gin-game-2026",
+    "cat-cohen-broad-strokes-off-broadway-2026",
+    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+    "abigails-party-west-end-2026",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
+      "showId": "the-gin-game-2026",
+      "title": "The Gin Game",
+      "openingDate": "2026-07-15",
       "sampleState": "measured",
-      "sampleReason": "opened 24d ago",
-      "naiveQuery": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
-      "candidates": [],
+      "sampleReason": "opened 41d ago",
+      "naiveQuery": "The Gin Game Housing Works Bookstore review",
+      "candidates": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://bookevents.nyc/events/the-gin-game-jul-15",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.tickpick.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-8-6-26-7pm/8129318/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://pulsd.com/new-york/events/housing-works-bookstore-cafe/the-gin-game",
+          "state": "gap",
+          "reason": null
+        }
+      ],
       "queries": [
         {
           "ok": true,
-          "raw": 0
+          "raw": 9
         }
       ],
-      "onDiskCount": 12
+      "onDiskCount": 13
     },
     {
-      "showId": "anansi-the-spider-west-end-2026",
-      "title": "Anansi the Spider",
-      "openingDate": "2026-08-15",
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
       "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
+      "sampleReason": "opened 29d ago",
+      "naiveQuery": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
+      "candidates": [
+        {
+          "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+          "state": "excluded",
+          "reason": "rejectionReason"
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 7
+        }
+      ],
+      "onDiskCount": 26
+    },
+    {
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "title": "The Wind in the Willows - Theatre On Kew",
+      "openingDate": "2026-07-25",
+      "sampleState": "measured",
+      "sampleReason": "opened 31d ago",
+      "naiveQuery": "The Wind in the Willows - Theatre On Kew Theatre on Kew review",
+      "candidates": [
+        {
+          "url": "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+          "state": "excluded",
+          "reason": "rejectionReason"
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 9
+        }
+      ],
+      "onDiskCount": 6
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "title": "Abigail’s Party",
+      "openingDate": "2026-08-19",
+      "sampleState": "measured",
+      "sampleReason": "opened 6d ago",
+      "naiveQuery": "Abigail’s Party Harold Pinter Theatre review",
+      "candidates": [
+        {
+          "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 8
+        }
+      ],
+      "onDiskCount": 29
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "sampleState": "measured",
+      "sampleReason": "opened 28d ago",
+      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
       "candidates": [],
       "queries": [
         {
@@ -41,61 +158,15 @@
         }
       ],
       "onDiskCount": 15
-    },
-    {
-      "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
-      "title": "Matilda The Musical (Theatre Row)",
-      "openingDate": "2026-08-06",
-      "sampleState": "measured",
-      "sampleReason": "opened 12d ago",
-      "naiveQuery": "Matilda The Musical (Theatre Row) Theatre Row review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 0
-        }
-      ],
-      "onDiskCount": 8
-    },
-    {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
-      "sampleState": "measured",
-      "sampleReason": "opened 24d ago",
-      "naiveQuery": "Hungry Women SoHo Playhouse review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 0
-        }
-      ],
-      "onDiskCount": 15
-    },
-    {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "title": "The Smile Of Her",
-      "openingDate": "2026-07-16",
-      "sampleState": "measured",
-      "sampleReason": "opened 33d ago",
-      "naiveQuery": "The Smile Of Her Marylebone Theatre review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 0
-        }
-      ],
-      "onDiskCount": 18
     }
   ],
   "summary": {
-    "verdict": "inconclusive",
+    "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 0,
-    "gapShows": [],
-    "reason": "provider outage — only 0/5 naive-query attempt(s) returned any raw result; the SERP chain is down, not the pipeline"
+    "gapCount": 3,
+    "gapShows": [
+      "the-gin-game-2026",
+      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+    ]
   }
 }

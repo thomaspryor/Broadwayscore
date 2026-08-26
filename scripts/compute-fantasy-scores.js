@@ -253,6 +253,19 @@ if (dryRun) {
   console.error('\n--dry-run: output to stdout only');
 } else {
   const outPath = path.join(dataDir, outFileName);
+
+  // Snapshot the outgoing realized scores as "prev" so the weekly email can
+  // diff week-over-week movers. Only when the week actually advances — a
+  // same-week rerun (e.g. re-running after a data fix) must not clobber the
+  // real previous week with same-week data.
+  if (mode !== 'projection' && fs.existsSync(outPath)) {
+    const existing = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+    if (existing._meta?.weekEnding && existing._meta.weekEnding !== output._meta.weekEnding) {
+      fs.writeFileSync(path.join(dataDir, 'fantasy-scores-prev.json'), JSON.stringify(existing, null, 2) + '\n');
+      console.error(`Snapshotted previous week (${existing._meta.weekEnding}) to fantasy-scores-prev.json`);
+    }
+  }
+
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
   console.error(`\nWrote ${outPath}`);
 }

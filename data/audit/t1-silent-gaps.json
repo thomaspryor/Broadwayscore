@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T03:53:01.151Z",
+  "generatedAt": "2026-08-26T16:26:50.359Z",
   "windowDays": 45,
-  "showsScanned": 75,
+  "showsScanned": 70,
   "gaps": [
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 686.6901675,
+      "fileAgeHours": 819.2501936111111,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 45.511445555555554
+      "nonTerminalAgeHours": 178.07511472222222
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,26 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 377.13335722222223,
+      "fileAgeHours": 509.6933825,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 45.511445555555554
-    },
-    {
-      "showId": "marlise-off-broadway-2026",
-      "title": "Marlise",
-      "openingDate": "2026-08-13",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.broadwayworld.com/off-off-broadway/regional/Marlise-4396485",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
-      "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 186.37380166666668,
-      "gapSeenAt": "2026-08-20T08:29:17.343Z",
-      "nonTerminalAgeHours": 19.395501944444444
+      "nonTerminalAgeHours": 178.07511472222222
     }
   ],
   "contradictions": []

@@ -183,6 +183,32 @@ function localPrSupervisorMessage() {
   return assessSupervisorStatus(payload).message;
 }
 
+// BRO-2318: dispatch-watchdog.js writes its heartbeat (HEARTBEAT_PATH there)
+// on THIS machine every sweep, including a `holds: string[]` field — the same
+// strings that hold the crowned tab's dispatch budget. A leaky-launcher hold
+// (~1-in-3 dispatches dying at cmux injection) can sit there indefinitely
+// without ever escalating past the tab title if the owner isn't looking at
+// cmux, so this surfaces it in the one channel read every day regardless.
+// Same null-if-absent shape as the readers above: no watchdog on this
+// machine, or a heartbeat not yet written, is unknown, not an alarm.
+// 3h staleness bar matches localLinearDelegationMessage's above — a dead
+// watchdog (crashed right after recording a leak) must not keep surfacing a
+// stale "leaking" line forever with no way to tell it apart from a live one.
+const WATCHDOG_HEARTBEAT_PATH = path.join(os.homedir(), '.claude', 'state', 'dispatch-watchdog.json');
+const { LAUNCHER_LEAK_HOLD_PREFIX } = require('./lib/dispatch-watchdog-core.js');
+function localDispatchWatchdogLeakMessage() {
+  let hb;
+  try {
+    hb = JSON.parse(fs.readFileSync(WATCHDOG_HEARTBEAT_PATH, 'utf8'));
+  } catch {
+    return null; // no watchdog heartbeat on this machine yet — unknown, not dead
+  }
+  const ageH = (Date.now() - Date.parse(hb.ts)) / 3600000;
+  if (!Number.isFinite(ageH) || ageH > 3) return null; // stale/unparseable heartbeat — unknown, not an alarm
+  const holds = Array.isArray(hb.holds) ? hb.holds : [];
+  return holds.find(h => String(h).startsWith(LAUNCHER_LEAK_HOLD_PREFIX)) || null;
+}
+
 function localRunnerHealthMessage() {
   let state;
   try {
@@ -400,6 +426,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const supervisorMsg = localPrSupervisorMessage();
   if (supervisorMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
+  }
+  const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
+  if (watchdogLeakMsg) {
+    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
@@ -664,10 +694,32 @@ async function main() {
   // other callers (linear-next.js --list) still want in full.
   try {
     const linear = require('./lib/linear-client.js');
-    const { buildAwaitingOwnerSection } = require('./lib/owner-approval-channel.js');
+    const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
-    const section = buildAwaitingOwnerSection(issues);
+    const awaiting = (issues || []).filter(isAwaitingOwner);
+    // BRO-420: "waiting since" is derived from linear-attach-approval.js's
+    // summary comment, not issue.updatedAt (see owner-approval-channel.js's
+    // waitingSince() header for why), so re-fetch comments for just the
+    // awaiting-owner subset via enrichWithComments (pure orchestration, unit
+    // tested there — this call site is the only I/O: wiring linear.getIssue
+    // in). Best-effort: enrichWithComments falls back to the un-enriched
+    // issues on any per-issue error or a whole-batch timeout, so
+    // buildAwaitingOwnerSection then just dates those rows off updatedAt
+    // instead of losing the section.
+    const enriched = await enrichWithComments(awaiting, {
+      getIssue: (identifier) => linear.getIssue(identifier),
+      onError: (issue, err) =>
+        console.error(
+          `[digest] WARN awaiting-owner comment enrichment failed${issue ? ` for ${issue.identifier}` : ''}, falling back to updatedAt: ${String(err.message).slice(0, 120)}`
+        ),
+    });
+    // Re-check the label on the freshly re-fetched labels (enrichWithComments
+    // refreshes them alongside comments): listOpenIssues() and the re-fetch
+    // above are two separate round trips, so an owner who removed the
+    // awaiting-owner label in that gap must not still show up as waiting
+    // (ship-check finding, BRO-420).
+    const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner));
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
@@ -896,4 +948,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, localDispatchWatchdogLeakMessage };
