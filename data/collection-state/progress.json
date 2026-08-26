@@ -156,7 +156,8 @@
     "the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
     "the-cherry-orchard-west-end-2026/amny--matt-windman.json",
     "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json",
-    "an-oak-tree-off-west-end-2026/london-box-office--stuart-king.json"
+    "an-oak-tree-off-west-end-2026/london-box-office--stuart-king.json",
+    "slam-frank-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -2072,7 +2073,16 @@
     "blood-of-my-blood-west-end-2026/the-scotsman--lauren-jack.json",
     "whos-afraid-of-virginia-woolf-west-end-2026/latimes--unknown.json",
     "the-last-ship-west-end-2026/timeout--unknown.json",
-    "the-last-ship-west-end-2026/around-the-town-chicago--unknown.json"
+    "the-last-ship-west-end-2026/around-the-town-chicago--unknown.json",
+    "the-last-ship-west-end-2026/chicago-sun-times--unknown.json",
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2168,7 +2178,8 @@
       "nine-night-off-west-end-2026/london-box-office--phil-willmott.json",
       "the-bridge-off-west-end-2026/london-box-office--emmie-newitt.json",
       "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json",
-      "an-oak-tree-off-west-end-2026/london-box-office--stuart-king.json"
+      "an-oak-tree-off-west-end-2026/london-box-office--stuart-king.json",
+      "slam-frank-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2185,7 +2196,8 @@
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
-      "the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json"
+      "the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -2259,7 +2271,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "the-last-ship-west-end-2026/around-the-town-chicago--unknown.json",
+  "lastProcessed": "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--alexander-cohen.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -2439,6 +2451,17 @@
       "event": "bb-session",
       "session": "6b8aea0b",
       "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+    },
+    {
+      "t": "2026-08-26T05:58:52.119Z",
+      "event": "bb-session",
+      "session": "efeeebaa",
+      "url": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html"
+    },
+    {
+      "t": "2026-08-26T05:58:52.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
