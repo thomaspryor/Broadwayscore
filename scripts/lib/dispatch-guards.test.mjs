@@ -11,6 +11,18 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { closedCardGuard, dispatchClaimGuard } = require('./dispatch-guards.js');
+// BRO-2488: marketingProjectGuard lives in linear-dispatch.js, not this
+// file's GUARD_NAMES family — it's issue-shaped (needs issue.project), and
+// predispatch-queue-audit.js's runGuard() only ever simulates GUARD_NAMES
+// members against a task-shaped {id, subject, description} object (a
+// Notion-mirror task has no .project), so adding it there would report 100%
+// "error" forever instead of ever actually firing. Same precedent
+// checkTerminalStateGuard already set for a Linear-only issue-shaped guard.
+// Required directly here (not just in linear-dispatch.test.mjs) because
+// BRO-2488's own acceptance criteria is `node --test
+// scripts/lib/dispatch-guards.test.mjs` proving this is no longer invisible
+// to the dispatch funnel.
+const { marketingProjectGuard } = require('./linear-dispatch.js');
 
 const TASK = { id: '1811', subject: 'test task', status: 'in_progress' };
 
@@ -105,4 +117,30 @@ test('dispatchClaimGuard: --force / --dry-run / --print-prompt all bypass it, ev
   assert.equal(dispatchClaimGuard(TASK, false, { 'dry-run': true }), null);
   assert.equal(dispatchClaimGuard(TASK, false, { 'print-prompt': true }), null);
   assert.equal(dispatchClaimGuard(TASK, 'error', { force: true }), null);
+});
+
+// ── marketingProjectGuard (BRO-2488) ────────────────────────────────────────
+// The documented dispatch funnel is "Backlog/Todo, not `· Marketing`, not BSC
+// Daily/CANARY" — but no query linear-next.js used ever fetched an issue's
+// Linear `project` relation, so the exclusion was invisible to every
+// dispatcher. Confirmed live: BRO-128 (project "Marketing/distribution")
+// dispatched cleanly via `linear-next.js --id BRO-128 --headless` with no
+// refusal. This case fails against that pre-fix behaviour (issue.project
+// undefined => guard always returns null => never refuses anything).
+test('marketingProjectGuard: a Marketing/distribution-project issue is REFUSED', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  const err = marketingProjectGuard(issue, {});
+  assert.match(err, /BRO-128/);
+  assert.match(err, /Marketing\/distribution/);
+  assert.match(err, /--force/);
+});
+
+test('marketingProjectGuard: an issue with no project (or a non-Marketing project) is ALLOWED', () => {
+  assert.equal(marketingProjectGuard({ identifier: 'BRO-1' }, {}), null);
+  assert.equal(marketingProjectGuard({ identifier: 'BRO-2', project: { name: 'Infrastructure' } }, {}), null);
+});
+
+test('marketingProjectGuard: --force bypasses the refusal', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  assert.equal(marketingProjectGuard(issue, { force: true }), null);
 });

@@ -437,6 +437,19 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
   }
 
+  // Marketing-project guard (BRO-2488): closes the gap that let BRO-128
+  // (Linear project "Marketing/distribution") dispatch cleanly with no
+  // refusal — see ld.marketingProjectGuard's header for the incident and why
+  // it self-exempts only --force, not --id. Same placement rationale as the
+  // terminal-state guard above: a Marketing card should never even reach the
+  // verify/idempotency gates below, which assume a card safe for unattended
+  // work.
+  const marketingRefusal = ld.marketingProjectGuard(issue, args);
+  if (marketingRefusal) {
+    console.error(`[linear-next] ${marketingRefusal}`);
+    process.exit(1);
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should
