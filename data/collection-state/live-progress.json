@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T14:17:39.140Z",
-  "processed": 102,
-  "failed": 1610,
-  "successRate": "6.0%",
+  "updatedAt": "2026-08-26T14:18:48.967Z",
+  "processed": 107,
+  "failed": 1615,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 66,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 2,
-    "scrapingbee": 16,
-    "brightdata": 10,
+    "scrapingbee": 17,
+    "brightdata": 12,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -82,6 +82,17 @@
       "event": "bb-session",
       "session": "d527688d",
       "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+    },
+    {
+      "t": "2026-08-26T14:18:33.719Z",
+      "event": "bb-session",
+      "session": "a217caba",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-26T14:18:34.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

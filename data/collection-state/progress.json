@@ -101,7 +101,12 @@
     "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
     "the-bridge-off-west-end-2026/london-box-office--emmie-newitt.json",
     "the-cherry-orchard-west-end-2026/hollywood-reporter--david-rooney.json",
-    "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json"
+    "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json",
+    "the-children-off-west-end-2026/london-box-office--andrew-bewley.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "pre-existing-condition-off-broadway-2026/vulture--sara-holdren.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -1713,7 +1718,12 @@
     "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
     "the-story-west-end-2026/observer--david-cote.json",
     "the-story-west-end-2026/london-box-office--phil-willmott.json",
-    "the-story-west-end-2026/london-box-office--stuart-king.json"
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1781,7 +1791,9 @@
       "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
       "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json",
       "the-bridge-off-west-end-2026/london-box-office--emmie-newitt.json",
-      "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json"
+      "an-oak-tree-off-west-end-2026/london-box-office--emmie-newitt.json",
+      "the-children-off-west-end-2026/london-box-office--andrew-bewley.json",
+      "the-children-off-west-end-2026/london-box-office--stuart-king.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1814,7 +1826,8 @@
       "six-2021/one-minute-critic--matthew-wexler.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
-      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+      "pre-existing-condition-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
@@ -1826,7 +1839,9 @@
       "maybe-happy-ending-2024/newyorker--conde-nast.json",
       "oh-mary-2024/independent--louis-chilton.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "pre-existing-condition-off-broadway-2026/vulture--sara-holdren.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1844,7 +1859,7 @@
     ]
   },
   "startTime": "2026-08-26T10:18:02.686Z",
-  "lastProcessed": "the-story-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
   "log": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -1913,6 +1928,17 @@
       "event": "bb-session",
       "session": "d527688d",
       "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+    },
+    {
+      "t": "2026-08-26T14:18:33.719Z",
+      "event": "bb-session",
+      "session": "a217caba",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-26T14:18:34.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
