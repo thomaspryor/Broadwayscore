@@ -68,6 +68,7 @@ const {
   BASE_TRAILER_PREFIX, oscillationTrailerFor, stripTrailers, parseBaseTrailer, shouldEscalateOscillation,
   buildEscalationNote, buildMergeOutcomeNote, buildReverifyFailNote, buildRevertOutcomeNote, stalenessRefusal,
 } = require('./lib/autonomous-merge-core.js');
+const { countPriorMergesInHistory } = require('./lib/check-merge-history.js');
 
 const REPO = path.join(__dirname, '..');
 // Tier-2's deterministic verifiers reuse the shared per-check wall clock —
@@ -387,8 +388,10 @@ function pushMain() {
 
 function countPriorMerges(cardId, cwd = REPO) {
   const trailer = oscillationTrailerFor(cardId);
-  return (gitOrNull(['log', '--fixed-strings', '--grep', trailer, '--format=%H', 'origin/main'], { cwd }) || '')
-    .trim().split('\n').filter(Boolean).length;
+  return countPriorMergesInHistory(trailer, 'origin/main', cwd, {
+    gitFn: (args, dir) => git(args, { cwd: dir }),
+    log: console.error,
+  });
 }
 
 // Tier-2 mirror of verifyRebase(): rebases the ALREADY-CLONED private-repo
