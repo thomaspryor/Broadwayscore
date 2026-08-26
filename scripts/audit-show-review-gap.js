@@ -1228,9 +1228,13 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   try {
     // Capture stdout: the child's `⚠️  Skipped: <reason>` line is the ONLY
     // signal that separates a benign no-op from a data conflict (both exit 0).
-    // killSignal: on timeout, execFileSync's default SIGTERM leaves the
-    // child's own grandchildren (a stuck fetch/browser subprocess) as
-    // orphans that outlive this process (task #361 gap-audit finding).
+    // killSignal: on timeout, execFileSync's default SIGTERM can be caught
+    // or ignored by the child (a stuck fetch/browser call) and leave it
+    // running past the timeout window. SIGKILL guarantees the immediate
+    // child dies. It does NOT reach any grandchild process the child itself
+    // spawned (no detached/process-group kill here) — if grandchild orphaning
+    // turns out to be the real problem, this needs `detached: true` on spawn
+    // + `process.kill(-pid)` on timeout instead (ship-check finding, task #361).
     ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
   } catch (e) {
     return { ok: false, reason: execErrorDetail(e, 100), provisional };
