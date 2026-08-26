@@ -45,6 +45,7 @@ export function hasReachedStage(status?: string | null): boolean {
 export function getMarketMinReviews(category?: string): number {
   switch (category) {
     case 'off-broadway':
+    case 'off-off-broadway':
     case 'regional':
       return MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY;
     case 'off-west-end':
