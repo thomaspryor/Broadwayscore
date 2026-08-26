@@ -7,7 +7,11 @@
     "jeeves-takes-charge-west-end-2026/ground--unknown.json",
     "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
-    "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
   ],
   "failed": [
     "paranormal-activity-2026/deadline--erik-pedersen.json",
@@ -24,7 +28,13 @@
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -33,7 +43,9 @@
       "spellbound-off-broadway-2026/amny--alexa-lutter.json",
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
-      "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
     ],
     "amp": [],
     "browserbase": [
@@ -42,17 +54,19 @@
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
-      "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+  "lastProcessed": "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
   "log": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -76,6 +90,28 @@
       "event": "bb-session",
       "session": "bf5a6727",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-26T21:00:54.988Z",
+      "event": "bb-session",
+      "session": "10d5f2d0",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-26T21:00:55.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T21:02:04.984Z",
+      "event": "bb-session",
+      "session": "eed1d05f",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-26T21:02:05.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

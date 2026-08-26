@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T20:59:26.588Z",
-  "processed": 8,
-  "failed": 15,
-  "successRate": "34.8%",
+  "updatedAt": "2026-08-26T21:02:58.551Z",
+  "processed": 12,
+  "failed": 21,
+  "successRate": "36.4%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -37,6 +37,28 @@
       "event": "bb-session",
       "session": "bf5a6727",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-26T21:00:54.988Z",
+      "event": "bb-session",
+      "session": "10d5f2d0",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-26T21:00:55.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T21:02:04.984Z",
+      "event": "bb-session",
+      "session": "eed1d05f",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-26T21:02:05.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
