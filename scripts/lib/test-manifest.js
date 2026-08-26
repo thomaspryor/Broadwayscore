@@ -63,4 +63,49 @@ function validateManifest(manifestPath, repoRoot) {
   return { entries, errors };
 }
 
-module.exports = { MANIFESTS, readManifest, validateManifest };
+// Rewrites manifestPath with its lines alphabetically sorted, preserving a
+// trailing newline. Returns true if the file changed on disk, false if it
+// was already sorted (no-op write avoided so a clean tree stays clean).
+// This is the auto-fix half of the sortedness check above: the check alone
+// only catches an unsorted manifest after a commit already landed, which is
+// exactly what let 3+ independent 'fix: re-sort tests/unit-test-manifest.txt'
+// commits happen (card #1825) — sessions kept appending at the end faster
+// than anyone could hand-fix it. scripts/hooks/pre-commit calls this before
+// every commit that touches a manifest so the unsorted state never reaches
+// CI, let alone main.
+function sortManifestFile(manifestPath) {
+  const raw = fs.readFileSync(manifestPath, 'utf8');
+  const entries = raw
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const sorted = [...entries].sort();
+  const sortedRaw = sorted.join('\n') + '\n';
+  if (sortedRaw === raw) return false;
+  fs.writeFileSync(manifestPath, sortedRaw);
+  return true;
+}
+
+module.exports = { MANIFESTS, readManifest, validateManifest, sortManifestFile };
+
+// CLI: `node scripts/lib/test-manifest.js --fix` sorts every manifest in
+// MANIFESTS in place and prints which ones changed. Used by the pre-commit
+// hook and available for a session to run by hand.
+if (require.main === module) {
+  const repoRoot = path.join(__dirname, '..', '..');
+  if (process.argv.includes('--fix')) {
+    let changedAny = false;
+    for (const manifest of MANIFESTS) {
+      const manifestPath = path.join(repoRoot, manifest);
+      if (!fs.existsSync(manifestPath)) continue;
+      if (sortManifestFile(manifestPath)) {
+        changedAny = true;
+        console.log(`sorted: ${manifest}`);
+      }
+    }
+    if (!changedAny) console.log('all manifests already sorted');
+  } else {
+    console.error('usage: node scripts/lib/test-manifest.js --fix');
+    process.exit(1);
+  }
+}
