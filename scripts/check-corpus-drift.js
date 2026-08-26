@@ -227,6 +227,25 @@ const AUDITS = [
     args: ['--gate', '--max=25'],
     crashCodes: [2],           // 0/under / 1 = grew above backlog (new producer bug) / 2 = corpus missing
   },
+  {
+    name: 'stale-score-input',
+    label: 'reviews scored off an excerpt that now have fullText, never flagged for rescore',
+    // Card #1902 (2026-08-26): 653 reviews measured with contentTier
+    // complete/truncated but llmMetadata.textSource.type=excerpt — scored
+    // off an excerpt despite fullText now on disk, because nothing set
+    // needsRescore before the write-time hook (review-file-writer.js) and
+    // the wrongProduction auto-clear sites (rebuild-all-reviews.js) existed.
+    // `total` is the coarse population (~653, mostly permanent — the
+    // 278-file unscoreable residue never reaches 0); gate on `fixable` only,
+    // which ratchets toward 0 as the backfill (audit-stale-score-input.js
+    // --fix) drains and the write-time hook now catches new drift as it
+    // happens. --max=379 is the measured baseline itself (audit run
+    // 2026-08-26, outlet-registry.json loaded) so this entry is non-blocking
+    // at launch; lower it as the backfill (--fix) drains the queue.
+    script: 'audit-stale-score-input.js',
+    args: ['--gate', '--max=379'],
+    crashCodes: [2],           // 0/under / 1 = fixable grew above baseline / 2 = corpus missing
+  },
 ];
 
 function runAudit(audit) {
