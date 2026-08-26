@@ -72,7 +72,10 @@ gitc "$TMP/seed" branch -M main; gitc "$TMP/seed" push -q "$TMP/origin.git" main
 # filesystem paths silently IGNORE --depth ("--depth is ignored in local
 # clones; use file:// instead") — the explicit file:// form is required to
 # actually get a shallow clone here. ──────────────────────────────────────────
-git clone -q --depth=1 --no-tags "file://$TMP/origin.git" "$TMP/runner"
+# --branch main is explicit (review catch): the bare origin's HEAD is never set,
+# so without it the clone picks whatever init.defaultBranch the host configures
+# — a second environment coupling of exactly the kind this block guards against.
+git clone -q --depth=1 --no-tags --branch main "file://$TMP/origin.git" "$TMP/runner"
 gitc "$TMP/runner" config user.email t@t.t; gitc "$TMP/runner" config user.name t
 
 # ── PRECONDITION: the runner clone MUST actually be shallow ───────────────────
@@ -88,13 +91,23 @@ gitc "$TMP/runner" config user.email t@t.t; gitc "$TMP/runner" config user.name 
 # local clones; the file:// form above is what normally makes it stick), so
 # repair it explicitly rather than trusting the clone, then assert. A hard
 # failure here names the real cause instead of blaming the escalation code.
+_repair_err=""
 if [ "$(gitc "$TMP/runner" rev-parse --is-shallow-repository)" != "true" ]; then
-  gitc "$TMP/runner" fetch -q --depth=1 "file://$TMP/origin.git" main 2>/dev/null || true
+  _repair_err=$(gitc "$TMP/runner" fetch --depth=1 "file://$TMP/origin.git" main 2>&1) || true
 fi
-if [ "$(gitc "$TMP/runner" rev-parse --is-shallow-repository)" != "true" ]; then
-  echo "FAIL[0]: fixture precondition — the runner clone is NOT shallow, so this suite cannot exercise shallow-fetch bounding at all."
-  echo "         git $(git --version | awk '{print $3}') refused to make a shallow clone of file://$TMP/origin.git."
-  echo "         This is an ENVIRONMENT failure, not a regression in push-with-retry.sh."
+# Assert DEPTH, not just the shallow flag: `--is-shallow-repository` proves
+# which branch push-with-retry.sh takes, but not that the boundary is the seed
+# tip the assertions below assume. rev-list --count is what pins that.
+_shallow_ok=$(gitc "$TMP/runner" rev-parse --is-shallow-repository)
+_depth=$(gitc "$TMP/runner" rev-list --count HEAD)
+if [ "$_shallow_ok" != "true" ] || [ "$_depth" != "1" ]; then
+  echo "FAIL[0]: fixture precondition — the runner clone is not a depth-1 shallow clone"
+  echo "         (is-shallow=$_shallow_ok, commits reachable=$_depth; both must be true/1)."
+  echo "         $(git --version) would not produce one from file://$TMP/origin.git."
+  [ -n "$_repair_err" ] && echo "         repair fetch said: $_repair_err"
+  echo "         This is an ENVIRONMENT failure, NOT a regression in push-with-retry.sh —"
+  echo "         on a full clone the script correctly skips shallow bounding, so FAIL[1..3]"
+  echo "         would fire against working code and PASS[4] would be vacuous."
   exit 1
 fi
 
