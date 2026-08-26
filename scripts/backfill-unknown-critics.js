@@ -16,6 +16,7 @@
  *   --skip-http       Skip HTTP fetches in Phase B (only use existing extractedByline)
  *   --source=X        Filter to specific source (e.g., playbill-verdict, showscore)
  *   --show=X          Filter to specific show directory
+ *   --outlet-id=X,Y   Filter to specific outletId(s), comma-separated
  */
 
 const fs = require('fs');
@@ -35,6 +36,8 @@ const sourceArg = args.find(a => a.startsWith('--source='));
 const sourceFilter = sourceArg ? sourceArg.split('=')[1] : null;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
+const outletIdArg = args.find(a => a.startsWith('--outlet-id='));
+const outletIdFilter = outletIdArg ? new Set(outletIdArg.split('=')[1].split(',')) : null;
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
@@ -100,6 +103,7 @@ function scanReviewFiles() {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
         if (sourceFilter && data.source !== sourceFilter) continue;
+        if (outletIdFilter && !outletIdFilter.has(data.outletId)) continue;
 
         const entry = { dir: d, file: f, filePath, outletId: data.outletId, url: data.url || '', data };
 
@@ -287,12 +291,25 @@ async function phaseB(unknownCritics) {
       bylineResolved++;
     }
 
+    // Strategy 1b: re-run extraction against the fullText we already stored
+    // (BRO-171). Some outlets (e.g. talkinbroadway's "Theatre Review by
+    // <Name> - <date>") print the byline in the article body itself, which
+    // gather already captured — no HTTP fetch needed to recover it.
+    if (!critic && u.data.fullText) {
+      const fromText = extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
+      if (fromText && !isRejectName(fromText)) {
+        critic = fromText;
+        method = 'stored-text';
+        bylineResolved++;
+      }
+    }
+
     // Strategy 2: Fetch HTML via scraper infrastructure (Bright Data → ScrapingBee → Playwright)
     if (!critic && !skipHttp && u.url) {
       const result = await fetchHtml(u.url);
 
       if (result.html) {
-        critic = extractAuthorFromHtml(result.html);
+        critic = extractAuthorFromHtml(result.html, null, { url: u.url });
         if (critic && isRejectName(critic)) {
           critic = null; // Reject outlet names, metadata artifacts, etc.
         }

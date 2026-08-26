@@ -233,6 +233,12 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
 // prunes entries older than ATTEMPTS_LOG_RETENTION_DAYS. Never throws —
 // logging the attempt must not itself become a new silent-failure vector.
 function logDispatchAttempt({ conditionKey, title, ok, error }) {
+  // Outside the try, like saveLedger/queueDigestLine: under node:test without
+  // ALERT_ATTEMPTS_LOG_PATH set, this must throw all the way out to fail the
+  // test loudly, not be swallowed by the catch below and merely
+  // console.error'd (the refusal itself IS the signal a real file write was
+  // about to happen under test).
+  assertRealFileWriteIsSafeUnderTest('alert-router attempts log', 'ALERT_ATTEMPTS_LOG_PATH');
   try {
     const cutoff = Date.now() - ATTEMPTS_LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000;
     let lines = [];
@@ -251,7 +257,6 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
       ok,
       error: error ? String(error).slice(0, 500) : null,
     }));
-    assertRealFileWriteIsSafeUnderTest('alert-router attempts log', 'ALERT_ATTEMPTS_LOG_PATH');
     fs.mkdirSync(path.dirname(ATTEMPTS_LOG_PATH), { recursive: true });
     fs.writeFileSync(ATTEMPTS_LOG_PATH, kept.join('\n') + '\n');
   } catch (err) {
@@ -380,7 +385,7 @@ function headStandsAlone(description, subject) {
 // auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
-function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model }) {
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields }) {
   // Non-throwing (card #1078): an alert must still reach the owner even if
   // its own head would clip badly — this is a loud warning, not a gate.
   // description renders as "<b>title</b> — description" (autonomous-email-
@@ -407,6 +412,10 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   queue.push({
     conditionKey, title, description, severity, url: url || null,
     decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
+    // routeAlert's caller-supplied fields ([{name,value}]) — dispatchCard and
+    // sendAlert both carry these through (e.g. the 'Shows' list on overdue/
+    // checklist/drift alerts); the digest path was silently dropping them.
+    fields: Array.isArray(fields) ? fields : [],
     queuedAt: new Date().toISOString(),
   });
   assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
@@ -584,7 +593,7 @@ async function routeAlert(opts) {
     if (!dispatch.ok) result.dispatchError = dispatch.error;
     notifyOk = dispatch.ok;
   } else if (effectiveDisposition === 'digest') {
-    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model });
+    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
   } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
     result.delivered = delivered;

@@ -12,6 +12,9 @@ const {
   estimateCronIntervalMinutes,
   touchesManagedFile,
   managedFileInfo,
+  classifyPushFallbackSafety,
+  extractStagedPaths,
+  stagedPathsPerCall,
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
 } = require('./audit-push-retry-budgets.js');
@@ -333,4 +336,258 @@ test('auditWorkflowText: continue-on-error: true step is treated as softFail lik
 test('auditWorkflowText: a step WITHOUT continue-on-error or || echo is NOT softFail', () => {
   const results = auditWorkflowText(FIXTURE_BARE_DEFAULT, 'fixture-bare-default.yml');
   assert.equal(results[0].softFail, false);
+});
+
+// ── mixed-safety-bundle (BRO-2446) ──────────────────────────────────────────
+// push-with-retry.sh's Git Data API fallback disqualifier checks the WHOLE
+// outgoing diff for a call — one unaudited data/audit/ file (or a genuinely
+// multi-writer MANAGED file) bundled alongside an apiFallbackSafe file
+// disqualifies the fallback for BOTH, not just the unsafe one. This is
+// exactly what made BRO-2435's single-writer orphan-rescore-requeue-state.json
+// hard-fail every run bundled with the 19-writer alert-ledger.json.
+
+test('classifyPushFallbackSafety: a registered apiFallbackSafe file is safe and does not disqualify', () => {
+  const r = classifyPushFallbackSafety('data/audit/imageless-scored-shows.json');
+  assert.equal(r.isApiFallbackSafe, true);
+  assert.equal(r.disqualifiesFallback, false);
+});
+
+test('classifyPushFallbackSafety: an unregistered data/audit/ path disqualifies (unaudited)', () => {
+  const r = classifyPushFallbackSafety('data/audit/some-totally-unregistered-file.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: a MANAGED (multi-writer, active) file disqualifies even though it is not data/audit/', () => {
+  const r = classifyPushFallbackSafety('data/commercial-pending-review.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: shows.json/reviews.json always disqualify (NEVER_FALLBACK)', () => {
+  assert.equal(classifyPushFallbackSafety('data/shows.json').disqualifiesFallback, true);
+  assert.equal(classifyPushFallbackSafety('data/reviews.json').disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: a file outside data/audit/ and not registered anywhere is a no-op (not disqualifying, not safe)', () => {
+  const r = classifyPushFallbackSafety('data/some-unrelated-report.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, false);
+});
+
+test('extractStagedPaths: git-add-existing.sh with multiple files', () => {
+  const paths = extractStagedPaths('bash scripts/lib/git-add-existing.sh --force data/audit/a.json data/audit/b.json\n');
+  assert.deepEqual(paths.sort(), ['data/audit/a.json', 'data/audit/b.json']);
+});
+
+test('extractStagedPaths: several plain `git add` lines across a step accumulate', () => {
+  const runText = [
+    'git add data/audit/opening-night-express-completed.json',
+    'git add data/audit/orphan-rescore-requeue-state.json',
+    'git add data/audit/alert-ledger.json',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText).sort(), [
+    'data/audit/alert-ledger.json',
+    'data/audit/opening-night-express-completed.json',
+    'data/audit/orphan-rescore-requeue-state.json',
+  ]);
+});
+
+test('extractStagedPaths: skips flags, shell variables, and bare directory adds', () => {
+  const runText = [
+    'git add -u data/audit/real-file.json',
+    'git add "$f"',
+    'git add data/audit/',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText), ['data/audit/real-file.json']);
+});
+
+test('stagedPathsPerCall: attributes each git-add-existing.sh file to its OWN push call, not every call in the step (BRO-2435 split pattern)', () => {
+  // Exact shape of opening-night-broadcast.yml's "Commit orphan-rescore-
+  // requeue state" step after the BRO-2435 fix: two independent
+  // add-one-file -> commit -> push blocks in the SAME step.
+  const runText = [
+    'bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json',
+    'git commit -m "a"',
+    'bash scripts/lib/push-with-retry.sh 14 main || STATUS=1',
+    'bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json',
+    'git commit -m "b"',
+    'bash scripts/lib/push-with-retry.sh 14 main || STATUS=1',
+  ].join('\n');
+  const perCall = stagedPathsPerCall(runText);
+  assert.deepEqual(perCall, [
+    ['data/audit/orphan-rescore-requeue-state.json'],
+    ['data/audit/alert-ledger.json'],
+  ]);
+});
+
+const FIXTURE_MIXED_BUNDLE = `
+name: Fixture Mixed Bundle
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit data
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/imageless-scored-shows.json
+          git add data/commercial-pending-review.json
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+
+test('auditWorkflowText: a single push call bundling an apiFallbackSafe file with unaudited/managed files flags mixed-safety-bundle', () => {
+  const results = auditWorkflowText(FIXTURE_MIXED_BUNDLE, 'fixture-mixed-bundle.yml');
+  assert.equal(results.length, 1);
+  const r = results[0];
+  assert.equal(r.mixedSafetyBundle, true);
+  assert.ok(r.flags.includes('mixed-safety-bundle'));
+  assert.deepEqual(r.mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
+  assert.deepEqual(r.mixedSafetyBundleDisqualifyingFiles.sort(), [
+    'data/audit/some-totally-unregistered-file.json',
+    'data/commercial-pending-review.json',
+  ]);
+});
+
+// ── for-loop staged paths (second-opinion finding, BRO-2446: both the Codex
+// adversarial review and the Claude QA subagent independently flagged this
+// as a live blind spot in 9 real workflows) ─────────────────────────────────
+
+test('extractStagedPaths: `for f in <paths>; do git add "$f"; done` loop staging is recognized (real idiom, e.g. audit-census-recall.yml)', () => {
+  const runText = [
+    'for f in data/audit/imageless-scored-shows.json \\',
+    '         data/audit/alert-ledger.json; do',
+    '  [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"',
+    'done',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText).sort(), [
+    'data/audit/alert-ledger.json',
+    'data/audit/imageless-scored-shows.json',
+  ]);
+});
+
+test('extractStagedPaths: single-line `for f in a b; do ... git add "$f" ...; done` is also recognized', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do [ -e "$f" ] && git add "$f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText).sort(), ['data/audit/a.json', 'data/audit/b.json']);
+});
+
+test('extractStagedPaths: a for-loop whose body does NOT git-add the loop variable is ignored (not every for-loop stages files)', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do echo "checking $f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText), []);
+});
+
+const FIXTURE_LOOP_MIXED_BUNDLE = `
+name: Fixture Loop Mixed Bundle
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit audit files
+        run: |
+          for f in data/audit/imageless-scored-shows.json \\
+                   data/audit/some-totally-unregistered-file.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh
+`;
+
+test('auditWorkflowText: a mixed bundle staged entirely via the for-loop idiom is flagged mixed-safety-bundle', () => {
+  const results = auditWorkflowText(FIXTURE_LOOP_MIXED_BUNDLE, 'fixture-loop-mixed-bundle.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].mixedSafetyBundle, true);
+  assert.deepEqual(results[0].mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
+  assert.deepEqual(results[0].mixedSafetyBundleDisqualifyingFiles, ['data/audit/some-totally-unregistered-file.json']);
+});
+
+const FIXTURE_BRO_2435_SPLIT = `
+name: Fixture BRO-2435 Split
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit orphan-rescore-requeue state
+        run: |
+          STATUS=0
+          bash scripts/lib/git-add-existing.sh data/audit/imageless-scored-shows.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "chore: update"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+          bash scripts/lib/git-add-existing.sh data/audit/some-totally-unregistered-file.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "chore: update"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+          exit $STATUS
+`;
+
+test('auditWorkflowText: the BRO-2435 split-per-file pattern is NOT flagged mixed-safety-bundle (each call stages only its own file)', () => {
+  const results = auditWorkflowText(FIXTURE_BRO_2435_SPLIT, 'fixture-bro-2435-split.yml');
+  assert.equal(results.length, 2);
+  for (const r of results) {
+    assert.equal(r.mixedSafetyBundle, false, `${JSON.stringify(r.mixedSafetyBundleSafeFiles)} / ${JSON.stringify(r.mixedSafetyBundleDisqualifyingFiles)}`);
+    assert.ok(!r.flags.includes('mixed-safety-bundle'));
+  }
+});
+
+test('auditWorkflowText: a bundle with only disqualifying files (no apiFallbackSafe file) is not flagged mixed — nothing fixable is being wasted', () => {
+  const runText = `
+name: Fixture All Unsafe
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/another-unregistered-file.json
+          bash scripts/lib/push-with-retry.sh
+`;
+  const results = auditWorkflowText(runText, 'fixture-all-unsafe.yml');
+  assert.equal(results[0].mixedSafetyBundle, false);
+});
+
+test('auditWorkflowText: mixed-safety-bundle contributes +2 to contentionScore, isolated from the (unchanged) managed-file weight', () => {
+  // Two calls in the SAME step (so managedFileInfo(step.runText) — computed
+  // over the whole step, touches/apiFallbackSafe identical for both calls —
+  // stays constant) that stage the exact same three files; the ONLY
+  // difference is whether they're staged together (one call, mixed) or one
+  // at a time (three calls, none mixed). Isolates the +2 mixed-bundle delta
+  // from managedFileInfo's own separate +1/+2 contentionScore weight.
+  const runText = `
+name: Fixture Isolate Mixed Delta
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit data
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/imageless-scored-shows.json
+          git add data/commercial-pending-review.json
+          git commit -m "data: update (bundled)"
+          bash scripts/lib/push-with-retry.sh 14 main
+          bash scripts/lib/git-add-existing.sh data/audit/some-totally-unregistered-file.json
+          git commit -m "data: unregistered alone"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+  const [bundled, unbundled] = auditWorkflowText(runText, 'fixture-isolate-mixed-delta.yml');
+  assert.equal(bundled.mixedSafetyBundle, true);
+  assert.equal(unbundled.mixedSafetyBundle, false);
+  assert.equal(bundled.contentionScore, unbundled.contentionScore + 2);
 });

@@ -398,7 +398,11 @@ jobs:
           # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
           # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
           # data/data/audit/... path and silently no-op the reconciliation it's here for.
-          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ] && [ ! -f data/audit/alert-ledger.json ]; then
+          # alert-ledger.json is tracked in the public repo, so it always exists
+          # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
+          # this early exit unreachable. git diff --cached --quiet below still
+          # short-circuits correctly; dropped the dead clause.
+          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi

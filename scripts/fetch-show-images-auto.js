@@ -33,6 +33,7 @@ const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./l
 const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -2235,29 +2236,12 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // Guard: for closed shows with a newer production of the same title,
   // skip TodayTix sources (which return current production art) but still try
   // production-specific sources like IBDB, ShowScore, Google Images, and Playbill.
-  let skipTodayTix = false;
-  if (show.status === 'closed') {
-    const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
-    const newerProduction = allShowsData.shows.find(s => {
-      if (s.id === show.id) return false;
-      const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
-      // Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
-      // Catches "The Tempest - Globe", "Encores! The Wild Party", "Doubt: A Parable"
-      // but NOT short titles like "Big" → "Big Fish" (space-only, no punct) or single words
-      const escaped = baseTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const hasMultipleWords = baseTitle.includes(' ');
-      const isVariant = hasMultipleWords &&
-        new RegExp(`(^${escaped}\\s*[-:,]|[-:!]\\s*${escaped}$)`).test(sBase);
-      if (sBase !== baseTitle && !isVariant) return false;
-      // Newer = has a later opening date
-      const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
-      const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
-      return sYear > showYear;
-    });
-    if (newerProduction) {
-      console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
-      skipTodayTix = true;
-    }
+  // Logic lives in scripts/lib/canon-poster-art.js so it's unit-testable
+  // without the network/API-key dependencies of this file (BRO-119).
+  const newerProduction = findNewerSameTitleProduction(show, allShowsData.shows);
+  const skipTodayTix = !!newerProduction;
+  if (skipTodayTix) {
+    console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
   }
 
   let apiData = null;

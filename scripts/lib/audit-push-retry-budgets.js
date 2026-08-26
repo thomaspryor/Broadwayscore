@@ -72,17 +72,175 @@ const RETRY_DEADLINE_RATIO_THRESHOLD = 0.5; // retries-vs-deadline undersizing f
 // if the registry can't be loaded, rather than throwing — this module must
 // stay usable even if core-data-merge-registry.js moves or breaks.
 let MANAGED_FILE_INFO = new Map();
+// Precise mirror of push-with-retry.sh's OWN Git Data API fallback
+// disqualifier (scripts/lib/push-with-retry.sh ~L1930, via scripts/lib/
+// reconcile-merged-json.js's MANAGED/API_FALLBACK_SAFE exports) — used ONLY
+// by the mixed-safety-bundle flag below (BRO-2446). Deliberately a SEPARATE,
+// narrower pair of lists from MANAGED_FILE_INFO above: that map folds in
+// EVERY registry entry regardless of surface/status (a looser "does this
+// basename appear anywhere in the registry" proxy, fine for contentionScore
+// weighting) — but push-with-retry.sh's actual disqualifier only ever
+// consults `activeEntriesFor('public-repo')` and
+// `apiFallbackSafeEntriesFor('public-repo')`. Reusing the loose map here
+// would misclassify e.g. a private-core-data-only 'special' entry as
+// disqualifying a public-repo push it never touches.
+let PUBLIC_REPO_MANAGED_FILES = [];
+let PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
 try {
   // eslint-disable-next-line global-require
-  const { CORE_DATA_MERGE_REGISTRY } = require('./core-data-merge-registry.js');
+  const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor } = require('./core-data-merge-registry.js');
   for (const entry of CORE_DATA_MERGE_REGISTRY) {
     const base = entry.file.split('/').pop();
     const prev = MANAGED_FILE_INFO.get(base);
     const apiFallbackSafe = entry.apiFallbackSafe === true && (prev ? prev.apiFallbackSafe : true);
     MANAGED_FILE_INFO.set(base, { apiFallbackSafe });
   }
+  PUBLIC_REPO_MANAGED_FILES = activeEntriesFor('public-repo').map((e) => e.file);
+  PUBLIC_REPO_API_FALLBACK_SAFE_FILES = apiFallbackSafeEntriesFor('public-repo').map((e) => e.file);
 } catch {
   MANAGED_FILE_INFO = new Map();
+  PUBLIC_REPO_MANAGED_FILES = [];
+  PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
+}
+
+// data/shows.json / data/reviews.json — push-with-retry.sh's NEVER_FALLBACK
+// list (fail-closed regardless of MANAGED/API_FALLBACK_SAFE membership).
+const NEVER_FALLBACK_FILES = ['data/shows.json', 'data/reviews.json'];
+
+/**
+ * Classify one staged repo-relative file path exactly the way push-with-
+ * retry.sh's disqualifier does: `isApiFallbackSafe` mirrors its
+ * isApiFallbackSafe(f); `disqualifiesFallback` mirrors the `hit` predicate
+ * (isManaged || isNeverFallback || unaudited-data/audit/-path). The two are
+ * mutually exclusive by registry construction (an apiFallbackSafe: true
+ * entry is never also `status: 'active'` on the same surface).
+ */
+function classifyPushFallbackSafety(filePath) {
+  const isManaged = PUBLIC_REPO_MANAGED_FILES.some((f) => filePath.endsWith(f));
+  const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => filePath.endsWith(f));
+  const isNeverFallback = NEVER_FALLBACK_FILES.some((p) => filePath === p || filePath.endsWith('/' + p));
+  const disqualifiesFallback = isManaged || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe);
+  return { isApiFallbackSafe, disqualifiesFallback };
+}
+
+// Shared token filter for both extraction passes below: keeps only literal
+// `data/...` path arguments, dropping flags (`-u`, `--force`), shell
+// variables (`$f`, `"${arr[@]}"`), and bare directory adds (trailing `/` —
+// can't be resolved to specific files statically).
+function pathTokensFrom(text, into) {
+  for (const tokRaw of text.trim().split(/\s+/)) {
+    if (!tokRaw) continue;
+    const tok = tokRaw.replace(/^['"]|['"]$/g, '');
+    if (tok.startsWith('-')) continue;
+    if (tok.includes('$')) continue;
+    if (tok.endsWith('/')) continue;
+    if (!tok.startsWith('data/')) continue;
+    into.add(tok);
+  }
+}
+
+// `for f in data/audit/a.json data/audit/b.json; do ... git add "$f" ...;
+// done` — the loop-staged idiom used across ~9 real workflows (BRO-2446
+// second-opinion review finding: both the Codex adversarial pass and the
+// Claude QA subagent independently flagged this as a live blind spot,
+// e.g. audit-census-recall.yml, audit-aggregator-gap.yml,
+// audit-critic-coverage.yml). The `git add "$f"` line itself references a
+// shell variable and is unresolvable on its own (pathTokensFrom deliberately
+// drops any token containing '$'), but the literal `data/...` paths the loop
+// iterates over sit on the `for ... in` header, not the git-add line. Gated
+// on the loop body actually referencing `git add ... $VAR` for the SAME loop
+// variable so an unrelated for-loop's arguments are never misattributed as
+// staged paths. Does not handle nested loops (finds the first `done` after
+// the loop body starts) — no such shape exists in this repo's push-staging
+// loops today.
+function extractLoopStagedPaths(cleaned, paths) {
+  const forRe = /for\s+(\w+)\s+in\s+([\s\S]*?);\s*do\b/g;
+  let m;
+  while ((m = forRe.exec(cleaned))) {
+    const varName = m[1];
+    const listText = m[2].replace(/\\\s*\n/g, ' ');
+    const bodyStart = forRe.lastIndex;
+    const doneIdx = cleaned.indexOf('\ndone', bodyStart);
+    const body = cleaned.slice(bodyStart, doneIdx === -1 ? cleaned.length : doneIdx);
+    const addsVar = new RegExp(`git\\s+add\\b[^\\n]*\\$\\{?${varName}\\}?\\b`).test(body);
+    if (!addsVar) continue;
+    pathTokensFrom(listText, paths);
+  }
+}
+
+// Extract literal `data/...` file-path arguments staged in `runText` via
+// `git-add-existing.sh`, plain `git add`, or a `for f in <paths>; do git add
+// "$f"; done` loop (the three shapes used across every workflow — see
+// BRO-2446 evidence grep). Best-effort/advisory, matching this module's
+// existing parse philosophy: flags (`-u`, `--force`, …), shell variables not
+// resolved by extractLoopStagedPaths, and bare directory adds (`data/audit/`,
+// trailing slash) are skipped rather than guessed at, so this only ever
+// UNDER-reports staged paths, never fabricates one. Runs against the WHOLE
+// runText (not one line) since real workflows stage several files across
+// separate `git add` lines before a single commit+push.
+//
+// KNOWN, DOCUMENTED BLIND SPOTS (second-opinion review, BRO-2446) — verified
+// via grep to have NO live overlap with any apiFallbackSafe file today, so
+// these are structural gaps, not live false negatives, as of this writing:
+//   - `bash scripts/lib/stage-data-changes.sh` bulk-stages all of `data/`
+//     (minus copyrighted-content exclusions) with no literal paths in the
+//     invocation itself — used by 12 workflows (e.g. commercial-weekly.yml's
+//     "Commit applied data + audit" step), none of which explicitly stage an
+//     apiFallbackSafe file elsewhere in the same step today.
+//   - Bash globs (`git add data/audit/*.json`) are treated as one opaque,
+//     non-`data/`-prefix-matching-safe literal token rather than shell-
+//     expanded to the files they'd actually match.
+// Resolving either would require simulating `git status` against the
+// checked-out tree, not just parsing YAML/shell source text — out of scope
+// for this module's static-analysis design (every other flag here works the
+// same way). If a future apiFallbackSafe file is ever staged behind either
+// shape, this audit will silently miss it; re-run the grep above (`git grep
+// stage-data-changes.sh .github/workflows | xargs grep -l <apiFallbackSafe
+// basenames>`) periodically, or when adding a new apiFallbackSafe entry.
+function extractStagedPaths(runText) {
+  const cleaned = stripCommentLines(runText);
+  const paths = new Set();
+  const patterns = [/git-add-existing\.sh\b([^\n]*)/g, /(?<![\w.-])git\s+add\b([^\n]*)/g];
+  for (const re of patterns) {
+    let m;
+    while ((m = re.exec(cleaned))) {
+      let rest = m[1];
+      const stopMatch = rest.match(/\|\||&&|;|(?:^|\s)#/);
+      if (stopMatch) rest = rest.slice(0, stopMatch.index);
+      pathTokensFrom(rest, paths);
+    }
+  }
+  extractLoopStagedPaths(cleaned, paths);
+  return [...paths];
+}
+
+// For each push-with-retry.sh call found in `runText`, IN THE SAME ORDER
+// findPushRetryCalls returns them, the staged paths from ONLY the git-add
+// commands between the previous call's line (or the start of the text) and
+// this call's own line. NOT "every git-add hit anywhere in the step" — the
+// BRO-2435 fix pattern (git-add-existing.sh ONE file -> commit ->
+// push-with-retry.sh, repeated per file in the SAME step, see opening-night-
+// broadcast.yml's "Commit orphan-rescore-requeue state" step) puts multiple
+// independent push calls in one step's run text; attributing every git-add
+// hit in the whole step to every call in it would falsely flag that
+// already-fixed, correctly-split pattern as a mixed bundle, when each call
+// in fact only ever stages its own single file.
+function stagedPathsPerCall(runText) {
+  const cleaned = stripCommentLines(runText);
+  const re = /(?<=\/)push-with-retry\.sh(?:\s+\d+)?/g;
+  const lineEnds = [];
+  let m;
+  while ((m = re.exec(cleaned))) {
+    const lineEnd = cleaned.indexOf('\n', m.index);
+    lineEnds.push(lineEnd === -1 ? cleaned.length : lineEnd);
+  }
+  const result = [];
+  let segStart = 0;
+  for (const lineEnd of lineEnds) {
+    result.push(extractStagedPaths(cleaned.slice(segStart, lineEnd)));
+    segStart = lineEnd;
+  }
+  return result;
 }
 
 function indentOf(line) {
@@ -462,15 +620,16 @@ function auditWorkflowText(text, filePath) {
     const pushCalls = [];
     for (const step of job.steps) {
       const calls = findPushRetryCalls(step.runText);
-      for (const call of calls) {
+      const stagedPerCall = stagedPathsPerCall(step.runText);
+      calls.forEach((call, callIdx) => {
         const deadlineSec = call.inlineDeadlineSec ?? step.envDeadlineSec ?? DEFAULT_DEADLINE_SEC;
         const stepBudgetSec = Math.max(deadlineSec, computeBackoffSum(call.maxRetries));
-        pushCalls.push({ step, call, deadlineSec, stepBudgetSec });
-      }
+        pushCalls.push({ step, call, deadlineSec, stepBudgetSec, stagedPaths: stagedPerCall[callIdx] || [] });
+      });
     }
 
     for (const pc of pushCalls) {
-      const { step, call, deadlineSec } = pc;
+      const { step, call, deadlineSec, stagedPaths } = pc;
       const explicitOtherSec = explicitTimeoutSteps
         .filter((s) => s !== step)
         .reduce((sum, s) => sum + s.timeoutMinutes * 60, 0);
@@ -495,6 +654,21 @@ function auditWorkflowText(text, filePath) {
       const softFail = call.softFail || step.continueOnError === true;
 
       const { touches: managed, apiFallbackSafe } = managedFileInfo(step.runText);
+
+      // mixed-safety-bundle (BRO-2446): this call's OWN staged files (not the
+      // whole step's — see stagedPathsPerCall's header comment) include at
+      // least one apiFallbackSafe-eligible file AND at least one file that
+      // disqualifies push-with-retry.sh's Git Data API fallback for the WHOLE
+      // outgoing diff — exactly the BRO-2435 failure shape (a fixable single-
+      // writer file's fallback eligibility defeated by one unaudited/multi-
+      // writer path bundled into the same commit+push). Mutually exclusive by
+      // classifyPushFallbackSafety's own construction, so this can only ever
+      // fire with >=2 distinct staged paths.
+      const mixedSafetyBundleSafeFiles = stagedPaths.filter((p) => classifyPushFallbackSafety(p).isApiFallbackSafe);
+      const mixedSafetyBundleDisqualifyingFiles = stagedPaths.filter((p) => classifyPushFallbackSafety(p).disqualifiesFallback);
+      const mixedSafetyBundle = mixedSafetyBundleSafeFiles.length > 0 && mixedSafetyBundleDisqualifyingFiles.length > 0;
+      if (mixedSafetyBundle) evaluation.flags.push('mixed-safety-bundle');
+
       let contentionScore = 0;
       if (managed) contentionScore += apiFallbackSafe ? 1 : 2;
       if (cronIntervalMinutes != null) {
@@ -503,6 +677,7 @@ function auditWorkflowText(text, filePath) {
       }
       if (evaluation.flags.includes('retries-undersized-vs-deadline')) contentionScore += 1;
       if (evaluation.flags.includes('job-timeout-margin-undersized')) contentionScore += 2;
+      if (mixedSafetyBundle) contentionScore += 2;
       if (softFail) contentionScore = Math.max(0, contentionScore - 3);
 
       results.push({
@@ -514,6 +689,9 @@ function auditWorkflowText(text, filePath) {
         softFail,
         cronIntervalMinutes,
         contentionScore,
+        mixedSafetyBundle,
+        mixedSafetyBundleSafeFiles,
+        mixedSafetyBundleDisqualifyingFiles,
         ...evaluation,
       });
     }
@@ -534,6 +712,9 @@ module.exports = {
   computeBackoffSum,
   touchesManagedFile,
   managedFileInfo,
+  classifyPushFallbackSafety,
+  extractStagedPaths,
+  stagedPathsPerCall,
   estimateCronIntervalMinutes,
   evaluateStep,
   auditWorkflowText,

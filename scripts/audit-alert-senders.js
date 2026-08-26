@@ -609,6 +609,7 @@ function main() {
 
 module.exports = {
   scanFile,
+  collectFindings,
   buildDirectCounts,
   buildHumanDigestCounts,
   compareToBaseline,

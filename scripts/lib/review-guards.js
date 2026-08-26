@@ -2987,11 +2987,17 @@ function explainExclusion(data, show, filePath) {
   // (every flag lives in the central guard).
 
   // wrongProduction — excluded unless cleared by one of three override flags
+  // or a freshness-bounded self-heal auto-clear (BRO-167/task #1017 follow-up:
+  // this is the 4th copy-pasted wpCleared check, checked FIRST of the 4, and
+  // was missed by both task #1017 fix commits (e8f88878b24, aa65ba15880),
+  // which only touched the 3 downstream gates below. A file with a fresh
+  // auto-clear stamp never reached those — it was excluded right here.)
   if (data.wrongProduction === true) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     if (!cleared) return 'wrongProduction';
   }
 

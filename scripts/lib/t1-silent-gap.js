@@ -232,9 +232,9 @@ function shouldEmailUnscoredGap(lastDispatchAt, now) {
 // carrying terminal isNonReview/isRoundupArticle/wrongProduction flags whose
 // own suggested fix command could never succeed).
 //
-// The functions below give the sweep a within-run card identity
-// (gapCardKey/dedupeGapCards), a cross-path duplicate check
-// (otherAlertPathKey), and a terminal-state classification
+// The functions below give the sweep a within-run dedupe (dedupeGapCards), a
+// canonical per-file identity for reporting (gapCardKey), a cross-path
+// duplicate check (otherAlertPathKey), and a terminal-state classification
 // (classifyGapCardState) so it can:
 //   - collapse several candidate files for the same show+outlet to ONE card
 //     per run instead of one per file (byline-explosion clusters), and skip
@@ -252,23 +252,29 @@ const GAP_CARD_STATE = {
   DUPLICATE: 'duplicate',
 };
 
-// Stable identity for one show+outlet+file gap. Used WITHIN a single run to
-// collapse multiple candidate files for the same outlet to one card
-// (dedupeGapCards below) — it deliberately is NOT used as the routeAlert()
-// conditionKey. The near-opening ('gap:showId/file') and >24h backstop
-// ('backstop:showId/file') alert paths in audit-t1-silent-gaps.js keep their
-// own native, unmigrated prefixes: routeAlert()'s ledger cooldown AND its
-// cross-system Linear dedupe (findLinearDuplicate → a plain substring search
-// for `[conditionKey:<key>]` inside EXISTING card bodies) both key off the
-// exact conditionKey string. Every gap card filed before this fix has its
-// old prefix baked verbatim into its Linear issue body — switching the
-// dispatched conditionKey format here would make every already-open gap
-// invisible to both dedupe mechanisms on the very next run (ledger sees "no
-// record", Linear search finds no substring match), so the first post-deploy
-// pass over any real corpus would re-file a duplicate card for every single
-// currently-open gap — exactly the bug this fix exists to close. (Caught in
-// review before ship: see otherAlertPathKey() below, which handles the
-// actual near-opening/backstop duplicate case without renaming the key.)
+// Canonical, stable identity string for one show+outlet+file gap card.
+// NOT currently constructed by any production code path — dedupeGapCards()
+// below groups on a plain `${showId}/${outletId}` key directly (gapCardKey's
+// own output includes `file`, so it couldn't group multiple files onto one
+// outlet if used there), and neither alert-dispatch path in
+// audit-t1-silent-gaps.js uses it as the routeAlert() conditionKey either:
+// the near-opening ('gap:showId/file') and >24h backstop
+// ('backstop:showId/file') paths keep their own native, unmigrated prefixes,
+// because routeAlert()'s ledger cooldown AND its cross-system Linear dedupe
+// (findLinearDuplicate → a plain substring search for `[conditionKey:<key>]`
+// inside EXISTING card bodies) both key off the exact conditionKey string.
+// Every gap card filed before this fix has its old prefix baked verbatim
+// into its Linear issue body — switching the dispatched conditionKey format
+// would make every already-open gap invisible to both dedupe mechanisms on
+// the very next run (ledger sees "no record", Linear search finds no
+// substring match), so the first post-deploy pass over any real corpus
+// would re-file a duplicate card for every single currently-open gap —
+// exactly the bug this fix exists to close. (Caught in review before ship:
+// see otherAlertPathKey() below, which handles the actual near-opening/
+// backstop duplicate case without renaming the key.) gapCardKey() is kept as
+// the canonical per-file identity primitive (BRO-341's acceptance criteria
+// calls for a tested "dedupe key") for reporting/future use — it is exported
+// and unit-tested, just not yet wired into a live dispatch or grouping path.
 function gapCardKey({ showId, outletId, file }) {
   return `t1gap:${showId}/${outletId}/${file}`;
 }

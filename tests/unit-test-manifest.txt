@@ -95,6 +95,7 @@ scripts/reconcile-broadcast-state.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/recover-serp-text.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
+scripts/scoring-delta-rebuild-loop-touch.test.mjs
 scripts/scrape-broadway-com-audience.test.mjs
 scripts/scrape-wp-theater-blogs.test.mjs
 scripts/send-opening-night-broadcast.test.mjs
@@ -190,6 +191,7 @@ tests/unit/broadcast-state.test.mjs
 tests/unit/broadway-fantasy-league.test.mjs
 tests/unit/broadway-schedule-discovery.test.mjs
 tests/unit/broadway-venue-fallback.test.mjs
+tests/unit/broadwayOpenings-sort.test.mjs
 tests/unit/browserbase-caps.test.mjs
 tests/unit/browserbase-live-usage.test.mjs
 tests/unit/browserbase-opening-window-budget-reserve.test.mjs
@@ -208,6 +210,7 @@ tests/unit/bww-roundup-persistence.test.mjs
 tests/unit/bww-roundup-thumbs-and-urls.test.mjs
 tests/unit/bww-rr-discover.test.mjs
 tests/unit/byline-normalization.test.mjs
+tests/unit/bylines-unknown-recovery.test.mjs
 tests/unit/canonical-duplicate-pointers.test.mjs
 tests/unit/canonical-venue.test.mjs
 tests/unit/card-creation-disposition.test.mjs
@@ -300,6 +303,7 @@ tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
 tests/unit/dispatch-capacity-force-threading.test.mjs
 tests/unit/dtli-homepage-scan-revival-tiebreak.test.mjs
+tests/unit/dispatch-guard.test.mjs
 tests/unit/dispatch-guards-closed-card.test.mjs
 tests/unit/dispatch-guards-native-completed.test.mjs
 tests/unit/dispatch-prompt-review-rule.test.mjs
@@ -319,6 +323,7 @@ tests/unit/duplicate-flag-inheritance.test.mjs
 tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
+tests/unit/essay-intro-nonreview-fp.test.mjs
 tests/unit/exact-title-and-clone-guards.test.mjs
 tests/unit/exclusion-logger.test.mjs
 tests/unit/exclusion-rule-consumption.test.mjs
@@ -415,6 +420,7 @@ tests/unit/merge-bww-roundup-ledger.test.mjs
 tests/unit/merge-commercial-data.test.mjs
 tests/unit/merge-diary-shows.test.mjs
 tests/unit/merge-feedback-ledger.test.mjs
+tests/unit/merge-gate-command-parsing.test.mjs
 tests/unit/merge-owner-email-log.test.mjs
 tests/unit/merge-review-fields.test.mjs
 tests/unit/merge-social-post-history.test.mjs
@@ -529,6 +535,7 @@ tests/unit/reddit-api-oauth.test.mjs
 tests/unit/reddit-api-rss.test.mjs
 tests/unit/reddit-api-scrapingdog.test.mjs
 tests/unit/reddit-grosses.test.mjs
+tests/unit/reddit-scraper-ci.test.mjs
 tests/unit/regression-guards.test.mjs
 tests/unit/rescore-actionable-depth.test.mjs
 tests/unit/rescore-flagging.test.mjs
@@ -588,6 +595,7 @@ tests/unit/self-contradictory-clear.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
 tests/unit/seo-cwv-field-scope.test.mjs
 tests/unit/serp-burst-caps.test.mjs
+tests/unit/serp-burst-tripwire.test.mjs
 tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs
 tests/unit/serp-session-cap.test.mjs
