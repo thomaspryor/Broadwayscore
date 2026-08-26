@@ -98,8 +98,9 @@ jobs:
           # fallback; default 240s deadline was self-aborting after ~2 real
           # fetch/rebase/push cycles under main's commit churn (task #458's
           # documented failure mode). This job has 60min timeout with ~20min
-          # headroom past this step — 600s matches update-show-status.yml's
-          # override for the same root cause.
+          # headroom past this step — smaller than the 1200s override
+          # update-show-status.yml uses for the same root cause (that job has
+          # a much bigger timeout budget).
           PUSH_DEADLINE_SEC: '600'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-batch-progress.json
