@@ -25,6 +25,7 @@ const { buildAutoTitle } = require('./workspace-naming');
 // (linear-next.js does the actual readEntries() I/O), so this file performs
 // no ledger I/O itself.
 const dispatchLedger = require('./dispatch-ledger.js');
+const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-types.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -83,7 +84,7 @@ function buildOpenIssuesQuery() {
     issues(
       first: 100
       after: $after
-      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } } }
       orderBy: updatedAt
     ) {
       nodes {
@@ -246,7 +247,7 @@ function generateCorrelationId() {
 // matching this codebase's lastByRef/foldJobs "last record wins" convention.
 function findUnresolvedDispatchComment(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  if (stateType === 'completed' || stateType === 'canceled') return null;
+  if (isTerminalStateType(stateType)) return null;
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   const dispatched = comments.filter((c) => /^Dispatched\b/.test(String((c && c.body) || '').trim()));
   return dispatched.length ? dispatched[dispatched.length - 1] : null;
@@ -278,7 +279,7 @@ function hasLiveLedgerEntry(taskId, entries) {
 // predicate, caller does I/O/exit" shape as the other guards in this file.
 function checkTerminalStateGuard(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  if (stateType !== 'completed' && stateType !== 'canceled') return null;
+  if (!isTerminalStateType(stateType)) return null;
   const stateName = (issue.state && issue.state.name) || stateType;
   return `${issue.identifier} is already in a terminal state ("${stateName}") — refusing to re-dispatch. Re-run with --force if this is a deliberate re-open.`;
 }
@@ -296,7 +297,7 @@ function buildOpenIssuesWithDescriptionsQuery() {
     issues(
       first: 100
       after: $after
-      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } } }
     ) {
       nodes {
         identifier

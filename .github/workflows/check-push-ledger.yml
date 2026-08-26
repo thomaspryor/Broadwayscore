@@ -20,6 +20,12 @@ name: Check Push Ledger
 # recent entries' reachability via the GitHub compare API, files an 'auto'
 # alert-router card for anything reverted, and prunes the ledger branch back
 # down through the same CAS write path.
+#
+# ALSO prunes the unrelated `push-retry-failures` branch (task: push-retry-
+# failure telemetry, 2026-08-23) on this same cron slot — no revert-checking
+# needed for that stream, just rotation so it doesn't grow forever. See
+# scripts/check-push-ledger.js's pruneFailureLedger() for why this rides
+# here instead of a dedicated workflow.
 
 on:
   schedule:

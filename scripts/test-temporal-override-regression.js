@@ -34,6 +34,7 @@ const {
   isSameTitleDifferentYearFalsePositive,
   applyVenueClassificationCarveout,
 } = require('./lib/review-guards');
+const { parseDate } = require('./lib/date-utils');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
@@ -95,8 +96,8 @@ function isEligible(review, show) {
   if (review.wrongProductionOverride === true) return false;
   // Must be within 30 days
   const opening = new Date(show.openingDate);
-  const publish = new Date(review.publishDate);
-  if (isNaN(opening.getTime()) || isNaN(publish.getTime())) return false;
+  const publish = parseDate(review.publishDate);
+  if (isNaN(opening.getTime()) || !publish) return false;
   const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
   return daysDiff <= 30;
 }

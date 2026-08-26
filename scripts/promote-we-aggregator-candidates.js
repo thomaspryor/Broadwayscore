@@ -40,7 +40,7 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
-const { WEST_END_VENUES, normalizeVenueName } = require('./lib/venue-classification');
+const { WEST_END_VENUES, normalizeVenueName, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { foldDiacritics } = require('./lib/title-match');
 const {
   fetchWetRecentRoundups,
@@ -49,6 +49,7 @@ const {
   fetchLboArticleDate,
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `promote-we-aggregator-candidates.js — West End aggregator-roundup auto-promotion backstop.
 
@@ -60,6 +61,7 @@ Options:
   --dry-run     show what would be promoted; don't write
   --limit=N     cap WET per-post venue fetches this run (default 15)
   --email       best-effort "went live" digest notification
+  --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
 
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'we-promotion-log.jsonl');
@@ -170,7 +172,11 @@ function buildWestEndAggregatorShowEntry(candidate) {
     id,
     title: candidate.title,
     slug,
-    venue: candidate.venue,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
+    // placeholder venue; main()'s `if (!entry.venue)` check refuses to
+    // promote rather than write a garbage venue string.
+    venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
     openingDateSource: openingDate ? 'aggregator-roundup' : null,
     previewsStartDate: null,
@@ -190,7 +196,7 @@ function buildWestEndAggregatorShowEntry(candidate) {
 
 /** Collect + dedupe raw listing candidates from both sources into one list. */
 async function collectCandidates(opts) {
-  const { log, limit } = opts;
+  const { log, limit, timeBudget } = opts;
   const discoveredAt = new Date().toISOString();
   const seenUrls = new Set();
   const out = [];
@@ -231,6 +237,10 @@ async function collectCandidates(opts) {
       log(`  [limit] reached --limit=${limit}; skipping remaining WET posts this run`);
       break;
     }
+    if (timeBudget && timeBudget.exceeded()) {
+      log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — skipping remaining WET posts this run`);
+      break;
+    }
     wetFetches++;
     const venueInfo = await fetchWetPostVenue(c.sourceUrl, opts);
     seenUrls.add(c.sourceUrl);
@@ -255,6 +265,7 @@ async function main() {
   const emailAlerts = args.includes('--email');
   const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '15', 10);
   const log = (...a) => console.log(...a);
+  const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
   // Reset up front (mirrors promote-ob-venue-candidates.js) so a crash
   // mid-run can never leave a stale file claiming a prior run's promotions
@@ -274,7 +285,7 @@ async function main() {
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
     .map(s => ({ id: s.id, title: s.title, venue: s.venue }));
 
-  const candidates = await collectCandidates({ log, limit });
+  const candidates = await collectCandidates({ log, limit, timeBudget });
   log('');
   log(`Collected ${candidates.length} raw candidate(s) from WE aggregator listings.`);
 
@@ -283,6 +294,10 @@ async function main() {
   let lboDateFetches = 0;
 
   for (const c of candidates) {
+    if (timeBudget.exceeded()) {
+      log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
+      break;
+    }
     const existingMatch = findExistingMatch(c, existingCandidates);
     if (existingMatch) {
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
@@ -313,6 +328,18 @@ async function main() {
     }
 
     const entry = buildWestEndAggregatorShowEntry(c);
+    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+    // string rather than silently promoting it (card #1921, cousin of
+    // BRO-160). decideWestEndAggregatorPromotion already checked
+    // c.venue against the canonical WEST_END_VENUES list above, so this
+    // should be unreachable in practice — kept as defense in depth, same
+    // pattern as the OB script's identical guard.
+    if (!entry.venue) {
+      skipped.push({ candidate: c, reason: `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)` });
+      logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });
+      continue;
+    }
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });

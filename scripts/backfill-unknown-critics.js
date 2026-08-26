@@ -16,6 +16,9 @@
  *   --skip-http       Skip HTTP fetches in Phase B (only use existing extractedByline)
  *   --source=X        Filter to specific source (e.g., playbill-verdict, showscore)
  *   --show=X          Filter to specific show directory
+ *   --outlet-id=X,Y   Filter to specific outletId(s), comma-separated
+ *   --time-budget-min=N  Wall-clock budget in minutes for Phase B's HTTP
+ *                     fetch loop (0/omitted = unlimited)
  */
 
 const fs = require('fs');
@@ -35,6 +38,8 @@ const sourceArg = args.find(a => a.startsWith('--source='));
 const sourceFilter = sourceArg ? sourceArg.split('=')[1] : null;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
+const outletIdArg = args.find(a => a.startsWith('--outlet-id='));
+const outletIdFilter = outletIdArg ? new Set(outletIdArg.split('=')[1].split(',')) : null;
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
@@ -43,6 +48,7 @@ const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-nor
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `backfill-unknown-critics.js — Backfill unknown outlets and critics across ALL review sources.
 
@@ -50,6 +56,7 @@ Usage:
   node scripts/backfill-unknown-critics.js [options]
   node scripts/backfill-unknown-critics.js --help, -h    print this usage and exit
 `;
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 // --- Names that are NOT theater critics (outlet names, wire service labels, etc.) ---
 const REJECT_NAMES = new Set([
   'condé nast', 'conde nast', 'the associated press', 'associated press',
@@ -100,6 +107,7 @@ function scanReviewFiles() {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
         if (sourceFilter && data.source !== sourceFilter) continue;
+        if (outletIdFilter && !outletIdFilter.has(data.outletId)) continue;
 
         const entry = { dir: d, file: f, filePath, outletId: data.outletId, url: data.url || '', data };
 
@@ -276,6 +284,10 @@ async function phaseB(unknownCritics) {
   let skippedNoUrl = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
+    if (timeBudget.exceeded()) {
+      console.log(`\n  ⏱ Time budget (${timeBudget.minutes} min) reached — ${toProcess.length - i} file(s) deferred to next run.`);
+      break;
+    }
     const u = toProcess[i];
     let critic = null;
     let method = '';
@@ -287,12 +299,25 @@ async function phaseB(unknownCritics) {
       bylineResolved++;
     }
 
+    // Strategy 1b: re-run extraction against the fullText we already stored
+    // (BRO-171). Some outlets (e.g. talkinbroadway's "Theatre Review by
+    // <Name> - <date>") print the byline in the article body itself, which
+    // gather already captured — no HTTP fetch needed to recover it.
+    if (!critic && u.data.fullText) {
+      const fromText = extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
+      if (fromText && !isRejectName(fromText)) {
+        critic = fromText;
+        method = 'stored-text';
+        bylineResolved++;
+      }
+    }
+
     // Strategy 2: Fetch HTML via scraper infrastructure (Bright Data → ScrapingBee → Playwright)
     if (!critic && !skipHttp && u.url) {
       const result = await fetchHtml(u.url);
 
       if (result.html) {
-        critic = extractAuthorFromHtml(result.html);
+        critic = extractAuthorFromHtml(result.html, null, { url: u.url });
         if (critic && isRejectName(critic)) {
           critic = null; // Reject outlet names, metadata artifacts, etc.
         }

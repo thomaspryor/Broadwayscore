@@ -49,6 +49,11 @@ test('isArchivableIssue: true for a canceled issue past the age threshold', () =
   assert.equal(isArchivableIssue(issue, NOW), true);
 });
 
+test('isArchivableIssue: true for a duplicate-type issue past the age threshold (BRO-2466 — the third terminal type, uses canceledAt)', () => {
+  const issue = { stateType: 'duplicate', canceledAt: new Date(NOW - 49 * HOUR_MS).toISOString() };
+  assert.equal(isArchivableIssue(issue, NOW), true);
+});
+
 test('isArchivableIssue: false when completed/canceled but no timestamp present', () => {
   const issue = { stateType: 'completed', completedAt: null, canceledAt: null };
   assert.equal(isArchivableIssue(issue, NOW), false);

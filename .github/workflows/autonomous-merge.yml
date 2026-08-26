@@ -52,13 +52,28 @@ permissions:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    # fetch-depth: 0 is expensive on this repo's git history (comparable
-    # full-history workflows here take ~14min on the checkout step ALONE —
-    # audit-touring-contamination.yml run 29187952694). 15min was not enough
-    # headroom; a real dispatch got cancelled mid `npm ci` (2026-07-14).
-    # Raised 30 → 50 for tier-3 (Sprint 2): a src/ diff's re-verify now
-    # includes a production `next build` (20min own timeout) on top of the
-    # full-history checkout + npm ci + core-data checkout.
+    # timeout history: raised 15 → 30 (2026-07-14, a real dispatch got
+    # cancelled mid `npm ci`), then 30 → 50 for tier-3 (Sprint 2): a src/
+    # diff's re-verify includes a production `next build` (20min own
+    # timeout) on top of checkout + npm ci + core-data checkout.
+    #
+    # BRO-423: fetch-depth: 0 alone was measured eating ~35 of these 50
+    # minutes on the Checkout repository step (runs 32086045215,
+    # 32089222063) — this repo's large data/*.json files have been rewritten
+    # by CI every ~30min for a long history, and a full checkout transfers
+    # every historical BLOB of every one of those rewrites, not just commit
+    # metadata. `filter: blob:none` keeps fetch-depth: 0's full commit graph
+    # (still required — scripts/autonomous-merge.js's countPriorMerges greps
+    # the ENTIRE history on origin/main for "Auto-merge-card: <id>" trailers,
+    # the oscillation breaker's hard-stop-at-2 guard must never undercount)
+    # but defers blob content to on-demand fetches for whatever the rebase
+    # actually touches — commit/tree metadata only, no blob transfer, for
+    # everything else. Same filter already used successfully for the Tier-2
+    # data-repo clone in scripts/autonomous-merge.js's cloneDataRepo().
+    # scripts/lib/check-merge-history.js is the safety net: if this ever
+    # regresses to a truly shallow clone, it deepens via `git fetch
+    # --unshallow` before the oscillation scan instead of silently
+    # undercounting.
     timeout-minutes: 50
     steps:
       - name: Checkout repository
@@ -66,6 +81,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          filter: blob:none
 
       - name: Configure git
         run: |

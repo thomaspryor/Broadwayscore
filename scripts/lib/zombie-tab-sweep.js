@@ -36,6 +36,12 @@
 
 const REVIVE_CAP_PER_TICK = 2; // spend safety: never fan out more than 2 headless re-dispatches per 5-min sweep
 
+// Canonical crown predicate, imported rather than re-derived (CLAUDE.md: a
+// predicate that must agree with another module's is required from it, never
+// copied). Pure regex test, no I/O, so it needs no injection seam like the
+// other collaborators above.
+const { isCrownTab } = require('./prune-closeable.js');
+
 /**
  * @param {Array<{ref:string,title:string,selected?:boolean}>} deadAutoTabs
  *        dead-by-both-signals workspaces (bsc-prune's `idle` bucket).
@@ -68,6 +74,16 @@ function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskSta
     const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
     const status = taskId ? taskStatusById(taskId) : null;
     const entry = { ref: w.ref, title: w.title, taskId, subject: (launch && launch.subject) || null, status };
+
+    // Crown (owner-loop) tab: REPORT it, never close it and never headlessly
+    // revive it (task #1751). Reported rather than `continue`d so a dead owner
+    // loop stays visible to whoever reads the sweep — silently dropping it from
+    // all three buckets is how an owner tab goes missing unnoticed, which is
+    // the failure this whole exemption exists to stop. Reviving is deliberately
+    // withheld too: re-crowning is an owner decision that must go through the
+    // dispatch ledger, not a headless 5-minute sweep. Placed AFTER the ledger
+    // lookup so the report carries the taskId/subject a human would need.
+    if (isCrownTab(w.title)) { report.push({ ...entry, reason: 'crown-tab' }); continue; }
 
     if (status === 'completed') { corpses.push({ ...entry, reason: 'task-completed' }); continue; }
     // Duplicate: same task already has a LIVE workspace. Title equality is

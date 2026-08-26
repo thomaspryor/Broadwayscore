@@ -1,0 +1,119 @@
+name: Clear Wrong-Show Blockers
+
+# Scheduled cleanup for wrongShow=true review-text files that carry no useful
+# data (no score, no LLM score, no aggregator data, no meaningful text).
+# Background (card #1828): these pure-junk files BLOCK gather-reviews.js from
+# re-discovering the correct review at that outlet/critic slot for the show,
+# since the slot already has a file on disk. scripts/clear-wrong-show-blockers.js
+# has existed since before this workflow but was never scheduled — a manual
+# dry-run on 2026-08-19 found 566 deletable files across 287 shows that had
+# been silently blocking rediscovery, in some cases for months.
+#
+# Conservative mode only (default — no --include-scored). Surge-guarded
+# (script refuses to delete >100 files without --force-bulk) since this
+# writes unattended to the private review-texts corpus.
+on:
+  schedule:
+    # Weekly on Thursdays at 9 AM UTC (day after clear-stale-suspected-
+    # misattribution-flags' Wednesday 9 AM slot, so the two unattended
+    # review-texts cleanup writes never land in the same window).
+    - cron: '0 9 * * 4'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no delete'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >100 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-wrong-show-blockers
+  cancel-in-progress: false
+
+jobs:
+  clear-blockers:
+    name: Clear wrongShow blocker files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run cleanup
+        id: cleanup
+        run: |
+          set +e
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            OUT=$(node scripts/clear-wrong-show-blockers.js 2>&1)
+          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+            OUT=$(node scripts/clear-wrong-show-blockers.js --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/clear-wrong-show-blockers.js --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'Deleted: [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.cleanup.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: auto-clear ${{ steps.cleanup.outputs.count }} wrongShow blocker files [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## wrongShow Blocker Cleanup"
+            echo ""
+            echo "**Deleted:** ${{ steps.cleanup.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.cleanup.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+            elif [ "${{ steps.cleanup.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no cleanup needed"
+            else
+              echo "**Mode:** auto-cleaned + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.cleanup.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Wrong-Show Blockers Failed'
+          severity: 'warning'

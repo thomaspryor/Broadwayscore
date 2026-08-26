@@ -171,14 +171,25 @@ function maybeTrackContentFix(diagnosis, issueNumber) {
 function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
   const card = buildEscalationCard({ diagnosis, planReason, issueNumber, issueUrl });
   const scriptsDir = path.join(ROOT, 'scripts');
+  // Files to LINEAR, not Notion (BRO-377). notion-brain.js create now exits 6
+  // under the Phase 1 read-only guard, and this call site is fail-soft by
+  // design — so leaving it pointed at Notion would not crash the workflow, it
+  // would silently DROP every escalation while logging one line nobody reads.
+  // That is worse than a crash: the escalation exists to reach a human.
+  //
+  // linear-brain.js takes a numeric --priority (0-4) rather than notion-brain's
+  // "P1" string, and has no --status/--action equivalents; the card's status and
+  // action are folded into the notes so nothing is lost. --park carries the same
+  // reason and keeps the CI-filed issue out of auto-dispatch, exactly as before.
+  const linearNotes = `${card.notes}\n\n_Filed from CI. Suggested action: ${card.action}._`;
   try {
     execFileSync('node', [
-      path.join(scriptsDir, 'notion-brain.js'), 'create', card.title,
-      '--priority', card.priority, '--status', card.status, '--action', card.action,
-      '--notes', card.notes, '--park', card.parkReason,
+      path.join(scriptsDir, 'linear-brain.js'), 'create', card.title,
+      '--priority', '2',
+      '--notes', linearNotes, '--park', card.parkReason,
     ], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
   } catch (err) {
-    console.error('escalatePlanRefusal: notion-brain create failed:', err.message);
+    console.error('escalatePlanRefusal: linear-brain create failed:', err.message);
     return { filed: false };
   }
   try {

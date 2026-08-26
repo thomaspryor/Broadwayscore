@@ -45,6 +45,7 @@ const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
+const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -312,6 +313,23 @@ function compareShow(show, parsed, playbillUrl) {
       });
     }
   }
+
+  // Revival status: Playbill prints "Revival" or "Original" on every
+  // production page it has classified — authoritative, not a title
+  // heuristic. Catches both directions of BRO-2023: a prior production this
+  // corpus never recorded (Playbill says Revival, shows.json says false) and
+  // a same-title transfer misread as a revival (Playbill says Original,
+  // shows.json says true).
+  if (parsed.tagLine && parsed.tagLine.revivalStatus !== 'unknown') {
+    const playbillIsRevival = parsed.tagLine.revivalStatus === 'revival';
+    if (!!show.isRevival !== playbillIsRevival) {
+      mismatches.push({
+        field: 'isRevival',
+        shows: !!show.isRevival,
+        playbill: playbillIsRevival,
+      });
+    }
+  }
   return mismatches;
 }
 
@@ -351,8 +369,9 @@ async function validateOne(show, log) {
 
   const titleParse = parseTitleVenueYear(html);
   const dates = parseFactDates(html);
-  const parsed = { titleParse, dates };
-  log(`  parsed venue: ${titleParse?.venue || '(none)'} | year ${titleParse?.year || '(none)'} | opening ${dates.openingDate || '(none)'}`);
+  const tagLine = parsePlaybillTagLine(html);
+  const parsed = { titleParse, dates, tagLine };
+  log(`  parsed venue: ${titleParse?.venue || '(none)'} | year ${titleParse?.year || '(none)'} | opening ${dates.openingDate || '(none)'} | revival ${tagLine.revivalStatus}`);
 
   const mismatches = compareShow(show, parsed, urlResult.url);
   if (mismatches.length === 0) {
@@ -459,4 +478,5 @@ if (require.main === module) {
 module.exports = {
   isProvisional, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
+  findPlaybillUrl, validateOne,
 };

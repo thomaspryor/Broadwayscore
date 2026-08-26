@@ -292,8 +292,13 @@ jobs:
             VALIDATE_FLAG="--validate-urls"
             echo "ℹ️ URL content validation enabled"
           fi
+          OPENING_NIGHT_FLAG=""
+          if [ "${{ inputs.opening_night }}" = "true" ]; then
+            OPENING_NIGHT_FLAG="--opening-night"
+            echo "ℹ️ Opening-night mode: aggregators forced fresh, SERP hits with a mismatched embedded year rejected (BRO-736)"
+          fi
           if [ -f scripts/gather-reviews.js ]; then
-            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG
           else
             echo "Note: scripts/gather-reviews.js not found"
             echo "Review data will need to be gathered manually"

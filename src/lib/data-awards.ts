@@ -163,12 +163,6 @@ export interface AwardWinnerSets {
   pulitzerWinnerIds: string[];
 }
 
-interface OlivierAwards {
-  wins?: string[];
-  nominations?: number;
-  nominatedFor?: string[];
-}
-
 export function getAwardWinnerSets(): AwardWinnerSets {
   const tonyWinnerIds: string[] = [];
   const tonyNomineeIds: string[] = [];
@@ -184,7 +178,7 @@ export function getAwardWinnerSets(): AwardWinnerSets {
       if (wins > 0) tonyWinnerIds.push(showId);
       if (wins > 0 || noms > 0) tonyNomineeIds.push(showId);
     }
-    const olivier = (showAwards as ShowAwards & { olivier?: OlivierAwards }).olivier;
+    const olivier = showAwards.olivier;
     if (olivier) {
       const wins = olivier.wins?.length ?? 0;
       const noms = olivier.nominations ?? 0;

@@ -101,6 +101,11 @@ function isPlaceholderVenue(venue) {
   }
   // A bare postcode/number, or a single character, is not a venue name.
   if (trimmed.length < 3) return { placeholder: true, reason: 'too_short' };
+  // A digits-only string ("123") passed the length check above but is still
+  // not a venue name — a bare street number or postcode fragment slipping
+  // through unrelated parsing, not a theatre (ship-check finding, card #1922
+  // follow-up: sanitizeVenueForWrite previously let "123" through as valid).
+  if (/^\d+$/.test(trimmed)) return { placeholder: true, reason: 'numeric_only' };
 
   return { placeholder: false, reason: null };
 }

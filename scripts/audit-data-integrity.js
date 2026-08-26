@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyFullTextContent } = require('./lib/content-quality');
+const { parseHistoricalDate } = require('./lib/date-utils');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -215,13 +216,13 @@ for (const showDir of showDirs) {
       if (category === 'published_before' && show && data.publishDate) {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
-          const pubDate = new Date(data.publishDate);
-          const earliestDate = new Date(earliest);
+          const pubDate = parseHistoricalDate(data.publishDate);
+          const earliestDate = parseHistoricalDate(earliest);
           // Allow reviews from 30 days before previews start
-          const previewWindow = new Date(earliestDate);
-          previewWindow.setDate(previewWindow.getDate() - 30);
+          const previewWindow = earliestDate ? new Date(earliestDate) : null;
+          if (previewWindow) previewWindow.setDate(previewWindow.getDate() - 30);
 
-          if (pubDate >= previewWindow) {
+          if (pubDate && previewWindow && pubDate >= previewWindow) {
             isFalsePositive = true;
             fpReason = `Published ${data.publishDate}, within preview window (previews: ${earliest})`;
           }

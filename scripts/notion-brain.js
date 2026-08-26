@@ -39,6 +39,7 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 // NOTION_API_KEY, so nothing can require it to learn the string.
 const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
+const { notionCreateVerdict } = require('./lib/notion-write-guard');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -49,29 +50,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 
-function parseArgs(argv) {
-  const args = { _positional: [] };
-  for (let i = 0; i < argv.length; i++) {
-    if (argv[i].startsWith('--')) {
-      const raw = argv[i].slice(2);
-      const eq = raw.indexOf('=');
-      if (eq !== -1) {
-        args[raw.slice(0, eq)] = raw.slice(eq + 1);
-        continue;
-      }
-      const next = argv[i + 1];
-      if (next && !next.startsWith('--')) {
-        args[raw] = next;
-        i++;
-      } else {
-        args[raw] = true;
-      }
-    } else {
-      args._positional.push(argv[i]);
-    }
-  }
-  return args;
-}
+const { parseArgs } = require('./lib/notion-brain-parse-args');
 
 function getTitleValue(prop) {
   if (!prop || prop.type !== 'title') return '';
@@ -249,6 +228,32 @@ async function listAllChildren(pageId) {
   return all;
 }
 
+// Delete the `[auto:<field>] full content` section (heading + its body
+// blocks, up to but not including the next auto heading) if one exists.
+// Shared by writeBodySection (replace) and clear-token handling in
+// updateCard (delete with nothing to replace it — otherwise a cleared
+// property leaves its old overflow body section permanently orphaned,
+// since readFieldWithOverflow only looks at the body when the property text
+// still carries the overflow marker).
+async function deleteBodySectionIfExists(pageId, field, opts = {}) {
+  const targetHeading = bodyHeadingText(field);
+  const children = opts.children || await listAllChildren(pageId);
+
+  const startIdx = children.findIndex(b => getHeadingText(b) === targetHeading);
+  if (startIdx === -1) return;
+  let endIdx = children.length;
+  for (let i = startIdx + 1; i < children.length; i++) {
+    if (isAutoHeading(children[i])) { endIdx = i; break; }
+  }
+  for (const block of children.slice(startIdx, endIdx)) {
+    try {
+      await notion.blocks.delete({ block_id: block.id });
+    } catch (err) {
+      console.error(`Warning: failed to delete block ${block.id}: ${err.message}`);
+    }
+  }
+}
+
 // Write or replace the `[auto:<field>] full content` section in the page body.
 // Idempotent: if a section for this field already exists, delete it and every
 // block up to (but not including) the next auto heading, then append the new
@@ -256,21 +261,7 @@ async function listAllChildren(pageId) {
 async function writeBodySection(pageId, field, text, opts = {}) {
   const targetHeading = bodyHeadingText(field);
   const children = opts.children || await listAllChildren(pageId);
-
-  const startIdx = children.findIndex(b => getHeadingText(b) === targetHeading);
-  if (startIdx !== -1) {
-    let endIdx = children.length;
-    for (let i = startIdx + 1; i < children.length; i++) {
-      if (isAutoHeading(children[i])) { endIdx = i; break; }
-    }
-    for (const block of children.slice(startIdx, endIdx)) {
-      try {
-        await notion.blocks.delete({ block_id: block.id });
-      } catch (err) {
-        console.error(`Warning: failed to delete block ${block.id}: ${err.message}`);
-      }
-    }
-  }
+  await deleteBodySectionIfExists(pageId, field, { children });
 
   const blocks = [
     {
@@ -454,6 +445,34 @@ function armingWarning(notesStr) {
 // ── Commands ────────────────────────────────────────────────────────────
 
 async function createCard(args) {
+  // Linear migration Phase 1 (BRO-377): Notion is read-only for NEW pages.
+  //
+  // FIRST STATEMENT IN THE FUNCTION, deliberately — this guard originally sat
+  // just above notion.pages.create(), which is far too late. Everything between
+  // here and there is validation (notes length, acceptance verifiability,
+  // disposition), and a validation REJECT writes
+  // /tmp/notion-create-failed-${session_id}. notion-create-block.sh then blocks
+  // every subsequent Bash call until a create SUCCEEDS — which under read-only
+  // can never happen. A caller whose card would have failed validation was
+  // therefore wedged permanently, and told to "fix the --notes" when the real
+  // answer is "file it in Linear". That wedged a live owner session twice
+  // before this moved. Refusing before any validation runs means read-only
+  // never emits REJECTED at all, so the breadcrumb is never written.
+  //
+  // Scope is creates only; updates and archives stay allowed. See
+  // scripts/lib/notion-write-guard.js for why gating updates would make
+  // notion-action-poll.js reprocess forever.
+  const writeVerdict = notionCreateVerdict(process.env);
+  if (!writeVerdict.allowed) {
+    console.error(`\n❌ REFUSED — ${writeVerdict.reason}\n`);
+    process.exit(6);
+  }
+  if (writeVerdict.reason) {
+    // Never silent: an unlogged bypass is how a one-off exception becomes the
+    // new normal.
+    console.error(`⚠️  ${writeVerdict.reason}`);
+  }
+
   const title = args._positional[1];
   if (!title) {
     console.error('Usage: notion-brain create "Card title" [--status ...] [--priority ...] ...');
@@ -937,42 +956,61 @@ async function updateCard(args) {
 
   // Collect per-field overflow so we can write body sections after update.
   const overflow = {};
+  // Fields cleared this call — their old overflow body section (if any) must
+  // be deleted, not just left orphaned (the property no longer carries the
+  // overflow marker once cleared, so readFieldWithOverflow would never find
+  // it again).
+  const clearBodySections = [];
+  const isClearToken = v => v === '' || v === 'none' || v === 'clear';
 
-  if (args.notes) {
-    // Same hoist as createCard above — see that comment for why.
-    const notesText = hoistRecheckAfterStamp(args.notes);
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
-    properties.Notes = propertyValue;
-    if (bodyText) overflow.notes = bodyText;
+  if (args.notes !== undefined) {
+    if (isClearToken(args.notes)) {
+      properties.Notes = { rich_text: [] };
+      clearBodySections.push('notes');
+    } else {
+      // Same hoist as createCard above — see that comment for why.
+      const notesText = hoistRecheckAfterStamp(args.notes);
+      const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
+      properties.Notes = propertyValue;
+      if (bodyText) overflow.notes = bodyText;
+    }
   }
 
-  if (args.outcome) {
-    // Read existing outcome first, prepend new content. Use the full value
-    // (including any page-body overflow) so prepends don't clobber history.
-    let outcomeText = args.outcome;
+  if (args.outcome !== undefined) {
+    if (isClearToken(args.outcome)) {
+      // Clearing always wins outright — prepend/--overwrite-outcome only make
+      // sense for non-empty replacement text ("prepend empty string" is a
+      // no-op either way).
+      properties.Outcome = { rich_text: [] };
+      clearBodySections.push('outcome');
+    } else {
+      // Read existing outcome first, prepend new content. Use the full value
+      // (including any page-body overflow) so prepends don't clobber history.
+      let outcomeText = args.outcome;
 
-    if (args['append-outcome'] !== undefined || !args['overwrite-outcome']) {
-      try {
-        const existing = await notion.pages.retrieve({ page_id: pageId });
-        const existingPropText = getRichTextValue(existing.properties.Outcome);
-        const existingOutcome = await readFieldWithOverflow(
-          pageId,
-          existingPropText,
-          'outcome'
-        );
-        if (existingOutcome) {
-          outcomeText = outcomeText + '\n\n---\n\n' + existingOutcome;
+      if (args['append-outcome'] !== undefined || !args['overwrite-outcome']) {
+        try {
+          const existing = await notion.pages.retrieve({ page_id: pageId });
+          const existingPropText = getRichTextValue(existing.properties.Outcome);
+          const existingOutcome = await readFieldWithOverflow(
+            pageId,
+            existingPropText,
+            'outcome'
+          );
+          if (existingOutcome) {
+            outcomeText = outcomeText + '\n\n---\n\n' + existingOutcome;
+          }
+        } catch {
+          // If we can't read existing, just use new content
         }
-      } catch {
-        // If we can't read existing, just use new content
       }
+
+      outcomeText = hoistRecheckAfterStamp(outcomeText);
+
+      const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
+      properties.Outcome = propertyValue;
+      if (bodyText) overflow.outcome = bodyText;
     }
-
-    outcomeText = hoistRecheckAfterStamp(outcomeText);
-
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
-    properties.Outcome = propertyValue;
-    if (bodyText) overflow.outcome = bodyText;
   }
 
   if (args['key-files']) {
@@ -1014,6 +1052,9 @@ async function updateCard(args) {
 
   for (const [field, text] of Object.entries(overflow)) {
     await writeBodySection(page.id, field, text);
+  }
+  for (const field of clearBodySections) {
+    await deleteBodySectionIfExists(page.id, field);
   }
 
   const card = formatCard(page);
@@ -1387,7 +1428,10 @@ Options (create/update):
   --type "New Feature"      Type: New Feature, Fix, Data Quality, Market Expansion
   --tags scoring,scraping   Tags (comma-separated)
   --notes "## Problem..."   Notes field — REQUIRED on create, validated for quality
+                            On update: "", "none", or "clear" empties the field
   --outcome "## Summary"    Outcome (prepends to existing by default)
+                            On update: "", "none", or "clear" empties the field
+                            (wins outright — ignores --overwrite-outcome/--append-outcome)
   --key-files "file.js"     Key Files field
   --auto STATE              (update only) Autonomous-loop state select: queued,
                             attempted, needs-approval, approved, merged,

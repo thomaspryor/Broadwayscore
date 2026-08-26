@@ -696,6 +696,24 @@
     "title": "Canon checklists show wrong-production poster art (In the Heights CenterREP, Avenue Q London)",
     "project": "Infrastructure"
   },
+  "576": {
+    "linearId": "4f366ffb-7867-43ae-a1ac-192211808164",
+    "identifier": null,
+    "title": "Brand monitor: owner Instagram URLs leak past filter (subdomain + /popular topic page)",
+    "project": "Archive"
+  },
+  "579": {
+    "linearId": "733f1486-dd31-468c-81a9-3fe0413624f5",
+    "identifier": null,
+    "title": "iOS Maestro CI: bookmark-toggle.yaml permanently red — dev-test account has rated all top Now Playing shows",
+    "project": "Archive"
+  },
+  "580": {
+    "linearId": "3b153dc9-93ae-4e42-9b3b-abe953546493",
+    "identifier": null,
+    "title": "iOS Browse: CRITICS/AUDIENCE toggle overlaps status-filter row (pre-existing, horizontal ScrollView flexShrink gap)",
+    "project": "Archive"
+  },
   "586": {
     "linearId": "c908243a-b959-4b54-b3b8-64e859b7ded7",
     "identifier": "BRO-120",
@@ -1436,6 +1454,12 @@
     "title": "Fix Tony predictions page: premature winner predictions for new season",
     "project": "Infrastructure"
   },
+  "1244": {
+    "linearId": "b658a349-99e7-425f-9ebb-e1c87a9a9b1d",
+    "identifier": "BRO-2327",
+    "title": "Generalize outlet stub-rate monitor to invalid-tier extraction failures",
+    "project": "Coverage pipeline"
+  },
   "1246": {
     "linearId": "e7e93609-d3cd-4331-9a6f-5e7d8787ff36",
     "identifier": "BRO-237",
@@ -1578,5 +1602,785 @@
     "identifier": "BRO-262",
     "title": "Show Score audience scraper: LLM page-validator rejects valid pages, 0% success",
     "project": "Scoring quality"
+  },
+  "1325": {
+    "linearId": "edff00a1-d18c-4950-b3b4-f3648393e81a",
+    "identifier": null,
+    "title": "P1: relax aggregator-outlet-refinement refusal now that validator has the star-stub carve-out (#1194 follow-up)",
+    "project": "Coverage pipeline"
+  },
+  "1328": {
+    "linearId": "6a0bc2e2-525f-42b6-bc92-40e631ad6a03",
+    "identifier": null,
+    "title": "P1: found-outlet-ids masks 88 unscored+blockedReviewUrl files corpus-wide (29 outlets incl. Telegraph, The Stage, Playbill)",
+    "project": "Scoring quality"
+  },
+  "1347": {
+    "linearId": "05b8842f-9259-462f-9ff7-e224d357fc8e",
+    "identifier": null,
+    "title": "iOS E2E: show/[slug], settings, rate/[showId] coverage",
+    "project": "iOS"
+  },
+  "1423": {
+    "linearId": "43ab4f74-7b18-49c3-bfbc-653e1a0449b7",
+    "identifier": null,
+    "title": "4 more scripts carry the unreviewed !openingDate guard (cousin of #1409)",
+    "project": "Archive"
+  },
+  "1442": {
+    "linearId": "5cacacfd-1ec9-4f51-ac24-417354044911",
+    "identifier": "BRO-2328",
+    "title": "Audit gate: catch workflows that write a CORE_FILES path but never call push-core-data",
+    "project": "Infrastructure"
+  },
+  "1448": {
+    "linearId": "e6f517e2-32d4-46ec-8ca3-36a4c1480f08",
+    "identifier": null,
+    "title": "Off-West-End browse search can't find closed shows (same bug class as #1429)",
+    "project": "Archive"
+  },
+  "1453": {
+    "linearId": "8fac9b21-e7db-4d30-a828-d7d050f8af54",
+    "identifier": null,
+    "title": "P1: discovery reconciliation needs source-agreement + concurrency hardening (follow-up to #1446)",
+    "project": "Coverage pipeline"
+  },
+  "1457": {
+    "linearId": "3be58f86-8a29-4e87-83b5-2cd4cddd041c",
+    "identifier": null,
+    "title": "Vercel deploy stuck 15+min: cancel-cascade under concurrent push load blocks all deploys",
+    "project": "Infrastructure"
+  },
+  "1469": {
+    "linearId": "f9c1c0c8-e925-4ce2-90a9-f402462bf2fd",
+    "identifier": null,
+    "title": "Generalize dead-commit-step detection: blocking CI rule for git-commit-with-zero-git-add",
+    "project": "Infrastructure"
+  },
+  "1502": {
+    "linearId": "ef729cf2-f9c3-4b02-acfc-5f23c8e7ecbe",
+    "identifier": null,
+    "title": "Surface shallow shared-checkout state in the daily health digest",
+    "project": "Infrastructure"
+  },
+  "1526": {
+    "linearId": "bf24de12-8c24-4700-818d-1ce9f5a279a0",
+    "identifier": null,
+    "title": "BRO-232 S4: digest-autofix queue hygiene — row-family key, decision routing, digest split",
+    "project": "Infrastructure"
+  },
+  "1566": {
+    "linearId": "43e65e6b-3738-4157-8647-09dbf4420cc3",
+    "identifier": "BRO-2329",
+    "title": "Network-tier publishDate backfill: close the remaining ~2900 undated reviews",
+    "project": "Archive"
+  },
+  "1571": {
+    "linearId": "819ac4d8-5a7d-4e1f-94c7-a3560d1ff255",
+    "identifier": "BRO-2330",
+    "title": "Commercial Scorecard: signup-gate the entire card (blur + preview for signed-out users)",
+    "project": "Archive"
+  },
+  "1573": {
+    "linearId": "f1825465-a771-4c00-959e-8472315863bf",
+    "identifier": null,
+    "title": "Clean up 10 byline-explosion review clusters (buried/unscored reviews)",
+    "project": "Scoring quality"
+  },
+  "1577": {
+    "linearId": "7ec75047-3043-4091-8b3e-c60ded277683",
+    "identifier": "BRO-2331",
+    "title": "Test Suite red on main — mobile-shows.json: 6 closed shows without scored reviews",
+    "project": "Archive"
+  },
+  "1581": {
+    "linearId": "62676635-0ea0-4fbc-8d80-b200df6bc7dc",
+    "identifier": null,
+    "title": "CI health: ~75% of test.yml runs on main cancel before validating (data-commit churn)",
+    "project": "Infrastructure"
+  },
+  "1582": {
+    "linearId": "c061a52e-aa67-4b5b-bcee-7a88a56eff29",
+    "identifier": "BRO-2332",
+    "title": "NYT bot-stub reviews mislabeled contentTier=complete (scored on partial text)",
+    "project": "Archive"
+  },
+  "1583": {
+    "linearId": "cf324560-1cfd-4747-b2fd-0413d914ffa1",
+    "identifier": "BRO-2333",
+    "title": "Comparative within-show anchored scoring (fix 97-clustering)",
+    "project": "Archive"
+  },
+  "1584": {
+    "linearId": "3516a5ec-b304-4dba-bc97-f556d39ed12e",
+    "identifier": "BRO-2334",
+    "title": "Audit other content-quality detectors for buried-signature misses (404 cousin)",
+    "project": "Archive"
+  },
+  "1585": {
+    "linearId": "e28f7e93-8803-4ce5-8271-bda54caf9ed6",
+    "identifier": "BRO-2335",
+    "title": "Sweep OB anticipatory_pre_opening_post flags (retroactive OB 14-day grace)",
+    "project": "Archive"
+  },
+  "1586": {
+    "linearId": "05c7d6b4-2e24-4033-879c-4c08ee54a5ad",
+    "identifier": "BRO-2336",
+    "title": "Newsletter Phase 2: edit/approve via +claude alias",
+    "project": "Archive"
+  },
+  "1587": {
+    "linearId": "6b8eeb03-7ffb-47e1-ab1e-5c0a257ff29c",
+    "identifier": "BRO-2337",
+    "title": "Decide on IG collab with 1minutecritic Tony series",
+    "project": "Archive"
+  },
+  "1588": {
+    "linearId": "b5598988-175a-4cbf-b98b-8a3e6c8123aa",
+    "identifier": "BRO-2338",
+    "title": "Subject line generator for Weekly Round-up email",
+    "project": "Archive"
+  },
+  "1593": {
+    "linearId": "73a9ec54-c55f-491b-9c5a-09bfae29eb4f",
+    "identifier": null,
+    "title": "Score recalibration and star rating extraction policy",
+    "project": "Archive"
+  },
+  "1594": {
+    "linearId": "57dd4b6f-05bc-4507-90d1-2e78569a3afa",
+    "identifier": "BRO-2339",
+    "title": "Audit show-page ticket CTA — Hamilton/Wicked leaking conversion 6x vs Death of a Salesman",
+    "project": "Archive"
+  },
+  "1595": {
+    "linearId": "234704ad-d224-42e6-8a1d-1cc661f7b269",
+    "identifier": "BRO-2340",
+    "title": "Switch headline traffic KPI to engaged sessions (drop Direct bots)",
+    "project": "Archive"
+  },
+  "1596": {
+    "linearId": "f4437b4f-38ec-4f79-a01f-1f1dc0685e58",
+    "identifier": "BRO-2341",
+    "title": "outlet-registry tier-4 schema mismatch breaks Test Suite",
+    "project": "Archive"
+  },
+  "1597": {
+    "linearId": "adf68d11-4de4-4ad8-ad8a-8eab252b9374",
+    "identifier": "BRO-2342",
+    "title": "Pitch kit: forwardable blurb for industry intros",
+    "project": "Archive"
+  },
+  "1598": {
+    "linearId": "b9556396-c44d-4059-8b2e-069d73fffa5f",
+    "identifier": "BRO-2343",
+    "title": "Ask Dennis T to mentor (Tony voter + coproducer path)",
+    "project": "Archive"
+  },
+  "1599": {
+    "linearId": "e5eb270e-c204-4f23-b787-2e6c02d6856f",
+    "identifier": "BRO-2344",
+    "title": "Meet with Kevin McCollum (lead producer, Two Strangers)",
+    "project": "Archive"
+  },
+  "1600": {
+    "linearId": "becce409-4e31-4588-9b0a-d3fdbb02c4f9",
+    "identifier": "BRO-2345",
+    "title": "CI Test Suite red on main since 2026-05-02 — contamination audit (7 strict) + npm audit high severity",
+    "project": "Archive"
+  },
+  "1601": {
+    "linearId": "a5f559a7-a940-4ac0-9cab-5f2a51a90dc2",
+    "identifier": "BRO-2346",
+    "title": "Author-page critic discovery — NYT/New Yorker/Vulture/BWW per-critic indexes as a coverage gate",
+    "project": "Archive"
+  },
+  "1602": {
+    "linearId": "17d17779-730a-4776-8f08-0682f81c2b6c",
+    "identifier": "BRO-2347",
+    "title": "Tier 2: Stale wrongProduction recovery — find current review when old URL was SERP-matched",
+    "project": "Archive"
+  },
+  "1605": {
+    "linearId": "3271d623-a663-4c43-9135-8d5bea6af150",
+    "identifier": null,
+    "title": "notion-create-verify.sh sentinel not written for successful notion-brain.js create --dispatch when downstream bsc-next dispatch fails",
+    "project": "Infrastructure"
+  },
+  "1615": {
+    "linearId": "1eb39046-d3c0-4552-acd0-12ff1ca7a883",
+    "identifier": "BRO-2348",
+    "title": "WE long-runner CV hardening (follow-up to wrongProduction clear)",
+    "project": "Scoring quality"
+  },
+  "1616": {
+    "linearId": "954a66e7-3531-478c-9322-e169d0e68b12",
+    "identifier": null,
+    "title": "Fix cyrus-webhook-drain.js missing --help flag safety check (Lint Workflows red on main)",
+    "project": "Infrastructure"
+  },
+  "1621": {
+    "linearId": "822debb9-4b79-4175-b198-90f863d203f6",
+    "identifier": null,
+    "title": "Investigate push-with-retry.sh content-survival false-positive on clean rebases",
+    "project": "Infrastructure"
+  },
+  "1625": {
+    "linearId": "4ca3f276-d79b-41c0-a1a6-90b92194c522",
+    "identifier": null,
+    "title": "Build CI detector for delete-without-breadcrumb bug class (safeWriteReview)",
+    "project": "Site & product"
+  },
+  "1644": {
+    "linearId": "e2d59f43-3954-4292-8d8b-e53ae76aca2d",
+    "identifier": null,
+    "title": "Pivot Reddit distribution to creator partners",
+    "project": "Archive"
+  },
+  "1646": {
+    "linearId": "c837d084-9deb-47b1-a903-d64e2fce7f91",
+    "identifier": null,
+    "title": "Extract shared resolveWriteTarget() — classifyMarketRouting caller idiom is now duplicated in 3 write paths",
+    "project": "Infrastructure"
+  },
+  "1647": {
+    "linearId": "58739342-79af-4d80-9994-2a3c3e34aec2",
+    "identifier": null,
+    "title": "Playbill Verdict Google-fallback: unmatchedShows deletes on tentative match before validation",
+    "project": "Infrastructure"
+  },
+  "1650": {
+    "linearId": "ea0a0df1-62ea-4cdc-8e8a-35bac18b3522",
+    "identifier": null,
+    "title": "Cross-show URL contamination: the-outsiders-world-premiere-regional-2023 vs the-outsiders-2024",
+    "project": "Scoring quality"
+  },
+  "1654": {
+    "linearId": "69531977-30a5-48e7-a316-2bb744cb2a7c",
+    "identifier": null,
+    "title": "Corpus-wide sibling-misfile archive cleanup: 158 shows found in Show Score archive",
+    "project": "Scoring quality"
+  },
+  "1657": {
+    "linearId": "065b7cc6-8a49-4a20-9002-794a88b3c938",
+    "identifier": null,
+    "title": "P1: audit-time-bomb-tests.js only scans the node manifest, blind to tsx/e2e-unit tests",
+    "project": "Infrastructure"
+  },
+  "1658": {
+    "linearId": "d4cc7bbc-4e23-4173-a2af-754f1db44292",
+    "identifier": null,
+    "title": "P1: RECHECK-AFTER verdicts are silently discarded when data-health-check's commit step loses a push race",
+    "project": "Infrastructure"
+  },
+  "1660": {
+    "linearId": "8b376853-8cc3-4ad9-806e-a2d034d7c69d",
+    "identifier": null,
+    "title": "P1: cast-changes-real-data.test.mjs + validate-added-review-ownership.test.mjs are time bombs, fail in 30 days",
+    "project": "Infrastructure"
+  },
+  "1662": {
+    "linearId": "bc790ebf-6cc2-4c7f-8d9a-6728265231d7",
+    "identifier": null,
+    "title": "CI guard: fail if a test writes to a real tracked data/*.json path outside tmp",
+    "project": "Infrastructure"
+  },
+  "1663": {
+    "linearId": "a3e96e57-2352-47f4-9574-3e17d70c8446",
+    "identifier": null,
+    "title": "Audit health-check.js checks for the same CI-blind per-machine-ledger gap #1648 just fixed",
+    "project": "Infrastructure"
+  },
+  "1664": {
+    "linearId": "a341ae96-219a-42b0-8783-e97ec6ffe8fa",
+    "identifier": null,
+    "title": "Session: CI lint guard for Broadway-category re-derivations (#1496)",
+    "project": "Infrastructure"
+  },
+  "1674": {
+    "linearId": "bd663b88-3ecd-4782-915f-d01014c7ac75",
+    "identifier": null,
+    "title": "P1: time-bomb audit found stale-sentinel test fails at +30d in validate-data-push-refusal-sentinel.test.mjs",
+    "project": "Infrastructure"
+  },
+  "1684": {
+    "linearId": "87dcc60f-f12a-48b3-826c-b49d7457dac3",
+    "identifier": null,
+    "title": "P1: 88 worktrees / 76GB filled the disk to 100% — ENOSPC killed local verification mid-session",
+    "project": "Infrastructure"
+  },
+  "1687": {
+    "linearId": "080617be-7674-49b8-a041-709f5e6fe73f",
+    "identifier": null,
+    "title": "Audit 14 scraper/collector scripts for the same Guard A bypass as verify-sent-vs-state cousins (theatre-reviews/thestage precedent)",
+    "project": "Coverage pipeline"
+  },
+  "1688": {
+    "linearId": "39e9172e-9cbc-4595-9819-b693545a2b1b",
+    "identifier": "BRO-2349",
+    "title": "CI red: lint-resend-calls.js flags scripts/newsletter/verify-sent-vs-state.mjs (read-only GET, not a send)",
+    "project": "Infrastructure"
+  },
+  "1689": {
+    "linearId": "4b96bd59-a35c-4d2d-8522-39b85400f199",
+    "identifier": null,
+    "title": "Structural: new blocking CI gates land straight on main with no pre-merge proof, so main flickers red daily",
+    "project": "Infrastructure"
+  },
+  "1700": {
+    "linearId": "f168ca1c-7b57-4283-9354-3f41b846a655",
+    "identifier": null,
+    "title": "P1: schedule sync-drift so in_progress staleness (#1691) does not reaccumulate",
+    "project": "Infrastructure"
+  },
+  "1703": {
+    "linearId": "631b3fc8-4ef0-4b73-903f-b5ecd882dd34",
+    "identifier": "BRO-2350",
+    "title": "sibling-misfile guard (BRO-363) rejects 154 show-score.json entries at full-corpus scale - confirm intended",
+    "project": "Scoring quality"
+  },
+  "1711": {
+    "linearId": "7d20a8ce-6768-4779-8af1-baa59e411089",
+    "identifier": null,
+    "title": "P1: stale VERIFY owner-judgment markers permanently starve 6 pending technical cards of dispatch — nothing re-evaluates a marker once written",
+    "project": "Infrastructure"
+  },
+  "1714": {
+    "linearId": "401cc7d9-612a-479a-a5cf-cdfa5201a77e",
+    "identifier": "BRO-2351",
+    "title": "Wire headless dispatch success rate into the daily digest",
+    "project": "Infrastructure"
+  },
+  "1718": {
+    "linearId": "9cf4cb38-56aa-4a05-a5d3-5a7cf5dc942a",
+    "identifier": null,
+    "title": "P1: Bright Data is over its $2.50/day alarm line on 17 of 17 recorded days (~$7.60/day, ~3x budget) and nobody owns it — split out of the T4 verification P0",
+    "project": "Infrastructure"
+  },
+  "1721": {
+    "linearId": "e0c3b043-291d-4285-9d92-e854e2d66b03",
+    "identifier": null,
+    "title": "P1: TypeScript-backed cards are unclosable by the verify gate — the allowlist only permits node --test *.test.mjs, and a .mjs cannot import a TS module with extensionless internal imports (4th starvat",
+    "project": "Infrastructure"
+  },
+  "1722": {
+    "linearId": "c4d4782e-9bcb-42e3-81ad-17220f0d8c4f",
+    "identifier": null,
+    "title": "Card #1226 status/reason mismatch: local shows completed, but its own triage reason says do-not-close (RECHECK-AFTER not passed)",
+    "project": "Infrastructure"
+  },
+  "1729": {
+    "linearId": "6eb92364-c52b-40cb-bbee-70127af9e118",
+    "identifier": "BRO-2352",
+    "title": "P1: prove the BWW roundup fix actually recovers reviews — yield provenance + Broadway replay + missing 4th roundup",
+    "project": "Infrastructure"
+  },
+  "1730": {
+    "linearId": "ee7e534e-3b7c-4001-baa0-6576d4a04d26",
+    "identifier": null,
+    "title": "Main red 2026-08-17: cats-west-end-2026 london-box-office--phil-willmott.json is a mis-attributed roundup, not a review",
+    "project": "Infrastructure"
+  },
+  "1732": {
+    "linearId": "d5b909a5-f45f-4c24-b4a3-d4cb0b4a0f9a",
+    "identifier": null,
+    "title": "P1: white-rabbit-red-rabbit-west-end-2026 wrong-production-by-date — thestage/dave-fargnoli",
+    "project": "Infrastructure"
+  },
+  "1742": {
+    "linearId": "661e6972-0877-434e-8629-b83b4c65fd4b",
+    "identifier": "BRO-2353",
+    "title": "record-push-ledger.js prints the git remote URL verbatim, leaking the embedded GitHub token into logs",
+    "project": "Infrastructure"
+  },
+  "1755": {
+    "linearId": "63c7f3d1-db29-4f4a-8766-0526cc71bfb8",
+    "identifier": "BRO-2354",
+    "title": "Notion→Linear cutover Sprint 3: ledger apply, dedupe removal, idempotent importer",
+    "project": "Infrastructure"
+  },
+  "1757": {
+    "linearId": "10cd3c0b-6eea-40c2-b7be-640b7f0d0b8a",
+    "identifier": "BRO-2355",
+    "title": "P1: CI red on main — outlet-registry.json domain collision, heraldscotland.com claimed by both herald and the-herald",
+    "project": "Coverage pipeline"
+  },
+  "1771": {
+    "linearId": "65d1c9eb-05f5-4a22-81d1-7f32262f22fb",
+    "identifier": "BRO-2356",
+    "title": "P1: main red — flag-vs-CV contradiction, the-pass-off-broadway-2026 broadwayworld--nicole-rosky.json",
+    "project": "Infrastructure"
+  },
+  "1787": {
+    "linearId": "7e2aa52b-98f9-4cce-acc1-10b8c0d1b1f9",
+    "identifier": "BRO-2357",
+    "title": "P0 fix: Sound of Music dup blocks update-show-status.yml (#1786)",
+    "project": "Infrastructure"
+  },
+  "1788": {
+    "linearId": "61a7c4cf-0def-447e-9964-358844b75b6a",
+    "identifier": "BRO-2358",
+    "title": "P1: opening-night-poller auto runs cancel-cascade — 6 of 8 cancelled, 5h discovery dead zone on press night",
+    "project": "Opening night"
+  },
+  "1805": {
+    "linearId": "4082b33e-339b-4a09-b068-2fa1c4ceff71",
+    "identifier": "BRO-2359",
+    "title": "RECHECK FAILED: context-budget guard fix (task #1344/commits 54d8702+787a898) has NOT reduced above-200K spend",
+    "project": "Infrastructure"
+  },
+  "1806": {
+    "linearId": "a6064ff8-4e8d-49c4-a661-a5dad69aba45",
+    "identifier": "BRO-2360",
+    "title": "P1: WSJ URL re-discovery + refetch for 33 recent wrong_content files (finish owner mandate: all WSJ full texts)",
+    "project": "Coverage pipeline"
+  },
+  "1807": {
+    "linearId": "319fe463-4bf2-42b4-94bf-b5d10f0cb180",
+    "identifier": "BRO-2361",
+    "title": "Time-boxed: can the real-browser login method beat newspapers.com's viewer? (access ends 2026-08-27)",
+    "project": "Infrastructure"
+  },
+  "1808": {
+    "linearId": "600e2cd6-e5bd-4a58-af0f-013a5ceedf3f",
+    "identifier": "BRO-2362",
+    "title": "Feedback auto-fix scopes multi-show reports to a single showId — second show silently dropped (issue #515)",
+    "project": "Infrastructure"
+  },
+  "1809": {
+    "linearId": "d371b9da-5784-45dc-86a8-aa1ecf0bdda3",
+    "identifier": "BRO-2363",
+    "title": "P1: 22 worktrees hold 36 unpushed commits (31GB) — no audit surfaces them, and closing their tabs orphans the work",
+    "project": "Infrastructure"
+  },
+  "1820": {
+    "linearId": "683dca1b-a45e-4298-abfa-063710220097",
+    "identifier": "BRO-2364",
+    "title": "P1: sync-audit-checkout reset path cannot clear a NEWLY-ADDED staged data/audit snapshot, wedging every launchd job",
+    "project": "Infrastructure"
+  },
+  "1824": {
+    "linearId": "a0f4103f-c86e-4ce5-adb3-105180330c9d",
+    "identifier": "BRO-2365",
+    "title": "Silent overwrite: 2nd review by same critic+outlet for same show clobbers 1st",
+    "project": "Coverage pipeline"
+  },
+  "1825": {
+    "linearId": "2bb0d812-b175-4a4a-a560-24e6c51a594f",
+    "identifier": "BRO-2366",
+    "title": "P1: tests/unit-test-manifest.txt sort-order gate keeps flapping CI red under concurrent sessions",
+    "project": "Infrastructure"
+  },
+  "1831": {
+    "linearId": "725ac555-c9fc-462c-a048-b6000bafcdfc",
+    "identifier": "BRO-2367",
+    "title": "Duplicate Vulture URL across 2 bylines on queen-versailles-2025 blocks main CI (Sara Holdren / David Fox)",
+    "project": "Coverage pipeline"
+  },
+  "1832": {
+    "linearId": "15f9f90b-589e-4f95-81df-5bfa302fa664",
+    "identifier": "BRO-2368",
+    "title": "CI health #1581: verify+lock in test.yml concurrency fix with regression test",
+    "project": "Infrastructure"
+  },
+  "1840": {
+    "linearId": "3bdf9cb3-c01a-4d94-9145-067c488173c1",
+    "identifier": "BRO-2369",
+    "title": "Cloud-memory sync: make merge-aware, not replace-from-master",
+    "project": "Infrastructure"
+  },
+  "1842": {
+    "linearId": "9b9aa3f5-02ac-4d38-89a1-7a7a54960f73",
+    "identifier": "BRO-2370",
+    "title": "P0: data-health-check.yml push-with-retry deadline exhaustion — same class as task #1791, never applied here",
+    "project": "Infrastructure"
+  },
+  "1844": {
+    "linearId": "5216706d-36dc-4db6-9ac9-f2f23069be49",
+    "identifier": "BRO-2371",
+    "title": "Extend outlet-alias-collision detector to hyphen/concatenated near-duplicates",
+    "project": "Coverage pipeline"
+  },
+  "1845": {
+    "linearId": "05abbb9f-6b33-4303-9798-58b2cee0ea2e",
+    "identifier": "BRO-2372",
+    "title": "P1: morning-digest's real (non-refused) auto-fix dispatch is unguarded by any checkout-freshness OR complete kill-switch coverage — LINEAR_NEXT_DISABLED never set",
+    "project": "Coverage pipeline"
+  },
+  "1849": {
+    "linearId": "69085393-8055-4b79-88f5-486a9cb1d2d3",
+    "identifier": "BRO-2373",
+    "title": "P0: push-with-retry.sh shallow-fetch fails identically on every retry under heavy churn (rc=128, discovered via task #1842)",
+    "project": "Infrastructure"
+  },
+  "1851": {
+    "linearId": "6aeb9876-2dd8-49c3-912c-01bc501e864e",
+    "identifier": "BRO-2374",
+    "title": "Triage 28 late-add-flagged shows with no priorRuns/transferOf link",
+    "project": "Infrastructure"
+  },
+  "1852": {
+    "linearId": "bb92e49b-b26a-4cf2-86f0-b1634c4f5da0",
+    "identifier": "BRO-2375",
+    "title": "Column-count brittleness cousins: 4 scrapers still read cells[N] by fixed position after assertTableSchema",
+    "project": "Coverage pipeline"
+  },
+  "1853": {
+    "linearId": "40798af5-5535-46f1-94e8-2515f844a96e",
+    "identifier": "BRO-2376",
+    "title": "reconcile-broadcast-state.js writes opening-night-sent.json locally with no origin sync (manual/CLI runs invisible to CI, same class as BRO-60)",
+    "project": "Opening night"
+  },
+  "1854": {
+    "linearId": "45684215-f512-459c-bfe2-55ce5813be8e",
+    "identifier": "BRO-2377",
+    "title": "send-opening-night-broadcast.js: sync tracker to origin on draft creation (not just preview)",
+    "project": "Opening night"
+  },
+  "1857": {
+    "linearId": "7a540121-c2a6-473b-bcc3-ac3e9e050fd1",
+    "identifier": "BRO-2378",
+    "title": "Audit tool: catch workflows silently missing secrets their scripts require",
+    "project": "Infrastructure"
+  },
+  "1858": {
+    "linearId": "3b6892c3-4a1f-4b33-b850-a83df420aa5b",
+    "identifier": "BRO-2379",
+    "title": "Generalize sticky-flag repeat-vs-new categorization into daily digest exclusion trend",
+    "project": "Infrastructure"
+  },
+  "1859": {
+    "linearId": "34dc2e21-2800-4e1b-91cf-ddcc58434588",
+    "identifier": "BRO-2380",
+    "title": "Extend infra-review-scope.js push-path gate to cover .github/actions/push-*/action.yml",
+    "project": "Infrastructure"
+  },
+  "1860": {
+    "linearId": "c02e65b4-bc21-4a5a-a5c3-76d0b828e33c",
+    "identifier": "BRO-2381",
+    "title": "Fix confirmed REVIEW_TEXTS_TOKEN gap: collect-review-texts.js checkpoint pushes silently no-op",
+    "project": "Coverage pipeline"
+  },
+  "1861": {
+    "linearId": "ec8b4459-4032-498a-8c55-d3edf148cdeb",
+    "identifier": "BRO-2382",
+    "title": "BRO-93: Triage 51 stale 'announced' shows",
+    "project": "Infrastructure"
+  },
+  "1862": {
+    "linearId": "133a6567-51ce-471a-8d4d-d2bf6a2c3b42",
+    "identifier": "BRO-2383",
+    "title": "Systemic fetch()/https.get() timeout audit across scripts/ (BRO-108 follow-up, repo-wide)",
+    "project": "Infrastructure"
+  },
+  "1864": {
+    "linearId": "3a58c1f8-33db-48fc-8099-923a6c4b2eac",
+    "identifier": "BRO-2384",
+    "title": "Investigate: Notion card reverted Done→Not started after Auto-closed, resurfaced as duplicate Linear card BRO-111",
+    "project": "Infrastructure"
+  },
+  "1865": {
+    "linearId": "b511e0a9-5f80-4a31-96cc-a0b132764a21",
+    "identifier": "BRO-2385",
+    "title": "CI red: 2 new flag-vs-CV contradictions (a-christmas-carol-west-end-2026, the-imaginary-invalid-2026)",
+    "project": "Infrastructure"
+  },
+  "1866": {
+    "linearId": "b963634b-3917-41a0-a414-310ddfa016b7",
+    "identifier": "BRO-2386",
+    "title": "Cousin bug: hand-rolled findMatching/findMatchingParen in audit-help-flag-safety.js and audit-same-job-breadcrumb-coverage.js desync on regex literals",
+    "project": "Site & product"
+  },
+  "1868": {
+    "linearId": "c26c4203-36b0-490b-b3cc-7ed10f56b3a6",
+    "identifier": "BRO-2387",
+    "title": "BRO-580: Connect feedback/review forms to Notion",
+    "project": "Infrastructure"
+  },
+  "1870": {
+    "linearId": "c84be763-b3b3-4b1f-b263-e101c04a6d83",
+    "identifier": "BRO-2388",
+    "title": "Fetch-depth:1 exposure — 20 more workflows share task #466's push-race risk",
+    "project": "Infrastructure"
+  },
+  "1871": {
+    "linearId": "5cf6b1ba-e78a-40d8-803b-526a628698cd",
+    "identifier": "BRO-2389",
+    "title": "push-via-git-api.sh fallback failing with 'non-race reason' even when disqualifier eligibility is correct",
+    "project": "Infrastructure"
+  },
+  "1872": {
+    "linearId": "b8a6ebe9-d275-4441-bf76-c64d6d2cb040",
+    "identifier": "BRO-2390",
+    "title": "main is red: duplicate review URL blocking validate-data.js (Loves Labours Lost Globe WE 2026)",
+    "project": "Infrastructure"
+  },
+  "1873": {
+    "linearId": "b9153ac1-8fe1-4d1e-a09d-7b477d62938d",
+    "identifier": "BRO-2391",
+    "title": "Investigate BRO-318 stale-backpointer recurrence: dedupe-same-url-bylines.js gate vs fix-canonical-duplicate-backpointer.js gap",
+    "project": "Coverage pipeline"
+  },
+  "1874": {
+    "linearId": "eb2c8beb-f886-4027-9cd8-0ee8dcd6fcb1",
+    "identifier": "BRO-2392",
+    "title": "Low ticket click volume relative to pageview traffic",
+    "project": "Infrastructure"
+  },
+  "1875": {
+    "linearId": "72ea6a76-14af-4972-bc94-d5ff372f6a1e",
+    "identifier": "BRO-2393",
+    "title": "All ticket clicks routing through TodayTix only — no diversification",
+    "project": "Commercial"
+  },
+  "1876": {
+    "linearId": "c91969b2-f041-4efd-8765-0fdbb8d6ad0d",
+    "identifier": "BRO-2394",
+    "title": "Visual-QA, ship-check, and skill-redaction push gates are Bash-only — bypassed by MCP-based pushes in cloud",
+    "project": "Infrastructure"
+  },
+  "1877": {
+    "linearId": "d526008d-c377-4220-b854-3a6f90cedbe6",
+    "identifier": "BRO-2395",
+    "title": "Audit ~29 stale wrongProductionManualClear review-text files for genuinely-wrong content",
+    "project": "Scoring quality"
+  },
+  "1879": {
+    "linearId": "0e17c63e-85c4-4317-b71e-36f61e53b16f",
+    "identifier": "BRO-2396",
+    "title": "P1: audit-aggregator-gap.yml regressed after task #1791 fix + check-show-freshness.yml failing 2 days straight",
+    "project": "Coverage pipeline"
+  },
+  "1880": {
+    "linearId": "f3498d92-f49c-43a7-a1ab-dfc449ad49f1",
+    "identifier": "BRO-2397",
+    "title": "P1: Mac-local checkout dirty-outside-audit blocking launchd sync — stalls digest/predispatch-queue-audit/backlog-drain",
+    "project": "Infrastructure"
+  },
+  "1881": {
+    "linearId": "65abf186-8127-494b-9044-4e2b4d3cc7ca",
+    "identifier": "BRO-2398",
+    "title": "Aggregator-archive cache poisoning: 3 new bad BWW archives blocking Data Validation CI",
+    "project": "Coverage pipeline"
+  },
+  "1883": {
+    "linearId": "4aae943b-2aeb-4c26-93f1-c9b2066573d7",
+    "identifier": null,
+    "title": "CI lint: block new inline Broadway-category re-derivations (3rd wave found, ~25 more files)",
+    "project": "Infrastructure"
+  },
+  "1884": {
+    "linearId": "7cefd14f-afb6-4483-8818-44baf1cb9d1b",
+    "identifier": "BRO-2399",
+    "title": "Commercial data: 33 show(s) awaiting your review",
+    "project": "Commercial"
+  },
+  "1885": {
+    "linearId": "7606d5db-c982-4815-a7d1-abfe04327584",
+    "identifier": "BRO-2400",
+    "title": "Audience-buzz title-collision sweep (revival/year cross-production Reddit contamination)",
+    "project": "Scoring quality"
+  },
+  "1886": {
+    "linearId": "b9bea6ad-6b60-4321-aaf9-bdea01f995f8",
+    "identifier": "BRO-2401",
+    "title": "Reddit post: Paranormal Activity opening + pre-Broadway reveal",
+    "project": "Marketing/distribution"
+  },
+  "1889": {
+    "linearId": "3c4648d6-6abe-4976-a185-6024260f6680",
+    "identifier": "BRO-2402",
+    "title": "Opening Night Express fires too early for evening openings, never retries when it finds 0 real reviews",
+    "project": "Opening night"
+  },
+  "1892": {
+    "linearId": "3e1ec1cb-249d-4176-b7b8-f93f7d0f74e5",
+    "identifier": "BRO-2403",
+    "title": "P1: critic personal-repost sites ingested as independent outlets (double-counts one critic)",
+    "project": "Coverage pipeline"
+  },
+  "1894": {
+    "linearId": "54ed9f1d-db71-43f8-b865-33e76bdeee36",
+    "identifier": "BRO-2404",
+    "title": "P1: sync-memory-to-repo.sh pull --rebase wedges shared main checkout (#1893)",
+    "project": "Infrastructure"
+  },
+  "1899": {
+    "linearId": "284c9813-0d46-4281-be2f-5ae3fab4d891",
+    "identifier": "BRO-2405",
+    "title": "CI red: 2 new flag-vs-CV contradictions (paranormal-activity-2026)",
+    "project": "Infrastructure"
+  },
+  "1900": {
+    "linearId": "f336f6bb-3975-488a-aeec-c1aeb35b7131",
+    "identifier": "BRO-2406",
+    "title": "P1: Cross-outlet syndication duplicates re-enter reviews.json (3rd incident — Chicago Tribune/Chris Jones recurred after delete)",
+    "project": "Coverage pipeline"
+  },
+  "1902": {
+    "linearId": "07be001e-c61c-43b7-b789-53e73af63d50",
+    "identifier": "BRO-2407",
+    "title": "Reviews with fullText added or wrongProduction false-positive cleared don't auto-flag needsRescore — scores go stale silently",
+    "project": "Scoring quality"
+  },
+  "1906": {
+    "linearId": "e08cfd11-fa1e-4152-a888-9a66c3b40154",
+    "identifier": "BRO-2408",
+    "title": "generate-related-shows.js computes scores from reviews.json alone, same drift class as BRO-339",
+    "project": "Scoring quality"
+  },
+  "1907": {
+    "linearId": "9ae3d450-964f-497a-b438-c85c73fa2fde",
+    "identifier": "BRO-2409",
+    "title": "P1: cycle-clear leaves same-URL review clusters fully unsuppressed; no placeholder-byline canonical rule (31 double-counting groups)",
+    "project": "Coverage pipeline"
+  },
+  "1908": {
+    "linearId": "d5b70b52-01c2-46df-b2cb-9da3a547c4f5",
+    "identifier": "BRO-2410",
+    "title": "blog-reviews-for-scoring.json generator has been silently producing 0 entries — content frontmatter uses show:, generator requires showSlug:",
+    "project": "Scoring quality"
+  },
+  "1909": {
+    "linearId": "d3c3ce9a-ff7f-494b-b1c1-62ce6aceff17",
+    "identifier": "BRO-2411",
+    "title": "clear-stale-wrong-show-flags.js has no schedule — 66-review backlog silently dropped from scoring",
+    "project": "Scoring quality"
+  },
+  "1910": {
+    "linearId": "226275f5-9f80-4805-9170-f9e6e64919a0",
+    "identifier": "BRO-2322",
+    "title": "Audit push-with-retry.sh callers for the same job-timeout/retry-budget undersizing class as #1842 and #1891",
+    "project": "Infrastructure"
+  },
+  "1911": {
+    "linearId": "ab9318fc-67f9-4529-883c-55e50d9522fd",
+    "identifier": "BRO-2323",
+    "title": "clear-stale-roundup-flags.js has no schedule — 6-review backlog silently dropped from scoring",
+    "project": "Scoring quality"
+  },
+  "1912": {
+    "linearId": "4d3a79b8-730c-4fdb-9a40-b822ad8171e2",
+    "identifier": "BRO-2324",
+    "title": "P1: cycle-clear leaves same-URL review clusters fully unsuppressed; no placeholder-byline canonical rule",
+    "project": "Coverage pipeline"
+  },
+  "1913": {
+    "linearId": "aac9723e-02ee-4b9e-8acb-d51972cdb157",
+    "identifier": "BRO-2325",
+    "title": "Email triage: trunk RED / Data Validation failing, Data Health Check crash, Opening Night Express fail (paranormal-activity-2026), scraper cost + PR backlog",
+    "project": "Opening night"
+  },
+  "1914": {
+    "linearId": "9eaecfd2-7bb2-4f6f-a773-be7495a4bf5c",
+    "identifier": "BRO-2326",
+    "title": "Infra: opening-night-sent.json sync has no timestamp-aware conflict resolution across concurrent writers",
+    "project": "Opening night"
+  },
+  "1915": {
+    "linearId": "023fa58d-2989-4430-927c-c3ff059bb811",
+    "identifier": "BRO-2412",
+    "title": "P1: dispatch-watchdog --health only checks heartbeat age, not whether dispatches are actually flowing",
+    "project": "Infrastructure"
   }
 }

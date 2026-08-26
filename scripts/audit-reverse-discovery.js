@@ -10,7 +10,10 @@
  *   - BW/OB:  DTLI shows-sitemap entries (last 2 sitemaps) with a recent
  *     lastmod. DTLI creates/updates a show page around opening night.
  *   - BW/OB:  BroadwayWorld's Google-News sitemap (bwwgnewsbway.cfm) — a
- *     same-day rolling window of ~100 recent Broadway-section articles.
+ *     rolling window of ~100 recent Broadway-section articles (live-verified
+ *     2026-07-26: 99 articles spanning ~5 days, NOT same-day — see BRO-114 /
+ *     docs/bww-reverse-discovery-backfill-visibility.md for why that window
+ *     size is the binding constraint on cron-downtime tolerance).
  *     BWW publishes a "Review Roundup: TITLE, ..." article for essentially
  *     every notable BW/OB opening (fetch-bww-roundups.js's hardcoded URL map
  *     covers ~25 of these retroactively; this is the live discovery feed

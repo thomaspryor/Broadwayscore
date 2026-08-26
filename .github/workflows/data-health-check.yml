@@ -58,7 +58,35 @@ jobs:
     # real headroom to reach its own new 900s deadline even after every step
     # ahead of it in this job. Nowhere near GitHub Actions' 360-min hard job
     # ceiling.
-    timeout-minutes: 45
+    # Raised 45->60 (Notion 3c4637c5-416f-8127, run 32559247279 push-race): the new "Commit digest snapshot" step
+    # (17min cap, same 900s-deadline sizing as the ledger step) runs BEFORE
+    # "Commit health check + triage data", so its worst case adds fully on
+    # top of every budget this comment already accounts for — and because
+    # both steps' pushes can genuinely contend with the SAME concurrent
+    # main-branch churn in the same run (that's the whole reason either one
+    # exists), a correlated worst case where both hit their full 900s
+    # deadline is a real scenario for this job, not just an independent-step
+    # sum.
+    # Raised 60->135 (ship-check finding — two independent reviewers both
+    # caught this — run 32625283171 push-race, follow-up to the digest-
+    # isolation fix): added ANOTHER 17min-capped push step, "Commit health
+    # check audit snapshots (apiFallbackSafe)", between "Commit digest
+    # snapshot" and "Commit health check + triage data". Following this
+    # comment's own established convention (sum every step's explicit
+    # timeout-minutes, then size the job ceiling above that sum with real
+    # margin — see every prior raise above): summing all 14 currently-capped
+    # steps (5+5+17+3+5+2+2+2+2+4+4+4+17+17 = 89min) plus the final "Commit
+    # health check + triage data" step's own worst case (uncapped, but
+    # governed by the same 900s PUSH_DEADLINE_SEC as its capped siblings —
+    # budget it the same ~17min those get) plus ~10min for the remaining
+    # uncapped setup/scan steps (checkout, install, run health check, E2E
+    # canary, provider spend reconciliation, the two artifact uploads) gives
+    # a worst-case theoretical ceiling around 116min. 135 gives real headroom
+    # above that, not a bare-minimum fit — this job pages the owner on ANY
+    # failure including a job-level timeout kill, so cheap margin here is
+    # worth more than a tight number, and even 135 is nowhere near GitHub
+    # Actions' 360-min hard job ceiling.
+    timeout-minutes: 135
     permissions:
       contents: write
       issues: write
@@ -461,6 +489,131 @@ jobs:
           node scripts/linear-archive-done.js || true
           node scripts/check-linear-cap.js --alert
 
+      # Digest snapshot artifact backup (Notion 3c4637c5-416f-8127 (run 32559247279 push-race), same BRO-386 pattern as
+      # "Upload acceptance recheck ledger" above). data/audit/health-digest-
+      # snapshot.json is the ONE file scripts/autonomous-email.js:51 actually
+      # reads (HEALTH_DIGEST_PATH) to build the owner's single scheduled
+      # morning email — and it's the file this job's own "Notify on failure"
+      # step (bottom of this job) blames by name when the commit below fails
+      # ("its digest snapshot may not have written"). Uploaded BEFORE the
+      # isolated commit so this run's snapshot is recoverable from the Actions
+      # run page (90-day retention) even if the push that follows loses its
+      # race entirely.
+      - name: Upload digest snapshot (artifact backup)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: digest-snapshot-${{ github.run_id }}
+          path: data/audit/health-digest-snapshot.json
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # Commit digest snapshot in its OWN small, isolated commit+push (task
+      # #1868), split out of the bulk "Commit health check + triage data"
+      # step below — same reasoning as BRO-386's "Commit acceptance recheck
+      # ledger" isolation earlier in this job. Root cause of the split: run
+      # 32559247279 (2026-08-22T07:32Z) bundled health-digest-snapshot.json
+      # with 14 OTHER data/audit/* files into one commit; that commit's push
+      # lost the race against main's concurrent commit traffic 7 times in a
+      # row and hit push-with-retry.sh's 900s deadline, so NONE of the 15
+      # files landed — including the one file this job's failure alert
+      # specifically claims is at risk. A single-file commit is faster per
+      # fetch/rebase/push cycle (higher odds of winning the race before
+      # origin moves again) and, more importantly, isolates blast radius: if
+      # the bulk step below still loses its own push on a heavy-churn day,
+      # the digest snapshot — the one thing the alert is actually about —
+      # already landed independently.
+      #
+      # UPDATE (follow-up task, plan-reviewed): health-digest-snapshot.json
+      # is now ALSO registered `apiFallbackSafe: true` in scripts/lib/core-
+      # data-merge-registry.js, so push-with-retry.sh's Git Data API fallback
+      # (a fast compare-and-swap that skips the fetch/rebase race entirely)
+      # can engage for it directly. This step's own workflow-level isolation
+      # is NOT made redundant by that — they're two independent layers, not
+      # duplicated effort: isolation shrinks the commit so the LOCAL retry
+      # loop wins the race faster and blast-radius stays contained even if
+      # the fallback is disabled/unavailable for any reason
+      # (PUSH_API_FALLBACK_DISABLE=1, node missing, etc — see push-with-
+      # retry.sh's own eligibility comment); the fallback is a faster escape
+      # hatch on top of that when it's available. Every other data/audit/*
+      # file this job writes still gets no help from the fallback (fail-
+      # closed default, unaudited) — isolation remains the only lever for
+      # those until each is individually verified the same way.
+      # No continue-on-error: unlike the shadow-mode steps above, a failure
+      # to persist the digest snapshot is exactly the page-worthy failure
+      # this workflow exists to catch.
+      - name: Commit digest snapshot
+        if: always()
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No digest snapshot changes"
+          else
+            git commit -m "data: Update digest snapshot [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Isolates the 15 files below from the bulk "Commit health check +
+      # triage data" step (task, run 32625283171, 2026-08-23) — same class as
+      # "Commit digest snapshot" above, one incident later. That step still
+      # bundled these files with the bulk step's other ~19; the bulk commit
+      # lost its push race and hard-failed the job, re-firing the same
+      # "Daily Data Health Check Crashed" alert the digest-isolation fix was
+      # meant to stop (isolating ONE file didn't help when the OTHER 15 could
+      # still take the whole job down).
+      #
+      # All 15 are registered `apiFallbackSafe: true` in scripts/lib/core-
+      # data-merge-registry.js — each independently verified via
+      # findWritingWorkflows() against the real .github/workflows/*.yml files
+      # to have exactly one writer (this workflow) sharing its own
+      # concurrency group (data-health-check, cancel-in-progress: false), so
+      # push-with-retry.sh's Git Data API fallback can engage for this commit
+      # instead of relying on the local fetch/rebase/push race at all. Kept
+      # as their own step (not folded into "Commit digest snapshot" above) to
+      # avoid touching that already-merged, already-verified step.
+      #
+      # 4 other files that step also writes — data/audit/triage/,
+      # alert-ledger.json, alert-digest-queue.json, alert-router-
+      # attempts.jsonl — are genuinely multi-writer (verified same way) and
+      # stay in the bulk step below, unprotected.
+      - name: Commit health check audit snapshots (apiFallbackSafe)
+        if: always()
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/health-check-history.json 2>/dev/null || true
+          git add data/audit/time-to-publish-sla.json 2>/dev/null || true
+          git add data/audit/workflow-run-coverage.json 2>/dev/null || true
+          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
+          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          # digest-history.json intentionally NOT added here — ship-check
+          # review (2026-08-23) found it has zero writers anywhere in the
+          # codebase (orphaned since card #364); see core-data-merge-
+          # registry.js's comment at this file's old registry slot.
+          git add data/audit/affiliate-health.json 2>/dev/null || true
+          git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
+          git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
+          git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
+          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
+          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
+          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No health check audit snapshot changes"
+          else
+            git commit -m "data: Update health check audit snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
       # audit-aggregator-gap.yml fix): this is the step that actually failed
       # in the incident that opened this card — run 32344089679 (2026-08-20)
@@ -470,6 +623,11 @@ jobs:
       # continue-on-error here, unlike every shadow-mode step above), firing
       # the misleading "Daily Data Health Check Crashed" critical email even
       # though the health-check script itself passed.
+      #
+      # health-digest-snapshot.json moved OUT of this step's git-add list
+      # (Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) into its own isolated "Commit digest snapshot" step
+      # above — see that step's comment for why. Everything else here is
+      # unchanged; this step still owns the other ~14 data/audit/* files.
       #
       # First fix pass set this to 600s and was verified LIVE via manual
       # workflow_dispatch run 32393356269 (2026-08-20) — it was NOT enough:
@@ -514,63 +672,31 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/health-check-history.json
-          # Time-to-publish SLA reading (task #388) — same reason as the
-          # snapshots below: the Mac Studio renders the digest, so the report
-          # has to leave the runner. Its step is continue-on-error, so the file
-          # can legitimately be absent on a failed run.
-          git add data/audit/time-to-publish-sla.json 2>/dev/null || true
-          # Task #737: never-run workflow coverage snapshot, computed inline
-          # by health-check.js (see scripts/health-check.js) since this is
-          # the job that can actually commit it — lint-workflows checks out
-          # code but never pushes.
-          git add data/audit/workflow-run-coverage.json 2>/dev/null || true
-          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
-          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          # 15 files this step used to also bundle here (health-check-
+          # history.json, time-to-publish-sla.json, workflow-run-coverage.json,
+          # provider-spend-daily.jsonl, provider-spend-snapshot.json, digest-
+          # history.json, affiliate-health.json, linear-archive-done.jsonl,
+          # trunk-status-snapshot.json, cross-outlet-attribution-drift.json,
+          # cv-wrongproduction-lifetime.json, fulltext-mentions-show-
+          # lifetime.json, slug-mismatch-lifetime.json, roundup-url-mismatch-
+          # lifetime.json, revival-unverified-lifetime.json) moved to their own
+          # isolated "Commit health check audit snapshots (apiFallbackSafe)"
+          # step above (run 32625283171 push-race, 2026-08-23) — verified
+          # single-writer, now apiFallbackSafe in core-data-merge-registry.js.
           # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
           # earlier step (BRO-386, "Commit acceptance recheck ledger") — NOT
           # added here, so a bulk-commit push failure can never take the
           # recheck verdicts down with it again.
-          # Card #364: without this the runner-local snapshot never leaves
-          # the GitHub Actions filesystem — the Mac Studio (a different
-          # machine) would never see it, and the whole merged-email feature
-          # would be a silent no-op (ship-check finding).
-          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
-          git add data/audit/digest-history.json 2>/dev/null || true
+          # health-digest-snapshot.json (Card #364's file) is committed+pushed
+          # in its OWN earlier step ("Commit digest snapshot", Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) —
+          # NOT added here, so a bulk-commit push failure can never take the
+          # one file the failure alert cares about down with it again.
+          # 4 files remain here — verified genuinely multi-writer (2026-08-23),
+          # no apiFallbackSafe path available for them:
           git add data/audit/triage/ 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
-          # Affiliate monitor snapshot (2026-08-03) — single writer (this cron);
-          # without this line the snapshot never leaves the runner and the
-          # digest's staleness dead-man would false-fire daily.
-          git add data/audit/affiliate-health.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
-          # Linear auto-archive audit log (BRO-285) — single writer (this
-          # cron); without this the local record of what was archived never
-          # leaves the runner.
-          git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
-          # Trunk status (task #1003) — same reason as health-digest-snapshot
-          # above: the Mac Studio renders the morning digest and runs the
-          # close gate, so the snapshot has to leave the runner.
-          git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
-          # Cross-outlet attribution drift snapshot (card #1550) — single
-          # writer (this cron); without this the snapshot never leaves the
-          # runner and health-check.js's digest check reads a stale/missing
-          # file forever.
-          git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
-          # cv-wrongproduction lifetime sweep snapshot (task #1731) — single
-          # writer (this cron); without this the snapshot never leaves the
-          # runner and health-check.js's digest check reads a stale/missing
-          # file forever.
-          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
-          # 4 more lifetime-sweep snapshots (task #1746) — same reason as the
-          # cv-wrongproduction snapshot above: single writer (this cron),
-          # without this line the snapshot never leaves the runner and
-          # health-check.js's digest check reads a stale/missing file forever.
-          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
-          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
-          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
-          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else

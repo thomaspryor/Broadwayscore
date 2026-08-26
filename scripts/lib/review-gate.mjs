@@ -43,8 +43,9 @@
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -381,10 +382,70 @@ export function gatedDiffPatchText(repoRoot, base, ref) {
 // where a genuine unshallow completes in well under a second.
 const UNSHALLOW_BUDGET_MS = Number(process.env.REVIEW_GATE_UNSHALLOW_MS || 5000);
 
+// Cross-PROCESS memo for the same guard (task #1502-class gap in #1497's own
+// fix): the in-memory `historyEnsured` Map below only survives one node
+// process, but pre-push-review-gate.sh/pre-merge-review-gate.sh spawn a FRESH
+// `node review-gate.mjs` per candidate ref per query type — up to ~4
+// invocations for one compound `git merge X && git push origin main` command
+// — and ancestorSet()/isAncestor() call ensureHistoryOnce() unconditionally
+// on every one of them. On this repo (134k+ commits, shallow by default under
+// actions/checkout@v5's fetch-depth:1) the unshallow attempt PROVABLY never
+// succeeds inside any hook-safe budget (see the 90s-and-still-shallow
+// measurement above) — so every invocation independently re-pays the full
+// UNSHALLOW_BUDGET_MS for a guaranteed-negative outcome. 4 x 5s == the hook's
+// own 20s SIGKILL ceiling (scripts/tests/merge-gate-hook.test.mjs
+// HOOK_TIMEOUT_MS), which is exactly what wedged CI's "Unit Tests" job on
+// main (the 'push-gate BLOCKS the compound merge+push' test hit its 20s
+// ceiling and reported exit null instead of the expected BLOCKED exit 2,
+// then short-circuited every later hook-spawning test in the file).
+//
+// The task #1497 comment already states the INTENDED behavior — "the
+// (network-touching) unshallow attempt runs at most once ... regardless of
+// how many ancestry checks follow" — this closes the gap where "once" was
+// scoped to one process instead of one hook invocation's whole cluster of
+// sibling processes. Persist the outcome to a small tmp-dir JSON file, keyed
+// by repoRoot, mirroring the established cross-process cache pattern in
+// scripts/lib/gh-api-cache.js (same os.tmpdir() + atomic rename + best-effort
+// approach; not reused directly here to avoid widening this already-gated
+// file's dependency surface for one small helper). Safe by construction: the
+// cached boolean is never read as a decision input anywhere in this module —
+// only `historyEnsured.has(repoRoot)` gates re-attempting — so a stale cache
+// entry can only ever cause a SKIPPED redundant network attempt, never a
+// different gate verdict. Every caller (isAncestor/ancestorSet) already
+// treats "still shallow" as "can't confirm ancestry" and degrades safely,
+// exactly as it did before this cache existed.
+const SHALLOW_CACHE_PATH = join(tmpdir(), 'bsc-review-gate-shallow-cache.json');
+const SHALLOW_CACHE_TTL_MS = Number(process.env.REVIEW_GATE_SHALLOW_CACHE_MS || 5 * 60 * 1000);
+
+function readShallowCacheEntry(repoRoot) {
+  try {
+    const all = JSON.parse(readFileSync(SHALLOW_CACHE_PATH, 'utf8'));
+    const hit = all[repoRoot];
+    if (hit && typeof hit.ts === 'number' && (Date.now() - hit.ts) < SHALLOW_CACHE_TTL_MS) return hit;
+  } catch { /* missing/corrupt cache — treat as a miss */ }
+  return null;
+}
+
+function writeShallowCacheEntry(repoRoot, shallow) {
+  try {
+    let all = {};
+    try { all = JSON.parse(readFileSync(SHALLOW_CACHE_PATH, 'utf8')) || {}; } catch { /* start fresh */ }
+    all[repoRoot] = { ts: Date.now(), shallow };
+    const tmp = `${SHALLOW_CACHE_PATH}.${process.pid}.tmp`;
+    writeFileSync(tmp, JSON.stringify(all));
+    renameSync(tmp, SHALLOW_CACHE_PATH);
+  } catch { /* best-effort only — a failed cache write just costs the next process a re-attempt */ }
+}
+
 const historyEnsured = new Map(); // repoRoot -> boolean (still shallow?)
 function ensureHistoryOnce(repoRoot) {
   if (!libEnsureFullHistory) return; // landing-verify.js unavailable — degraded no-op, see require() above
   if (historyEnsured.has(repoRoot)) return;
+  const cached = readShallowCacheEntry(repoRoot);
+  if (cached) {
+    historyEnsured.set(repoRoot, cached.shallow);
+    return;
+  }
   const { shallow } = libEnsureFullHistory({
     cwd: repoRoot,
     remote: 'origin',
@@ -392,6 +453,7 @@ function ensureHistoryOnce(repoRoot) {
     timeoutMs: UNSHALLOW_BUDGET_MS,
   });
   historyEnsured.set(repoRoot, shallow);
+  writeShallowCacheEntry(repoRoot, shallow);
 }
 
 function isAncestor(repoRoot, maybeAncestor, ref) {
@@ -800,8 +862,28 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
 // The merge wrapper script — the real call site (merge-worktree-to-main.sh:203).
 const MERGE_WRAPPER_BASENAME = 'merge-worktree-to-main.sh';
 
-// Interpreters that can carry a script path as their first argument.
-const SCRIPT_INTERPRETERS = new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time']);
+// Interpreters that can carry a script path as their first argument. Any
+// prefix NOT in this set falls through to the token-level fail-closed
+// catch-all at the bottom of parseMergeIngress (BRO-2436) rather than being
+// silently treated as "not a merge" — `timeout 900 bash <wrapper>` was the
+// reported bypass: `timeout` alone wasn't a KNOWN issue, the missing keyword
+// wasn't the point, the fail-open DEFAULT for anything unrecognised was.
+const SCRIPT_INTERPRETERS = new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time', 'timeout', 'nice', 'stdbuf', 'command']);
+
+// Flags on the wrappers above that consume a SEPARATE following value token
+// (as opposed to a `--flag=value` single token, which needs no extra skip).
+// Without this, `nice -n 10 bash <wrapper>` misreads "10" as the wrapped
+// command name and the unwrap loop stops one token too early.
+const WRAPPER_VALUE_FLAGS = {
+  timeout: new Set(['-s', '--signal', '-k', '--kill-after']),
+  nice: new Set(['-n', '--adjustment']),
+  stdbuf: new Set(['-i', '--input', '-o', '--output', '-e', '--error']),
+};
+
+// Wrappers with a MANDATORY bare positional before the wrapped command
+// (`timeout DURATION cmd…`), distinct from any flag — consumed once the
+// flag-skip loop is done so the unwrap can continue to the real command.
+const WRAPPER_LEADING_ARG = new Set(['timeout']);
 
 // `git merge` flags that consume a FOLLOWING value; that value must not be
 // mistaken for the merge source ref. (`--flag=value` forms are single tokens
@@ -861,6 +943,35 @@ function basename(p) {
   return s.slice(s.lastIndexOf('/') + 1);
 }
 
+// Last-resort scan over a SINGLE segment's already-tokenized, quote-respecting
+// tokens (never the raw string — a quoted arg like `git commit -m "explains
+// git merge"` is ONE token post-tokenize() and can never match here, unlike a
+// naive whole-string regex would) for a merge ingress that classifySegment's
+// head-anchored parse didn't recognise: an unknown wrapper prefix (`sudo`,
+// `strace -f`, a future coreutil), or `git` appearing anywhere ahead of a
+// `merge` subcommand. This is the BRO-2436 non-negotiable: an unrecognised
+// shape must not read as "not a merge".
+function looksLikeUnparsedMergeIngress(tokens) {
+  for (let i = 0; i < tokens.length; i++) {
+    if (basename(tokens[i]) === MERGE_WRAPPER_BASENAME) return true;
+    // basename(), not exact equality — `sudo /usr/bin/git merge feat` is a
+    // real merge that exact-string `tokens[i] !== 'git'` let through (Codex
+    // adversarial review): classifySegment only ever looks at toks[0], so
+    // `sudo` alone already sent this segment to this catch-all, and an
+    // absolute-path git must be caught here just like a bare one.
+    if (basename(tokens[i]) !== 'git') continue;
+    let j = i + 1;
+    while (j < tokens.length) {
+      const t = tokens[j];
+      if (GIT_GLOBAL_VALUE_OPTS.has(t)) { j += 2; continue; }
+      if (t.startsWith('-')) { j += 1; continue; }
+      if (t === 'merge') return true;
+      break;
+    }
+  }
+  return false;
+}
+
 // Drop leading `FOO=bar` environment assignments. `DRY_RUN=1 scripts/merge-…`
 // skips the wrapper's PUSH but still performs the MERGE, so it must still gate.
 function withoutEnvPrefix(tokens) {
@@ -874,9 +985,12 @@ function classifySegment(rawTokens) {
   let toks = withoutEnvPrefix(rawTokens);
   if (toks.length === 0) return null;
 
-  // `bash scripts/merge-worktree-to-main.sh …`, `env FOO=1 bash …`
+  // `bash scripts/merge-worktree-to-main.sh …`, `env FOO=1 bash …`,
+  // `timeout 900 bash …`, `nice -n 10 bash …`
   while (toks.length > 1 && SCRIPT_INTERPRETERS.has(basename(toks[0]))) {
+    const wrapperName = basename(toks[0]);
     toks = withoutEnvPrefix(toks.slice(1));
+    const valueFlags = WRAPPER_VALUE_FLAGS[wrapperName];
     // Skip the interpreter's own flags so `bash -x scripts/merge-…sh` still
     // reaches the script name. Bailing on ANY leading flag (the first cut)
     // meant `bash -x <wrapper>` silently escaped the gate — QA review,
@@ -887,9 +1001,23 @@ function classifySegment(rawTokens) {
     // open. Short-flag clusters are checked for `c` too (`bash -xc '…'`).
     while (toks.length > 1 && toks[0].startsWith('-')) {
       const flag = toks[0];
-      if (flag === '-c' || (/^-[a-zA-Z]+$/.test(flag) && flag.includes('c'))) return null;
+      // `bash -c '<payload>'` — the payload is one opaque string this shallow
+      // tokenizer already split back into bare words (no quotes survive a
+      // second pass), so `bash -c git merge feat` looks IDENTICAL to a real
+      // merge even though bash -c actually runs `git` with `merge`/`feat` as
+      // $0/$1, not a merge at all. Guessing would be worse than failing open
+      // here specifically — 'opaque' (not null) tells the fail-closed
+      // catch-all below to skip this segment too, not just classifySegment.
+      if (flag === '-c' || (/^-[a-zA-Z]+$/.test(flag) && flag.includes('c'))) return { kind: 'opaque' };
       toks = toks.slice(1);
+      // `nice -n 10 …`, `timeout -s TERM …`, `stdbuf -o L …` — the flag's
+      // value is a separate token; a `--flag=value` single token needs no
+      // extra skip (it never matches this exact-string set).
+      if (valueFlags && valueFlags.has(flag) && toks.length > 1) toks = toks.slice(1);
     }
+    // `timeout DURATION cmd…` — the mandatory positional before the real
+    // command, consumed once flags are exhausted.
+    if (WRAPPER_LEADING_ARG.has(wrapperName) && toks.length > 1) toks = toks.slice(1);
   }
   if (toks.length === 0) return null;
 
@@ -965,7 +1093,7 @@ function classifySegment(rawTokens) {
 // `defaultBranch` are injected, so this is unit-testable without a fixture.
 // The hook resolves them exactly as the push gate resolves its own.
 export function parseMergeIngress(command, { currentBranch = null, defaultBranch = 'main' } = {}) {
-  const notMerge = (reason) => ({ isMerge: false, targetsMain: false, sources: [], via: null, destination: null, reason });
+  const notMerge = (reason) => ({ isMerge: false, targetsMain: false, sources: [], via: null, destination: null, reason, unparsedFailClosed: false });
   const raw = String(command || '');
   if (!raw.trim()) return notMerge('empty command');
   // Cheap pre-filter on the RAW text — keeps the gate off the hot path for
@@ -991,7 +1119,8 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
   } catch (e) {
     return notMerge(`tokenizer threw (${e.message}) — fail open`);
   }
-  const classified = segments.filter(t => t.length).map(classifySegment);
+  const nonEmptySegments = segments.filter(t => t.length);
+  const classified = nonEmptySegments.map(classifySegment);
 
   // `git commit … && git checkout main && git merge X`: at hook time the commit
   // has not happened, so the branch tip does NOT yet contain the work that will
@@ -1020,6 +1149,7 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
       return {
         isMerge: true, targetsMain: true, sources: withWorktree([branch]), via: 'wrapper',
         destination: defaultBranch, reason: `${MERGE_WRAPPER_BASENAME} integrates ${branch} into ${defaultBranch}`,
+        unparsedFailClosed: false,
       };
     }
     if (seg.kind === 'merge') {
@@ -1028,13 +1158,46 @@ export function parseMergeIngress(command, { currentBranch = null, defaultBranch
         return {
           isMerge: true, targetsMain: false, sources: seg.sources, via: 'git-merge', destination,
           reason: `merge destination is ${destination || 'unknown'}, not ${defaultBranch}`,
+          unparsedFailClosed: false,
         };
       }
       return {
         isMerge: true, targetsMain: true, sources: withWorktree(seg.sources), via: 'git-merge', destination,
-        reason: `git merge into ${defaultBranch}`,
+        reason: `git merge into ${defaultBranch}`, unparsedFailClosed: false,
       };
     }
+  }
+  // Every segment was either irrelevant (cd, commit, …) or classifySegment
+  // returned null for it — an unrecognised shape (unknown wrapper prefix,
+  // `sudo`, a future coreutil). BRO-2436: that must not silently mean
+  // allowed:true when the segment plainly contains a merge ingress. Fail
+  // closed instead of returning notMerge() so queryMergeGate blocks it —
+  // sources is deliberately empty (we don't know what would land), so this
+  // must be intercepted before queryMergeAllowed, whose empty-sources path is
+  // itself a fail-OPEN default.
+  //
+  // 'opaque' segments (a `bash -c` payload) are excluded on purpose: the
+  // tokenizer already lost the quoting that would tell "git merge" the
+  // command from "git"/"merge" as bash -c's own $0/$1, and guessing here is
+  // the one case this file already decided is worse than failing open.
+  //
+  // KNOWN, ACCEPTED cost (Codex adversarial review, BRO-2436): tokenize()
+  // drops which tokens were quoted before this function ever sees them, so
+  // `printf '%s\n' 'scripts/merge-worktree-to-main.sh'` — a quoted DATA
+  // argument that happens to equal the wrapper's basename, not an actual
+  // invocation of it — reads identically to a real one and fails closed.
+  // Deliberately not "fixed" by excluding quoted tokens: a quoted COMMAND
+  // name (`"scripts/merge-worktree-to-main.sh" branch`) is legal shell and
+  // must still be caught, and this file has nothing that tells "quoted
+  // because it's a path with spaces" apart from "quoted because it's a
+  // sentence." Erring toward the recoverable failure (NO-SHIP-CHECK /
+  // REVIEW_GATE_DISABLE) beats erring toward the unrecoverable one.
+  if (nonEmptySegments.some((seg, i) => classified[i]?.kind !== 'opaque' && looksLikeUnparsedMergeIngress(seg))) {
+    return {
+      isMerge: true, targetsMain: true, sources: [], via: 'unparsed', destination: defaultBranch,
+      reason: 'command references a merge ingress this gate could not structurally parse — failing closed',
+      unparsedFailClosed: true,
+    };
   }
   return notMerge('no merge ingress parsed');
 }
@@ -1118,6 +1281,15 @@ export function queryMergeGate({ repoRoot, ledgerRoot = null, command, currentBr
   }
   if (!ingress.isMerge || !ingress.targetsMain) {
     return { allowed: true, ingress, reason: ingress.reason };
+  }
+  // BRO-2436: an unparsed-but-merge-shaped command has no resolvable source
+  // ref, so it must NOT reach queryMergeAllowed — that function's own
+  // empty-sources branch ("no merge sources to evaluate") is a fail-OPEN
+  // default and would silently undo the fail-closed intent. Block directly;
+  // the hook's usual escape hatches (NO-SHIP-CHECK, REVIEW_GATE_DISABLE)
+  // still apply on top of this like any other allowed:false verdict.
+  if (ingress.unparsedFailClosed) {
+    return { allowed: false, ingress, reason: ingress.reason };
   }
   return { ...queryMergeAllowed({ repoRoot, ledgerRoot, sources: ingress.sources }), ingress };
 }

@@ -94,6 +94,14 @@ jobs:
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: MANAGED-file push disqualified from the Git Data API
+          # fallback; default 240s deadline was self-aborting after ~2 real
+          # fetch/rebase/push cycles under main's commit churn (task #458's
+          # documented failure mode). This job has 60min timeout with ~20min
+          # headroom past this step — smaller than the 1200s override
+          # update-show-status.yml uses for the same root cause (that job has
+          # a much bigger timeout budget).
+          PUSH_DEADLINE_SEC: '600'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-batch-progress.json
           if git diff --staged --quiet; then
@@ -169,6 +177,11 @@ jobs:
         # retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: same root cause as the batch-research push above — default
+          # 240s deadline self-aborting after ~2 real cycles. This job has only
+          # a 20min timeout (sweep itself is lightweight, ~3min), so 480s
+          # (not the 600s used on longer jobs) to leave real buffer.
+          PUSH_DEADLINE_SEC: '480'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-pending-archive.json data/commercial-research-queue.json
           if git diff --staged --quiet; then
@@ -220,7 +233,14 @@ jobs:
           TB="${{ inputs.time_budget_min }}"
           [ -z "$TB" ] && TB=100
           ARGS="$ARGS --time-budget-min=$TB"
-          ARGS="$ARGS --model=o4-mini-deep"
+          # BRO-123: o4-mini-deep-research (and the o3 variant) were shut down
+          # by OpenAI on 2026-07-23 — every call 404s ("Model not found"),
+          # verified live against /v1/models. No deep-research successor model
+          # exists in this account as of 2026-08-26. --model=o4-mini is the
+          # script's already-implemented non-deep fallback (web_search_preview
+          # + reasoning.effort=high, synchronous) — see researchShowWithOpenAI
+          # in deep-research-commercial.js.
+          ARGS="$ARGS --model=o4-mini"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -234,6 +254,10 @@ jobs:
         # retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: same root cause as the batch-research push above. This
+          # job has a 120min timeout (mostly consumed by the research loop
+          # itself, not this push step), so 600s is safe.
+          PUSH_DEADLINE_SEC: '600'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
@@ -301,7 +325,7 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -f data/commercial-pending-review.json ]; then
-            node scripts/reconcile-recoupment-claims.js
+            node scripts/reconcile-recoupment-claims.js --time-budget-min=25
           fi
 
       - name: Self-heal resurrected duplicate key pairs
@@ -403,6 +427,11 @@ jobs:
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: same root cause as the batch-research push above. Job
+          # timeout was already raised 15min->30min for this exact push-
+          # contention class (see the timeout-minutes comment on this job) —
+          # 600s gives the retry loop itself the same headroom.
+          PUSH_DEADLINE_SEC: '600'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh

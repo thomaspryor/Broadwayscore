@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-21T08:45:35.203Z",
+    "generatedAt": "2026-08-26T20:11:21.337Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 87,
-    "highConfidence": 7,
-    "mediumConfidence": 80,
+    "totalFlagged": 84,
+    "highConfidence": 6,
+    "mediumConfidence": 78,
     "lowConfidence": 0,
-    "reassignable": 37
+    "reassignable": 35
   },
   "results": [
     {
@@ -332,6 +332,7 @@
       "confidence": "medium",
       "suggestedShowId": "the-lion-king-west-end-2021",
       "signals": [
+        "publishDate 2012 is 15 years after original opening 1997",
         "year 1998 in text matches revival the-lion-king-west-end-2021"
       ],
       "textSnippet": "Director-designer Julie Taymor’s visionary reimagining of Disney’s animated movie is an expedition through gorgeous new terrain. The parts of the show involving comic relief remain tethered to a theme"
@@ -612,6 +613,7 @@
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
+        "publishDate 2014 is 26 years after original opening 1988",
         "modern references: twitter"
       ],
       "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $26\n Buy Tickets\n\nCititour.com Review\n The chandelier still swings over the audie"
@@ -630,6 +632,21 @@
         "publishDate 2015 is 27 years after original opening 1988"
       ],
       "textSnippet": "By Tulis McCall\n\nJames Barbour as The Phantom; credit Joan Marcus\n\nJoin me for a little jaunt down memory lane to a magical place that is alive and well. Andrew Lloyd Webber’s THE PHANTOM OF THE OPERA"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "nypost--clive-barnes.json",
+      "outlet": "New York Post",
+      "criticName": "Clive Barnes",
+      "publishDate": "February 4th, 2004",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2004 is 16 years after original opening 1988"
+      ],
+      "textSnippet": "Majestic Theater. 247 W. 44th St., (212) 239-6200. FOR a show that turned 16 last week, “The Phantom of the Opera” seems band- box fresh. Harold Prince’s powerful operatic-style staging is terrific, r"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -660,6 +677,21 @@
         "publishDate 2018 is 30 years after original opening 1988"
       ],
       "textSnippet": "Long ago, children, when I was an editor of Theatre Crafts Magazine, I interviewed the technical crew who were installing the massive scenery for The Phantom of the Opera at the Majestic Theatre. I re"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "nytimes--charles-isherwood.json",
+      "outlet": "The New York Times",
+      "criticName": "Charles Isherwood",
+      "publishDate": "August 17th, 2014",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2014 is 26 years after original opening 1988"
+      ],
+      "textSnippet": "https://www.nytimes.com/2014/08/18/theater/the-phantom-of-the-opera-retains-its-luster.htmlGive this articleAdvertisement\n\nIs there a truism more rarely true than the notion that absence makes the hea"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -1035,23 +1067,6 @@
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
-      "showId": "the-mystery-of-edwin-drood-1985",
-      "showTitle": "The Mystery of Edwin Drood",
-      "showYear": 1985,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNY",
-      "criticName": "Matt Windman",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production",
-        "modern references: twitter",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
-    },
-    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -1065,21 +1080,6 @@
         "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
       ],
       "textSnippet": "https://www.nytimes.com/1981/01/24/theater/stage-macbeth-returns.htmlShare full articleAdvertisement\n\nTo put it simply, there can be no ''Macbeth'' without Macbeth. Such is the sad case with the Linco"
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "the-gin-game-2015",
-      "signals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
     },
     {
       "showId": "dracula-1977",
@@ -1271,21 +1271,6 @@
       "showId": "jesus-christ-superstar-2000",
       "showTitle": "Jesus Christ Superstar",
       "showYear": 2000,
-      "file": "ew--melissa-rose-bernardo.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Melissa Rose Bernardo",
-      "publishDate": null,
-      "confidence": "high",
-      "suggestedShowId": "jesus-christ-superstar-2012",
-      "signals": [
-        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff"
-      ],
-      "textSnippet": "Andrew Lloyd Webber has said he's never really been happy with Jesus Christ Superstar until now  41 years after its stage debut. That's high advance praise for the new Stratford (Ontario) Shakespeare"
-    },
-    {
-      "showId": "jesus-christ-superstar-2000",
-      "showTitle": "Jesus Christ Superstar",
-      "showYear": 2000,
       "file": "variety--unknown.json",
       "outlet": "Variety",
       "criticName": "Unknown",
@@ -1329,37 +1314,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES \n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZ"
-    },
-    {
-      "showId": "old-times-1971",
-      "showTitle": "Old Times",
-      "showYear": 1971,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNY",
-      "criticName": "Matt Windman",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "There’s really no middle ground when it comes to the late English playwright Harold Pinter. You’re either mesmerized by his mysterious, menacing, pause-filled psychological dramas or you find them puz"
-    },
-    {
-      "showId": "old-times-1971",
-      "showTitle": "Old Times",
-      "showYear": 1971,
-      "file": "nbcny--robert-kahn.json",
-      "outlet": "NBC New York",
-      "criticName": "Robert Kahn",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: twitter"
-      ],
-      "textSnippet": "Bright flashes of light and discomforting noises make for a jarring start to Harold Pinter’s 1971 “Old Times,\" which is now enjoying a carefully cultivated revival at Roundabout’s American Airlines Th"
     }
   ]
 }

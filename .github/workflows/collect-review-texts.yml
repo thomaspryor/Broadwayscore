@@ -437,15 +437,16 @@ jobs:
             const fs = require('fs'), path = require('path');
             const base = 'data/review-texts';
             // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require('./scripts/lib/failed-fetch-policy');
             let failedUrls = new Set();
             const globalFF = path.join(base, 'failed-fetches.json');
             if (fs.existsSync(globalFF)) {
               try {
                 const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
                 (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
-                  if (!e.url || e.failureReason === 'garbage_content') return;
-                  const isDead = e.failureReason === 'url_dead_404' || e.failureReason === 'url_dead_410';
-                  if (e.failureCount >= (isDead ? 3 : 5)) failedUrls.add(e.url);
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
                 });
               } catch {}
             }

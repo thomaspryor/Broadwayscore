@@ -1073,3 +1073,70 @@ one import per hour, or expect a mid-run throttle. The importer resumes cleanly 
 Only two remain in the entire plan: **S7-T8** (intake-channel repoint-vs-retire) and **Sprint 8** (deleting
 Notion). Everything else is executable without the owner. If a future handoff claims otherwise, check it against
 the plan before escalating.
+
+---
+
+## Execution corrections — 2026-08-26 session (S4-T3b)
+
+Two more plan specifics wrong, both found by running rather than reading. That is eleven and twelve.
+
+### 11. "the four gate hooks" is ONE hook
+S4-T3b's Files line says "the four gate hooks (modify)". Only **one** hook makes a gate decision that depends
+on board health: `~/.claude/hooks/notion-card-required-commit.sh`. Verified:
+
+- `notion-card-required-stop.sh` — its network call (`:93`) is inside the `[ -f "$SENTINEL" ]` branch and every
+  path in that branch exits 0 (`:141, :175, :187, :194`). Its only `exit 2` (`:338`) comes from a pure Python
+  transcript scan that touches no board. It also has a documented `NO-CARD:` bypass (`:29-32`, implemented at
+  `:298`), so an unreachable board cannot wedge session end. Nothing to fail open.
+- `linear-issue-required-stop.sh` — zero network calls; BLOCK is pure transcript.
+- `notion-create-block.sh` — reads `/tmp/notion-create-failed-*`, a local breadcrumb.
+
+Adding a probe to the stop hook would have been a new network round-trip on every Stop for no behaviour change.
+
+### 12. The stated premise was already true
+S4-T3b exists because "today 'reachable but erroring' means *enforce*". For Notion it does not, and did not.
+`notion-brain.js search` with an invalid key exits 1, and the old hook treated **every** non-zero as fail-open.
+Both of the task's acceptance criteria passed before a line was written.
+
+The real defect was one level down and is worth carrying forward as a pattern: the fail-open was **unclassified
+and unrecorded**. Auth error, network error, bad arguments, missing node and missing file all exited 1, all
+failed open, and all printed the same "Notion unreachable" text. A permanently broken probe — `node` off PATH,
+CLI moved — therefore left the gate off on every commit indefinitely, while reading as ON. *A gate that has
+silently failed open for weeks is worse than no gate, because everyone believes it is on.*
+
+### What shipped instead
+`~/.claude` commit `c475ff8`. rc captured on its own line, then classified:
+`4|124|142 → unreachable`, `1|2|3 → erroring`, `* → broken` (loud banner, deliberately not rate-limited).
+Every fail-open appends to `~/.claude/logs/board-gate-failopen.log`, trimmed at 5000 lines. 3 and 4 are the
+`board-probe.js` contract, mapped now so **S4-T3d's repoint needs no one to remember to widen this branch**.
+
+### Two review passes, both of which said no
+Worth recording because the second rejection prevented an outage:
+
+1. First pass: 5 correctness + 3 design blockers. The one that mattered — an earlier draft routed "any other rc"
+   to the loud BROKEN banner, and `perl -e 'alarm N'` exits **142** on timeout (128+SIGALRM, verified). The
+   banner would have fired on every ordinary 4s network hang, the commonest event on this path.
+2. Second pass rejected the revision too. De-duplicating the branch into a sourced `hooks/lib/board-probe.sh`
+   **fails CLOSED**: the hook has no `set -e`, so a missing lib (fresh clone, partial sync) leaves the function
+   undefined, `command not found` returns 127, execution continues, and it falls through to `exit 2` — wedging
+   every commit on the machine with no repair path, since repairing requires committing. Verified by execution.
+
+Shipped the reviewer's minimum instead: no shared runner, no `notion-brain.js --probe`, no bash lib, no
+breadcrumb. All four would have been repointed at S4-T3d and deleted in Sprint 8.
+
+### Gate defects found while using the gates (filed, not fixed here)
+- **BRO-2310** — `infra-review-scope.js:588` documents that a `fail` verdict needs an `owner-override` to
+  overturn. `findFreshPlanVerdict` merely skips non-pass verdicts, so any later `pass` unlocks. Documented but
+  unimplemented.
+- **BRO-2311** — `infra-plan-review-gate.sh` blocked an `Edit` to a gated hook, but a `python3 patch.py` that
+  wrote the same file minutes earlier in the same session was not blocked. The Bash arm cannot see a path that
+  only exists inside a script file. Same card covers `claude-sync push` skipping the hook-test gate for
+  already-committed changes.
+- **BRO-2312** — `pre-push-visual-gate`'s suite has had 4 of 8 tests inert on a deleted fixture worktree while
+  reporting green.
+
+Also unbroke that suite's one red test, which asserted a bare `exit 0` on the premise that `origin/main...main`
+holds no UI files. That is live, mutable repo state; one unpushed `.tsx` on local main turned it red, and since
+`claude-sync` runs `run-all.sh` on every staged `hooks/` change, that blocked **every** hooks push on the
+machine. It now asserts the real invariant — the gate fires iff the range contains UI files — deriving the
+pattern from the hook rather than restating it.

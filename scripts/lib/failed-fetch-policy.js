@@ -40,13 +40,30 @@ function shouldCountFailure(reason) {
 }
 
 /**
+ * Is this failure reason strong evidence the URL itself is bad (as opposed to
+ * a transient scraper/network issue)? Single source of truth for the
+ * dead/garbage vs everything-else split — consumed by both isPermanentlyFailed
+ * (flat threshold) and review-guards.js's shouldRetryFetch (lifecycle-tiered
+ * threshold), so the two can never classify the same reason differently
+ * (BRO-787 — the lifecycle guard was built by re-deriving this split inline
+ * before ship-check caught the drift risk).
+ *
+ * url_dead_404 / url_dead_410 — the server confirmed the page is gone.
+ * garbage_content             — site serves content, but never the review.
+ *
+ * @param {string} reason
+ */
+function isStrictFailureReason(reason) {
+  return reason === 'garbage_content' || reason === 'url_dead_404' || reason === 'url_dead_410';
+}
+
+/**
  * Is this failed-fetches entry retired from future runs?
  *
  * Thresholds (unchanged from the inline logic this replaces):
- *   url_dead_404 / url_dead_410 → 3 failures (the server confirmed it is gone)
- *   garbage_content            → 3 failures (site serves content, never the review)
- *   everything else            → 5 failures
- *   budget_capped              → never (not evidence about the URL)
+ *   strict (dead/garbage) → 3 failures
+ *   everything else       → 5 failures
+ *   budget_capped         → never (not evidence about the URL)
  *
  * @param {{failureReason?: string, failureCount?: number}} entry
  */
@@ -54,14 +71,13 @@ function isPermanentlyFailed(entry) {
   const reason = (entry && entry.failureReason) || '';
   const count = (entry && entry.failureCount) || 0;
   if (isNonEvidenceFailure(reason)) return false;
-  if (reason === 'garbage_content') return count >= 3;
-  const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
-  return count >= (isConfirmedDead ? 3 : 5);
+  return count >= (isStrictFailureReason(reason) ? 3 : 5);
 }
 
 module.exports = {
   NON_EVIDENCE_REASONS,
   isNonEvidenceFailure,
   shouldCountFailure,
+  isStrictFailureReason,
   isPermanentlyFailed,
 };

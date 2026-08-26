@@ -206,7 +206,7 @@ export default function ShowPageBelowFold({
 
       {/* Awards Scorecard */}
       <div id="awards" className="scroll-mt-20" />
-      {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}
+      {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} category={show.category} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}
 
       {/* Box Office Scorecard — Broadway only (no public OB/WE gross data).
           NOTE: the approved mockup showed BO + Commercial side by side on

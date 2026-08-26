@@ -1,0 +1,164 @@
+name: Audit Time-Bomb Tests
+
+# Weekly, observability-only run of scripts/audit-time-bomb-tests.js — the
+# clock-shift detector for tests that pass today and fail purely from calendar
+# drift (a hardcoded date compared against a rolling freshness window, with no
+# code change in between). Built for card 3ba637c5 but left deliberately
+# unwired: nothing ran it proactively, so armed bombs sat until a human
+# remembered to check by hand. Two manual triages nine days apart found 2
+# armed bombs (2026-08-17), then 4 (2026-08-26) — one of which would have gone
+# red for real around 2026-09-29 with zero commits in between (BRO-2441).
+#
+# Deliberately NOT wired into test.yml's pass/fail path: the detector runs
+# every unit-test manifest TWICE (baseline + a +45d clock shift), which is
+# slow and inherently noisy for a per-PR gate. This cron is the proactive
+# check instead — schedule + workflow_dispatch only, never push/pull_request.
+# The job's own exit code does not depend on findings — only on the audit
+# itself being unreliable (exit 2) or a real alert-delivery failure (exit 3,
+# see below) — both of which fail the job and reach notify-failure.
+#
+# New findings reach the owner as a Linear issue per bomb, filed by the
+# script's own --alert flag via routeAlert() (disposition:'auto') — same
+# posture as audit-uncollected-live-reviews.js's --alert. routeAlert's 7-day
+# cooldown ledger means a still-armed bomb from last week doesn't re-file
+# every run; a newly-armed one does. That ledger (data/audit/alert-ledger.json)
+# is a normal committed repo file, so the "Persist alert-router state" step
+# below commits it back after every run — without that, each run would start
+# from a cold ledger and the cooldown could never actually hold across weeks.
+#
+# Kill switch: repo Actions variable TIME_BOMB_AUDIT_DISABLED=true.
+
+on:
+  schedule:
+    - cron: '0 15 * * 1'  # Mondays 15:00 UTC
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Clock-shift window in days'
+        required: false
+        default: '45'
+      alert:
+        description: 'File a Linear issue per newly-found bomb'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-time-bomb-tests
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Find tests that pass today and fail by calendar
+    if: ${{ vars.TIME_BOMB_AUDIT_DISABLED != 'true' }}
+    runs-on: ubuntu-latest
+    # Each of the 3 manifests test.yml's own "Unit Tests" job runs once (~4-6
+    # min job-level budget, see test.yml:3169) runs TWICE here (baseline +
+    # shifted clock) — call it ~15 min of test time plus checkout/install/
+    # core-data overhead. 30 gives real headroom without masking a genuine
+    # hang as a false pass.
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      # review-guards regression tests (in the unit manifest) exercise
+      # detectCrossShowUrlMismatch against real show slugs — without this,
+      # those tests fail for an unrelated reason (missing data, not a time
+      # bomb) in BOTH the baseline and shifted run, which is harmless to the
+      # diff itself but matches the known-good environment test.yml's own
+      # "Unit Tests" job runs these manifests in (test.yml:3169).
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run time-bomb audit
+        id: audit
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          DAYS="${{ github.event.inputs.days || '45' }}"
+          ALERT_FLAG=""
+          if [ "${{ github.event.inputs.alert || 'true' }}" = "true" ]; then
+            ALERT_FLAG="--alert"
+          fi
+          # --out (not `--json > file`): --alert can make routeAlert() write
+          # its own informational lines to stdout (e.g. the cross-system
+          # Linear-dedupe log) — those would land inside a `--json`-redirected
+          # file and corrupt it. --out writes the same report straight to a
+          # file over its own handle, leaving stdout free for the human/log
+          # output actually shown in this step's log.
+          #
+          # Exit code: 0 = clean (whether or not bombs were found), 2 = the
+          # audit itself could not run reliably, 3 = it ran fine but a real
+          # --alert dispatch failed (not just a cooldown-silent skip). Both
+          # 2 and 3 fail the job so notify-failure fires — a green run here
+          # must not look identical to "found something and told the owner".
+          set +e
+          node scripts/audit-time-bomb-tests.js --days="$DAYS" --out=/tmp/time-bomb-report.json $ALERT_FLAG
+          EC=$?
+          set -e
+          if [ "$EC" -eq 2 ]; then
+            echo "::error::audit-time-bomb-tests.js could not run reliably (exit 2) — see log above"
+            exit 1
+          fi
+          if [ "$EC" -eq 3 ]; then
+            echo "::error::audit-time-bomb-tests.js found bomb(s) but --alert failed to dispatch at least one (exit 3) — see log above"
+            exit 1
+          fi
+          node -e "
+            const r = require('/tmp/time-bomb-report.json');
+            console.log('## Time-Bomb Test Audit' + '\n');
+            console.log('Files checked: ' + r.filesChecked + '   Clock shift: +' + r.shiftDays + 'd' + '\n');
+            if (r.timeBombs.length === 0) {
+              console.log('PASS — no test changes outcome when the clock moves.');
+            } else {
+              console.log(r.timeBombs.length + ' time-bomb(s) found:');
+              for (const b of r.timeBombs) console.log('- [' + b.suite + '] ' + b.file + ' — ' + b.name);
+            }
+          " >> "$GITHUB_STEP_SUMMARY"
+
+      # routeAlert()'s cooldown ledger (data/audit/alert-ledger.json) and
+      # dispatch-attempt log (data/audit/alert-router-attempts.jsonl) are
+      # written to the runner's local checkout during the step above — without
+      # committing them back, every run starts cold and the 7-day cooldown
+      # this whole design leans on never actually holds across weeks (the
+      # cross-system Linear-search dedupe inside routeAlert is a real but
+      # weaker backstop, not a substitute). `if: always()` + `continue-on-error`
+      # on this step: a failed persist degrades back to that weaker backstop
+      # for one week, it must never fail an otherwise-successful audit run.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist time-bomb-tests alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Time-Bomb Test Audit Failed'
+          severity: 'warning'
