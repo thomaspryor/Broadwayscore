@@ -42,6 +42,7 @@ function runPreSendCheck(outDir, weekStart) {
     cwd: repoRoot,
     env: { ...process.env, NEWSLETTER_OUT_DIR: outDir, NEWSLETTER_EDITION: undefined, NEWSLETTER_SKIP_IMAGE_FETCH: '1' },
     stdio: 'pipe',
+    timeout: 30000,
   }).toString();
 }
 
@@ -55,14 +56,16 @@ function runCreateBroadcastDraftDryRun(outDir, weekStart) {
     cwd: repoRoot,
     env: { ...process.env, NEWSLETTER_EDITION: undefined },
     encoding: 'utf8',
+    timeout: 30000,
   });
   assert.equal(res.status, 0, `create-broadcast-draft.mjs dry run failed: ${res.stderr}`);
   return `${res.stdout}${res.stderr}`;
 }
 
-test('pre-send-check.mjs injects the PRE-SEND ISSUES banner for soft issues', () => {
+test('pre-send-check.mjs injects the PRE-SEND ISSUES banner for soft issues', (t) => {
   const weekStart = '2026-08-24';
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-banner-guard-'));
+  t.after(() => fs.rmSync(outDir, { recursive: true, force: true }));
   writeFixture(outDir, weekStart);
 
   const out = runPreSendCheck(outDir, weekStart);
@@ -74,9 +77,10 @@ test('pre-send-check.mjs injects the PRE-SEND ISSUES banner for soft issues', ()
   assert.ok(html.includes('PRE-SEND ISSUES'), 'expected the banner text in the draft HTML');
 });
 
-test('create-broadcast-draft.mjs strips the banner before it would reach the subscriber PATCH', () => {
+test('create-broadcast-draft.mjs strips the banner before it would reach the subscriber PATCH', (t) => {
   const weekStart = '2026-08-24';
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-banner-guard-'));
+  t.after(() => fs.rmSync(outDir, { recursive: true, force: true }));
   writeFixture(outDir, weekStart);
   runPreSendCheck(outDir, weekStart); // injects the banner, as proven above
 
@@ -100,9 +104,10 @@ test('create-broadcast-draft.mjs strips the banner before it would reach the sub
   assert.ok(!rawLengthPattern.test(out), 'reported byte count matches the UN-stripped HTML — banner would reach the PATCH payload');
 });
 
-test('create-broadcast-draft.mjs is a no-op strip when no banner is present (happy path unaffected)', () => {
+test('create-broadcast-draft.mjs is a no-op strip when no banner is present (happy path unaffected)', (t) => {
   const weekStart = '2026-08-24';
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-banner-guard-'));
+  t.after(() => fs.rmSync(outDir, { recursive: true, force: true }));
   writeFixture(outDir, weekStart);
   // No pre-send-check.mjs run here — the HTML never had a banner injected.
 
