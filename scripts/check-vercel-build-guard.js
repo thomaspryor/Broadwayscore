@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   nextGuardState,
   shouldAutoRecover,
@@ -30,6 +31,13 @@ const {
   buildOverrideCommand,
   buildGuardBlockedAlert,
 } = require('./lib/guard-escalation');
+
+const USAGE = `Usage: node scripts/check-vercel-build-guard.js
+
+Verifies the Vercel project's commandForIgnoringBuildStep setting is
+'exit 0' (git-triggered builds stay blocked); auto-restores it via PATCH if
+it drifted. Requires VERCEL_TOKEN. See file header for the guard-escalation
+auto-recovery behavior on repeated restore failures.`;
 
 const PROJECT_ID = 'prj_wmBnDUrCQCwabIAYPbnMiIP3wg15';
 const EXPECTED_SETTING = 'exit 0';
@@ -213,6 +221,7 @@ async function handleBlocked(baseMsg, impact) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const token = process.env.VERCEL_TOKEN;
   if (!token) {
     await handleBlocked(
