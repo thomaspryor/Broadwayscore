@@ -58,7 +58,8 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
     "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
   ],
   "failed": [
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -393,7 +394,16 @@
     "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
     "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json",
     "murder-she-didnt-write-west-end-2025/london-box-office--stacey-tyler.json",
-    "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json"
+    "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json",
+    "operation-mincemeat-2025/musical-theatre-review--unknown.json",
+    "operation-mincemeat-2025/thereviewshub--mike-wells.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json",
+    "operation-mincemeat-2025/british-theatre--unknown.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "operation-mincemeat-2025/standard--nick-curtis.json",
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -444,7 +454,8 @@
     "browserbase": [
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -462,7 +473,8 @@
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-producers-west-end-2025/variety--ellise-shafer.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -478,7 +490,7 @@
     ]
   },
   "startTime": "2026-08-26T10:18:02.686Z",
-  "lastProcessed": "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
   "log": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -513,6 +525,17 @@
       "event": "bb-session",
       "session": "a2e7ca66",
       "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-08-26T11:48:10.879Z",
+      "event": "bb-session",
+      "session": "de58b2e3",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-08-26T11:48:11.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
