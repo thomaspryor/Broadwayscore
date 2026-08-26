@@ -362,7 +362,11 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
     id,
     title: candidate.title,
     slug: slugBase,
-    venue: candidate.venue,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
+    // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+    // promote rather than write a garbage venue string.
+    venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
     openingDateSource: openingDate ? 'aggregator-roundup' : null,
     previewsStartDate: null,
@@ -394,7 +398,16 @@ function buildRegionalShowEntry(candidate) {
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const id = `${slugBase}-regional-${year}`;
+  // City lookup stays on the raw candidate venue — feederVenueCity keys off
+  // the feeder-venue table's own spelling, unaffected by sanitization.
   const city = feederVenueCity(candidate.venue);
+  // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+  // cousin of BRO-160's buildShowEntry fix (card #1921). Sanitize BEFORE the
+  // city-suffix concatenation so a placeholder venue can't smuggle itself
+  // through as "Spring Gala 2026, Chicago, IL" — returns null on a
+  // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+  // promote rather than write a garbage venue string.
+  const sanitizedVenue = sanitizeVenueForWrite(candidate.venue);
   // Regional runs are limited engagements (6-10 weeks). A fresh roundup ⇒ the
   // show just opened ⇒ 'open'. A roundup older than ~90 days reaching this
   // code is a backfill/seed — the run is almost certainly over, and 'open'
@@ -405,7 +418,7 @@ function buildRegionalShowEntry(candidate) {
     id,
     title: candidate.title,
     slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
-    venue: city ? `${candidate.venue}, ${city}` : candidate.venue,
+    venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
     openingDate,
     openingDateSource: 'aggregator-roundup',
     previewsStartDate: null,
