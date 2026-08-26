@@ -3,6 +3,20 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findOverlappingCards, filePathsIn, titlesOverlap } = require('./dispatch-overlap-check.js');
+const os = require('os');
+const path = require('path');
+const fs = require('fs');
+// Task #1896: the mirror-staleness race findOverlappingCards alone can't
+// close — its input snapshot only shows a task as in_progress once the
+// local task mirror already says so, and nothing writes that until the
+// DISPATCHED session itself gets around to it, minutes later. The actual
+// fix is scripts/lib/atomic-claim.js's atomic per-task claim, wired into
+// bsc-next.js's fresh-dispatch path ahead of the overlap check this file
+// tests. Required directly here (not re-exported from dispatch-overlap-
+// check.js, which stays pure/no-I/O by convention) so the acceptance
+// criteria's `node --test scripts/lib/dispatch-overlap-check.test.mjs`
+// command exercises the real race-closing primitive, not just the guard.
+const { acquireClaim, releaseClaim } = require('./atomic-claim.js');
 
 test('findOverlappingCards flags an in_progress card sharing a scripts/ file path (#893/#902 class)', () => {
   const target = { id: '902', subject: 'Coverage Verdict S0: foundations', notes: 'Fix scripts/audit-show-review-gap.js self-clobber.' };
@@ -67,4 +81,73 @@ test('titlesOverlap requires both titles to clear the 20-char floor', () => {
   assert.equal(titlesOverlap('Fix: CI red', 'Fix: CI red today'), false); // too short
   assert.equal(titlesOverlap('Extract the shared helper function', 'Extract the shared helper function today'), true);
   assert.equal(titlesOverlap('Extract the shared helper function', 'Completely unrelated long title here'), false);
+});
+
+// ── Task #1896 race-simulation cases ────────────────────────────────────────
+// The real incident: task #1893 was independently dispatched 4x within ~8
+// minutes because findOverlappingCards' in_progress snapshot never reflected
+// any of the in-flight attempts (nothing marks a task in_progress until the
+// dispatched session itself gets around to it, minutes later). acquireClaim
+// closes this by giving concurrent bsc-next.js processes a single, atomic
+// per-task gate to race on BEFORE they ever reach the overlap check.
+
+test('acquireClaim: race simulation — two dispatch attempts for the same stale-mirror task, only one may proceed (task #1896)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    // Both "attempts" model bsc-next.js processes that loaded the identical
+    // stale (not-yet-in_progress) mirror snapshot for task #1893 and, absent
+    // this claim, would BOTH have passed findOverlappingCards and dispatched.
+    const first = acquireClaim(dir, '1893');
+    const second = acquireClaim(dir, '1893');
+    assert.equal(first, true, 'first attempt claims the slot');
+    assert.equal(second, false, 'second concurrent attempt on the same task must be refused, not also proceed');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('acquireClaim: does not block a DIFFERENT task id', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    assert.equal(acquireClaim(dir, '1893'), true);
+    assert.equal(acquireClaim(dir, '1894'), true, 'an unrelated task id must never contend for #1893\'s claim');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('acquireClaim: a stale claim (crashed or long-dead prior attempt) can be taken over', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 1000 }), true);
+    assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 1500 }), false, 'still fresh at +500ms');
+    assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 3000 }), true, 'stale at +2000ms — takeover allowed');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('releaseClaim allows an immediate reclaim — the legitimate same-session dead-launch retry path', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    // Mirrors the real incident's OWN legitimate retries (08:33 dead ->
+    // 08:39 relaunch of the same task by the same session): those must never
+    // be blocked by this claim, only genuinely concurrent OTHER attempts.
+    assert.equal(acquireClaim(dir, '1893'), true);
+    releaseClaim(dir, '1893');
+    assert.equal(acquireClaim(dir, '1893'), true, 'a retry after releasing must not be refused');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('acquireClaim: unreadable/corrupt claim metadata fails closed, never guesses the slot is free', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
+  try {
+    fs.mkdirSync(path.join(dir, '1893.claim'));
+    fs.writeFileSync(path.join(dir, '1893.claim', 'meta.json'), 'not valid json{{{');
+    assert.equal(acquireClaim(dir, '1893'), 'error');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
