@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-26T00:24:02.682Z",
+    "generatedAt": "2026-08-26T04:50:18.220Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,134 +8,116 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 2,
-    "exemptCount": 8,
+    "flaggedCount": 0,
+    "exemptCount": 7,
     "coveredCount": 22,
-    "highChurnTracked": 32
+    "highChurnTracked": 29
   },
-  "flagged": [
-    {
-      "path": "data/audit/validation/collection-report-2026-08-23.json",
-      "churn": 34
-    },
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 31
-    }
-  ],
+  "flagged": [],
   "exempt": [
     {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 65
-    },
-    {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 60
+      "churn": 62
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 60
+      "churn": 62
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 60
+      "churn": 62
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 53
+      "churn": 59
     },
     {
-      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 44
+      "path": "data/audit/alert-ledger.json",
+      "churn": 57
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 42
+      "churn": 44
     },
     {
-      "path": "public/data/shows/jeeves-takes-charge-west-end-2026.json",
-      "churn": 30
+      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
+      "churn": 43
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1025,
+      "churn": 996,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 971,
+      "churn": 945,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 394,
+      "churn": 392,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 381,
+      "churn": 385,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 231,
+      "churn": 239,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 180,
+      "churn": 172,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 111,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 111,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 111,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 72,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 67,
+      "churn": 69,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 60,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 49,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 49,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 39,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 33,
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
@@ -166,6 +148,11 @@
     {
       "path": "data/audit/poller-backoff/how-the-other-half-loves-west-end-2026.json",
       "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
