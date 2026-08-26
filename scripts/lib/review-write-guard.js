@@ -257,6 +257,16 @@ const PROTECTED_FIELDS = [
   // NOTE: serpRetryCount/serpDiscoveryAbandoned are intentionally excluded — clearFailureFlags()
   // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
+  // Fetch retry lifecycle gate state (BRO-787, same pattern as the SERP fields
+  // above, applied to failed-fetches.json retries instead of SERP calls —
+  // see scripts/lib/review-guards.js shouldRetryFetch/recordFetchAttempt).
+  // NOTE: BOTH fetchRetryAfter and fetchDiscoveryAbandoned are intentionally
+  // excluded here — unlike serpRetryAfter, clearFailureFlags() clears
+  // fetchRetryAfter too (not just fetchDiscoveryAbandoned) once a fetch
+  // actually succeeds, so protecting it here would fight that null-write on
+  // the next rebase. Durability across a REBASE (as opposed to a same-run
+  // clear) still comes from push-review-texts/action.yml's ACTION_EXTRA list
+  // and restore-protected-fields.js's MANUAL_FIELDS list — both include them.
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
   // Manual-clear Haiku-fallback failure state (P1 352637c5-416f-81ab). A rebase
   // conflict resolver that picks the remote/longer-text side on ties would

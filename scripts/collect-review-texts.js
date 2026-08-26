@@ -471,7 +471,7 @@ const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
-const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
 const { emitStage } = require('./lib/stage-latency');
 
@@ -5539,11 +5539,14 @@ function findReviewsToProcess() {
   // never collected at all. See scripts/lib/collection-priority.js.
   const openShowIds = new Set();
   const showOpeningDates = new Map(); // showId → recency key (YYYY-MM-DD)
+  // showId → show object, for the fetch-retry lifecycle gate below (BRO-787).
+  const showsById = new Map();
   try {
     const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
     const allShows = showsData.shows || showsData;
     allShows.forEach(s => {
       if (s.status === 'open' || s.status === 'previews') openShowIds.add(s.id);
+      showsById.set(s.id, s);
     });
     for (const [id, key] of buildShowRecencyMap(allShows)) showOpeningDates.set(id, key);
     console.log(`  Prioritizing ${openShowIds.size} open/preview shows`);
@@ -5559,9 +5562,17 @@ function findReviewsToProcess() {
   // crashed the whole 3×-daily pipeline for ~8h on 2026-05-27).
   const shows = listShowDirs(CONFIG.reviewTextsDir);
 
-  // Load failed fetches — skip permanently failed URLs (5+ failures, or 3+ confirmed dead)
+  // Load failed fetches. Lifecycle-tiered abandonment (BRO-787): a single
+  // gate, shouldRetryFetch, replaces the old flat isPermanentlyFailed
+  // pre-filter (3 dead/garbage, 5 everything else) so there is exactly one
+  // source of truth for "how many retries does this review get" — not two
+  // independently-tuned thresholds that could drift apart. This scan can only
+  // evaluate the count-vs-tiered-max part (no review file loaded yet); the
+  // per-file loop below applies the FULL gate (adds cooldown +
+  // urlCorrectedRefetch bypass) once each review's own JSON is available —
+  // see the fetchGate check near "Skip if no URL".
   const failedFetches = new Set();  // For retry mode: IDs to include
-  const permanentlyFailed = new Set();  // IDs to always skip (too many failures)
+  const failedFetchesByReviewId = new Map(); // reviewId → ledger entry, for the per-file gate below
   let permanentSkipCount = 0;
   const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
   if (fs.existsSync(failedPath)) {
@@ -5569,14 +5580,13 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        // Shared with recordFailedFetch's write-side threshold via
-        // lib/failed-fetch-policy.js — the two used to be separate copies of
-        // the same rule with a comment asserting they matched (S2-T6).
+        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 };
+        failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
         // retire a URL the breaker merely deferred.
-        if (isPermanentlyFailed({ failureReason: f.failureReason || '', failureCount: f.failureCount || 1 })) {
-          permanentlyFailed.add(id);
+        const gate = shouldRetryFetch(showsById.get(f.showId) || null, {}, entry);
+        if (!gate.shouldRetry) {
           permanentSkipCount++;
         } else if (CONFIG.retryFailed) {
           failedFetches.add(id);
@@ -5585,7 +5595,7 @@ function findReviewsToProcess() {
     } catch (e) {}
   }
   if (permanentSkipCount > 0) {
-    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (dead 3+, other 5+, garbage 3+)`);
+    console.log(`  Skipping ${permanentSkipCount} permanently failed reviews (lifecycle-tiered thresholds, BRO-787)`);
   }
 
   for (const showId of shows) {
@@ -5602,9 +5612,10 @@ function findReviewsToProcess() {
       const filePath = path.join(showDir, file);
       const reviewId = `${showId}/${file}`;
 
-      // Skip permanently failed (3+ failures across runs)
-      // Bypass when explicitly targeting files (review_filter or show_filter) — always retry
-      if (permanentlyFailed.has(reviewId) && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) continue;
+      // Permanently-failed / cooldown skip (lifecycle-tiered, BRO-787) lives
+      // further down as `fetchGate`, once `data` (the review file) is loaded —
+      // it needs the review's own fetchRetryAfter/fetchDiscoveryAbandoned
+      // state and the urlCorrectedRefetch bypass, neither available here.
       // Skip already processed in this run
       if (state.processed.includes(reviewId)) continue;
       // Skip failed unless retry mode
@@ -5620,7 +5631,7 @@ function findReviewsToProcess() {
         // resurrects the duplicate until the next write re-tombstones it
         // (the-enormous-crocodile london-theatre--unknown weekly oscillation,
         // 2026-08-01). Explicit --review or --show targeting bypasses (same
-        // pattern as the permanentlyFailed skip above), so manual recovery of
+        // pattern as the fetchGate skip below), so manual recovery of
         // a wrongly tombstoned file still works.
         if (data.duplicateOf && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
           logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedDuplicateOf', details: { url: data.url, duplicateOf: data.duplicateOf } });
@@ -5720,6 +5731,43 @@ function findReviewsToProcess() {
           // Override: explicit reviewFilter (specific file targeting) bypasses this guard.
           // Override: truncated reviews always need re-collection (scored on partial text is wrong).
           if (!isTruncated && shouldSkipScoredReview(data, CONFIG.reviewFilter.size)) {
+            continue;
+          }
+        }
+
+        // Lifecycle-tiered fetch retry gate (BRO-787): once a review has a
+        // failed-fetches.json entry, don't keep burning Browserbase/BD/SB
+        // spend retrying it forever — closed-old shows with a confirmed-dead
+        // URL get 0 further retries, and every other lifecycle gets a
+        // cooldown between attempts. Runs AFTER the has-good-text checks
+        // above (a stale ledger entry on an already-complete review must not
+        // be gated — those checks already let it through) and bypasses on
+        // urlCorrectedRefetch, same as the wrongContent cooldown above: a
+        // corrected URL is a strong signal the next fetch will succeed, and
+        // the OLD url's failure history says nothing about the NEW one.
+        const fetchFailureEntry = failedFetchesByReviewId.get(reviewId);
+        if (fetchFailureEntry && !urlCorrectedRefetch) {
+          const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
+          if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
+            logExclusion({
+              script: 'collect-review-texts',
+              showId,
+              file,
+              reason: fetchGate.reason === 'abandoned' || fetchGate.reason === 'max_retries_reached'
+                ? 'skippedFetchAbandoned' : 'skippedFetchCooldown',
+              details: {
+                url: data.url,
+                failureReason: fetchFailureEntry.failureReason,
+                failureCount: fetchFailureEntry.failureCount,
+                nextAttemptAt: fetchGate.nextAttemptAt,
+              },
+            });
+            if (fetchGate.updates) {
+              try {
+                Object.assign(data, fetchGate.updates);
+                fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+              } catch (e) {}
+            }
             continue;
           }
         }
@@ -6089,7 +6137,20 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal — don't crash the run over tracking
   }
 
-  // Set incompleteReason on the review source file
+  // Set incompleteReason on the review source file, and advance the
+  // lifecycle-tiered fetch retry gate state (fetchRetryAfter /
+  // fetchDiscoveryAbandoned — BRO-787). Both live on the same file, so one
+  // read+write covers them.
+  let fetchAttemptUpdates = {};
+  if (counts) {
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const showMeta = _showsJsonCache.shows.find(s => s.id === review.showId) || null;
+      fetchAttemptUpdates = recordFetchAttempt(showMeta, review, entry);
+    } catch (e) {
+      // Non-fatal — worst case, no cooldown/abandonment is stamped this run
+    }
+  }
   try {
     const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
     if (fs.existsSync(reviewFilePath)) {
@@ -6098,6 +6159,11 @@ function recordFailedFetch(review, reason, details = {}) {
       if (reasonResult) {
         reviewData.incompleteReason = reasonResult.incompleteReason;
         reviewData.incompleteDetail = reasonResult.incompleteDetail;
+      }
+      if (Object.keys(fetchAttemptUpdates).length > 0) {
+        Object.assign(reviewData, fetchAttemptUpdates);
+      }
+      if (reasonResult || Object.keys(fetchAttemptUpdates).length > 0) {
         fs.writeFileSync(reviewFilePath, JSON.stringify(reviewData, null, 2) + '\n');
       }
     }
@@ -6105,10 +6171,12 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal
   }
 
-  if (isPermanentlyFailed(entry)) {
+  if (fetchAttemptUpdates.fetchDiscoveryAbandoned || isPermanentlyFailed(entry)) {
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts) {
     console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
+  } else if (fetchAttemptUpdates.fetchRetryAfter) {
+    console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);
   }
 }
 
