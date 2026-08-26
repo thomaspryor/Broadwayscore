@@ -39,12 +39,46 @@ const { getBestScore, applyScoreRelevantMigrations } = require('./lib/rebuild-he
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { getSyndicationConfig } = require('./lib/syndication-pairs');
 const { findMissingScoreableShows } = require('./lib/rebuild-staleness-guard');
+// BRO-545 (pipeline self-healing): this guard is right to fail loud on its
+// first occurrence, but must not be allowed to wedge reviews.json indefinitely
+// if the same drift keeps recurring — see guard-escalation.js header.
+const {
+  nextGuardState,
+  shouldAutoRecover,
+  shouldEscalate,
+  buildOverrideCommand,
+  buildGuardBlockedAlert,
+} = require('./lib/guard-escalation');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
+// Committed alongside the other per-run audit files (rebuild-reviews.yml's
+// commit step does `git add data/audit/*.json`) so the streak survives across
+// CI checkouts — a fresh checkout every run means this guard has no memory
+// unless its state is git-tracked.
+const GUARD_STATE_FILE = path.join(DATA_DIR, 'audit', 'guard-escalation-state.json');
+const GUARD_ID = 'stale-checkout-staleness';
+const WORKFLOW_DISPLAY_NAME = 'Rebuild Reviews Data';
+const ALERT_CONDITION_KEY = `guard-escalation:${GUARD_ID}`;
+
+function loadGuardState() {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  return (doc && doc[GUARD_ID]) || null;
+}
+
+function saveGuardState(state) {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  doc[GUARD_ID] = state;
+  try {
+    fs.mkdirSync(path.dirname(GUARD_STATE_FILE), { recursive: true });
+    fs.writeFileSync(GUARD_STATE_FILE, JSON.stringify(doc, null, 2) + '\n');
+  } catch (e) {
+    console.error(`::warning::[check-rebuild-staleness] could not persist guard-escalation state: ${e.message}`);
+  }
+}
 
 function loadJSON(file, fallback = null) {
   try {
@@ -107,12 +141,23 @@ function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir) {
   });
 }
 
-function main() {
+async function main() {
   const showsFileArg = (process.argv.find((a) => a.startsWith('--shows-file=')) || '')
     .replace('--shows-file=', '') || null;
+  // BRO-545: the real, immediate bypass — same --force flag rebuild-reviews.yml
+  // already threads to rebuild-all-reviews.js as --force-write when a human
+  // runs `gh workflow run "Rebuild Reviews Data" -f force_write=true`. Without
+  // this, "override command" in the alert below would only be a plain re-run
+  // (still subject to the same first-block-fails-loud rule), not an actual
+  // way to unblock before the 2-consecutive auto-recovery threshold.
+  const forced = process.argv.includes('--force');
   const candidateShowIds = readCandidateShowIds(showsFileArg);
   if (candidateShowIds.length === 0) {
     console.log('[check-rebuild-staleness] no drifted shows this run — nothing to verify.');
+    // A clean no-op run is still "not blocked" — clear any open streak so a
+    // quiet stretch doesn't leave a stale escalation state behind.
+    const cleared = nextGuardState(loadGuardState(), false, Date.now());
+    saveGuardState(cleared);
     return;
   }
 
@@ -151,18 +196,102 @@ function main() {
   }
 
   const missing = findMissingScoreableShows(scoreableShowIds, reviewsShowIds);
+  const overrideCommand = buildOverrideCommand({
+    workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+    reason: 'BRO-545 stale-checkout guard manual override',
+    extraFlags: ['-f force_write=true'],
+  });
+
   if (missing.length > 0) {
-    console.error(
-      `::error::[check-rebuild-staleness] ${missing.length} show(s) had scoreable review-text ` +
+    const priorState = loadGuardState();
+    const state = nextGuardState(priorState, true, Date.now());
+    saveGuardState(state);
+
+    const baseMsg =
+      `[check-rebuild-staleness] ${missing.length} show(s) had scoreable review-text ` +
       `files (drifted in during this job) but ZERO reviews.json entries after rebuild — ` +
-      `stale-checkout race, not a legitimate exclusion. Shows: ${missing.join(', ')}`,
-    );
-    process.exit(1);
+      `stale-checkout race, not a legitimate exclusion. Shows: ${missing.join(', ')}. ` +
+      `Override: ${overrideCommand}`;
+
+    if (forced) {
+      console.error(`::warning::${baseMsg}`);
+      console.error('::warning::[guard-escalation] --force passed — proceeding despite the block (manual override, not auto-recovery).');
+      return;
+    }
+
+    if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks)) {
+      // First (or still-below-threshold) block: fail loud, unchanged from
+      // before BRO-545 — a one-off stale-checkout race is worth flagging
+      // immediately.
+      console.error(`::error::${baseMsg}`);
+      process.exit(1);
+    }
+
+    // BRO-545 auto-recovery: this guard has now blocked
+    // state.consecutiveBlocks runs in a row. Reviews.json already reflects
+    // this run's rebuild (the "Rebuild reviews.json" step succeeded before
+    // this check ran) — proceeding here just stops marking the whole job red
+    // for a condition that keeps reproducing, so the pipeline degrades to a
+    // loud, escalating alert instead of stalling indefinitely.
+    const alert = buildGuardBlockedAlert({
+      guardId: GUARD_ID,
+      guardLabel: 'Stale-checkout race guard (check-rebuild-staleness.js)',
+      consecutiveBlocks: state.consecutiveBlocks,
+      workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+      overrideCommand,
+      runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
+        ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+        : undefined,
+    });
+    console.error(`::warning::${baseMsg}`);
+    console.error(`::warning::[guard-escalation] AUTO-RECOVERING — ${alert.description.replace(/\n/g, ' | ')}`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+      try {
+        fs.appendFileSync(
+          process.env.GITHUB_STEP_SUMMARY,
+          `\n## ⚠️ Guard auto-recovery — ${alert.title}\n\n${alert.description.replace(/\n/g, '\n\n')}\n`,
+        );
+      } catch (e) { /* summary write is best-effort */ }
+    }
+
+    if (shouldEscalate(state.consecutiveBlocks)) {
+      try {
+        const { routeAlert } = require('./lib/owner-alert-router');
+        await routeAlert({
+          conditionKey: ALERT_CONDITION_KEY,
+          title: alert.title,
+          description: alert.description,
+          disposition: 'human',
+          cooldownHours: 1,
+        });
+      } catch (e) {
+        console.error(`::warning::[guard-escalation] routeAlert failed (${e.message}) — escalation was logged above regardless.`);
+      }
+    }
+    // Auto-recovered: exit 0 so this step (and the job) stays green — the
+    // condition is already visible via the warnings/summary/alert above.
+    return;
   }
+
+  // Healthy run: clear any open streak so a real recurring block doesn't get
+  // silently forgotten, but a single good run also doesn't leave a stale
+  // "still blocked" incident open.
+  const priorState = loadGuardState();
+  if (priorState && priorState.consecutiveBlocks > 0) {
+    try {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      resolveCondition(ALERT_CONDITION_KEY);
+    } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
+  }
+  saveGuardState(nextGuardState(priorState, false, Date.now()));
+
   console.log(
     `[check-rebuild-staleness] verified ${candidateShowIds.length} drifted show(s), ` +
     `${scoreableShowIds.length} scoreable — all present in reviews.json.`,
   );
 }
 
-main();
+main().catch((e) => {
+  console.error(`::error::[check-rebuild-staleness] unexpected failure: ${e.stack || e.message}`);
+  process.exit(1);
+});
