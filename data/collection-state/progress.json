@@ -1,7 +1,13 @@
 {
   "processed": [
     "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
   ],
   "failed": [
     "paranormal-activity-2026/deadline--erik-pedersen.json",
@@ -14,12 +20,20 @@
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
     "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-    "abigails-party-west-end-2026/london-box-office--stuart-king.json"
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -27,16 +41,18 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
     ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
   "log": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -48,6 +64,18 @@
       "t": "2026-08-26T20:51:12.317Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-26T20:54:51.124Z",
+      "event": "bb-session",
+      "session": "c4001a5b",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-26T20:55:04.666Z",
+      "event": "bb-session",
+      "session": "bf5a6727",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
