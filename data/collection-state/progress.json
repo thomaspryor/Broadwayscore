@@ -1792,7 +1792,14 @@
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/daily-mail--bethan-edwards.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/monstagigz--unknown.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1934,7 +1941,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -2130,6 +2137,30 @@
       "t": "2026-08-26T05:15:13.437Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-26T05:18:16.406Z",
+      "event": "bb-session",
+      "session": "afadc8f3",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-26T05:18:34.911Z",
+      "event": "bb-session",
+      "session": "50a8a6fd",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-26T05:19:15.319Z",
+      "event": "bb-session",
+      "session": "0f20700b",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-26T05:19:24.014Z",
+      "event": "bb-session",
+      "session": "46990102",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
