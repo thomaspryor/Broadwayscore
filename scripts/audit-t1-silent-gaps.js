@@ -38,7 +38,10 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX } = require('./lib/t1-silent-gap');
+const {
+  classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX,
+  gapCardKey, classifyGapCardState, dedupeGapCards, GAP_CARD_STATE,
+} = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
 const { isAgedNonTerminalGap, shouldBackstopAlert, gapFirstSeen, nonTerminalAgeHours, BACKSTOP_MIN_AGE_HOURS } = require('./lib/t1-backstop');
@@ -52,7 +55,7 @@ const {
 } = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { routeAlert } = require('./lib/owner-alert-router');
+const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -294,7 +297,29 @@ async function main() {
       }
 
       let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
-      if (!gap) continue;
+      if (!gap) {
+        // BRO-341: a file that is no longer a gap may have a previously-filed
+        // card still open for it (the sweep used to have no way to notice a
+        // gap resolved). Close it the moment the file turns terminal —
+        // 'collected' (the review reached the score) or 'no-review' (an
+        // editorial verdict says the absence is correct, not a fetch
+        // failure). resolveCondition() is a no-op when no card is tracked.
+        // Legacy keys are resolved too so cards filed before this fix (under
+        // the old 'gap:'/'backstop:' conditionKey prefixes) also close.
+        if (!DRY_RUN) {
+          const terminal = classifyGapCardState({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
+          if (terminal === GAP_CARD_STATE.COLLECTED || terminal === GAP_CARD_STATE.NO_REVIEW) {
+            const key = gapCardKey({ showId: show.id, outletId, file: f });
+            const closedNew = resolveCondition(key);
+            const closedLegacyGap = resolveCondition(`gap:${show.id}/${f}`);
+            const closedLegacyBackstop = resolveCondition(`backstop:${show.id}/${f}`);
+            if (closedNew || closedLegacyGap || closedLegacyBackstop) {
+              console.log(`  ✅ closed gap card for ${show.id}/${f} (${terminal})`);
+            }
+          }
+        }
+        continue;
+      }
 
       let recovery = null;
       // A file is a refetch candidate when it's a recoverable empty-body gap
@@ -480,15 +505,14 @@ async function main() {
   if (DO_ALERT && gaps.length > 0 && !DRY_RUN) {
     const due = gaps.filter(emailEligible)
       .filter((g) => shouldAlertGap(state[`${g.showId}/${g.file}`], now));
-    // One alert field per show+outlet (byline-explosion clusters produce many
-    // files for the same missing outlet — the ACTION is the same fix command).
-    const seen = new Set();
-    const dueDeduped = due.filter((g) => {
-      const k = `${g.showId}/${g.outletId}`;
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    });
+    // One alert per show+outlet (byline-explosion clusters produce many files
+    // for the same missing outlet — the ACTION is the same fix command; BRO-341
+    // moved this to the shared dedupeGapCards() so the urgent and backstop
+    // paths below dedupe identically instead of each having its own logic).
+    const { primary: dueDeduped, duplicates: dueDupes } = dedupeGapCards(due);
+    if (dueDupes.length > 0) {
+      console.log(`  🧹 ${dueDupes.length} duplicate gap file(s) collapsed onto their show+outlet's primary card.`);
+    }
     if (due.length > 0) {
       // Email routing (2026-07-19, after 6 CRITICAL emails in 36h): only gaps
       // on shows NEAR OPENING (score actively forming, user can still act
@@ -518,7 +542,7 @@ async function main() {
       const dispatchedOutletKeys = new Set();
       for (const g of toDispatch) {
         const result = await routeAlert({
-          conditionKey: `gap:${g.showId}/${g.file}`,
+          conditionKey: gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file }),
           title: `T1/T2 silent gap on near-opening show: ${g.title || g.showId} — ${g.outletId}`,
           description: `Review file ${g.file} (T${g.tier}, ${g.type}) will not reach the composite score and is not legitimately excluded. URL on file: ${g.url || 'none'}. If the fix command keeps failing, check whether the URL is actually a review page (show/ticket hub URLs can never recover) and whether the outlet has published a review at all.`,
           hint: g.fix,
@@ -611,10 +635,16 @@ async function main() {
     // Age measured from when the file first became a GAP (gapSeenAt), not file
     // creation. Exclude files that already paged via the normal gap path this
     // run (cross-path dedupe).
-    const aged = gaps.filter((g) =>
+    const agedRaw = gaps.filter((g) =>
       isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
       && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
-    const dueB = aged.filter((g) => shouldBackstopAlert(state[`backstop:${g.showId}/${g.file}`], now));
+    // BRO-341: collapse to one card per show+outlet here too — an aged
+    // byline-explosion cluster used to file one backstop card PER FILE.
+    const { primary: aged, duplicates: agedDupes } = dedupeGapCards(agedRaw);
+    if (agedDupes.length > 0) {
+      console.log(`  🧹 ${agedDupes.length} duplicate aged gap file(s) collapsed onto their show+outlet's primary backstop card.`);
+    }
+    const dueB = aged.filter((g) => shouldBackstopAlert(state[gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file })], now));
     if (dueB.length > 0) {
       // Each gap already names its own exact recovery command (fixCommand())
       // — that's a machine-investigable condition, not one that needs owner
@@ -626,7 +656,7 @@ async function main() {
       // hands-free. Capped at 5/run so a bad run can't flood the queue.
       const toFile = dueB.slice(0, 5);
       for (const g of toFile) {
-        const conditionKey = `backstop:${g.showId}/${g.file}`;
+        const conditionKey = gapCardKey({ showId: g.showId, outletId: g.outletId, file: g.file });
         const result = await routeAlert({
           conditionKey,
           title: `T1/T2 review stuck >24h: ${g.title || g.showId} — ${g.outletId}`,
