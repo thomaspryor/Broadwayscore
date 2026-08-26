@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, detectLauncherFailureRate, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, detectLauncherFailureRate, countRecentLaunches, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
