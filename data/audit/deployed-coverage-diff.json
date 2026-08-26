@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T16:27:01.819Z",
+  "generatedAt": "2026-08-26T18:50:59.451Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,79 +11,79 @@
   },
   "shows": [
     {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
+      "showId": "paranormal-activity-2026",
+      "title": "Paranormal Activity",
+      "openingDate": "2026-08-25",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.03 vs local 74.79 (Δ0.24)"
+          "detail": "deployed cs 79.31 vs local 79.77 (Δ0.46)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 36,
-      "deployedCount": 36
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing - Globe",
-      "openingDate": "2026-06-20",
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.06 vs local 77.12 (Δ0.06)"
+          "detail": "deployed cs 78.84 vs local 78.77 (Δ0.07)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24
+      "localCount": 41,
+      "deployedCount": 41
     },
     {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
-      "title": "The 25th Annual Putnam County Spelling Bee",
-      "openingDate": "2025-11-17",
+      "showId": "burlesque-west-end-2026",
+      "title": "Burlesque",
+      "openingDate": "2025-07-22",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 90.91 vs local 91.33 (Δ0.42)"
+          "detail": "deployed cs 62.48 vs local 60.85 (Δ1.63)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 11
+      "localCount": 17,
+      "deployedCount": 17
     },
     {
-      "showId": "mj-2022",
-      "title": "MJ The Musical",
-      "openingDate": "2022-02-01",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 66.74 vs local 66.65 (Δ0.09)"
+          "detail": "deployed cs 61.62 vs local 61.25 (Δ0.37)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
+      "localCount": 27,
+      "deployedCount": 27
     },
     {
-      "showId": "hadestown-2019",
-      "title": "Hadestown",
-      "openingDate": "2019-04-17",
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.85 vs local 82.77 (Δ0.08)"
+          "detail": "deployed cs 87.63 vs local 87.52 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 45,
-      "deployedCount": 45
+      "localCount": 32,
+      "deployedCount": 32
     }
   ]
 }
