@@ -67,6 +67,7 @@ const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
+const { mergeObVenueCandidates } = require('./merge-ob-venue-candidates');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -329,6 +330,37 @@ const CORE_DATA_MERGE_REGISTRY = [
   // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
   // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
   // path available for them.
+  {
+    file: 'audit/ob-venue-candidates.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeObVenueCandidates,
+    format: 'json',
+    newline: false,
+    // BRO-158 ("the #788 class"): 4 independent producers (discover-new-
+    // shows.js's OB venue fan-out, add-requested-show.js, extract-
+    // aggregator-candidates.js, promote-ob-venue-candidates.js) each run in
+    // their own GitHub Actions checkout — no shared filesystem, so
+    // venue-listing-discover.js's withFileLock (same-host protection only)
+    // can't cover this. A real conflict here used to fall to the generic
+    // `data/collection-state/*|data/audit/*)` "keep local" case in
+    // push-with-retry.sh — a whole-file overwrite that silently dropped
+    // every candidate the OTHER run staged or pruned this same push cycle.
+    // Reconciled via BOTH the resolve_conflicts() case-arm (like audit/
+    // feedback-request-ledger.json and audit/express-retry-queue.json above)
+    // AND the opt-in post-rebase reconcile pass (default — optInReconcile
+    // NOT set to false, unlike those two): update-show-status.yml's "Commit
+    // and push changes" step (the ONLY step that runs discover-new-shows.js)
+    // already sets PUSH_RECONCILE_MERGED_JSON=1 and stages this exact file
+    // (verified — .github/workflows/update-show-status.yml:610,634,640), and
+    // push-with-retry.sh's primary path is `git rebase -X theirs`, which
+    // resolves two producers appending different candidates near the array
+    // tail as a non-conflicting hunk — the resolve_conflicts() case-arm never
+    // even runs on that path (same gap awards.json's entry above documents
+    // and opts into reconcile_merged_json for). Second-opinion review finding
+    // (2026-08-26): case-arm-only would have left this, the LIKELY-common
+    // race shape for this file, uncovered.
+  },
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
