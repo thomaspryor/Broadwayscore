@@ -39,6 +39,7 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 // NOTION_API_KEY, so nothing can require it to learn the string.
 const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
+const { notionCreateVerdict } = require('./lib/notion-write-guard');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -590,6 +591,23 @@ async function createCard(args) {
   // size, so a truncated/piped log still shows which card and why) before
   // propagating to main()'s catch, which exits nonzero. Reporting success
   // below is gated on verifyCardCreated actually finding the page.
+  // Linear migration Phase 1 (BRO-377): Notion is read-only for NEW pages.
+  // Refused here, at the single create call, rather than in each of the ~5
+  // callers that shell out to this CLI — a guard the callers have to remember
+  // is a guard that gets forgotten. Updates and closes are deliberately still
+  // allowed; see scripts/lib/notion-write-guard.js for why blocking those too
+  // would make notion-action-poll.js reprocess forever.
+  const writeVerdict = notionCreateVerdict(process.env);
+  if (!writeVerdict.allowed) {
+    console.error(`\n❌ REFUSED — ${writeVerdict.reason}\n`);
+    process.exit(6);
+  }
+  if (writeVerdict.reason) {
+    // Never silent: an unlogged bypass is how a one-off exception becomes the
+    // new normal.
+    console.error(`⚠️  ${writeVerdict.reason}`);
+  }
+
   let page;
   try {
     page = await notion.pages.create({
