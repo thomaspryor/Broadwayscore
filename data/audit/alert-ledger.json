@@ -373,11 +373,12 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-25T13:17:56.577Z",
+      "lastSeen": "2026-08-26T13:29:18.268Z",
       "lastNotifiedAt": "2026-08-25T13:17:56.577Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1037,7 +1038,7 @@
       "silentRefires": 6
     },
     "arm-yield:outlet:nypost": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "New York Post (reviews collected) has stopped updating (20 days)",
       "firstSeen": "2026-08-15T13:04:25.661Z",
@@ -1046,7 +1047,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-08-26T13:29:18.282Z"
     },
     "tier-skip-drift": {
       "status": "open",
@@ -1518,15 +1520,15 @@
       "disposition": "digest",
       "title": "Scrape WestEndTheatre has stopped updating (22 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-08-25T13:17:56.579Z",
+      "lastSeen": "2026-08-26T13:29:18.270Z",
       "lastNotifiedAt": "2026-08-24T13:26:25.716Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "arm-yield:outlet:nysr": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "New York Stage Review (reviews collected) has stopped updating (10 days)",
       "firstSeen": "2026-08-24T13:26:25.720Z",
@@ -1535,7 +1537,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-26T13:29:18.289Z"
     },
     "gap:as-you-like-it-globe-west-end-2026/thestage--unknown.json": {
       "status": "open",

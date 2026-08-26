@@ -177,3 +177,34 @@ Controlled A/B, same URL and script four minutes apart: without env → `Trying 
 **Workaround when recovering a review locally:** `set -a; . ./.env; set +a` before any script that calls `fetchPage()`.
 **Tell:** the log line `→ Trying Playwright (last resort)...` appearing FIRST. If Playwright is the first tier you see, your env is not loaded — never conclude the outlet is unreachable.
 Falsely blamed three outlets across monitor passes 10 (DTLI), 12 (NYTG) and 13 (Blogcritics). Card: "P1: scraper.js never loads dotenv — all paid fetch tiers silently skipped in local runs" (3c8637c5-416f-8176-9b3e-ecb9b1b7c7e4).
+
+## Cross-outlet syndication duplicates re-ingest after deletion (2026-08-26, 3rd incident)
+**Gate that does NOT fire:** none. `explainExclusion() => null`, `isIncludableForRebuild() => true`.
+Dedupe is per-outlet only, so the same critic's review syndicated to a sibling
+outlet enters `reviews.json` as an independent review and double-weights that
+critic in the composite.
+
+Incidents: Showriz/Frank Rizzo (Variety self-repost), People, and Chicago
+Tribune/Chris Jones — the last one TWICE on the same night.
+
+Three compounding facts, in the order they bite:
+1. A manual `duplicateOf` pointer across differing URLs is **auto-nulled** by
+   `audit-duplicate-of-url-mismatch.js --fix` (:308-335 exempts only
+   duplicateOf-cycles and skiplisted dirs; it reads no protection field). The 8
+   manual-protection fields are inert against it. Deleting the loser file is the
+   only durable remedy today.
+2. Deleting does **not** blacklist the URL. `chicagotribune--chris-jones.json`
+   was deleted at ~12:2xZ; the same review returned ~11h later as
+   `chicagotribune--unknown.json` via outlet-listing-poller + submit-review-form,
+   already scored 85 with a populated `llmScore`.
+3. The recurrence had `criticName: "Unknown"` because the page renders the byline
+   as `By Chris Jones | [email protected]` — so any same-criticName dedupe would
+   have missed it too. **Detect on 8-word shingle overlap of fullText, not on
+   byline.** Observed overlap between the two files: 0.749 then 0.778.
+
+**Monitor recipe:** on any opening night, for each show compute pairwise 8-word
+shingle overlap across `data/review-texts/<show>/*.json`; anything >= 0.6 under
+two different `outletId`s is a syndication duplicate. Keep the higher-tier
+outlet, `git rm` the other, push, and re-check the following pass — it comes back.
+
+Systemic fix carded: Notion `3c8637c5-416f-81d7-80d6-e421d9c37ef6`.
