@@ -55,6 +55,7 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // Meta: alert-pipeline self-tests — must always page (see file header).
   'alert-router:deadman', // health-check.js: disposition='auto' has been silently failing for 7 days
   'e2e-canary:chain-broken', // e2e-canary-alert-chain.js: the real (unmocked) alert→card→dispatch chain is broken
+  'alert-router:usage-limit-exceeded', // BRO-281: dispatchCard() hit Linear's USAGE_LIMIT_EXCEEDED — every 'auto' alert fails the same way until the workspace is archived/upgraded
 
   // Category (owner-approved 2026-08-03, affiliate hardening session — "it's
   // our only revenue stream, I do want it really strong"): affiliate revenue
