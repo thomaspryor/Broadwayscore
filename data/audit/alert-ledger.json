@@ -139,11 +139,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-26T09:17:45.158Z",
+      "lastSeen": "2026-08-26T12:32:34.113Z",
       "lastNotifiedAt": "2026-08-26T09:17:45.158Z",
       "notifyCount": 47,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -564,12 +565,12 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-08-25T07:44:56.838Z",
+      "lastSeen": "2026-08-26T12:44:34.146Z",
       "lastNotifiedAt": "2026-08-24T07:48:26.323Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -777,12 +778,12 @@
       "disposition": "auto",
       "title": "Main test.yml red — no confirmed-green run in 9.6h",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-26T12:02:55.120Z",
+      "lastSeen": "2026-08-26T12:32:34.112Z",
       "lastNotifiedAt": "2026-08-24T07:46:20.285Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1446,24 +1447,24 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-25T12:35:46.500Z",
+      "lastSeen": "2026-08-26T12:37:29.970Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Paranormal Activity",
       "firstSeen": "2026-08-23T02:02:50.903Z",
-      "lastSeen": "2026-08-25T22:49:03.350Z",
+      "lastSeen": "2026-08-26T12:39:41.327Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "cron-health:Enrich Off-Broadway Dates": {
       "status": "open",
@@ -1552,23 +1553,24 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Paranormal Activity",
       "firstSeen": "2026-08-25T09:54:54.016Z",
-      "lastSeen": "2026-08-25T22:49:03.351Z",
+      "lastSeen": "2026-08-26T12:39:41.329Z",
       "lastNotifiedAt": "2026-08-25T09:54:54.016Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health-chronic:Commercial Friday Refresh": {
       "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-25T12:35:43.960Z",
+      "lastSeen": "2026-08-26T12:37:29.968Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2303"
+      "linearIdentifier": "BRO-2303",
+      "silentRefires": 1
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1581,6 +1583,96 @@
       "cardId": null,
       "linearIdentifier": "BRO-2304",
       "silentRefires": 1
+    },
+    "cron-health:Commercial RSS Poll": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial RSS Poll",
+      "firstSeen": "2026-08-26T12:37:29.919Z",
+      "lastSeen": "2026-08-26T12:37:29.919Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.919Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Scrape WestEndTheatre": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Scrape WestEndTheatre",
+      "firstSeen": "2026-08-26T12:37:29.921Z",
+      "lastSeen": "2026-08-26T12:37:29.921Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.921Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-slug-mismatch-paranormal-activity-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on Paranormal Activity",
+      "firstSeen": "2026-08-26T12:39:41.328Z",
+      "lastSeen": "2026-08-26T12:39:41.328Z",
+      "lastNotifiedAt": "2026-08-26T12:39:41.328Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-cv-wrongproduction-unhandled-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.765Z",
+      "lastSeen": "2026-08-26T12:39:43.765Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.765Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T12:39:43.767Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-revival-unverified-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unverified revival on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T12:39:43.767Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-slug-mismatch-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:44.012Z",
+      "lastSeen": "2026-08-26T12:39:44.012Z",
+      "lastNotifiedAt": "2026-08-26T12:39:44.012Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:44.014Z",
+      "lastSeen": "2026-08-26T12:39:44.014Z",
+      "lastNotifiedAt": "2026-08-26T12:39:44.014Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

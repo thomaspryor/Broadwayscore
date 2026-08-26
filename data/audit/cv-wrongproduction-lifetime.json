@@ -1,10 +1,14 @@
 {
-  "updatedAt": "2026-08-25T07:44:36.237Z",
-  "scanned": 2023,
-  "showsWithViolations": 403,
-  "totalViolations": 850,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-08-26T12:44:17.354Z",
+  "scanned": 2024,
+  "showsWithViolations": 404,
+  "totalViolations": 852,
+  "newSinceLastRun": 3,
+  "newViolationKeys": [
+    "as-you-like-it-globe-west-end-2026::broadwayworld--clement-scott.json",
+    "as-you-like-it-globe-west-end-2026::whatsonstage--unknown.json",
+    "the-real-ivanov-off-broadway-2026::nytg--austin-fimmano.json"
+  ],
   "violationKeys": [
     "the-lost-boys-2026::latimes--charles-mcnulty.json",
     "the-balusters-2026::times-square-chronicles--suzanna-bowling.json",
@@ -313,7 +317,6 @@
     "lysistrata-jones-2011::hollywood-reporter--david-rooney.json",
     "stick-fly-2011::theatermania--charles-isherwood.json",
     "venus-in-fur-2011::backstage--david-sheward.json",
-    "other-desert-cities-2011::variety--marilyn-stasio.json",
     "chinglish-2011::hollywood-reporter--david-rooney.json",
     "relatively-speaking-2011::nytimes--charles-isherwood.json",
     "relatively-speaking-2011::theatermania--andy-propst.json",
@@ -588,6 +591,8 @@
     "deep-azure-globe-west-end-2026::guardian--arifa-akbar.json",
     "mother-courage-and-her-children-globe-west-end-2026::times-uk--clive-davis.json",
     "the-playboy-of-the-western-world-west-end-2025::guardian--arifa-akbar.json",
+    "as-you-like-it-globe-west-end-2026::broadwayworld--clement-scott.json",
+    "as-you-like-it-globe-west-end-2026::whatsonstage--unknown.json",
     "les-liaisons-dangereuses-west-end-2026::guardian--paul-raven.json",
     "les-liaisons-dangereuses-west-end-2026::telegraph--claire-allfree.json",
     "les-liaisons-dangereuses-west-end-2026::timeout-london--andrzej-lukowski.json",
@@ -835,6 +840,7 @@
     "iceboy-regional-2026::around-the-town-chicago--alan-bresloff.json",
     "iceboy-regional-2026::broadwayworld--rachel-weinberg.json",
     "iceboy-regional-2026::stageandcinema--cj-fernandes.json",
+    "the-real-ivanov-off-broadway-2026::nytg--austin-fimmano.json",
     "vanya-off-broadway-2025::theater-scene--joel-benjamin.json",
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
     "vanya-off-broadway-2025::vulture--sara-holdren.json",
@@ -6171,27 +6177,6 @@
       ]
     },
     {
-      "showId": "other-desert-cities-2011",
-      "title": "Other Desert Cities",
-      "openingDate": "2011-11-03",
-      "message": "variety/Bob Verini (variety--marilyn-stasio.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a review of 'Other Desert Citi — https://variety.com/2012/legit/reviews/other-desert-cities-3-1117948891/",
-      "violations": [
-        {
-          "filename": "variety--marilyn-stasio.json",
-          "url": "https://variety.com/2012/legit/reviews/other-desert-cities-3-1117948891/",
-          "outletId": "variety",
-          "criticName": "Bob Verini",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a review of 'Other Desert Citi",
-          "cvIssues": [
-            "Review evaluates the Mark Taper Forum production, not the Broadway production at Booth Theatre",
-            "Critic describes 'Robert Egan's Taper production' and references 'Egan, formerly the Taper's producing director' — explicitly identifying the venue as the Taper (Mark Taper Forum in Los Angeles)"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "chinglish-2011",
       "title": "Chinglish",
       "openingDate": "2011-10-27",
@@ -10015,7 +10000,7 @@
       "showId": "murder-she-didnt-write-west-end-2025",
       "title": "Murder, She Didn't Write",
       "openingDate": "2025-03-24",
-      "message": "thereviewshub/The Reviews Hub - London (thereviewshub--the-reviews-hub-london.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate theater review with critical ass — https://www.thereviewshub.com/murder-she-didnt-write-duchess-theatre-london/",
+      "message": "thereviewshub/The Reviews Hub - London (thereviewshub--the-reviews-hub-london.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a competent review of 'Murder, She Didn't Wri — https://www.thereviewshub.com/murder-she-didnt-write-duchess-theatre-london/",
       "violations": [
         {
           "filename": "thereviewshub--the-reviews-hub-london.json",
@@ -10024,10 +10009,10 @@
           "criticName": "The Reviews Hub - London",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate theater review with critical ass",
+          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] This is a competent review of 'Murder, She Didn't Wri",
           "cvIssues": [
-            "Review evaluates the Edinburgh Festival Fringe touring production, not the West End opening",
-            "Final sentence explicitly states: 'As it now heads out on a UK tour' — indicates review is of pre-West End or touring version"
+            "Review describes the Edinburgh Festival Fringe production and UK touring production, not the West End production at Duchess Theatre",
+            "Closing sentence explicitly states: 'As it now heads out on a UK tour' — indicating this review was written about the touring production, not the West End opening"
           ]
         }
       ]
@@ -10847,6 +10832,38 @@
           "cvIssues": [
             "Review describes a production at the Abbey Theatre in Dublin, directed by Caitríona McLaughlin (Abbey's artistic director), not a West End production",
             "No mention of Lyttelton Theatre or National Theatre London"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-21",
+      "message": "broadwayworld/Clementine Scott (broadwayworld--clement-scott.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Sean Ho — https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821\nwhatsonstage/Miriam Sallon (whatsonstage--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production of 'As You Like It' — https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
+      "violations": [
+        {
+          "filename": "broadwayworld--clement-scott.json",
+          "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+          "outletId": "broadwayworld",
+          "criticName": "Clementine Scott",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Sean Ho",
+          "cvIssues": [
+            "Review is for a different production of 'As You Like It' not related to the Off-West End run at Shakespeare's Globe."
+          ]
+        },
+        {
+          "filename": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
+          "outletId": "whatsonstage",
+          "criticName": "Miriam Sallon",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production of 'As You Like It'",
+          "cvIssues": [
+            "The review describes a production of 'As You Like It' that is not the Off-West End production at Shakespeare's Globe, as it mentions a different cast and context that does not align with the expected production details."
           ]
         }
       ]
@@ -12908,7 +12925,7 @@
       "showId": "the-comedy-about-spies-west-end-2026",
       "title": "The Comedy About Spies",
       "openingDate": "2026-08-06",
-      "message": "a-youngish-perspective/Unknown (a-youngish-perspective--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine theater review with professional cr — https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/\nafridiziak-theatre-news/Elana Joseph (afridiziak-theatre-news--elana-joseph.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 8d of opening, likely correct production] This is a genuine review of The Comedy About Spies wi — https://www.afridiziak.com/reviews/the-comedy-about-spies/\ndaily-mail/Patrick Marmion (daily-mail--patrick-marmion.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review by a professional critic (Patrick Marmion, Daily Mail style evident). However, the revi — https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html\nguardian/Ryan Gilbey (guardian--ryan-gilbey.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review is evaluating a production of 'The Comedy About Spies' at the Noël Coward theatre, which is a West End venue, — https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a complete review (not a preview or other article type) with clear critical assessment, but it re — https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqawIAzRPLCe5BipyMyYjw8DiIaqX0NUVtdid3ax7rY3-CHJtvH\ni-paper/Fiona Mountford (i-paper--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The scraped content is a legitimate theater review (h — https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqtSl0i9HRQiMAqBRfEPNRYBCZFe5qlz99UT_wugGzgtJ6l8jhF\njonathan-baz/Unknown (jonathan-baz--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 18d of opening, likely correct production] This is a valid review of 'The Comedy About Spies,'  — http://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html\nliamodell/Liam O’Dell (liamodell--liam-odell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review of 'The Comedy About Spies' by Mischief Theatre with strong opinion-bearing content (pr — https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/\nlondon-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of 'The Comedy About Spies' at the Noël Coward Theatre in the West End. However, the — https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies\nlondon-theatre/Aliya Al-Hussan (london-theatre--aliya-al-hussan.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review is for a performance at the Noël Coward Th — https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre\nloureviews/Louise Penn (loureviews--louise-penn.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate review of 'The Comedy About Spie — https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/\nplays-international/Maryam Philpott (plays-international--maryam-philpott.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine theater review of 'The Comedy About — https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/\nthe-spy-in-the-stalls/Unknown (the-spy-in-the-stalls--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 5d of opening, likely correct production] This is a genuine review of 'The Comedy About Spies,' — https://thespyinthestalls.com/2026/08/the-comedy-about-spies-2/\nthelivereview/Tanya Howard (thelivereview--tanya-howard.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review of 'The Comedy About Spies' by Mischief, but it explicitly identifies  — https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
+      "message": "a-youngish-perspective/Unknown (a-youngish-perspective--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine theater review with professional cr — https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/\nafridiziak-theatre-news/Elana Joseph (afridiziak-theatre-news--elana-joseph.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 8d of opening, likely correct production] This is a genuine review of The Comedy About Spies wi — https://www.afridiziak.com/reviews/the-comedy-about-spies/\ndaily-mail/Patrick Marmion (daily-mail--patrick-marmion.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review by a professional critic (Patrick Marmion, Daily Mail style evident). However, the revi — https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html\nguardian/Ryan Gilbey (guardian--ryan-gilbey.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review is evaluating a production of 'The Comedy About Spies' at the Noël Coward theatre, which is a West End venue, — https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show\ni-paper/Fiona Mountford (i-paper--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a complete review (not a preview or other article type) with clear critical assessment, but it re — https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqawIAzRPLCe5BipyMyYjw8DiIaqX0NUVtdid3ax7rY3-CHJtvH\ni-paper/Fiona Mountford (i-paper--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The scraped content is a legitimate theater review (h — https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqtSl0i9HRQiMAqBRfEPNRYBCZFe5qlz99UT_wugGzgtJ6l8jhF\njonathan-baz/Unknown (jonathan-baz--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] The scraped review describes 'The Comedy About Spies — http://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html\nliamodell/Liam O’Dell (liamodell--liam-odell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review of 'The Comedy About Spies' by Mischief Theatre, but the timing is wrong. The publish date (2025- — https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/\nlondon-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of 'The Comedy About Spies' at the Noël Coward Theatre in the West End. However, the — https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies\nlondon-theatre/Aliya Al-Hussan (london-theatre--aliya-al-hussan.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review is for a performance at the Noël Coward Th — https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre\nloureviews/Louise Penn (loureviews--louise-penn.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate review of 'The Comedy About Spie — https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/\nplays-international/Maryam Philpott (plays-international--maryam-philpott.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine theater review of 'The Comedy About — https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/\nthe-spy-in-the-stalls/Unknown (the-spy-in-the-stalls--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 5d of opening, likely correct production] This is a genuine review of 'The Comedy About Spies,' — https://thespyinthestalls.com/2026/08/the-comedy-about-spies-2/\nthelivereview/Tanya Howard (thelivereview--tanya-howard.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review of 'The Comedy About Spies' by Mischief, but it explicitly identifies  — https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
       "violations": [
         {
           "filename": "a-youngish-perspective--unknown.json",
@@ -12994,10 +13011,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 18d of opening, likely correct production] This is a valid review of 'The Comedy About Spies,' ",
+          "cvReasoning": "[OVERRIDE: review within 20d of opening, likely correct production] The scraped review describes 'The Comedy About Spies",
           "cvIssues": [
-            "Venue mismatch: Review clearly describes Noel Coward Theatre (a West End venue), not an Off-West End venue",
-            "Expected venue is 'West End' but the specific venue named (Noel Coward Theatre) is in the West End theater district, not Off-West End"
+            "Venue mismatch: review states 'Noel Coward Theatre' but expected venue is 'West End' (generic). Noel Coward Theatre is a West End venue, not an Off-West End venue.",
+            "The scraped text is truncated and ends mid-information ('Runs until 5th September') without conclusion or full critical assessment context."
           ]
         },
         {
@@ -13007,10 +13024,10 @@
           "criticName": "Liam O’Dell",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a genuine theater review of 'The Comedy About Spies' by Mischief Theatre with strong opinion-bearing content (pr",
+          "cvReasoning": "This is a valid review of 'The Comedy About Spies' by Mischief Theatre, but the timing is wrong. The publish date (2025-",
           "cvIssues": [
-            "Expected venue is 'West End' but review describes a production at an unspecified venue — likely West End proper, not Off-West End",
-            "Review text is truncated mid-sentence ('awwing' at the play's more sentimental moments, i)"
+            "Review describes Mischief Theatre production with cast including Dave Hearn, Chris Leask, Charlie Russell, Henry Lewis, and Henry Shields — no indication this is the Off-West End production opening 2026-08-06",
+            "Review publish date 2025-05-20 is more than 15 months before the expected Off-West End opening date 2026-08-06, indicating this review is of a different production (likely a prior/concurrent staging)"
           ]
         },
         {
@@ -14318,7 +14335,7 @@
       "showId": "abigails-party-west-end-2026",
       "title": "Abigail’s Party",
       "openingDate": "2026-08-19",
-      "message": "london-unattached/Dr Adrian York (london-unattached--dr-adrian-york.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The scraped review explicitly states this is a 2024 S — https://www.london-unattached.com/abigails-party/\nplays-international/Unknown (plays-international--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] This is a competent review with critical assessment,  — https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a revival of 'Abigail's Party' t — https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl\ntimes-uk/Nancy Durrant (times-uk--nancy-durrant.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review with critical assessment, but it evaluates the Stratford East producti — https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
+      "message": "london-unattached/Dr Adrian York (london-unattached--dr-adrian-york.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The scraped review explicitly states this is a 2024 S — https://www.london-unattached.com/abigails-party/\nplays-international/Unknown (plays-international--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] This is a competent review with critical assessment,  — https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a revival of 'Abigail's Party' t — https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl\ntimes-uk/Nancy Durrant (times-uk--nancy-durrant.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review with critical assessment, but it evaluates the Stratford East Theatre production of 'Ab — https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaites-beverley-is-mesmerising-zlddx5w2p\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review evaluates a production of 'Abigail's Party' directed by Nadia Fall at Stratford East, which is not the West E — https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
       "violations": [
         {
           "filename": "london-unattached--dr-adrian-york.json",
@@ -14365,10 +14382,10 @@
           "criticName": "Nancy Durrant",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "The scraped review is a legitimate theater review with critical assessment, but it evaluates the Stratford East producti",
+          "cvReasoning": "This is a genuine theater review with critical assessment, but it evaluates the Stratford East Theatre production of 'Ab",
           "cvIssues": [
             "Review describes production at Stratford East (\"stratfordeast.com\"), not Harold Pinter Theatre",
-            "Stratford East is a regional London theater, not a West End venue"
+            "Stratford East is a regional UK theater, not a West End venue"
           ]
         },
         {
@@ -14651,6 +14668,26 @@
           "cvIssues": [
             "Review is of Goodman Theatre production in Chicago, not Broadway",
             "Venue is explicitly stated as 'Goodman Theatre' which is a regional theater in Chicago, IL"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "the-real-ivanov-off-broadway-2026",
+      "title": "The Real Ivanov",
+      "openingDate": "2026-08-25",
+      "message": "nytg/Austin Fimmano (nytg--austin-fimmano.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'The Real Ivanov — https://www.newyorktheatreguide.com/reviews/the-real-ivanov-off-broadway-review-chekhovs-classic-gets-a-thrilling-update",
+      "violations": [
+        {
+          "filename": "nytg--austin-fimmano.json",
+          "url": "https://www.newyorktheatreguide.com/reviews/the-real-ivanov-off-broadway-review-chekhovs-classic-gets-a-thrilling-update",
+          "outletId": "nytg",
+          "criticName": "Austin Fimmano",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'The Real Ivanov",
+          "cvIssues": [
+            "The review describes a production that is set to open in 2026, which is inconsistent with the expected review details provided."
           ]
         }
       ]

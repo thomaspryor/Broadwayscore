@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-08-25T07:44:44.611Z",
+  "generatedAt": "2026-08-26T12:44:25.699Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "43b83a6513294d11d8d0d3cc1736b6f2cddd8236",
+  "latestRunHeadSha": "022ce15b7701a8d6c77459ec2e70a71ef2371603",
   "state": "RED",
-  "consecutiveFailures": 2,
+  "consecutiveFailures": 1,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
   "redSince": "2026-08-24T07:00:36Z",
-  "redForHours": 24.735725277777778,
+  "redForHours": 53.730471944444446,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-23T22:10:38Z",
-  "latestFailedRunId": "32818729802",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32818729802",
+  "latestFailedRunId": "32699645957",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32699645957",
   "decidedRuns": 90,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -30,6 +30,13 @@
       ]
     }
   ],
-  "failingPaths": [],
+  "failingPaths": [
+    {
+      "path": "scripts/validate-mobile-shows.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
   "topFailingJob": "Data Validation"
 }
