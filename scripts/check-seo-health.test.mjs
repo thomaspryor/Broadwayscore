@@ -346,6 +346,22 @@ test('sampleShowPages returns an empty array for empty/invalid input', () => {
   assert.deepEqual(sampleShowPages(undefined), []);
 });
 
+test('sampleShowPages ignores shows with a non-string or missing slug', () => {
+  const dirty = [...FIXTURE_SHOWS, { slug: 42, category: 'broadway' }, { category: 'broadway' }, null];
+  const picks = sampleShowPages(dirty, { weekIndex: 3 });
+  assert.ok(picks.every(p => typeof p === 'string'));
+});
+
+test('sampleShowPages still represents every category when categories outnumber sampleSize', () => {
+  // 20 categories, one show each, sampleSize 12: perCategory floors to 1,
+  // so 20 candidates are picked before de-dupe/cap — every category must
+  // survive the cap rather than losing whichever sort last alphabetically.
+  const manyCategories = Array.from({ length: 20 }, (_, i) => ({ slug: `show-${i}`, category: `cat-${String(i).padStart(2, '0')}` }));
+  const picks = sampleShowPages(manyCategories, { weekIndex: 3, sampleSize: 12 });
+  const categories = new Set(picks.map(slug => manyCategories.find(s => s.slug === slug).category));
+  assert.equal(categories.size, 20, `expected all 20 categories represented, got ${categories.size}`);
+});
+
 test('buildCWVPages includes the static pages plus a diverse set of show pages', () => {
   const pages = buildCWVPages(FIXTURE_SHOWS);
   const showPages = pages.filter(url => url.includes('/show/'));

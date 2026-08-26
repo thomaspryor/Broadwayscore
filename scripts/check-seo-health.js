@@ -76,26 +76,25 @@ const CWV_STATIC_PAGES = [
 //
 // sampleShowPages() picks a rotating, stratified sample instead: bucketed by
 // category (broadway/off-broadway/west-end/off-west-end/regional, so every
-// market segment is represented every run) and rotated by ISO week number, so
-// re-running within the same week is reproducible (stable for tests/debugging)
-// while successive weeks work through the full catalog over time.
+// market segment is represented every run) and rotated by a monotonically
+// increasing week index (days-since-epoch / 7, NOT the 1-53 ISO week-of-year —
+// that would reset every January and re-visit the same ~10 shows per category
+// forever), so re-running within the same week is reproducible (stable for
+// tests/debugging) while successive weeks work through the full catalog.
 const SHOW_PAGE_SAMPLE_SIZE = 12;
+const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 
-function getIsoWeekNumber(date = new Date()) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+function getRotationIndex(date = new Date()) {
+  return Math.floor(date.getTime() / MS_PER_WEEK);
 }
 
-function sampleShowPages(shows, { sampleSize = SHOW_PAGE_SAMPLE_SIZE, weekIndex = getIsoWeekNumber() } = {}) {
-  const eligible = (Array.isArray(shows) ? shows : []).filter(s => s && s.slug);
+function sampleShowPages(shows, { sampleSize = SHOW_PAGE_SAMPLE_SIZE, weekIndex = getRotationIndex() } = {}) {
+  const eligible = (Array.isArray(shows) ? shows : []).filter(s => s && typeof s.slug === 'string' && s.slug);
   if (eligible.length === 0) return [];
 
   const byCategory = new Map();
   for (const show of eligible) {
-    const cat = show.category || 'unknown';
+    const cat = typeof show.category === 'string' && show.category ? show.category : 'unknown';
     if (!byCategory.has(cat)) byCategory.set(cat, []);
     byCategory.get(cat).push(show);
   }
@@ -112,7 +111,11 @@ function sampleShowPages(shows, { sampleSize = SHOW_PAGE_SAMPLE_SIZE, weekIndex 
     }
   }
   // De-dupe (small categories can wrap onto the same slug twice in one run).
-  return [...new Set(picks)].slice(0, sampleSize);
+  // The cap is the larger of sampleSize and categories.length so that having
+  // more categories than the sample budget (perCategory floors to 1 each)
+  // never truncates away whichever categories sort last — every category
+  // picked above must survive into the result.
+  return [...new Set(picks)].slice(0, Math.max(sampleSize, categories.length));
 }
 
 function buildCWVPages(shows) {
