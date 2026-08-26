@@ -13,12 +13,14 @@ scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-regex-patterns.test.mjs
+scripts/audit-review-contamination.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
+scripts/audit-venue-write-guard.test.mjs
 scripts/auto-fix-show-data.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-core-data-guard.test.mjs
@@ -157,6 +159,7 @@ tests/unit/audience-coverage-gaps.test.mjs
 tests/unit/audience-full-snapshot.test.mjs
 tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
+tests/unit/audit-cross-show-excerpt-contamination.test.mjs
 tests/unit/audit-delete-without-breadcrumb.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-ensemble-rejections.test.mjs
