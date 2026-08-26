@@ -62,10 +62,42 @@ function hasAutoDispatchMarker(title) {
 // rule stands: dead or idle-at-prompt closes, mid-turn never. pruneDone's
 // outer protections (never the SELECTED tab — re-checked immediately before
 // close — never mid-turn, never unmarked) are unchanged.
-function isCloseable({ hasLiveClaude, isAutoDispatched, isRunning }) {
+// Crown (owner-loop) tabs are NEVER auto-closed, whatever the auto-dispatch
+// signals say (task #1751, 2026-08-26). An owner session ran on Opus for 8
+// days titled "✅ 🤖🔮 Data·OWNER: drive the Linear migration to done — own, m":
+// it was dispatched through bsc-next, so buildAutoTitle stamped the 🤖 on it,
+// so hasAutoDispatchMarker matched, so it was ✅-auto-marked on its first Stop
+// and became closeable the moment it sat idle at the prompt — the owner spotted
+// it only because the sidebar showed no 👑. The two auto-dispatch signals are
+// both about HOW a tab was launched; a crown is a statement about what the tab
+// IS, and it outranks them. This is deliberately belt-and-braces: a crowned
+// title carries no 🤖 today, so the glyph signal alone would usually acquit it,
+// but isLedgerAutoDispatched can still match a crowned tab by ref+subject (cmux
+// renumbers refs across restarts), and that path has no title-shape opinion at
+// all. Placing the veto here rather than in the title means no title matcher
+// changes shape — a second-opinion review on 2026-08-26 killed the alternative
+// (rewriting buildAutoTitle to lead with 👑), which desynchronised
+// titleMatchesSubject and would have let the SAME card be dispatched twice.
+//
+// Regex mirrors dispatch-watchdog-core.js:81 CROWN_TAB_RE, which is private to
+// that module and lives in the tier-"critical" dispatch layer (editing it needs
+// a gated review, per CLAUDE.md rule 18). prune-closeable.test.mjs asserts the
+// two literals stay byte-identical, so drift fails a test instead of silently
+// splitting the definition of "crown tab" in half. Collapse them into this one
+// export the next time the dispatch layer is opened under review.
+const CROWN_TAB_RE = /^[^\p{L}\p{N}]*👑/u;
+
+function isCrownTab(title) {
+  return CROWN_TAB_RE.test(String(title || ''));
+}
+
+// title is OPTIONAL: callers that don't know it (or don't have one) keep the
+// pre-#1751 behaviour byte-for-byte, since an absent title is not a crown.
+function isCloseable({ hasLiveClaude, isAutoDispatched, isRunning, title }) {
+  if (isCrownTab(title)) return false;
   if (!isAutoDispatched) return false;
   if (!hasLiveClaude) return true;
   return !isRunning;
 }
 
-module.exports = { AUTO_GLYPH, hasAutoDispatchMarker, isCloseable };
+module.exports = { AUTO_GLYPH, CROWN_TAB_RE, hasAutoDispatchMarker, isCrownTab, isCloseable };
