@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T14:49:43.965Z",
+  "timestamp": "2026-08-26T16:42:19.315Z",
   "stats": {
-    "totalReviews": 41939,
-    "alreadyFlagged": 17584,
+    "totalReviews": 41954,
+    "alreadyFlagged": 17586,
     "dateGuardCatches": 181,
     "directorMismatch": 1014,
-    "tvFilmSignals": 1231,
-    "londonSignals": 932,
+    "tvFilmSignals": 1232,
+    "londonSignals": 933,
     "offBroadwaySignals": 495,
     "yearMismatch": 90,
-    "noPublishDate": 3574
+    "noPublishDate": 3584
   },
   "findings": [
     {
@@ -9416,6 +9416,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "observer--barbara-ellen.json",
+      "publishDate": "2026-08-08",
+      "url": "https://observer.co.uk/culture/theatre/article/the-biggest-production-we-have-ever-put-on-inside-the-rscs-game-of-thrones-epic",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
