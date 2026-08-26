@@ -117,3 +117,10 @@ Ingesting a URL whose derived filename collides with an existing outlet--critic 
 **Detect:** an outlet in your census with zero events anywhere in `data/audit/` AND no review-texts file. Repro with the direct-URL ingest and watch for the 102-char line.
 **Fix:** add the domain to `PATTERNS` in `scripts/lib/article-extractor.js`; systemic fix is to log sub-300-char extractions after a *successful* fetch into the audit exclusion log. Carded P1 `3c2637c5-416f-8112-b500-ea1b528e3274`.
 **Sibling gate seen same pass:** BroadwayWorld West End ingest died with `Skipping Playwright (domain-tier-skip)` then `All scraping methods failed` — domain-tier policy forbids the only working transport when BD/SB are exhausted, also silent.
+
+## Gate: headless opening-night monitor runs without `.env` (found 2026-08-26, paranormal-activity-2026)
+The launchd-dispatched monitor pass inherits a bare environment. `SCRAPINGBEE_API_KEY`/`BRIGHTDATA_*`/`BROWSERBASE_API_KEY` are unset, so **every `fetchPage()` call returns "All scraping methods failed"** — not a block, not a 404, just the whole fallback chain exhausted on the first hop. The independent census is the load-bearing step of the monitor mission, and it is silently impossible in that environment.
+- Detect: `node scripts/lib/check-sb-credits.js` → `{"ok":false,"reason":"no-key"}` inside a monitor pass, while the same command from an interactive shell reports credits fine.
+- Workaround inside a pass: `set -a && . ./.env && set +a` before every node invocation.
+- Permanent fix: export the .env vars from the launchd plist / `opening-night-monitor-launch.js`.
+- Cost of missing it: a pass reports "census failed, aggregators unreachable" and the next pass repeats the same dead fetch. Suspect this on 2026-08-12/18/19 passes too.
