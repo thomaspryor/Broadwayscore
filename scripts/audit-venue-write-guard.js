@@ -51,7 +51,7 @@ const SCRIPTS_DIR = path.join(REPO_ROOT, 'scripts');
 const BASELINE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'venue-write-guard-baseline.json');
 const SELF_PATHS = new Set(['scripts/audit-venue-write-guard.js', 'scripts/lib/venue-write-guard-detector.js']);
 
-const SCANNABLE_EXT_RE = /\.(js|mjs)$/;
+const SCANNABLE_EXT_RE = /\.(js|mjs|ts)$/;
 const TEST_FILE_RE = /\.(test|spec)\.(js|mjs|ts)$/;
 const EXCLUDE_DIRS = new Set(['node_modules', '__pycache__', '.git']);
 
@@ -66,6 +66,7 @@ function listScannableFiles(dir) {
     if (!entry.isFile()) continue;
     if (!SCANNABLE_EXT_RE.test(entry.name)) continue;
     if (TEST_FILE_RE.test(entry.name)) continue;
+    if (entry.name.endsWith('.d.ts')) continue;
     out.push(path.join(dir, entry.name));
   }
   return out;
@@ -92,19 +93,25 @@ function loadBaseline() {
   return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
 }
 
+// Keyed by file + the site's own snippet text — NOT file:line. An earlier
+// version keyed on file:line, which adversarial review caught as fragile:
+// any unrelated edit earlier in the file that shifts line numbers makes a
+// genuinely-unchanged baselined site look "new" (forcing a spurious
+// --update-baseline), while moving a NEW raw write to land on an old
+// baselined site's exact line+snippet would (in the file:line scheme)
+// silently inherit its pass — the same failure mode either way, since line
+// number carries no real identity here. Keying on snippet text alone is
+// stable across line drift and only collides when two DIFFERENT sites in
+// the same file happen to be byte-identical text, an accepted heuristic
+// tradeoff (same class as every other audit-*.js in this repo).
 function siteKey(f) {
-  return `${f.file}:${f.line}`;
+  return `${f.file}::${f.snippet}`;
 }
 
-/**
- * A finding is "new" (not baselined) if its file:line key is absent from the
- * baseline, OR present but with a different snippet — an unrelated edit that
- * happens to land on the same line number as a baselined site must still be
- * checked fresh, not silently inherit the old site's pass.
- */
+/** A finding is "new" (not baselined) if its file+snippet key is absent from the baseline. */
 function computeNewFindings(findings, baseline) {
   const sites = baseline.sites || {};
-  return findings.filter((f) => sites[siteKey(f)]?.snippet !== f.snippet);
+  return findings.filter((f) => !sites[siteKey(f)]);
 }
 
 function writeBaseline(findings) {

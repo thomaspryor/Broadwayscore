@@ -9,18 +9,27 @@
  * card #1922) each found MORE show-entry builders / venue-writing
  * enrichment scripts skipping it, all via the same ad-hoc
  * `grep -rn "venue:" scripts/*.js | grep -v sanitizeVenueForWrite`. This is
- * that grep, automated: scan every object-literal `venue:` key and
- * `.venue =` assignment in scripts/**, and flag any whose right-hand-side
- * expression does not route through sanitizeVenueForWrite(...) (a bare
- * call, or a ternary of one — the pattern card #1921's
- * buildRegionalShowEntry fix uses: `venue: cond ? sanitizeVenueForWrite(x)
- * : null`).
+ * that grep, automated and widened past what a literal grep would catch:
+ * scans every `venue:` / `'venue':` / `"venue":` object-literal key and
+ * every `.venue =` / `['venue'] =` / `["venue"] =` assignment (including
+ * `||=`/`??=` compound forms) in scripts/**, and flags any whose
+ * right-hand-side expression does not route through
+ * sanitizeVenueForWrite(...) — a bare call, a ternary of one (card #1921's
+ * buildRegionalShowEntry fix: `venue: cond ? sanitizeVenueForWrite(x) :
+ * null`), but NOT one whose non-null fallback defeats it
+ * (`sanitizeVenueForWrite(x) || x` restores exactly what the call just
+ * rejected — this is a real gap an adversarial review caught live, same
+ * bug class as discover-new-shows.js's fixed `|| 'TBA'` history).
  *
  * Heuristic, not a real parser — same tradeoff as every other audit-*.js in
- * this repo. The RHS is captured by depth-aware bracket scanning from just
- * after the `venue:`/`.venue =` token to the first top-level `,`, unmatched
- * closing bracket, or `;` — enough to see through a ternary (which has its
- * own `:` at depth 0, deliberately not a stop character) without a real AST.
+ * this repo, and known gaps remain (shorthand `{ venue }`, a computed key
+ * `{ [k]: raw }`, `Object.defineProperty` — all silent misses, not
+ * misclassifications; found by adversarial review, judged low-value to chase
+ * further for a regex-level heuristic). The RHS is captured by depth-aware
+ * bracket scanning from just after the key/assignment token to the first
+ * top-level `,`, unmatched closing bracket, or `;` — enough to see through a
+ * ternary (which has its own `:` at depth 0, deliberately not a stop
+ * character) without a real AST.
  *
  * Comment/string handling reuses audit-fetch-timeouts.js's acorn-tokenizer
  * approach (two blanked views, same offsets — see its doc comment for the
@@ -31,17 +40,67 @@
  * site — caught live by /second-opinion review before this ever reached CI.
  * Reimplemented standalone rather than require()'d from audit-fetch-timeouts.js
  * for the same reason that file gives: it runs a --help gate as a
- * MODULE-LOAD side effect, which would hijack this lib's own callers.
+ * MODULE-LOAD side effect, which would hijack this lib's own callers. One
+ * deliberate exception to the string-blanking: a string token whose content
+ * is EXACTLY "venue" is left intact (see blankStringsAndComments below) — a
+ * quoted key/bracket write would otherwise be invisible to its own regex.
+ *
+ * A hardcoded string-literal RHS (`venue: "Studio 54"`) is treated as safe —
+ * a human typed it, it can't carry scraped junk — EXCEPT a literal that is
+ * itself a known placeholder marker (`venue: "TBA"`), which is exactly the
+ * value class sanitizeVenueForWrite() exists to reject (also caught live by
+ * adversarial review — the original version trusted ANY string literal).
  *
  * Pure detection logic lives here so both the CLI (audit-venue-write-guard.js)
  * and its unit test can call scanVenueWrites() directly (CLAUDE.md §15 —
  * never copy logic into a test).
  */
 
-const OBJECT_LITERAL_KEY_RE = /(?<![\w$.])venue\s*:\s*/g;
-const ASSIGNMENT_RE = /(?<![\w$])[\w$.]*\.venue\s*=(?!=)\s*/g;
+// Object-literal key: bare `venue:` or a quoted `'venue':`/`"venue":` (the
+// quoted form is a real gap found live by adversarial review — a caller can
+// defeat the bare-identifier match by quoting the key with identical runtime
+// meaning).
+const OBJECT_LITERAL_KEY_RE = /(?<![\w$.])(?:venue|'venue'|"venue")\s*:\s*/g;
+// Assignment: `.venue =` / `.venue ||=` / `.venue ??=`, or bracket-notation
+// `['venue'] =` / `["venue"] =` — also found live: a caller can defeat the
+// dot-notation-only match with either shape while writing the exact same
+// field.
+const ASSIGNMENT_RE = /(?<![\w$])[\w$.]*(?:\.venue|\[\s*(?:'venue'|"venue")\s*\])\s*(?:\|\||\?\?)?=(?!=)\s*/g;
 const GUARD_CALL_RE = /sanitizeVenueForWrite\(/;
 const FILE_EXEMPTION = 'venue-write-guard-ok';
+
+// A `sanitizeVenueForWrite(x) || fallback` RHS is NOT guarded if `fallback`
+// is anything but a null/undefined-ish literal — sanitizeVenueForWrite()
+// returns null on rejection specifically so a placeholder/junk value never
+// reaches the write; `|| x`/`|| rawVenue`/`|| 'TBA'` restores exactly what
+// it just rejected, the same fallback-defeats-the-guard shape already fixed
+// once in discover-new-shows.js's `|| 'TBA'` history. Found live by
+// adversarial review — a substring check for "sanitizeVenueForWrite(" alone
+// can't see this. Matched on the ORIGINAL (non-blanked) rhs text so string
+// fallbacks like 'TBA' are visible.
+const SAFE_FALLBACK_RE = /^(?:null|undefined)$/i;
+
+function isGuardCallDefeatedByFallback(rhs) {
+  const idx = rhs.search(GUARD_CALL_RE);
+  if (idx === -1) return false;
+  const afterCallStart = rhs.indexOf('(', idx);
+  const closeIdx = findMatchingParen(rhs, afterCallStart);
+  if (closeIdx === -1) return false;
+  const tail = rhs.slice(closeIdx + 1).trim();
+  if (!tail) return false; // nothing after the call — not defeated
+  const fallbackMatch = /^\|\|\s*([\s\S]*)$/.exec(tail) || /^\?\?\s*([\s\S]*)$/.exec(tail);
+  if (!fallbackMatch) return false; // some other trailing expression (e.g. `?.trim()`) — not a fallback defeat we can reason about; don't flag
+  return !SAFE_FALLBACK_RE.test(fallbackMatch[1].trim());
+}
+
+function findMatchingParen(source, openIdx) {
+  let depth = 0;
+  for (let i = openIdx; i < source.length; i++) {
+    if (source[i] === '(') depth++;
+    else if (source[i] === ')') { depth--; if (depth === 0) return i; }
+  }
+  return -1;
+}
 
 // A bare hardcoded string literal RHS (`venue: "Studio 54"`) can never carry
 // the incident class card #994 guards against — a placeholder/junk value
@@ -53,12 +112,22 @@ const FILE_EXEMPTION = 'venue-write-guard-ok';
 // Template literals only qualify with no `${...}` interpolation — an
 // interpolated template can embed unsanitized data just like any other
 // expression.
+//
+// EXCEPT a hardcoded value that IS itself a known placeholder marker
+// (`venue: "TBA"`) — found live by adversarial review: sanitizeVenueForWrite()
+// exists specifically to reject these (isPlaceholderVenue's UNKNOWN_MARKERS,
+// scripts/audit-placeholder-venues.js), so a hand-typed 'TBA' is exactly the
+// value class this guard exists to keep out of the venue field, not a
+// counterexample to it.
 const STRING_LITERAL_RE = /^(['"])(?:\\.|(?!\1)[^\\])*\1$/;
 const TEMPLATE_LITERAL_NO_INTERP_RE = /^`(?:\\.|[^`$]|\$(?!\{))*`$/;
+const UNKNOWN_MARKERS = new Set(['tba', 'tbd', 'n/a', 'na', 'unknown', '', '-']);
 
 function isHardcodedStringRhs(rhs) {
   const trimmed = rhs.trim();
-  return STRING_LITERAL_RE.test(trimmed) || TEMPLATE_LITERAL_NO_INTERP_RE.test(trimmed);
+  if (!STRING_LITERAL_RE.test(trimmed) && !TEMPLATE_LITERAL_NO_INTERP_RE.test(trimmed)) return false;
+  const inner = trimmed.slice(1, -1).trim().toLowerCase();
+  return !UNKNOWN_MARKERS.has(inner);
 }
 
 function lineOf(source, index) {
@@ -156,7 +225,21 @@ function blankStringsAndComments(src) {
   const ok = tokenizeAcorn(src, (tok) => {
     const label = tok.type.label;
     if (label === 'comment') b.blank(tok.start, tok.end);
-    else if (label === 'string' || label === 'regexp') b.blank(tok.start + 1, tok.end - 1);
+    else if (label === 'string' || label === 'regexp') {
+      // Exception: a string token whose content is EXACTLY "venue" is left
+      // intact — blanking it would blind the quoted-key ('venue': x) and
+      // bracket-assignment (['venue'] =) call-site regexes to a real write,
+      // the same false-negative caught live by adversarial review for the
+      // bare-identifier-only version of this detector. The residual risk is
+      // a string literal reading exactly "venue" used as a VALUE (not a key)
+      // immediately followed by `:` or wrapped in `[...] =` — grepped the
+      // current corpus (`grep -rn "['\"]venue['\"]"`) and found none; the
+      // real instances (`field: 'venue'`, `checks.push('venue')`) are all
+      // followed by `,`/`)`, which the key/assignment regexes below don't
+      // match on.
+      if (label === 'string' && src.slice(tok.start + 1, tok.end - 1) === 'venue') return;
+      b.blank(tok.start + 1, tok.end - 1);
+    }
     else if (label === 'template' || label === 'invalidTemplate') b.blank(tok.start, tok.end);
   });
   return ok ? b.result() : src;
@@ -189,7 +272,7 @@ function scanVenueWrites(source) {
         line: lineOf(scanSrc, match.index),
         kind,
         snippet: lineText(source, match.index).slice(0, 160),
-        guarded: GUARD_CALL_RE.test(rhs) || isHardcodedStringRhs(rhs),
+        guarded: (GUARD_CALL_RE.test(rhs) && !isGuardCallDefeatedByFallback(rhs)) || isHardcodedStringRhs(rhs),
       });
     }
   }
@@ -208,6 +291,7 @@ module.exports = {
   findUnguardedVenueWrites,
   scanRhs,
   isHardcodedStringRhs,
+  isGuardCallDefeatedByFallback,
   blankStringsAndComments,
   stripComments,
   FILE_EXEMPTION,

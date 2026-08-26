@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { scanVenueWrites, findUnguardedVenueWrites, isHardcodedStringRhs } = require('./lib/venue-write-guard-detector.js');
+const { scanVenueWrites, findUnguardedVenueWrites, isHardcodedStringRhs, isGuardCallDefeatedByFallback } = require('./lib/venue-write-guard-detector.js');
 const { computeNewFindings, siteKey } = require('./audit-venue-write-guard.js');
 
 // --- acceptance criteria: guarded passes, unguarded fails ---
@@ -110,9 +110,85 @@ test('two venue writes, one guarded one not — only the unguarded one is flagge
   assert.equal(findings[0].line, 3);
 });
 
-// --- baseline diff logic (scripts/audit-venue-write-guard.js) ---
+// --- quoted key / bracket-notation / compound-assignment shapes (adversarial-review findings) ---
 
-test('computeNewFindings drops a finding whose file:line:snippet already matches the baseline', () => {
+test('a quoted object key ("venue": raw) is flagged just like the bare form', () => {
+  const src = `const x = { "venue": raw.venue };`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+});
+
+test('bracket-notation assignment (show["venue"] = raw) is flagged', () => {
+  const src = `function go(show, raw) { show["venue"] = raw.venue; }`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].kind, 'assignment');
+});
+
+test('a guarded bracket-notation assignment passes', () => {
+  const src = `function go(show, x) { show["venue"] = sanitizeVenueForWrite(x.venue); }`;
+  assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
+test('compound assignment (show.venue ||= raw) is flagged — the bare "= " regex missed this entirely', () => {
+  const src = `function go(show, raw) { show.venue ||= raw.venue; }`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+});
+
+test('a string literal that reads exactly "venue" as an unrelated VALUE is not mistaken for a key/bracket write', () => {
+  // field: 'venue' / checks.push('venue') style config — real patterns in
+  // this codebase (scripts/validate-show-venue.js, scripts/update-show-status.js).
+  const src = `function go(field) {
+    if (field === "venue") return true;
+    const schema = { field: "venue", label: "Venue" };
+    checks.push("venue");
+    return schema;
+  }`;
+  assert.deepEqual(scanVenueWrites(src), []);
+});
+
+// --- guard call defeated by a non-null fallback (adversarial-review finding) ---
+
+test('sanitizeVenueForWrite(x) || x restores exactly what it just rejected — flagged, not guarded', () => {
+  const src = `function go(c) { return { venue: sanitizeVenueForWrite(c.venue) || c.venue }; }`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+});
+
+test('sanitizeVenueForWrite(x) || null is still guarded — null is a safe fallback', () => {
+  const src = `function go(c) { return { venue: sanitizeVenueForWrite(c.venue) || null }; }`;
+  assert.deepEqual(findUnguardedVenueWrites(src), []);
+});
+
+test('isGuardCallDefeatedByFallback: true for || <non-null>, false for bare call or || null', () => {
+  assert.equal(isGuardCallDefeatedByFallback('sanitizeVenueForWrite(x) || x'), true);
+  assert.equal(isGuardCallDefeatedByFallback('sanitizeVenueForWrite(x) || rawVenue'), true);
+  assert.equal(isGuardCallDefeatedByFallback('sanitizeVenueForWrite(x) || null'), false);
+  assert.equal(isGuardCallDefeatedByFallback('sanitizeVenueForWrite(x)'), false);
+  assert.equal(isGuardCallDefeatedByFallback('candidate.venue'), false);
+});
+
+// --- hardcoded placeholder-marker strings are NOT treated as safe (adversarial-review finding) ---
+
+test('a hardcoded "TBA" literal is flagged — it is exactly the placeholder value sanitizeVenueForWrite() rejects', () => {
+  const src = `const entry = { venue: "TBA" };`;
+  const findings = findUnguardedVenueWrites(src);
+  assert.equal(findings.length, 1);
+});
+
+test('isHardcodedStringRhs rejects known placeholder markers but accepts a real venue name', () => {
+  assert.equal(isHardcodedStringRhs('"TBA"'), false);
+  assert.equal(isHardcodedStringRhs('"tbd"'), false);
+  assert.equal(isHardcodedStringRhs('"N/A"'), false);
+  assert.equal(isHardcodedStringRhs('"Studio 54"'), true);
+});
+
+// --- baseline diff logic (scripts/audit-venue-write-guard.js) ---
+// Keyed on file+snippet (NOT file:line) — an unrelated edit shifting line
+// numbers must not make a genuinely-unchanged baselined site look "new".
+
+test('computeNewFindings drops a finding whose file+snippet already matches the baseline', () => {
   const findings = [{ file: 'scripts/foo.js', line: 10, kind: 'literal', snippet: 'venue: c.venue,' }];
   const baseline = { sites: { [siteKey(findings[0])]: { snippet: 'venue: c.venue,' } } };
   assert.deepEqual(computeNewFindings(findings, baseline), []);
@@ -124,11 +200,20 @@ test('computeNewFindings keeps a finding not present in the baseline', () => {
   assert.deepEqual(computeNewFindings(findings, baseline), findings);
 });
 
-test('computeNewFindings re-surfaces a site whose snippet changed even if the file:line key matches', () => {
-  // An unrelated edit landing on the same line number as a baselined site
-  // must be checked fresh, not silently inherit the old site's pass.
+test('computeNewFindings does NOT re-surface a baselined site whose LINE moved but snippet is unchanged', () => {
+  // Regression guard for the file:line-keyed version (caught live by
+  // adversarial review): an unrelated edit earlier in the file shifting
+  // every subsequent line number by N must not force a spurious
+  // --update-baseline for sites nothing actually changed about.
+  const baselineFinding = { file: 'scripts/foo.js', line: 10, kind: 'literal', snippet: 'venue: c.venue,' };
+  const baseline = { sites: { [siteKey(baselineFinding)]: { snippet: baselineFinding.snippet } } };
+  const shifted = { file: 'scripts/foo.js', line: 15, kind: 'literal', snippet: 'venue: c.venue,' };
+  assert.deepEqual(computeNewFindings([shifted], baseline), []);
+});
+
+test('computeNewFindings keeps a finding whose snippet differs even at the same line', () => {
   const findings = [{ file: 'scripts/foo.js', line: 10, kind: 'literal', snippet: 'venue: someOtherRawField,' }];
-  const baseline = { sites: { [siteKey(findings[0])]: { snippet: 'venue: c.venue,' } } };
+  const baseline = { sites: { [siteKey({ file: 'scripts/foo.js', line: 10, kind: 'literal', snippet: 'venue: c.venue,' })]: { snippet: 'venue: c.venue,' } } };
   assert.deepEqual(computeNewFindings(findings, baseline), findings);
 });
 
