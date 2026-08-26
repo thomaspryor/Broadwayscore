@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T11:39:23.644Z",
-  "processed": 46,
-  "failed": 236,
-  "successRate": "16.3%",
+  "updatedAt": "2026-08-26T11:40:35.133Z",
+  "processed": 47,
+  "failed": 245,
+  "successRate": "16.1%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 2,
     "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -31,6 +31,17 @@
       "event": "bb-session",
       "session": "a33f68b2",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-26T11:40:24.378Z",
+      "event": "bb-session",
+      "session": "f12bf93d",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-26T11:40:25.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
