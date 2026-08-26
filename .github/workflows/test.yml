@@ -103,6 +103,14 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-544: root-level regression guard scanning scripts/**, src/**, and
+      # .github/workflows|actions/** for the deleted mcp_browser/
+      # scraping_browser Bright Data zone being sent through the HTTP
+      # /request API (it's a WebSocket-only browser_api zone). No lib
+      # dependency (self-contained fs scan) — registered in
+      # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI
+      # (root-level scripts/*.test.mjs is NOT globbed).
+      - 'scripts/bright-data-websocket.test.mjs'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
