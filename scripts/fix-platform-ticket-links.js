@@ -30,9 +30,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
-const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
+const { buildTelechargeUrl } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { isRegionMismatch, titleMatches } = require('./lib/ticket-link-discovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -88,39 +89,46 @@ function httpGet(url, options = {}) {
   });
 }
 
+// Both storefronts sell different markets from different hosts (task #956 /
+// #1002): ticketmaster.com is US-only, ticketmaster.co.uk is UK-only. Only
+// matching .com meant a West End show could never re-confirm its real .co.uk
+// page here and instead got silently overwritten by a loosely title-matching
+// US result — the exact regression isRegionMismatch() exists to catch.
+const TM_HOSTS = ['ticketmaster.com', 'ticketmaster.co.uk'];
+
 /**
  * Match SERP results against a Ticketmaster URL for the given show.
  * Uses allowlist of valid TM path patterns instead of strict regex.
  * Returns { status, newUrl?, reason? } or null if no results to evaluate.
  */
-function matchTicketmasterFromResults(results, showTitle, existingUrl) {
+function matchTicketmasterFromResults(results, show, existingUrl) {
+  const showTitle = show.title;
   // Allowlist of valid Ticketmaster path patterns
   const validPaths = ['/event/', '/artist/', '/venue/', '/tickets/'];
 
   for (const r of results) {
     const url = r.url || r.link;
-    if (!url || !url.includes('ticketmaster.com')) continue;
+    if (!url || !TM_HOSTS.some(h => url.includes(h))) continue;
     // Must match at least one valid path pattern
     if (!validPaths.some(p => url.includes(p))) continue;
     // Reject search/listing/category pages
     if (url.includes('/search') || url.includes('/discover') || url.includes('/category')) continue;
 
-    const serpTitle = normalizeShowName(r.title || '');
-    const showNorm = normalizeShowName(showTitle);
-    const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
-    const matched = [showNorm, primaryTitle].some(candidate => {
-      const words = candidate.split(' ').filter(w => w.length > 2);
-      const matchCount = words.filter(w => serpTitle.includes(w)).length;
-      return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
-    });
+    // Region check before the title check, same order as pickTicketUrl()
+    // (task #1002): a touring "A Christmas Carol" runs on both sides of the
+    // Atlantic every December, so title-matching alone can't tell the
+    // storefronts apart — reject a wrong-market host before it ever gets to
+    // decide whether the title also happens to match.
+    if (isRegionMismatch(url, show)) continue;
+    // Shared with the CI corpus gate (tm-gap-links.test.mjs) and pickTicketUrl —
+    // one matcher, not a second independently-drifting reimplementation.
+    if (!titleMatches(r.title || '', showTitle, show.venue || '')) continue;
 
-    if (matched) {
-      const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com');
-      if (cleanUrl === existingUrl) {
-        return { status: 'ok' };
-      }
-      return { status: 'updated', newUrl: cleanUrl };
+    const cleanUrl = url.replace(/^http:/, 'https:').replace('://ticketmaster.com', '://www.ticketmaster.com').replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
+    if (cleanUrl === existingUrl) {
+      return { status: 'ok' };
     }
+    return { status: 'updated', newUrl: cleanUrl };
   }
 
   return null; // No matching result found
@@ -128,8 +136,8 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl) {
 
 // SERP functions removed — using shared serpQuery from url-discovery.js
 
-async function serpVerifyTicketmaster(showTitle, existingUrl) {
-  const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
+async function serpVerifyTicketmaster(show, existingUrl) {
+  const query = `(site:ticketmaster.com OR site:ticketmaster.co.uk) "${show.title}" tickets`;
 
   const results = await serpQuery(query);
 
@@ -139,7 +147,7 @@ async function serpVerifyTicketmaster(showTitle, existingUrl) {
   }
 
   console.log(`    (${results.length} results)`);
-  const match = matchTicketmasterFromResults(results, showTitle, existingUrl);
+  const match = matchTicketmasterFromResults(results, show, existingUrl);
   if (match) return match;
 
   return { status: 'not_found', reason: 'no matching SERP result' };
@@ -228,7 +236,7 @@ async function main() {
 
     // SERP re-verify
     console.log(`${show.id}: verifying via SERP...`);
-    const result = await serpVerifyTicketmaster(show.title, tmLink.url);
+    const result = await serpVerifyTicketmaster(show, tmLink.url);
 
     if (result.status === 'ok') {
       console.log(`  ✓ URL confirmed`);
@@ -271,7 +279,11 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}
+
+module.exports = { matchTicketmasterFromResults, serpVerifyTicketmaster };

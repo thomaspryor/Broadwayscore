@@ -29,6 +29,15 @@ on:
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
       - 'vercel.json'
+      # BRO-172: fix-platform-ticket-links.js's Ticketmaster SERP re-verification
+      # had zero CI coverage (no test.yml path entry at all) despite a region-
+      # mismatch bug in its matcher regressing shows.json's a-christmas-carol-
+      # west-end-2026 Ticketmaster link at least 6 times (792d249c, c1344d6,
+      # c76a8af, ed9d424, 4f18b22, e721c202b in the private data repo). Registered
+      # in tests/unit-test-manifest.txt; needs its own entry (no scripts/** broad
+      # glob) so a solo edit triggers CI.
+      - 'scripts/fix-platform-ticket-links.js'
+      - 'scripts/fix-platform-ticket-links.test.mjs'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
