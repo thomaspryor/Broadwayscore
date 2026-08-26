@@ -154,39 +154,6 @@
     "queuedAt": "2026-08-25T13:17:56.577Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 75.9% (384/506)\noff-broadway: 45.9% (150/327)\nwest-end: 71.9% (401/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (269h)\nA Midsummer Night's Dream - Globe — telegraph (269h)\nA Midsummer Night's Dream - Globe — thestage (269h)\nA Midsummer Night's Dream - Globe — times-uk (269h)\nA Midsummer Night's Dream — financialtimes (269h)\n… 186 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (269h)\n& Juliet — nydailynews (269h)\nThe Book of Mormon — usatoday (269h)\nBuena Vista Social Club — broadwaynews (269h)\nBuena Vista Social Club — nydailynews (269h)\n… 24 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:53.319Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/141 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAbigail’s Party: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:55.856Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "115 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:55.959Z"
-  },
-  {
     "conditionKey": "review-gap:blast-radius-refused",
     "title": "Review-gap audit refused to write — 13.2% of shows changed coverage state",
     "description": "review-gap blast radius 13.2% (5/38 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, isla-off-broadway-2026, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
@@ -282,7 +249,29 @@
     "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32989630438",
     "decision": false,
     "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T16:27:01.828Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "122 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T16:27:01.925Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 11 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32989998377",
+    "decision": false,
+    "decisionPrompt": null,
     "model": "opus",
-    "queuedAt": "2026-08-26T17:06:55.831Z"
+    "queuedAt": "2026-08-26T17:08:47.755Z"
   }
 ]
