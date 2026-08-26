@@ -93,7 +93,15 @@
     "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-    "isla-off-broadway-2026/goseeashowpodcast--robby.json"
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "paranormal-activity-2026/variety--frank-rizzo.json",
+    "paranormal-activity-2026/vulture--jackson-mchenry.json",
+    "paranormal-activity-2026/deadline--unknown.json",
+    "paranormal-activity-2026/ew--emlyn-travis.json",
+    "paranormal-activity-2026/nydailynews--chris-jones.json",
+    "paranormal-activity-2026/nypost--johnny-oleksinski.json",
+    "paranormal-activity-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -1651,7 +1659,9 @@
     "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
     "masquerade-off-broadway-2025/theater-life--unknown.json",
     "the-producers-west-end-2025/deadline--unknown.json",
-    "the-producers-west-end-2025/people--unknown.json"
+    "the-producers-west-end-2025/people--unknown.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "paranormal-activity-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1713,13 +1723,17 @@
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-      "isla-off-broadway-2026/goseeashowpodcast--robby.json"
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+      "paranormal-activity-2026/ew--emlyn-travis.json",
+      "paranormal-activity-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
       "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/paranormal-activity-2026/deadline--unknown.json",
+      "paranormal-activity-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -1735,7 +1749,9 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nydailynews--chris-jones.json"
     ],
     "brightdata": [
       "schmigadoon-2026/thewrap--robert-hofler.json",
@@ -1745,7 +1761,10 @@
       "maybe-happy-ending-2024/newyorker--conde-nast.json",
       "and-juliet-2022/newyorker--conde-nast.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "paranormal-activity-2026/variety--frank-rizzo.json",
+      "paranormal-activity-2026/vulture--jackson-mchenry.json",
+      "paranormal-activity-2026/nypost--johnny-oleksinski.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1768,7 +1787,7 @@
     ]
   },
   "startTime": "2026-08-25T09:40:16.680Z",
-  "lastProcessed": "the-producers-west-end-2025/people--unknown.json",
+  "lastProcessed": "paranormal-activity-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-08-25T09:41:24.564Z",
@@ -1808,6 +1827,12 @@
       "t": "2026-08-26T00:41:42.898Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-26T01:34:20.905Z",
+      "event": "bb-session",
+      "session": "d8c6fe31",
+      "url": "https://deadline.com/2026/08/jason-blum-hosts-paranormal-activity-broadway-perfo"
     }
   ]
 }
