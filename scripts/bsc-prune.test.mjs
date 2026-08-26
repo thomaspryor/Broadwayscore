@@ -487,6 +487,32 @@ test('sweepNoPayload: never a candidate for the selected tab, even if 🤖 + aut
   assert.deepEqual(closed, []);
 });
 
+// Crown (owner-loop) tabs — task #1751. This is the THIRD close path in
+// bsc-prune.js and the one an owner tab is most exposed to: it decides from
+// SCREEN CONTENTS, and an owner loop parked at an empty prompt looks exactly
+// like an auth-dead husk.
+const crownWs = (n) => ({ ref: `workspace:${n}`, title: `👑 🤖 OWNER — Linear migration to done ${n}` });
+
+test('sweepNoPayload: a crown tab is never a candidate, even 🤖 + auth-dead + already quarantined twice', () => {
+  const { closed, appended, paged, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [crownWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+  assert.deepEqual(appended, []);
+  assert.deepEqual(paged, []);
+});
+
+test('sweepNoPayload: the close-site veto holds even if a crown tab reaches toClose via prior state', () => {
+  // Defense in depth (reviewer catch): the candidate filter is not the only
+  // guard. Drive a crown tab all the way to the close loop by pairing it with
+  // a NON-crown tab so the sweep does real work, and assert only the worker
+  // closes.
+  const { closed, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2, 'workspace:2': 2 } });
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [crownWs(1), authDeadWs(2)], dryRun: false, ...deps });
+  assert.deepEqual(closed, ['workspace:2']);
+});
+
 test('sweepNoPayload: first sighting quarantines, does not close', () => {
   const { closed, getSavedState, deps } = noPayloadHarness();
   deps.readScreenFn = () => 'Not logged in · Please run /login';
