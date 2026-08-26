@@ -39,6 +39,7 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 // NOTION_API_KEY, so nothing can require it to learn the string.
 const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
+const { parseArgs } = require('./lib/notion-brain-parse-args');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -48,30 +49,6 @@ if (!process.env.NOTION_API_KEY) {
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 // ── Helpers ─────────────────────────────────────────────────────────────
-
-function parseArgs(argv) {
-  const args = { _positional: [] };
-  for (let i = 0; i < argv.length; i++) {
-    if (argv[i].startsWith('--')) {
-      const raw = argv[i].slice(2);
-      const eq = raw.indexOf('=');
-      if (eq !== -1) {
-        args[raw.slice(0, eq)] = raw.slice(eq + 1);
-        continue;
-      }
-      const next = argv[i + 1];
-      if (next && !next.startsWith('--')) {
-        args[raw] = next;
-        i++;
-      } else {
-        args[raw] = true;
-      }
-    } else {
-      args._positional.push(argv[i]);
-    }
-  }
-  return args;
-}
 
 function getTitleValue(prop) {
   if (!prop || prop.type !== 'title') return '';
@@ -938,41 +915,52 @@ async function updateCard(args) {
   // Collect per-field overflow so we can write body sections after update.
   const overflow = {};
 
-  if (args.notes) {
-    // Same hoist as createCard above — see that comment for why.
-    const notesText = hoistRecheckAfterStamp(args.notes);
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
-    properties.Notes = propertyValue;
-    if (bodyText) overflow.notes = bodyText;
+  if (args.notes !== undefined) {
+    // "", "none", or "clear" explicitly empties Notes — matches the
+    // --due-date clear convention (BRO-344; rich-text has no other
+    // unambiguous empty-string form now that parseArgs consumes '').
+    if (args.notes === '' || args.notes === 'none' || args.notes === 'clear') {
+      properties.Notes = { rich_text: [] };
+    } else {
+      // Same hoist as createCard above — see that comment for why.
+      const notesText = hoistRecheckAfterStamp(args.notes);
+      const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
+      properties.Notes = propertyValue;
+      if (bodyText) overflow.notes = bodyText;
+    }
   }
 
-  if (args.outcome) {
-    // Read existing outcome first, prepend new content. Use the full value
-    // (including any page-body overflow) so prepends don't clobber history.
-    let outcomeText = args.outcome;
+  if (args.outcome !== undefined) {
+    if (args.outcome === '' || args.outcome === 'none' || args.outcome === 'clear') {
+      properties.Outcome = { rich_text: [] };
+    } else {
+      // Read existing outcome first, prepend new content. Use the full value
+      // (including any page-body overflow) so prepends don't clobber history.
+      let outcomeText = args.outcome;
 
-    if (args['append-outcome'] !== undefined || !args['overwrite-outcome']) {
-      try {
-        const existing = await notion.pages.retrieve({ page_id: pageId });
-        const existingPropText = getRichTextValue(existing.properties.Outcome);
-        const existingOutcome = await readFieldWithOverflow(
-          pageId,
-          existingPropText,
-          'outcome'
-        );
-        if (existingOutcome) {
-          outcomeText = outcomeText + '\n\n---\n\n' + existingOutcome;
+      if (args['append-outcome'] !== undefined || !args['overwrite-outcome']) {
+        try {
+          const existing = await notion.pages.retrieve({ page_id: pageId });
+          const existingPropText = getRichTextValue(existing.properties.Outcome);
+          const existingOutcome = await readFieldWithOverflow(
+            pageId,
+            existingPropText,
+            'outcome'
+          );
+          if (existingOutcome) {
+            outcomeText = outcomeText + '\n\n---\n\n' + existingOutcome;
+          }
+        } catch {
+          // If we can't read existing, just use new content
         }
-      } catch {
-        // If we can't read existing, just use new content
       }
+
+      outcomeText = hoistRecheckAfterStamp(outcomeText);
+
+      const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
+      properties.Outcome = propertyValue;
+      if (bodyText) overflow.outcome = bodyText;
     }
-
-    outcomeText = hoistRecheckAfterStamp(outcomeText);
-
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
-    properties.Outcome = propertyValue;
-    if (bodyText) overflow.outcome = bodyText;
   }
 
   if (args['key-files']) {
@@ -1387,7 +1375,9 @@ Options (create/update):
   --type "New Feature"      Type: New Feature, Fix, Data Quality, Market Expansion
   --tags scoring,scraping   Tags (comma-separated)
   --notes "## Problem..."   Notes field — REQUIRED on create, validated for quality
+                            On update: "", "none", or "clear" empties Notes
   --outcome "## Summary"    Outcome (prepends to existing by default)
+                            "", "none", or "clear" empties Outcome instead
   --key-files "file.js"     Key Files field
   --auto STATE              (update only) Autonomous-loop state select: queued,
                             attempted, needs-approval, approved, merged,
