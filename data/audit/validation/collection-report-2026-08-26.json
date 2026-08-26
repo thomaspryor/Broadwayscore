@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-08-26T18:27:01.002Z",
+  "runDate": "2026-08-26T20:05:53.554Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "paranormal-activity-2026",
+    "showFilter": "paranormal-activity-2026,the-real-ivanov-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -51,17 +51,14 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "paranormal-activity-2026/frontmezzjunkies--unknown.json"
+    "paranormal-activity-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "paranormal-activity-2026/deadline--erik-pedersen.json",
     "paranormal-activity-2026/deadline--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "paranormal-activity-2026/frontmezzjunkies--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
