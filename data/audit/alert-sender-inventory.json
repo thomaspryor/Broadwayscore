@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-26T16:14:56.413Z",
+  "generatedAt": "2026-08-26T17:39:55.410Z",
   "counts": {
-    "router": 107,
+    "router": 109,
     "digest": 1,
-    "direct": 3,
+    "direct": 0,
     "humanCallerIgnoresDigest": 0
   },
   "senders": [
@@ -37,10 +37,10 @@
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
-      "line": 861,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
+      "line": 876,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": ".github/workflows/scrape-new-aggregators.yml",
@@ -58,21 +58,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 2787,
+      "line": 2825,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4979,
+      "line": 5017,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 5002,
+      "line": 5040,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -205,28 +205,28 @@
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 1965,
+      "line": 1968,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 1990,
+      "line": 1993,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2013,
+      "line": 2016,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2162,
+      "line": 2165,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -582,22 +582,15 @@
       "disposition": "unknown"
     },
     {
-      "file": "scripts/lib/bsc-runner.js",
-      "line": 289,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "critical"
-    },
-    {
       "file": "scripts/lib/cmux-launch.js",
-      "line": 757,
+      "line": 819,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/lib/cmux-launch.js",
-      "line": 889,
+      "line": 969,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -632,7 +625,7 @@
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 562,
+      "line": 589,
       "kind": "sendAlert-direct",
       "classification": "digest",
       "severity": null
@@ -681,21 +674,21 @@
     },
     {
       "file": "scripts/opening-night-poller.js",
-      "line": 1680,
-      "kind": "sendAlert-direct",
-      "classification": "direct",
-      "severity": "error"
+      "line": 1693,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 709,
+      "line": 722,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/promote-we-aggregator-candidates.js",
-      "line": 397,
+      "line": 413,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"

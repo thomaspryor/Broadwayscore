@@ -755,7 +755,7 @@ jobs:
           # Alert if a show's opening-night reviews should exist by now but broadcast hasn't sent.
           # Reference: 4 AM UTC day after opening (~11 PM ET + 5h for gather/score pipeline).
           # Dedup: only alert once per show per day via opening-night-sent.json.
-          OVERDUE=$(node -e "
+          OVERDUE_RAW=$(node -e "
             const fs = require('fs');
             const { hasRecentOverdueAlert } = require('./scripts/lib/preview-dedup');
             const shows = require('./data/shows.json').shows;
@@ -811,24 +811,30 @@ jobs:
               return { id, line: (s ? s.title : id) + why };
             });
 
-            // Mark alerted shows so we don't spam. ONLY the ids that are
-            // actually overdue this run: stamping every pending id started a
-            // 24h cooldown for shows that had not yet had their first
-            // legitimate overdue moment, delaying their first real alert by
-            // up to a day (2026-08-02 email-noise session finding).
-            if (overdue.length > 0) {
-              const sentData = { shows: sent };
-              try { Object.assign(sentData, JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8'))); } catch {}
-              if (!sentData.shows) sentData.shows = {};
-              for (const o of overdue) {
-                const alertKey = 'overdue-alert:' + o.id;
-                sentData.shows[alertKey] = { sentAt: new Date().toISOString() };
-              }
-              fs.writeFileSync('data/opening-night-sent.json', JSON.stringify(sentData, null, 2));
-            }
+            // NOTE: the 'overdue-alert:ID' stamp used to be written HERE,
+            // unconditionally once overdue.length>0 — before the alert was
+            // even attempted. Moved into the routeAlert() .then() below
+            // (BRO-1699 ship-check finding): this file's OWN checklist/drift
+            // gates above already stamp state only after confirmed delivery
+            // ("blocked=true is written from INSIDE the node call, only once
+            // we know the owner was actually informed") specifically because
+            // writing first and notifying second means a delivery failure
+            // gets silently marked as handled, suppressing the real retry for
+            // up to cooldownHours. Same discipline applied here.
 
-            if (overdue.length) console.log(overdue.map(o => o.line).join(' | '));
+            // Two lines: sorted IDs (stable routeAlert conditionKey — same
+            // overdue combination within the cooldown window dedupes to one
+            // email; a different combination gets its own incident, mirroring
+            // the BREACHED_LIST pattern used by the checklist/drift gates
+            // above) then the display line bash already relied on.
+            if (overdue.length) {
+              console.log(overdue.map(o => o.id).sort().join(','));
+              console.log(overdue.map(o => o.line).join(' | '));
+            }
           ")
+
+          OVERDUE_IDS=$(echo "$OVERDUE_RAW" | sed -n '1p')
+          OVERDUE=$(echo "$OVERDUE_RAW" | sed -n '2p')
 
           if [ -n "$OVERDUE" ]; then
             echo "::warning::Broadcast overdue for: $OVERDUE"
@@ -856,15 +862,48 @@ jobs:
             # single-quoted literal, the step exits 1 with NO alert sent, and
             # the cooldown stamped above suppresses the retry — silent
             # permanent suppression. Same pattern as BREACHED_LIST above.
-            OVERDUE_LIST="$OVERDUE" node -e "
-              const { sendAlert } = require('./scripts/lib/discord-notify.js');
-              sendAlert({
+            #
+            # Routed through owner-alert-router (BRO-1699 migration): this used
+            # to call sendAlert(email:true) directly, bypassing the ACTION-only
+            # policy and the alert ledger's dedup — the two direct-bypass senders
+            # this card exists to close. conditionKey is the sorted overdue-ID
+            # list (same pattern as the checklist/drift gates' BREACHED_LIST) so
+            # a recurring identical overdue set within cooldownHours collapses to
+            # one email instead of re-firing every ~2.8h retry.
+            OVERDUE_LIST="$OVERDUE" OVERDUE_IDS="$OVERDUE_IDS" node -e "
+              const fs = require('fs');
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast:overdue:' + (process.env.OVERDUE_IDS || 'unknown'),
                 title: 'Opening Night Broadcast Overdue',
                 description: 'These shows opened 6+ hours ago but the broadcast has not sent. Each line names the blocking unscored file when the orphan gate is the cause; otherwise the pipeline (gather/rebuild/score) may be stuck.',
                 severity: 'error',
-                email: true,
+                disposition: 'human',
+                cooldownHours: 24,
                 fields: [{ name: 'Shows', value: process.env.OVERDUE_LIST || '?' }],
-              });
+              }).then((result) => {
+                // Same 'informed' definition as the checklist/drift gates above:
+                // silent (already notified, cooldown open) / digest (queued,
+                // durable) / auto (filed, durable) all count; 'human' only
+                // counts if sendAlert() actually delivered. Stamp the per-show
+                // dedup key ONLY when informed — an unconfirmed delivery must
+                // leave the retry path open for the next run.
+                const informed = result.action === 'silent' || result.action === 'digest' || result.action === 'auto' || (result.action === 'human' && result.delivered);
+                if (!informed) {
+                  console.error('::warning::overdue-broadcast alert delivery unconfirmed — not stamping overdue-alert keys, next run will retry');
+                  return;
+                }
+                const sentPath = 'data/opening-night-sent.json';
+                let sentData = {};
+                try { sentData = JSON.parse(fs.readFileSync(sentPath, 'utf8')); } catch {}
+                if (!sentData.shows) sentData.shows = {};
+                const ids = (process.env.OVERDUE_IDS || '').split(',').filter(Boolean);
+                for (const id of ids) {
+                  sentData.shows['overdue-alert:' + id] = { sentAt: new Date().toISOString() };
+                }
+                fs.writeFileSync(sentPath, JSON.stringify(sentData, null, 2));
+                console.log('[alert-router] overdue-broadcast alert routed: ' + result.action);
+              }).catch(e => { console.error('::warning::routeAlert failed (non-fatal): ' + e.message); });
             "
           fi
 

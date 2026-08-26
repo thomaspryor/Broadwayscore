@@ -256,6 +256,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+# Feature specs are cross-session deliverables (Notion cards + PRs point at
+# them) — durable-path rule, same rationale as /docs/experiments/ below.
+!/docs/specs/
 # Experiment pre-registration docs are referenced by code comments as the
 # canonical source of truth (analyze-gate-cold-start.js, flag-registry.js,
 # docs/experiments/README.md's setup contract) and must be committed for
@@ -278,6 +281,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # card's acceptance criteria), so it must be committed or CI fails on a
 # missing file rather than on the thing the test is guarding.
 !/docs/BRO-373-codex-lane-decision.md
+# BRO-377 Phase 1 deliverable: the dual-write window + induced-failure drill
+# result. The card's acceptance criteria is literally
+# `test -f docs/Phase-1-drill-results.md`, so it has to be committed.
+!/docs/Phase-1-drill-results.md
 /memory/
 /data/deep-research/
 /data/theater-research/

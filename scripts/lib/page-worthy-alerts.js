@@ -27,12 +27,16 @@
  * have no entries below yet. Add one here the day a sender for either
  * exists; do not pre-populate with a key nothing emits.
  *
- * Two permanent exceptions live OUTSIDE this file and outside routeAlert()
- * entirely: opening-night-poller.js and .github/workflows/opening-night-
- * broadcast.yml call sendAlert() directly (never through routeAlert), by
- * deliberate design (CLAUDE.md rule 14) — they must keep working even if
- * the router itself is broken. They're tracked/reviewed via
- * scripts/.alert-sender-baseline.json, not here.
+ * BRO-1699: opening-night-poller.js and .github/workflows/opening-night-
+ * broadcast.yml used to bypass routeAlert() entirely (direct sendAlert()
+ * calls), on the theory that they must keep paging even if the router itself
+ * is broken. That theory turned out to be the noise-regression bug, not a
+ * safety feature — see the card for the two live bypasses it caught. Both
+ * now call routeAlert(disposition:'human') like every other page candidate;
+ * opening-night-broadcast.yml's overdue-broadcast alert IS Category 2 (below),
+ * and opening-night-poller.js's SERP-burst-tripwire condition is a deliberate
+ * carve-out below it (not one of the 3 categories, but preserving its
+ * pre-migration real-time-page behavior — see that entry's comment).
  */
 'use strict';
 
@@ -44,6 +48,7 @@ const PAGE_WORTHY_PREFIXES = [
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
+  'broadcast:overdue:', // opening-night-broadcast.yml: broadcast hasn't sent 6+h after a show's opening — the pipeline (gather/rebuild/score) may be stuck
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
@@ -81,6 +86,19 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+
+  // Not one of the 3 owner-approved categories above, but a deliberate
+  // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
+  // real-time email BEFORE the routeAlert() migration, specifically because
+  // its own severity comment argues the 24h-late digest is inadequate for a
+  // same-day 60-100K ScrapingBee-credit runaway (feedback_sb_serp_invisible_
+  // burn). Downgrading it to disposition:'human'-requested-but-actually-
+  // digest would have silently regressed real-time paging while the code's
+  // own rationale still claimed same-day urgency — leaving it off this list
+  // was the ship-check-caught bug, not a deliberate policy choice. The hard
+  // daily cap (scripts/lib/serp-burst-caps.js) still auto-stops the runaway
+  // regardless of whether this page fires.
+  'serp-burst:tripwire', // opening-night-poller.js: WE SERP burst cascade tripwire, one page per UTC day
 ]);
 
 function isPageWorthy(conditionKey) {

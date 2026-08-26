@@ -95,7 +95,14 @@ function isCIExecution() {
 }
 const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
   || (isCIExecution() ? TRACKED_LEDGER_PATH : LOCAL_LEDGER_PATH);
-const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
+// Overridable like ALERT_LEDGER_PATH above (tests / ad-hoc verification runs
+// need to point this somewhere disposable too) — added after BRO-1699's
+// verification run wrote two throwaway rows into the REAL tracked file
+// because, unlike the ledger, this path had no override and no write-time
+// guard. Same incident CLASS as the 2026-08-02 ledger one (saveLedger()'s
+// NODE_TEST_CONTEXT guard below), just not yet caught for this file.
+const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
 // records successes (a failed dispatch is deliberately not written there, so
@@ -105,7 +112,12 @@ const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-qu
 // incident every single dispatch failed, so the ledger would have shown ZERO
 // activity all week even though the router was attempting (and silently
 // failing) auto-dispatch on every run.
-const ATTEMPTS_LOG_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
+// Overridable + guarded like the ledger and digest queue above (BRO-1699
+// what-else finding, systematic pass: this is the third tracked file this
+// module writes and had the same gap as the digest queue did before this
+// pass).
+const ATTEMPTS_LOG_PATH = process.env.ALERT_ATTEMPTS_LOG_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-router-attempts.jsonl');
 const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 
 const DISPOSITIONS = ['auto', 'digest', 'human'];
@@ -133,17 +145,28 @@ function loadLedger() {
   return { conditions: {} };
 }
 
-function saveLedger(ledger) {
-  // Tests must NEVER write a real ledger. 2026-08-02: the tracked
-  // data/audit/alert-ledger.json was found carrying this module's own test
-  // conditions ('test:unwritable-ledger', a fake on-monitor-launch-failed-*
-  // with cardId 'fake-card-id'), swept into main by an unrelated wholesale
-  // data commit — and the same commit rolled back the REAL opening-night SLA
-  // state, causing a duplicate owner page. Guarded at write time (not
-  // require time) so read-only tests of the path-resolution logic still load.
-  if (process.env.NODE_TEST_CONTEXT && !process.env.ALERT_LEDGER_PATH) {
-    throw new Error('owner-alert-router: refusing to write a REAL alert ledger under node:test — set ALERT_LEDGER_PATH to a temp file (see loadRouterWithFakes)');
+// Shared guard for both tracked-state files this module owns (the ledger and
+// the digest queue): tests, and ad-hoc verification runs under node:test,
+// must NEVER write the REAL file unless the caller explicitly overrode its
+// path. 2026-08-02: the tracked data/audit/alert-ledger.json was found
+// carrying this module's own test conditions ('test:unwritable-ledger', a
+// fake on-monitor-launch-failed-* with cardId 'fake-card-id'), swept into
+// main by an unrelated wholesale data commit — and the same commit rolled
+// back the REAL opening-night SLA state, causing a duplicate owner page.
+// Extended to the digest queue (BRO-1699 what-else finding): the queue had
+// no equivalent guard and no override, so a direct verification run of
+// routeAlert()'s digest path wrote two throwaway rows straight into the
+// real tracked file — same incident class, just not yet caught here.
+// Guarded at write time (not require time) so read-only tests of the
+// path-resolution logic still load.
+function assertRealFileWriteIsSafeUnderTest(kind, overrideEnvVar) {
+  if (process.env.NODE_TEST_CONTEXT && !process.env[overrideEnvVar]) {
+    throw new Error(`owner-alert-router: refusing to write a REAL ${kind} under node:test — set ${overrideEnvVar} to a temp file (see loadRouterWithFakes)`);
   }
+}
+
+function saveLedger(ledger) {
+  assertRealFileWriteIsSafeUnderTest('alert ledger', 'ALERT_LEDGER_PATH');
   fs.mkdirSync(path.dirname(LEDGER_PATH), { recursive: true });
   // Atomic write: a kill mid-write must not truncate the ledger and drop
   // every condition's open/silent state (same pattern as notion-action-poll.js).
@@ -228,6 +251,7 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
       ok,
       error: error ? String(error).slice(0, 500) : null,
     }));
+    assertRealFileWriteIsSafeUnderTest('alert-router attempts log', 'ALERT_ATTEMPTS_LOG_PATH');
     fs.mkdirSync(path.dirname(ATTEMPTS_LOG_PATH), { recursive: true });
     fs.writeFileSync(ATTEMPTS_LOG_PATH, kept.join('\n') + '\n');
   } catch (err) {
@@ -385,6 +409,7 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
     decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
     queuedAt: new Date().toISOString(),
   });
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
 }
@@ -406,6 +431,7 @@ function peekDigestQueue() {
 
 // Clears the queue. Call only AFTER the peeked lines are durably persisted.
 function clearDigestQueue() {
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
 }
@@ -421,6 +447,7 @@ function removeDigestLines(conditionKeys) {
   const queue = peekDigestQueue();
   const kept = queue.filter(q => !q || !keys.has(q.conditionKey));
   if (kept.length !== queue.length) {
+    assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
     fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
     fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(kept, null, 2) + '\n');
   }
