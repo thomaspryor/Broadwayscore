@@ -161,6 +161,13 @@ jobs:
         if: always() && inputs.dry_run != true
         env:
           SHOW_TITLE: ${{ inputs.title }}
+          # BRO-158: data/audit/ob-venue-candidates.json is now a union-merged
+          # registry file (scripts/lib/core-data-merge-registry.js) — the
+          # default `-X theirs` rebase resolves a non-overlapping hunk (two
+          # producers adding different candidates) silently, without ever
+          # reaching resolve_conflicts()'s case-arm merge. This flag routes
+          # that path through reconcile-merged-json.js instead.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
           if [ -f "$SENTINEL" ]; then
