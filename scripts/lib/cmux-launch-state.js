@@ -194,8 +194,81 @@ function isSlowBootFailure(state) {
   return state === STATES.SLOW_BOOT_TIMEOUT || state === STATES.WRAPPER_GONE_TAG_ALIVE;
 }
 
+// ── Probe cadence (task #1904 follow-up, /code-review findings 2 and 7) ─────
+// Both of these are "should I spend a cmux round trip on this poll?" — pure
+// functions of elapsed time and what has already been asked. They live here,
+// beside decideLaunchWait, because every other timing rule in this launcher
+// already does; the alternative was four tunables plus three mutable counters
+// bolted into waitForLaunchOutcome's I/O loop, untestable without a real cmux.
+
+// read-screen was consulted ONCE per launch before the capacity work; the
+// first cut of it fired every PROBE_INTERVAL_SEC (3s) for the entire grace
+// window — 30-60 extra IPC round trips per launch, the exact cost the comment
+// beside the capacity probe rejects. 15s is comfortably inside the 90s grace
+// AND strictly safer than the status quo for branch 3b, which can currently
+// fire against a launch just 3s old even though healthy runtime attach was
+// measured as slow as 39.9s on this machine.
+const SURFACE_PROBE_AFTER_SEC = 15;
+const SURFACE_PROBE_INTERVAL_SEC = 15;
+
+// Capacity is an app-wide property, so it is asked at most this many times and
+// only while the answer is genuinely UNKNOWN. A known answer is cached: it
+// cannot change materially inside one launch's wait, and re-asking every 3s
+// for six minutes would be the ~120 pointless round trips the launcher's own
+// comment rejects.
+const CAPACITY_REPROBE_INTERVAL_SEC = 15;
+const CAPACITY_PROBE_MAX_ATTEMPTS = 3;
+
+/**
+ * PURE. Spend a read-screen round trip on this poll?
+ * `lastProbeSec` is null until the first probe.
+ *
+ * `graceSec` caps the delay. The verdict is a LABEL that decides whether the
+ * caller learns a ceiling observation at all, so the poll where the grace
+ * expires — the deciding one — must have a fresh reading. A flat 15s delay
+ * silently disables learning for any caller with a grace shorter than that
+ * (`verifyTimeoutSec: 1` in the launcher's own tests, and any short-grace
+ * caller in production), which is blocker 3 in a different costume: caught by
+ * scripts/tests/cmux-launch-reclaim.test.mjs, which went from
+ * 'terminal-runtime-missing' to 'injection-never-ran' the moment the flat
+ * threshold went in.
+ */
+function shouldProbeSurface({ elapsedSec = 0, lastProbeSec = null, graceSec = Infinity,
+  afterSec = SURFACE_PROBE_AFTER_SEC, intervalSec = SURFACE_PROBE_INTERVAL_SEC } = {}) {
+  const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
+  const grace = Number.isFinite(graceSec) ? Math.max(0, graceSec) : Infinity;
+  if (elapsed < Math.min(afterSec, grace)) return false;
+  if (!Number.isFinite(lastProbeSec)) return true;
+  return elapsed - lastProbeSec >= intervalSec;
+}
+
+/**
+ * PURE. Ask cmux for its live-runtime count on this poll?
+ *
+ * `known` is the load-bearing input. The first cut asked exactly once, on the
+ * first poll where the surface read missing — i.e. seconds after
+ * `new-workspace`, precisely when the cmux socket is briefly unavailable
+ * BECAUSE it is busy creating workspaces (four consecutive probes returned
+ * nothing in that window on this machine). A null probe reports "capacity
+ * unknown", which reads as hasCapacity:true, and the answer was then cached
+ * for the remaining 90-360s — leaving the state machine's branch 3b close to
+ * unreachable in exactly the degraded state it exists for. So: cache only a
+ * KNOWN answer, and re-ask a bounded number of times otherwise.
+ */
+function shouldReprobeCapacity({ known = false, attempts = 0, elapsedSec = 0, lastProbeSec = null,
+  intervalSec = CAPACITY_REPROBE_INTERVAL_SEC, maxAttempts = CAPACITY_PROBE_MAX_ATTEMPTS } = {}) {
+  if (known) return false;
+  if (attempts >= maxAttempts) return false;
+  const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
+  if (!Number.isFinite(lastProbeSec)) return true;
+  return elapsed - lastProbeSec >= intervalSec;
+}
+
 module.exports = {
   decideLaunchWait, isSlowBootFailure,
+  shouldProbeSurface, shouldReprobeCapacity,
   STATES, REASONS,
   DEFAULT_INJECTION_GRACE_SEC, DEFAULT_SLOW_BOOT_CAP_SEC,
+  SURFACE_PROBE_AFTER_SEC, SURFACE_PROBE_INTERVAL_SEC,
+  CAPACITY_REPROBE_INTERVAL_SEC, CAPACITY_PROBE_MAX_ATTEMPTS,
 };

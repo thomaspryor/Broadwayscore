@@ -245,18 +245,57 @@ const CEILING_CONFIRMATIONS_REQUIRED = 2;
  * after would include this launch's own runtime on the success path and not
  * on the failure path, i.e. compare two different things.
  *
+ * ── CONFIRMED vs CANDIDATE (task #1904 follow-up, code-review finding 4) ───
+ * The first cut of this function let ANY lower observation overwrite the
+ * ceiling outright. That is the one way this whole module could do real harm:
+ * a CONFIRMED ceiling of 29 plus a single #1829-class failure at 12 live
+ * runtimes became an unconfirmed 12 (gate silently off), and a second such
+ * failure CONFIRMED 12 — refusing every dispatch above 12 live tabs for the
+ * full 24h TTL while reporting a confident "cap observed at 12" on a
+ * half-empty cmux. MIN_PLAUSIBLE_CEILING (8) sits far below normal operating
+ * counts and was the only thing standing in the way.
+ *
+ * So a lower number no longer touches a CONFIRMED ceiling at all. It becomes
+ * a CANDIDATE, and the candidate must itself reach
+ * CEILING_CONFIRMATIONS_REQUIRED — the same evidentiary bar the confirmed
+ * ceiling had to clear — before it may supersede. One stray failure now
+ * changes nothing; two are a pattern, exactly as at the top level.
+ *
+ * The candidate's counter ACCUMULATES while its VALUE moves down (min), which
+ * is the only shape that converges: a genuinely lowered cap produces a
+ * descending run of observations (25, 22, 21, 20 …), and a rule that restarted
+ * the count on each new number would never reach 2 — the gate would keep
+ * feeding doomed launches until the TTL wiped everything. This mirrors the
+ * confirmed arm's own `cur <= before` corroboration rule.
+ *
+ * `touched` tells the persistence layer WHICH half this observation spoke to,
+ * so a candidate write cannot refresh the confirmed ceiling's freshness stamp
+ * (see readCeilingRecord — that would kill the TTL escape hatch documented at
+ * CEILING_TTL_MS, the only recovery when cmux RAISES its cap).
+ *
  * @param {object} o
- * @param {number|null} o.ceiling      current learned ceiling (null = none yet)
+ * @param {number|null} o.ceiling      current confirmed-or-pending ceiling (null = none yet)
+ * @param {number} [o.confirmations]   observations behind `ceiling`
+ * @param {number|null} [o.candidate]  lower value under test against a confirmed ceiling
+ * @param {number} [o.candidateConfirmations] observations behind `candidate`
  * @param {number} o.liveRuntimesBefore
  * @param {'runtime-missing'|'runtime-created'} o.outcome
- * @returns {{ceiling:number|null, changed:boolean, reason:string}}
+ * @returns {{ceiling:number|null, confirmations:number, candidate:number|null,
+ *            candidateConfirmations:number, changed:boolean,
+ *            touched:'confirmed'|'candidate'|null, reason:string}}
  */
-function learnCeiling({ ceiling = null, confirmations = 0, liveRuntimesBefore, outcome } = {}) {
+function learnCeiling({ ceiling = null, confirmations = 0, candidate = null, candidateConfirmations = 0, liveRuntimesBefore, outcome } = {}) {
   const cur = Number.isInteger(ceiling) ? ceiling : null;
   const seen = Number.isInteger(confirmations) && confirmations > 0 ? confirmations : 0;
+  const cand = Number.isInteger(candidate) ? candidate : null;
+  const candSeen = Number.isInteger(candidateConfirmations) && candidateConfirmations > 0 ? candidateConfirmations : 0;
   const before = Number.isInteger(liveRuntimesBefore) ? liveRuntimesBefore : null;
-  const keep = { ceiling: cur, confirmations: seen, changed: false };
+  const keep = {
+    ceiling: cur, confirmations: seen, candidate: cand, candidateConfirmations: candSeen,
+    changed: false, touched: null,
+  };
   if (before === null) return { ...keep, reason: 'no live-runtime count observed — nothing to learn' };
+  const ceilingIsConfirmed = cur !== null && seen >= CEILING_CONFIRMATIONS_REQUIRED;
 
   if (outcome === 'runtime-missing') {
     // Creation at `before` failed, so IF this is the cap, the cap is at most
@@ -274,16 +313,35 @@ function learnCeiling({ ceiling = null, confirmations = 0, liveRuntimesBefore, o
       // Same regime, seen again: this is the corroboration, not a new number.
       const next = seen + 1;
       return {
-        ceiling: cur, confirmations: next, changed: true,
+        ...keep, ceiling: cur, confirmations: next, changed: true, touched: 'confirmed',
         reason: `cmux failed to attach a terminal again at ${before} live runtime(s) — ceiling ${cur} now confirmed ${next}/${CEILING_CONFIRMATIONS_REQUIRED}`,
       };
     }
-    // A NEW, lower number. Confirmations restart: the evidence supports this
-    // value, not the old one, and acting on an unconfirmed number is exactly
-    // the latch this counter exists to prevent.
+    if (!ceilingIsConfirmed) {
+      // A NEW, lower number with nothing confirmed to protect. Confirmations
+      // restart: the evidence supports this value, not the old one, and acting
+      // on an unconfirmed number is exactly the latch this counter prevents.
+      return {
+        ceiling: before, confirmations: 1, candidate: null, candidateConfirmations: 0,
+        changed: true, touched: 'confirmed',
+        reason: `cmux failed to attach a terminal at ${before} live runtime(s) — ceiling candidate ${before}, seen 1/${CEILING_CONFIRMATIONS_REQUIRED}`,
+      };
+    }
+    // Lower than a CONFIRMED ceiling: candidate arm. The confirmed number is
+    // untouched until the candidate has earned the same corroboration.
+    const nextCand = cand === null ? before : Math.min(cand, before);
+    const nextCandSeen = candSeen + 1;
+    if (nextCandSeen >= CEILING_CONFIRMATIONS_REQUIRED) {
+      return {
+        ceiling: nextCand, confirmations: CEILING_CONFIRMATIONS_REQUIRED,
+        candidate: null, candidateConfirmations: 0, changed: true, touched: 'confirmed',
+        reason: `cmux failed to attach a terminal at ${before} live runtime(s) for the ${nextCandSeen}${nextCandSeen === 2 ? 'nd' : 'th'} time below the confirmed ceiling ${cur} — the cap has genuinely dropped, superseding it with ${nextCand}`,
+      };
+    }
     return {
-      ceiling: before, confirmations: 1, changed: true,
-      reason: `cmux failed to attach a terminal at ${before} live runtime(s) — ceiling candidate ${before}, seen 1/${CEILING_CONFIRMATIONS_REQUIRED}`,
+      ceiling: cur, confirmations: seen, candidate: nextCand, candidateConfirmations: nextCandSeen,
+      changed: true, touched: 'candidate',
+      reason: `cmux failed to attach a terminal at ${before} live runtime(s), below the confirmed ceiling ${cur} — recorded as candidate ${nextCand}, seen ${nextCandSeen}/${CEILING_CONFIRMATIONS_REQUIRED}. The confirmed ceiling stands until the candidate is corroborated.`,
     };
   }
 
@@ -292,11 +350,28 @@ function learnCeiling({ ceiling = null, confirmations = 0, liveRuntimesBefore, o
     // This is the path that recovers from a ceiling learned too low —
     // together with the TTL and --force, it is why a wrong number cannot
     // become permanent.
-    if (cur === null || cur > before) return { ...keep, reason: 'success below the known ceiling — nothing to learn' };
-    return {
-      ceiling: before + 1, confirmations: 0, changed: true,
-      reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — raised to ${before + 1} and back to unconfirmed`,
-    };
+    if (cur !== null && cur <= before) {
+      return {
+        ceiling: before + 1, confirmations: 0, candidate: null, candidateConfirmations: 0,
+        changed: true, touched: 'confirmed',
+        reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — raised to ${before + 1} and back to unconfirmed`,
+      };
+    }
+    // A success at or above the CANDIDATE disproves the candidate even though
+    // it says nothing about the confirmed ceiling above it. Without this arm
+    // the late-adopt/reclaim disproof (cmux-launch.js) is inert: those cases
+    // are precisely `confirmed 29 > before 12`, which the branch above skips,
+    // so a false low observation would survive while its own disproof never
+    // did — one-directional learning, which is what put a wrong number on
+    // disk in the first place.
+    if (cand !== null && before >= cand) {
+      return {
+        ceiling: cur, confirmations: seen, candidate: null, candidateConfirmations: 0,
+        changed: true, touched: 'candidate',
+        reason: `cmux attached a terminal at ${before} live runtime(s), at or above the ${cand} candidate — candidate withdrawn (it is not the cap)`,
+      };
+    }
+    return { ...keep, reason: 'success below the known ceiling — nothing to learn' };
   }
 
   return { ...keep, reason: `unknown outcome ${JSON.stringify(outcome)}` };
@@ -340,34 +415,70 @@ function runCmuxDebugTerminals({ attempts = 2, backoffMs = 300 } = {}) {
  * isn't one / it has expired. Kept separate from readCeiling() so existing
  * callers that only want the number keep working unchanged.
  */
-function readCeilingRecord(ceilingPath = CEILING_PATH, opts = {}) {
-  const ceiling = readCeiling(ceilingPath, opts);
-  if (ceiling === null) return { ceiling: null, confirmations: 0 };
-  try {
-    const raw = JSON.parse(fs.readFileSync(ceilingPath, 'utf8'));
-    return { ceiling, confirmations: Number.isInteger(raw.confirmations) ? raw.confirmations : 0 };
-  } catch { return { ceiling: null, confirmations: 0 }; }
+const EMPTY_CEILING_RECORD = Object.freeze({
+  ceiling: null, confirmations: 0, candidate: null, candidateConfirmations: 0,
+  confirmedAt: null, candidateAt: null,
+});
+
+/**
+ * ONE read, ONE parse (code-review design finding). The first cut called
+ * readCeiling() and then re-read the file for the confirmation count — two
+ * separate reads of a file published by atomic rename from a dozen parallel
+ * sessions, so a reader could take the ceiling from file A and its
+ * confirmations from file B and act on a combination that never existed on
+ * disk. With four correlated fields that stops being theoretical.
+ *
+ * The two halves expire INDEPENDENTLY against the same TTL. They have to:
+ * writeCeiling stamps whichever half the observation actually spoke to, so a
+ * run of candidate observations cannot keep refreshing a confirmed ceiling's
+ * freshness. If it could, the expiry documented at CEILING_TTL_MS — the only
+ * recovery path when cmux ships a build with a HIGHER cap, because the gate
+ * itself is what prevents the success that would raise the number — would
+ * never fire.
+ *
+ * `observedAt` is the legacy single stamp and is still read as the fallback
+ * for both halves, so a file written by the previous version keeps working.
+ */
+function readCeilingRecord(ceilingPath = CEILING_PATH, { nowMs = Date.now(), ttlMs = CEILING_TTL_MS } = {}) {
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(ceilingPath, 'utf8')); } catch { return { ...EMPTY_CEILING_RECORD }; }
+  if (!raw || typeof raw !== 'object') return { ...EMPTY_CEILING_RECORD };
+
+  // An unparseable/absent stamp is treated as expired, never as eternally
+  // fresh: the failure direction has to be "stop refusing", not "refuse
+  // forever off a timestamp nobody can read". A FUTURE timestamp is expired
+  // too (adversarial review catch) — `age > ttlMs` alone lets a stamp written
+  // under a clock that later rolled back, or a stale file left by another
+  // machine's tmpdir, read as permanently fresh, refusing every dispatch
+  // until that future date plus a day and looking like a legitimate capacity
+  // refusal the whole time. Both directions of "this timestamp makes no
+  // sense" resolve to unknown.
+  const isFresh = (stamp) => {
+    const t = Date.parse(stamp);
+    if (!Number.isFinite(t)) return false;
+    const age = nowMs - t;
+    return !(age > ttlMs || age < -CLOCK_SKEW_TOLERANCE_MS);
+  };
+
+  const out = { ...EMPTY_CEILING_RECORD };
+  const confirmedStamp = raw.confirmedAt || raw.observedAt;
+  if (Number.isInteger(raw.ceiling) && isFresh(confirmedStamp)) {
+    out.ceiling = raw.ceiling;
+    out.confirmations = Number.isInteger(raw.confirmations) ? raw.confirmations : 0;
+    out.confirmedAt = confirmedStamp;
+  }
+  const candidateStamp = raw.candidateAt || raw.observedAt;
+  if (Number.isInteger(raw.candidate) && isFresh(candidateStamp)) {
+    out.candidate = raw.candidate;
+    out.candidateConfirmations = Number.isInteger(raw.candidateConfirmations) ? raw.candidateConfirmations : 0;
+    out.candidateAt = candidateStamp;
+  }
+  return out;
 }
 
-function readCeiling(ceilingPath = CEILING_PATH, { nowMs = Date.now(), ttlMs = CEILING_TTL_MS } = {}) {
-  try {
-    const raw = JSON.parse(fs.readFileSync(ceilingPath, 'utf8'));
-    if (!Number.isInteger(raw && raw.ceiling)) return null;
-    const observedAt = Date.parse(raw.observedAt);
-    // An unparseable/absent observedAt is treated as expired, never as
-    // eternally fresh: the failure direction has to be "stop refusing", not
-    // "refuse forever off a timestamp nobody can read".
-    if (!Number.isFinite(observedAt)) return null;
-    const age = nowMs - observedAt;
-    // A FUTURE timestamp is expired too (adversarial review catch). `age >
-    // ttlMs` alone lets a stamp written under a clock that later rolled back
-    // — or a stale file left by another machine's tmpdir — read as
-    // permanently fresh, refusing every dispatch until that future date plus
-    // a day, and looking like a legitimate capacity refusal the whole time.
-    // Both directions of "this timestamp makes no sense" resolve to unknown.
-    if (age > ttlMs || age < -CLOCK_SKEW_TOLERANCE_MS) return null;
-    return raw.ceiling;
-  } catch { return null; }
+/** The confirmed-or-pending ceiling number alone, or null. Derived, never a second read. */
+function readCeiling(ceilingPath = CEILING_PATH, opts = {}) {
+  return readCeilingRecord(ceilingPath, opts).ceiling;
 }
 
 // Temp-file + rename, the same atomic-publish shape cmux-launch.js's launch
@@ -375,11 +486,27 @@ function readCeiling(ceilingPath = CEILING_PATH, { nowMs = Date.now(), ttlMs = C
 // sessions dispatch on this host, so a plain writeFileSync can be read
 // half-written by a concurrent probe — and a torn ceiling file reads as no
 // ceiling, silently disabling the gate.
-function writeCeiling(ceiling, { ceilingPath = CEILING_PATH, note = null, confirmations = 0, nowIso = new Date().toISOString() } = {}) {
+function writeCeiling(ceiling, {
+  ceilingPath = CEILING_PATH, note = null, confirmations = 0,
+  candidate = null, candidateConfirmations = 0,
+  confirmedAt = null, candidateAt = null,
+  nowIso = new Date().toISOString(),
+} = {}) {
   const tmp = `${ceilingPath}.${process.pid}.tmp`;
+  // `confirmedAt` defaults to now so an ordinary writeCeiling(29, {...}) call
+  // behaves exactly as before. A CANDIDATE write passes the PRIOR
+  // confirmedAt through untouched — that is what keeps the confirmed half
+  // ageing toward its TTL while the candidate accumulates (see
+  // readCeilingRecord). `observedAt` mirrors the confirmed stamp so a reader
+  // from the previous version reads the confirmed half's real age.
+  const stampConfirmed = confirmedAt || nowIso;
   try {
     fs.mkdirSync(path.dirname(ceilingPath), { recursive: true });
-    fs.writeFileSync(tmp, JSON.stringify({ ceiling, confirmations, observedAt: nowIso, note }, null, 2) + '\n');
+    fs.writeFileSync(tmp, JSON.stringify({
+      ceiling, confirmations, confirmedAt: stampConfirmed,
+      candidate, candidateConfirmations, candidateAt,
+      observedAt: stampConfirmed, note,
+    }, null, 2) + '\n');
     fs.renameSync(tmp, ceilingPath);
     return true;
   } catch {
@@ -419,16 +546,31 @@ function probeTerminalCapacity({ debugTerminals = runCmuxDebugTerminals, ceiling
  * dispatch on a scratch-file lock would be a much worse failure.
  */
 function recordLaunchOutcome({ liveRuntimesBefore, outcome, ceilingPath = CEILING_PATH, nowMs = Date.now() }) {
-  let result = { ceiling: null, confirmations: 0, changed: false, reason: 'not evaluated' };
+  let result = {
+    ceiling: null, confirmations: 0, candidate: null, candidateConfirmations: 0,
+    changed: false, touched: null, reason: 'not evaluated',
+  };
   withFileLock(`${ceilingPath}.lock`, () => {
     const rec = readCeilingRecord(ceilingPath, { nowMs });
-    result = learnCeiling({ ceiling: rec.ceiling, confirmations: rec.confirmations, liveRuntimesBefore, outcome });
-    if (result.changed) {
-      writeCeiling(result.ceiling, {
-        ceilingPath, note: result.reason, confirmations: result.confirmations,
-        nowIso: new Date(nowMs).toISOString(),
-      });
-    }
+    result = learnCeiling({
+      ceiling: rec.ceiling, confirmations: rec.confirmations,
+      candidate: rec.candidate, candidateConfirmations: rec.candidateConfirmations,
+      liveRuntimesBefore, outcome,
+    });
+    if (!result.changed) return;
+    const nowIso = new Date(nowMs).toISOString();
+    // Only the half this observation actually spoke to gets a fresh stamp —
+    // see readCeilingRecord for why refreshing both would disable the TTL
+    // escape hatch.
+    const confirmedAt = result.touched === 'confirmed' ? nowIso : (rec.confirmedAt || nowIso);
+    const candidateAt = result.candidate === null
+      ? null
+      : (result.touched === 'candidate' ? nowIso : (rec.candidateAt || nowIso));
+    writeCeiling(result.ceiling, {
+      ceilingPath, note: result.reason, confirmations: result.confirmations,
+      candidate: result.candidate, candidateConfirmations: result.candidateConfirmations,
+      confirmedAt, candidateAt, nowIso,
+    });
   }, { timeoutMs: 3000 });
   return result;
 }

@@ -132,14 +132,81 @@ test('ONE runtime-missing verdict cannot latch the gate shut (ship-check blocker
     'two observations in the same regime IS the pattern the gate is allowed to act on');
 });
 
-test('a new, LOWER candidate restarts confirmations rather than inheriting them', () => {
+test('a lower observation CANNOT destroy a confirmed ceiling — it becomes a candidate', () => {
+  // This test previously asserted the OPPOSITE (one low observation replaced
+  // the confirmed ceiling outright, "the evidence supports 12, not the old
+  // 29"). That was the bug, not the contract: /code-review finding 4, the one
+  // finding in this lineage that could wrongly REFUSE real dispatches. A
+  // confirmed 29 plus a single #1829-class failure at 12 became an
+  // unconfirmed 12, and a second such failure confirmed 12 — refusing every
+  // dispatch above 12 live tabs for the full 24h TTL while reporting a
+  // confident "cap observed at 12" on a half-empty cmux. Rewritten
+  // deliberately rather than deleted, so the old behavior stays refuted here.
   const p = tmpCeilingPath('restart');
   recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-missing', ceilingPath: p });
   recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-missing', ceilingPath: p });
   assert.equal(readCeilingRecord(p).confirmations, CEILING_CONFIRMATIONS_REQUIRED);
+
   const lower = recordLaunchOutcome({ liveRuntimesBefore: 12, outcome: 'runtime-missing', ceilingPath: p });
-  assert.deepEqual([lower.ceiling, lower.confirmations], [12, 1],
-    'the evidence supports 12, not the old 29 — acting on it immediately would be the latch again');
+  assert.deepEqual([lower.ceiling, lower.confirmations], [29, CEILING_CONFIRMATIONS_REQUIRED],
+    'the confirmed ceiling stands — one anecdote below it is not evidence the cap moved');
+  assert.deepEqual([lower.candidate, lower.candidateConfirmations], [12, 1]);
+  assert.equal(probeTerminalCapacity({ debugTerminals: () => REAL_DUMP, ceilingPath: p }).ceiling, 29,
+    'the gate still enforces 29, not 12 — this is the refusal the finding was about');
+
+  // …but a candidate that earns the SAME corroboration the ceiling had does
+  // supersede it, so a genuinely lowered cap is still learnable.
+  const second = recordLaunchOutcome({ liveRuntimesBefore: 12, outcome: 'runtime-missing', ceilingPath: p });
+  assert.deepEqual([second.ceiling, second.confirmations], [12, CEILING_CONFIRMATIONS_REQUIRED]);
+  assert.deepEqual([second.candidate, second.candidateConfirmations], [null, 0], 'promotion clears the candidate');
+});
+
+test('the candidate counter ACCUMULATES while its value moves down — a descending cap converges', () => {
+  // A rule that restarted the count on every new number could never reach 2
+  // against a genuinely lowered cap, because a real drop produces a DESCENDING
+  // run of observations. The gate would keep feeding doomed launches until the
+  // TTL wiped everything.
+  assert.deepEqual(
+    learnCeiling({ ceiling: 29, confirmations: 2, candidate: 25, candidateConfirmations: 1, liveRuntimesBefore: 22, outcome: 'runtime-missing' }),
+    {
+      ceiling: 22, confirmations: CEILING_CONFIRMATIONS_REQUIRED, candidate: null, candidateConfirmations: 0,
+      changed: true, touched: 'confirmed',
+      reason: 'cmux failed to attach a terminal at 22 live runtime(s) for the 2nd time below the confirmed ceiling 29 — the cap has genuinely dropped, superseding it with 22',
+    },
+    'min() of the observations, and the counter carries forward');
+});
+
+test('a success at or above the candidate withdraws it, even far below the confirmed ceiling', () => {
+  // Without this arm the late-adopt/reclaim disproof in cmux-launch.js is
+  // inert: those cases are exactly `confirmed 29 > before 12`, which the
+  // ceiling-raising branch skips. A false low observation would survive while
+  // its own disproof never did.
+  const r = learnCeiling({ ceiling: 29, confirmations: 2, candidate: 12, candidateConfirmations: 1, liveRuntimesBefore: 12, outcome: 'runtime-created' });
+  assert.deepEqual([r.ceiling, r.confirmations, r.candidate, r.candidateConfirmations], [29, 2, null, 0]);
+  assert.equal(r.changed, true, 'the withdrawal has to PERSIST, or the candidate just re-accumulates');
+  assert.equal(r.touched, 'candidate', 'and it must not refresh the confirmed ceiling toward its TTL');
+  // A success below the candidate proves nothing about either number.
+  assert.equal(learnCeiling({ ceiling: 29, confirmations: 2, candidate: 12, candidateConfirmations: 1, liveRuntimesBefore: 5, outcome: 'runtime-created' }).changed, false);
+});
+
+test('a candidate observation cannot refresh the confirmed ceiling toward its TTL', () => {
+  // The TTL is the ONLY recovery when cmux ships a build with a HIGHER cap:
+  // the gate itself prevents the success that would raise the number. If a
+  // stream of candidate writes kept re-stamping the confirmed half, that
+  // escape hatch would never fire.
+  const p = tmpCeilingPath('ttl-split');
+  const t0 = Date.parse('2026-08-26T00:00:00.000Z');
+  recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-missing', ceilingPath: p, nowMs: t0 });
+  recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-missing', ceilingPath: p, nowMs: t0 });
+  // 23h later: one low observation lands as a candidate.
+  const t1 = t0 + 23 * 60 * 60 * 1000;
+  recordLaunchOutcome({ liveRuntimesBefore: 12, outcome: 'runtime-missing', ceilingPath: p, nowMs: t1 });
+  // 25h after the ORIGINAL confirmation the ceiling must be gone, however
+  // recently the candidate half was written.
+  const t2 = t0 + 25 * 60 * 60 * 1000;
+  const rec = readCeilingRecord(p, { nowMs: t2 });
+  assert.equal(rec.ceiling, null, 'the confirmed half ages from ITS OWN stamp');
+  assert.equal(rec.candidate, 12, 'while the candidate half is still inside its own TTL');
 });
 
 test('the ceiling only ratchets DOWN on a NEW number; a repeat at/above it confirms instead', () => {
@@ -211,15 +278,22 @@ test('ceiling state lives in tmpdir, not in the git-tracked data/audit tree', ()
   assert.equal(/data[/\\]audit/.test(CEILING_PATH), false);
 });
 
+// The record carries freshness stamps that are wall-clock values, so compare
+// the DECISION fields rather than deepEqual-ing the whole object.
+const decisionFields = (rec) => ({
+  ceiling: rec.ceiling, confirmations: rec.confirmations,
+  candidate: rec.candidate, candidateConfirmations: rec.candidateConfirmations,
+});
+
 test('recordLaunchOutcome round-trips the ceiling AND its confirmation count', () => {
   const p = tmpCeilingPath('record');
   recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-missing', ceilingPath: p });
-  assert.deepEqual(readCeilingRecord(p), { ceiling: 29, confirmations: 1 });
+  assert.deepEqual(decisionFields(readCeilingRecord(p)), { ceiling: 29, confirmations: 1, candidate: null, candidateConfirmations: 0 });
   recordLaunchOutcome({ liveRuntimesBefore: 40, outcome: 'runtime-missing', ceilingPath: p });
-  assert.deepEqual(readCeilingRecord(p), { ceiling: 29, confirmations: 2 },
+  assert.deepEqual(decisionFields(readCeilingRecord(p)), { ceiling: 29, confirmations: 2, candidate: null, candidateConfirmations: 0 },
     'a failure above the ceiling does not raise the number, but it does corroborate it');
   recordLaunchOutcome({ liveRuntimesBefore: 29, outcome: 'runtime-created', ceilingPath: p });
-  assert.deepEqual(readCeilingRecord(p), { ceiling: 30, confirmations: 0 });
+  assert.deepEqual(decisionFields(readCeilingRecord(p)), { ceiling: 30, confirmations: 0, candidate: null, candidateConfirmations: 0 });
 });
 
 test('probe fails OPEN when cmux is unavailable or the format changes', () => {

@@ -377,6 +377,22 @@ test('a dead row arriving AFTER the launch was reconciled belongs to the ref\'s 
   assert.deepEqual([r.launches, r.dead, r.deadRate], [1, 0, 0]);
 });
 
+test('a no-payload death is NOT disowned by the reconciling rule — that reaper closed the tab itself', () => {
+  // /code-review finding 6, decided deliberately. bsc-prune's no-payload
+  // reaper is the ONE dead-row writer that closes the workspace and then
+  // journals the death, so its own close can leave a prune-closed row on the
+  // ref ahead of its own `dead` row. Everything else that matches this shape
+  // is cmux recycling a ref (measured: every currently-excluded row has a
+  // launch-to-death gap of 9 hours to 31 days).
+  const folded = foldAttempts([
+    { ts: '2026-08-08T04:18:00.000Z', event: 'launch', taskId: '1901', workspaceRef: 'workspace:70' },
+    { ts: '2026-08-08T05:00:00.000Z', event: 'prune-closed', taskId: '1901', workspaceRef: 'workspace:70' },
+    { ts: '2026-08-08T05:00:01.000Z', event: 'dead', taskId: '1901', workspaceRef: 'workspace:70', reason: 'no-payload' },
+  ]);
+  assert.equal(folded.attempts[0].dead, true, 'a never-booted tab the reaper closed IS a real death');
+  assert.equal(folded.unattributedDeadCount, 0);
+});
+
 test('an ordinary shape-2 breadcrumb (no reconciling event in between) still counts as a death', () => {
   // The guard must not swallow the real case it sits next to: a verified
   // launch that a later sweep finds dead, with nothing in between.

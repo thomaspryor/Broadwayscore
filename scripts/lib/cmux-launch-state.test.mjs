@@ -2,7 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { decideLaunchWait, isSlowBootFailure, STATES } = require('./cmux-launch-state.js');
+const { decideLaunchWait, isSlowBootFailure, STATES,
+  shouldProbeSurface, shouldReprobeCapacity,
+  SURFACE_PROBE_AFTER_SEC, SURFACE_PROBE_INTERVAL_SEC,
+  CAPACITY_REPROBE_INTERVAL_SEC, CAPACITY_PROBE_MAX_ATTEMPTS } = require('./cmux-launch-state.js');
 
 // Card #705: three launches on 2026-07-31 00:06-00:35 ET were reported dead by
 // a 90s verify window, retried, and ALL came alive minutes later — three
@@ -195,4 +198,54 @@ test('TERMINAL_RUNTIME_MISSING is a confirmed death, not a slow boot', () => {
   // isSlowBootFailure drives deadConfirmed in cmux-launch.js: a slow boot must
   // not be journaled as a corpse, but a workspace with no terminal is one.
   assert.equal(isSlowBootFailure(STATES.TERMINAL_RUNTIME_MISSING), false);
+});
+
+// ── probe cadence (task #1904 follow-up, /code-review findings 2 and 7) ─────
+
+test('shouldProbeSurface: quiet early, then throttled — not one read-screen call every 3s', () => {
+  // The launcher polls every PROBE_INTERVAL_SEC (3s). Probing on each of those
+  // for a 90s grace is 30-60 extra cmux IPC round trips per launch, where
+  // read-screen used to be consulted once.
+  assert.equal(shouldProbeSurface({ elapsedSec: 3, lastProbeSec: null, graceSec: 90 }), false);
+  assert.equal(shouldProbeSurface({ elapsedSec: SURFACE_PROBE_AFTER_SEC, lastProbeSec: null, graceSec: 90 }), true);
+  assert.equal(shouldProbeSurface({ elapsedSec: 18, lastProbeSec: 15, graceSec: 90 }), false, 'inside the interval');
+  assert.equal(shouldProbeSurface({ elapsedSec: 15 + SURFACE_PROBE_INTERVAL_SEC, lastProbeSec: 15, graceSec: 90 }), true);
+  // ~6 probes across a 90s grace instead of ~30.
+  let probes = 0; let last = null;
+  for (let t = 0; t <= 90; t += 3) {
+    if (shouldProbeSurface({ elapsedSec: t, lastProbeSec: last, graceSec: 90 })) { probes++; last = t; }
+  }
+  assert.equal(probes <= 8, true, `expected a handful of probes across the grace window, got ${probes}`);
+  assert.equal(probes >= 2, true);
+});
+
+test('shouldProbeSurface: a grace SHORTER than the delay still gets probed', () => {
+  // The verdict is the label that decides whether a ceiling observation is
+  // recorded at all, so the deciding poll must have a reading. A flat 15s
+  // delay silently disabled learning for every short-grace caller — the
+  // launcher's own reclaim test (verifyTimeoutSec: 1) went from
+  // 'terminal-runtime-missing' to 'injection-never-ran' when that landed.
+  assert.equal(shouldProbeSurface({ elapsedSec: 1, lastProbeSec: null, graceSec: 1 }), true);
+  assert.equal(shouldProbeSurface({ elapsedSec: 0.5, lastProbeSec: null, graceSec: 1 }), false);
+  // And the last probe always lands within one interval of grace expiry.
+  let last = null;
+  for (let t = 0; t <= 90; t += 3) {
+    if (shouldProbeSurface({ elapsedSec: t, lastProbeSec: last, graceSec: 90 })) last = t;
+  }
+  assert.equal(90 - last <= SURFACE_PROBE_INTERVAL_SEC, true, `stale by ${90 - last}s at the deciding poll`);
+});
+
+test('shouldReprobeCapacity: a KNOWN answer is cached, an UNKNOWN one is re-asked (bounded)', () => {
+  // The first cut asked once, on the first poll where the surface read missing
+  // — seconds after new-workspace, exactly when the cmux socket is briefly
+  // unavailable because it is busy creating workspaces. That null read cached
+  // as "not at capacity" for the remaining 90-360s.
+  assert.equal(shouldReprobeCapacity({ known: true, attempts: 1, elapsedSec: 60, lastProbeSec: 15 }), false,
+    'a known answer cannot change materially inside one launch wait');
+  assert.equal(shouldReprobeCapacity({ known: false, attempts: 0, elapsedSec: 15, lastProbeSec: null }), true);
+  assert.equal(shouldReprobeCapacity({ known: false, attempts: 1, elapsedSec: 20, lastProbeSec: 15 }), false,
+    'bounded by the interval, not asked on every poll');
+  assert.equal(shouldReprobeCapacity({ known: false, attempts: 1, elapsedSec: 15 + CAPACITY_REPROBE_INTERVAL_SEC, lastProbeSec: 15 }), true);
+  assert.equal(shouldReprobeCapacity({ known: false, attempts: CAPACITY_PROBE_MAX_ATTEMPTS, elapsedSec: 300, lastProbeSec: 100 }), false,
+    'and bounded in total — far below the ~120 round trips the launcher rejects');
 });
