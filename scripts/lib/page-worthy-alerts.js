@@ -81,6 +81,14 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+
+  // Category 3 (BRO-545, pipeline self-healing): a hard-blocking rebuild
+  // guard that has fired 2+ consecutive times means reviews.json — the
+  // site's single source of truth for scores — has stopped advancing. This
+  // is the "data-loss in progress" category the file header notes had no
+  // entries yet; scripts/check-rebuild-staleness.js (via
+  // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
+  'guard-escalation:stale-checkout-staleness',
 ]);
 
 function isPageWorthy(conditionKey) {
