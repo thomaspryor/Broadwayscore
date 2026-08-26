@@ -54,6 +54,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
+const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -1392,6 +1393,13 @@ const crossShowFingerprints = new Map();
           d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete d.wrongProductionNote;
           if (d.wrongProductionReason === 'dateless-revival') delete d.wrongProductionReason;
+          // Card #1902: a wrongProduction clear can un-exclude a file that
+          // was already scored before the flag went on. isStaleScoreInput
+          // gates on assignedScore + isScoreable, so a never-scored file or
+          // one that's still non-includable (wrongShow etc.) is untouched.
+          if (isStaleScoreInput(d, showRecord, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (dateless-revival)');
+          }
           safeWriteReview(fp, d, { force: true });
           datelessRevivalAutoCleared++;
           // Fall through — file may still need the dated pre-opening guard.
@@ -1423,6 +1431,10 @@ const crossShowFingerprints = new Map();
             delete d.anticipatoryGateDaysBeforeOpening;
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
+          }
+          // Card #1902: see the dateless-revival auto-clear above — same gate.
+          if (isStaleScoreInput(d, showRecord, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (priorRuns/tourLegs)');
           }
           safeWriteReview(fp, d, { force: true });
           priorRunAutoCleared++;
