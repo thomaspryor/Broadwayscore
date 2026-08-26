@@ -48,8 +48,12 @@ describe('isAutoFiledParked', () => {
     assert.strictEqual(isAutoFiledParked(issue()), true);
   });
 
-  test('false when the state is not Backlog (e.g. already dispatched to In Progress)', () => {
+  test('false when the state is not backlog/unstarted (e.g. already dispatched to In Progress)', () => {
     assert.strictEqual(isAutoFiledParked(issue({ state: { name: 'In Progress', type: 'started' } })), false);
+  });
+
+  test('true for state.type "unstarted" — linear-issue-create.js\'s pickStateForMode(\'park\') fallback when a team has no backlog-type state', () => {
+    assert.strictEqual(isAutoFiledParked(issue({ state: { name: 'Todo', type: 'unstarted' } })), true);
   });
 
   test('false when the body has no auto-filed marker (a hand-filed Backlog issue)', () => {
@@ -210,6 +214,39 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     } finally {
       if (prior === undefined) delete process.env.LINEAR_NEXT_DISABLED;
       else process.env.LINEAR_NEXT_DISABLED = prior;
+    }
+  });
+
+  test('--cap threads through to selectDrainCandidates\'s limit', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const dispatchedTaskIds = [];
+    const result = await main(['--cap', '1'], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' }), issue({ identifier: 'BRO-2' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => [],
+      appendLedger: () => {},
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, ['BRO-1']);
+    assert.deepStrictEqual(dispatchedTaskIds, ['linear:BRO-1']);
+  });
+
+  test('a bare --cap with no value (or a non-numeric one) falls back to DISPATCH_CAP instead of silently selecting nothing', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const issues = ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4'].map((identifier) => issue({ identifier }));
+    for (const argv of [['--cap'], ['--cap', 'not-a-number'], ['--cap', '0'], ['--cap', '-1']]) {
+      const warnings = [];
+      const dispatchedTaskIds = [];
+      const result = await main(argv, {
+        listOpenIssuesWithDescriptions: async () => issues,
+        dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+        readLedger: () => [],
+        appendLedger: () => {},
+        log: (m) => warnings.push(m),
+      });
+      assert.strictEqual(result.dispatched.length, DISPATCH_CAP, `argv=${JSON.stringify(argv)}`);
+      assert.strictEqual(dispatchedTaskIds.length, DISPATCH_CAP, `argv=${JSON.stringify(argv)}`);
+      assert.ok(warnings.some((m) => m.includes('WARN --cap')), `argv=${JSON.stringify(argv)} should warn`);
     }
   });
 

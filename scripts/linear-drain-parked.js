@@ -131,9 +131,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return { dispatched: [] }; }
   const args = parseArgs(argv);
   const dryRun = !!args['dry-run'];
-  const cap = args.cap ? parseInt(args.cap, 10) : DISPATCH_CAP;
-
   const log = deps.log || ((m) => console.log(m));
+  // A bare `--cap` with no value parses to `args.cap === true` (parseArgs
+  // treats a following `--`-prefixed token, or nothing, as flag-not-value) —
+  // parseInt(true, 10) is NaN, and Math.max(0, NaN)/.slice(0, NaN) both
+  // silently collapse the candidate list to [], reading as "no eligible
+  // issues" instead of the bad-flag it actually is (ship-check finding).
+  // Loud, not silent: fall back to the default and say so.
+  let cap = DISPATCH_CAP;
+  if (typeof args.cap === 'string') {
+    const parsed = parseInt(args.cap, 10);
+    if (Number.isInteger(parsed) && parsed > 0) cap = parsed;
+    else log(`[linear-drain-parked] WARN --cap "${args.cap}" is not a positive integer — using default ${DISPATCH_CAP}`);
+  } else if (args.cap !== undefined) {
+    log(`[linear-drain-parked] WARN --cap requires a value (e.g. --cap 5) — using default ${DISPATCH_CAP}`);
+  }
   const listOpenIssuesWithDescriptionsFn =
     deps.listOpenIssuesWithDescriptions || require('./lib/linear-client.js').listOpenIssuesWithDescriptions;
   const dispatchFn = deps.dispatchFn || require('./lib/digest-autofix.js').dispatchDetached;
@@ -179,8 +191,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       log(`[linear-drain-parked] WARN dispatch failed for ${issue.identifier}: ${e.message}`);
     }
   }
-  if (dryRun) log(`[linear-drain-parked] DRY RUN: ${candidates.length} candidate(s), no dispatch/ledger writes`);
-  else log(`[linear-drain-parked] dispatched ${dispatched.length}/${candidates.length}: ${dispatched.join(', ') || '(none)'}`);
+  if (dryRun) {
+    log(`[linear-drain-parked] DRY RUN: ${candidates.length} candidate(s), no dispatch/ledger writes`);
+  } else {
+    // "attempted", not "dispatched" (ship-check finding, same honesty rule
+    // backlog-drain.js/digest-autofix.js already follow): dispatchFn only
+    // proves spawn() was called — linear-next.js's own guards (kill switch,
+    // idempotency, verify gate, human-gate) can still refuse inside the
+    // detached child. Per-attempt outcome lives in that child's own log
+    // file (dispatchDetached() prints the path) and, on a real dispatch,
+    // the shared dispatch-ledger's 'launch' entry.
+    log(`[linear-drain-parked] dispatch attempted for ${dispatched.length}/${candidates.length}: ${dispatched.join(', ') || '(none)'}`);
+  }
   return { dispatched };
 }
 

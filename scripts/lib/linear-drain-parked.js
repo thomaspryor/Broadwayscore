@@ -44,9 +44,18 @@ function issueNumber(identifier) {
   return m ? parseInt(m[1], 10) : Number.POSITIVE_INFINITY;
 }
 
-// Still-parked, auto-filed-by-the-alert-router tracker sitting in Backlog.
+// linear-issue-create.js's pickStateForMode('park') picks a 'backlog'-type
+// state, falling back to 'unstarted' ONLY if the team has no backlog-type
+// state at all (ship-check finding: two independent reviewers caught that
+// an earlier version of this checked 'backlog' alone, which would silently
+// starve every parked issue on a team configured that way — every issue
+// owner-alert-router.js files goes through that same park path, so both
+// outcomes count as "still parked, never picked up").
+const PARKED_STATE_TYPES = new Set(['backlog', 'unstarted']);
+
+// Still-parked, auto-filed-by-the-alert-router tracker.
 function isAutoFiledParked(issue) {
-  if (!issue || !issue.state || issue.state.type !== 'backlog') return false;
+  if (!issue || !issue.state || !PARKED_STATE_TYPES.has(issue.state.type)) return false;
   return typeof issue.description === 'string' && issue.description.includes(AUTO_FILED_MARKER);
 }
 
@@ -78,6 +87,7 @@ function selectDrainCandidates(issues, { limit = 3, alreadyAttempted = new Set()
 
 module.exports = {
   AUTO_FILED_MARKER,
+  PARKED_STATE_TYPES,
   issueNumber,
   isAutoFiledParked,
   hasSafeVerifyCommand,
