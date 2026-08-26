@@ -156,6 +156,7 @@ test('main() exits 1 with an [bsc-next] error on --id "" instead of dispatching 
     assert.throws(() => main(['--id', ''], {
       loadTasks: throwIfCalled('loadTasks'),
       launchCmux: throwIfCalled('launchCmux'),
+      appendLedgerEntry: () => {},
     }), /__exit__/);
   } finally {
     process.exit = origExit;
