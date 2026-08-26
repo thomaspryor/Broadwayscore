@@ -7,9 +7,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildIssueQuery,
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
   checkTerminalStateGuard,
+  marketingProjectGuard,
   findUnresolvedDispatchComment,
 } from './linear-dispatch.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
@@ -42,6 +44,49 @@ test('checkTerminalStateGuard: refuses re-dispatch of a duplicate-type issue, na
   const refusal = checkTerminalStateGuard(issue);
   assert.match(refusal, /BRO-2400/);
   assert.match(refusal, /Duplicate/);
+});
+
+test('buildIssueQuery: fetches project so marketingProjectGuard can see it (BRO-2488)', () => {
+  const query = buildIssueQuery();
+  assert.match(query, /project\s*\{\s*name\s*\}/);
+});
+
+// BRO-2488: the documented dispatch funnel excludes "· Marketing" issues, but
+// nothing enforced it — BRO-128 (Linear project "Marketing/distribution")
+// dispatched cleanly with zero refusal. This must fail against the
+// pre-fix behavior (issue.project was never fetched, so any check reading it
+// evaluated against undefined and refused nothing).
+test('marketingProjectGuard: refuses an issue in the Marketing/distribution project', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  const refusal = marketingProjectGuard(issue, {});
+  assert.match(refusal, /BRO-128/);
+  assert.match(refusal, /Marketing\/distribution/);
+});
+
+test('marketingProjectGuard: case/whitespace-insensitive on the project name', () => {
+  const issue = { identifier: 'BRO-1', project: { name: '  MARKETING/DISTRIBUTION  ' } };
+  assert.match(marketingProjectGuard(issue, {}), /BRO-1/);
+});
+
+test('marketingProjectGuard: a non-Marketing project is allowed', () => {
+  const issue = { identifier: 'BRO-2', project: { name: 'Infrastructure' } };
+  assert.equal(marketingProjectGuard(issue, {}), null);
+});
+
+test('marketingProjectGuard: no project set (undefined) is allowed — fails open like every other guard', () => {
+  const issue = { identifier: 'BRO-3' };
+  assert.equal(marketingProjectGuard(issue, {}), null);
+});
+
+test('marketingProjectGuard: --force bypasses the refusal', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  assert.equal(marketingProjectGuard(issue, { force: true }), null);
+});
+
+test('marketingProjectGuard: --dry-run and --print-prompt also bypass it (preview stays side-effect-free)', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  assert.equal(marketingProjectGuard(issue, { 'dry-run': true }), null);
+  assert.equal(marketingProjectGuard(issue, { 'print-prompt': true }), null);
 });
 
 test('findUnresolvedDispatchComment: a "Dispatched ..." comment on a now-duplicate issue is not live', () => {
