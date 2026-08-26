@@ -1144,3 +1144,36 @@ test('countRecentLaunches: counts only launch entries inside the trailing window
   assert.equal(countRecentLaunches([], { now, windowMs: 45 * 60 * 1000 }), 0);
   assert.throws(() => countRecentLaunches([], { windowMs: 45 * 60 * 1000 }), /now/);
 });
+
+test('countRecentLaunches: a future-dated launch row is never counted as recent (BRO-395)', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [
+    // Real recent launch — must still count.
+    { event: 'launch', taskId: '1', ts: new Date(now - 10 * 60 * 1000).toISOString() },
+    // Future-dated row (e.g. clock skew or corrupt write) — `now - t` is
+    // negative here, which is < any positive window; without a `ts <= now`
+    // clamp this row would count as "recent" forever, however much wall-clock
+    // time actually passes.
+    { event: 'launch', taskId: '2', ts: new Date(now + 45 * 24 * 60 * 60 * 1000).toISOString() },
+  ];
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 45 * 60 * 1000 }), 1);
+  // Even a huge window must not rescue the future row.
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 365 * 24 * 60 * 60 * 1000 }), 1);
+});
+
+test('appendEntry: rejects a future-dated ts instead of writing corrupt input (BRO-395)', () => {
+  const ledgerPath = tmpLedger();
+  const futureTs = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString();
+  assert.throws(
+    () => appendEntry({ event: 'launch', taskId: '999', ts: futureTs }, ledgerPath),
+    /future ts/
+  );
+  assert.equal(fs.existsSync(ledgerPath), false, 'a rejected entry must leave no ledger file/row behind');
+});
+
+test('appendEntry: a self-stamped ts (the normal path) is never rejected', () => {
+  const ledgerPath = tmpLedger();
+  const line = appendEntry({ event: 'launch', taskId: '1000' }, ledgerPath);
+  assert.equal(readEntries(ledgerPath).length, 1);
+  assert.ok(Date.parse(line.ts) <= Date.now());
+});
