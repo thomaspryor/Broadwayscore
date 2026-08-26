@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-26T11:42:43.669Z",
-  "processed": 52,
-  "failed": 270,
-  "successRate": "16.1%",
+  "updatedAt": "2026-08-26T11:50:03.167Z",
+  "processed": 61,
+  "failed": 361,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 41,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 4,
     "directCookies": 2,
     "scrapingbee": 6,
-    "brightdata": 2,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-26T10:37:15.146Z",
@@ -42,6 +42,23 @@
       "t": "2026-08-26T11:40:25.065Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-26T11:46:49.755Z",
+      "event": "bb-session",
+      "session": "a2e7ca66",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-08-26T11:48:10.879Z",
+      "event": "bb-session",
+      "session": "de58b2e3",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-08-26T11:48:11.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
