@@ -159,10 +159,52 @@ function getJobBlocks(raw) {
   });
 }
 
+// A `/` opens a regex literal (not division) when the preceding non-space
+// token can't be an operand — the standard "operand can't precede a regex"
+// heuristic. Ported from scripts/audit-run-budget-coverage.js (BRO-109):
+// unskipped, a paren inside a regex character class desyncs `depth` exactly
+// like an unskipped string would.
+const REGEX_PRECEDING_CHAR_RE = /[([{,;:=!&|?+\-*%~^]$/;
+const REGEX_PRECEDING_KEYWORD_RE = /(?:^|[^\w$])(return|typeof|instanceof|in|of|new|delete|void|yield|case|do|else)$/;
+
+/** True if the `/` at src[slashIdx] plausibly opens a regex literal (vs. division), by inspecting the preceding token. */
+function looksLikeRegexStart(src, slashIdx) {
+  let k = slashIdx - 1;
+  while (k >= 0 && /\s/.test(src[k])) k--;
+  if (k < 0) return true; // nothing before it — can't be a binary division operator
+  if (REGEX_PRECEDING_CHAR_RE.test(src[k])) return true;
+  return REGEX_PRECEDING_KEYWORD_RE.test(src.slice(Math.max(0, k - 12), k + 1));
+}
+
+/**
+ * Index just past a regex literal (and its flags) starting at src[startIdx]
+ * (`src[startIdx] === '/'`), honoring backslash escapes and `[...]`
+ * character classes (where an unescaped `/` does NOT end the literal).
+ * Returns null if no unescaped, non-class closing `/` is found before a
+ * newline (bails rather than guessing).
+ */
+function skipRegexLiteral(src, startIdx) {
+  let i = startIdx + 1;
+  let inClass = false;
+  while (i < src.length && src[i] !== '\n') {
+    const c = src[i];
+    if (c === '\\') { i += 2; continue; }
+    if (c === '[') { inClass = true; i++; continue; }
+    if (c === ']') { inClass = false; i++; continue; }
+    if (c === '/' && !inClass) {
+      i++;
+      while (i < src.length && /[a-z]/i.test(src[i])) i++; // flags: g, i, m, ...
+      return i;
+    }
+    i++;
+  }
+  return null;
+}
+
 /**
  * Index of the char matching src[openIdx] ('(' → matching ')'), skipping over
- * '...'/"..."/`...` string literals and //, /* comments so a stray paren
- * inside a string or comment can't desync the depth count.
+ * '...'/"..."/`...` string literals, //, /* comments, and regex literals so a
+ * stray paren inside a string, comment, or regex can't desync the depth count.
  */
 function findMatchingParen(src, openIdx) {
   let depth = 0;
@@ -177,6 +219,10 @@ function findMatchingParen(src, openIdx) {
       const end = src.indexOf('*/', i + 2);
       i = end === -1 ? src.length + 1 : end + 1;
       continue;
+    }
+    if (ch === '/' && looksLikeRegexStart(src, i)) {
+      const end = skipRegexLiteral(src, i);
+      if (end != null) { i = end - 1; continue; }
     }
     if (ch === '"' || ch === "'" || ch === '`') {
       const quote = ch;
@@ -415,4 +461,5 @@ module.exports = {
   SCRIPT_INVOCATION_RE,
   ANNOTATION,
   ACTION_EXTRA_PROTECTED,
+  findMatchingParen,
 };

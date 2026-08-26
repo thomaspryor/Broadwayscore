@@ -27,6 +27,7 @@ const {
   auditRepo,
   main,
   ACTION_EXTRA_PROTECTED,
+  findMatchingParen,
 } = require(path.join(repoRoot, 'scripts/audit-same-job-breadcrumb-coverage.js'));
 const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } =
   require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
@@ -575,4 +576,37 @@ test('ACTION_EXTRA_PROTECTED stays in sync with the real push-review-texts/actio
 // assertion about whether a try/catch exists. ──
 test('main(): runs to completion without throwing against the real repo', () => {
   assert.doesNotThrow(() => main());
+});
+
+// --- findMatchingParen must not desync on regex literals (cousin of BRO-109) ---
+//
+// An unescaped paren inside a regex character class (e.g. `/\(/g`) is a real
+// source shape (see scripts/lib/wiki-utils.js's brace-scrubbing siblings). If
+// findMatchingParen doesn't skip regex literals, the stray `(` inside the
+// regex desyncs its depth counter, returning -1 (or the wrong index) instead
+// of the call's real closing paren.
+
+test('findMatchingParen skips a paren hidden inside a regex literal', () => {
+  const src = "foo(/\\(/g, 'x')";
+  const openIdx = src.indexOf('(');
+  const closeIdx = findMatchingParen(src, openIdx);
+  assert.equal(closeIdx, src.length - 1, 'desynced on the paren-like char inside the regex literal');
+});
+
+test('findMatchingParen: real-corpus regex (scripts/lib/wiki-utils.js) does not desync a later safeWriteReview(...) scan', () => {
+  const wikiSrc = fs.readFileSync(path.join(repoRoot, 'scripts/lib/wiki-utils.js'), 'utf8');
+  const src = `${wikiSrc}\nsafeWriteReview(showId, data, { force: true });\n`;
+  const callIdx = src.indexOf('safeWriteReview(');
+  const openParenIdx = callIdx + 'safeWriteReview'.length;
+  const closeParenIdx = findMatchingParen(src, openParenIdx);
+  assert.notEqual(closeParenIdx, -1, 'desynced somewhere in wiki-utils.js before reaching the real call');
+  assert.equal(src[closeParenIdx], ')');
+  assert.ok(src.slice(openParenIdx, closeParenIdx + 1).includes('force: true'));
+});
+
+test('findForceTrueClearSites finds a force:true clear even with real-corpus regex content earlier in the file', () => {
+  const wikiSrc = fs.readFileSync(path.join(repoRoot, 'scripts/lib/wiki-utils.js'), 'utf8');
+  const src = `${wikiSrc}\nsafeWriteReview(showId, reviewData, { force: true });\nreviewData.wrongProduction = false;\n`;
+  const sites = findForceTrueClearSites(src, PROTECTED_FIELDS);
+  assert.ok(Array.isArray(sites), 'expected an array of clear sites even with a regex-heavy file prefix');
 });
