@@ -70,7 +70,7 @@ const { isPageWorthy } = require('./page-worthy-alerts');
 // BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
 // shelling out to the linear-brain.js CLI — see linear-issue-create.js's
 // header for why this is the natural repoint target.
-const { createLinearIssue } = require('./linear-issue-create');
+const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-create');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -340,7 +340,29 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
-    return { ok: false, error: err.message };
+    // BRO-281: a USAGE_LIMIT_EXCEEDED failure is not an ordinary dispatch
+    // failure that can just retry next call — it means the Linear intake
+    // front door is jammed for EVERY conditionKey's 'auto' disposition until
+    // the workspace is archived or upgraded (BRO-10), not just this one. The
+    // Notion-era router degraded this to the same logged-warning path as any
+    // other failure, which is exactly how the ceiling went unnoticed on
+    // 2026-08-12. Page immediately, bypassing the caller's own disposition
+    // and the page-worthy allowlist gate entirely (this is not a per-condition
+    // alert, it's "the alert router itself is broken").
+    const usageLimitExceeded = isUsageLimitExceeded(err);
+    if (usageLimitExceeded) {
+      try {
+        await sendAlert({
+          title: 'Linear issue cap hit — automated alert filing is now silently failing',
+          description: `dispatchCard() could not file "${title}" (condition "${conditionKey}"): ${err.message}. The Linear workspace has hit its free-tier issue cap — every 'auto' disposition alert will keep failing the same way until stale issues are archived (scripts/linear-archive-done.js) or the plan is upgraded (BRO-10).`,
+          severity: 'critical',
+          email: true,
+        });
+      } catch (escalationErr) {
+        console.error(`[alert-router] USAGE_LIMIT_EXCEEDED escalation email itself failed: ${escalationErr.message}`);
+      }
+    }
+    return { ok: false, error: err.message, usageLimitExceeded };
   }
 }
 
@@ -591,6 +613,7 @@ async function routeAlert(opts) {
     // callers — the E2E canary, health-check.js's dispatchedCards mapping —
     // can surface the true underlying failure instead of re-guessing one.
     if (!dispatch.ok) result.dispatchError = dispatch.error;
+    if (dispatch.usageLimitExceeded) result.usageLimitExceeded = true;
     notifyOk = dispatch.ok;
   } else if (effectiveDisposition === 'digest') {
     queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
