@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T05:45:08.127Z",
+  "timestamp": "2026-08-26T09:14:55.877Z",
   "stats": {
-    "totalReviews": 42483,
-    "alreadyFlagged": 18132,
-    "dateGuardCatches": 188,
-    "directorMismatch": 998,
-    "tvFilmSignals": 1230,
+    "totalReviews": 42487,
+    "alreadyFlagged": 18145,
+    "dateGuardCatches": 181,
+    "directorMismatch": 1014,
+    "tvFilmSignals": 1229,
     "londonSignals": 932,
     "offBroadwaySignals": 494,
     "yearMismatch": 90,
-    "noPublishDate": 3582
+    "noPublishDate": 3574
   },
   "findings": [
     {
@@ -224,17 +224,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
         }
       ]
     },
@@ -5541,34 +5530,12 @@
     },
     {
       "showId": "cinderella-west-end-2026",
-      "file": "broadwaynews--brittani-samuel.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1352d before show (2023-03-24 vs 2026-12-05)"
-        }
-      ]
-    },
-    {
-      "showId": "cinderella-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 2518d before show (2020-01-13 vs 2026-12-05)"
-        }
-      ]
-    },
-    {
-      "showId": "cinderella-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1935d before show (2021-08-18 vs 2026-12-05)"
         }
       ]
     },
@@ -6644,7 +6611,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "telegraph--tim-robey.json",
-      "score": 15,
+      "score": 17,
       "publishDate": "2026-08-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-note-the-musical-barbican-review/",
       "findings": [
@@ -9467,7 +9434,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "stratford-herald--steve-sutherland.json",
-      "score": 89,
+      "score": 87,
       "publishDate": "2026-08-09",
       "url": "https://www.stratford-herald.com/news/game-of-thrones-at-the-rsc-a-spectacle-for-sceptics-and-ad-9477707/",
       "findings": [
@@ -12542,7 +12509,7 @@
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
       "file": "west-end-best-friend--anna-nichols.json",
-      "score": 86,
+      "score": 85,
       "publishDate": "2025-08-04",
       "url": "https://www.westendbestfriend.co.uk/news/review-horrible-histories-barmy-britain-apollo-theatre",
       "findings": [
@@ -13406,11 +13373,165 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 91,
+      "publishDate": "2026-04-07",
+      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "broadwayworld--harlan-clementine-scott.json",
+      "score": 93,
+      "publishDate": "2026-04-07",
+      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2026-04-07",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "score": 97,
+      "publishDate": null,
+      "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 82,
+      "publishDate": "2026-04-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-inter-alia-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 81,
+      "publishDate": "2026-04-07",
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 78,
+      "publishDate": "2026-04-08",
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "the-daily--unknown.json",
+      "publishDate": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "theatreandtonic--becky-k.json",
+      "publishDate": null,
+      "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 97,
       "publishDate": "2026-04-08",
       "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -13425,15 +13546,109 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thereviewshub--daniel-spicer-cusack.json",
+      "score": 79,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thereviewshub.com/inter-alia-wyndhams-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 60,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "timeout-london--caroline-mcginn.json",
       "score": 76,
       "publishDate": "2026-04-07",
       "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 79,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 88,
+      "publishDate": "2026-04-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -17822,17 +18037,6 @@
       ]
     },
     {
-      "showId": "miss-saigon-west-end-2026",
-      "file": "timeout-london--david-cote.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 465d before show (2026-02-02 vs 2027-05-13)"
-        }
-      ]
-    },
-    {
       "showId": "mj-2022",
       "file": "cititour--brian-scott-lipton.json",
       "score": 77,
@@ -19479,20 +19683,6 @@
       "score": 81,
       "publishDate": "November 3, 2011",
       "url": "https://www.amny.com/urbanite-1.812039/theater-review-other-desert-cities-3-5-stars-1.3295262",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "other-desert-cities-2011",
-      "file": "variety--marilyn-stasio.json",
-      "score": 82,
-      "publishDate": "November 3, 2011",
-      "url": "https://variety.com/2012/legit/reviews/other-desert-cities-3-1117948891/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -29065,19 +29255,6 @@
       ]
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "file": "variety--bob-verini.json",
-      "publishDate": "2026-08-03",
-      "url": "http://www.variety.com/review/VE1117947963?refCatId=33",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"susan stroman\" from the-producers-2001"
-        }
-      ]
-    },
-    {
       "showId": "the-prom-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 60,
@@ -29551,17 +29728,6 @@
       ]
     },
     {
-      "showId": "the-snowman-west-end-2026",
-      "file": "express-uk--neil-norman.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 6196d before show (2009-12-04 vs 2026-11-21)"
-        }
-      ]
-    },
-    {
       "showId": "the-sound-inside-2019",
       "file": "variety--marilyn-stasio.json",
       "score": 91,
@@ -29578,17 +29744,6 @@
     {
       "showId": "the-sound-of-music-2027",
       "file": "broadwayworld--greg-dalton-white.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 545d before show (2025-09-24 vs 2027-03-23)"
-        }
-      ]
-    },
-    {
-      "showId": "the-sound-of-music-2027",
-      "file": "broadwayworld--michael-quintos.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -39459,7 +39614,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 83,
+      "score": 82,
       "publishDate": "2026-08-14",
       "url": "https://www.allthatdazzles.co.uk/post/review-how-the-other-half-loves-the-old-vic",
       "findings": [
@@ -39555,7 +39710,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-theatre--cheryl-markoski.json",
-      "score": 80,
+      "score": 83,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
       "findings": [
@@ -39639,7 +39794,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "timeout-london--time-out.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-08-18",
       "url": "https://www.timeout.com/london/theatre/how-the-other-half-loves-1-review",
       "findings": [
@@ -39653,7 +39808,7 @@
     {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "whatsonstage--aliya-al-hassan.json",
-      "score": 83,
+      "score": 82,
       "publishDate": "2026-08-12",
       "url": "https://www.whatsonstage.com/news/how-the-other-half-loves-at-the-old-vic-review_1729206/",
       "findings": [
@@ -40165,94 +40320,10 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--clementine-scott.json",
-      "score": 91,
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--harlan-clementine-scott.json",
-      "score": 93,
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 80,
       "publishDate": "2026-04-09",
       "url": "https://www.cityam.com/inter-alia-play-review-springs-must-book-west-end-ticket/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "everything-theatre--gabriel-wilding.json",
-      "score": 97,
-      "publishDate": null,
-      "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 82,
-      "publishDate": "2026-04-14",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-inter-alia-wyndhams-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "london-theatre--olivia-rook.json",
-      "score": 81,
-      "publishDate": "2026-04-07",
-      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42248,17 +42319,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "guardian--arifa-akbar.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 192d before show (2026-04-22 vs 2026-10-31)"
         }
       ]
     },
