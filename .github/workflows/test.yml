@@ -1088,6 +1088,10 @@ on:
       # tests/unit-test-manifest.txt and path-listed here so a solo edit
       # triggers CI.
       - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
+      # task #1929: rebuild-all-reviews.js exclusion-loop-touch detector added
+      # to scoring-delta.js — same root-level scripts/*.test.mjs registration
+      # requirement as the entry above.
+      - 'scripts/scoring-delta-rebuild-loop-touch.test.mjs'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'

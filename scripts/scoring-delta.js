@@ -314,6 +314,172 @@ function gitDiffHasChanges(files) {
   }
 }
 
+// ─── rebuild-all-reviews.js inline-loop touch detector ──────────────────────
+// decideInclusion() below is a hand-maintained MIRROR of review-guards.js's
+// exports — it does NOT execute rebuild-all-reviews.js's own ~60
+// logExclusion() call sites, which is the code that actually decides what
+// lands in reviews.json (see file header comment, and the comment near
+// rebuild-all-reviews.js:3349 stating the inline loop is the real
+// enforcement — it does not delegate to isIncludableForRebuild). A diff that
+// only touches code near one of those call sites (not review-guards.js
+// itself) can leave every function this file compares byte-identical, so
+// guardsIdentical stays true and Phase A gets skipped as "decisions
+// identical" — while the real rebuild's behavior silently changed underneath.
+//
+// Confirmed empirically in task #1926: an early version of a new exclusion
+// check was added only to review-guards.js. This tool reported 0 newly
+// excluded, 0 T1 flips. A direct corpus scan against all 36,806 real
+// review-texts files showed the change would have caused 722 currently-
+// includable files across 78 outlets to become excluded once the same check
+// was wired into rebuild-all-reviews.js's real loop (which it had to be for
+// the fix to actually work).
+//
+// This detector closes that specific silent-pass: any diff hunk landing near
+// a logExclusion( call site forces a CANNOT-AUTO-VERIFY verdict (see
+// printCannotAutoVerifyBanner below) instead of a clean "safe to proceed" —
+// regardless of what Phase A/B replay finds, because decideInclusion() simply
+// never runs the changed code.
+const REBUILD_LOOP_FILE = 'scripts/rebuild-all-reviews.js';
+const EXCLUSION_PROXIMITY_WINDOW = 12; // lines of slack around a logExclusion( call
+
+function findLogExclusionSites(source) {
+  const sites = [];
+  const re = /logExclusion\(\s*["']([^"']+)["']/;
+  source.split('\n').forEach((line, idx) => {
+    const m = line.match(re);
+    if (m) sites.push({ line: idx + 1, statKey: m[1] });
+  });
+  return sites;
+}
+
+// Parses `@@ -oldStart,oldLen +newStart,newLen @@` unified-diff hunk headers.
+function parseUnifiedHunks(diffText) {
+  const hunks = [];
+  const re = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/;
+  for (const line of diffText.split('\n')) {
+    const m = line.match(re);
+    if (m) {
+      hunks.push({
+        oldStart: parseInt(m[1], 10),
+        oldLen: m[2] !== undefined ? parseInt(m[2], 10) : 1,
+        newStart: parseInt(m[3], 10),
+        newLen: m[4] !== undefined ? parseInt(m[4], 10) : 1,
+      });
+    }
+  }
+  return hunks;
+}
+
+// Returns { touched, sites } — whether the current diff (working tree vs
+// BASE_REF) has any hunk within EXCLUSION_PROXIMITY_WINDOW lines of a
+// logExclusion( call site in rebuild-all-reviews.js, on either side of the
+// diff. Fails CLOSED (touched=true) on anything it can't fully inspect —
+// this detector exists specifically to stop false "nothing to see here"
+// verdicts, so an inspection failure must never be silently read as "safe".
+function detectRebuildLoopTouch() {
+  const absPath = path.join(REPO_ROOT, REBUILD_LOOP_FILE);
+  let newContent;
+  try {
+    newContent = fs.readFileSync(absPath, 'utf8');
+  } catch {
+    return { touched: false, sites: [] }; // file doesn't exist in working tree — nothing to touch
+  }
+
+  let oldContent = null;
+  let oldExisted = true;
+  try {
+    oldContent = execSync(`git show ${BASE_REF}:${REBUILD_LOOP_FILE}`, {
+      cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    oldExisted = false; // new file at BASE_REF (or BASE_REF predates it)
+  }
+
+  if (oldExisted && oldContent === newContent) return { touched: false, sites: [] };
+
+  if (!oldExisted) {
+    // Entirely new file relative to BASE_REF — no proximity math is
+    // meaningful, so conservatively flag every exclusion site it defines.
+    return { touched: true, sites: findLogExclusionSites(newContent).map(s => ({ ...s, side: 'new' })) };
+  }
+
+  let diffText;
+  try {
+    diffText = execSync(`git diff ${BASE_REF} --unified=0 -- ${REBUILD_LOOP_FILE}`, {
+      cwd: REPO_ROOT, encoding: 'utf8',
+    });
+  } catch (e) {
+    // Couldn't inspect the diff at all — fail closed, don't claim "untouched".
+    return { touched: true, sites: [{ line: 0, statKey: `(diff unavailable: ${e.message}) — inspect manually`, side: 'unknown' }] };
+  }
+  const hunks = parseUnifiedHunks(diffText);
+  return computeTouchedSites(oldContent, newContent, hunks);
+}
+
+// Pure core of detectRebuildLoopTouch — factored out so it's testable without
+// shelling out to git (see scripts/scoring-delta-rebuild-loop-touch.test.mjs,
+// CLAUDE.md rule 15: extract to a require()-able pure function, don't
+// reimplement the logic in the test).
+function computeTouchedSites(oldContent, newContent, hunks) {
+  if (hunks.length === 0) return { touched: false, sites: [] };
+
+  const oldSites = findLogExclusionSites(oldContent);
+  const newSites = findLogExclusionSites(newContent);
+  const touchedSites = [];
+  for (const hunk of hunks) {
+    const oldLo = hunk.oldStart - EXCLUSION_PROXIMITY_WINDOW;
+    const oldHi = hunk.oldStart + Math.max(hunk.oldLen, 1) + EXCLUSION_PROXIMITY_WINDOW;
+    const newLo = hunk.newStart - EXCLUSION_PROXIMITY_WINDOW;
+    const newHi = hunk.newStart + Math.max(hunk.newLen, 1) + EXCLUSION_PROXIMITY_WINDOW;
+    for (const s of oldSites) if (s.line >= oldLo && s.line <= oldHi) touchedSites.push({ ...s, side: 'old' });
+    for (const s of newSites) if (s.line >= newLo && s.line <= newHi) touchedSites.push({ ...s, side: 'new' });
+  }
+  const seen = new Set();
+  const sites = touchedSites.filter(s => {
+    const key = `${s.side}:${s.statKey}:${s.line}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  return { touched: sites.length > 0, sites };
+}
+
+// Prints the loud, hard-to-miss caveat + corpus-scan recipe used whenever
+// detectRebuildLoopTouch() finds a hit. Kept separate from the normal summary
+// so both the --json and text code paths render it identically.
+function printCannotAutoVerifyBanner(rebuildLoopTouch) {
+  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🛑 CANNOT AUTO-VERIFY — rebuild-all-reviews.js exclusion loop touched');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('This diff lands near one or more logExclusion(...) call sites inside');
+  console.log('rebuild-all-reviews.js\'s own inline exclusion loop — the code that');
+  console.log('ACTUALLY decides what lands in reviews.json. decideInclusion() in this');
+  console.log('tool is a hand-maintained mirror of review-guards.js only; it does not');
+  console.log('execute this code, so a 0-flip Phase A result above does NOT mean the');
+  console.log('real rebuild is unaffected (task #1926: a check landed only in');
+  console.log('review-guards.js, this tool reported 0 flips, and a direct corpus scan');
+  console.log('found 722 reviews across 78 outlets would flip once the same check was');
+  console.log('wired into the real loop).');
+  console.log('');
+  console.log('Touched call site(s):');
+  for (const s of rebuildLoopTouch.sites.slice(0, 20)) {
+    console.log(`  - line ${s.line} (${s.side}): logExclusion("${s.statKey}", ...)`);
+  }
+  if (rebuildLoopTouch.sites.length > 20) console.log(`  ...and ${rebuildLoopTouch.sites.length - 20} more`);
+  console.log('');
+  console.log('BEFORE MERGING — run a direct corpus scan against the actual changed');
+  console.log('condition (not this tool\'s replay):');
+  console.log('  1. Identify the exact condition guarding the logExclusion(...) call(s) above.');
+  console.log('  2. Write a one-off script that require()s the changed predicate/module');
+  console.log('     directly and evaluates it against every file under data/review-texts/*/*.json');
+  console.log('     — count how many currently-includable files flip to excluded (or back).');
+  console.log('     (Same pattern as task #1926\'s ad hoc scan: node -e requiring');
+  console.log('     explainOutletDomainMismatch over the full corpus.)');
+  console.log('  3. Paste the corpus-scan count to the user before merging — this tool\'s');
+  console.log('     flip count above does not cover this change.');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+}
+
 // ─── Load two versions of review-guards ──────────────────────────────────────
 
 function loadBaselineGuards() {
@@ -721,6 +887,18 @@ function main() {
     process.exit(1);
   }
 
+  // Guard 1c: does the diff land near rebuild-all-reviews.js's own
+  // logExclusion() call sites? See detectRebuildLoopTouch() above — this is
+  // the task #1929 fix for the blind spot where a change to the REAL
+  // exclusion loop (not mirrored by decideInclusion) could report 0 flips.
+  let rebuildLoopTouch = { touched: false, sites: [] };
+  try {
+    rebuildLoopTouch = detectRebuildLoopTouch();
+  } catch (e) {
+    // Fail closed — an inspection error must never read as "safe".
+    rebuildLoopTouch = { touched: true, sites: [{ line: 0, statKey: `(detector error: ${e.message}) — inspect manually`, side: 'unknown' }] };
+  }
+
   // Guard 1b: flag-field changes in review-texts (separate git repo).
   // Audit sweeps (e.g. clearing wrongProduction) change data but not code,
   // so inclusionDiff stays false — but the inclusion decisions still flip.
@@ -847,9 +1025,14 @@ function main() {
         && String(baseline.UNSCHEDULED_MAX_AGE_DAYS) === String(working.UNSCHEDULED_MAX_AGE_DAYS)
         // Unreadable on either side is NOT "identical" (task #1075).
         && registryComparable && registryHash === baselineRegistryHash;
-      if (guardsIdentical && !dataFlagDiff) {
+      if (guardsIdentical && !dataFlagDiff && !rebuildLoopTouch.touched) {
         log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
-      } else if (!guardsIdentical) {
+      } else if (!guardsIdentical || rebuildLoopTouch.touched) {
+        // rebuildLoopTouch.touched alone (guards otherwise identical) is
+        // exactly the task #1926 blind spot: the diff changed
+        // rebuild-all-reviews.js's own inline loop, which decideInclusion()
+        // never executes, so this replay running "clean" proves nothing
+        // about the real change — see printCannotAutoVerifyBanner below.
         runPhaseA = true;
       }
     }
@@ -891,6 +1074,18 @@ function main() {
   }
 
   if (!runPhaseA && !runPhaseB) {
+    if (rebuildLoopTouch.touched) {
+      // Defensive: runPhaseA is forced true above whenever rebuildLoopTouch.touched
+      // and inclusionDiff/dataFlagDiff triggered Phase A prep, so this path should
+      // be unreachable in practice — but never let a touched exclusion loop exit
+      // clean via a code path this fix didn't anticipate.
+      if (OUT_JSON) {
+        console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, cannotAutoVerify: true, rebuildLoopTouchedSites: rebuildLoopTouch.sites }));
+      } else {
+        printCannotAutoVerifyBanner(rebuildLoopTouch);
+      }
+      process.exit(2);
+    }
     log('[scoring-delta] ✅ Nothing meaningful to replay — decisions identical.');
     if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'decisions-identical' }));
     process.exit(0);
@@ -1090,6 +1285,11 @@ function main() {
   const affectedShowsIncluded = new Set(flipsIncluded.map(f => f.showId));
   const affectedShowsScore = new Set(scoreFlips.map(f => f.showId));
 
+  // task #1929: a touched rebuild-all-reviews.js exclusion-loop site means
+  // decideInclusion()'s replay above (however clean) does not cover the real
+  // change — never let this report "safe to proceed" on flip counts alone.
+  const cannotAutoVerify = rebuildLoopTouch.touched;
+
   if (OUT_JSON) {
     console.log(JSON.stringify({
       base: BASE_REF,
@@ -1112,10 +1312,14 @@ function main() {
         included: flipsIncluded.slice(0, 100),
         scoreChanged: scoreFlips.slice(0, 100),
       },
+      cannotAutoVerify,
+      rebuildLoopTouchedSites: cannotAutoVerify ? rebuildLoopTouch.sites : undefined,
     }, null, 2));
   } else {
-    const significant = totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
-    const header = significant ? '⚠️  SCORING DELTA — significant change detected' : '✅ scoring delta — minor change';
+    const significant = cannotAutoVerify || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
+    const header = cannotAutoVerify
+      ? '🛑 SCORING DELTA — rebuild-all-reviews.js exclusion loop touched, CANNOT AUTO-VERIFY'
+      : (significant ? '⚠️  SCORING DELTA — significant change detected' : '✅ scoring delta — minor change');
     console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(header);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -1173,7 +1377,9 @@ function main() {
       console.log('');
     }
 
-    if (significant) {
+    if (cannotAutoVerify) {
+      printCannotAutoVerifyBanner(rebuildLoopTouch);
+    } else if (significant) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log('BEFORE MERGING:');
       console.log('  1. Paste this summary to the user');
@@ -1185,10 +1391,10 @@ function main() {
     }
   }
 
-  process.exit((totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
+  process.exit((cannotAutoVerify || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
-module.exports = { decideInclusion, FLAG_FIELDS };
+module.exports = { decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 if (require.main === module) {
   try {
