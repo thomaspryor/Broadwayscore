@@ -1469,6 +1469,7 @@ test('main(): --dry-run bypasses the dispatch claim entirely (no side-effecting 
       fetchCard: () => null,
       acquireDispatchClaim: () => { claimCalled = true; return true; },
       releaseDispatchClaim: () => {},
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must never be called on a --dry-run preview'); },
     });
   } finally {
     console.log = origLog;
