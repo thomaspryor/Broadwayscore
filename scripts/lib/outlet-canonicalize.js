@@ -21,7 +21,7 @@
  */
 
 const path = require('path');
-const { normalizeOutlet, getOutletDisplayName } = require('./review-normalization');
+const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
@@ -141,7 +141,15 @@ function resolveCanonicalOutletId({ outletArg, url }) {
   // to borrow a T1's tier weight). Fall back to a host-derived provisional
   // outlet instead of trusting the fuzzy match blind.
   if (aliasIsRegistered) {
-    if (url) {
+    // Wire services syndicate on arbitrary partner domains by design (AP
+    // reviews live on huffpost.com, sfgate.com, abcnews.go.com, …) — same
+    // exemption isCrossOutletUrl() and outlet-domain-validation.js's own
+    // gate already apply. Without this, a legitimate AP submission with a
+    // URL on a non-apnews.com partner site would get demoted to a bogus
+    // host-derived provisional outlet BEFORE ever reaching the domain-
+    // validation gate that would have exempted it (adversarial review
+    // finding on this same fix, task #1926).
+    if (url && !WIRE_SERVICE_OUTLETS.has(aliasResolved)) {
       const domain = parseDomain(url);
       if (domain) {
         const { hostMatchesOutletDomain } = require('./outlet-domain-validation');
