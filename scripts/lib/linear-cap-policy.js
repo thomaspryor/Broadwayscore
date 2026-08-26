@@ -81,13 +81,20 @@ function isCapEnforced(subscription, now = Date.now()) {
 // completedAt-wins fallback — an issue moved Done -> Canceled can carry a
 // stale completedAt from its earlier Done pass, and blindly preferring it
 // would archive on the wrong (older) timestamp, undercutting the 48h reopen
-// buffer for the transition that actually made it terminal.
+// buffer for the transition that actually made it terminal. `canceled` and
+// `duplicate` share the `canceledAt` branch — confirmed live (BRO-2466) that
+// Linear populates `canceledAt`, not a separate field, for duplicate-type
+// issues too.
+function closedAtOf(issue) {
+  return issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
+}
+
 function isArchivableIssue(issue, now, ageHours = ARCHIVE_AGE_HOURS) {
   if (!issue || !isTerminalStateType(issue.stateType)) return false;
-  const closedAt = issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
+  const closedAt = closedAtOf(issue);
   if (!closedAt) return false;
   const ageMs = now - new Date(closedAt).getTime();
   return ageMs >= ageHours * 60 * 60 * 1000;
 }
 
-module.exports = { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isCapEnforced, isArchivableIssue };
+module.exports = { WARN_THRESHOLD, ARCHIVE_AGE_HOURS, isOverCapThreshold, isCapEnforced, isArchivableIssue, closedAtOf };
