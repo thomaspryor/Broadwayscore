@@ -62,13 +62,13 @@ const { isInOpeningWindow } = require('./lib/opening-window-backoff');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   checkSerpBurstAllowed,
-  isCascadeTripwireExceeded,
 } = require('./lib/serp-burst-caps');
 const {
   DEFAULT_SERP_SESSION_CONFIG,
   checkSerpSessionAllowed,
 } = require('./lib/serp-session-cap');
 const { routeAlert } = require('./lib/owner-alert-router');
+const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 
 // Paths
@@ -1684,31 +1684,16 @@ async function pollCycle() {
         // burst ledger). A 24h router cooldown would silence a genuine NEXT-day
         // tripwire that lands soon after a late-UTC-day one — 1h only guards
         // against a duplicate routeAlert() call within the same brief window.
-        if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
-          updated.tripwireAlerted = true;
-          writeSerpBurstLedger(updated);
-          const msg =
-            `${updated.globalBursts} WE opening-night SERP bursts today ` +
-            `(tripwire ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, hard daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
-            `Bursts auto-stop at the cap; this is an early heads-up. ` +
-            `Emergency off: gh variable set DISABLE_WE_SERP_BURST --body true`;
-          console.log(`::warning::SERP burst cascade tripwire: ${msg}`);
-          try {
-            await routeAlert({
-              conditionKey: 'serp-burst:tripwire',
-              title: 'WE SERP burst tripwire',
-              description: msg,
-              // 'error': same-day actionable — the 60-100K credits/day runaway
-              // class (feedback_sb_serp_invisible_burn); the daily digest is up
-              // to 24h late. warning would be suppressed (actionable-only policy).
-              severity: 'error',
-              disposition: 'human',
-              cooldownHours: 1,
-            });
-          } catch (e) {
-            console.log(`  [SERP burst] tripwire alert failed (non-fatal): ${e.message}`);
-          }
-        }
+        // Extracted to scripts/lib/serp-burst-tripwire.js (BRO-2438 finding 2):
+        // write-after-notify — tripwireAlerted persists only once routeAlert
+        // actually delivers, so a failed sendAlert() (missing RESEND_API_KEY,
+        // Resend 5xx) leaves the ledger untouched and the next cycle retries.
+        await maybeAlertSerpBurstTripwire({
+          ledger: updated,
+          config: DEFAULT_SERP_BURST_CONFIG,
+          routeAlert,
+          writeSerpBurstLedger,
+        });
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
       } // end: daily SERP-session cap allowed
