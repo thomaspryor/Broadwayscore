@@ -1478,13 +1478,25 @@ const crossShowFingerprints = new Map();
         // default (or before an openingDate correction landed) can carry a
         // permanently stale anticipatory_pre_opening_post flag even though the
         // SAME gate, re-run today with the show's CURRENT category/openingDate,
-        // no longer rejects it. reviewDate is null-guarded — isAnticipatoryPreviewPost
-        // short-circuits rejected:false on a missing publishDate, which would be
-        // exactly backwards here (an unparseable date must never read as "passes").
-        if (reviewDate && d.wrongProduction === true && d.wrongProductionReason === 'anticipatory_pre_opening_post') {
+        // no longer rejects it. Both reviewDate AND showOpeningDateMap[sid] are
+        // null-guarded — isAnticipatoryPreviewPost short-circuits rejected:false
+        // on either a missing publishDate OR a missing openingDate, which would
+        // be exactly backwards here. showEarliest (used to gate this whole loop)
+        // is NOT a substitute: earliestShowDate() falls back to previewsStartDate
+        // when openingDate is null, so a still-in-previews show with no confirmed
+        // opening would otherwise silently read as "not rejected" and every
+        // anticipatory flag on it would auto-clear regardless of actual date
+        // proximity — showOpeningDateMap is the openingDate-ONLY map built
+        // above for exactly this kind of publishDate-vs-real-opening comparison.
+        // Also mirrors the stale-date-guard block's manual/human-override gate
+        // just above, so an operator's explicit call is never overridden.
+        if (reviewDate && showOpeningDateMap[sid] && d.wrongProduction === true &&
+            d.wrongProductionReason === 'anticipatory_pre_opening_post' &&
+            !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
+            !d.allowEarlyDate) {
           const anticipRecheck = isAnticipatoryPreviewPost(
             reviewDate.toISOString().slice(0, 10),
-            showRecord && showRecord.openingDate,
+            showOpeningDateMap[sid].toISOString().slice(0, 10),
             d.outletId,
             { category: showRecord && showRecord.category }
           );
