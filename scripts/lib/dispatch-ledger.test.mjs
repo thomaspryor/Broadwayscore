@@ -957,3 +957,55 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
   assert.equal(classifyDeadAttemptsForTask('B', entries).infra.length, 0);
   assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
 });
+
+// ── Task #1904: a FINISHED dispatch must not be killed by ref recycling ────
+
+test('deadBreadcrumbs: a prune-closed (finished) launch is never journaled dead when cmux recycles its ref', () => {
+  // The live 2026-08-26 sequence, verbatim in shape: #1888 launched into
+  // workspace:46 at 04:20Z, finished and was prune-closed at 05:16Z, and at
+  // 13:19:55Z the sweep found workspace:46 — by then a ZZ-probe tab — idle and
+  // journaled a death against #1888. Eleven such rows accumulated since 08-19.
+  const entries = [
+    { event: 'launch', taskId: '1888', subject: 'roundup detector', workspaceRef: 'workspace:46', ts: '2026-08-26T04:20:27Z' },
+    { event: 'prune-closed', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T05:16:55Z', title: 'done: roundup detector' },
+  ];
+  // cmux handed workspace:46 to something else entirely; that tab is idle now.
+  const idle = [{ ref: 'workspace:46', title: 'ZZ-probe-cmd' }];
+  assert.deepEqual(deadBreadcrumbs(idle, entries), [],
+    'a task that FINISHED must not lose a dispatch attempt to its ref being reused');
+});
+
+test('deadBreadcrumbs: the bogus row would have burned a real dispatch attempt, not just skewed a metric', () => {
+  // deadAttemptsForTask counts RAW dead rows by taskId — no folding, no
+  // pairing — so the suppressed row above is worth one of two allowed attempts.
+  const withBogusRow = [
+    { event: 'launch', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T04:20:27Z' },
+    { event: 'prune-closed', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T05:16:55Z' },
+    { event: 'dead', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T13:19:55Z' },
+  ];
+  assert.equal(deadAttemptsForTask('1888', withBogusRow).length, 1);
+  assert.equal(deadAttemptsForTask('1888', withBogusRow.slice(0, 2)).length, 0);
+});
+
+test('deadBreadcrumbs: an owner-closed (vanished) or remapped launch is likewise already reconciled', () => {
+  for (const terminalEvent of ['vanished', 'remapped']) {
+    const entries = [
+      { event: 'launch', taskId: '700', workspaceRef: 'workspace:8', ts: '2026-08-01T00:00:00Z' },
+      { event: terminalEvent, taskId: '700', workspaceRef: 'workspace:8', ts: '2026-08-01T01:00:00Z' },
+    ];
+    assert.deepEqual(deadBreadcrumbs([{ ref: 'workspace:8', title: 'someone else now' }], entries), [],
+      `${terminalEvent} must end the launch's life for breadcrumb purposes`);
+  }
+});
+
+test('deadBreadcrumbs: a terminal row from an EARLIER occupant still cannot suppress a real death (card #960 preserved)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'prune-closed', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // Fresh dispatch onto the recycled ref, which then genuinely dies.
+    { event: 'launch', taskId: '640', subject: 'current task', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const bc = deadBreadcrumbs([{ ref: 'workspace:12', title: 'current task' }], entries);
+  assert.equal(bc.length, 1, 'the newer launch has no terminal row after it — its death must still be recorded');
+  assert.equal(bc[0].taskId, '640');
+});

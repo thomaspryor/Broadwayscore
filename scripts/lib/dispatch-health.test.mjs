@@ -355,3 +355,65 @@ test('the headless digest row is shaped for health-check.js (name/status/message
   assert.ok(['pass', 'warn', 'error'].includes(row.status));
   assert.equal(typeof row.message, 'string');
 });
+
+// ── Task #1904: a recycled ref must not resurrect a finished attempt ───────
+
+test('a dead row arriving AFTER the launch was reconciled belongs to the ref\'s next occupant, not to it', () => {
+  // The live 2026-08-26 shape: #1888 launched into workspace:46, finished and
+  // was prune-closed, and hours later a sweep found workspace:46 — by then a
+  // completely different tab — idle and wrote a `dead` row naming #1888.
+  // Counting that as a death makes a SUCCESSFUL dispatch read as a failure.
+  const entries = [
+    launch('2026-08-08T04:20:00.000Z', 'workspace:46', '1888'),
+    { ts: '2026-08-08T05:16:00.000Z', event: 'prune-closed', taskId: '1888', workspaceRef: 'workspace:46' },
+    dead('2026-08-08T13:19:00.000Z', 'workspace:46', '1888'),
+  ];
+  const folded = foldAttempts(entries);
+  assert.equal(folded.attempts.length, 1);
+  assert.equal(folded.attempts[0].dead, false, 'the finished dispatch must not be counted dead');
+  assert.equal(folded.unattributedDeadCount, 1, 'the death is surfaced as unattributed, never silently dropped');
+
+  const r = computeDeadRate(entries, { nowMs: Date.parse('2026-08-10T12:00:00.000Z'), windowDays: 7 });
+  assert.deepEqual([r.launches, r.dead, r.deadRate], [1, 0, 0]);
+});
+
+test('an ordinary shape-2 breadcrumb (no reconciling event in between) still counts as a death', () => {
+  // The guard must not swallow the real case it sits next to: a verified
+  // launch that a later sweep finds dead, with nothing in between.
+  const entries = [
+    launch('2026-08-08T04:20:00.000Z', 'workspace:47', '1889'),
+    dead('2026-08-08T13:19:00.000Z', 'workspace:47', '1889'),
+  ];
+  const folded = foldAttempts(entries);
+  assert.equal(folded.attempts[0].dead, true);
+  assert.equal(folded.unattributedDeadCount, 0);
+});
+
+test('a reconciling event BEFORE the launch cannot suppress that launch\'s own death', () => {
+  // Ordering matters: the prune-closed here belongs to the ref's PREVIOUS
+  // occupant, so the fresh launch after it is still fully accountable.
+  const entries = [
+    launch('2026-08-04T01:00:00.000Z', 'workspace:48', '900'),
+    { ts: '2026-08-04T02:00:00.000Z', event: 'prune-closed', taskId: '900', workspaceRef: 'workspace:48' },
+    launch('2026-08-08T04:00:00.000Z', 'workspace:48', '901'),
+    dead('2026-08-08T05:00:00.000Z', 'workspace:48', '901'),
+  ];
+  const folded = foldAttempts(entries);
+  const latest = folded.attempts.find((a) => a.taskId === '901');
+  assert.equal(latest.dead, true, 'the newer attempt has no reconciling event after it — its death stands');
+  assert.equal(folded.attempts.find((a) => a.taskId === '900').dead, false);
+});
+
+test('a shape-1 pair is immune to the reconciling rule — the death IS this launch', () => {
+  // The paired row is written by the launcher at failure time, 1-2ms apart, so
+  // a stale prune-closed on a recycled ref must not disarm it.
+  const entries = [
+    launch('2026-08-04T01:00:00.000Z', 'workspace:49', '910'),
+    { ts: '2026-08-04T02:00:00.000Z', event: 'prune-closed', taskId: '910', workspaceRef: 'workspace:49' },
+    dead('2026-08-08T06:00:00.000Z', 'workspace:49', '911'),
+    launch('2026-08-08T06:00:00.002Z', 'workspace:49', '911', { unverified: true }),
+  ];
+  const folded = foldAttempts(entries);
+  assert.equal(folded.attempts.find((a) => a.taskId === '911').dead, true);
+  assert.equal(folded.unattributedDeadCount, 0);
+});

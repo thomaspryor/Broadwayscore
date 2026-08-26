@@ -71,6 +71,17 @@ const PAIR_WINDOW_MS = 5000;
 // They stay visible in byLane.
 const CMUX_LANE = 'workspace';
 
+// Events that END a launch's life, so a LATER `dead` row on the same ref
+// belongs to whatever cmux handed the recycled ref to next, not to this
+// attempt (task #1904). Mirrors dispatch-ledger.js's TERMINAL_LAUNCH_EVENTS
+// minus 'dead' itself — duplicated rather than imported on purpose: this is
+// the leaf module dispatch-ledger.js requires, and reaching back up into it
+// would be the import cycle this file's header promises never to create.
+// dispatch-ledger.js's own deadBreadcrumbs now refuses to WRITE these rows;
+// this is the reader side, because eleven of them are already in the ledger
+// and would otherwise keep inflating the dead rate for another week.
+const RECONCILING_EVENTS = new Set(['vanished', 'prune-closed', 'remapped']);
+
 // Any workspaceRef without a "prefix:" shape (the real ledger has
 // "live-session-manual"). Bucketed rather than dropped so byLane always
 // accounts for every launch.
@@ -139,6 +150,14 @@ function foldAttempts(entries) {
 
   let unattributedDeadCount = 0;
 
+  // ts-ordered reconciling events per ref, for the shape-2 recycling check.
+  const reconciledByRef = new Map();
+  for (const e of rows) {
+    if (!RECONCILING_EVENTS.has(e.event) || !e.workspaceRef) continue;
+    if (!reconciledByRef.has(e.workspaceRef)) reconciledByRef.set(e.workspaceRef, []);
+    reconciledByRef.get(e.workspaceRef).push(tsOf(e));
+  }
+
   for (const e of rows) {
     if (e.event !== 'dead') continue;
     const ref = e.workspaceRef || null;
@@ -166,6 +185,19 @@ function foldAttempts(entries) {
       if (attempts[candidates[k]].ts <= deadTs) { target = candidates[k]; break; }
     }
     if (target === undefined) { unattributedDeadCount++; continue; }
+    // …unless that attempt was already RECONCILED before the death (task
+    // #1904). cmux recycles refs, so a sweep that finds workspace:46 idle
+    // long after #1888 finished and was prune-closed writes a `dead` row
+    // naming #1888 on a tab #1888 no longer owns. Live on 2026-08-26: #1887
+    // and #1888 both completed at 05:03Z/05:16Z and were journaled dead at
+    // 13:19:55Z; 11 such rows since 08-19, 2 of them inside the 7-day rate
+    // window this module feeds. The death is real for SOMEBODY — it just
+    // isn't this attempt's, and there is no launch row for the current
+    // occupant — so it joins unattributedDeadCount (surfaced, never folded
+    // into the rate) rather than being silently dropped.
+    const reconciledTs = (reconciledByRef.get(ref) || [])
+      .some((t) => t !== null && t >= attempts[target].ts && t <= deadTs);
+    if (reconciledTs) { unattributedDeadCount++; continue; }
     if (!attempts[target].dead) {
       attempts[target].dead = true;
       attempts[target].deadReason = e.failureReason || 'workspace found dead by sweep';
