@@ -271,6 +271,8 @@ tests/unit/curated-historical-min-reviews.test.mjs
 tests/unit/cv-stale-wrongproduction-selfheal.test.mjs
 tests/unit/date-utils.test.mjs
 tests/unit/dedupe-byline-preference.test.mjs
+tests/unit/dedupe-same-url-bylines-classA-skip.test.mjs
+tests/unit/dedupe-same-url-bylines-double-clear.test.mjs
 tests/unit/dedupe-same-url-bylines-stale-canonical.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
@@ -461,6 +463,7 @@ tests/unit/pending-gap-classification.test.mjs
 tests/unit/pending-promote-validation.test.mjs
 tests/unit/pending-strand-routing.test.mjs
 tests/unit/per-category-precursor-warnings.test.mjs
+tests/unit/placeholder-byline.test.mjs
 tests/unit/placeholder-images.test.mjs
 tests/unit/placeholder-venue-guard.test.mjs
 tests/unit/plan-ready.test.mjs

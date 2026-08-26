@@ -68,10 +68,21 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild, areSameCriticFuzzy } = require('./lib/review-guards');
-const { normalizeUrl } = require('./lib/review-normalization');
+const { normalizeUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
+const { isPlaceholderRecord } = require('./lib/placeholder-byline');
+
+// See fix-circular-duplicate-pairs.js's identical helper — self-branded solo
+// critics (carole-di-tosti, carey-purcell, oscar-e-moore) have outlet
+// displayName === defaultCritic, so isPlaceholderRecord needs this override
+// to not flag them as placeholders (Codex adversarial review, card #1907).
+function _defaultCriticFor(outletId) {
+  if (!outletId) return null;
+  const registry = loadOutletRegistry();
+  return (registry && registry.outlets && registry.outlets[outletId] && registry.outlets[outletId].defaultCritic) || null;
+}
 
 const USAGE = `dedupe-same-url-bylines.js — Fixes the same-URL / multi-byline double-count class (Notion 2026-07-12,.
 
@@ -213,6 +224,54 @@ function rebuildAlreadyCollapses(names, datas) {
   return false;
 }
 
+/**
+ * True when an includable same-URL group has both a placeholder byline (the
+ * outlet's own name, "Unknown", or a generic desk/staff term) AND a real one.
+ * Card #1907: a placeholder must never survive as canonical over a real
+ * byline in the SAME cluster — this is checked ahead of rebuildAlreadyCollapses
+ * so the fingerprint-identical bypass never lets a placeholder's survival
+ * depend on file-processing order at rebuild time. Pure — for unit tests.
+ * @param {Array<{criticName?:string, outlet?:string}>} datas includable members
+ */
+function hasPlaceholderVsRealSplit(datas) {
+  const flags = datas.map(d => isPlaceholderRecord(d, { defaultCritic: _defaultCriticFor(d && d.outletId) }));
+  return flags.some(Boolean) && flags.some(f => !f);
+}
+
+// The two EXACT stamp patterns that mean "a repair declined to close a
+// duplicateOf cycle here" — review-write-guard.js's cycle-refusal and
+// fix-canonical-duplicate-backpointer.js's canonical-backpointer repair.
+// Deliberately narrow: `duplicateClearReason` has 9+ other writers (self-ref
+// clears, stale-sibling clears, URL-mismatch clears, and — critically —
+// manual-review-fields.js's operator "vouched for this review as independent
+// (not a duplicate)" stamp, which ALSO adds duplicateOf/duplicateClearReason
+// to that record's own protectedFields specifically so the vouch survives
+// future writes). A broad `typeof === 'string'` match would force-resolve a
+// manually-vouched cluster too — and force:true (used by fix() below) already
+// bypasses protectedFields protection by design, so that vouch would be
+// silently overwritten. Second-opinion review, card #1907.
+const CYCLE_CLEAR_BREADCRUMB_PATTERNS = [
+  'refusing duplicateOf cycle',
+  'canonical-backpointer-cleared:',
+];
+
+/**
+ * True when an includable same-URL group has already been through a declined
+ * cycle-clear: review-write-guard's cycle-refusal (wouldFormDuplicateCycle)
+ * and fix-canonical-duplicate-backpointer.js each stamp `duplicateClearReason`
+ * on the side they clear rather than leaving a duplicateOf pointer. Two
+ * independent repairs can each clear one side of an A<->B cycle, leaving BOTH
+ * members unsuppressed with nothing left pointing either way — this is the
+ * breadcrumb that proves it happened, per the card's own diagnosis: "The
+ * duplicateClearReason breadcrumb names the exact counterpart it deferred to -
+ * that is enough to re-check." Pure — for unit tests.
+ * @param {Array<{duplicateClearReason?:string|null}>} datas includable members
+ */
+function hasContestedCycleClear(datas) {
+  return datas.some(d => d && typeof d.duplicateClearReason === 'string'
+    && CYCLE_CLEAR_BREADCRUMB_PATTERNS.some(p => d.duplicateClearReason.includes(p)));
+}
+
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
   return fs.readdirSync(root, { withFileTypes: true })
@@ -227,6 +286,7 @@ function walkShowDirs(root) {
  */
 function audit() {
   const cohesive = [], different = [];
+  let placeholderVsRealCount = 0;
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showId = path.basename(showDir);
     let files;
@@ -259,17 +319,39 @@ function audit() {
       });
       if (incl.length < 2) continue;
       const datas = incl.map(load);
-      // Leave groups the rebuild already collapses (same-fingerprint or fuzzy
-      // typo-critic) untouched — marking them would override the rebuild's
-      // better byline-selection logic and change nothing about the double-count.
-      if (rebuildAlreadyCollapses(incl, datas)) continue;
+      // Placeholder-vs-real or a previously-declined cycle-clear: never defer
+      // to rebuildAlreadyCollapses for these. That bypass exists because the
+      // rebuild's runtime fingerprint dedup "already handles it" — true in
+      // general, but it resolves by file-processing order, not by byline
+      // quality, and leaves no persistent duplicateOf pointer a future
+      // re-scrape (differing extraction -> differing fingerprint) can rely on.
+      // Card #1907 gaps 1+2: force these into the normal cohesive/different
+      // path so a real byline is proactively marked canonical on disk.
+      const forceResolve = hasPlaceholderVsRealSplit(datas) || hasContestedCycleClear(datas);
+      if (forceResolve) placeholderVsRealCount++;
+      // Leave OTHER groups the rebuild already collapses (same-fingerprint or
+      // fuzzy typo-critic) untouched — marking them would override the
+      // rebuild's better byline-selection logic and change nothing about the
+      // double-count.
+      if (!forceResolve && rebuildAlreadyCollapses(incl, datas)) continue;
       if (isCohesiveGroup(datas)) {
-        // fold chooseCanonicalForRebuild across the group to pick one survivor
+        // fold chooseCanonicalForRebuild across the group to pick one survivor.
+        // A `skip:true` pairwise result means chooseCanonicalForRebuild found
+        // BOTH members class-A cross-market contaminated and explicitly said
+        // "leave this pair suppressed, don't canonicalize either side"
+        // (fix-circular-duplicate-pairs.js's own audit() honors this by
+        // `continue`-ing past the pair entirely). Folding blindly through
+        // `c.canonical` here would ignore that safety verdict and could
+        // unsuppress a known wrong-production review — Codex adversarial
+        // review, card #1907. Abort the WHOLE group on any skip.
         let canonName = incl[0];
+        let skipped = false;
         for (let i = 1; i < incl.length; i++) {
           const c = chooseCanonicalForRebuild(canonName, load(canonName), incl[i], load(incl[i]), showDir);
+          if (c.skip) { skipped = true; break; }
           canonName = c.canonical;
         }
+        if (skipped) continue;
         cohesive.push({ showId, canonical: canonName, losers: incl.filter(f => f !== canonName) });
       } else {
         let minJ = 1;
@@ -279,7 +361,7 @@ function audit() {
       }
     }
   }
-  return { cohesive, different };
+  return { cohesive, different, placeholderVsRealCount };
 }
 
 function fix(cohesive) {
@@ -354,12 +436,14 @@ function writeAuditReport(different) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const { cohesive, different } = audit();
+  const { cohesive, different, placeholderVsRealCount } = audit();
   if (JSON_OUT) {
-    console.log(JSON.stringify({ cohesiveCount: cohesive.length, differentCount: different.length, cohesive, different }, null, 2));
+    console.log(JSON.stringify({
+      cohesiveCount: cohesive.length, differentCount: different.length, placeholderVsRealCount, cohesive, different,
+    }, null, 2));
     process.exit(cohesive.length === 0 ? 0 : 1);
   }
-  console.log(`Same-URL double-count groups: ${cohesive.length} cohesive (collapsible), ${different.length} different-text (report-only).`);
+  console.log(`Same-URL double-count groups: ${cohesive.length} cohesive (collapsible), ${different.length} different-text (report-only), ${placeholderVsRealCount} placeholder-vs-real or contested-clear (forced into the above).`);
   for (const g of cohesive.slice(0, 40)) {
     console.log(`  [collapse] ${g.showId}: keep ${g.canonical}, mark ${g.losers.join(', ')} duplicate`);
   }
@@ -386,4 +470,8 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { jaccard, containment, wordSet, isCohesiveGroup, rebuildAlreadyCollapses, audit, fix, COHESION_THRESHOLD, CONTAINMENT_THRESHOLD };
+module.exports = {
+  jaccard, containment, wordSet, isCohesiveGroup, rebuildAlreadyCollapses,
+  hasPlaceholderVsRealSplit, hasContestedCycleClear,
+  audit, fix, COHESION_THRESHOLD, CONTAINMENT_THRESHOLD,
+};
