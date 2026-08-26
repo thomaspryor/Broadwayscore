@@ -428,12 +428,105 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
       // ~/.claude/tasks read, from a test subprocess.
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      // task #1898's fresh-dispatch claim runs before the overlap check /
+      // duplicate-tab guard this test exercises — stub it so this subprocess
+      // never touches the real data/audit/linear-dispatch-claims dir.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
   `;
   const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
   assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
+});
+
+// ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
+// task #1896 claim wiring tests, scripts/bsc-next.test.mjs:1400-1478) ───────
+//
+// A non-terminal issue with LINEAR_NEXT_DISABLED unset reaches the claim
+// (placed after the terminal-state guard + kill switch, before the overlap
+// check — see linear-next.js's claim block comment for why).
+function makeClaimTestIssue() {
+  return {
+    id: 'issue-uuid-1898', identifier: 'BRO-1898', title: 'Some claimable issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-1898/some-claimable-issue',
+    priority: 2,
+    state: { id: 'state-1', name: 'Todo', type: 'unstarted' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): a held dispatch claim refuses BEFORE the overlap check ever runs', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(String(msg));
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-1898'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => false, // "another attempt already holds it"
+      releaseDispatchClaim: () => {},
+      listOpenIssuesWithDescriptions: async () => { throw new Error('overlap check must never run once the claim guard refuses'); },
+      loadNotionMirrorTasks: () => { throw new Error('overlap check must never run once the claim guard refuses'); },
+      launchCmux: () => { throw new Error('launchCmux must never be called once the claim guard refuses'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the claim guard refuses'); },
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #BRO-1898/.test(e) && /mirror-staleness race/.test(e)),
+    `expected a mirror-staleness claim refusal keyed on the bare identifier, got: ${errors.join(' | ')}`);
+});
+
+test('main(): --force bypasses the dispatch claim entirely (acquireDispatchClaim never even called)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let claimCalled = false;
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-1898', '--force'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => { claimCalled = true; return false; },
+      releaseDispatchClaim: () => {},
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(claimCalled, false, '--force must skip claim acquisition entirely, matching every sibling guard\'s carve-out');
+  assert.equal(launched, true);
+});
+
+test('main(): --dry-run bypasses the dispatch claim entirely (no side-effecting claim I/O during a preview)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(String(msg));
+  let claimCalled = false;
+  try {
+    await main(['--id', 'BRO-1898', '--dry-run'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => { claimCalled = true; return true; },
+      releaseDispatchClaim: () => {},
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must never be called on a --dry-run preview'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(claimCalled, false, '--dry-run must never acquire a real claim');
+  assert.ok(logs.some(l => /would launch/.test(l)));
 });
 
 // ── terminal-state dispatch guard, end-to-end (task #1517) ─────────────────
