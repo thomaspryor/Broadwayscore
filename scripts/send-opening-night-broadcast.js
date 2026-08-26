@@ -194,7 +194,10 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
       // BRO-159: a denylist (exclude off-broadway/regional/London) silently
       // admits any future category value — e.g. an enumerated 'off-off-broadway'
       // would inherit Broadway broadcast eligibility by default. Require the
-      // exact category instead.
+      // exact category instead. Intentionally NOT isBroadwayCategory()
+      // (venue-classification.js) — that helper treats a missing category as
+      // Broadway, which is the wrong default for something that emails real
+      // subscribers.
       if (s.category !== 'broadway') return false;
     }
     const d = new Date(s.openingDate);
