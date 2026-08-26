@@ -94,11 +94,24 @@ function clearStreakIfOpen() {
 // behavior BRO-2424 exists to fix. Treat a malformed/errored response the
 // same as an explicit bad-setting value — the caller's normal drift/restore
 // logic (and the guard-escalation streak it feeds) already handles that.
+// 15s cap so a hung connection can't eat the job's 5-min timeout before the
+// always()-gated commit step gets a chance to run (Codex adversarial review).
+const FETCH_TIMEOUT_MS = 15000;
+
 async function fetchSetting(token) {
   try {
     const res = await fetch(`https://api.vercel.com/v9/projects/${PROJECT_ID}`, {
       headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
+    // A non-2xx response (401 revoked token, 429, 5xx) can still return a
+    // JSON body — don't let an error-shaped payload that happens to omit
+    // commandForIgnoringBuildStep read as a real 'NOT SET' setting without
+    // the response status showing up in the log (Codex adversarial review).
+    if (!res.ok) {
+      console.error(`::warning::[check-vercel-build-guard] GET returned HTTP ${res.status} — treating as NOT SET`);
+      return 'NOT SET';
+    }
     const data = await res.json();
     return data.commandForIgnoringBuildStep || 'NOT SET';
   } catch (e) {
@@ -113,7 +126,12 @@ async function restoreSetting(token) {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ commandForIgnoringBuildStep: EXPECTED_SETTING }),
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
+    if (!res.ok) {
+      console.error(`::warning::[check-vercel-build-guard] PATCH returned HTTP ${res.status} — treating as FAILED`);
+      return 'FAILED';
+    }
     const data = await res.json();
     return data.commandForIgnoringBuildStep || 'FAILED';
   } catch (e) {
@@ -122,34 +140,13 @@ async function restoreSetting(token) {
   }
 }
 
-async function main() {
-  const token = process.env.VERCEL_TOKEN;
-  if (!token) {
-    console.error('::error::[check-vercel-build-guard] VERCEL_TOKEN not set');
-    process.exit(1);
-  }
-
-  const setting = await fetchSetting(token);
-  console.log(`Current setting: '${setting}'`);
-
-  if (setting === EXPECTED_SETTING) {
-    console.log('Build guard is active. All good.');
-    clearStreakIfOpen();
-    return;
-  }
-
-  console.error(`::error::Build guard is NOT 'exit 0' — it is '${setting}'. Restoring now...`);
-  const verified = await restoreSetting(token);
-  console.log(`After fix: '${verified}'`);
-
-  if (verified === EXPECTED_SETTING) {
-    console.error('::warning::Build guard was missing and has been restored. Check Vercel billing for unwanted builds.');
-    // Self-healed — not the double-failure gap this port targets.
-    clearStreakIfOpen();
-    return;
-  }
-
-  // Auto-restore itself failed — the genuine double-failure gap.
+// Shared by every way this guard can end up blocked (restore-PATCH failure,
+// missing token) — a missing VERCEL_TOKEN is itself a "guard cannot confirm
+// builds are blocked" condition, not a config error to just exit(1) on
+// forever with no escalation (Codex adversarial review: that path bypassed
+// guard-escalation entirely, reintroducing the exact "fails loud forever, no
+// real escalation" bug this port exists to fix).
+async function handleBlocked(baseMsg, impact) {
   const priorState = loadGuardState();
   const state = nextGuardState(priorState, true, Date.now());
   saveGuardState(state);
@@ -158,36 +155,32 @@ async function main() {
     workflowDisplayName: WORKFLOW_DISPLAY_NAME,
     reason: 'BRO-2424 vercel-build-guard restore-failure manual override',
   });
-  const baseMsg =
-    `[check-vercel-build-guard] setting drifted to '${setting}' AND the auto-restore PATCH failed ` +
-    `(verify returned '${verified}') — manual intervention required. Override: ${overrideCommand}`;
+  const fullMsg = `${baseMsg} Override: ${overrideCommand}`;
 
   if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks)) {
     // First (or still-below-threshold) failure: fail loud, unchanged from
-    // before BRO-2424 — a one-off restore failure is worth flagging
-    // immediately.
-    console.error(`::error::${baseMsg}`);
+    // before BRO-2424 — a one-off failure is worth flagging immediately.
+    console.error(`::error::${fullMsg}`);
     process.exit(1);
   }
 
-  // BRO-2424 auto-recovery: this restore-failure condition has now fired
-  // state.consecutiveBlocks runs in a row (>= 1 hour at this workflow's
-  // 30-min cadence). Failing loud every 30 min forever just adds noise once
-  // the owner has been told once — degrade to a loud, escalating alert
-  // instead of blocking the job (and every job depending on it staying
-  // green) indefinitely.
+  // BRO-2424 auto-recovery: this condition has now fired state.consecutiveBlocks
+  // runs in a row (>= 1 hour at this workflow's 30-min cadence). Failing loud
+  // every 30 min forever just adds noise once the owner has been told once —
+  // degrade to a loud, escalating alert instead of blocking the job (and
+  // every job depending on it staying green) indefinitely.
   const alert = buildGuardBlockedAlert({
     guardId: GUARD_ID,
     guardLabel: 'Vercel build-guard restore failure (check-vercel-build-guard.js)',
     consecutiveBlocks: state.consecutiveBlocks,
     workflowDisplayName: WORKFLOW_DISPLAY_NAME,
     overrideCommand,
-    impact: `the ignore-build-step setting is still '${setting}' (not 'exit 0') — git-triggered Vercel builds are NOT blocked and may bill unexpectedly`,
+    impact,
     runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
       ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
       : undefined,
   });
-  console.error(`::warning::${baseMsg}`);
+  console.error(`::warning::${fullMsg}`);
   console.error(`::warning::[guard-escalation] AUTO-RECOVERING — ${alert.description.replace(/\n/g, ' | ')}`);
   if (process.env.GITHUB_STEP_SUMMARY) {
     try {
@@ -217,6 +210,44 @@ async function main() {
   }
   // Auto-recovered: exit 0 so the job stays green — the condition is
   // already visible via the warnings/summary/digest alert above.
+}
+
+async function main() {
+  const token = process.env.VERCEL_TOKEN;
+  if (!token) {
+    await handleBlocked(
+      '[check-vercel-build-guard] VERCEL_TOKEN not set — cannot verify or restore the build-guard setting.',
+      'the guard cannot verify whether git-triggered Vercel builds are blocked at all — VERCEL_TOKEN needs to be re-added as a repo secret',
+    );
+    return;
+  }
+
+  const setting = await fetchSetting(token);
+  console.log(`Current setting: '${setting}'`);
+
+  if (setting === EXPECTED_SETTING) {
+    console.log('Build guard is active. All good.');
+    clearStreakIfOpen();
+    return;
+  }
+
+  console.error(`::error::Build guard is NOT 'exit 0' — it is '${setting}'. Restoring now...`);
+  const verified = await restoreSetting(token);
+  console.log(`After fix: '${verified}'`);
+
+  if (verified === EXPECTED_SETTING) {
+    console.error('::warning::Build guard was missing and has been restored. Check Vercel billing for unwanted builds.');
+    // Self-healed — not the double-failure gap this port targets.
+    clearStreakIfOpen();
+    return;
+  }
+
+  // Auto-restore itself failed — the genuine double-failure gap.
+  await handleBlocked(
+    `[check-vercel-build-guard] setting drifted to '${setting}' AND the auto-restore PATCH failed ` +
+      `(verify returned '${verified}') — manual intervention required.`,
+    `the ignore-build-step setting is still '${setting}' (not 'exit 0') — git-triggered Vercel builds are NOT blocked and may bill unexpectedly`,
+  );
 }
 
 main().catch((e) => {

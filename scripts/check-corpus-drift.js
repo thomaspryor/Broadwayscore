@@ -369,14 +369,15 @@ async function main() {
   }
 
   const code = decideExit({ ...verdict.summary, strict });
-  if (code === 2) {
-    console.error('[check-corpus-drift] drift detected and --strict set.');
-    process.exit(code);
-  }
   if (code !== 3) {
-    // Healthy (or non-strict drift) run: clear any open crash streak so a
-    // real recurring crash doesn't get silently forgotten, but a single good
-    // run doesn't leave a stale "still blocked" incident open either.
+    // Healthy, or drift (with or without --strict): decideExit's crash check
+    // runs first (see its own precedence test), so code !== 3 here means NO
+    // audit crashed this run. Clear any open crash streak so an intervening
+    // successful (non-crashing) run — even one that still exits non-zero for
+    // --strict drift — doesn't let a LATER crash get miscounted as
+    // consecutive with an OLDER one across a clean run in between (found by
+    // Codex adversarial review: this used to only run on the code===0 path,
+    // skipped entirely by the code===2 early exit below).
     const priorState = loadGuardState();
     if (priorState && priorState.consecutiveBlocks > 0) {
       try {
@@ -385,6 +386,7 @@ async function main() {
       } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
       saveGuardState(nextGuardState(priorState, false, Date.now()));
     }
+    if (code === 2) console.error('[check-corpus-drift] drift detected and --strict set.');
     process.exit(code);
   }
 
