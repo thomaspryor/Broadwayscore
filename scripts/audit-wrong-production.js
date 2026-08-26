@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { parseHistoricalDate } = require('./lib/date-utils');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
@@ -299,8 +300,8 @@ for (const showDir of showDirs) {
 
     // 1. Date-based check
     if (data.publishDate && showEarliestDate) {
-      const pubDate = new Date(data.publishDate);
-      if (!isNaN(pubDate.getTime())) {
+      const pubDate = parseHistoricalDate(data.publishDate);
+      if (pubDate) {
         const daysBefore = (showEarliestDate - pubDate) / (1000 * 60 * 60 * 24);
         if (daysBefore > 30) {
           stats.dateGuardCatches++;

@@ -233,6 +233,7 @@ const { blastRadiusCheck } = require('./lib/coverage-gate');
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
 const { classifyReviewUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
 // gap audit and its unit test share one implementation (CLAUDE.md §15).
@@ -1882,9 +1883,9 @@ async function main(argv = process.argv.slice(2)) {
         const openingMs = s.openingDate ? new Date(s.openingDate).getTime() : null;
         const notPriorRun = (d) => {
           if (!openingMs || !d.publishDate) return true;
-          const pd = new Date(d.publishDate).getTime();
-          if (Number.isNaN(pd)) return true;
-          return pd >= openingMs - 30 * 86400000;
+          const parsed = parseHistoricalDate(d.publishDate);
+          if (!parsed) return true;
+          return parsed.getTime() >= openingMs - 30 * 86400000;
         };
         const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d));
         const uncitedBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);

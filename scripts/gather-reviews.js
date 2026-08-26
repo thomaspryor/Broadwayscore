@@ -121,7 +121,7 @@ const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
@@ -3318,7 +3318,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       const sibs = sibMap.get(showId) || [];
       if (sibs.length) {
         const v = classifyClassAContamination(
-          new Date(reviewData.publishDate),
+          parseHistoricalDate(reviewData.publishDate),
           _showMeta.openingDate ? new Date(_showMeta.openingDate) : null,
           sibs.map((x) => (x && x.opening ? x.opening : x))
         );
@@ -3727,9 +3727,9 @@ function createReviewFile(showId, reviewData, options = {}) {
       if (show.category !== 'off-broadway' && !isWithinPriorRun(review.publishDate, show.priorRuns) && !isWithinTourLeg(review.publishDate, show.tourLegs)) {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
-          const pubDate = new Date(review.publishDate);
+          const pubDate = parseHistoricalDate(review.publishDate);
           const earliestDate = new Date(earliest);
-          const daysBefore = (earliestDate - pubDate) / (1000 * 60 * 60 * 24);
+          const daysBefore = pubDate ? (earliestDate - pubDate) / (1000 * 60 * 60 * 24) : 0;
           if (daysBefore > 30) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);

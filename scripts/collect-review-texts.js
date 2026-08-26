@@ -140,6 +140,7 @@ const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
+const { parseDate } = require('./lib/date-utils');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -5843,9 +5844,7 @@ function findReviewsToProcess() {
         // Parse publish date for archive-first logic
         let publishDate = null;
         if (data.publishDate) {
-          try {
-            publishDate = new Date(data.publishDate);
-          } catch (e) {}
+          publishDate = parseDate(data.publishDate);
         }
 
         // Count previous fetch attempts (from file + failed-fetches.json)
