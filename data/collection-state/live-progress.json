@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-26T09:29:14.935Z",
-  "processed": 34,
-  "failed": 136,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-26T09:31:55.338Z",
+  "processed": 36,
+  "failed": 140,
+  "successRate": "20.5%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 24,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 1,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-26T09:24:33.274Z",
@@ -31,6 +31,18 @@
       "t": "2026-08-26T09:27:35.265Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T09:30:35.008Z",
+      "event": "bb-session",
+      "session": "b7ad47b5",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-26T09:30:54.805Z",
+      "event": "bb-session",
+      "session": "497567bc",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
     }
   ]
 }
