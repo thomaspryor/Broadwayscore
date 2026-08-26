@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision, countRecentLaunches } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -1008,4 +1008,18 @@ test('deadBreadcrumbs: a terminal row from an EARLIER occupant still cannot supp
   const bc = deadBreadcrumbs([{ ref: 'workspace:12', title: 'current task' }], entries);
   assert.equal(bc.length, 1, 'the newer launch has no terminal row after it — its death must still be recorded');
   assert.equal(bc[0].taskId, '640');
+});
+
+test('countRecentLaunches: counts only launch entries inside the trailing window', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [
+    { event: 'launch', taskId: '1', ts: new Date(now - 10 * 60 * 1000).toISOString() }, // in window
+    { event: 'launch', taskId: '2', ts: new Date(now - 44 * 60 * 1000).toISOString() }, // in window
+    { event: 'launch', taskId: '3', ts: new Date(now - 46 * 60 * 1000).toISOString() }, // outside window
+    { event: 'dead', taskId: '4', ts: new Date(now - 1 * 60 * 1000).toISOString() },    // not a launch
+    { event: 'launch', taskId: '5' }, // missing ts, must not throw or count
+  ];
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 45 * 60 * 1000 }), 2);
+  assert.equal(countRecentLaunches([], { now, windowMs: 45 * 60 * 1000 }), 0);
+  assert.throws(() => countRecentLaunches([], { windowMs: 45 * 60 * 1000 }), /now/);
 });
