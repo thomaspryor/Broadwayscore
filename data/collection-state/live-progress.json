@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-26T21:16:02.674Z",
-  "processed": 20,
-  "failed": 53,
-  "successRate": "27.4%",
+  "updatedAt": "2026-08-26T21:17:38.445Z",
+  "processed": 21,
+  "failed": 62,
+  "successRate": "25.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -71,6 +71,17 @@
       "event": "bb-session",
       "session": "d3497bfa",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-26T21:16:07.765Z",
+      "event": "bb-session",
+      "session": "eef54c88",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-26T21:16:08.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
