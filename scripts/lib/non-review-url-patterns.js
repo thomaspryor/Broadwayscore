@@ -327,9 +327,18 @@ function classifyReviewUrl(url) {
     } catch { return { ok: false, reason: 'unparseable-url' }; }
   }
   // Playbill/BWW internal navigation (we want outlet URLs, not aggregator nav).
-  if ((h === 'playbill.com' || h === 'broadwayworld.com')
-      && !/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(url)) {
-    return { ok: false, reason: 'aggregator-internal-nav' };
+  // Also require at least 2 path segments so bare section roots like
+  // playbill.com/news or broadwayworld.com/theater are rejected too (they're
+  // category pages, not reviews, but the keyword regex alone matches them —
+  // task #361 gap-audit finding).
+  if (h === 'playbill.com' || h === 'broadwayworld.com') {
+    if (!/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(url)) {
+      return { ok: false, reason: 'aggregator-internal-nav' };
+    }
+    try {
+      const segments = new URL(url).pathname.split('/').filter(Boolean);
+      if (segments.length < 2) return { ok: false, reason: 'aggregator-section-root' };
+    } catch { return { ok: false, reason: 'unparseable-url' }; }
   }
   try {
     const p = new URL(url).pathname;

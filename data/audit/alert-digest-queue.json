@@ -154,17 +154,6 @@
     "queuedAt": "2026-08-25T13:17:56.577Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32950332881",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-26T09:17:45.160Z"
-  },
-  {
     "conditionKey": "review-gap:blast-radius-refused",
     "title": "Review-gap audit refused to write — 13.2% of shows changed coverage state",
     "description": "review-gap blast radius 13.2% (5/38 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, isla-off-broadway-2026, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
@@ -253,22 +242,11 @@
     "queuedAt": "2026-08-26T14:33:02.785Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.9% (398/511)\noff-broadway: 45.9% (150/327)\nwest-end: 71.9% (401/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (294h)\nA Midsummer Night's Dream - Globe — telegraph (294h)\nA Midsummer Night's Dream - Globe — thestage (294h)\nA Midsummer Night's Dream - Globe — times-uk (294h)\nA Midsummer Night's Dream — financialtimes (294h)\n… 205 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (294h)\nBuena Vista Social Club — broadwaynews (294h)\nHeathers The Musical — dailybeast (294h)\nJust in Time — broadwaynews (294h)\nOthello — broadwaynews (294h)\n… 5 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-26T16:26:57.786Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "5/141 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nCats: score-drift\nMuch Ado About Nothing - Globe: score-drift\nThe 25th Annual Putnam County Spelling Bee: score-drift\nMJ The Musical: score-drift\nHadestown: score-drift",
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 10 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": null,
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32989630438",
     "decision": false,
     "decisionPrompt": null,
     "model": null,
@@ -284,5 +262,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-26T16:27:01.925Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 12 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32990577264",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-26T17:24:50.483Z"
   }
 ]

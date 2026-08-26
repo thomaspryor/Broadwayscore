@@ -210,6 +210,13 @@ function watchdogClaimPending(entries, now) {
   for (const [id, claimMs] of lastClaim) {
     const launchMs = lastLaunch.get(id);
     if (launchMs != null && launchMs >= claimMs) continue;      // the claim landed
+    // BRO-395: a future-dated claimMs must never read as "just claimed" —
+    // `now - claimMs < REDISPATCH_REARM_MS` alone is satisfied forever by a
+    // future timestamp (now-claimMs negative, always < a positive window),
+    // which would wedge this task claim-pending permanently and silently
+    // block every downstream consumer (dispatchCapDecision, the
+    // awaitingClaim label below) from ever seeing it as stale.
+    if (claimMs > now) continue;
     if (now - claimMs < REDISPATCH_REARM_MS) pending.set(id, claimMs);
   }
   return pending;

@@ -694,10 +694,32 @@ async function main() {
   // other callers (linear-next.js --list) still want in full.
   try {
     const linear = require('./lib/linear-client.js');
-    const { buildAwaitingOwnerSection } = require('./lib/owner-approval-channel.js');
+    const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
-    const section = buildAwaitingOwnerSection(issues);
+    const awaiting = (issues || []).filter(isAwaitingOwner);
+    // BRO-420: "waiting since" is derived from linear-attach-approval.js's
+    // summary comment, not issue.updatedAt (see owner-approval-channel.js's
+    // waitingSince() header for why), so re-fetch comments for just the
+    // awaiting-owner subset via enrichWithComments (pure orchestration, unit
+    // tested there — this call site is the only I/O: wiring linear.getIssue
+    // in). Best-effort: enrichWithComments falls back to the un-enriched
+    // issues on any per-issue error or a whole-batch timeout, so
+    // buildAwaitingOwnerSection then just dates those rows off updatedAt
+    // instead of losing the section.
+    const enriched = await enrichWithComments(awaiting, {
+      getIssue: (identifier) => linear.getIssue(identifier),
+      onError: (issue, err) =>
+        console.error(
+          `[digest] WARN awaiting-owner comment enrichment failed${issue ? ` for ${issue.identifier}` : ''}, falling back to updatedAt: ${String(err.message).slice(0, 120)}`
+        ),
+    });
+    // Re-check the label on the freshly re-fetched labels (enrichWithComments
+    // refreshes them alongside comments): listOpenIssues() and the re-fetch
+    // above are two separate round trips, so an owner who removed the
+    // awaiting-owner label in that gap must not still show up as waiting
+    // (ship-check finding, BRO-420).
+    const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner));
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
