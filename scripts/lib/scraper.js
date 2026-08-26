@@ -1257,9 +1257,16 @@ function verifyFetchedUrl(html, expectedUrl) {
   //   - http:// vs https:// (e.g. old NYPost URLs stored as http but canonicalized to https)
   //   - invisible/bidi Unicode marks (see stripInvisibleUnicode above)
   // Path-only comparison is robust: none of these change the article served.
+  //
+  // Second arg to `new URL()` resolves relative canonical/og:url values (legal
+  // per the HTML spec, resolved against the page's own URL absent a <base>
+  // tag) — e.g. todaytix.com's og:url is a bare `/nyc/shows/<id>-<slug>?...`
+  // path with no scheme/host. Without a base, `new URL()` throws and the catch
+  // branch compared the raw relative string against a full hostname+path,
+  // guaranteeing a false url_mismatch even when the path matched exactly.
   function normalizeForVerify(u) {
     try {
-      const parsed = new URL(stripInvisibleUnicode(u));
+      const parsed = new URL(stripInvisibleUnicode(u), expectedUrl);
       return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
     } catch { return stripInvisibleUnicode(u).toLowerCase().replace(/\/$/, ''); }
   }
@@ -1322,12 +1329,46 @@ function verifyFetchedUrl(html, expectedUrl) {
       // false-match under this rule with no host restriction — confirmed in
       // review. Only allowlist hosts verified to use a CMS-unique numeric
       // post ID (not a date/index) in this position.
-      const POST_ID_HOSTS = new Set(['variety.com']);
-      if (POST_ID_HOSTS.has(expHost)) {
-        const expIdMatch = expLast && expLast.match(/(\d{6,})$/);
-        const actIdMatch = actLast && actLast.match(/(\d{6,})$/);
-        if (expIdMatch && actIdMatch && expIdMatch[1] === actIdMatch[1]) {
+      //
+      // BRO-151: audited the top hosts in url-mismatch-suspects.json for the
+      // same class of bug. ft.com's legacy /cms/s/<n>/<uuid>.html permalinks
+      // (pre-2016) redirect to a totally different /content/<uuid> structure
+      // — the FT.com content UUID is embedded at the START of the legacy
+      // segment (sometimes followed by `,Authorised=false.html` cruft) and
+      // is the ENTIRE modern segment, so it's extracted with a start-anchored
+      // regex rather than variety.com's end-anchored one. 17 live suspects
+      // (all same-article) confirmed this is safe to allowlist.
+      const TRAILING_ID_EXTRACTORS = {
+        'variety.com': (s) => { const m = s && s.match(/(\d{6,})$/); return m && m[1]; },
+        'ft.com': (s) => {
+          const m = s && s.match(/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+          return m && m[1].toLowerCase();
+        },
+      };
+      const idExtractor = TRAILING_ID_EXTRACTORS[expHost];
+      if (idExtractor) {
+        const expId = idExtractor(expLast);
+        const actId = idExtractor(actLast);
+        if (expId && actId && expId === actId) {
           return { verified: true, reason: 'post_id_match' };
+        }
+      }
+
+      // BRO-151: show-score.com re-categorizes shows across market/venue-type
+      // directories (broadway-shows ↔ off-broadway-shows ↔ off-off-broadway-shows
+      // ↔ uk/london/{west-end,off-west-end}-shows) while keeping the show's own
+      // slug stable — the suffix_redirect check above requires matching parent
+      // directories, which fails here because the ENTIRE directory changes, not
+      // just the final segment. Host-scoped like the post-ID check above: the
+      // slug is show-score's own unique identifier for the show, so a word-
+      // boundary match on it is safe regardless of which category directory
+      // currently holds it. 30 live suspects (all same-show re-categorizations)
+      // confirmed this is safe to allowlist.
+      const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
+      if (CATEGORY_DRIFT_HOSTS.has(expHost) && expLast && actLast && actLast.startsWith(expLast)) {
+        const nextChar = actLast.charAt(expLast.length);
+        if (nextChar === '' || /[-_.]/.test(nextChar)) {
+          return { verified: true, reason: 'category_redirect' };
         }
       }
     }
