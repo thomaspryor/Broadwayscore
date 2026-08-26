@@ -66,6 +66,7 @@ const { mergeOpeningNightSent } = require('./merge-opening-night-sent');
 const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
+const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -92,6 +93,23 @@ const CORE_DATA_MERGE_REGISTRY = [
     optInReconcile: false,
   },
   { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl' },
+  {
+    file: 'audit/express-retry-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeExpressRetryQueue,
+    format: 'json',
+    newline: true,
+    // opening-night-express.yml uses a PER-SHOW concurrency group (see its
+    // own comment on `concurrency:`), so multiple shows opening the same
+    // night dispatch concurrently and can each append a retry entry to this
+    // file around the same time — same multi-writer shape as
+    // social-post-history.json. Reconciled ONLY via the case-arm path (same
+    // reasoning as feedback-request-ledger.json above); not opted into the
+    // post-rebase reconcile pass since the case-arm fires unconditionally on
+    // an actual conflict, which two near-simultaneous appends reliably cause.
+    optInReconcile: false,
+  },
 
   // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
   // push-race hardening, session 2026-08-22, incident run 32559247279) ──────

@@ -124,3 +124,47 @@ The launchd-dispatched monitor pass inherits a bare environment. `SCRAPINGBEE_AP
 - Workaround inside a pass: `set -a && . ./.env && set +a` before every node invocation.
 - Permanent fix: export the .env vars from the launchd plist / `opening-night-monitor-launch.js`.
 - Cost of missing it: a pass reports "census failed, aggregators unreachable" and the next pass repeats the same dead fetch. Suspect this on 2026-08-12/18/19 passes too.
+
+## Gate: tour-contamination safety net silently DEMOTES an already-live review
+
+**Class:** include→exclude regression triggered by the review's own full text arriving.
+
+A review can be live on prod for hours and then vanish, with no audit line and no alert —
+the show's `rc` just decrements. Cause: `isTourReviewExcerpt()` feeding the CONTAMINATION
+SAFETY NET in `scripts/lib/review-guards.js` (~:3134-3143). It inspects only
+`fullText.slice(0, 600)`, so any Broadway review whose intro mentions the production's
+**prior national tour** ("following a national tour") is read as a tour-stop review and
+excluded. Score, `contentTier` and aggregator corroboration are all ignored.
+
+**Seen:** paranormal-activity-2026 (opening 2026-08-25). `theatermania--zachary-stewart.json`
+live at 04:19Z (rc=20); text fetch at 04:05Z replaced aggregator excerpts with the real body;
+by 04:41Z prod was rc=19. `explainExclusion()` => `tourContaminationInText`.
+
+**Why it is monitor-only-detectable:** nothing in the pipeline flags a demotion. It was found
+purely by diffing prod `rc` against an independent census. **If prod rc DROPS between passes,
+suspect this class first** — run `explainExclusion()` over every review-texts file for the show
+and look for a file whose `textFetchedAt` is newer than the last good rebuild.
+
+**Tonight's fix (data level):** set `allowTourSignal: true` + `allowTourSignalReason` + all 8
+protection fields. That is the guard's own designed escape hatch. **Corroborate production
+identity from the census source first** — venue in body, publishDate == openingDate, and the
+same URL cited under the Broadway production by ≥2 aggregators.
+
+**Trap:** `allowTourSignal` / `allowFilmSignal` are NOT in `PROTECTED_FIELDS`
+(`scripts/lib/review-write-guard.js`), so a CI restore can strip the clear and re-exclude the
+review. Re-verify the field survives after any observed CI checkpoint commit.
+
+Cards: P0 `3c8637c5-416f-817a-b698-ddbb70e78ba7` (guard fix + demotion audit line),
+P1 `3c8637c5-416f-81fb-8efb-cfb60059d3e3` (PROTECTED_FIELDS 3-way sync).
+
+## Gate: auto-ingest paths write UNFLAGGED phantom reviews (paranormal-activity-2026, 2026-08-26, passes 5-8)
+
+Three distinct rc-inflation defects, all from ingest paths that skip the triage checks the manual path runs:
+
+1. **Critic personal-repost site ingested as an independent outlet.** `showriz.com` is Variety critic Frank Rizzo's own blog; the post is his Variety review verbatim ("My Variety Review: Broadway's Paranormal Activity"). Discovery wrote it with `critic: undefined`, so no cross-outlet dedupe fired. rc 20→21 and one critic's opinion was double-weighted in the composite.
+2. **Aggregator SHOW PAGE written as a review.** `audit-aggregator-gap` auto-ingest wrote `didtheylikeit.com/shows/paranormal-activity/` with `contentTier: complete`, no flags, `isIncludableForRebuild() => true`. Roundup detection runs in manual triage, not in the auto-ingest path.
+3. **Same-URL byline/unknown pairs from one ingest batch.** `people--dave-quinn.json` + `people--unknown.json`, identical `url`; also `theater-pizzazz--ron-fassler.json` + `theater-pizzazz--unknown.json`. Both copies unflagged and includable → the outlet enters reviews.json twice. Note the survivor is often the WRONG one: Theater Pizzazz kept the `--unknown` copy (complete text, `critic: Unknown`) and dropped the byline copy, so the live entry lost its critic name.
+
+**Triage recipe when rc is higher than your census outlet count:** list `data/review-texts/<show>/`, group files by `url` (exact match) and by domain-vs-critic-name; any group of size >1 is a duplicate pair, any file whose url is an aggregator `/shows/<slug>/` path is a phantom.
+
+**Trap that costs a whole pass:** `audit-duplicate-of-url-mismatch.js --fix` nulls a manually-set `duplicateOf` whenever the two files' URLs differ, and it reads NO protection field — `manuallyVerified` / `protectedFromAutoFlagging` / `doNotAutoFlag` are all inert against it (it leaves a `duplicateClearReason` naming itself). So legitimate CROSS-DOMAIN duplicates (syndication, critic reposts) cannot be marked by hand at all. Workaround that holds: `git rm` the loser file. Identical-URL pairs (People, Theater Pizzazz) are safe to mark, since matching URLs is exactly what the auditor checks for.
