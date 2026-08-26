@@ -58,6 +58,7 @@ const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { explainOutletDomainMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { parseDate } = require('./lib/date-utils');
 const {
@@ -2962,6 +2963,26 @@ showDirs.forEach(showId => {
       if (data.wrongShow === true) {
         logExclusion("skippedWrongShow", showId, file, data);
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
+      }
+
+      // Outlet-domain mismatch (task #1926, paranormal-activity-2026
+      // incident): the file's outletId is a REGISTERED outlet (e.g. vulture,
+      // T1 weight 1.0) but data.url's host doesn't match that outlet's own
+      // registered domain/domainAliases — an operator-supplied outletId
+      // (submit-review-form / audit-aggregator-gap auto-ingest) borrowing a
+      // registered outlet's tier without the review actually being that
+      // outlet's own content. Recomputed fresh every run (not gated on the
+      // stored domainUnvalidated flag, which can go stale — see
+      // scripts/lib/outlet-domain-validation.js docstring). This inline check
+      // is what actually stops the real double-count; explainExclusion() in
+      // review-guards.js mirrors it for the ~35 audit/monitoring call sites
+      // but is NOT itself the scoring-corpus gate (see the isNonReview note
+      // just below for the same "this loop is the enforcement, not the
+      // mirror" pattern).
+      if (explainOutletDomainMismatch(data, outletRegistry)) {
+        logExclusion("skippedOutletDomainUnvalidated", showId, file, data);
+        stats.skippedOutletDomainUnvalidated = (stats.skippedOutletDomainUnvalidated || 0) + 1;
         return;
       }
 

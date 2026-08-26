@@ -107,6 +107,44 @@ describe('resolveCanonicalOutletId — edge cases', () => {
   });
 });
 
+describe('resolveCanonicalOutletId — task #1926 outlet-domain-borrowing fixture', () => {
+  // Real incident (2026-08-26): review-texts/paranormal-activity-2026/
+  // vulture--sandy-macdonald.json was ingested with outletId "vulture" (T1,
+  // weight 1.0) but a url on newyorknotebook.substack.com — a host that
+  // matches none of vulture's registered domains (vulture.com, domainAliases
+  // nymag.com/newyorkmetro.com). normalizeOutlet('newyorknotebook') fuzzy-
+  // matches vulture's "newyork"/"nymag" alias fragments, and Case B used to
+  // trust that blind. This is exactly the "New York Notebook class" the
+  // provisionalOutletIdFromHost docstring above already names.
+  test('operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorknotebook',
+      url: 'https://newyorknotebook.substack.com/p/paranormal-activity',
+    });
+    assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
+    assert.strictEqual(r.outletId, 'newyorknotebook');
+    assert.strictEqual(r.source, 'slug-fallback');
+    assert.ok(r.warning);
+    assert.match(r.warning, /vulture/);
+  });
+
+  test('operator input matching a registered outlet AND a matching host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'vulture',
+      url: 'https://www.vulture.com/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+
+  test('operator input matching a registered outlet via a domainAlias host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'nymag',
+      url: 'https://nymag.com/vulture/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+});
+
 describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BRO-247)', () => {
   // silent-exclusion-detectors.js (#1254) and review-normalization.js's
   // buildDomainToOutletIndex (BRO-247, PR #573) both had the same bug: they
