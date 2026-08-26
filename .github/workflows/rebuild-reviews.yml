@@ -48,7 +48,18 @@ jobs:
       github.event_name != 'workflow_run'
       || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 30->40 (card #1891 follow-up, 2026-08-26, adversarial ship-check
+    # finding): "Commit and push changes" below can now take up to 900s
+    # (15min) vs the OLD 240s (4min) worst case — an added ~11min of
+    # possible step duration. Stacked against this job's other explicit
+    # step budget ("Extract pull quotes for new reviews", timeout-minutes:
+    # 12 below) that alone is 12+15=27 of the OLD 30min ceiling, leaving
+    # near-zero room for checkout/rebuild/push-core-data/deploy-trigger and
+    # every other unbounded step in this ~35-step job. Raised the same way
+    # data-health-check.yml's job timeout was (task #1842): give real
+    # headroom past the new internal push-step deadline, not just past the
+    # old one.
+    timeout-minutes: 40
 
     steps:
       - name: Checkout repository
