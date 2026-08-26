@@ -25,6 +25,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { runClaudeCli } = require('./claude-cli.js');
 const ledger = require('./dispatch-ledger.js');
+const { shouldRefuseDispatch } = require('./worktree-gc-reclaim.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -132,6 +133,41 @@ function teardownJobWorktree(wtPath, jobId) {
   } catch { return false; }
 }
 
+// Dispatch disk-pressure floor (BRO-2319): worktrees hit 84GB/99 dirs and
+// disk free hit 4.7Gi with GC unable to reclaim (all 82 unmerged) — under
+// that condition dispatch didn't fail loudly, it failed INVISIBLY (lease
+// mkdir / worktree checkout / ledger append can all silently no-op or throw
+// under ENOSPC, and the caller's own pre-runJob ledger "launch" write in
+// bsc-next.js/linear-next.js already wraps its own failure in a non-fatal
+// console.error). This is the one shared choke point both dispatchers call
+// through, so the check lives here rather than duplicated in each caller.
+const DEFAULT_DISPATCH_DISK_FLOOR_GB = 5;
+const GC_SCRIPT = path.join(REPO, 'scripts', 'gc-merged-worktrees.sh');
+
+// Same `df -Pk` parse as scripts/lib/disk-floor-check.sh's ensure_disk_floor,
+// reimplemented in JS because that helper is bash-sourced (push-with-retry.sh/
+// merge-worktree-to-main.sh) and this call site is Node. Fails to null (never
+// throws) so a missing/broken `df` never blocks dispatch on its own — same
+// fail-open contract as ensure_disk_floor.
+function freeDiskGB(repoPath) {
+  try {
+    const out = execFileSync('df', ['-Pk', repoPath], { encoding: 'utf8', timeout: 10000 });
+    const cols = (out.trim().split('\n')[1] || '').trim().split(/\s+/);
+    const availableKb = Number(cols[3]);
+    return Number.isFinite(availableKb) ? availableKb / 1024 / 1024 : null;
+  } catch { return null; }
+}
+
+// Try the same self-heal ensure_disk_floor already performs for push/merge
+// BEFORE refusing dispatch — a transient low-disk moment the GC can clear in
+// seconds (stripping node_modules/.next from stale worktrees, reclaiming
+// already-merged ones) must not page the owner for nothing. Best-effort:
+// any failure here (lock held by a concurrent run, script missing) falls
+// through to the refusal check below with freeGB re-measured regardless.
+function selfHealDiskPressure() {
+  try { execFileSync('bash', [GC_SCRIPT], { stdio: 'ignore', timeout: 5 * 60 * 1000 }); } catch { /* best-effort */ }
+}
+
 /**
  * Run a task as a headless job. Resolves when the session finishes.
  * @param {object} opts
@@ -178,6 +214,40 @@ async function runJob(opts) {
 
   const jobId = `${taskId}-${Date.now().toString(36)}`;
   const logFile = path.join(LOG_ROOT, `${jobId}.log`);
+
+  // Disk-pressure preflight (BRO-2319), before any lease/worktree I/O that
+  // could fail silently under ENOSPC. freeGB === null (df unavailable/erred)
+  // never refuses — same fail-open contract as ensure_disk_floor.
+  const dispatchFloorGB = Number(process.env.BSC_DISPATCH_DISK_FLOOR_GB || DEFAULT_DISPATCH_DISK_FLOOR_GB);
+  let freeGB = freeDiskGB(REPO);
+  if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
+    selfHealDiskPressure();
+    freeGB = freeDiskGB(REPO);
+  }
+  if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
+    const detail = `disk free ${freeGB.toFixed(1)}GB < floor ${dispatchFloorGB}GB after self-heal GC — refusing dispatch for task ${taskId}`;
+    console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
+    // ABANDONED, not FAILED: disk pressure is infra, not a defect in this
+    // task — JOB_EVENTS.FAILED counts toward a task's dead-attempt strikes
+    // (isDeadlikeEvent in dispatch-ledger.js), and a transient fleet-wide
+    // disk condition must not permanently park an otherwise-healthy task.
+    // Same "task is fine, this attempt just didn't run" semantics as the
+    // lease-held case below.
+    try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `disk-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
+    // Fire-and-forget: dispatch must not block on email delivery. severity
+    // 'critical' is the one email-eligible tier (discord-notify.js's
+    // shouldEmailAlert) — this is exactly the "degrade loudly" this guard
+    // exists for, not a log-only warning.
+    try {
+      require('./discord-notify.js').sendAlert({
+        title: 'Dispatch refused — disk pressure',
+        description: detail,
+        severity: 'critical',
+        email: true,
+      }).catch((e) => console.error(`[bsc-runner] disk-pressure alert send failed: ${e.message}`));
+    } catch (e) { console.error(`[bsc-runner] disk-pressure alert require failed: ${e.message}`); }
+    return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
+  }
 
   // Card #1454: acquireLease() (mkdirSync-based) can throw (e.g. LEASE_ROOT
   // unwritable) before ever returning ok/not-ok — without this catch, that
