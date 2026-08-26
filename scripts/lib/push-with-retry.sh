@@ -742,6 +742,21 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/audit/express-retry-queue.json)
+        # Multi-writer (card #1889): opening-night-express.yml uses a
+        # per-show concurrency group, so multiple shows opening the same
+        # night can each append a retry entry around the same time. Unlike
+        # the per-run-independent audit/ logs below, a whole-file keep-local
+        # here would silently drop one show's queued retry — same class as
+        # feedback-request-ledger.json above and social-post-history.json.
+        echo "  Auto-resolving (express-retry-queue merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::express-retry-queue merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"
