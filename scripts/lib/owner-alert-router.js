@@ -95,7 +95,15 @@ function isCIExecution() {
 }
 const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
   || (isCIExecution() ? TRACKED_LEDGER_PATH : LOCAL_LEDGER_PATH);
-const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
+// BRO-2424: unlike LEDGER_PATH above, this had no env override — a manual
+// CLI smoke test of any routeAlert(disposition:'digest') caller (e.g.
+// running a guard-escalation-integrated script directly to verify its
+// auto-recovery behavior) writes straight into the real, git-tracked repo
+// digest queue with no way to redirect it. Hit this twice in one session
+// (had to detect + `git checkout --` the pollution both times) testing
+// scripts/check-vercel-build-guard.js and scripts/check-corpus-drift.js.
+const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
+  || path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
 // records successes (a failed dispatch is deliberately not written there, so
