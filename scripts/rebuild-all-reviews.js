@@ -2312,7 +2312,26 @@ showDirs.forEach(showId => {
         let nCycleExcludeFile = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+          // refAlsoDupe deliberately checks ONLY refData.duplicateOf, not
+          // refData.duplicateTextOf (BRO-2317). duplicateTextOf is a
+          // TEXT-STORAGE annotation this file's own content-fingerprint dedup
+          // pass (above, "1C. Content hash dedup" in collect-review-texts.js)
+          // sets on a file that legitimately holds its OWN fullText — it means
+          // "my content also matches some sibling", not "I am excluded/at
+          // risk", and it never by itself excludes refData (nothing in
+          // isIncludableForRebuild/explainExclusion checks bare
+          // data.duplicateTextOf as a self-exclusion trigger). Folding it into
+          // "reference is ALSO a dupe, recover me" was the root cause: a
+          // cluster winner that legitimately holds its own fullText AND
+          // carries a duplicateTextOf pointing at one of its own losers (from
+          // that same dedup pass) made every OTHER, non-circular loser in the
+          // cluster look like it pointed at "a dupe pointing elsewhere" and
+          // silently fall through unexcluded — reviews.json got duplicate
+          // URLs and validate-data.js's NEW-duplicate-URL gate failed on main
+          // + all 17 open PRs (loves-labours-lost-globe-west-end-2026,
+          // 2026-08-26). refData.duplicateOf, by contrast, IS a real
+          // unresolved verdict regardless of content, so it always counts.
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
           // Only tiebreak on TRUE duplicates — same content fingerprint, OR the
           // identical source URL (same show+outlet+url can never legitimately be
@@ -2443,7 +2462,10 @@ showDirs.forEach(showId => {
         let refInheritedFlag = null;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
-          refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          // Mirrors the duplicateOf block's BRO-2317 narrowing above: refAlsoDupe
+          // checks ONLY refData.duplicateOf, never refData.duplicateTextOf — see
+          // that block's comment for the full incident.
+          refAlsoDupe = !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
           // Same-URL is a strictly stronger same-article signal than the fingerprint
           // and must count as circularSameText too — mirrors the duplicateOf block
