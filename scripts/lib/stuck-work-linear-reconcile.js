@@ -34,6 +34,13 @@
 /** Linear state types that mean "this work is finished, stop counting it". */
 const CLOSED_STATE_TYPES = new Set(['completed', 'canceled', 'duplicate']);
 
+// Network budget. linear-client's defaults (30s x 5 attempts with backoff) are
+// sized for a mutation that must land; this is a best-effort read whose failure
+// mode is "counts not reconciled", so it must never hold up the digest.
+const ATTEMPT_TIMEOUT_MS = 8000;
+const MAX_ATTEMPTS = 2;
+const DEADLINE_MS = 60000;
+
 /**
  * Normalize a card name / issue title for cross-board matching.
  * Collapses whitespace and case; keeps punctuation, which carries meaning in
@@ -56,8 +63,14 @@ function partitionBucket(cards, linearStateByTitle) {
   const kept = [];
   const resolved = [];
   for (const card of cards || []) {
-    const stateType = linearStateByTitle.get(normalizeTitle(card && card.name));
-    if (stateType && CLOSED_STATE_TYPES.has(stateType)) resolved.push(card);
+    const tally = linearStateByTitle.get(normalizeTitle(card && card.name));
+    // Drop ONLY when a twin exists and EVERY issue sharing that title is
+    // closed. Titles are not unique on this board — linear-import-rules.js:378
+    // measured 28 titles shared by 69 distinct un-Done cards, which is why the
+    // importer's own title-dedupe was deleted. A last-write-wins lookup here
+    // would let one archived Done issue silently retire a live card with the
+    // same name: the exact failure this check exists to catch, inverted.
+    if (tally && tally.closed > 0 && tally.open === 0) resolved.push(card);
     else kept.push(card);
   }
   return { kept, resolved };
@@ -84,6 +97,8 @@ function reconcileStuckBuckets(buckets, linearStateByTitle) {
       pausedCritical: buckets.pausedCritical || [],
       orphaned: buckets.orphaned || [],
       pausedStale: buckets.pausedStale || [],
+      pausedAwaitingRecheck: buckets.pausedAwaitingRecheck || [],
+      pausedParked: buckets.pausedParked || [],
       resolvedCounts: empty,
       applied: false,
     };
@@ -92,11 +107,20 @@ function reconcileStuckBuckets(buckets, linearStateByTitle) {
   const pc = partitionBucket(buckets.pausedCritical, linearStateByTitle);
   const or = partitionBucket(buckets.orphaned, linearStateByTitle);
   const ps = partitionBucket(buckets.pausedStale, linearStateByTitle);
+  // The two carve-out buckets feed the "(N awaiting recheck … not counted)"
+  // note and the parked-card resume hint. Left unreconciled they would report a
+  // different definition of "card" in the same sentence as the headline count,
+  // and parkedNote would print `bsc-next.js --id N --force` for work Linear says
+  // is already Done.
+  const ar = partitionBucket(buckets.pausedAwaitingRecheck, linearStateByTitle);
+  const pk = partitionBucket(buckets.pausedParked, linearStateByTitle);
 
   return {
     pausedCritical: pc.kept,
     orphaned: or.kept,
     pausedStale: ps.kept,
+    pausedAwaitingRecheck: ar.kept,
+    pausedParked: pk.kept,
     resolvedCounts: {
       pausedCritical: pc.resolved.length,
       orphaned: or.resolved.length,
@@ -110,17 +134,30 @@ function reconcileStuckBuckets(buckets, linearStateByTitle) {
 /**
  * Fetch every Linear issue title (INCLUDING archived — Done issues get archived,
  * and an archived Done twin is the strongest possible "not stuck" signal) mapped
- * to its state type.
+ * to a {closed, open} TALLY rather than a single state, so a title shared by
+ * several issues can't be collapsed to whichever one the API happened to return
+ * last (see partitionBucket).
+ *
+ * Bounded on purpose. This is the only network call in the stuck-work check, the
+ * check is awaited serially in main(), and the digest email is not sent until
+ * every check returns — so an unbounded call here trades "the counts are stale"
+ * for "the whole daily digest is lost". 8s per attempt x 2 attempts, plus a
+ * wall-clock deadline across the page loop; whatever has been collected when the
+ * deadline hits is returned as a PARTIAL map, which is safe because a missing
+ * title reads as "no twin" and keeps the card counted.
  *
  * Returns an EMPTY map on any failure so `reconcileStuckBuckets` degrades to a
  * no-op rather than under-reporting. Never throws: this runs inside the digest,
  * where an uncaught rejection takes out every downstream row.
  *
  * @param {{graphql:Function, getTeam:Function}} [client] injectable for tests
- * @returns {Promise<Map<string,string>>}
+ * @param {{deadlineMs?:number, now?:Function}} [opts]
+ * @returns {Promise<Map<string,{closed:number,open:number}>>}
  */
-async function fetchLinearIssueStates(client) {
+async function fetchLinearIssueStates(client, opts = {}) {
   const map = new Map();
+  const now = opts.now || Date.now;
+  const deadline = now() + (Number.isFinite(opts.deadlineMs) ? opts.deadlineMs : DEADLINE_MS);
   try {
     const lc = client || require('./linear-client.js');
     const team = await lc.getTeam();
@@ -128,6 +165,7 @@ async function fetchLinearIssueStates(client) {
     let after = null;
     // ~2.4k issues today; 250/page, capped so a pagination bug can't spin.
     for (let page = 0; page < 40; page++) {
+      if (now() >= deadline) break; // partial map is safe — see the contract
       const data = await lc.graphql(
         `query($teamId: String!, $after: String) {
           team(id: $teamId) {
@@ -137,14 +175,18 @@ async function fetchLinearIssueStates(client) {
             }
           }
         }`,
-        { teamId: team.id, after }
+        { teamId: team.id, after },
+        { timeoutMs: ATTEMPT_TIMEOUT_MS, maxAttempts: MAX_ATTEMPTS }
       );
       const conn = data && data.team && data.team.issues;
       if (!conn) break;
       for (const n of conn.nodes || []) {
-        if (n && n.title && n.state && n.state.type) {
-          map.set(normalizeTitle(n.title), n.state.type);
-        }
+        if (!n || !n.title || !n.state || !n.state.type) continue;
+        const key = normalizeTitle(n.title);
+        const tally = map.get(key) || { closed: 0, open: 0 };
+        if (CLOSED_STATE_TYPES.has(n.state.type)) tally.closed++;
+        else tally.open++;
+        map.set(key, tally);
       }
       if (!conn.pageInfo || !conn.pageInfo.hasNextPage) break;
       after = conn.pageInfo.endCursor;
@@ -158,6 +200,9 @@ async function fetchLinearIssueStates(client) {
 
 module.exports = {
   CLOSED_STATE_TYPES,
+  ATTEMPT_TIMEOUT_MS,
+  MAX_ATTEMPTS,
+  DEADLINE_MS,
   normalizeTitle,
   partitionBucket,
   reconcileStuckBuckets,

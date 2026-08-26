@@ -2762,7 +2762,7 @@ async function checkStuckWorkInner() {
     return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
   }
   const raw = classifyStuckCards(cards, Date.now());
-  const { pausedAwaitingRecheck, pausedParked, invalidDates } = raw;
+  const { invalidDates } = raw;
   // Reconcile against Linear before reporting (BRO-104). The board moved to
   // Linear on 2026-08-12 (CLAUDE.md §6) but these buckets are still computed
   // from the Notion brain, so cards closed in Linear sit Paused/In-progress in
@@ -2771,14 +2771,24 @@ async function checkStuckWorkInner() {
   // task 1285, so post-freeze Notion-only work has no twin at all). An
   // unreachable Linear is a no-op, never a shrink — see the lib's contract.
   const { reconcileStuckBuckets, fetchLinearIssueStates } = require('./lib/stuck-work-linear-reconcile');
-  const linearStates = process.env.LINEAR_API_KEY ? await fetchLinearIssueStates() : null;
+  // No `process.env.LINEAR_API_KEY &&` gate here on purpose: linear-client
+  // resolves the key from .env too, so gating on the raw env var would make a
+  // manual run print UN-reconciled numbers while CI printed reconciled ones —
+  // same command, two different answers, no signal in either. Let the fetch
+  // decide; a missing key throws inside it and degrades to the no-op path.
+  const linearStates = await fetchLinearIssueStates();
   const rec = reconcileStuckBuckets(raw, linearStates);
-  const { pausedCritical, pausedStale, orphaned } = rec;
+  const { pausedCritical, pausedStale, orphaned, pausedAwaitingRecheck, pausedParked } = rec;
   // Appended to each row so the number is self-explaining: a reader who
   // remembers "55 orphaned yesterday" can see why it is 20 today.
-  const recNote = (n) => (rec.applied && n > 0
-    ? ` [${n} more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]`
-    : '');
+  const recNote = (n) => {
+    // Three distinct states, and the email must not collapse them: reconciled
+    // and excluded N; reconciled and excluded nothing; never reconciled at all
+    // (which means the number may be inflated by stale Notion twins).
+    if (!rec.applied) return ' [not reconciled against Linear this run — may include cards already closed there]';
+    if (n > 0) return ` [${n} more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]`;
+    return '';
+  };
   const results = [];
   // Card names are free text typed into Notion and land in the HTML email —
   // escape them (first check to inject arbitrary text into the digest).
