@@ -235,17 +235,17 @@ test('shouldProbeSurface: a grace SHORTER than the delay still gets probed', () 
   assert.equal(90 - last <= SURFACE_PROBE_INTERVAL_SEC, true, `stale by ${90 - last}s at the deciding poll`);
 });
 
-test('shouldReprobeCapacity: a KNOWN answer is cached, an UNKNOWN one is re-asked (bounded)', () => {
-  // The first cut asked once, on the first poll where the surface read missing
-  // — seconds after new-workspace, exactly when the cmux socket is briefly
-  // unavailable because it is busy creating workspaces. That null read cached
-  // as "not at capacity" for the remaining 90-360s.
-  assert.equal(shouldReprobeCapacity({ known: true, attempts: 1, elapsedSec: 60, lastProbeSec: 15 }), false,
-    'a known answer cannot change materially inside one launch wait');
-  assert.equal(shouldReprobeCapacity({ known: false, attempts: 0, elapsedSec: 15, lastProbeSec: null }), true);
-  assert.equal(shouldReprobeCapacity({ known: false, attempts: 1, elapsedSec: 20, lastProbeSec: 15 }), false,
-    'bounded by the interval, not asked on every poll');
-  assert.equal(shouldReprobeCapacity({ known: false, attempts: 1, elapsedSec: 15 + CAPACITY_REPROBE_INTERVAL_SEC, lastProbeSec: 15 }), true);
-  assert.equal(shouldReprobeCapacity({ known: false, attempts: CAPACITY_PROBE_MAX_ATTEMPTS, elapsedSec: 300, lastProbeSec: 100 }), false,
-    'and bounded in total — far below the ~120 round trips the launcher rejects');
+test('shouldReprobeCapacity: bounded by a total budget and a spacing, NOT by "we have an answer"', () => {
+  // Two things the first cut got wrong, both caught in adversarial review:
+  //  - an UNKNOWN reading cached as "not at capacity" (the probe fires seconds
+  //    after new-workspace, when the cmux socket is busy creating workspaces);
+  //  - a KNOWN reading assumed stable for a 90-360s wait, which is false when a
+  //    dozen sessions dispatch on this host and can fill the last runtime.
+  assert.equal(shouldReprobeCapacity({ attempts: 0, elapsedSec: 15, lastProbeSec: null }), true);
+  assert.equal(shouldReprobeCapacity({ attempts: 1, elapsedSec: 20, lastProbeSec: 15 }), false,
+    'spaced out, not asked on every 3s poll');
+  assert.equal(shouldReprobeCapacity({ attempts: 1, elapsedSec: 15 + CAPACITY_REPROBE_INTERVAL_SEC, lastProbeSec: 15 }), true,
+    'a known answer goes stale — it must be re-asked while the budget lasts');
+  assert.equal(shouldReprobeCapacity({ attempts: CAPACITY_PROBE_MAX_ATTEMPTS, elapsedSec: 300, lastProbeSec: 100 }), false,
+    'bounded in TOTAL — far below the ~120 round trips the launcher rejects');
 });

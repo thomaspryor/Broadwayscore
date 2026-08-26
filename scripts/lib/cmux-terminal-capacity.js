@@ -261,12 +261,23 @@ const CEILING_CONFIRMATIONS_REQUIRED = 2;
  * ceiling had to clear — before it may supersede. One stray failure now
  * changes nothing; two are a pattern, exactly as at the top level.
  *
- * The candidate's counter ACCUMULATES while its VALUE moves down (min), which
- * is the only shape that converges: a genuinely lowered cap produces a
- * descending run of observations (25, 22, 21, 20 …), and a rule that restarted
- * the count on each new number would never reach 2 — the gate would keep
- * feeding doomed launches until the TTL wiped everything. This mirrors the
- * confirmed arm's own `cur <= before` corroboration rule.
+ * The candidate corroborates on exactly the same rule as the confirmed arm:
+ * an observation at or ABOVE the candidate confirms it, and one BELOW replaces
+ * it and restarts the count. An earlier cut of this paired a min() value with a
+ * monotonic counter, which looked like it converged faster and was wrong:
+ * starting from a confirmed 29, a miss at 28 followed by an unrelated miss at
+ * 12 would promote a ceiling of 12 that NO single value had ever been observed
+ * twice at, and then refuse every dispatch above 12 live tabs for a day —
+ * reintroducing the exact harm this split exists to prevent (adversarial
+ * review catch, 2026-08-26).
+ *
+ * "It will never converge on a descending run (25, 22, 21, 20 …)" is the
+ * objection to the restart rule, and it is the right behaviour rather than a
+ * flaw: a REAL cap at 20 produces failures at every count at or above 20, not
+ * a strictly descending staircase, so the first repeat at-or-above the running
+ * low confirms it. A strictly descending run is evidence that these are NOT
+ * capacity failures, and refusing to act on it leaves the gate armed at the
+ * older, higher, corroborated number — the safe direction.
  *
  * `touched` tells the persistence layer WHICH half this observation spoke to,
  * so a candidate write cannot refresh the confirmed ceiling's freshness stamp
@@ -285,11 +296,22 @@ const CEILING_CONFIRMATIONS_REQUIRED = 2;
  *            touched:'confirmed'|'candidate'|null, reason:string}}
  */
 function learnCeiling({ ceiling = null, confirmations = 0, candidate = null, candidateConfirmations = 0, liveRuntimesBefore, outcome } = {}) {
-  const cur = Number.isInteger(ceiling) ? ceiling : null;
-  const seen = Number.isInteger(confirmations) && confirmations > 0 ? confirmations : 0;
-  const cand = Number.isInteger(candidate) ? candidate : null;
-  const candSeen = Number.isInteger(candidateConfirmations) && candidateConfirmations > 0 ? candidateConfirmations : 0;
+  let cur = Number.isInteger(ceiling) ? ceiling : null;
+  let seen = Number.isInteger(confirmations) && confirmations > 0 ? confirmations : 0;
+  let cand = Number.isInteger(candidate) ? candidate : null;
+  let candSeen = Number.isInteger(candidateConfirmations) && candidateConfirmations > 0 ? candidateConfirmations : 0;
   const before = Number.isInteger(liveRuntimesBefore) ? liveRuntimesBefore : null;
+  // The two halves expire independently, so the confirmed one can age out while
+  // a candidate is still fresh. The candidate exists only to be measured
+  // against a confirmed ceiling; with that ceiling gone there is nothing left
+  // to protect, and its evidence is simply the best evidence there is. Adopt it
+  // as the (unconfirmed) ceiling rather than discarding it — the first cut fell
+  // straight into the `cur === null` arm below and threw a fresh candidate away,
+  // so a candidate could never converge across the expiry boundary while new
+  // doomed workspaces kept being created (adversarial review catch).
+  if (cur === null && cand !== null) {
+    cur = cand; seen = candSeen; cand = null; candSeen = 0;
+  }
   const keep = {
     ceiling: cur, confirmations: seen, candidate: cand, candidateConfirmations: candSeen,
     changed: false, touched: null,
@@ -328,20 +350,29 @@ function learnCeiling({ ceiling = null, confirmations = 0, candidate = null, can
       };
     }
     // Lower than a CONFIRMED ceiling: candidate arm. The confirmed number is
-    // untouched until the candidate has earned the same corroboration.
-    const nextCand = cand === null ? before : Math.min(cand, before);
-    const nextCandSeen = candSeen + 1;
-    if (nextCandSeen >= CEILING_CONFIRMATIONS_REQUIRED) {
+    // untouched until the candidate has earned the same corroboration, on
+    // exactly the rule the confirmed arm uses one branch up — at-or-above the
+    // candidate CONFIRMS it, below REPLACES it and restarts the count. See the
+    // header for why "accumulate the count while min()-ing the value" is wrong.
+    if (cand !== null && cand <= before) {
+      const nextCandSeen = candSeen + 1;
+      if (nextCandSeen >= CEILING_CONFIRMATIONS_REQUIRED) {
+        return {
+          ceiling: cand, confirmations: CEILING_CONFIRMATIONS_REQUIRED,
+          candidate: null, candidateConfirmations: 0, changed: true, touched: 'confirmed',
+          reason: `cmux failed to attach a terminal again at ${before} live runtime(s), below the confirmed ceiling ${cur} — candidate ${cand} now corroborated ${nextCandSeen}/${CEILING_CONFIRMATIONS_REQUIRED}, so the cap has genuinely dropped and ${cand} supersedes ${cur}`,
+        };
+      }
       return {
-        ceiling: nextCand, confirmations: CEILING_CONFIRMATIONS_REQUIRED,
-        candidate: null, candidateConfirmations: 0, changed: true, touched: 'confirmed',
-        reason: `cmux failed to attach a terminal at ${before} live runtime(s) for the ${nextCandSeen}${nextCandSeen === 2 ? 'nd' : 'th'} time below the confirmed ceiling ${cur} — the cap has genuinely dropped, superseding it with ${nextCand}`,
+        ceiling: cur, confirmations: seen, candidate: cand, candidateConfirmations: nextCandSeen,
+        changed: true, touched: 'candidate',
+        reason: `cmux failed to attach a terminal at ${before} live runtime(s) — candidate ${cand} seen ${nextCandSeen}/${CEILING_CONFIRMATIONS_REQUIRED}; the confirmed ceiling ${cur} stands until it is corroborated`,
       };
     }
     return {
-      ceiling: cur, confirmations: seen, candidate: nextCand, candidateConfirmations: nextCandSeen,
+      ceiling: cur, confirmations: seen, candidate: before, candidateConfirmations: 1,
       changed: true, touched: 'candidate',
-      reason: `cmux failed to attach a terminal at ${before} live runtime(s), below the confirmed ceiling ${cur} — recorded as candidate ${nextCand}, seen ${nextCandSeen}/${CEILING_CONFIRMATIONS_REQUIRED}. The confirmed ceiling stands until the candidate is corroborated.`,
+      reason: `cmux failed to attach a terminal at ${before} live runtime(s), below the confirmed ceiling ${cur} — recorded as candidate ${before}, seen 1/${CEILING_CONFIRMATIONS_REQUIRED}. The confirmed ceiling stands until the candidate is corroborated.`,
     };
   }
 
@@ -351,10 +382,28 @@ function learnCeiling({ ceiling = null, confirmations = 0, candidate = null, can
     // together with the TTL and --force, it is why a wrong number cannot
     // become permanent.
     if (cur !== null && cur <= before) {
+      // CLEARED, not raised to `before + 1`. The success proves the recorded
+      // ceiling is wrong; it does NOT reveal where the real one is, and
+      // inventing `before + 1` puts a number on disk that no observation
+      // supports — which then collects corroboration from failures far above
+      // it. Demonstrated end to end (adversarial review, 2026-08-26):
+      //
+      //   missing@12 -> 12/1   created@12 -> 13/0 (fabricated)
+      //   missing@30 -> 13/1   missing@30 -> 13/2 CONFIRMED
+      //   => the gate refuses at 20 live tabs, having seen a SUCCESS at 12 and
+      //      failures only at 30.
+      //
+      // The compensating runtime-created this file's late-adopt and reclaim
+      // paths now record made that missing-then-created-at-the-same-count pair
+      // a routine event rather than a rarity, so the latent fabrication had to
+      // go with it. "Unknown" keeps the escape from a stale-low ceiling that
+      // the raise was there for — the gate goes quiet and the next real
+      // failures re-learn the true number — without asserting anything nobody
+      // observed.
       return {
-        ceiling: before + 1, confirmations: 0, candidate: null, candidateConfirmations: 0,
+        ceiling: null, confirmations: 0, candidate: null, candidateConfirmations: 0,
         changed: true, touched: 'confirmed',
-        reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — raised to ${before + 1} and back to unconfirmed`,
+        reason: `cmux attached a terminal at ${before} live runtime(s), at or above the recorded ceiling ${cur} — that ceiling is disproved and cleared; the next failures re-learn it`,
       };
     }
     // A success at or above the CANDIDATE disproves the candidate even though

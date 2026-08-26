@@ -508,27 +508,32 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   let wakeAttempted = false;
   let nextWakeAtSec = wakeAfterSec;
   let effectiveGraceSec = injectionGraceSec;
-  // Capacity is a whole-app property, so a KNOWN answer is cached — re-asking
-  // every 3s for six minutes would be ~120 pointless cmux round trips. An
-  // UNKNOWN answer is re-asked a bounded number of times (shouldReprobeCapacity):
-  // the first cut cached the unknown too, which latched atTerminalCapacity
-  // false for the rest of the wait in precisely the degraded state the gate
-  // exists for.
+  // Asked a bounded number of times, spaced out (shouldReprobeCapacity) rather
+  // than once-and-cached: an unknown reading must not latch as "plenty of
+  // room", and a known one goes stale because a dozen sessions dispatch on
+  // this host in parallel. An unknown reading leaves the previous verdict
+  // standing instead of overwriting it with a guess.
   let atTerminalCapacity = false;
-  let capacityKnown = false;
   let capacityProbeAttempts = 0;
   let lastCapacityProbeSec = null;
-  // Sticky (blocking /code-review catch): the read-screen verdict is now
-  // throttled, but it is ALSO the sole trigger for ceiling learning —
-  // decideLaunchWait's grace-expiry branch uses it only as a LABEL, and that
-  // label (TERMINAL_RUNTIME_MISSING) is what launchCmuxSessionInner gates
-  // recordCapacityOutcome('runtime-missing') on. Recomputed per poll, the
-  // DECIDING iteration would usually be a non-probe poll, the label would
-  // degrade to INJECTION_NEVER_RAN, and the throttle would silently disable
-  // the whole fix. Latched exactly like wrapperEverSeen below; safe because
-  // the probe only runs while !wrapperEverSeen, and once the wrapper is seen
-  // the state machine resolves before it ever consults this.
-  let surfaceEverConfirmedMissing = false;
+  // The LAST read-screen verdict, carried between polls because the probe is
+  // now throttled rather than run every 3s.
+  //
+  // Carried, but deliberately NOT latched sticky-true. It has to survive
+  // between probes because it is the sole trigger for ceiling learning:
+  // decideLaunchWait's grace-expiry branch uses it as a LABEL, and that label
+  // (TERMINAL_RUNTIME_MISSING) is what launchCmuxSessionInner gates
+  // recordCapacityOutcome('runtime-missing') on — recomputed from scratch each
+  // poll, a non-probe deciding iteration would degrade it to
+  // INJECTION_NEVER_RAN and the throttle would silently disable the whole fix.
+  // But latching it FOREVER is the opposite error (adversarial review catch):
+  // a healthy launch's runtime attach was measured as slow as 39.9s on this
+  // machine, so a legitimate "no surface yet" at 15s would then still read as
+  // missing at 30s, after the surface had actually appeared — and branch 3b
+  // could kill a launch that was merely slow. A later probe must be able to
+  // clear it. shouldProbeSurface's forced probe at grace expiry is what makes
+  // "carried, not latched" safe: the deciding poll always reads fresh.
+  let surfaceMissingVerdict = false;
   let lastSurfaceProbeSec = null;
   for (;;) {
     const sampleAlive = wrapperProbe(marker);
@@ -593,20 +598,23 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
         // the one outcome the fail-open design exists to rule out. A throw
         // reads as "not confirmed missing", matching the probe's own
         // fail-open contract.
-        let missing = false;
-        try { missing = !!surfaceMissingProbe(ws.ref); }
-        catch (e) { console.error(`[cmux-launch] WARN surface probe threw (${e.message}) — treating the surface as not-confirmed-missing`); }
-        if (missing) surfaceEverConfirmedMissing = true;
+        // A throw leaves the PREVIOUS verdict standing rather than flipping it
+        // to false: an IPC error is "I couldn't ask", not "the surface is
+        // there", and treating it as the latter would drop a real observation.
+        try { surfaceMissingVerdict = !!surfaceMissingProbe(ws.ref); }
+        catch (e) { console.error(`[cmux-launch] WARN surface probe threw (${e.message}) — keeping the previous surface verdict (${surfaceMissingVerdict})`); }
       }
-      if (surfaceEverConfirmedMissing
-        && shouldReprobeCapacity({ known: capacityKnown, attempts: capacityProbeAttempts, elapsedSec, lastProbeSec: lastCapacityProbeSec })) {
+      if (surfaceMissingVerdict
+        && shouldReprobeCapacity({ attempts: capacityProbeAttempts, elapsedSec, lastProbeSec: lastCapacityProbeSec })) {
         capacityProbeAttempts += 1;
         lastCapacityProbeSec = elapsedSec;
         let reading = { atCapacity: false, known: false };
         try { reading = readCapacityProbe(); }
         catch (e) { console.error(`[cmux-launch] WARN terminal-capacity probe threw (${e.message}) — treating capacity as unknown`); }
+        // Only a KNOWN reading moves the verdict. An unknown one leaves
+        // whatever the last known answer was — never overwritten with a guess
+        // in either direction.
         if (reading.known) {
-          capacityKnown = true;
           atTerminalCapacity = reading.atCapacity;
           if (atTerminalCapacity) {
             console.error(`[cmux-launch] ${ws.ref}: no terminal surface AND cmux is at its terminal-runtime ceiling — this workspace can never run its command (task #1904). Not retrying: the cap is app-wide.`);
@@ -614,7 +622,7 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
         }
       }
     }
-    const surfaceConfirmedMissing = surfaceEverConfirmedMissing;
+    const surfaceConfirmedMissing = surfaceMissingVerdict;
     const d = decideLaunchWait({
       claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
       attempt, maxAttempts, injectionGraceSec: effectiveGraceSec, slowBootCapSec,

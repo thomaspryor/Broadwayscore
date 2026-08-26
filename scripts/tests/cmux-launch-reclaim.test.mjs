@@ -45,6 +45,7 @@ const cmuxws = require(path.join(REPO_ROOT, 'scripts/lib/cmux-workspaces.js'));
 const {
   launchCmuxSession, readLaunchJournalEntry, writeLaunchJournalEntry, clearLaunchJournalEntry,
 } = cmuxLaunch;
+const { CAPACITY_PROBE_MAX_ATTEMPTS } = require(path.join(REPO_ROOT, 'scripts/lib/cmux-launch-state.js'));
 
 function tmpJournalPath() {
   return path.join(os.tmpdir(), `bsc-cmux-launch-journal-test-${process.pid}-${Math.random().toString(36).slice(2)}.json`);
@@ -563,12 +564,15 @@ test('capacity: an UNKNOWN probe is re-asked, not cached as "plenty of room"', (
   } finally { listMock.mock.restore(); }
 });
 
-test('capacity: a KNOWN probe is asked once and cached — no re-ask storm on a long wait', () => {
+test('capacity: probing is bounded in TOTAL — no re-ask storm across a long wait', () => {
+  // A known answer is NOT cached forever: a dozen sessions dispatch on this
+  // host and can fill the last runtime mid-wait. What keeps the cost sane is
+  // the total budget, not a "first answer wins" rule.
   let calls = 0;
   const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
   try {
     launchCmuxSession({
-      title: 'known answer cached', seed: 'seed', seedKey: 'capacity-1904-cached',
+      title: 'bounded probing', seed: 'seed', seedKey: 'capacity-1904-cached',
       cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
       verifyTimeoutSec: 200, lateAdoptSec: 0, journalPath: tmpJournalPath(),
       probes: {
@@ -580,7 +584,45 @@ test('capacity: a KNOWN probe is asked once and cached — no re-ask storm on a 
         terminalSurfaceAlive: () => false,
       },
     });
-    assert.equal(calls, 1, `a known answer must be cached, asked ${calls} times`);
+    assert.equal(calls <= CAPACITY_PROBE_MAX_ATTEMPTS, true,
+      `capacity asked ${calls} times across a 200s wait — must stay inside the ${CAPACITY_PROBE_MAX_ATTEMPTS}-probe budget`);
+    assert.equal(calls > 1, true, 'and a stale known answer must be refreshed at least once');
+  } finally { listMock.mock.restore(); }
+});
+
+test('a surface that REAPPEARS clears the missing verdict — it is carried, not latched', () => {
+  // The throttled verdict has to survive between probes (it is the sole trigger
+  // for ceiling learning), but latching it forever is the opposite error: a
+  // healthy launch's runtime attach was measured as slow as 39.9s on this
+  // machine, so a legitimate "no surface yet" early on would still read as
+  // missing after the surface had actually appeared, and the at-capacity branch
+  // could kill a launch that was merely slow.
+  // The order matters: on the FIRST probe the surface reads missing but the
+  // capacity answer is still unknown (the cmux socket is busy right after
+  // new-workspace), so branch 3b cannot fire yet. By the time capacity reports
+  // "at capacity", the surface has actually appeared. Latched, the stale
+  // missing verdict would meet the fresh at-capacity reading and kill a launch
+  // whose terminal was already attached.
+  let surfCalls = 0;
+  let capCalls = 0;
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+  try {
+    const res = launchCmuxSession({
+      title: 'surface comes back', seed: 'seed', seedKey: 'capacity-1904-unlatch',
+      cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+      verifyTimeoutSec: 120, lateAdoptSec: 0, journalPath: tmpJournalPath(),
+      probes: {
+        ...baseProbes(),
+        newWorkspace: () => ({ status: 0, stdout: 'OK workspace:9207\n', stderr: '' }),
+        terminalCapacity: () => ({ hasCapacity: true, known: true, liveRuntimes: 28, ceiling: null, reason: 'no ceiling yet', surfaces: null }),
+        surfaceConfirmedMissing: () => { surfCalls += 1; return surfCalls === 1; },
+        atTerminalCapacity: () => { capCalls += 1; return capCalls === 1 ? { atCapacity: false, known: false } : { atCapacity: true, known: true }; },
+        terminalSurfaceAlive: () => false,
+      },
+    });
+    assert.equal(surfCalls > 1, true, 'the throttle must still re-probe, or nothing can clear the verdict');
+    assert.equal(res.state, 'injection-never-ran',
+      'a surface that came back must NOT be reported as terminal-runtime-missing, even at capacity');
   } finally { listMock.mock.restore(); }
 });
 

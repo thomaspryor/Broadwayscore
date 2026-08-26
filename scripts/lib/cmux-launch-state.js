@@ -211,11 +211,19 @@ function isSlowBootFailure(state) {
 const SURFACE_PROBE_AFTER_SEC = 15;
 const SURFACE_PROBE_INTERVAL_SEC = 15;
 
-// Capacity is an app-wide property, so it is asked at most this many times and
-// only while the answer is genuinely UNKNOWN. A known answer is cached: it
-// cannot change materially inside one launch's wait, and re-asking every 3s
-// for six minutes would be the ~120 pointless round trips the launcher's own
-// comment rejects.
+// Capacity is asked at most this many times per launch, this far apart. The
+// TOTAL budget is what keeps it far below the ~120 round trips the launcher's
+// own comment rejects — not a "cache the first known answer forever" rule,
+// which is what the first cut did on two separate mistaken grounds:
+//   - an UNKNOWN reading cached as "not at capacity" (the probe fires seconds
+//     after new-workspace, exactly when the cmux socket is busy creating
+//     workspaces), and
+//   - a KNOWN reading assumed stable for the rest of a 90-360s wait, which is
+//     false on this host: a dozen sessions dispatch in parallel and can fill
+//     the last runtime inside that window (adversarial review catch).
+// Bounded re-asking costs the same worst case and is stale-free by
+// construction. Once the answer is "at capacity" the state machine resolves
+// immediately, so the budget is only ever spent while the answer is "fine".
 const CAPACITY_REPROBE_INTERVAL_SEC = 15;
 const CAPACITY_PROBE_MAX_ATTEMPTS = 3;
 
@@ -239,25 +247,26 @@ function shouldProbeSurface({ elapsedSec = 0, lastProbeSec = null, graceSec = In
   const grace = Number.isFinite(graceSec) ? Math.max(0, graceSec) : Infinity;
   if (elapsed < Math.min(afterSec, grace)) return false;
   if (!Number.isFinite(lastProbeSec)) return true;
+  // ALWAYS probe on the poll where the grace expires, whatever the interval
+  // says (adversarial review catch). That is the poll whose verdict becomes
+  // the recorded label, and the throttle can otherwise leave it reading a
+  // value up to intervalSec old — including a stale "the surface is there"
+  // from before it vanished, which loses the ceiling observation entirely.
+  // Costs at most one extra round trip, and only on launches that reach grace
+  // expiry, i.e. the ones already failing.
+  if (elapsed >= grace && lastProbeSec < grace) return true;
   return elapsed - lastProbeSec >= intervalSec;
 }
 
 /**
  * PURE. Ask cmux for its live-runtime count on this poll?
  *
- * `known` is the load-bearing input. The first cut asked exactly once, on the
- * first poll where the surface read missing — i.e. seconds after
- * `new-workspace`, precisely when the cmux socket is briefly unavailable
- * BECAUSE it is busy creating workspaces (four consecutive probes returned
- * nothing in that window on this machine). A null probe reports "capacity
- * unknown", which reads as hasCapacity:true, and the answer was then cached
- * for the remaining 90-360s — leaving the state machine's branch 3b close to
- * unreachable in exactly the degraded state it exists for. So: cache only a
- * KNOWN answer, and re-ask a bounded number of times otherwise.
+ * Bounded by a TOTAL attempt budget and a minimum spacing — deliberately not
+ * by "have we got an answer yet". See CAPACITY_PROBE_MAX_ATTEMPTS for the two
+ * ways the cache-the-first-answer rule was wrong.
  */
-function shouldReprobeCapacity({ known = false, attempts = 0, elapsedSec = 0, lastProbeSec = null,
+function shouldReprobeCapacity({ attempts = 0, elapsedSec = 0, lastProbeSec = null,
   intervalSec = CAPACITY_REPROBE_INTERVAL_SEC, maxAttempts = CAPACITY_PROBE_MAX_ATTEMPTS } = {}) {
-  if (known) return false;
   if (attempts >= maxAttempts) return false;
   const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
   if (!Number.isFinite(lastProbeSec)) return true;
