@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-26T03:57:28.971Z",
+  "updatedAt": "2026-08-26T04:02:48.176Z",
   "processed": 114,
-  "failed": 1640,
+  "failed": 1650,
   "successRate": "6.5%",
   "tierBreakdown": {
     "playwright": 69,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 1,
     "scrapingbee": 14,
     "brightdata": 13,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-25T10:36:32.537Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-26T00:41:42.360Z",
-      "event": "bb-session",
-      "session": "590f0d44",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
     {
       "t": "2026-08-26T00:41:42.898Z",
       "event": "bb-cookie-inject",
@@ -129,6 +118,17 @@
       "event": "bb-session",
       "session": "2aeb6ce9",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-26T04:01:06.788Z",
+      "event": "bb-session",
+      "session": "b3ba8ad9",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-26T04:01:07.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
