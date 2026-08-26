@@ -130,8 +130,46 @@ function resolveCanonicalOutletId({ outletArg, url }) {
     };
   }
 
-  // Case B: URL absent / domain ambiguous. Use alias resolution.
+  // Case B: URL absent / domain ambiguous / domain not itself a registered
+  // outlet. Use alias resolution — but if the URL's host IS known and does
+  // NOT match the alias-resolved outlet's own registered domain, don't trust
+  // a fuzzy name match onto a registered outlet's identity (task #1926: the
+  // real paranormal-activity-2026 incident — operator input "newyorknotebook"
+  // fuzzy-matches registered outlet "vulture" via its "newyork"/"nymag"
+  // aliases, but the review's actual host, newyorknotebook.substack.com,
+  // matches none of vulture's registered domains — a genuine outlet trying
+  // to borrow a T1's tier weight). Fall back to a host-derived provisional
+  // outlet instead of trusting the fuzzy match blind.
   if (aliasIsRegistered) {
+    if (url) {
+      const domain = parseDomain(url);
+      if (domain) {
+        const { hostMatchesOutletDomain } = require('./outlet-domain-validation');
+        const registry = loadRegistry();
+        if (hostMatchesOutletDomain(url, aliasResolved, registry) === false) {
+          const provisionalId = provisionalOutletIdFromHost(domain);
+          if (provisionalId) {
+            return {
+              outletId: provisionalId,
+              displayName: provisionalId
+                .split('-')
+                .filter(Boolean)
+                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                .join(' '),
+              source: 'slug-fallback',
+              warning:
+                `operator input "${outletArg}" resolved to registered outlet "${aliasResolved}" ` +
+                `but URL host "${domain}" doesn't match that outlet's registered domain — refusing ` +
+                `to borrow its identity. Using host-derived provisional "${provisionalId}" instead.`,
+            };
+          }
+          // No usable provisional label (e.g. an aggregator host) — fall
+          // through to the alias-trusting return below. review-file-writer.js's
+          // own validateUrlDomain guard still hard-rejects a registered-domain
+          // mismatch downstream, so this isn't a silent gap.
+        }
+      }
+    }
     return {
       outletId: aliasResolved,
       displayName: getOutletDisplayName(aliasResolved) || aliasResolved,

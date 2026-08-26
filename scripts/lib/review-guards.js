@@ -3010,6 +3010,31 @@ function explainExclusion(data, show, filePath) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
+  // outletDomainUnvalidated (task #1926, paranormal-activity-2026 incident):
+  // outletId is a REGISTERED outlet whose domain/domainAliases don't match
+  // data.url's host — an operator-supplied outletId (submit-review-form /
+  // audit-aggregator-gap auto-ingest) borrowing a registered outlet's tier
+  // weight. Recomputed FRESH every call rather than trusting the stored
+  // domainUnvalidated/domainUnvalidatedReason flags — the real specimen's
+  // stored reason still names an outletId a later merge overwrote without
+  // re-validating, so gating on the stale flag would have missed it. Escape
+  // hatch: explainOutletDomainMismatch honors allowUnvalidatedDomain + reason
+  // + the same 8-field manual-protection set ingest-manual-review.js stamps
+  // (memory/feedback_manual_review_protection_fields.md) — an operator who
+  // wants to legitimize a borrowed-tier domain mismatch must carry the same
+  // verification signals as any other manually-cleared review, not a
+  // narrower one-off pair.
+  //
+  // This is a MIRROR, not the sole gate: rebuild-all-reviews.js's actual
+  // scoring-corpus loop calls explainOutletDomainMismatch directly (its own
+  // inline check, same pattern as its isNonReview/wrongShow checks a few
+  // lines up in that file) — see that file's comment for why this function
+  // alone doesn't stop the real rebuild.
+  {
+    const { explainOutletDomainMismatch } = require('./outlet-domain-validation');
+    const { loadOutletRegistry } = require('./review-normalization');
+    if (explainOutletDomainMismatch(data, loadOutletRegistry())) return 'outletDomainUnvalidated';
+  }
   // Pre-opening temporal gate: a never-opened show cannot carry reviews
   // published long before its own previews window (helper honors priorRuns +
   // every manual-clear/early-date override — see its docstring).
