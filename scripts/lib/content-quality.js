@@ -172,6 +172,23 @@ const STRONG_CHROME_DUMP_PATTERNS = [
   /^cookie\s+(policy|notice|consent)\b/im,
   /^legal\s+(notice|disclaimer)\b/im,
   /^copyright\s+(notice|policy)\b/im,
+  // BRO-38: mirrors LEGAL_PAGE_PATTERNS::0/::1 and COOKIE_CONSENT_PATTERNS::1/::2/
+  // ::5/::6 position-independently — same buried-marker gap the 404 fix closed,
+  // for legal-title and GDPR/cookie-sentence markers. NOT extended to
+  // LEGAL_PAGE_PATTERNS's "all rights reserved"/"© YYYY...rights reserved"
+  // entries: a full-corpus parity check (2026-08-26, 33,945 scored review files)
+  // found those two specifically DO flip 7-8 genuine real reviews (kwCount just
+  // under the 3-theater-keyword substantial threshold) from valid to garbage —
+  // too common as legitimate trailing footers to scan this way. The six patterns
+  // below were verified 0 flips across the same full-corpus run; raw hit counts
+  // are allowlisted in audit-regex-patterns.js (PATTERN_ALLOWLIST) where non-zero.
+  // See cloud-memory/feedback_strong_anywhere_scan_must_be_gated.md.
+  /^privacy\s+policy\b/im,
+  /^terms\s+(of\s+)?(use|service)\b/im,
+  /legitimate\s+interest/i,
+  /data\s+protection\s+(regulation|authority).*\b(consent|cookie|opt[\s-]?out)\b/is,
+  /we\s+use\s+cookies.*\b(consent|opt[\s-]?out|preferences)\b/is,
+  /\bGDPR\b.*\b(consent|cookie|opt[\s-]?out|data\s+processing)\b/is,
   // Hard paywall walls — full call-to-action sentences (not bare "members only").
   /subscribe\s+to\s+(continue|read|access)\b/i,
   /sign\s+in\s+to\s+(continue|read|access|view)\b/i,

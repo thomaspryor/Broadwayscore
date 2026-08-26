@@ -101,6 +101,19 @@ const PATTERN_ALLOWLIST = {
   'LEGAL_PAGE_PATTERNS::6': 1000, // /©\s*\d{4}.*all\s+rights\s+reserved/
   // Cookie consent: Telegraph GDPR text bleeds into many Telegraph scrapes
   'COOKIE_CONSENT_PATTERNS::1': 100, // /legitimate\s+interest/
+  // BRO-38: STRONG_CHROME_DUMP_PATTERNS::6/7/8 mirror LEGAL_PAGE_PATTERNS::0/1
+  // and COOKIE_CONSENT_PATTERNS::1 position-independently (see content-quality.js
+  // comment above the array). Same underlying raw-hit source as those families —
+  // real "Privacy Policy"/"Terms of Use" footer links and WhatsOnStage's embedded
+  // GDPR cookie-notice bleed — but a 2026-08-26 full-corpus parity diff (33,945
+  // files) confirmed 0 of those raw hits reach isGarbageContent's actual gate
+  // (hasSubstantialReviewContent + non-trailing), because every hit either sits
+  // in a substantial real review (gate blocks it) or in trailing junk. Sized to
+  // the observed full-corpus raw count + 30% headroom, same convention as the
+  // source families.
+  'STRONG_CHROME_DUMP_PATTERNS::6': 60,  // /^privacy\s+policy/im — raw 43
+  'STRONG_CHROME_DUMP_PATTERNS::7': 20,  // /^terms\s+(of\s+)?(use|service)/im — raw 14
+  'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
   // Newsletter: real newsletter prompts in Guardian, artsdesk, TimeOut scrapes —
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
