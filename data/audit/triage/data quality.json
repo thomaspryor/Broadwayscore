@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "error",
-  "lastChecked": "2026-08-19T14:07:12.820Z",
+  "lastChecked": "2026-08-24T07:46:40.492Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,28 +13,28 @@
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "status": "warn",
-      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+      "status": "error",
+      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "status": "warn",
-      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+      "status": "error",
+      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "status": "warn",
-      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+      "status": "error",
+      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
-      "status": "warn",
-      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+      "status": "error",
+      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "status": "warn",
-      "message": "No lifetime-sweep snapshot yet (cron not yet run)"
+      "status": "error",
+      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
     }
   ]
 }

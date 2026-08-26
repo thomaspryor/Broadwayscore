@@ -57,7 +57,7 @@ function basicAuth(user, pass) {
 
 // ── Impact ─────────────────────────────────────────────────────────────
 
-async function fetchImpact(startDate, endDate) {
+async function fetchImpact(startDate, endDate, opts = {}) {
   const sid = process.env.IMPACT_ACCOUNT_SID;
   const token = process.env.IMPACT_AUTH_TOKEN;
   if (!sid || !token) {
@@ -65,9 +65,11 @@ async function fetchImpact(startDate, endDate) {
   }
 
   const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(startDate)}&EndDate=${fmtISO(endDate)}`;
-  const { ok, data } = await fetchWithTimeout(url, {
-    headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' },
-  });
+  const { ok, data } = await fetchWithTimeout(
+    url,
+    { headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' } },
+    opts.timeoutMs
+  );
 
   if (!ok || data.Status === 'ERROR') {
     const msg = data.Message || `HTTP error`;
@@ -88,7 +90,10 @@ async function fetchImpact(startDate, endDate) {
  * healthy-looking zero series.
  *
  * @param {number} days lookback (max 45)
- * @param {{now?: Date}} [opts] injectable clock for tests/replays
+ * @param {{now?: Date, timeoutMs?: number}} [opts] injectable clock for tests/replays;
+ *   timeoutMs overrides PROVIDER_TIMEOUT_MS for callers not bound by Vercel's
+ *   10s route cap (e.g. the GitHub Actions health-monitor cron, which has a
+ *   5-minute step budget — see check-affiliate-health.js's MONITOR_FETCH_TIMEOUT_MS).
  * @returns {Promise<Array<{date:string, clicks:number, conversions:number, payout:number, sales:number}>>}
  */
 async function fetchImpactDaily(days, opts = {}) {
@@ -103,9 +108,11 @@ async function fetchImpactDaily(days, opts = {}) {
   const url =
     `https://api.impact.com/Mediapartners/${sid}/Reports/partner_performance_by_day.json` +
     `?START_DATE=${fmtDate(start)}&END_DATE=${fmtDate(now)}&PageSize=${IMPACT_MAX_DAYS + 5}`;
-  const { ok, status, data } = await fetchWithTimeout(url, {
-    headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' },
-  });
+  const { ok, status, data } = await fetchWithTimeout(
+    url,
+    { headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' } },
+    opts.timeoutMs
+  );
   if (!ok) throw new Error(`Impact performance-by-day error: HTTP ${status}`);
   const records = data.Records || [];
   return records
@@ -141,7 +148,7 @@ async function fetchImpactActionsWindow(days, opts = {}) {
   const clamped = Math.min(Math.max(1, Math.floor(days)), IMPACT_MAX_DAYS);
   const start = new Date(now.getTime() - clamped * 24 * 60 * 60 * 1000);
   const end = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-  const result = await fetchImpact(start, end);
+  const result = await fetchImpact(start, end, opts);
   if (result.skipped) throw new Error(`Impact actions fetch skipped: ${result.reason}`);
   return result.actions;
 }
@@ -158,6 +165,7 @@ async function fetchImpactActionsWindow(days, opts = {}) {
  * Monitor-grade: throws on missing credentials.
  *
  * @param {number} days lookback
+ * @param {{now?: Date, timeoutMs?: number}} [opts] see fetchImpactDaily's opts doc
  * @returns {Promise<Array<{date:string, clicks:number, ttClicks:number}>>}
  */
 async function fetchPosthogDailyClicks(days, opts = {}) {
@@ -186,7 +194,8 @@ async function fetchPosthogDailyClicks(days, opts = {}) {
       method: 'POST',
       headers: { Authorization: `Bearer ${phKey}`, 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
-    }
+    },
+    opts.timeoutMs
   );
   if (!ok) throw new Error(`PostHog daily clicks error: HTTP ${status}`);
   return (data.results || []).map(([d, clicks, tt]) => ({

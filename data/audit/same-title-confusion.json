@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-09T14:17:26.833Z",
-  "totalFindings": 2,
+  "generatedAt": "2026-08-23T14:25:28.742Z",
+  "totalFindings": 1,
   "findings": [
     {
       "currentShowId": "oh-mary-2024",
@@ -8,25 +8,12 @@
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:575",
-        "days-from-closer:50",
-        "duplicate-in-suggested-dir"
+        "days-from-own:557",
+        "days-from-closer:32"
       ],
-      "reviewFile": "data/review-texts/oh-mary-2024/njcom--christopher-kelly.json",
-      "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-hi",
+      "reviewFile": "data/review-texts/oh-mary-2024/one-minute-critic--matthew-wexler.json",
+      "url": "https://1minutecritic.com/oh-mary-broadway-review/",
       "reason": "publish-date"
-    },
-    {
-      "currentShowId": "giant-west-end-2025",
-      "suggestedShowId": "giant-royal-court-off-west-end-2024",
-      "confidence": "medium",
-      "signals": [
-        "venue-slug-match",
-        "duplicate-in-suggested-dir"
-      ],
-      "reviewFile": "data/review-texts/giant-west-end-2025/thestage--dave-fargnoli.json",
-      "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald",
-      "reason": "venue"
     }
   ]
 }

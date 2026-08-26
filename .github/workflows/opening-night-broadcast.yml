@@ -52,7 +52,12 @@ concurrency:
 jobs:
   broadcast:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15->20 (card #1910 audit, 2026-08-26): raising this job's 2 hard-fail
+    # push steps to 300s/14-retries each (from the shared 240s/7-retries
+    # default) pushed the summed worst-case push budget (300+300+240=840s)
+    # to only 6.7% margin against the old 900s timeout. 20min (1200s) clears
+    # the 15% margin threshold with real headroom.
+    timeout-minutes: 20
     # Skip if triggered by a failed scoring run
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
@@ -559,7 +564,18 @@ jobs:
         # Committing right after the state is written removes that window;
         # the late "Commit data" step re-stages the same paths as a no-op
         # defense-in-depth if nothing changed since.
+        # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+        # 2026-08-26): was on the bare shared default (7 retries/240s,
+        # backoffSum 77s, ratio 0.32) — this and "Commit data" below are the
+        # only 2 genuinely hard-fail push steps in this 15-min job (the
+        # third, "Record indexing quota usage", is already `|| echo`-
+        # wrapped). Sized smaller than the 20/600s pairing used elsewhere in
+        # this audit because BOTH hard-fail steps share this job's tight
+        # 15-min budget — see the timeout-minutes comment below for the
+        # combined math.
         if: steps.check.outputs.pending_shows != ''
+        env:
+          PUSH_DEADLINE_SEC: '300'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -569,7 +585,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 14 main
 
       - name: Sync subscribers (Formspree → local)
         if: steps.check.outputs.pending_shows != ''
@@ -958,8 +974,14 @@ jobs:
               -f "title=$TITLE" || echo "Push dispatch failed for $SLUG — non-critical"
           done
 
+      # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+      # 2026-08-26): see "Commit orphan-rescore-requeue state" above for the
+      # sizing rationale — this is the second of this job's 2 hard-fail push
+      # steps sharing the same tight 15-min job budget.
       - name: Commit data
         if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '300'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -990,7 +1012,7 @@ jobs:
             exit 0
           fi
           git commit -m "data: Update opening-night broadcast audit state"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 14 main
 
 
       - name: Push core data to private repo

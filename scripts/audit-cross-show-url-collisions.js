@@ -14,9 +14,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
+// Overridable via env so tests can point at a temp fixture dir/file instead
+// of real data (same pattern as scripts/flag-wrong-production-by-date.js).
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
+  || path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = process.env.SHOWS_PATH
+  || path.join(__dirname, '..', 'data', 'shows.json');
+const REPORT_PATH = process.env.REPORT_PATH
+  || path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
 
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');

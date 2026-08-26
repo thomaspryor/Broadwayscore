@@ -20,11 +20,40 @@ on:
 
 permissions:
   contents: write
+  # Required for scripts/audit-imageless-scored-shows.js's self-heal dispatch
+  # (dispatchImageFetch() in scripts/lib/dispatch-image-fetch.js, which POSTs
+  # to the Actions API to trigger fetch-all-image-formats.yml per-show).
+  # Confirmed live (run 32618091382, 2026-08-23): every dispatch attempt this
+  # workflow made failed with "403 Resource not accessible by integration" —
+  # the default GITHUB_TOKEN's actions scope is read-only unless explicitly
+  # granted write here. Same pattern as audit-aggregator-gap.yml and 5+ other
+  # self-heal/dispatch workflows in this repo.
+  actions: write
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Required for the apiFallbackSafe registry entry (core-data-merge-
+    # registry.js, audit/imageless-scored-shows.json): push-with-retry.sh's
+    # Git Data API fallback is only safe as "ours wins outright" when
+    # overlapping runs of THIS workflow (its own cron racing a manual
+    # workflow_dispatch) queue instead of racing each other into the
+    # fallback. This workflow had no concurrency group before.
+    concurrency:
+      group: audit-imageless-scored-shows
+      cancel-in-progress: false
+    # 15->25 (task investigating card: "Benevolent"/IATI Theater discovery +
+    # image gap, 2026-08-22): this job's "Commit audit ledger" step shares
+    # the exact same push-with-retry.sh bug fixed on scrape-new-aggregators.
+    # yml and fetch-all-image-formats.yml in the same incident — plain
+    # push-with-retry.sh with no override, committing a data/audit/ path,
+    # which the Git Data API fallback unconditionally refuses. This is the
+    # self-heal mechanism (card #1456) meant to catch exactly the class of
+    # gap that caused Benevolent to launch imageless — if ITS OWN commit
+    # can't land, the safety net silently doesn't work either. 25min leaves
+    # generous headroom over the 600s(10min) PUSH_DEADLINE_SEC override
+    # below plus the audit script's own runtime.
+    timeout-minutes: 25
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -66,6 +95,21 @@ jobs:
       # reviews.yml's "Commit audit log" step.
       - name: Commit audit ledger
         if: always() && inputs.dry_run != true
+        env:
+          # History: PR #667 first fixed this step's push by raising the
+          # deadline and disabling the Git Data API fallback entirely
+          # (PUSH_API_FALLBACK_DISABLE=1) — that stopped the wasteful early
+          # bailout but a live-verified run (32576759555, 2026-08-22) still
+          # exhausted the full 600s local-retry budget and failed under
+          # sustained main-branch churn. Root cause: this file
+          # (data/audit/imageless-scored-shows.json) was blanket-disqualified
+          # from the fast API fallback along with every other unaudited
+          # data/audit/ path. It's now individually verified single-writer
+          # and registered in core-data-merge-registry.js's apiFallbackSafe
+          # list, so the fallback (built for exactly this "losing the local
+          # push race" failure mode — task #707) is allowed to run for this
+          # file. PUSH_API_FALLBACK_DISABLE removed accordingly.
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

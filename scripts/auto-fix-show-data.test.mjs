@@ -19,6 +19,13 @@ process.env.SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'test-key';
 const targetPath = require.resolve('./auto-fix-show-data.js');
 const urlDiscoveryPath = require.resolve('./lib/url-discovery.js');
 const ibdbDatesPath = require.resolve('./lib/ibdb-dates.js');
+// creative-team-verify.js destructures serpQuery from url-discovery.js at
+// require time (`const { serpQuery } = require('./url-discovery')`), so its
+// own cache entry must also be cleared — otherwise a cached copy keeps a
+// closure over the REAL serpQuery even after url-discovery.js's cache entry
+// is swapped for the mock (task #1863, caught when verifyCreativeTeamViaSerp
+// moved out of this file into the shared lib).
+const creativeTeamVerifyPath = require.resolve('./lib/creative-team-verify.js');
 
 // Load auto-fix-show-data.js with serpQuery and lookupIBDBDates swapped out.
 // Restores the real modules afterward so other tests in the same process
@@ -29,6 +36,7 @@ function loadWithMocks({ serpQueryImpl, ibdbCreativeTeam }) {
 
   delete require.cache[urlDiscoveryPath];
   delete require.cache[ibdbDatesPath];
+  delete require.cache[creativeTeamVerifyPath];
   delete require.cache[targetPath];
 
   require.cache[urlDiscoveryPath] = {
@@ -60,6 +68,7 @@ function loadWithMocks({ serpQueryImpl, ibdbCreativeTeam }) {
     // does a plain require('./lib/ibdb-dates') / require('./lib/url-discovery').
     delete require.cache[urlDiscoveryPath];
     delete require.cache[ibdbDatesPath];
+    delete require.cache[creativeTeamVerifyPath];
     delete require.cache[targetPath];
     require.cache[urlDiscoveryPath] = { id: urlDiscoveryPath, filename: urlDiscoveryPath, loaded: true, exports: realUrlDiscovery };
     require.cache[ibdbDatesPath] = { id: ibdbDatesPath, filename: ibdbDatesPath, loaded: true, exports: realIbdbDates };

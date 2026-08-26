@@ -26,6 +26,7 @@ const {
 const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
 const { summarizeBotQueries, botDropExplainsDecline, isBotQueryRow } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
+const { sampleShowPages } = require('./lib/sample-show-pages');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -55,18 +56,31 @@ const TARGET_KEYWORDS = [
   'broadway shows for tourists',
 ];
 
-// Key pages to check Core Web Vitals for (covers main page types)
-const CWV_PAGES = [
+// Static key pages to check Core Web Vitals for (covers main page types).
+// Show pages are appended dynamically — see sampleShowPages() below.
+const CWV_STATIC_PAGES = [
   `${SITE_HOST}/`,
   // /browse/best-broadway-musicals now 308-redirects to /guides/best-broadway-musicals
   // (guides feature migration) — PSI/Lighthouse was scoring the redirect stub, not the
   // real page, which is a plausible contributor to the erratic scores that triggered
   // card #311 (2026-07-21 CWV regression false-alarm investigation).
   `${SITE_HOST}/guides/best-broadway-musicals`,
-  `${SITE_HOST}/show/hamilton`,
   `${SITE_HOST}/west-end`,
   `${SITE_HOST}/off-broadway`,
 ];
+
+// Show pages are ~2800 of ~2900 routes and the heaviest page type on the site,
+// but CWV_PAGES used to hardcode exactly one of them (/show/hamilton) — so the
+// same single page got checked every week and every other show page's CWV was
+// unmonitored. Card #419: hamilton was found carrying 645KB of RSC payload;
+// sibling show pages had the identical defect with nothing to catch it.
+// sampleShowPages() (rotating, category-stratified sample) now lives in
+// scripts/lib/sample-show-pages.js so lighthouse-post-deploy.yml's per-deploy
+// gate (card #1919) can reuse it instead of duplicating the logic.
+function buildCWVPages(shows) {
+  const showPages = sampleShowPages(shows).map(slug => `${SITE_HOST}/show/${slug}`);
+  return [...CWV_STATIC_PAGES, ...showPages];
+}
 
 // Google's "Good" CWV absolute thresholds
 const CWV_ABSOLUTE = {
@@ -845,6 +859,15 @@ async function checkCoreWebVitals() {
   // calls would just burn it 3x faster for no benefit.
   const RUNS_PER_URL = psKey ? 3 : 1;
 
+  let shows = [];
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    shows = data.shows || data;
+  } catch (err) {
+    console.log('  Could not read shows.json, skipping show-page CWV sampling');
+  }
+  const cwvPages = buildCWVPages(shows);
+
   const fetchOnce = async (url) => {
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
     // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
@@ -888,7 +911,7 @@ async function checkCoreWebVitals() {
     };
   };
 
-  for (const url of CWV_PAGES) {
+  for (const url of cwvPages) {
     try {
       let best = null;
       let rateLimited = false;
@@ -1322,18 +1345,61 @@ async function sendAlerts(healthData, anomalies) {
 }
 
 // Show pages to monitor for rich results verdict (confirmed verdict:FAIL before 2026-06-07 fix)
+// 'death-of-a-salesman-2024' 404s — the real slug has never had a year suffix
+// (BRO-528, 2026-08-26). It silently read verdict:UNKNOWN/types:none in every
+// run since this check was added (2026-06-07) instead of erroring loudly,
+// because checkRichResults() has no 404/URL-validity guard — a monitor
+// checking 5 pages was actually only checking 4.
 const RICH_RESULTS_SLUGS = [
   'schmigadoon',
   'the-lost-boys',
   'cats-the-jellicle-ball',
-  'death-of-a-salesman-2024',
+  'death-of-a-salesman',
   'dog-day-afternoon',
 ];
+
+// A renamed/retired slug 404s and GSC reports verdict:UNKNOWN with no detected
+// items — indistinguishable from "hasn't been recrawled yet" unless we check
+// the slug is still real. That's exactly how 'death-of-a-salesman-2024'
+// silently checked nothing for months (BRO-528) instead of erroring loudly.
+// Pure and separately testable (CLAUDE.md rule 15) so the guard doesn't
+// require a live network call to verify.
+//
+// `shows` must be a real array to produce a trustworthy result: a malformed
+// read (e.g. `{}` instead of `{shows: [...]}`, matching
+// scripts/lib/list-running-shows.js's shape check) must NOT silently become
+// an empty catalog, or every slug would false-positive as STALE_SLUG (adversarial
+// review of the first cut of this fix, BRO-528). Returns null — not [] — to
+// let the caller distinguish "no stale slugs" from "couldn't check".
+function findStaleSlugs(slugs, shows) {
+  if (!Array.isArray(shows)) return null;
+  const validSlugs = new Set(shows.map(s => s.slug));
+  return slugs.filter(slug => !validSlugs.has(slug));
+}
 
 async function checkRichResults(token) {
   console.log('\n--- Rich Results Verdict ---');
   const results = [];
+
+  let staleSlugSet = null;
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const stale = findStaleSlugs(RICH_RESULTS_SLUGS, data.shows || data);
+    if (stale === null) {
+      console.log(`  WARN: ${SHOWS_PATH} did not contain a shows array — skipping the stale-slug validity guard for this run`);
+    } else {
+      staleSlugSet = new Set(stale);
+    }
+  } catch (err) {
+    console.log(`  WARN: could not read ${SHOWS_PATH} (${err.message}) — skipping the stale-slug validity guard for this run`);
+  }
+
   for (const slug of RICH_RESULTS_SLUGS) {
+    if (staleSlugSet && staleSlugSet.has(slug)) {
+      console.log(`  ${slug}: STALE_SLUG — no show in shows.json has this slug (renamed or retired?)`);
+      results.push({ slug, verdict: 'STALE_SLUG', error: 'slug not found in shows.json' });
+      continue;
+    }
     const inspectionUrl = `${SITE_HOST}/show/${slug}`;
     try {
       const res = await fetchT('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
@@ -1481,6 +1547,20 @@ async function main() {
     });
   }
 
+  // A STALE_SLUG (renamed/retired show) silently checks nothing forever unless
+  // it reaches this same alert path — logging it to an unattended cron's console
+  // is not "erroring loudly" (BRO-528: 'death-of-a-salesman-2024' did exactly
+  // that for months before anyone noticed).
+  const staleSlugs = richResults.results.filter(r => r.verdict === 'STALE_SLUG');
+  if (staleSlugs.length > 0) {
+    anomalies.push({
+      type: 'rich_results_stale_slug',
+      severity: 'warning',
+      message: `${staleSlugs.length} RICH_RESULTS_SLUGS entr${staleSlugs.length > 1 ? 'ies' : 'y'} no longer match a show in shows.json (renamed/retired?): ${staleSlugs.map(r => r.slug).join(', ')}`,
+      pages: staleSlugs.map(r => r.slug),
+    });
+  }
+
   if (!dryRun) {
     saveSnapshot(healthData, performance);
   } else {
@@ -1518,4 +1598,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { detectAnomalies, detectCWVAnomalies };
+module.exports = { detectAnomalies, detectCWVAnomalies, sampleShowPages, buildCWVPages, findStaleSlugs, RICH_RESULTS_SLUGS };

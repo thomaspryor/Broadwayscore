@@ -257,6 +257,28 @@ test('paths-ignore is excluded too', () => {
   assert.deepEqual(referencedScripts(src), []);
 });
 
+test('REGRESSION: a step comment naming a script as a cross-reference is not an invocation (BRO-1794)', () => {
+  // A step comment describing what a NEW step's "different risk class"
+  // cousins are (documentation, not a call) made referencedScripts() report
+  // scripts/sync-review-texts.sh as reachable purely because its path
+  // appeared in prose next to a run: block — same false-positive shape as
+  // the paths: filter case above, just via a whole-line `#` comment instead.
+  const src = [
+    'jobs:',
+    '  a:',
+    '    steps:',
+    '      - name: some step',
+    '        # see also scripts/sync-review-texts.sh, tracked separately',
+    '        run: node scripts/really-runs.js',
+  ].join('\n');
+  assert.deepEqual(referencedScripts(src), ['scripts/really-runs.js']);
+});
+
+test('a trailing comment after real content does not hide a real invocation', () => {
+  const src = "jobs:\n  a:\n    steps:\n      - run: node scripts/really-runs.js  # fast path\n";
+  assert.deepEqual(referencedScripts(src), ['scripts/really-runs.js']);
+});
+
 // ── dependency graph + reachability ─────────────────────────────────────────
 
 test('normalizePath resolves .. without touching disk', () => {

@@ -108,7 +108,6 @@ scrape-theatre-reviews.yml
 scrape-thestage-roundups.yml
 scrape-waltz-costs.yml
 scrape-wp-blogs.yml
-scraper-cost-report.yml
 send-follow-notifications.yml
 sentry-triage.yml
 snapshot-audience-grades.yml
@@ -185,11 +184,14 @@ verify-schema.yml
 # via a red main build, not a silent staleness a user would notice. Digest-only.
 outlet-registry-baseline-maintenance.yml
 
-# Weekly report-only sweeps (no auto-apply) — a stale run means slower drift
-# detection, not user-facing staleness worth paging on. Digest-only, matches
-# the other weekly audit-*.yml entries above.
-audit-stale-wrong-production.yml
+# Weekly stale-flag cleanup sweeps — a stale/missed run just means slower
+# backlog drain (files stay excluded from scoring a bit longer, same as
+# before this workflow existed), not user-facing staleness worth paging on.
+# Digest-only, matches the other weekly audit-*.yml entries above.
 clear-stale-suspected-misattribution-flags.yml
+clear-wrong-show-blockers.yml
+clear-stale-wrong-production-flags.yml
+clear-stale-wrong-show-flags.yml
 
 # BRO-54: daily safety-net rotation for data/audit/stage-latency.jsonl.
 # emitStage() already self-rotates the log inline on every pipeline write;

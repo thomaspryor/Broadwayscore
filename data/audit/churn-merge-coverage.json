@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-20T18:11:33.979Z",
+    "generatedAt": "2026-08-26T15:01:34.687Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,132 +8,129 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 3,
+    "flaggedCount": 0,
     "exemptCount": 9,
-    "coveredCount": 14,
-    "highChurnTracked": 26
+    "coveredCount": 16,
+    "highChurnTracked": 25
   },
-  "flagged": [
-    {
-      "path": "tests/unit-test-manifest.txt",
-      "churn": 46
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 41
-    },
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 32
-    }
-  ],
+  "flagged": [],
   "exempt": [
     {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 157
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 85
-    },
-    {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 84
+      "churn": 67
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 84
+      "churn": 67
     },
     {
-      "path": "public/data/stats-reviews.json",
-      "churn": 56
+      "path": "public/data/mobile-shows.json",
+      "churn": 67
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 54
+      "churn": 65
     },
     {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 47
+      "path": "data/audit/alert-ledger.json",
+      "churn": 61
     },
     {
-      "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
-      "churn": 34
+      "path": "public/data/stats-reviews.json",
+      "churn": 52
     },
     {
-      "path": "data/audit/processed-feedback.json",
-      "churn": 32
+      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
+      "churn": 45
+    },
+    {
+      "path": "public/data/shows/abigails-party-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/paranormal-activity-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 828,
+      "churn": 1155,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 802,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 457,
+      "churn": 1112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 379,
+      "churn": 392,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 362,
+      "churn": 384,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 256,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 213,
+      "churn": 177,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 119,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 119,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 119,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 89,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-anansi-the-spider-west-end-2026.json",
-      "churn": 84,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 84,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 84,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 49,
+      "churn": 79,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 73,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 67,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 32,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]

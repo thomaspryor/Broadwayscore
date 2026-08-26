@@ -1,32 +1,26 @@
 {
-  "generatedAt": "2026-08-19T14:08:22.195Z",
+  "generatedAt": "2026-08-26T12:44:25.699Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "8ad8e3eaa7226dd7b7562cf842b3aa1cb3f5f4e3",
+  "latestRunHeadSha": "022ce15b7701a8d6c77459ec2e70a71ef2371603",
   "state": "RED",
-  "consecutiveFailures": 9,
+  "consecutiveFailures": 1,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-19T04:39:58Z",
-  "redForHours": 9.4733875,
+  "redSince": "2026-08-24T07:00:36Z",
+  "redForHours": 53.730471944444446,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-19T04:05:47Z",
-  "latestFailedRunId": "32248882647",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32248882647",
-  "decidedRuns": 82,
+  "lastSuccessAt": "2026-08-23T22:10:38Z",
+  "latestFailedRunId": "32699645957",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32699645957",
+  "decidedRuns": 90,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -38,22 +32,10 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/audit-duplicate-shows.js",
+      "path": "scripts/validate-mobile-shows.js",
       "job": "Data Validation",
       "step": "UNKNOWN STEP",
       "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/lib/push-via-git-api.sh",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]push-with-retry: the Git Data API fallback did NOT run this attempt — either PUSH_VIA_API_FALLBACK was not set to 1, PUSH_API_FALLBACK_DISABLE=1 was set, no origin merge-base could be resolve"
-    },
-    {
-      "path": "tests/unit/validate-data-push-refusal-sentinel.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1 - clean shows.json → exit 0, no sentinel written"
     }
   ],
   "topFailingJob": "Data Validation"

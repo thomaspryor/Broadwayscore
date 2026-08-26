@@ -1,51 +1,11 @@
 {
-  "updatedAt": "2026-08-19T14:08:22.138Z",
-  "scanned": 2008,
-  "showsWithViolations": 41,
-  "totalViolations": 41,
-  "newSinceLastRun": 41,
+  "updatedAt": "2026-08-26T12:44:25.650Z",
+  "scanned": 2024,
+  "showsWithViolations": 44,
+  "totalViolations": 44,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-lost-boys-2026",
-    "schmigadoon-2026",
-    "titanique-2026",
-    "two-strangers-bway-2025",
-    "just-in-time-2025",
-    "stranger-things-2024",
-    "buena-vista-social-club-2025",
-    "maybe-happy-ending-2024",
-    "the-great-gatsby-2024",
-    "the-outsiders-2024",
-    "and-juliet-2022",
-    "mj-2022",
-    "moulin-rouge-2019",
-    "hadestown-2019",
-    "harry-potter-2021",
-    "wicked-2003",
-    "hamilton-west-end-2021",
-    "the-play-that-goes-wrong-west-end-2021",
-    "the-devil-wears-prada-west-end-2024",
-    "my-neighbour-totoro-west-end-2025",
-    "the-lion-king-west-end-2021",
-    "mamma-mia-west-end-2021",
-    "moulin-rouge-the-musical-west-end-2021",
-    "the-mousetrap-west-end-2021",
-    "stranger-things-the-first-shadow-west-end-2023",
-    "the-phantom-of-the-opera-west-end-1986",
-    "loves-labours-lost-globe-west-end-2026",
-    "cabaret-at-the-kit-kat-club-west-end-2021",
-    "operation-mincemeat-west-end-2024",
-    "ulster-american-irish-repertory-theatre-off-broadway-2026",
-    "death-note-the-musical-west-end-2026",
-    "the-car-man-west-end-2026",
-    "cleansed-off-west-end-2026",
-    "the-old-ladies-off-west-end-2026",
-    "the-oresteia-west-end-2026",
-    "la-boheme-off-broadway-2026",
-    "tosca-off-broadway-2026",
-    "the-smile-of-her-off-west-end-2026",
-    "the-jonathan-larson-project-off-west-end-2026",
-    "disruption-off-broadway-2026",
-    "hungry-women-off-broadway-2026"
+    "the-real-ivanov-off-broadway-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -74,6 +34,7 @@
     "the-mousetrap-west-end-2021",
     "stranger-things-the-first-shadow-west-end-2023",
     "the-phantom-of-the-opera-west-end-1986",
+    "as-you-like-it-globe-west-end-2026",
     "loves-labours-lost-globe-west-end-2026",
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
@@ -85,9 +46,11 @@
     "the-oresteia-west-end-2026",
     "la-boheme-off-broadway-2026",
     "tosca-off-broadway-2026",
+    "jeeves-takes-charge-west-end-2026",
     "the-smile-of-her-off-west-end-2026",
-    "the-jonathan-larson-project-off-west-end-2026",
+    "abigails-party-west-end-2026",
     "disruption-off-broadway-2026",
+    "the-real-ivanov-off-broadway-2026",
     "hungry-women-off-broadway-2026"
   ],
   "hits": [
@@ -326,6 +289,15 @@
       ]
     },
     {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-21",
+      "message": "as-you-like-it-globe-west-end-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "loves-labours-lost-globe-west-end-2026",
       "title": "Love's Labour's Lost - Globe",
       "openingDate": "2026-07-28",
@@ -425,6 +397,15 @@
       ]
     },
     {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "title": "Jeeves Takes Charge",
+      "openingDate": "2026-08-18",
+      "message": "jeeves-takes-charge-west-end-2026 review text mentions \"revival\" 12x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "the-smile-of-her-off-west-end-2026",
       "title": "The Smile Of Her",
       "openingDate": "2026-07-16",
@@ -434,10 +415,10 @@
       ]
     },
     {
-      "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "title": "The Jonathan Larson Project",
-      "openingDate": "2026-07-13",
-      "message": "the-jonathan-larson-project-off-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "abigails-party-west-end-2026",
+      "title": "Abigail’s Party",
+      "openingDate": "2026-08-19",
+      "message": "abigails-party-west-end-2026 review text mentions \"revival\" 20x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -447,6 +428,15 @@
       "title": "Disruption",
       "openingDate": "2026-08-02",
       "message": "disruption-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-real-ivanov-off-broadway-2026",
+      "title": "The Real Ivanov",
+      "openingDate": "2026-08-25",
+      "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

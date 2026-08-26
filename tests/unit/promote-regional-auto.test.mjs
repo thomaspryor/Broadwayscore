@@ -96,6 +96,16 @@ test('buildRegionalShowEntry: venue gets the feeder city suffix; type detected f
   assert.equal(play.venue, 'Arena Stage, Washington, DC');
 });
 
+// Card #1921 (cousin of BRO-160): buildRegionalShowEntry writes raw
+// candidate.venue instead of routing through sanitizeVenueForWrite (card
+// #994). A placeholder/neighbourhood-blob venue must be refused (venue:
+// null) BEFORE the city-suffix concatenation, not smuggled through as
+// "Midtown E, Chicago, IL".
+test('buildRegionalShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: null), not silently promoted', () => {
+  const e = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, venue: 'Midtown E' });
+  assert.equal(e.venue, null, 'card #994 write-time guard — the promotion loop in main() must skip a null-venue entry');
+});
+
 test('buildRegionalShowEntry: unparseable article date falls back to current year, null openingDate', () => {
   const e = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, articlePublishedAt: 'not-a-date' });
   assert.equal(e.openingDate, null);
@@ -231,6 +241,14 @@ test('buildOffBroadwayAggregatorShowEntry: status open + real openingDate, unlik
   assert.match(e.id, /-off-broadway-\d{4}$/);
   assert.equal(e.provisional, true);
   assert.equal(e.discoverySource, 'aggregator-roundup:bww-roundup');
+});
+
+// Card #1921 (cousin of BRO-160): buildOffBroadwayAggregatorShowEntry wrote
+// raw candidate.venue instead of routing through sanitizeVenueForWrite
+// (card #994).
+test('buildOffBroadwayAggregatorShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: null), not silently promoted', () => {
+  const e = buildOffBroadwayAggregatorShowEntry({ ...OB_ROUNDUP_CANDIDATE, venue: 'Midtown E' });
+  assert.equal(e.venue, null, 'card #994 write-time guard — the promotion loop in main() must skip a null-venue entry');
 });
 
 test('buildOffBroadwayAggregatorShowEntry: unparseable date still stays visible (status open, no closed-guess)', () => {

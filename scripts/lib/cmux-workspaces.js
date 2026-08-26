@@ -358,7 +358,9 @@ function pruneDone(opts = {}) {
     if (!dead) {
       try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
     }
-    if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning })) { skipped.push(w); continue; }
+    // title is threaded through so isCloseable can veto crown (owner-loop) tabs
+    // outright — see prune-closeable.js's CROWN_TAB_RE comment (task #1751).
+    if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning, title: w.title })) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     // TOCTOU guard (adversarial review, 2026-08-02): the selected flag above
     // is a snapshot from the top-of-sweep listing — the liveness probes take

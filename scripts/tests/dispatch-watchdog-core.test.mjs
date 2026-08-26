@@ -203,6 +203,28 @@ test('recheck failures count toward needsYou and render in the narrative', () =>
   assert.match(core.renderNarrative(plan), /acceptance recheck FAILED/);
 });
 
+// ── BRO-2318: leaky launcher, independent of detectLauncherOutage ──────────
+test('a leaky launcher (~1-in-3 injection deaths, always followed by a success) holds and counts toward needsYou even though outage.recovered is true', () => {
+  const pattern = ['dead', 'ok', 'ok', 'dead', 'ok', 'ok', 'dead', 'ok', 'ok'];
+  const entries = [];
+  pattern.forEach((kind, i) => {
+    const w = `workspace:${900 + i}`;
+    const ts = T(24 - i * 3); // spread across the last 24min, oldest first
+    if (kind === 'dead') {
+      entries.push({ ts, event: 'dead', taskId: String(900 + i), workspaceRef: w, failureReason: 'command injection never ran (no wrapper process appeared)' });
+      entries.push({ ts, event: 'launch', taskId: String(900 + i), workspaceRef: w, unverified: true });
+    } else {
+      entries.push({ ts, event: 'launch', taskId: String(900 + i), workspaceRef: w });
+    }
+  });
+  const plan = core.planSweep(entries, new Map(), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.outage.outage, false, 'sanity: not enough deaths inside the 30min outage lookback to alarm on its own terms');
+  assert.equal(plan.outage.recovered, true, 'sanity: this is exactly the "recovered" shape the outage detector is blind to');
+  assert.equal(plan.failureRate.leaking, true);
+  assert.ok(plan.budgets.holds.some(h => /leaking/.test(h)));
+  assert.equal(plan.needsYou >= 1, true);
+});
+
 test('taskPriority parses bridge line and subject fallback', () => {
   assert.equal(core.taskPriority({ description: '[notion:x] P0 Now · In progress · Admin' }), 'P0');
   assert.equal(core.taskPriority({ description: 'native', subject: 'P1: fix it' }), 'P1');
@@ -344,6 +366,18 @@ test('#1564: a claim whose child is still booting is not re-picked (duplicate-wo
   const entries = [{ ts: T(1), event: 'watchdog-redispatch', taskId: '25', kind: 'p01-backlog' }];
   const plan = core.planSweep(entries, new Map([task(25, 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.toDispatch.length, 0, 'no second dispatch while the first child is still booting');
+});
+
+test('BRO-395: watchdogClaimPending never treats a future-dated claim as pending', () => {
+  // A corrupt/clock-skewed claim row dated in the future would otherwise make
+  // `now - claimMs` negative — always < REDISPATCH_REARM_MS — so it would
+  // read as "just claimed" forever, permanently suppressing redispatch AND
+  // permanently hiding from the awaitingClaim owner-alert path (both read
+  // this same pending map).
+  const futureTs = new Date(NOW + 45 * 24 * 60 * 60 * 1000).toISOString();
+  const entries = [{ ts: futureTs, event: 'watchdog-redispatch', taskId: '77', kind: 'retry' }];
+  const pending = core.watchdogClaimPending(entries, NOW);
+  assert.equal(pending.has('77'), false, 'a future-dated claim must never count as pending');
 });
 
 test('#1564: watchdogClaimPending ignores rows with no taskId, the watchdog marker, and unparseable timestamps', () => {

@@ -97,6 +97,20 @@ data/opening-night-monitor/night-state-*.json
 data/opening-night-monitor/session-state-*.json
 data/opening-night-monitor/*.log
 data/opening-night-monitor/*.err
+# Per-attempt debug snapshots (attempt-N-noop.json etc) — missed by the
+# state/log patterns above, which is why one kept surfacing as untracked and
+# blocking sync-audit-checkout.sh's ff-only merge for launchd jobs sharing
+# this checkout (found via 2026-08-26 email triage: predispatch-queue-audit
+# and backlog-drain both stuck since 2026-08-20 on "dirty-outside-audit").
+data/opening-night-monitor/attempt-*.json
+
+# Sunday newsletter review launcher's runtime log/lock — same class of bug as
+# opening-night-monitor above (local-fs-only state that isn't read via git/CI
+# but kept getting committed, which then blocked sync-audit-checkout.sh the
+# same way). Untracked from here on (2026-08-26 email triage).
+data/audit/digest-autofix-logs/
+data/newsletter-drafts/*.log
+data/newsletter-drafts/sunday-review-lock.json
 
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
@@ -146,6 +160,14 @@ data/master-review-list.json
 data/review-texts-quarantine/
 data/calibration/calibration-examples.json
 data/collected-reviews/
+# migrate-reroute-backlog.js writes full "before" review-text snapshots
+# (including fullText) into its plan/log JSON — outside data/review-texts/,
+# so the "no copyrighted content in public repo" CI guard (path-scoped to
+# data/review-texts/ and data/aggregator-archive/) would never catch a leak.
+data/reroute-migration-plan.json
+data/reroute-migration-plan-cross-market.json
+data/reroute-migration-log.json
+data/reroute-migration-log-cross-market.json
 data/mezzanine-screenshots/
 data/bug-reviews.json
 
@@ -234,6 +256,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+# Feature specs are cross-session deliverables (Notion cards + PRs point at
+# them) — durable-path rule, same rationale as /docs/experiments/ below.
+!/docs/specs/
 # Experiment pre-registration docs are referenced by code comments as the
 # canonical source of truth (analyze-gate-cold-start.js, flag-registry.js,
 # docs/experiments/README.md's setup contract) and must be committed for
@@ -251,6 +276,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # dispatcher's safety logic (Notion → Linear transition). Referenced by the
 # Linear issue and its PR; must be committed so future sessions find it.
 !/docs/dispatcher-safety-port-table.md
+# BRO-373: the written decision that the Codex DELEGATION lane is dropped.
+# tests/unit/codex-delegation.test.mjs reads this file directly (it is the
+# card's acceptance criteria), so it must be committed or CI fails on a
+# missing file rather than on the thing the test is guarding.
+!/docs/BRO-373-codex-lane-decision.md
 /memory/
 /data/deep-research/
 /data/theater-research/
@@ -290,6 +320,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
 # — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
 /data/audit/wrongproduction-seen-files.json
+# BRO-176: exclusion-rule-census.js snapshot — regenerated every run from the
+# review-texts corpus, same reasoning as the ledger above.
+/data/audit/exclusion-rule-census.json
 /data/integrity-report.md
 /data/review-reports/
 
@@ -340,6 +373,16 @@ tmp/
 /data/audit/backlog-drain-metric.json
 /data/audit/backlog-drain-logs/
 /data/audit/job-leases/
+# Task #1896: per-task fresh-dispatch claim dir (atomic-claim.js), and the
+# pre-existing succession-lock dir it shares its primitive with — both are
+# ephemeral mkdir-marker locks, same class as job-leases/ above, that were
+# never actually gitignored before now.
+/data/audit/dispatch-claims/
+/data/audit/succession-locks/
+# linear-next.js's own fresh-dispatch claim dir (task #1898) — separate id
+# space from bsc-next.js's dispatch-claims/ above, same ephemeral mkdir-
+# marker-lock class.
+/data/audit/linear-dispatch-claims/
 # Predispatch queue backlog digest metric (task #1801) — Mac-local, same
 # reasoning as backlog-drain-metric.json above (producer
 # scripts/predispatch-queue-audit.js + consumer send-morning-digest.js both

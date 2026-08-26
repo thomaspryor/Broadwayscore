@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { closedCardGuard } = require('./dispatch-guards.js');
+const { closedCardGuard, dispatchClaimGuard } = require('./dispatch-guards.js');
 
 const TASK = { id: '1811', subject: 'test task', status: 'in_progress' };
 
@@ -76,4 +76,33 @@ test('closedCardGuard: --dry-run / --print-prompt bypass a trashed-page refusal'
 test('closedCardGuard: trashed-page refusal message tells the reader --allow-closed-card alone will not be enough', () => {
   const err = closedCardGuard(TASK, { status: 'In progress', archived: true }, {});
   assert.match(err, /--allow-reopen-suspect/);
+});
+
+// ── dispatchClaimGuard (task #1896) ─────────────────────────────────────────
+// Pure: the actual acquireClaim() mkdir/EEXIST I/O is scripts/lib/atomic-
+// claim.js's job (covered in scripts/lib/dispatch-overlap-check.test.mjs's
+// race-simulation cases); this only checks how a claim RESULT becomes a
+// refusal (or not).
+test('dispatchClaimGuard: claimResult === true is silent (this attempt won the claim)', () => {
+  assert.equal(dispatchClaimGuard(TASK, true, {}), null);
+});
+
+test('dispatchClaimGuard: claimResult === false (genuinely held elsewhere) refuses, naming the mirror-staleness race', () => {
+  const err = dispatchClaimGuard(TASK, false, {});
+  assert.match(err, /REFUSING to dispatch #1811/);
+  assert.match(err, /mirror-staleness race/);
+  assert.match(err, /--force/);
+});
+
+test('dispatchClaimGuard: claimResult === \'error\' (unreadable claim meta) fails closed with a distinct message', () => {
+  const err = dispatchClaimGuard(TASK, 'error', {});
+  assert.match(err, /REFUSING to dispatch #1811/);
+  assert.match(err, /claim dir unreadable\/corrupt/);
+});
+
+test('dispatchClaimGuard: --force / --dry-run / --print-prompt all bypass it, even on a held claim', () => {
+  assert.equal(dispatchClaimGuard(TASK, false, { force: true }), null);
+  assert.equal(dispatchClaimGuard(TASK, false, { 'dry-run': true }), null);
+  assert.equal(dispatchClaimGuard(TASK, false, { 'print-prompt': true }), null);
+  assert.equal(dispatchClaimGuard(TASK, 'error', { force: true }), null);
 });

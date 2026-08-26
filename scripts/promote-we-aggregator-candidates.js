@@ -40,7 +40,7 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
-const { WEST_END_VENUES, normalizeVenueName } = require('./lib/venue-classification');
+const { WEST_END_VENUES, normalizeVenueName, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { foldDiacritics } = require('./lib/title-match');
 const {
   fetchWetRecentRoundups,
@@ -170,7 +170,11 @@ function buildWestEndAggregatorShowEntry(candidate) {
     id,
     title: candidate.title,
     slug,
-    venue: candidate.venue,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
+    // placeholder venue; main()'s `if (!entry.venue)` check refuses to
+    // promote rather than write a garbage venue string.
+    venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
     openingDateSource: openingDate ? 'aggregator-roundup' : null,
     previewsStartDate: null,
@@ -313,6 +317,18 @@ async function main() {
     }
 
     const entry = buildWestEndAggregatorShowEntry(c);
+    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+    // string rather than silently promoting it (card #1921, cousin of
+    // BRO-160). decideWestEndAggregatorPromotion already checked
+    // c.venue against the canonical WEST_END_VENUES list above, so this
+    // should be unreachable in practice — kept as defense in depth, same
+    // pattern as the OB script's identical guard.
+    if (!entry.venue) {
+      skipped.push({ candidate: c, reason: `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)` });
+      logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });
+      continue;
+    }
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });

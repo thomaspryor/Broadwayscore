@@ -124,7 +124,7 @@ function classifyCandidate(showId, file, data, guard, decision) {
 
   // Rule 5: Flag note must be year-based OR cross-market (when --cross-market mode)
   const note = (data.wrongProductionNote || '').toLowerCase();
-  const isYearBased = /date guard|url year|publishdate|url contains year|-year|closer to sibling/.test(note);
+  const isYearBased = /date guard|url year|publishdate|url contains year|-year|closer to sibling|closer to review year/.test(note);
   const isCrossMarket = /cross-market|cross market/.test(note);
   if (isCrossMarket && !CROSS_MARKET) return { safe: false, reason: 'cross_market' };
   if (!isYearBased && !isCrossMarket) return { safe: false, reason: 'non_year_flag' };
@@ -153,7 +153,7 @@ function classifyCandidate(showId, file, data, guard, decision) {
       if (weSibs.length > 0) {
         let detectedYear = null;
         if (data.publishDate) { const m = data.publishDate.match(/(20\d\d|19\d\d)/); if (m) detectedYear = parseInt(m[0]); }
-        if (!detectedYear && data.url) { const m = data.url.match(/\/(20\d\d|19\d\d)\//); if (m) detectedYear = parseInt(m[1]); }
+        if (!detectedYear && data.url) { const m = data.url.match(/(?:^|[/\-_.])(20\d\d|19\d\d)(?=$|[/\-_.])/); if (m) detectedYear = parseInt(m[1]); }
 
         if (detectedYear) {
           const weDecision = pickRerouteTarget(guard.showYear, weSibs, detectedYear);
@@ -287,7 +287,7 @@ if (MODE === 'dryrun') {
         if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
       }
       if (!detectedYear && data.url) {
-        const m = data.url.match(/\/(20\d\d|19\d\d)\//);
+        const m = data.url.match(/(?:^|[/\-_.])(20\d\d|19\d\d)(?=$|[/\-_.])/);
         if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
       }
       if (!detectedYear) continue;
@@ -301,9 +301,17 @@ if (MODE === 'dryrun') {
       const decision = guard
         ? pickRerouteTarget(guard.showYear, guard.siblings, detectedYear)
         : { action: 'reroute', targetShowId: null, distance: Infinity };
-      // For cross-market-only shows (no guard), the classifier's Path A handles routing
+      // For cross-market-only shows (no guard), the classifier's Path A handles routing.
+      // A cross-market-flagged file can also sit in a show that DOES have same-market
+      // siblings (e.g. a UK critic's review filed under a Broadway "Hamlet" revival that
+      // also has Broadway siblings) — the same-market decision often resolves 'keep'
+      // (or reroutes to the wrong same-market sibling) because it never considers WE
+      // siblings. Don't let that same-market verdict pre-empt classifyCandidate's Path A
+      // WE-sibling routing: give cross-market-noted files a shot regardless of `decision`.
+      const noteForGate = (data.wrongProductionNote || '').toLowerCase();
+      const isCrossMarketNote = /cross-market|cross market/.test(noteForGate);
       if (!guard && !CROSS_MARKET) continue;
-      if (guard && decision.action !== 'reroute') continue;
+      if (guard && decision.action !== 'reroute' && !(CROSS_MARKET && isCrossMarketNote)) continue;
 
       // Safety classifier
       const classification = classifyCandidate(showId, file, data, effectiveGuard, decision);
@@ -420,6 +428,9 @@ if (MODE === 'execute') {
       continue;
     }
 
+    // Declared outside try/catch so the catch block's cleanup can see it —
+    // see the write-target comment below for why this gates the cleanup.
+    let targetWrittenByUs = false;
     try {
       // Re-read fresh from disk
       const sourceData = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
@@ -443,10 +454,17 @@ if (MODE === 'execute') {
         sourceData.allowEarlyDate = true;
       }
 
-      // Write target
+      // Write target. 'wx' closes the TOCTOU gap between the pre-flight
+      // existsSync check above and this write — throws EEXIST instead of
+      // silently overwriting if something else (a rebuild, a concurrent
+      // migration run) created the target in between. targetWrittenByUs
+      // gates the catch-block cleanup below: on EEXIST we did NOT write the
+      // file, so we must not delete what's sitting there — it belongs to
+      // whoever raced us.
       const targetDir = path.dirname(targetPath);
       if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-      fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n');
+      fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n', { flag: 'wx' });
+      targetWrittenByUs = true;
 
       // Delete source
       fs.unlinkSync(sourcePath);
@@ -460,8 +478,12 @@ if (MODE === 'execute') {
       if (moved % 20 === 0) console.log(`  ... ${moved} moved`);
     } catch (e) {
       console.error(`  FAIL ${sourceShowId}/${file}: ${e.message}`);
-      // Clean up target if written
-      try { if (fs.existsSync(targetPath)) fs.unlinkSync(targetPath); } catch { /* best-effort */ }
+      // Only clean up the target if THIS iteration wrote it (e.g. the
+      // subsequent unlinkSync(sourcePath) threw) — never delete a file that
+      // lost the 'wx' race, since that means it belongs to another writer.
+      if (targetWrittenByUs) {
+        try { fs.unlinkSync(targetPath); } catch { /* best-effort */ }
+      }
       failed++;
     }
   }

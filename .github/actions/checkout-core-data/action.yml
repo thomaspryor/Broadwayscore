@@ -72,6 +72,12 @@ runs:
 
           cat "$STDERR_FILE" >&2
 
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing retry/exit handling below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
           DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
             const fs = require('fs');
             const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
@@ -79,7 +85,7 @@ runs:
             const attempt = Number(process.env.ATTEMPT);
             const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
             console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
-          ")
+          ") || DECISION="stop:decision-error"
 
           rm -rf /tmp/core-data-checkout
 

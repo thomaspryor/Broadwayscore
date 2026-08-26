@@ -28,7 +28,14 @@ concurrency:
 jobs:
   digest:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Was 10 — the fallback chain (Reddit OAuth dormant, Bright Data refuses
+    # reddit.com, unauthenticated JSON hard-403s) pushes nearly every call
+    # through Scrapingdog's tier-escalation retries or 429 backoff, and
+    # `enrichWithComments` makes up to 30 of those sequentially per run.
+    # 10 min was cancelling this job on most days (matches
+    # brand-mention-monitor.yml's 15 for the same shared reddit-api.js client;
+    # 20 adds headroom for npm ci/checkout on top of it).
+    timeout-minutes: 20
     permissions:
       contents: write
 

@@ -2800,13 +2800,17 @@ function validateReviewTextDuplicates(shows) {
   }
 
   // Thresholds — non-aggregator cross-show dupes are the real concern.
-  // Baseline ~144 after multi-critic URL dedup fix (Apr 2026) — previously ~53 when
-  // aggressive URL dedup masked cross-show duplicates by dropping multi-critic reviews.
-  // Remaining are revival pairs and cross-market shows needing manual review.
-  if (crossShowDupesNonAgg > 180) {
-    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~144, spike suggests data issue)`);
-  } else if (crossShowDupesNonAgg > 160) {
-    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~144)`);
+  // Baseline ~3 after BRO-810 audit (Aug 2026) — was ~144 after the Apr 2026 multi-critic
+  // URL dedup fix (previously ~53, when aggressive URL dedup masked cross-show duplicates
+  // by dropping multi-critic reviews). The 144 were reviewed and resolved: showId/directory
+  // mismatches and misattributed announced-show reviews got wrongProduction/wrongShow flags;
+  // the ~3 remaining are legitimate same-critic coverage of both runs of a transferring
+  // production sharing one article URL (human-verified wrongProductionManualClear breadcrumbs).
+  // Acceptance target per BRO-810: keep this under 60.
+  if (crossShowDupesNonAgg > 60) {
+    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~3, BRO-810 target <60 — spike suggests data issue)`);
+  } else if (crossShowDupesNonAgg > 20) {
+    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~3)`);
   }
   // Baseline ~0 after consolidation (Feb 2026). New dupes come from collection scripts using non-canonical outlet IDs.
   if (dupeGroups > 50) {

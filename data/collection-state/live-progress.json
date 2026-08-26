@@ -1,119 +1,98 @@
 {
-  "updatedAt": "2026-08-21T04:21:37.112Z",
-  "processed": 66,
-  "failed": 985,
-  "successRate": "6.3%",
+  "updatedAt": "2026-08-26T14:18:57.149Z",
+  "processed": 107,
+  "failed": 1615,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 3,
-    "scrapingbee": 7,
-    "brightdata": 3,
+    "browserbase": 8,
+    "directCookies": 2,
+    "scrapingbee": 17,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-08-20T23:16:54.951Z",
+      "t": "2026-08-26T10:37:15.146Z",
       "event": "bb-session",
-      "session": "4f601e71",
+      "session": "65e85086",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-26T10:37:15.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-26T10:43:03.373Z",
+      "event": "bb-session",
+      "session": "a33f68b2",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-26T11:40:24.378Z",
+      "event": "bb-session",
+      "session": "f12bf93d",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-26T11:40:25.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-26T11:46:49.755Z",
+      "event": "bb-session",
+      "session": "a2e7ca66",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-08-26T11:48:10.879Z",
+      "event": "bb-session",
+      "session": "de58b2e3",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-08-26T11:48:11.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-26T14:12:51.893Z",
+      "event": "bb-session",
+      "session": "9c6de683",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-26T14:12:52.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-26T14:15:39.283Z",
+      "event": "bb-session",
+      "session": "b372412c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-26T14:16:20.788Z",
+      "event": "bb-session",
+      "session": "d527688d",
+      "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+    },
+    {
+      "t": "2026-08-26T14:18:33.719Z",
+      "event": "bb-session",
+      "session": "a217caba",
       "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
     },
     {
-      "t": "2026-08-20T23:16:55.980Z",
+      "t": "2026-08-26T14:18:34.767Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-21T00:15:59.669Z",
-      "event": "bb-session",
-      "session": "da118808",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-21T00:16:00.066Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-21T01:27:56.324Z",
-      "event": "bb-session",
-      "session": "d47a0c9c",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-21T01:27:56.739Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-21T01:31:04.525Z",
-      "event": "bb-session",
-      "session": "c1af06b3",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-21T01:31:04.904Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-21T02:57:16.677Z",
-      "event": "bb-session",
-      "session": "fea115b3",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-21T02:57:25.656Z",
-      "event": "bb-session",
-      "session": "4080fa7b",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-21T03:02:16.180Z",
-      "event": "bb-session",
-      "session": "1944a1e1",
-      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
-    },
-    {
-      "t": "2026-08-21T03:02:17.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-21T03:04:00.394Z",
-      "event": "bb-session",
-      "session": "3ac831d1",
-      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-08-21T03:04:01.231Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-21T04:15:45.133Z",
-      "event": "bb-session",
-      "session": "d2dd506d",
-      "url": "https://www.thetimes.co.uk/article/as-you-like-it-review-stick-with-this-singalo"
-    },
-    {
-      "t": "2026-08-21T04:15:46.227Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
-    },
-    {
-      "t": "2026-08-21T04:17:25.994Z",
-      "event": "bb-session",
-      "session": "bcc837a2",
-      "url": "https://www.thetimes.co.uk/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-08-21T04:17:26.970Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.co.uk"
     }
   ]
 }

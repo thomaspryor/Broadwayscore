@@ -43,8 +43,9 @@
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -381,10 +382,70 @@ export function gatedDiffPatchText(repoRoot, base, ref) {
 // where a genuine unshallow completes in well under a second.
 const UNSHALLOW_BUDGET_MS = Number(process.env.REVIEW_GATE_UNSHALLOW_MS || 5000);
 
+// Cross-PROCESS memo for the same guard (task #1502-class gap in #1497's own
+// fix): the in-memory `historyEnsured` Map below only survives one node
+// process, but pre-push-review-gate.sh/pre-merge-review-gate.sh spawn a FRESH
+// `node review-gate.mjs` per candidate ref per query type — up to ~4
+// invocations for one compound `git merge X && git push origin main` command
+// — and ancestorSet()/isAncestor() call ensureHistoryOnce() unconditionally
+// on every one of them. On this repo (134k+ commits, shallow by default under
+// actions/checkout@v5's fetch-depth:1) the unshallow attempt PROVABLY never
+// succeeds inside any hook-safe budget (see the 90s-and-still-shallow
+// measurement above) — so every invocation independently re-pays the full
+// UNSHALLOW_BUDGET_MS for a guaranteed-negative outcome. 4 x 5s == the hook's
+// own 20s SIGKILL ceiling (scripts/tests/merge-gate-hook.test.mjs
+// HOOK_TIMEOUT_MS), which is exactly what wedged CI's "Unit Tests" job on
+// main (the 'push-gate BLOCKS the compound merge+push' test hit its 20s
+// ceiling and reported exit null instead of the expected BLOCKED exit 2,
+// then short-circuited every later hook-spawning test in the file).
+//
+// The task #1497 comment already states the INTENDED behavior — "the
+// (network-touching) unshallow attempt runs at most once ... regardless of
+// how many ancestry checks follow" — this closes the gap where "once" was
+// scoped to one process instead of one hook invocation's whole cluster of
+// sibling processes. Persist the outcome to a small tmp-dir JSON file, keyed
+// by repoRoot, mirroring the established cross-process cache pattern in
+// scripts/lib/gh-api-cache.js (same os.tmpdir() + atomic rename + best-effort
+// approach; not reused directly here to avoid widening this already-gated
+// file's dependency surface for one small helper). Safe by construction: the
+// cached boolean is never read as a decision input anywhere in this module —
+// only `historyEnsured.has(repoRoot)` gates re-attempting — so a stale cache
+// entry can only ever cause a SKIPPED redundant network attempt, never a
+// different gate verdict. Every caller (isAncestor/ancestorSet) already
+// treats "still shallow" as "can't confirm ancestry" and degrades safely,
+// exactly as it did before this cache existed.
+const SHALLOW_CACHE_PATH = join(tmpdir(), 'bsc-review-gate-shallow-cache.json');
+const SHALLOW_CACHE_TTL_MS = Number(process.env.REVIEW_GATE_SHALLOW_CACHE_MS || 5 * 60 * 1000);
+
+function readShallowCacheEntry(repoRoot) {
+  try {
+    const all = JSON.parse(readFileSync(SHALLOW_CACHE_PATH, 'utf8'));
+    const hit = all[repoRoot];
+    if (hit && typeof hit.ts === 'number' && (Date.now() - hit.ts) < SHALLOW_CACHE_TTL_MS) return hit;
+  } catch { /* missing/corrupt cache — treat as a miss */ }
+  return null;
+}
+
+function writeShallowCacheEntry(repoRoot, shallow) {
+  try {
+    let all = {};
+    try { all = JSON.parse(readFileSync(SHALLOW_CACHE_PATH, 'utf8')) || {}; } catch { /* start fresh */ }
+    all[repoRoot] = { ts: Date.now(), shallow };
+    const tmp = `${SHALLOW_CACHE_PATH}.${process.pid}.tmp`;
+    writeFileSync(tmp, JSON.stringify(all));
+    renameSync(tmp, SHALLOW_CACHE_PATH);
+  } catch { /* best-effort only — a failed cache write just costs the next process a re-attempt */ }
+}
+
 const historyEnsured = new Map(); // repoRoot -> boolean (still shallow?)
 function ensureHistoryOnce(repoRoot) {
   if (!libEnsureFullHistory) return; // landing-verify.js unavailable — degraded no-op, see require() above
   if (historyEnsured.has(repoRoot)) return;
+  const cached = readShallowCacheEntry(repoRoot);
+  if (cached) {
+    historyEnsured.set(repoRoot, cached.shallow);
+    return;
+  }
   const { shallow } = libEnsureFullHistory({
     cwd: repoRoot,
     remote: 'origin',
@@ -392,6 +453,7 @@ function ensureHistoryOnce(repoRoot) {
     timeoutMs: UNSHALLOW_BUDGET_MS,
   });
   historyEnsured.set(repoRoot, shallow);
+  writeShallowCacheEntry(repoRoot, shallow);
 }
 
 function isAncestor(repoRoot, maybeAncestor, ref) {

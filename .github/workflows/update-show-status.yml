@@ -628,6 +628,18 @@ jobs:
           git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
+          # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):
+          # this is the ONLY step that runs discover-new-shows.js
+          # --include-off-broadway --include-west-end, which is the only writer
+          # of these 3 files — none were previously in this step's git-add list,
+          # so every candidate staged/counted here was silently discarded at job
+          # end (the OB staging gate has been non-durable since it shipped;
+          # ob-venue-counts.json's 7-day anomaly baseline never had a chance to
+          # persist). owe-venue-candidates.json is new (this fix); the other two
+          # close a pre-existing gap in the same step.
+          git add data/audit/ob-venue-candidates.json 2>/dev/null || true
+          git add data/audit/ob-venue-counts.json 2>/dev/null || true
+          git add data/audit/owe-venue-candidates.json 2>/dev/null || true
 
           # Only commit if there are staged changes
           if git diff --staged --quiet; then

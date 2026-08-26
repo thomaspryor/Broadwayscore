@@ -53,7 +53,19 @@ jobs:
   scrape-playbill-verdict:
     if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 60->75 (task investigating card: "Benevolent"/IATI Theater discovery
+    # miss, 2026-08-22). Runs #112-118 (2026-08-15..21, one per scheduled day)
+    # all failed on the "Commit Playbill Verdict unmatched-articles audit"
+    # step alone — push-with-retry.sh's own 240s PUSH_DEADLINE_SEC exhausted
+    # after 3 attempts, "Current branch main is up to date" on the early
+    # attempts (genuine push contention against main's high commit volume,
+    # NOT the task-#394 stale-ref NOOP-abort, confirmed from run 32492185882's
+    # log). That step now overrides PUSH_DEADLINE_SEC=900 below. On the Mon-Sat
+    # cron (no Google fallback) the commit step observed starting ~11min in;
+    # the Sunday deep run adds ~35min of per-show Google fallback ahead of it,
+    # so worst case ~46min-in + 900s(15min) deadline = ~61min — over the old
+    # 60min budget. 75min leaves ~14min of headroom for that worst case.
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
@@ -272,6 +284,34 @@ jobs:
       # (see audit-aggregator-coverage.yml for the same pattern).
       - name: Commit Playbill Verdict unmatched-articles audit + candidate staging
         if: always()
+        env:
+          # PUSH_DEADLINE_SEC override: this step's push was the confirmed
+          # failure point on 7 straight scheduled runs (2026-08-15..21) — see
+          # the job-level timeout-minutes comment above for the full incident
+          # + headroom math. Per push-with-retry.sh's own sizing comment
+          # ("DO NOT raise this SHARED default... override at their own call
+          # site, after confirming their OWN job-timeout headroom"), 900s
+          # matches the value already proven live elsewhere in this repo for
+          # the same failure class (data-health-check.yml, audit-aggregator-
+          # gap.yml, task #1791/#1842) rather than picking a new untested
+          # number.
+          PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -443,7 +483,18 @@ jobs:
   # Google search misses (e.g., Heated Rivalry 2026-05-26).
   scrape-bww-landing:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 30->45 (task investigating card: "Benevolent"/IATI Theater discovery
+    # miss, 2026-08-22). Runs #112-118 (2026-08-15..21) all failed on the
+    # "Commit BWW unmatched-roundups audit" step alone — push-with-retry.sh's
+    # own 240s PUSH_DEADLINE_SEC exhausted after 3 attempts against genuine
+    # push contention on main (confirmed from run 32492185882's log: "up to
+    # date" on early attempts, not the task-#394 stale-ref NOOP-abort). That
+    # step now overrides PUSH_DEADLINE_SEC=900 below. Worst-case headroom: the
+    # discovery step's own time-budget defaults to 22min on a scheduled run
+    # (no `time_budget_min` input) + ~3min checkout/npm-ci overhead observed
+    # = ~25min before the commit step can even start, + 900s(15min) new
+    # deadline = ~40min. 45min leaves ~5min of margin over that worst case.
+    timeout-minutes: 45
     needs: [scrape-lbo-roundups]
     if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'bww-landing') }}
 
@@ -502,6 +553,34 @@ jobs:
 
       - name: Commit BWW unmatched-roundups audit
         if: always()
+        env:
+          # PUSH_DEADLINE_SEC override: this step's push was the confirmed
+          # failure point on 7 straight scheduled runs (2026-08-15..21) — see
+          # the job-level timeout-minutes comment above for the full incident
+          # + headroom math. Per push-with-retry.sh's own sizing comment
+          # ("DO NOT raise this SHARED default... override at their own call
+          # site, after confirming their OWN job-timeout headroom"), 900s
+          # matches the value already proven live elsewhere in this repo for
+          # the same failure class (data-health-check.yml, audit-aggregator-
+          # gap.yml, task #1791/#1842) rather than picking a new untested
+          # number.
+          PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

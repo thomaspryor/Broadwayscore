@@ -29,12 +29,32 @@ import {
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
 } from '../../scripts/lib/linear-dispatch.js';
-import { parseArgs, ledgerTaskId, main } from '../../scripts/linear-next.js';
+import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
 // normally, same as running the CLI for real.
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
+
+// A no-op Linear client for any main() test whose launch path reaches
+// reportDispatchOnIssue() — without this, main()'s default `deps.linear`
+// falls through to the REAL scripts/lib/linear-client.js, and a successful
+// dispatch (e.g. --force reaching a stubbed launchCmux) makes a genuine
+// network call to the live Linear workspace (BRO-287: caught live — a test
+// here was silently calling real getTeam/getIssue/createComment/updateIssue
+// against a real issue whenever LINEAR_API_KEY happened to be set, violating
+// this file's own "no live Linear API calls" invariant stated above).
+function noopLinearDeps() {
+  return {
+    linear: {
+      createComment: async () => {},
+      getTeam: async () => ({ states: [] }),
+      getIssue: async () => null,
+      updateIssue: async () => {},
+      TEAM_KEY: 'BRO',
+    },
+  };
+}
 
 // ── GraphQL query/mutation builders ─────────────────────────────────────────
 
@@ -428,12 +448,106 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
       // ~/.claude/tasks read, from a test subprocess.
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      // task #1898's fresh-dispatch claim runs before the overlap check /
+      // duplicate-tab guard this test exercises — stub it so this subprocess
+      // never touches the real data/audit/linear-dispatch-claims dir.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     });
   `;
   const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
   assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
+});
+
+// ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
+// task #1896 claim wiring tests, scripts/bsc-next.test.mjs:1400-1478) ───────
+//
+// A non-terminal issue with LINEAR_NEXT_DISABLED unset reaches the claim
+// (placed after the terminal-state guard + kill switch, before the overlap
+// check — see linear-next.js's claim block comment for why).
+function makeClaimTestIssue() {
+  return {
+    id: 'issue-uuid-1898', identifier: 'BRO-1898', title: 'Some claimable issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-1898/some-claimable-issue',
+    priority: 2,
+    state: { id: 'state-1', name: 'Todo', type: 'unstarted' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): a held dispatch claim refuses BEFORE the overlap check ever runs', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(String(msg));
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-1898'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => false, // "another attempt already holds it"
+      releaseDispatchClaim: () => {},
+      listOpenIssuesWithDescriptions: async () => { throw new Error('overlap check must never run once the claim guard refuses'); },
+      loadNotionMirrorTasks: () => { throw new Error('overlap check must never run once the claim guard refuses'); },
+      launchCmux: () => { throw new Error('launchCmux must never be called once the claim guard refuses'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the claim guard refuses'); },
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.ok(errors.some(e => /REFUSING to dispatch #BRO-1898/.test(e) && /mirror-staleness race/.test(e)),
+    `expected a mirror-staleness claim refusal keyed on the bare identifier, got: ${errors.join(' | ')}`);
+});
+
+test('main(): --force bypasses the dispatch claim entirely (acquireDispatchClaim never even called)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let claimCalled = false;
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-1898', '--force'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => { claimCalled = true; return false; },
+      releaseDispatchClaim: () => {},
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(claimCalled, false, '--force must skip claim acquisition entirely, matching every sibling guard\'s carve-out');
+  assert.equal(launched, true);
+});
+
+test('main(): --dry-run bypasses the dispatch claim entirely (no side-effecting claim I/O during a preview)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(String(msg));
+  let claimCalled = false;
+  try {
+    await main(['--id', 'BRO-1898', '--dry-run'], {
+      getIssue: async () => makeClaimTestIssue(),
+      acquireDispatchClaim: () => { claimCalled = true; return true; },
+      releaseDispatchClaim: () => {},
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must never be called on a --dry-run preview'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(claimCalled, false, '--dry-run must never acquire a real claim');
+  assert.ok(logs.some(l => /would launch/.test(l)));
 });
 
 // ── terminal-state dispatch guard, end-to-end (task #1517) ─────────────────
@@ -513,6 +627,7 @@ test('main(): --force overrides the terminal-state refusal and proceeds to launc
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
     });
   } finally {
     console.error = origError;
@@ -569,4 +684,115 @@ test('pickStateForMode accepts both bare-array and {nodes} connection shapes', a
   assert.equal(pickStateForMode(states, 'dispatch').id, 's2');
   assert.equal(pickStateForMode({ nodes: states }, 'dispatch').id, 's2');
   assert.equal(pickStateForMode({ nodes: states }, 'park').id, 's1');
+});
+
+// BRO-287: reportDispatchOnIssue (scripts/linear-next.js) must move the
+// issue to "In Progress" regardless of which shape getTeam() returns
+// team.states in (bare array or GraphQL {nodes: [...]} connection) — the
+// same {nodes}-shape class as pickStateForMode above, fixed here on
+// 2026-08-12 but never given its own regression test until now. (A prior
+// version of this fix duplicated the shape-check locally before handing off
+// to lsr.pickStateByName/pickStateByType, which already normalize both
+// shapes internally — that duplicate line was dead code, verified by
+// deleting it and confirming these tests still pass unchanged; it has since
+// been removed in favor of relying on lsr's normalization directly.) Drives
+// the real function through its injected `deps.linear` seam, so no live
+// Linear API call is made, for both shapes getTeam() can return.
+function makeStubLinear(states, updateCalls, freshStateType = 'backlog') {
+  return {
+    createComment: async () => {},
+    getTeam: async () => ({ states }),
+    getIssue: async () => ({ state: { type: freshStateType } }),
+    updateIssue: async (id, patch) => updateCalls.push({ id, patch }),
+    TEAM_KEY: 'BRO',
+  };
+}
+
+test('reportDispatchOnIssue: picks "In Progress" when getTeam() returns a bare states array', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+    { linear: makeStubLinear(states, updateCalls) }
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].id, 'issue-1');
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
+});
+
+test('reportDispatchOnIssue: picks "In Progress" when getTeam() returns the {nodes} connection shape', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+    { linear: makeStubLinear({ nodes: states }, updateCalls) }
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].id, 'issue-1');
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
+});
+
+test('reportDispatchOnIssue: no started-type state in the {nodes} shape leaves the issue untouched (warns, does not crash)', async () => {
+  const states = [{ id: 'done-1', name: 'Done', type: 'completed' }];
+  const updateCalls = [];
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await reportDispatchOnIssue(
+      { id: 'issue-1', identifier: 'BRO-1' }, 'ref', 'cmux', 'corr-1',
+      { linear: makeStubLinear({ nodes: states }, updateCalls) }
+    );
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(updateCalls.length, 0);
+  assert.match(errors.join('\n'), /no 'started'-type workflow state/);
+});
+
+// Live BRO-287 finding: for 'headless' mode, this function runs AFTER
+// main() has awaited the worker session to full completion — by then the
+// session may have already moved the issue itself (e.g. to "In Review" per
+// its own completion instructions). Without a fresh re-check, this function
+// would blindly overwrite that with "In Progress" using the stale `issue`
+// object captured at dispatch time.
+test('reportDispatchOnIssue: does not clobber a state the session already moved to since dispatch', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  const logs = [];
+  const origLog = console.log;
+  console.log = (msg) => logs.push(msg);
+  try {
+    await reportDispatchOnIssue(
+      { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
+      { linear: makeStubLinear(states, updateCalls, 'started') } // fresh getIssue() says it's now "started" (e.g. In Review)
+    );
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(updateCalls.length, 0, 'must not overwrite a state the session already set');
+  assert.match(logs.join('\n'), /already "started".*leaving its state alone/);
+});
+
+test('reportDispatchOnIssue: still claims the state when the fresh refetch confirms nothing else has moved it', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
+    { linear: makeStubLinear(states, updateCalls, 'unstarted') } // fresh getIssue() confirms still Todo
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
 });

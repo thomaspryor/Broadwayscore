@@ -25,6 +25,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { foldDiacritics } = require('./lib/title-match');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
@@ -38,7 +39,7 @@ Options:
   --help, -h    print this usage and exit
 `;
 
-if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const args = process.argv.slice(2);
 const seasonArg = args.find(a => a.startsWith('--season='))?.split('=')[1];
@@ -47,7 +48,7 @@ const allowUncorroborated = new Set(
   args.filter(a => a.startsWith('--allow-uncorroborated=')).map(a => a.split('=').slice(1).join('='))
 );
 
-if (!seasonArg) {
+if (require.main === module && !seasonArg) {
   console.error('Usage: node scripts/promote-historical-we.js --season=YYYY-YYYY [--apply]');
   process.exit(2);
 }
@@ -72,7 +73,10 @@ function buildShowEntry(candidate) {
     id,
     title: candidate.title,
     slug: id,
-    venue: candidate.venue,
+    // sanitizeVenueForWrite (card #994) refuses a placeholder/neighbourhood-
+    // blob venue string, returning null — main()'s promotion loop must skip
+    // a null-venue entry rather than write it (card #1922, cousin of #1921).
+    venue: sanitizeVenueForWrite(candidate.venue),
     openingDate: candidate.openingDate,
     previewsStartDate: null,
     closingDate: null,
@@ -123,6 +127,15 @@ function main() {
   for (const c of promotable) {
     if (!c.venue) { skipped.push({ candidate: c, reason: 'no venue' }); continue; }
     const entry = buildShowEntry(c);
+    // sanitizeVenueForWrite (card #994) returns null for a placeholder/
+    // neighbourhood-blob venue — refuse to write a garbage venue string
+    // rather than silently promoting it (card #1922, cousin of BRO-160/#1921).
+    if (!entry.venue) {
+      const reason = `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
+      skipped.push({ candidate: c, reason });
+      logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, reason, season: c.season });
+      continue;
+    }
     const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
     const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
     if (exactDup) { skipped.push({ candidate: c, reason: 'duplicate title+venue' }); continue; }
@@ -171,4 +184,8 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { buildShowEntry };

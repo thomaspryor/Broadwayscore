@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, detectLauncherFailureRate, countRecentLaunches, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -820,6 +820,127 @@ test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are 
     'a live-wrapper slow boot is not the launcher failing to inject — must not alarm on it');
 });
 
+// ── detectLauncherFailureRate (BRO-2318) ────────────────────────────────────
+test('detectLauncherFailureRate: fires on a leaky launcher that detectLauncherOutage calls "recovered" (the exact blind spot)', () => {
+  // ~1-in-3 dispatches die at injection, and a verified success always
+  // follows the next death within minutes — the shape measured in production
+  // (48 launches/24 deaths/14 injection-failures ≈ 29%). Every 'dead' is
+  // paired with the unverified 'launch' failedLaunchEntries() always writes.
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [];
+  let ref = 0;
+  const minsAgo = (m) => new Date(now - m * 60000).toISOString();
+  // 9 launches total: 3 die at injection (interleaved with successes), 6 succeed.
+  const pattern = ['dead', 'ok', 'ok', 'dead', 'ok', 'ok', 'dead', 'ok', 'ok'];
+  pattern.forEach((kind, i) => {
+    const w = `workspace:${ref++}`;
+    const ts = minsAgo(24 - i * 3); // spread across the last 24min so the deaths ALSO sit inside detectLauncherOutage's 30min lookback (the sanity check below needs both detectors looking at the same incident)
+    if (kind === 'dead') {
+      entries.push({ event: 'dead', taskId: String(900 + i), workspaceRef: w, ts, failureReason: 'command injection never ran (no wrapper process appeared)' });
+      entries.push({ event: 'launch', taskId: String(900 + i), workspaceRef: w, ts, unverified: true });
+    } else {
+      entries.push({ event: 'launch', taskId: String(900 + i), workspaceRef: w, ts });
+    }
+  });
+  // Newest entry overall is a verified success — this is what makes
+  // detectLauncherOutage report recovered:true today.
+  const outage = detectLauncherOutage(entries, { now });
+  assert.equal(outage.outage, false);
+  assert.equal(outage.recovered, true, 'sanity check: this fixture reproduces the reported blind spot');
+
+  const r = detectLauncherFailureRate(entries, { now });
+  assert.equal(r.totalLaunches, 9);
+  assert.equal(r.failureCount, 3);
+  assert.ok(Math.abs(r.rate - 1 / 3) < 1e-9);
+  assert.equal(r.leaking, true, 'a 1-in-3 injection-failure rate must alarm even though detectLauncherOutage sees "recovered"');
+});
+
+test('detectLauncherFailureRate: does not alarm below minLaunches even at 100% failure', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [
+    { event: 'dead', taskId: '1', workspaceRef: 'workspace:1', ts: new Date(now - 5 * 60000).toISOString(), failureReason: 'command injection never ran (no wrapper process appeared)' },
+    { event: 'launch', taskId: '1', workspaceRef: 'workspace:1', ts: new Date(now - 5 * 60000).toISOString(), unverified: true },
+  ];
+  const r = detectLauncherFailureRate(entries, { now });
+  assert.equal(r.totalLaunches, 1);
+  assert.equal(r.rate, 1);
+  assert.equal(r.leaking, false, 'one bad dispatch out of one is not enough sample to alarm on');
+});
+
+test('detectLauncherFailureRate: does not alarm below rateThreshold', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [];
+  for (let i = 0; i < 10; i++) {
+    const w = `workspace:${i}`;
+    const ts = new Date(now - i * 10 * 60000).toISOString();
+    if (i === 0) {
+      entries.push({ event: 'dead', taskId: String(i), workspaceRef: w, ts, failureReason: 'command injection never ran (no wrapper process appeared)' });
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts, unverified: true });
+    } else {
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts });
+    }
+  }
+  const r = detectLauncherFailureRate(entries, { now });
+  assert.equal(r.totalLaunches, 10);
+  assert.equal(r.failureCount, 1);
+  assert.equal(r.leaking, false, '10% is below the default 20% threshold');
+});
+
+test('detectLauncherFailureRate: ignores launches/deaths outside the lookback window', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const old = new Date(now - 7 * 3600000).toISOString(); // default lookback is 6h
+  const entries = [];
+  for (let i = 0; i < 9; i++) {
+    const w = `workspace:${i}`;
+    if (i % 3 === 0) {
+      entries.push({ event: 'dead', taskId: String(i), workspaceRef: w, ts: old, failureReason: 'command injection never ran (no wrapper process appeared)' });
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts: old, unverified: true });
+    } else {
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts: old });
+    }
+  }
+  const r = detectLauncherFailureRate(entries, { now });
+  assert.equal(r.totalLaunches, 0);
+  assert.equal(r.rate, 0);
+  assert.equal(r.leaking, false, 'everything is outside the 6h window');
+});
+
+test('detectLauncherFailureRate: zero launches in window does not throw (division-by-zero guard)', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  assert.doesNotThrow(() => detectLauncherFailureRate([], { now }));
+  const r = detectLauncherFailureRate([], { now });
+  assert.deepEqual(r, { leaking: false, rate: 0, failureCount: 0, totalLaunches: 0, taskIds: [] });
+});
+
+test('detectLauncherFailureRate: excludes headless/linear-prefixed launches from both numerator and denominator', () => {
+  // Headless jobs never go through cmux injection — folding them into the
+  // denominator dilutes a real cmux-only leak below the alarm threshold
+  // (confirmed against the live ledger: an 8/25 ≈32% cmux-only rate becomes
+  // 8/62 ≈13% once headless launches are counted in the denominator).
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [];
+  for (let i = 0; i < 30; i++) {
+    entries.push({ event: 'launch', taskId: String(1000 + i), workspaceRef: `headless:${1000 + i}`, ts: new Date(now - i * 60000).toISOString() });
+  }
+  for (let i = 0; i < 9; i++) {
+    const w = `workspace:${i}`;
+    const ts = new Date(now - i * 60000).toISOString();
+    if (i % 3 === 0) {
+      entries.push({ event: 'dead', taskId: String(i), workspaceRef: w, ts, failureReason: 'command injection never ran (no wrapper process appeared)' });
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts, unverified: true });
+    } else {
+      entries.push({ event: 'launch', taskId: String(i), workspaceRef: w, ts });
+    }
+  }
+  const r = detectLauncherFailureRate(entries, { now });
+  assert.equal(r.totalLaunches, 9, 'the 30 headless launches must not inflate the denominator');
+  assert.equal(r.leaking, true, 'the real cmux-only 1-in-3 rate must still alarm');
+});
+
+test('detectLauncherFailureRate requires now (ms epoch)', () => {
+  assert.throws(() => detectLauncherFailureRate([], {}), /requires now/);
+});
+
 // ── followRetryChain (task #1184 S1) ────────────────────────────────────────
 import { followRetryChain, JOB_EVENTS } from './dispatch-ledger.js';
 
@@ -956,4 +1077,103 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
   assert.equal(classifyDeadAttemptsForTask('A', entries).substantive.length, 0);
   assert.equal(classifyDeadAttemptsForTask('B', entries).infra.length, 0);
   assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
+});
+
+// ── Task #1904: a FINISHED dispatch must not be killed by ref recycling ────
+
+test('deadBreadcrumbs: a prune-closed (finished) launch is never journaled dead when cmux recycles its ref', () => {
+  // The live 2026-08-26 sequence, verbatim in shape: #1888 launched into
+  // workspace:46 at 04:20Z, finished and was prune-closed at 05:16Z, and at
+  // 13:19:55Z the sweep found workspace:46 — by then a ZZ-probe tab — idle and
+  // journaled a death against #1888. Eleven such rows accumulated since 08-19.
+  const entries = [
+    { event: 'launch', taskId: '1888', subject: 'roundup detector', workspaceRef: 'workspace:46', ts: '2026-08-26T04:20:27Z' },
+    { event: 'prune-closed', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T05:16:55Z', title: 'done: roundup detector' },
+  ];
+  // cmux handed workspace:46 to something else entirely; that tab is idle now.
+  const idle = [{ ref: 'workspace:46', title: 'ZZ-probe-cmd' }];
+  assert.deepEqual(deadBreadcrumbs(idle, entries), [],
+    'a task that FINISHED must not lose a dispatch attempt to its ref being reused');
+});
+
+test('deadBreadcrumbs: the bogus row would have burned a real dispatch attempt, not just skewed a metric', () => {
+  // deadAttemptsForTask counts RAW dead rows by taskId — no folding, no
+  // pairing — so the suppressed row above is worth one of two allowed attempts.
+  const withBogusRow = [
+    { event: 'launch', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T04:20:27Z' },
+    { event: 'prune-closed', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T05:16:55Z' },
+    { event: 'dead', taskId: '1888', workspaceRef: 'workspace:46', ts: '2026-08-26T13:19:55Z' },
+  ];
+  assert.equal(deadAttemptsForTask('1888', withBogusRow).length, 1);
+  assert.equal(deadAttemptsForTask('1888', withBogusRow.slice(0, 2)).length, 0);
+});
+
+test('deadBreadcrumbs: an owner-closed (vanished) or remapped launch is likewise already reconciled', () => {
+  for (const terminalEvent of ['vanished', 'remapped']) {
+    const entries = [
+      { event: 'launch', taskId: '700', workspaceRef: 'workspace:8', ts: '2026-08-01T00:00:00Z' },
+      { event: terminalEvent, taskId: '700', workspaceRef: 'workspace:8', ts: '2026-08-01T01:00:00Z' },
+    ];
+    assert.deepEqual(deadBreadcrumbs([{ ref: 'workspace:8', title: 'someone else now' }], entries), [],
+      `${terminalEvent} must end the launch's life for breadcrumb purposes`);
+  }
+});
+
+test('deadBreadcrumbs: a terminal row from an EARLIER occupant still cannot suppress a real death (card #960 preserved)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'prune-closed', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // Fresh dispatch onto the recycled ref, which then genuinely dies.
+    { event: 'launch', taskId: '640', subject: 'current task', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const bc = deadBreadcrumbs([{ ref: 'workspace:12', title: 'current task' }], entries);
+  assert.equal(bc.length, 1, 'the newer launch has no terminal row after it — its death must still be recorded');
+  assert.equal(bc[0].taskId, '640');
+});
+
+test('countRecentLaunches: counts only launch entries inside the trailing window', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [
+    { event: 'launch', taskId: '1', ts: new Date(now - 10 * 60 * 1000).toISOString() }, // in window
+    { event: 'launch', taskId: '2', ts: new Date(now - 44 * 60 * 1000).toISOString() }, // in window
+    { event: 'launch', taskId: '3', ts: new Date(now - 46 * 60 * 1000).toISOString() }, // outside window
+    { event: 'dead', taskId: '4', ts: new Date(now - 1 * 60 * 1000).toISOString() },    // not a launch
+    { event: 'launch', taskId: '5' }, // missing ts, must not throw or count
+  ];
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 45 * 60 * 1000 }), 2);
+  assert.equal(countRecentLaunches([], { now, windowMs: 45 * 60 * 1000 }), 0);
+  assert.throws(() => countRecentLaunches([], { windowMs: 45 * 60 * 1000 }), /now/);
+});
+
+test('countRecentLaunches: a future-dated launch row is never counted as recent (BRO-395)', () => {
+  const now = Date.parse('2026-08-26T12:00:00.000Z');
+  const entries = [
+    // Real recent launch — must still count.
+    { event: 'launch', taskId: '1', ts: new Date(now - 10 * 60 * 1000).toISOString() },
+    // Future-dated row (e.g. clock skew or corrupt write) — `now - t` is
+    // negative here, which is < any positive window; without a `ts <= now`
+    // clamp this row would count as "recent" forever, however much wall-clock
+    // time actually passes.
+    { event: 'launch', taskId: '2', ts: new Date(now + 45 * 24 * 60 * 60 * 1000).toISOString() },
+  ];
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 45 * 60 * 1000 }), 1);
+  // Even a huge window must not rescue the future row.
+  assert.equal(countRecentLaunches(entries, { now, windowMs: 365 * 24 * 60 * 60 * 1000 }), 1);
+});
+
+test('appendEntry: rejects a future-dated ts instead of writing corrupt input (BRO-395)', () => {
+  const ledgerPath = tmpLedger();
+  const futureTs = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString();
+  assert.throws(
+    () => appendEntry({ event: 'launch', taskId: '999', ts: futureTs }, ledgerPath),
+    /future ts/
+  );
+  assert.equal(fs.existsSync(ledgerPath), false, 'a rejected entry must leave no ledger file/row behind');
+});
+
+test('appendEntry: a self-stamped ts (the normal path) is never rejected', () => {
+  const ledgerPath = tmpLedger();
+  const line = appendEntry({ event: 'launch', taskId: '1000' }, ledgerPath);
+  assert.equal(readEntries(ledgerPath).length, 1);
+  assert.ok(Date.parse(line.ts) <= Date.now());
 });
