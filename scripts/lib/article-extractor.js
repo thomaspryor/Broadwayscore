@@ -16,6 +16,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 function stripHtml(s) {
   return (s || '')
     .replace(/<script[\s\S]*?<\/script>/g, '')
@@ -342,6 +344,73 @@ function extractLsaByline(text) {
 }
 
 /**
+ * Talkin' Broadway (talkinbroadway.com) — review pages embed each review as
+ * old-style (pre-HTML5) markup inside <section class="page">, with paragraph
+ * breaks marked by bare <P> tags (no closing </p>), so both the generic
+ * <article>/<main> PATTERNS and the <p>...</p>-based paragraph-density
+ * fallback miss the review body entirely. Worse: the page's ONLY <article>
+ * tag is the "Talkin' Broadway E-Blast List" newsletter-signup sidebar
+ * (<article class="newsletter">, containing the "Sound Advice Weekly"
+ * checkbox label text) — so the generic <article> PATTERNS entry confidently
+ * matches THAT instead, and the newsletter blurb gets saved as the review
+ * (task #1887, paranormal-activity-2026/howard-miller incident: fullText
+ * came back as "Talkin' Broadway E-Blast List Sound Advice Weekly...").
+ *
+ * Every review on the site is signed with a "Theatre Review by {Critic} -
+ * {date}" marker — a stable anchor across both the single-review page layout
+ * and the "Past Reviews" layout some perennial/recurring shows (immersive or
+ * seasonal productions restaged under the same URL) use, where multiple
+ * runs' reviews are stacked on one page. Anchor there instead of guessing a
+ * DOM container: from a marker, collect text through the next marker (the
+ * next stacked review) or the embedded page's own </body> close, whichever
+ * comes first. Since the marker always comes AFTER the newsletter sidebar in
+ * document order, starting extraction there structurally excludes it.
+ *
+ * When a criticHint is supplied (ingest-review-from-url.js passes --critic)
+ * and the page has more than one marker, prefer the marker whose nearby text
+ * matches the hint — otherwise take the first (matches the common single-
+ * review-page case, and the "which review" question doesn't arise when
+ * there's only one marker to pick from).
+ */
+// A bare "Theatre Review by" match could, in principle, occur inside review
+// prose itself (a critic quoting another outlet's byline) rather than as the
+// page's own byline — that would wrongly truncate or mis-anchor extraction
+// (adversarial review, task #1887). TB's actual byline is always immediately
+// followed by "{Critic Name} - {Month Day, Year}" (verified across 2009-2026
+// archived pages), so require that shape within a short window right after
+// the marker before treating a position as a real byline.
+const TB_BYLINE_SHAPE = /^\s*[A-Za-z][\w.'-]*(?:\s+[A-Za-z][\w.'-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/;
+
+function extractTalkinBroadwayBody(html, criticHint) {
+  const MARKER_LEN = 'Theatre Review by'.length;
+  const rawPositions = [...html.matchAll(/Theatre Review by/gi)].map((m) => m.index);
+  const positions = rawPositions.filter((p) =>
+    TB_BYLINE_SHAPE.test(stripHtml(html.slice(p + MARKER_LEN, p + MARKER_LEN + 200)))
+  );
+  if (!positions.length) return null;
+
+  let start = positions[0];
+  const hint = foldDiacritics((criticHint || '').toLowerCase()).replace(/[^a-z]/g, '');
+  if (hint && positions.length > 1) {
+    const norm = (s) => foldDiacritics((s || '').toLowerCase()).replace(/[^a-z]/g, '');
+    const withHint = positions.find((p) => norm(stripHtml(html.slice(p, p + 200))).includes(hint));
+    if (withHint !== undefined) start = withHint;
+  }
+
+  // Bound the END at the next VALIDATED byline (not any bare "Theatre Review
+  // by" occurrence) — a stray match inside the chosen review's own prose must
+  // not truncate it early.
+  const restStart = start + MARKER_LEN;
+  const nextValidated = positions.find((p) => p > start);
+  const bodyCloseIdx = html.slice(restStart).search(/<\/body>/i);
+  let end = nextValidated !== undefined ? nextValidated : html.length;
+  if (bodyCloseIdx > -1 && restStart + bodyCloseIdx < end) end = restStart + bodyCloseIdx;
+
+  const text = stripHtml(html.slice(start, end));
+  return text.length >= 300 ? text : null;
+}
+
+/**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
@@ -549,12 +618,22 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
+  'talkinbroadway.com',
 ];
 
-function extractArticleText(html, hostname) {
+function extractArticleText(html, hostname, criticHint) {
   if (!html || typeof html !== 'string') return null;
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
   const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
+
+  // Talkin' Broadway: the page's only <article> tag is newsletter-signup
+  // chrome, not the review (see extractTalkinBroadwayBody above) — returns
+  // null explicitly rather than falling through to the generic <article>/
+  // <main> PATTERNS below, same "known outlet, don't let a bad fallback
+  // masquerade as a real extraction" reasoning as Stage/Times.
+  if (host.includes('talkinbroadway.com')) {
+    return extractTalkinBroadwayBody(html, criticHint);
+  }
 
   // WSJ: modern articles serve full body via __NEXT_DATA__ JSON for
   // authenticated sessions. Plain DOM patterns only catch the lede teaser
@@ -656,10 +735,10 @@ function extractArticleText(html, hostname) {
 /**
  * Convenience: derive hostname from URL and call extractArticleText.
  */
-function extractArticleTextFromUrl(html, url) {
+function extractArticleTextFromUrl(html, url, criticHint) {
   let host = '';
   try { host = new URL(url).hostname; } catch { /* fall through with empty host */ }
-  return extractArticleText(html, host);
+  return extractArticleText(html, host, criticHint);
 }
 
 /** Normalize a raw date string to YYYY-MM-DD (or null). */
