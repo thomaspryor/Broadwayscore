@@ -37,7 +37,7 @@ const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, isWrongShowUnknownLocked } = require('./review-guards');
-const { detectRoundupDigest } = require('./roundup-digest');
+const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
@@ -666,6 +666,27 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     if (digest) {
       fields.isRoundupArticle = true;
       fields.roundupArticleReason = `auto: ${digest.reason}`;
+    }
+  }
+
+  // --- Guard E4: "critical consensus" pull-quote compilation (outlet-agnostic) ---
+  // Catches compilation pages stored under an individual critic's OWN byline
+  // that quote several OTHER outlets' reviews verbatim with no "Roundup"
+  // wording anywhere — e.g. New York Theater's (newyorktheater.me) "critical
+  // consensus" posts, bylined to the site's own writer (task #1888). Unlike
+  // Guard E3 above, not gated to one aggregator host: detection is purely
+  // content-based (3+ distinct outlet attributions, or a consensus-intro
+  // phrase corroborated by 2+), so it won't fire on a real critic's review
+  // that quotes one rival in passing. Skip if already flagged.
+  if (!fields.isRoundupArticle) {
+    const compilation = detectPullQuoteCompilation({
+      fullText: input.fullText || fields.fullText,
+      outletId,
+      criticName: input.criticName || fields.criticName,
+    });
+    if (compilation) {
+      fields.isRoundupArticle = true;
+      fields.roundupArticleReason = `auto: ${compilation.reason}`;
     }
   }
 
