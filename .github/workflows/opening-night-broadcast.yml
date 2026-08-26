@@ -57,7 +57,16 @@ jobs:
     # default) pushed the summed worst-case push budget (300+300+240=840s)
     # to only 6.7% margin against the old 900s timeout. 20min (1200s) clears
     # the 15% margin threshold with real headroom.
-    timeout-minutes: 20
+    # 20->24 (BRO-2435, 2026-08-26): splitting "Commit orphan-rescore-requeue
+    # state" into two independent push-with-retry.sh calls (one per file, so
+    # the single-writer orphan-rescore-requeue-state.json alone qualifies for
+    # the Git Data API fallback — see that step's own comment) added a THIRD
+    # 300s/14-retries push call site to this job's worst case
+    # (300+300+300+240=1140s), pushing margin back under the 15% floor
+    # (60s/5% at 20min). `node scripts/audit-push-retry-budgets.js` confirmed
+    # the regression and confirms 24min (1440s, margin 300s/20.8%) clears it
+    # again — re-run that script before changing any of these numbers.
+    timeout-minutes: 24
     # Skip if triggered by a failed scoring run
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
@@ -551,12 +560,12 @@ jobs:
             echo "blocked=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit orphan-rescore-requeue state (early — before the job's 15-min budget can time out)
+      - name: Commit orphan-rescore-requeue state (early — before the job's 24-min budget can time out)
         # Writes Before Pushes (.github/workflows/CLAUDE.md): the "Commit data"
         # step near the end of this job only runs on success/always(), which
         # does NOT fire on cancellation — and this job runs consensus
         # generation (Claude calls) + broadcast send after this point, well
-        # within reach of the 15-min job timeout on a multi-show day. A
+        # within reach of the 24-min job timeout on a multi-show day. A
         # cancellation between here and the late commit would silently lose
         # the attempt/alert-ledger state this self-heal depends on, resetting
         # the 2-attempt/24h budget and re-arming an alert that already fired
@@ -564,28 +573,64 @@ jobs:
         # Committing right after the state is written removes that window;
         # the late "Commit data" step re-stages the same paths as a no-op
         # defense-in-depth if nothing changed since.
+        #
+        # BRO-2435 (2026-08-26): this step was hard-failing on EVERY run
+        # (push-retry "retries-exhausted" on this genuinely single-writer
+        # file bundled with the 19-writer alert-ledger.json), which skipped
+        # every later step including "Create broadcast draft" — the entire
+        # point of a scheduled run. Split into two independent commit+push
+        # steps below so orphan-rescore-requeue-state.json (this repo's ONLY
+        # writer — grepped across every .github/workflows/*.yml) can use
+        # push-with-retry.sh's Git Data API fallback (registered
+        # apiFallbackSafe in scripts/lib/core-data-merge-registry.js); the
+        # genuinely multi-writer alert-ledger.json stays on the slow local
+        # fetch+rebase+push path, unblocked from this one's failures.
         # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
         # 2026-08-26): was on the bare shared default (7 retries/240s,
         # backoffSum 77s, ratio 0.32) — this and "Commit data" below are the
-        # only 2 genuinely hard-fail push steps in this 15-min job (the
-        # third, "Record indexing quota usage", is already `|| echo`-
+        # only genuinely hard-fail push steps in this 24-min job (the
+        # other, "Record indexing quota usage", is already `|| echo`-
         # wrapped). Sized smaller than the 20/600s pairing used elsewhere in
-        # this audit because BOTH hard-fail steps share this job's tight
-        # 15-min budget — see the timeout-minutes comment below for the
-        # combined math.
+        # this audit because these hard-fail steps share this job's tight
+        # 24-min budget — see the timeout-minutes comment below for the
+        # combined math. `node scripts/audit-push-retry-budgets.js` reports
+        # no flags on either step at this sizing (ratio 0.84, well inside
+        # margin) — re-confirm with that script before changing these numbers.
         if: steps.check.outputs.pending_shows != ''
         env:
           PUSH_DEADLINE_SEC: '300'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json data/audit/alert-ledger.json
+
+          # ship-check/Codex adversarial finding (2026-08-26): GitHub Actions
+          # runs `run:` blocks as `bash -e`, so a bare push-with-retry.sh call
+          # that exits 1 would terminate this script immediately — the SECOND
+          # file's commit+push below would never even run. `|| STATUS=1`
+          # keeps each push independent (matching the whole point of the
+          # split: one file's failure must not block the other's) while
+          # `exit $STATUS` at the end still surfaces a real failure — this
+          # step must stay hard-fail-capable per the "writes before pushes"
+          # rationale above, not become silently non-fatal.
+          STATUS=0
+
+          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json
           if git diff --cached --quiet; then
-            echo "No orphan-rescore-requeue state changes to commit"
-            exit 0
+            echo "No orphan-rescore-requeue-state.json changes to commit"
+          else
+            git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
           fi
-          git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
-          bash scripts/lib/push-with-retry.sh 14 main
+
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json
+          if git diff --cached --quiet; then
+            echo "No alert-ledger.json changes to commit"
+          else
+            git commit -m "chore: Update alert-ledger state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+
+          exit $STATUS
 
       - name: Sync subscribers (Formspree → local)
         if: steps.check.outputs.pending_shows != ''
@@ -994,8 +1039,8 @@ jobs:
 
       # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
       # 2026-08-26): see "Commit orphan-rescore-requeue state" above for the
-      # sizing rationale — this is the second of this job's 2 hard-fail push
-      # steps sharing the same tight 15-min job budget.
+      # sizing rationale — this is the last of this job's hard-fail push
+      # steps sharing the same tight 24-min job budget.
       - name: Commit data
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
@@ -1024,12 +1069,29 @@ jobs:
             git add data/audit/alert-ledger.json
             echo "Staged alert-ledger.json"
           fi
-          # Skip push if nothing to commit (avoids push race failures)
-          if git diff --cached --quiet; then
-            echo "No changes to commit — skipping push"
+          # BRO-2435: a dirty index isn't the only reason to push here. The
+          # early "Commit orphan-rescore-requeue state" step commits BEFORE
+          # pushing (by design), so if its own push-with-retry.sh call
+          # hard-failed (retries-exhausted), the commit it made is still
+          # sitting on local HEAD, unpushed — push-with-retry.sh's
+          # restore_head_if_moved() preserves an advanced HEAD rather than
+          # resetting it (task #769), it just never reached origin. The old
+          # `git diff --cached --quiet` gate alone can't see that: nothing
+          # NEW is staged here (the file was already committed), so it
+          # exited 0 and silently left the commit stranded — the exact gap
+          # that let origin/main's orphan-rescore-requeue-state.json sit
+          # stale at its 2026-08-01 version despite local runs "succeeding"
+          # at writing it. Push whenever EITHER this step staged something
+          # new OR local HEAD already sits ahead of origin/main.
+          if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
+            echo "No changes to commit and no unpushed local commits — skipping push"
             exit 0
           fi
-          git commit -m "data: Update opening-night broadcast audit state"
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update opening-night broadcast audit state"
+          else
+            echo "No new changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
           bash scripts/lib/push-with-retry.sh 14 main
 
 

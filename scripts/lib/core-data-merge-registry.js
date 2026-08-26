@@ -308,6 +308,20 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
+  // BRO-2435 (opening-night-broadcast.yml "Commit orphan-rescore-requeue
+  // state" hard-failing every run, retries-exhausted): unlike alert-
+  // ledger.json (19 writers — see the "NOT added" note just below), this
+  // file has exactly one. Split into its own commit+push step so it alone
+  // gets the Git Data API fallback; alert-ledger.json stays on the slow
+  // local fetch+rebase+push path in a separate step.
+  {
+    file: 'audit/orphan-rescore-requeue-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'broadcast-send',
+    verifiedBy: '2026-08-26: grepped every .github/workflows/*.yml for the literal filename — only opening-night-broadcast.yml writes it; that workflow declares concurrency: {group: broadcast-send, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+  },
   // NOT added, deliberately: data/audit/triage/ (also written by
   // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
   // data/audit/alert-digest-queue.json (8 writers — the exact file the
