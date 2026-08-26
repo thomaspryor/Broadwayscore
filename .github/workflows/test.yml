@@ -136,6 +136,11 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # BRO-65: countStrictHits/STRICT_CLASSES regression test. Depends on
+      # scripts/lib/contamination-gate.js (already globbed above) plus this
+      # top-level script itself (listed just above) — needs its own entry
+      # (no scripts/** broad glob) so a solo edit to the test triggers CI.
+      - 'scripts/audit-review-contamination.test.mjs'
       # Placeholder-venue guard (card 3b2637c5/#994): sanitizeVenueForWrite
       # (venue-classification.js) reuses isPlaceholderVenue (the census script)
       # to fail closed on ShowScore neighbourhood-blob venues at write time.

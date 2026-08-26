@@ -28,6 +28,36 @@ const ERROR_THRESHOLD = 5;
 const BUG_SIGNAL_REASONS = new Set(['not-logged', 'skippedProcessingError']);
 
 /**
+ * Fallback for when the daily exclusion JSONL has no entry for a file (e.g.
+ * the full rebuild-all-reviews.js run that would have logged it didn't run
+ * today/yesterday — CI's fast-rebuild path doesn't write this log). Read the
+ * file's own persisted flags directly: a file can be legitimately excluded
+ * without ever having been logged on the specific day this check happens to
+ * run. Returns null if nothing on the file explains the exclusion (a real
+ * 'not-logged' bug signal).
+ */
+function deriveOnDiskExclusionReason(showDir, filename) {
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(path.join(showDir, filename), 'utf8'));
+  } catch {
+    return null;
+  }
+  if (data.wrongProduction) return 'on-disk:wrongProduction';
+  if (data.wrongShow) return 'on-disk:wrongShow';
+  if (data.wrongAttribution) return 'on-disk:wrongAttribution';
+  if (data.isRoundupArticle) return 'on-disk:isRoundupArticle';
+  if (data.duplicateOf) return 'on-disk:duplicateOf';
+  if (data.contentTier === 'invalid') return 'on-disk:contentTier=invalid';
+  // A stub with no score and no full text was never actually collected —
+  // legitimately absent from reviews.json, not a silent-exclusion bug.
+  if (data.contentTier === 'stub' && data.assignedScore == null && !data.fullText) {
+    return 'on-disk:uncollected-stub';
+  }
+  return null;
+}
+
+/**
  * Task #1846: severity tracks the UNEXPLAINED (bug-signal) portion of the
  * gap, not the raw gap. A large gap where every file carries a real,
  * legitimate logged reason (dedup, wrong-production, non-review, etc.) is
@@ -139,7 +169,8 @@ function run(show, context) {
   const named = [];
   for (const f of absentees) {
     const info = exclusionIndex.get(f);
-    const reason = info ? info.reason : 'not-logged';
+    const reason = info ? info.reason
+      : deriveOnDiskExclusionReason(showDir, f) || 'not-logged';
     reasons[reason] = (reasons[reason] || 0) + 1;
     named.push({ file: f, reason });
   }
