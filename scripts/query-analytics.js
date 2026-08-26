@@ -18,6 +18,7 @@
  *   node scripts/query-analytics.js ticket-clicks      # Ticket clicks by show & platform
  *   node scripts/query-analytics.js top-pages          # Most viewed pages (last 30 days)
  *   node scripts/query-analytics.js traffic            # Daily sessions & users (last 30 days)
+ *   node scripts/query-analytics.js sessions-engaged    # Headline KPI: engaged sessions by channel (drops Direct bots)
  *   node scripts/query-analytics.js events             # All custom events summary
  *   node scripts/query-analytics.js search-terms       # What users search for on-site
  *   node scripts/query-analytics.js geo-audit          # Country breakdown — find bot geos
@@ -26,6 +27,7 @@
  */
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
 
 // Load .env
 require('./lib/load-env').loadEnv();
@@ -147,6 +149,29 @@ async function reportTraffic(client, dateRange) {
   }));
 }
 
+async function reportSessionsEngaged(client, dateRange) {
+  console.log('\nHeadline Traffic KPI — Engaged Sessions (drops Direct bots)\n');
+  const summary = await fetchEngagedSessionsSummary(client, PROPERTY_ID, dateRange);
+
+  formatTable(
+    ['Channel', 'Sessions', 'Engaged Sessions'],
+    summary.byChannel.map((r) => [r.channel, r.sessions.toLocaleString(), r.engagedSessions.toLocaleString()])
+  );
+
+  console.log(`\n  Headline (engaged sessions, all channels): ${summary.headline.toLocaleString()}`);
+  console.log(`  Raw sessions (all channels):                ${summary.totalSessions.toLocaleString()}`);
+  console.log(
+    `  Inflation vs headline:                      ${summary.inflationRatio ? summary.inflationRatio.toFixed(1) + 'x' : 'n/a'}`
+  );
+  console.log(
+    `  Direct channel:                             ${summary.direct.sessions.toLocaleString()} raw / ${summary.direct.engagedSessions.toLocaleString()} engaged`
+  );
+  console.log(
+    `  Ex-Direct (other channels):                 ${summary.sessionsExDirect.toLocaleString()} raw / ${summary.engagedSessionsExDirect.toLocaleString()} engaged`
+  );
+  console.log('\n  See docs/GA4_Engaged_Sessions_Report.md for report definition + rationale.');
+}
+
 async function reportEvents(client, dateRange) {
   console.log('\nAll Events\n');
   const [res] = await client.runReport({
@@ -226,7 +251,8 @@ async function main() {
 
   const reports = {
     'ticket-clicks': reportTicketClicks, 'top-pages': reportTopPages,
-    'traffic': reportTraffic, 'events': reportEvents, 'search-terms': reportSearchTerms,
+    'traffic': reportTraffic, 'sessions-engaged': reportSessionsEngaged,
+    'events': reportEvents, 'search-terms': reportSearchTerms,
     'geo-audit': reportGeoAudit,
   };
   const fn = reports[opts.report];
