@@ -23,6 +23,8 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 SRC="$HOME/.claude/projects/-Users-tompryor-Broadwayscore/memory"
 # Always sync to the main Broadwayscore repo (not whatever worktree cwd happens
 # to be in when SessionStop fires). Cloud-memory/ lives in main; worktree
@@ -73,23 +75,84 @@ fi
 if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
   REPO="$HOME/Broadwayscore"
   LOCK="$REPO/.git/cloud-memory-sync.lock"
+
+  # push-mutex.sh is the SAME fleet-wide lock push-with-retry.sh and
+  # merge-worktree-to-main.sh hold around their own fetch/rebase/merge flows
+  # (keyed off git-common-dir, so it's shared by the main checkout and every
+  # worktree). Held below around this script's fetch+merge retry so it can't
+  # interleave with another session's in-flight rebase/merge on the same
+  # checkout — task #1893 ship-check finding: without this, memory-sync-
+  # pull.js's own pre-existing-marker check has a TOCTOU window (another
+  # session's operation can start between the check and the merge). Sourced
+  # here, not just inside the retry branch, so _cloud_memory_sync_cleanup
+  # (registered next) can always call push_mutex_release safely regardless
+  # of which branch runs. Guarded on the file existing (fail OPEN): a
+  # checkout predating this file must behave exactly as before.
+  if [ -f "$SCRIPT_DIR/lib/push-mutex.sh" ]; then
+    # shellcheck source=scripts/lib/push-mutex.sh
+    source "$SCRIPT_DIR/lib/push-mutex.sh"
+  fi
+  if [ -f "$SCRIPT_DIR/lib/detect-stale-merge-head.sh" ]; then
+    # shellcheck source=scripts/lib/detect-stale-merge-head.sh
+    source "$SCRIPT_DIR/lib/detect-stale-merge-head.sh"
+  fi
+
+  _cloud_memory_sync_cleanup() {
+    command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
+    rmdir "$LOCK" 2>/dev/null || true
+  }
+
   # Clear a stale lock from a crashed run (>10 min old)
   find "$LOCK" -maxdepth 0 -mmin +10 -exec rmdir {} \; 2>/dev/null || true
   if mkdir "$LOCK" 2>/dev/null; then
-    trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+    trap _cloud_memory_sync_cleanup EXIT
     BRANCH=$(git -C "$REPO" branch --show-current 2>/dev/null)
     if [ "$BRANCH" != "main" ]; then
       echo "sync-memory-to-repo: main checkout is on '$BRANCH', not main — skipping commit" >&2
     elif [ -n "$(git -C "$REPO" status --porcelain -- cloud-memory/ 2>/dev/null)" ]; then
       git -C "$REPO" add cloud-memory/
       if git -C "$REPO" commit -q -m "chore: sync cloud-memory (session-stop auto-commit)" -- cloud-memory/; then
-        if ! git -C "$REPO" push -q origin main 2>/dev/null; then
-          # Behind origin (CI commits constantly) — rebase and retry once.
-          git -C "$REPO" pull --rebase --autostash -q origin main 2>/dev/null || true
-          git -C "$REPO" push -q origin main 2>/dev/null ||
-            echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+        PUSHED=""
+        if git -C "$REPO" push -q origin main 2>/dev/null; then
+          PUSHED=1
+        else
+          # Behind origin (CI commits constantly) — merge (NEVER rebase; the
+          # repo's own policy, see merge-worktree-to-main.sh — `pull --rebase`
+          # silently drops merge commits) and retry once, under the shared
+          # push-mutex. Marker check runs AFTER acquiring the mutex (BRO-142
+          # ordering) so a marker that appears is genuinely foreign, not a
+          # race with this run's own check. On conflict, memory-sync-pull.js
+          # aborts cleanly instead of leaving .git/rebase-merge residue that
+          # wedges every OTHER session's push via push-with-retry.sh's own
+          # BRO-142 guard (task #1893).
+          command -v push_mutex_acquire >/dev/null 2>&1 && push_mutex_acquire
+
+          BLOCKED_MARKER=""
+          if command -v marker_staleness >/dev/null 2>&1; then
+            for _marker in ${STALE_MARKER_TYPES:-MERGE_HEAD}; do
+              _result=$(marker_staleness "$REPO" "$_marker")
+              _status="${_result%% *}"
+              if [ "$_status" != "none" ]; then
+                BLOCKED_MARKER="$_marker"
+                marker_staleness_message "$REPO" "$_marker" "$_status" "${_result#* }" >&2
+                break
+              fi
+            done
+          fi
+
+          if [ -z "$BLOCKED_MARKER" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/memory-sync-pull.js" ]; then
+            node "$SCRIPT_DIR/lib/memory-sync-pull.js" "$REPO" >&2 || true
+          fi
+
+          command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
+
+          if git -C "$REPO" push -q origin main 2>/dev/null; then PUSHED=1; fi
         fi
-        echo "sync-memory-to-repo: cloud-memory committed to main" >&2
+        if [ -n "$PUSHED" ]; then
+          echo "sync-memory-to-repo: cloud-memory committed and pushed to main" >&2
+        else
+          echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+        fi
       fi
     fi
   else
