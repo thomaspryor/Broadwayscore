@@ -20,7 +20,7 @@ test('null entries (ledger absent/unreadable) -> warn, never a false pass', () =
   const r = assessPushRetryDeadman(null, { now: NOW });
   assert.equal(r.name, NAME);
   assert.equal(r.status, 'warn');
-  assert.match(r.message, /absent here/);
+  assert.match(r.message, /ledger branch could not be read/);
 });
 
 test('empty array (ledger present, genuinely clean) -> pass', () => {
