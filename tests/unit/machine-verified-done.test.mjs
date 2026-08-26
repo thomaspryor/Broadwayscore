@@ -1,6 +1,9 @@
 // tests/unit/machine-verified-done.test.mjs — acceptance test for BRO-264
 // Phase 2 (machine-verified Done gate). Per CLAUDE.md rule 15, this
 // require()s the real modules rather than restating their logic.
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural checks against pure glob logic
+// and workflow-file shape (file_path_restriction glob semantics, whether a
+// trigger block has a paths: filter) — no show/review/awards facts pinned.
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
