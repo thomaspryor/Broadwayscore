@@ -28,10 +28,19 @@ function urlSearchSlug(url) {
     const segments = path.split('/').filter(Boolean);
     // Some outlets (e.g. Talkin' Broadway: /ParanormalActivity.html) use
     // camelCase path segments with no hyphen/space between words. Insert a
-    // space at each lowercase/digit -> uppercase boundary BEFORE lowercasing
-    // so urlMentionsAnySlug's word-boundary regex can still find "paranormal"
-    // and "activity" as separate tokens instead of one unbroken run.
-    const spaced = segments.map(s => s.replace(/([a-z0-9])([A-Z])/g, '$1 $2')).join(' ');
+    // space at each lowercase/digit -> uppercase boundary, AND at an
+    // uppercase-run -> titlecase boundary (Codex ship-check finding — an
+    // all-caps show name glued to the next titlecase word, e.g. "SIX" +
+    // "The" + "Musical" as "SIXTheMusical", has no lowercase/digit before
+    // its first uppercase-to-uppercase transition, so the first rule alone
+    // leaves it as one unbroken token) BEFORE lowercasing, so
+    // urlMentionsAnySlug's word-boundary regex can find each title word as
+    // a separate token instead of one unbroken run.
+    const spaced = segments
+      .map(s => s
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2'))
+      .join(' ');
     return spaced.toLowerCase();
   } catch {
     return url.toLowerCase();

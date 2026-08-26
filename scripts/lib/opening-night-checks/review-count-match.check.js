@@ -10,6 +10,22 @@ try {
 } catch {
   _generateReviewFilename = null;
 }
+// Codex ship-check finding (2026-08-26): the fallback below must call the
+// SAME predicate rebuild-all-reviews.js uses to decide inclusion, not a
+// hand-rolled subset of flags. explainExclusion() already covers
+// wrongProduction/wrongShow/duplicateOf/isRoundupArticle/contentTier=invalid
+// AND their manual-clear/staleness overrides (wrongShowCleared,
+// isLikelyStaleWrongShow, isLikelyStaleRoundupFlag, freshness-bounded
+// auto-clears, circular-duplicate tiebreaking) — reimplementing any subset
+// of that here would silently diverge from the real rebuild decision the
+// moment one of those override paths fires (e.g. a manually-cleared
+// wrongProduction flag would falsely read as still-excluded).
+let _explainExclusion;
+try {
+  ({ explainExclusion: _explainExclusion } = require('../review-guards'));
+} catch {
+  _explainExclusion = null;
+}
 
 const name = 'review-count-match';
 const description = 'Local review-texts file count matches reviews.json count (exclusion drift detection)';
@@ -27,34 +43,42 @@ const ERROR_THRESHOLD = 5;
 // reason string (Codex ship-check finding, task #1846 follow-up).
 const BUG_SIGNAL_REASONS = new Set(['not-logged', 'skippedProcessingError']);
 
+// explainExclusion() answers "is this includable in reviews.json", which is
+// a broader question than this check's "is the absence explained by a real,
+// specific reason". Its generic catch-all reasons fire even for a totally
+// empty/malformed file ({} -> 'noTextOrScoreSignal') — exactly the case this
+// check exists to catch, not explain away. Only reasons backed by a
+// SPECIFIC persisted flag or signal count as an explanation here.
+const GENERIC_EXPLAIN_EXCLUSION_REASONS = new Set([
+  'no-data',
+  'noTextOrScoreSignal',
+  'wrongContentNoUsableSignal',
+  'rejectedAt',
+]);
+
 /**
  * Fallback for when the daily exclusion JSONL has no entry for a file (e.g.
  * the full rebuild-all-reviews.js run that would have logged it didn't run
- * today/yesterday — CI's fast-rebuild path doesn't write this log). Read the
- * file's own persisted flags directly: a file can be legitimately excluded
- * without ever having been logged on the specific day this check happens to
- * run. Returns null if nothing on the file explains the exclusion (a real
- * 'not-logged' bug signal).
+ * today/yesterday — CI's fast-rebuild path doesn't write this log). Calls
+ * the canonical explainExclusion() predicate directly against the file's
+ * current on-disk state, so a manually-cleared or stale flag is honored
+ * exactly the way rebuild-all-reviews.js itself would honor it. Returns
+ * null if the file is genuinely includable, or if explainExclusion only
+ * found a generic/no-signal reason (making its absence from reviews.json
+ * unexplained — a real bug signal), or if the predicate is unavailable.
  */
-function deriveOnDiskExclusionReason(showDir, filename) {
+function deriveOnDiskExclusionReason(showDir, filename, show) {
+  if (!_explainExclusion) return null;
+  const filePath = path.join(showDir, filename);
   let data;
   try {
-    data = JSON.parse(fs.readFileSync(path.join(showDir, filename), 'utf8'));
+    data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch {
     return null;
   }
-  if (data.wrongProduction) return 'on-disk:wrongProduction';
-  if (data.wrongShow) return 'on-disk:wrongShow';
-  if (data.wrongAttribution) return 'on-disk:wrongAttribution';
-  if (data.isRoundupArticle) return 'on-disk:isRoundupArticle';
-  if (data.duplicateOf) return 'on-disk:duplicateOf';
-  if (data.contentTier === 'invalid') return 'on-disk:contentTier=invalid';
-  // A stub with no score and no full text was never actually collected —
-  // legitimately absent from reviews.json, not a silent-exclusion bug.
-  if (data.contentTier === 'stub' && data.assignedScore == null && !data.fullText) {
-    return 'on-disk:uncollected-stub';
-  }
-  return null;
+  const reason = _explainExclusion(data, show, filePath);
+  if (!reason || GENERIC_EXPLAIN_EXCLUSION_REASONS.has(reason)) return null;
+  return `on-disk:${reason}`;
 }
 
 /**
@@ -169,8 +193,16 @@ function run(show, context) {
   const named = [];
   for (const f of absentees) {
     const info = exclusionIndex.get(f);
-    const reason = info ? info.reason
-      : deriveOnDiskExclusionReason(showDir, f) || 'not-logged';
+    // Prefer CURRENT on-disk state over the log: the log is an append-only
+    // snapshot from whenever the file was last excluded, which can predate a
+    // later manual clear or re-flag — trusting a stale log entry over the
+    // live file would launder today's real regression as an old, resolved
+    // exclusion (Codex ship-check finding, 2026-08-26). Only fall back to
+    // the log's reason (e.g. 'skippedProcessingError', a transient runtime
+    // exception with no corresponding persisted flag) when the file's
+    // current state doesn't explain the absence on its own.
+    const onDiskReason = deriveOnDiskExclusionReason(showDir, f, show);
+    const reason = onDiskReason || (info ? info.reason : 'not-logged');
     reasons[reason] = (reasons[reason] || 0) + 1;
     named.push({ file: f, reason });
   }
