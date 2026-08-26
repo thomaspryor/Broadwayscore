@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-08-26T09:10:40.012Z",
-  "processed": 25,
-  "failed": 125,
-  "successRate": "16.7%",
+  "updatedAt": "2026-08-26T09:26:04.101Z",
+  "processed": 32,
+  "failed": 128,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-08-26T09:24:33.274Z",
+      "event": "bb-session",
+      "session": "0ebc402d",
+      "url": "https://deadline.com/2026/08/jason-blum-hosts-paranormal-activity-broadway-perfo"
+    }
+  ]
 }
