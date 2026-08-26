@@ -36,6 +36,26 @@ import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scri
 // normally, same as running the CLI for real.
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
+// A no-op Linear client for any main() test whose launch path reaches
+// reportDispatchOnIssue() — without this, main()'s default `deps.linear`
+// falls through to the REAL scripts/lib/linear-client.js, and a successful
+// dispatch (e.g. --force reaching a stubbed launchCmux) makes a genuine
+// network call to the live Linear workspace (BRO-287: caught live — a test
+// here was silently calling real getTeam/getIssue/createComment/updateIssue
+// against a real issue whenever LINEAR_API_KEY happened to be set, violating
+// this file's own "no live Linear API calls" invariant stated above).
+function noopLinearDeps() {
+  return {
+    linear: {
+      createComment: async () => {},
+      getTeam: async () => ({ states: [] }),
+      getIssue: async () => null,
+      updateIssue: async () => {},
+      TEAM_KEY: 'BRO',
+    },
+  };
+}
+
 // ── GraphQL query/mutation builders ─────────────────────────────────────────
 
 test('buildIssueQuery: parameterized on $id, fetches the fields the dispatcher needs', () => {
@@ -500,6 +520,7 @@ test('main(): --force bypasses the dispatch claim entirely (acquireDispatchClaim
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
     });
   } finally {
     console.error = origError;
@@ -606,6 +627,7 @@ test('main(): --force overrides the terminal-state refusal and proceeds to launc
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
     });
   } finally {
     console.error = origError;
@@ -676,10 +698,11 @@ test('pickStateForMode accepts both bare-array and {nodes} connection shapes', a
 // been removed in favor of relying on lsr's normalization directly.) Drives
 // the real function through its injected `deps.linear` seam, so no live
 // Linear API call is made, for both shapes getTeam() can return.
-function makeStubLinear(states, updateCalls) {
+function makeStubLinear(states, updateCalls, freshStateType = 'backlog') {
   return {
     createComment: async () => {},
     getTeam: async () => ({ states }),
+    getIssue: async () => ({ state: { type: freshStateType } }),
     updateIssue: async (id, patch) => updateCalls.push({ id, patch }),
     TEAM_KEY: 'BRO',
   };
@@ -731,4 +754,45 @@ test('reportDispatchOnIssue: no started-type state in the {nodes} shape leaves t
   }
   assert.equal(updateCalls.length, 0);
   assert.match(errors.join('\n'), /no 'started'-type workflow state/);
+});
+
+// Live BRO-287 finding: for 'headless' mode, this function runs AFTER
+// main() has awaited the worker session to full completion — by then the
+// session may have already moved the issue itself (e.g. to "In Review" per
+// its own completion instructions). Without a fresh re-check, this function
+// would blindly overwrite that with "In Progress" using the stale `issue`
+// object captured at dispatch time.
+test('reportDispatchOnIssue: does not clobber a state the session already moved to since dispatch', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  const logs = [];
+  const origLog = console.log;
+  console.log = (msg) => logs.push(msg);
+  try {
+    await reportDispatchOnIssue(
+      { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
+      { linear: makeStubLinear(states, updateCalls, 'started') } // fresh getIssue() says it's now "started" (e.g. In Review)
+    );
+  } finally {
+    console.log = origLog;
+  }
+  assert.equal(updateCalls.length, 0, 'must not overwrite a state the session already set');
+  assert.match(logs.join('\n'), /already "started".*leaving its state alone/);
+});
+
+test('reportDispatchOnIssue: still claims the state when the fresh refetch confirms nothing else has moved it', async () => {
+  const states = [
+    { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
+    { id: 'progress-1', name: 'In Progress', type: 'started' },
+  ];
+  const updateCalls = [];
+  await reportDispatchOnIssue(
+    { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
+    { linear: makeStubLinear(states, updateCalls, 'unstarted') } // fresh getIssue() confirms still Todo
+  );
+  assert.equal(updateCalls.length, 1);
+  assert.equal(updateCalls[0].patch.stateId, 'progress-1');
 });

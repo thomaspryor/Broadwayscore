@@ -257,6 +257,26 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId, deps = {})
     const started =
       lsr.pickStateByName(team.states, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(team.states, 'started');
     if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linearClient.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
+    // For 'headless' mode this runs AFTER the worker session has already
+    // finished (main() awaits runJob() to completion before calling this —
+    // see the caller) and may itself have moved the issue on completion
+    // (e.g. to "In Review" or "Done" per its own instructions, or a human
+    // could have touched it in the meantime). `issue` here is the object
+    // fetched at DISPATCH time, now stale, so blindly writing stateId would
+    // silently clobber whatever ran during that window. Re-fetch and only
+    // claim the state if it's still sitting where it was at dispatch
+    // (backlog/unstarted) — found live (BRO-287): this exact function would
+    // have overwritten the "In Review" state the BRO-287 session set on
+    // itself moments before exiting.
+    let currentType = issue.state && issue.state.type;
+    try {
+      const fresh = await linearClient.getIssue(issue.identifier);
+      if (fresh && fresh.state) currentType = fresh.state.type;
+    } catch (e) { /* refetch failure — fall back to the stale type below rather than block the claim */ }
+    if (currentType && currentType !== 'backlog' && currentType !== 'unstarted') {
+      console.log(`[linear-next] ${issue.identifier} is already "${currentType}" (moved since dispatch) — leaving its state alone`);
+      return;
+    }
     await linearClient.updateIssue(issue.id, { stateId: started.id });
   } catch (e) { console.error(`[linear-next] WARN could not move ${issue.identifier} to In Progress: ${e.message}`); }
 }
@@ -288,6 +308,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // holds this issue's claim" without touching the real filesystem dir.
     acquireDispatchClaim: acquireDispatchClaimFn = (id, opts) => acquireClaim(DISPATCH_CLAIM_DIR, id, opts),
     releaseDispatchClaim: releaseDispatchClaimFn = (id) => releaseClaim(DISPATCH_CLAIM_DIR, id),
+    // BRO-287: reportDispatchOnIssue()'s own Linear client, threaded through
+    // so a successful dispatch in a test never falls through to the real
+    // network client — closes the same "no live Linear API calls" gap the
+    // comment above already claims for this file (a --force/cmux-success
+    // test path was calling the real getTeam/getIssue/createComment/
+    // updateIssue with no override before this was added).
+    linear: reportLinearFn = linear,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -600,7 +627,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // header's crash-safety ordering — a crash between them leaves the
     // ledger (not the issue thread) as the authoritative "this was
     // dispatched" record, and hasLiveLedgerEntry() still catches it on retry.
-    await reportDispatchOnIssue(issue, res.jobId, 'headless', correlationId);
+    await reportDispatchOnIssue(issue, res.jobId, 'headless', correlationId, { linear: reportLinearFn });
     return;
   }
 
@@ -648,7 +675,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 
-  await reportDispatchOnIssue(issue, res.ref, 'cmux', correlationId);
+  await reportDispatchOnIssue(issue, res.ref, 'cmux', correlationId, { linear: reportLinearFn });
 }
 
 if (require.main === module) {
