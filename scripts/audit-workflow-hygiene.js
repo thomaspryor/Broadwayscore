@@ -743,8 +743,13 @@ module.exports = {
 };
 
 if (require.main === module) {
-  main().catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/audit-workflow-hygiene.js\n\nChecks every .github/workflows/*.yml against the hygiene rules documented at the top of this file. No arguments — always audits the full workflow directory. Exits 1 on any violation.');
+  } else {
+    main().catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+  }
 }
