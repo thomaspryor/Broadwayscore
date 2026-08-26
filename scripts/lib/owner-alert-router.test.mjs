@@ -15,6 +15,14 @@ const require = createRequire(import.meta.url);
 // (CLAUDE.md rule 15).
 const { ISSUE_CREATE_MUTATION: REAL_ISSUE_CREATE_MUTATION } = require('./linear.js');
 
+// Same treatment for linear-issue-create.js's isUsageLimitExceeded (BRO-281):
+// it's a pure predicate over an Error's shape/message, no network — the
+// createLinearIssue stub below still needs to re-export it verbatim so
+// dispatchCard()'s `const { createLinearIssue, isUsageLimitExceeded } =
+// require('./linear-issue-create')` doesn't get `isUsageLimitExceeded ===
+// undefined` once this module is stubbed out of require.cache.
+const { isUsageLimitExceeded: REAL_IS_USAGE_LIMIT_EXCEEDED } = require('./linear-issue-create.js');
+
 // The router calls createLinearIssue() (scripts/lib/linear-issue-create.js,
 // BRO-375 Phase 1 — formerly an execFileSync shell-out to linear-brain.js)
 // for disposition='auto' and calls sendAlert() (Resend) for
@@ -96,6 +104,7 @@ function loadRouterWithFakes({
           if (createLinearIssueImpl) return createLinearIssueImpl(opts);
           return { issue: { id: 'uuid-opaque', identifier: 'BRO-999', title: opts.title }, mode: 'park', stateName: 'Backlog' };
         },
+        isUsageLimitExceeded: REAL_IS_USAGE_LIMIT_EXCEEDED,
       },
     };
   }
@@ -493,6 +502,107 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
     });
     assert.equal(second.action, 'auto');
     assert.equal(calls.createLinearIssue.length, 2);
+  } finally {
+    restore();
+  }
+});
+
+// BRO-281: hitting Linear's usage limit (e.g. the free-tier 250-issue cap)
+// makes createLinearIssue() throw USAGE_LIMIT_EXCEEDED — the Notion-era
+// router degraded that to the same "logged warning, retry next call" path as
+// any other dispatch failure, so the ceiling being hit went unnoticed
+// mid-migration on 2026-08-12. This must page the owner, not just log, and it
+// must do so regardless of the caller's requested disposition (an 'auto'
+// request here has no page-worthy allowlist entry of its own, so a normal
+// dispatch failure would never reach sendAlert at all).
+//
+// The escalation is routed through routeAlert() itself (conditionKey
+// 'alert-router:usage-limit-exceeded', disposition:'human') rather than a raw
+// sendAlert() call, so it gets the SAME ledger/cooldown protection as every
+// other alert in this file — see the two tests below for why an unthrottled
+// direct sendAlert() was rejected (ship-check finding: guaranteed inbox storm
+// while the cap stays hit, since a failed dispatch is deliberately never
+// ledgered and therefore retries — and pages — on every single call).
+test('routeAlert: a USAGE_LIMIT_EXCEEDED dispatch failure pages the owner, unlike an ordinary dispatch failure', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    createLinearIssueImpl: () => {
+      const err = new Error('Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the free-tier 250-issue cap.');
+      throw err;
+    },
+  });
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:usage-limit-exceeded',
+      title: 'Test alert',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.equal(result.dispatchOk, false);
+    assert.equal(result.usageLimitExceeded, true);
+    assert.match(result.dispatchError, /USAGE_LIMIT_EXCEEDED/);
+
+    // The escalation is an immediate page under its OWN conditionKey, not the
+    // routed disposition's own channel — a 'digest'/'auto' failure normally
+    // never calls sendAlert.
+    assert.equal(calls.sendAlert.length, 1, 'a USAGE_LIMIT_EXCEEDED failure must page the owner');
+    assert.equal(calls.sendAlert[0].email, true);
+    assert.equal(calls.sendAlert[0].severity, 'critical');
+    assert.match(calls.sendAlert[0].title, /Linear usage limit/);
+    assert.match(calls.sendAlert[0].description, /test:usage-limit-exceeded/);
+
+    // The escalation's OWN conditionKey is now ledgered as notified (it went
+    // through routeAlert(), unlike the failed alert itself below).
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['alert-router:usage-limit-exceeded'].status, 'open');
+
+    // The ORIGINAL failed alert is still not recorded as notified — same
+    // "will retry next call" contract as any other failed dispatch (the
+    // ledger doesn't lie about a card that was never actually filed).
+    assert.equal(ledger.conditions['test:usage-limit-exceeded'], undefined);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an ordinary (non-cap) dispatch failure does NOT page the owner — only USAGE_LIMIT_EXCEEDED escalates', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    createLinearIssueImpl: () => { throw new Error('some transient network error'); },
+  });
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:ordinary-dispatch-failure',
+      title: 'Test alert',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.equal(result.dispatchOk, false);
+    assert.equal(result.usageLimitExceeded, undefined);
+    assert.equal(calls.sendAlert.length, 0, 'an ordinary dispatch failure must not page — only the cap-hit escalates');
+  } finally {
+    restore();
+  }
+});
+
+// The exact scenario both ship-check reviewers flagged against the FIRST
+// version of this fix: while the cap stays hit, every 'auto' alert across
+// every conditionKey fails on every call (failed dispatches are never
+// ledgered, by design, so they always retry). An unthrottled escalation would
+// therefore send one critical email per failed call — a same-day inbox storm.
+// Routing the escalation through routeAlert()'s own cooldown means only the
+// FIRST of any number of distinct failing conditionKeys/calls actually pages.
+test('routeAlert: repeated USAGE_LIMIT_EXCEEDED failures across many conditionKeys page ONCE, not once per call (no inbox storm)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    createLinearIssueImpl: () => { throw new Error('USAGE_LIMIT_EXCEEDED: workspace at free-tier cap'); },
+  });
+  try {
+    // Simulate a health-check style run: many distinct alert call sites, each
+    // with its own conditionKey, all trying to auto-dispatch while the cap is
+    // hit — plus the SAME conditionKey retried on a later call.
+    for (const key of ['test:storm-a', 'test:storm-b', 'test:storm-c', 'test:storm-a']) {
+      await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto' });
+    }
+    assert.equal(calls.createLinearIssue.length, 4, 'every failing dispatch attempt still retries (unchanged contract)');
+    assert.equal(calls.sendAlert.length, 1, 'only the FIRST failure escalates — the cooldown suppresses the rest');
   } finally {
     restore();
   }
