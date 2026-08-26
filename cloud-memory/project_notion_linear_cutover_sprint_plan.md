@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 60709126-a693-4158-a155-cfc6ffd81ecc
-  modified: 2026-08-17T04:37:36.411Z
+  modified: 2026-08-26T18:26:30.196Z
 ---
 
 `sprint-plan-notion-linear-cutover.md` (Broadwayscore repo root) is the authoritative, owner-approved plan to fully retire Notion and make Linear the sole board (source: `~/Documents/claude-outputs/notion-linear-cutover-plan-2026-08-15.md`, six-reviewer critique passed). Size L: 9 sprints, 64 tasks, one sprint per session. Sprint 0 complete 2026-08-17; Sprint 1 (safety rails — backoff, `--probe` mode, escape hatch, neutral marker) landing same day.
@@ -15,3 +15,5 @@ metadata:
 BRO-387 ("Phase 1: Claude Code sessions must report status into Linear") was scoped and dispatched independently of this sprint plan and landed a parallel, narrower solution 2026-08-17 (`scripts/lib/linear-session-reporting.js`, `scripts/linear-session.js`, two NEW hooks `~/.claude/hooks/linear-issue-verify.sh` / `linear-issue-required-stop.sh` added alongside the Notion hooks, not replacing them). Neither doc references the other — flagged via a comment on the BRO-387 Linear issue for whoever runs Sprint 4 to reconcile.
 
 **How to apply:** Before building ANY new Notion-card or Linear-issue session-reporting, gate-hook, or dispatch-claim infra, read `sprint-plan-notion-linear-cutover.md` first — check which sprint has landed (grep for `✅ COMPLETE` markers) and whether the work is already spoken for. If BRO-387's two hooks are still present when Sprint 4 starts, that's the reconciliation point — don't rediscover this collision from scratch. Related: [[project_linear_migration_decision.md]] (the earlier "retire the fleet" decision this sprint plan implements).
+
+**Concrete stuck-session recipe (confirmed working 2026-08-26, BRO-2438):** until Sprint 4 lands, `notion-card-required-commit.sh` still hard-blocks `git commit` on a missing Notion sentinel even in a purely Linear-dispatched session (project CLAUDE.md §6 explicitly forbids creating a Notion card) — it has zero Linear awareness (`grep -n linear ~/.claude/hooks/notion-card-required-commit.sh` → no matches). Sprint 1's "escape hatch" IS `~/.claude/BOARD_GATE_DISABLED` (repo root `board-gate-escape-hatch.md` has the full doc) — create the file (`echo off > ~/.claude/BOARD_GATE_DISABLED`), run the commit, then `rm -f ~/.claude/BOARD_GATE_DISABLED` immediately after — it's machine-wide, not session-scoped, so leaving it up stands every board gate down for every parallel session on the Mac. Don't create a Notion card as the workaround; that's the thing §6 forbids.
