@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * isPlaceholderByline(criticName, outlet)
  *
@@ -34,8 +36,7 @@ const GENERIC_BYLINE_TERMS = new Set([
 /** Lowercase, strip parenthetical qualifiers ("(UK)"), collapse punctuation/whitespace. */
 function normalizeForCompare(s) {
   if (!s || typeof s !== 'string') return '';
-  return s
-    .toLowerCase()
+  return foldDiacritics(s.toLowerCase())
     .replace(/\([^)]*\)/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
