@@ -29,9 +29,11 @@ const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
-const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const {
+  declaredImageResolves, isPlaceholderFile, PLACEHOLDER_FILE_HASHES,
+  pruneEmptyShowImageDir, snapshotShowImageDir, discardFailedFetchArtifacts,
+} = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir, snapshotShowImageDir, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -1628,9 +1630,11 @@ async function fetchFromGoogleImages(show) {
   // inline ternary with a bare Broadway fallback (that class is why
   // scripts/lib/market-label.js exists).
   const marketKw = getMarketSearchKeyword(show.category || show.market);
+  // BRO-179: no mkdir/write here — candidate bytes are held in memory and only
+  // hit disk once verifyAndCollect (or the caller) accepts this candidate. See
+  // flushPendingImageWrites().
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showDir = path.join(outputBase, show.id);
-  fs.mkdirSync(showDir, { recursive: true });
 
   let thumbnailBuffer = null;
   let thumbnailResult = null;
@@ -1746,7 +1750,10 @@ async function fetchFromGoogleImages(show) {
     return null;
   }
 
-  // Save thumbnail (prefer square, fall back to poster)
+  // Prepare thumbnail (prefer square, fall back to poster). BRO-179: hash-reject
+  // placeholders here as before, but do NOT write to disk yet — that only
+  // happens once the caller's verification accepts this candidate (see
+  // flushPendingImageWrites). A rejected candidate must never touch disk.
   const finalThumbnailBuffer = await compressImage(thumbnailBuffer || posterBuffer, 'thumbnail');
   const thumbHash = crypto.createHash('md5').update(finalThumbnailBuffer).digest('hex');
   if (PLACEHOLDER_FILE_HASHES.has(thumbHash)) {
@@ -1754,10 +1761,10 @@ async function fetchFromGoogleImages(show) {
     return null;
   }
   const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-  fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
-  console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
+  const pendingWrites = [{ path: thumbnailPath, buffer: finalThumbnailBuffer }];
+  console.log(`   ✓ Thumbnail ready${thumbnailBuffer ? ' (native square)' : ' (from poster)'} — pending verification`);
 
-  // Save poster if we have one distinct from thumbnail
+  // Prepare poster if we have one distinct from thumbnail
   let posterPath = null;
   if (posterBuffer && posterBuffer !== (thumbnailBuffer || posterBuffer)) {
     const compressedPoster = await compressImage(posterBuffer, 'poster');
@@ -1766,8 +1773,8 @@ async function fetchFromGoogleImages(show) {
       console.log(`   ✗ Downloaded poster is a "Coming Soon" placeholder — rejecting`);
     } else {
       posterPath = path.join(showDir, 'poster.jpg');
-      fs.writeFileSync(posterPath, compressedPoster);
-      console.log(`   ✓ Saved poster`);
+      pendingWrites.push({ path: posterPath, buffer: compressedPoster });
+      console.log(`   ✓ Poster ready — pending verification`);
     }
   }
 
@@ -1781,6 +1788,7 @@ async function fetchFromGoogleImages(show) {
     poster: posterPath ? `/images/shows/${show.id}/poster.jpg` : null,
     hero: null,
     _verifyBuffer: finalThumbnailBuffer,
+    _pendingWrites: pendingWrites,
     _remainingCandidates: allRemaining,
     _hasNativeSquare: !!thumbnailBuffer,
   };
@@ -1797,12 +1805,12 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
 
       console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
 
+      // BRO-179: hold the compressed buffer, don't write it — only accepted
+      // candidates reach disk (see flushPendingImageWrites).
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const showDir = path.join(outputBase, show.id);
-      fs.mkdirSync(showDir, { recursive: true });
       const compressed = await compressImage(buffer, 'thumbnail');
       const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-      fs.writeFileSync(thumbnailPath, compressed);
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
       return {
@@ -1810,6 +1818,7 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
         poster: null,
         hero: null,
         _verifyBuffer: buffer,
+        _pendingWrites: [{ path: thumbnailPath, buffer: compressed }],
         _remainingCandidates: nextRemaining,
       };
     } catch {
@@ -1912,7 +1921,32 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   }
 }
 
+// Flush any deferred candidate writes (BRO-179: fetchFromGoogleImages and
+// tryNextGoogleCandidate hold compressed bytes in `_pendingWrites` instead of
+// writing them immediately, so a rejected candidate never touches disk).
+// Single funnel point for every fetchShowImages exit path — early returns,
+// the multi-tier `candidates` array pick, and the last-resort production-photo
+// fallback all flow through here, so none of them need their own write call.
+function flushPendingImageWrites(images) {
+  if (!images || !images._pendingWrites) return images;
+  const writes = images._pendingWrites;
+  delete images._pendingWrites;
+  if (writes.length > 0) {
+    fs.mkdirSync(path.dirname(writes[0].path), { recursive: true });
+    for (const { path: filePath, buffer } of writes) {
+      fs.writeFileSync(filePath, buffer);
+    }
+    console.log(`   ✓ Saved ${writes.length} accepted image(s) for ${images.thumbnail || images.poster || ''}`);
+  }
+  return images;
+}
+
 async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
+  const images = await fetchShowImagesAndVerify(show, todayTixInfo, apiData, verifyCtx);
+  return flushPendingImageWrites(images);
+}
+
+async function fetchShowImagesAndVerify(show, todayTixInfo, apiData, verifyCtx) {
   console.log(`\n📽️  ${show.title}`);
 
   // Regional feeder-venue shows: venue og:image is the canonical key art —
@@ -2289,10 +2323,14 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     }
   }
 
-  // Snapshot BEFORE fetching: several source paths write thumbnail.jpg/poster.jpg
-  // to disk before Gemini verifies the candidate, so the failure path has to be
-  // able to tell "art that was already archived" from "a candidate this run
-  // wrote and then had rejected". Only the latter may be removed.
+  // Snapshot BEFORE fetching: crash-safety net, not the primary defense.
+  // BRO-179 made every source hold candidate bytes and write only on accept
+  // (flushPendingImageWrites), so a rejected candidate no longer touches disk
+  // in the normal case — but a thrown error between an accepted write's mkdir
+  // and its writeFileSync calls (disk full, OOM) can still leave a partial
+  // file. This lets that failure path tell "art that was already archived"
+  // from "a file this run wrote and never finished". Only the latter may be
+  // removed.
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showImageDir = path.join(outputBase, show.id);
   const dirBefore = snapshotShowImageDir(showImageDir);
@@ -2769,11 +2807,11 @@ async function main() {
       shows = shows.filter(s => s.status !== 'closed');
       console.log(`Excluding ${before - shows.length} closed shows (use --include-closed to override)`);
     }
-    // imageOnDisk() is the shared predicate (scripts/lib/show-images.js): a path
+    // declaredImageResolves() is the shared predicate (scripts/lib/show-images.js): a path
     // in shows.json counts only when the file exists AND is not a known
     // placeholder. The monitors use the same helper so "covered" means the same
     // thing everywhere (the-gin-game-2026 phantom-path class, 2026-07-31).
-    shows = shows.filter(s => !imageOnDisk(s.images?.poster) || !imageOnDisk(s.images?.thumbnail));
+    shows = shows.filter(s => !declaredImageResolves(s.images?.poster) || !declaredImageResolves(s.images?.thumbnail));
     console.log(`Processing only shows with missing images: ${shows.length}`);
   }
 

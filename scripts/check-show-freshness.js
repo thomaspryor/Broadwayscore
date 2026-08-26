@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyBadSynopsis } = require('./lib/synopsis-validation');
-const { imageOnDisk } = require('./lib/show-images');
+const { declaredImageResolves } = require('./lib/show-images');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -123,18 +123,18 @@ function checkShowCompleteness(show) {
   const issues = [];
   const isOpen = show.status === 'open';
 
-  // Images — imageOnDisk(), not truthiness. A phantom /images/ path (written at
+  // Images — declaredImageResolves(), not truthiness. A phantom /images/ path (written at
   // add-time with no file behind it) is truthy, which is how the-gin-game-2026
   // stayed live for two weeks rendering the placeholder with this monitor
   // reporting it covered (2026-07-31). Shared predicate so "covered" means the
   // same thing here, in validate-data.js, and in fetch-show-images --missing.
-  if (!imageOnDisk(show.images?.poster)) {
+  if (!declaredImageResolves(show.images?.poster)) {
     issues.push({ type: 'missing_poster', severity: 'high' });
   }
-  if (!imageOnDisk(show.images?.hero)) {
+  if (!declaredImageResolves(show.images?.hero)) {
     issues.push({ type: 'missing_hero', severity: 'medium' });
   }
-  if (!imageOnDisk(show.images?.thumbnail)) {
+  if (!declaredImageResolves(show.images?.thumbnail)) {
     issues.push({ type: 'missing_thumbnail', severity: 'low' });
   }
 

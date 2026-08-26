@@ -19,7 +19,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { imageOnDisk, hasRealImage, PLACEHOLDER_FILE_HASHES } = require('../../scripts/lib/show-images.js');
+const { declaredImageResolves, hasRealImage, PLACEHOLDER_FILE_HASHES } = require('../../scripts/lib/show-images.js');
 const { getMarketSearchKeyword } = require('../../scripts/lib/market-label.js');
 
 // Scratch public/ tree: images/shows/real-show/poster.webp exists, phantom does not.
@@ -30,28 +30,28 @@ fs.writeFileSync(path.join(realDir, 'poster.webp'), Buffer.from('not-a-placehold
 const opts = { publicDir: tmp };
 
 test('phantom local path (no file on disk) is NOT present', () => {
-  assert.equal(imageOnDisk('/images/shows/the-gin-game-2026/poster.jpg', opts), false);
+  assert.equal(declaredImageResolves('/images/shows/the-gin-game-2026/poster.jpg', opts), false);
 });
 
 test('local path with a real file on disk IS present', () => {
-  assert.equal(imageOnDisk('/images/shows/real-show/poster.webp', opts), true);
+  assert.equal(declaredImageResolves('/images/shows/real-show/poster.webp', opts), true);
 });
 
 test('null/empty paths are not present', () => {
-  assert.equal(imageOnDisk(null, opts), false);
-  assert.equal(imageOnDisk(undefined, opts), false);
-  assert.equal(imageOnDisk('', opts), false);
-  assert.equal(imageOnDisk('   ', opts), false);
+  assert.equal(declaredImageResolves(null, opts), false);
+  assert.equal(declaredImageResolves(undefined, opts), false);
+  assert.equal(declaredImageResolves('', opts), false);
+  assert.equal(declaredImageResolves('   ', opts), false);
 });
 
 test('external URL is assumed live (we do not HEAD every CDN URL)', () => {
-  assert.equal(imageOnDisk('https://cdn.example.com/poster.jpg', opts), true);
+  assert.equal(declaredImageResolves('https://cdn.example.com/poster.jpg', opts), true);
 });
 
 test('protocol-relative URL is external, not a local path', () => {
   // `//cdn/x.jpg` starts with '/' but is a real external URL. Resolving it
   // against public/ would report it permanently missing (2026-07-31 review).
-  assert.equal(imageOnDisk('//images.squarespace-cdn.com/x.png', opts), true);
+  assert.equal(declaredImageResolves('//images.squarespace-cdn.com/x.png', opts), true);
 });
 
 test('a byte-identical known placeholder on disk is NOT a real image', () => {
@@ -62,11 +62,11 @@ test('a byte-identical known placeholder on disk is NOT a real image', () => {
   const md5 = crypto.createHash('md5').update(body).digest('hex');
   const p = path.join(realDir, 'fake-placeholder.webp');
   fs.writeFileSync(p, body);
-  assert.equal(imageOnDisk('/images/shows/real-show/fake-placeholder.webp', opts), true,
+  assert.equal(declaredImageResolves('/images/shows/real-show/fake-placeholder.webp', opts), true,
     'sanity: unregistered file counts as real');
   PLACEHOLDER_FILE_HASHES.add(md5);
   try {
-    assert.equal(imageOnDisk('/images/shows/real-show/fake-placeholder.webp', opts), false,
+    assert.equal(declaredImageResolves('/images/shows/real-show/fake-placeholder.webp', opts), false,
       'a file whose hash is registered as a placeholder must NOT count as a real image');
   } finally {
     PLACEHOLDER_FILE_HASHES.delete(md5);

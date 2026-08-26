@@ -12,6 +12,12 @@
  * soon" (Brainiac Live at the Garrick; The Gin Game before it).
  *
  * These assert on the REAL exported functions, against real directories on disk.
+ *
+ * BRO-179: this module's functions were folded into show-images.js (single
+ * home for both the declared-path and archived-file coverage predicates).
+ * hasArchivedShowImages was renamed archivedFilesExist there — this file keeps
+ * its own name/scope (archived-file coverage) rather than merging into
+ * show-images.test.mjs, which covers the consolidated module as a whole.
  */
 
 import { test } from 'node:test';
@@ -23,13 +29,13 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  hasArchivedShowImages,
+  archivedFilesExist: hasArchivedShowImages,
   listShowIdsWithImages,
   pruneEmptyShowImageDir,
   snapshotShowImageDir,
   discardFailedFetchArtifacts,
   dirHasImageFiles,
-} = require('./show-image-coverage.js');
+} = require('./show-images.js');
 
 function makeRoot() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'img-coverage-'));

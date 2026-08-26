@@ -21,7 +21,7 @@ const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-d
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
 const { planContentRequestActions } = require('./lib/content-request-routing.js');
 const { buildEntry: buildLedgerEntry, mergeEntries: mergeLedgerEntries } = require('./lib/feedback-request-ledger.js');
-const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
+const { listShowIdsWithImages } = require('./lib/show-images.js');
 const { mergeCorrectionSubmissions } = require('./lib/feedback-digest-correction-merge.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -468,7 +468,7 @@ async function main() {
         // whether any candidate will verify, so a failed show leaves an EMPTY
         // directory. Counting that as coverage hides the show from this router —
         // the same blind spot that let Brainiac Live reach the live homepage
-        // with "Images coming soon". See scripts/lib/show-image-coverage.js.
+        // with "Images coming soon". See scripts/lib/show-images.js.
         const covered = listShowIdsWithImages(path.join(__dirname, '../public/images/shows'));
         showIdsMissingImages = new Set(shows.filter((s) => s && s.id && !covered.has(s.id)).map((s) => s.id));
       } catch (err) {
