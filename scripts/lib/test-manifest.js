@@ -74,28 +74,29 @@ function validateManifest(manifestPath, repoRoot) {
 // every commit that touches a manifest so the unsorted state never reaches
 // CI, let alone main.
 function sortManifestFile(manifestPath) {
-  const raw = fs.readFileSync(manifestPath, 'utf8');
-  const entries = raw
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const entries = readManifest(manifestPath);
   const sorted = [...entries].sort();
-  const sortedRaw = sorted.join('\n') + '\n';
-  if (sortedRaw === raw) return false;
-  fs.writeFileSync(manifestPath, sortedRaw);
+  const isSorted = entries.length === sorted.length && entries.every((e, i) => e === sorted[i]);
+  if (isSorted) return false;
+  fs.writeFileSync(manifestPath, sorted.join('\n') + '\n');
   return true;
 }
 
 module.exports = { MANIFESTS, readManifest, validateManifest, sortManifestFile };
 
-// CLI: `node scripts/lib/test-manifest.js --fix` sorts every manifest in
-// MANIFESTS in place and prints which ones changed. Used by the pre-commit
-// hook and available for a session to run by hand.
+// CLI: `node scripts/lib/test-manifest.js --fix [manifest ...]` sorts the
+// given repo-relative manifest paths in place (or every manifest in
+// MANIFESTS if none are given) and prints which ones changed. Used by the
+// pre-commit hook — which passes ONLY the manifests it has already
+// confirmed are safe to rewrite (staged, with no unstaged hunks of their
+// own) — and available for a session to run by hand with no args.
 if (require.main === module) {
   const repoRoot = path.join(__dirname, '..', '..');
   if (process.argv.includes('--fix')) {
+    const explicitTargets = process.argv.slice(3).filter((a) => !a.startsWith('--'));
+    const targets = explicitTargets.length > 0 ? explicitTargets : MANIFESTS;
     let changedAny = false;
-    for (const manifest of MANIFESTS) {
+    for (const manifest of targets) {
       const manifestPath = path.join(repoRoot, manifest);
       if (!fs.existsSync(manifestPath)) continue;
       if (sortManifestFile(manifestPath)) {
@@ -105,7 +106,7 @@ if (require.main === module) {
     }
     if (!changedAny) console.log('all manifests already sorted');
   } else {
-    console.error('usage: node scripts/lib/test-manifest.js --fix');
+    console.error('usage: node scripts/lib/test-manifest.js --fix [manifest ...]');
     process.exit(1);
   }
 }

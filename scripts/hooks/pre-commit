@@ -38,14 +38,33 @@ fi
 #    commit lands — 3+ independent 'fix: re-sort tests/unit-test-manifest.txt'
 #    commits happened anyway because sessions append faster than anyone can
 #    hand-fix it (card #1825). Sorting here, before the commit is made, means
-#    the unsorted state never reaches CI. Re-stages only manifests that were
-#    already staged — an unstaged, only-on-disk manifest edit is left alone.
+#    the unsorted state never reaches CI.
+#
+#    Only touches manifests that are staged AND have no unstaged hunks of
+#    their own (`git diff --cached --name-only` vs `git diff --name-only`) —
+#    a manifest with a partial `git add -p` would otherwise get its on-disk
+#    (staged+unstaged) content sorted and the WHOLE file re-added, silently
+#    pulling the unstaged hunk into this commit. Paths are passed explicitly
+#    to --fix so an unrelated sibling manifest with unstaged WIP on disk is
+#    never touched (second-opinion review, card #1825).
 STAGED_MANIFESTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E "^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" || true)
-if [ -n "$STAGED_MANIFESTS" ] && [ -f "$REPO_ROOT/scripts/lib/test-manifest.js" ]; then
-  node "$REPO_ROOT/scripts/lib/test-manifest.js" --fix
+UNSTAGED_MANIFESTS=$(git diff --name-only | grep -E "^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" || true)
+FIX_TARGETS=()
+if [ -n "$STAGED_MANIFESTS" ]; then
   while IFS= read -r manifest; do
-    [ -n "$manifest" ] && git add "$REPO_ROOT/$manifest"
+    [ -z "$manifest" ] && continue
+    if echo "$UNSTAGED_MANIFESTS" | grep -qxF "$manifest"; then
+      echo "pre-commit: $manifest has unstaged changes too — skipping auto-sort (stage the whole file, or sort by hand with: node scripts/lib/test-manifest.js --fix $manifest)" >&2
+      continue
+    fi
+    FIX_TARGETS+=("$manifest")
   done <<<"$STAGED_MANIFESTS"
+fi
+if [ "${#FIX_TARGETS[@]}" -gt 0 ] && [ -f "$REPO_ROOT/scripts/lib/test-manifest.js" ]; then
+  node "$REPO_ROOT/scripts/lib/test-manifest.js" --fix "${FIX_TARGETS[@]}"
+  for manifest in "${FIX_TARGETS[@]}"; do
+    git add "$REPO_ROOT/$manifest"
+  done
 fi
 
 # 4. Block commits that introduce new secrets (gitleaks, staged diff only ~1s).
