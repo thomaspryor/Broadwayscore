@@ -311,6 +311,17 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
       cooldownHours: 6,
     });
   }
+  // BRO-2318: independent of the outage page above — fires even when the
+  // launcher looks "recovered" (a success always follows the next death),
+  // because a sustained ~1-in-3 injection-failure rate was invisible until now.
+  if (plan.failureRate.leaking) {
+    pageOwner({
+      conditionKey: 'watchdog-launcher-leak',
+      title: 'cmux launcher leaking — a third-ish of dispatches never start',
+      description: `Watchdog: ${plan.failureRate.failureCount}/${plan.failureRate.totalLaunches} launches (${Math.round(plan.failureRate.rate * 100)}%) died with "injection never ran" over the last 6h across tasks ${plan.failureRate.taskIds.join(', ')}. This is NOT the sustained-outage alarm — cmux keeps producing occasional verified successes, which is exactly why it never trips that one. Dispatched work is silently not running at this rate; check cmux responsiveness.`,
+      cooldownHours: 6,
+    });
+  }
   return results;
 }
 
