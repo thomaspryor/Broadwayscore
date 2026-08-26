@@ -252,6 +252,15 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     // the remote flag. Without this guard the remote's stale `true` comes
     // right back on every rebase. Mirrors the action.yml restore skip and
     // review-guards.js is-cleared semantics. (2026-06-05)
+    //
+    // Caveat when source===ours (adversarial review, #1916): the
+    // _urlChangeCleared "same era" un-suppress inside isIntentionalClear
+    // assumes its committedData argument can be FRESHER than localData (a
+    // legitimate newer write re-derived the value after a URL change). ours
+    // is the pre-rebase commit, i.e. OLDER than local by construction, so
+    // that assumption is inverted here — it only misfires if both local and
+    // ours carry a matching _urlChangedClear breadcrumb, a compound edge
+    // case with no known instance. Left as-is; not a #1916 blocker.
     if (isIntentionalClear(field, local, source)) continue;
     local[field] = source[field];
     modified = true;
