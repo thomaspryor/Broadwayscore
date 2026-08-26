@@ -1256,6 +1256,16 @@ on:
       # command; without these path entries a solo edit triggers ZERO CI.
       - 'scripts/audit-direct-provider-calls.js'
       - 'scripts/config/direct-provider-calls-allowlist.json'
+      # Venue-write-guard CI guard (card #1923, follow-up to card #994's
+      # sanitizeVenueForWrite() write-time guard): flags scripts/**
+      # `venue:`/`.venue =` sites that skip sanitizeVenueForWrite(...), same
+      # baseline+--strict advisory shape as audit-direct-provider-calls.js
+      # above. scripts/lib/venue-write-guard-detector.js is NOT listed here —
+      # already covered by the scripts/lib/** glob. Without these 2 entries a
+      # solo edit to the audit script or its baseline gets ZERO CI.
+      - 'scripts/audit-venue-write-guard.js'
+      - 'scripts/audit-venue-write-guard.test.mjs'
+      - 'data/audit/venue-write-guard-baseline.json'
       # Email-capture gate logic (cooldown + mobile-timing A/B) + its tsx-batch test.
       - 'src/lib/gate-logic.ts'
       - 'src/config/email-capture.ts'
@@ -2426,6 +2436,19 @@ jobs:
         # data/audit/direct-provider-calls-baseline.json and never fails CI; only
         # a genuinely NEW direct-provider-call site fails under --strict.
         run: node scripts/audit-direct-provider-calls.js --strict
+
+      - name: Audit — venue-write guard coverage (card #1923)
+        # Card #994's sanitizeVenueForWrite() (scripts/lib/venue-classification.js)
+        # fails closed on placeholder/junk venue strings before they reach
+        # shows.json — a real incident (junk venue text tripping the
+        # opening-night orchestrator + a live subscriber broadcast). Three
+        # separate discovery rounds (BRO-160, cards #1921/#1922) each found MORE
+        # show-entry builders / venue-writing scripts skipping it, all found via
+        # ad-hoc grep. This automates that grep. Advisory-first, identical shape
+        # to the direct-provider-calls audit above: pre-existing debt is frozen
+        # in data/audit/venue-write-guard-baseline.json and never fails CI; only
+        # a genuinely NEW unguarded `venue:`/`.venue =` site fails under --strict.
+        run: node scripts/audit-venue-write-guard.js --strict
 
       - name: Audit — fetchPage() cleanup on success path (advisory)
         # Prevents the #438/#914 bug class recurring: fetchWithPlaywright() in
