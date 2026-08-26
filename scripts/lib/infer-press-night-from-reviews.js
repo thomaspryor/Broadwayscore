@@ -124,6 +124,8 @@ function findEarliestCluster(sortedDates) {
  *     likely contamination than a backwards date, so we leave those alone.
  *   - Same ≥3-reviews + ≥2-within-3-days cluster check, applied to the reviews
  *     published BEFORE the stored openingDate.
+ *   - The pre-date cluster must be at least as large as everything published on
+ *     or after the stored date (dominance guard — see the comment at the call).
  *   - Inferred press night = earliest clustered review date (offset 0 — see
  *     REVERSE_OFFSET_DAYS), gap in [2, 90] days.
  *   - previewsStartDate is set to null, not fabricated.
@@ -204,6 +206,19 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     const beforeDates = showDates.filter(d => new Date(d).getTime() < openingMs).sort();
     const beforeCluster = findEarliestCluster(beforeDates);
     if (!beforeCluster) continue;
+
+    // Dominance guard: the pre-date cluster must be at least as big as
+    // everything published on or after the stored date. The forward branch is
+    // floored at COLLAPSED_MIN_GAP_DAYS, so a show can have a big legitimate
+    // press wave 1 day after the stored date (forward declines it) plus a few
+    // stray or placeholder-dated earlier reviews — without this guard the
+    // reverse branch would then drag openingDate backwards on the strength of
+    // the smaller wave. Measured on a forced-collapse sweep of all 2,900 shows,
+    // pre-opening review dates are common enough (preview-period notices,
+    // first-of-month placeholder publishDates on older entries) that "some
+    // reviews exist before the date" is not on its own sufficient evidence.
+    const atOrAfterCount = showDates.filter(d => new Date(d).getTime() >= openingMs).length;
+    if (beforeCluster.clusterSize < atOrAfterCount) continue;
 
     // gapDays is how far BEFORE the stored date the cluster sits (positive).
     const gapDays = Math.round((openingMs - beforeCluster.earliestMs) / DAY_MS);

@@ -227,3 +227,23 @@ test('forward wins when both a before- and an after-cluster qualify', () => {
   const prev = out[0].changes.find(c => c.field === 'previewsStartDate');
   assert.equal(prev.new, '2025-11-28', 'forward rule still preserves the old opening as previews');
 });
+
+test('reverse: a small pre-date cluster loses to a bigger wave on/after the stored date', () => {
+  const show = {
+    id: 'we-reverse-dominance-2025',
+    title: 'Dominance',
+    slug: 'we-reverse-dominance-2025',
+    category: 'west-end',
+    openingDate: '2025-11-28',
+    previewsStartDate: '2025-11-28',
+    openingDateSource: 'todaytix',
+  };
+  // The real press wave is 1 day after the stored date, so the forward branch
+  // declines it (gap 1 < 2). Three earlier strays must not win by default.
+  const reviews = [
+    ...reviewsOn('we-reverse-dominance-2025', '2025-11-20', 3),
+    ...reviewsOn('we-reverse-dominance-2025', '2025-11-29', 10),
+  ];
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+  assert.equal(out.length, 0, 'the larger later wave means the stored date is roughly right');
+});
