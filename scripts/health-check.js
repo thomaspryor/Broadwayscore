@@ -2761,7 +2761,24 @@ async function checkStuckWorkInner() {
     // genuinely empty brain — surface it instead of reporting a clean pass.
     return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
   }
-  const { pausedCritical, pausedStale, pausedAwaitingRecheck, pausedParked, orphaned, invalidDates } = classifyStuckCards(cards, Date.now());
+  const raw = classifyStuckCards(cards, Date.now());
+  const { pausedAwaitingRecheck, pausedParked, invalidDates } = raw;
+  // Reconcile against Linear before reporting (BRO-104). The board moved to
+  // Linear on 2026-08-12 (CLAUDE.md §6) but these buckets are still computed
+  // from the Notion brain, so cards closed in Linear sit Paused/In-progress in
+  // Notion forever and the counts only grow. Drop a card ONLY when its Linear
+  // twin is explicitly closed; no-twin cards keep counting (the mirror froze at
+  // task 1285, so post-freeze Notion-only work has no twin at all). An
+  // unreachable Linear is a no-op, never a shrink — see the lib's contract.
+  const { reconcileStuckBuckets, fetchLinearIssueStates } = require('./lib/stuck-work-linear-reconcile');
+  const linearStates = process.env.LINEAR_API_KEY ? await fetchLinearIssueStates() : null;
+  const rec = reconcileStuckBuckets(raw, linearStates);
+  const { pausedCritical, pausedStale, orphaned } = rec;
+  // Appended to each row so the number is self-explaining: a reader who
+  // remembers "55 orphaned yesterday" can see why it is 20 today.
+  const recNote = (n) => (rec.applied && n > 0
+    ? ` [${n} more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]`
+    : '');
   const results = [];
   // Card names are free text typed into Notion and land in the HTML email —
   // escape them (first check to inject arbitrary text into the digest).
@@ -2792,26 +2809,26 @@ async function checkStuckWorkInner() {
       // work: paused P0/P1 cards` byte-for-byte. Never rename it.
       name: 'Stuck work: paused P0/P1 cards',
       status: 'warn',
-      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}`,
+      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}${recNote(rec.resolvedCounts.pausedCritical)}`,
       hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), resume a parked card (bsc-next --id N --force), close, or park with RECHECK-AFTER: YYYY-MM-DD',
     });
   } else {
-    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}` });
+    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}${recNote(rec.resolvedCounts.pausedCritical)}` });
   }
 
   if (orphaned.length > 0) {
     results.push({
       name: 'Stuck work: orphaned in-progress cards',
       status: 'warn',
-      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}`,
+      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}${recNote(rec.resolvedCounts.orphaned)}`,
       hint: 'Triage: node scripts/notion-brain.js search --status "In progress" — re-dispatch, pause with a reason, or close',
     });
   } else {
-    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: 'No in-progress cards idle >48h' });
+    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: `No in-progress cards idle >48h${recNote(rec.resolvedCounts.orphaned)}` });
   }
 
   if (pausedStale.length > 0) {
-    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)` });
+    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)${recNote(rec.resolvedCounts.pausedStale)}` });
   }
   if (invalidDates > 0) {
     results.push({ name: 'Stuck work: unparseable timestamps', status: 'warn', message: `${invalidDates} card(s) skipped — last_edited_time did not parse (they may be hiding stuck work)` });
