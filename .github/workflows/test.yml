@@ -185,6 +185,10 @@ on:
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
+      # BRO-129: colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
+      # solo edit to the test triggers CI.
+      - 'scripts/process-feedback.test.mjs'
       # Diacritic folding across every show-title matcher (task #648). A matcher
       # that strips non-ASCII without folding first shreds "Les Misérables" into
       # ["les","mis","rables"] and matches nothing — confirmed live suppression.
