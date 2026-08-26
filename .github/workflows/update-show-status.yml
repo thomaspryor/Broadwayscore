@@ -256,7 +256,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/enrich-stubhub-prices.js
+        run: node scripts/enrich-stubhub-prices.js --time-budget-min=4
         continue-on-error: true
         timeout-minutes: 5
 
@@ -280,7 +280,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/enrich-fallback-ticket-links.js --limit=10
+        run: node scripts/enrich-fallback-ticket-links.js --limit=10 --time-budget-min=8
         continue-on-error: true
         timeout-minutes: 10
 

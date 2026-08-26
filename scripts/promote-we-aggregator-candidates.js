@@ -49,6 +49,7 @@ const {
   fetchLboArticleDate,
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `promote-we-aggregator-candidates.js — West End aggregator-roundup auto-promotion backstop.
 
@@ -60,6 +61,7 @@ Options:
   --dry-run     show what would be promoted; don't write
   --limit=N     cap WET per-post venue fetches this run (default 15)
   --email       best-effort "went live" digest notification
+  --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
 
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'we-promotion-log.jsonl');
@@ -194,7 +196,7 @@ function buildWestEndAggregatorShowEntry(candidate) {
 
 /** Collect + dedupe raw listing candidates from both sources into one list. */
 async function collectCandidates(opts) {
-  const { log, limit } = opts;
+  const { log, limit, timeBudget } = opts;
   const discoveredAt = new Date().toISOString();
   const seenUrls = new Set();
   const out = [];
@@ -235,6 +237,10 @@ async function collectCandidates(opts) {
       log(`  [limit] reached --limit=${limit}; skipping remaining WET posts this run`);
       break;
     }
+    if (timeBudget && timeBudget.exceeded()) {
+      log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — skipping remaining WET posts this run`);
+      break;
+    }
     wetFetches++;
     const venueInfo = await fetchWetPostVenue(c.sourceUrl, opts);
     seenUrls.add(c.sourceUrl);
@@ -259,6 +265,7 @@ async function main() {
   const emailAlerts = args.includes('--email');
   const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '15', 10);
   const log = (...a) => console.log(...a);
+  const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
   // Reset up front (mirrors promote-ob-venue-candidates.js) so a crash
   // mid-run can never leave a stale file claiming a prior run's promotions
@@ -278,7 +285,7 @@ async function main() {
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
     .map(s => ({ id: s.id, title: s.title, venue: s.venue }));
 
-  const candidates = await collectCandidates({ log, limit });
+  const candidates = await collectCandidates({ log, limit, timeBudget });
   log('');
   log(`Collected ${candidates.length} raw candidate(s) from WE aggregator listings.`);
 
@@ -287,6 +294,10 @@ async function main() {
   let lboDateFetches = 0;
 
   for (const c of candidates) {
+    if (timeBudget.exceeded()) {
+      log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
+      break;
+    }
     const existingMatch = findExistingMatch(c, existingCandidates);
     if (existingMatch) {
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });

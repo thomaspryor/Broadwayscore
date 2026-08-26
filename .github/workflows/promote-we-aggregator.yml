@@ -78,7 +78,7 @@ jobs:
           fi
           DRY_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then DRY_FLAG="--dry-run"; fi
-          node scripts/promote-we-aggregator-candidates.js --email $DRY_FLAG
+          node scripts/promote-we-aggregator-candidates.js --email --time-budget-min=25 $DRY_FLAG
           PROMOTE_RC=$?
           [ "$PROMOTE_RC" -ne 0 ] && echo "::error::WE promotion script exited $PROMOTE_RC (failure email sent by the script)"
           # ALWAYS validate before push-core-data below — promotion may have
