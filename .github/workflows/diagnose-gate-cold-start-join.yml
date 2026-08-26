@@ -7,6 +7,8 @@ name: Diagnose gate-cold-start join (one-off)
 # start while the overall email-gate funnel shows healthy modal volume over
 # the same window — see docs/experiments/gate-cold-start.md.
 
+# hygiene-notify-ok: manual one-off diagnostic, watched directly by whoever
+# dispatches it — no on-call/alerting value in a failure notification.
 on:
   workflow_dispatch: {}
 
