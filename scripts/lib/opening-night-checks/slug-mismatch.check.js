@@ -26,7 +26,13 @@ function urlSearchSlug(url) {
     const u = new URL(url);
     const path = u.pathname.replace(/\.(html?|php|aspx?)$/i, '').replace(/\/$/, '');
     const segments = path.split('/').filter(Boolean);
-    return segments.join(' ').toLowerCase();
+    // Some outlets (e.g. Talkin' Broadway: /ParanormalActivity.html) use
+    // camelCase path segments with no hyphen/space between words. Insert a
+    // space at each lowercase/digit -> uppercase boundary BEFORE lowercasing
+    // so urlMentionsAnySlug's word-boundary regex can still find "paranormal"
+    // and "activity" as separate tokens instead of one unbroken run.
+    const spaced = segments.map(s => s.replace(/([a-z0-9])([A-Z])/g, '$1 $2')).join(' ');
+    return spaced.toLowerCase();
   } catch {
     return url.toLowerCase();
   }
