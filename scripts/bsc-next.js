@@ -176,7 +176,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   closedCardGuard,
-  checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
+  checkDeadDispatch, sessionAliveForTask, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
   dispatchClaimGuard,
@@ -945,6 +945,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
     claudeAliveIn: claudeAliveInFn = cmuxws.claudeAliveIn,
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    sessionAliveForTask: sessionAliveForTaskFn = sessionAliveForTask,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     appendCiRedClaim: appendCiRedClaimFn = appendClaim,
@@ -1441,7 +1442,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // for bsc-prune.js's own (typically once/day) sweep to write the
       // breadcrumb.
       try {
-        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args);
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args, sessionAliveForTaskFn);
         freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
@@ -1589,4 +1590,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, sessionAliveForTask, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };

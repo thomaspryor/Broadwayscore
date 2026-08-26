@@ -61,13 +61,14 @@ const fs = require('fs');
 const path = require('path');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
-// gitSafeJobId only (no lease/runJob I/O pulled in) — matchesTaskWorkBranch
-// needs the identical git-ref sanitization bsc-runner.js applies to a jobId
-// before it ever becomes part of a branch name (BRO-278). Same require
-// direction scripts/backlog-drain.js already uses for the same reason; no
-// cycle (bsc-runner.js's own requires — dispatch-ledger.js, claude-cli.js,
+// gitSafeJobId for matchesTaskWorkBranch's git-ref sanitization (BRO-278);
+// readLease/pidLooksLikeClaude for sessionAliveForTask (BRO-268) — the
+// per-task lease file bsc-runner.runJob() writes/updates with the live pid,
+// independent of any cmux workspace. Same require direction
+// scripts/backlog-drain.js already uses for the same reason; no cycle
+// (bsc-runner.js's own requires — dispatch-ledger.js, claude-cli.js,
 // worktree-gc-reclaim.js — never reach back to this file).
-const { gitSafeJobId } = require('./bsc-runner.js');
+const { gitSafeJobId, readLease, pidLooksLikeClaude } = require('./bsc-runner.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
@@ -348,11 +349,60 @@ function closedCardGuard(task, card, opts) {
 // working on. Same fix shape as #559's pruneDone: require the independent
 // terminal-surface signal (surfaceAliveFn) to ALSO say not-alive before a
 // workspace counts as idle-and-dead.
-function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, surfaceAliveFn, opts) {
+//
+// BRO-268: even both workspace-shaped signals agreeing "not alive" can be
+// wrong — they only see what's running inside THIS SPECIFIC cmux workspace's
+// own pty, so a headless/resumed session (bsc-runner.js's runJob, launched
+// via bsc-reconcile.js's retry/resume paths) doing the real work outside
+// that pty is invisible to them. sessionAliveFn is the independent
+// session-shaped signal: it reads bsc-runner's per-task lease file (written
+// at spawn, live pid re-verified via pidLooksLikeClaude — sessionAliveForTask
+// below) and says "alive" regardless of which workspace, if any, is
+// currently associated with the task.
+//
+// When it says alive, this strips EVERY dead-shaped entry for task.id — not
+// just this call's freshDead, but also any already sitting in the incoming
+// ledgerEntries from earlier calls/sweeps — before handing off to
+// deadDispatchGuard. Filtering freshDead alone would only stop the count
+// from climbing further; deadDispatchGuard's dispatchCapDecision counts
+// every dead-shaped row for task.id across the WHOLE array it's given
+// (dispatch-ledger.js deadAttemptsForTask has no "fresh vs historical"
+// concept), so a task that already reached DEAD_ATTEMPT_LIMIT from past
+// (mistaken) breadcrumbs would otherwise stay refused forever even once its
+// live session is provable. Scoped inside this function, not
+// deadDispatchGuard's own signature — predispatch-queue-audit.js calls
+// deadDispatchGuard directly to simulate backlog-wide refusal state and must
+// stay untouched (plan review, second-opinion, 2026-08-26).
+function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, surfaceAliveFn, opts, sessionAliveFn = sessionAliveForTask) {
   const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveFn).dead);
-  const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
-  const refusal = deadDispatchGuard(task, ledgerEntries.concat(freshDead), opts);
+  const allFreshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
+  const sessionAlive = sessionAliveFn(task.id);
+  const notThisTaskDead = (e) => !(dispatchLedger.isDeadlikeEvent(e.event) && String(e.taskId) === String(task.id));
+  const freshDead = sessionAlive ? allFreshDead.filter(notThisTaskDead) : allFreshDead;
+  const priorEntries = sessionAlive ? ledgerEntries.filter(notThisTaskDead) : ledgerEntries;
+  const refusal = deadDispatchGuard(task, priorEntries.concat(freshDead), opts);
   return { freshDead, refusal };
+}
+
+// BRO-268: the session-shaped liveness signal checkDeadDispatch needs to see
+// past a dead-looking cmux workspace. bsc-runner.js's per-task lease file
+// (data/audit/job-leases/<taskId>/lease.json) is written at spawn and kept
+// current with the live pid (runJob's onSpawn/onSessionId callbacks) by
+// every headless dispatch path — independent of which workspace/pty, if
+// any, is currently associated with the task. pidLooksLikeClaude
+// re-validates the recorded pid's argv (guards a recycled pid — the same
+// check acquireLease() already relies on to detect a stale lease and steal
+// it).
+//
+// Deliberately fails the OPPOSITE direction from worktree-live-lease-check.js's
+// hasLiveLease (which reads a null/pending pid as "alive" — fail-safe toward
+// NOT reclaiming a worktree mid-acquisition): here a missing/unconfirmed pid
+// must read as "not alive," because the failure cost is inverted — this
+// signal only ever SUPPRESSES a dead-dispatch refusal, so erring toward
+// "alive" would let a truly-dead task dodge the guard it exists to enforce.
+function sessionAliveForTask(taskId, { readLeaseFn = readLease, isAliveFn = pidLooksLikeClaude } = {}) {
+  const lease = readLeaseFn(taskId);
+  return Boolean(lease && lease.pid && isAliveFn(lease.pid));
 }
 
 // Notion-mirror convenience: extract an embedded `[notion:<uuid>]` tag from a
@@ -809,6 +859,7 @@ module.exports = {
   closedCardGuard,
   CLOSED_CARD_STATUSES,
   checkDeadDispatch,
+  sessionAliveForTask,
   notionIdOf,
   loadLinearMirrorMapping,
   liveLinearCounterpart,
