@@ -49,19 +49,34 @@ function main() {
 
   const flagged = allResults.filter((r) => r.flags.length > 0);
   const ranked = [...flagged].sort((a, b) => b.contentionScore - a.contentionScore);
+  const mixedBundles = flagged.filter((r) => r.mixedSafetyBundle);
 
   if (jsonOut) {
-    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, underParsedFiles, ranked }, null, 2));
+    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, underParsedFiles, ranked }, null, 2));
     return;
   }
 
   console.log(`Scanned ${files.length} workflow files, ${filesWithPushCalls} with push-with-retry.sh calls (${allResults.length} total call sites).`);
-  console.log(`${flagged.length} flagged (retries-undersized-vs-deadline and/or job-timeout-margin-undersized).\n`);
+  console.log(`${flagged.length} flagged (retries-undersized-vs-deadline and/or job-timeout-margin-undersized and/or mixed-safety-bundle).\n`);
 
   if (underParsedFiles.length > 0) {
     console.log(`⚠️  ${underParsedFiles.length} file(s) may have UNDER-PARSED push-with-retry.sh calls (structured parse found fewer than a raw text scan — verify by hand):`);
     for (const u of underParsedFiles) console.log(`     ${u.file}: parsed=${u.parsed} raw=${u.raw}`);
     console.log('');
+  }
+
+  // mixed-safety-bundle (BRO-2446): surfaced in its OWN section, separate from
+  // the contentionScore ranking below — this is a structural "split this step"
+  // fix (the BRO-2435 pattern), not a sizing tweak, so it needs a fix pass of
+  // its own regardless of where contentionScore happens to rank it.
+  if (mixedBundles.length > 0) {
+    console.log(`🔀 ${mixedBundles.length} call site(s) bundle an apiFallbackSafe file with a disqualifying (unaudited/multi-writer) file in the SAME commit+push — this defeats the Git Data API fallback for BOTH, exactly the BRO-2435 failure shape:\n`);
+    for (const r of mixedBundles) {
+      console.log(`  ${r.file} :: ${r.job} / "${r.step}"`);
+      console.log(`      apiFallbackSafe file(s) losing their fallback: ${r.mixedSafetyBundleSafeFiles.join(', ')}`);
+      console.log(`      bundled with disqualifying file(s):            ${r.mixedSafetyBundleDisqualifyingFiles.join(', ')}`);
+      console.log('      fix: split into separate git-add-existing.sh + push-with-retry.sh calls (see opening-night-broadcast.yml\'s "Commit orphan-rescore-requeue state" step for the reference pattern)\n');
+    }
   }
 
   console.log(`Top ${Math.min(topN, ranked.length)} by contention score (managed-file writes + cron frequency + severity):\n`);
