@@ -75,6 +75,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
+const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
@@ -563,7 +564,7 @@ function categoryOfLinearIssue(description) {
 // why this must be checked before ever writing.
 function isLinearIssueTerminal(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  return stateType === 'completed' || stateType === 'canceled';
+  return isTerminalStateType(stateType);
 }
 
 function normalizeLinearIssue(issue) {
