@@ -190,10 +190,12 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
       // as Broadway excludes off-broadway below. Require the exact category.
       if (s.category !== 'west-end') return false;
     } else {
-      // Broadway: exclude off-broadway, regional (non-NYC US tryouts), and London markets.
-      // Regional already carries market:'regional' so it fails the broadway-only gates,
-      // but exclude by category here too — Broadway subscribers did not opt into regional.
-      if (s.category === 'off-broadway' || s.category === 'regional' || isLondonMarket(s.category)) return false;
+      // True Broadway only, same allowlist shape as the West End branch above.
+      // BRO-159: a denylist (exclude off-broadway/regional/London) silently
+      // admits any future category value — e.g. an enumerated 'off-off-broadway'
+      // would inherit Broadway broadcast eligibility by default. Require the
+      // exact category instead.
+      if (s.category !== 'broadway') return false;
     }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);
