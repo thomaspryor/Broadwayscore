@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-08-26T23:04:44.305Z",
-  "processed": 52,
-  "failed": 417,
-  "successRate": "11.1%",
+  "updatedAt": "2026-08-26T23:07:50.492Z",
+  "processed": 57,
+  "failed": 462,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 2,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-08-26T21:02:04.984Z",
-      "event": "bb-session",
-      "session": "eed1d05f",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
     {
       "t": "2026-08-26T21:02:05.313Z",
       "event": "bb-cookie-inject",
@@ -128,6 +122,12 @@
       "t": "2026-08-26T23:02:52.173Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-26T23:05:17.241Z",
+      "event": "bb-session",
+      "session": "9ff7c765",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
