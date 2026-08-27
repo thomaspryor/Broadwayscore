@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-27T04:52:34.906Z",
+  "updatedAt": "2026-08-27T05:15:45.758Z",
   "processed": 58,
-  "failed": 850,
-  "successRate": "6.4%",
+  "failed": 860,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 52,
     "amp": 1,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 2,
     "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-27T01:41:12.053Z",
-      "event": "bb-session",
-      "session": "0df56eb0",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-27T01:41:12.600Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-08-27T01:47:27.377Z",
       "event": "bb-session",
@@ -131,6 +120,17 @@
       "event": "bb-session",
       "session": "6f1c7954",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-27T05:14:03.123Z",
+      "event": "bb-session",
+      "session": "0ad79467",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-27T05:14:04.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
