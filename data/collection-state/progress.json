@@ -863,7 +863,13 @@
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -967,7 +973,7 @@
     ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
   "log": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -1168,6 +1174,18 @@
       "t": "2026-08-27T02:52:25.810Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T02:55:48.711Z",
+      "event": "bb-session",
+      "session": "282112b3",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-27T02:55:56.659Z",
+      "event": "bb-session",
+      "session": "f2357ad6",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
