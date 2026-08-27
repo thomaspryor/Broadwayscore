@@ -34,7 +34,7 @@
 
 'use strict';
 
-const { evaluateCurrentRunCorroboration } = require('./wrong-production-corroboration');
+const { evaluateCurrentRunCorroboration, bucketDateGuardCandidate } = require('./wrong-production-corroboration');
 const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 
 // Most wrongProductionReason values in the corpus are terse operator/audit
@@ -110,19 +110,13 @@ function classifyWrongProductionFPCandidate({ review, show } = {}) {
   if (note.startsWith('Date guard:')) {
     const isBeforePreview = / is \d+d before /.test(note);
     const corrob = evaluateCurrentRunCorroboration({ review, show });
-    if (corrob.strength) {
-      const trSignal = corrob.signals.find((s) => s.startsWith('theatre-record-month:'));
-      if (trSignal && isBeforePreview) {
-        return { kind: 'misparsed-date', strength: 'strong', signals: corrob.signals, fullReasoning: null };
-      }
-      if (corrob.strength === 'weak') {
-        return { kind: 'misparsed-date', strength: 'weak', signals: corrob.signals, fullReasoning: null };
-      }
-      // 'strong' via cv-affirms-production alone, or an after_close TR-month
-      // match, is informational only (see wrong-production-corroboration.js
-      // header) — not sweep-actionable as a date candidate. Fall through in
-      // case the truncated-reason signal also applies.
+    const bucket = bucketDateGuardCandidate({ corrob, isBeforePreview });
+    if (bucket) {
+      return { kind: 'misparsed-date', strength: bucket, signals: corrob.signals, fullReasoning: null };
     }
+    // null bucket: no corroboration, or an informational-only 'strong' (see
+    // bucketDateGuardCandidate) — fall through in case the truncated-reason
+    // signal also applies.
   }
 
   const reason = review.wrongProductionReason || '';
@@ -148,5 +142,4 @@ function classifyWrongProductionFPCandidate({ review, show } = {}) {
 module.exports = {
   isTruncatedReason,
   classifyWrongProductionFPCandidate,
-  TRUNCATION_CAP,
 };
