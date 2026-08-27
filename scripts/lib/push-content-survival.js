@@ -262,6 +262,88 @@ function anyReverted(classified) {
   return classified.some((c) => c.status === 'reverted');
 }
 
+// Task BRO-2500: a second false-positive variant BRO-2449's fork-point
+// scoping does not cover. That fix addressed a STALE BRANCH (lines the
+// branch never touched, which main has since legitimately replaced) — the
+// missing lines were never genuinely the branch's to lose, so scoping them
+// out of addedLines suppresses the alarm.
+//
+// This variant is structurally different and can't be fixed by scoping
+// addedLines more carefully, because there's nothing wrong with addedLines
+// here: a small number of known files have MANY independent writers (or, for
+// deploy-watermark.json below, a single writer whose entire job is to
+// overwrite the file with a fresh snapshot on every run) such that BOTH the
+// branch and main routinely diverge from base in the SAME push window,
+// neither at the other's expense. addedLinesSurvived() correctly reports
+// "the branch's added lines are not in final" — they really aren't — but
+// that's not evidence of a clobber for these specific files, it's the file
+// doing exactly what it exists to do. Per the ticket: these files need to be
+// excluded from the check entirely, not scored more cleverly — any
+// set/multiset comparison would still have to special-case "both sides can
+// add without either being wrong", which is just this same exclusion with
+// extra steps.
+//
+// Shape follows scripts/lib/ledger-coverage-exemptions.js's EXEMPTIONS /
+// scripts/lib/audit-ledger-merge-attrs.js's EXEMPT_LEDGERS convention (a
+// {file, reason} object array with a dated justification per entry) rather
+// than a bare path list — this codebase already solves "documented exception
+// to an automated check" this way twice, and a bare list would have nowhere
+// to record that deploy-watermark.json is exempt for a DIFFERENT reason than
+// the other three (see its own entry below).
+//
+// Matched by exact file path (not suffix): `git diff --name-only` always
+// reports repo-root-relative paths, and no real caller of this CLI passes
+// --path-prefix today (verified: grepped every scripts/lib/push-with-retry.sh
+// and scripts/merge-worktree-to-main.sh call site) — suffix matching would
+// only add a future basename-collision risk for zero present benefit.
+//
+// Drift guard: scripts/lib/push-content-survival.test.mjs's "stays in sync
+// with core-data-merge-registry.js" test fails if the registry ever adds a
+// real merge fn / status:'active' entry for one of the three registry-cited
+// paths below — that would mean the file is no longer "genuinely
+// unreconciled by design" and this exemption should be revisited alongside
+// it, not silently keep excluding a file that now has real coverage.
+const CONTENT_SURVIVAL_EXEMPT_LEDGERS = [
+  {
+    file: 'data/audit/alert-ledger.json',
+    reason:
+      '2026-08-26 (BRO-2500): 12 independent writers, deliberately excluded from ' +
+      "core-data-merge-registry.js's active/merge-fn coverage (see its \"NOT added, " +
+      'deliberately\" comment) because divergence here is expected and benign, not an ' +
+      'error to reconcile away. Live incident: merging origin/job/linear-BRO-45-mtapwjad ' +
+      'reported REVERTED — 18 lines only on the branch, 23 lines only on main, both grown ' +
+      'independently, nothing clobbered.',
+  },
+  {
+    file: 'data/audit/alert-digest-queue.json',
+    reason: "2026-08-26 (BRO-2500): same shape and same registry comment as alert-ledger.json above — 8 independent writers.",
+  },
+  {
+    file: 'data/audit/alert-router-attempts.jsonl',
+    reason: "2026-08-26 (BRO-2500): same shape and same registry comment as alert-ledger.json above — 3 independent writers.",
+  },
+  {
+    file: 'data/audit/deploy-watermark.json',
+    reason:
+      '2026-08-26 (BRO-2500): the OTHER file flagged reverted in the same live incident as ' +
+      'alert-ledger.json above, but for a different underlying reason — not an append-only ' +
+      'ledger, a small whole-object snapshot ({showCount, reviewCount, updatedAt}) that ' +
+      'update-deploy-watermark.yml fully overwrites on every deploy. There is no "our added ' +
+      "lines must survive\" invariant to check for a full-overwrite file: its content is " +
+      'EXPECTED to differ between any two arbitrary points in time regardless of which ref ' +
+      'last touched it, so every touch looks like the same false-positive shape.',
+  },
+];
+
+/**
+ * @param {string} file repo-relative path as reported by `git diff --name-only`
+ * @returns {boolean} true if this file is a documented exception that
+ *   content-survival should not attempt to classify at all
+ */
+function isContentSurvivalExempt(file) {
+  return CONTENT_SURVIVAL_EXEMPT_LEDGERS.some((e) => e.file === file);
+}
+
 module.exports = {
   classifyFileSurvival,
   classifyFileSurvivalDeep,
@@ -270,6 +352,8 @@ module.exports = {
   addedLinesSurvived,
   classifyAll,
   anyReverted,
+  CONTENT_SURVIVAL_EXEMPT_LEDGERS,
+  isContentSurvivalExempt,
 };
 
 // ── CLI ───────────────────────────────────────────────────────────────────
@@ -330,8 +414,39 @@ if (require.main === module) {
     process.exit(0);
   }
 
+  // This exact vacuous-diff case (no MODIFIED/TYPE-CHANGED files at all) must
+  // print the literal "no modified files to check" text UNCHANGED and BEFORE
+  // exemption filtering: merge-worktree-to-main.sh pattern-matches that exact
+  // substring to print its own "compared NOTHING — check by hand" warning
+  // when the fork-point scoping itself went empty (a genuinely different,
+  // pre-existing failure mode this fix does not touch).
   if (modifiedFiles.length === 0) {
     console.log('OK — no modified files to check');
+    process.exit(0);
+  }
+
+  // Task BRO-2500: documented exemptions (append-only/full-overwrite
+  // multi-writer files — see CONTENT_SURVIVAL_EXEMPT_LEDGERS) are filtered
+  // out here, AFTER the vacuous-diff check above, deliberately NOT reusing
+  // its "no modified files to check" text even when every remaining file
+  // turns out to be exempt. Collapsing into that literal string was tried
+  // and reverted (ship-check finding): merge-worktree-to-main.sh's
+  // vacuous-guard case-match fires on that substring whenever VERIFY_FILES
+  // is non-empty, and VERIFY_FILES virtually always contains an exempt
+  // ledger a branch actually touched — so reusing the string would replace
+  // the #619 hard-failure false alarm this ticket exists to remove with a
+  // softer, but still spurious, "check by hand" warning on the SAME files,
+  // undermining the exact goal. A distinct message here means the caller
+  // simply prints nothing extra, since there IS nothing to manually verify.
+  const exemptFiles = modifiedFiles.filter((f) => isContentSurvivalExempt(f));
+  for (const f of exemptFiles) {
+    const entry = CONTENT_SURVIVAL_EXEMPT_LEDGERS.find((e) => e.file === f);
+    console.log(`[content-survival] EXCLUDED (documented exemption, BRO-2500): ${f} — ${entry.reason}`);
+  }
+  modifiedFiles = modifiedFiles.filter((f) => !isContentSurvivalExempt(f));
+
+  if (modifiedFiles.length === 0) {
+    console.log(`OK — ${exemptFiles.length} modified file(s) all documented exemptions, nothing left to check`);
     process.exit(0);
   }
 
