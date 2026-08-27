@@ -739,6 +739,121 @@ test('main(): a non-Marketing-project issue is unaffected by the guard (dry-run 
   assert.match(logs.join('\n'), /would launch/);
 });
 
+// ── auto-filed-pipeline dispatch guard, end-to-end (BRO-2499) ──────────────
+// The other half of the SAME documented funnel line BRO-2488 closed
+// ("Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY"). BRO-2488's own
+// root cause was a guard that COULD NEVER FIRE (issue.project was never
+// fetched), so a pure-predicate test would not have caught it — these drive
+// the real main() to prove the guard is actually wired into the --id path,
+// and that the pipeline's opt-in flag really lets its own dispatch through.
+function makeAutofixFiledIssue(title = 'BSC Daily: Cron failed: data-health-check') {
+  return {
+    id: 'issue-uuid-2499', identifier: 'BRO-9499', title,
+    description: 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-2499/bsc-daily-cron-failed',
+    priority: 2,
+    state: { id: 'state-1', name: 'Backlog', type: 'backlog' },
+    project: { id: 'proj-2', name: 'Infrastructure' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): refuses to dispatch a "BSC Daily:"-titled auto-filed issue (BRO-2499)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-9499'], {
+      getIssue: async () => makeAutofixFiledIssue(),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for an auto-filed issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /digest-autofix/);
+});
+
+test('main(): the daily CANARY card is refused the same way (BRO-2499)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  console.error = () => {};
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-9499'], {
+      getIssue: async () => makeAutofixFiledIssue('CANARY: touch data/audit/canary-2026-08-26.marker'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+});
+
+// The load-bearing half: digest-autofix.js and autofix-canary.js dispatch
+// their own issues through this exact CLI. If this case fails, the daily
+// autofix drain and the daily end-to-end canary have both stopped dispatching
+// — a failure that would otherwise only surface ~24h later in the canary row.
+test('main(): --allow-autofix-filed lets the owning pipeline dispatch its own issue (BRO-2499)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+      getIssue: async () => makeAutofixFiledIssue(),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      // Unlike the --force cases above, this path does NOT bypass the
+      // fresh-dispatch claim or the work-branch collision check — stub both
+      // so this subprocess never writes a real claim into
+      // data/audit/linear-dispatch-claims (a leftover claim makes the NEXT
+      // run of this file take the refusal path and call the real
+      // process.exit) and never shells out to git. Same convention as the
+      // task #1898 claim tests above.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+test('main(): an ordinary backlog issue is unaffected by the auto-filed guard (BRO-2499)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-9499', '--dry-run'], {
+      getIssue: async () => ({ ...makeAutofixFiledIssue('Fix the score badge width'), description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`' }),
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
+});
+
 // bsc-next.js's own completedLaunchGuard (the Notion-mirror counterpart)
 // self-exempts --dry-run/--print-prompt, and this file's own header/USAGE
 // both document "--list/--dry-run still work" even under the kill switch —

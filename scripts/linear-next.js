@@ -52,6 +52,7 @@
  *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+ *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
  *   node scripts/linear-next.js --help, -h                   show this message, do nothing else
  *
@@ -132,6 +133,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+  node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
 
@@ -450,6 +452,20 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Auto-filed-pipeline guard (BRO-2499): the other half of the SAME
+  // documented funnel line the marketing guard above closes ("Backlog/Todo,
+  // not `· Marketing`, not BSC Daily/CANARY"). Refuses a backlog sweep that
+  // picks up an issue digest-autofix / autofix-canary filed and is already
+  // dispatching itself; those two pipelines pass --allow-autofix-filed at
+  // their own call sites. See ld.autofixFiledIssueGuard's header for why
+  // this is an opt-in bypass and not a blanket title refusal. Same placement
+  // rationale as the two guards above.
+  const autofixRefusal = ld.autofixFiledIssueGuard(issue, args);
+  if (autofixRefusal) {
+    console.error(`[linear-next] ${autofixRefusal}`);
+    process.exit(1);
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should
@@ -646,6 +662,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+        // BRO-2499: the autofix-pipeline bypass is journaled the same way
+        // --allow-unverifiable is, so a dispatch that only happened because
+        // the guard was waived is auditable in the ledger rather than
+        // invisible.
+        allowAutofixFiled: args['allow-autofix-filed'] || null,
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -751,6 +772,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+      // BRO-2499 — see the headless launch entry above for why the
+      // autofix-pipeline bypass is journaled.
+      allowAutofixFiled: args['allow-autofix-filed'] || null,
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.

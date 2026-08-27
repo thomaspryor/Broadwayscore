@@ -530,3 +530,45 @@ test('dispatchDetached: linear ids spawn linear-next.js, numeric ids spawn bsc-n
   assert.throws(() => clean.dispatchDetached('BRO-9', () => {}, 0, null), /invalid taskId/);
   assert.throws(() => clean.dispatchDetached('linear:$(rm -rf x)', () => {}, 0, null), /invalid taskId/);
 });
+
+// BRO-2499: linear-dispatch.js's autofixFiledIssueGuard refuses "BSC Daily:"
+// / "CANARY: touch" issues at `linear-next.js --id`. Every issue THIS module
+// files is in that population and it dispatches them itself, so runAutofix
+// must waive the guard — and only there. If the flag stops being appended,
+// the daily autofix drain and the daily canary silently stop dispatching, a
+// failure that otherwise surfaces ~24h later in the canary health row.
+test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, only when opted in (BRO-2499)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true });
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-autofix-filed/);
+
+    // Default (no opts) must NOT carry the bypass — linear-drain-parked.js and
+    // any future caller share this helper and never asked for it.
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
+    assert.doesNotMatch(calls.spawn[1][1][1], /--allow-autofix-filed/);
+
+    // bsc-next.js has no such flag and no such guard — never append it there.
+    mod.dispatchDetached(7, () => {}, 0, null, { allowAutofixFiled: true });
+    assert.ok(String(calls.spawn[2][1][3]).endsWith('bsc-next.js'));
+    assert.doesNotMatch(calls.spawn[2][1][1], /--allow-autofix-filed/);
+  });
+});
+
+// The other end of the same contract: runAutofix must actually pass the opt-in
+// to its dispatch function. A guard that fires on the pipeline's own issues is
+// the BRO-2488 failure mode inverted — this asserts the wiring, not the flag.
+test('runAutofix: passes allowAutofixFiled to the dispatcher for its own filed rows (BRO-2499)', () => {
+  const mod = require('./digest-autofix.js');
+  const plan = [{ name: 'Cron failed: X', message: 'm', title: 'BSC Daily: Cron failed: X', state: 'queued', taskId: 'linear:BRO-500', conditionKey: null, model: null }];
+  const dispatchCalls = [];
+  mod.runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [],
+    ledgerPath: path.join(os.tmpdir(), `da-bro2499-${process.pid}.jsonl`),
+    dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 1);
+  assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true },
+    'runAutofix must waive autofixFiledIssueGuard for the issues it just filed');
+});

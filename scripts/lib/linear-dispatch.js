@@ -26,6 +26,10 @@ const { buildAutoTitle } = require('./workspace-naming');
 // no ledger I/O itself.
 const dispatchLedger = require('./dispatch-ledger.js');
 const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-types.js');
+// BRO-2499: autofixFiledIssueGuard below recognises issues the digest-autofix
+// / canary pipeline filed and dispatches itself. Leaf module, no I/O — see
+// its header for why the signal lives there and not in this file.
+const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -355,6 +359,50 @@ function marketingProjectGuard(issue, opts) {
     `approved this specific card.`;
 }
 
+// Auto-filed-pipeline guard (BRO-2499): the OTHER half of the same
+// documented funnel line marketingProjectGuard above closes — "Backlog/Todo,
+// not `· Marketing`, not BSC Daily/CANARY". Found by the /what-else pass on
+// BRO-2488: nothing in this dispatcher's chain ever looked at either signal.
+//
+// This one is NOT a blanket refusal, and that distinction is load-bearing.
+// scripts/lib/digest-autofix.js files "BSC Daily: <row>" issues and
+// scripts/lib/autofix-canary.js files the "CANARY: touch <marker>" card, and
+// BOTH then dispatch their own issue through this exact CLI
+// (digest-autofix.js's dispatchDetached → `linear-next.js --id BRO-N
+// --headless`, no --force). Refusing on the title alone would have disabled
+// the daily autofix drain and the daily end-to-end canary — the only live
+// proof the dispatch pipeline still works. What the documented line actually
+// excludes is CANDIDATE SELECTION: a crown-loop or human sweeping the
+// backlog must not pick one of these up, because the pipeline that filed it
+// already owns it and is mid-flight on it.
+//
+// So: refuse by default; the two owning pipelines pass `--allow-autofix-filed`
+// explicitly at their own call sites (NOT blanket-applied inside
+// dispatchDetached — second-opinion review, BRO-2499: that would hand every
+// present and future caller of that helper, including
+// scripts/linear-drain-parked.js, a silent bypass it never asked for).
+// `--force`/`--dry-run`/`--print-prompt` bypass too, matching
+// marketingProjectGuard's own exemptions directly above.
+//
+// Lives here next to marketingProjectGuard for the same reason that one
+// does: it is issue-shaped and Linear-only. It is deliberately NOT added to
+// dispatch-guards.js's GUARD_NAMES — those are blind-simulated across the
+// Notion-mirror backlog by predispatch-queue-audit.js, and a Notion-mirror
+// task never carries the `PARKED: ...` description prefix
+// linear-issue-create.js:141 writes, so half this guard's signal is
+// structurally absent there and the simulated refusal rate would be
+// meaningless.
+function autofixFiledIssueGuard(issue, opts) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt'] || o['allow-autofix-filed']) return null;
+  if (!isAutofixFiledIssue(issue)) return null;
+  return `${(issue && issue.identifier) || '(unknown)'} was auto-filed by the digest-autofix / canary pipeline ` +
+    `("${(issue && issue.title) || ''}") — refusing to dispatch. That pipeline dispatches its own issues ` +
+    `(scripts/lib/digest-autofix.js's dispatchDetached), so a backlog sweep picking this up either duplicates ` +
+    `a live dispatch or burns a session "fixing" a rolling health snapshot. Re-run with --force if you have ` +
+    `checked that no autofix dispatch is in flight for it.`;
+}
+
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
@@ -428,6 +476,7 @@ module.exports = {
   decideRouting,
   checkTerminalStateGuard,
   marketingProjectGuard,
+  autofixFiledIssueGuard,
   MARKETING_PROJECT_NAMES,
   buildLinearSeed,
   buildDispatchComment,
