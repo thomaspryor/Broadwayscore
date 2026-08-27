@@ -17,9 +17,20 @@
  * openings, buzziest show, closings; generate.mjs's fuller pipeline also
  * feeds recoupments/Tony/box-office movers, which need state this standalone
  * script doesn't have: prior-week snapshots, cast-changes history, etc.):
- *   - Openings: openingDate in the last 7 days (ending on --date), status
- *     'open', with a public Critic Score (cs != null on the slim file — the
- *     same review-count gate canonical-critic-scores.ts documents).
+ *   - Broadway openings: openingDate OR reopeningDate in the last 7 days
+ *     (ending on --date), with a public Critic Score (cs != null on the slim
+ *     file — the same review-count gate canonical-critic-scores.ts
+ *     documents). No status filter — mirrors generate.mjs's
+ *     openingEventsForWeek(), which doesn't gate on status either: a show can
+ *     still carry status:'previews' the week it opens (flip lag) or
+ *     status:'closed' after a short reopening run (e.g. Can I Be Frank).
+ *   - Off-Broadway openings: openingDate in the last 21 days, status 'open'.
+ *     The 14-day grace beyond the normal 7-day window mirrors
+ *     offBroadwayOpenings()'s documented fix for late-DB-added OB shows
+ *     (generate.mjs: "Heated Rivalry" case).
+ *   - West End / Off West End openings: openingDate in the last 7 days,
+ *     status 'open' — this script doesn't replicate weOpeningStories()'s
+ *     full logic, just the review-count + date gates.
  *   - Closings: closingDate in the next 7 days (from --date), status 'open'
  *     — mirrors the site's "Closing this Week" convention (forward-looking).
  *   - Buzziest show: best (lowest) social-pulse rank position across fresh
@@ -106,17 +117,31 @@ async function main() {
     process.exit(1);
   }
   const refStr = refDate.toISOString().slice(0, 10);
-  const weekAgo = new Date(refDate); weekAgo.setDate(weekAgo.getDate() - 7);
-  const weekAgoStr = weekAgo.toISOString().slice(0, 10);
+  const daysAgoStr = (n) => { const d = new Date(refDate); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+  const weekAgoStr = daysAgoStr(7);
+  const obGraceStr = daysAgoStr(21); // 7-day window + 14-day grace, see header comment
   const weekAhead = new Date(refDate); weekAhead.setDate(weekAhead.getDate() + 7);
   const weekAheadStr = weekAhead.toISOString().slice(0, 10);
 
   const { shows } = loadJson('data/shows.json');
 
-  const openings = shows.filter(s =>
-    s.openingDate && s.openingDate > weekAgoStr && s.openingDate <= refStr
-    && s.status === 'open' && primaryMarkets.includes(s.category) && !isOperaShow(s)
-    && getCriticScore(s.id) != null);
+  const inWeek = (dateStr) => !!dateStr && dateStr > weekAgoStr && dateStr <= refStr;
+
+  const bwOpenings = isWe ? [] : shows
+    .filter(s => s.category === 'broadway' && !isOperaShow(s) && getCriticScore(s.id) != null)
+    .filter(s => inWeek(s.openingDate) || inWeek(s.reopeningDate))
+    .map(show => ({ show, isReopening: !inWeek(show.openingDate) && inWeek(show.reopeningDate) }));
+
+  const obOpenings = isWe ? [] : shows
+    .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
+      && s.openingDate && s.openingDate > obGraceStr && s.openingDate <= refStr
+      && getCriticScore(s.id) != null)
+    .map(show => ({ show }));
+
+  const weGoldOpenings = isWe ? shows
+    .filter(s => primaryMarkets.includes(s.category) && s.status === 'open' && !isOperaShow(s)
+      && inWeek(s.openingDate) && getCriticScore(s.id) != null)
+    .map(show => ({ show })) : [];
 
   const closings = shows.filter(s =>
     s.closingDate && s.closingDate > refStr && s.closingDate <= weekAheadStr
@@ -125,10 +150,6 @@ async function main() {
   const buzziest = findBuzziestShow(shows, refDate, primaryMarkets);
 
   const { scoreCandidates, buildSubjectFromCandidates } = await import('./newsletter/newsworthiness.mjs');
-
-  const bwOpenings = isWe ? [] : openings.filter(s => s.category === 'broadway').map(show => ({ show }));
-  const obOpenings = isWe ? [] : openings.filter(s => s.category === 'off-broadway').map(show => ({ show }));
-  const weGoldOpenings = isWe ? openings.map(show => ({ show })) : [];
 
   const aggregateScore = (showId) => {
     const avg = getCriticScore(showId);
