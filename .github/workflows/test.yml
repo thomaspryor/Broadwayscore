@@ -1138,11 +1138,6 @@ on:
       # node --test step covers audit-opening-night-coverage.test.mjs;
       # path-listed here so it's not orphaned, and so a solo lib edit triggers CI.
       - 'scripts/audit-opening-night-coverage.test.mjs'
-      # BRO-89: dispatch-storm regression tests for computeDispatchDecision()
-      # (scripts/lib/t1-ledger.js, already covered by the scripts/lib/** glob
-      # above) — root-level scripts/*.test.mjs files are NOT globbed, so this
-      # needs its own entry or a solo edit gets ZERO CI.
-      - 'scripts/audit-opening.test.mjs'
       # Card #627: standingCoverage membership is derived from measured Broadway
       # coverage, not asserted by tier — this audit reports registry drift in
       # both directions. Run in the node --test step below.

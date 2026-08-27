@@ -152,6 +152,15 @@ function classifyCellDetailed(c) {
  *            severity:'major'|'minor'}}
  */
 function computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken = false, isTripped }) {
+  // Enforce the contract the JSDoc above argues for. Without this the omission
+  // is invisible on every show with zero T1/T2 census gaps (the filter callback
+  // never runs) and throws `isTripped is not a function` only on the first show
+  // that HAS one -- an uncaught throw inside main()'s per-show loop, so the
+  // audit dies mid-run and the opening-night gap alert never fires, on exactly
+  // the run where it mattered. Fail at the call, not at the first real gap.
+  if (typeof isTripped !== 'function') {
+    throw new TypeError('computeDispatchDecision: isTripped is required (pass () => false when there is no breaker)');
+  }
   const censusMissingT12 = censusMissing.filter((id) => isDispatchTierOutlet(outlets, id));
   const circuitOpenIds = censusMissingT12.filter((id) => isTripped(id));
   const censusMissingActionable = censusMissingT12.filter((id) => !circuitOpenIds.includes(id));
