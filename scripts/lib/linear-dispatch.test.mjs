@@ -140,6 +140,19 @@ test('autofixFiledIssueGuard: provenance alone refuses, even if the title were r
   assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2503/);
 });
 
+// BRO-2499 ship-check P2: provenance means "this filer created this issue",
+// which only linear-issue-create.js:141's leading `PARKED: ` line attests. An
+// unanchored substring match refuses any meta-issue that merely QUOTES the
+// marker while discussing the pipeline — BRO-2499's own card is that shape.
+test('autofixFiledIssueGuard: an issue that merely QUOTES the marker in its body is ALLOWED (BRO-2499)', () => {
+  const issue = {
+    identifier: 'BRO-2505',
+    title: 'P1: the autofix guard is too broad',
+    description: '## Problem\nThe guard keys on "Auto-filed by digest-autofix" appearing anywhere in the body, so this very issue is refused.\n\n## Acceptance criteria\n`node --test scripts/lib/linear-dispatch.test.mjs`',
+  };
+  assert.equal(autofixFiledIssueGuard(issue, {}), null);
+});
+
 test('autofixFiledIssueGuard: an ordinary backlog issue is ALLOWED', () => {
   assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-1', title: 'Fix the score badge width' }, {}), null);
   assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-2' }, {}), null);

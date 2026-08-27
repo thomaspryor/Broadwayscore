@@ -334,14 +334,29 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
   const strandedCommitsFn = opts.strandedCommits || countStrandedCommits;
   const landedFn = opts.jobBranchLanded || jobBranchLanded;
   const commitRefFn = opts.taskCommitLandedInWindow || taskCommitLandedInWindow;
-  // Outcomes appended during THIS pass, so two dispatches of the same card in
-  // one tick don't both emit an outcome.
-  const emitted = [];
-  const dispatches = drainLedgerEntries.filter(e => e.event === 'drain-dispatch');
+  // A malformed/missing ts (hand-edited or corrupted ledger line) would
+  // otherwise turn every downstream Date arithmetic into NaN, tripping
+  // `< ORPHAN_TIMEOUT_H` to false and firing an immediate fail instead of the
+  // intended grace window — same defensive guard linear-drain-parked.js's
+  // reconcileOutcomes already applies (1f0daa1100b), added here too since
+  // this touches the same function (ship-check/Codex finding, BRO-2508).
+  const dispatches = drainLedgerEntries.filter(e =>
+    e && e.event === 'drain-dispatch' && Number.isFinite(new Date(e.ts).getTime()));
+  // Jobs already resolved into an outcome THIS pass — guards the real hazard
+  // of two dispatch rows racing onto the SAME underlying job. isDispatchResolved
+  // itself is checked only against the immutable pre-pass drainLedgerEntries: an
+  // earlier version tagged same-pass breadcrumbs with `now` and cross-checked
+  // against them, which is wrong — `now` is later than every historical
+  // dispatch ts by construction, so resolving ONE stale dispatch this pass
+  // would immediately satisfy the `>= dispatchTs` check for every OTHER
+  // unresolved dispatch of the same taskId too, collapsing genuinely
+  // separate, sequential re-attempts onto one outcome (BRO-2508, same bug
+  // class as BRO-2434's linear-drain-parked.js fix — see 1f0daa1100b).
+  const claimedJobIds = new Set();
   const newEntries = [];
   for (const d of dispatches) {
     const taskId = String(d.taskId);
-    if (isDispatchResolved(drainLedgerEntries.concat(emitted), taskId, d.ts)) continue;
+    if (isDispatchResolved(drainLedgerEntries, taskId, d.ts)) continue;
     const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
     if (!job) {
       const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
@@ -350,9 +365,9 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
-      emitted.push({ cardId: taskId, ts: now.toISOString(), event: 'card-fail' });
       continue;
     }
+    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
     if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
       // Chain ends at a retry whose successor hasn't spawned yet — in-flight
       // within the same orphan bound as the no-spawn case; past it, the
@@ -363,7 +378,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: Number(job.costUSD) || 0,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      emitted.push({ cardId: taskId, ts: now.toISOString(), event: 'card-fail' });
+      if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
@@ -422,7 +437,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
       strandedBranch: stranded ? `job/${job.jobId}` : undefined,
       attribution: attribution || undefined,
     });
-    emitted.push({ cardId: taskId, ts: now.toISOString(), event: outcome });
+    if (job.jobId) claimedJobIds.add(job.jobId);
   }
   return newEntries;
 }

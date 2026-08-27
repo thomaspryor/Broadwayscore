@@ -73,6 +73,14 @@
 // here, USED there, so the recogniser and the writer can never drift.
 const AUTOFIX_FILED_MARKER = 'Auto-filed by digest-autofix';
 
+// ANCHORED to the leading `PARKED: ` line linear-issue-create.js:141 always
+// writes, not a bare substring anywhere in the body (BRO-2499 ship-check P2).
+// An unanchored `.includes()` refuses any meta-issue that merely QUOTES the
+// marker while discussing the pipeline — BRO-2499's own card is exactly that
+// shape. Provenance means "this issue was created by that filer", which only
+// the first line can attest.
+const AUTOFIX_PARKED_RE = new RegExp(`^PARKED:[^\\n]*${AUTOFIX_FILED_MARKER.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
+
 // Historical title conventions for the same population:
 //   "BSC Daily: <health row>"       — digest-autofix.js:186
 //   "Fix: BSC Daily: <health row>"  — the pre-BRO-286 email-worker button
@@ -88,7 +96,7 @@ const AUTOFIX_TITLE_PATTERNS = [
  * @returns {boolean}
  */
 function hasAutofixFiledMarker(description) {
-  return String(description || '').includes(AUTOFIX_FILED_MARKER);
+  return AUTOFIX_PARKED_RE.test(String(description || ''));
 }
 
 /**
@@ -114,6 +122,7 @@ function isAutofixFiledIssue(issue) {
 
 module.exports = {
   AUTOFIX_FILED_MARKER,
+  AUTOFIX_PARKED_RE,
   AUTOFIX_TITLE_PATTERNS,
   hasAutofixFiledMarker,
   isAutofixFiledTitle,
