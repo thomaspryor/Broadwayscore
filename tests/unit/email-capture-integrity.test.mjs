@@ -164,9 +164,16 @@ describe('Email Capture Integrity', () => {
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (hardcodedPattern.test(line)) {
-          // Allow fallbacks with || (env var with hardcoded default) but flag them
           const relative = file.replace(ROOT + '/', '');
-          violations.push(`${relative}:${i + 1}`);
+          // Record WHETHER this specific line is an env-var fallback
+          // (`process.env.X || '<literal>'`). The exemption below keys off
+          // this, not off the file, so an allowlisted file cannot smuggle in a
+          // genuinely hardcoded ID on some other line.
+          violations.push({
+            at: `${relative}:${i + 1}`,
+            file: relative,
+            isEnvFallback: /process\.env\.[A-Z0-9_]+\s*\|\|/.test(line),
+          });
         }
       }
     }
@@ -190,9 +197,13 @@ describe('Email Capture Integrity', () => {
       'src/app/api/feedback/route.ts',
     ];
 
-    const unexpected = violations.filter(v =>
-      !KNOWN_FALLBACKS.some(known => v.startsWith(known))
-    );
+    // Exempt only an env-var fallback IN an allowlisted file. Either half
+    // missing is a real violation: a bare literal in an allowlisted file is
+    // exactly the un-rotatable ID this test exists to catch, and an env
+    // fallback in a file nobody vetted still deserves a look.
+    const unexpected = violations
+      .filter(v => !(v.isEnvFallback && KNOWN_FALLBACKS.includes(v.file)))
+      .map(v => v.at);
 
     assert.deepStrictEqual(
       unexpected,
