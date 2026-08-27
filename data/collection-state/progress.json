@@ -234,7 +234,17 @@
     "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
     "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
     "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json"
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
+    "twelfth-night-off-west-end-2026/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -291,7 +301,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+  "lastProcessed": "twelfth-night-off-west-end-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -373,6 +383,17 @@
       "event": "bb-session",
       "session": "b85724e7",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-27T21:10:35.256Z",
+      "event": "bb-session",
+      "session": "efe1c49c",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-27T21:10:35.608Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
