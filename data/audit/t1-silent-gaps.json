@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-26T18:50:49.462Z",
+  "generatedAt": "2026-08-27T01:23:54.019Z",
   "windowDays": 45,
-  "showsScanned": 70,
+  "showsScanned": 71,
   "gaps": [
     {
       "showId": "disruption-off-broadway-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 512.0965658333333,
+      "fileAgeHours": 518.6478980555555,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 180.47486555555557
+      "nonTerminalAgeHours": 187.0261313888889
     }
   ],
   "contradictions": []

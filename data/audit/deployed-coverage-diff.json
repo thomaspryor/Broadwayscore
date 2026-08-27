@@ -1,89 +1,29 @@
 {
-  "generatedAt": "2026-08-26T18:50:59.451Z",
+  "generatedAt": "2026-08-27T01:24:04.300Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 141,
-  "clean": 136,
-  "defective": 5,
+  "checked": 142,
+  "clean": 141,
+  "defective": 1,
   "byType": {
-    "score-drift": 5
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "paranormal-activity-2026",
-      "title": "Paranormal Activity",
-      "openingDate": "2026-08-25",
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "title": "The Hunger Games On Stage",
+      "openingDate": "2025-11-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.31 vs local 79.77 (Δ0.46)"
+          "detail": "deployed cs 53.72 vs local 54.26 (Δ0.54)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.84 vs local 78.77 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 41,
-      "deployedCount": 41
-    },
-    {
-      "showId": "burlesque-west-end-2026",
-      "title": "Burlesque",
-      "openingDate": "2025-07-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 62.48 vs local 60.85 (Δ1.63)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.62 vs local 61.25 (Δ0.37)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "oh-mary-2024",
-      "title": "Oh, Mary!",
-      "openingDate": "2024-07-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.63 vs local 87.52 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32
+      "localCount": 23,
+      "deployedCount": 24
     }
   ]
 }

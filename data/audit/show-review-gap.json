@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-26T16:26:36.457Z",
+  "generatedAt": "2026-08-27T01:23:51.910Z",
   "windowDays": 1095,
-  "targets": 127,
-  "auditedThisRun": 12,
-  "carriedForward": 434,
+  "targets": 120,
+  "auditedThisRun": 17,
+  "carriedForward": 431,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 285,
-    "totalMissing": 1324,
+    "withGap": 287,
+    "totalMissing": 1339,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1613,
+    "totalFlaggedMisses": 1617,
     "totalRecoverable": 17,
     "totalRecovered": 2
   },
@@ -5367,9 +5367,9 @@
         "https://www.theaterscene.net/musicals/offbway/animal-wisdom/tony-marinelli/",
         "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/"
       ],
-      "dirFiles": 23,
-      "dirClean": 15,
-      "inReviewsJson": 15,
+      "dirFiles": 22,
+      "dirClean": 16,
+      "inReviewsJson": 16,
       "missing": [],
       "dirOnly": [
         {
@@ -5385,30 +5385,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--david-roberts.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/"
-            },
-            {
-              "file": "theatre-reviews-limited--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -5416,25 +5393,18 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 89,
+        "count": 94,
         "byReason": {
           "non-review-host": 20,
           "aggregator-internal-nav": 49,
-          "not-http-url": 20
+          "not-http-url": 20,
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -5511,16 +5481,15 @@
           },
           {
             "url": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/",
-            "outletId": "theatre-reviews-limited",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theatrereviews.com",
+            "state": "live",
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
           }
         ],
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -6847,7 +6816,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "art-2025",
@@ -7278,28 +7247,29 @@
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
         "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
         "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
-        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
         "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+        "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
         "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
         "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
-        "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
         "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
-        "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
+        "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
         "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
+        "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
         "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+        "https://www.westendbestfriend.co.uk/news/review-as-you-like-it-shakespeares-globe",
+        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
         "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
         "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
-        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+        "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
         "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
-        "https://www.thereviewshub.com/as-you-like-it-shakespeares-globe-london-3/",
-        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
-        "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
-        "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
+        "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+        "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
         "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/as-you-like-it-review-the-globe-london-2026-qb7pgdzf2",
-        "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
         "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
         "https://www.shakespearesglobe.com/",
         "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
@@ -7312,9 +7282,9 @@
         "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
         "https://inews.co.uk/culture/arts/as-you-like-it-sohoplace-review-rose-ayling-ellis-charming-west-end-debut-2033245"
       ],
-      "dirFiles": 52,
-      "dirClean": 28,
-      "inReviewsJson": 25,
+      "dirFiles": 54,
+      "dirClean": 30,
+      "inReviewsJson": 26,
       "missing": [
         {
           "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
@@ -7331,7 +7301,7 @@
       ],
       "dirOnly": [
         {
-          "host": "firstnightmagazine.com",
+          "host": "ft.com",
           "count": 1
         },
         {
@@ -7339,19 +7309,19 @@
           "count": 1
         },
         {
-          "host": "liamodell.com",
-          "count": 1
-        },
-        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
         {
-          "host": "theupcoming.co.uk",
+          "host": "londontheatre1.com",
           "count": 1
         },
         {
-          "host": "westendbestfriend.co.uk",
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
           "count": 1
         }
       ],
@@ -7370,6 +7340,24 @@
               "file": "shakespearesglobe--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes"
             }
           ],
           "serpCensus": true
@@ -7667,8 +7655,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 4,
             "error": null
           },
           {
@@ -7678,7 +7666,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -7698,7 +7686,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -7708,7 +7696,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 5,
             "error": null
           },
           {
@@ -7718,22 +7706,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 8,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 21,
+        "resultCount": 23,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 20,
         "byReason": {
-          "non-review-host": 12,
-          "not-http-url": 7,
+          "non-review-host": 14,
           "roundup-page": 2,
-          "ticketing-listing": 1
+          "ticketing-listing": 4
         }
       },
       "dedupedVariants": [],
@@ -7787,6 +7774,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe"
           },
           {
             "outletId": "shakespearesglobe.com",
@@ -7868,22 +7862,28 @@
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
             "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T14:43:57.981Z"
+          },
+          {
             "url": "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
@@ -7898,28 +7898,46 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
-            "outletId": "theatreweekly.com",
+            "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "firstSeenAt": "2026-08-25T22:17:08.499Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T14:43:57.981Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
             "outletId": "marquee.tv",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-as-you-like-it-shakespeares-globe",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+            "outletId": "myreviewer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
@@ -7934,10 +7952,10 @@
             "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
-            "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
-            "outletId": "myreviewer.com",
+            "url": "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
+            "outletId": "firstnightmagazine.com",
             "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
@@ -7946,28 +7964,10 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.thereviewshub.com/as-you-like-it-shakespeares-globe-london-3/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-25T22:17:08.499Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/as-you-like-it-shakespeares-globe/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/08/22/review-as-you-like-it-shakespeares-globe-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+            "firstSeenAt": "2026-08-24T23:21:50.513Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
@@ -7980,12 +7980,6 @@
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
@@ -8013,6 +8007,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.shakespearesglobe.com/",
@@ -8085,10 +8086,10 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           }
         ],
-        "liveCount": 20,
-        "candidateCount": 32
+        "liveCount": 21,
+        "candidateCount": 34
       },
-      "computedAt": "2026-08-26T16:26:36.457Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -8698,7 +8699,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "beauty-freak-off-broadway-2026",
@@ -27941,6 +27942,284 @@
       "computedAt": "2026-08-16T23:13:35.325Z"
     },
     {
+      "showId": "cowbois-west-end-2024",
+      "title": "Cowbois",
+      "openingDate": "2024-01-17",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
+        "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
+        "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
+        "https://www.timeout.com/london/theatre/cowbois-review",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
+        "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+        "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+        "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cowbois-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+          "host": "lostintheatreland.co.uk",
+          "knownOutletId": "lost-in-theatreland"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cowbois-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
+          "host": "independent.co.uk",
+          "outletId": "independent",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+          "host": "lostintheatreland.co.uk",
+          "outletId": "lost-in-theatreland"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/cowbois-review"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza"
+          },
+          {
+            "outletId": "lost-in-theatreland",
+            "outlet": "lost-in-theatreland",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/cowbois-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+            "outletId": "lost-in-theatreland",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-08-27T01:23:51.910Z"
+    },
+    {
       "showId": "crazysexycool-regional-2026",
       "title": "CrazySexyCool: The TLC Musical",
       "openingDate": "2026-06-26",
@@ -36008,14 +36287,9 @@
         "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html"
       ],
       "dirFiles": 16,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
-        {
-          "url": "https://cititour.com/NYC_News/Billy-Porter-and-Wayne-Brady-Are-Stellar-in-La-Cage-Aux-Folles/10790",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
         {
           "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
           "host": "interestedbystander.com",
@@ -36040,28 +36314,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 402,
+        "count": 393,
         "byReason": {
-          "not-http-url": 94,
-          "aggregator-internal-nav": 270,
           "non-review-host": 35,
-          "non-review-path": 3
+          "aggregator-internal-nav": 253,
+          "not-http-url": 96,
+          "aggregator-section-root": 9
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_News/Billy-Porter-and-Wayne-Brady-Are-Stellar-in-La-Cage-Aux-Folles/10790",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~191033/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
-        },
         {
           "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
           "host": "interestedbystander.com",
@@ -36072,20 +36334,13 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~191036/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "cititour",
-            "outlet": "cititour",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://cititour.com/NYC_News/Billy-Porter-and-Wayne-Brady-Are-Stellar-in-La-Cage-Aux-Folles/10790"
-          },
           {
             "outletId": "the-interested-bystander",
             "outlet": "the-interested-bystander",
@@ -36099,6 +36354,12 @@
           {
             "url": "https://1minutecritic.com/la-cage-aux-folles-billy-porter-wayne-brady-review/",
             "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T14:28:21.379Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_News/Billy-Porter-and-Wayne-Brady-Are-Stellar-in-La-Cage-Aux-Folles/10790",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T14:28:21.379Z"
           },
@@ -36145,13 +36406,6 @@
             "firstSeenAt": "2026-08-03T14:28:21.379Z"
           },
           {
-            "url": "https://cititour.com/NYC_News/Billy-Porter-and-Wayne-Brady-Are-Stellar-in-La-Cage-Aux-Folles/10790",
-            "outletId": "cititour",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T14:28:21.379Z"
-          },
-          {
             "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
             "outletId": "the-interested-bystander",
             "state": "GAP",
@@ -36159,10 +36413,10 @@
             "firstSeenAt": "2026-08-03T14:28:21.379Z"
           }
         ],
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-11T23:28:14.993Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "encores-the-wild-party-off-broadway-2026",
@@ -40244,21 +40498,26 @@
         "https://winteriscoming.net/game-of-thrones-the-mad-king-play-review",
         "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
         "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/",
-        "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-        "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
-        "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-        "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
+        "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html",
+        "https://theartsdispatch.substack.com/p/game-of-thrones-the-mad-king-review",
         "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
+        "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
         "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
-        "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
         "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
-        "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
-        "https://collider.com/george-rr-martin-game-of-thrones-the-mad-king-audience-reviews/"
+        "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632597.html",
+        "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
+        "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html"
       ],
-      "dirFiles": 27,
-      "dirClean": 15,
-      "inReviewsJson": 13,
+      "dirFiles": 31,
+      "dirClean": 18,
+      "inReviewsJson": 16,
       "missing": [
+        {
+          "url": "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
           "host": "thestage.co.uk",
@@ -40269,12 +40528,6 @@
           "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/",
           "host": "perspectivemedia.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://collider.com/george-rr-martin-game-of-thrones-the-mad-king-audience-reviews/",
-          "host": "collider.com",
-          "knownOutletId": "collider",
           "serpCensus": true
         }
       ],
@@ -40289,6 +40542,14 @@
         },
         {
           "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "heraldscotland.com",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
           "count": 1
         },
         {
@@ -40346,44 +40607,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--precious-adesina.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "latimes--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-          "host": "rsc.org.uk",
+          "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632597.html",
+          "host": "yahoo.com",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -40392,9 +40617,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "rsc--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
+              "file": "yahoo--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632676.html"
             }
           ],
           "serpCensus": true
@@ -40416,24 +40641,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
-          "host": "thenorthernecho.co.uk",
-          "knownOutletId": "thenorthernecho",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thenorthernecho--pa-news-agency.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -40449,7 +40656,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 4,
             "error": null
           },
@@ -40459,8 +40666,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -40469,7 +40676,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -40479,8 +40686,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -40490,7 +40697,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -40500,27 +40707,39 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 435,
+        "count": 447,
         "byReason": {
-          "roundup-page": 3,
-          "non-review-host": 54,
-          "not-http-url": 126,
+          "non-review-host": 57,
           "aggregator-internal-nav": 249,
-          "non-review-path": 3
+          "not-http-url": 126,
+          "aggregator-section-root": 9,
+          "roundup-page": 6
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "outletId": "partially-obstructed-view",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"partially-obstructed-view\" (not in registry) — onboard to outlet-registry.js"
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
           "host": "thestage.co.uk",
@@ -40544,24 +40763,19 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"perspectivemedia\" (not in registry) — onboard to outlet-registry.json after "
-        },
-        {
-          "url": "https://collider.com/george-rr-martin-game-of-thrones-the-mad-king-audience-reviews/",
-          "host": "collider.com",
-          "outletId": "collider",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "partially-obstructed-view.blogspot.com",
+            "outlet": "partially-obstructed-view.blogspot.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html"
+          },
           {
             "outletId": "thestage",
             "outlet": "thestage",
@@ -40575,13 +40789,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.perspectivemedia.com/game-of-thrones-the-mad-king-reviews-hail-titanic-display-of-theatre-magic/"
-          },
-          {
-            "outletId": "collider",
-            "outlet": "collider",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://collider.com/george-rr-martin-game-of-thrones-the-mad-king-audience-reviews/"
           },
           {
             "outletId": "deadline",
@@ -40598,25 +40805,11 @@
             "url": "https://variety.com/2026/theater/global/game-of-thrones-the-mad-king-play-preview-standing-ovation-1236823223/"
           },
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
+            "outletId": "yahoo.com",
+            "outlet": "yahoo.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html"
-          },
-          {
-            "outletId": "latimes",
-            "outlet": "latimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre"
-          },
-          {
-            "outletId": "rsc.org.uk",
-            "outlet": "rsc.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play"
+            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632597.html"
           },
           {
             "outletId": "nytimes",
@@ -40624,13 +40817,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html"
-          },
-          {
-            "outletId": "thenorthernecho",
-            "outlet": "thenorthernecho",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/"
           }
         ],
         "suppressedMissing": [],
@@ -40678,16 +40864,35 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://theartsdispatch.substack.com/p/game-of-thrones-the-mad-king-review",
+            "outletId": "theartsdispatch.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/aug/08/game-of-thrones-the-mad-king-prequel-royal-shakespeare-theatre-stratford-upon-avon",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/game-of-thrones-the-mad-king-rsc-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/11/game-of-thrones-the-mad-king-royal-shakespeare-company",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html",
+            "outletId": "partially-obstructed-view.blogspot.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon-george-rr-martin",
@@ -40704,13 +40909,6 @@
             "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
-            "url": "https://collider.com/george-rr-martin-game-of-thrones-the-mad-king-audience-reviews/",
-            "outletId": "collider",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
-          },
-          {
             "url": "https://deadline.com/2026/08/game-of-thrones-the-mad-king-reviews-what-critics-saying-1237030057/",
             "outletId": "deadline",
             "state": "GAP",
@@ -40725,25 +40923,11 @@
             "firstSeenAt": "2026-08-24T06:27:46.478Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/07/27/theater/game-of-thrones-mad-king-royal-shakespeare-cancellations.html",
-            "outletId": "nytimes",
+            "url": "https://uk.news.yahoo.com/game-thrones-mad-king-reviews-083632597.html",
+            "outletId": "yahoo.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T06:27:46.478Z"
-          },
-          {
-            "url": "https://www.latimes.com/entertainment-arts/story/2026-08-10/game-of-thrones-fans-gush-over-mad-king-at-royal-shakespeare-theatre",
-            "outletId": "latimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T06:27:46.478Z"
-          },
-          {
-            "url": "https://www.rsc.org.uk/game-of-thrones-the-mad-king/about-the-play",
-            "outletId": "rsc.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T06:27:46.478Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakespeare.html",
@@ -40751,19 +40935,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-24T06:27:46.478Z"
-          },
-          {
-            "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
-            "outletId": "thenorthernecho",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
           }
         ],
-        "liveCount": 8,
-        "candidateCount": 17
+        "liveCount": 9,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -41134,12 +41311,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 833,
+        "count": 839,
         "byReason": {
-          "non-review-host": 68,
-          "aggregator-internal-nav": 567,
-          "not-http-url": 192,
-          "non-review-path": 6
+          "non-review-host": 69,
+          "aggregator-internal-nav": 555,
+          "not-http-url": 198,
+          "aggregator-section-root": 17
         }
       },
       "dedupedVariants": [],
@@ -41443,7 +41620,7 @@
         "liveCount": 21,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "giant-royal-court-off-west-end-2024",
@@ -56354,11 +56531,25 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
+        "https://www.whatsonstage.com/news/hot-mess-musical-at-the-other-palace-review_1725868/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/hot-mess-musical-at-the-other-palace-review_1725868/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -56372,15 +56563,72 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/hot-mess-musical-at-the-other-palace-review_1725868/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/hot-mess-musical-at-the-other-palace-review_1725868/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/hot-mess-musical-at-the-other-palace-review_1725868/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -60778,14 +61026,35 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-isla-a-shadow-puppet-play-about-cuba_1849261/",
-        "https://www.offoffonline.com/offoffonline/2026/8/10/isla"
+        "https://www.theaterscene.net/multimedia/isla/tony-marinelli/",
+        "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
+        "https://www.callmeadam.com/blog/samantha-blain-interview-hit-the-lights-theatre-presents-isla-one-family-immigration-story"
       ],
-      "dirFiles": 5,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 8,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.callmeadam.com/blog/samantha-blain-interview-hit-the-lights-theatre-presents-isla-one-family-immigration-story",
+          "host": "callmeadam.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "callmeadam--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.callmeadam.com/blog/samantha-blain-interview-hit-the-lights-theatre-presents-isla-one-family-immigration-story"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -60799,7 +61068,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -60809,7 +61078,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -60830,28 +61099,36 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 21,
         "byReason": {
-          "roundup-page": 4,
-          "non-review-host": 13,
+          "non-review-host": 16,
+          "venue-production-page": 1,
           "aggregator-internal-nav": 1,
-          "venue-production-page": 1
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "callmeadam.com",
+            "outlet": "callmeadam.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.callmeadam.com/blog/samantha-blain-interview-hit-the-lights-theatre-presents-isla-one-family-immigration-story"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -60861,16 +61138,29 @@
             "firstSeenAt": "2026-08-24T08:02:41.396Z"
           },
           {
+            "url": "https://www.theaterscene.net/multimedia/isla/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
             "url": "https://www.offoffonline.com/offoffonline/2026/8/10/isla",
             "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T08:02:41.396Z"
+          },
+          {
+            "url": "https://www.callmeadam.com/blog/samantha-blain-interview-hit-the-lights-theatre-presents-isla-one-family-immigration-story",
+            "outletId": "callmeadam.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 2
+        "liveCount": 3,
+        "candidateCount": 4
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -73688,6 +73978,41 @@
       "computedAt": "2026-08-21T22:16:46.049Z"
     },
     {
+      "showId": "marilyn-exposed-off-broadway-2026",
+      "title": "Marilyn Exposed",
+      "openingDate": "2026-06-08",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-27T01:23:51.910Z"
+    },
+    {
       "showId": "marjorie-prime-2025",
       "title": "Marjorie Prime",
       "openingDate": "2025-12-08",
@@ -74913,7 +75238,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-24T23:21:50.513Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -76786,9 +77111,9 @@
         "https://www.theaterscene.net/musicals/offbway/mexodus/victor-gluck/",
         "https://thefrontrowcenter.com/2025/09/mexodus/"
       ],
-      "dirFiles": 27,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 24,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [],
       "dirOnly": [
         {
@@ -77030,12 +77355,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 405,
+        "count": 413,
         "byReason": {
-          "non-review-host": 34,
+          "non-review-host": 35,
           "aggregator-internal-nav": 304,
-          "not-http-url": 64,
-          "non-review-path": 3
+          "not-http-url": 66,
+          "aggregator-section-root": 8
         }
       },
       "dedupedVariants": [],
@@ -77233,7 +77558,7 @@
         "liveCount": 1,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
@@ -94786,21 +95111,22 @@
         "https://www.vulture.com/article/paranormal-activity-play-review-broadway.html",
         "https://www.newyorktheatreguide.com/reviews/paranormal-activity-broadway-review",
         "https://didtheylikeit.com/shows/paranormal-activity/",
-        "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
-        "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-        "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+        "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
         "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-        "https://ca.news.yahoo.com/paranormal-activity-scares-hell-good-022545160.html"
+        "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+        "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
+        "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
+        "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/"
       ],
-      "dirFiles": 36,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirFiles": 37,
+      "dirClean": 22,
+      "inReviewsJson": 22,
       "missing": [
         {
-          "url": "https://newyorknotebook.substack.com/p/paranormal-activity",
-          "host": "newyorknotebook.substack.com",
-          "knownOutletId": null
+          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
+          "host": "goldderby.com",
+          "knownOutletId": null,
+          "serpCensus": true
         },
         {
           "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
@@ -94809,9 +95135,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://ca.news.yahoo.com/paranormal-activity-scares-hell-good-022545160.html",
-          "host": "yahoo.com",
-          "knownOutletId": null,
+          "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "serpCensus": true
         }
       ],
@@ -94845,24 +95171,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "roundup",
-              "urlInDir": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
           "host": "onstageblog.com",
           "knownOutletId": "onstage-blog",
@@ -94881,9 +95189,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -94891,9 +95199,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "variety--william-earl.json",
-              "flag": "clean",
-              "urlInDir": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "roundup",
+              "urlInDir": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
             }
           ],
           "serpCensus": true
@@ -94912,8 +95220,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -94922,8 +95230,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 4,
             "error": null
           },
           {
@@ -94932,8 +95240,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -94942,8 +95250,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -94953,7 +95261,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -94963,32 +95271,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
-        "count": 400,
+        "count": 397,
         "byReason": {
-          "aggregator-internal-nav": 247,
-          "non-review-host": 47,
-          "not-http-url": 98,
-          "non-review-path": 3,
-          "roundup-page": 4,
-          "ticketing-reseller": 1
+          "non-review-host": 46,
+          "aggregator-internal-nav": 244,
+          "not-http-url": 91,
+          "aggregator-section-root": 9,
+          "roundup-page": 7
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://newyorknotebook.substack.com/p/paranormal-activity",
-          "host": "newyorknotebook.substack.com",
-          "outletId": "newyorknotebook",
+          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
+          "host": "goldderby.com",
+          "outletId": "goldderby",
           "provisional": true,
           "ok": true,
           "noop": false,
@@ -95010,16 +95317,16 @@
           "reason": "unknown-outlet-no-host"
         },
         {
-          "url": "https://ca.news.yahoo.com/paranormal-activity-scares-hell-good-022545160.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": true,
-          "ok": false,
+          "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune",
+          "provisional": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://ca."
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -95027,11 +95334,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "newyorknotebook.substack.com",
-            "outlet": "newyorknotebook.substack.com",
+            "outletId": "goldderby.com",
+            "outlet": "goldderby.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://newyorknotebook.substack.com/p/paranormal-activity"
+            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
           },
           {
             "outletId": "show-score.com",
@@ -95041,11 +95348,11 @@
             "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway"
           },
           {
-            "outletId": "yahoo.com",
-            "outlet": "yahoo.com",
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://ca.news.yahoo.com/paranormal-activity-scares-hell-good-022545160.html"
+            "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/"
           },
           {
             "outletId": "dtli",
@@ -95055,13 +95362,6 @@
             "url": "https://didtheylikeit.com/shows/paranormal-activity/"
           },
           {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
-          },
-          {
             "outletId": "onstage-blog",
             "outlet": "onstage-blog",
             "critic": "Unknown",
@@ -95069,11 +95369,11 @@
             "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity"
           },
           {
-            "outletId": "variety",
-            "outlet": "variety",
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
+            "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
           }
         ],
         "suppressedMissing": [],
@@ -95111,6 +95411,12 @@
           {
             "url": "https://ew.com/paranormal-activity-review-horror-franchise-brings-big-scares-to-broadway-12066840",
             "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
+            "url": "https://newyorknotebook.substack.com/p/paranormal-activity",
+            "outletId": "newyorknotebook.substack.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
@@ -95193,17 +95499,17 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://www.theatrely.com/post/on-the-scene-paranormal-activity-has-made-its-way-to-broadway",
-            "outletId": "theatrely.com",
+            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
-            "url": "https://newyorknotebook.substack.com/p/paranormal-activity",
-            "outletId": "newyorknotebook.substack.com",
+            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
+            "outletId": "goldderby.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
@@ -95213,22 +95519,15 @@
             "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
-            "url": "https://ca.news.yahoo.com/paranormal-activity-scares-hell-good-022545160.html",
-            "outletId": "yahoo.com",
+            "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
+            "outletId": "chicagotribune",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/paranormal-activity/",
             "outletId": "dtli",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
-            "outletId": "nyt-theater",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
@@ -95241,17 +95540,17 @@
             "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-            "outletId": "variety",
+            "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
+            "outletId": "nyt-theater",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "firstSeenAt": "2026-08-26T16:26:36.457Z"
           }
         ],
-        "liveCount": 18,
+        "liveCount": 19,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-26T16:26:36.457Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -101477,10 +101776,12 @@
         "https://playbill.com/article/what-are-the-reviews-for-shakespeare-in-the-parks-romeo-and-juliet",
         "https://playbill.com/article/reviews-did-critics-love-the-tom-holland-led-romeo-juliet-in-the-west-end",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
-        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-AND-JULIET-Opens-on-Broadway-All-the-Reviews-20130920",
-        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914"
+        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
+        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-the-New-JULIET-ROMEO-Pop-Musical-20250509",
+        "https://www.broadwayworld.com/article/Review-Roundup-CSCs-ROMEO-JULIET-20131017"
       ],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
@@ -101531,13 +101832,6 @@
         "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
         "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
         "https://cititour.com/NYC_Broadway/Romeo-Juliet/1260",
-        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-        "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
-        "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
-        "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-        "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-        "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
         "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html",
         "http://www.therepublic.com/view/story/a79faa21eaad4a53a813a9c4f375fdb3/US-Theater-Review-Romeo-and-Juliet",
         "http://variety.com/2013/legit/reviews/broadway-review-romeo-and-juliet-1200643078/",
@@ -101553,11 +101847,33 @@
         "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
         "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
         "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
-        "https://www.harvardmagazine.com/2024/09/romeo-and-juliet"
+        "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
+        "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
+        "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
+        "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+        "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
+        "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
+        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+        "https://variety.com/2025/film/reviews/juliet-amp-romeo-review-1236390550/",
+        "https://www.thewrap.com/juliet-romeo-review-william-shakespeare-clara-rugaard/",
+        "https://www.nytimes.com/2025/05/08/movies/juliet-romeo-review.html",
+        "https://collider.com/juliet-and-romeo-review/",
+        "https://screenrant.com/juliet-and-romeo-movie-review/",
+        "https://movieweb.com/juliet-and-romeo-review/",
+        "https://www.newsday.com/entertainment/movies/juliet-and-romeo-review-myl16xz6",
+        "http://www.nytimes.com/2013/10/17/theater/reviews/romeo-and-juliet-with-a-twist-at-classic-stage-company.html",
+        "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+        "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+        "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
+        "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+        "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+        "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
+        "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735"
       ],
-      "dirFiles": 53,
-      "dirClean": 15,
-      "inReviewsJson": 15,
+      "dirFiles": 61,
+      "dirClean": 16,
+      "inReviewsJson": 25,
       "missing": [
         {
           "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-harold-pinter-theatre-london",
@@ -101616,34 +101932,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "times-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.therepublic.com/view/story/a79faa21eaad4a53a813a9c4f375fdb3/US-Theater-Review-Romeo-and-Juliet",
           "host": "therepublic.com",
           "knownOutletId": null,
@@ -101691,6 +101979,74 @@
           "knownOutletId": "harvard-magazine",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://collider.com/juliet-and-romeo-review/",
+          "host": "collider.com",
+          "knownOutletId": "collider",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://screenrant.com/juliet-and-romeo-movie-review/",
+          "host": "screenrant.com",
+          "knownOutletId": "screen-rant",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://movieweb.com/juliet-and-romeo-review/",
+          "host": "movieweb.com",
+          "knownOutletId": "movieweb",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+          "host": "northjersey.com",
+          "knownOutletId": "northjerseycom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735",
+          "host": "villagevoice.com",
+          "knownOutletId": "village-voice"
         }
       ],
       "dirOnly": [
@@ -101700,6 +102056,10 @@
         },
         {
           "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
           "count": 1
         },
         {
@@ -102084,30 +102444,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--clare-brennan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2024/sep/22/romeo-and-juliet-graeae-shakespeare-north-theatre-jenny-sealey-review"
-            },
-            {
-              "file": "guardian--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/lifeandstyle/video/2026/jun/15/o-romeow-cat-steals-the-show-during-final-scene-at-romeo-and-juliet-ballet-video"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://variety.com/2013/legit/reviews/broadway-review-romeo-and-juliet-1200643078/",
           "host": "variety.com",
           "knownOutletId": "variety",
@@ -102220,6 +102556,163 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--clare-brennan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2024/sep/22/romeo-and-juliet-graeae-shakespeare-north-theatre-jenny-sealey-review"
+            },
+            {
+              "file": "guardian--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/lifeandstyle/video/2026/jun/15/o-romeow-cat-steals-the-show-during-final-scene-at-romeo-and-juliet-ballet-video"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2025/film/reviews/juliet-amp-romeo-review-1236390550/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2026/legit/news/broadway-polk-co-promotes-colgan-mcneil-kelly-stotmeister-1236772374/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/juliet-romeo-review-william-shakespeare-clara-rugaard/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/romeo-and-juliet-broadway-review-rachel-zegler-kit-connor/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/movies/juliet-and-romeo-review-myl16xz6",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-bloom-1.6098455"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-bloom-1.6098455"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nbcny--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/review-romeo-and-juliet-224447471.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/romeo-juliet-theater-review-article-1.1461244"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-stars-1.6106386"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -102229,12 +102722,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1749,
+        "count": 2362,
         "byReason": {
-          "non-review-host": 135,
-          "aggregator-internal-nav": 1326,
-          "not-http-url": 273,
-          "non-review-path": 15
+          "non-review-host": 166,
+          "aggregator-internal-nav": 1751,
+          "not-http-url": 402,
+          "aggregator-section-root": 42,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -102252,16 +102746,24 @@
           "publishDate": "2024-10-24"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
-          "publishDate": "2024-05-23"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-AND-JULIET-Opens-on-Broadway-All-the-Reviews-20130920",
           "publishDate": "2013-09-20"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
           "publishDate": "2024-09-14"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
+          "publishDate": "2024-05-23"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-the-New-JULIET-ROMEO-Pop-Musical-20250509",
+          "publishDate": "2025-05-09"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CSCs-ROMEO-JULIET-20131017",
+          "publishDate": "2013-10-17"
         }
       ],
       "weIngestBlocked": [
@@ -102314,30 +102816,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://www.therepublic.com/view/story/a79faa21eaad4a53a813a9c4f375fdb3/US-Theater-Review-Romeo-and-Juliet",
           "host": "therepublic.com",
           "priorRun": true,
@@ -102378,9 +102856,76 @@
           "host": "harvardmagazine.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://collider.com/juliet-and-romeo-review/",
+          "host": "collider.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://screenrant.com/juliet-and-romeo-movie-review/",
+          "host": "screenrant.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://movieweb.com/juliet-and-romeo-review/",
+          "host": "movieweb.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+          "host": "northjersey.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735",
+          "host": "villagevoice.com",
+          "outletId": "village-voice",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=villagevoice.com): Scrapingdog HTTP 404: {\"message\":\"T"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -102442,34 +102987,6 @@
             "url": "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/"
           },
           {
-            "outletId": "daily-mail",
-            "outlet": "daily-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html"
-          },
-          {
-            "outletId": "independent",
-            "outlet": "independent",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers"
-          },
-          {
             "outletId": "therepublic.com",
             "outlet": "therepublic.com",
             "critic": "Unknown",
@@ -102517,6 +103034,76 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.harvardmagazine.com/2024/09/romeo-and-juliet"
+          },
+          {
+            "outletId": "daily-mail",
+            "outlet": "daily-mail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers"
+          },
+          {
+            "outletId": "collider",
+            "outlet": "collider",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://collider.com/juliet-and-romeo-review/"
+          },
+          {
+            "outletId": "screen-rant",
+            "outlet": "screen-rant",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://screenrant.com/juliet-and-romeo-movie-review/"
+          },
+          {
+            "outletId": "movieweb",
+            "outlet": "movieweb",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://movieweb.com/juliet-and-romeo-review/"
+          },
+          {
+            "outletId": "northjerseycom",
+            "outlet": "northjerseycom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/"
+          },
+          {
+            "outletId": "village-voice",
+            "outlet": "village-voice",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735"
           },
           {
             "outletId": "guardian",
@@ -102652,13 +103239,6 @@
             "url": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers"
-          },
-          {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
@@ -102699,6 +103279,62 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.nydailynews.com/entertainment/music-arts/romeo-juliet-theater-review-article-1.1461244"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2025/film/reviews/juliet-amp-romeo-review-1236390550/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/juliet-romeo-review-william-shakespeare-clara-rugaard/"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/movies/juliet-and-romeo-review-myl16xz6"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499"
+          },
+          {
+            "outletId": "nbcny",
+            "outlet": "nbcny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214"
           }
         ],
         "suppressedMissing": [],
@@ -102830,18 +103466,6 @@
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
           },
           {
-            "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
             "url": "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html",
             "outletId": "theater.nytimes.com",
             "state": "live",
@@ -102858,6 +103482,30 @@
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/05/08/movies/juliet-romeo-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2013/10/17/theater/reviews/romeo-and-juliet-with-a-twist-at-classic-stage-company.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-harold-pinter-theatre-london",
@@ -102916,34 +103564,6 @@
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
           },
           {
-            "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-            "outletId": "daily-mail",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-            "outletId": "independent",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
-            "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T00:59:38.238Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
             "url": "http://www.therepublic.com/view/story/a79faa21eaad4a53a813a9c4f375fdb3/US-Theater-Review-Romeo-and-Juliet",
             "outletId": "therepublic.com",
             "state": "GAP",
@@ -102991,6 +103611,76 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+            "outletId": "daily-mail",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T00:59:38.238Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://collider.com/juliet-and-romeo-review/",
+            "outletId": "collider",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://screenrant.com/juliet-and-romeo-movie-review/",
+            "outletId": "screen-rant",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://movieweb.com/juliet-and-romeo-review/",
+            "outletId": "movieweb",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+            "outletId": "northjerseycom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735",
+            "outletId": "village-voice",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
@@ -103126,13 +103816,6 @@
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
             "url": "http://variety.com/2013/legit/reviews/broadway-review-romeo-and-juliet-1200643078/",
             "outletId": "variety",
             "state": "GAP",
@@ -103173,12 +103856,68 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
+            "url": "https://variety.com/2025/film/reviews/juliet-amp-romeo-review-1236390550/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.thewrap.com/juliet-romeo-review-william-shakespeare-clara-rugaard/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/movies/juliet-and-romeo-review-myl16xz6",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+            "outletId": "nbcny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           }
         ],
         "liveCount": 12,
-        "candidateCount": 45
+        "candidateCount": 50
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
@@ -132683,8 +133422,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 5,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -132693,7 +133432,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -132703,8 +133442,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -132714,7 +133453,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -132724,21 +133463,21 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 18,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 7,
-          "venue-production-page": 1
+          "non-review-host": 15,
+          "venue-production-page": 1,
+          "aggregator-internal-nav": 2
         }
       },
       "dedupedVariants": [],
@@ -132855,7 +133594,7 @@
         "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-26T16:26:36.457Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "the-receptionist-off-broadway-2026",
@@ -148483,7 +149222,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-12T00:59:38.238Z"
+      "computedAt": "2026-08-27T01:23:51.910Z"
     },
     {
       "showId": "zack-off-broadway-2026",
