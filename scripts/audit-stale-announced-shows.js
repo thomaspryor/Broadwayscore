@@ -18,14 +18,22 @@
  *
  * This script does NOT auto-flip status (an 'announced' show can legitimately
  * be pre-sale/unconfirmed and previewsStartDate can slip) — it flags for
- * human/pipeline follow-up. Two independent signals, either fires:
- *   - previewsStartDate is set and > STALE_DAYS in the past
- *   - data/review-texts/{id}/ exists and contains at least one file
+ * human/pipeline follow-up. Decision logic lives in
+ * scripts/lib/stale-announced-audit.js (CLAUDE.md §15) so the test exercises
+ * the real predicate.
+ *
+ * Triage (BRO-93): once a flagged show has actually been looked at — its real
+ * previewsStartDate/openingDate corrected in shows.json, or confirmed to have
+ * no announced date yet — record that with --ack so it stops reappearing in
+ * the report every run. The ack does not change shows.json; it only silences
+ * the audit for a show a human has already triaged.
  *
  * Usage:
  *   node scripts/audit-stale-announced-shows.js
  *   node scripts/audit-stale-announced-shows.js --stale-days=30
  *   node scripts/audit-stale-announced-shows.js --fail-on-gap
+ *   node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="..."
+ *   node scripts/audit-stale-announced-shows.js --unack=<show-id>
  *
  * Output: data/audit/stale-announced-shows.json
  */
@@ -34,6 +42,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  loadAcks,
+  addAck,
+  saveAcks,
+  evaluateAnnouncedShow,
+} = require('./lib/stale-announced-audit');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -44,6 +58,9 @@ const argv = process.argv.slice(2);
 const STALE_DAYS = parseInt((argv.find(a => a.startsWith('--stale-days=')) || '').replace('--stale-days=', ''), 10) || 30;
 const FAIL_ON_GAP = argv.includes('--fail-on-gap');
 const DRY_RUN = argv.includes('--dry-run');
+const ACK_ID = (argv.find(a => a.startsWith('--ack=')) || '').replace('--ack=', '') || null;
+const ACK_NOTE = (argv.find(a => a.startsWith('--ack-note=')) || '').replace('--ack-note=', '') || '';
+const UNACK_ID = (argv.find(a => a.startsWith('--unack=')) || '').replace('--unack=', '') || null;
 
 function loadJSON(file, fallback = null) {
   try {
@@ -51,12 +68,6 @@ function loadJSON(file, fallback = null) {
   } catch {
     return fallback;
   }
-}
-
-function daysSince(dateStr, now) {
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return null;
-  return Math.floor((now.getTime() - d.getTime()) / (24 * 60 * 60 * 1000));
 }
 
 function hasPopulatedReviewTextsDir(showId) {
@@ -75,23 +86,59 @@ function main() {
     process.exit(1);
   }
 
+  // --ack=<id>: record a triage decision and exit — doesn't run the audit.
+  // Requires the id to be a real, currently-'announced' show, so a typo or a
+  // not-yet-discovered id can't pre-silence a future real flag.
+  if (ACK_ID) {
+    if (!ACK_NOTE) {
+      console.error('--ack requires --ack-note="<why this show is known-stale>"');
+      process.exit(1);
+    }
+    const show = showsData.shows.find(s => s.id === ACK_ID);
+    if (!show) {
+      console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
+      process.exit(1);
+    }
+    if (show.status !== 'announced') {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
+      process.exit(1);
+    }
+    const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked ${ACK_ID}: ${ACK_NOTE}`);
+    return;
+  }
+
+  // --unack=<id>: remove a previously-recorded ack and exit.
+  if (UNACK_ID) {
+    const acks = loadAcks();
+    const remaining = acks.filter(a => a.id !== UNACK_ID);
+    if (remaining.length === acks.length) {
+      console.error(`--unack=${UNACK_ID}: no ack found for this id`);
+      process.exit(1);
+    }
+    saveAcks(remaining);
+    console.log(`Unacked ${UNACK_ID}`);
+    return;
+  }
+
   const now = new Date();
+  const acks = loadAcks();
   const flagged = [];
+
+  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+    console.log(`  ⚠️  ${REVIEW_TEXTS_DIR} not found — review-texts signal is disabled in this environment (private repo not checked out); only date-based signals will fire`);
+  }
 
   for (const show of showsData.shows) {
     if (show.status !== 'announced') continue;
 
-    const reasons = [];
-
-    const pastDays = show.previewsStartDate ? daysSince(show.previewsStartDate, now) : null;
-    if (pastDays !== null && pastDays > STALE_DAYS) {
-      reasons.push(`previewsStartDate ${show.previewsStartDate} is ${pastDays}d in the past`);
-    }
-
-    const hasReviews = hasPopulatedReviewTextsDir(show.id);
-    if (hasReviews) {
-      reasons.push('data/review-texts/ has collected review file(s)');
-    }
+    const reasons = evaluateAnnouncedShow(show, {
+      now,
+      staleDays: STALE_DAYS,
+      hasReviews: hasPopulatedReviewTextsDir(show.id),
+      acks,
+    });
 
     if (reasons.length > 0) {
       flagged.push({

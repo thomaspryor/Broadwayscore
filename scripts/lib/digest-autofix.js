@@ -63,6 +63,12 @@ const path = require('path');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const { checkPark, computeContentHash } = require('./attempt-memory.js');
+// BRO-2499: the marker this module stamps onto every issue it files (via the
+// --park reason, which linear-issue-create.js prepends to the description as
+// `PARKED: <reason>`) and which linear-dispatch.js's autofixFiledIssueGuard
+// recognises. Defined in the leaf so the writer and the recogniser cannot
+// drift apart.
+const { AUTOFIX_FILED_MARKER } = require('./autofix-filed-marker.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
@@ -327,7 +333,7 @@ function fileCard(title, notes, { log = () => {} } = {}) {
       // task #1310: filing and dispatching are deliberately separate steps
       // here (see header comment above) — this call only ever files; the
       // caller's own dispatchDetached() (below) is the real dispatch.
-      '--park', 'Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.',
+      '--park', `${AUTOFIX_FILED_MARKER}; runAutofix dispatches via linear-next separately in the same pass.`,
     ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
     // linear-brain prints the issue JSON then a PARKED: line — the field is
     // `.identifier` (NOT `.id`, which is the opaque UUID).
@@ -363,7 +369,17 @@ function syncTasks({ log = () => {} } = {}) {
 // for a row's 2nd+ attempt on unchanged content, or a caller-supplied hint
 // (e.g. test.yml's streak escalation, which wants opus on its first try here
 // since it's already the SECOND machine attempt at the underlying failure).
-function dispatchDetached(taskId, log, delaySec = 0, model = null) {
+// `opts.allowAutofixFiled` (BRO-2499) appends --allow-autofix-filed on the
+// linear-next path, waiving linear-dispatch.js's autofixFiledIssueGuard for
+// THIS dispatch. Opt-in per call site, not defaulted on, so a future caller
+// never inherits a bypass it never asked for (second-opinion review,
+// BRO-2499). All three of today's callers legitimately own their population
+// and pass it: runAutofix below, autofix-canary.js's two sites, and
+// scripts/linear-drain-parked.js — that last one is NOT redundant, see its
+// call site: health-check.js routes alert-router trackers under the same
+// "BSC Daily:" title, so the guard refuses them too. Never appended on the
+// bsc-next.js branch: that CLI has no such flag and no such guard.
+function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // Validate BEFORE opening the log fd — throwing after openSync leaked a
   // file descriptor per rejected dispatch (Codex review, 2026-08-02).
   //
@@ -393,7 +409,8 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null) {
     : path.join(REPO, 'scripts', 'bsc-next.js');
   const safeModel = model && VALID_MODELS.has(model) ? model : null;
   const modelArg = safeModel ? ` --model ${safeModel}` : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}`;
+  const autofixArg = linearMatch && opts && opts.allowAutofixFiled ? ' --allow-autofix-filed' : '';
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}${autofixArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
@@ -617,7 +634,11 @@ function runAutofix({
     const attempt = priorAttempts + 1;
     const model = row.model || (attempt >= 2 ? 'opus' : null);
     try {
-      dispatchFn(row.taskId, log, (cap - budget) * 45, model);
+      // allowAutofixFiled (BRO-2499): every row dispatched here is an issue
+      // THIS module filed moments ago (fileCard, above), so it is exactly the
+      // population autofixFiledIssueGuard refuses — waived at the one call
+      // site that legitimately owns it.
+      dispatchFn(row.taskId, log, (cap - budget) * 45, model, { allowAutofixFiled: true });
       row.state = 'dispatched';
       row.attempt = attempt;
       if (model) row.model = model;

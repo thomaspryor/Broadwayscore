@@ -16,12 +16,16 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `enrich-stubhub-prices.js — Enrich ticketLinks[].priceFrom for StubHub entries from page scraping.
 
 Usage:
   node scripts/enrich-stubhub-prices.js [options]
   node scripts/enrich-stubhub-prices.js --help, -h    print this usage and exit
+
+Options:
+  --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -29,6 +33,7 @@ const LIMIT = (() => {
   const idx = process.argv.indexOf('--limit');
   return idx > -1 ? parseInt(process.argv[idx + 1], 10) : Infinity;
 })();
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 function extractMinPrice(html) {
   // StubHub embeds lowPrice in JSON-LD and page state across event listings
@@ -61,6 +66,10 @@ async function main() {
   const toProcess = candidates.slice(0, LIMIT);
 
   for (let i = 0; i < toProcess.length; i++) {
+    if (timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${toProcess.length - i} show(s) deferred to next run.`);
+      break;
+    }
     const show = toProcess[i];
     const shLink = show.ticketLinks.find(l => l.platform === 'StubHub');
     if (!shLink?.url) continue;

@@ -25,14 +25,29 @@ jobs:
           node-version: '20'
       - name: Install Lighthouse
         run: npm install -g lighthouse chrome-launcher
+      - name: Pick rotating show pages
+        # Show pages are ~2800 of ~2900 routes but this gate used to hardcode
+        # exactly one (/show/wicked) forever (card #1919). Reads the LIVE
+        # sitemap (scripts/lib/live-show-slugs.js) via a thin CLI wrapper —
+        # see scripts/print-sample-show-urls.js — so every picked slug is
+        # guaranteed to be an actually-deployed route, with no new private-
+        # repo/secret dependency for this job. The script itself always
+        # prints at least one URL (falling back to /show/wicked if the live
+        # sitemap fetch fails or returns nothing), so this step never needs
+        # to fail the job.
+        run: node scripts/print-sample-show-urls.js 2 > /tmp/sample-show-urls.txt
       - name: Run Lighthouse audits
         id: audit
         run: |
           URLS=(
             "https://broadwayscorecard.com/"
-            "https://broadwayscorecard.com/show/wicked"
             "https://broadwayscorecard.com/guides/best-broadway-musicals"
           )
+          if [ -s /tmp/sample-show-urls.txt ]; then
+            while IFS= read -r url; do
+              [ -n "$url" ] && URLS+=("$url")
+            done < /tmp/sample-show-urls.txt
+          fi
           RESULTS=""
           ALL_PASS=true
 

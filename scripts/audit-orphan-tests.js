@@ -149,7 +149,13 @@ const EXEMPT_KNOWN_BROKEN = {
 // audit all three or the gate has the same hole it was built to close. Claude
 // caught this during ship-check: 6 .ts/.js orphans were silently uncovered.
 const TEST_FILE_REGEX = /\.test\.(mjs|ts|js)$/;
-const REFERENCE_REGEX = /[a-zA-Z0-9_-]+\.test\.(mjs|ts|js)/g;
+// Dots allowed in the prefix class (not just alnum/dash/underscore): filenames
+// like review-normalization.maybeUpgradeUrl.test.mjs embed a dot before the
+// .test.mjs suffix. A dot-less class truncated the match to just
+// "maybeUpgradeUrl.test.mjs", which never equals the full basename
+// listTestFiles() reports — every dotted test filename read as an orphan
+// even when correctly registered in a manifest (BRO-111).
+const REFERENCE_REGEX = /[a-zA-Z0-9_.-]+\.test\.(mjs|ts|js)/g;
 
 // Returns { name, rel } for each test file: name is the bare filename (used for
 // the reference/exempt lookups, matching how they're cited in YAML), rel is the
@@ -319,4 +325,4 @@ function main() {
 // also execute the CLI against the real repo and process.exit() the test run.
 if (require.main === module) main();
 
-module.exports = { extractRunBlocks };
+module.exports = { extractRunBlocks, REFERENCE_REGEX };

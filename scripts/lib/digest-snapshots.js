@@ -323,7 +323,16 @@ function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
     bannerText: `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`,
     items: rows.slice(0, maxItems).map((r) => ({
       title: r.tag,
-      detail: `${r.reason || 'unknown'} — ${Number(r.behindCount) || 0} commit(s) behind origin/main as of ${String(r.at || '').slice(0, 16).replace('T', ' ')} UTC`,
+      // blockingFiles (BRO-2314) is the subset of dirtyFiles that origin/main
+      // actually moves — the only files that can block a fast-forward. Naming
+      // them here is the difference between an alert that says "dirty
+      // checkout" and one that says which file to go look at; the six-day
+      // outage this key was added for was visible in this very block every
+      // morning and went unactioned because it named the wrong files.
+      detail: `${r.reason || 'unknown'} — ${Number(r.behindCount) || 0} commit(s) behind origin/main as of ${String(r.at || '').slice(0, 16).replace('T', ' ')} UTC`
+        + (Array.isArray(r.blockingFiles) && r.blockingFiles.length
+          ? ` — blocked by: ${r.blockingFiles.join(', ')}`
+          : ''),
     })),
     moreCount: Math.max(0, rows.length - maxItems),
   };

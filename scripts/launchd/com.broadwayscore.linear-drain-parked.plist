@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
+         Phase 2 completion). Ticks 3x/day (10:30/14:30/18:30 ET — offset
+         30min from backlog-drain.plist's 10/14/18 so the two never spawn
+         detached children in the same worktree-lock window) and runs
+         scripts/linear-drain-parked.js, which dispatches up to 3 parked
+         issues owner-alert-router.js auto-filed through linear-next.js's
+         own --headless path (full guard stack: kill switch, idempotency,
+         terminal-state, dead-dispatch, verify gate).
+
+         Not wired into data-health-check.yml: the CI runner has no `claude`
+         binary to hand a dispatched job to, so this has to run somewhere
+         with one — this Mac, same as backlog-drain.js's own launchd tick.
+
+         DISABLED BY DEFAULT — this file is NOT installed. Do not
+         `launchctl bootstrap` this without the owner reviewing at least one
+         supervised manual run first (`node scripts/linear-drain-parked.js
+         --dry-run`, then a live run) and explicitly deciding to turn on
+         continuous unattended dispatch.
+
+         StartCalendarInterval entries are LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Secrets (LINEAR_API_KEY) come from the repo's .env via
+         load-env.js's own chain — launchd does NOT inherit shell env; no
+         secrets are read directly by this plist.
+
+         Install (owner action, after reviewing a manual run's output):
+           cp scripts/launchd/com.broadwayscore.linear-drain-parked.plist ~/Library/LaunchAgents/
+           launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.linear-drain-parked.plist
+         Manual run (no launchd): node scripts/linear-drain-parked.js
+         Manual tick via launchd: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.linear-drain-parked
+         Kill (stops FUTURE ticks only):
+           launchctl bootout gui/$(id -u)/com.broadwayscore.linear-drain-parked
+
+         Rollback story (mirrors backlog-drain.plist's own note): bootout
+         does not touch an ALREADY-dispatched headless job — the spawn is
+         detached and this script returns immediately once spawn() is
+         called. To find/stop a live drain-dispatched job:
+           cat data/audit/job-leases/*/lease.json   # {jobId, pid, cwd} per live task
+           kill <pid>
+         Per-attempt stdout/stderr for debugging a refused/failed dispatch:
+           data/audit/digest-autofix-logs/linear_<identifier>-<ts>.log
+           (dispatchDetached()'s own log dir — this drain reuses it, no
+           separate log dir of its own)
+         This drain's own attempt journal (which parked issues it has tried
+         and when, for the retry-cooldown dedupe):
+           data/audit/linear-drain-parked-ledger.jsonl -->
+    <key>Label</key>
+    <string>com.broadwayscore.linear-drain-parked</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=linear-drain-parked bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/linear-drain-parked.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>14</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>18</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/tmp/linear-drain-parked-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/linear-drain-parked-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

@@ -17,7 +17,9 @@ const {
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { isAutofixFiledTitle } = require('./autofix-filed-marker.js');
 const { execFileSync } = require('node:child_process');
+const { readFileSync } = require('node:fs');
 
 const NOW = Date.parse('2026-08-11T12:00:00.000Z'); // yesterday = 2026-08-10
 const YESTERDAY = '2026-08-10';
@@ -280,4 +282,27 @@ test('REGRESSION: isPathAbsentFromTreeError classifies the REAL `git cat-file -e
   }
   assert.ok(threw, 'expected git cat-file -e to fail for a nonexistent path');
   assert.equal(isPathAbsentFromTreeError(threw), true);
+});
+
+// BRO-2499: the canary card is titled "CANARY: touch ..." and carries
+// digest-autofix's PARKED provenance, so linear-dispatch.js's
+// autofixFiledIssueGuard refuses it at `linear-next.js --id` unless this
+// module passes the opt-in. runAutofixCanary() does real filing/spawning I/O
+// with no dispatch seam, so this is a source-level pin instead: EVERY
+// dispatchDetached call site here must carry the waiver. Without it the daily
+// end-to-end canary silently stops dispatching and only self-reports ~24h
+// later, as the very starvation this module exists to detect.
+test('every dispatchDetached call site passes allowAutofixFiled (BRO-2499)', () => {
+  const src = readFileSync(new URL('./autofix-canary.js', import.meta.url), 'utf8');
+  const calls = src.match(/dispatchDetached\([^)]*\)/g) || [];
+  assert.ok(calls.length >= 2, `expected at least 2 dispatchDetached call sites, found ${calls.length}`);
+  for (const call of calls) {
+    assert.match(call, /allowAutofixFiled:\s*true/, `dispatchDetached call site missing the BRO-2499 waiver: ${call}`);
+  }
+});
+
+test('canaryCardTitle is exactly the shape autofixFiledIssueGuard recognises (BRO-2499)', () => {
+  // Cross-module pin: if canaryCardTitle's prefix is ever changed, the guard
+  // stops recognising the canary and a crown-loop sweep can pick it up.
+  assert.equal(isAutofixFiledTitle(canaryCardTitle(TODAY)), true);
 });

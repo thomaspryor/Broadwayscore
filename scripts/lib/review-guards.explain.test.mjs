@@ -16,6 +16,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { createRequire } from 'module';
 
@@ -120,6 +121,132 @@ test('a clean review yields null and includable=true', () => {
   };
   assert.strictEqual(explainExclusion(clean, null, undefined), null);
   assert.strictEqual(isIncludableForRebuild(clean, null, undefined), true);
+});
+
+// BRO-2317 — a stale duplicateTextOf on a duplicate cluster's WINNER must not
+// silently disable exclusion for every OTHER loser in the cluster. Real
+// incident (2026-08-26): loves-labours-lost-globe-west-end-2026 had a 3-file
+// same-URL Times cluster whose winner held its own fullText but ALSO carried a
+// stale duplicateTextOf pointing at one of the two losers — that made the
+// OTHER loser (whose duplicateOf points at the winner, non-circularly) look
+// like it referenced "a reference that's also a dupe, elsewhere" and fall
+// through unexcluded, tripping validate-data.js's NEW-duplicate-URL gate on
+// main and failing all 17 open PRs.
+function mkShowDir() {
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'bro2317-'));
+}
+
+test('BRO-2317: real 3-file cluster — winner\'s own duplicateTextOf (set by collect-review-texts.js\'s content-fingerprint dedup, per its own fullText) does NOT block loser2 exclusion', () => {
+  const showDir = mkShowDir();
+  try {
+    const url = 'https://www.thetimes.co.uk/article/loves-labours-lost-review-abc123';
+    const winnerFile = 'times-uk--clive-davis.json';
+    const loser1File = 'times-uk--david-jays-and-maxie-szalwinska.json';
+    const loser2File = 'times-uk--other-critic.json';
+    // loser1 is processed first and gets its own fullText; the winner is
+    // processed later, its content-fingerprint matches loser1's, so
+    // collect-review-texts.js's dedup pass ("1C. Content hash dedup") stamps
+    // duplicateTextOf on the WINNER — this is normal, not stale, and the
+    // winner legitimately keeps its own fullText alongside it (real corpus
+    // pattern, confirmed via collect-review-texts.js:~4898).
+    fs.writeFileSync(path.join(showDir, loser1File), JSON.stringify({
+      url,
+      fullText: 'The winner review holds its own full text right here, plenty of words.',
+    }));
+    fs.writeFileSync(path.join(showDir, winnerFile), JSON.stringify({
+      url,
+      fullText: 'The winner review holds its own full text right here, plenty of words.',
+      duplicateTextOf: loser1File,
+    }));
+    fs.writeFileSync(path.join(showDir, loser2File), JSON.stringify({
+      url,
+      duplicateOf: winnerFile,
+    }));
+
+    const loser2Data = JSON.parse(fs.readFileSync(path.join(showDir, loser2File), 'utf8'));
+    const reason = explainExclusion(loser2Data, null, path.join(showDir, loser2File));
+    assert.strictEqual(reason, 'duplicateOf', 'loser2 must be excluded as a duplicate despite the winner\'s duplicateTextOf pointing elsewhere');
+    assert.strictEqual(isIncludableForRebuild(loser2Data, null, path.join(showDir, loser2File)), false);
+  } finally {
+    fs.rmSync(showDir, { recursive: true, force: true });
+  }
+});
+
+test('BRO-2317: winner\'s duplicateTextOf pointing straight back at ME (circular) still gets the same-URL tiebreak, not a silent fall-through', () => {
+  const showDir = mkShowDir();
+  try {
+    const url = 'https://www.thetimes.co.uk/article/loves-labours-lost-review-abc123';
+    const winnerFile = 'times-uk--clive-davis.json';
+    const loser1File = 'times-uk--david-jays-and-maxie-szalwinska.json';
+
+    fs.writeFileSync(path.join(showDir, winnerFile), JSON.stringify({
+      url,
+      fullText: 'The winner review holds its own full text right here, plenty of words.',
+      duplicateTextOf: loser1File,
+    }));
+    // loser1 has no fullText of its own (a bare duplicateOf stub) — the
+    // fingerprint check can't run, but same-URL alone must still tiebreak it,
+    // matching rebuild-all-reviews.js's same-URL fallback.
+    fs.writeFileSync(path.join(showDir, loser1File), JSON.stringify({
+      url,
+      duplicateOf: winnerFile,
+    }));
+
+    const loser1Data = JSON.parse(fs.readFileSync(path.join(showDir, loser1File), 'utf8'));
+    const reason = explainExclusion(loser1Data, null, path.join(showDir, loser1File));
+    assert.strictEqual(reason, 'duplicateOfCircularTiebreak', 'a circular same-URL pair without a fingerprint match on both sides must still tiebreak via same-URL, not silently fall through');
+  } finally {
+    fs.rmSync(showDir, { recursive: true, force: true });
+  }
+});
+
+test('BRO-2317: duplicateOf on the reference (a real verdict, not a text pointer) still lets a non-circular loser through unexcluded (unchanged pre-existing behavior)', () => {
+  const showDir = mkShowDir();
+  try {
+    const url = 'https://example.com/review-a';
+    const winnerFile = 'outlet--winner.json';
+    const loserFile = 'outlet--loser.json';
+
+    // The "winner" here is itself still flagged with a live duplicateOf verdict
+    // pointing at some OTHER, unrelated file — that's a real unresolved dupe
+    // signal (not a stale text pointer), so the recovery fall-through must
+    // still apply exactly as before BRO-2317.
+    fs.writeFileSync(path.join(showDir, winnerFile), JSON.stringify({
+      url,
+      fullText: 'Some other unrelated full text.',
+      duplicateOf: 'outlet--yet-another.json',
+    }));
+    fs.writeFileSync(path.join(showDir, loserFile), JSON.stringify({
+      url,
+      fullText: 'This file has its own full text too, plenty of words for the text gate.',
+      duplicateOf: winnerFile,
+    }));
+
+    const loserData = JSON.parse(fs.readFileSync(path.join(showDir, loserFile), 'utf8'));
+    const reason = explainExclusion(loserData, null, path.join(showDir, loserFile));
+    assert.strictEqual(reason, null, 'a reference with its own live duplicateOf verdict should still recover the pointing file (fall through), unlike a stale duplicateTextOf');
+  } finally {
+    fs.rmSync(showDir, { recursive: true, force: true });
+  }
+});
+
+test('BRO-2317: mutual circular duplicateOf pair with same fingerprint still tiebreaks correctly (isCircular untouched by the fix)', () => {
+  const showDir = mkShowDir();
+  try {
+    const sameText = 'A perfectly ordinary review body shared by both circularly-pointing files here.';
+    const aFile = 'outlet--aaa.json';
+    const bFile = 'outlet--bbb.json';
+    fs.writeFileSync(path.join(showDir, aFile), JSON.stringify({ fullText: sameText, duplicateOf: bFile }));
+    fs.writeFileSync(path.join(showDir, bFile), JSON.stringify({ fullText: sameText, duplicateOf: aFile }));
+
+    const aData = JSON.parse(fs.readFileSync(path.join(showDir, aFile), 'utf8'));
+    const bData = JSON.parse(fs.readFileSync(path.join(showDir, bFile), 'utf8'));
+    // Lexicographically-greater filename (bbb > aaa) is excluded; the other is kept.
+    assert.strictEqual(explainExclusion(bData, null, path.join(showDir, bFile)), 'duplicateOfCircularTiebreak');
+    assert.strictEqual(explainExclusion(aData, null, path.join(showDir, aFile)), null);
+  } finally {
+    fs.rmSync(showDir, { recursive: true, force: true });
+  }
 });
 
 test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on every corpus file', (t) => {

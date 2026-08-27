@@ -108,7 +108,6 @@ scrape-theatre-reviews.yml
 scrape-thestage-roundups.yml
 scrape-waltz-costs.yml
 scrape-wp-blogs.yml
-scraper-cost-report.yml
 send-follow-notifications.yml
 sentry-triage.yml
 snapshot-audience-grades.yml
@@ -173,6 +172,18 @@ audit-census-recall.yml
 # cron coverage than CRITICAL_CRONS' generic recency page. Digest-only.
 coverage-adversarial-probe.yml
 
+# 2026-08-26 (BRO-2441): weekly clock-shift audit for tests that pass today
+# and fail purely from calendar drift. Gates nothing (schedule +
+# workflow_dispatch only, never push/pull_request) and changes no
+# user-facing data — a missed run just means a real bug (an armed but
+# undetected time bomb) surfaces a week later than it could have, not a
+# correctness regression right now. New findings file a Linear issue per
+# bomb directly (routeAlert disposition:'auto'), which is itself the
+# alerting channel — a silently-broken cron here degrades to "no new Linear
+# issues", the same shape as every other cron in this exempt list rather
+# than a unique risk that needs CRITICAL_CRONS' generic recency page.
+audit-time-bomb-tests.yml
+
 # 2026-08-09: fails loud on its own push trigger the moment a migration lands
 # without being applied (see the workflow's header comment); the weekly cron
 # is a secondary drift check for dashboard-side edits, not the primary signal
@@ -185,8 +196,20 @@ verify-schema.yml
 # via a red main build, not a silent staleness a user would notice. Digest-only.
 outlet-registry-baseline-maintenance.yml
 
-# Weekly report-only sweeps (no auto-apply) — a stale run means slower drift
-# detection, not user-facing staleness worth paging on. Digest-only, matches
-# the other weekly audit-*.yml entries above.
-audit-stale-wrong-production.yml
+# Weekly stale-flag cleanup sweeps — a stale/missed run just means slower
+# backlog drain (files stay excluded from scoring a bit longer, same as
+# before this workflow existed), not user-facing staleness worth paging on.
+# Digest-only, matches the other weekly audit-*.yml entries above.
 clear-stale-suspected-misattribution-flags.yml
+clear-wrong-show-blockers.yml
+clear-stale-wrong-production-flags.yml
+clear-stale-wrong-show-flags.yml
+
+# BRO-54: daily safety-net rotation for data/audit/stage-latency.jsonl.
+# emitStage() already self-rotates the log inline on every pipeline write;
+# this cron only matters if no pipeline writes for a while. A stale/missed
+# run just means the file grows a bit longer before the next rotation —
+# it's already on the ALLOW_LARGE allowlist + 90MiB hard cap in
+# check-file-sizes/action.yml, so there's no user-facing staleness or gate
+# risk to page on. Failures alert via notify-failure (warning severity).
+stage-latency-rotation.yml

@@ -220,6 +220,178 @@ function shouldEmailUnscoredGap(lastDispatchAt, now) {
   return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
 }
 
+// --- Gap-card lifecycle (BRO-341) ---------------------------------------
+//
+// classifySilentGap() above is a per-run classifier: it tells the sweep
+// whether a FILE is a gap right now. It has no memory of a previously-filed
+// card, so the sweep (audit-t1-silent-gaps.js) had nothing to check a card's
+// underlying condition against once opened — every gap card, once created,
+// stayed open forever even after the file was collected/scored or turned out
+// to be a correct editorial absence (2026-08-14 triage: #936/#1019/#1027/
+// #1070 sat open after the review was collected; #839/#1141 sat open despite
+// carrying terminal isNonReview/isRoundupArticle/wrongProduction flags whose
+// own suggested fix command could never succeed).
+//
+// The functions below give the sweep a within-run dedupe (dedupeGapCards), a
+// canonical per-file identity for reporting (gapCardKey), a cross-path
+// duplicate check (otherAlertPathKey), and a terminal-state classification
+// (classifyGapCardState) so it can:
+//   - collapse several candidate files for the same show+outlet to ONE card
+//     per run instead of one per file (byline-explosion clusters), and skip
+//     dispatching down one alert path when the OTHER path already tracks the
+//     identical file — the actual root cause of the #1070/#1114 and
+//     #1082/#1179 exact-duplicate pairs (filed once via the near-opening
+//     'gap:' path, once via the >24h 'backstop:' path, on different runs), and
+//   - resolveCondition() a previously-open card the moment its file's state
+//     turns terminal, instead of leaving it open forever.
+
+const GAP_CARD_STATE = {
+  OPEN: 'open',
+  COLLECTED: 'collected',
+  NO_REVIEW: 'no-review',
+  DUPLICATE: 'duplicate',
+};
+
+// Canonical, stable identity string for one show+outlet+file gap card.
+// NOT currently constructed by any production code path — dedupeGapCards()
+// below groups on a plain `${showId}/${outletId}` key directly (gapCardKey's
+// own output includes `file`, so it couldn't group multiple files onto one
+// outlet if used there), and neither alert-dispatch path in
+// audit-t1-silent-gaps.js uses it as the routeAlert() conditionKey either:
+// the near-opening ('gap:showId/file') and >24h backstop
+// ('backstop:showId/file') paths keep their own native, unmigrated prefixes,
+// because routeAlert()'s ledger cooldown AND its cross-system Linear dedupe
+// (findLinearDuplicate → a plain substring search for `[conditionKey:<key>]`
+// inside EXISTING card bodies) both key off the exact conditionKey string.
+// Every gap card filed before this fix has its old prefix baked verbatim
+// into its Linear issue body — switching the dispatched conditionKey format
+// would make every already-open gap invisible to both dedupe mechanisms on
+// the very next run (ledger sees "no record", Linear search finds no
+// substring match), so the first post-deploy pass over any real corpus
+// would re-file a duplicate card for every single currently-open gap —
+// exactly the bug this fix exists to close. (Caught in review before ship:
+// see otherAlertPathKey() below, which handles the actual near-opening/
+// backstop duplicate case without renaming the key.) gapCardKey() is kept as
+// the canonical per-file identity primitive (BRO-341's acceptance criteria
+// calls for a tested "dedupe key") for reporting/future use — it is exported
+// and unit-tested, just not yet wired into a live dispatch or grouping path.
+function gapCardKey({ showId, outletId, file }) {
+  return `t1gap:${showId}/${outletId}/${file}`;
+}
+
+// Given the conditionKey prefix one alert path is ABOUT to dispatch under
+// ('gap' or 'backstop'), returns the OTHER path's native conditionKey for
+// the identical show+file. audit-t1-silent-gaps.js checks whether that key
+// is already 'open' in the alert-router ledger before dispatching — the
+// actual fix for the #1070/#1114 and #1082/#1179 duplicate pairs: those were
+// filed once via the urgent 'gap:' path and once via the >24h 'backstop:'
+// path for the identical file, on different runs (so same-run dedupe alone
+// can't catch it).
+function otherAlertPathKey(showId, file, thisPathPrefix) {
+  const otherPrefix = thisPathPrefix === 'gap' ? 'backstop' : 'gap';
+  return `${otherPrefix}:${showId}/${file}`;
+}
+
+/**
+ * Per-file terminal classification for an existing (or would-be) gap card.
+ * Unlike classifySilentGap (which only answers "is this a gap right now"),
+ * this names WHY a file that WAS a gap no longer is one, so a caller can
+ * decide whether to resolveCondition() a previously-filed card.
+ *
+ * Returns:
+ *   'collected' — the outlet now reaches the composite score (this file
+ *                 became scoreable, or another file for the same outlet
+ *                 did). A previously-open card should close: the review
+ *                 arrived.
+ *   'no-review'  — the classifier's own editorial/roundup/wrong-URL
+ *                 exclusion fired: this file's absence is a correct
+ *                 editorial verdict (isNonReview, isRoundupArticle,
+ *                 wrongProduction, wrongShow, duplicateOf, …), not a fetch
+ *                 failure. No command can recover a review that was never
+ *                 published. A previously-open card should close: the
+ *                 "gap" was never a real one. Content-garbage
+ *                 (contentTier: 'invalid') files fall in this bucket too —
+ *                 classifySilentGap already treats them as un-actionable
+ *                 (re-ingesting the same URL can only re-fetch garbage), so
+ *                 a stale card for one should close the same way.
+ *   'open'      — still a live, unresolved gap (empty-body / unscored /
+ *                 rejected-unscoreable). A previously-open card should stay
+ *                 open.
+ *   null        — not T1/T2-gap-eligible at all (wrong tier, or a fresh file
+ *                 still inside the unscored grace window) — there is
+ *                 nothing for a card to track either way.
+ *
+ * @param {object} args same shape as classifySilentGap's args.
+ */
+function classifyGapCardState({ file, show, tier, outletScored, now }) {
+  if (!file || typeof file !== 'object') return null;
+  if (tier == null || tier > MAJOR_TIER_MAX) return null;
+  if (outletScored) return GAP_CARD_STATE.COLLECTED;
+  if (isIncludableForRebuild(file, show) && hasValidScore(file)) return GAP_CARD_STATE.COLLECTED;
+  if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return GAP_CARD_STATE.NO_REVIEW;
+  if (isRoundupPageAsReview(file)) return GAP_CARD_STATE.NO_REVIEW;
+  const gap = classifySilentGap({ file, show, tier, outletScored, now });
+  if (gap) return GAP_CARD_STATE.OPEN;
+  // classifySilentGap's own final branch excludes contentTier:'invalid' from
+  // ever counting as a recoverable empty-body gap — mirror that exclusion
+  // here as a terminal state rather than plain "not eligible" so a stale
+  // card for a file that was later reclassified as garbage still closes.
+  if (file.contentTier === 'invalid') return GAP_CARD_STATE.NO_REVIEW;
+  return null;
+}
+
+/**
+ * Collapse a run's open gaps to one card per show+outlet. A byline-explosion
+ * cluster (or any outlet with several candidate files) can leave more than
+ * one file classifying as an open gap for the SAME outlet in a single run —
+ * without this, each file mints its own card for what is, from the owner's
+ * perspective, one missing review.
+ *
+ * `gaps` items need at minimum { showId, outletId, file }; a `url` field is
+ * used for primary selection when present, and all extra fields are
+ * preserved on output. Duplicates carry cardState: 'duplicate' and
+ * duplicateOfFile pointing at the kept file, so a caller can still
+ * report/log them without dispatching a second card.
+ *
+ * Primary selection is deterministic, not scan-order-dependent: a candidate
+ * with a usable `url` (an actionable fix command) is always preferred over
+ * one without, and ties break on filename. Without this, whichever file
+ * `fs.readdirSync()` happened to return first would win — a URL-less file
+ * could become primary while a directly-fixable sibling gets silently
+ * dropped as a duplicate, and a later directory re-scan (a sibling file
+ * added/removed) could flip which file is primary from run to run, which
+ * would leave the PREVIOUS primary's card open forever (still a real gap,
+ * just no longer the one being tracked) while filing a new card for the new
+ * primary — review finding, BRO-341.
+ *
+ * @param {Array<object>} gaps
+ * @returns {{ primary: Array<object>, duplicates: Array<object> }}
+ */
+function dedupeGapCards(gaps) {
+  const groups = new Map(); // show+outlet key -> all gaps in that group
+  for (const g of gaps || []) {
+    const key = `${g.showId}/${g.outletId}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(g);
+  }
+  const primary = [];
+  const duplicates = [];
+  for (const group of groups.values()) {
+    const sorted = [...group].sort((a, b) => {
+      const aHasUrl = a.url ? 1 : 0;
+      const bHasUrl = b.url ? 1 : 0;
+      if (aHasUrl !== bHasUrl) return bHasUrl - aHasUrl;
+      return String(a.file).localeCompare(String(b.file));
+    });
+    const [best, ...rest] = sorted;
+    primary.push(best);
+    for (const g of rest) {
+      duplicates.push({ ...g, cardState: GAP_CARD_STATE.DUPLICATE, duplicateOfFile: best.file });
+    }
+  }
+  return { primary, duplicates };
+}
+
 module.exports = {
   classifySilentGap,
   shouldAlertGap,
@@ -229,4 +401,9 @@ module.exports = {
   REALERT_DAYS,
   UNSCORED_GRACE_HOURS,
   DISPATCH_RETRY_HOURS,
+  GAP_CARD_STATE,
+  gapCardKey,
+  otherAlertPathKey,
+  classifyGapCardState,
+  dedupeGapCards,
 };

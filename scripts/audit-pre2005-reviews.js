@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
+const { parseHistoricalDate } = require('./lib/date-utils');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -226,8 +227,8 @@ function getReviewText(reviewData) {
 
 function getPublishYear(reviewData) {
   if (!reviewData.publishDate) return null;
-  const d = new Date(reviewData.publishDate);
-  if (isNaN(d.getTime())) return null;
+  const d = parseHistoricalDate(reviewData.publishDate);
+  if (!d) return null;
   return d.getFullYear();
 }
 

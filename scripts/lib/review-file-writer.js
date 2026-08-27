@@ -37,7 +37,8 @@ const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, isWrongShowUnknownLocked } = require('./review-guards');
-const { detectRoundupDigest } = require('./roundup-digest');
+const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
+const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
@@ -669,6 +670,27 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
+  // --- Guard E4: "critical consensus" pull-quote compilation (outlet-agnostic) ---
+  // Catches compilation pages stored under an individual critic's OWN byline
+  // that quote several OTHER outlets' reviews verbatim with no "Roundup"
+  // wording anywhere — e.g. New York Theater's (newyorktheater.me) "critical
+  // consensus" posts, bylined to the site's own writer (task #1888). Unlike
+  // Guard E3 above, not gated to one aggregator host: detection is purely
+  // content-based (3+ distinct outlet attributions, or a consensus-intro
+  // phrase corroborated by 2+), so it won't fire on a real critic's review
+  // that quotes one rival in passing. Skip if already flagged.
+  if (!fields.isRoundupArticle) {
+    const compilation = detectPullQuoteCompilation({
+      fullText: input.fullText || fields.fullText,
+      outletId,
+      criticName: input.criticName || fields.criticName,
+    });
+    if (compilation) {
+      fields.isRoundupArticle = true;
+      fields.roundupArticleReason = `auto: ${compilation.reason}`;
+    }
+  }
+
   // --- Guard F: Empty unknown rejection ---
   // Don't create files for unknown critics with no URL and no text content.
   // These are pure scrape garbage that clutter the directory.
@@ -1028,6 +1050,17 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // own release condition), so a truncated paywall refetch keeps its retry
     // context while a genuinely-healed body sheds the garbage verdict.
     if (clearFailureFlags(existing).length > 0) changed = true;
+
+    // Card #1902: this fullText change may have just made a prior
+    // excerpt-based score stale. isStaleScoreInput() is the single gate
+    // shared with rebuild-all-reviews.js's wrongProduction auto-clear sites
+    // — it already requires a prior assignedScore (so a never-scored file
+    // is untouched) and isScoreable() (so a non-includable file can never
+    // become a stuck flag, the 278-file guard from card #1902's audit).
+    if (isStaleScoreInput(existing, undefined, filepath)) {
+      markRescoreNeeded(existing, 'fullText added after excerpt-based score');
+      changed = true;
+    }
   }
 
   if (!changed) {

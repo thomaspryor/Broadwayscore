@@ -1,8 +1,8 @@
 {
   "version": 1,
   "showId": "as-you-like-it-globe-west-end-2026",
-  "openingDate": "2026-08-14",
-  "detectedAt": "2026-08-20T18:42:59.887Z",
+  "openingDate": "2026-08-21",
+  "detectedAt": "2026-08-26T23:49:35.321Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -46,9 +46,51 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "thestage--tom-wicker.json",
+      "outletId": "thestage",
+      "criticName": "Tom Wicker",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+      "fullTextLen": 2850,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "times-uk--rachel-halliburton.json",
+      "outletId": "times-uk",
+      "criticName": "Rachel Halliburton",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/as-you-like-it-review-the-globe-london-2026-qb7pgdzf2",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
+    },
+    {
+      "file": "times-uk--victoria-segal.json",
+      "outletId": "times-uk",
+      "criticName": "Victoria Segal",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
+  "orphanCount": 6,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null

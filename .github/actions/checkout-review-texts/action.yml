@@ -13,10 +13,82 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v5
-      with:
-        repository: thomaspryor/broadway-review-texts
-        token: ${{ inputs.token }}
-        path: data/review-texts
-        fetch-depth: ${{ inputs.fetch-depth }}
-        ref: main
+    # BRO-66: this is the exact step named in the incident — "Checkout
+    # review-texts (private repo)" failed with "API rate limit exceeded for
+    # user ID 3475675" during an opening-night burst of orchestrator
+    # dispatches. REVIEW_TEXTS_TOKEN is a classic PAT (5000 req/hr across ALL
+    # API calls from that token, shared by every workflow using this action),
+    # and actions/checkout@v5 has no retry of its own. Manual clone (same
+    # pattern as checkout-core-data/action.yml) gives this composite action
+    # control over retry timing: a rate-limited clone gets 30s-base
+    # exponential backoff (scripts/lib/github-rate-limit-retry.js, unit-tested
+    # in tests/unit/checkout-rate-limit-retry.test.mjs) instead of failing the
+    # whole job outright.
+    - name: Clone review-texts repo
+      shell: bash
+      env:
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
+        FETCH_DEPTH: ${{ inputs.fetch-depth }}
+      run: |
+        DEPTH_ARGS=""
+        if [ -n "${FETCH_DEPTH}" ] && [ "${FETCH_DEPTH}" != "0" ]; then
+          DEPTH_ARGS="--depth ${FETCH_DEPTH}"
+        fi
+
+        rm -rf data/review-texts
+        MAX_RETRIES=3
+        STDERR_FILE=$(mktemp)
+        for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+          : > "$STDERR_FILE"
+          START=$(date +%s)
+          if git clone $DEPTH_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE"; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "review-texts cloned in ${ELAPSED}s"
+            break
+          fi
+
+          cat "$STDERR_FILE" >&2
+          rm -rf data/review-texts
+
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing retry/exit handling below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::review-texts checkout hit a GitHub API rate limit (attempt $ATTEMPT/$MAX_RETRIES) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            stop:max-attempts-reached)
+              echo "::error::review-texts checkout still rate-limited after $MAX_RETRIES attempts — giving up"
+              exit 1
+              ;;
+            *)
+              if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "::warning::review-texts checkout failed (attempt $ATTEMPT/$MAX_RETRIES, non-rate-limit) — retrying in 10s"
+                sleep 10
+              else
+                echo "::error::review-texts checkout failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+              ;;
+          esac
+        done
+
+        if [ ! -d data/review-texts/.git ]; then
+          echo "::error::review-texts checkout FAILED — data/review-texts/.git missing"
+          exit 1
+        fi

@@ -117,3 +117,139 @@ Ingesting a URL whose derived filename collides with an existing outlet--critic 
 **Detect:** an outlet in your census with zero events anywhere in `data/audit/` AND no review-texts file. Repro with the direct-URL ingest and watch for the 102-char line.
 **Fix:** add the domain to `PATTERNS` in `scripts/lib/article-extractor.js`; systemic fix is to log sub-300-char extractions after a *successful* fetch into the audit exclusion log. Carded P1 `3c2637c5-416f-8112-b500-ea1b528e3274`.
 **Sibling gate seen same pass:** BroadwayWorld West End ingest died with `Skipping Playwright (domain-tier-skip)` then `All scraping methods failed` — domain-tier policy forbids the only working transport when BD/SB are exhausted, also silent.
+
+## Gate: headless opening-night monitor runs without `.env` (found 2026-08-26, paranormal-activity-2026)
+The launchd-dispatched monitor pass inherits a bare environment. `SCRAPINGBEE_API_KEY`/`BRIGHTDATA_*`/`BROWSERBASE_API_KEY` are unset, so **every `fetchPage()` call returns "All scraping methods failed"** — not a block, not a 404, just the whole fallback chain exhausted on the first hop. The independent census is the load-bearing step of the monitor mission, and it is silently impossible in that environment.
+- Detect: `node scripts/lib/check-sb-credits.js` → `{"ok":false,"reason":"no-key"}` inside a monitor pass, while the same command from an interactive shell reports credits fine.
+- Workaround inside a pass: `set -a && . ./.env && set +a` before every node invocation.
+- Permanent fix: export the .env vars from the launchd plist / `opening-night-monitor-launch.js`.
+- Cost of missing it: a pass reports "census failed, aggregators unreachable" and the next pass repeats the same dead fetch. Suspect this on 2026-08-12/18/19 passes too.
+
+## Gate: tour-contamination safety net silently DEMOTES an already-live review
+
+**Class:** include→exclude regression triggered by the review's own full text arriving.
+
+A review can be live on prod for hours and then vanish, with no audit line and no alert —
+the show's `rc` just decrements. Cause: `isTourReviewExcerpt()` feeding the CONTAMINATION
+SAFETY NET in `scripts/lib/review-guards.js` (~:3134-3143). It inspects only
+`fullText.slice(0, 600)`, so any Broadway review whose intro mentions the production's
+**prior national tour** ("following a national tour") is read as a tour-stop review and
+excluded. Score, `contentTier` and aggregator corroboration are all ignored.
+
+**Seen:** paranormal-activity-2026 (opening 2026-08-25). `theatermania--zachary-stewart.json`
+live at 04:19Z (rc=20); text fetch at 04:05Z replaced aggregator excerpts with the real body;
+by 04:41Z prod was rc=19. `explainExclusion()` => `tourContaminationInText`.
+
+**Why it is monitor-only-detectable:** nothing in the pipeline flags a demotion. It was found
+purely by diffing prod `rc` against an independent census. **If prod rc DROPS between passes,
+suspect this class first** — run `explainExclusion()` over every review-texts file for the show
+and look for a file whose `textFetchedAt` is newer than the last good rebuild.
+
+**Tonight's fix (data level):** set `allowTourSignal: true` + `allowTourSignalReason` + all 8
+protection fields. That is the guard's own designed escape hatch. **Corroborate production
+identity from the census source first** — venue in body, publishDate == openingDate, and the
+same URL cited under the Broadway production by ≥2 aggregators.
+
+**Trap:** `allowTourSignal` / `allowFilmSignal` are NOT in `PROTECTED_FIELDS`
+(`scripts/lib/review-write-guard.js`), so a CI restore can strip the clear and re-exclude the
+review. Re-verify the field survives after any observed CI checkpoint commit.
+
+Cards: P0 `3c8637c5-416f-817a-b698-ddbb70e78ba7` (guard fix + demotion audit line),
+P1 `3c8637c5-416f-81fb-8efb-cfb60059d3e3` (PROTECTED_FIELDS 3-way sync).
+
+## Gate: auto-ingest paths write UNFLAGGED phantom reviews (paranormal-activity-2026, 2026-08-26, passes 5-8)
+
+Three distinct rc-inflation defects, all from ingest paths that skip the triage checks the manual path runs:
+
+1. **Critic personal-repost site ingested as an independent outlet.** `showriz.com` is Variety critic Frank Rizzo's own blog; the post is his Variety review verbatim ("My Variety Review: Broadway's Paranormal Activity"). Discovery wrote it with `critic: undefined`, so no cross-outlet dedupe fired. rc 20→21 and one critic's opinion was double-weighted in the composite.
+2. **Aggregator SHOW PAGE written as a review.** `audit-aggregator-gap` auto-ingest wrote `didtheylikeit.com/shows/paranormal-activity/` with `contentTier: complete`, no flags, `isIncludableForRebuild() => true`. Roundup detection runs in manual triage, not in the auto-ingest path.
+3. **Same-URL byline/unknown pairs from one ingest batch.** `people--dave-quinn.json` + `people--unknown.json`, identical `url`; also `theater-pizzazz--ron-fassler.json` + `theater-pizzazz--unknown.json`. Both copies unflagged and includable → the outlet enters reviews.json twice. Note the survivor is often the WRONG one: Theater Pizzazz kept the `--unknown` copy (complete text, `critic: Unknown`) and dropped the byline copy, so the live entry lost its critic name.
+
+**Triage recipe when rc is higher than your census outlet count:** list `data/review-texts/<show>/`, group files by `url` (exact match) and by domain-vs-critic-name; any group of size >1 is a duplicate pair, any file whose url is an aggregator `/shows/<slug>/` path is a phantom.
+
+**Trap that costs a whole pass:** `audit-duplicate-of-url-mismatch.js --fix` nulls a manually-set `duplicateOf` whenever the two files' URLs differ, and it reads NO protection field — `manuallyVerified` / `protectedFromAutoFlagging` / `doNotAutoFlag` are all inert against it (it leaves a `duplicateClearReason` naming itself). So legitimate CROSS-DOMAIN duplicates (syndication, critic reposts) cannot be marked by hand at all. Workaround that holds: `git rm` the loser file. Identical-URL pairs (People, Theater Pizzazz) are safe to mark, since matching URLs is exactly what the auditor checks for.
+
+## Gate: local fetchPage silently skips every paid tier (no dotenv) — 2026-08-26, monitor pass 13
+`scripts/lib/scraper.js` has **no `require('dotenv')`** (nor does `scripts/ingest-review-from-url.js`). Run locally, it sees every scraper key as undefined, skips Scrapingdog/ScrapingBee/Bright Data/Browserbase without a word, and drops to bare Playwright with a `networkidle` wait. JS-heavy outlets never reach networkidle, so it times out at 30s and prints "All scraping methods failed" — which reads as *the review is unreachable* when the truth is *no working tier was ever tried*. CI is immune (secrets are exported), which is why it hid for months.
+
+Controlled A/B, same URL and script four minutes apart: without env → `Trying Playwright (last resort)` as the only tier → timeout. With `set -a; . ./.env; set +a` → `Trying Scrapingdog...` → HTTP 200, 1 credit, first try.
+
+**Workaround when recovering a review locally:** `set -a; . ./.env; set +a` before any script that calls `fetchPage()`.
+**Tell:** the log line `→ Trying Playwright (last resort)...` appearing FIRST. If Playwright is the first tier you see, your env is not loaded — never conclude the outlet is unreachable.
+Falsely blamed three outlets across monitor passes 10 (DTLI), 12 (NYTG) and 13 (Blogcritics). Card: "P1: scraper.js never loads dotenv — all paid fetch tiers silently skipped in local runs" (3c8637c5-416f-8176-9b3e-ecb9b1b7c7e4).
+
+## Cross-outlet syndication duplicates re-ingest after deletion (2026-08-26, 3rd incident)
+**Gate that does NOT fire:** none. `explainExclusion() => null`, `isIncludableForRebuild() => true`.
+Dedupe is per-outlet only, so the same critic's review syndicated to a sibling
+outlet enters `reviews.json` as an independent review and double-weights that
+critic in the composite.
+
+Incidents: Showriz/Frank Rizzo (Variety self-repost), People, and Chicago
+Tribune/Chris Jones — the last one TWICE on the same night.
+
+Three compounding facts, in the order they bite:
+1. A manual `duplicateOf` pointer across differing URLs is **auto-nulled** by
+   `audit-duplicate-of-url-mismatch.js --fix` (:308-335 exempts only
+   duplicateOf-cycles and skiplisted dirs; it reads no protection field). The 8
+   manual-protection fields are inert against it. Deleting the loser file is the
+   only durable remedy today.
+2. Deleting does **not** blacklist the URL. `chicagotribune--chris-jones.json`
+   was deleted at ~12:2xZ; the same review returned ~11h later as
+   `chicagotribune--unknown.json` via outlet-listing-poller + submit-review-form,
+   already scored 85 with a populated `llmScore`.
+3. The recurrence had `criticName: "Unknown"` because the page renders the byline
+   as `By Chris Jones | [email protected]` — so any same-criticName dedupe would
+   have missed it too. **Detect on 8-word shingle overlap of fullText, not on
+   byline.** Observed overlap between the two files: 0.749 then 0.778.
+
+**Monitor recipe:** on any opening night, for each show compute pairwise 8-word
+shingle overlap across `data/review-texts/<show>/*.json`; anything >= 0.6 under
+two different `outletId`s is a syndication duplicate. Keep the higher-tier
+outlet, `git rm` the other, push, and re-check the following pass — it comes back.
+
+Systemic fix carded: Notion `3c8637c5-416f-81d7-80d6-e421d9c37ef6`.
+
+## Gate: same-critic dedupe picks a survivor that a LATER gate then excludes (2026-08-26)
+**Symptom:** a review-texts file that is provably clean (`explainExclusion() => null`, `isIncludableForRebuild() => true`) has NO entry in reviews.json and is absent from prod. Nothing in the audit logs names it.
+**Cause:** rebuild's same-critic/same-outlet dedupe runs BEFORE the exclusion gates and picks the survivor by longest body. When the survivor is subsequently excluded by another gate, the loser is never re-promoted — both copies vanish.
+**Real incident:** paranormal-activity-2026, Chris Jones. A `chicagotribune--chris-jones.json` syndication copy (4771 chars) beat `nydailynews--chris-jones.json` (4086 chars); the Tribune copy died at a later gate; the NYDN review (llmScore 86, T2) left prod entirely, rc 21 -> 20.
+**Tonight's workaround:** `git rm` the syndication copy, commit to review-texts, re-run rebuild-reviews.yml. Restored rc=21 cs=79.77.
+**Diagnostic:** when a review is missing but its file is clean, grep the show dir for OTHER files with the same critic slug — the killer is a sibling, not the file itself.
+**Re-ingestion loop:** deleting a review-texts file leaves no URL tombstone, so discovery re-ingests the same syndication URL on the next sweep (happened 3x here). Expect to delete it again until the tombstone list ships.
+**Systemic fix carded:** Notion 3c8637c5-416f-81c7-b585-da3eb8f37f07 (P1, parked).
+
+## Same field, WORSE variant: `domainUnvalidated` laundering onto a REGISTERED T1 outlet
+**2026-08-26, paranormal-activity-2026, monitor pass 27. Carded task #1926 ("P1: submit-review-form outlet attribution is never validated against the URL host — any domain can be ingested as a T1"), dispatched.**
+
+The staybook incident above is the *junk-content* face of this gate. The worse face: the submitted `outletId` can be an outlet that IS registered. `newyorknotebook.substack.com` (a critic's personal Substack) was ingested as `outletId: vulture` — T1, weight 1.0 — with `contentTier: complete`, zero flags, `explainExclusion() => null`. The body was a GENUINE review of the correct production, so no content-quality guard could ever catch it; the defect is purely the borrowed tier, on a show whose real Vulture review was already live. One rebuild from double-counting a T1.
+
+`domainUnvalidated: true` is written by the ingester and **read by nothing**. A field named `<x>Unvalidated` is not a guard, it is a TODO that looks handled.
+
+**Opening-night detection:** `grep -rl domainUnvalidated data/review-texts`, then compare each file's URL host to its `outletId`'s registry `domain`/`domainAliases`. Sweep on 2026-08-26: 221 files carry the field, 2 mismatched, 0 includable — rare enough to never surface in review, which is why it needs a CI gate not vigilance.
+
+**Manual block (until #1926 ships):** `contentTier: invalid` + `manualContentTier: invalid` + `incompleteReason: outlet_misattribution` + `outletMisattribution`/`Reason`/`VerifiedBy`. Do NOT delete — a misattributed genuine review should score at its true tier once its domain is registered.
+
+## Gate: outletDomainUnvalidated — critic-name outlet lookup on a substack/personal domain (2026-08-25, paranormal-activity-2026)
+**Symptom:** a real published review is ingested, gets a T1 outletId it does not belong to, and is then silently blocked. Review never reaches reviews.json; nothing in the pipeline surfaces it.
+**Mechanism:** `submit-review-form` / discovery resolves outletId by CRITIC NAME, not by URL domain. Sandy MacDonald publishes at `newyorknotebook.substack.com`; the registry knows her via Vulture, so the file was written as `vulture--sandy-macdonald.json`. The outlet-domain guard correctly refuses a `vulture.com` attribution on a `substack.com` URL → `outletDomainUnvalidated`. Correct guard, wrong upstream input. It re-ingests the same wrong attribution every cycle, so it never self-heals.
+**Detection (this is what caught it — keep doing it every pass):**
+`git -C data/review-texts log origin/main --since="3 hours ago" --name-only -- <show-id>/` then diagnose any touched file not live on prod.
+**Fix tonight (data layer):** re-attribute the file — rename to `<real-outlet>--<critic>.json`, set `outletId`/`outlet` to the domain's true outlet, keep the URL. Commit 01538871665. Then rebuild → score → rebuild → deploy. Result: prod rc 21 → 22.
+**Systemic fix:** BRO-2459 (resolve outletId from URL domain first; critic name only disambiguates within a matching domain; never fall back to a critic's best-known outlet; emit a `data/audit/` row whenever outletDomainUnvalidated fires so blocked reviews stop being invisible). Distinct from #1926, which hardened the guard rather than the upstream assignment.
+**Generalizes to:** any critic publishing on Substack, Medium, or a personal domain — increasingly common for T1-affiliated freelancers.
+
+## Gate: ensemble-scoreability-check rejects paywall stubs as `not_a_review` (2026-08-26, Paranormal Activity opening night)
+
+**Symptom:** prod review count drops silently hours after opening night (rc 22→21, cs 79.2→79.15). The lost review is a T1 whose body is a paywall bot stub.
+
+**Cause:** an LLM ensemble scoring run stamps `rejectionReason=not_a_review` / `rejectedBy=ensemble-scoreability-check` on a review-texts file. Both models reject on TRUNCATION, not content ("text is a preview"; gemini quotes the bot-stub boilerplate). The file's own `contentTierReason` already said `Truncation detected: nyt_bot_stub` — the pipeline knew and rejected anyway. The review's score was THUMB-derived (`dtliThumb=Up`, `scoreSource=thumb`) and never depended on the body.
+
+**Why the escape hatch didn't fire:** `hasIndependentExcerptScore()` in `scripts/lib/review-guards.js` requires `data.aggregatorStars != null`. It does not recognise `dtliThumb`/`bwwThumb`. Every thumb-scored paywalled T1 (NYT, WSJ, New Yorker, The Times) is one ensemble run away from vanishing.
+
+**Detection:** only the opening-night monitor's prod-vs-census diff caught it. No gate, alert or audit fired.
+
+**Data-level fix (repeatable tonight):** clear `rejectionReason`/`rejectedAt`/`rejectedBy`/`rejectionReasoning`, set `rejectionClearReason` + `manualReviewCleared` + all 8 protection fields, corroborate production identity from the census source (URL slug, publishDate==openingDate, venue named in body), then confirm `explainExclusion()===null` and `isIncludableForRebuild()===true` against the on-disk file. **This is not durable** — nothing stops a re-run re-stamping the same rejection.
+
+**Code fix:** BRO-2495. Extend `hasIndependentExcerptScore()` to accept thumb-derived scores; and make the ensemble scoreability check SKIP files whose `contentTierReason` matches a known bot-stub/truncation signal instead of classifying them non-reviews.
+
+**Related trap:** the same file was earlier nulled by a Weekly refresh (benign — thumb survived), which looked like a one-off. The narrow trigger ("score fields nulled") was the wrong thing to watch; the durable signal is *any* write to a thumb-scored paywalled T1.

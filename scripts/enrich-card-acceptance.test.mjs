@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   enrichOneCard, spliceNotes,
   selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard, linearIssueNumber,
-  isLinearIssueTerminal,
+  isLinearIssueTerminal, categoryOfLinearIssue,
 } = require('./enrich-card-acceptance.js');
 // Rule 15: assert against the REAL validator the production path uses, never a
 // copy — if isSafeCheckCommand's notion of "safe" drifts, these tests move with
@@ -400,6 +400,113 @@ test('guardrail 3: an ADDITIONAL safe command keeps its backticks (no gratuitous
   assert.deepEqual(r.demotedSpans, [], 'nothing should be demoted when every span is safe');
 });
 
+// BRO-2232: spliceNotes() only ever rewrites the "## Acceptance criteria"
+// section it finds, and the owner-judgment path only ever APPENDS — neither
+// examines a VERIFY: line living anywhere else in the card's OWN
+// pre-existing notes. But extractVerifyCmd() scopes its command search to
+// exactly that section AND every VERIFY: line in the whole text, so a
+// pre-existing unsanctioned VERIFY line rode through every write path
+// unexamined. This is the exact repro from the Linear issue.
+test('BRO-2232: a pre-existing unsanctioned VERIFY line in the card\'s own notes is never written back in command position', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2232-a', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nx.\nVERIFY: `rm -rf /`',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  const unsafeWritten = backtickedSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeWritten, [], `unsanctioned command written as a command: ${unsafeWritten.join(', ')}`);
+  assert.ok(!/`rm -rf \/`/.test(written), 'rm -rf / must not remain backticked');
+  assert.ok(r.demotedSpans.includes('rm -rf /'), 'the pre-existing unsafe VERIFY line should be reported as demoted');
+});
+
+test('BRO-2232: the owner-judgment write path also strips a pre-existing unsanctioned VERIFY line', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2232-b', name: 'Pitch kit for industry intros', category: 'Marketing', tags: [],
+    notes: '## Problem\nNeed a forwardable blurb.\nVERIFY: `rm -rf /`',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => { throw new Error('must not be called — human-territory cards skip the LLM'); },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'owner-judgment');
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  const unsafeWritten = backtickedSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeWritten, [], `unsanctioned command written as a command: ${unsafeWritten.join(', ')}`);
+  assert.ok(!/`rm -rf \/`/.test(written), 'rm -rf / must not remain backticked');
+});
+
+// A first version of this fix scoped demotion to VERIFY_LINE_RE's single
+// line and missed exactly the class of hole guardrail 3 was hardened
+// against for the drafted section: CommonMark inline code can straddle a
+// line ending within one paragraph, so a backtick opened on the VERIFY:
+// line and closed on the NEXT line still renders as one intact command to a
+// human/Notion/Linear reader. This must be caught the same as a same-line
+// span.
+test('BRO-2232: a pre-existing unsafe VERIFY line whose backtick span straddles a newline is still demoted', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2232-e', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nx.\nVERIFY: `rm -rf\n/tmp`',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+  const written = writtenNotes(calls);
+  const unsafeRendered = renderedCodeSpans(written).filter(c => !isSafeCheckCommand(c));
+  assert.deepEqual(unsafeRendered, [], `card renders an unsanctioned command as code: ${unsafeRendered.join(', ')}`);
+  assert.ok(r.demotedSpans.some(s => /rm -rf/.test(s)), 'the multiline span should be reported as demoted');
+});
+
+// Note: a card whose pre-existing notes already carry a SAFE VERIFY line
+// can't reach either write path at all — evaluateVerifiability() sees that
+// safe candidate and arms the card, so it's skipped before any write, same
+// as before this change. Nothing to assert there.
+
+// Option 3's scope is deliberately narrow: only VERIFY: lines, not arbitrary
+// backticked prose elsewhere in the card. An unsafe-looking backtick span
+// OUTSIDE a VERIFY: line is not part of extractVerifyCmd's scan surface at
+// all, so it is left untouched rather than rewriting owner-authored text
+// that was never going to be read as a command.
+test('BRO-2232: a backticked span outside any VERIFY line is left untouched (narrow scope)', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2232-d', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nFor context, someone once ran `rm -rf /` here.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  const written = writtenNotes(calls);
+  assert.match(written, /`rm -rf \/`/, 'prose outside a VERIFY line is not part of the executable surface and must be preserved verbatim');
+});
+
 test('eligible card: LLM call throws — failed, zero writes', async () => {
   const calls = [];
   const card = { id: 'c4', name: 'Fix scoring bug', category: 'Product', tags: [], notes: '## Problem\nBug.' };
@@ -502,9 +609,10 @@ test('linearIssueNumber: parses the trailing number, non-numeric identifiers sor
 
 // ship-check/Codex finding (task #1830): a stale "open" snapshot must never
 // let a write resurrect an issue that reached Done/Canceled since the sweep.
-test('isLinearIssueTerminal: true for completed/canceled state types, false otherwise', () => {
+test('isLinearIssueTerminal: true for completed/canceled/duplicate state types, false otherwise', () => {
   assert.equal(isLinearIssueTerminal({ state: { type: 'completed', name: 'Done' } }), true);
   assert.equal(isLinearIssueTerminal({ state: { type: 'canceled', name: 'Canceled' } }), true);
+  assert.equal(isLinearIssueTerminal({ state: { type: 'duplicate', name: 'Duplicate' } }), true);
   assert.equal(isLinearIssueTerminal({ state: { type: 'started', name: 'In Progress' } }), false);
   assert.equal(isLinearIssueTerminal({ state: { type: 'unstarted', name: 'Todo' } }), false);
   assert.equal(isLinearIssueTerminal({}), false);
@@ -524,6 +632,8 @@ test('normalizeLinearIssue: maps a full linear.getIssue() result to the enrichOn
   assert.equal(card.name, 'Cron stale 3+ consecutive days: Refresh Show Score');
   assert.equal(card.notes, '## Problem\nCron has not run.');
   assert.deepEqual(card.tags, ['cron', 'auto-enriched']);
+  // No [notion:...] meta line in this description — category is genuinely
+  // unknown (native Linear card, or pre-fmt:2 import), not a hardcode.
   assert.equal(card.category, null);
   assert.equal(card.identifier, 'BRO-450');
 });
@@ -538,6 +648,83 @@ test('normalizeLinearIssue: tolerates a missing description, no labels, and no u
 test('normalizeLinearIssue: carries the issue url through for the audit log', () => {
   const card = normalizeLinearIssue({ id: 'uuid-1', identifier: 'BRO-1', title: 'x', url: 'https://linear.app/broadway-scorecard/issue/BRO-1' });
   assert.equal(card.url, 'https://linear.app/broadway-scorecard/issue/BRO-1');
+});
+
+// BRO-2245: normalizeLinearIssue hardcoded category:null, so the
+// owner-judgment branch could never fire on the Linear leg. notion-tasks-sync
+// writes "[notion:<id>] <priority> · <status> · <category>" as the imported
+// description's meta line — linear-import.js carries it through verbatim, so
+// it is recoverable on every already-imported card.
+test('normalizeLinearIssue: recovers category from the imported [notion:...] meta line', () => {
+  const issue = {
+    id: 'uuid-mkt-1',
+    identifier: 'BRO-9001',
+    title: 'Reddit post: Les Mis Arena Concert (r/Broadway)',
+    description: '[notion:3b2637c5-abcd-1234-9999-000000000000] P1 Next · Not started · Marketing\nDraft a Reddit post.',
+  };
+  const card = normalizeLinearIssue(issue);
+  assert.equal(card.category, 'Marketing');
+});
+
+test('categoryOfLinearIssue: parses the trailing segment of the [notion:...] meta line', () => {
+  assert.equal(
+    categoryOfLinearIssue('[notion:abc-123] P0 Now · In progress · Marketing'),
+    'Marketing'
+  );
+  assert.equal(
+    categoryOfLinearIssue('[notion:abc-123] P2 Later · Backlog · Product'),
+    'Product'
+  );
+});
+
+test('categoryOfLinearIssue: returns null when there is no [notion:...] meta line at all', () => {
+  assert.equal(categoryOfLinearIssue('## Problem\nNative Linear card, no Notion import.'), null);
+  assert.equal(categoryOfLinearIssue(''), null);
+  assert.equal(categoryOfLinearIssue(undefined), null);
+});
+
+// linear-import-rules.js's extractNotionId scans the whole description, not
+// just line 1, because zombie-sweep re-opens and other prefixes push the
+// marker down — categoryOfLinearIssue must do the same or a re-opened
+// Marketing card silently loses its category again.
+test('categoryOfLinearIssue: finds the meta line even when it is not line 1', () => {
+  const description = [
+    '[zombie-sweep re-opened 2026-08-10]',
+    'Follow-up needed.',
+    '[notion:abc-123] P1 Now · Not started · Marketing',
+    'Original body text.',
+  ].join('\n');
+  assert.equal(categoryOfLinearIssue(description), 'Marketing');
+});
+
+// End-to-end reproduction of the live incident: a Marketing card imported
+// from Notion into Linear, run through normalizeLinearIssue then
+// enrichOneCard, must land on owner-judgment and must NEVER be armed with a
+// runnable acceptance command.
+test('BRO-2245: a Linear issue whose imported description marks it Marketing is owner-judgment, never armed', async () => {
+  let llmCalled = false;
+  const writeCalls = [];
+  const issue = {
+    id: 'uuid-mkt-2',
+    identifier: 'BRO-9002',
+    title: 'Forbes feature pitch: Marc Hershberg (Commercial Scorecard)',
+    description: '[notion:3b2637c5-abcd-1234-9999-000000000001] P1 Next · Not started · Marketing\nDraft a pitch email.',
+  };
+  const card = normalizeLinearIssue(issue);
+  assert.equal(card.category, 'Marketing');
+
+  const r = await enrichOneCard(card, {
+    callLLM: async () => { llmCalled = true; return '{}'; },
+    writeCard: async (c, newNotes) => { writeCalls.push({ id: c.id, newNotes }); },
+    logPath: SCRATCH_LOG_PATH,
+  });
+
+  assert.equal(r.action, 'owner-judgment');
+  assert.equal(llmCalled, false, 'the LLM must never be called for an owner-judgment card');
+  assert.equal(writeCalls.length, 1);
+  assert.match(writeCalls[0].newNotes, /VERIFY: owner-judgment/);
+  // The whole point: no runnable safe-form command anywhere in the write.
+  assert.doesNotMatch(writeCalls[0].newNotes, /## Acceptance criteria/);
 });
 
 test('makeLinearWriteCard: updates the description then ensures the auto-enriched label via findOrCreateLabel + addLabelToIssue', async () => {

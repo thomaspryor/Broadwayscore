@@ -1,24 +1,46 @@
 {
-  "generatedAt": "2026-08-19T18:14:42.598Z",
+  "generatedAt": "2026-08-21T05:05:44.144Z",
   "filter": {
-    "show": "bronco-billy-the-musical-west-end-2024"
+    "show": "school-girls-or-the-african-mean-girls-play-2026"
   },
   "counts": {
     "total": 1,
-    "match": 0,
+    "match": 1,
     "mismatch": 0,
-    "unresolved": 1
+    "unresolved": 0
   },
   "results": [
     {
-      "id": "bronco-billy-the-musical-west-end-2024",
-      "title": "Bronco Billy – The Musical",
-      "venue": "Charing Cross Theatre",
-      "result": "fetch-error",
-      "error": "All scraping methods failed",
-      "mismatches": [],
-      "playbillUrl": "https://playbill.com/production/bronco-billy-the-musical-london-charing-cross-theatre-2024",
-      "parsed": null
+      "id": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "venue": "Samuel J. Friedman Theatre",
+      "result": "match",
+      "playbillUrl": "https://playbill.com/production/school-girls-or-the-african-mean-girls-play-broadway-samuel-j-friedman-theatre-2026",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "School Girls; Or, The African Mean Girls Play",
+          "market": "Broadway",
+          "venue": "Samuel J. Friedman Theatre",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-09-08",
+          "openingDate": "2026-09-28",
+          "closingDate": null
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Play",
+            "One Act",
+            "Revival"
+          ],
+          "market": "Broadway",
+          "showType": "play",
+          "revivalStatus": "revival"
+        }
+      },
+      "mismatches": []
     }
   ]
 }

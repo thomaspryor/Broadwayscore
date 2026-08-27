@@ -487,7 +487,13 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
     }
     log(`[autofix-canary] today's canary has an open, never-dispatched task (#${existingTask.id}) from a prior sync-lag run — dispatching now`);
     try {
-      dispatchDetached(existingTask.id, log, 0, null);
+      // allowAutofixFiled (BRO-2499): this is the canary's own card, which
+      // autofixFiledIssueGuard refuses by title/provenance. Passed on both
+      // branches even though this one resolves to a legacy numeric task id
+      // (bsc-next path, where dispatchDetached never appends the flag) — so
+      // if the sync-lag branch is ever repointed to a `linear:` id it stays
+      // dispatchable instead of silently starting to refuse.
+      dispatchDetached(existingTask.id, log, 0, null, { allowAutofixFiled: true });
       return { filed: true, dispatched: true, taskId: String(existingTask.id) };
     } catch (err) {
       log(`[autofix-canary] WARN dispatch spawn failed for canary #${existingTask.id}: ${String(err.message).slice(0, 120)}`);
@@ -505,7 +511,11 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
   const canaryTaskId = `linear:${filedIssue.identifier}`;
 
   try {
-    dispatchDetached(canaryTaskId, log, 0, null);
+    // allowAutofixFiled (BRO-2499) — the canary card is titled
+    // "CANARY: touch ..." and carries digest-autofix's PARKED provenance, so
+    // autofixFiledIssueGuard would refuse it without this waiver. This is the
+    // live path: without it the daily end-to-end canary never dispatches.
+    dispatchDetached(canaryTaskId, log, 0, null, { allowAutofixFiled: true });
     appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: canaryTaskId });
     return { filed: true, dispatched: true, taskId: canaryTaskId };
   } catch (err) {

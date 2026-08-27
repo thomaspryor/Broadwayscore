@@ -514,3 +514,71 @@ test('isReviewContentTrustworthy: falsy data → false', () => {
   assert.equal(isReviewContentTrustworthy(null), false);
   assert.equal(isReviewContentTrustworthy(undefined), false);
 });
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Top-level wrongProduction gate honors wrongProductionAutoCleared (BRO-167,
+ * task #1017 follow-up).
+ *
+ * Task #1017 taught 3 downstream explainExclusion gates (contentTier===
+ * 'invalid', rejectedAt, incompleteReason='wrong_content') to recognize the
+ * wrongProductionAutoCleared self-heal stamp via the freshness-bounded
+ * isFreshWpAutoCleared helper. But explainExclusion's FIRST check — the
+ * generic `if (data.wrongProduction === true)` gate — was a 4th, earlier
+ * copy of the same wpCleared pattern that neither #1017 fix commit touched.
+ * Since it runs before the 3 fixed gates, a file with a fresh auto-clear
+ * stamp was excluded right here and never reached them. A corpus scan
+ * confirmed this live: 12 files with a <=7-day-old wrongProductionAutoClearedAt
+ * stamp were still excluded with reason==='wrongProduction'.
+ *
+ * Freshness stamps are relative to run time (see daysAgoISO note in
+ * tests/unit/review-guards.test.mjs) — AUTO_CLEAR_FRESH_DAYS is a rolling
+ * 7-day window against Date.now(), so a hardcoded date would silently expire.
+ * ────────────────────────────────────────────────────────────────────────── */
+const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+
+test('top-level wrongProduction gate: wrongProduction:true with no clear flag → excluded', () => {
+  const data = { outletId: 'nytimes', fullText: 'real review', wrongProduction: true };
+  assert.equal(isIncludableForRebuild(data), false);
+});
+
+test('top-level wrongProduction gate: wrongProduction:true + fresh wrongProductionAutoCleared → includable', () => {
+  const data = {
+    outletId: 'nytimes',
+    fullText: 'real review',
+    wrongProduction: true,
+    wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+    wrongProductionAutoClearedAt: daysAgoISO(1),
+  };
+  assert.equal(isIncludableForRebuild(data), true);
+});
+
+test('top-level wrongProduction gate: wrongProduction:true + STALE (>7d) wrongProductionAutoCleared → still excluded', () => {
+  const data = {
+    outletId: 'nytimes',
+    fullText: 'real review',
+    wrongProduction: true,
+    wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+    wrongProductionAutoClearedAt: daysAgoISO(365),
+  };
+  assert.equal(isIncludableForRebuild(data), false);
+});
+
+test('top-level wrongProduction gate: wrongProduction:true + wrongProductionAutoCleared with NO timestamp → still excluded', () => {
+  const data = {
+    outletId: 'nytimes',
+    fullText: 'real review',
+    wrongProduction: true,
+    wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+  };
+  assert.equal(isIncludableForRebuild(data), false);
+});
+
+test('top-level wrongProduction gate: wrongProduction:true + wrongProductionManualClear:true → includable (existing 3-flag clear still works)', () => {
+  const data = {
+    outletId: 'nytimes',
+    fullText: 'real review',
+    wrongProduction: true,
+    wrongProductionManualClear: true,
+  };
+  assert.equal(isIncludableForRebuild(data), true);
+});

@@ -128,6 +128,48 @@ function classifyCellDetailed(c) {
 }
 
 /**
+ * Tier-scope a show's census-missing outlets into the dispatch/severity decision.
+ * Pulled out of audit-opening-night-coverage.js's main() (adversarial ship-check
+ * finding, BRO-89): `censusMissing` (the hard, roundup-named bucket) can contain
+ * any number of T3 blogs or completely unregistered/phantom outletIds (a
+ * mis-normalized critic name — see review-census.js's normalizeOutlet), and
+ * counting those toward `dispatchable`/`severity` is exactly the dispatch-storm
+ * bug: a show with 3 unscored T3 blogs and zero real T1/T2 gaps would re-fire a
+ * FULL gather every run. Only registered T1/T2 outlets (isDispatchTierOutlet)
+ * may drive a fetch or escalate severity; a phantom outletId (undefined tier)
+ * is silently excluded, never thrown on — outlets[outletId] is a plain object
+ * lookup that returns undefined for an unregistered id.
+ * @param {object} p
+ *   { censusMissing:string[], outlets:object, censusExtractorBroken?:boolean,
+ *     isTripped:(outletId:string)=>boolean }
+ *   isTripped is REQUIRED (not defaulted to "never tripped"): a caller wiring
+ *   in a real breaker who forgets this argument would silently re-enable
+ *   dispatch for every circuit-open outlet — exactly the storm B2 exists to
+ *   prevent (adversarial ship-check finding, BRO-89). Tests without a breaker
+ *   pass `() => false` explicitly.
+ * @returns {{censusMissingT12:string[], circuitOpenIds:string[],
+ *            censusMissingActionable:string[], dispatchable:boolean,
+ *            severity:'major'|'minor'}}
+ */
+function computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken = false, isTripped }) {
+  // Enforce the contract the JSDoc above argues for. Without this the omission
+  // is invisible on every show with zero T1/T2 census gaps (the filter callback
+  // never runs) and throws `isTripped is not a function` only on the first show
+  // that HAS one -- an uncaught throw inside main()'s per-show loop, so the
+  // audit dies mid-run and the opening-night gap alert never fires, on exactly
+  // the run where it mattered. Fail at the call, not at the first real gap.
+  if (typeof isTripped !== 'function') {
+    throw new TypeError('computeDispatchDecision: isTripped is required (pass () => false when there is no breaker)');
+  }
+  const censusMissingT12 = censusMissing.filter((id) => isDispatchTierOutlet(outlets, id));
+  const circuitOpenIds = censusMissingT12.filter((id) => isTripped(id));
+  const censusMissingActionable = censusMissingT12.filter((id) => !circuitOpenIds.includes(id));
+  const dispatchable = censusMissingActionable.length > 0;
+  const severity = (censusMissingActionable.length >= 3 || censusExtractorBroken) ? 'major' : 'minor';
+  return { censusMissingT12, circuitOpenIds, censusMissingActionable, dispatchable, severity };
+}
+
+/**
  * Merge freshly-observed cells with the prior ledger, preserving each gap's
  * immutable firstSeenAt so consecutive runs on unchanged data produce identical
  * output. New cells get firstSeenAt = nowIso; cells no longer present are dropped.
@@ -183,6 +225,6 @@ function serializeLedger(ledger) {
 
 module.exports = {
   classifyCell, classifyCellDetailed, isActionableState,
-  mergeLedger, serializeLedger, isDispatchTierOutlet,
+  mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision,
   GRACE_HOURS, CELL_DISPOSITION, CELL_REASON,
 };

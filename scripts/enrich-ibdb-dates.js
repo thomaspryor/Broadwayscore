@@ -24,6 +24,7 @@ const { execSync } = require('child_process');
 const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -93,6 +94,81 @@ function clearPushRefusalSentinel() {
   try {
     if (fs.existsSync(sentinel)) fs.unlinkSync(sentinel);
   } catch (_) { /* non-fatal */ }
+}
+
+const CREATIVE_TEAM_DESIGN_ROLES = new Set([
+  'Scenic Design', 'Costume Design', 'Lighting Design', 'Sound Design',
+  'Projection Design', 'Video Design', 'Orchestrations',
+  'Music Supervision', 'Music Direction', 'Original Score'
+]);
+
+// BRO-102 follow-up (task #1863): routes ibdb.creativeTeam through the same
+// SERP-verification gate as auto-fix-show-data.js before it's staged as a
+// showChanges entry. Splits combined credits BEFORE verifying — a combined
+// "John Doe & Jane Smith" name would never match a "directed by John Doe"
+// SERP snippet, so splitting first lets each individual name get its own
+// query. Returns null when nothing survives verification (mirrors the
+// existing "no change" behavior for an empty newRoles/ibdb.creativeTeam).
+async function buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits, force }) {
+  if (!ibdb.creativeTeam || ibdb.creativeTeam.length === 0) return null;
+
+  const { result: splitIbdbTeam } = splitCombinedCredits(ibdb.creativeTeam);
+  const hasCreativeTeam = show.creativeTeam && show.creativeTeam.length > 0;
+  const year = ibdb.openingDate?.slice(0, 4) || show.openingDate?.slice(0, 4) || 'upcoming';
+
+  if (mergeCredits && hasCreativeTeam) {
+    // Merge mode: add roles from IBDB that don't already exist
+    const existingRoles = new Set((show.creativeTeam || []).map(e => e.role));
+    const newRoles = splitIbdbTeam.filter(e => !existingRoles.has(e.role));
+    if (newRoles.length === 0) return null;
+
+    const verifiedNewRoles = await verifyCreativeTeamViaSerp(show, newRoles, year, 'serp-verified-ibdb-enrich');
+    if (verifiedNewRoles.length === 0) return null;
+
+    // Build merged array: insert new roles after Director, before design
+    const existing = show.creativeTeam;
+    let insertIdx = existing.length;
+    for (let j = 0; j < existing.length; j++) {
+      if (CREATIVE_TEAM_DESIGN_ROLES.has(existing[j].role)) { insertIdx = j; break; }
+    }
+    const dirIdx = existing.findLastIndex(e => e.role === 'Director');
+    if (dirIdx >= 0 && dirIdx + 1 <= insertIdx) insertIdx = dirIdx + 1;
+
+    const merged = [
+      ...existing.slice(0, insertIdx),
+      ...verifiedNewRoles,
+      ...existing.slice(insertIdx)
+    ];
+    return {
+      field: 'creativeTeam',
+      old: `${existing.length} role(s)`,
+      new: merged,
+      newLabel: `${merged.length} role(s) (+${verifiedNewRoles.length} merged: ${verifiedNewRoles.map(r => r.role).join(', ')})`
+    };
+  }
+
+  if (!hasCreativeTeam || force) {
+    const verified = await verifyCreativeTeamViaSerp(show, splitIbdbTeam, year, 'serp-verified-ibdb-enrich');
+    if (verified.length === 0) return null;
+    // verifyCreativeTeamViaSerp doesn't distinguish "explicitly rejected" from
+    // "SERP call errored" (both just come back missing from `verified`) — a
+    // transient network blip on --force could otherwise silently shrink an
+    // existing complete team down to whatever happened to succeed. --force is
+    // a rare, manually-triggered mode; the safe default is to skip the write
+    // rather than lose credits (ship-check 2026-08-20).
+    if (hasCreativeTeam && force && verified.length < show.creativeTeam.length) {
+      console.log(`  ⚠️  ${show.title}: --force verified only ${verified.length}/${splitIbdbTeam.length} IBDB credit(s), fewer than the existing ${show.creativeTeam.length} — skipping creativeTeam overwrite (possible transient SERP failure, not necessarily a real rejection)`);
+      return null;
+    }
+    return {
+      field: 'creativeTeam',
+      old: hasCreativeTeam ? `${show.creativeTeam.length} role(s)` : 'empty',
+      new: verified,
+      newLabel: `${verified.length} role(s)`
+    };
+  }
+
+  return null;
 }
 
 async function main() {
@@ -273,50 +349,8 @@ async function main() {
     }
 
     // Check creativeTeam
-    if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
-      const hasCreativeTeam = show.creativeTeam && show.creativeTeam.length > 0;
-
-      if (mergeCredits && hasCreativeTeam) {
-        // Merge mode: add roles from IBDB that don't already exist
-        const existingRoles = new Set((show.creativeTeam || []).map(e => e.role));
-        const newRoles = ibdb.creativeTeam.filter(e => !existingRoles.has(e.role));
-
-        if (newRoles.length > 0) {
-          // Build merged array: insert new roles after Director, before design
-          const designRoles = new Set([
-            'Scenic Design', 'Costume Design', 'Lighting Design', 'Sound Design',
-            'Projection Design', 'Video Design', 'Orchestrations',
-            'Music Supervision', 'Music Direction', 'Original Score'
-          ]);
-          const existing = show.creativeTeam;
-          let insertIdx = existing.length;
-          for (let j = 0; j < existing.length; j++) {
-            if (designRoles.has(existing[j].role)) { insertIdx = j; break; }
-          }
-          const dirIdx = existing.findLastIndex(e => e.role === 'Director');
-          if (dirIdx >= 0 && dirIdx + 1 <= insertIdx) insertIdx = dirIdx + 1;
-
-          const merged = [
-            ...existing.slice(0, insertIdx),
-            ...newRoles,
-            ...existing.slice(insertIdx)
-          ];
-          showChanges.push({
-            field: 'creativeTeam',
-            old: `${existing.length} role(s)`,
-            new: merged,
-            newLabel: `${merged.length} role(s) (+${newRoles.length} merged: ${newRoles.map(r => r.role).join(', ')})`
-          });
-        }
-      } else if (!hasCreativeTeam || force) {
-        showChanges.push({
-          field: 'creativeTeam',
-          old: hasCreativeTeam ? `${show.creativeTeam.length} role(s)` : 'empty',
-          new: ibdb.creativeTeam,
-          newLabel: `${ibdb.creativeTeam.length} role(s)`
-        });
-      }
-    }
+    const creativeTeamChange = await buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits, force });
+    if (creativeTeamChange) showChanges.push(creativeTeamChange);
 
     // Data integrity guards
     const filteredChanges = showChanges.filter(c => {
@@ -399,8 +433,8 @@ async function main() {
 
       for (const ch of c.changes) {
         if (ch.field === 'creativeTeam') {
-          const { result } = splitCombinedCredits(ch.new);
-          showRecord.creativeTeam = result; // ch.new is the array from IBDB, split combined names
+          // ch.new is already split + SERP-verified by buildVerifiedCreativeTeamChange().
+          showRecord.creativeTeam = ch.new;
         } else if (ch.field === 'closingDate') {
           // Route through guard so humanCorrectedClosingDate is honored.
           if (!writeClosingDate(showRecord, ch.new, 'IBDB enrichment')) {
@@ -496,11 +530,19 @@ async function main() {
   }
 }
 
-main()
-  .catch(e => {
-    console.error('IBDB enrichment failed:', e);
-    process.exit(1);
-  })
-  .finally(() => {
-    cleanup().catch(() => {});
-  });
+if (require.main === module) {
+  main()
+    .catch(e => {
+      console.error('IBDB enrichment failed:', e);
+      process.exit(1);
+    })
+    .finally(() => {
+      cleanup().catch(() => {});
+    });
+}
+
+// Exports for unit tests (task #1863) — buildVerifiedCreativeTeamChange is the
+// SERP-verification gate for this file's IBDB creativeTeam writes; tests
+// exercise it directly against a mocked verifyCreativeTeamViaSerp rather than
+// re-implementing its decision logic (CLAUDE.md rule 15).
+module.exports = { buildVerifiedCreativeTeamChange };

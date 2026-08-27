@@ -75,6 +75,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
+const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
@@ -360,6 +361,60 @@ function unsanctionedRenderedSpans(section, finalCommand) {
     .filter(c => c !== finalCommand && !isSafeCheckCommand(c));
 }
 
+// Guardrail 4 (BRO-2232): spliceNotes() only ever rewrites the "##
+// Acceptance criteria" section it finds via SECTION_RE, and the
+// owner-judgment path only ever APPENDS — neither examines a VERIFY: line
+// living anywhere else in the card's OWN pre-existing notes. But
+// extractVerifyCmd() (autonomous-verify-cmd.js) scopes its command search to
+// exactly two places: the Acceptance-criteria section, AND every VERIFY:
+// line in the whole text — so a VERIFY: line outside the section IS part of
+// the surface a dispatcher can read a command out of, and it rode through
+// every write path unexamined.
+//
+// Scoped to the whole VERIFY "paragraph" — through the next blank line, next
+// heading, or end of text — NOT a single line matched by autonomous-verify-
+// cmd.js's line-anchored VERIFY_LINE_RE. Ship-check finding: a first version
+// scoped to VERIFY_LINE_RE's single line missed the same class of hole
+// guardrail 3 was hardened against for the drafted section (commits
+// a9b0c8d355b, bc9059c9b31) — CommonMark inline code can straddle a line
+// ending WITHIN one paragraph, so `VERIFY: \`rm -rf\n/tmp\`` renders as one
+// intact "VERIFY: `rm -rf /tmp`" code span to a human/Notion/Linear reader
+// even though extractVerifyCmd's own single-line regex would never treat it
+// as an executable candidate. Bounding at the next blank line/heading is
+// where CommonMark itself stops letting a code span continue, so this can't
+// be tricked into swallowing an unrelated later paragraph — and it lets the
+// SAME newline-tolerant demoteUnsafeSpans/unsanctionedRenderedSpans
+// guardrail 3 already proved safe under backtick re-pairing attacks run here
+// unchanged, rather than a second, drifting implementation.
+// (?![\s\S]) rather than a bare $ — under the 'm' flag $ matches before EVERY
+// line terminator, not just true end-of-string, which would silently collapse
+// this back to single-line matching (caught by direct regex testing before
+// this shipped: the lookahead's own `$` was satisfying at the first line
+// break, well short of the closing backtick).
+const VERIFY_BLOCK_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?:[\s\S]*?(?=\n[ \t]*\n|\n#|(?![\s\S]))/gim;
+
+function demoteUnsafeVerifyLines(text) {
+  const demoted = [];
+  const rewritten = String(text).replace(VERIFY_BLOCK_RE, (whole) => {
+    const { section: rewrittenBlock, demoted: blockDemoted } = demoteUnsafeSpans(whole, undefined);
+    if (!blockDemoted.length) return whole;
+    demoted.push(...blockDemoted);
+    return rewrittenBlock;
+  });
+  return { text: rewritten, demoted };
+}
+
+// Structural assertion mirroring unsanctionedRenderedSpans, scoped to VERIFY
+// blocks only — the re-check that makes demoteUnsafeVerifyLines a proof
+// rather than a hope.
+function unsanctionedVerifyLineSpans(text) {
+  const out = [];
+  for (const m of String(text).matchAll(VERIFY_BLOCK_RE)) {
+    out.push(...unsanctionedRenderedSpans(m[0], undefined));
+  }
+  return out;
+}
+
 function buildEnrichPrompt(card) {
   return `You are drafting the missing "## Acceptance criteria" section for a software backlog card so a dispatcher can verify it was actually done, by RE-RUNNING one command.
 
@@ -473,19 +528,43 @@ function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
     .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
 }
 
+// Pure — extracts the category a Linear issue inherited from its Notion
+// import. notion-tasks-sync.js (fmt:2) writes a meta line shaped
+// "[notion:<id>] <priority> · <status> · <category>" — linear-import.js
+// carries that line straight into the issue description verbatim, so it
+// survives the migration unchanged (BRO-2245: the two Marketing cards that
+// slipped through the owner-judgment gate both literally read
+// "P1 Next · Not started · Marketing").
+//
+// Unlike autonomous-eligibility.js's categoryOf() (which anchors to line 1
+// for the Notion task-mirror shape, where the marker is always first),
+// this searches the WHOLE description with the multiline flag: per
+// linear-import-rules.js's extractNotionId comment, the marker is not
+// always line 1 on the Linear side — zombie-sweep re-opens and other
+// prefixes push it down.
+const LINEAR_CATEGORY_LINE_RE = /^\[notion:[^\]]+\]\s*(.+)$/m;
+function categoryOfLinearIssue(description) {
+  const m = LINEAR_CATEGORY_LINE_RE.exec(String(description || ''));
+  if (!m) return null;
+  const parts = m[1].split('·').map(s => s.trim());
+  return parts.length >= 3 ? parts[parts.length - 1] : null;
+}
+
 // Pure — normalizes a full linear.getIssue() result into the {id, name,
 // notes, tags, category} shape enrichOneCard() expects (the same shape
 // audit-card-verifiability.js's evaluateCard() produces for a Notion card).
-// category is always null: Linear has no Notion-category equivalent, which
-// isCardEligible() already treats as fail-closed (applies the human-action
-// title filter without the Notion "no-category" 5-word bound) — the same
-// conservative posture a "no-category" Notion card gets today.
+// category comes from categoryOfLinearIssue() above when the issue was
+// imported from Notion; issues with no such marker (native Linear cards)
+// get null, which isCardEligible() already treats as fail-closed (applies
+// the human-action title filter without the Notion "no-category" 5-word
+// bound) — the same conservative posture a "no-category" Notion card gets
+// today.
 // Pure — true when a freshly-fetched Linear issue has reached a terminal
 // state since the sweep snapshot was taken. See runLinearLeg's call site for
 // why this must be checked before ever writing.
 function isLinearIssueTerminal(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  return stateType === 'completed' || stateType === 'canceled';
+  return isTerminalStateType(stateType);
 }
 
 function normalizeLinearIssue(issue) {
@@ -494,7 +573,7 @@ function normalizeLinearIssue(issue) {
     name: issue.title,
     notes: issue.description || '',
     tags: ((issue.labels && issue.labels.nodes) || []).map(l => l.name),
-    category: null,
+    category: categoryOfLinearIssue(issue.description),
     identifier: issue.identifier,
     url: issue.url || null,
   };
@@ -558,6 +637,12 @@ async function enrichOneCard(card, opts = {}) {
     return { id: card.id, name: card.name, action: 'skipped', detail: 'already tagged auto-enriched' };
   }
 
+  // Guardrail 4 (BRO-2232): sanitize the card's OWN pre-existing notes before
+  // either write path touches them — see demoteUnsafeVerifyLines above for
+  // why neither path examines a VERIFY: line outside the section it
+  // explicitly rewrites.
+  const { text: sanitizedNotes, demoted: preexistingDemoted } = demoteUnsafeVerifyLines(card.notes || '');
+
   const eligibility = isCardEligible({ name: card.name, category: card.category, tags: card.tags });
   // Only a genuinely human-territory rejection (category/title/owner-action —
   // see isCardEligible's `kind` docstring) gets the hard-blocking marker.
@@ -569,9 +654,16 @@ async function enrichOneCard(card, opts = {}) {
   // `bsc-next --id` (task #1186). Those fall through to the same
   // LLM-drafted-acceptance-criteria path as an eligible card, below.
   if (!eligibility.eligible && eligibility.kind === 'human-territory') {
-    const newNotes = `${card.notes || ''}\n\nVERIFY: owner-judgment`.trim();
+    const newNotes = `${sanitizedNotes}\n\nVERIFY: owner-judgment`.trim();
+    // Structural assertion (defense in depth): if a demotion somehow failed
+    // to clear a pre-existing VERIFY line (re-paired backticks, nesting),
+    // refuse the write rather than let it through half-sanitized.
+    const survivingPreexisting = unsanctionedVerifyLineSpans(newNotes);
+    if (survivingPreexisting.length) {
+      return { id: card.id, name: card.name, action: 'failed', detail: `pre-existing VERIFY line still names an unsanctioned command: ${survivingPreexisting[0].slice(0, 120)}` };
+    }
     if (!opts.dryRun) {
-      logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath);
+      logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath, { demotedSpans: preexistingDemoted });
       // ship-check/Codex + QA-subagent finding (task #1830): a Linear write is
       // 3 sequential network calls (updateIssue, findOrCreateLabel,
       // addLabelToIssue — see makeLinearWriteCard), any of which can throw a
@@ -698,7 +790,18 @@ async function enrichOneCard(card, opts = {}) {
     return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${survivingUnsafe[0].slice(0, 120)}` };
   }
 
-  const newNotes = spliceNotes(card.notes, sectionToWrite);
+  const newNotes = spliceNotes(sanitizedNotes, sectionToWrite);
+  const allDemotedSpans = [...demotedSpans, ...preexistingDemoted];
+
+  // Guardrail 4 structural re-check (BRO-2232): sectionToWrite alone
+  // (guardrail 3, above) can't see a pre-existing VERIFY: line living
+  // outside the drafted section — demoteUnsafeVerifyLines is a best-effort
+  // rewrite, not a proof by itself. Re-run the detector across the FULL
+  // written notes and refuse the write if anything survives.
+  const survivingVerifyUnsafe = unsanctionedVerifyLineSpans(newNotes);
+  if (survivingVerifyUnsafe.length) {
+    return { id: card.id, name: card.name, action: 'failed', detail: `pre-existing VERIFY line still names an unsanctioned command: ${survivingVerifyUnsafe[0].slice(0, 120)}` };
+  }
 
   // Final safety net: re-run the SAME gate the audit/dispatch use before ever
   // writing — an LLM that ignored instructions must not slip a bad or
@@ -709,7 +812,7 @@ async function enrichOneCard(card, opts = {}) {
   }
 
   if (!opts.dryRun) {
-    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans });
+    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans });
     // See the owner-judgment write above for why this is caught rather than
     // left to propagate.
     try {
@@ -726,10 +829,10 @@ async function enrichOneCard(card, opts = {}) {
     // a guardrail that fires 40 times in a 60-card sweep needs to stay
     // visible, otherwise nobody can tell a healthy sweep from a prompt
     // regression that started spraying script names into every draft.
-    detail: demotedSpans.length
-      ? `${finalGate.cmd} (demoted ${demotedSpans.length} non-command span(s) to prose: ${demotedSpans.slice(0, 3).join(', ').slice(0, 120)})`
+    detail: allDemotedSpans.length
+      ? `${finalGate.cmd} (demoted ${allDemotedSpans.length} non-command span(s) to prose: ${allDemotedSpans.slice(0, 3).join(', ').slice(0, 120)})`
       : finalGate.cmd,
-    demotedSpans,
+    demotedSpans: allDemotedSpans,
     newPaths: pathCheck.newPaths || [],
   };
 }
@@ -911,5 +1014,5 @@ module.exports = {
   // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are
   // pure; makeLinearWriteCard takes an injectable client).
   writeBack, selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard,
-  linearIssueNumber, isLinearIssueTerminal,
+  linearIssueNumber, isLinearIssueTerminal, categoryOfLinearIssue,
 };

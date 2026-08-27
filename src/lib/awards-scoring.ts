@@ -9,6 +9,7 @@
 
 import awardsData from '../../data/awards.json';
 import { tonyCeremonyIsFuture } from './tony-cutoffs';
+import { categoryToAwardsMarket } from '../../scripts/lib/olivier-award-market';
 
 export type CategoryTier = 'S' | 'A+' | 'A' | 'B' | 'C';
 
@@ -21,6 +22,12 @@ export type TierBadge =
   | 'sweeper';
 
 export type Market = 'broadway' | 'west-end';
+
+/** Show category → award-scoring market. West End and Off-West End shows use
+ *  the West End Olivier weight table; everything else uses Broadway's. */
+export function categoryToMarket(category?: string): Market {
+  return categoryToAwardsMarket(category) as Market;
+}
 
 type CeremonyKey =
   | 'tony'

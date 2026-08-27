@@ -3,49 +3,56 @@
   "showId": "avenue-q-west-end-2026",
   "showTitle": "Avenue Q",
   "market": "West End",
-  "fetchedAt": "2026-08-18T13:29:20.857Z",
+  "fetchedAt": "2026-08-24T07:18:11.969Z",
   "tier": "Hidden",
-  "volume": 3,
-  "effectiveVolume": 0,
+  "volume": 4,
+  "effectiveVolume": 0.8,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0
+      "reddit": 0.6666666666666666
     },
-    "overall": 0,
-    "classified": 1
+    "overall": 0.6666666666666666,
+    "classified": 3
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -67,
-  "baselineMultiple": 0.31,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 33,
+  "baselineMultiple": 0.47,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 2,
     "bluesky": 0
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "So Excited West End Trip - How're my picks!? Hi All, super super excited for my upcoming West End trip next weekend…",
+      "platform": "reddit",
+      "author": "u/GravityTO",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1vst1vm/so_excited_west_end_trip_howre_my_picks/"
+    }
+  ],
   "counters": {
-    "reddit": 1,
+    "reddit": 3,
     "bluesky": 0,
-    "x": 2,
-    "wikipedia": 4924
+    "x": 1,
+    "wikipedia": 5596
   },
   "wikipediaTitle": "Avenue Q",
   "baseline": {
-    "mean": 8.5,
-    "weeksOfHistory": 6
+    "mean": 7.857142857142857,
+    "weeksOfHistory": 7
   },
   "rawCounts": {
-    "reddit": 1,
+    "reddit": 3,
     "bluesky": 0
   },
   "errors": [],
   "rank": {
-    "position": 34,
+    "position": 23,
     "total": 46,
-    "text": "34/46 West End"
+    "text": "23/46 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.4
 }

@@ -71,6 +71,14 @@ test('validatePlatformConfig catches an enabled platform with empty IDs', () => 
   assert.ok(problems[0].includes('impactPublisherId'));
 });
 
+test('validatePlatformConfig catches an enabled platform with no rendering entry (BRO-174 drift class)', () => {
+  const problems = validatePlatformConfig(
+    { NewPlatform: { type: 'utm', enabled: true, revenueReporting: true, params: {} } },
+    {} // empty rendering config — NewPlatform has no entry
+  );
+  assert.ok(problems.some((p) => p.includes('NewPlatform') && p.includes('rendering')));
+});
+
 test('extractImpactLinks finds links in static-export HTML (incl. &amp; escaping)', () => {
   const html = `<a href="${GOOD_LINK.replace(/&/g, '&amp;')}">Get Tickets</a> <a href="https://example.com/x">other</a>`;
   const links = extractImpactLinks(html);

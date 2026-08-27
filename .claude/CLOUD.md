@@ -13,11 +13,15 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 ## Project hooks that fire in cloud (project-scoped subset)
 
 - `.claude/hooks/session-start.sh` — critical-rules banner + integrity check
-- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification. Bypass: `NO-VERIFY: <reason>` in final message.
+- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification, and (since 2026-08-23) requires a closing SAFE TO EXIT / NOT SAFE TO EXIT line + blocks an unmerged PR with no stated blocker once a session did real work. Bypass: `NO-VERIFY: <reason>` in final message.
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
+- `.claude/hooks/worktree-enforce.sh` — PreToolUse on `Edit|Write|NotebookEdit|Bash`; hard-blocks (exit 2) tracked-code edits (`src/`, `scripts/`, `.github/workflows/`, etc. — CLAUDE.md §1) made outside a worktree. Ported 2026-08-23 (task: cloud sessions had zero technical backstop for the worktree rule until then, PR #691) — was previously in the "does not fire in cloud" list below; if you're reading a stale copy of this doc elsewhere, this line is the correction.
+- `.claude/hooks/pre-push-visual-gate.sh`, `.claude/hooks/pre-push-review-gate.sh`, `.claude/hooks/pre-merge-review-gate.sh`, `.claude/hooks/check-skill-redaction.sh` — PreToolUse `Bash` gates for visual-QA, ship-check, and skill-redaction enforcement before `git push`/`git merge`. **Known gap:** matcher is `Bash` only — a push done via the GitHub MCP connector (`mcp__github__push_files`/`create_or_update_file`) instead of `git push` bypasses all four (tracked in Notion).
+- `.claude/hooks/enterworktree-guard.sh` — PreToolUse `EnterWorktree` gate; guards worktree NAME COLLISIONS only (`worktree-enforce.sh` above is the one that covers the actual §1 rule).
+- `.claude/hooks/whitespace-nowrap-lint.sh` — PostToolUse `Edit|Write` warning for a recurring CSS overflow trap.
 
-These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 12 other user-level hooks DO NOT fire in cloud (worktree-enforce, design-system-lint, etc.) — be extra careful with edits the local hooks would catch.
+These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 11 other user-level hooks still DO NOT fire in cloud (design-system-lint, etc.) — be extra careful with edits those local-only hooks would catch.
 
 ## Slash commands available in cloud
 
@@ -37,6 +41,7 @@ Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set`
 | Local `.env` files | NO — secrets via Anthropic Settings UI | YES via direnv |
 | User-level `~/.claude/skills/` | NO — only `.claude/skills/` in repo | YES |
 | `claude-sync` for `~/.claude` repo | NO (separate repo, not auto-cloned) | YES |
+| `bsc-next.js --id` auto-dispatch (P0/P1 card → Cmux workspace) | NO — `launchCmuxSession` requires the owner's local desktop (`cwd does not exist: "/Users/tompryor/Broadwayscore"`); fails with `DISPATCH FAILED` | YES |
 
 ## When in doubt
 

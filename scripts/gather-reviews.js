@@ -23,6 +23,10 @@
  *   node scripts/gather-reviews.js --shows=show-id-1,show-id-2
  *   node scripts/gather-reviews.js --shows=all-out-2025
  *   node scripts/gather-reviews.js --shows=show-id --validate-urls  # Content-check roundup URLs
+ *   node scripts/gather-reviews.js --shows=show-id --opening-night  # Forces fresh aggregator
+ *     fetches and rejects SERP hits whose embedded URL year doesn't match the
+ *     show's opening year (BRO-736) — for revivals/transfers, use on the show's
+ *     actual opening day so an undeclared prior production's press can't leak in.
  *
  * Environment Variables:
  *   SCRAPINGBEE_API_KEY - Required for SERP-based outlet discovery
@@ -63,7 +67,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -75,6 +79,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
@@ -116,7 +121,7 @@ const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
@@ -498,7 +503,7 @@ function getDomainMarketMap() {
  * discoverCorrectUrl will append the name as an unquoted boost term so the SERP
  * returns that critic's review URL rather than only the highest-ranked one.
  */
-async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown' } = {}) {
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown', openingNight = false } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
     return { unavailable: true };
   }
@@ -517,6 +522,10 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     brightDataKey,
     log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
     forceHistorical: historical,
+    // opening-night discovery is time-sensitive — ScrapingBee-first sync chain
+    // (see url-discovery.js's preferSpeed doc: "time-sensitive flows like
+    // opening night polling").
+    preferSpeed: openingNight,
   });
 
   if (result === '__SERP_UNAVAILABLE__') {
@@ -1993,9 +2002,12 @@ async function searchBWWRoundup(show, year, options = {}) {
   }
 
   // Priority 2: Check for existing valid archive (less than 30 days old)
-  // Skip cache near opening night — BWW roundups are updated with new reviews on opening day
-  const isNearOpeningNight = show.openingDate &&
-    Math.abs(Date.now() - new Date(show.openingDate).getTime()) < 2 * 24 * 60 * 60 * 1000; // within 48h
+  // Skip cache near opening night — BWW roundups are updated with new reviews on opening day.
+  // options.openingNight (--opening-night, BRO-736) forces this even when the automatic
+  // 48h-window date math doesn't trigger — e.g. an operator running it deliberately on
+  // the actual opening day slightly outside that window.
+  const isNearOpeningNight = options.openingNight || (show.openingDate &&
+    Math.abs(Date.now() - new Date(show.openingDate).getTime()) < 2 * 24 * 60 * 60 * 1000); // within 48h
   const archivePath = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${showId}.html`);
   if (!isNearOpeningNight && fs.existsSync(archivePath)) {
     const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
@@ -3306,7 +3318,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       const sibs = sibMap.get(showId) || [];
       if (sibs.length) {
         const v = classifyClassAContamination(
-          new Date(reviewData.publishDate),
+          parseHistoricalDate(reviewData.publishDate),
           _showMeta.openingDate ? new Date(_showMeta.openingDate) : null,
           sibs.map((x) => (x && x.opening ? x.opening : x))
         );
@@ -3528,6 +3540,79 @@ function createReviewFile(showId, reviewData, options = {}) {
           && existingCriticForUrlCheck !== normalizedCriticName;
         if (isDifferentNamedCriticsAtSameOutlet && reviewData.url
             && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
+          // Byline-correction exception (BRO-730): the Proof/Torre-Suskin guard above
+          // exists because two DIFFERENT critics at a multi-critic outlet can coincidentally
+          // get matched to the same URL by discovery — that's two real reviews, keep separate.
+          // But when the EXISTING file's critic name came ONLY from roundup/positional-
+          // attribution sources (ROUNDUP_URL_SOURCES — carousel order, roundup page layout,
+          // known to misattribute) and the INCOMING write carries a byline from a source this
+          // codebase already trusts for critic identity, this is the OTHER case: one review,
+          // same URL, and the roundup simply guessed the wrong critic for it. Correct the
+          // existing file instead of spawning a duplicate under the wrong name (Becky Shaw
+          // 2026-04: variety--brent-lang.json from a BWW roundup + variety--rebecca-rubin.json
+          // from a later discovery, same URL, same review).
+          //
+          // isVerifiedDiscoverySource() — NOT a plain "not a roundup" test — is the confidence
+          // gate: ROUNDUP_URL_SOURCES was built for URL/content reliability, not byline
+          // provenance, and an early version of this fix used its negation as a stand-in for
+          // "trustworthy critic name." That's wrong: 'rss-discovery' fails outside
+          // ROUNDUP_URL_SOURCES but is EXCLUDED from VERIFIED_DISCOVERY_SOURCES precisely
+          // because "RSS hits often duplicate named-critic files" (review-guards.js,
+          // tests/unit/pending-strand-routing.test.mjs) — an RSS feed's <author> is often the
+          // publication or a wire byline, not the actual critic. Reusing the codebase's own
+          // canonical "is this source's attribution trustworthy" predicate (Pattern Card #4)
+          // keeps this correction to the sources it was already built to trust (adversarial
+          // ship-check finding, 2026-08-21).
+          const existingSources = Array.isArray(existingReview.sources) && existingReview.sources.length
+            ? existingReview.sources
+            : [existingReview.source].filter(Boolean);
+          const existingIsRoundupOnly = existingSources.length > 0 && existingSources.every(s => ROUNDUP_URL_SOURCES.has(s));
+          const incomingIsVerified = isVerifiedDiscoverySource(reviewData.source);
+          // Same flag/human-decision carve-out the sibling wrongShow-replacement branch above
+          // computes as isHumanFlagged (out of scope here — that binding lives inside the
+          // sibling `if (existingKey === reviewKey)` block) — a roundup-sourced file can still
+          // carry a real human or LLM verdict, and this correction must not resurrect a flagged
+          // file under a new critic's name while leaving the wrong-show content/flag untouched
+          // (adversarial ship-check finding: mergeReviews only clears those flags via
+          // applyUrlChangeInvariant, which is gated on urlChanged — and the URL here is
+          // identical by construction, so it never fires).
+          const existingIsHumanFlagged = existingReview.wrongShowReason
+            || existingReview.humanReviewedWrongProduction === false
+            || existingReview.humanReviewScore != null
+            || (existingReview.llmScore && existingReview.llmScore.score != null);
+          const existingBlocksCorrection = existingReview.wrongShow || existingReview.wrongProduction || existingIsHumanFlagged;
+          // Target-filename clobber guard (adversarial ship-check finding): refuse the
+          // correction if a THIRD file already sits at the incoming critic's canonical
+          // filename — renaming onto it would silently overwrite unrelated content depending
+          // on readdirSync() iteration order.
+          const targetPathClear = existingFile === filename || !fs.existsSync(filepath);
+          if (existingIsRoundupOnly && incomingIsVerified && !existingReview.criticNameManual
+              && !existingBlocksCorrection && targetPathClear) {
+            const corrected = mergeReviews(existingReview, {
+              ...reviewData,
+              source: reviewData.source || 'gather-reviews',
+            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            // mergeReviews keeps the FIRST-seen source as primary (existing's roundup source);
+            // force both fields so a corrected file no longer reads as roundup-attributed.
+            corrected.criticName = reviewData.criticName;
+            corrected.source = reviewData.source;
+            // Audit breadcrumb (adversarial ship-check finding: rollback previously relied on
+            // a console line alone) — records what changed and why, so a bad correction can be
+            // identified and reverted without re-deriving it from git history.
+            corrected._criticCorrection = {
+              fromCriticName: existingReview.criticName,
+              fromSource: existingSources,
+              toCriticName: reviewData.criticName,
+              toSource: reviewData.source,
+              correctedAt: new Date().toISOString(),
+            };
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(corrected, null, 2));
+            if (existingFile !== filename) {
+              fs.renameSync(path.join(showDir, existingFile), filepath);
+            }
+            console.log(`    ⟳ Corrected misattributed critic at ${normalizedOutletId}: "${existingReview.criticName}" (${existingSources.join(',')}) → "${reviewData.criticName}" (${reviewData.source}) — same URL`);
+            return true;
+          }
           console.log(`    ⚠ URL shared by ${existingCriticForUrlCheck} and ${normalizedCriticName} at ${normalizedOutletId} — creating separate file (URL to be re-discovered per critic via SERP)`);
         } else if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)
             && !existingReview.wrongShow) {
@@ -3642,9 +3727,9 @@ function createReviewFile(showId, reviewData, options = {}) {
       if (show.category !== 'off-broadway' && !isWithinPriorRun(review.publishDate, show.priorRuns) && !isWithinTourLeg(review.publishDate, show.tourLegs)) {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
-          const pubDate = new Date(review.publishDate);
+          const pubDate = parseHistoricalDate(review.publishDate);
           const earliestDate = new Date(earliest);
-          const daysBefore = (earliestDate - pubDate) / (1000 * 60 * 60 * 24);
+          const daysBefore = pubDate ? (earliestDate - pubDate) / (1000 * 60 * 60 * 24) : 0;
           if (daysBefore > 30) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
@@ -4058,7 +4143,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     health.bww.skipped = true;
     console.log(`    [SKIP] BWW roundups disabled for off-Broadway (URL patterns are Broadway-specific)`);
   }
-  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
+  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year, { openingNight: options.openingNight });
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
     const validation = await validatePageMatchesShow(bwwResult.html, show.title, {
@@ -4750,6 +4835,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       health.siteSearch.hits = siteSearchResults.length;
 
       for (const result of siteSearchResults) {
+        // Site search is a second, structurally-separate discovery path (outlet-native
+        // search, not Google) — it got none of STEP 2's wrong-production filtering.
+        // Apply the same opening-night guard here so a revival/transfer can't absorb
+        // an undeclared earlier production's review through this path instead (BRO-736).
+        if (options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+          console.log(`  ✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+          health.rejections.wrongProduction++;
+          continue;
+        }
         const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
         const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
         foundReviews.push({
@@ -4877,13 +4971,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, {
               historical: options.historical,
               criticName: critic,
+              openingNight: options.openingNight,
             });
             if (result && result.unavailable) {
               console.log('✗ (SERP providers unavailable — aborting SERP phase)');
               serpUnavailable = true;
               break;
             }
-            if (result && result.url) {
+            if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+              console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+              health.rejections.wrongProduction++;
+            } else if (result && result.url) {
               const urlKey = _normalizeUrlForDedup(result.url);
               if (seenUrlsForOutlet.has(urlKey)) {
                 console.log(`⟳ dup URL`);
@@ -4915,10 +5013,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           if (outletHits === 0 && !aggregatorCovered && serpCallCount < SERP_BUDGET) {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
-            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
+            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
             if (result && result.unavailable) {
               console.log('✗ (SERP providers unavailable — aborting SERP phase)');
               serpUnavailable = true;
+            } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+              console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+              health.rejections.wrongProduction++;
             } else if (result && result.url) {
               health.serp.hits++;
               console.log('✓');
@@ -4949,11 +5050,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         process.stdout.write(`  ${outlet.name}... `);
         serpCallCount++;
 
-        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
+        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
 
         if (result && result.unavailable) {
           console.log('✗ (SERP providers unavailable — aborting SERP phase)');
           serpUnavailable = true;
+        } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
+          console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
+          health.rejections.wrongProduction++;
         } else if (result && result.url) {
           health.serp.hits++;
           // For single-critic outlets, default to that critic so saveReview doesn't route
@@ -4979,6 +5083,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       health.serp.calls = serpCallCount;
       console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
+
+      if (options.openingNight) {
+        const { serpCount, aggregatorCount, total, serpRatio } = computeSerpShare(foundReviews);
+        health.serp.openingNightShare = { serpCount, aggregatorCount, total, serpRatio };
+        if (exceedsOpeningNightSerpBudget(serpRatio)) {
+          console.log(`  ⚠ Opening-night SERP budget exceeded: ${serpCount}/${total} reviews (${Math.round(serpRatio * 100)}%) came from SERP, not aggregators (BRO-736 target: ≤20%)`);
+          health.serp.openingNightShare.overBudget = true;
+        } else {
+          console.log(`  ✓ Opening-night SERP share: ${serpCount}/${total} reviews (${Math.round(serpRatio * 100)}%)`);
+        }
+      }
     }
   }
 
@@ -5278,17 +5393,17 @@ async function rebuildReviewsJson() {
 async function main() {
   const args = process.argv.slice(2);
 
-  // Parse --shows argument
-  const showsArg = args.find(a => a.startsWith('--shows='));
-  if (!showsArg) {
+  const flags = parseGatherReviewsFlags(args);
+  if (!flags.showIds) {
     console.log('Usage: node scripts/gather-reviews.js --shows=show-id-1,show-id-2');
     console.log('Example: node scripts/gather-reviews.js --shows=all-out-2025');
     process.exit(1);
   }
 
-  const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
-  const aggregatorsOnly = args.includes('--aggregators-only');
-  const validateUrls = args.includes('--validate-urls');
+  const showIds = flags.showIds;
+  const aggregatorsOnly = flags.aggregatorsOnly;
+  const validateUrls = flags.validateUrls;
+  const openingNight = flags.openingNight;
   /**
    * NOTE: For historical shows where SERP yields few/no hits (typically pre-2010
    * Broadway, where Google has deindexed older outlet archives), do NOT implement
@@ -5313,7 +5428,7 @@ async function main() {
    * second discovery path to maintain. See plan-review notes from Joe Turner
    * 2009 historical recovery (2026-04-26).
    */
-  const historical = args.includes('--historical');
+  const historical = flags.historical;
 
   console.log('========================================');
   console.log('Broadway Review Gatherer');
@@ -5322,6 +5437,9 @@ async function main() {
   console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
   if (historical) {
     console.log('Historical mode: ON (date filter skipped from first query — better for pre-2005 shows)');
+  }
+  if (openingNight) {
+    console.log('Opening-night mode: ON (aggregators checked first, forced-fresh; SERP results with a mismatched embedded year are rejected)');
   }
   if (validateUrls) {
     console.log('URL validation: ON (roundup-sourced URLs will be content-checked)');
@@ -5336,7 +5454,7 @@ async function main() {
   for (const showId of showIds) {
     let result;
     try {
-      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical });
+      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });
     } catch (err) {
       console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };

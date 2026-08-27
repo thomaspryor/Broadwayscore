@@ -21,7 +21,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 const { routeAlert } = require('./lib/owner-alert-router');
 const {
   postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl, siteNameForMarket, buildReplyToAddress,
@@ -38,7 +37,14 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
+const {
+  syncTrackerToOrigin: syncTrackerToOriginShared,
+  mergeTrackerEntries,
+  SYNC_REPO,
+  SYNC_REMOTE_PATH,
+} = require('./lib/opening-night-tracker-sync');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { showFormatTitle } = require('./lib/show-format');
@@ -84,14 +90,9 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
 const SUBSCRIBERS_PATH = path.join(DATA_DIR, isLondonMarket(MARKET) ? 'subscribers-westend.json' : 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
-// Sync target for syncTrackerToOrigin() below. As of task #1759,
-// opening-night-sent.json is untracked+ignored in the PUBLIC repo (like every
-// other CORE_FILES entry) — the private data repo (synced via checkout-core-
-// data/push-core-data) is the only place a `gh api contents` read/write can
-// reach it. Files sit at that repo's ROOT (checkout-core-data does
-// `cp -f /tmp/core-data-checkout/*.json data/`), so no 'data/' prefix here.
-const SYNC_REPO = 'thomaspryor/broadway-scorecard-data';
-const SYNC_REMOTE_PATH = 'opening-night-sent.json';
+// SYNC_REPO / SYNC_REMOTE_PATH are re-exported (via require above) from
+// scripts/lib/opening-night-tracker-sync.js, which owns the sync target
+// documentation.
 const EXPRESS_COMPLETED_PATH = path.join(DATA_DIR, 'audit', 'opening-night-express-completed.json');
 
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
@@ -127,134 +128,42 @@ function saveSentData(data) {
 }
 
 /**
- * Pure merge helper — exposed for unit tests. Remote entries are preserved, local
- * entries win on conflict (the CLI just sent, so its entries are newest).
+ * Thin wrapper over the shared scripts/lib/opening-night-tracker-sync.js
+ * helper, binding this script's DRY_RUN flag. See that module for the full
+ * sync strategy + skip conditions. Kept as a local `syncTrackerToOrigin` name
+ * (rather than calling the shared export directly at each call site) so
+ * existing tests/imports (scripts/test-sync-tracker.js,
+ * scripts/send-opening-night-broadcast.test.mjs) keep working unchanged.
  */
-function mergeTrackerEntries(remoteParsed, localParsed) {
-  const merged = { ...(remoteParsed || {}) };
-  if (!merged.shows) merged.shows = {};
-  const localShows = (localParsed && localParsed.shows) || {};
-  for (const [k, v] of Object.entries(localShows)) {
-    merged.shows[k] = v;
-  }
-  return merged;
+function syncTrackerToOrigin(localData) {
+  return syncTrackerToOriginShared(localData, { dryRun: DRY_RUN });
 }
 
 /**
- * Push opening-night-sent.json to the private data repo's main branch (SYNC_REPO)
- * via the GitHub Contents API. As of task #1759 this is the authoritative copy —
- * the public repo no longer tracks the file, so a public-repo target would either
- * 404 or (worse) re-create/re-track it there on every local sync.
- *
- * Why: when the script is invoked from a local shell (e.g. manual CLI preview), it
- * writes the tracker to disk but the running-in-CI workflow reads the private repo
- * (via checkout-core-data). Without a sync step, the workflow can't see the CLI
- * write and will double-send on its next run. This is what caused the 2026-04-11
- * duplicate-preview incident (CLI sent at 02:09 UTC but never committed; workflow
- * fired at 12:21 UTC reading stale state).
- *
- * Strategy: fetch the current file from origin/main, parse it, merge in our in-memory
- * entries (CLI write wins on conflict — the CLI just sent, so our entries are newest),
- * PUT back with the fetched sha. If the sha is stale due to concurrent write, retry
- * once with a fresh fetch.
- *
- * Skipped when:
- *   - Running in GitHub Actions (the workflow commits separately).
- *   - DRY_RUN (never write to origin).
- *   - `gh` CLI is missing or the user isn't authenticated (logged loudly).
- *
- * Exits non-zero on failure after one retry, so the user knows dedup is at risk.
+ * Marks a draft (or preview) as complete in the in-memory tracker, persists it
+ * locally, and syncs it to origin/main. BRO-60: previously only the SEND_TO
+ * (preview) path called syncTrackerToOrigin — a real Resend draft creation saved
+ * locally via saveSentData() but never synced, so a CLI-created draft's
+ * completed:true state was invisible to origin until the next scheduled CI
+ * commit, same class of divergence as the 2026-04-11 preview incident this
+ * function's sibling comment describes. Exported for unit testing.
  */
-function syncTrackerToOrigin(localData) {
-  if (process.env.GITHUB_ACTIONS === 'true') {
-    // Workflow's dedicated commit step handles this path.
-    return;
-  }
-  if (DRY_RUN) return;
-
-  // Check gh is available and authed.
-  try {
-    execSync('gh auth status', { stdio: 'ignore' });
-  } catch {
-    console.error('\nWARNING: `gh` CLI missing or not authenticated — cannot sync opening-night-sent.json to origin.');
-    console.error('         The next workflow run will not see this preview send. Run `gh auth login`, then manually');
-    console.error('         push data/opening-night-sent.json to main, or live with a possible duplicate.');
-    process.exitCode = 1;
-    return;
-  }
-
-  const REPO = SYNC_REPO;
-  const REMOTE_PATH = SYNC_REMOTE_PATH;
-  const BRANCH = 'main';
-
-  const fetchRemote = () => {
-    // gh api errors (incl. 404) throw; treat 404 as "file doesn't exist yet".
-    try {
-      const raw = execSync(
-        `gh api repos/${REPO}/contents/${REMOTE_PATH}?ref=${BRANCH}`,
-        { encoding: 'utf8' }
-      );
-      const meta = JSON.parse(raw);
-      const content = Buffer.from(meta.content, 'base64').toString('utf8');
-      let parsed = {};
-      try { parsed = JSON.parse(content); } catch { parsed = {}; }
-      return { sha: meta.sha, parsed };
-    } catch (err) {
-      if (String(err.stderr || err.message || '').includes('404')) {
-        return { sha: null, parsed: { shows: {} } };
-      }
-      throw err;
-    }
+function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo) {
+  const completionData = {
+    draftCreatedAt: new Date().toISOString(),
+    ...draftInfo,
+    completed: true,
+    draftStatus: 'draft',
+    sentAt: null,
+    recipientCount: null,
   };
-
-  const putRemote = (sha, parsed) => {
-    const content = Buffer.from(JSON.stringify(parsed, null, 2) + '\n', 'utf8').toString('base64');
-    const payload = {
-      message: 'data: Sync opening-night-sent tracking from CLI preview',
-      content,
-      branch: BRANCH,
-    };
-    if (sha) payload.sha = sha;
-    // Write payload via stdin so the filename doesn't leak into shell expansion.
-    const tmpPath = path.join(require('os').tmpdir(), `ons-${Date.now()}.json`);
-    fs.writeFileSync(tmpPath, JSON.stringify(payload));
-    try {
-      execSync(
-        `gh api --method PUT repos/${REPO}/contents/${REMOTE_PATH} --input ${JSON.stringify(tmpPath)}`,
-        { stdio: ['ignore', 'pipe', 'pipe'] }
-      );
-    } finally {
-      try { fs.unlinkSync(tmpPath); } catch {}
-    }
-  };
-
-  const attempt = () => {
-    const remote = fetchRemote();
-    const merged = mergeTrackerEntries(remote.parsed, localData);
-    putRemote(remote.sha, merged);
-  };
-
-  try {
-    attempt();
-    console.log(`  Synced opening-night-sent.json to origin/${BRANCH} via gh api`);
-  } catch (err) {
-    const msg = String(err.stderr || err.message || '');
-    // Retry once on sha conflict (409/422) — remote may have changed between fetch and PUT.
-    if (msg.includes('409') || msg.includes('422') || msg.includes('sha')) {
-      console.error(`  Sync retry after remote conflict: ${msg.trim().slice(0, 200)}`);
-      try {
-        attempt();
-        console.log(`  Synced opening-night-sent.json to origin/${BRANCH} (after retry)`);
-        return;
-      } catch (err2) {
-        console.error(`\nWARNING: Sync retry failed: ${(err2.stderr || err2.message || '').toString().trim().slice(0, 300)}`);
-      }
-    } else {
-      console.error(`\nWARNING: Failed to sync opening-night-sent.json to origin: ${msg.trim().slice(0, 300)}`);
-    }
-    console.error('         The next workflow run may not see this preview and could duplicate the send.');
-    process.exitCode = 1;
+  sentData.shows[broadcastKey] = completionData;
+  for (const s of showsForEmail) {
+    sentData.shows[s.showId] = { ...completionData, broadcastKey };
   }
+  saveSentData(sentData);
+  syncTrackerToOrigin(sentData);
+  return completionData;
 }
 
 /**
@@ -281,10 +190,15 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
       // as Broadway excludes off-broadway below. Require the exact category.
       if (s.category !== 'west-end') return false;
     } else {
-      // Broadway: exclude off-broadway, regional (non-NYC US tryouts), and London markets.
-      // Regional already carries market:'regional' so it fails the broadway-only gates,
-      // but exclude by category here too — Broadway subscribers did not opt into regional.
-      if (s.category === 'off-broadway' || s.category === 'regional' || isLondonMarket(s.category)) return false;
+      // True Broadway only, same allowlist shape as the West End branch above.
+      // BRO-159: a denylist (exclude off-broadway/regional/London) silently
+      // admits any future category value — e.g. an enumerated 'off-off-broadway'
+      // would inherit Broadway broadcast eligibility by default. Require the
+      // exact category instead. Intentionally NOT isBroadwayCategory()
+      // (venue-classification.js) — that helper treats a missing category as
+      // Broadway, which is the wrong default for something that emails real
+      // subscribers.
+      if (s.category !== 'broadway') return false;
     }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);
@@ -331,6 +245,37 @@ function getReviewStats(reviews, showId, market) {
  * Pure + exported for unit testing.
  */
 const RESEND_NAME_MAX = 70;
+// BRO-227: returns the showsForEmail entries lacking a critic-consensus verdict.
+function findShowsMissingConsensus(showsForEmail) {
+  return showsForEmail.filter(s => !s.consensusText);
+}
+
+// BRO-227: the email-capture modal (gate-logic.ts getTriggerCopy) promises subscribers
+// "the CriticScore and a one-line critics' verdict. Nothing else." Sending without
+// consensus for a show breaks that promise, so this drops it from the batch rather than
+// warning-and-continuing. Filters PER SHOW rather than aborting the whole batch — the
+// workflow's own readiness_gate learned this the hard way (2026-04-08: a single not-ready
+// West End show blocked an otherwise-ready Broadway show on the same coalesced run).
+// Exits non-zero only when NOTHING in the batch has consensus, since then there is
+// nothing left this run can honor the promise for. Returns the shows that DO have
+// consensus (may be the full input) otherwise.
+function filterShowsWithConsensus(showsForEmail) {
+  const missingConsensus = findShowsMissingConsensus(showsForEmail);
+  if (missingConsensus.length === 0) return showsForEmail;
+
+  console.error(`\n❌ Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
+  console.error(`   critic-consensus.json is not generated yet for ${missingConsensus.length === 1 ? 'this show' : 'these shows'}.`);
+  console.error(`   Refusing to send for ${missingConsensus.length === 1 ? 'it' : 'them'} — the signup modal promises a critics' verdict on every opening-night email.`);
+
+  const ready = showsForEmail.filter(s => s.consensusText);
+  if (ready.length === 0) {
+    console.error(`   No show in this batch has consensus yet — nothing to send this run.`);
+    process.exit(1);
+  }
+  console.error(`   Continuing with ${ready.length} show(s) that do have consensus; the rest will retry next run.`);
+  return ready;
+}
+
 function buildBroadcastName(siteName, shows) {
   const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
   const prefix = `${siteName} opening night`;
@@ -521,11 +466,9 @@ async function main() {
   }
 
   // Build show data for email template
-  const showsForEmail = readyShows.map(({ show, stats }) => {
+  let showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
-    const consensusShows = consensus.shows || consensus;
-    const showConsensus = consensusShows[showId] || consensusShows[show.slug];
-    const consensusText = showConsensus?.text || showConsensus?.consensus || null;
+    const consensusText = getShowConsensusText(consensus, showId, show.slug);
 
     // Use pre-computed score from per-show public JSON (same as live site)
     const showJson = showJsonMap.get(showId);
@@ -566,15 +509,18 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
-  // Warn if any show is missing consensus — critic-consensus.json may not be generated yet.
-  // The email will still be created, but without the Critics' Take section. If consensus
-  // arrives later, use --recreate-draft to replace the draft with a complete version.
-  const missingConsensus = showsForEmail.filter(s => !s.consensusText);
-  if (missingConsensus.length > 0) {
-    console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
-    console.warn(`   critic-consensus.json may not be generated yet.`);
-    console.warn(`   Continuing — email will send without Critics' Take.`);
-    console.warn(`   Once consensus is available, run again with --recreate-draft to replace this draft.`);
+  // BRO-227: --send-to is the owner's own private preview (never reaches subscribers —
+  // a transactional /emails call, not a /broadcasts draft), so let it through with just a
+  // warning: blocking it would leave the owner unable to even see the draft they'd need to
+  // judge whether to wait for consensus. The real draft/broadcast path (below) is where the
+  // signup-modal promise actually applies, and stays hard-gated.
+  if (SEND_TO) {
+    const missingConsensus = findShowsMissingConsensus(showsForEmail);
+    if (missingConsensus.length > 0) {
+      console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')} (preview only — the real broadcast will wait for consensus)`);
+    }
+  } else {
+    showsForEmail = filterShowsWithConsensus(showsForEmail);
   }
 
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
@@ -821,22 +767,12 @@ async function main() {
       // NEW 2026-04-22: also track draftStatus so reconcile-broadcast-state.js can
       // round-trip the Resend API and detect cancelled/deleted drafts. completed:true
       // stays for backwards-compat; shouldRequeueShow() gates the re-entry path.
-      const completionData = {
-        draftCreatedAt: new Date().toISOString(),
+      recordDraftCompletion(sentData, broadcastKey, showsForEmail, {
         draftId,
         draftUrl,
         method: 'resend-draft',
         reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-        completed: true,
-        draftStatus: 'draft',
-        sentAt: null,
-        recipientCount: null,
-      };
-      sentData.shows[broadcastKey] = completionData;
-      for (const s of showsForEmail) {
-        sentData.shows[s.showId] = { ...completionData, broadcastKey };
-      }
-      saveSentData(sentData);
+      });
 
       console.log(`\nDraft ready — log into Resend to send: ${draftUrl}`);
 
@@ -890,7 +826,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {

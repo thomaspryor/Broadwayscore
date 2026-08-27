@@ -31,6 +31,7 @@ const {
   pruneUnmatchedAudit,
   pruneStagedCandidates,
   referenceTitle,
+  countDistinctReviewOutlets,
 } = require('./aggregator-candidate-extract.js');
 
 const html = (name) => fs.readFileSync(path.join(FIX, name), 'utf8');
@@ -690,4 +691,110 @@ test('cleaning the title does not break the nightly already-in-shows gate', () =
     true,
     'the roundup that created this show must still collide with it, or it re-stages nightly'
   );
+});
+
+// countDistinctReviewOutlets (BRO-125): the review-count signal that feeds
+// scripts/lib/review-threshold.js's promotion gate.
+const LIVE_BLOG_HTML = (updates) => `<html><head>
+<script type="application/ld+json">${JSON.stringify({
+  '@type': 'LiveBlogPosting',
+  liveBlogUpdate: updates,
+})}</script>
+</head><body><article><p>roundup body</p></article></body></html>`;
+
+test('countDistinctReviewOutlets: counts distinct registered outlets from BWW LiveBlogPosting JSON-LD', () => {
+  const html = LIVE_BLOG_HTML([
+    { '@type': 'BlogPosting', author: { name: 'Variety - Frank Rizzo' } },
+    { '@type': 'BlogPosting', author: { name: 'New York Post - Johnny Oleksinski' } },
+    { '@type': 'BlogPosting', headline: 'BroadwayWorld - Review Roundup' },
+  ]);
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 3);
+});
+
+test('countDistinctReviewOutlets: unregistered/unknown outlet names never inflate the count', () => {
+  const html = LIVE_BLOG_HTML([
+    { '@type': 'BlogPosting', author: { name: 'Variety - Frank Rizzo' } },
+    { '@type': 'BlogPosting', author: { name: 'Some Random Blog Nobody Registered - A Person' } },
+  ]);
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 1);
+});
+
+test('countDistinctReviewOutlets: same outlet appearing twice counts once (dedup)', () => {
+  const html = LIVE_BLOG_HTML([
+    { '@type': 'BlogPosting', author: { name: 'Variety - Frank Rizzo' } },
+    { '@type': 'BlogPosting', author: { name: 'Variety - A Second Critic' } },
+  ]);
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 1);
+});
+
+test('countDistinctReviewOutlets: recovers from BWW\'s unescaped-inner-quote JSON-LD (sanitizeBwwJsonLd fallback)', () => {
+  // A raw, deliberately-unescaped inner quote in headline — a plain
+  // JSON.parse throws on this; the sanitizeBwwJsonLd retry must recover it.
+  const html = `<html><head>
+<script type="application/ld+json">
+{"@type": "LiveBlogPosting", "liveBlogUpdate": [
+  {"@type": "BlogPosting", "headline": "Variety - "Fallen Angels" Review"},
+  {"@type": "BlogPosting", "author": {"name": "New York Post - Johnny Oleksinski"}}
+]}
+</script>
+</head><body><article><p>roundup body</p></article></body></html>`;
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 2);
+});
+
+test('countDistinctReviewOutlets: malformed/uncontrolled JSON-LD field shapes never throw', () => {
+  const html = LIVE_BLOG_HTML([
+    { '@type': 'BlogPosting', author: { name: 12345 } },
+    { '@type': 'BlogPosting', author: [{ name: { nested: true } }] },
+    { '@type': 'BlogPosting', headline: 98765 },
+    { '@type': 'BlogPosting' },
+    null,
+  ]);
+  assert.doesNotThrow(() => countDistinctReviewOutlets(html, 'bww-roundup'));
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 0);
+});
+
+test('countDistinctReviewOutlets: falls back to resolving <a href> links when there is no LiveBlogPosting JSON-LD (Playbill Verdict)', () => {
+  const html = `<html><head>
+<script type="application/ld+json">{"@type":"NewsArticle","headline":"Review Roundup"}</script>
+</head><body><article>
+  <p>The reviews are in. <a href="https://variety.com/2026/legit/reviews/some-review-123/">Variety</a>
+  called it a triumph. <a href="https://nypost.com/2026/some-review">The Post</a> agreed.</p>
+</article></body></html>`;
+  assert.equal(countDistinctReviewOutlets(html, 'playbill-verdict'), 2);
+});
+
+test('countDistinctReviewOutlets: excludes the aggregator\'s OWN self-links (Playbill/BWW nav, not a review)', () => {
+  const html = `<html><head>
+<script type="application/ld+json">{"@type":"NewsArticle","headline":"Review Roundup"}</script>
+</head><body><article>
+  <p><a href="https://playbill.com/article/some-other-story">More on Playbill</a>
+  <a href="https://variety.com/2026/legit/reviews/some-review-123/">Variety</a> loved it.</p>
+</article></body></html>`;
+  assert.equal(countDistinctReviewOutlets(html, 'playbill-verdict'), 1, 'playbill.com self-link must not count as a review outlet');
+
+  const bwwHtml = `<html><head>
+<script type="application/ld+json">{"@type":"NewsArticle","headline":"Review Roundup"}</script>
+</head><body><article>
+  <p><a href="https://broadwayworld.com/article/some-other-story">More on BroadwayWorld</a>
+  <a href="https://variety.com/2026/legit/reviews/some-review-123/">Variety</a> loved it.</p>
+</article></body></html>`;
+  assert.equal(countDistinctReviewOutlets(bwwHtml, 'bww-roundup'), 1, 'broadwayworld.com self-link must not count as a review outlet');
+});
+
+test('countDistinctReviewOutlets: JSON-LD and link-scan results are MERGED, not one-or-the-other (partial JSON-LD undercount recovers via link scan)', () => {
+  const html = `<html><head>
+<script type="application/ld+json">${JSON.stringify({
+    '@type': 'LiveBlogPosting',
+    liveBlogUpdate: [{ '@type': 'BlogPosting', author: { name: 'Variety - Frank Rizzo' } }],
+  })}</script>
+</head><body><article>
+  <p>Also reviewed by <a href="https://nypost.com/2026/some-review">The Post</a>.</p>
+</article></body></html>`;
+  assert.equal(countDistinctReviewOutlets(html, 'bww-roundup'), 2, 'Variety (JSON-LD) + NY Post (link scan) must both count');
+});
+
+test('countDistinctReviewOutlets: empty/null/unparseable html never throws, returns 0', () => {
+  assert.equal(countDistinctReviewOutlets(null, 'bww-roundup'), 0);
+  assert.equal(countDistinctReviewOutlets('', 'bww-roundup'), 0);
+  assert.equal(countDistinctReviewOutlets('not html at all {{{', 'bww-roundup'), 0);
 });

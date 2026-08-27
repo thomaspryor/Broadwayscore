@@ -195,3 +195,37 @@ test('active + announced same-title same-category at confirmed different venues 
   const b = checkForDuplicate(hackney, [kew]);
   assert.equal(b.isDuplicate, false, `hackney-vs-kew should not be duplicate: ${b.reason}`);
 });
+
+// Regression (BRO-622): Chess 1988 (original Broadway run) vs Chess 2025 (revival)
+// were flagged by CI as duplicates — both closed, both at the Imperial Theatre,
+// only the 2025 revival has an ibdbUrl. Same-venue-when-closed used to be
+// evaluated only via the "existing is open/previews" branch; both being closed
+// falls to the final `Math.abs(newYear - existingYear) > 2` check, which is
+// correct here (37yr gap) — this test locks that behavior in either direction.
+test('closed + closed same-title same-venue >2yr apart (historical revival) = not duplicate (Chess regression)', () => {
+  const original = {
+    id: 'chess-1988',
+    title: 'Chess',
+    status: 'closed',
+    category: 'broadway',
+    venue: 'Imperial Theatre',
+    openingDate: '1988-04-28',
+    previewsStartDate: '1988-04-11',
+    closingDate: '1988-06-25',
+  };
+  const revival = {
+    id: 'chess-2025',
+    title: 'Chess',
+    status: 'closed',
+    category: 'broadway',
+    venue: 'Imperial Theatre',
+    openingDate: '2025-11-16',
+    previewsStartDate: '2025-10-15',
+    closingDate: '2026-06-21',
+    ibdbUrl: 'https://www.ibdb.com/broadway-production/chess-543200',
+  };
+  const a = checkForDuplicate(original, [revival]);
+  assert.equal(a.isDuplicate, false, `chess-1988-vs-2025 should not be duplicate: ${a.reason}`);
+  const b = checkForDuplicate(revival, [original]);
+  assert.equal(b.isDuplicate, false, `chess-2025-vs-1988 should not be duplicate: ${b.reason}`);
+});

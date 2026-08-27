@@ -27,9 +27,11 @@ const cjsRequire = createRequire(import.meta.url);
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
+const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -657,12 +659,18 @@ function openingEventsForWeek(category) {
 }
 
 // SECTION: BW openings (includes reopenings — see openingEventsForWeek)
+// Card order must match the subject/lede's newsworthiness pick — the same
+// class of bug fixed for WE (see londonSection()'s ledeStory float and
+// scripts/lib/opening-story-order.js's header comment: BRO-177, a gold-tier
+// BW opening rendered second because this section had no sort at all and
+// simply mirrored shows.json insertion order).
 function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
@@ -711,6 +719,39 @@ function offBroadwayOpenings() {
   markOpening('offbroadway-openings', list);
   const body = list.map(s => showRow(s, {})).join('');
   return { html: sectionWrap(sectionHeading('Opened Off-Broadway'), body), list };
+}
+
+// SECTION: Out of Town — a US regional/pre-Broadway-tryout show (category
+// 'regional', e.g. A.R.T., Goodman, La Jolla Playhouse) that got its first
+// review(s) THIS week. Regional shows are discovered and reviewed on their
+// own schedule, independent of the newsletter's weekly cadence — a tryout may
+// have opened weeks or months earlier and only get pulled into our pipeline
+// (and scored) once its reviews are collected. Unlike broadwayOpenings()/
+// offBroadwayOpenings(), which gate on openingDate falling in-week, this
+// section gates on the show's EARLIEST scored review publishing in-week (and
+// none earlier) — that's the week it actually became newsworthy to readers,
+// and it fires exactly once per show (never repeats once older reviews exist).
+// US-only: isUkRegionalVenue() routes UK regional houses (RSC, Chichester) to
+// their own market vocabulary, not the Broadway "out of town" idiom, and the
+// West End edition has no out-of-town section of its own.
+function outOfTownOpenings() {
+  if (IS_WE) return { html: null, list: [] };
+  const withScore = shows
+    .filter(s => s.category === 'regional' && !isOperaShow(s) && !isUkRegionalVenue(s.venue)
+      && notFeatured(s.id) && !excludedShowIds.has(s.id))
+    .map(s => {
+      const scored = reviews.filter(r => r.showId === s.id && r.assignedScore != null && r.publishDate);
+      const earliest = scored.reduce((min, r) => (min == null || r.publishDate < min ? r.publishDate : min), null);
+      return { s, earliest, agg: aggregateScore(s.id) };
+    })
+    .filter(({ earliest, agg }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway'))
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+  if (!withScore.length) return { html: null, list: [] };
+  const list = withScore.slice(0, 6).map(x => x.s);
+  markFeatured(...list.map(s => s.id));
+  markOpening('out-of-town-openings', list);
+  const body = list.map(s => showRow(s, {})).join('');
+  return { html: sectionWrap(sectionHeading('Out of Town', 'pre-Broadway tryouts & regional premieres'), body), list };
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.
@@ -1583,9 +1624,26 @@ function boxOfficeSection() {
   let grosses;
   try { grosses = JSON.parse(fs.readFileSync(path.join(repo, 'data/grosses.json'), 'utf8')); }
   catch { return null; }
-  // Grosses are keyed by SLUG, not show id. Build a slug→show map for open BW.
+  // Grosses are keyed by SLUG, not show id. Build a slug→show map for BW shows
+  // with valid this-week data. status 'open' OR 'closed' — NOT 'open' only.
+  // Mirrors src/app/box-office/page.tsx's inclusion exactly: "Include any show
+  // with thisWeek data (not just 'open' — shows that closed during the
+  // reporting week still have valid grosses for that week)". A stricter
+  // 'open'-only filter here silently drops a show that just played its final
+  // week from Top Gross/Capacity/ATP consideration even when its numbers win —
+  // Ragtime closed 2026-08-16 (final-week capacity 100%/$233 ATP, both above
+  // Hamilton's 99.8%/$201) and the newsletter still credited Hamilton with
+  // "Highest Capacity" and "Top Average Ticket Price" while linking to the
+  // /box-office page that correctly showed Ragtime ahead on both (user-flagged
+  // 2026-08-23, contradicted its own linked page).
   const slugToShow = new Map();
-  shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
+  // Intentionally NOT isBroadwayCategory(): this must match isBroadwayShow()
+  // in src/lib/data-core.ts (strict `category === 'broadway'`, no
+  // missing-category fallback) — the same predicate that decides what
+  // appears on the linked /box-office page. isBroadwayCategory() treats a
+  // missing category as Broadway too, which would let this list diverge
+  // from the page it links to again.
+  shows.forEach(s => { if ((s.status === 'open' || s.status === 'closed') && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const entries = Object.entries(grosses.shows)
     .filter(([slug, g]) => slugToShow.has(slug) && g.thisWeek && g.thisWeek.gross > 0)
     .map(([slug, g]) => ({ slug, ...g.thisWeek, show: slugToShow.get(slug) }));
@@ -1945,12 +2003,20 @@ let _londonHasGoldOpening = false;
 // equal-weight WE openings fell to shows.json insertion order — an accident.
 // NEWSLETTER_WE_LEAD=<showId> is a manual editor override (mirrors
 // NEWSLETTER_OB_LEAD): floats that show to story #1 regardless of count.
+// West End (the full-scale venue tier) always ranks ahead of Off West End
+// (the smaller-venue tier) — mirrors Broadway always ranking ahead of
+// Off-Broadway. Shared by weOpeningStories() and londonSection() so the lead
+// story, the card order, and the subject/lede (newsworthiness.mjs mirrors
+// this same tier split) can never disagree about which show is "first."
+function weTierRank(category) { return category === 'west-end' ? 0 : 1; }
+
 function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
-    .sort((a, b) => ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    .sort((a, b) => (weTierRank(a.s.category) - weTierRank(b.s.category))
+      || ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   const weLead = (process.env.NEWSLETTER_WE_LEAD || '').trim();
   if (weLead) {
     const i = ranked.findIndex(x => x.s.id === weLead);
@@ -1964,11 +2030,14 @@ function londonSection() {
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // Sort: Gold first, then by score desc. When the DISPLAYED (rounded) scores
-  // tie, rank the better-reviewed show first — more reviews is a more settled
-  // verdict — rather than letting a sub-point raw difference decide order
-  // (Sinatra 64 on 29 reviews should sit above Archduke 64 on 7).
+  // Sort: West End before Off West End (see weTierRank), then Gold first, then
+  // by score desc. When the DISPLAYED (rounded) scores tie, rank the
+  // better-reviewed show first — more reviews is a more settled verdict —
+  // rather than letting a sub-point raw difference decide order (Sinatra 64
+  // on 29 reviews should sit above Archduke 64 on 7).
   withScore.sort((a, b) => {
+    const at = weTierRank(a.s.category), bt = weTierRank(b.s.category);
+    if (at !== bt) return at - bt;
     const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
     const bg = isGoldTier(b.agg.avg, b.s.category) ? 1 : 0;
     if (ag !== bg) return bg - ag;
@@ -2097,8 +2166,10 @@ const sections = createSectionRunner();
 // bwO.list/obO.list, so it must stay after these calls.
 const bwO = broadwayOpenings();
 const obO = offBroadwayOpenings();
+const otO = outOfTownOpenings();
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
+sections.run('out-of-town-openings', () => otO.html);
 
 const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection());
 // Broadway-only sections: SKIP them entirely in the West End edition. They
@@ -2217,6 +2288,7 @@ const sectionOrder = IS_WE ? [
 ].filter(Boolean) : [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
+  _slot('out-of-town-openings', otO.html),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
@@ -2693,7 +2765,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
-      : ['broadway-openings', 'offbroadway-openings', 'london-openings', 'opera-openings']
+      : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings']
     ).includes(r.section))
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),

@@ -74,3 +74,36 @@ Per arm: `EXPOSED` (distinct persons whose first flag response = arm),
 Pure, testable, and the actual source of truth for the numbers above:
 `scripts/lib/gate-cold-start-rules.js` (guardrail thresholds + alerting) and
 `scripts/analyze-gate-cold-start.js` (attribution + metric computation).
+
+## Amendments
+
+- **2026-08-21 (BRO-1959)**: raised `exitIntent.minTimeOnPageSec` 5 -> 30 in
+  `src/config/email-capture.ts` (aggressive preset) and its lock in
+  `tests/unit/gate-logic.test.mjs`. The experiment cleared its pre-registered
+  28-day minimum runtime on 2026-08-18 (start 2026-07-21); the last automated
+  monitor run before that date (`data/audit/gate-cold-start-monitor-state.json`,
+  2026-08-17) showed `flagHealthy: true` and no capture-collapse guardrail
+  trips. This value is shared across both arms (not the treatment lever —
+  `minPageViewsForPassiveGate` is), so raising it doesn't advantage either arm;
+  it brings desktop's exit-intent dwell floor in line with the mobile
+  scroll-gate raise from task #586. All other locked values are unchanged and
+  the experiment (`minPageViewsForPassiveGate` treatment split) remains live.
+
+- **2026-08-26**: the 4-week "time to judge" milestone alert (fired
+  2026-08-24) turned out to be reading corrupted numbers — `scripts/analyze-
+  gate-cold-start.js`'s HogQL queries were silently capped at ~100 rows by
+  PostHog's API default (no explicit `LIMIT`), so it reported 0.00% captures/
+  exposed in both arms against a true exposed population in the thousands.
+  Root cause fixed (`scripts/analyze-gate-cold-start.js`, `scripts/analyze-
+  email-gate-funnel.js` had the same gap in one query). Corrected 40-day
+  readout: control 7,328 exposed / 2,011 shown / 10 captured (0.14% ITT),
+  cold-start 7,343 exposed / 813 shown / 9 captured (0.12% ITT); combined
+  captures/week 3.62, in line with the ~4/wk baseline — the funnel was never
+  broken. Per-impression, cold-start converts ~2.2x higher (1.11% vs 0.50%)
+  on its smaller shown population, but n=9 vs n=10 total conversions is not
+  a significant difference. Owner decision (2026-08-26): extend the
+  experiment rather than call a winner now — sample size is still too small
+  after 5+ weeks. No config change; both arms continue running as-is.
+  `primaryReadyAlertedAt` is already stamped (one-time alert, won't re-fire)
+  — re-read with `node scripts/analyze-gate-cold-start.js --days=60` in
+  ~3-4 weeks to reassess with a larger sample.

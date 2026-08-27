@@ -5,7 +5,11 @@ Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwa
 2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics (raw counts: `data/shows.json`/`data/reviews.json`).
 
 ## Before You Start
-Run `npm run data:check` — if data files are missing, stop and report it; do not proceed without data.
+Check whether the diff under review is data-dependent before running any data preflight:
+- **Data-dependent** (touches `data/*.json`, `src/lib/data-core.ts`, `src/lib/engine.ts`, `src/lib/scoring.ts`, or any script that reads/writes `data/*.json`): run `npm run data:check` first. If core data files are missing, stop and report it — do not proceed without data.
+- **Data-independent** (e.g. a diff limited to `scripts/lib/` helpers, `tests/`, `docs/`, CI config, or other files with no `data/` import): skip `data:check` — missing core data is irrelevant to reviewing this diff. Proceed straight to the review.
+
+When unsure, `grep` the changed files for `data/` or `require(...data...)` — if nothing matches, treat it as data-independent.
 
 ## Test Commands (run ALL before committing)
 ```bash

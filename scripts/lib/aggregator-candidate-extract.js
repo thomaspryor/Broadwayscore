@@ -33,6 +33,7 @@
 const { JSDOM } = require('jsdom');
 const { slugify, levenshteinDistance, venuesMatch } = require('./deduplication');
 const { normalizeTitle } = require('./title-match');
+const { normalizeOutlet, isRegisteredOutlet, resolveOutletFromUrl } = require('./review-normalization');
 
 // Aggregator-infrastructure URLs that land in the unmatched audit but are not
 // shows (site nav, legal, feeds). Matched against the article slug.
@@ -263,6 +264,179 @@ function extractArticleFields(html) {
     venue: venue || null,
     date: date || null,
   };
+}
+
+// BWW emits JSON-LD with unescaped inner double quotes inside headline/
+// articleBody strings (e.g. show titles wrapped in quotes) — a plain
+// JSON.parse throws on these. Deliberate copy of gather-reviews.js's
+// sanitizeBwwJsonLd (not require()'d — that file is a top-level CLI script,
+// not a lib module, and pulling its full dependency chain into a candidate-
+// classification lib for one pure string helper isn't worth the coupling).
+// Walks char-by-char tracking string state; inside a string, escapes any `"`
+// whose next non-whitespace char is NOT a JSON structural token.
+function sanitizeBwwJsonLd(s) {
+  const out = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (!inString) {
+      out.push(c);
+      if (c === '"') inString = true;
+      continue;
+    }
+    if (escaped) { out.push(c); escaped = false; continue; }
+    if (c === '\\') { out.push(c); escaped = true; continue; }
+    if (c === '"') {
+      let j = i + 1;
+      while (j < s.length && /\s/.test(s[j])) j++;
+      const next = s[j];
+      if (next === ',' || next === '}' || next === ']' || next === ':') {
+        out.push(c);
+        inString = false;
+      } else {
+        out.push('\\"');
+      }
+      continue;
+    }
+    out.push(c);
+  }
+  return out.join('');
+}
+
+/** Outlet name for one JSON-LD BlogPosting entry — mirrors
+ *  gather-reviews.js#extractBWWRoundupReviews Method 1 (the real BWW
+ *  review-ingestion parser), simplified to just name the outlet rather than
+ *  build a full review record. Third-party JSON-LD is uncontrolled input —
+ *  every field is type-checked (a number/object where a string is expected
+ *  must never throw and crash the whole daily batch). */
+function outletNameFromBlogPosting(posting) {
+  if (posting.author) {
+    const authorEntry = Array.isArray(posting.author) ? posting.author[0] : posting.author;
+    const authorName = authorEntry && typeof authorEntry.name === 'string' ? authorEntry.name : null;
+    if (!authorName) return null;
+    if (authorName.includes(' - ')) return authorName.split(' - ')[0].trim();
+    if (authorName.includes(', ')) {
+      const idx = authorName.indexOf(', ');
+      const part0 = authorName.slice(0, idx).trim();
+      const part1 = authorName.slice(idx + 2).trim();
+      if (isRegisteredOutlet(part1)) return part1;
+      if (isRegisteredOutlet(part0)) return part0;
+      return authorName;
+    }
+    if (authorName.includes(': ')) {
+      const idx = authorName.lastIndexOf(': ');
+      const part0 = authorName.slice(0, idx).trim();
+      const part1 = authorName.slice(idx + 2).trim();
+      if (isRegisteredOutlet(part0)) return part0;
+      if (isRegisteredOutlet(part1)) return part1;
+      return authorName;
+    }
+    return authorName;
+  }
+  if (typeof posting.headline === 'string' && posting.headline.includes(' - ')) {
+    const outlet = posting.headline.split(' - ')[0].trim();
+    // Real outlet names are 1-5 words; 6+ = headline fragment, not an outlet.
+    return outlet.split(/\s+/).length > 5 ? null : outlet;
+  }
+  return null;
+}
+
+/**
+ * Count DISTINCT registered review outlets a roundup/verdict article names —
+ * the real signal behind BRO-125's 3+ distinct-review promotion threshold
+ * (owner rule 2026-07-30), replacing the old "a roundup article exists at
+ * all" proxy (decideRegionalPromotion in promote-ob-venue-candidates.js
+ * used to stop at "source is bww-roundup/playbill-verdict", with no check
+ * on how many critics the article actually named).
+ *
+ * Two extraction paths, BOTH always run and merged (a Set, so double-
+ * counting the same outlet across paths is impossible) — deliberately not
+ * "try path 1, fall back to path 2 only if it found nothing": a roundup
+ * whose JSON-LD partially resolves (2 of 4 real critics recognized) must
+ * not silently discard whatever the link scan could recover for the other
+ * 2, which an ids.size===0 gate would do.
+ *  1. BWW Review Roundup JSON-LD: LiveBlogPosting.liveBlogUpdate[] (or a
+ *     standalone BlogPosting) — one entry per critic. Same JSON-LD shape
+ *     gather-reviews.js#extractBWWRoundupReviews parses for the real
+ *     review-ingestion pipeline (including its sanitizeBwwJsonLd retry for
+ *     BWW's unescaped-inner-quote headlines); only registered outlets count
+ *     (an unknown or typo'd name never inflates the count).
+ *  2. Every outbound <a href> in the article body, resolved via
+ *     resolveOutletFromUrl — the same domain-resolution
+ *     scrape-playbill-verdict.js#extractReviewLinksFromArticle uses for the
+ *     real ingestion pipeline (the primary source for Playbill Verdict,
+ *     whose JSON-LD is a plain NewsArticle with no per-critic structure).
+ *     Non-outlet domains (ticketing, social, Playbill's own site) resolve to
+ *     null and are dropped automatically — no blocklist duplicated here.
+ *
+ * Pure given html; returns 0 (never throws) on unparseable input or
+ * malformed/uncontrolled JSON-LD field shapes.
+ */
+// The aggregator's OWN domains, per source — resolveOutletFromUrl resolves
+// both playbill.com and broadwayworld.com to real registered outlets
+// (verified: {"outletId":"playbill",...} / {"outletId":"broadwayworld",...}),
+// so an unfiltered link scan would count the roundup page's own nav/footer/
+// related-article self-links as a "review outlet." scrape-playbill-verdict.js
+// hits the identical problem and hand-excludes these exact domains from its
+// production link walk; mirrored here rather than re-derived.
+const SELF_DOMAINS_BY_SOURCE = {
+  'playbill-verdict': new Set(['playbill.com', 'playbillder.com', 'playbillstore.com', 'playbillvault.com', 'playbilltravel.com']),
+  'bww-roundup': new Set(['broadwayworld.com']),
+};
+
+function countDistinctReviewOutlets(html, source) {
+  if (!html) return 0;
+  let doc;
+  try { doc = new JSDOM(html).window.document; } catch { return 0; }
+  const selfDomains = SELF_DOMAINS_BY_SOURCE[source] || new Set();
+
+  const ids = new Set();
+  for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
+    let parsed;
+    try {
+      parsed = JSON.parse(script.textContent);
+    } catch {
+      try { parsed = JSON.parse(sanitizeBwwJsonLd(script.textContent)); } catch { continue; }
+    }
+    const items = Array.isArray(parsed) ? parsed : [parsed];
+    for (const item of items) {
+      if (!item || typeof item !== 'object') continue;
+      const postings = [];
+      if (item['@type'] === 'BlogPosting') postings.push(item);
+      if (item['@type'] === 'LiveBlogPosting' && Array.isArray(item.liveBlogUpdate)) {
+        for (const u of item.liveBlogUpdate) {
+          if (u && u['@type'] === 'BlogPosting') postings.push(u);
+        }
+      }
+      for (const posting of postings) {
+        try {
+          const outletRaw = outletNameFromBlogPosting(posting);
+          if (outletRaw && isRegisteredOutlet(outletRaw)) ids.add(normalizeOutlet(outletRaw));
+        } catch {
+          // Uncontrolled third-party JSON-LD — one malformed entry must never
+          // crash the whole daily batch run (or even this one candidate).
+        }
+      }
+    }
+  }
+
+  const container =
+    doc.querySelector('article, .article-content, .article-body, .entry-content, main') || doc.body;
+  if (container) {
+    for (const a of container.querySelectorAll('a[href]')) {
+      const href = a.getAttribute('href');
+      if (!href) continue;
+      let hostname = null;
+      try { hostname = new URL(href, 'https://example.invalid').hostname.replace(/^www\./, ''); } catch { /* relative/malformed — resolveOutletFromUrl below handles or drops it */ }
+      if (hostname && selfDomains.has(hostname)) continue;
+      let resolved = null;
+      try { resolved = resolveOutletFromUrl(href); } catch { resolved = null; }
+      if (resolved && resolved.outletId) ids.add(resolved.outletId);
+    }
+  }
+
+  return ids.size;
 }
 
 // Boundary markers for the NO-venue-in-headline case (placeholder slugs like
@@ -933,6 +1107,10 @@ function classifyCandidate({ source, record, html, shows }) {
     discoveredAt: record.firstSeen || fields.date || new Date().toISOString(),
     category: classifyVenueMarket(fields.venue),
     corroborations: [],
+    // BRO-125: distinct review outlets this article names — the promotion
+    // gate's real "enough critical signal" check (scripts/lib/review-
+    // threshold.js), replacing the old bare roundup-exists proxy.
+    reviewCount: countDistinctReviewOutlets(html, source),
   };
   return { status: 'accept', candidate };
 }
@@ -958,4 +1136,5 @@ module.exports = {
   referenceTitle,
   classifyCandidate,
   titleCaseShout,
+  countDistinctReviewOutlets,
 };

@@ -39,6 +39,19 @@ data/audit/alert-router-attempts.jsonl merge=union
 # union semantics. merge=union concatenates both sides losslessly, same as
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
+# Newline-delimited registry of unit-test files, appended to by nearly every
+# worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
+# Two branches each registering a different test past a common ancestor is a
+# REAL conflict under plain `git merge` — verified 2026-08-26 with
+# `git merge-tree origin/main origin/job/linear-BRO-65-mt1sa3d6`, which is the
+# sole conflict blocking PR 616 and had survived two manual resolutions.
+# Every line is an independent registration and duplicates are harmless (the
+# manifest is read as a set), so merge=union keeps BOTH sides' tests instead of
+# silently dropping whichever one the resolver didn't notice. This is the same
+# append-only-registry shape as the ledgers above, not audit churn — the audit
+# state files in this PR's sibling (636) are deliberately merge-coverage=exempt
+# and are NOT given a driver here.
+tests/unit-test-manifest.txt merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours
 data/audit/opening-night-completeness-state.json merge=ours
@@ -138,6 +151,60 @@ data/audit/pipeline-health/collect-review-texts.last-success merge=ours
 # Append-only opening-night timeline entries (scripts/generate-status-page.js
 # appendFileSync), same shape as the other JSONL logs above.
 data/opening-night-timeline/*.jsonl merge=union
+
+# BRO-2493: sync-audit-checkout.sh's union-recovery stage (BRO-2314) only
+# unblocks a launchd job's `git merge --ff-only` for a tracked *.jsonl path
+# declared merge=union here — 17 of the 20 tracked data/audit/*.jsonl ledgers
+# were missing this attribute, which is the identical six-day-outage shape
+# BRO-2314 just closed for the two files below, latent on every one of the
+# 17. Each entry below was checked against its ACTUAL writer AND reader for
+# the two things that disqualify a file from union:
+#   (a) a line's disappearance is semantically load-bearing (a reader sums or
+#       otherwise aggregates duplicate keys, or a resolved/consumed row must
+#       not come back) — NOT merely "the writer prunes old rows"
+#       (scraper-spend-ledger.jsonl above already establishes that a pure
+#       chronological ring-buffer trim is an accepted, harmless union risk: a
+#       union-resurrected pruned row is stale data, never a wrong computed
+#       value);
+#   (b) a reader assumes array/file order encodes true chronological order
+#       (first-element-is-earliest, walk-newest-to-oldest, a consecutive-
+#       streak count) WITHOUT re-sorting by an explicit timestamp field first
+#       — sync-audit-checkout.sh's recovery stage appends the locally-saved
+#       rows after origin's committed rows regardless of their real
+#       timestamps (scripts/lib/sync-audit-decision.js's unionLedgerLines()),
+#       so file order is NOT chronological order post-recovery. A reader that
+#       explicitly re-sorts before using order (see remediation-log.jsonl's
+#       readAttempts()/readGiveUps() below) is unaffected.
+# Files that failed either check are deliberately NOT listed here — see the
+# EXEMPT_LEDGERS array in scripts/lib/audit-ledger-merge-attrs.js, which a
+# colocated CI gate cross-checks against this file so an 18th ledger can't
+# arrive uncovered by either list.
+data/audit/bww-roundup-miss-ledger.jsonl merge=union
+data/audit/linear-archive-done.jsonl merge=union
+data/audit/ob-promotion-log.jsonl merge=union
+data/audit/we-promotion-log.jsonl merge=union
+# remediation-log.jsonl (scripts/lib/opening-night-remediation.js):
+# readAttempts() and readGiveUps() both explicitly re-sort/re-derive by the
+# entry's own `at` timestamp instead of trusting array position — their doc
+# comments already call out "a rebase/merge of a JSONL can disturb append
+# order" as the exact reason. Safe for union by design, not by luck.
+data/audit/remediation-log.jsonl merge=union
+# owner-email-log.jsonl already has a dedicated union merge function
+# registered in scripts/lib/core-data-merge-registry.js (mergeOwnerEmailLog)
+# for push-with-retry.sh's reconcile pass — this is the git attribute that
+# was never declared alongside it (the actual root cause this card fixes).
+# discord-notify.js's writer prunes its OWN retention window before writing
+# (same accepted ring-buffer-trim risk as scraper-spend-ledger.jsonl above),
+# but it is safe under sync-audit-checkout.sh's DUMB line-string union (not
+# the smart merge function above, which only runs on the separate push-with-
+# retry.sh reconcile path) because its rows key on `${ts}|${title}|${severity}`
+# and its only reader (health-check.js's readOwnerEmailLog(), a 7-day send
+# count for the digest) just lists/counts them — a resurrected row is either
+# an exact-string duplicate (which the dumb line union already dedupes, same
+# as the smart merge function's key) or a genuinely distinct send that
+# legitimately belongs in the count. Verified 2026-08-26 (BRO-2493, Codex
+# ship-check review) against health-check.js:4158.
+data/audit/owner-email-log.jsonl merge=union
 
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
 # `ours` would silently discard the other side's accrued state (open alert

@@ -22,16 +22,26 @@ runs:
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
       run: |
-        MAX_RETRIES=2
+        # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT (5000 req/hr across ALL
+        # API calls from that token, shared by every workflow that checks out
+        # core-data or review-texts). An opening-night burst of orchestrator
+        # dispatches can exhaust that quota mid-run; a rate-limited clone gets
+        # its own detection + 30s-base exponential backoff here (via
+        # scripts/lib/github-rate-limit-retry.js, unit-tested in
+        # tests/unit/checkout-rate-limit-retry.test.mjs) instead of the flat
+        # 10s sleep this used to give every failure regardless of cause.
+        MAX_RETRIES=3
+        STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           START=$(date +%s)
           SUCCESS=false
+          : > "$STDERR_FILE"
 
           if [ -d "/tmp/core-data-checkout/.git" ]; then
             # Cache restored — fast update via fetch
             cd /tmp/core-data-checkout
             git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
-            if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
+            if git fetch origin main --depth 1 2>>"$STDERR_FILE" && git reset --hard origin/main 2>>"$STDERR_FILE"; then
               ELAPSED=$(($(date +%s) - START))
               echo "Core data updated from cache in ${ELAPSED}s (git fetch)"
               SUCCESS=true
@@ -40,7 +50,7 @@ runs:
               echo "::warning::Cache update failed — falling back to full clone"
               cd /tmp
               rm -rf /tmp/core-data-checkout
-              if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout; then
+              if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
                 ELAPSED=$(($(date +%s) - START))
                 echo "Core data cloned fresh in ${ELAPSED}s (fallback)"
                 SUCCESS=true
@@ -49,7 +59,7 @@ runs:
           else
             # No cache — full clone
             rm -rf /tmp/core-data-checkout
-            if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout; then
+            if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
               ELAPSED=$(($(date +%s) - START))
               echo "Core data cloned fresh in ${ELAPSED}s"
               SUCCESS=true
@@ -58,14 +68,48 @@ runs:
 
           if [ "$SUCCESS" = "true" ]; then
             break
-          elif [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
-            echo "::warning::Core data checkout failed (attempt $ATTEMPT/$MAX_RETRIES) — retrying in 10s"
-            sleep 10
-            rm -rf /tmp/core-data-checkout
-          else
-            echo "::error::Core data checkout failed after $MAX_RETRIES attempts"
-            exit 1
           fi
+
+          cat "$STDERR_FILE" >&2
+
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing retry/exit handling below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+
+          rm -rf /tmp/core-data-checkout
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Core data checkout hit a GitHub API rate limit (attempt $ATTEMPT/$MAX_RETRIES) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            stop:max-attempts-reached)
+              echo "::error::Core data checkout still rate-limited after $MAX_RETRIES attempts — giving up"
+              exit 1
+              ;;
+            stop:not-rate-limit|*)
+              if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "::warning::Core data checkout failed (attempt $ATTEMPT/$MAX_RETRIES, non-rate-limit) — retrying in 10s"
+                sleep 10
+              else
+                echo "::error::Core data checkout failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+              ;;
+          esac
         done
 
     - name: Copy core data to data/

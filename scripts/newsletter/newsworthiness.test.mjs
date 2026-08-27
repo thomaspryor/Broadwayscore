@@ -212,3 +212,27 @@ test('3 same-week openings fill the lede cap; a same-week closing does not displ
   assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'we-gold-opening']);
   assert.deepEqual(showRefs.map(s => s.id), ['a', 'b', 'c']);
 });
+
+// ── weGoldOpenings list order must survive a later item's gold bump ────────
+// Regression guard for BRO-273 (2026-08-02): a later-ranked West End opening
+// with a Critical Gold score used to be able to outweigh an earlier-ranked,
+// more-reviewed, non-gold show — reordering the subject/lede pick away from
+// weOpeningStories()'s (generate.mjs) most-reviewed-first order, which the
+// card stack (londonSection()) always follows. Reproduces the shape directly
+// against scoreCandidates() with a mocked aggregateScore, independent of live
+// data — scripts/newsletter/we-opening-stories.test.mjs covers the same
+// invariant end-to-end against the real, mutable 2026-07-27 corpus.
+test('a later item\'s Critical Gold score cannot outrank an earlier, non-gold weGoldOpenings entry', () => {
+  const scores = { first: 83, second: 87 }; // "first" is non-gold (<85), "second" is gold (>=85)
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'first', slug: 'first', title: 'Show First', category: 'west-end' } },
+      { show: { id: 'second', slug: 'second', title: 'Show Second', category: 'west-end' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const weCandidates = candidates.filter((c) => c.kind === 'we-gold-opening');
+  assert.deepEqual(weCandidates.map((c) => c.show.id), ['first', 'second']);
+  assert.ok(weCandidates[0].weight > weCandidates[1].weight, `expected 'first' to outweigh 'second' despite its gold bump; got ${JSON.stringify(weCandidates.map((c) => c.weight))}`);
+});

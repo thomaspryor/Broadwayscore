@@ -41,8 +41,8 @@ const MODAL_SRC = readFileSync(join(REPO_ROOT, 'src/components/EmailCaptureModal
 
 test('modal no longer fires on the old immediate/aggressive trigger: passive gates require meaningful engagement', () => {
   // Old behavior (pre-#586): exit intent could fire near-instantly and the
-  // mobile scroll gate fired at 10s dwell.
-  assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 5,
+  // mobile scroll gate fired at 10s dwell. Raised again 5 -> 30 by BRO-1959.
+  assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 30,
     'exit intent must not fire immediately on page load');
   // Only the control mobile-scroll-gate variant is dwell-gated at 30s+; the
   // end-of-content variant deliberately swaps dwell time for a near-full-page

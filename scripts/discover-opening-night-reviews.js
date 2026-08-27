@@ -24,6 +24,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -360,6 +361,15 @@ async function main() {
           continue;
         }
 
+        // Zero-grace opening-night guard (BRO-736) — this whole script IS the
+        // opening-night discovery path, so always apply it (isUrlYearOutsideWindow
+        // above grants a -3y grace that let a 2024 same-title production's reviews
+        // through for a 2026 revival; see scripts/lib/opening-night-discovery.js).
+        if (isSerpUrlWrongProductionForOpeningNight(url, show)) {
+          console.log(`    [SKIP] Embedded URL year doesn't match opening year (opening-night guard, BRO-736)`);
+          continue;
+        }
+
         // Skip results whose title mentions a year far from this production
         if (openYear && result.title) {
           const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
@@ -511,6 +521,12 @@ async function main() {
         continue;
       }
 
+      // Zero-grace opening-night guard (BRO-736) — see Strategy 1's comment above.
+      if (isSerpUrlWrongProductionForOpeningNight(url, show)) {
+        console.log(`    [SKIP] Embedded URL year doesn't match opening year (opening-night guard, BRO-736)`);
+        continue;
+      }
+
       // Skip results whose title mentions a year far from this production
       if (openYearNews && result.title) {
         const titleYears = result.title.match(/\b(19\d{2}|20\d{2})\b/g);
@@ -628,6 +644,11 @@ async function main() {
         const closeYearWeb = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
         if (openYearWeb && isUrlYearOutsideWindow(url, openYearWeb, closeYearWeb)) {
           console.log(`    [SKIP] URL year outside production window for ${showId}`);
+          continue;
+        }
+        // Zero-grace opening-night guard (BRO-736) — see Strategy 1's comment above.
+        if (isSerpUrlWrongProductionForOpeningNight(url, show)) {
+          console.log(`    [SKIP] Embedded URL year doesn't match opening year (opening-night guard, BRO-736)`);
           continue;
         }
         // Title/snippet year-window (Strategy 1/2 parity, extended to the snippet):
