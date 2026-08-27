@@ -1,19 +1,132 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-27T01:47:01.750Z",
+    "generatedAt": "2026-08-27T15:21:21.080Z",
     "windowDays": 3,
     "minChurn": 30,
-    "degraded": true,
+    "degraded": false,
     "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 0,
-    "exemptCount": 0,
-    "coveredCount": 0,
-    "highChurnTracked": 0
+    "flaggedCount": 1,
+    "exemptCount": 9,
+    "coveredCount": 14,
+    "highChurnTracked": 24
   },
-  "flagged": [],
-  "exempt": [],
-  "covered": []
+  "flagged": [
+    {
+      "path": "data/audit/validation-baseline.json",
+      "churn": 41
+    }
+  ],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 141
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 53
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 49
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 49
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 49
+    },
+    {
+      "path": "public/data/shows/paranormal-activity-2026.json",
+      "churn": 46
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 40
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 38
+    },
+    {
+      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
+      "churn": 31
+    }
+  ],
+  "covered": [
+    {
+      "path": "data/collection-state/live-progress.json",
+      "churn": 876,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 847,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 323,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 313,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 203,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 166,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 91,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/needs-human-review.json",
+      "churn": 91,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 91,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 85,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "tests/unit-test-manifest.txt",
+      "churn": 76,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 53,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
+      "churn": 49,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 49,
+      "mergeAttr": "ours"
+    }
+  ]
 }
