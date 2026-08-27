@@ -552,15 +552,19 @@ function loadBaselineGuards() {
     );
   }
 
-  // date-guard.js (+ its dependency wrong-production-autoclear.js): the
-  // pre-window inclusion predicate lives there (card 386637c5). Materialize the
-  // BASE_REF copies so threshold/predicate changes replay per side. If BASE_REF
-  // predates a file entirely, the WORKING-TREE copy is used for that baseline
-  // side — the baseline then behaves like the working tree (silent zero-delta
-  // for that guard). Acceptable: date-guard.js has existed since 2026-05-25,
+  // date-guard.js (+ its dependency wrong-production-autoclear.js) and
+  // failed-fetch-policy.js (a direct review-guards.js require, BRO-39 —
+  // review-guards.js at HEAD requires it but the baseline sandbox never
+  // materialized it, so loadBaselineGuards() threw MODULE_NOT_FOUND on
+  // every run once that require landed): the pre-window inclusion predicate
+  // lives in date-guard.js (card 386637c5). Materialize the BASE_REF copies
+  // so threshold/predicate changes replay per side. If BASE_REF predates a
+  // file entirely, the WORKING-TREE copy is used for that baseline side —
+  // the baseline then behaves like the working tree (silent zero-delta for
+  // that guard). Acceptable: date-guard.js has existed since 2026-05-25,
   // and BASE_REF defaults to HEAD. Baselines that HAVE date-guard.js but lack
   // evaluatePreWindowInclusion take simulateInclusion's legacy inline branch.
-  for (const dep of ['date-guard.js', 'wrong-production-autoclear.js']) {
+  for (const dep of ['date-guard.js', 'wrong-production-autoclear.js', 'failed-fetch-policy.js']) {
     try {
       const src = execSync(`git show ${BASE_REF}:scripts/lib/${dep}`, {
         cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
