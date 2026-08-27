@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-27T19:47:45.965Z",
-  "processed": 11,
-  "failed": 29,
-  "successRate": "27.5%",
+  "updatedAt": "2026-08-27T19:49:37.199Z",
+  "processed": 16,
+  "failed": 34,
+  "successRate": "32.0%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -36,6 +36,12 @@
       "t": "2026-08-27T19:45:14.374Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-27T19:49:25.441Z",
+      "event": "bb-session",
+      "session": "6c577657",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
