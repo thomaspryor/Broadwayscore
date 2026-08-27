@@ -143,33 +143,53 @@ test('blastRadiusCheck: minChanged is configurable and 0 restores pure-percentag
   assert.strictEqual(r.ok, false, 'minChanged:0 must reproduce the old percentage-only gate');
 });
 
+// review-gap's actual isRiskyChange (audit-show-review-gap.js): states are
+// encoded 'verdict:liveCount:candidateCount' and a transition is risky iff
+// EITHER count went down. Mirrored here (not imported — it's a closure at
+// the call site) so these tests exercise the real decision rule.
+const countsRiskyChange = (prevState, nextState) => {
+  const counts = (s) => String(s).split(':').slice(1).map(Number);
+  const [prevLive, prevCandidates] = counts(prevState);
+  const [nextLive, nextCandidates] = counts(nextState);
+  return nextLive < prevLive || nextCandidates < prevCandidates;
+};
+
 test('blastRadiusCheck: isRiskyChange narrows which transitions count as changed (BRO-513)', () => {
   // The recurring false positive: a batch of shows genuinely goes
-  // complete -> incomplete because the census found real new gaps, not
-  // because anything broke. With a review-gap-style isRiskyChange (only a
-  // regression TO 'no-census-yet' is risky), that batch must never refuse.
-  const prev = state(29, 'complete');
+  // complete -> incomplete because the census found real NEW gaps (candidate
+  // count grows, nothing previously live was lost). That must never refuse.
+  const prev = state(29, 'complete:3:3');
   const next = { ...prev };
-  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'incomplete'; // 20.7%, the exact BRO-513 numbers
-  const isRiskyChange = (p, n) => n === 'no-census-yet' && p !== 'no-census-yet';
-  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange });
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'incomplete:3:4'; // 20.7%, the exact BRO-513 numbers — a new candidate appeared, live coverage unchanged
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange: countsRiskyChange });
   assert.strictEqual(r.compared, 29, 'denominator is unaffected by the filter');
-  assert.strictEqual(r.changed, 0, 'complete -> incomplete is not a risky transition');
+  assert.strictEqual(r.changed, 0, 'complete -> incomplete from a NEW candidate is not a risky transition');
   assert.strictEqual(r.ok, true);
 });
 
-test('blastRadiusCheck: isRiskyChange still catches the failure mode it is FOR', () => {
-  // A dead SERP provider / empty census manifests as verdicts regressing to
-  // 'no-census-yet' — that direction must still refuse even though the
-  // complete<->incomplete churn above is now ignored.
-  const prev = state(29, 'complete');
+test('blastRadiusCheck: isRiskyChange still catches a dead SERP provider (regression to no-census-yet)', () => {
+  const prev = state(29, 'complete:3:3');
   const next = { ...prev };
-  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'no-census-yet';
-  const isRiskyChange = (p, n) => n === 'no-census-yet' && p !== 'no-census-yet';
-  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange });
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'no-census-yet:0:0';
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange: countsRiskyChange });
   assert.strictEqual(r.changed, 6);
   assert.strictEqual(r.ok, false);
   assert.match(r.reason, /blast radius/);
+});
+
+test('blastRadiusCheck: isRiskyChange catches lost coverage even when the verdict word looks the same benign direction (adversarial review finding)', () => {
+  // A broken/partial review-texts checkout makes loadDirFiles() return []
+  // for every show — previously-`live` outlets read as newly `missing`.
+  // Same complete -> incomplete verdict transition as the benign case above,
+  // but liveCount DROPS (3 -> 0) instead of candidateCount growing — this
+  // must still refuse, or the fix reopens the exact hole the guard exists
+  // to close.
+  const prev = state(29, 'complete:3:3');
+  const next = { ...prev };
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'incomplete:0:3'; // same 3 candidates, none live anymore
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange: countsRiskyChange });
+  assert.strictEqual(r.changed, 6);
+  assert.strictEqual(r.ok, false, 'losing previously-live coverage must refuse even though the verdict transition matches the benign case');
 });
 
 test('blastRadiusCheck: isRiskyChange omitted preserves the original direction-blind behavior', () => {

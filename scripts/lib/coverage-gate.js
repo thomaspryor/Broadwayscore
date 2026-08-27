@@ -52,13 +52,23 @@
  *   listed URLs the show didn't have before, flipping complete → incomplete —
  *   the census doing its job as new roundups/blog posts publish. Shows opening
  *   in the same week cluster these discoveries naturally; nothing was broken.
- *   The one direction that DOES match the vacuous-truth failure mode
- *   (censusVerdictFor's own docstring) is a regression TO 'no-census-yet' —
- *   hadAnySource going false is exactly what a dead SERP provider / empty
- *   census / partial checkout produces. review-gap's blastRadiusCheck call
- *   passes isRiskyChange to count only that direction, so a batch of
- *   legitimate new-gap discoveries can never trip the guard while an actual
- *   "this run found nothing" regression still does.
+ *
+ *   The bare verdict label alone can't distinguish that from the actual
+ *   failure mode (adversarial ship-check review, task #902 follow-up): a
+ *   broken/partial review-texts checkout makes audit-show-review-gap.js's
+ *   loadDirFiles() return [] for EVERY show, so outlets that were previously
+ *   `live` also read as newly `missing` — ALSO complete → incomplete, same
+ *   verdict transition as the benign new-gap-discovery case above, but this
+ *   IS the dead-SERP-provider/empty-census/partial-checkout class the guard
+ *   exists to catch. A verdict-only isRiskyChange would have let that through
+ *   right alongside the benign case. review-gap's call therefore doesn't
+ *   diff the verdict string at all — it diffs `liveCount`/`candidateCount`
+ *   (already computed per show by censusVerdictFor) and calls a transition
+ *   risky iff EITHER count went down: real collected coverage disappeared, or
+ *   a previously-known gap silently disappeared from view (the same
+ *   vacuous-truth trap, one layer up — a dead SERP provider makes a KNOWN
+ *   gap list vanish, not just fail to grow). A verdict word changing while
+ *   both counts hold or grow is the audit doing its job and is never risky.
  */
 
 'use strict';
