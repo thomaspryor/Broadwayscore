@@ -164,23 +164,46 @@ describe('Email Capture Integrity', () => {
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (hardcodedPattern.test(line)) {
-          // Allow fallbacks with || (env var with hardcoded default) but flag them
           const relative = file.replace(ROOT + '/', '');
-          violations.push(`${relative}:${i + 1}`);
+          // Record WHETHER this specific line is an env-var fallback
+          // (`process.env.X || '<literal>'`). The exemption below keys off
+          // this, not off the file, so an allowlisted file cannot smuggle in a
+          // genuinely hardcoded ID on some other line.
+          violations.push({
+            at: `${relative}:${i + 1}`,
+            file: relative,
+            isEnvFallback: /process\.env\.[A-Z0-9_]+\s*\|\|/.test(line),
+          });
         }
       }
     }
 
-    // These are known fallbacks — acceptable for now but tracked
-    // If this list grows, we should centralize form IDs
+    // These are known `process.env.X || '<literal>'` fallbacks — the literal is
+    // a default, not the only source, so the ID stays rotatable via the env var.
+    // Tracked rather than banned; if this list grows, centralize the form IDs.
+    //
+    // src/app/api/feedback/route.ts holds the LAST such literal in the tree
+    // (the two page.tsx entries above have since migrated to pure env vars and
+    // no longer match this pattern at all). It is deliberately still a fallback:
+    // NEXT_PUBLIC_FORMSPREE_ENDPOINT is not set in any environment, so removing
+    // the default would silently stop the best-effort forward that
+    // process-feedback.yml's AI bug-diagnosis pipeline polls — the exact
+    // "submissions go to the void" failure this test exists to prevent.
+    // Retiring it properly means provisioning the env var in the Vercel build
+    // env first; tracked in Linear (see BRO-2275's session comment).
     const KNOWN_FALLBACKS = [
       'src/app/feedback/page.tsx',
       'src/app/submit-review/page.tsx',
+      'src/app/api/feedback/route.ts',
     ];
 
-    const unexpected = violations.filter(v =>
-      !KNOWN_FALLBACKS.some(known => v.startsWith(known))
-    );
+    // Exempt only an env-var fallback IN an allowlisted file. Either half
+    // missing is a real violation: a bare literal in an allowlisted file is
+    // exactly the un-rotatable ID this test exists to catch, and an env
+    // fallback in a file nobody vetted still deserves a look.
+    const unexpected = violations
+      .filter(v => !(v.isEnvFallback && KNOWN_FALLBACKS.includes(v.file)))
+      .map(v => v.at);
 
     assert.deepStrictEqual(
       unexpected,
