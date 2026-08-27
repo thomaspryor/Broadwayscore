@@ -237,14 +237,27 @@ function computeAddedLines(baseContent, localContent) {
  * fresh version over ours. Callers warn loudly but must not fail. Both nulls
  * guard: a file DELETED at final (finalBlob null) with an unresolvable
  * pushed-sha (pushedBlob null) must not satisfy null === null.
+ * `skipDeepCheck` (task BRO-2500): for a handful of known files there is no
+ * "our added lines" invariant to check at all — a full-overwrite snapshot
+ * (deploy-watermark.json) has almost none of its content in common between
+ * any two arbitrary writes, so addedLinesSurvived() reads as a false
+ * 'reverted' on every legitimate concurrent write, not just a clobber. When
+ * set, an 'ambiguous' verdict from the cheap classifier stays 'ambiguous'
+ * unconditionally — the deep line-level check never runs for this entry. The
+ * cheap classifier itself (survived/reverted/unchanged) still runs FIRST and
+ * is NOT bypassed: a file that reverted all the way back to byte-identical
+ * base content is still caught, since that narrow signal doesn't depend on
+ * any added-lines invariant. See CONTENT_SURVIVAL_EXEMPT_LEDGERS below for
+ * which files use this vs. full exclusion from the check.
  * @param {{baseBlob: string|null, localBlob: string|null, finalBlob: string|null,
- *           pushedBlob?: string|null,
+ *           pushedBlob?: string|null, skipDeepCheck?: boolean,
  *           addedLines?: string[], baseContent?: string|null, finalContent?: string|null}} entry
  * @returns {'survived'|'unchanged'|'reverted'|'ambiguous'|'superseded'}
  */
 function classifyFileSurvivalDeep(entry) {
   const base = classifyFileSurvival(entry);
   if (base !== 'ambiguous') return base;
+  if (entry.skipDeepCheck) return 'ambiguous';
   if (addedLinesSurvived(entry.addedLines, entry.baseContent, entry.finalContent)) return 'ambiguous';
   if (entry.pushedBlob != null && entry.finalBlob != null && entry.pushedBlob === entry.finalBlob) return 'superseded';
   return 'reverted';
@@ -277,19 +290,29 @@ function anyReverted(classified) {
 // neither at the other's expense. addedLinesSurvived() correctly reports
 // "the branch's added lines are not in final" — they really aren't — but
 // that's not evidence of a clobber for these specific files, it's the file
-// doing exactly what it exists to do. Per the ticket: these files need to be
-// excluded from the check entirely, not scored more cleverly — any
-// set/multiset comparison would still have to special-case "both sides can
-// add without either being wrong", which is just this same exclusion with
-// extra steps.
+// doing exactly what it exists to do.
+//
+// Two exemption MODES, not one (adversarial review finding — see
+// deploy-watermark.json's entry for why a single blanket mode was wrong):
+//   'full'      — skip classification entirely, including the cheap
+//                 survived/reverted/unchanged blob check. Only for files
+//                 where even a byte-identical-to-base "revert" carries no
+//                 real signal, because the project has ALREADY, explicitly,
+//                 decided losing a writer's update here is an accepted
+//                 outcome (see each entry's reason).
+//   'deep-only' — still run the cheap blob check (so a genuine full revert
+//                 to pre-edit base is still caught — see
+//                 classifyFileSurvivalDeep's skipDeepCheck param), but skip
+//                 ONLY the line-level addedLinesSurvived downgrade, which is
+//                 what actually produces the false positive for a
+//                 full-overwrite snapshot file with no "added lines"
+//                 invariant.
 //
 // Shape follows scripts/lib/ledger-coverage-exemptions.js's EXEMPTIONS /
 // scripts/lib/audit-ledger-merge-attrs.js's EXEMPT_LEDGERS convention (a
 // {file, reason} object array with a dated justification per entry) rather
 // than a bare path list — this codebase already solves "documented exception
-// to an automated check" this way twice, and a bare list would have nowhere
-// to record that deploy-watermark.json is exempt for a DIFFERENT reason than
-// the other three (see its own entry below).
+// to an automated check" this way twice.
 //
 // Matched by exact file path (not suffix): `git diff --name-only` always
 // reports repo-root-relative paths, and no real caller of this CLI passes
@@ -299,49 +322,76 @@ function anyReverted(classified) {
 //
 // Drift guard: scripts/lib/push-content-survival.test.mjs's "stays in sync
 // with core-data-merge-registry.js" test fails if the registry ever adds a
-// real merge fn / status:'active' entry for one of the three registry-cited
-// paths below — that would mean the file is no longer "genuinely
-// unreconciled by design" and this exemption should be revisited alongside
-// it, not silently keep excluding a file that now has real coverage.
+// real merge fn / status:'active'/'special' entry for one of the three
+// registry-cited 'full'-mode paths below — that would mean the file is no
+// longer "genuinely unreconciled by design" and this exemption should be
+// revisited alongside it, not silently keep excluding a file that now has
+// real coverage.
 const CONTENT_SURVIVAL_EXEMPT_LEDGERS = [
   {
     file: 'data/audit/alert-ledger.json',
+    mode: 'full',
     reason:
       '2026-08-26 (BRO-2500): 12 independent writers, deliberately excluded from ' +
       "core-data-merge-registry.js's active/merge-fn coverage (see its \"NOT added, " +
       'deliberately\" comment) because divergence here is expected and benign, not an ' +
       'error to reconcile away. Live incident: merging origin/job/linear-BRO-45-mtapwjad ' +
       'reported REVERTED — 18 lines only on the branch, 23 lines only on main, both grown ' +
-      'independently, nothing clobbered.',
+      'independently, nothing clobbered. \'full\' mode (not just \'deep-only\') is deliberate, ' +
+      'not merely convenient: owner-alert-router.js\'s own module header (lines 54-62) already ' +
+      'documents that a losing writer\'s commit here "gets overwritten by push-with-retry.sh\'s ' +
+      'last-writer-wins conflict resolution", calling the outcome "a duplicate card/email, not ' +
+      'a crash or lost alert — acceptable for a single-owner project". The exact class of loss ' +
+      'this guard would otherwise flag as REVERTED for this file is a class the project has ' +
+      'ALREADY, independently, explicitly decided is not worth alarming on.',
   },
   {
     file: 'data/audit/alert-digest-queue.json',
-    reason: "2026-08-26 (BRO-2500): same shape and same registry comment as alert-ledger.json above — 8 independent writers.",
+    mode: 'full',
+    reason: "2026-08-26 (BRO-2500): same shape, same registry comment, and same owner-alert-router.js accepted-loss reasoning as alert-ledger.json above — 8 independent writers, routed through the same routeAlert() ledger machinery.",
   },
   {
     file: 'data/audit/alert-router-attempts.jsonl',
-    reason: "2026-08-26 (BRO-2500): same shape and same registry comment as alert-ledger.json above — 3 independent writers.",
+    mode: 'full',
+    reason: "2026-08-26 (BRO-2500): same shape, same registry comment, and same owner-alert-router.js accepted-loss reasoning as alert-ledger.json above — 3 independent writers.",
   },
   {
     file: 'data/audit/deploy-watermark.json',
+    mode: 'deep-only',
     reason:
       '2026-08-26 (BRO-2500): the OTHER file flagged reverted in the same live incident as ' +
       'alert-ledger.json above, but for a different underlying reason — not an append-only ' +
       'ledger, a small whole-object snapshot ({showCount, reviewCount, updatedAt}) that ' +
-      'update-deploy-watermark.yml fully overwrites on every deploy. There is no "our added ' +
-      "lines must survive\" invariant to check for a full-overwrite file: its content is " +
-      'EXPECTED to differ between any two arbitrary points in time regardless of which ref ' +
-      'last touched it, so every touch looks like the same false-positive shape.',
+      'update-deploy-watermark.yml fully overwrites on every deploy. \'deep-only\' mode ' +
+      '(NOT \'full\' — adversarial review finding), because unlike the alert-* ledgers this ' +
+      "file's value is NOT disposable: pre-deploy-check.js reads it as the regression baseline " +
+      'for the next deploy\'s show/review-count floor, and corpus-determinism.js treats it as a ' +
+      'source of truth. There is no "our added lines must survive" invariant to line-check for ' +
+      'a full-overwrite file — every legitimate concurrent watermark write differs from every ' +
+      'other, which is what made the deep addedLinesSurvived check false-positive here — but a ' +
+      'genuine full revert all the way back to the pre-edit base value is still a real signal ' +
+      '(effectively "no deploy watermark update landed at all"), so the cheap blob check stays ' +
+      'active and only the line-level downgrade is skipped.',
   },
 ];
 
 /**
  * @param {string} file repo-relative path as reported by `git diff --name-only`
- * @returns {boolean} true if this file is a documented exception that
- *   content-survival should not attempt to classify at all
+ * @returns {boolean} true if this file should skip classification ENTIRELY
+ *   ('full' mode — see CONTENT_SURVIVAL_EXEMPT_LEDGERS header comment)
  */
 function isContentSurvivalExempt(file) {
-  return CONTENT_SURVIVAL_EXEMPT_LEDGERS.some((e) => e.file === file);
+  return CONTENT_SURVIVAL_EXEMPT_LEDGERS.some((e) => e.file === file && e.mode === 'full');
+}
+
+/**
+ * @param {string} file repo-relative path as reported by `git diff --name-only`
+ * @returns {boolean} true if this file should still run the cheap
+ *   survived/reverted/unchanged blob check, but skip the deep line-level
+ *   addedLinesSurvived downgrade ('deep-only' mode)
+ */
+function isDeepCheckExempt(file) {
+  return CONTENT_SURVIVAL_EXEMPT_LEDGERS.some((e) => e.file === file && e.mode === 'deep-only');
 }
 
 module.exports = {
@@ -354,6 +404,7 @@ module.exports = {
   anyReverted,
   CONTENT_SURVIVAL_EXEMPT_LEDGERS,
   isContentSurvivalExempt,
+  isDeepCheckExempt,
 };
 
 // ── CLI ───────────────────────────────────────────────────────────────────
@@ -450,11 +501,25 @@ if (require.main === module) {
     process.exit(0);
   }
 
+  // Task BRO-2500 'deep-only' exemptions (deploy-watermark.json): still run
+  // the cheap blob check below (a genuine full revert to base is still
+  // real signal), just skip the line-level addedLinesSurvived downgrade that
+  // false-positives on a full-overwrite snapshot with no "added lines"
+  // invariant. Logged here (not silently) even though nothing is excluded
+  // from the diff — an operator seeing this file in the report should know
+  // why an 'ambiguous' verdict for it never escalates to 'reverted'.
+  for (const f of modifiedFiles) {
+    if (!isDeepCheckExempt(f)) continue;
+    const entry = CONTENT_SURVIVAL_EXEMPT_LEDGERS.find((e) => e.file === f);
+    console.log(`[content-survival] DEEP-CHECK EXEMPT (documented exemption, BRO-2500): ${f} — ${entry.reason}`);
+  }
+
   const entries = modifiedFiles.map((file) => ({
     file,
     baseBlob: gitTry(['rev-parse', `${baseSha}:${file}`]),
     localBlob: gitTry(['rev-parse', `${beforeSha}:${file}`]),
     finalBlob: gitTry(['rev-parse', `${checkRef}:${file}`]),
+    skipDeepCheck: isDeepCheckExempt(file),
   }));
 
   // Deep-check only the 'ambiguous' bucket (task #833): survived/reverted/
@@ -473,6 +538,11 @@ if (require.main === module) {
   // bytes that blob was computed from, eliminating the race entirely.
   for (const e of entries) {
     if (classifyFileSurvival(e) !== 'ambiguous') continue;
+    // skipDeepCheck entries never reach addedLinesSurvived/superseded inside
+    // classifyFileSurvivalDeep (it returns 'ambiguous' unconditionally right
+    // after the cheap check) — skip the file-content reads too, same
+    // "only pay where it matters" reasoning as the comment above.
+    if (e.skipDeepCheck) continue;
     e.baseContent = e.baseBlob ? gitTry(['show', e.baseBlob]) : null;
     const localContent = e.localBlob ? gitTry(['show', e.localBlob]) : null;
     e.addedLines = computeAddedLines(e.baseContent, localContent);
@@ -489,7 +559,11 @@ if (require.main === module) {
   );
 
   for (const c of ambiguous) {
-    console.log(`[content-survival] AMBIGUOUS (likely legitimate concurrent merge, our own added lines confirmed present): ${c.file}`);
+    const e = entries.find((en) => en.file === c.file);
+    const note = e && e.skipDeepCheck
+      ? 'documented deep-check exemption, BRO-2500 — not checked'
+      : 'likely legitimate concurrent merge, our own added lines confirmed present';
+    console.log(`[content-survival] AMBIGUOUS (${note}): ${c.file}`);
   }
   for (const c of superseded) {
     console.log(`[content-survival] SUPERSEDED: ${c.file} — our own conflict resolution integrated a concurrent fresh version of this file instead of ours (sibling-pipeline collision, e.g. two collectors pushing the same review). What we pushed IS what's on ${checkRef}; nothing clobbered us post-push. Not failing — but our version of this file was not the one that won.`);

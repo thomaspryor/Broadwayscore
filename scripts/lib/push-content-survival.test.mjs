@@ -18,6 +18,7 @@ const {
   anyReverted,
   CONTENT_SURVIVAL_EXEMPT_LEDGERS,
   isContentSurvivalExempt,
+  isDeepCheckExempt,
 } = require('./push-content-survival.js');
 const CLI = join(dirname(fileURLToPath(import.meta.url)), 'push-content-survival.js');
 
@@ -194,6 +195,24 @@ test('classifyFileSurvivalDeep: ambiguous + added lines MISSING -> downgraded to
     baseContent: 'line1\nline2\n',
     finalContent: 'line1\nsome-other-concurrent-edit\n',
   });
+  assert.equal(status, 'reverted');
+});
+
+// Task BRO-2500: skipDeepCheck must short-circuit BEFORE addedLinesSurvived
+// ever runs — same inputs as the task #833 test directly above (which
+// downgrades to 'reverted' without it) must stay 'ambiguous' with it set.
+test('classifyFileSurvivalDeep: skipDeepCheck stays ambiguous even with added lines MISSING (deep-only exemption, BRO-2500)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C', skipDeepCheck: true,
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\n',
+    finalContent: 'line1\nsome-other-concurrent-edit\n',
+  });
+  assert.equal(status, 'ambiguous');
+});
+
+test('classifyFileSurvivalDeep: skipDeepCheck does NOT bypass the cheap check — a genuine revert to base is still caught', () => {
+  const status = classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'A', skipDeepCheck: true });
   assert.equal(status, 'reverted');
 });
 
@@ -742,16 +761,26 @@ test('CLI: post-push clobber (check-ref moved past what we pushed, our lines gon
 // content the other side never had, in the same push window, with no clobber
 // involved. addedLinesSurvived() correctly reports "the branch's lines
 // aren't in final" — they genuinely aren't — but that's expected divergence
-// for these specific files, not evidence of loss. Fix: exclude them from the
-// check entirely (isContentSurvivalExempt), rather than trying to
-// distinguish "legitimately grew" from "clobbered" for a file class where
-// every divergence looks like both.
+// for these specific files, not evidence of loss.
+//
+// Two exemption modes (adversarial review finding — a single blanket
+// exclusion was too strong for deploy-watermark.json, whose value IS a real
+// regression baseline elsewhere in the codebase, unlike the alert-* ledgers
+// whose loss is explicitly pre-accepted by owner-alert-router.js):
+//   'full'      — data/audit/alert-{ledger,digest-queue}.json and
+//                 alert-router-attempts.jsonl skip classification entirely.
+//   'deep-only' — deploy-watermark.json still runs the cheap blob check (a
+//                 genuine full revert to base is still caught), only the
+//                 line-level addedLinesSurvived downgrade is skipped.
 
-test('isContentSurvivalExempt: true for each documented exemption, false for an ordinary file', () => {
-  for (const { file } of CONTENT_SURVIVAL_EXEMPT_LEDGERS) {
+test('isContentSurvivalExempt: true only for \'full\'-mode entries, false for \'deep-only\' and ordinary files', () => {
+  const fullModeFiles = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full').map((e) => e.file);
+  assert.ok(fullModeFiles.length >= 3, 'expected at least the 3 full-mode ledger exemptions');
+  for (const file of fullModeFiles) {
     assert.equal(isContentSurvivalExempt(file), true, `expected ${file} to be exempt`);
   }
   assert.equal(isContentSurvivalExempt('data/audit/alert-ledger.json'), true);
+  assert.equal(isContentSurvivalExempt('data/audit/deploy-watermark.json'), false, "deploy-watermark.json is 'deep-only', not 'full'");
   assert.equal(isContentSurvivalExempt('scripts/lib/push-content-survival.js'), false);
   assert.equal(isContentSurvivalExempt('data/shows.json'), false);
 });
@@ -762,27 +791,37 @@ test('isContentSurvivalExempt: matches by exact path, not suffix (avoids future 
   assert.equal(isContentSurvivalExempt('alert-ledger.json'), false);
 });
 
+test('isDeepCheckExempt: true only for deploy-watermark.json (\'deep-only\' mode)', () => {
+  assert.equal(isDeepCheckExempt('data/audit/deploy-watermark.json'), true);
+  assert.equal(isDeepCheckExempt('data/audit/alert-ledger.json'), false, "'full'-mode files are not also 'deep-only'");
+  assert.equal(isDeepCheckExempt('data/shows.json'), false);
+});
+
 // Drift guard: the 3 ledger paths here are exempt specifically BECAUSE
 // core-data-merge-registry.js deliberately leaves them out of its
 // active/merge-fn coverage (see that file's "NOT added, deliberately"
 // comment). If the registry ever gains a real merge function for one of
 // these paths, this exemption's own justification no longer holds and it
 // needs to be revisited alongside that change — not silently keep excluding
-// a file that now has real reconciliation. deploy-watermark.json is
-// deliberately excluded from this check: it isn't in the registry at all
-// (full-overwrite snapshot, not a merge-registry concern), exempt for an
-// unrelated reason documented in its own entry above.
-test('CONTENT_SURVIVAL_EXEMPT_LEDGERS: stays in sync with core-data-merge-registry.js (registry-sourced entries must still be un-reconciled there)', () => {
+// a file that now has real reconciliation. Checks BOTH 'active' (a real
+// generic merge fn) and 'special' (bespoke-but-real reconciliation, e.g.
+// shows.json's per-field logic) statuses — a migration to either would mean
+// this file is no longer "genuinely unreconciled by design" (adversarial
+// review finding: 'active' alone would miss a 'special' migration).
+// deploy-watermark.json is deliberately excluded from this check: it isn't
+// in the registry at all (full-overwrite snapshot, not a merge-registry
+// concern), exempt for an unrelated reason documented in its own entry above.
+test('CONTENT_SURVIVAL_EXEMPT_LEDGERS: \'full\'-mode entries stay in sync with core-data-merge-registry.js (must still be un-reconciled there)', () => {
   const { findEntry } = require('./core-data-merge-registry.js');
-  const registrySourced = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.file !== 'data/audit/deploy-watermark.json');
+  const registrySourced = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full');
   assert.ok(registrySourced.length >= 3, 'expected at least the 3 registry-cited ledger exemptions');
   for (const { file } of registrySourced) {
     const basename = file.replace(/^data\//, ''); // registry paths are relative to data/ for public-repo entries
     const entry = findEntry(basename, 'public-repo');
     assert.ok(
-      !entry || entry.status !== 'active',
+      !entry || (entry.status !== 'active' && entry.status !== 'special'),
       `${file} is exempt from content-survival because core-data-merge-registry.js leaves it un-reconciled — ` +
-        `but the registry now has an 'active' entry for it. Re-examine whether this exemption should still apply.`
+        `but the registry now has a '${entry && entry.status}' entry for it. Re-examine whether this exemption should still apply.`
     );
   }
 });
@@ -840,4 +879,92 @@ test('CLI: append-only multi-writer ledger — base has lines 1-10, branch appen
   // but still spurious warning on the exact same files (ship-check finding).
   assert.doesNotMatch(out, /no modified files to check/);
   assert.match(out, /all documented exemptions/);
+});
+
+// deploy-watermark.json ('deep-only' mode, adversarial review finding):
+// unlike the 3 alert-* ledgers, this file's value is a real regression
+// baseline elsewhere (pre-deploy-check.js, corpus-determinism.js), so a
+// blanket exclusion would also hide a genuine full revert. These 2 tests
+// prove BOTH halves of the surgical fix: the false-positive from a
+// concurrent independent watermark write is gone, AND a true full revert to
+// the pre-edit base is still caught.
+
+function buildWatermarkDir(dir) {
+  const auditDir = join(dir, 'data', 'audit');
+  execFileSync('node', ['-e', `require('fs').mkdirSync(${JSON.stringify(auditDir)}, { recursive: true })`]);
+  return join(auditDir, 'deploy-watermark.json');
+}
+
+test('CLI: deploy-watermark.json — a concurrent independent watermark write (different showCount/updatedAt) is NOT reported reverted', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-watermark-ambiguous-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  const wmPath = buildWatermarkDir(dir);
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2900,"reviewCount":20000,"updatedAt":"2026-08-25T00:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base watermark');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Our run's own watermark write.
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2910,"reviewCount":20050,"updatedAt":"2026-08-26T10:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'our watermark write');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // A DIFFERENT deploy's watermark write landed on origin instead — neither
+  // base nor ours, but not a clobber either, just a fresher independent write.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2925,"reviewCount":20133,"updatedAt":"2026-08-26T23:44:27.922Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'a different, later deploy watermark write');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected the concurrent-watermark-write shape to pass, not be reported reverted. Output:\n${out}`);
+  assert.doesNotMatch(out, /\[content-survival\] FAILED/);
+  assert.match(out, /DEEP-CHECK EXEMPT/);
+  assert.match(out, /deploy-watermark\.json/);
+  assert.match(out, /AMBIGUOUS/);
+});
+
+test('CLI: deploy-watermark.json — a genuine full revert to pre-edit base is STILL caught (deep-only exemption does not disable the cheap check)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-watermark-reverted-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  const wmPath = buildWatermarkDir(dir);
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2900,"reviewCount":20000,"updatedAt":"2026-08-25T00:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base watermark');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2910,"reviewCount":20050,"updatedAt":"2026-08-26T10:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'our watermark write');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Origin ends up byte-identical to pre-edit base — nothing new landed at
+  // all, the narrow true-positive signal this exemption mode preserves.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${baseSha}`,
+  ]);
+  assert.equal(code, 1, `expected the true full revert to still fail. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /deploy-watermark\.json/);
 });
