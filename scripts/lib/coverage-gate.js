@@ -42,6 +42,23 @@
  *   costs nothing in detection and removes the entire small-denominator false
  *   positive class. minSample alone could not do this: raising it would make
  *   every partial run unjudgeable rather than correctly judged.
+ *
+ *   WHY isRiskyChange EXISTS (2026-08-26, BRO-513, recurred from an identical
+ *   16.7% refusal on 2026-08-03): once a batch is large enough to clear
+ *   minSample/minChanged, the guard still fired at a steady ~17-21% — nowhere
+ *   near the "essentially the whole batch" signature above, and not a broken
+ *   input either. The individual show diffs (abigails-party-west-end-2026,
+ *   jeeves-takes-charge-west-end-2026, …) showed genuinely NEW aggregator-
+ *   listed URLs the show didn't have before, flipping complete → incomplete —
+ *   the census doing its job as new roundups/blog posts publish. Shows opening
+ *   in the same week cluster these discoveries naturally; nothing was broken.
+ *   The one direction that DOES match the vacuous-truth failure mode
+ *   (censusVerdictFor's own docstring) is a regression TO 'no-census-yet' —
+ *   hadAnySource going false is exactly what a dead SERP provider / empty
+ *   census / partial checkout produces. review-gap's blastRadiusCheck call
+ *   passes isRiskyChange to count only that direction, so a batch of
+ *   legitimate new-gap discoveries can never trip the guard while an actual
+ *   "this run found nothing" regression still does.
  */
 
 'use strict';
@@ -99,6 +116,15 @@ const DEFAULT_MIN_CHANGED = 5;
  * @param {number} [opts.minSample=20]    below this many compared ids, never refuse
  * @param {number} [opts.minChanged=5]    below this many CHANGED ids, never refuse
  * @param {string} [opts.label='coverage'] shown in the reason string
+ * @param {(prevState: any, nextState: any) => boolean} [opts.isRiskyChange]
+ *   Optional filter on which state transitions count toward `changed` at all.
+ *   Defaults to "every transition counts" (the original, direction-blind
+ *   behavior — unchanged for any caller that doesn't pass this). A caller
+ *   whose state values aren't a flat interchangeable set — some transitions
+ *   are the system doing its job, others are exactly the broken-input
+ *   symptom this guard exists to catch — can narrow `changed` to only the
+ *   risky direction. See the review-gap call site in
+ *   audit-show-review-gap.js for the motivating case.
  * @param {NodeJS.ProcessEnv} [opts.env]
  * @returns {{ok: boolean, compared: number, changed: number, changedPct: number,
  *            changedIds: string[], reason: string}}
@@ -110,6 +136,7 @@ function blastRadiusCheck(prevStates, nextStates, opts = {}) {
     minSample = DEFAULT_MIN_SAMPLE,
     minChanged = DEFAULT_MIN_CHANGED,
     label = 'coverage',
+    isRiskyChange,
     env = process.env,
   } = opts;
 
@@ -132,7 +159,10 @@ function blastRadiusCheck(prevStates, nextStates, opts = {}) {
   for (const [id, nextState] of next) {
     if (!prev.has(id)) continue; // new show — not a state CHANGE
     compared++;
-    if (prev.get(id) !== nextState) changedIds.push(id);
+    const prevState = prev.get(id);
+    if (prevState === nextState) continue;
+    if (typeof isRiskyChange === 'function' && !isRiskyChange(prevState, nextState)) continue;
+    changedIds.push(id);
   }
   const changed = changedIds.length;
   const changedPct = compared > 0 ? (changed / compared) * 100 : 0;

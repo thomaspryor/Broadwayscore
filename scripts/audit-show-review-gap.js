@@ -2113,7 +2113,20 @@ async function main(argv = process.argv.slice(2)) {
       return blastRadiusCheck(
         only(stateMap(prevAudit && prevAudit.results)),
         only(stateMap(mergedResults)),
-        { label: 'review-gap' }
+        {
+          label: 'review-gap',
+          // BRO-513 (2026-08-26, recurrence of the 2026-08-03 16.7% refusal):
+          // complete → incomplete is the census finding a genuinely NEW
+          // aggregator-listed URL — the audit doing its job, not a broken
+          // input, and it clusters naturally on weeks when several shows
+          // open together. The failure mode this guard actually exists to
+          // catch (dead SERP provider / empty census / partial checkout) is
+          // hadAnySource going false, which lands verdicts on
+          // 'no-census-yet' (see censusVerdictFor's vacuous-truth note). Only
+          // count a REGRESSION to 'no-census-yet' as risky — see
+          // coverage-gate.js's isRiskyChange rationale.
+          isRiskyChange: (prevState, nextState) => nextState === 'no-census-yet' && prevState !== 'no-census-yet',
+        }
       );
     })();
 

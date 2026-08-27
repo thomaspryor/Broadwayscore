@@ -143,6 +143,44 @@ test('blastRadiusCheck: minChanged is configurable and 0 restores pure-percentag
   assert.strictEqual(r.ok, false, 'minChanged:0 must reproduce the old percentage-only gate');
 });
 
+test('blastRadiusCheck: isRiskyChange narrows which transitions count as changed (BRO-513)', () => {
+  // The recurring false positive: a batch of shows genuinely goes
+  // complete -> incomplete because the census found real new gaps, not
+  // because anything broke. With a review-gap-style isRiskyChange (only a
+  // regression TO 'no-census-yet' is risky), that batch must never refuse.
+  const prev = state(29, 'complete');
+  const next = { ...prev };
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'incomplete'; // 20.7%, the exact BRO-513 numbers
+  const isRiskyChange = (p, n) => n === 'no-census-yet' && p !== 'no-census-yet';
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange });
+  assert.strictEqual(r.compared, 29, 'denominator is unaffected by the filter');
+  assert.strictEqual(r.changed, 0, 'complete -> incomplete is not a risky transition');
+  assert.strictEqual(r.ok, true);
+});
+
+test('blastRadiusCheck: isRiskyChange still catches the failure mode it is FOR', () => {
+  // A dead SERP provider / empty census manifests as verdicts regressing to
+  // 'no-census-yet' — that direction must still refuse even though the
+  // complete<->incomplete churn above is now ignored.
+  const prev = state(29, 'complete');
+  const next = { ...prev };
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'no-census-yet';
+  const isRiskyChange = (p, n) => n === 'no-census-yet' && p !== 'no-census-yet';
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap', isRiskyChange });
+  assert.strictEqual(r.changed, 6);
+  assert.strictEqual(r.ok, false);
+  assert.match(r.reason, /blast radius/);
+});
+
+test('blastRadiusCheck: isRiskyChange omitted preserves the original direction-blind behavior', () => {
+  const prev = state(100, 'complete');
+  const next = { ...prev };
+  for (let i = 0; i < 6; i++) next[`show-${i}`] = 'incomplete';
+  const r = blastRadiusCheck(prev, next, { env: {} });
+  assert.strictEqual(r.changed, 6);
+  assert.strictEqual(r.ok, false);
+});
+
 test('both env overrides force the write through', () => {
   const prev = state(100, 'complete');
   const next = state(100, 'incomplete'); // 100% change
