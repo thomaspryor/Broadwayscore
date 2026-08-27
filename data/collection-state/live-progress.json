@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-27T21:42:34.209Z",
+  "updatedAt": "2026-08-27T22:01:25.575Z",
   "processed": 60,
-  "failed": 403,
-  "successRate": "13.0%",
+  "failed": 413,
+  "successRate": "12.7%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 12
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-27T19:42:25.660Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-27T19:45:13.410Z",
-      "event": "bb-session",
-      "session": "68a2d932",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
     {
       "t": "2026-08-27T19:45:14.374Z",
       "event": "bb-cookie-inject",
@@ -129,6 +118,17 @@
       "event": "bb-session",
       "session": "dc33f83f",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-27T21:59:54.736Z",
+      "event": "bb-session",
+      "session": "4d6c3280",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-27T21:59:55.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
