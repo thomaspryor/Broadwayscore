@@ -11,7 +11,12 @@
     "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "hungry-women-off-broadway-2026/melissamaney--unknown.json",
-    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -41,7 +46,12 @@
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
     "shifters-off-broadway-2026/times-uk--donald-hutera.json",
-    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json"
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,10 +64,16 @@
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
@@ -66,11 +82,12 @@
     "archiveToday": [],
     "archive": [
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
     ]
   },
   "startTime": "2026-08-27T20:23:44.168Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
   "log": [
     {
       "t": "2026-08-27T20:24:40.488Z",
@@ -93,6 +110,24 @@
       "t": "2026-08-27T20:26:41.043Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-27T20:30:22.203Z",
+      "event": "bb-session",
+      "session": "37530944",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-08-27T20:30:39.705Z",
+      "event": "bb-session",
+      "session": "527b81dc",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-08-27T20:31:32.700Z",
+      "event": "bb-session",
+      "session": "8152e247",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-27T20:29:43.051Z",
-  "processed": 12,
-  "failed": 28,
-  "successRate": "30.0%",
+  "updatedAt": "2026-08-27T20:31:57.900Z",
+  "processed": 17,
+  "failed": 33,
+  "successRate": "34.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 13,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-27T20:24:40.488Z",
@@ -36,6 +36,24 @@
       "t": "2026-08-27T20:26:41.043Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-27T20:30:22.203Z",
+      "event": "bb-session",
+      "session": "37530944",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-08-27T20:30:39.705Z",
+      "event": "bb-session",
+      "session": "527b81dc",
+      "url": "https://www.broadwayworld.com/reviews/dukes"
+    },
+    {
+      "t": "2026-08-27T20:31:32.700Z",
+      "event": "bb-session",
+      "session": "8152e247",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
