@@ -53,7 +53,9 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/vulture--sara-holdren.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -424,7 +426,15 @@
     "a-midsummer-nights-dream-globe-west-end-2026/newsday--linda-winer.json",
     "a-midsummer-nights-dream-globe-west-end-2026/andrzej-lukowski--andrzej-lukowski.json",
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -465,13 +475,15 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -496,11 +508,12 @@
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
-      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+      "schmigadoon-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
+  "lastProcessed": "schmigadoon-2026/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -605,6 +618,17 @@
       "event": "bb-session",
       "session": "35613450",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-27T21:38:51.863Z",
+      "event": "bb-session",
+      "session": "78371596",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-27T21:38:52.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
