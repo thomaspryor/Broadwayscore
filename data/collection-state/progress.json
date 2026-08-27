@@ -59,7 +59,8 @@
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-    "oh-mary-west-end-2025/deadline--greg-evans.json"
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -474,7 +475,15 @@
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -556,11 +565,12 @@
       "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
       "schmigadoon-2026/vulture--sara-holdren.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json"
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -693,6 +703,18 @@
       "t": "2026-08-27T21:59:55.842Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T22:02:46.586Z",
+      "event": "bb-session",
+      "session": "fbf91254",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-27T22:03:04.169Z",
+      "event": "bb-session",
+      "session": "7b7d1995",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
