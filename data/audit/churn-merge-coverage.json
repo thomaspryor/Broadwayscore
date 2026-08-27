@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-27T17:46:37.934Z",
+    "generatedAt": "2026-08-27T20:29:41.377Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -26,11 +26,11 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 54
+      "churn": 55
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 47
+      "churn": 49
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -56,57 +56,57 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 857,
+      "churn": 860,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 829,
+      "churn": 831,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 323,
+      "churn": 325,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 314,
+      "churn": 318,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 199,
+      "churn": 197,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 159,
+      "churn": 163,
       "mergeAttr": "union"
     },
     {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 89,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 89,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 89,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 87,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 76,
+      "churn": 75,
       "mergeAttr": "union"
     },
     {
