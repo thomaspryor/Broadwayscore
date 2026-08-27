@@ -853,7 +853,23 @@
     "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "masticate-off-broadway-2026/donyc--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -920,6 +936,7 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
@@ -956,7 +973,7 @@
     ]
   },
   "startTime": "2026-08-26T20:05:15.926Z",
-  "lastProcessed": "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
   "log": [
     {
       "t": "2026-08-26T20:51:11.926Z",
@@ -1146,6 +1163,29 @@
       "event": "bb-session",
       "session": "9d00321f",
       "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-27T02:52:25.338Z",
+      "event": "bb-session",
+      "session": "2cc1ce2d",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-27T02:52:25.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T02:55:48.711Z",
+      "event": "bb-session",
+      "session": "282112b3",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-27T02:55:56.659Z",
+      "event": "bb-session",
+      "session": "f2357ad6",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
