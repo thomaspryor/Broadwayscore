@@ -27,6 +27,7 @@ const { execSync } = require('child_process');
 const { Client: NotionClient } = require('@notionhq/client');
 const Anthropic = require('@anthropic-ai/sdk');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { updatePage } = require('./lib/notion-writes');
 
 // Load .env
 require('./lib/load-env').loadEnv();
@@ -127,7 +128,7 @@ async function tagCardAttempted(notion, cardId, extraTag) {
   if (extraTag && !newTags.find(t => t.name === extraTag)) {
     newTags.push({ name: extraTag });
   }
-  await notion.pages.update({
+  await updatePage(notion, {
     page_id: cardId,
     properties: { Tags: { multi_select: newTags } },
   });
@@ -137,7 +138,7 @@ async function addPrUrlToCard(notion, cardId, prUrl) {
   const page = await notion.pages.retrieve({ page_id: cardId });
   const existing = page.properties?.Notes?.rich_text?.map(t => t.plain_text).join('') || '';
   const updated = existing + `\n\n## Auto-fix PR\n${prUrl}`;
-  await notion.pages.update({
+  await updatePage(notion, {
     page_id: cardId,
     properties: {
       Notes: { rich_text: [{ text: { content: updated.slice(0, 1800) } }] },
