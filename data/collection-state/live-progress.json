@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-27T19:09:21.926Z",
+  "updatedAt": "2026-08-27T19:11:49.856Z",
   "processed": 22,
-  "failed": 98,
-  "successRate": "18.3%",
+  "failed": 108,
+  "successRate": "16.9%",
   "tierBreakdown": {
     "playwright": 15,
-    "amp": 0,
+    "amp": 1,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 4,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-08-27T18:55:19.511Z",
@@ -48,6 +48,40 @@
       "event": "bb-session",
       "session": "1e2ab065",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-08-27T19:10:43.222Z",
+      "event": "bb-session",
+      "session": "f943e771",
+      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
+    },
+    {
+      "t": "2026-08-27T19:11:02.257Z",
+      "event": "bb-session",
+      "session": "43ce237b",
+      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
+    },
+    {
+      "t": "2026-08-27T19:11:14.080Z",
+      "event": "bb-session",
+      "session": "a2413b27",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-08-27T19:11:14.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-27T19:11:32.347Z",
+      "event": "bb-session",
+      "session": "c136a2ab",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-08-27T19:11:32.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
