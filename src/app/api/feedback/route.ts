@@ -100,6 +100,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Forward to Formspree FIRST and unconditionally. Before this route
+    // existed the form posted straight to Formspree, and process-feedback.yml
+    // polls it for the AI bug-diagnosis pipeline. Doing the Notion write first
+    // meant a Notion outage (502) or a missing NOTION_API_KEY (503) dropped
+    // submissions that would have reached Formspree before — a regression in
+    // the path that actually has a consumer. Notion is purely additive now.
+    await forwardToFormspree(formData);
+
     const notionKey = process.env.NOTION_API_KEY;
     if (!notionKey) {
       console.error('NOTION_API_KEY not configured');
@@ -123,8 +131,6 @@ export async function POST(req: NextRequest) {
         { status: 502 }
       );
     }
-
-    await forwardToFormspree(formData);
 
     return NextResponse.json({ ok: true });
   } catch (err) {
