@@ -334,7 +334,14 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
   const strandedCommitsFn = opts.strandedCommits || countStrandedCommits;
   const landedFn = opts.jobBranchLanded || jobBranchLanded;
   const commitRefFn = opts.taskCommitLandedInWindow || taskCommitLandedInWindow;
-  const dispatches = drainLedgerEntries.filter(e => e.event === 'drain-dispatch');
+  // A malformed/missing ts (hand-edited or corrupted ledger line) would
+  // otherwise turn every downstream Date arithmetic into NaN, tripping
+  // `< ORPHAN_TIMEOUT_H` to false and firing an immediate fail instead of the
+  // intended grace window — same defensive guard linear-drain-parked.js's
+  // reconcileOutcomes already applies (1f0daa1100b), added here too since
+  // this touches the same function (ship-check/Codex finding, BRO-2508).
+  const dispatches = drainLedgerEntries.filter(e =>
+    e && e.event === 'drain-dispatch' && Number.isFinite(new Date(e.ts).getTime()));
   // Jobs already resolved into an outcome THIS pass — guards the real hazard
   // of two dispatch rows racing onto the SAME underlying job. isDispatchResolved
   // itself is checked only against the immutable pre-pass drainLedgerEntries: an
