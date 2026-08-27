@@ -28,7 +28,13 @@ const {
   main,
   DISPATCH_CAP,
   RETRY_COOLDOWN_MS,
+  ORPHAN_TIMEOUT_H,
+  computeIssueContentHash,
+  findMyJob,
+  reconcileOutcomes,
 } = require(path.join(REPO, 'scripts', 'linear-drain-parked.js'));
+
+const { JOB_EVENTS } = require(path.join(REPO, 'scripts', 'lib', 'dispatch-ledger.js'));
 
 const SAFE_CMD = '`node --test tests/unit/some-check.test.mjs`';
 const PARKED_BODY = `PARKED: Auto-filed by owner-alert-router (condition: some:condition); parked for triage.\n\n## Problem\nSomething broke.\n\n## Acceptance criteria\n${SAFE_CMD} passes.`;
@@ -169,6 +175,206 @@ describe('recentlyAttempted', () => {
       null,
     ]);
     assert.strictEqual(set.size, 0);
+  });
+});
+
+describe('computeIssueContentHash', () => {
+  test('stable for the same title+description, changes when either changes', () => {
+    const a = computeIssueContentHash(issue({ identifier: 'BRO-1' }));
+    const b = computeIssueContentHash(issue({ identifier: 'BRO-1' })); // identifier not part of the hash basis
+    assert.strictEqual(a, b);
+    assert.notStrictEqual(a, computeIssueContentHash(issue({ title: 'A different title' })));
+    assert.notStrictEqual(a, computeIssueContentHash(issue({ description: PARKED_BODY + '\nedited.' })));
+  });
+});
+
+describe('findMyJob', () => {
+  test('finds the job-spawned at/after sinceTs for this taskId and follows it to a terminal state', () => {
+    const entries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:00:05Z' },
+      { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:05:00Z', costUSD: 0.5 },
+    ];
+    const job = findMyJob(entries, 'linear:BRO-1', '2026-08-26T12:00:00Z');
+    assert.strictEqual(job.event, JOB_EVENTS.DONE);
+    assert.strictEqual(job.jobId, 'j1');
+  });
+
+  test('returns null when no spawn is observed at/after sinceTs', () => {
+    const entries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T11:00:00Z' }, // before sinceTs
+    ];
+    assert.strictEqual(findMyJob(entries, 'linear:BRO-1', '2026-08-26T12:00:00Z'), null);
+  });
+
+  test('ignores spawns for a different taskId', () => {
+    const entries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-2', jobId: 'j1', ts: '2026-08-26T12:00:05Z' },
+      { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-2', jobId: 'j1', ts: '2026-08-26T12:05:00Z' },
+    ];
+    assert.strictEqual(findMyJob(entries, 'linear:BRO-1', '2026-08-26T12:00:00Z'), null);
+  });
+});
+
+describe('reconcileOutcomes', () => {
+  const HASH = 'deadbeefcafef00d';
+
+  test('a job-done resolves to card-pass', () => {
+    const now = new Date('2026-08-26T13:00:00Z');
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: '2026-08-26T12:00:00Z' },
+    ];
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:00:05Z' },
+      { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:10:00Z' },
+    ];
+    const out = reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now);
+    assert.strictEqual(out.length, 1);
+    assert.strictEqual(out[0].event, 'card-pass');
+    assert.strictEqual(out[0].cardId, 'BRO-1');
+    assert.strictEqual(out[0].contentHash, HASH);
+  });
+
+  test('a job-failed resolves to card-fail', () => {
+    const now = new Date('2026-08-26T13:00:00Z');
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: '2026-08-26T12:00:00Z' },
+    ];
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:00:05Z' },
+      { event: JOB_EVENTS.FAILED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:10:00Z', stage: 'verify' },
+    ];
+    const out = reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now);
+    assert.strictEqual(out.length, 1);
+    assert.strictEqual(out[0].event, 'card-fail');
+    assert.ok(out[0].note.includes('verify'));
+  });
+
+  test('no spawn observed within ORPHAN_TIMEOUT_H resolves to card-fail (likely refused)', () => {
+    const dispatchTs = '2026-08-26T09:00:00Z';
+    const now = new Date(new Date(dispatchTs).getTime() + (ORPHAN_TIMEOUT_H + 1) * 3600e3);
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: dispatchTs },
+    ];
+    const out = reconcileOutcomes(ledgerEntries, [], now);
+    assert.strictEqual(out.length, 1);
+    assert.strictEqual(out[0].event, 'card-fail');
+    assert.ok(out[0].note.includes('spawn never observed'));
+  });
+
+  test('no spawn observed but still within ORPHAN_TIMEOUT_H leaves it unresolved', () => {
+    const dispatchTs = '2026-08-26T09:00:00Z';
+    const now = new Date(new Date(dispatchTs).getTime() + 60 * 60 * 1000); // 1h — within the window
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: dispatchTs },
+    ];
+    assert.deepStrictEqual(reconcileOutcomes(ledgerEntries, [], now), []);
+  });
+
+  test('a job still running (no terminal event) is left unresolved', () => {
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: '2026-08-26T12:00:00Z' },
+    ];
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-26T12:00:05Z' },
+    ];
+    assert.deepStrictEqual(reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, new Date('2026-08-26T12:30:00Z')), []);
+  });
+
+  test('an already-resolved dispatch (same identifier+contentHash) is not re-emitted', () => {
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: HASH, ts: '2026-08-26T12:00:00Z' },
+      { event: 'card-fail', cardId: 'BRO-1', contentHash: HASH, ts: '2026-08-26T12:05:00Z' },
+    ];
+    assert.deepStrictEqual(reconcileOutcomes(ledgerEntries, [], new Date('2026-08-26T13:00:00Z')), []);
+  });
+
+  test('pre-feature dispatch entries with no contentHash are silently excluded', () => {
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', ts: '2026-08-26T09:00:00Z' }, // no contentHash
+    ];
+    assert.deepStrictEqual(reconcileOutcomes(ledgerEntries, [], new Date('2026-08-26T13:00:00Z')), []);
+  });
+});
+
+describe('main() — permanent park integration (BRO-2434 acceptance criteria)', () => {
+  test('a repeatedly-failing parked issue is skipped after 2 failed attempts on unchanged content, not re-dispatched', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const target = issue({ identifier: 'BRO-1' });
+    const hash = computeIssueContentHash(target);
+    // Two prior card-fail entries on the SAME content hash — checkPark's
+    // default maxFailures (2) is met, so this issue must be parked.
+    const ledgerEntries = [
+      { event: 'card-fail', cardId: 'BRO-1', contentHash: hash, ts: '2026-08-24T12:00:00Z', note: 'job-failed' },
+      { event: 'card-fail', cardId: 'BRO-1', contentHash: hash, ts: '2026-08-25T12:00:00Z', note: 'job-failed' },
+    ];
+    const dispatchedTaskIds = [];
+    const appended = [];
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [target],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledgerEntries,
+      appendLedger: (entry) => appended.push(entry),
+      dispatchLedgerEntries: () => [],
+      now: new Date('2026-08-26T12:00:00Z'),
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, []);
+    assert.deepStrictEqual(dispatchedTaskIds, []);
+    assert.strictEqual(appended.some((e) => e.event === 'drain-parked-dispatch'), false);
+  });
+
+  test('a resolved/successful dispatch is reconciled to card-pass and does not park', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const target = issue({ identifier: 'BRO-1' });
+    const hash = computeIssueContentHash(target);
+    // One prior dispatch whose child job finished cleanly (job-done) —
+    // reconciliation should score this card-pass, leaving zero failures on
+    // this content hash, so the issue is eligible for a fresh dispatch.
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-1', contentHash: hash, ts: '2026-08-24T12:00:00Z' },
+    ];
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-24T12:00:05Z' },
+      { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-1', jobId: 'j1', ts: '2026-08-24T12:10:00Z' },
+    ];
+    const dispatchedTaskIds = [];
+    const appended = [];
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [target],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledgerEntries,
+      appendLedger: (entry) => appended.push(entry),
+      dispatchLedgerEntries: () => dispatchLedgerEntries,
+      now: new Date('2026-08-26T12:00:00Z'),
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, ['BRO-1']);
+    assert.deepStrictEqual(dispatchedTaskIds, ['linear:BRO-1']);
+    assert.ok(appended.some((e) => e.event === 'card-pass' && e.cardId === 'BRO-1'));
+    assert.ok(appended.some((e) => e.event === 'drain-parked-dispatch' && e.identifier === 'BRO-1'));
+  });
+
+  test('two failures on DIFFERENT content hashes (issue was edited) do not park — each is a fresh attempt', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const target = issue({ identifier: 'BRO-1' });
+    const currentHash = computeIssueContentHash(target);
+    const ledgerEntries = [
+      { event: 'card-fail', cardId: 'BRO-1', contentHash: 'stale-hash-1', ts: '2026-08-24T12:00:00Z' },
+      { event: 'card-fail', cardId: 'BRO-1', contentHash: 'stale-hash-2', ts: '2026-08-25T12:00:00Z' },
+    ];
+    assert.notStrictEqual(currentHash, 'stale-hash-1');
+    const dispatchedTaskIds = [];
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [target],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledgerEntries,
+      appendLedger: () => {},
+      dispatchLedgerEntries: () => [],
+      now: new Date('2026-08-26T12:00:00Z'),
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, ['BRO-1']);
+    assert.deepStrictEqual(dispatchedTaskIds, ['linear:BRO-1']);
   });
 });
 
