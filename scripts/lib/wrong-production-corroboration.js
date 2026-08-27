@@ -112,4 +112,36 @@ function evaluateCurrentRunCorroboration({ review, show }) {
   return { strength, signals };
 }
 
-module.exports = { evaluateCurrentRunCorroboration, ROUNDUP_EXCERPT_FIELDS };
+/**
+ * Bucket an evaluateCurrentRunCorroboration() result into a sweep-actionable
+ * verdict for a date-guard flag, given whether the flag's own note describes
+ * a before_preview date. Shared by every sweep that surfaces date-guard
+ * misparse candidates (scripts/sweep-wrongproduction-corroboration.js,
+ * scripts/lib/wrong-production-fp-signals.js) so the bucketing rule below is
+ * defined exactly once instead of hand-copied per caller.
+ *
+ *   'strong' → theatre-record-month signal AND the flag is before_preview
+ *     (the only case where a TR-month contradiction is itself sweep-
+ *     actionable; see the theatre-record-month doc comment above).
+ *   'weak'   → any weak corroboration (roundup-excerpt) — flag as usual,
+ *     warn for human review.
+ *   null     → no corroboration, OR a 'strong' verdict from cv-affirms-
+ *     production alone / an after_close TR-month match — both informational
+ *     only, not sweep-actionable (see header: on the 2026-08-16 sweep
+ *     cv-affirms-production alone produced 700+ hits almost all on curated
+ *     historical revivals).
+ *
+ * @param {object} args
+ * @param {{strength: string|null, signals: string[]}} args.corrob - result of evaluateCurrentRunCorroboration
+ * @param {boolean} args.isBeforePreview - true when the flag's note describes a before_preview date
+ * @returns {'strong'|'weak'|null}
+ */
+function bucketDateGuardCandidate({ corrob, isBeforePreview }) {
+  if (!corrob || !corrob.strength) return null;
+  const trSignal = corrob.signals.find((s) => s.startsWith('theatre-record-month:'));
+  if (trSignal && isBeforePreview) return 'strong';
+  if (corrob.strength === 'weak') return 'weak';
+  return null;
+}
+
+module.exports = { evaluateCurrentRunCorroboration, bucketDateGuardCandidate, ROUNDUP_EXCERPT_FIELDS };

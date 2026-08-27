@@ -79,9 +79,11 @@ const NON_DATE_BASIS = /Collector LLM|CV-promoted|not a review|Cross-market|dupl
 
 /**
  * Fields by which a human (or an operator-run remediation) asserted the flag.
- * A re-derived date must never overturn one of these.
+ * A re-derived date must never overturn one of these. Exported: other
+ * corroboration-guard sweeps (e.g. wrong-production-fp-signals.js) apply the
+ * same never-second-guess-a-human rule and should not re-derive it.
  */
-function _hasHumanAssertedFlag(review) {
+function hasHumanAssertedFlag(review) {
   if (review.humanReviewedWrongProduction === true) return true;
   if (review.wrongProductionProvenance === 'manual') return true;
   if (review.humanReviewScore != null) return true;
@@ -152,7 +154,7 @@ function detectContradictedFlagBasis({ review, show } = {}) {
   if (review.wrongShow === true) flags.push('wrongShow');
   if (!flags.length) return none;
 
-  if (_hasHumanAssertedFlag(review)) return none;
+  if (hasHumanAssertedFlag(review)) return none;
 
   const basisStrings = _basisStringsForLiveFlags(review);
   if (!basisStrings.length) return none;
@@ -187,6 +189,7 @@ function detectContradictedFlagBasis({ review, show } = {}) {
 module.exports = {
   detectContradictedFlagBasis,
   citedBasisDate,
+  hasHumanAssertedFlag,
   DATE_ONLY_BASIS_PREFIXES,
   NON_DATE_BASIS,
 };
