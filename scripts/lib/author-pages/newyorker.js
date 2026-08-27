@@ -98,7 +98,11 @@ async function fetch(newyorkerSlug) {
     return [];
   }
   if (!html || html.length < 5000) return [];
-  return parseArticles(html);
+  const articles = parseArticles(html);
+  if (articles.length === 0) {
+    console.warn(`  [newyorker] WARN: ${url} returned ${html.length} bytes but 0 data-item articles parsed — possible structural drift (data-item/hotelLink/dangerousHed shape changed), or the critic genuinely has no recent bylines`);
+  }
+  return articles;
 }
 
 module.exports = { fetch };

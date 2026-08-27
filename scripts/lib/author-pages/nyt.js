@@ -80,7 +80,11 @@ async function fetch(nytSlug) {
     return [];
   }
   if (!html || html.length < 5000) return [];
-  return parseArticles(html);
+  const articles = parseArticles(html);
+  if (articles.length === 0) {
+    console.warn(`  [nyt] WARN: ${url} returned ${html.length} bytes but 0 bylined articles parsed — possible slug/structural drift, or the critic genuinely has no recent bylines`);
+  }
+  return articles;
 }
 
 module.exports = { fetch };

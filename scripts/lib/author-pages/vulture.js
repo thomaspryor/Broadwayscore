@@ -16,17 +16,26 @@
 const path = require('path');
 const { fetchPage } = require(path.join(__dirname, '../scraper.js'));
 
+const MONTHS = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12',
+};
+
 /**
- * Convert Vulture's "Jan. 8, 2026" date text to ISO YYYY-MM-DD.
- * Returns null if unparseable.
+ * Convert Vulture's date text ("Jan. 8, 2026" or "July 29, 2026" — both
+ * abbreviated+period and full month-name forms appear) to ISO YYYY-MM-DD.
+ * Parsed manually (not via `new Date()`) so the result doesn't shift by a day
+ * depending on the runner's timezone. Returns null if unparseable.
  * @param {string} raw
  * @returns {string|null}
  */
 function toIsoDate(raw) {
   if (!raw) return null;
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return null;
-  return d.toISOString().slice(0, 10);
+  const m = raw.match(/^([A-Za-z]+)\.?\s+(\d{1,2}),\s*(\d{4})$/);
+  if (!m) return null;
+  const month = MONTHS[m[1].slice(0, 3).toLowerCase()];
+  if (!month) return null;
+  return `${m[3]}-${month}-${m[2].padStart(2, '0')}`;
 }
 
 function cleanTitle(raw) {
@@ -89,7 +98,11 @@ async function fetch(vultureSlug) {
     return [];
   }
   if (!html || html.length < 5000) return [];
-  return parseArticles(html);
+  const articles = parseArticles(html);
+  if (articles.length === 0) {
+    console.warn(`  [vulture] WARN: ${url} returned ${html.length} bytes but 0 articles parsed — possible structural drift (article <li>/data-track-headline shape changed), or the critic genuinely has no recent bylines`);
+  }
+  return articles;
 }
 
 module.exports = { fetch };
