@@ -23,6 +23,7 @@ const { planContentRequestActions } = require('./lib/content-request-routing.js'
 const { buildEntry: buildLedgerEntry, mergeEntries: mergeLedgerEntries } = require('./lib/feedback-request-ledger.js');
 const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
 const { mergeCorrectionSubmissions } = require('./lib/feedback-digest-correction-merge.js');
+const { shouldSendThankYouNow } = require('./lib/feedback-thank-you-gate.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -418,10 +419,16 @@ async function main() {
       const sub = submissions[cat.submissionNumber - 1];
       if (!sub) continue;
 
-      // Bug/Content Error emails are sent after resolution, not now — except
-      // content-addition requests, which bypass diagnosis/auto-fix entirely
-      // and would otherwise never get any acknowledgement.
-      if ((cat.category === 'Bug' || cat.category === 'Content Error') && !cat.contentRequest) continue;
+      // shouldSendThankYouNow (scripts/lib/feedback-thank-you-gate.js) decides
+      // this from classification alone — it runs BEFORE content-request
+      // routing/dispatch below and has no way to see whether the downstream
+      // add-requested-show.yml run later accepts, rejects (title-mismatch,
+      // venue ambiguity), or leaves the request stillStaged. That is
+      // intentional (BRO-129): the submitter is acknowledged regardless of
+      // that outcome. Bug/Content Error reports that are NOT content-addition
+      // requests are the one exception — their thank-you is sent after
+      // resolution, not now.
+      if (!shouldSendThankYouNow(cat)) continue;
 
       if (sub.email) {
         const emailCategory = cat.contentRequest ? 'Content Request' : cat.category;

@@ -124,27 +124,57 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   ALL_CHANGED_FILES="$ALL_CHANGED_FILES
 $range_files"
 
-  # CLAUDE.md guard (only meaningful when there's a remote_oid to compare).
-  if [ "$remote_oid" != "0000000000000000000000000000000000000000" ] && \
-     echo "$range_files" | grep -q "^CLAUDE.md$"; then
-    remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
-    local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
-    if [ -n "$remote_content" ]; then
-      for pattern in "${CRITICAL_PATTERNS[@]}"; do
-        if echo "$remote_content" | grep -q "$pattern" && \
-           ! echo "$local_content" | grep -q "$pattern"; then
-          echo ""
-          echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
-          echo ""
-          echo "  The remote CLAUDE.md contains '$pattern'"
-          echo "  but your version removes it. Concurrent session conflict?"
-          echo "  Pull, re-apply, ensure both sections are present."
-          echo ""
-          echo "  Inspect: git diff $remote_oid..$local_oid -- CLAUDE.md"
-          echo ""
-          exit 1
-        fi
-      done
+  # CLAUDE.md guards: run whenever CLAUDE.md is part of this push.
+  if echo "$range_files" | grep -q "^CLAUDE.md$"; then
+    # 1. Critical-section revert guard (only meaningful when there's a
+    #    remote_oid to compare against).
+    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+      remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
+      local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
+      if [ -n "$remote_content" ]; then
+        for pattern in "${CRITICAL_PATTERNS[@]}"; do
+          if echo "$remote_content" | grep -q "$pattern" && \
+             ! echo "$local_content" | grep -q "$pattern"; then
+            echo ""
+            echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
+            echo ""
+            echo "  The remote CLAUDE.md contains '$pattern'"
+            echo "  but your version removes it. Concurrent session conflict?"
+            echo "  Pull, re-apply, ensure both sections are present."
+            echo ""
+            echo "  Inspect: git diff $remote_oid..$local_oid -- CLAUDE.md"
+            echo ""
+            exit 1
+          fi
+        done
+      fi
+    fi
+
+    # 2. Byte cap guard (BRO-124): scripts/lib/claude-md-anchors.json's
+    #    byteLimit is enforced in CI (test.yml's Lint Workflows job) but,
+    #    before this, nowhere locally — an overage only surfaced after push,
+    #    once CI failed. Same config, same check, run here so it's caught
+    #    before the push leaves the machine. Git-plumbing + decision logic
+    #    live in scripts/lib/claude-md-byte-cap-gate.sh / check-claude-md-
+    #    byte-cap.js (required/invoked directly by scripts/pre-push.test.mjs
+    #    per CLAUDE.md rule 15) — this is a thin call, not a second copy.
+    if [ -f "$REPO_ROOT/scripts/lib/claude-md-byte-cap-gate.sh" ]; then
+      CAP_OUT="/tmp/pre-push-claude-md-cap.$$.$RANDOM.out"
+      if ! bash "$REPO_ROOT/scripts/lib/claude-md-byte-cap-gate.sh" "$REPO_ROOT" "$local_oid" >"$CAP_OUT" 2>&1; then
+        echo ""
+        echo "=== PRE-PUSH BLOCKED: CLAUDE.md exceeds byte cap ==="
+        echo ""
+        cat "$CAP_OUT"
+        echo ""
+        echo "  Same cap .github/workflows/test.yml's Lint Workflows job enforces in"
+        echo "  CI — trim CLAUDE.md or move detail to memory/ before pushing."
+        echo ""
+        echo "  (Bypass for emergencies: git push --no-verify)"
+        echo ""
+        rm -f "$CAP_OUT"
+        exit 1
+      fi
+      rm -f "$CAP_OUT"
     fi
   fi
 done

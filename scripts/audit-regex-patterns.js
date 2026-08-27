@@ -101,10 +101,24 @@ const PATTERN_ALLOWLIST = {
   'LEGAL_PAGE_PATTERNS::6': 1000, // /©\s*\d{4}.*all\s+rights\s+reserved/
   // Cookie consent: Telegraph GDPR text bleeds into many Telegraph scrapes
   'COOKIE_CONSENT_PATTERNS::1': 100, // /legitimate\s+interest/
+  // BRO-38: STRONG_CHROME_DUMP_PATTERNS::6/7/8 mirror LEGAL_PAGE_PATTERNS::0/1
+  // and COOKIE_CONSENT_PATTERNS::1 position-independently (see content-quality.js
+  // comment above the array). Same underlying raw-hit source as those families —
+  // real "Privacy Policy"/"Terms of Use" footer links and WhatsOnStage's embedded
+  // GDPR cookie-notice bleed — but a 2026-08-26 full-corpus parity diff (33,945
+  // files) confirmed 0 of those raw hits reach isGarbageContent's actual gate
+  // (hasSubstantialReviewContent + non-trailing), because every hit either sits
+  // in a substantial real review (gate blocks it) or in trailing junk. Sized to
+  // the observed full-corpus raw count + 30% headroom, same convention as the
+  // source families.
+  'STRONG_CHROME_DUMP_PATTERNS::6': 60,  // /^privacy\s+policy/im — raw 43
+  'STRONG_CHROME_DUMP_PATTERNS::7': 20,  // /^terms\s+(of\s+)?(use|service)/im — raw 14
+  'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
   // Newsletter: real newsletter prompts in Guardian, artsdesk, TimeOut scrapes —
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'NEWSLETTER_PATTERNS::3': 10,   // /subscribe\s+to\s+(our\s+)?newsletter/i — raw 7, 2026-08-26 (BRO-33, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::4': 28,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 21, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::5': 22,   // /newsletter\s+sign[-\s]?up/ — raw 17, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
@@ -141,7 +155,7 @@ const PATTERN_ALLOWLIST = {
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
   'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
   'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
-  'HORROR_FILM_PATTERNS::3': 70,  // /haunted\s+(family|house|lambert)/ — raw 47
+  'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
   'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
@@ -206,6 +220,33 @@ const PATTERN_CALIBRATION = {
         + 'widget pattern (Playbill, Daily Beast), diffuse across outlets, not '
         + 'a scraper regression. Sized to baseline + ~30%.',
   },
+  'NEWSLETTER_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 7,
+    headroom: 1.43,
+    note: 'BRO-33 triage: /subscribe to (our )?newsletter/i first breached the '
+        + 'default-5 threshold (raw 7). Diffuse across 4 outlets — nytg (New '
+        + 'York Theatre Guide, 4 hits), new-statesman, queerty, london-theatre '
+        + '— corpus growth, not a scraper regression. 5/7 hits sit in the '
+        + 'trailing >60% of fullText (footer CTA) and are absorbed by '
+        + "isGarbageContent's trailing-junk mitigation (_isPatternInTrailingJunk); "
+        + 'the queerty hit at 16% is absorbed by the leading-junk mitigation '
+        + '(<20%). The new-statesman hit at 56% sits in neither safe window —  '
+        + 'verified this file is NOT protected by position, but detectNewsletter() '
+        + 'iterates NEWSLETTER_PATTERNS in array order and returns on the first '
+        + 'INDEX that matches anywhere in the text, not the first occurrence by '
+        + 'position; this file also matches NEWSLETTER_PATTERNS[1] '
+        + '("enter your email", allowlisted at 150) at 59%, which is checked '
+        + 'first and wins, so index 3 is never the operative match for this '
+        + 'file today. That is order-of-evaluation luck, not a structural '
+        + 'guarantee — if a future scrape drops the "enter your email" phrase '
+        + 'from this outlet while keeping "subscribe to our newsletter" in the '
+        + 'unprotected 20-60% zone, this specific file would flip to garbage. '
+        + 'Next bump: if this pattern regresses again, check whether the new '
+        + 'hits are mid-text (unprotected) rather than assuming trailing/leading '
+        + 'absorption. Sized to raw + 30%.',
+  },
   'NEWSLETTER_PATTERNS::4': {
     commit: 'pending',
     date: '2026-08-15',
@@ -263,6 +304,19 @@ const PATTERN_CALIBRATION = {
         + 'bleeding verbatim into scraped Playbill reviews. Concentrated in '
         + 'one outlet (Playbill), consistent with a static footer widget, '
         + 'not a scraper regression. Sized to raw + ~35%.',
+  },
+  'HORROR_FILM_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 76,
+    headroom: 1.32,
+    note: 'BRO-33 triage: /haunted (family|house|lambert)/i corpus growth from '
+        + 'raw 47 (prior baseline) to 76 — theater-metaphor bleed ("haunted '
+        + 'house version of the Seventies", horror-adjacent staging '
+        + 'descriptions in Appropriate, Abigail\'s Party reviews), diffuse '
+        + "across outlets, not concentrated in one active scraper. detectHorror"
+        + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
+        + 'zero pass through to rejection. Sized to raw + 30%.',
   },
 };
 

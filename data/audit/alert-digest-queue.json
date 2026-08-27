@@ -154,50 +154,6 @@
     "queuedAt": "2026-08-25T13:17:56.577Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 75.9% (384/506)\noff-broadway: 45.9% (150/327)\nwest-end: 71.9% (401/558)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (269h)\nA Midsummer Night's Dream - Globe — telegraph (269h)\nA Midsummer Night's Dream - Globe — thestage (269h)\nA Midsummer Night's Dream - Globe — times-uk (269h)\nA Midsummer Night's Dream — financialtimes (269h)\n… 186 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (269h)\n& Juliet — nydailynews (269h)\nThe Book of Mormon — usatoday (269h)\nBuena Vista Social Club — broadwaynews (269h)\nBuena Vista Social Club — nydailynews (269h)\n… 24 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:53.319Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/141 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAbigail’s Party: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:55.856Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "115 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T14:45:55.959Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 13.2% of shows changed coverage state",
-    "description": "review-gap blast radius 13.2% (5/38 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, isla-off-broadway-2026, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-26T10:30:37.657Z"
-  },
-  {
     "conditionKey": "opening-night-slug-mismatch-paranormal-activity-2026",
     "title": "Review URL cross-show mismatch on Paranormal Activity",
     "description": "Review URL for talkinbroadway/Howard Miller does not mention show slug (checked: paranormal-activity, paranormal, activity): https://www.talkinbroadway.com/page/world/ParanormalActivity.html",
@@ -275,14 +231,39 @@
     "queuedAt": "2026-08-26T14:33:02.785Z"
   },
   {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 38.2% of shows changed coverage state",
+    "description": "review-gap blast radius 38.2% (13/34 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, burlesque-west-end-2026, disruption-off-broadway-2026, game-of-thrones-the-mad-king-regional-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, midnight-at-the-never-get-west-end-2026, paranormal-activity-2026, romeo-and-juliet-off-broadway-2026, the-hunger-games-on-stage-west-end-2025, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, the-rocky-horror-show-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-26T18:50:46.770Z"
+  },
+  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 16 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32987885849",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33005004889",
     "decision": false,
     "decisionPrompt": null,
     "model": "opus",
-    "queuedAt": "2026-08-26T16:50:21.119Z"
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33005004889)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33003973080)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "27"
+      }
+    ],
+    "queuedAt": "2026-08-26T19:52:07.446Z"
   }
 ]

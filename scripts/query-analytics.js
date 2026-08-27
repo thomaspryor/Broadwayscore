@@ -18,6 +18,7 @@
  *   node scripts/query-analytics.js ticket-clicks      # Ticket clicks by show & platform
  *   node scripts/query-analytics.js top-pages          # Most viewed pages (last 30 days)
  *   node scripts/query-analytics.js traffic            # Daily sessions & users (last 30 days)
+ *   node scripts/query-analytics.js sessions-engaged    # Headline KPI: engaged sessions by channel (drops Direct bots)
  *   node scripts/query-analytics.js events             # All custom events summary
  *   node scripts/query-analytics.js search-terms       # What users search for on-site
  *   node scripts/query-analytics.js geo-audit          # Country breakdown — find bot geos
@@ -26,6 +27,7 @@
  */
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
 
 // Load .env
 require('./lib/load-env').loadEnv();
@@ -135,16 +137,42 @@ async function reportTraffic(client, dateRange) {
     property: `properties/${PROPERTY_ID}`,
     dateRanges: [dateRange],
     dimensions: [{ name: 'date' }],
-    metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }],
+    metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }],
     orderBys: [{ dimension: { dimensionName: 'date' } }],
   });
-  formatTable(['Date', 'Sessions', 'Users', 'Page Views'], (res.rows || []).map(r => {
+  formatTable(['Date', 'Sessions (raw)', 'Sessions (engaged)', 'Users', 'Page Views'], (res.rows || []).map(r => {
     const d = r.dimensionValues[0]?.value || '';
     return [`${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`,
       parseInt(r.metricValues[0]?.value || '0').toLocaleString(),
       parseInt(r.metricValues[1]?.value || '0').toLocaleString(),
-      parseInt(r.metricValues[2]?.value || '0').toLocaleString()];
+      parseInt(r.metricValues[2]?.value || '0').toLocaleString(),
+      parseInt(r.metricValues[3]?.value || '0').toLocaleString()];
   }));
+  console.log('\n  "Sessions (raw)" is bot-inflated (GA4 Direct channel). Use "Sessions (engaged)" as the headline number,');
+  console.log('  or run `sessions-engaged` for the full channel breakdown. See docs/GA4_Engaged_Sessions_Report.md.');
+}
+
+async function reportSessionsEngaged(client, dateRange) {
+  console.log('\nHeadline Traffic KPI — Engaged Sessions (drops Direct bots)\n');
+  const summary = await fetchEngagedSessionsSummary(client, PROPERTY_ID, dateRange);
+
+  formatTable(
+    ['Channel', 'Sessions', 'Engaged Sessions'],
+    summary.byChannel.map((r) => [r.channel, r.sessions.toLocaleString(), r.engagedSessions.toLocaleString()])
+  );
+
+  console.log(`\n  Headline (engaged sessions, all channels): ${summary.headline.toLocaleString()}`);
+  console.log(`  Raw sessions (all channels):                ${summary.totalSessions.toLocaleString()}`);
+  console.log(
+    `  Inflation vs headline:                      ${summary.inflationRatio ? summary.inflationRatio.toFixed(1) + 'x' : 'n/a'}`
+  );
+  console.log(
+    `  Direct channel:                             ${summary.direct.sessions.toLocaleString()} raw / ${summary.direct.engagedSessions.toLocaleString()} engaged`
+  );
+  console.log(
+    `  Ex-Direct (other channels):                 ${summary.sessionsExDirect.toLocaleString()} raw / ${summary.engagedSessionsExDirect.toLocaleString()} engaged`
+  );
+  console.log('\n  See docs/GA4_Engaged_Sessions_Report.md for report definition + rationale.');
 }
 
 async function reportEvents(client, dateRange) {
@@ -226,7 +254,8 @@ async function main() {
 
   const reports = {
     'ticket-clicks': reportTicketClicks, 'top-pages': reportTopPages,
-    'traffic': reportTraffic, 'events': reportEvents, 'search-terms': reportSearchTerms,
+    'traffic': reportTraffic, 'sessions-engaged': reportSessionsEngaged,
+    'events': reportEvents, 'search-terms': reportSearchTerms,
     'geo-audit': reportGeoAudit,
   };
   const fn = reports[opts.report];

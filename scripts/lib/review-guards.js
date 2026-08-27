@@ -9,6 +9,7 @@
  */
 
 const crypto = require('crypto');
+const { isNonEvidenceFailure, isStrictFailureReason } = require('./failed-fetch-policy');
 
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
@@ -2665,6 +2666,169 @@ function recordSerpAttempt(show, review) {
   return updates;
 }
 
+// ---------------------------------------------------------------------------
+// Fetch retry guard (BRO-787) — lifecycle cooldown for failed-fetches.json
+// ---------------------------------------------------------------------------
+//
+// Same pathology as the SERP guard above, applied to fetch attempts instead
+// of SERP calls: scripts/lib/failed-fetch-policy.js's isPermanentlyFailed()
+// caps retries at a flat 3 (dead/garbage) or 5 (everything else) regardless
+// of show lifecycle. A closed show whose review URL 404s gets the same
+// retry budget as an opening-night show, burning Browserbase (~$0.10/
+// session) + Bright Data + ScrapingBee spend on URLs that will never
+// succeed.
+//
+// Shape mirrors shouldRetryUrlDiscovery/recordSerpAttempt exactly:
+// shouldRetryFetch is the PURE query, recordFetchAttempt is the PURE
+// compute-the-state-patch — both leave all I/O to the caller
+// (collect-review-texts.js). Reuses classifyLifecycle (same lifecycle
+// buckets as the SERP guard) and failed-fetch-policy.js's
+// isStrictFailureReason (same dead/garbage-vs-everything-else split
+// isPermanentlyFailed uses) as the SINGLE source of truth for failure
+// classification — a second, independently-tuned classification here would
+// silently drift from the ledger's own threshold (exactly the two-source
+// bug failed-fetch-policy.js was extracted to prevent).
+//
+// New protected fields on review files (synced in review-write-guard.js +
+// push-review-texts action.yml ACTION_EXTRA + restore-protected-fields.js
+// MANUAL_FIELDS):
+//   - fetchRetryAfter (ISO timestamp — don't re-fetch before this)
+//   - fetchDiscoveryAbandoned (bool — permanent gate, only cleared manually)
+
+// Max additional fetch attempts once a failure is on record, keyed by show
+// lifecycle. "Strict" reasons (confirmed-dead 404/410, garbage_content) use
+// the tighter table; everything else uses the looser one. Open-lifecycle
+// buckets keep TODAY's flat isPermanentlyFailed thresholds (3 / 5)
+// unchanged — only closed shows get tightened, since a closed show's dead
+// URL stays dead forever while an opening-night show's URL may still
+// resolve once the outlet finishes publishing.
+const MAX_RETRIES_FETCH_STRICT = Object.freeze({
+  previews: 3,
+  openWindow: 3,
+  openRecent: 3,
+  openMature: 3,
+  closedRecent: 2,
+  closedOld: 0,
+  unknown: 3,
+});
+const MAX_RETRIES_FETCH_LENIENT = Object.freeze({
+  previews: 5,
+  openWindow: 5,
+  openRecent: 5,
+  openMature: 5,
+  closedRecent: 3,
+  closedOld: 2,
+  unknown: 5,
+});
+
+// Cooldown between fetch attempts while still under the tiered max. Shorter
+// than the SERP guard's COOLDOWN_MS — collect-review-texts.js runs multiple
+// times a day, and a fetch attempt is far cheaper to retry sooner than a
+// SERP call.
+const FETCH_COOLDOWN_MS = Object.freeze({
+  previews: 6 * 3600 * 1000,       // 6h
+  openWindow: 6 * 3600 * 1000,     // 6h
+  openRecent: 24 * 3600 * 1000,    // 24h
+  openMature: 3 * DAY_MS,          // 3 days
+  closedRecent: 7 * DAY_MS,        // 7 days
+  closedOld: 30 * DAY_MS,          // 30 days (moot for strict reasons — max is 0)
+  unknown: 24 * 3600 * 1000,       // 24h safe default
+});
+
+/**
+ * Decide whether a failed fetch should be retried, given show lifecycle.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review-text file data (reads fetchRetryAfter/fetchDiscoveryAbandoned)
+ * @param {{failureReason?: string, failureCount?: number}|null} failureEntry - the
+ *   failed-fetches.json ledger entry for this review, or null/undefined if this
+ *   is a first attempt (nothing to gate).
+ * @returns {{ shouldRetry: boolean, reason: string, nextAttemptAt?: string, updates?: Object }}
+ */
+function shouldRetryFetch(show, review, failureEntry) {
+  if (!review || typeof review !== 'object') return { shouldRetry: true, reason: 'not_gated' };
+  if (!failureEntry) return { shouldRetry: true, reason: 'not_gated' };
+
+  // Permanent gate — once set, only a human unsets.
+  if (review.fetchDiscoveryAbandoned === true) {
+    return { shouldRetry: false, reason: 'abandoned' };
+  }
+
+  const failureReason = failureEntry.failureReason || '';
+
+  // budget_capped etc. — we chose not to pay for that attempt; it is not
+  // evidence the URL is dead, so it must not consume retry budget or gate
+  // the next attempt (same reasoning as isPermanentlyFailed's carve-out).
+  if (isNonEvidenceFailure(failureReason)) {
+    return { shouldRetry: true, reason: 'not_gated' };
+  }
+
+  const isStrict = isStrictFailureReason(failureReason);
+  const lifecycle = classifyLifecycle(show);
+  const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
+  const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
+  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+
+  if (count >= max) {
+    return {
+      shouldRetry: false,
+      reason: 'max_retries_reached',
+      updates: { fetchDiscoveryAbandoned: true },
+    };
+  }
+
+  if (review.fetchRetryAfter) {
+    const after = new Date(review.fetchRetryAfter).getTime();
+    if (!isNaN(after) && Date.now() < after) {
+      return {
+        shouldRetry: false,
+        reason: 'cooldown',
+        nextAttemptAt: review.fetchRetryAfter,
+      };
+    }
+  }
+
+  return { shouldRetry: true, reason: isStrict ? 'strict_retry' : 'lenient_retry' };
+}
+
+/**
+ * Compute the state updates to apply to a review file AFTER a fetch attempt
+ * has failed and the failed-fetches.json ledger has already been updated
+ * (failureEntry.failureCount reflects THIS attempt, i.e. post-increment).
+ *
+ * Call this only on failure — a successful fetch has no retry state to
+ * advance (and clear-on-success is handled separately by clearFailureFlags).
+ *
+ * Returns { fetchRetryAfter } or { fetchDiscoveryAbandoned: true } — a patch
+ * the caller merges into the review file before writing.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review-text file data (pre-update; unused today, kept
+ *   for signature parity with recordSerpAttempt and future use)
+ * @param {{failureReason?: string, failureCount?: number}} failureEntry - the
+ *   ledger entry AFTER this attempt's failure was recorded
+ * @returns {Object} Patch to apply
+ */
+function recordFetchAttempt(show, review, failureEntry) {
+  if (!failureEntry) return {};
+
+  const failureReason = failureEntry.failureReason || '';
+  if (isNonEvidenceFailure(failureReason)) return {};
+
+  const isStrict = isStrictFailureReason(failureReason);
+  const lifecycle = classifyLifecycle(show);
+  const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
+  const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
+  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+
+  if (count >= max) {
+    return { fetchDiscoveryAbandoned: true };
+  }
+
+  const cooldown = FETCH_COOLDOWN_MS[lifecycle] ?? (24 * 3600 * 1000);
+  return { fetchRetryAfter: new Date(Date.now() + cooldown).toISOString() };
+}
+
 /* ──────────────────────────────────────────────────────────────────────────
  * Tier 2 stale wrongProduction recovery (BRO-53)
  *
@@ -2987,11 +3151,17 @@ function explainExclusion(data, show, filePath) {
   // (every flag lives in the central guard).
 
   // wrongProduction — excluded unless cleared by one of three override flags
+  // or a freshness-bounded self-heal auto-clear (BRO-167/task #1017 follow-up:
+  // this is the 4th copy-pasted wpCleared check, checked FIRST of the 4, and
+  // was missed by both task #1017 fix commits (e8f88878b24, aa65ba15880),
+  // which only touched the 3 downstream gates below. A file with a fresh
+  // auto-clear stamp never reached those — it was excluded right here.)
   if (data.wrongProduction === true) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     if (!cleared) return 'wrongProduction';
   }
 
@@ -3010,6 +3180,31 @@ function explainExclusion(data, show, filePath) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
+  // outletDomainUnvalidated (task #1926, paranormal-activity-2026 incident):
+  // outletId is a REGISTERED outlet whose domain/domainAliases don't match
+  // data.url's host — an operator-supplied outletId (submit-review-form /
+  // audit-aggregator-gap auto-ingest) borrowing a registered outlet's tier
+  // weight. Recomputed FRESH every call rather than trusting the stored
+  // domainUnvalidated/domainUnvalidatedReason flags — the real specimen's
+  // stored reason still names an outletId a later merge overwrote without
+  // re-validating, so gating on the stale flag would have missed it. Escape
+  // hatch: explainOutletDomainMismatch honors allowUnvalidatedDomain + reason
+  // + the same 8-field manual-protection set ingest-manual-review.js stamps
+  // (memory/feedback_manual_review_protection_fields.md) — an operator who
+  // wants to legitimize a borrowed-tier domain mismatch must carry the same
+  // verification signals as any other manually-cleared review, not a
+  // narrower one-off pair.
+  //
+  // This is a MIRROR, not the sole gate: rebuild-all-reviews.js's actual
+  // scoring-corpus loop calls explainOutletDomainMismatch directly (its own
+  // inline check, same pattern as its isNonReview/wrongShow checks a few
+  // lines up in that file) — see that file's comment for why this function
+  // alone doesn't stop the real rebuild.
+  {
+    const { explainOutletDomainMismatch } = require('./outlet-domain-validation');
+    const { loadOutletRegistry } = require('./review-normalization');
+    if (explainOutletDomainMismatch(data, loadOutletRegistry())) return 'outletDomainUnvalidated';
+  }
   // Pre-opening temporal gate: a never-opened show cannot carry reviews
   // published long before its own previews window (helper honors priorRuns +
   // every manual-clear/early-date override — see its docstring).
@@ -4018,6 +4213,8 @@ module.exports = {
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
+  shouldRetryFetch,
+  recordFetchAttempt,
   isEligibleForStaleWrongProductionRecovery,
   resolveStaleWrongProductionRecovery,
   pickRerouteTarget,

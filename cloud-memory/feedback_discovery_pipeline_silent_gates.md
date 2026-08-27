@@ -217,3 +217,39 @@ Systemic fix carded: Notion `3c8637c5-416f-81d7-80d6-e421d9c37ef6`.
 **Diagnostic:** when a review is missing but its file is clean, grep the show dir for OTHER files with the same critic slug — the killer is a sibling, not the file itself.
 **Re-ingestion loop:** deleting a review-texts file leaves no URL tombstone, so discovery re-ingests the same syndication URL on the next sweep (happened 3x here). Expect to delete it again until the tombstone list ships.
 **Systemic fix carded:** Notion 3c8637c5-416f-81c7-b585-da3eb8f37f07 (P1, parked).
+
+## Same field, WORSE variant: `domainUnvalidated` laundering onto a REGISTERED T1 outlet
+**2026-08-26, paranormal-activity-2026, monitor pass 27. Carded task #1926 ("P1: submit-review-form outlet attribution is never validated against the URL host — any domain can be ingested as a T1"), dispatched.**
+
+The staybook incident above is the *junk-content* face of this gate. The worse face: the submitted `outletId` can be an outlet that IS registered. `newyorknotebook.substack.com` (a critic's personal Substack) was ingested as `outletId: vulture` — T1, weight 1.0 — with `contentTier: complete`, zero flags, `explainExclusion() => null`. The body was a GENUINE review of the correct production, so no content-quality guard could ever catch it; the defect is purely the borrowed tier, on a show whose real Vulture review was already live. One rebuild from double-counting a T1.
+
+`domainUnvalidated: true` is written by the ingester and **read by nothing**. A field named `<x>Unvalidated` is not a guard, it is a TODO that looks handled.
+
+**Opening-night detection:** `grep -rl domainUnvalidated data/review-texts`, then compare each file's URL host to its `outletId`'s registry `domain`/`domainAliases`. Sweep on 2026-08-26: 221 files carry the field, 2 mismatched, 0 includable — rare enough to never surface in review, which is why it needs a CI gate not vigilance.
+
+**Manual block (until #1926 ships):** `contentTier: invalid` + `manualContentTier: invalid` + `incompleteReason: outlet_misattribution` + `outletMisattribution`/`Reason`/`VerifiedBy`. Do NOT delete — a misattributed genuine review should score at its true tier once its domain is registered.
+
+## Gate: outletDomainUnvalidated — critic-name outlet lookup on a substack/personal domain (2026-08-25, paranormal-activity-2026)
+**Symptom:** a real published review is ingested, gets a T1 outletId it does not belong to, and is then silently blocked. Review never reaches reviews.json; nothing in the pipeline surfaces it.
+**Mechanism:** `submit-review-form` / discovery resolves outletId by CRITIC NAME, not by URL domain. Sandy MacDonald publishes at `newyorknotebook.substack.com`; the registry knows her via Vulture, so the file was written as `vulture--sandy-macdonald.json`. The outlet-domain guard correctly refuses a `vulture.com` attribution on a `substack.com` URL → `outletDomainUnvalidated`. Correct guard, wrong upstream input. It re-ingests the same wrong attribution every cycle, so it never self-heals.
+**Detection (this is what caught it — keep doing it every pass):**
+`git -C data/review-texts log origin/main --since="3 hours ago" --name-only -- <show-id>/` then diagnose any touched file not live on prod.
+**Fix tonight (data layer):** re-attribute the file — rename to `<real-outlet>--<critic>.json`, set `outletId`/`outlet` to the domain's true outlet, keep the URL. Commit 01538871665. Then rebuild → score → rebuild → deploy. Result: prod rc 21 → 22.
+**Systemic fix:** BRO-2459 (resolve outletId from URL domain first; critic name only disambiguates within a matching domain; never fall back to a critic's best-known outlet; emit a `data/audit/` row whenever outletDomainUnvalidated fires so blocked reviews stop being invisible). Distinct from #1926, which hardened the guard rather than the upstream assignment.
+**Generalizes to:** any critic publishing on Substack, Medium, or a personal domain — increasingly common for T1-affiliated freelancers.
+
+## Gate: ensemble-scoreability-check rejects paywall stubs as `not_a_review` (2026-08-26, Paranormal Activity opening night)
+
+**Symptom:** prod review count drops silently hours after opening night (rc 22→21, cs 79.2→79.15). The lost review is a T1 whose body is a paywall bot stub.
+
+**Cause:** an LLM ensemble scoring run stamps `rejectionReason=not_a_review` / `rejectedBy=ensemble-scoreability-check` on a review-texts file. Both models reject on TRUNCATION, not content ("text is a preview"; gemini quotes the bot-stub boilerplate). The file's own `contentTierReason` already said `Truncation detected: nyt_bot_stub` — the pipeline knew and rejected anyway. The review's score was THUMB-derived (`dtliThumb=Up`, `scoreSource=thumb`) and never depended on the body.
+
+**Why the escape hatch didn't fire:** `hasIndependentExcerptScore()` in `scripts/lib/review-guards.js` requires `data.aggregatorStars != null`. It does not recognise `dtliThumb`/`bwwThumb`. Every thumb-scored paywalled T1 (NYT, WSJ, New Yorker, The Times) is one ensemble run away from vanishing.
+
+**Detection:** only the opening-night monitor's prod-vs-census diff caught it. No gate, alert or audit fired.
+
+**Data-level fix (repeatable tonight):** clear `rejectionReason`/`rejectedAt`/`rejectedBy`/`rejectionReasoning`, set `rejectionClearReason` + `manualReviewCleared` + all 8 protection fields, corroborate production identity from the census source (URL slug, publishDate==openingDate, venue named in body), then confirm `explainExclusion()===null` and `isIncludableForRebuild()===true` against the on-disk file. **This is not durable** — nothing stops a re-run re-stamping the same rejection.
+
+**Code fix:** BRO-2495. Extend `hasIndependentExcerptScore()` to accept thumb-derived scores; and make the ensemble scoreability check SKIP files whose `contentTierReason` matches a known bot-stub/truncation signal instead of classifying them non-reviews.
+
+**Related trap:** the same file was earlier nulled by a Weekly refresh (benign — thumb survived), which looked like a one-off. The narrow trigger ("score fields nulled") was the wrong thing to watch; the durable signal is *any* write to a thumb-scored paywalled T1.

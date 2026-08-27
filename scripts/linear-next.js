@@ -90,8 +90,14 @@ const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
+  workBranchCollisionGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
+// Cross-session work-branch collision guard (BRO-278, port of card #1281's
+// bsc-next.js check — see docs/dispatcher-safety-port-table.md row A5). Was
+// never wired into this dispatcher; combined with dispatch-guards.js's own
+// id-sanitization gap, every Linear-issue collision was invisible.
+const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 // Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
 // task #1896 fix) — same shared primitive, separate claim dir/id-space (see
 // DISPATCH_CLAIM_DIR below).
@@ -296,6 +302,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    // BRO-278: same test-seam convention — real git I/O by default,
+    // injectable so tests exercise workBranchCollisionGuard's refusal
+    // without shelling out to git in this repo.
+    listWorkBranchStatuses: listWorkBranchStatusesFn = listWorkBranchStatuses,
     // Cross-task/cross-system overlap check (task #1696) I/O seams — same
     // convention as the rest of this list: real implementation by default,
     // injectable so tests never make a live Linear API call or read this
@@ -427,6 +437,19 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
   }
 
+  // Marketing-project guard (BRO-2488): closes the gap that let BRO-128
+  // (Linear project "Marketing/distribution") dispatch cleanly with no
+  // refusal — see ld.marketingProjectGuard's header for the incident and why
+  // it self-exempts only --force, not --id. Same placement rationale as the
+  // terminal-state guard above: a Marketing card should never even reach the
+  // verify/idempotency gates below, which assume a card safe for unattended
+  // work.
+  const marketingRefusal = ld.marketingProjectGuard(issue, args);
+  if (marketingRefusal) {
+    console.error(`[linear-next] ${marketingRefusal}`);
+    process.exit(1);
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should
@@ -526,6 +549,27 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       const parkErr = parkedGuard(pseudoTask, entries0, args, CLI_NAME);
       if (parkErr) { console.error(`[linear-next] ${parkErr}`); process.exit(1); }
     } catch (e) { console.error(`[linear-next] park check failed (continuing): ${e.message}`); }
+  }
+
+  // Cross-session work-branch collision guard (BRO-278, card #1281's A5 port
+  // — see docs/dispatcher-safety-port-table.md). Mirrors bsc-next.js's own
+  // call site: runs unconditionally (not gated on cmuxAvailableFn(), like the
+  // cmux duplicate-tab check below) because local git state exists
+  // independent of cmux, and both routing modes continue past this point
+  // with no other check of local branch state. --dry-run/--print-prompt skip
+  // the git I/O itself, not just the refusal, so a "dry" preview never
+  // shells out.
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    let branchStatuses = null;
+    try {
+      branchStatuses = listWorkBranchStatusesFn(taskId, { repoDir: REPO });
+    } catch (e) {
+      console.error(`[linear-next] WARN worktree-branch collision check failed (continuing): ${e.message}`);
+    }
+    if (branchStatuses) {
+      const branchErr = workBranchCollisionGuard(pseudoTask, branchStatuses, args);
+      if (branchErr) { console.error(`[linear-next] ${branchErr}`); process.exit(1); }
+    }
   }
 
   // Dead-dispatch self-heal (both routing modes — task-level, not mode-

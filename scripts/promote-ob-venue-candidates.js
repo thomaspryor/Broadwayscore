@@ -36,7 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
+const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
 const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
@@ -661,11 +661,23 @@ async function main() {
   // (candidate's show since added to shows.json by hand — the regional flow)
   // leave staging via remainingStaged, and that cleanup has to land even on a
   // zero-promotion run or stale entries linger forever (QA 2026-07-08).
+  // BRO-158 (the #788 class): `staged` was read at the very start of main(),
+  // before the Playbill/Lortel fetches above — a run that takes a while can
+  // easily overlap another producer staging fresh candidates. Writing
+  // `remainingStaged` directly used to overwrite the whole file with that
+  // stale snapshot, silently dropping anything staged concurrently. Instead,
+  // express this run's outcome as a removal set (the hashes promoted or
+  // dedupe-skipped out of `staged`) and apply it through updateStaging(),
+  // which re-reads the file fresh under an exclusive lock — so concurrent
+  // additions survive and only the hashes this run actually resolved are
+  // removed.
   const rewriteStaging = () => {
-    const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
-    fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
-    fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
-    console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+    const remainingHashes = new Set(remainingStaged.map((c) => c.candidateHash));
+    const removedHashes = new Set(
+      staged.filter((c) => !remainingHashes.has(c.candidateHash)).map((c) => c.candidateHash)
+    );
+    const next = updateStaging((current) => current.filter((c) => !removedHashes.has(c.candidateHash)));
+    console.log(`Staging file: ${next.length} unpromoted candidates remain.`);
   };
 
   if (promoted.length === 0) {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T16:42:25.733Z",
+  "generatedAt": "2026-08-26T23:49:51.476Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,23 +12,23 @@
       "status": "open",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "siteScore": 79.77,
-      "liveScore": 80,
-      "scoreDrift": 0.23000000000000398,
+      "siteScore": 79.36,
+      "liveScore": 79,
+      "scoreDrift": -0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
+      "total": 22,
       "t1": 4,
       "t2": 14,
-      "t3": 3,
+      "t3": 4,
       "positive": 16,
-      "mixed": 4,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -37,8 +37,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "complete",
+        "detail": "Sent 1/1/1970, 12:00:00 AM"
       },
       "missingT1": [
         {
@@ -348,6 +348,30 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-26T20:14:51.429Z",
+          "rc": 22,
+          "s": 79.2,
+          "t1": 4,
+          "t2": 14,
+          "t3": 4,
+          "p": 16,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-08-26T23:49:51.476Z",
+          "rc": 22,
+          "s": 79.36,
+          "t1": 4,
+          "t2": 14,
+          "t3": 4,
+          "p": 16,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     },

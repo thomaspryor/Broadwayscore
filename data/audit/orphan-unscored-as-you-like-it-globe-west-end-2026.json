@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "as-you-like-it-globe-west-end-2026",
   "openingDate": "2026-08-21",
-  "detectedAt": "2026-08-26T16:42:06.952Z",
+  "detectedAt": "2026-08-26T23:49:35.321Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -48,6 +48,20 @@
       "eligibilityReason": null
     },
     {
+      "file": "thestage--tom-wicker.json",
+      "outletId": "thestage",
+      "criticName": "Tom Wicker",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
+      "fullTextLen": 2850,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "times-uk--rachel-halliburton.json",
       "outletId": "times-uk",
       "criticName": "Rachel Halliburton",
@@ -76,8 +90,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 5,
+  "orphanCount": 6,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-26T16:42:06.952Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }

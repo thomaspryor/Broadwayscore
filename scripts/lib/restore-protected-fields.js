@@ -6,9 +6,12 @@
  * by keeping the CI's version. This silently drops manual corrections
  * (humanReviewScore, manualContentTier, etc.) that were pushed to origin.
  *
- * This script compares each JSON file between the remote ref and HEAD.
- * If the remote version had manual correction fields that are now missing,
- * it restores them into the local file.
+ * This script compares each JSON file between the remote ref and HEAD, and
+ * (when available) against ORIG_HEAD (the pre-rebase local commit). If either
+ * source had manual correction fields that are now missing, it restores them
+ * into the local file. The ORIG_HEAD source (#1916) covers the case where a
+ * content-length tie-break discarded our whole commit for a file, dropping a
+ * freshly-set MANUAL_FIELDS value that remote never had either.
  *
  * Usage: node scripts/lib/restore-protected-fields.js <remote-ref>
  *
@@ -115,6 +118,15 @@ const MANUAL_FIELDS = [
   'serpRetryCount',
   'serpRetryAfter',
   'wrongShowRetryAt',
+  // (b) Durable fetch retry lifecycle gate state (BRO-787) — same reasoning
+  // as the SERP fields above, applied to failed-fetches.json retries. Losing
+  // fetchDiscoveryAbandoned on rebase resurrects a closed-old show's
+  // confirmed-dead URL into the retry pool and burns the exact spend this
+  // guard exists to stop.
+  'fetchDiscoveryAbandoned',
+  'fetchAbandonmentReason',
+  'fetchAbandonmentDate',
+  'fetchRetryAfter',
 ];
 
 // Nested fields under contentVerification that are manually set, mapped to the

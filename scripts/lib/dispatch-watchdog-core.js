@@ -210,6 +210,13 @@ function watchdogClaimPending(entries, now) {
   for (const [id, claimMs] of lastClaim) {
     const launchMs = lastLaunch.get(id);
     if (launchMs != null && launchMs >= claimMs) continue;      // the claim landed
+    // BRO-395: a future-dated claimMs must never read as "just claimed" —
+    // `now - claimMs < REDISPATCH_REARM_MS` alone is satisfied forever by a
+    // future timestamp (now-claimMs negative, always < a positive window),
+    // which would wedge this task claim-pending permanently and silently
+    // block every downstream consumer (dispatchCapDecision, the
+    // awaitingClaim label below) from ever seeing it as stale.
+    if (claimMs > now) continue;
     if (now - claimMs < REDISPATCH_REARM_MS) pending.set(id, claimMs);
   }
   return pending;
@@ -428,6 +435,21 @@ function planSweep(entries, tasks, opts) {
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
   if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
 
+  // BRO-2462: `holds` mixes deliberate/mundane pauses (kill-switch, budget,
+  // concurrency, tab ceiling) with failure-DETECTION signals (outage,
+  // failure-rate leak, claimOutage) that mean the launcher looks wedged, not
+  // paused. A caller that wants to know "does zero launches have an
+  // innocent explanation" must not treat an outage as innocent — that's
+  // backwards, it's the strongest signal something is actually dead. Keep
+  // this narrower flag for that use (see dispatch-watchdog.js health()); the
+  // full `holds` array stays as-is for the sweep budget gate above and for
+  // narrative display, where "don't dispatch more work right now" correctly
+  // covers both categories.
+  const pausedByPolicy = !dispatchEnabled ||
+    usedToday >= CAPS.perDay ||
+    liveNow >= CAPS.watchdogConcurrent ||
+    (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
+
   let budget = 0;
   if (!holds.length) {
     budget = Math.min(
@@ -458,7 +480,7 @@ function planSweep(entries, tasks, opts) {
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
-    budgets: { usedToday, liveNow, autoTabs, budget, holds, caps: CAPS },
+    budgets: { usedToday, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,

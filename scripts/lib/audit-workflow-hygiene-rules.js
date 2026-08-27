@@ -417,6 +417,122 @@ function findPipefailDeadExitCodeEcho(raw) {
   return violations;
 }
 
+// Matches the tail of the shell text immediately preceding a `'` that opens
+// an inline eval argument — `node -e '`, `node --input-type=module -e '`,
+// `npx tsx -e '`, `python3 -e '`/`python -e '`, `... -p '`. Deliberately
+// narrow (verified against every current `-e '`/`-p '` opener in
+// .github/workflows/*.yml, 2026-08-26) rather than matching any `-e '`, since
+// generic single-char flags (`sed -e`, `grep -e`) take a PATTERN argument,
+// not embedded source, and bash's own quote-parity rule doesn't apply to
+// them the same way (their bodies are never multi-line JS with prose
+// comments, the actual risk surface this rule targets).
+//
+// Deliberately excludes `python3 -c '...'` (this repo's only current
+// single-quoted-eval Python idiom is double-quoted, so no live workflow is
+// affected either way): the validator this feeds
+// (findUnescapedApostrophesInSingleQuotedEval) always runs `node --check`
+// on the reconstructed body — matching a Python opener would hand Python
+// source to a JS syntax checker and manufacture a guaranteed false
+// positive, not close a gap. Widening this needs a language-aware
+// validator alongside it, not just a wider regex.
+const EVAL_OPENER_TAIL_RE = /\b(?:node(?:\s+--\S+)*|npx\s+tsx|python3?)\s+-[ep]\s*$/;
+
+// Characters (besides whitespace) that end an unquoted shell word/simple
+// command in POSIX word-splitting — `)` is the one that actually shows up
+// after these blocks (closing a `$(...)` command substitution).
+const SHELL_WORD_BREAK_RE = /[\s)(;&|<>]/;
+
+/**
+ * Return the literal source bodies of inline `-e '...'`/`-p '...'` eval
+ * arguments EXACTLY as bash would parse them.
+ *
+ * Bash single-quoted strings have no escape mechanism, so a `'` inside one
+ * always closes it — but a closed quote does NOT necessarily end the shell
+ * WORD: `'foo'bar'baz'` with zero whitespace between segments is ONE
+ * concatenated word ("foobarbaz"), because bash only splits words on
+ * whitespace/metacharacters, never on a bare quote transition. This matters
+ * here because a comment containing a well-formed quoted-and-closed aside —
+ * `// result.action==='digest' means...` — round-trips back into the SAME
+ * shell word by accident (no whitespace ever sits at any quote boundary),
+ * while a stray possessive apostrophe — `sit out the previous incident's` —
+ * is immediately followed by end-of-line whitespace, which DOES end the
+ * word right there, truncating everything after it (the exact BRO-450 bug:
+ * `SyntaxError: Unexpected end of input`, run 32253007200).
+ *
+ * Algorithm: walk the block character-by-character from the opener,
+ * toggling in/out of quotes on each `'`. Whenever a quote closes, keep
+ * consuming the following unquoted text into the same accumulated body
+ * UNLESS/UNTIL hitting whitespace or a shell metacharacter (`)(;&|<>`) —
+ * that's the true end of the word. Hitting another `'` first just re-enters
+ * quoted mode and the accumulation continues (this is what correctly
+ * reconstructs the "digest"/"human" case above, and also why `SHOWS=$(node
+ * -e '...')`'s trailing `)` and `... ' "$VAR")`'s argv-passing tail are
+ * correctly EXCLUDED from the returned body).
+ */
+function extractSingleQuotedEvalBodies(raw) {
+  const results = [];
+
+  for (const block of extractRunBlocks(raw)) {
+    if (block.lines.length === 0) continue;
+    const blockText = block.lines.map((l) => l.text).join('\n');
+
+    let searchFrom = 0;
+    while (true) {
+      const openIdx = blockText.indexOf("'", searchFrom);
+      if (openIdx === -1) break;
+
+      const before = blockText.slice(0, openIdx);
+      if (!EVAL_OPENER_TAIL_RE.test(before)) {
+        searchFrom = openIdx + 1;
+        continue;
+      }
+
+      let pos = openIdx + 1;
+      let inQuote = true;
+      let segStart = pos;
+      let body = '';
+
+      while (pos <= blockText.length) {
+        if (inQuote) {
+          const closeIdx = blockText.indexOf("'", pos);
+          if (closeIdx === -1) {
+            body += blockText.slice(segStart);
+            pos = blockText.length + 1;
+            break;
+          }
+          body += blockText.slice(segStart, closeIdx);
+          inQuote = false;
+          segStart = closeIdx + 1;
+          pos = segStart;
+        } else {
+          let k = pos;
+          while (k < blockText.length && blockText[k] !== "'" && !SHELL_WORD_BREAK_RE.test(blockText[k])) {
+            k++;
+          }
+          if (k >= blockText.length || blockText[k] !== "'") {
+            body += blockText.slice(segStart, k);
+            pos = k + 1; // word ends here (whitespace/metachar/EOF)
+            break;
+          }
+          // Hit another quote — the literal text up to it continues the
+          // same word, and we're back inside a quoted span.
+          body += blockText.slice(segStart, k);
+          inQuote = true;
+          segStart = k + 1;
+          pos = segStart;
+        }
+      }
+
+      const startLine = block.lines[0].lineNum + (before.match(/\n/g) || []).length;
+      const esm = /--input-type=module/.test(before);
+      results.push({ startLine, body, esm });
+      searchFrom = pos;
+    }
+  }
+
+  return results;
+}
+
 module.exports = {
   indentOf,
   RUN_LINE_RE,
@@ -427,4 +543,5 @@ module.exports = {
   findDeadCommitSteps,
   extractRunBlocks,
   findPipefailDeadExitCodeEcho,
+  extractSingleQuotedEvalBodies,
 };

@@ -27,6 +27,7 @@ const cjsRequire = createRequire(import.meta.url);
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
@@ -658,12 +659,18 @@ function openingEventsForWeek(category) {
 }
 
 // SECTION: BW openings (includes reopenings — see openingEventsForWeek)
+// Card order must match the subject/lede's newsworthiness pick — the same
+// class of bug fixed for WE (see londonSection()'s ledeStory float and
+// scripts/lib/opening-story-order.js's header comment: BRO-177, a gold-tier
+// BW opening rendered second because this section had no sort at all and
+// simply mirrored shows.json insertion order).
 function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));

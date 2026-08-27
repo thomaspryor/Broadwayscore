@@ -29,12 +29,13 @@
 const USAGE = `backfill-dates-from-roundups.js — fill null show dates from roundup articles
 
 Usage:
-  node scripts/backfill-dates-from-roundups.js [--dry-run] [--limit=N] [--show=ID]
+  node scripts/backfill-dates-from-roundups.js [--dry-run] [--limit=N] [--show=ID] [--time-budget-min=N]
 
 Options:
   --dry-run     Print what would be written; no shows.json write
   --limit=N     Max shows to process (default 10 per run)
   --show=ID     Only this show id
+  --time-budget-min=N  Wall-clock budget in minutes (0/omitted = unlimited)
   --help, -h    Show this help
 
 Exit codes: 0 = ran (0+ backfills); 1 = fatal error.`;
@@ -53,10 +54,12 @@ async function main(argv = process.argv.slice(2)) {
   // shows.json and the guard's lock+snapshot-merge is what keeps concurrent
   // writers from clobbering each other (pre-push write-routing lint enforces).
   const { loadShows, saveShows } = require('./lib/shows-write-guard');
+  const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
   const dryRun = argv.includes('--dry-run');
   const limit = parseInt((argv.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '10', 10);
   const onlyShow = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
+  const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
 
   const showsData = loadShows();
   const shows = showsData.shows || showsData;
@@ -86,6 +89,10 @@ async function main(argv = process.argv.slice(2)) {
 
   let backfilled = 0;
   for (const { show, item } of targets.slice(0, limit)) {
+    if (timeBudget.exceeded()) {
+      console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — stopping early. Next run resumes.`);
+      break;
+    }
     try {
       const page = await fetchPage(item.url);
       // Parse only the HEAD of the article body: roundup pages carry

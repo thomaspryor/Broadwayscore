@@ -58,6 +58,7 @@ const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { explainOutletDomainMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { parseDate } = require('./lib/date-utils');
 const {
@@ -73,8 +74,10 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
 } = require('./lib/wrong-production-autoclear');
+const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1346,6 +1349,7 @@ const crossShowFingerprints = new Map();
   let datelessRevivalFlagged = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
+  let anticipatoryGraceAutoCleared = 0;
   let awaitingRefetchSkipped = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
@@ -1465,6 +1469,54 @@ const crossShowFingerprints = new Map();
             safeWriteReview(fp, d, { force: true });
             staleDateGuardAutoCleared++;
             // Fall through — file may still need other guards (duplicateOf etc.)
+          }
+        }
+
+        // Stale anticipatory-gate auto-clear (BRO-39): collect-review-texts.js's
+        // ingest gate never re-runs on an already-flagged file, so a file flagged
+        // while the show's category lookup fell through to the 2-day Broadway
+        // default (or before an openingDate correction landed) can carry a
+        // permanently stale anticipatory_pre_opening_post flag even though the
+        // SAME gate, re-run today with the show's CURRENT category/openingDate,
+        // no longer rejects it. Both reviewDate AND showOpeningDateMap[sid] are
+        // null-guarded — isAnticipatoryPreviewPost short-circuits rejected:false
+        // on either a missing publishDate OR a missing openingDate, which would
+        // be exactly backwards here. showEarliest (used to gate this whole loop)
+        // is NOT a substitute: earliestShowDate() falls back to previewsStartDate
+        // when openingDate is null, so a still-in-previews show with no confirmed
+        // opening would otherwise silently read as "not rejected" and every
+        // anticipatory flag on it would auto-clear regardless of actual date
+        // proximity — showOpeningDateMap is the openingDate-ONLY map built
+        // above for exactly this kind of publishDate-vs-real-opening comparison.
+        // Also mirrors the stale-date-guard block's manual/human-override gate
+        // just above, so an operator's explicit call is never overridden.
+        if (reviewDate && showOpeningDateMap[sid] && d.wrongProduction === true &&
+            d.wrongProductionReason === 'anticipatory_pre_opening_post' &&
+            !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
+            !d.allowEarlyDate) {
+          const anticipRecheck = isAnticipatoryPreviewPost(
+            reviewDate.toISOString().slice(0, 10),
+            showOpeningDateMap[sid].toISOString().slice(0, 10),
+            d.outletId,
+            { category: showRecord && showRecord.category }
+          );
+          if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected })) {
+            const wasDetail = d.wrongProductionDetail || '(no detail)';
+            d.wrongProduction = false;
+            d.wrongProductionAutoCleared = `rebuild: anticipatory gate re-evaluated in-grace (was: ${wasDetail})`;
+            d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            delete d.wrongProductionReason;
+            delete d.wrongProductionDetail;
+            delete d.wrongProductionDetectedAt;
+            delete d.wrongProductionDetectedBy;
+            delete d.anticipatoryGateOutletCategory;
+            delete d.anticipatoryGateDaysBeforeOpening;
+            if (isStaleScoreInput(d, showRecord, fp)) {
+              markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
+            }
+            safeWriteReview(fp, d, { force: true });
+            anticipatoryGraceAutoCleared++;
+            // Fall through — file may still need other guards
           }
         }
 
@@ -1594,12 +1646,16 @@ const crossShowFingerprints = new Map();
   if (staleDateGuardAutoCleared > 0) {
     console.log(`Pre-opening guard: auto-cleared ${staleDateGuardAutoCleared} stale flags (date corrected, now in-window)\n`);
   }
+  if (anticipatoryGraceAutoCleared > 0) {
+    console.log(`Pre-opening guard: auto-cleared ${anticipatoryGraceAutoCleared} stale anticipatory-gate flags (re-evaluated in-grace)\n`);
+  }
   stats.preOpeningFlagged = preOpenFlagged;
   stats.priorRunAutoCleared = priorRunAutoCleared;
   stats.priorRunSkipped = priorRunSkipped;
   stats.datelessRevivalFlagged = datelessRevivalFlagged;
   stats.datelessRevivalAutoCleared = datelessRevivalAutoCleared;
   stats.staleDateGuardAutoCleared = staleDateGuardAutoCleared;
+  stats.anticipatoryGraceAutoCleared = anticipatoryGraceAutoCleared;
 }
 
 // Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,
@@ -2378,7 +2434,7 @@ showDirs.forEach(showId => {
             // incl. the priorRuns exemption) — a threshold drift here would let a
             // duplicate's excluded reference block the surviving copy's recovery.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -2486,7 +2542,7 @@ showDirs.forEach(showId => {
             // paths must agree on whether a reference is excluded or recovery
             // depends on which duplicate field happened to be set.
             const preWindow = evaluatePreWindowInclusion({
-              pubDate: new Date(refData.publishDate),
+              pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
@@ -2962,6 +3018,26 @@ showDirs.forEach(showId => {
       if (data.wrongShow === true) {
         logExclusion("skippedWrongShow", showId, file, data);
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+        return;
+      }
+
+      // Outlet-domain mismatch (task #1926, paranormal-activity-2026
+      // incident): the file's outletId is a REGISTERED outlet (e.g. vulture,
+      // T1 weight 1.0) but data.url's host doesn't match that outlet's own
+      // registered domain/domainAliases — an operator-supplied outletId
+      // (submit-review-form / audit-aggregator-gap auto-ingest) borrowing a
+      // registered outlet's tier without the review actually being that
+      // outlet's own content. Recomputed fresh every run (not gated on the
+      // stored domainUnvalidated flag, which can go stale — see
+      // scripts/lib/outlet-domain-validation.js docstring). This inline check
+      // is what actually stops the real double-count; explainExclusion() in
+      // review-guards.js mirrors it for the ~35 audit/monitoring call sites
+      // but is NOT itself the scoring-corpus gate (see the isNonReview note
+      // just below for the same "this loop is the enforcement, not the
+      // mirror" pattern).
+      if (explainOutletDomainMismatch(data, outletRegistry)) {
+        logExclusion("skippedOutletDomainUnvalidated", showId, file, data);
+        stats.skippedOutletDomainUnvalidated = (stats.skippedOutletDomainUnvalidated || 0) + 1;
         return;
       }
 
@@ -3554,8 +3630,8 @@ showDirs.forEach(showId => {
         }
         // Fall back to publishDate only if it looks like a real date (ISO format with time, or matches URL)
         if (!effectiveDate && data.publishDate) {
-          const pd = new Date(data.publishDate);
-          if (!isNaN(pd.getTime())) {
+          const pd = parseDate(data.publishDate);
+          if (pd && !isNaN(pd.getTime())) {
             // Only trust publishDate if it contains a timestamp (T or time component) — bulk imports are plain dates
             const hasTimestamp = /T\d|:\d/.test(data.publishDate);
             if (hasTimestamp) { effectiveDate = pd; dateSource = 'publishDate'; }

@@ -2761,7 +2761,34 @@ async function checkStuckWorkInner() {
     // genuinely empty brain — surface it instead of reporting a clean pass.
     return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
   }
-  const { pausedCritical, pausedStale, pausedAwaitingRecheck, pausedParked, orphaned, invalidDates } = classifyStuckCards(cards, Date.now());
+  const raw = classifyStuckCards(cards, Date.now());
+  const { invalidDates } = raw;
+  // Reconcile against Linear before reporting (BRO-104). The board moved to
+  // Linear on 2026-08-12 (CLAUDE.md §6) but these buckets are still computed
+  // from the Notion brain, so cards closed in Linear sit Paused/In-progress in
+  // Notion forever and the counts only grow. Drop a card ONLY when its Linear
+  // twin is explicitly closed; no-twin cards keep counting (the mirror froze at
+  // task 1285, so post-freeze Notion-only work has no twin at all). An
+  // unreachable Linear is a no-op, never a shrink — see the lib's contract.
+  const { reconcileStuckBuckets, fetchLinearIssueStates } = require('./lib/stuck-work-linear-reconcile');
+  // No `process.env.LINEAR_API_KEY &&` gate here on purpose: linear-client
+  // resolves the key from .env too, so gating on the raw env var would make a
+  // manual run print UN-reconciled numbers while CI printed reconciled ones —
+  // same command, two different answers, no signal in either. Let the fetch
+  // decide; a missing key throws inside it and degrades to the no-op path.
+  const linearStates = await fetchLinearIssueStates();
+  const rec = reconcileStuckBuckets(raw, linearStates);
+  const { pausedCritical, pausedStale, orphaned, pausedAwaitingRecheck, pausedParked } = rec;
+  // Appended to each row so the number is self-explaining: a reader who
+  // remembers "55 orphaned yesterday" can see why it is 20 today.
+  const recNote = (n) => {
+    // Three distinct states, and the email must not collapse them: reconciled
+    // and excluded N; reconciled and excluded nothing; never reconciled at all
+    // (which means the number may be inflated by stale Notion twins).
+    if (!rec.applied) return ' [not reconciled against Linear this run — may include cards already closed there]';
+    if (n > 0) return ` [${n} more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]`;
+    return '';
+  };
   const results = [];
   // Card names are free text typed into Notion and land in the HTML email —
   // escape them (first check to inject arbitrary text into the digest).
@@ -2792,26 +2819,26 @@ async function checkStuckWorkInner() {
       // work: paused P0/P1 cards` byte-for-byte. Never rename it.
       name: 'Stuck work: paused P0/P1 cards',
       status: 'warn',
-      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}`,
+      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}${recNote(rec.resolvedCounts.pausedCritical)}`,
       hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), resume a parked card (bsc-next --id N --force), close, or park with RECHECK-AFTER: YYYY-MM-DD',
     });
   } else {
-    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}` });
+    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}${recNote(rec.resolvedCounts.pausedCritical)}` });
   }
 
   if (orphaned.length > 0) {
     results.push({
       name: 'Stuck work: orphaned in-progress cards',
       status: 'warn',
-      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}`,
+      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}${recNote(rec.resolvedCounts.orphaned)}`,
       hint: 'Triage: node scripts/notion-brain.js search --status "In progress" — re-dispatch, pause with a reason, or close',
     });
   } else {
-    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: 'No in-progress cards idle >48h' });
+    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: `No in-progress cards idle >48h${recNote(rec.resolvedCounts.orphaned)}` });
   }
 
   if (pausedStale.length > 0) {
-    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)` });
+    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)${recNote(rec.resolvedCounts.pausedStale)}` });
   }
   if (invalidDates > 0) {
     results.push({ name: 'Stuck work: unparseable timestamps', status: 'warn', message: `${invalidDates} card(s) skipped — last_edited_time did not parse (they may be hiding stuck work)` });
@@ -3333,6 +3360,26 @@ function reverseDiscoveryBacklogResults(report) {
     status: 'warn',
     message: `${report.candidates.length} aggregator-reviewed show(s) not in the catalogue. First: "${first.title}" (${first.source})`,
     hint: 'Review data/audit/reverse-discovery-candidates.json; validate each via node scripts/validate-show-venue.js, then add per CLAUDE.md §3.',
+  }];
+}
+
+// Freshness/backfill visibility for reverse-discovery (BRO-114): the audit's
+// own state-diff design naturally "backfills" a missed run's window on the
+// next run, EXCEPT when downtime exceeds BWW's ~5-day rolling window — that
+// failure mode was previously silent (see scripts/lib/reverse-discovery-
+// freshness.js for the full rationale). This surfaces it in the same daily
+// digest as reverseDiscoveryBacklogResults, independent of candidate count
+// (a stale-but-empty candidates file is exactly the dangerous case: it looks
+// clean but may just not have run).
+function reverseDiscoveryFreshnessResults(report, nowMs) {
+  const { checkReverseDiscoveryFreshness } = require('./lib/reverse-discovery-freshness');
+  const stale = checkReverseDiscoveryFreshness(report, nowMs);
+  if (!stale) return [];
+  return [{
+    name: 'Data: BWW reverse-discovery audit stale',
+    status: stale.severity,
+    message: `reverse-discovery-candidates.json is ${stale.hoursStale.toFixed(1)}h old (audit-reverse-discovery.yml runs every 6h) — a delayed/skipped run risks missing a BWW roundup that rotates out of its ~5-day window before ever being seen.`,
+    hint: 'Check audit-reverse-discovery.yml run history; dispatch manually if the cron is stuck: gh workflow run audit-reverse-discovery.yml. See docs/bww-reverse-discovery-backfill-visibility.md.',
   }];
 }
 
@@ -4098,7 +4145,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     ? `
       <h3 style="color:#aaa;margin:24px 0 8px;">Automation (queued)</h3>
       <ul style="padding-left:20px;margin:4px 0;">
-        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}</li>`).join('')}
+        ${queuedDigestItems.map(q => `<li style="color:#ccc;margin-bottom:4px;"><strong>${escapeHtml(q.title)}</strong>${q.description ? ` — ${escapeHtml(q.description)}` : ''}${Array.isArray(q.fields) && q.fields.length ? ` (${q.fields.map(f => `${escapeHtml(f.name)}: ${escapeHtml(f.value)}`).join(', ')})` : ''}</li>`).join('')}
       </ul>
     `
     : '';
@@ -4217,7 +4264,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     // persists it, but projecting it away here made renderHealthDigestBlock's
     // link unreachable in production — a digest line whose whole point is
     // "go look at this page" (regional show going live) arrived unclickable.
-    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null })),
+    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null, fields: Array.isArray(q.fields) ? q.fields : [] })),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
@@ -4476,6 +4523,7 @@ async function main() {
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
+      allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     try {
@@ -4607,4 +4655,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };

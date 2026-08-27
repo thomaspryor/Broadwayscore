@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
+const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
 const { matchesTaskWorkBranch, findWorkBranchCollisions, workBranchCollisionGuard } = require('./lib/dispatch-guards.js');
@@ -126,6 +126,45 @@ test('pickTask --pick with no value (true) or non-numeric defaults to top task',
 test('pickTask --id selects that task even if completed', () => {
   assert.equal(pickTask(TASKS, { id: '3' }).id, '3');
   assert.equal(pickTask(TASKS, { id: 'nope' }), null);
+});
+
+// BRO-271: `--id ""` used to be JS-falsy and silently fall through to the
+// default top-of-queue pick instead of erroring (2026-07-24 misdispatch of
+// task #382 from an empty shell var). validateIdArg() closes that gap.
+test('validateIdArg: empty --id value is refused', () => {
+  assert.match(validateIdArg({ id: '' }), /empty value/);
+  assert.match(validateIdArg({ id: '   ' }), /empty value/);
+});
+
+test('validateIdArg: --id absent, bare flag, or a real value are all fine (unchanged behavior)', () => {
+  assert.equal(validateIdArg({}), null);           // no --id at all
+  assert.equal(validateIdArg({ id: true }), null); // bare --id flag, no value — already handled by pickTask -> null -> exit 1
+  assert.equal(validateIdArg({ id: '12' }), null);
+  assert.equal(validateIdArg({ id: 'nope' }), null); // non-numeric non-empty — already handled by pickTask -> null -> exit 1
+});
+
+test('main() exits 1 with an [bsc-next] error on --id "" instead of dispatching the top task', () => {
+  const calls = [];
+  const throwIfCalled = (name) => (...args) => { calls.push(name); throw new Error(`${name} should not run for an invalid --id`); };
+  let exitCode = null;
+  const origExit = process.exit;
+  const origError = console.error;
+  const errors = [];
+  process.exit = (code) => { exitCode = code; throw new Error('__exit__'); };
+  console.error = (msg) => errors.push(msg);
+  try {
+    assert.throws(() => main(['--id', ''], {
+      loadTasks: throwIfCalled('loadTasks'),
+      launchCmux: throwIfCalled('launchCmux'),
+      appendLedgerEntry: () => {},
+    }), /__exit__/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.equal(calls.length, 0, 'must exit before ever loading tasks or launching');
+  assert.match(errors.join('\n'), /empty value/);
 });
 
 test('completedLaunchGuard blocks launching a completed task without --force', () => {
@@ -968,6 +1007,18 @@ test('matchesTaskWorkBranch: numeric-substring safety — #123 never matches a #
 test('matchesTaskWorkBranch: known gap — a branch that never mentions the task id is invisible (documented, not silently "fixed")', () => {
   // The actual 3rd #1233 branch from the incident this card describes.
   assert.ok(!matchesTaskWorkBranch('worktree-dead-dispatch-cap-infra-split', 1233));
+});
+
+// BRO-278: a Linear-namespaced taskId (`linear:BRO-278`) carries a git-illegal
+// colon that bsc-runner.js's gitSafeJobId() sanitizes to a dash BEFORE the
+// branch is created (`job/linear-BRO-278-<suffix>`) — matching the raw taskId
+// made this guard structurally blind to every Linear dispatch. Full coverage
+// of this fix + the end-to-end cross-session collision scenario lives in
+// tests/unit/dispatch-guard.test.mjs (the acceptance-criteria path for BRO-278);
+// this case just confirms bsc-next.js's own numeric-id path stays intact.
+test('matchesTaskWorkBranch: Linear-namespaced ids (colon sanitized to dash in the real branch name) also match — BRO-278', () => {
+  assert.ok(matchesTaskWorkBranch('job/linear-BRO-278-mtaf33qe', 'linear:BRO-278'));
+  assert.ok(!matchesTaskWorkBranch('job/linear-BRO-278-mtaf33qe', 'linear:BRO-27'));
 });
 
 test('findWorkBranchCollisions: only branches matching the task id AND carrying unlanded commits count', () => {

@@ -18,6 +18,19 @@
  *
  * Usage: node scripts/reddit-engagement-digest.js [--dry-run] [--verbose]
  * Env: ANTHROPIC_API_KEY
+ *
+ * BRO-59 (pivot Reddit distribution to creator partners, 2026-08-26):
+ * digestCount had already climbed to 207 — well past PHASE_DATA_ONLY (56) —
+ * so this had been dropping direct broadwayscorecard.com links into
+ * u/thomaspryor's own r/Broadway comments for a long stretch. That's the
+ * "Reddit distribution" strategy being retired: promotional links from a
+ * brand-adjacent account read as astroturfing and don't scale. Distribution
+ * now routes through the VideoScore creator partners instead (see
+ * data/creator-partnerships.json + scripts/lib/creator-partnerships.js) —
+ * they have their own Reddit/TikTok/YouTube audiences and organic
+ * credibility. getPromoPhase() below is hard-capped at 'data-only': the
+ * account keeps engaging genuinely and can still cite score data, but never
+ * reaches 'links-ok' again.
  */
 
 const https = require('https');
@@ -25,11 +38,14 @@ const fs = require('fs');
 const path = require('path');
 const { fetchWithFallback, flattenComments } = require('./lib/reddit-api');
 const { VOICE_CHARACTERISTICS } = require('./lib/voice-characteristics');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
+// Usage: node scripts/reddit-engagement-digest.js [--dry-run] [--verbose] [--time-budget-min=N]
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const HISTORY_PATH = path.join(DATA_DIR, 'reddit-digest-history.json');
@@ -45,8 +61,7 @@ const MY_USERNAMES = ['thomaspryor', 'thepinkmusical'];
 
 // Promo phase thresholds (digest count)
 const PHASE_NO_MENTION = 28;   // Digests 1-28: zero site mentions
-const PHASE_DATA_ONLY = 56;    // Digests 29-56: mention data, no links
-// 57+: occasional links allowed
+const PHASE_DATA_ONLY = 56;    // Digests 29+: mention data, no links — permanent ceiling (BRO-59)
 
 // ── Voice Profile ───────────────────────────────────────────────────────────
 // VOICE_CHARACTERISTICS now lives in scripts/lib/voice-characteristics.js
@@ -87,7 +102,10 @@ function formatAge(createdUtc) {
 function getPromoPhase(digestCount) {
   if (digestCount < PHASE_NO_MENTION) return 'no-mention';
   if (digestCount < PHASE_DATA_ONLY) return 'data-only';
-  return 'links-ok';
+  // BRO-59: previously escalated to 'links-ok' past PHASE_DATA_ONLY.
+  // Capped at 'data-only' — direct self-promo links now come from
+  // creator partners, not this account.
+  return 'data-only';
 }
 
 function log(msg) {
@@ -211,7 +229,12 @@ async function enrichWithComments(threads) {
   console.log(`Fetching comments for ${threads.length} threads...`);
   const enriched = [];
 
-  for (const post of threads) {
+  for (let ti = 0; ti < threads.length; ti++) {
+    const post = threads[ti];
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${threads.length - ti} thread(s) skipped this run.`);
+      break;
+    }
     try {
       const url = `https://www.reddit.com/r/${SUBREDDIT}/comments/${post.id}.json?limit=${MAX_COMMENTS_PER_THREAD}&depth=2&raw_json=1`;
       const response = await fetchWithFallback(url);
@@ -357,13 +380,10 @@ function buildSystemPrompt(promoPhase, showContext, showsSeenContext, lastDigest
   let promoInstructions;
   if (promoPhase === 'no-mention') {
     promoInstructions = 'DO NOT mention Broadway Scorecard, the website, scores from it, or any data source. You are just a knowledgeable theater fan engaging in conversation.';
-  } else if (promoPhase === 'data-only') {
-    promoInstructions = 'You may casually reference critic score data (e.g., "the critics averaged about a 73 from 30+ reviews") but DO NOT mention "Broadway Scorecard" by name or link to the website. Make the data feel like general knowledge.';
   } else {
-    const linkCaveat = lastDigestHadPromo
-      ? 'The last digest included a promo link, so DO NOT include one this time.'
-      : 'You may include ONE natural link to broadwayscorecard.com/show/{slug} if someone asks about scores/ratings. Never the homepage. Mark as promoLink: true.';
-    promoInstructions = `Occasional site references allowed. ${linkCaveat}`;
+    // promoPhase === 'data-only' — the only other phase getPromoPhase() ever
+    // returns (BRO-59 retired the 'links-ok' phase permanently).
+    promoInstructions = 'You may casually reference critic score data (e.g., "the critics averaged about a 73 from 30+ reviews") but DO NOT mention "Broadway Scorecard" by name or link to the website. Make the data feel like general knowledge.';
   }
 
   return `You are selecting r/Broadway threads worth replying to and drafting replies for u/thomaspryor (also posts as u/pinkthemusical).
@@ -501,11 +521,11 @@ async function evaluateThreads(threads, history) {
 // block (renderNamedDigestBlock).
 
 function getPhaseLabel(phase) {
+  // 'data-only' is getPromoPhase()'s permanent ceiling (BRO-59) — there is no
+  // Phase 3 anymore, so this only distinguishes the two reachable phases.
   return phase === 'no-mention'
     ? 'Phase 1: Building reputation (no site mentions)'
-    : phase === 'data-only'
-      ? 'Phase 2: Sharing data casually (no links yet)'
-      : 'Phase 3: Full engagement (occasional links OK)';
+    : 'Phase 2: Sharing data casually (no links — permanent, BRO-59)';
 }
 
 function buildDigestItems(suggestions) {

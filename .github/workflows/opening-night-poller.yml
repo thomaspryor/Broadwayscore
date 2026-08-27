@@ -398,6 +398,10 @@ jobs:
           # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
           # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
           # data/data/audit/... path and silently no-op the reconciliation it's here for.
+          # alert-ledger.json is tracked in the public repo, so it always exists
+          # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
+          # this early exit unreachable. git diff --cached --quiet below still
+          # short-circuits correctly; dropped the dead clause.
           if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
@@ -428,6 +432,12 @@ jobs:
           # runner, so attributedPct reads artificially low for exactly the traffic #752
           # exists to name.
           { [ -f data/audit/scraper-spend-ledger.jsonl ] && git add data/audit/scraper-spend-ledger.jsonl; } || true
+          # BRO-1699: the SERP-burst tripwire now calls routeAlert()
+          # (scripts/lib/owner-alert-router.js), which writes the CI-tracked
+          # ledger at this path. Must be committed in this same job or the
+          # tripwireAlerted-style dedup the router provides resets every run
+          # (alert-ledger-commit-check.js CI gate).
+          { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"

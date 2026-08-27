@@ -95,6 +95,11 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/migrate-reroute-backlog.js'
       - 'scripts/verify-reroute-migration.test.mjs'
+      # BRO-2267: scripts/lib/unabandon-fetch-cycles.test.mjs (already covered
+      # by the scripts/lib/** glob above) execFileSync-shells out to this
+      # root-level script — needs its own entry so a solo edit to the script
+      # alone still triggers CI (same gap class as recover-serp-text.js above).
+      - 'scripts/unabandon-fetch-cycles.js'
       # BRO-735: root-level scripts/*.js + *.test.mjs trio (no scripts/**
       # broad glob) — opening-night-pipeline-verify.js is the CLI glue that
       # wraps scripts/lib/opening-night-pipeline-stages.js (already covered
@@ -136,6 +141,11 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # BRO-65: countStrictHits/STRICT_CLASSES regression test. Depends on
+      # scripts/lib/contamination-gate.js (already globbed above) plus this
+      # top-level script itself (listed just above) — needs its own entry
+      # (no scripts/** broad glob) so a solo edit to the test triggers CI.
+      - 'scripts/audit-review-contamination.test.mjs'
       # Placeholder-venue guard (card 3b2637c5/#994): sanitizeVenueForWrite
       # (venue-classification.js) reuses isPlaceholderVenue (the census script)
       # to fail closed on ShowScore neighbourhood-blob venues at write time.
@@ -175,6 +185,10 @@ on:
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
+      # BRO-129: colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
+      # solo edit to the test triggers CI.
+      - 'scripts/process-feedback.test.mjs'
       # Diacritic folding across every show-title matcher (task #648). A matcher
       # that strips non-ASCII without folding first shreds "Les Misérables" into
       # ["les","mis","rables"] and matches nothing — confirmed live suppression.
@@ -988,6 +1002,14 @@ on:
       # auto-clear-vs-ensemble-verdict class.
       - 'scripts/audit-wrongshow-autoclear-conflicts.js'
       - 'scripts/newsletter/pre-send-check.mjs'
+      # BRO-132: end-to-end guard that create-broadcast-draft.mjs actually
+      # strips the pre-send-check.mjs soft-issue banner before it would reach
+      # a subscriber PATCH. Top-level scripts/ file (no scripts/** glob) with
+      # a colocated test registered in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is NOT globbed) — needs its own entry
+      # so a solo edit triggers CI. (create-broadcast-draft.mjs itself is
+      # already covered by the 'scripts/newsletter/**' glob below.)
+      - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
@@ -1083,6 +1105,10 @@ on:
       # tests/unit-test-manifest.txt and path-listed here so a solo edit
       # triggers CI.
       - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
+      # task #1929: rebuild-all-reviews.js exclusion-loop-touch detector added
+      # to scoring-delta.js — same root-level scripts/*.test.mjs registration
+      # requirement as the entry above.
+      - 'scripts/scoring-delta-rebuild-loop-touch.test.mjs'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
@@ -1166,6 +1192,14 @@ on:
       - 'scripts/deep-research-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
       - 'scripts/gather-reviews.js'
+      # Colocated regression test for quickDateCheck/verifyProduction (date-range +
+      # venue filters that gather-reviews.js relies on via production-verifier.js) —
+      # registered in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+      # isn't globbed there), but ALSO needs this push-path entry since this job
+      # only fires on paths matching this allow-list; a solo edit to just the test
+      # file would otherwise ship with zero CI (same class as scripts/discover-new-shows.js
+      # + .test.mjs above).
+      - 'scripts/gather-reviews.test.mjs'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
@@ -1190,6 +1224,12 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Run-budget coverage guard (#425, extended BRO-109 for script->lib-helper
+      # budget-threading gaps). Colocated test registered in
+      # tests/unit-test-manifest.txt — root-level scripts/*.test.mjs is NOT
+      # covered by any broad glob, so this needs its own entry or a solo edit
+      # to the test gets zero CI.
+      - 'scripts/audit-run-budget-coverage.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -1256,6 +1296,21 @@ on:
       # command; without these path entries a solo edit triggers ZERO CI.
       - 'scripts/audit-direct-provider-calls.js'
       - 'scripts/config/direct-provider-calls-allowlist.json'
+      # Venue-write-guard CI guard (card #1923, follow-up to card #994's
+      # sanitizeVenueForWrite() write-time guard): flags scripts/**
+      # `venue:`/`.venue =` sites that skip sanitizeVenueForWrite(...), same
+      # baseline+--strict advisory shape as audit-direct-provider-calls.js
+      # above. scripts/lib/venue-write-guard-detector.js is NOT listed here —
+      # already covered by the scripts/lib/** glob. Without these 2 entries a
+      # solo edit to the audit script or its baseline gets ZERO CI.
+      - 'scripts/audit-venue-write-guard.js'
+      - 'scripts/audit-venue-write-guard.test.mjs'
+      - 'data/audit/venue-write-guard-baseline.json'
+      # BRO-2472: scripts/triage-unopened-shows.mjs (BRO-80 prior-run triage
+      # CLI) lives at scripts/ root, outside the scripts/lib/** glob, and had
+      # no path entry of its own — a solo edit to it got ZERO CI, same gap
+      # shape as every other scripts/ root file on this list.
+      - 'scripts/triage-unopened-shows.mjs'
       # Email-capture gate logic (cooldown + mobile-timing A/B) + its tsx-batch test.
       - 'src/lib/gate-logic.ts'
       - 'src/config/email-capture.ts'
@@ -1482,6 +1537,11 @@ on:
       # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
       # side triggers CI.
       - 'scripts/enrich-ibdb-dates.test.mjs'
+      # BRO-626: WE todaytix-collapsed press-night enrichment. scripts/lib/
+      # counterpart is covered by the scripts/lib/**.test.mjs glob; this
+      # root-level pair is NOT globbed, so it's path-listed here too.
+      - 'scripts/enrich-todaytix-press-nights.js'
+      - 'scripts/enrich-todaytix-press-nights.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
       - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery
@@ -1523,6 +1583,15 @@ on:
       # lint-workflows relies on it, and the file is otherwise unguarded.
       - 'CLAUDE.md'
       - 'scripts/lib/claude-md-anchors.json'
+      # BRO-124: scripts/lib/check-claude-md-byte-cap.js + claude-md-byte-cap-
+      # gate.sh (already covered by the scripts/lib/** glob) are the byte-cap
+      # decision fn + git wrapper scripts/hooks/pre-push now calls locally —
+      # the same cap this job's Lint Workflows step enforces, previously
+      # CI-only. Their test is root-level scripts/pre-push.test.mjs, which is
+      # NOT globbed (root-level scripts/*.test.mjs never is) — path-listed so
+      # a solo edit to any of the three triggers CI. Registered in
+      # tests/unit-test-manifest.txt.
+      - 'scripts/pre-push.test.mjs'
       # Personal orchestration tooling — colocated tests run in the main unit batch;
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
@@ -2028,6 +2097,16 @@ on:
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/linear-next-overlap-guards.test.mjs'
+      # Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
+      # Phase 2 completion): dispatches issues owner-alert-router.js's
+      # dispatchCard() filed and parked, via linear-next.js's own --headless
+      # path. Its pure selection predicate (scripts/lib/linear-drain-
+      # parked.js) is already covered by the scripts/lib/** glob above; this
+      # top-level CLI wrapper is not, so it needs explicit listing
+      # (feedback_test_yml_push_path_allowlist). Colocated test
+      # (tests/unit/linear-drain-parked.test.mjs) is registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above).
+      - 'scripts/linear-drain-parked.js'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -2427,6 +2506,19 @@ jobs:
         # a genuinely NEW direct-provider-call site fails under --strict.
         run: node scripts/audit-direct-provider-calls.js --strict
 
+      - name: Audit — venue-write guard coverage (card #1923)
+        # Card #994's sanitizeVenueForWrite() (scripts/lib/venue-classification.js)
+        # fails closed on placeholder/junk venue strings before they reach
+        # shows.json — a real incident (junk venue text tripping the
+        # opening-night orchestrator + a live subscriber broadcast). Three
+        # separate discovery rounds (BRO-160, cards #1921/#1922) each found MORE
+        # show-entry builders / venue-writing scripts skipping it, all found via
+        # ad-hoc grep. This automates that grep. Advisory-first, identical shape
+        # to the direct-provider-calls audit above: pre-existing debt is frozen
+        # in data/audit/venue-write-guard-baseline.json and never fails CI; only
+        # a genuinely NEW unguarded `venue:`/`.venue =` site fails under --strict.
+        run: node scripts/audit-venue-write-guard.js --strict
+
       - name: Audit — fetchPage() cleanup on success path (advisory)
         # Prevents the #438/#914 bug class recurring: fetchWithPlaywright() in
         # scripts/lib/scraper.js only closes Chromium on the error path — on
@@ -2564,11 +2656,13 @@ jobs:
         # sender in a file not in scripts/.alert-sender-baseline.json, or a
         # baselined file's per-file count growing (a count map, not a file
         # list — offsetting regressions inside an already-listed file must
-        # still fail). Baselined debt: opening-night-broadcast.yml +
-        # opening-night-poller.js are permanent real-time-critical senders
-        # (CLAUDE.md rule 14); audit-t1-silent-gaps.js drain is card #531;
-        # audit-opening-night-coverage.js drain is carded (see card body).
-        # Shrink the baseline as migrations land: --update-baseline.
+        # still fail). As of BRO-1699 the baseline is empty (0 direct
+        # senders) — opening-night-broadcast.yml + opening-night-poller.js,
+        # previously treated as permanent real-time-critical exceptions under
+        # CLAUDE.md rule 14, are now migrated onto the owner-alert-router
+        # helper; locked by scripts/tests/alert-sender-bypass.test.mjs.
+        # Shrink the baseline again as any future migration lands:
+        # --update-baseline.
         # NOTE: the step NAME deliberately avoids quoting the flagged pattern
         # verbatim — a name: line is not a YAML comment, so the scanner would
         # flag this very step as a phantom direct sender.

@@ -139,11 +139,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-26T16:50:21.118Z",
-      "lastNotifiedAt": "2026-08-26T16:50:21.118Z",
-      "notifyCount": 48,
+      "lastSeen": "2026-08-27T00:55:01.007Z",
+      "lastNotifiedAt": "2026-08-26T19:25:45.379Z",
+      "notifyCount": 49,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 11
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -227,34 +228,36 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-26T16:27:01.925Z",
+      "lastSeen": "2026-08-26T18:50:59.557Z",
       "lastNotifiedAt": "2026-08-26T16:27:01.925Z",
       "notifyCount": 27,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-26T16:27:02.011Z",
+      "lastSeen": "2026-08-26T18:50:59.645Z",
       "lastNotifiedAt": "2026-08-26T16:26:57.785Z",
       "notifyCount": 31,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 3
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-26T16:27:01.827Z",
+      "lastSeen": "2026-08-26T18:50:59.459Z",
       "lastNotifiedAt": "2026-08-26T16:27:01.827Z",
       "notifyCount": 23,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -290,7 +293,7 @@
       "cardId": null
     },
     "backstop:trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — broadwayworld",
       "firstSeen": "2026-08-02T11:27:10.140Z",
@@ -298,7 +301,8 @@
       "lastNotifiedAt": "2026-08-23T16:15:00.515Z",
       "notifyCount": 4,
       "cardId": "3b7637c5-416f-81a1-aa84-eb96cbadff1c",
-      "linearIdentifier": "BRO-372"
+      "linearIdentifier": "BRO-372",
+      "resolvedAt": "2026-08-26T18:50:48.172Z"
     },
     "health-check:Workflow repeat-failure: Rebuild Reviews Data": {
       "status": "open",
@@ -345,14 +349,15 @@
       "silentRefires": 3
     },
     "backstop:trainspotting-the-musical-west-end-2026/daily-mail--georgina-brown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — daily-mail",
       "firstSeen": "2026-08-03T12:09:29.992Z",
       "lastSeen": "2026-08-10T12:47:35.007Z",
       "lastNotifiedAt": "2026-08-10T12:47:35.007Z",
       "notifyCount": 2,
-      "cardId": "3b8637c5-416f-81e9-99d5-fdac6ace3005"
+      "cardId": "3b8637c5-416f-81e9-99d5-fdac6ace3005",
+      "resolvedAt": "2026-08-26T18:50:48.174Z"
     },
     "arm-yield:workflow:sweep-we-aggregators": {
       "status": "resolved",
@@ -393,11 +398,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 13.2% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 38.2% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-26T10:30:37.656Z",
-      "lastNotifiedAt": "2026-08-26T10:30:37.656Z",
-      "notifyCount": 31,
+      "lastSeen": "2026-08-26T18:50:46.770Z",
+      "lastNotifiedAt": "2026-08-26T18:50:46.770Z",
+      "notifyCount": 32,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -443,14 +448,15 @@
       "cardId": "3b3637c5-416f-816f-a51f-f5b8162b1ba6"
     },
     "gap:disruption-off-broadway-2026/nytimes--tim-teeman.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Disruption — nytimes",
       "firstSeen": "2026-08-05T13:38:48.951Z",
       "lastSeen": "2026-08-05T13:38:48.951Z",
       "lastNotifiedAt": "2026-08-05T13:38:48.951Z",
       "notifyCount": 1,
-      "cardId": "3b3637c5-416f-8156-a1db-ed21db5c94c7"
+      "cardId": "3b3637c5-416f-8156-a1db-ed21db5c94c7",
+      "resolvedAt": "2026-08-26T18:50:48.646Z"
     },
     "scheduled-email-missing:morning-digest:2026-08-04": {
       "status": "open",
@@ -474,14 +480,15 @@
       "silentRefires": 1
     },
     "gap:now-you-see-me-live-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Now You See Me Live — thestage",
       "firstSeen": "2026-08-05T20:33:16.050Z",
       "lastSeen": "2026-08-05T20:33:16.050Z",
       "lastNotifiedAt": "2026-08-05T20:33:16.050Z",
       "notifyCount": 1,
-      "cardId": "3b3637c5-416f-81b2-8bb2-d5cebcb05a0c"
+      "cardId": "3b3637c5-416f-81b2-8bb2-d5cebcb05a0c",
+      "resolvedAt": "2026-08-26T18:50:48.255Z"
     },
     "feedback-requests-live:missing-show:two strangers (carry a cake across new york):2026-08-04T17:27:01.614593+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:53:33.054218+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:59:44.465941+00:00": {
       "status": "open",
@@ -539,14 +546,15 @@
       "cardId": null
     },
     "backstop:now-you-see-me-live-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Now You See Me Live — thestage",
       "firstSeen": "2026-08-07T00:48:20.096Z",
       "lastSeen": "2026-08-07T00:48:20.096Z",
       "lastNotifiedAt": "2026-08-07T00:48:20.096Z",
       "notifyCount": 1,
-      "cardId": "3b5637c5-416f-815c-9f7b-f6ae7424da68"
+      "cardId": "3b5637c5-416f-815c-9f7b-f6ae7424da68",
+      "resolvedAt": "2026-08-26T18:50:48.256Z"
     },
     "health-check:Workflow repeat-failure: Collect WE/OB Review Texts": {
       "status": "open",
@@ -752,11 +760,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4410/3250 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2834/2750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.704Z",
-      "lastSeen": "2026-08-23T22:09:06.919Z",
-      "lastNotifiedAt": "2026-08-23T22:09:06.919Z",
-      "notifyCount": 10,
+      "lastSeen": "2026-08-26T18:33:53.803Z",
+      "lastNotifiedAt": "2026-08-26T18:33:53.803Z",
+      "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -764,11 +772,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (5558/3250 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (7810/2750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-08-23T22:09:06.962Z",
-      "lastNotifiedAt": "2026-08-23T22:09:06.962Z",
-      "notifyCount": 11,
+      "lastSeen": "2026-08-26T18:33:53.915Z",
+      "lastNotifiedAt": "2026-08-26T18:33:53.915Z",
+      "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -777,11 +785,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-26T16:50:18.539Z",
-      "lastNotifiedAt": "2026-08-26T16:50:18.539Z",
-      "notifyCount": 24,
+      "lastSeen": "2026-08-27T00:55:01.006Z",
+      "lastNotifiedAt": "2026-08-26T19:25:43.300Z",
+      "notifyCount": 25,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "silentRefires": 11
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -909,12 +918,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-26T16:26:52.963Z",
+      "lastSeen": "2026-08-26T18:50:52.259Z",
       "lastNotifiedAt": "2026-08-21T03:53:05.139Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 26
+      "silentRefires": 27
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -929,7 +938,7 @@
       "silentRefires": 3
     },
     "gap:an-american-daughter-off-broadway-2026/nysr--david-finkle.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: An American Daughter — nysr",
       "firstSeen": "2026-08-14T01:02:20.644Z",
@@ -937,7 +946,8 @@
       "lastNotifiedAt": "2026-08-14T01:02:20.644Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-329"
+      "linearIdentifier": "BRO-329",
+      "resolvedAt": "2026-08-26T18:50:49.037Z"
     },
     "affiliate:provider-auth:impact": {
       "status": "resolved",
@@ -952,7 +962,7 @@
       "resolvedAt": "2026-08-15T01:33:42.978Z"
     },
     "gap:an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: An American Daughter — nytimes",
       "firstSeen": "2026-08-14T10:00:01.123Z",
@@ -960,7 +970,8 @@
       "lastNotifiedAt": "2026-08-14T10:00:01.123Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-332"
+      "linearIdentifier": "BRO-332",
+      "resolvedAt": "2026-08-26T18:50:49.041Z"
     },
     "cron-health:Collect WE/OB Reviews": {
       "status": "open",
@@ -1369,7 +1380,7 @@
       "linearIdentifier": null
     },
     "gap:anansi-the-spider-west-end-2026/thestage--anna-james.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Anansi the Spider — thestage",
       "firstSeen": "2026-08-19T22:17:11.539Z",
@@ -1377,7 +1388,8 @@
       "lastNotifiedAt": "2026-08-19T22:17:11.539Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-462"
+      "linearIdentifier": "BRO-462",
+      "resolvedAt": "2026-08-26T18:50:47.913Z"
     },
     "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026": {
       "status": "open",
@@ -1466,12 +1478,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Paranormal Activity",
       "firstSeen": "2026-08-23T02:02:50.903Z",
-      "lastSeen": "2026-08-26T12:39:41.327Z",
+      "lastSeen": "2026-08-26T23:42:01.692Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 15
     },
     "cron-health:Enrich Off-Broadway Dates": {
       "status": "open",
@@ -1546,7 +1558,7 @@
       "resolvedAt": "2026-08-26T13:29:18.289Z"
     },
     "gap:as-you-like-it-globe-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: As You Like It - Globe — thestage",
       "firstSeen": "2026-08-24T14:43:58.754Z",
@@ -1554,19 +1566,20 @@
       "lastNotifiedAt": "2026-08-24T14:43:58.754Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2300"
+      "linearIdentifier": "BRO-2300",
+      "resolvedAt": "2026-08-26T18:50:47.684Z"
     },
     "opening-night-stale-upcoming-tag-paranormal-activity-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Paranormal Activity",
       "firstSeen": "2026-08-25T09:54:54.016Z",
-      "lastSeen": "2026-08-26T12:39:41.329Z",
+      "lastSeen": "2026-08-26T23:42:01.693Z",
       "lastNotifiedAt": "2026-08-25T09:54:54.016Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 4
     },
     "cron-health-chronic:Commercial Friday Refresh": {
       "status": "open",
@@ -1632,55 +1645,60 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on The Real Ivanov",
       "firstSeen": "2026-08-26T12:39:43.765Z",
-      "lastSeen": "2026-08-26T12:39:43.765Z",
+      "lastSeen": "2026-08-26T23:42:03.907Z",
       "lastNotifiedAt": "2026-08-26T12:39:43.765Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:the-real-ivanov-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on The Real Ivanov",
       "firstSeen": "2026-08-26T12:39:43.767Z",
-      "lastSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T23:42:03.909Z",
       "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-revival-unverified-the-real-ivanov-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Unverified revival on The Real Ivanov",
       "firstSeen": "2026-08-26T12:39:43.767Z",
-      "lastSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T23:42:03.910Z",
       "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-the-real-ivanov-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Review URL cross-show mismatch on The Real Ivanov",
       "firstSeen": "2026-08-26T12:39:44.012Z",
-      "lastSeen": "2026-08-26T12:39:44.012Z",
+      "lastSeen": "2026-08-26T23:42:03.911Z",
       "lastNotifiedAt": "2026-08-26T12:39:44.012Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-stale-upcoming-tag-the-real-ivanov-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on The Real Ivanov",
       "firstSeen": "2026-08-26T12:39:44.014Z",
-      "lastSeen": "2026-08-26T12:39:44.014Z",
+      "lastSeen": "2026-08-26T23:42:03.912Z",
       "lastNotifiedAt": "2026-08-26T12:39:44.014Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "alert-sender-direct-bypass": {
       "status": "open",

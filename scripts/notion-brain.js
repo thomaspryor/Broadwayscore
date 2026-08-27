@@ -39,6 +39,8 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 // NOTION_API_KEY, so nothing can require it to learn the string.
 const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
+const { notionCreateVerdict } = require('./lib/notion-write-guard');
+const { updatePage } = require('./lib/notion-writes');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -444,6 +446,34 @@ function armingWarning(notesStr) {
 // ── Commands ────────────────────────────────────────────────────────────
 
 async function createCard(args) {
+  // Linear migration Phase 1 (BRO-377): Notion is read-only for NEW pages.
+  //
+  // FIRST STATEMENT IN THE FUNCTION, deliberately — this guard originally sat
+  // just above notion.pages.create(), which is far too late. Everything between
+  // here and there is validation (notes length, acceptance verifiability,
+  // disposition), and a validation REJECT writes
+  // /tmp/notion-create-failed-${session_id}. notion-create-block.sh then blocks
+  // every subsequent Bash call until a create SUCCEEDS — which under read-only
+  // can never happen. A caller whose card would have failed validation was
+  // therefore wedged permanently, and told to "fix the --notes" when the real
+  // answer is "file it in Linear". That wedged a live owner session twice
+  // before this moved. Refusing before any validation runs means read-only
+  // never emits REJECTED at all, so the breadcrumb is never written.
+  //
+  // Scope is creates only; updates and archives stay allowed. See
+  // scripts/lib/notion-write-guard.js for why gating updates would make
+  // notion-action-poll.js reprocess forever.
+  const writeVerdict = notionCreateVerdict(process.env);
+  if (!writeVerdict.allowed) {
+    console.error(`\n❌ REFUSED — ${writeVerdict.reason}\n`);
+    process.exit(6);
+  }
+  if (writeVerdict.reason) {
+    // Never silent: an unlogged bypass is how a one-off exception becomes the
+    // new normal.
+    console.error(`⚠️  ${writeVerdict.reason}`);
+  }
+
   const title = args._positional[1];
   if (!title) {
     console.error('Usage: notion-brain create "Card title" [--status ...] [--priority ...] ...');
@@ -1016,7 +1046,7 @@ async function updateCard(args) {
     await enforceCloseTimeVerify(pageId, args);
   }
 
-  const page = await notion.pages.update({
+  const page = await updatePage(notion, {
     page_id: pageId,
     properties,
   });
@@ -1374,7 +1404,7 @@ async function archiveCard(args) {
     process.exit(1);
   }
 
-  const page = await notion.pages.update({ page_id: pageId, archived: true });
+  const page = await updatePage(notion, { page_id: pageId, archived: true });
   const result = { id: page.id, archived: true };
   console.log(JSON.stringify(result, null, 2));
   return result;

@@ -33,7 +33,10 @@
 const fs = require('fs');
 const path = require('path');
 const linear = require('./lib/linear-client');
-const { ARCHIVE_AGE_HOURS, isArchivableIssue } = require('./lib/linear-cap-policy');
+const { ARCHIVE_AGE_HOURS, isArchivableIssue, closedAtOf } = require('./lib/linear-cap-policy');
+const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types');
+
+const TERMINAL_STATE_LABEL = TERMINAL_STATE_TYPES.join('/');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const ARCHIVE_LOG_PATH = path.join(REPO_ROOT, 'data/audit/linear-archive-done.jsonl');
@@ -51,13 +54,13 @@ async function main() {
   const candidates = issues.filter((issue) => isArchivableIssue(issue, now, ARCHIVE_AGE_HOURS));
 
   if (candidates.length === 0) {
-    console.log(`linear-archive-done: no issues completed/canceled >= ${ARCHIVE_AGE_HOURS}h ago.`);
+    console.log(`linear-archive-done: no issues ${TERMINAL_STATE_LABEL} >= ${ARCHIVE_AGE_HOURS}h ago.`);
     return;
   }
 
   console.log(
     `linear-archive-done: ${candidates.length} issue(s) eligible for archive ` +
-    `(completed/canceled >= ${ARCHIVE_AGE_HOURS}h ago):`
+    `(${TERMINAL_STATE_LABEL} >= ${ARCHIVE_AGE_HOURS}h ago):`
   );
   for (const issue of candidates) {
     console.log(`  ${issue.identifier} — ${issue.title}`);
@@ -75,7 +78,7 @@ async function main() {
   let archived = 0;
   let failed = 0;
   for (const issue of candidates) {
-    const closedAt = issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
+    const closedAt = closedAtOf(issue);
     try {
       await linear.archiveIssue(issue.id);
       logArchive({

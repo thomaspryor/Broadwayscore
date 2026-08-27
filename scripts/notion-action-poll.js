@@ -51,6 +51,7 @@ const REPO_DIR = path.join(__dirname, '..');
 const LOG_DIR = path.join(require('os').homedir(), 'Library', 'Logs');
 const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
+const { updatePage } = require('./lib/notion-writes');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady, shouldEscalateToFix, parseVerifiedOutcomeLine } = require('./lib/plan-ready.js');
@@ -746,7 +747,7 @@ function prependOutcome(existing, action, result) {
 }
 
 async function setCardOutcome(cardId, text) {
-  await withRetry(() => notion.pages.update({
+  await withRetry(() => updatePage(notion, {
     page_id: cardId,
     properties: {
       Outcome: {
@@ -791,7 +792,7 @@ async function addInfoComment(cardId, content, label) {
 
 async function clearAction(card) {
   // 3. Clear Action LAST (prevents orphaned cards) — with retry
-  await withRetry(() => notion.pages.update({
+  await withRetry(() => updatePage(notion, {
     page_id: card.id,
     properties: {
       Action: { select: null },
@@ -824,7 +825,7 @@ async function markPlanReadyForDispatch(card, entry) {
       status: page.properties.Status?.status?.name || 'Unknown',
     };
     if (!shouldMarkPlanReady(live)) return false;
-    await withRetry(() => notion.pages.update({
+    await withRetry(() => updatePage(notion, {
       page_id: card.id,
       properties: { Priority: { select: { name: 'P1 Next' } } },
     }), 'markPlanReady');
@@ -1243,7 +1244,7 @@ async function main() {
           state.escalatedCardIds = [...state.escalatedCardIds, card.id];
           saveState(state);
           try {
-            await withRetry(() => notion.pages.update({
+            await withRetry(() => updatePage(notion, {
               page_id: card.id,
               properties: { Action: { select: { name: 'Fix' } } },
             }), 'escalateToFix');

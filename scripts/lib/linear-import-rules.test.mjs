@@ -18,6 +18,7 @@ import {
   classifyCorpusRecord,
   mapNotionStatusToLinearState,
   normalizeLabelName,
+  isAlreadyImported,
 } from './linear-import-rules.js';
 
 test('extractNotionId finds the tag anywhere in the description, not just line 1', () => {
@@ -392,4 +393,37 @@ test('two distinct pages sharing one title both survive classification (S3-T3)',
   assert.equal(classifyCorpusRecord(a).disposition, 'live');
   assert.equal(classifyCorpusRecord(b).disposition, 'live');
   assert.notEqual(deriveIssueId(a.id), deriveIssueId(b.id), 'same title, different pages, different issue ids');
+});
+
+// --- BRO-2468: dedup must not key solely on the mirror's renumbering task id ---
+
+test('isAlreadyImported: a page whose mirror task id changed since import is still recognised (BRO-2399 shape)', () => {
+  // The exact incident: Notion page 39c637c5-…a6b8 was imported as BRO-29 under
+  // taskId 53. A later mirror resync renumbered the same page to taskId 1884.
+  // The legacy mapping only knows taskId 53, so a taskId-only check reads
+  // taskId 1884 as never-imported — which is what created duplicate BRO-2399.
+  const notionId = '39c637c5-416f-8115-9b51-e5c2eaa7a6b8';
+  const mapping = { 53: { linearId: '59b165a2-5281-4042-817a-870f92554c69', identifier: 'BRO-29' } };
+  const pageIdIndex = new Map([[notionId, { identifier: 'BRO-29', taskId: '53' }]]);
+
+  // taskId 53 (unchanged) hits the legacy mapping directly.
+  assert.equal(isAlreadyImported({ id: 53 }, notionId, mapping, pageIdIndex), true);
+
+  // taskId 1884 (renumbered) misses the legacy mapping but hits the pageId
+  // ledger — this is the case that used to fall through and re-create.
+  assert.equal(isAlreadyImported({ id: 1884 }, notionId, mapping, pageIdIndex), true);
+
+  // A genuinely new page, never seen under any task id, is not already imported.
+  assert.equal(isAlreadyImported({ id: 9999 }, 'brand-new-page-id', mapping, pageIdIndex), false);
+});
+
+test('isAlreadyImported: legacy rows with no recoverable pageId still dedup on taskId alone', () => {
+  const mapping = { 7: { linearId: 'x', identifier: 'BRO-7' } };
+  const pageIdIndex = new Map(); // empty — nothing resolved to a pageId
+  assert.equal(isAlreadyImported({ id: 7 }, null, mapping, pageIdIndex), true);
+  assert.equal(isAlreadyImported({ id: 8 }, null, mapping, pageIdIndex), false);
+});
+
+test('isAlreadyImported: no notionId and no mapping hit is a genuinely new task', () => {
+  assert.equal(isAlreadyImported({ id: 1 }, null, {}, new Map()), false);
 });

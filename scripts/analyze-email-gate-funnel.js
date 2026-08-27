@@ -144,7 +144,8 @@ async function main() {
         AND JSONExtractString(properties,'$device_type') IN ('Mobile','Tablet')
         AND timestamp > now() - INTERVAL ${DAYS} DAY
         AND ${REAL_USERS}
-      GROUP BY person_id)`);
+      GROUP BY person_id
+      LIMIT 1000000)`);
   const bouncers = Number(bouncersRows[0]?.[0] || 0);
 
   const summary = {

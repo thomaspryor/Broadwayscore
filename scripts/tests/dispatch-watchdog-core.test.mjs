@@ -368,6 +368,18 @@ test('#1564: a claim whose child is still booting is not re-picked (duplicate-wo
   assert.equal(plan.toDispatch.length, 0, 'no second dispatch while the first child is still booting');
 });
 
+test('BRO-395: watchdogClaimPending never treats a future-dated claim as pending', () => {
+  // A corrupt/clock-skewed claim row dated in the future would otherwise make
+  // `now - claimMs` negative — always < REDISPATCH_REARM_MS — so it would
+  // read as "just claimed" forever, permanently suppressing redispatch AND
+  // permanently hiding from the awaitingClaim owner-alert path (both read
+  // this same pending map).
+  const futureTs = new Date(NOW + 45 * 24 * 60 * 60 * 1000).toISOString();
+  const entries = [{ ts: futureTs, event: 'watchdog-redispatch', taskId: '77', kind: 'retry' }];
+  const pending = core.watchdogClaimPending(entries, NOW);
+  assert.equal(pending.has('77'), false, 'a future-dated claim must never count as pending');
+});
+
 test('#1564: watchdogClaimPending ignores rows with no taskId, the watchdog marker, and unparseable timestamps', () => {
   const entries = [
     { ts: T(5), event: 'watchdog-redispatch', taskId: null },

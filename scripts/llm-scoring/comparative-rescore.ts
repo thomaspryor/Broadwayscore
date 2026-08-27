@@ -13,7 +13,7 @@
  *
  * Usage:
  *   tsx scripts/llm-scoring/comparative-rescore.ts --show=war-horse-west-end-2026 [--dry-run]
- *   tsx scripts/llm-scoring/comparative-rescore.ts --all-we [--limit=N] [--dry-run]
+ *   tsx scripts/llm-scoring/comparative-rescore.ts --all-we [--limit=N] [--max-rescores=N] [--dry-run]
  *
  * Env: OPENAI_API_KEY, GEMINI_API_KEY (and optionally ANTHROPIC_API_KEY). At
  * least 2 models must be available or the run aborts (combine needs 2 to apply
@@ -22,6 +22,15 @@
  * Rule 13 / §12.7: this is scoring logic. The --dry-run mode prints the
  * isolated→comparative delta, bucket drift, and mean drift so the A/B gate can
  * be checked before any write. All reviews must stay in the same bucket.
+ *
+ * Idempotent by design (this is now wired into llm-ensemble-score.yml as a
+ * daily cron step, not just a one-off manual pass): a show+band group is
+ * skipped with zero API calls once EVERY entry in it already carries
+ * `llmScore.comparative` — otherwise a recurring cron would re-spend on
+ * already-fixed groups every run and could re-shuffle stable scores via LLM
+ * temperature noise. A group is only reprocessed when a new review lands in
+ * an existing band. `--max-rescores=N` caps API-calling groups per invocation
+ * (cron passes a small cap; manual full sweeps can omit it).
  */
 
 import * as fs from 'fs';
@@ -280,6 +289,7 @@ async function main() {
   const allWE = args.includes('--all-we');
   const showArg = args.find((a) => a.startsWith('--show='))?.split('=')[1];
   const limit = parseInt(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
+  const maxRescores = parseInt(args.find((a) => a.startsWith('--max-rescores='))?.split('=')[1] || '0', 10);
 
   const models = availableModels();
   if (models.length < 2) {
@@ -312,19 +322,29 @@ async function main() {
   // A/B accounting
   let totalReviews = 0, changed = 0, bucketShifts = 0;
   let sumDelta = 0, sumAbsDelta = 0;
+  let rescoresDone = 0;
   const examples: string[] = [];
 
+  outer:
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
     const groups = loadGroups(showDir);
     for (const [bandKey, entries] of groups) {
       if (entries.length < 2) continue;
+      // Idempotency: nothing new to compare once every entry in this show+band
+      // already carries a comparative verdict (see header). Zero API cost.
+      if (entries.every((e) => e.data.llmScore && e.data.llmScore.comparative)) continue;
+      if (maxRescores > 0 && rescoresDone >= maxRescores) {
+        console.log(`\nReached --max-rescores=${maxRescores}; stopping.`);
+        break outer;
+      }
       const result = await rescoreGroup(entries, models);
       if (!result) continue;
       if (result.skippedReason) {
         console.log(`  ${show} [${bandKey}] skipped: ${result.skippedReason}`);
         continue;
       }
+      rescoresDone++;
       const byFile = new Map(result.applied.map((a) => [a.file, a]));
       const lines: string[] = [];
       for (const e of entries) {

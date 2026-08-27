@@ -170,7 +170,7 @@ jobs:
         # pace with opening-night review surges (a backlog of 150+ unknown-author
         # files built up across recent WE/OB openings). At ~1 req/s, 150 fits the
         # 15-min step timeout with headroom. Notion 38a637c5-416f-81a7.
-        run: node scripts/backfill-unknown-critics.js --critics-only --limit=150 2>&1 | tee -a /tmp/locked-skip.log
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=150 --time-budget-min=12 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 15
 
@@ -186,7 +186,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/replay-pending-bylines.js --all-open 2>&1 | tee -a /tmp/locked-skip.log
+        run: node scripts/replay-pending-bylines.js --all-open --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 20
 

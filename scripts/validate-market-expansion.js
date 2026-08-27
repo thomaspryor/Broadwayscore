@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { parseDate } = require('./lib/date-utils');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SRC_DIR = path.join(__dirname, '..', 'src');
@@ -241,9 +242,9 @@ if (hasReviewTexts && registryData) {
 
           // Early date check (>1 year before opening)
           if (review.publishDate && show.openingDate) {
-            const pub = new Date(review.publishDate);
+            const pub = parseDate(review.publishDate);
             const open = new Date(show.openingDate);
-            const daysBefore = (open - pub) / (1000 * 60 * 60 * 24);
+            const daysBefore = pub ? (open - pub) / (1000 * 60 * 60 * 24) : 0;
             if (daysBefore > 365) earlyReviews++;
           }
         } catch (e) {

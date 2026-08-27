@@ -76,3 +76,59 @@ test('STRONG_CHROME_DUMP_PATTERNS is a non-empty exported RegExp array', () => {
   assert.ok(Array.isArray(STRONG_CHROME_DUMP_PATTERNS) && STRONG_CHROME_DUMP_PATTERNS.length > 0);
   assert.ok(STRONG_CHROME_DUMP_PATTERNS.every(p => p instanceof RegExp));
 });
+
+// BRO-38: audit of the other content-quality detectors for the same buried-
+// marker gap found that LEGAL_PAGE_PATTERNS's "Privacy Policy"/"Terms of Use"
+// page-title headers, and COOKIE_CONSENT_PATTERNS's GDPR/"legitimate interest"
+// sentences, were NOT mirrored into STRONG_CHROME_DUMP_PATTERNS — so a chrome
+// dump consisting solely of one of those (no cookie-consent or copyright-notice
+// phrasing) still slipped through when buried past the front-500-char windows.
+// A full-corpus parity check (33,945 review files) confirmed 0 flips on real
+// reviews before these were added — see content-quality.js's comment above
+// STRONG_CHROME_DUMP_PATTERNS for the "all rights reserved" entries that were
+// deliberately NOT added (they DID flip 7-8 real reviews).
+test('buried "Privacy Policy" page title (no other marker) is flagged', () => {
+  const text = NAV_PREFIX + '\nPrivacy Policy\nWe collect various types of information. ' + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('buried "Terms of Use" page title (no other marker) is flagged', () => {
+  const text = NAV_PREFIX + '\nTerms of Use\nBy using this site you agree to the following. ' + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('buried GDPR cookie-consent sentence (no other marker) is flagged', () => {
+  const text = NAV_PREFIX + ' Under GDPR we require your consent and cookie preferences before continuing. ' + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('buried "legitimate interest" cookie sentence (no other marker) is flagged', () => {
+  // Extra trailing padding: the short 2-word match ("legitimate interest") sits
+  // right after NAV_PREFIX, close to the 60%-of-length trailing-junk cutoff —
+  // double the suffix so the fixture unambiguously exercises the non-trailing path.
+  const text = NAV_PREFIX + ' We process data based on legitimate interest as defined by law. ' + NAV_SUFFIX + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('buried "data protection...consent" cookie sentence (no other marker) is flagged', () => {
+  const text = NAV_PREFIX + ' Under data protection regulation you may opt-out of this consent at any time. ' + NAV_SUFFIX + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('buried "we use cookies...consent" sentence (no other marker) is flagged', () => {
+  const text = NAV_PREFIX + ' We use cookies to personalize content and you may withdraw consent at any time. ' + NAV_SUFFIX + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
+});
+
+test('FP guard: real review with a trailing "Privacy Policy" footer link is NOT flagged', () => {
+  const text = 'A dazzling Broadway musical. The cast, director and orchestra shine; the audience gave a standing ovation at curtain. '.repeat(6)
+    + ' Privacy Policy Terms of Use ' + NAV_SUFFIX;
+  const r = isGarbageContent(text);
+  assert.equal(r.isGarbage, false, `expected real review to pass, got flagged: ${r.reason}`);
+});

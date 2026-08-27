@@ -88,7 +88,6 @@ You do not need to ask anyone before creating it. It is yours, it is reversible,
   `notion-card-required-commit.sh`, `notion-card-required-stop.sh`, `notion-create-block.sh`,
   `notion-create-verify.sh`, `notion-mcp-block.sh`; plus the repo-scoped cloud copy
   `.claude/hooks/notion-create-block.sh`.
-- **Status: the hooks do not honour this file yet.** It is wired in by task S4-T3a of
-  `sprint-plan-notion-linear-cutover.md`, which is a standalone commit that does nothing else, landing before any
-  other Sprint 4 hook edit. This document ships first, in Sprint 1, so the instructions are in the owner's hands
-  before the hooks are touched at all. **When S4-T3a lands, delete this bullet.**
+- **Status: wired in (task S4-T3a landed).** Confirmed live 2026-08-26 (BRO-151) — the hatch let a
+  commit through `notion-card-required-commit.sh` when Notion was correctly refusing writes
+  post-cutover (BRO-377) and the session was tracking work in Linear instead.

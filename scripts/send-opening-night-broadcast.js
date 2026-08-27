@@ -37,6 +37,7 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const {
   syncTrackerToOrigin: syncTrackerToOriginShared,
@@ -189,10 +190,15 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
       // as Broadway excludes off-broadway below. Require the exact category.
       if (s.category !== 'west-end') return false;
     } else {
-      // Broadway: exclude off-broadway, regional (non-NYC US tryouts), and London markets.
-      // Regional already carries market:'regional' so it fails the broadway-only gates,
-      // but exclude by category here too — Broadway subscribers did not opt into regional.
-      if (s.category === 'off-broadway' || s.category === 'regional' || isLondonMarket(s.category)) return false;
+      // True Broadway only, same allowlist shape as the West End branch above.
+      // BRO-159: a denylist (exclude off-broadway/regional/London) silently
+      // admits any future category value — e.g. an enumerated 'off-off-broadway'
+      // would inherit Broadway broadcast eligibility by default. Require the
+      // exact category instead. Intentionally NOT isBroadwayCategory()
+      // (venue-classification.js) — that helper treats a missing category as
+      // Broadway, which is the wrong default for something that emails real
+      // subscribers.
+      if (s.category !== 'broadway') return false;
     }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);
@@ -239,6 +245,37 @@ function getReviewStats(reviews, showId, market) {
  * Pure + exported for unit testing.
  */
 const RESEND_NAME_MAX = 70;
+// BRO-227: returns the showsForEmail entries lacking a critic-consensus verdict.
+function findShowsMissingConsensus(showsForEmail) {
+  return showsForEmail.filter(s => !s.consensusText);
+}
+
+// BRO-227: the email-capture modal (gate-logic.ts getTriggerCopy) promises subscribers
+// "the CriticScore and a one-line critics' verdict. Nothing else." Sending without
+// consensus for a show breaks that promise, so this drops it from the batch rather than
+// warning-and-continuing. Filters PER SHOW rather than aborting the whole batch — the
+// workflow's own readiness_gate learned this the hard way (2026-04-08: a single not-ready
+// West End show blocked an otherwise-ready Broadway show on the same coalesced run).
+// Exits non-zero only when NOTHING in the batch has consensus, since then there is
+// nothing left this run can honor the promise for. Returns the shows that DO have
+// consensus (may be the full input) otherwise.
+function filterShowsWithConsensus(showsForEmail) {
+  const missingConsensus = findShowsMissingConsensus(showsForEmail);
+  if (missingConsensus.length === 0) return showsForEmail;
+
+  console.error(`\n❌ Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
+  console.error(`   critic-consensus.json is not generated yet for ${missingConsensus.length === 1 ? 'this show' : 'these shows'}.`);
+  console.error(`   Refusing to send for ${missingConsensus.length === 1 ? 'it' : 'them'} — the signup modal promises a critics' verdict on every opening-night email.`);
+
+  const ready = showsForEmail.filter(s => s.consensusText);
+  if (ready.length === 0) {
+    console.error(`   No show in this batch has consensus yet — nothing to send this run.`);
+    process.exit(1);
+  }
+  console.error(`   Continuing with ${ready.length} show(s) that do have consensus; the rest will retry next run.`);
+  return ready;
+}
+
 function buildBroadcastName(siteName, shows) {
   const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
   const prefix = `${siteName} opening night`;
@@ -429,11 +466,9 @@ async function main() {
   }
 
   // Build show data for email template
-  const showsForEmail = readyShows.map(({ show, stats }) => {
+  let showsForEmail = readyShows.map(({ show, stats }) => {
     const showId = show.id || show.slug;
-    const consensusShows = consensus.shows || consensus;
-    const showConsensus = consensusShows[showId] || consensusShows[show.slug];
-    const consensusText = showConsensus?.text || showConsensus?.consensus || null;
+    const consensusText = getShowConsensusText(consensus, showId, show.slug);
 
     // Use pre-computed score from per-show public JSON (same as live site)
     const showJson = showJsonMap.get(showId);
@@ -474,15 +509,18 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
-  // Warn if any show is missing consensus — critic-consensus.json may not be generated yet.
-  // The email will still be created, but without the Critics' Take section. If consensus
-  // arrives later, use --recreate-draft to replace the draft with a complete version.
-  const missingConsensus = showsForEmail.filter(s => !s.consensusText);
-  if (missingConsensus.length > 0) {
-    console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
-    console.warn(`   critic-consensus.json may not be generated yet.`);
-    console.warn(`   Continuing — email will send without Critics' Take.`);
-    console.warn(`   Once consensus is available, run again with --recreate-draft to replace this draft.`);
+  // BRO-227: --send-to is the owner's own private preview (never reaches subscribers —
+  // a transactional /emails call, not a /broadcasts draft), so let it through with just a
+  // warning: blocking it would leave the owner unable to even see the draft they'd need to
+  // judge whether to wait for consensus. The real draft/broadcast path (below) is where the
+  // signup-modal promise actually applies, and stays hard-gated.
+  if (SEND_TO) {
+    const missingConsensus = findShowsMissingConsensus(showsForEmail);
+    if (missingConsensus.length > 0) {
+      console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')} (preview only — the real broadcast will wait for consensus)`);
+    }
+  } else {
+    showsForEmail = filterShowsWithConsensus(showsForEmail);
   }
 
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
@@ -788,7 +826,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {
