@@ -16,6 +16,7 @@ const {
   parseYearFromUrl,
   detectMarketMismatch,
   SERP_MIN_SCORE,
+  isViableCastExtraction,
 } = require('../../scripts/lib/cast-extraction-guards.js');
 
 test('rejects Met Opera contamination (Kavalier-Clay case)', () => {
@@ -434,4 +435,26 @@ test('honest scope: short-titled shows STILL bypass SERP scorer (caughtBy=llm-pr
   );
   assert.ok(m2m.score >= SERP_MIN_SCORE,
     `Man to Man still expected to pass SERP scorer (downstream defense: LLM prompt year/venue refusal), got ${m2m.score}`);
+});
+
+// BRO-504: backfill-cast-web.js used to require >=2 named cast members to
+// accept an extraction, which permanently starved solo shows (one actor
+// playing every role, e.g. "Jeeves Takes Charge") of cast data — every run
+// found the lone real cast member, rejected it as "too few", and tombstoned
+// the show empty, so auto-remediation retried forever and gave up.
+test('isViableCastExtraction accepts a single named cast member (solo shows)', () => {
+  assert.equal(isViableCastExtraction([{ name: 'Sam Harrison', role: 'Jeeves' }]), true);
+});
+
+test('isViableCastExtraction accepts multi-member casts', () => {
+  assert.equal(isViableCastExtraction([{ name: 'A' }, { name: 'B' }]), true);
+});
+
+test('isViableCastExtraction rejects an empty extraction', () => {
+  assert.equal(isViableCastExtraction([]), false);
+});
+
+test('isViableCastExtraction rejects non-array input', () => {
+  assert.equal(isViableCastExtraction(null), false);
+  assert.equal(isViableCastExtraction(undefined), false);
 });

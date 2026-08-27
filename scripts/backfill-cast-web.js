@@ -29,6 +29,7 @@ const {
   isOperaSourceUrl,
   scoreSerpResult,
   SERP_MIN_SCORE,
+  isViableCastExtraction,
 } = require('./lib/cast-extraction-guards');
 const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
@@ -367,7 +368,7 @@ async function processShow(show) {
       continue;
     }
 
-    if (cleaned.length >= 2) {
+    if (isViableCastExtraction(cleaned)) {
       console.log(`  Found ${cleaned.length} cast members`);
       return {
         fetchFailed: false,
@@ -472,7 +473,7 @@ async function main() {
     try {
       const result = await processShow(show);
 
-      if (!result.cast || result.cast.length < 2) {
+      if (!result.cast || !isViableCastExtraction(result.cast)) {
         // A transient failure (SERP/fetch/LLM error, blocked page) must NOT
         // be tombstoned — a tombstone permanently blocks re-scraping (default
         // runs skip shows with an existing cast file), so one bad run would
