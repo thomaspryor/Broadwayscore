@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-26T23:49:44.968Z",
+  "timestamp": "2026-08-27T01:31:48.822Z",
   "stats": {
-    "totalReviews": 41970,
-    "alreadyFlagged": 17582,
-    "dateGuardCatches": 227,
+    "totalReviews": 41982,
+    "alreadyFlagged": 17569,
+    "dateGuardCatches": 228,
     "directorMismatch": 1019,
     "tvFilmSignals": 1235,
-    "londonSignals": 934,
+    "londonSignals": 939,
     "offBroadwaySignals": 495,
     "yearMismatch": 90,
-    "noPublishDate": 3571
+    "noPublishDate": 3570
   },
   "findings": [
     {
@@ -29,7 +29,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb",
       "findings": [
@@ -749,7 +749,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2024-09-13",
       "url": "https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
       "findings": [
@@ -1011,7 +1011,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -1540,7 +1540,7 @@
     {
       "showId": "an-ideal-husband-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 51,
+      "score": 53,
       "publishDate": "2026-05-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review",
       "findings": [
@@ -1979,7 +1979,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-04-17",
       "url": "https://www.broadwayworld.com/westend/article/Review-AVENUE-Q-Shaftesbury-Theatre-20260417",
       "findings": [
@@ -18433,6 +18433,20 @@
       ]
     },
     {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 86,
+      "publishDate": "2024-09-25",
+      "url": "https://www.theaterscene.net/musicals/offbway/monte-cristo-2/victor-gluck/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 533d before show (2024-09-25 vs 2026-03-12)"
+        }
+      ]
+    },
+    {
       "showId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 56,
@@ -33382,7 +33396,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "broadwayworld--debbie-gilpin.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
       "findings": [
@@ -33396,7 +33410,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "thestage--holly-o.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-05-13",
       "url": "https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett",
       "findings": [
@@ -33942,7 +33956,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2026-08-20",
       "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
       "findings": [
@@ -33956,7 +33970,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-08-21",
       "url": "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
       "findings": [
@@ -33970,7 +33984,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-08-20",
       "url": "https://www.standard.co.uk/culture/theatre/abigails-party-at-harold-pinter-theatre-review-b1294045.html",
       "findings": [
@@ -34096,7 +34110,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2025-11-22",
       "url": "https://www.broadwayworld.com/westend/article/Review-ALL-MY-SONS-starring-Bryan-Cranston-and-Marianne-Jean-Baptiste-20251122",
       "findings": [
@@ -34110,7 +34124,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "everything-theatre--dave-b.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2025-11-23",
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
       "findings": [
@@ -34138,7 +34152,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2025-11-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
       "findings": [
@@ -34166,7 +34180,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 91,
+      "score": 93,
       "publishDate": "2025-11-22",
       "url": "https://www.londontheatre.co.uk/reviews/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-ivo-van-hove",
       "findings": [
@@ -34721,7 +34735,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-02-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/arcadia-old-vic-review",
       "findings": [
@@ -34735,7 +34749,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2026-02-05",
       "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-old-vic",
       "findings": [
@@ -34804,7 +34818,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-06-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-archduke-royal-court",
       "findings": [
@@ -34832,7 +34846,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-06-28",
       "url": "https://www.theguardian.com/stage/2026/jun/28/archduke-review-royal-court-london-rajiv-joseph",
       "findings": [
@@ -34874,7 +34888,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -34888,7 +34902,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 61,
+      "score": 57,
       "publishDate": "2026-07-03",
       "url": "https://www.standard.co.uk/culture/theatre/archduke-royal-court-review-b1288614.html",
       "findings": [
@@ -34944,7 +34958,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 61,
+      "score": 64,
       "publishDate": "2026-06-29",
       "url": "https://www.whatsonstage.com/news/archduke-at-the-royal-court-review_1726342/",
       "findings": [
@@ -34972,7 +34986,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 71,
+      "score": 78,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -35042,7 +35056,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -35098,7 +35112,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2021-08-20",
       "url": "https://www.allthatdazzles.co.uk/post/review-back-to-the-future-adelphi-theatre",
       "findings": [
@@ -35112,7 +35126,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "guardian--arifa-akbar.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2021-09-13",
       "url": "https://www.theguardian.com/stage/2021/sep/13/back-to-the-future-the-musical-review-adelphi-theatre",
       "findings": [
@@ -35140,7 +35154,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "london-box-office--miriam-gibson.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2022-09-12",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-back-to-the-future-musical",
       "findings": [
@@ -35154,7 +35168,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "london-theatre--marianka-swain.json",
-      "score": 98,
+      "score": 95,
       "publishDate": "2021-09-28",
       "url": "https://www.londontheatre.co.uk/reviews/back-to-the-future-review-adelphi-theatre",
       "findings": [
@@ -35168,7 +35182,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "musical-theatre-review--unknown.json",
-      "score": 61,
+      "score": 63,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/back-to-the-future-the-musical-adelphi-theatre/",
       "findings": [
@@ -36994,6 +37008,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "publishDate": "2024-01-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "independent--unknown.json",
+      "publishDate": "2024-01-18",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2024-01-22",
+      "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-01-18",
+      "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -40204,6 +40270,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2025-08-05 vs 2026-07-30)"
+        }
+      ]
+    },
+    {
+      "showId": "hot-mess-a-new-musical-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

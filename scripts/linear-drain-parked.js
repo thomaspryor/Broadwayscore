@@ -366,7 +366,19 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // Staggered start (dispatched.length * 45s), same reasoning
       // dispatchDetached's own header documents for digest-autofix: parallel
       // detached spawns race the main repo's `git worktree add` lock.
-      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45);
+      // allowAutofixFiled (BRO-2499, ship-check P0): this drain's own
+      // population overlaps the one linear-dispatch.js's autofixFiledIssueGuard
+      // refuses. scripts/health-check.js:3951 routes actionable health rows
+      // through owner-alert-router with a "BSC Daily: <row>" title, so an
+      // alert-filed tracker carries the SAME title convention as a
+      // digest-autofix-filed one (only the PARKED marker differs). Measured
+      // against the live snapshot at the time of the fix: 13 of the 14 issues
+      // selectDrainCandidates returns would have been refused. Silently, too —
+      // the ledger row below records "attempted" either way, and the refusal
+      // exists only in the detached child's log file.
+      // Passed here, at the call site that owns this population — not inside
+      // dispatchDetached, which would waive it for every future caller too.
+      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true });
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),

@@ -12,6 +12,7 @@ import {
   buildOpenIssuesWithDescriptionsQuery,
   checkTerminalStateGuard,
   marketingProjectGuard,
+  autofixFiledIssueGuard,
   findUnresolvedDispatchComment,
 } from './linear-dispatch.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
@@ -93,4 +94,103 @@ test('findUnresolvedDispatchComment: a "Dispatched ..." comment on a now-duplica
   const dispatched = { body: 'Dispatched abcd1234 to workspace-9 at 2026-08-01T00:00:00Z' };
   const issue = { state: { type: 'duplicate' }, comments: { nodes: [dispatched] } };
   assert.equal(findUnresolvedDispatchComment(issue), null);
+});
+
+// ── autofixFiledIssueGuard (BRO-2499) ───────────────────────────────────────
+// The other half of the SAME documented funnel line marketingProjectGuard
+// above closes: "Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY". It
+// was equally unenforced — a grep for CANARY/BSC Daily across linear-next.js,
+// linear-dispatch.js and dispatch-guards.js returned only BRO-2488's own
+// doc-quote comment. These cases fail against that pre-fix behaviour (no
+// predicate existed at all, so nothing was ever refused).
+//
+// The guard is NOT a blanket title refusal: digest-autofix.js and
+// autofix-canary.js dispatch these very issues themselves through
+// `linear-next.js --id ... --headless`, so a blanket refusal would disable
+// the daily autofix drain and the daily canary. Hence the opt-in bypass those
+// two pipelines pass at their own call sites — covered by the last case here
+// and, end-to-end, by digest-autofix.test.mjs's dispatchDetached argv test.
+
+test('autofixFiledIssueGuard: a "BSC Daily: ..."-titled issue is REFUSED by the dispatch funnel', () => {
+  const issue = { identifier: 'BRO-2500', title: 'BSC Daily: Cron failed: data-health-check' };
+  const refusal = autofixFiledIssueGuard(issue, {});
+  assert.match(refusal, /BRO-2500/);
+  assert.match(refusal, /digest-autofix/);
+  assert.match(refusal, /--force/);
+});
+
+test('autofixFiledIssueGuard: the legacy "Fix: BSC Daily: ..." title variant is refused too', () => {
+  const issue = { identifier: 'BRO-2501', title: 'Fix: BSC Daily: ScrapingBee credits low' };
+  assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2501/);
+});
+
+test('autofixFiledIssueGuard: the daily CANARY card is refused (canaryCardTitle shape)', () => {
+  const issue = { identifier: 'BRO-2502', title: 'CANARY: touch data/audit/canary-2026-08-26.marker' };
+  assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2502/);
+});
+
+test('autofixFiledIssueGuard: provenance alone refuses, even if the title were renamed', () => {
+  // linear-issue-create.js:141 writes `PARKED: <reason>` into the description;
+  // digest-autofix.js's fileCard supplies AUTOFIX_FILED_MARKER as that reason.
+  const issue = {
+    identifier: 'BRO-2503',
+    title: 'Renamed by hand to something ordinary',
+    description: 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n## Problem\n...',
+  };
+  assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2503/);
+});
+
+// BRO-2499 ship-check P2: provenance means "this filer created this issue",
+// which only linear-issue-create.js:141's leading `PARKED: ` line attests. An
+// unanchored substring match refuses any meta-issue that merely QUOTES the
+// marker while discussing the pipeline — BRO-2499's own card is that shape.
+test('autofixFiledIssueGuard: an issue that merely QUOTES the marker in its body is ALLOWED (BRO-2499)', () => {
+  const issue = {
+    identifier: 'BRO-2505',
+    title: 'P1: the autofix guard is too broad',
+    description: '## Problem\nThe guard keys on "Auto-filed by digest-autofix" appearing anywhere in the body, so this very issue is refused.\n\n## Acceptance criteria\n`node --test scripts/lib/linear-dispatch.test.mjs`',
+  };
+  assert.equal(autofixFiledIssueGuard(issue, {}), null);
+});
+
+test('autofixFiledIssueGuard: an ordinary backlog issue is ALLOWED', () => {
+  assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-1', title: 'Fix the score badge width' }, {}), null);
+  assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-2' }, {}), null);
+  // An owner-alert-router tracker whose title does NOT follow the BSC Daily
+  // convention is untouched.
+  assert.equal(autofixFiledIssueGuard({
+    identifier: 'BRO-3',
+    title: 'Alert: prod deploy stale',
+    description: 'PARKED: Auto-filed by owner-alert-router.',
+  }, {}), null);
+});
+
+// BRO-2499 ship-check P0 (Codex): the two auto-filed populations are NOT
+// disjoint by title. scripts/health-check.js:3951 routes actionable health
+// rows through owner-alert-router with `title: "BSC Daily: <row>"`, so an
+// alert-filed tracker carries the BSC Daily title with the OTHER PARKED
+// marker. It is still machine-owned, so refusing a human/crown-loop `--id`
+// on it is correct — but scripts/linear-drain-parked.js, which owns and
+// dispatches that population, must pass the waiver. The first pass of this
+// change did not, which would have silently refused every dispatch that
+// drain made (its ledger records "attempted" either way, so the refusal
+// would only have existed in the detached child's log file).
+test('autofixFiledIssueGuard: an owner-alert-router tracker titled "BSC Daily:" is refused too — its drain must waive (BRO-2499)', () => {
+  const issue = {
+    identifier: 'BRO-2504',
+    title: 'BSC Daily: ScrapingBee credits below threshold',
+    description: 'PARKED: Auto-filed by owner-alert-router (condition: health-check:ScrapingBee credits); parked for triage.',
+  };
+  assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2504/);
+  assert.equal(autofixFiledIssueGuard(issue, { 'allow-autofix-filed': true }), null,
+    'linear-drain-parked.js passes this waiver — without it that drain silently stops dispatching');
+});
+
+test('autofixFiledIssueGuard: --force/--dry-run/--print-prompt and the pipeline opt-in all bypass it', () => {
+  const issue = { identifier: 'BRO-2500', title: 'BSC Daily: Cron failed: data-health-check' };
+  assert.equal(autofixFiledIssueGuard(issue, { force: true }), null);
+  assert.equal(autofixFiledIssueGuard(issue, { 'dry-run': true }), null);
+  assert.equal(autofixFiledIssueGuard(issue, { 'print-prompt': true }), null);
+  assert.equal(autofixFiledIssueGuard(issue, { 'allow-autofix-filed': true }), null,
+    'digest-autofix / autofix-canary pass this flag — without the bypass the daily drain and canary stop dispatching');
 });
