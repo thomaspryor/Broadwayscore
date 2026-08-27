@@ -30,6 +30,19 @@ const ALWAYS_UNCONFIRMED = new Set([
   'todaytix',
   'showscore',
   'unknown',
+  // Written by the REVERSE branch of infer-press-night-from-reviews.js
+  // (BRO-2280): a press night inferred from a review cluster published BEFORE
+  // a collapsed TodayTix date. That is a weaker claim than the forward
+  // inference — the reviews it reads could belong to another production — so
+  // it stays overwritable by Theatremonkey / Playbill instead of being
+  // terminal. Deliberately NOT symmetrical with the forward branch's
+  // 'inferred-from-reviews', which is a confirmed source.
+  //
+  // This does not make the inference re-fire on the next run: a
+  // reverse-corrected show has previewsStartDate null (no longer collapsed,
+  // which the reverse branch requires) and its whole review cluster now sits
+  // on or after the corrected openingDate.
+  'inferred-from-reviews-reverse',
   null,
   undefined,
   '',

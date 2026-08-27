@@ -246,6 +246,8 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 
      You have read access to the repository — use Read/Grep on the actual files. Cite specific files and line numbers.
 
+     Do NOT run `npm run data:check`, `npm install`, `setup-local-data.sh`, or any other setup/preflight command — this is a pure read-only review of the diff below, no show/review data is needed, and worktree sessions do not have the full local data clone available. If CLAUDE.md's session-start convention would normally tell you to run a data-check preflight, that convention does not apply here: read the diff and the repository files directly and review them.
+
      **CHALLENGE THE DESIGN:**
      1. Was this the right approach? Is there a simpler one that was skipped? (config change vs new code, existing helper vs new function, deletion vs addition)
      2. What hidden assumption does this make that future-you will regret? (data shape, API contract, ordering, idempotency)

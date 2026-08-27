@@ -105,8 +105,10 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   function linkFor(metric: RankMetric, pool: 'openMarket' | 'season' | 'allTime'): string | null {
     if (pool === 'openMarket') {
       switch (metric) {
-        case 'critic':
-          return `/browse/${getBrowseSlug(market, show.type)}`;
+        case 'critic': {
+          const critSlug = getBrowseSlug(market, show.type);
+          return critSlug ? `/browse/${critSlug}` : null;
+        }
         case 'audience':
           return '/audience-buzz';
         case 'awards':

@@ -111,6 +111,15 @@ runs:
             // wrong_content files. Belt-and-braces: protect them at push time.
             'serpRetryCount',
             'serpDiscoveryAbandoned',
+            // Fetch retry lifecycle gate state (BRO-787), same reasoning as the
+            // SERP fields above but for failed-fetches.json retries:
+            // clearFailureFlags() clears BOTH fields on a successful fetch, so
+            // neither is in the guard's PROTECTED_FIELDS — but losing them on
+            // rebase would reset the cooldown/abandonment and re-trigger
+            // retries on closed-old shows whose URL is confirmed dead, burning
+            // Browserbase/Bright Data/ScrapingBee spend the guard exists to stop.
+            'fetchRetryAfter',
+            'fetchDiscoveryAbandoned',
             // Head-of-line rescore block state (Notion 3ad637c5-416f-8169), same
             // reasoning as the SERP fields above: clearFailureFlags() may clear
             // them on success so they are not in the guard's PROTECTED_FIELDS,
@@ -275,8 +284,10 @@ runs:
         # with richer content (longer fullText). This prevents a truncated archive
         # snapshot from overwriting a complete review pushed by another workflow.
         for i in 1 2 3 4 5; do
+          STDERR_FILE=$(mktemp)
           # Try fast path first: if no conflicts, rebase + push succeeds immediately
-          if git pull --rebase origin main 2>&1; then
+          if git pull --rebase origin main 2>"$STDERR_FILE"; then
+            cat "$STDERR_FILE" >&2
             # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134):
             # in-process guards (url-ownership.js Guard I, gather's cross-production
             # check) validate against the CHECKOUT snapshot. If a manual cross-show
@@ -291,10 +302,15 @@ runs:
             # Fail-open: a validator crash must never block a data push.
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
-            if git push origin main 2>&1; then
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully (attempt $i)"
+              rm -f "$STDERR_FILE"
               exit 0
             fi
+            cat "$STDERR_FILE" >&2
+          else
+            cat "$STDERR_FILE" >&2
           fi
 
           # Rebase hit conflicts — resolve them content-aware
@@ -400,7 +416,17 @@ runs:
             # manualContentTier, etc.) that content-length resolution may have dropped.
             # These fields are ONLY set by humans — always safe to merge from either side.
             if command -v node &>/dev/null; then
-              RESTORED=$(node ../../scripts/lib/restore-protected-fields.js "origin/main" 2>&1 | tail -1)
+              # Guarded with `|| RESTORED="0"`: this step runs under
+              # bash -e -o pipefail, so if restore-protected-fields.js
+              # throws, the pipe to `tail -1` still propagates its non-zero
+              # exit to this assignment — unguarded, that trips errexit and
+              # kills the whole script mid-rebase (worse than a normal
+              # crash: mid-conflict-resolution). Same bug/fix as
+              # push-core-data/action.yml (task #1911); found by
+              # scripts/audit-errexit-unguarded-substitution.js (task #97).
+              # "0" is the safe fallback: skip the amend below rather than
+              # guess how many files were restored.
+              RESTORED=$(node ../../scripts/lib/restore-protected-fields.js "origin/main" 2>&1 | tail -1) || RESTORED="0"
               if [ "$RESTORED" -gt 0 ] 2>/dev/null; then
                 echo "  Restored protected fields in $RESTORED file(s) after conflict resolution"
                 git add -A
@@ -416,15 +442,52 @@ runs:
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
 
-            if git push origin main 2>&1; then
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
+              rm -f "$STDERR_FILE"
               exit 0
             fi
+            cat "$STDERR_FILE" >&2
           fi
 
-          echo "Push attempt $i failed, retrying in $((RANDOM % 10 + 5))s..."
+          # BRO-66 sibling (card #1850): distinguish a GitHub-API-rate-limit
+          # failure from a real merge conflict before deciding how long to
+          # wait. STDERR_FILE holds whichever git call most recently failed
+          # above (the pre-loop pull, the fast-path push, or the
+          # content-aware-merge push) — conflict-shaped stderr doesn't match
+          # the rate-limit pattern, so the case below falls through to the
+          # existing flat-jitter retry unchanged for that path.
+          echo "Push attempt $i failed"
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing flat-jitter retry below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+          rm -f "$STDERR_FILE"
           git rebase --abort 2>/dev/null || true
-          sleep $((RANDOM % 10 + 5))
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Review-texts push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              echo "Retrying in $((RANDOM % 10 + 5))s..."
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
         done
 
         echo "WARNING: Failed to push review-texts after 5 attempts"

@@ -32,11 +32,24 @@ export const WEIGHTS = {
   BW_OPENING_GOLD_BUMP: 15,           // critical-gold debut is the biggest event of the week
   OB_OPENING_BASE: 70,                // smaller market but still review news
   OB_OPENING_GOLD_BUMP: 15,
-  WE_GOLD_OPENING_BASE: 78,           // Critical Gold West End earns subject line (non-gold WE excluded)
-  WE_OPENING_SECONDARY_BASE: 66,      // In the US edition, a West End opening is SECONDARY news:
-                                      // rank it below every NY opening (OB_OPENING_BASE 70) so the
-                                      // editorial leads with NY shows when they exist (user 2026-07-12).
-                                      // In the WE edition the same opening is PRIMARY (see below).
+  // WE edition: West End (full-scale venue) is PRIMARY news, Off West End
+  // (smaller venue) is SECONDARY — mirrors BW_OPENING_BASE/OB_OPENING_BASE
+  // exactly (same base gap, same gold bump) so the subject/lede always leads
+  // with a West End opening over an Off West End one, the way the US edition
+  // always leads with Broadway over Off-Broadway (user, 2026-08-23: Jeeves
+  // Takes Charge [Off West End] led the subject over Abigail's Party [West
+  // End] purely because it had one more review — both were scored identically
+  // regardless of venue tier before this fix).
+  WE_OPENING_BASE: 85,
+  WE_OPENING_GOLD_BUMP: 15,
+  OFF_WE_OPENING_BASE: 70,
+  OFF_WE_OPENING_GOLD_BUMP: 15,
+  // US edition: a London opening of either tier is SECONDARY news — rank it
+  // below every NY opening (OB_OPENING_BASE 70) so the editorial leads with
+  // NY shows when they exist (user 2026-07-12). West End still outranks Off
+  // West End within that secondary slot for the same reason as above.
+  WE_OPENING_SECONDARY_BASE: 66,
+  OFF_WE_OPENING_SECONDARY_BASE: 60,
   OUTLIER_BASE: 70,                   // a critic out of step IS review news
   OUTLIER_LARGE_BUMP: 10,             // ≥20pt delta from consensus
   BIGGEST_MOVER_BASE: 72,             // score moves are the most direct review signal
@@ -50,6 +63,11 @@ export const WEIGHTS = {
   RECOUPMENT_FAST_BUMP: 6,            // <12 weeks-to-recoup is genuinely notable
   BUZZ_NEW_NUM_ONE: 48,               // social rotates fast; less stable signal
   BUZZ_HOLD_NUM_ONE: 25,
+  // Tie-break epsilon for the weGoldOpenings loop below (see
+  // weOpeningStoriesCap) — deliberately tiny (not a category-scale penalty)
+  // so it only ever resolves order WITHIN the West End opening list itself,
+  // never bumping a WE opening below an unrelated candidate kind.
+  WE_OPENING_RANK_EPSILON: 0.01,
 };
 
 const SCORE_GOLD_MIN_NYC = 83;
@@ -136,6 +154,18 @@ export function scoreCandidates(input) {
 
   // 1b. West End Gold openings — only Critical Gold WE shows enter the scorer.
   // Non-gold WE shows stay in London Openings but never lead the subject line.
+  // weOpeningStoriesCap tracks the lowest weight assigned so far in THIS list
+  // — enforced below as a hard ceiling for every later item, so weGoldOpenings'
+  // input order (weOpeningStories() in generate.mjs — most-reviewed-first,
+  // tier-first, the SAME order that drives the londonSection() card stack)
+  // always wins ties and can never be inverted by a later item's own gold
+  // bump. Uses a vanishingly small epsilon rather than a fixed penalty so it
+  // only ever breaks ties WITHIN this list — it must not push a later WE
+  // opening below an unrelated candidate kind (a closing, a recoupment) the
+  // way a category-scale penalty would (owner, 2026-08-02: Tao of Glass led
+  // weOpeningStories() on review count, but Brainiac Live's gold bump won the
+  // subject — cards led with one show, the subject named another).
+  let weOpeningStoriesCap = Infinity;
   for (const item of (input.weGoldOpenings || [])) {
     const s = item.show || item;
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
@@ -143,9 +173,17 @@ export function scoreCandidates(input) {
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     // Edition-aware weight: PRIMARY in the West End edition (leads like a
     // Broadway opening); SECONDARY in the US edition (below NY openings so the
-    // editorial leads with NY shows when they exist — user 2026-07-12).
+    // editorial leads with NY shows when they exist — user 2026-07-12). Within
+    // either tier, West End (full-scale venue) always outweighs Off West End
+    // (smaller venue) — mirrors Broadway always outweighing Off-Broadway.
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
-    const weWeight = isWeEdition ? WEIGHTS.BW_OPENING_BASE : WEIGHTS.WE_OPENING_SECONDARY_BASE;
+    const isWestEndVenue = s.category === 'west-end';
+    const gold = isGoldTier(score, s.category);
+    let weWeight = isWeEdition
+      ? (isWestEndVenue ? WEIGHTS.WE_OPENING_BASE : WEIGHTS.OFF_WE_OPENING_BASE) + (gold ? (isWestEndVenue ? WEIGHTS.WE_OPENING_GOLD_BUMP : WEIGHTS.OFF_WE_OPENING_GOLD_BUMP) : 0)
+      : (isWestEndVenue ? WEIGHTS.WE_OPENING_SECONDARY_BASE : WEIGHTS.OFF_WE_OPENING_SECONDARY_BASE);
+    if (weWeight > weOpeningStoriesCap) weWeight = weOpeningStoriesCap - WEIGHTS.WE_OPENING_RANK_EPSILON;
+    weOpeningStoriesCap = weWeight;
     // "in London" is useful context in the US edition, but redundant in the
     // West End edition (the whole email IS the West End) — drop it there so it
     // reads "opens to strong reviews", not "opens in London..." (user 2026-07-12).
@@ -154,7 +192,8 @@ export function scoreCandidates(input) {
       ? `${s.title} opens${loc} to ${verdict}`
       : `${s.title} opens${loc}`;
     out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} opens${loc} to `, openingVenue: isWeEdition ? 'the West End' : 'London' });
+      verdictTier: tier, verdictPrefix: `${s.title} opens${loc} to `,
+      openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 
   // 2. Off-Broadway openings (or reopenings).

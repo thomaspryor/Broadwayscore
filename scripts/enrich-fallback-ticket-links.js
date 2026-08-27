@@ -30,6 +30,7 @@ Options:
   --dry-run    discover + verify but do not write shows.json
   --limit=N    max shows to attempt this run (default 10, bounds SERP spend)
   --show=ID    only attempt this show id
+  --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
 
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -40,10 +41,12 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpQuery } = require('./lib/url-discovery');
 const { pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES } = require('./lib/ticket-link-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1]) || 10;
 const ONLY_SHOW = (process.argv.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 
 function isVenueSiteHost(url) {
   try {
@@ -129,6 +132,10 @@ async function main() {
   let added = 0;
   let misses = 0;
   for (const show of targets) {
+    if (timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining shows deferred to next run.`);
+      break;
+    }
     const query = buildTicketQuery(show);
     console.log(`\n${show.id}: SERP "${query}"`);
     let results = null;

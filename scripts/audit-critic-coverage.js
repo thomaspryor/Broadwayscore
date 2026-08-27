@@ -23,7 +23,10 @@ const muckrack = require(path.join(__dirname, 'lib/author-pages/muckrack.js'));
 const bww = require(path.join(__dirname, 'lib/author-pages/bww.js'));
 const nysun = require(path.join(__dirname, 'lib/author-pages/nysun.js'));
 const nysr = require(path.join(__dirname, 'lib/author-pages/nysr.js'));
-const { looksLikeReview } = require(path.join(__dirname, 'lib/author-pages/headline-classifier.js'));
+const nyt = require(path.join(__dirname, 'lib/author-pages/nyt.js'));
+const newyorker = require(path.join(__dirname, 'lib/author-pages/newyorker.js'));
+const vulture = require(path.join(__dirname, 'lib/author-pages/vulture.js'));
+const { computeCriticCoverage } = require(path.join(__dirname, 'lib/check-critic-coverage.js'));
 const { buildCadenceReport } = require(path.join(__dirname, 'lib/outlet-cadence.js'));
 const { updateHeartbeatState } = require(path.join(__dirname, 'lib/outlet-heartbeat-state.js'));
 
@@ -147,23 +150,6 @@ if (dryRun) {
 const modeLabel = mode === 'historical' ? 'historical T1/T2 critics' : 'active T1/T2 critics';
 console.error(`Auditing ${critics.length} ${modeLabel} (full missing capture)`);
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-function urlKey(u) {
-  try {
-    const x = new URL(u);
-    return x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/$/, '').split('?')[0];
-  } catch { return null; }
-}
-
-function ourUrlsFor(name) {
-  const set = new Set();
-  for (const r of rev.reviews) {
-    if (r.criticName !== name) continue;
-    const k = urlKey(r.url); if (k) set.add(k);
-  }
-  return set;
-}
-
 // ── Core ─────────────────────────────────────────────────────────────────────
 const CONC = 4;
 const REPORT = [];
@@ -176,9 +162,12 @@ async function processCritic(c) {
   const sourceCalls = [
     { source: 'muckrack', promise: muckrack.fetch(c.slug) },
   ];
-  if (override.bww)   sourceCalls.push({ source: 'bww',   promise: bww.fetch(override.bww) });
-  if (override.nysun) sourceCalls.push({ source: 'nysun', promise: nysun.fetch(override.nysun) });
-  if (override.nysr)  sourceCalls.push({ source: 'nysr',  promise: nysr.fetch(override.nysr) });
+  if (override.bww)       sourceCalls.push({ source: 'bww',       promise: bww.fetch(override.bww) });
+  if (override.nysun)     sourceCalls.push({ source: 'nysun',     promise: nysun.fetch(override.nysun) });
+  if (override.nysr)      sourceCalls.push({ source: 'nysr',      promise: nysr.fetch(override.nysr) });
+  if (override.nyt)       sourceCalls.push({ source: 'nyt',       promise: nyt.fetch(override.nyt) });
+  if (override.newyorker) sourceCalls.push({ source: 'newyorker', promise: newyorker.fetch(override.newyorker) });
+  if (override.vulture)   sourceCalls.push({ source: 'vulture',   promise: vulture.fetch(override.vulture) });
 
   const settled = await Promise.allSettled(sourceCalls.map(s => s.promise));
 
@@ -198,37 +187,11 @@ async function processCritic(c) {
     return;
   }
 
-  const ours = ourUrlsFor(c.name);
-
-  // Merge by URL key, preserving multi-source attribution
-  const extMap = new Map();
-  for (const a of externalArts) {
-    const k = urlKey(a.url);
-    if (!k) continue;
-    if (extMap.has(k)) {
-      const existing = extMap.get(k);
-      if (!existing.sources) existing.sources = [existing.source];
-      if (!existing.sources.includes(a.source)) existing.sources.push(a.source);
-      // Keep the most recent date
-      if (a.date && (!existing.date || a.date > existing.date)) existing.date = a.date;
-    } else {
-      extMap.set(k, { ...a, sources: [a.source] });
-    }
-  }
-
-  const missing = [];
-  for (const [k, a] of extMap) {
-    if (ours.has(k)) continue;
-    if (!looksLikeReview(a.title, a.url)) continue;
-    missing.push(a);
-  }
+  const coverage = computeCriticCoverage(rev.reviews, c.name, externalArts);
 
   REPORT.push({
     ...c,
-    externalCount: extMap.size,
-    ourCount: ours.size,
-    missingCount: missing.length,
-    missing,
+    ...coverage,
     ...(errors.length ? { errors } : {}),
   });
 }

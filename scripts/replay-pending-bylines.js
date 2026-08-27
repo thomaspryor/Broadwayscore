@@ -19,6 +19,7 @@
  *   node scripts/replay-pending-bylines.js --show=eugene-onegin-off-broadway-2026
  *   node scripts/replay-pending-bylines.js --shows=show1,show2
  *   node scripts/replay-pending-bylines.js --all-opera
+ *   node scripts/replay-pending-bylines.js --all-open --time-budget-min=16
  */
 
 const fs = require('fs');
@@ -30,6 +31,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -102,6 +104,7 @@ const allOpera = args.includes('--all-opera');
 const allOpen = args.includes('--all-open');
 const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const PENDING_ROOT = path.join(__dirname, '../data/review-texts/_pending');
 const REVIEW_TEXTS_ROOT = path.join(__dirname, '../data/review-texts');
@@ -162,6 +165,10 @@ async function processShow(showId) {
 
   let promoted = 0, kept = 0, rejected = 0;
   for (const file of files) {
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — remaining files (and shows) deferred to next run.`);
+      return { promoted, kept, rejected, budgetExceeded: true };
+    }
     const filepath = path.join(pendingDir, file);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     // Already evaluated and skipped on a prior run — don't re-fetch the URL.
@@ -298,10 +305,11 @@ if (require.main === module) {
 
     let totalPromoted = 0, totalKept = 0, totalRejected = 0;
     for (const id of ids) {
-      const { promoted, kept, rejected } = await processShow(id);
+      const { promoted, kept, rejected, budgetExceeded } = await processShow(id);
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
+      if (budgetExceeded) break;
     }
 
     console.log(`\n━━━ Replay complete ━━━`);

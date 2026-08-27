@@ -13,7 +13,7 @@ const {
   findRepeatBuyers,
   baselineComparison,
 } = require('./affiliate-anomaly.js');
-const { runChecks } = require('../check-affiliate-health.js');
+const { runChecks, isTransientFetchError, fetchWithOneRetry } = require('../check-affiliate-health.js');
 
 // ── REAL July–August 2026 data (the incident that motivated this monitor) ──
 // Impact partner_performance_by_day + PostHog daily ticket_click (real-users
@@ -173,4 +173,52 @@ test('baselineComparison computes window-vs-trailing-baseline per-day deltas', (
   assert.equal(res.baseline.days, 7);
   // Current week (~$31.88 payout) vs prior week (~$142) → strongly negative
   assert.ok(res.payoutVsBaselinePct < -50);
+});
+
+// ── fetch timeout/retry (2026-08-22 incident: PostHog's 28-day HogQL query
+// took >8s once — the Vercel-route-sized default timeout — and paged as a
+// false "provider down" while every other check was healthy) ──────────────
+
+test('isTransientFetchError recognizes AbortController timeouts, not real API errors', () => {
+  const abortByName = Object.assign(new Error('The operation was aborted'), { name: 'AbortError' });
+  const abortByMessage = new Error('This operation was aborted');
+  assert.equal(isTransientFetchError(abortByName), true);
+  assert.equal(isTransientFetchError(abortByMessage), true);
+  assert.equal(isTransientFetchError(new Error('PostHog daily clicks error: HTTP 401')), false);
+  assert.equal(isTransientFetchError(new Error('Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)')), false);
+});
+
+test('fetchWithOneRetry retries exactly once on a transient abort, then succeeds', async () => {
+  let calls = 0;
+  const result = await fetchWithOneRetry(() => {
+    calls += 1;
+    if (calls === 1) return Promise.reject(Object.assign(new Error('aborted'), { name: 'AbortError' }));
+    return Promise.resolve('ok');
+  });
+  assert.equal(result, 'ok');
+  assert.equal(calls, 2);
+});
+
+test('fetchWithOneRetry does not retry a non-transient error', async () => {
+  let calls = 0;
+  await assert.rejects(
+    fetchWithOneRetry(() => {
+      calls += 1;
+      return Promise.reject(new Error('PostHog daily clicks error: HTTP 401'));
+    }),
+    /HTTP 401/
+  );
+  assert.equal(calls, 1);
+});
+
+test('fetchWithOneRetry surfaces the error if the retry also aborts', async () => {
+  let calls = 0;
+  await assert.rejects(
+    fetchWithOneRetry(() => {
+      calls += 1;
+      return Promise.reject(Object.assign(new Error('aborted'), { name: 'AbortError' }));
+    }),
+    /aborted/
+  );
+  assert.equal(calls, 2);
 });

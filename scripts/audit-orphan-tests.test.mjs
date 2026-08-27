@@ -11,7 +11,18 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractRunBlocks } = require('./audit-orphan-tests.js');
+const { extractRunBlocks, REFERENCE_REGEX } = require('./audit-orphan-tests.js');
+
+// BRO-111: REFERENCE_REGEX used to exclude dots from its match class, so a
+// dotted test filename (review-normalization.maybeUpgradeUrl.test.mjs) only
+// ever matched its tail (maybeUpgradeUrl.test.mjs) — never equal to the full
+// basename listTestFiles() reports, so a correctly-manifest-registered test
+// still read as an orphan and blocked pushes.
+test('REFERENCE_REGEX matches the full basename of a dotted test filename', () => {
+  const line = 'tests/unit/review-normalization.maybeUpgradeUrl.test.mjs';
+  const matches = [...line.matchAll(new RegExp(REFERENCE_REGEX))].map((m) => m[0]);
+  assert.deepEqual(matches, ['review-normalization.maybeUpgradeUrl.test.mjs']);
+});
 
 test('a comment-only mention of a test filename is excluded', () => {
   const yaml = [

@@ -47,6 +47,7 @@ const {
   classifyNoise,
   classifyProject,
   isIdleArchive,
+  isAlreadyImported,
 } = rules;
 const linear = require('./lib/linear-client');
 const ledgerLib = require('./lib/import-ledger');
@@ -429,6 +430,14 @@ async function main() {
 
   const mapping = loadMapping();
   const notionState = loadNotionSnapshot();
+  // BRO-2468: mapping[task.id] alone is not enough — the local mirror
+  // renumbers task ids on resync, so a page imported under a stale task id
+  // reads as "never imported" against the legacy JSON. The pageId ledger
+  // (data/linear-import-mapping.jsonl) is keyed on the Notion page id, which
+  // does not move, so a hit there also counts. See isAlreadyImported().
+  const pageIdIndex = ledgerLib.indexByPageId(
+    ledgerLib.readRows(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER))
+  );
 
   // Classify EVERY record first (independent of the mapping), because
   // --reconcile needs the full curation to diff against the board, not just
@@ -446,7 +455,8 @@ async function main() {
   let alreadyImported = 0;
 
   for (const { task, c } of classified) {
-    if (mapping[task.id]) {
+    const notionId = extractNotionId(task.description || '');
+    if (isAlreadyImported(task, notionId, mapping, pageIdIndex)) {
       alreadyImported++;
       continue;
     }

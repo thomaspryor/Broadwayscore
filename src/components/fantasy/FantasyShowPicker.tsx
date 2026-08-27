@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { FantasyShow } from '@/config/fantasy';
+import { ELIGIBILITY_MARKERS } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { showFormatTitle } from '@/lib/show-format';
 
@@ -76,7 +77,16 @@ export default function FantasyShowPicker({
           <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
             <span>{showFormatTitle(selectedShow.type)}</span>
             {selectedShow.criticScore != null && (
-              <span className="text-yellow-400">Score: {Math.round(selectedShow.criticScore)}</span>
+              <span className="text-yellow-400">
+                {!selectedShow.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
+                Score: {Math.round(selectedShow.criticScore)}
+              </span>
+            )}
+            {selectedShow.audienceGrade != null && (
+              <span className="text-yellow-400">
+                {!selectedShow.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
+                Grade: {selectedShow.audienceGrade}
+              </span>
             )}
           </div>
         </div>
@@ -174,7 +184,16 @@ export default function FantasyShowPicker({
                     <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
                       <span>{showFormatTitle(show.type)}</span>
                       {show.criticScore != null && (
-                        <span className="text-yellow-400">Score: {Math.round(show.criticScore)}</span>
+                        <span className="text-yellow-400">
+                          {!show.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
+                          Score: {Math.round(show.criticScore)}
+                        </span>
+                      )}
+                      {show.audienceGrade != null && (
+                        <span className="text-yellow-400">
+                          {!show.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
+                          Grade: {show.audienceGrade}
+                        </span>
                       )}
                       {!show.eligible.boxOffice && (
                         <span className="text-gray-500">† no box office</span>

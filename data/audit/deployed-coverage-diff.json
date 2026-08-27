@@ -1,24 +1,54 @@
 {
-  "generatedAt": "2026-08-20T10:24:12.811Z",
+  "generatedAt": "2026-08-26T18:50:59.451Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 150,
-  "clean": 148,
-  "defective": 2,
+  "checked": 141,
+  "clean": 136,
+  "defective": 5,
   "byType": {
-    "score-drift": 2
+    "score-drift": 5
   },
   "shows": [
     {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "openingDate": "2026-08-18",
+      "showId": "paranormal-activity-2026",
+      "title": "Paranormal Activity",
+      "openingDate": "2026-08-25",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 67.57 vs local 67.99 (Δ0.42)"
+          "detail": "deployed cs 79.31 vs local 79.77 (Δ0.46)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.84 vs local 78.77 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 41,
+      "deployedCount": 41
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "title": "Burlesque",
+      "openingDate": "2025-07-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.48 vs local 60.85 (Δ1.63)"
         }
       ],
       "missingFromProd": [],
@@ -26,19 +56,34 @@
       "deployedCount": 17
     },
     {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "title": "How the Other Half Loves",
-      "openingDate": "2026-08-12",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.5 vs local 77.42 (Δ0.08)"
+          "detail": "deployed cs 61.62 vs local 61.25 (Δ0.37)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.63 vs local 87.52 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 32
     }
   ]
 }

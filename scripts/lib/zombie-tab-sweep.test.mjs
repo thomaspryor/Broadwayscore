@@ -304,3 +304,62 @@ test('sweepZombieTabs kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 does nothing', ()
   } finally { delete process.env.ZOMBIE_TAB_SWEEP_DISABLED; }
   assert.deepEqual(calls.closed, []);
 });
+
+// ── Crown (owner-loop) tabs — task #1751 ───────────────────────────────────
+
+test('crown tab with a completed task → reported, never a corpse', () => {
+  // Without the crown branch this is the strongest close signal there is
+  // (dead tab + task marked completed) and the owner loop would be closed.
+  const r = classify({
+    deadAutoTabs: [dead('workspace:5', '👑 🤖 OWNER — Linear migration to done (8/14)')],
+    launches: { 'workspace:5': { taskId: 1751, subject: 'OWNER: drive the Linear migration to done' } },
+    statuses: { 1751: 'completed' },
+  });
+  assert.deepEqual(r.corpses, []);
+  assert.equal(r.report.length, 1);
+  assert.equal(r.report[0].reason, 'crown-tab');
+  // The report must carry the ledger identity a human needs to act on it —
+  // that is the whole reason this is reported rather than skipped outright.
+  assert.equal(r.report[0].taskId, '1751');
+  assert.equal(r.report[0].subject, 'OWNER: drive the Linear migration to done');
+});
+
+test('crown tab with a pending task → reported, never headlessly revived', () => {
+  // Re-crowning is an owner decision that must go through the dispatch ledger,
+  // not a 5-minute headless sweep.
+  const r = classify({
+    deadAutoTabs: [dead('workspace:5', '✅ 👑 🤖 OWNER — Linear migration to done')],
+    launches: { 'workspace:5': { taskId: 1751, subject: 's' } },
+    statuses: { 1751: 'pending' },
+  });
+  assert.deepEqual(r.revive, []);
+  assert.deepEqual(r.corpses, []);
+  assert.equal(r.report[0].reason, 'crown-tab');
+});
+
+test('crown tab duplicating a LIVE tab is still reported, not closed', () => {
+  const r = classify({
+    deadAutoTabs: [dead('workspace:5', '👑 🤖 OWNER — Linear migration to done')],
+    liveWorkspaces: [{ ref: 'workspace:9', title: '👑 🤖 OWNER — Linear migration to done' }],
+    launches: {
+      'workspace:5': { taskId: 1751, subject: 's' },
+      'workspace:9': { taskId: 1751, subject: 's' },
+    },
+    statuses: { 1751: 'in_progress' },
+  });
+  assert.deepEqual(r.corpses, []);
+  assert.equal(r.report[0].reason, 'crown-tab');
+});
+
+test('a non-crown 🤖 tab is unaffected by the crown branch', () => {
+  // Regression fence: the incident title itself carries no leading 👑, so it
+  // must still classify exactly as it did before.
+  const r = classify({
+    deadAutoTabs: [dead('workspace:5', '✅ 🤖🔮 Data·OWNER: drive the Linear migration to done — own, m')],
+    launches: { 'workspace:5': { taskId: 1751, subject: 's' } },
+    statuses: { 1751: 'completed' },
+  });
+  assert.equal(r.corpses.length, 1);
+  assert.equal(r.corpses[0].reason, 'task-completed');
+  assert.equal(r.report.length, 0);
+});

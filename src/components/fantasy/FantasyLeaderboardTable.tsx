@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import type { LeaderboardEntry } from '@/config/fantasy';
 
+const EMAIL_FORMAT_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function FantasyLeaderboardTable() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -10,6 +12,9 @@ export default function FantasyLeaderboardTable() {
   const [expandedRank, setExpandedRank] = useState<number | null>(null);
   const [leagueFilter, setLeagueFilter] = useState('');
   const [debouncedLeague, setDebouncedLeague] = useState('');
+  const [emailFilter, setEmailFilter] = useState('');
+  const [debouncedEmail, setDebouncedEmail] = useState('');
+  const [emailNotFound, setEmailNotFound] = useState(false);
 
   // Debounce league filter (500ms)
   useEffect(() => {
@@ -17,16 +22,29 @@ export default function FantasyLeaderboardTable() {
     return () => clearTimeout(timer);
   }, [leagueFilter]);
 
+  // Debounce email search (500ms) — email search takes priority over league
+  // filter. Only fires once the input is a complete email address, so
+  // every keystroke of a partial address doesn't round-trip to the server.
+  useEffect(() => {
+    const trimmed = emailFilter.trim();
+    const timer = setTimeout(() => setDebouncedEmail(EMAIL_FORMAT_RE.test(trimmed) ? trimmed : ''), 500);
+    return () => clearTimeout(timer);
+  }, [emailFilter]);
+
   useEffect(() => {
     async function fetchLeaderboard() {
       setLoading(true);
+      setEmailNotFound(false);
       try {
-        const url = debouncedLeague
+        const url = debouncedEmail
+          ? `/api/fantasy/leaderboard?email=${encodeURIComponent(debouncedEmail)}`
+          : debouncedLeague
           ? `/api/fantasy/leaderboard?league=${encodeURIComponent(debouncedLeague)}`
           : '/api/fantasy/leaderboard';
         const res = await fetch(url);
         const data = await res.json();
         setEntries(data.entries || []);
+        if (debouncedEmail && data.entries?.length === 0 && !data.error) setEmailNotFound(true);
         if (data.error) setError(data.error);
       } catch {
         setError('Failed to load leaderboard');
@@ -35,7 +53,7 @@ export default function FantasyLeaderboardTable() {
       }
     }
     fetchLeaderboard();
-  }, [debouncedLeague]);
+  }, [debouncedLeague, debouncedEmail]);
 
   if (loading) {
     return (
@@ -46,31 +64,33 @@ export default function FantasyLeaderboardTable() {
     );
   }
 
-  if (entries.length === 0) {
-    return (
-      <div className="text-center py-12 bg-surface-raised/30 rounded-xl border border-white/5">
-        <p className="text-gray-400 text-lg mb-2">No entries yet</p>
-        <p className="text-gray-600 text-sm mb-6">Be the first to draft a team!</p>
-        <a
-          href="/fantasy/draft"
-          className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
-        >
-          Draft Now
-        </a>
+  const filterBar = (
+    <div className="flex flex-col sm:flex-row gap-2 mb-2">
+      <div className="flex-1 flex items-center gap-2">
+        <input
+          type="email"
+          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+          placeholder="Find your team by email..."
+          value={emailFilter}
+          onChange={e => setEmailFilter(e.target.value)}
+        />
+        {emailFilter && (
+          <button
+            onClick={() => setEmailFilter('')}
+            className="text-xs text-gray-500 hover:text-white transition-colors"
+          >
+            Clear
+          </button>
+        )}
       </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2">
-      {/* League filter */}
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex-1 flex items-center gap-2">
         <input
           type="text"
-          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors disabled:opacity-40"
           placeholder="Filter by league name..."
           value={leagueFilter}
           onChange={e => setLeagueFilter(e.target.value)}
+          disabled={!!emailFilter}
         />
         {leagueFilter && (
           <button
@@ -81,6 +101,39 @@ export default function FantasyLeaderboardTable() {
           </button>
         )}
       </div>
+    </div>
+  );
+
+  if (entries.length === 0) {
+    return (
+      <div className="space-y-2">
+        {filterBar}
+        <div className="text-center py-12 bg-surface-raised/30 rounded-xl border border-white/5">
+          {emailNotFound ? (
+            <>
+              <p className="text-gray-400 text-lg mb-2">No team found for that email</p>
+              <p className="text-gray-600 text-sm">Check the address you drafted with and try again.</p>
+            </>
+          ) : (
+            <>
+              <p className="text-gray-400 text-lg mb-2">No entries yet</p>
+              <p className="text-gray-600 text-sm mb-6">Be the first to draft a team!</p>
+              <a
+                href="/fantasy/draft"
+                className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+              >
+                Draft Now
+              </a>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {filterBar}
 
       {/* Header row */}
       <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-gray-500 uppercase tracking-wider">

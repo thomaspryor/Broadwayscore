@@ -24,6 +24,7 @@ const { fetchPage } = require('../scraper');
 const { extractBWWRoundupReviews } = require('../../gather-reviews');
 const { normalizeOutlet, findExistingReviewFile } = require('../review-normalization');
 const { discoverBwwRoundupUrl } = require('../bww-rr-discover');
+const { llmFallbackExtractIfNeeded } = require('../llm-extractor');
 
 const name = 'bww-rr-count-mismatch';
 const description = 'BWW Review Roundup lists more reviews than we have in our database (>3 gap)';
@@ -111,6 +112,12 @@ async function run(show, context) {
   let extracted;
   try {
     extracted = extractBWWRoundupReviews(html, show.id, rrUrl, show.title) || [];
+    // Same LLM fallback gather-reviews.js uses (zero AND partial triggers) — this
+    // check calls the same regex extractor, so it's blind to the exact format
+    // changes it exists to catch unless it gets the same resilience.
+    extracted = await llmFallbackExtractIfNeeded(html, extracted, {
+      aggregator: 'bww', showTitle: show.title, showId: show.id,
+    });
   } catch (err) {
     return {
       ok: true,

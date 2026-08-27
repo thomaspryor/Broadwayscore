@@ -15,15 +15,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  MAX_CLOSED_WITHOUT_REVIEWS,
+  buildShowsWithScores,
+  findClosedShowsWithoutScores,
+} = require('./lib/mobile-shows-validator.js');
 
 const MOBILE_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
-
-// Closed shows without any scored review in reviews.json should never appear
-// in mobile-shows.json — the visibility filter requires showsWithScores.
-// A small number (threshold) allows for race conditions during builds.
-const MAX_CLOSED_WITHOUT_REVIEWS = 5;
 
 function main() {
   if (!fs.existsSync(MOBILE_PATH)) {
@@ -49,13 +49,10 @@ function main() {
     const reviewArr = Array.isArray(reviews) ? reviews : Object.values(reviews);
 
     // Build the same showsWithScores set that generate-mobile-data.js uses
-    const showsWithScores = new Set();
-    for (const r of reviewArr) {
-      if (r.assignedScore != null) showsWithScores.add(r.showId);
-    }
+    const showsWithScores = buildShowsWithScores(reviewArr);
 
     const closedMobileShows = mobileShows.filter(s => s.st === 'closed');
-    const closedWithoutReviews = closedMobileShows.filter(s => !showsWithScores.has(s.id));
+    const closedWithoutReviews = findClosedShowsWithoutScores(mobileShows, showsWithScores);
 
     console.log(`\nClosed shows in mobile: ${closedMobileShows.length}`);
     console.log(`Closed shows WITHOUT scored reviews in reviews.json: ${closedWithoutReviews.length}`);

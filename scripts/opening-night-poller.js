@@ -44,10 +44,11 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
+const { llmFallbackExtractIfNeeded } = require('./lib/llm-extractor');
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
@@ -62,13 +63,13 @@ const { isInOpeningWindow } = require('./lib/opening-window-backoff');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   checkSerpBurstAllowed,
-  isCascadeTripwireExceeded,
 } = require('./lib/serp-burst-caps');
 const {
   DEFAULT_SERP_SESSION_CONFIG,
   checkSerpSessionAllowed,
 } = require('./lib/serp-session-cap');
-const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert } = require('./lib/owner-alert-router');
+const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 
 // Paths
@@ -478,11 +479,9 @@ async function runAggregators(show) {
         });
         if (validation.valid) {
           let reviews = extractDTLIReviews(dtli.html, show.id, dtli.url, show.title);
-          if (reviews.length === 0 && hasStructuralMarkers(dtli.html, 'dtli')) {
-            reviews = await llmFallbackExtract(dtli.html, {
-              aggregator: 'dtli', showTitle: show.title, showId: show.id,
-            });
-          }
+          reviews = await llmFallbackExtractIfNeeded(dtli.html, reviews, {
+            aggregator: 'dtli', showTitle: show.title, showId: show.id,
+          });
           console.log(`  DTLI: ${reviews.length} reviews found`);
           results.push(...reviews);
         } else {
@@ -634,11 +633,9 @@ async function runAggregators(show) {
       const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
         let reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title);
-        if (reviews.length === 0 && hasStructuralMarkers(bww.html, 'bww')) {
-          reviews = await llmFallbackExtract(bww.html, {
-            aggregator: 'bww', showTitle: show.title, showId: show.id,
-          });
-        }
+        reviews = await llmFallbackExtractIfNeeded(bww.html, reviews, {
+          aggregator: 'bww', showTitle: show.title, showId: show.id,
+        });
         // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
         reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
@@ -761,7 +758,11 @@ async function runAggregators(show) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
         const overrideUrl = TB_REVIEW_URL_CLI || show.tbReviewUrl || '';
-        const isRevival = !!(show.isRevival || (show.id && /\b(19|20)\d{2}\b/.test(show.id)));
+        // Every show.id ends in its opening year (BRO-2023) — the old
+        // `|| /\b(19|20)\d{2}\b/.test(show.id)` clause matched EVERY show,
+        // so isRevival was always true here regardless of show.isRevival,
+        // wrongly tightening the TB date window (1 day vs 7) for non-revivals.
+        const isRevival = !!show.isRevival;
         const tb = await tryTbDirectUrl({
           show,
           year,
@@ -1262,7 +1263,15 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
       );
 
       const url = (result && result !== '__SERP_UNAVAILABLE__') ? result : null;
-      if (url && !knownUrls.has(url)) {
+      // The ±14d/7d dateRange above filters Google's indexing metadata, which
+      // can be stale/wrong for an old article; this is an independent check
+      // against the URL itself. Zero-grace (unlike discoverCorrectUrl's own
+      // -3y-grace isUrlYearOutsideWindow) — every call here IS an opening-night
+      // poll, so a mismatched embedded year is always the wrong production
+      // unless a declared priorRuns/tourLegs window says otherwise (BRO-736).
+      if (url && isSerpUrlWrongProductionForOpeningNight(url, show)) {
+        console.log(`rejected — embedded URL year doesn't match opening year (opening-night guard, BRO-736): ${url}`);
+      } else if (url && !knownUrls.has(url)) {
         console.log('found');
         results.push({
           showId: show.id,
@@ -1663,37 +1672,37 @@ async function pollCycle() {
       // the daily/per-show cap and starve another opening.
       if (serpBurstActive) {
         const updated = incrementSerpBurstLedger(SHOW_ID);
-        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner email
-        // (sendAlert) per UTC day — no human log-watching required. The hard daily cap still
-        // auto-stops further bursts regardless. tripwireAlerted (persisted in the ledger)
-        // dedupes so we don't email every cycle.
-        // Direct sendAlert, not routeAlert — this already has its own cooldown:
-        // tripwireAlerted resets with the rest of the SERP burst ledger at the
-        // next UTC day boundary, giving the same one-per-day dedup the router's
-        // ledger would provide.
-        if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
-          updated.tripwireAlerted = true;
-          writeSerpBurstLedger(updated);
-          const msg =
-            `${updated.globalBursts} WE opening-night SERP bursts today ` +
-            `(tripwire ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, hard daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
-            `Bursts auto-stop at the cap; this is an early heads-up. ` +
-            `Emergency off: gh variable set DISABLE_WE_SERP_BURST --body true`;
-          console.log(`::warning::SERP burst cascade tripwire: ${msg}`);
-          try {
-            await sendAlert({
-              title: 'WE SERP burst tripwire',
-              description: msg,
-              // 'error': same-day actionable — the 60-100K credits/day runaway
-              // class (feedback_sb_serp_invisible_burn); the daily digest is up
-              // to 24h late. warning would be suppressed (actionable-only policy).
-              severity: 'error',
-              email: true,
-            });
-          } catch (e) {
-            console.log(`  [SERP burst] tripwire alert failed (non-fatal): ${e.message}`);
-          }
-        }
+        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner
+        // notification per UTC day — no human log-watching required. The hard daily cap
+        // still auto-stops further bursts regardless. tripwireAlerted (persisted in the
+        // ledger) dedupes so we don't call routeAlert() every cycle.
+        // Routed through owner-alert-router (BRO-1699 migration): this used to call
+        // sendAlert(email:true) directly, bypassing the ACTION-only policy and the
+        // alert ledger's dedup — one of the two direct-bypass senders this card exists
+        // to close. conditionKey is static (not per-show) because the tripwire is a
+        // global daily-cascade signal, matching the local tripwireAlerted gate above.
+        // 'serp-burst:tripwire' IS on the page-worthy allowlist (scripts/lib/page-
+        // worthy-alerts.js) so disposition:'human' actually pages — a ship-check
+        // finding caught leaving it off the allowlist as a real regression: this
+        // alert's own severity rationale (below) argues the digest is too late for
+        // a same-day credit runaway, so silently downgrading it would have
+        // contradicted the code's own stated urgency.
+        // cooldownHours is intentionally short (1h, not the router's 7-day
+        // default): the LOCAL tripwireAlerted flag above is the real once-per-day
+        // dedup (it resets at the UTC-day boundary with the rest of the SERP
+        // burst ledger). A 24h router cooldown would silence a genuine NEXT-day
+        // tripwire that lands soon after a late-UTC-day one — 1h only guards
+        // against a duplicate routeAlert() call within the same brief window.
+        // Extracted to scripts/lib/serp-burst-tripwire.js (BRO-2438 finding 2):
+        // write-after-notify — tripwireAlerted persists only once routeAlert
+        // actually delivers, so a failed sendAlert() (missing RESEND_API_KEY,
+        // Resend 5xx) leaves the ledger untouched and the next cycle retries.
+        await maybeAlertSerpBurstTripwire({
+          ledger: updated,
+          config: DEFAULT_SERP_BURST_CONFIG,
+          routeAlert,
+          writeSerpBurstLedger,
+        });
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
       } // end: daily SERP-session cap allowed

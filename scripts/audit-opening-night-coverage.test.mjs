@@ -42,6 +42,9 @@ function makeArchiveFixture() {
   const archiveDir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-test-'));
   return {
     archiveDir,
+    // Every fixture mints a tmpdir; without this each run leaks one
+    // census-test-* directory into os.tmpdir(), locally and on every CI run.
+    cleanup() { fs.rmSync(archiveDir, { recursive: true, force: true }); },
     realSource(name, entries) {
       fs.mkdirSync(path.join(archiveDir, name), { recursive: true });
       fs.writeFileSync(path.join(archiveDir, name, `${SHOW_ID}.html`), '<html></html>');
@@ -238,4 +241,29 @@ test('coverage math: totalTier dedupes London-alias pairs (timeout/timeout-londo
   censusOpts.sources[1].dir = 'dtli';
   const { coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts);
   assert.equal(coverage.totalTier, 1, 'timeout + timeout-london are the same logical outlet — must count once');
+});
+
+
+// --- BRO-89: a phantom census entry must not crash the T1 coverage ledger and
+// must not mint a phantom SLA cell. An outletId that doesn't exist in
+// outlet-registry.json at all (a mis-normalized critic name -- see
+// review-census.js's normalizeOutlet) is excluded from tier counting silently,
+// never thrown on. ---
+
+test('ledger path: a phantom (unregistered) census outletId does not crash computeShowCells and is excluded from cells/coverage', (t) => {
+  const fixture = makeArchiveFixture();
+  t.after(() => fixture.cleanup());
+  const s = show();
+  const censusOpts = {
+    archiveDir: fixture.archiveDir,
+    sources: [fixture.realSource('bww-roundup', [
+      { outlet: 'The New York Times', outletId: 'nytimes', critic: 'Unknown', stars: null, url: '' },
+      // A completely unregistered outletId -- the phantom-census-outlet case.
+      { outlet: 'Some Nobody Blog', outletId: 'phantom-outlet-xyz', critic: 'Unknown', stars: null, url: '' },
+    ])],
+  };
+  assert.doesNotThrow(() => computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts));
+  const { cells, coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts);
+  assert.deepEqual(cells.map((c) => c.outletId).sort(), ['nytimes'], 'phantom outletId must never mint a ledger cell');
+  assert.equal(coverage.totalTier, 1, 'phantom outletId must not inflate the T1/T2 denominator');
 });

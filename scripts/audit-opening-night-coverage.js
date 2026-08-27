@@ -20,7 +20,7 @@ const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
-const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, GRACE_HOURS } = require('./lib/t1-ledger');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
@@ -935,25 +935,17 @@ async function main() {
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
     // Tier scoping (mirrors the ledger's census∩T1/T2): only registered T1/T2
     // outlets drive dispatch and major severity. A roundup naming 3+ unscored
-    // T3 blogs (or unregistered junk ids) is honest census data but a FULL
-    // gather re-fired for it every run is the dispatch storm — the T3 long
-    // tail stays visible in censusMissing, it just doesn't ACT.
-    const censusMissingT12 = censusMissing.filter(id => isDispatchTierOutlet(outlets, id));
-    // B2: the LEARNED half of the same "don't re-fire what can't succeed" rule
-    // the suppressed set encodes by hand. An outlet whose breaker is open is
-    // still reported in censusMissingT12 (it IS missing — visibility is B1's
-    // job), but it must not make the show `dispatchable`, or the exact NYT/WSJ
-    // dispatch storm the v2 plan's point 3 warns about returns through this door.
-    const circuitOpenIds = censusMissingT12.filter(id => isOutletTripped(breaker, id));
-    const censusMissingActionable = censusMissingT12.filter(id => !circuitOpenIds.includes(id));
+    // T3 blogs (or unregistered/phantom outletIds — see review-census.js's
+    // normalizeOutlet) is honest census data but a FULL gather re-fired for it
+    // every run is the dispatch storm — the T3 long tail stays visible in
+    // censusMissing, it just doesn't ACT. Pulled into a pure, unit-tested
+    // function (scripts/lib/t1-ledger.js) so this decision has a regression
+    // test independent of live census/archive fixtures (BRO-89).
+    const { censusMissingT12, circuitOpenIds, censusMissingActionable, dispatchable, severity } =
+      computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken, isTripped: (id) => isOutletTripped(breaker, id) });
     if (circuitOpenIds.length) {
       console.log(`  🔌 CIRCUIT OPEN (missing but NOT dispatchable — retrieval failing across shows): ${circuitOpenIds.join(', ')}`);
     }
-    // Dispatchable = there is something we can actually go fetch (NON-suppressed,
-    // NON-circuit-open, dispatch-tier census-missing). A show that's incomplete ONLY
-    // because of suppressed/unfetchable outlets, T3+ blogs, or whose extractor broke, is
-    // still alert-worthy but must NOT re-fire a gather that can't change the outcome.
-    const dispatchable = censusMissingActionable.length > 0;
     // Only surface a gap when there's a HARD (roundup-named) census-missing outlet
     // or a broken extractor. A show whose only census-missing outlets are soft
     // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
@@ -980,7 +972,7 @@ async function main() {
         // the alert fatigue B3's ack mechanism exists to prevent. Circuit-open
         // cells still ride the digest + scoreboard, which is where a
         // known-permanent gap belongs.
-        severity: (censusMissingActionable.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
+        severity,
       });
     }
   }

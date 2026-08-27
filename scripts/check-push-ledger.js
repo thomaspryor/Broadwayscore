@@ -53,6 +53,60 @@ const { readLedger, writeLedger } = require('./lib/push-ledger-store');
 // prunes instead, so a short retry budget is plenty.
 const PRUNE_ATTEMPTS = 3;
 
+// push-retry-failures branch: NO revert-detection needed here (unlike the
+// push-ledger success stream above) — a failure record has no "did it land"
+// question to re-verify, it's just diagnostic history. This reuses this
+// SAME script/cron (task: push-retry-failure telemetry, 2026-08-23,
+// plan-review finding: 3 independent reviewers flagged that a durable
+// branch with a write path and no prune path grows forever) rather than
+// standing up a second scheduled workflow for one prune call.
+// FAILURE_MAX_AGE_MS: assessPushRetryDeadman() (scripts/lib/push-retry-
+// deadman.js) only ever reads the trailing 7 days; keep a wider buffer (30d)
+// so a brief digest-consumer outage doesn't lose entries it would have
+// wanted, without growing the branch unboundedly.
+const FAILURE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+async function pruneFailureLedger() {
+  const cwd = process.cwd();
+  let read;
+  try {
+    read = readLedger(cwd, { branch: 'push-retry-failures', file: 'failures.jsonl' });
+  } catch (err) {
+    console.error(`check-push-ledger: push-retry-failures read failed, skipping prune this run: ${err.message}`);
+    return;
+  }
+  if (read.fetchFailed || !read.content) {
+    // Absent (nothing has ever failed and been recorded yet) or a transient
+    // fetch error — either way, nothing to prune this run.
+    return;
+  }
+  const entries = parseLedgerLines(read.content, ['reason', 'ts']);
+  const nowMs = Date.now();
+  const kept = pruneToWindow(entries, { nowMs, maxAgeMs: FAILURE_MAX_AGE_MS });
+  if (kept.length === entries.length) return; // nothing aged out
+  let state = { tip: read.tip, entries: kept, before: entries.length };
+  for (let attempt = 1; attempt <= PRUNE_ATTEMPTS; attempt++) {
+    try {
+      writeLedger(cwd, serializeEntries(state.entries), state.tip, { branch: 'push-retry-failures', file: 'failures.jsonl' });
+      console.log(`check-push-ledger: pruned push-retry-failures from ${state.before} to ${state.entries.length} entries`);
+      return;
+    } catch (err) {
+      console.error(`check-push-ledger: push-retry-failures prune attempt ${attempt} failed (${err.message.split('\n')[0]})`);
+      if (attempt === PRUNE_ATTEMPTS) {
+        console.error('check-push-ledger: leaving push-retry-failures prune to the next scheduled run');
+        return;
+      }
+      const reread = readLedger(cwd, { branch: 'push-retry-failures', file: 'failures.jsonl' });
+      const rereadEntries = parseLedgerLines(reread.content, ['reason', 'ts']);
+      state = {
+        tip: reread.tip,
+        entries: pruneToWindow(rereadEntries, { nowMs: Date.now(), maxAgeMs: FAILURE_MAX_AGE_MS }),
+        before: rereadEntries.length,
+      };
+    }
+  }
+}
+
 // A push needs time for a concurrent-operation revert to actually happen
 // before checking it is meaningful — MIN_AGE_MS mirrors the first delayed
 // checkpoint in verify-merge-landed.js's default (120s), rounded up since
@@ -179,6 +233,16 @@ async function main() {
   }
 
   console.log(`check-push-ledger: done — checked ${checkedCount}, flagged ${flaggedCount}, skipped ${skippedCount}`);
+
+  // Unrelated branch, same cron slot (task: push-retry-failure telemetry) —
+  // see pruneFailureLedger()'s own header for why this rides here rather
+  // than a dedicated workflow. Never allowed to fail this job: a prune miss
+  // just means the branch stays one entry bigger until the next run.
+  try {
+    await pruneFailureLedger();
+  } catch (err) {
+    console.error(`check-push-ledger: push-retry-failures prune crashed (non-fatal): ${err.message}`);
+  }
 }
 
 main().catch(err => {

@@ -639,10 +639,12 @@ async function main() {
     });
     for (const inf of inferences) {
       const pressNightIso = inf.changes.find(c => c.field === 'openingDate').new;
-      const earliestReviewIso = new Date(new Date(pressNightIso).getTime() + 86400000)
-        .toISOString().split('T')[0];
       const oldOpening = inf.changes.find(c => c.field === 'openingDate').old;
-      console.log(`  INFER ${inf.title}: earliest review ${earliestReviewIso} (${inf.clusterSize} within 3d) → press night ${pressNightIso} (${inf.gapDays}d after opening ${oldOpening})`);
+      // `direction` is 'forward' (cluster after the stored date) or 'reverse'
+      // (cluster before it — the BRO-2280 backward-collapsed TodayTix case),
+      // so the gap has to be described in the right direction.
+      const where = inf.direction === 'reverse' ? 'before' : 'after';
+      console.log(`  INFER ${inf.title}: earliest review ${inf.earliestReviewIso} (${inf.clusterSize} within 3d) → press night ${pressNightIso} (${inf.gapDays}d ${where} stored ${oldOpening}${inf.direction === 'reverse' ? ', previewsStartDate cleared' : ''})`);
       changes.push({ show: inf.title, slug: inf.slug, id: inf.id, changes: inf.changes });
     }
     console.log(`Inferred ${inferences.length} press night(s) from review dates`);

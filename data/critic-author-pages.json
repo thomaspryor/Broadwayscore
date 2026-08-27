@@ -1,9 +1,12 @@
 {
   "_schema": {
-    "format": "object map: criticSlug -> { bww?, nysun?, nysr? } (all optional strings)",
-    "purpose": "Override author-page slugs for sources where the registry slug doesn't match the source's URL. Loaded by audit-critic-coverage.js (S1-T7).",
+    "format": "object map: criticSlug -> { bww?, nysun?, nysr?, nyt?, newyorker?, vulture? } (all optional strings)",
+    "purpose": "Override author-page slugs for sources where the registry slug doesn't match the source's URL. Loaded by audit-critic-coverage.js (S1-T7, BRO-52).",
     "case-sensitive": "BWW slugs MUST preserve case (e.g. Elysa-Gardner) — lowercase 404s",
-    "see-also": "Sprint S1-T2 in sprint-plan-critic-coverage.md",
+    "nyt": "nytimes.com/by/{slug} — single page only, no query-param pagination",
+    "newyorker": "newyorker.com/contributors/{slug} — single page only, no query-param pagination",
+    "vulture": "vulture.com/author/{slug} — single page only, no query-param pagination",
+    "see-also": "Sprint S1-T2 in sprint-plan-critic-coverage.md; BRO-52 added nyt/newyorker/vulture",
     "_comment": "Keys starting with _ are ignored when iterating critic entries"
   },
   "elysa-gardner": {
@@ -12,15 +15,35 @@
     "nysr": "elysa"
   },
   "jesse-green": {
-    "bww": "Jesse-Green"
+    "bww": "Jesse-Green",
+    "nyt": "jesse-green"
   },
   "helen-shaw": {
-    "bww": "Helen-Shaw"
+    "bww": "Helen-Shaw",
+    "newyorker": "helen-shaw"
   },
   "chris-jones": {
     "bww": "Chris-Jones"
   },
   "naveen-kumar": {
     "bww": "Naveen-Kumar"
+  },
+  "sara-holdren": {
+    "vulture": "sara-holdren"
+  },
+  "jackson-mchenry": {
+    "vulture": "jackson-mchenry"
+  },
+  "jason-zinoman": {
+    "nyt": "jason-zinoman"
+  },
+  "hilton-als": {
+    "newyorker": "hilton-als"
+  },
+  "maya-phillips": {
+    "nyt": "maya-phillips"
+  },
+  "laura-collins-hughes": {
+    "nyt": "laura-collins-hughes"
   }
 }

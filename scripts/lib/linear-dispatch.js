@@ -25,6 +25,7 @@ const { buildAutoTitle } = require('./workspace-naming');
 // (linear-next.js does the actual readEntries() I/O), so this file performs
 // no ledger I/O itself.
 const dispatchLedger = require('./dispatch-ledger.js');
+const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-types.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -37,9 +38,17 @@ const MAC_ONLY_LABEL = 'mac-only';
 // description (the card body), state (to know what "In Progress"/"In
 // Review" resolve to isn't needed here — linear-client.js's listOpenIssues
 // return the team's state list separately via getTeam()), priority, labels
-// (for the mac-only routing check), url (quoted in the seed), and comments
+// (for the mac-only routing check), url (quoted in the seed), comments
 // (not currently rendered into the seed, but fetched so a future version can
-// show prior context without a second round trip).
+// show prior context without a second round trip), and project (BRO-2488 —
+// marketingProjectGuard below needs issue.project.name to refuse a
+// Marketing/distribution-project issue; nothing fetched it before). Only
+// `name`, not `id`: this codebase's other project-identity checks
+// (ARCHIVE_PROJECT in linear-import.js, TEAM_KEY in linear-client.js) are
+// already plain name/key string literals resolved at call time, not cached
+// ids — matching that convention here means a project rename is fixed by
+// updating one string in one place (marketingProjectGuard's
+// MARKETING_PROJECT_NAMES) rather than also re-deriving a UUID.
 function buildIssueQuery() {
   return `query($id: String!) {
     issue(id: $id) {
@@ -50,6 +59,7 @@ function buildIssueQuery() {
       priority
       url
       state { id name type }
+      project { name }
       labels(first: 20) { nodes { id name } }
       comments(first: 20) { nodes { id body createdAt user { name } } }
     }
@@ -83,7 +93,7 @@ function buildOpenIssuesQuery() {
     issues(
       first: 100
       after: $after
-      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } } }
       orderBy: updatedAt
     ) {
       nodes {
@@ -246,7 +256,7 @@ function generateCorrelationId() {
 // matching this codebase's lastByRef/foldJobs "last record wins" convention.
 function findUnresolvedDispatchComment(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  if (stateType === 'completed' || stateType === 'canceled') return null;
+  if (isTerminalStateType(stateType)) return null;
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   const dispatched = comments.filter((c) => /^Dispatched\b/.test(String((c && c.body) || '').trim()));
   return dispatched.length ? dispatched[dispatched.length - 1] : null;
@@ -278,9 +288,71 @@ function hasLiveLedgerEntry(taskId, entries) {
 // predicate, caller does I/O/exit" shape as the other guards in this file.
 function checkTerminalStateGuard(issue) {
   const stateType = issue && issue.state && issue.state.type;
-  if (stateType !== 'completed' && stateType !== 'canceled') return null;
+  if (!isTerminalStateType(stateType)) return null;
   const stateName = (issue.state && issue.state.name) || stateType;
   return `${issue.identifier} is already in a terminal state ("${stateName}") — refusing to re-dispatch. Re-run with --force if this is a deliberate re-open.`;
+}
+
+// Marketing-project guard (BRO-2488): the dispatch funnel has always been
+// DOCUMENTED as "Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY"
+// (crown-loop handoff notes, ~/Documents/claude-outputs/p1-dispatcher-
+// handoff-*.md) but was never enforced in code — it relied on a human/LLM
+// eyeballing each issue's description every cycle. That failed live: BRO-128
+// (Linear project "Marketing/distribution" — a Reddit post, external-facing
+// copy) dispatched cleanly through `linear-next.js --id BRO-128 --headless`
+// with zero refusal, and was only caught after the fact by a BRO-343
+// crown-loop session manually un-dispatching it (see BRO-128's own comment
+// thread: "Un-dispatched by the BRO-343 crown loop. This is a Marketing /
+// owner-judgment card... and was sent to an autonomous coding worker by
+// mistake").
+//
+// Root cause: no query this dispatcher used ever fetched the issue's
+// `project` relation (buildIssueQuery above omitted it) — so `issue.project`
+// was always undefined, and no predicate keyed on it could ever refuse
+// anything. Fixed by fetching `project { name }` there and gating on it here.
+//
+// Lives here, next to checkTerminalStateGuard, NOT in dispatch-guards.js's
+// GUARD_NAMES family (second-opinion review, BRO-2488): every guard in that
+// array is simulated across the whole Notion-mirror + Linear backlog by
+// predispatch-queue-audit.js's runGuard() dispatch, which only ever builds a
+// task-shaped `{id, subject, description}` object — a Notion-mirror task has
+// no `.project`, so a project-relation guard added there would report 100%
+// "error" forever (dispatch-guard-queue-audit.js's own header explains why
+// dispatchClaimGuard is deliberately excluded from GUARD_NAMES for the same
+// reason: not every guard here is safe to blind-simulate). checkTerminalStateGuard
+// is the existing precedent for an issue-shaped, Linear-only guard living in
+// this file instead — this one follows it.
+//
+// Keyed on the Linear project RELATION (issue.project.name), not the
+// `· Marketing` text that happens to survive in an imported issue's
+// description (linear-import.js carries the Notion mirror's trailing
+// category segment over verbatim, same convention autonomous-eligibility.js
+// parses on the Notion side) — the project relation is set on every issue in
+// this workstream regardless of whether it went through the Notion import
+// path, so it's the more durable, structural signal. "Marketing/distribution"
+// is the literal project name linear-import.js's ensureProjects() creates
+// from linear-import-rules.js's PROJECT_RULES (name: 'Marketing/distribution'
+// — that file is the source of truth for the literal string); bare
+// "marketing" is matched too in case a project is ever renamed or created by
+// hand.
+//
+// No `--id` bypass (divergence from autonomous-eligibility.js's Notion-side
+// isCardEligible, which explicitly lets `--id`/`--pick` through human-
+// territory categories): linear-next.js has no separate auto-pick layer the
+// way bsc-next.js does — every dispatch, automated or not, goes through
+// `--id` — so gating on `--id` alone would gate nothing. `--force` is the
+// only override, matching checkTerminalStateGuard's own bypass just above.
+const MARKETING_PROJECT_NAMES = new Set(['marketing/distribution', 'marketing']);
+
+function marketingProjectGuard(issue, opts) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const name = issue && issue.project && issue.project.name;
+  if (!name || !MARKETING_PROJECT_NAMES.has(String(name).trim().toLowerCase())) return null;
+  return `${(issue && issue.identifier) || '(unknown)'} is in Linear project "${name}" — refusing to dispatch. ` +
+    `Marketing/distribution is owner-judgment territory (external-facing copy: Reddit posts, journalist pitches, ` +
+    `donor/broadcast email), not safe for unattended dispatch. Re-run with --force if the owner has reviewed and ` +
+    `approved this specific card.`;
 }
 
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
@@ -291,12 +363,21 @@ function checkTerminalStateGuard(issue) {
 // pageInfo) like buildOpenIssuesQuery: the workspace already holds 200+
 // issues, so a single first:100 page would silently miss dedupe matches —
 // exactly the double-file this query exists to prevent.
+//
+// Deliberately NOT given `project` (BRO-2488, ship-check adversarial review):
+// this query also backs owner-alert-router.js's cross-system dedupe
+// (searchIssues) — an unused field here is pure blast radius on a second
+// consumer for no benefit, since nothing reads `.project` off this candidate
+// list today. The actual enforcement point is buildIssueQuery() above, which
+// marketingProjectGuard reads at real dispatch time; if a future funnel needs
+// to pre-filter Marketing issues out of this candidate list before ever
+// calling `--id`, add the field there when that caller exists, not before.
 function buildOpenIssuesWithDescriptionsQuery() {
   return `query($teamKey: String!, $after: String) {
     issues(
       first: 100
       after: $after
-      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } } }
     ) {
       nodes {
         identifier
@@ -346,6 +427,8 @@ module.exports = {
   hasMacOnlyLabel,
   decideRouting,
   checkTerminalStateGuard,
+  marketingProjectGuard,
+  MARKETING_PROJECT_NAMES,
   buildLinearSeed,
   buildDispatchComment,
   generateCorrelationId,

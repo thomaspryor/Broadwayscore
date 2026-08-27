@@ -46,6 +46,7 @@ const STATES = Object.freeze({
   SLOW_BOOT_TIMEOUT: 'slow-boot-timeout',   // wrapper still alive at the cap — alive, just not verifiable yet
   WRAPPER_GONE_TAG_ALIVE: 'wrapper-gone-tag-alive', // wrapper not in ps, but cmux still reports a live claude
   SURFACE_NOT_FOUND: 'surface-not-found',   // wrapper+tag both said REGISTERED, but read-screen confirmed no terminal surface exists (card #1829)
+  TERMINAL_RUNTIME_MISSING: 'terminal-runtime-missing', // cmux never attached a terminal to this workspace — the command CANNOT run here (task #1904)
 });
 
 // Human-readable reason per terminal state, for the launch result and logs.
@@ -58,6 +59,7 @@ const REASONS = Object.freeze({
   [STATES.SLOW_BOOT_TIMEOUT]: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
   [STATES.WRAPPER_GONE_TAG_ALIVE]: 'launch wrapper is gone from the process table but cmux still reports a live claude in the workspace — ambiguous, left alone',
   [STATES.SURFACE_NOT_FOUND]: 'wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session',
+  [STATES.TERMINAL_RUNTIME_MISSING]: 'cmux created the workspace but never attached a terminal to it, so the typed command can never run there (cmux is at its terminal-runtime ceiling — close finished tabs or restart cmux)',
 });
 
 /**
@@ -78,6 +80,14 @@ const REASONS = Object.freeze({
  * @param {number}  [s.maxAttempts]     attempts allowed in total
  * @param {number}  [s.injectionGraceSec]
  * @param {number}  [s.slowBootCapSec]
+ * @param {boolean} [s.surfaceConfirmedMissing] cmux's own read-screen says this
+ *                                  workspace has NO terminal surface (task #1904).
+ *                                  Confirmed-missing only — an ordinary read
+ *                                  error or a surface with nothing painted yet
+ *                                  must arrive here as false.
+ * @param {boolean} [s.atTerminalCapacity] the pre-create probe found cmux at its
+ *                                  observed terminal-runtime ceiling, so no new
+ *                                  workspace can get a terminal until one frees.
  * @returns {{action: 'ok'|'wait'|'retry'|'fail', state: string, reason: string|null}}
  */
 function decideLaunchWait({
@@ -91,6 +101,8 @@ function decideLaunchWait({
   maxAttempts = 2,
   injectionGraceSec = DEFAULT_INJECTION_GRACE_SEC,
   slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC,
+  surfaceConfirmedMissing = false,
+  atTerminalCapacity = false,
 } = {}) {
   const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
   const booting = Number.isFinite(bootElapsedSec) ? Math.max(0, bootElapsedSec) : elapsed;
@@ -123,13 +135,50 @@ function decideLaunchWait({
   //    one non-injection case where a fresh attempt is the right move.
   if (wrapperEverSeen) return terminal(STATES.WRAPPER_EXITED, attempt, maxAttempts);
 
+  // 3b. cmux never attached a TERMINAL to this workspace, and the pre-create
+  //     probe already found the app at its terminal-runtime ceiling. Task
+  //     #1904, root-caused live 2026-08-26: past that cap cmux still creates
+  //     the workspace and still accepts the --command, but the surface gets
+  //     ghostty=nil / runtime=0 and the command can never run there. Nothing
+  //     inside cmux fixes it — set-app-focus, open -a, simulate-app-active,
+  //     refresh-surfaces, select-workspace, new-surface, send and a fresh
+  //     WINDOW were all tested against a doomed workspace and did nothing.
+  //     Only a runtime freeing (a tab closing) does.
+  //
+  //     So this is 'fail', never 'retry': the cap is app-wide, so a second
+  //     new-workspace is equally doomed — retrying just doubles the wasted
+  //     tabs, which is what turned a 31% dead rate into a 58% one.
+  //
+  //     BOTH signals are required. surfaceConfirmedMissing alone is not
+  //     enough: measured runtime-attach lag on healthy launches was 0.1s x7
+  //     but also 35.5s and 39.9s, so a workspace can legitimately be
+  //     surface-less for half a minute. Acting on one signal here would be
+  //     the short-timeout-then-retry mistake this file's own header opens
+  //     with (#705, three identical crowned sessions in half an hour).
+  if (surfaceConfirmedMissing && atTerminalCapacity) {
+    return { action: 'fail', state: STATES.TERMINAL_RUNTIME_MISSING, reason: REASONS[STATES.TERMINAL_RUNTIME_MISSING] };
+  }
+
   // 4. No wrapper has ever been seen. Inside the grace window the keystrokes
   //    may still be landing (cmux types into a pane that is itself still
   //    booting), so waiting costs nothing and a retry costs a duplicate.
   if (elapsed < injectionGraceSec) return { action: 'wait', state: STATES.AWAITING_INJECTION, reason: null };
 
-  // 5. Grace expired with nothing ever running: the injection was swallowed.
-  return terminal(STATES.INJECTION_NEVER_RAN, attempt, maxAttempts);
+  // 5. Grace expired with nothing ever running. The surface signal only
+  //    changes the DIAGNOSIS here, never the retry policy: this is the
+  //    uncorroborated case (capacity said we had room, or said nothing at
+  //    all), so "no terminal" might be this one workspace's problem rather
+  //    than the app's, and a fresh attempt may well work. Dropping the retry
+  //    on one signal would be a behavior regression smuggled in under a
+  //    capacity fix (ship-check catch) — `terminal()` keeps the exact
+  //    attempt budget INJECTION_NEVER_RAN has always had.
+  //
+  //    The better label still earns its keep: it is what the caller records
+  //    as a ceiling OBSERVATION, and two such observations are what arm the
+  //    pre-create gate. Branch 3b above is the corroborated case, and it is
+  //    the only one that skips the retry.
+  return terminal(surfaceConfirmedMissing ? STATES.TERMINAL_RUNTIME_MISSING : STATES.INJECTION_NEVER_RAN,
+    attempt, maxAttempts);
 }
 
 function terminal(state, attempt, maxAttempts) {
@@ -145,8 +194,90 @@ function isSlowBootFailure(state) {
   return state === STATES.SLOW_BOOT_TIMEOUT || state === STATES.WRAPPER_GONE_TAG_ALIVE;
 }
 
+// ── Probe cadence (task #1904 follow-up, /code-review findings 2 and 7) ─────
+// Both of these are "should I spend a cmux round trip on this poll?" — pure
+// functions of elapsed time and what has already been asked. They live here,
+// beside decideLaunchWait, because every other timing rule in this launcher
+// already does; the alternative was four tunables plus three mutable counters
+// bolted into waitForLaunchOutcome's I/O loop, untestable without a real cmux.
+
+// read-screen was consulted ONCE per launch before the capacity work; the
+// first cut of it fired every PROBE_INTERVAL_SEC (3s) for the entire grace
+// window — 30-60 extra IPC round trips per launch, the exact cost the comment
+// beside the capacity probe rejects. 15s is comfortably inside the 90s grace
+// AND strictly safer than the status quo for branch 3b, which can currently
+// fire against a launch just 3s old even though healthy runtime attach was
+// measured as slow as 39.9s on this machine.
+const SURFACE_PROBE_AFTER_SEC = 15;
+const SURFACE_PROBE_INTERVAL_SEC = 15;
+
+// Capacity is asked at most this many times per launch, this far apart. The
+// TOTAL budget is what keeps it far below the ~120 round trips the launcher's
+// own comment rejects — not a "cache the first known answer forever" rule,
+// which is what the first cut did on two separate mistaken grounds:
+//   - an UNKNOWN reading cached as "not at capacity" (the probe fires seconds
+//     after new-workspace, exactly when the cmux socket is busy creating
+//     workspaces), and
+//   - a KNOWN reading assumed stable for the rest of a 90-360s wait, which is
+//     false on this host: a dozen sessions dispatch in parallel and can fill
+//     the last runtime inside that window (adversarial review catch).
+// Bounded re-asking costs the same worst case and is stale-free by
+// construction. Once the answer is "at capacity" the state machine resolves
+// immediately, so the budget is only ever spent while the answer is "fine".
+const CAPACITY_REPROBE_INTERVAL_SEC = 15;
+const CAPACITY_PROBE_MAX_ATTEMPTS = 3;
+
+/**
+ * PURE. Spend a read-screen round trip on this poll?
+ * `lastProbeSec` is null until the first probe.
+ *
+ * `graceSec` caps the delay. The verdict is a LABEL that decides whether the
+ * caller learns a ceiling observation at all, so the poll where the grace
+ * expires — the deciding one — must have a fresh reading. A flat 15s delay
+ * silently disables learning for any caller with a grace shorter than that
+ * (`verifyTimeoutSec: 1` in the launcher's own tests, and any short-grace
+ * caller in production), which is blocker 3 in a different costume: caught by
+ * scripts/tests/cmux-launch-reclaim.test.mjs, which went from
+ * 'terminal-runtime-missing' to 'injection-never-ran' the moment the flat
+ * threshold went in.
+ */
+function shouldProbeSurface({ elapsedSec = 0, lastProbeSec = null, graceSec = Infinity,
+  afterSec = SURFACE_PROBE_AFTER_SEC, intervalSec = SURFACE_PROBE_INTERVAL_SEC } = {}) {
+  const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
+  const grace = Number.isFinite(graceSec) ? Math.max(0, graceSec) : Infinity;
+  if (elapsed < Math.min(afterSec, grace)) return false;
+  if (!Number.isFinite(lastProbeSec)) return true;
+  // ALWAYS probe on the poll where the grace expires, whatever the interval
+  // says (adversarial review catch). That is the poll whose verdict becomes
+  // the recorded label, and the throttle can otherwise leave it reading a
+  // value up to intervalSec old — including a stale "the surface is there"
+  // from before it vanished, which loses the ceiling observation entirely.
+  // Costs at most one extra round trip, and only on launches that reach grace
+  // expiry, i.e. the ones already failing.
+  if (elapsed >= grace && lastProbeSec < grace) return true;
+  return elapsed - lastProbeSec >= intervalSec;
+}
+
+/**
+ * PURE. Ask cmux for its live-runtime count on this poll?
+ *
+ * Bounded by a TOTAL attempt budget and a minimum spacing — deliberately not
+ * by "have we got an answer yet". See CAPACITY_PROBE_MAX_ATTEMPTS for the two
+ * ways the cache-the-first-answer rule was wrong.
+ */
+function shouldReprobeCapacity({ attempts = 0, elapsedSec = 0, lastProbeSec = null,
+  intervalSec = CAPACITY_REPROBE_INTERVAL_SEC, maxAttempts = CAPACITY_PROBE_MAX_ATTEMPTS } = {}) {
+  if (attempts >= maxAttempts) return false;
+  const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
+  if (!Number.isFinite(lastProbeSec)) return true;
+  return elapsed - lastProbeSec >= intervalSec;
+}
+
 module.exports = {
   decideLaunchWait, isSlowBootFailure,
+  shouldProbeSurface, shouldReprobeCapacity,
   STATES, REASONS,
   DEFAULT_INJECTION_GRACE_SEC, DEFAULT_SLOW_BOOT_CAP_SEC,
+  SURFACE_PROBE_AFTER_SEC, SURFACE_PROBE_INTERVAL_SEC,
+  CAPACITY_REPROBE_INTERVAL_SEC, CAPACITY_PROBE_MAX_ATTEMPTS,
 };

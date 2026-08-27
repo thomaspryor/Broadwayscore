@@ -32,6 +32,13 @@ node scripts/generate-brand-tokens.js
 # (push-core-data), so always regenerate to keep review logos current without a
 # manual step. The committed copy is a dev/tsc convenience that this overwrites.
 node scripts/generate-outlet-logos.js
+# Blog reviews (Tier 3 critic injection) — MUST run before generate-mobile-show-details.js
+# and compute-gold-lists.js below, both of which read blog-reviews-for-scoring.json via
+# scripts/lib/load-reviews-with-blog.js. This script only parses ~4 markdown files, so it's
+# cheap enough to always run rather than risk the exact stale-read drift its own header
+# comment documents (compute-gold-lists.js/generate-mobile-show-details.js showing a
+# different score than the live show page — task #1908).
+node scripts/generate-blog-reviews-for-scoring.js
 # Always regenerate public show JSONs — they must match the reviews.json
 # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)
@@ -45,7 +52,6 @@ fi
 # Full prebuild: regenerate all data files
 node scripts/generate-search-shows.js
 node scripts/compute-gold-lists.js
-node scripts/generate-blog-reviews-for-scoring.js
 node scripts/generate-review-og-images.js
 node scripts/generate-mobile-data.js
 node scripts/generate-homepage-archive.js

@@ -70,6 +70,8 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
    You can READ this repository — use Read/Grep on the actual files the plan touches. Generic advice is failure; every finding must cite a specific file:line or pattern from the codebase.
 
+   Do NOT run `npm run data:check`, `npm install`, `setup-local-data.sh`, or any other setup/preflight command — this is a pure read-only critique of the plan below, no show/review data is needed, and worktree sessions do not have the full local data clone available. If CLAUDE.md's session-start convention would normally tell you to run a data-check preflight, that convention does not apply here: read the plan and the repository files directly and critique them.
+
    **PRODUCTION LENS** — Find what will fail:
    1. What will fail in production? (deployments, data corruption, partial failures, rollback gaps)
    2. Security vulnerabilities (injection, leaked secrets, unsanitized input)
@@ -353,7 +355,7 @@ As soon as the critique is complete — before the user answers Phase 7, and whe
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
-  --result=pass --session-id="$CLAUDE_SESSION_ID" --note="<one line: what the review changed>"
+  --result=pass --session-id="$CLAUDE_CODE_SESSION_ID" --note="<one line: what the review changed>"
 ```
 
 `~/.claude/hooks/infra-plan-review-gate.sh` reads this before the session's first edit to shared infrastructure — the dispatch layer, spend guards, concurrency primitives, the review gates, CI workflows and hooks (task #1079, owner decision 2026-08-05, scope in `scripts/lib/infra-review-scope.js`). Without the record the session stays blocked no matter how thorough the review was.

@@ -216,7 +216,7 @@ function extractByline(html) {
     }
   }
 
-  const text = extractArticleTextFromUrl(html, url);
+  const text = extractArticleTextFromUrl(html, url, criticArg);
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.

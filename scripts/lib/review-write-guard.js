@@ -257,6 +257,16 @@ const PROTECTED_FIELDS = [
   // NOTE: serpRetryCount/serpDiscoveryAbandoned are intentionally excluded — clearFailureFlags()
   // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
+  // Fetch retry lifecycle gate state (BRO-787, same pattern as the SERP fields
+  // above, applied to failed-fetches.json retries instead of SERP calls —
+  // see scripts/lib/review-guards.js shouldRetryFetch/recordFetchAttempt).
+  // NOTE: BOTH fetchRetryAfter and fetchDiscoveryAbandoned are intentionally
+  // excluded here — unlike serpRetryAfter, clearFailureFlags() clears
+  // fetchRetryAfter too (not just fetchDiscoveryAbandoned) once a fetch
+  // actually succeeds, so protecting it here would fight that null-write on
+  // the next rebase. Durability across a REBASE (as opposed to a same-run
+  // clear) still comes from push-review-texts/action.yml's ACTION_EXTRA list
+  // and restore-protected-fields.js's MANUAL_FIELDS list — both include them.
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
   // Manual-clear Haiku-fallback failure state (P1 352637c5-416f-81ab). A rebase
   // conflict resolver that picks the remote/longer-text side on ties would
@@ -514,6 +524,30 @@ const _freshStuckRescoreCleared = (d) => {
   return age >= 0 && age <= STUCK_RESCORE_FRESH_DAYS * 86400000;
 };
 
+// rescoreCompletedAt freshness gate (BRO-2429). rescore-lifecycle.js's
+// markRescoreComplete() — called from EVERY ensemble scoring success path, not
+// just the audit-fix path above — deletes needsRescore and stamps
+// rescoreCompletedAt in the same write. No CLEAR_BREADCRUMBS predicate
+// recognized that stamp, so a same-job push-review-texts restore (both the
+// merge-mode loop here and the action.yml/restore-protected-fields.js git-level
+// restore, which read this same predicate) saw committed HEAD still carrying
+// needsRescore:true and resurrected it — the queue never drained (18 days
+// monotonically non-decreasing; 418 already-scored files stuck re-queued as of
+// 2026-08-26). Same shape/window as _freshStuckRescoreCleared: bridges one
+// job's push-review-texts call(s), not permanent, so a genuine FUTURE re-flag
+// of this file (a real, non-empty needsRescore=true write) still queues once
+// the stamp ages out — see the "later legitimate re-flag" test below, mirrored
+// from stuckRescoreCleared's sibling test.
+const RESCORE_COMPLETED_FRESH_DAYS = 3;
+const _freshRescoreCompleted = (d) => {
+  if (!d || !d.rescoreCompletedAt) return false;
+  const at = Date.parse(String(d.rescoreCompletedAt));
+  if (Number.isNaN(at)) return false;
+  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
+  const age = Date.now() - at;
+  return age >= 0 && age <= RESCORE_COMPLETED_FRESH_DAYS * 86400000;
+};
+
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
@@ -668,7 +702,16 @@ const CLEAR_BREADCRUMBS = {
   // rescoreReason/lateStarAnchorBand when the flag is permanently stuck (the
   // scorer would reject the file, so it could never clear itself). See
   // PROTECTED_FIELDS comment above and _freshStuckRescoreCleared.
-  needsRescore: _freshStuckRescoreCleared,
+  // OR'd with _freshRescoreCompleted (BRO-2429): the NORMAL success path
+  // (rescore-lifecycle.js markRescoreComplete(), every ensemble scoring
+  // success) also deletes needsRescore, stamping rescoreCompletedAt instead of
+  // stuckRescoreCleared — that stamp needs its own breadcrumb or the same-job
+  // restore resurrects the flag on every drain. rescoreReason/
+  // lateStarAnchorBand stay stuckRescoreCleared-only: markRescoreComplete
+  // deliberately PRESERVES rescoreReason (see its own comment) and never
+  // touches lateStarAnchorBand, so there is nothing for the completed-path
+  // predicate to protect on those two fields.
+  needsRescore: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
   rescoreReason: _freshStuckRescoreCleared,
   lateStarAnchorBand: _freshStuckRescoreCleared,
 };

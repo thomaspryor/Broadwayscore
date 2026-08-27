@@ -43,6 +43,7 @@
  *   node scripts/reconcile-recoupment-claims.js --dry-run       # plan only
  *   node scripts/reconcile-recoupment-claims.js --show=SLUG     # single entry
  *   node scripts/reconcile-recoupment-claims.js --max-verify=5  # SERP-call cap
+ *   node scripts/reconcile-recoupment-claims.js --time-budget-min=25
  */
 
 const fs = require('fs');
@@ -63,6 +64,7 @@ const {
   buildVerifiedOverlay,
 } = require('./lib/recoupment-reconcile-gate');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // Worktrees don't ship the gitignored core-data files (commercial.json,
 // shows.json live in the private repo). Fall back to the main repo's data
@@ -99,6 +101,7 @@ for (const a of args) {
 const DRY_RUN = flags['dry-run'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const MAX_VERIFY_CALLS = parseInt(flags['max-verify'], 10) || 27; // bounded by pending-queue size
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 function log(...a) { console.log(...a); }
 function loadJSON(p, fallback) {
@@ -240,7 +243,12 @@ async function main() {
   // to the next run instead.
   const touchedSlugsThisRun = new Set();
 
-  for (const [key, entry] of entries) {
+  for (let entryIdx = 0; entryIdx < entries.length; entryIdx++) {
+    if (timeBudget.exceeded()) {
+      log(`⏱ Time budget (${timeBudget.minutes} min) reached — ${entries.length - entryIdx} entries deferred to next run.`);
+      break;
+    }
+    const [key, entry] = entries[entryIdx];
     const slug = resolveSlug(key, entry);
     const title = entry.title || showsBySlug[slug]?.title || slug;
     log(`— ${key} (slug: ${slug}) —`);

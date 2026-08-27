@@ -23,7 +23,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
+const { fetchGitHubJSON, hasLowHeadroom } = require('./lib/gh-api-client.js');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const REPO = 'thomaspryor/Broadwayscore';
@@ -73,36 +73,26 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-function apiGet(url, retries = 3) {
-  return new Promise((resolve, reject) => {
-    const opts = {
-      headers: {
-        Authorization: `token ${TOKEN}`,
-        Accept: 'application/vnd.github.v3+json',
-        'User-Agent': 'bwsc-workflow-audit',
-      },
-    };
-    https.get(url, opts, (res) => {
-      let body = '';
-      res.on('data', (d) => (body += d));
-      res.on('end', async () => {
-        if (res.statusCode === 200) {
-          try { resolve(JSON.parse(body)); } catch { resolve(null); }
-        } else if (res.statusCode === 403 && retries > 0) {
-          // Secondary rate limit — back off and retry
-          const retryAfter = parseInt(res.headers['retry-after'] || '60', 10);
-          const delay = Math.max(retryAfter * 1000, 10000);
-          if (!JSON_OUTPUT) {
-            process.stderr.write(`  ⏳ Secondary rate limit hit, waiting ${Math.round(delay / 1000)}s...\n`);
-          }
-          await sleep(delay);
-          try { resolve(await apiGet(url, retries - 1)); } catch (e) { reject(e); }
-        } else {
-          resolve({ _status: res.statusCode, _body: body });
-        }
-      });
-    }).on('error', reject);
-  });
+async function apiGet(url, retries = 3) {
+  try {
+    return await fetchGitHubJSON(url, {
+      token: TOKEN,
+      caller: 'audit-workflow-activity.js',
+      headers: { Accept: 'application/vnd.github.v3+json', 'User-Agent': 'bwsc-workflow-audit' },
+    });
+  } catch (err) {
+    if (err.status === 403 && retries > 0) {
+      // Secondary rate limit — back off and retry
+      const retryAfter = parseInt(err.retryAfter || '60', 10);
+      const delay = Math.max((Number.isFinite(retryAfter) ? retryAfter : 60) * 1000, 10000);
+      if (!JSON_OUTPUT) {
+        process.stderr.write(`  ⏳ Secondary rate limit hit, waiting ${Math.round(delay / 1000)}s...\n`);
+      }
+      await sleep(delay);
+      return apiGet(url, retries - 1);
+    }
+    return { _status: err.status || 0, _body: err.body || err.message };
+  }
 }
 
 async function getWorkflowId(filename) {
@@ -201,6 +191,23 @@ async function main() {
     return !c || (Date.now() - c.fetchedAt) >= CACHE_TTL_MS;
   }).length;
   const fromCache = files.length - staleCount;
+
+  // This is the highest-fan-out direct-API-call script in the repo (up to 2
+  // calls per workflow — 372 for the current 186 workflows, see header
+  // comment). Skip gracefully when the shared fleet-wide token quota is
+  // already critically low instead of contributing to the exhaustion
+  // (same guard as health-check.js's getWorkflowRunSummary(), BRO-134).
+  // Checked AFTER the cache load so a fully-warm cache (staleCount === 0,
+  // zero real API calls needed) is never skipped over a quota concern that
+  // doesn't apply to it.
+  if (staleCount > 0 && hasLowHeadroom()) {
+    if (JSON_OUTPUT) {
+      console.log(JSON.stringify({ skipped: true, reason: 'low fleet-wide rate-limit headroom', fromCache, staleCount }));
+    } else {
+      console.error('⚠️  Skipping — fleet-wide GitHub API rate-limit headroom is low. Try again once quota recovers.');
+    }
+    return;
+  }
 
   if (!JSON_OUTPUT) {
     if (fromCache > 0 && !FORCE) {

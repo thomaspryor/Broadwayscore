@@ -79,17 +79,61 @@ runs:
         # Push with retry — newer local scrape always wins on conflicts
         # In rebase context, -X theirs = keep our commits being replayed (local changes)
         for i in 1 2 3 4 5; do
-          if git push origin main 2>&1; then
+          PUSH_STDERR_FILE=$(mktemp)
+          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+            cat "$PUSH_STDERR_FILE" >&2
             echo "Aggregator archive pushed successfully (attempt $i)"
+            rm -f "$PUSH_STDERR_FILE"
             exit 0
           fi
+          cat "$PUSH_STDERR_FILE" >&2
 
           echo "Push attempt $i failed, pulling and rebasing..."
-          if ! git pull --rebase -X theirs origin main 2>&1; then
+          # Separate temp file for the pull — a successful pull (rebase applies
+          # cleanly) must NOT clobber the push's stderr with its own empty/benign
+          # output before the rate-limit decision below reads it (that emptied
+          # the actual rate-limit signal in an earlier version of this fix).
+          PULL_STDERR_FILE=$(mktemp)
+          if ! git pull --rebase -X theirs origin main 2>"$PULL_STDERR_FILE"; then
+            cat "$PULL_STDERR_FILE" >&2
             git rebase --abort 2>/dev/null || true
+          else
+            cat "$PULL_STDERR_FILE" >&2
           fi
 
-          sleep $((RANDOM % 10 + 5))
+          # BRO-66 sibling (card #1850): the decision is always based on the
+          # PUSH's stderr — that's the call being retried, and a rate-limited
+          # push means the shared PAT is throttled regardless of whether the
+          # recovery pull that follows happens to succeed. A rate-limit-shaped
+          # failure gets exponential backoff instead of the flat jitter sleep;
+          # a real conflict (non-rate-limit stderr) falls through unchanged.
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing flat-jitter retry below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(PUSH_STDERR_FILE="$PUSH_STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.PUSH_STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+          rm -f "$PUSH_STDERR_FILE" "$PULL_STDERR_FILE"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Aggregator archive push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
         done
 
         echo "WARNING: Failed to push aggregator-archive after 5 attempts"

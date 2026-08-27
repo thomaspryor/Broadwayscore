@@ -115,10 +115,24 @@ jobs:
           fi
 
           # 4. Mismatch — re-pin demo to the latest demo build.
+          # Same Vercel-CLI-hang risk class as card #90 (production
+          # vercel-deploy.yml): a lightweight timeout here since this is a
+          # metadata-only alias call, not a full build+deploy. Already
+          # partially bounded by this job's cancel-in-progress cron (~5min),
+          # but a hang would still burn that whole window silently otherwise.
           echo "::warning::Demo alias drifted ($CURRENT_URL → expected $LATEST_DEMO). Re-aliasing now."
-          npx vercel alias set "$LATEST_DEMO" "$DEMO_DOMAIN" \
+          timeout 120 npx vercel alias set "$LATEST_DEMO" "$DEMO_DOMAIN" \
             --token=$VERCEL_TOKEN \
             --scope=thomaspryors-projects
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel alias set timed out after 2m (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel alias set failed (exit $status)"
+            fi
+            exit 1
+          fi
 
           # 5. Verify.
           VERIFY=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \

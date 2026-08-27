@@ -90,7 +90,16 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 60->100 (card #1910 audit, 2026-08-26): raising 2 push steps below to
+    # 600s/20-retries (from #1842/#1891's undersizing pattern) pushed this
+    # job's worst-case summed step budget — all 6 push-with-retry.sh steps
+    # (2x600s + 4x240s = 2160s) plus every OTHER step's own explicit
+    # timeout-minutes (2880s) — to 5040s (84min), which the OLD 60min
+    # (3600s) timeout couldn't cover even before this fix (the job was
+    # already undersized on a worst-case run; this audit is what surfaced
+    # it, not something the 2 step edits introduced). 100min leaves ~16min
+    # (16%) of real margin over the 84min worst case.
+    timeout-minutes: 100
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -105,6 +114,21 @@ jobs:
           # doubling clone weight + corrupting per-file history). Full history keeps
           # merge-base resolvable so every commit stays properly parented.
           fetch-depth: 0
+
+      # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT — 5000 req/hr across ALL
+      # API calls from that token, shared by every workflow that checks out
+      # or pushes core-data/review-texts. Logging remaining/reset at job start
+      # and end (see the matching step near the bottom of this job) makes a
+      # near-exhausted quota visible in the run log BEFORE it causes a hard
+      # failure, instead of the only signal being the checkout step's error.
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (start)
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -210,6 +234,14 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: poll
         env:
+          # BRO-67: DTLI/BWW extraction now routes through
+          # llmFallbackExtractIfNeeded (zero AND partial-extraction triggers).
+          # Without this, callClaude rejects immediately with "ANTHROPIC_API_KEY
+          # not set" and the fallback silently degrades to the regex baseline —
+          # this step is the only one that runs the extraction code, so it's
+          # the one that needs the key (the later "Score reviews inline" step's
+          # key is for LLM ensemble scoring, unrelated).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
@@ -240,6 +272,15 @@ jobs:
           fi
 
           GUARDIAN_REDISPATCH_SHOWS=""
+          # BRO-735: per-show pipeline crash counters (gather stage). The loop
+          # deliberately keeps polling every show even if one crashes (`|| true`
+          # below preserves that resilience — GH Actions bash runs with -e, so
+          # without it one bad show would kill the whole loop) but a crash must
+          # no longer be indistinguishable from "ran fine, found nothing new".
+          # Counted here and verified fail-fast in the "Verify pipeline stages"
+          # step near the end of this job — see scripts/lib/opening-night-pipeline-stages.js.
+          GATHER_FAILED=0
+          GATHER_TOTAL=0
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             echo "════════════════════════════════════════"
             echo "Polling: $SHOW_ID"
@@ -255,7 +296,13 @@ jobs:
             # Capture poller output to a per-show file so we can grep for
             # guardian_redispatch_needed below. --force-serp is derived from workflow input.
             PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
-            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || true
+            GATHER_TOTAL=$((GATHER_TOTAL + 1))
+            POLLER_RC=0
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
+            if [ "$POLLER_RC" -ne 0 ]; then
+              GATHER_FAILED=$((GATHER_FAILED + 1))
+              echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+            fi
 
             # Check if files were created (review-texts is a separate git checkout)
             CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
@@ -308,6 +355,8 @@ jobs:
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
           echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
+          echo "gather_failed=$GATHER_FAILED" >> $GITHUB_OUTPUT
+          echo "gather_total=$GATHER_TOTAL" >> $GITHUB_OUTPUT
           echo "guardian_redispatch_shows=$GUARDIAN_REDISPATCH_SHOWS" >> $GITHUB_OUTPUT
           if [ -n "$GUARDIAN_REDISPATCH_SHOWS" ]; then
             echo "Guardian redispatch needed for: $GUARDIAN_REDISPATCH_SHOWS"
@@ -349,6 +398,10 @@ jobs:
           # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
           # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
           # data/data/audit/... path and silently no-op the reconciliation it's here for.
+          # alert-ledger.json is tracked in the public repo, so it always exists
+          # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
+          # this early exit unreachable. git diff --cached --quiet below still
+          # short-circuits correctly; dropped the dead clause.
           if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
@@ -379,12 +432,28 @@ jobs:
           # runner, so attributedPct reads artificially low for exactly the traffic #752
           # exists to name.
           { [ -f data/audit/scraper-spend-ledger.jsonl ] && git add data/audit/scraper-spend-ledger.jsonl; } || true
+          # BRO-1699: the SERP-burst tripwire now calls routeAlert()
+          # (scripts/lib/owner-alert-router.js), which writes the CI-tracked
+          # ledger at this path. Must be committed in this same job or the
+          # tripwireAlerted-style dedup the router provides resets every run
+          # (alert-ledger-commit-check.js CI gate).
+          { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
 
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # this is one of only 2 genuinely hard-fail push steps in this job (the
+      # other 4 "Commit ..." steps below are wrapped in `|| echo` or
+      # `continue-on-error: true`) — a failed push here silently drops newly
+      # discovered opening-night reviews. Same #1842/#1891-class undersizing:
+      # the shared 5-retries/240s default backoff-sums to only 45s
+      # (N^2+4N), far under the deadline. Sized to the same 20/600s pairing
+      # as rebuild-fast.yml's #1891 fix (ratio ~0.8).
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -392,14 +461,25 @@ jobs:
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
-          bash ../../scripts/lib/push-with-retry.sh 5 main
+          bash ../../scripts/lib/push-with-retry.sh 20 main
 
       - name: Collect full text inline
+        id: collect
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         env:
           SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
+          # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
+          # loop cleanly with a checkpoint well before the step's own
+          # timeout-minutes below, so a big backlog exits 0 instead of being
+          # externally SIGKILLed (which the fail-fast verify step below
+          # correctly treats as a crash worth paging on — but a graceful
+          # "ran out of time this run" isn't one; task #1911 follow-up,
+          # 2026-08-23). 9 min leaves ~3 min for an in-flight review
+          # (90s REVIEW_TIMEOUT + up to 90s browser-restart recovery) plus
+          # the final checkpoint commit/push to land before the 12-min cap.
+          MAX_DURATION_MS: '540000'
           ARCHIVE_FIRST: 'true'
           RETRY_FAILED: 'true'
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -443,7 +523,7 @@ jobs:
           BD_OPENING_NIGHT: '1'
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 12
 
       - name: Commit collected texts
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
@@ -486,6 +566,7 @@ jobs:
         continue-on-error: true
 
       - name: Score reviews inline
+        id: score
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -494,10 +575,23 @@ jobs:
         run: |
           SHOWS="${{ steps.find.outputs.shows }}"
           IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          # BRO-735: same per-show crash counting as the gather stage above —
+          # `|| true` keeps the loop resilient across shows, but a genuine
+          # crash is now counted and verified fail-fast, not silently dropped.
+          SCORE_FAILED=0
+          SCORE_TOTAL=0
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             echo "Scoring: $SHOW_ID"
-            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || true
+            SCORE_TOTAL=$((SCORE_TOTAL + 1))
+            SCORE_RC=0
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || SCORE_RC=$?
+            if [ "$SCORE_RC" -ne 0 ]; then
+              SCORE_FAILED=$((SCORE_FAILED + 1))
+              echo "  ⚠️ scoring exited $SCORE_RC for $SHOW_ID — counted as a score-stage failure"
+            fi
           done
+          echo "score_failed=$SCORE_FAILED" >> $GITHUB_OUTPUT
+          echo "score_total=$SCORE_TOTAL" >> $GITHUB_OUTPUT
         continue-on-error: true
         timeout-minutes: 10
 
@@ -604,8 +698,17 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
 
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # the other genuinely hard-fail push step in this job (see "Commit new
+      # review files" above) — this one gates the deploy-trigger step right
+      # after it, so a failed push here silently blocks the fast-path deploy
+      # on a live opening night. Was on the bare shared default (7 retries/
+      # 240s, backoffSum 77s). Same 20/600s pairing as rebuild-fast.yml's
+      # #1891 fix.
       - name: Commit and push rebuilt data (fast_path)
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -615,7 +718,7 @@ jobs:
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
           git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }
           git commit -m "data: Opening night poller (fast path) — inline rebuild"
-          bash scripts/lib/push-with-retry.sh
+          bash scripts/lib/push-with-retry.sh 20 main
 
       - name: Push core data to private repo (fast_path)
         if: always() && inputs.fast_path && steps.fast_rebuild.outcome == 'success'
@@ -625,12 +728,54 @@ jobs:
           message: 'data: Opening night poller (fast path) — inline rebuild'
 
       - name: Trigger deploy (fast_path)
+        id: deploy
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          echo "Fast path: triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+          DEPLOY_SHA=$(git rev-parse HEAD)
+          echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT
+          echo "Fast path: triggering deploy for $DEPLOY_SHA..."
+          if gh workflow run vercel-deploy.yml; then
+            echo "dispatched=true" >> $GITHUB_OUTPUT
+          else
+            echo "::warning::Deploy dispatch call failed — will deploy on next 5-min content-aware cron gate"
+            echo "dispatched=false" >> $GITHUB_OUTPUT
+          fi
+
+      # BRO-735: the old "Trigger deploy" step above dispatched vercel-deploy.yml
+      # fire-and-forget (`|| echo warning`, no wait, no check the commit was
+      # ever actually served) — the clearest silent handoff in this pipeline.
+      # check-prod-deploy.js polls Vercel's production-deployment API directly
+      # for the target SHA, so it needs no GH Actions run-id discovery (unlike
+      # waiting on a dispatched *workflow run*). A timeout here is NOT treated
+      # as a hard failure — vercel-deploy.yml's own 5-min content-aware cron
+      # gate is the documented backstop for a missed/slow deploy — but it must
+      # be visible in the pipeline verdict below, not swallowed.
+      - name: Wait for deploy to go live (fast_path)
+        id: deploy_verify
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.deploy.outputs.dispatched == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set +e
+          node scripts/check-prod-deploy.js "${{ steps.deploy.outputs.deploy_sha }}" --wait=480
+          RC=$?
+          set -e
+          if [ "$RC" -eq 0 ]; then
+            echo "verified=true" >> $GITHUB_OUTPUT
+          elif [ "$RC" -eq 1 ]; then
+            echo "::warning::Deploy for ${{ steps.deploy.outputs.deploy_sha }} was not verified live on production within the wait window — the 5-min content-aware cron gate will pick it up"
+            echo "verified=false" >> $GITHUB_OUTPUT
+            echo "timed_out=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Deploy verification for ${{ steps.deploy.outputs.deploy_sha }} failed with exit $RC (Vercel API/token problem, not just 'not live yet')"
+            echo "verified=false" >> $GITHUB_OUTPUT
+            echo "timed_out=false" >> $GITHUB_OUTPUT
+            echo "reason=check-prod-deploy.js exited $RC" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+        timeout-minutes: 9
 
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
@@ -641,6 +786,7 @@ jobs:
           gh workflow run rebuild-reviews.yml -f reason="Opening night poller (inline)"
 
       - name: Rebuild reviews.json locally (for readiness check)
+        id: readiness_rebuild
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
         continue-on-error: true
@@ -693,6 +839,85 @@ jobs:
               fi
             fi
           done
+
+      # BRO-735 "Single integrated opening night pipeline": aggregates every
+      # stage's real outcome (gather/collect/score/rebuild/deploy — all inline
+      # in this one job above) and fails the JOB if any stage genuinely
+      # crashed, instead of that crash disappearing behind the per-stage
+      # `continue-on-error: true` the way it did for 6 consecutive opening
+      # nights. Placed AFTER every other stage/broadcast step (not between
+      # them) so a crash surfaced here never skips already-queued work — every
+      # step above still runs its own `if:`-gated best-effort attempt; this
+      # step only makes the final job conclusion tell the truth about it,
+      # which is what fires the existing "Notify on failure" step below.
+      # Pure verification logic lives in scripts/lib/opening-night-pipeline-stages.js
+      # (tested by scripts/opening-night-pipeline.test.mjs) — this step is
+      # just the GH Actions step-outcome -> env-var glue.
+      - name: Verify pipeline stages (fail-fast)
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          GATHER_FAILED: ${{ steps.poll.outputs.gather_failed }}
+          GATHER_TOTAL: ${{ steps.poll.outputs.gather_total }}
+          COLLECT_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_new }}
+          COLLECT_OUTCOME: ${{ steps.collect.outcome }}
+          SCORE_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
+          SCORE_OUTCOME: ${{ steps.score.outcome }}
+          SCORE_FAILED_RAW: ${{ steps.score.outputs.score_failed }}
+          SCORE_TOTAL_RAW: ${{ steps.score.outputs.score_total }}
+          FAST_PATH: ${{ inputs.fast_path }}
+          REBUILD_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
+          FAST_REBUILD_OUTCOME: ${{ steps.fast_rebuild.outcome }}
+          READINESS_REBUILD_OUTCOME: ${{ steps.readiness_rebuild.outcome }}
+          DEPLOY_ATTEMPTED_RAW: ${{ steps.fast_rebuild.outcome }}
+          DEPLOY_DISPATCHED: ${{ steps.deploy.outputs.dispatched }}
+          DEPLOY_VERIFIED: ${{ steps.deploy_verify.outputs.verified }}
+          DEPLOY_TIMED_OUT: ${{ steps.deploy_verify.outputs.timed_out }}
+          DEPLOY_REASON: ${{ steps.deploy_verify.outputs.reason }}
+        run: |
+          COLLECT_ATTEMPTED=false
+          [ "$COLLECT_ATTEMPTED_RAW" = "true" ] && COLLECT_ATTEMPTED=true
+
+          # Defend against the score step crashing/timing out BEFORE it could
+          # write its own per-show counters — an empty SCORE_TOTAL combined
+          # with outcome=failure/cancelled means it never finished, which must
+          # read as "the stage crashed", not "nothing to do".
+          SCORE_FAILED="$SCORE_FAILED_RAW"
+          SCORE_TOTAL="$SCORE_TOTAL_RAW"
+          if [ "$SCORE_ATTEMPTED_RAW" = "true" ] && [ -z "$SCORE_TOTAL_RAW" ] && { [ "$SCORE_OUTCOME" = "failure" ] || [ "$SCORE_OUTCOME" = "cancelled" ]; }; then
+            SCORE_FAILED=1
+            SCORE_TOTAL=1
+          fi
+
+          REBUILD_ATTEMPTED=false
+          [ "$REBUILD_ATTEMPTED_RAW" = "true" ] && REBUILD_ATTEMPTED=true
+          if [ "$FAST_PATH" = "true" ]; then
+            REBUILD_OUTCOME="$FAST_REBUILD_OUTCOME"
+          else
+            REBUILD_OUTCOME="$READINESS_REBUILD_OUTCOME"
+          fi
+
+          DEPLOY_ATTEMPTED=false
+          if [ "$FAST_PATH" = "true" ] && [ "$DEPLOY_ATTEMPTED_RAW" = "success" ]; then
+            DEPLOY_ATTEMPTED=true
+          fi
+
+          GATHER_FAILED="$GATHER_FAILED" GATHER_TOTAL="$GATHER_TOTAL" \
+          COLLECT_ATTEMPTED="$COLLECT_ATTEMPTED" COLLECT_OUTCOME="$COLLECT_OUTCOME" \
+          SCORE_FAILED="$SCORE_FAILED" SCORE_TOTAL="$SCORE_TOTAL" \
+          REBUILD_ATTEMPTED="$REBUILD_ATTEMPTED" REBUILD_OUTCOME="$REBUILD_OUTCOME" \
+          DEPLOY_ATTEMPTED="$DEPLOY_ATTEMPTED" DEPLOY_DISPATCHED="$DEPLOY_DISPATCHED" \
+          DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
+          node scripts/opening-night-pipeline-verify.js
+
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (end)
+        if: always()
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
 
       - name: Notify on failure
         id: notify

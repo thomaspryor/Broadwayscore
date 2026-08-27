@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import fs from 'node:fs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -81,5 +82,80 @@ describe('unparsed-explicit-ratings check', () => {
     // Verify the wrong names are NOT present
     assert.ok(!('the-guardian' in outlets), '"the-guardian" is wrong outletId');
     assert.ok(!('ny-post' in outlets), '"ny-post" is wrong outletId');
+  });
+});
+
+// BRO-68 — the check used to stop at printing the fix command in `message`;
+// nothing ran it. opening-night-remediation.js's collectRemediations() picks
+// up any details.remediation self-declared by a failing check (task #389
+// contract), so this check closes the loop by emitting one kind:'workflow'
+// spec per distinct unparsed outlet, targeting recover-explicit-ratings.yml
+// with the exact --show/--outlet the printed message recommends.
+describe('unparsed-explicit-ratings check — remediation', () => {
+  it('single unparsed outlet → one workflow remediation spec targeting recover-explicit-ratings.yml', () => {
+    const show = { id: 'test-2026' };
+    const context = makeContext([
+      { outletId: 'guardian', originalRating: null, url: 'https://guardian.com/review' },
+    ]);
+    const result = check.run(show, context);
+    assert.equal(result.ok, false);
+    const remediation = result.details.remediation;
+    assert.ok(Array.isArray(remediation));
+    assert.equal(remediation.length, 1);
+    assert.equal(remediation[0].kind, 'workflow');
+    assert.equal(remediation[0].key, `explicit-ratings:${show.id}:guardian`);
+    assert.equal(remediation[0].workflow, 'recover-explicit-ratings.yml');
+    assert.deepEqual(remediation[0].inputs, { show: show.id, outlet: 'guardian', phases: '0,1,2,3' });
+  });
+
+  it('two unparsed reviews from the same outlet → one remediation spec, not two', () => {
+    const show = { id: 'test-2026' };
+    const context = makeContext([
+      { outletId: 'guardian', originalRating: null, url: 'https://guardian.com/review-1' },
+      { outletId: 'guardian', originalRating: null, url: 'https://guardian.com/review-2' },
+    ]);
+    const result = check.run(show, context);
+    assert.equal(result.details.remediation.length, 1);
+  });
+
+  it('two distinct unparsed outlets → two remediation specs, each outlet-scoped', () => {
+    const show = { id: 'test-2026' };
+    const context = makeContext([
+      { outletId: 'guardian', originalRating: null, url: 'https://guardian.com/review' },
+      { outletId: 'nypost', originalRating: null, url: 'https://nypost.com/review' },
+    ]);
+    const result = check.run(show, context);
+    const keys = result.details.remediation.map(r => r.key).sort();
+    assert.deepEqual(keys, [`explicit-ratings:${show.id}:guardian`, `explicit-ratings:${show.id}:nypost`]);
+  });
+
+  it('all remediation inputs are declared workflow_dispatch inputs on recover-explicit-ratings.yml', () => {
+    // Regression guard: a typo'd or renamed input here makes GitHub's dispatch
+    // API reject the call outright (422), which is silent from the checklist's
+    // point of view (dispatchWorkflow only logs a ::warning::).
+    const show = { id: 'test-2026' };
+    const context = makeContext([
+      { outletId: 'guardian', originalRating: null, url: 'https://guardian.com/review' },
+    ]);
+    const result = check.run(show, context);
+    const yaml = require('yaml');
+    const workflowPath = path.join(__dirname, '..', '..', '.github', 'workflows', 'recover-explicit-ratings.yml');
+    const workflowDoc = yaml.parse(fs.readFileSync(workflowPath, 'utf8'));
+    const declaredInputs = new Set(Object.keys(workflowDoc.on.workflow_dispatch.inputs || {}));
+    for (const spec of result.details.remediation) {
+      for (const key of Object.keys(spec.inputs)) {
+        assert.ok(declaredInputs.has(key), `recover-explicit-ratings.yml has no workflow_dispatch input named '${key}' (declared: ${[...declaredInputs].join(', ')})`);
+      }
+    }
+  });
+
+  it('ok result (all outlets parsed) → no remediation field', () => {
+    const show = { id: 'test-2026' };
+    const context = makeContext([
+      { outletId: 'guardian', originalRating: '4/5 stars', url: 'https://guardian.com/review' },
+    ]);
+    const result = check.run(show, context);
+    assert.equal(result.ok, true);
+    assert.equal(result.details, undefined);
   });
 });

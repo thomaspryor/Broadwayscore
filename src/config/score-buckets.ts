@@ -217,6 +217,7 @@ export function reviewsRemainingForScore(
   isCuratedHistorical?: boolean,
 ): number {
   let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
+    : category === 'off-off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
     : category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_OFF_WEST_END
     : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : category === 'regional' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
