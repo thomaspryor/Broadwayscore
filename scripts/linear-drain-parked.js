@@ -45,8 +45,12 @@
  * attempt-memory.js's checkPark() then runs per-issue against this drain's
  * own ledger: an issue that has failed DEFAULT_MAX_FAILURES (2) times in a
  * row on UNCHANGED content (title+description) is parked — skipped and
- * logged instead of re-dispatched — until the issue is edited or the owner
- * clears the park (attempt-memory's own override mechanism).
+ * logged instead of re-dispatched — until the issue is edited (a changed
+ * contentHash resets the streak). checkPark also supports an explicit owner
+ * override that clears a park without an edit, but neither this drain nor
+ * either of its sibling reference implementations (digest-autofix.js,
+ * backlog-drain.js) currently wires attempt-memory.js's loadParkOverrides()
+ * in — same inherited gap, not new here.
  *
  * Kill switch: LINEAR_NEXT_DISABLED=1 is checked here too (not just inside
  * linear-next.js) so a disabled run logs ONE clear line instead of spawning
@@ -173,27 +177,64 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
   return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
+// A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
+// identifier+contentHash has an outcome somewhere in history" (ship-check
+// Codex finding). The content-hash-keyed Set that scripts/lib/digest-autofix.js's
+// reconcileDigestOutcomes uses collapses two dispatches of the SAME unchanged
+// content onto one shared key — exactly the repeated-failure case this drain
+// exists to detect — so a card re-dispatched after its first attempt failed
+// would never produce a SECOND card-fail at all, and attempt-memory's
+// failure streak could never reach maxFailures. This ts-ordered check is the
+// same fix scripts/backlog-drain.js's own isDispatchResolved already applies
+// (see its header comment for the "old card-id Set" postmortem this mirrors).
+const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
+function isDispatchResolved(ledgerEntries, identifier, dispatchTs) {
+  const at = new Date(dispatchTs).getTime();
+  return (ledgerEntries || []).some((e) =>
+    e && String(e.cardId) === String(identifier) && e.ts &&
+    RESOLVING_EVENTS.has(e.event) &&
+    new Date(e.ts).getTime() >= at);
+}
+
 // Resolves prior 'drain-parked-dispatch' breadcrumbs (this drain's own
 // ledger) into card-pass/card-fail by cross-referencing the SHARED
-// dispatch-ledger's job lifecycle for `linear:<identifier>` — same
-// reconciliation shape as scripts/lib/digest-autofix.js's
-// reconcileDigestOutcomes. Emitted entries carry `cardId` (not `identifier`)
-// because that's the field attempt-memory.js's checkPark/attemptOutcomesForCard
-// key on; `identifier` stays on the 'drain-parked-dispatch' entries only,
-// where recentlyAttempted() already expects it.
+// dispatch-ledger's job lifecycle for `linear:<identifier>`. Emitted entries
+// carry `cardId` (not `identifier`) because that's the field attempt-memory.js's
+// checkPark/attemptOutcomesForCard key on; `identifier` stays on the
+// 'drain-parked-dispatch' entries only, where recentlyAttempted() already
+// expects it.
+//
+// isDispatchResolved is checked against the IMMUTABLE pre-pass ledgerEntries
+// only (never entries emitted earlier in this SAME loop) — an earlier draft
+// tagged same-pass emitted breadcrumbs with `now` and cross-checked against
+// them, which is wrong: `now` is later than every historical dispatch ts by
+// construction, so resolving ONE stale dispatch this pass would immediately
+// satisfy the `>= dispatchTs` check for every OTHER unresolved dispatch of
+// the same identifier too — collapsing genuinely separate, sequential
+// re-attempts (exactly what BRO-2434 needs to count separately) onto one
+// outcome. The real hazard the old code was trying to guard — two dispatch
+// rows racing onto the SAME underlying job (e.g. a duplicate-dispatch race
+// where only one job ever actually spawned) — is instead guarded directly by
+// jobId: claimedJobIds below skips emitting a second outcome for a jobId
+// already resolved earlier in this same pass, without touching timestamps.
 function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date()) {
-  const resolvedKeys = new Set(
-    (ledgerEntries || [])
-      .filter((e) => e && (e.event === 'card-pass' || e.event === 'card-fail'))
-      .map((e) => `${e.cardId}:${e.contentHash}`));
   // Entries written before this feature shipped carry no contentHash and are
   // silently excluded — same convention attempt-memory.js's own header
   // documents for pre-feature ledger history.
-  const dispatches = (ledgerEntries || []).filter((e) => e && e.event === 'drain-parked-dispatch' && e.identifier && e.contentHash);
+  // A malformed/missing ts (hand-edited or corrupted ledger line — readLedger
+  // already drops lines that aren't even valid JSON, but not a field-level
+  // check) would otherwise turn every downstream Date arithmetic into NaN,
+  // which trips `< ORPHAN_TIMEOUT_H` to false and fires an immediate fail
+  // instead of the intended multi-hour grace window. Same defensive
+  // Number.isFinite guard recentlyAttempted() already applies for the exact
+  // same reason.
+  const dispatches = (ledgerEntries || []).filter((e) =>
+    e && e.event === 'drain-parked-dispatch' && e.identifier && e.contentHash &&
+    Number.isFinite(new Date(e.ts).getTime()));
+  const claimedJobIds = new Set();
   const newEntries = [];
   for (const d of dispatches) {
-    const key = `${d.identifier}:${d.contentHash}`;
-    if (resolvedKeys.has(key)) continue;
+    if (isDispatchResolved(ledgerEntries, d.identifier, d.ts)) continue;
     const taskId = `linear:${d.identifier}`;
     const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
     if (!job) {
@@ -203,9 +244,9 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
         event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
-      resolvedKeys.add(key);
       continue;
     }
+    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
     if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
       // Chain ends at a retry whose successor hasn't spawned yet: still
       // in-flight within the same orphan bound the no-spawn case uses.
@@ -215,7 +256,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
         event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      resolvedKeys.add(key);
+      if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
@@ -226,7 +267,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
         ? 'session finished (job-done)'
         : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
     });
-    resolvedKeys.add(key);
+    if (job.jobId) claimedJobIds.add(job.jobId);
   }
   return newEntries;
 }
@@ -357,5 +398,5 @@ if (require.main === module) {
 module.exports = {
   parseArgs, readLedger, appendLedger, recentlyAttempted, main, USAGE,
   LEDGER_PATH, DISPATCH_CAP, RETRY_COOLDOWN_MS, ORPHAN_TIMEOUT_H,
-  computeIssueContentHash, findMyJob, reconcileOutcomes,
+  computeIssueContentHash, findMyJob, reconcileOutcomes, isDispatchResolved,
 };
