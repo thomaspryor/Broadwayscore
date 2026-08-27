@@ -21,7 +21,8 @@
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
-    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -151,7 +152,16 @@
     "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
     "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
     "macbeth-off-broadway-2026/newsday--linda-winer.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json"
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -170,7 +180,8 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -195,7 +206,7 @@
     ]
   },
   "startTime": "2026-08-27T18:54:37.195Z",
-  "lastProcessed": "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-27T18:55:19.511Z",
@@ -264,6 +275,17 @@
       "t": "2026-08-27T19:11:32.817Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-27T19:21:24.430Z",
+      "event": "bb-session",
+      "session": "da00ce7a",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-27T19:21:24.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
