@@ -230,7 +230,15 @@ async function runList() {
   sorted.slice(0, 25).forEach((iss, i) => {
     const labels = ld.issueLabelNames(iss);
     const stateName = (iss.state && iss.state.name) || '?';
-    console.log(`  ${i + 1}. ${iss.identifier} [${ld.priorityLabel(iss)}] [${stateName}]${labels.length ? ` [${labels.join(',')}]` : ''} ${iss.title}`);
+    // BRO-2499 (code-review finding): this is the only candidate list this CLI
+    // offers, and it is where selection actually happens — an operator reading
+    // it and picking an auto-filed issue burns a refused --id per pick. Mark
+    // them rather than hide them: a crown loop reporting funnel counts needs
+    // to see the whole list, and a silently shortened list is its own bug.
+    // Annotation only, so the refusal itself stays the single enforcement
+    // point (autofixFiledIssueGuard) rather than becoming two half-guards.
+    const owned = ld.autofixFiledIssueGuard(iss, {}) ? ' [auto-filed — a pipeline owns this, --id will refuse]' : '';
+    console.log(`  ${i + 1}. ${iss.identifier} [${ld.priorityLabel(iss)}] [${stateName}]${labels.length ? ` [${labels.join(',')}]` : ''} ${iss.title}${owned}`);
   });
 }
 

@@ -555,6 +555,21 @@ test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, o
   });
 });
 
+// Cross-module pin (BRO-2499 code-review finding): the canary half already had
+// one (autofix-canary.test.mjs runs isAutofixFiledTitle over a real
+// canaryCardTitle), but "BSC Daily:" was two independent string literals — this
+// producer and the matcher. A rename would silently stop the title check
+// matching, and for owner-alert-router trackers (which carry the OTHER PARKED
+// marker, so provenance never matches either) the guard would stop firing at
+// all, with nothing failing. Assert the REAL produced title, not a fixture.
+test('planAutofix titles are recognised by autofixFiledIssueGuard (BRO-2499 drift pin)', () => {
+  const { isAutofixFiledTitle } = require('./autofix-filed-marker.js');
+  const plan = planAutofix({ health: { errors: [{ name: 'Cron failed: Test Suite', message: 'm' }] }, tasks: [] });
+  assert.equal(plan.length, 1);
+  assert.ok(isAutofixFiledTitle(plan[0].title),
+    `digest-autofix produces "${plan[0].title}" but the guard's title matcher no longer recognises it — the two have drifted`);
+});
+
 // Class-level prevention (BRO-2499 ship-check). The bug this closes was a
 // dispatchDetached CALLER that did not pass the waiver — scripts/linear-drain-
 // parked.js — whose whole population is refused by autofixFiledIssueGuard
@@ -589,7 +604,11 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
 
   const callers = [];
   for (const rel of files) {
-    const src = fs.readFileSync(path.join(repo, rel), 'utf8');
+    // stripComments HERE too, not just in the second loop (code-review
+    // finding): a future file documenting the helper as
+    // `// dispatchDetached(taskId, log, …)` would otherwise join `callers` on
+    // a comment and fail the exact caller-list assertion below for no reason.
+    const src = stripComments(fs.readFileSync(path.join(repo, rel), 'utf8'));
     const bindsIt = /dispatchFn\s*[=|]{1,2}[^;\n]*dispatchDetached/.test(src);
     const invokesIt = /(?<!function\s)dispatchDetached\(\s*[^)]/.test(
       src.replace(/function dispatchDetached\([^)]*\)/g, ''));

@@ -68,7 +68,7 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // `PARKED: <reason>`) and which linear-dispatch.js's autofixFiledIssueGuard
 // recognises. Defined in the leaf so the writer and the recogniser cannot
 // drift apart.
-const { AUTOFIX_FILED_MARKER } = require('./autofix-filed-marker.js');
+const { AUTOFIX_FILED_MARKER, BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
@@ -189,7 +189,9 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     // raw r.name (never family-collapsed) still drives buildCardNotes' prose
     // and its check-health-row-absent.js verify command, which must keep
     // checking the SPECIFIC health-check row that was actually seen.
-    const title = `BSC Daily: ${familyDisplayName(r.name)}`;
+    // Built from the shared constant (code-review finding, BRO-2499) so this
+    // producer and autofix-filed-marker.js's title matcher cannot drift.
+    const title = `${BSC_DAILY_TITLE_PREFIX}${familyDisplayName(r.name)}`;
     const conditionKey = r.conditionKey || null;
 
     // Decision items (owner-alert-router callers that opted in via

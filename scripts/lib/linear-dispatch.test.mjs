@@ -115,8 +115,11 @@ test('autofixFiledIssueGuard: a "BSC Daily: ..."-titled issue is REFUSED by the 
   const issue = { identifier: 'BRO-2500', title: 'BSC Daily: Cron failed: data-health-check' };
   const refusal = autofixFiledIssueGuard(issue, {});
   assert.match(refusal, /BRO-2500/);
-  assert.match(refusal, /digest-autofix/);
+  assert.match(refusal, /refusing to dispatch/);
   assert.match(refusal, /--force/);
+  // Which pipeline the refusal NAMES depends on the PARKED provenance, not the
+  // title — this fixture carries no description, so it is attributed to the
+  // alert-router/drain owner. See the owner-attribution test below.
 });
 
 test('autofixFiledIssueGuard: the legacy "Fix: BSC Daily: ..." title variant is refused too', () => {
@@ -184,6 +187,26 @@ test('autofixFiledIssueGuard: an owner-alert-router tracker titled "BSC Daily:" 
   assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2504/);
   assert.equal(autofixFiledIssueGuard(issue, { 'allow-autofix-filed': true }), null,
     'linear-drain-parked.js passes this waiver — without it that drain silently stops dispatching');
+});
+
+// Code-review finding: the refusal has to name the RIGHT owner. Sending an
+// operator to digest-autofix's logs for an alert-router tracker (or vice
+// versa) wastes the one action the message exists to enable.
+test('autofixFiledIssueGuard: the refusal names the owning pipeline that actually filed it (BRO-2499)', () => {
+  const digestOwned = {
+    identifier: 'BRO-2506',
+    title: 'BSC Daily: Cron failed: X',
+    description: 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.',
+  };
+  const alertOwned = {
+    identifier: 'BRO-2507',
+    title: 'BSC Daily: ScrapingBee credits below threshold',
+    description: 'PARKED: Auto-filed by owner-alert-router (condition: health-check:Credits); parked for triage.',
+  };
+  assert.match(autofixFiledIssueGuard(digestOwned, {}), /digest-autofix/);
+  assert.match(autofixFiledIssueGuard(alertOwned, {}), /linear-drain-parked/);
+  assert.doesNotMatch(autofixFiledIssueGuard(alertOwned, {}), /autofix dispatch is in flight/,
+    'an alert-router tracker must not be blamed on the autofix pipeline — wrong log to check');
 });
 
 test('autofixFiledIssueGuard: --force/--dry-run/--print-prompt and the pipeline opt-in all bypass it', () => {

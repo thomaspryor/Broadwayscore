@@ -29,7 +29,7 @@ const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-ty
 // BRO-2499: autofixFiledIssueGuard below recognises issues the digest-autofix
 // / canary pipeline filed and dispatches itself. Leaf module, no I/O — see
 // its header for why the signal lives there and not in this file.
-const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
+const { isAutofixFiledIssue, hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -402,11 +402,18 @@ function autofixFiledIssueGuard(issue, opts) {
   const o = opts || {};
   if (o.force || o['dry-run'] || o['print-prompt'] || o['allow-autofix-filed']) return null;
   if (!isAutofixFiledIssue(issue)) return null;
-  return `${(issue && issue.identifier) || '(unknown)'} was auto-filed by the digest-autofix / canary pipeline ` +
-    `("${(issue && issue.title) || ''}") — refusing to dispatch. That pipeline dispatches its own issues ` +
-    `(scripts/lib/digest-autofix.js's dispatchDetached), so a backlog sweep picking this up either duplicates ` +
-    `a live dispatch or burns a session "fixing" a rolling health snapshot. Re-run with --force if you have ` +
-    `checked that no autofix dispatch is in flight for it.`;
+  // Name the RIGHT owner (code-review finding): two different pipelines file
+  // into this population, and telling an operator to check the wrong one
+  // sends them to the wrong log. digest-autofix's own trackers carry its
+  // PARKED marker; an alert-router tracker (health-check.js:3951, same
+  // "BSC Daily:" title, different marker) is owned by linear-drain-parked.js.
+  const owner = hasAutofixFiledMarker(issue && issue.description)
+    ? { pipeline: 'the digest-autofix / canary pipeline', dispatcher: "scripts/lib/digest-autofix.js's runAutofix", check: 'no autofix dispatch is in flight for it' }
+    : { pipeline: 'an automated filer (owner-alert-router, via health-check)', dispatcher: 'scripts/linear-drain-parked.js', check: 'that drain is not about to pick it up' };
+  return `${(issue && issue.identifier) || '(unknown)'} was auto-filed by ${owner.pipeline} ` +
+    `("${(issue && issue.title) || ''}") — refusing to dispatch. ${owner.dispatcher} dispatches this issue ` +
+    `itself, so a backlog sweep picking it up either duplicates a live dispatch or burns a session "fixing" a ` +
+    `rolling health snapshot. Re-run with --force if you have checked that ${owner.check}.`;
 }
 
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
