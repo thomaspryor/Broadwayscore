@@ -229,11 +229,23 @@ const PATTERN_CALIBRATION = {
         + 'default-5 threshold (raw 7). Diffuse across 4 outlets — nytg (New '
         + 'York Theatre Guide, 4 hits), new-statesman, queerty, london-theatre '
         + '— corpus growth, not a scraper regression. 5/7 hits sit in the '
-        + 'trailing 5% of fullText (footer CTA) and are absorbed by '
-        + "isGarbageContent's trailing-junk mitigation; the 2 non-trailing hits "
-        + '(new-statesman at 56%, queerty at 16%) do not independently flip a '
-        + 'review to garbage — verified via isGarbageContent() on all 3 sample '
-        + 'files, no false rejection traced to this pattern. Sized to raw + 30%.',
+        + 'trailing >60% of fullText (footer CTA) and are absorbed by '
+        + "isGarbageContent's trailing-junk mitigation (_isPatternInTrailingJunk); "
+        + 'the queerty hit at 16% is absorbed by the leading-junk mitigation '
+        + '(<20%). The new-statesman hit at 56% sits in neither safe window —  '
+        + 'verified this file is NOT protected by position, but detectNewsletter() '
+        + 'iterates NEWSLETTER_PATTERNS in array order and returns on the first '
+        + 'INDEX that matches anywhere in the text, not the first occurrence by '
+        + 'position; this file also matches NEWSLETTER_PATTERNS[1] '
+        + '("enter your email", allowlisted at 150) at 59%, which is checked '
+        + 'first and wins, so index 3 is never the operative match for this '
+        + 'file today. That is order-of-evaluation luck, not a structural '
+        + 'guarantee — if a future scrape drops the "enter your email" phrase '
+        + 'from this outlet while keeping "subscribe to our newsletter" in the '
+        + 'unprotected 20-60% zone, this specific file would flip to garbage. '
+        + 'Next bump: if this pattern regresses again, check whether the new '
+        + 'hits are mid-text (unprotected) rather than assuming trailing/leading '
+        + 'absorption. Sized to raw + 30%.',
   },
   'NEWSLETTER_PATTERNS::4': {
     commit: 'pending',
