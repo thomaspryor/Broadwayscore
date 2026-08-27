@@ -16,11 +16,16 @@
  * (`node scripts/linear-next.js --id BRO-N --headless`, digest-autofix.js's
  * dispatchDetached). A blanket refusal on these titles would disable the
  * daily autofix drain AND the daily end-to-end canary — the only live proof
- * that dispatch still works. The documented exclusion is about CANDIDATE
- * SELECTION: a crown-loop / human sweep of the backlog must not pick one of
- * these up, because the pipeline that filed it already owns it. So the guard
- * (linear-dispatch.js's autofixFiledIssueGuard) refuses by default and the
- * two owning pipelines pass an explicit opt-in flag.
+ * that dispatch still works. The MOTIVATION is candidate selection — a
+ * crown-loop / human sweep of the backlog must not pick one of these up,
+ * because the pipeline that filed it already owns it and is mid-flight —
+ * but the ENFORCEMENT POINT is deliberately every `linear-next.js --id`,
+ * not a filter on some sweep's candidate list. `--id` is the only way any
+ * dispatch happens (linear-next.js has no separate auto-pick layer the way
+ * bsc-next.js does), and a filter on one caller's list is exactly the kind
+ * of unenforced convention BRO-2488 and this issue both exist to close. So:
+ * refuse at the chokepoint, and let each owning pipeline waive for the slice
+ * it owns.
  *
  * TWO SIGNALS, deliberately:
  *
