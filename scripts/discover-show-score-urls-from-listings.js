@@ -3,10 +3,17 @@
  * discover-show-score-urls-from-listings.js
  *
  * Smart Show Score URL discovery that scrapes their actual listings pages
- * instead of guessing URL slugs. Works for all 3 categories:
+ * instead of guessing URL slugs. Works for all these categories:
  *   - Broadway: https://www.show-score.com/broadway-shows
  *   - Off-Broadway: https://www.show-score.com/off-broadway-shows
+ *   - Off-Off-Broadway: https://www.show-score.com/off-off-broadway-shows
  *   - West End: https://www.show-score.com/uk/london/west-end-shows
+ *
+ * Off-Off-Broadway shows (small rental venues like SoHo Playhouse booking
+ * limited-run solo comedy/fringe transfers) get their own Show Score category
+ * distinct from "Off-Broadway" even when our own shows.json tracks the venue
+ * under category:"off-broadway" — matched into our DB the same way as the
+ * off-broadway listing (card: SoHo Playhouse discovery gap, 2026-08-27).
  *
  * Usage:
  *   node scripts/discover-show-score-urls-from-listings.js [--dry-run] [--verbose]
@@ -358,6 +365,26 @@ async function main() {
     'Off-Broadway'
   );
   console.log(`  Off-Broadway: ${obListings.length} shows found`);
+
+  // Off-Off-Broadway is a separate Show Score category (small rental/fringe
+  // venues — SoHo Playhouse, La MaMa, etc.) even though we track those venues
+  // under our own "off-broadway" category. Merge into obListings so it flows
+  // through the same off-broadway matching/candidate path below.
+  const oobListings = await fetchAllListings(
+    'https://www.show-score.com/off-off-broadway-shows',
+    /^\/off-off-broadway-shows\//,
+    'Off-Off-Broadway'
+  );
+  console.log(`  Off-Off-Broadway: ${oobListings.length} shows found`);
+  {
+    const seenObHrefs = new Set(obListings.map(l => l.href));
+    for (const l of oobListings) {
+      if (!seenObHrefs.has(l.href)) {
+        seenObHrefs.add(l.href);
+        obListings.push(l);
+      }
+    }
+  }
 
   // West End: no pagination (loops), fetch both endpoints once
   let weListings = [];
