@@ -19,7 +19,12 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -170,7 +175,14 @@
     "the-story-west-end-2026/london-box-office--phil-willmott.json",
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/nysr--frank-scheck.json",
-    "paranormal-activity-2026/deadline--erik-pedersen.json"
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -189,11 +201,13 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
@@ -208,11 +222,13 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "paranormal-activity-2026/deadline--erik-pedersen.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
   "log": [
     {
       "t": "2026-08-27T20:24:40.488Z",
@@ -269,13 +285,31 @@
     {
       "t": "2026-08-27T20:40:54.827Z",
       "event": "bb-session",
-      "session": "0c7f7a76",
+      "session": "f128da31",
+      "url": "https://donyc.com/events/2026/8/6/masticate-tickets"
+    },
+    {
+      "t": "2026-08-27T20:50:26.889Z",
+      "event": "bb-session",
+      "session": "651b7beb",
       "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
     },
     {
-      "t": "2026-08-27T20:40:55.416Z",
+      "t": "2026-08-27T20:50:27.301Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T20:53:45.393Z",
+      "event": "bb-session",
+      "session": "cd7812a8",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-27T20:54:01.177Z",
+      "event": "bb-session",
+      "session": "77f1a434",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
