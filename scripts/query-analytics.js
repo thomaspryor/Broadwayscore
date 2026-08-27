@@ -137,16 +137,19 @@ async function reportTraffic(client, dateRange) {
     property: `properties/${PROPERTY_ID}`,
     dateRanges: [dateRange],
     dimensions: [{ name: 'date' }],
-    metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }],
+    metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }],
     orderBys: [{ dimension: { dimensionName: 'date' } }],
   });
-  formatTable(['Date', 'Sessions', 'Users', 'Page Views'], (res.rows || []).map(r => {
+  formatTable(['Date', 'Sessions (raw)', 'Sessions (engaged)', 'Users', 'Page Views'], (res.rows || []).map(r => {
     const d = r.dimensionValues[0]?.value || '';
     return [`${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`,
       parseInt(r.metricValues[0]?.value || '0').toLocaleString(),
       parseInt(r.metricValues[1]?.value || '0').toLocaleString(),
-      parseInt(r.metricValues[2]?.value || '0').toLocaleString()];
+      parseInt(r.metricValues[2]?.value || '0').toLocaleString(),
+      parseInt(r.metricValues[3]?.value || '0').toLocaleString()];
   }));
+  console.log('\n  "Sessions (raw)" is bot-inflated (GA4 Direct channel). Use "Sessions (engaged)" as the headline number,');
+  console.log('  or run `sessions-engaged` for the full channel breakdown. See docs/GA4_Engaged_Sessions_Report.md.');
 }
 
 async function reportSessionsEngaged(client, dateRange) {
