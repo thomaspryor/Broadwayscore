@@ -2,8 +2,12 @@
  * Consolidated false-positive signal detection for wrongProduction:true
  * review-text records (BRO-23).
  *
- * Two independent FP modes, both READ-ONLY (no flag is ever cleared here —
- * every hit still needs a human/live-page check before correction):
+ * Two FP modes, both READ-ONLY (no flag is ever cleared here — every hit
+ * still needs a human/live-page check before correction). A record can match
+ * both; classifyWrongProductionFPCandidate() below still reports one `kind`
+ * per record (date-guard misparse takes priority) but folds a co-occurring
+ * truncated-reason hit into that candidate's `signals` array rather than
+ * dropping it:
  *
  *   1. 'misparsed-date' — a date-guard flag whose own in-file corroboration
  *      (Theatre Record archive month, current-run roundup excerpt) contradicts
@@ -60,9 +64,13 @@ const TRUNCATION_CAP = 200;
 
 /**
  * Strip a known CV-promotion prefix and return the reasoning-only remainder,
- * or null if `reason` doesn't start with one of them.
+ * or null if `reason` doesn't start with one of them. Operates on `reason`
+ * as-is — no trimming: the writers' template literals never pad the string,
+ * and a genuine 200-char cut landing on a space (plausible — reasoning is
+ * natural language) must not be trimmed down to 199 and missed.
  */
-function _stripTruncationPrefix(reason) {
+function stripTruncationPrefix(reason) {
+  if (typeof reason !== 'string') return null;
   for (const re of TRUNCATION_PREFIX_PATTERNS) {
     const m = re.exec(reason);
     if (m) return reason.slice(m[0].length);
@@ -76,13 +84,15 @@ function _stripTruncationPrefix(reason) {
  *   `.substring(0, 200)` cap mid-sentence.
  */
 function isTruncatedReason(reason) {
-  if (typeof reason !== 'string') return false;
-  const remainder = _stripTruncationPrefix(reason.trim());
+  const remainder = stripTruncationPrefix(reason);
   if (remainder === null) return false;
   // .substring(0, 200) always yields exactly 200 chars when the source was
   // longer — a naturally-written CV reasoning happening to land on exactly
   // 200 chars by chance is vanishingly unlikely, especially combined with no
-  // terminal punctuation at that exact cutoff.
+  // terminal punctuation at that exact cutoff. (Accepted false-negative: if
+  // the 200th char happens to BE a sentence-ending period, this reads as
+  // complete even when more text was actually cut — indistinguishable from
+  // a genuinely short reasoning without the untruncated original.)
   if (remainder.length !== TRUNCATION_CAP) return false;
   if (TERMINAL_PUNCTUATION_RE.test(remainder)) return false;
   return true;
@@ -106,23 +116,37 @@ function classifyWrongProductionFPCandidate({ review, show } = {}) {
   if (!review || review.wrongProduction !== true) return null;
   if (hasHumanAssertedFlag(review)) return null;
 
+  const reason = review.wrongProductionReason || '';
+  const reasonIsTruncated = isTruncatedReason(reason);
+
   const note = review.wrongProductionNote || '';
   if (note.startsWith('Date guard:')) {
     const isBeforePreview = / is \d+d before /.test(note);
     const corrob = evaluateCurrentRunCorroboration({ review, show });
     const bucket = bucketDateGuardCandidate({ corrob, isBeforePreview });
     if (bucket) {
-      return { kind: 'misparsed-date', strength: bucket, signals: corrob.signals, fullReasoning: null };
+      // The truncated-reason signal can co-occur with a date-guard flag —
+      // surface it via `signals` rather than dropping it, so a reviewer
+      // checking a weak roundup-excerpt candidate also sees that its stated
+      // rationale is cut off (Codex ship-check review: the two signals
+      // aren't mutually exclusive just because one classification wins).
+      const signals = reasonIsTruncated
+        ? [...corrob.signals, 'truncated-wrongProductionReason']
+        : corrob.signals;
+      return { kind: 'misparsed-date', strength: bucket, signals, fullReasoning: null };
     }
     // null bucket: no corroboration, or an informational-only 'strong' (see
     // bucketDateGuardCandidate) — fall through in case the truncated-reason
     // signal also applies.
   }
 
-  const reason = review.wrongProductionReason || '';
-  if (isTruncatedReason(reason)) {
+  if (reasonIsTruncated) {
     const cv = review.contentVerification;
-    const fullReasoning = (cv && typeof cv.reasoning === 'string' && cv.reasoning.length > reason.length)
+    // Recoverable iff contentVerification.reasoning carries more text than
+    // the writers' 200-char cap captured — NOT `> reason.length` (that also
+    // counts the "CV-promoted: " prefix bytes, so a reasoning only 1-12
+    // chars past the cap was wrongly reported unrecoverable; ship-check).
+    const fullReasoning = (cv && typeof cv.reasoning === 'string' && cv.reasoning.length > TRUNCATION_CAP)
       ? cv.reasoning
       : null;
     return {
@@ -142,4 +166,5 @@ function classifyWrongProductionFPCandidate({ review, show } = {}) {
 module.exports = {
   isTruncatedReason,
   classifyWrongProductionFPCandidate,
+  TRUNCATION_PREFIX_PATTERNS,
 };

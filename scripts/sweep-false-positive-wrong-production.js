@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyWrongProductionFPCandidate } = require('./lib/wrong-production-fp-signals');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
   || path.join(__dirname, '..', 'data', 'review-texts');
@@ -53,10 +54,10 @@ function run() {
     : path.join(__dirname, '..', 'data', 'audit', 'false-positive-wrong-production-sweep.json');
 
   const showMap = loadShows();
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter((d) => {
-    const full = path.join(REVIEW_TEXTS_DIR, d);
-    return fs.statSync(full).isDirectory() && !d.startsWith('_');
-  });
+  // listShowDirs tolerates a dangling symlink or stray file among the show
+  // dirs (warns + skips) instead of statSync throwing and crashing the whole
+  // sweep (2026-05-27 incident — see scripts/lib/list-show-dirs.js header).
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter((d) => !d.startsWith('_'));
 
   const misparsedDate = [];
   const truncatedReason = [];

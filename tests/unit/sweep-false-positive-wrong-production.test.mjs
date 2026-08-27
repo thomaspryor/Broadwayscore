@@ -19,6 +19,7 @@ const require = createRequire(import.meta.url);
 const {
   isTruncatedReason,
   classifyWrongProductionFPCandidate,
+  TRUNCATION_PREFIX_PATTERNS,
 } = require('../../scripts/lib/wrong-production-fp-signals.js');
 
 const CARE_SHOW = {
@@ -85,8 +86,14 @@ describe('isTruncatedReason', () => {
     assert.equal(isTruncatedReason(42), false);
   });
 
-  test('leading/trailing whitespace around the reason does not defeat detection', () => {
-    assert.equal(isTruncatedReason(`  ${GYPSY_TRUNCATED_REASON}  `), true);
+  test('a genuine 200-char cut landing exactly on a trailing space is still detected (not trimmed away)', () => {
+    // The 200-char remainder itself ends in a space — a real substring(0,200)
+    // cut can land there (reasoning is natural language). If this were
+    // trimmed before measuring, the remainder would read as 199 chars and a
+    // real truncation would be missed.
+    const remainder = `${'x'.repeat(199)} `;
+    assert.equal(remainder.length, 200);
+    assert.equal(isTruncatedReason(`CV-promoted: ${remainder}`), true);
   });
 });
 
@@ -175,6 +182,80 @@ describe('classifyWrongProductionFPCandidate — truncated-reason signal', () =>
       wrongProductionReason: 'CV-promoted: this is unambiguously a review of a different, earlier production.',
     };
     assert.equal(classifyWrongProductionFPCandidate({ review, show: { id: 'gypsy-2024' } }), null);
+  });
+
+  test('recoverability boundary: cv.reasoning just 1 char past the 200-char cap is still recoverable', () => {
+    // Regression for a bug ship-check caught: comparing cv.reasoning.length
+    // against the PREFIXED reason.length (213 for "CV-promoted: " + 200 chars)
+    // instead of the 200-char cap meant a reasoning only slightly longer than
+    // the cap was wrongly reported unrecoverable ('weak').
+    const reasoning = `${'x'.repeat(200)}y`; // 201 chars — 1 past the cap
+    const review = {
+      wrongProduction: true,
+      wrongProductionReason: `CV-promoted: ${reasoning.slice(0, 200)}`,
+      contentVerification: { isValid: false, confidence: 'high', reasoning },
+    };
+    const c = classifyWrongProductionFPCandidate({ review, show: { id: 'x' } });
+    assert.ok(c);
+    assert.equal(c.strength, 'strong');
+    assert.equal(c.fullReasoning, reasoning);
+  });
+
+  test('recoverability boundary: cv.reasoning exactly at the 200-char cap (nothing more to recover) → weak', () => {
+    const reasoning = 'x'.repeat(200);
+    const review = {
+      wrongProduction: true,
+      wrongProductionReason: `CV-promoted: ${reasoning}`,
+      contentVerification: { isValid: false, confidence: 'high', reasoning },
+    };
+    const c = classifyWrongProductionFPCandidate({ review, show: { id: 'x' } });
+    assert.ok(c);
+    assert.equal(c.strength, 'weak');
+    assert.equal(c.fullReasoning, null);
+  });
+
+  test('co-occurrence: a weak roundup-excerpt date candidate also surfaces a truncated reason in signals', () => {
+    const review = {
+      wrongProduction: true,
+      wrongProductionNote: 'Date guard: review 2019-06-12 is 2500d before 2026-05-11 (previews) — likely different production',
+      publishDate: '2019-06-12',
+      theStageExcerpt: 'quoted in current roundup…',
+      wrongProductionReason: GYPSY_TRUNCATED_REASON,
+    };
+    const c = classifyWrongProductionFPCandidate({ review, show: CARE_SHOW });
+    assert.ok(c);
+    assert.equal(c.kind, 'misparsed-date');
+    assert.equal(c.strength, 'weak');
+    assert.ok(c.signals.includes('roundup-excerpt:theStageExcerpt'));
+    assert.ok(c.signals.includes('truncated-wrongProductionReason'));
+  });
+});
+
+describe('TRUNCATION_PREFIX_PATTERNS — regression fixtures for every known real write site', () => {
+  // Every current wrongProductionReason = `${prefix}${reasoning.substring(0,200)}`
+  // call site in the repo (grepped 2026-08-26: rebuild-all-reviews.js:1899,
+  // 2019, 2710; collect-review-texts.js:5072) renders one of these two
+  // prefix shapes. If a future writer adds a new promotion label with the
+  // same substring(0,200) bug, this list needs a new entry too — same
+  // hand-curated-allowlist tradeoff as contradicted-flag-basis.js's
+  // DATE_ONLY_BASIS_PREFIXES (no code-level drift guard for that list
+  // either); recorded here so the risk is visible at the next edit.
+  const KNOWN_PREFIXES = [
+    'CV-promoted: ',
+    'CV-low-but-strong-signal: ',
+    'Collector LLM: wrong production (high) — ',
+    'Collector LLM: wrong production (medium) — ',
+  ];
+
+  test('each known prefix is matched by TRUNCATION_PREFIX_PATTERNS', () => {
+    for (const prefix of KNOWN_PREFIXES) {
+      const reason = `${prefix}${'x'.repeat(200)}`;
+      assert.ok(
+        TRUNCATION_PREFIX_PATTERNS.some((re) => re.test(reason)),
+        `prefix not covered: ${JSON.stringify(prefix)}`
+      );
+      assert.equal(isTruncatedReason(reason), true, `not detected as truncated: ${JSON.stringify(prefix)}`);
+    }
   });
 });
 
