@@ -3,7 +3,11 @@
     "spellbound-off-broadway-2026/amny--alexa-lutter.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
     "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+    "masticate-off-broadway-2026/nyu--unknown.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -11,13 +15,22 @@
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/the-recs--unknown.json",
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
-    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "spellbound-off-broadway-2026/amny--alexa-lutter.json",
-      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+      "masticate-off-broadway-2026/nyu--unknown.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -28,11 +41,12 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ]
   },
   "startTime": "2026-08-27T20:23:44.168Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+  "lastProcessed": "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
   "log": [
     {
       "t": "2026-08-27T20:24:40.488Z",
@@ -42,6 +56,17 @@
     },
     {
       "t": "2026-08-27T20:24:41.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-27T20:26:40.084Z",
+      "event": "bb-session",
+      "session": "4b4b6e97",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-27T20:26:41.043Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
