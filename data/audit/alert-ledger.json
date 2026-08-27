@@ -1329,9 +1329,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-08-23T12:24:33.120Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.120Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-27T21:33:20.831Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.831Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1468,12 +1468,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-26T12:37:29.970Z",
+      "lastSeen": "2026-08-27T21:33:25.864Z",
       "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1505,9 +1505,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
       "firstSeen": "2026-08-23T12:24:33.125Z",
-      "lastSeen": "2026-08-23T12:24:33.125Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.125Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-27T21:33:20.834Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.834Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1588,12 +1588,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-26T12:37:29.968Z",
+      "lastSeen": "2026-08-27T21:33:20.909Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1620,7 +1620,7 @@
       "linearIdentifier": null
     },
     "cron-health:Scrape WestEndTheatre": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Scrape WestEndTheatre",
@@ -1629,7 +1629,8 @@
       "lastNotifiedAt": "2026-08-26T12:37:29.921Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-27T21:33:25.935Z"
     },
     "opening-night-slug-mismatch-paranormal-activity-2026": {
       "status": "open",
@@ -1712,6 +1713,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2421"
+    },
+    "cron-health-chronic:Commercial RSS Poll": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
+      "firstSeen": "2026-08-27T21:33:20.912Z",
+      "lastSeen": "2026-08-27T21:33:20.912Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.912Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2524"
     }
   }
 }
