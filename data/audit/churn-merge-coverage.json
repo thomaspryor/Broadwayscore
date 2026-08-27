@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-27T15:21:21.080Z",
+    "generatedAt": "2026-08-27T17:46:37.934Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,63 +9,59 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 1,
-    "exemptCount": 9,
+    "exemptCount": 8,
     "coveredCount": 14,
-    "highChurnTracked": 24
+    "highChurnTracked": 23
   },
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 41
+      "churn": 40
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 141
+      "churn": 138
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 53
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 49
+      "churn": 54
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
       "churn": 46
     },
     {
-      "path": "public/data/stats-reviews.json",
-      "churn": 40
+      "path": "public/data/admin/locks.json",
+      "churn": 46
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 46
     },
     {
       "path": "data/audit/alert-digest-queue.json",
       "churn": 38
     },
     {
-      "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 31
+      "path": "public/data/stats-reviews.json",
+      "churn": 38
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 876,
+      "churn": 857,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 847,
+      "churn": 829,
       "mergeAttr": "ours"
     },
     {
@@ -75,37 +71,37 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 313,
+      "churn": 314,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 203,
+      "churn": 199,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 166,
+      "churn": 159,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 91,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 91,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 91,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 85,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
@@ -115,17 +111,17 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 53,
+      "churn": 50,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-as-you-like-it-globe-west-end-2026.json",
-      "churn": 49,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 49,
+      "churn": 46,
       "mergeAttr": "ours"
     }
   ]
