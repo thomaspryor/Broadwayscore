@@ -22,7 +22,9 @@
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
     "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -161,7 +163,14 @@
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -181,7 +190,8 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -189,7 +199,8 @@
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -202,11 +213,12 @@
     "archiveToday": [],
     "archive": [
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
   "startTime": "2026-08-27T18:54:37.195Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
   "log": [
     {
       "t": "2026-08-27T18:55:19.511Z",
@@ -286,6 +298,18 @@
       "t": "2026-08-27T19:21:24.922Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T19:26:18.404Z",
+      "event": "bb-session",
+      "session": "72b88e99",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-27T19:26:26.358Z",
+      "event": "bb-session",
+      "session": "ecf4e969",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
