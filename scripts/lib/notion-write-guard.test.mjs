@@ -13,7 +13,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -120,5 +120,45 @@ test('updates and archives are deliberately NOT gated', () => {
   // notion-action-poll.js reprocess actions forever (see the guard's header).
   const calls = src.match(/notionCreateVerdict\(/g) || [];
   assert.equal(calls.length, 1, `guard should be called once (at create), found ${calls.length}`);
-  assert.ok(src.includes('notion.pages.update('), 'update path should still exist and be ungated');
+  // Update path goes through the shared helper (BRO-2471), not the raw SDK
+  // call directly — see the next test for why that matters.
+  assert.ok(src.includes('updatePage(notion,'), 'update path should still exist and be ungated');
+});
+
+test('no script outside scripts/lib/notion-writes.js calls pages.update directly', () => {
+  // BRO-2471: Phase 1's read-only guard worked because notion-brain.js has
+  // exactly one create call site — a single chokepoint. Updates had none:
+  // auto-fix-friction-card.js and notion-action-poll.js called
+  // `notion.pages.update()` straight against the SDK, invisible to any guard
+  // or counter placed at the CLI. scripts/lib/notion-writes.js's updatePage()
+  // is now the one place that call is allowed to appear — this test fails
+  // the moment a new direct call site is added anywhere under scripts/.
+  const SCRIPTS_DIR = join(REPO, 'scripts');
+  const HELPER_PATH = join(SCRIPTS_DIR, 'lib', 'notion-writes.js');
+  const offenders = [];
+
+  function walk(dir) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (!/\.(js|mjs)$/.test(entry.name)) continue;
+      if (/\.test\.(js|mjs)$/.test(entry.name)) continue; // reference the pattern in prose/strings, not real calls
+      if (full === HELPER_PATH) continue;
+      const src = stripComments(readFileSync(full, 'utf8'));
+      if (/\.pages\s*\.\s*update\s*\(/.test(src)) {
+        offenders.push(full.slice(REPO.length + 1));
+      }
+    }
+  }
+
+  walk(SCRIPTS_DIR);
+  assert.deepEqual(
+    offenders,
+    [],
+    `these files call notion.pages.update() directly instead of scripts/lib/notion-writes.js's updatePage(): ${offenders.join(', ')}`
+  );
 });

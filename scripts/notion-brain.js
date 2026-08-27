@@ -40,6 +40,7 @@ const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 const { OVERFLOW_MARKER_SUBSTR, cardHasOverflow } = require('./lib/overflow-marker');
 const { resolveDisposition } = require('./lib/card-disposition');
 const { notionCreateVerdict } = require('./lib/notion-write-guard');
+const { updatePage } = require('./lib/notion-writes');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -1045,7 +1046,7 @@ async function updateCard(args) {
     await enforceCloseTimeVerify(pageId, args);
   }
 
-  const page = await notion.pages.update({
+  const page = await updatePage(notion, {
     page_id: pageId,
     properties,
   });
@@ -1403,7 +1404,7 @@ async function archiveCard(args) {
     process.exit(1);
   }
 
-  const page = await notion.pages.update({ page_id: pageId, archived: true });
+  const page = await updatePage(notion, { page_id: pageId, archived: true });
   const result = { id: page.id, archived: true };
   console.log(JSON.stringify(result, null, 2));
   return result;
