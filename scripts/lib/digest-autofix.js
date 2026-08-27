@@ -476,7 +476,12 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next run
       newEntries.push({
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
-        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+        // BRO-2518: fileCard()'s exact-title dedup can reattach a row to an
+        // issue a PRIOR dispatch already moved to a started Linear state (In
+        // Progress/In Review) — linear-next.js's startedStateGuard refuses
+        // that cleanly (correctly: it's the guard closing exactly this class
+        // of stray double-dispatch), so it belongs in this likely-cause list.
+        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)`,
       });
       resolvedKeys.add(key);
       continue;

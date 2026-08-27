@@ -447,16 +447,28 @@ function autofixFiledIssueGuard(issue, opts) {
 // tracked tasks carry more than one 'launch' entry, i.e. genuine re-dispatch
 // is a normal, not rare, event) — matching checkTerminalStateGuard's own
 // --force-only exemption, not autofixFiledIssueGuard's per-caller opt-in
-// flag: no machine caller here legitimately needs to re-dispatch an
-// already-started issue without a human deciding to force it. Checked: none
-// of digest-autofix.js's runAutofix (skips 'in-progress' rows explicitly,
-// and its 'card-filed' rows are always freshly filed — Backlog/Todo —
-// issues), autofix-canary.js (its "existingTask" sync-lag branch matches
-// against the legacy Notion-mirror task list, which has no sync path for
-// Linear-filed issues, so it never matches a live started Linear issue), or
-// linear-drain-parked.js (selectDrainCandidates filters to
-// PARKED_STATE_TYPES = backlog/unstarted only) ever dispatches an
-// already-started issue in normal operation — --force is a human-only door.
+// flag: no machine caller here legitimately WANTS to re-dispatch an
+// already-started issue without a human deciding to force it — but one CAN
+// still hit this refusal in normal operation (ship-check finding, BRO-2518):
+// digest-autofix.js's fileCard() dedups by exact-title match against LIVE
+// Linear state (not the local task mirror) — a reattach hit can land on an
+// issue a PRIOR dispatch already moved to a started state (cross-host, or a
+// stalled prior attempt), and runAutofix's dispatch-loop skip-list
+// ('in-progress'/'card-failed'/'acknowledged'/'decision') does not include
+// the 'card-filed' state a reattached row carries, so it reaches dispatchFn
+// same as a freshly-filed row would. That is this guard doing its job, not a
+// bug: refusing IS the correct outcome (prevents a stray double-dispatch
+// onto still-active work), and digest-autofix's own attempt-memory
+// (reconcileDigestOutcomes' orphan-timeout branch, digest-autofix.js) scores
+// the un-spawned attempt 'card-fail' and eventually parks a row that keeps
+// hitting this — no bypass flag needed, unlike autofixFiledIssueGuard, whose
+// refused population (its OWN freshly-filed tracker) has no other path to
+// resolution. autofix-canary.js's "existingTask" sync-lag branch is a
+// separate, narrower check (matches the legacy Notion-mirror task list,
+// which has no sync path for Linear-filed issues, so it never even reaches a
+// live started Linear issue this way) — unaffected. linear-drain-parked.js
+// (selectDrainCandidates filters to PARKED_STATE_TYPES = backlog/unstarted
+// only) never selects a started issue in the first place.
 function startedStateGuard(issue, opts) {
   const o = opts || {};
   if (o.force || o['dry-run'] || o['print-prompt']) return null;
