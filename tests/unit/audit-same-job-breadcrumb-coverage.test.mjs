@@ -316,16 +316,32 @@ test('findForceTrueClearSites: exact field match on the real strip-stale-single-
   assert.deepEqual([...fields].sort(), ['assignedScore', 'ensembleData', 'llmMetadata', 'llmScore']);
 });
 
-test('findForceTrueClearSites: correctly resolves 11 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion AND adversarial ship-check reviews both flagged)', () => {
+test('findForceTrueClearSites: resolves at least 11 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion AND adversarial ship-check reviews both flagged)', () => {
   const src = fs.readFileSync(path.join(repoRoot, 'scripts/rebuild-all-reviews.js'), 'utf8');
   const sites = findForceTrueClearSites(src, new Set(PROTECTED_FIELDS));
-  // 11 call sites carry a protected clear as of this writing (up from 5 before
-  // the balanced-parens argument parser fix — the adversarial ship-check
-  // review found the prior `[^,]+`-based first-arg regex silently produced
-  // zero matches on `safeWriteReview(path.join(showDir, file), data, {force:
-  // true})`, live at 7 of this file's call sites). Each site's fields must
-  // come only from its own immediately-preceding statements.
-  assert.equal(sites.length, 11);
+  // This is a POSITIVE CONTROL on the parser, not an inventory of the file.
+  // What it must catch is the parser silently under-matching: the prior
+  // `[^,]+`-based first-arg regex produced ZERO matches on
+  // `safeWriteReview(path.join(showDir, file), data, {force: true})`, live at
+  // 7 of this file's call sites, and the balanced-parens fix took it 5 -> 11.
+  //
+  // An EXACT count asserted that property by proxy and got it wrong: it also
+  // fails every time someone legitimately adds a protected clear to
+  // rebuild-all-reviews.js, which is normal churn in an actively-edited
+  // 4000-line file. That is what turned main red on 2026-08-27 (site 12
+  // landed at line 1517 with correctly-attributed fields and nothing about
+  // the parser had regressed). Asserting a FLOOR keeps the under-matching
+  // regression caught — 0 or 5 still fails loudly — without coupling a parser
+  // test to the file's current call-site inventory.
+  //
+  // Over-matching is caught by the per-field allowlist below, which is the
+  // real cross-attribution guard: a site invented by a runaway window would
+  // pull in fields from an unrelated statement and trip it.
+  assert.ok(sites.length >= 11,
+    `expected the balanced-parens parser to still resolve at least 11 protected-clear ` +
+    `call sites in rebuild-all-reviews.js, got ${sites.length} — a DROP means the ` +
+    `argument parser has regressed (it silently returned 0 before the fix), not that ` +
+    `the file changed`);
   const allowedFields = [
     'wrongProduction', 'wrongProductionNote', 'wrongProductionReason',
     'wrongShow', 'wrongShowNote', 'wrongShowReason',
