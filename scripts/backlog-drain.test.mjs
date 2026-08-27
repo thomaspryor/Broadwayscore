@@ -200,8 +200,34 @@ test('reconcileOutcomes: two unresolved dispatches of the same card in one tick 
   const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
     new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 0 });
   // Both dispatches correlate to the same single job, so exactly one outcome —
-  // the in-pass `emitted` guard stops the second from double-charging it.
+  // the in-pass `claimedJobIds` Set (keyed on job.jobId) stops the second from
+  // double-charging it.
   assert.equal(out.length, 1);
+});
+
+test('reconcileOutcomes: two unresolved dispatches of the same taskId mapping to DIFFERENT jobs each resolve independently (BRO-2508)', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '9', jobId: '9-a' },
+    { ts: '2026-08-04T11:30:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '9', jobId: '9-a', costUSD: 1 },
+    { ts: '2026-08-04T11:40:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '9', jobId: '9-b' },
+    { ts: '2026-08-04T12:00:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '9', jobId: '9-b', costUSD: 2 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '9', subject: 'x', contentHash: 'h1' },
+    { ts: '2026-08-04T11:40:00Z', event: 'drain-dispatch', taskId: '9', subject: 'x', contentHash: 'h2' },
+  ];
+  // Task never completes, so neither outcome touches the attribution path
+  // (landedFn/commitRefFn) — isolates this test to the same-pass dedup bug.
+  const tasksById = new Map([['9', { id: '9', status: 'pending' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T13:00:00Z'), { strandedCommits: () => 0 });
+  // Pre-fix: resolving dispatch #1 (job 9-a) tagged an in-pass breadcrumb with
+  // `now` (13:00), which is later than dispatch #2's ts (11:40) too — so
+  // isDispatchResolved wrongly treated the second, genuinely separate
+  // re-dispatch (job 9-b) as already resolved and silently dropped it.
+  assert.equal(out.length, 2, 'two separate re-dispatches to two different jobs must each produce their own outcome');
+  assert.deepEqual(out.map(o => o.usd).sort(), [1, 2]);
+  assert.ok(out.every(o => o.event === 'card-fail'));
 });
 
 // ── attribution: `completed` alone is NOT proof the drain did the work ──────
