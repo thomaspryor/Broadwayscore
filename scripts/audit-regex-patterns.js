@@ -118,6 +118,7 @@ const PATTERN_ALLOWLIST = {
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'NEWSLETTER_PATTERNS::3': 10,   // /subscribe\s+to\s+(our\s+)?newsletter/i — raw 7, 2026-08-26 (BRO-33, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::4': 28,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 21, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::5': 22,   // /newsletter\s+sign[-\s]?up/ — raw 17, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
@@ -154,7 +155,7 @@ const PATTERN_ALLOWLIST = {
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
   'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
   'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
-  'HORROR_FILM_PATTERNS::3': 70,  // /haunted\s+(family|house|lambert)/ — raw 47
+  'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
   'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
@@ -219,6 +220,21 @@ const PATTERN_CALIBRATION = {
         + 'widget pattern (Playbill, Daily Beast), diffuse across outlets, not '
         + 'a scraper regression. Sized to baseline + ~30%.',
   },
+  'NEWSLETTER_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 7,
+    headroom: 1.43,
+    note: 'BRO-33 triage: /subscribe to (our )?newsletter/i first breached the '
+        + 'default-5 threshold (raw 7). Diffuse across 4 outlets — nytg (New '
+        + 'York Theatre Guide, 4 hits), new-statesman, queerty, london-theatre '
+        + '— corpus growth, not a scraper regression. 5/7 hits sit in the '
+        + 'trailing 5% of fullText (footer CTA) and are absorbed by '
+        + "isGarbageContent's trailing-junk mitigation; the 2 non-trailing hits "
+        + '(new-statesman at 56%, queerty at 16%) do not independently flip a '
+        + 'review to garbage — verified via isGarbageContent() on all 3 sample '
+        + 'files, no false rejection traced to this pattern. Sized to raw + 30%.',
+  },
   'NEWSLETTER_PATTERNS::4': {
     commit: 'pending',
     date: '2026-08-15',
@@ -276,6 +292,19 @@ const PATTERN_CALIBRATION = {
         + 'bleeding verbatim into scraped Playbill reviews. Concentrated in '
         + 'one outlet (Playbill), consistent with a static footer widget, '
         + 'not a scraper regression. Sized to raw + ~35%.',
+  },
+  'HORROR_FILM_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 76,
+    headroom: 1.32,
+    note: 'BRO-33 triage: /haunted (family|house|lambert)/i corpus growth from '
+        + 'raw 47 (prior baseline) to 76 — theater-metaphor bleed ("haunted '
+        + 'house version of the Seventies", horror-adjacent staging '
+        + 'descriptions in Appropriate, Abigail\'s Party reviews), diffuse '
+        + "across outlets, not concentrated in one active scraper. detectHorror"
+        + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
+        + 'zero pass through to rejection. Sized to raw + 30%.',
   },
 };
 
