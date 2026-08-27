@@ -32,10 +32,21 @@
  *     creation — the same reason marketingProjectGuard prefers the Linear
  *     project relation over description prose. Distinct from
  *     scripts/lib/linear-drain-parked.js's own AUTO_FILED_MARKER
- *     ("Auto-filed by owner-alert-router"), which is a DIFFERENT population
- *     that drain deliberately dispatches — do not conflate the two.
+ *     ("Auto-filed by owner-alert-router"), which is a different PARKED
+ *     marker — but see the title note below: the two populations are NOT
+ *     disjoint by title.
  *  2. TITLE (fallback). The historical convention the handoff line names.
- *     Covers an issue whose description was hand-edited after filing.
+ *     Covers an issue whose description was hand-edited after filing — and,
+ *     more importantly, a SECOND producer: scripts/health-check.js:3951
+ *     routes actionable health rows through owner-alert-router with
+ *     `title: "BSC Daily: <row>"`, so an alert-filed tracker wears the same
+ *     title convention with the owner-alert-router PARKED marker instead.
+ *     Those are equally machine-owned (scripts/linear-drain-parked.js
+ *     dispatches them), so refusing them at a human/crown-loop `--id` is
+ *     correct — but that drain must pass the waiver too, and does
+ *     (linear-drain-parked.js's dispatchFn call). Found by the BRO-2499
+ *     ship-check: without that waiver this title check silently refused
+ *     every dispatch that drain made.
  *
  * The title patterns are declared HERE rather than imported from
  * scripts/lib/task-store-archive.js:69, which has its own BSC_DAILY_TITLE_RE.

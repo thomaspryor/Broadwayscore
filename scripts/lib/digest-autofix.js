@@ -371,12 +371,14 @@ function syncTasks({ log = () => {} } = {}) {
 // since it's already the SECOND machine attempt at the underlying failure).
 // `opts.allowAutofixFiled` (BRO-2499) appends --allow-autofix-filed on the
 // linear-next path, waiving linear-dispatch.js's autofixFiledIssueGuard for
-// THIS dispatch. Opt-in per call site, not defaulted on: this helper is also
-// the drain in scripts/linear-drain-parked.js (a different, owner-alert-router
-// population), and blanket-waiving here would hand that drain — and every
-// future caller — a bypass it never asked for (second-opinion review,
-// BRO-2499). Never appended on the bsc-next.js branch: that CLI has no such
-// flag and no such guard.
+// THIS dispatch. Opt-in per call site, not defaulted on, so a future caller
+// never inherits a bypass it never asked for (second-opinion review,
+// BRO-2499). All three of today's callers legitimately own their population
+// and pass it: runAutofix below, autofix-canary.js's two sites, and
+// scripts/linear-drain-parked.js — that last one is NOT redundant, see its
+// call site: health-check.js routes alert-router trackers under the same
+// "BSC Daily:" title, so the guard refuses them too. Never appended on the
+// bsc-next.js branch: that CLI has no such flag and no such guard.
 function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // Validate BEFORE opening the log fd — throwing after openSync leaked a
   // file descriptor per rejected dispatch (Codex review, 2026-08-02).

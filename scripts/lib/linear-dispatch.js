@@ -376,11 +376,17 @@ function marketingProjectGuard(issue, opts) {
 // backlog must not pick one of these up, because the pipeline that filed it
 // already owns it and is mid-flight on it.
 //
-// So: refuse by default; the two owning pipelines pass `--allow-autofix-filed`
-// explicitly at their own call sites (NOT blanket-applied inside
+// So: refuse by default; each owning pipeline passes `--allow-autofix-filed`
+// explicitly at its own call site (NOT blanket-applied inside
 // dispatchDetached — second-opinion review, BRO-2499: that would hand every
-// present and future caller of that helper, including
-// scripts/linear-drain-parked.js, a silent bypass it never asked for).
+// present and future caller of that helper a silent bypass it never asked
+// for). Three call sites own a slice of this population today:
+// digest-autofix.js's runAutofix, autofix-canary.js, and
+// scripts/linear-drain-parked.js — that third one was missed on the first
+// pass and caught by the BRO-2499 ship-check: health-check.js:3951 routes
+// actionable rows through owner-alert-router under the SAME "BSC Daily:"
+// title, so this guard refuses that drain's candidates too, and it records
+// "attempted" whether or not the detached child was refused.
 // `--force`/`--dry-run`/`--print-prompt` bypass too, matching
 // marketingProjectGuard's own exemptions directly above.
 //

@@ -143,14 +143,34 @@ test('autofixFiledIssueGuard: provenance alone refuses, even if the title were r
 test('autofixFiledIssueGuard: an ordinary backlog issue is ALLOWED', () => {
   assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-1', title: 'Fix the score badge width' }, {}), null);
   assert.equal(autofixFiledIssueGuard({ identifier: 'BRO-2' }, {}), null);
-  // NOT the same population: linear-drain-parked.js's own auto-filed set is
-  // owner-alert-router's, which that drain deliberately dispatches. Refusing
-  // it here would silently kill that drain.
+  // An owner-alert-router tracker whose title does NOT follow the BSC Daily
+  // convention is untouched.
   assert.equal(autofixFiledIssueGuard({
     identifier: 'BRO-3',
     title: 'Alert: prod deploy stale',
     description: 'PARKED: Auto-filed by owner-alert-router.',
   }, {}), null);
+});
+
+// BRO-2499 ship-check P0 (Codex): the two auto-filed populations are NOT
+// disjoint by title. scripts/health-check.js:3951 routes actionable health
+// rows through owner-alert-router with `title: "BSC Daily: <row>"`, so an
+// alert-filed tracker carries the BSC Daily title with the OTHER PARKED
+// marker. It is still machine-owned, so refusing a human/crown-loop `--id`
+// on it is correct — but scripts/linear-drain-parked.js, which owns and
+// dispatches that population, must pass the waiver. The first pass of this
+// change did not, which would have silently refused every dispatch that
+// drain made (its ledger records "attempted" either way, so the refusal
+// would only have existed in the detached child's log file).
+test('autofixFiledIssueGuard: an owner-alert-router tracker titled "BSC Daily:" is refused too — its drain must waive (BRO-2499)', () => {
+  const issue = {
+    identifier: 'BRO-2504',
+    title: 'BSC Daily: ScrapingBee credits below threshold',
+    description: 'PARKED: Auto-filed by owner-alert-router (condition: health-check:ScrapingBee credits); parked for triage.',
+  };
+  assert.match(autofixFiledIssueGuard(issue, {}), /BRO-2504/);
+  assert.equal(autofixFiledIssueGuard(issue, { 'allow-autofix-filed': true }), null,
+    'linear-drain-parked.js passes this waiver — without it that drain silently stops dispatching');
 });
 
 test('autofixFiledIssueGuard: --force/--dry-run/--print-prompt and the pipeline opt-in all bypass it', () => {

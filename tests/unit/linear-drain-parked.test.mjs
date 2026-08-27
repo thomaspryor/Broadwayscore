@@ -197,17 +197,26 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     const prior = process.env.LINEAR_NEXT_DISABLED;
     delete process.env.LINEAR_NEXT_DISABLED;
     const dispatchedTaskIds = [];
+    const dispatchOpts = [];
     const journaled = [];
     try {
       const result = await main([], {
         listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' }), issue({ identifier: 'BRO-2' })],
-        dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+        dispatchFn: (taskId, _log, _delay, _model, opts) => { dispatchedTaskIds.push(taskId); dispatchOpts.push(opts); },
         readLedger: () => [],
         appendLedger: (entry) => journaled.push(entry),
         log: () => {},
       });
       assert.deepStrictEqual(result.dispatched, ['BRO-1', 'BRO-2']);
       assert.deepStrictEqual(dispatchedTaskIds, ['linear:BRO-1', 'linear:BRO-2']);
+      // BRO-2499 ship-check P0: health-check.js:3951 files alert-router
+      // trackers titled "BSC Daily: <row>", which linear-dispatch.js's
+      // autofixFiledIssueGuard refuses. This drain owns that population, so
+      // every dispatch it makes must carry the waiver — without it the guard
+      // refuses inside the detached child and this drain silently does
+      // nothing while still journaling "attempted".
+      assert.deepStrictEqual(dispatchOpts, [{ allowAutofixFiled: true }, { allowAutofixFiled: true }],
+        'linear-drain-parked must waive autofixFiledIssueGuard for the population it owns');
       assert.strictEqual(journaled.length, 2);
       assert.strictEqual(journaled[0].event, 'drain-parked-dispatch');
       assert.strictEqual(journaled[0].identifier, 'BRO-1');
