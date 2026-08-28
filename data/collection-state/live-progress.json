@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-28T20:41:53.616Z",
-  "processed": 20,
-  "failed": 100,
-  "successRate": "16.7%",
+  "updatedAt": "2026-08-28T20:47:18.023Z",
+  "processed": 22,
+  "failed": 108,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -47,7 +47,60 @@
     {
       "t": "2026-08-28T20:37:43.180Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T20:19:58.889Z",
+      "event": "bb-session",
+      "session": "30d22d25",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-28T20:19:59.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T20:27:41.487Z",
+      "event": "bb-session",
+      "session": "0505841e",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-28T20:27:59.904Z",
+      "event": "bb-session",
+      "session": "642a0c51",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-28T20:33:02.379Z",
+      "event": "bb-session",
+      "session": "4308bed6",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-28T20:33:19.909Z",
+      "event": "bb-session",
+      "session": "b8493589",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-28T20:34:32.879Z",
+      "event": "bb-session",
+      "session": "c65f734f",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-08-28T20:34:51.307Z",
+      "event": "bb-session",
+      "session": "2b205749",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-08-28T20:43:12.591Z",
+      "event": "bb-session",
+      "session": "765c558e",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
     }
   ]
 }
