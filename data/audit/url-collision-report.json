@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-28T09:42:51.635Z",
+  "generatedAt": "2026-08-28T17:46:04.880Z",
   "summary": {
-    "total": 6,
-    "high": 1,
+    "total": 7,
+    "high": 2,
     "medium": 4,
     "low": 1
   },
@@ -33,6 +33,33 @@
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 but also 10 days from cats-the-jellicle-ball-off-broadway-2024",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
+      "normalizedUrl": "https://thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
+      "candidates": [
+        {
+          "showId": "evita-2026",
+          "file": "thestage--sam-marlowe.json",
+          "publishDate": null,
+          "openingDate": "2027-03-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "evita-west-end-2025",
+          "file": "thestage--sam-marlowe.json",
+          "publishDate": "2025-07-02",
+          "openingDate": "2025-07-01",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "evita-west-end-2025",
+      "reason": "publishDate 2025-07-02 is 1 days from evita-west-end-2025 opening (2025-07-01)",
+      "confidence": "high"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
