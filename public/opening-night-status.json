@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-28T02:51:57.829Z",
+  "generatedAt": "2026-08-28T20:46:27.753Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,23 +12,23 @@
       "status": "open",
       "slug": "paranormal-activity",
       "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
-      "siteScore": 78.81,
+      "siteScore": 78.98,
       "liveScore": 79,
-      "scoreDrift": 0.18999999999999773,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 28,
       "t1": 4,
       "t2": 17,
-      "t3": 5,
-      "positive": 18,
+      "t3": 7,
+      "positive": 20,
       "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -380,6 +380,18 @@
           "m": 7,
           "n": 1,
           "bc": "complete"
+        },
+        {
+          "t": "2026-08-28T20:46:27.753Z",
+          "rc": 28,
+          "s": 78.98,
+          "t1": 4,
+          "t2": 17,
+          "t3": 7,
+          "p": 20,
+          "m": 7,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     },
@@ -498,10 +510,6 @@
         {
           "name": "New York Post",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
