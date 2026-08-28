@@ -251,7 +251,17 @@
     "white-rabbit-red-rabbit-west-end-2026/nytimes--charles-isherwood.json",
     "white-rabbit-red-rabbit-west-end-2026/guardian--david-jays.json",
     "white-rabbit-red-rabbit-west-end-2026/timeout-london--caroline-mcginn.json",
-    "white-rabbit-red-rabbit-west-end-2026/telegraph--marianka-swain.json"
+    "white-rabbit-red-rabbit-west-end-2026/telegraph--marianka-swain.json",
+    "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
+    "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+    "beetlejuice-west-end-2026/nytg--mark-shenton.json",
+    "beetlejuice-west-end-2026/nytimes--ben-brantley.json",
+    "beetlejuice-west-end-2026/nytimes--sarah-bahr.json",
+    "beetlejuice-west-end-2026/nytimes--unknown.json",
+    "beetlejuice-west-end-2026/variety--frank-rizzo.json",
+    "beetlejuice-west-end-2026/variety--owen-gleiberman.json",
+    "beetlejuice-west-end-2026/vulture--sara-holdren.json",
+    "beetlejuice-west-end-2026/deadline--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -317,7 +327,7 @@
     ]
   },
   "startTime": "2026-08-28T20:28:43.159Z",
-  "lastProcessed": "white-rabbit-red-rabbit-west-end-2026/telegraph--marianka-swain.json",
+  "lastProcessed": "beetlejuice-west-end-2026/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -411,6 +421,17 @@
       "event": "bb-session",
       "session": "7c70f771",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-08-28T21:40:09.028Z",
+      "event": "bb-session",
+      "session": "bc03a2da",
+      "url": "https://www.thestage.co.uk/news/production-news/mel-giedroyc-and-munya-chawawa-j"
+    },
+    {
+      "t": "2026-08-28T21:40:09.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
