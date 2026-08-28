@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-28T20:37:40.044Z",
-  "processed": 11,
-  "failed": 29,
-  "successRate": "27.5%",
+  "updatedAt": "2026-08-28T20:41:15.795Z",
+  "processed": 14,
+  "failed": 36,
+  "successRate": "28.0%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 4,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -37,6 +37,17 @@
       "event": "bb-session",
       "session": "1d51cccb",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-28T20:37:42.661Z",
+      "event": "bb-session",
+      "session": "355ad6e5",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-28T20:37:43.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

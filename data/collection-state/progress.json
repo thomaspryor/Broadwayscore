@@ -10,7 +10,10 @@
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -41,7 +44,14 @@
     "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
     "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -52,7 +62,9 @@
       "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
       "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
-      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json"
     ],
     "amp": [],
     "browserbase": [
@@ -67,12 +79,14 @@
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-28T20:28:43.159Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+  "lastProcessed": "cats-west-end-2026/newyorker--emily-nussbaum.json",
   "log": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -96,6 +110,17 @@
       "event": "bb-session",
       "session": "1d51cccb",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-28T20:37:42.661Z",
+      "event": "bb-session",
+      "session": "355ad6e5",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-28T20:37:43.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
