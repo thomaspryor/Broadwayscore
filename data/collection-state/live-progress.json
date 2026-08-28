@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-08-28T21:48:32.821Z",
-  "processed": 51,
-  "failed": 259,
-  "successRate": "16.5%",
+  "updatedAt": "2026-08-28T21:49:56.748Z",
+  "processed": 53,
+  "failed": 267,
+  "successRate": "16.6%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "browserbase": 5,
+    "directCookies": 2,
+    "scrapingbee": 7,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 17,
   "recentActivity": [
     {
-      "t": "2026-08-28T21:35:36.348Z",
-      "event": "bb-session",
-      "session": "ee69cf6d",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-28T21:35:37.309Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-28T21:39:19.263Z",
+      "t": "2026-08-28T20:34:56.482Z",
       "event": "bb-session",
       "session": "25d3c7bc",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
@@ -48,6 +37,29 @@
       "t": "2026-08-28T21:44:37.965Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T21:46:38.189Z",
+      "event": "bb-session",
+      "session": "1da516cb",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-28T21:46:38.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-28T21:48:51.446Z",
+      "event": "bb-session",
+      "session": "d950c823",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-28T21:49:42.736Z",
+      "event": "bb-session",
+      "session": "a621540d",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     }
   ]
 }
