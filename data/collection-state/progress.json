@@ -2019,7 +2019,17 @@
     "paranormal-activity-2026/deadline--erik-pedersen.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
-    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json"
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2114,7 +2124,8 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
-      "data/review-texts/a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -2188,7 +2199,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+  "lastProcessed": "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -2505,6 +2516,40 @@
       "t": "2026-08-28T17:40:19.834Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-28T18:14:28.943Z",
+      "event": "bb-session",
+      "session": "4b34fd7e",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-28T18:14:29.887Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-28T18:16:34.440Z",
+      "event": "bb-session",
+      "session": "1039cd99",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-28T18:16:50.443Z",
+      "event": "bb-session",
+      "session": "588c0d0b",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-28T18:19:23.720Z",
+      "event": "bb-session",
+      "session": "ae72f63c",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-28T18:19:24.578Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
