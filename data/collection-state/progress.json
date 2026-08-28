@@ -2029,7 +2029,17 @@
     "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
     "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
     "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json"
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2199,7 +2209,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+  "lastProcessed": "cats-west-end-2026/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -2550,6 +2560,28 @@
       "t": "2026-08-28T18:19:24.578Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T18:20:55.916Z",
+      "event": "bb-session",
+      "session": "85be07da",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-28T18:20:56.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-28T18:21:16.103Z",
+      "event": "bb-session",
+      "session": "6f5eafd2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-28T18:21:16.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
