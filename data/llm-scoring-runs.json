@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-22T05:41:29.342Z",
-    "completedAt": "2026-08-22T05:46:06.436Z",
-    "totalReviews": 42626,
-    "processed": 47,
-    "skipped": 42392,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 274877,
-      "output": 15679,
-      "total": 700477
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-22T06:09:53.842Z",
     "completedAt": "2026-08-22T06:09:56.920Z",
     "totalReviews": 42626,
@@ -428879,6 +428865,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-28T03:51:03.841Z",
+    "completedAt": "2026-08-28T03:51:06.787Z",
+    "totalReviews": 42309,
+    "processed": 0,
+    "skipped": 42307,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 109,
+      "total": 10946
+    },
+    "errorDetails": [
+      {
+        "showId": "moulin-rouge-2019",
+        "outletId": "billboard",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
