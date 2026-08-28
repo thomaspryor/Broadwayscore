@@ -1,6 +1,9 @@
 {
   "processed": [
-    "the-story-west-end-2026/radio-times--unknown.json"
+    "the-story-west-end-2026/radio-times--unknown.json",
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -15,21 +18,47 @@
     "the-story-west-end-2026/london-box-office--phil-willmott.json",
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/londontheatre1--chris-omaweng.json",
-    "the-story-west-end-2026/nysr--frank-scheck.json"
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-story-west-end-2026/radio-times--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "the-story-west-end-2026/radio-times--unknown.json",
-  "log": []
+  "lastProcessed": "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-28T22:49:28.862Z",
+      "event": "bb-session",
+      "session": "7f79b184",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-28T22:49:29.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
