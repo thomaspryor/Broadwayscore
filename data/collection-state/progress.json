@@ -371,7 +371,17 @@
     "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
     "masquerade-off-broadway-2025/theater-life--unknown.json",
     "the-producers-west-end-2025/deadline--unknown.json",
-    "the-producers-west-end-2025/people--unknown.json"
+    "the-producers-west-end-2025/people--unknown.json",
+    "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "burlesque-west-end-2026/broadwayworld--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -423,7 +433,8 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -452,7 +463,7 @@
     ]
   },
   "startTime": "2026-08-28T20:28:43.159Z",
-  "lastProcessed": "the-producers-west-end-2025/people--unknown.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
   "log": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -586,6 +597,23 @@
       "event": "bb-session",
       "session": "504f61fe",
       "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-08-28T21:55:39.408Z",
+      "event": "bb-session",
+      "session": "fd9d8123",
+      "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-08-28T21:57:10.706Z",
+      "event": "bb-session",
+      "session": "49874767",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-08-28T21:57:11.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
