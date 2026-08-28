@@ -1,20 +1,37 @@
 {
-  "updatedAt": "2026-08-28T02:56:26.478Z",
-  "processed": 68,
-  "failed": 731,
-  "successRate": "8.5%",
+  "updatedAt": "2026-08-28T03:36:04.674Z",
+  "processed": 89,
+  "failed": 984,
+  "successRate": "8.3%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 1,
-    "scrapingbee": 9,
-    "brightdata": 1,
+    "scrapingbee": 15,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
+    {
+      "t": "2026-08-27T20:50:26.889Z",
+      "event": "bb-session",
+      "session": "651b7beb",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-27T20:50:27.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-27T20:53:45.393Z",
+      "event": "bb-session",
+      "session": "cd7812a8",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
     {
       "t": "2026-08-27T20:54:01.177Z",
       "event": "bb-session",
@@ -86,51 +103,33 @@
       "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     },
     {
-      "t": "2026-08-28T02:31:27.519Z",
+      "t": "2026-08-28T03:10:03.267Z",
       "event": "bb-session",
-      "session": "225e97ec",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "b50de07c",
+      "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
     },
     {
-      "t": "2026-08-28T02:31:46.609Z",
+      "t": "2026-08-28T03:11:39.843Z",
       "event": "bb-session",
-      "session": "31935ebf",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "a16522f8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
     },
     {
-      "t": "2026-08-28T02:35:21.387Z",
-      "event": "bb-session",
-      "session": "db0959cb",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-28T02:35:22.093Z",
+      "t": "2026-08-28T03:11:40.399Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-08-28T02:38:29.984Z",
+      "t": "2026-08-28T03:20:57.784Z",
       "event": "bb-session",
-      "session": "432c5de4",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+      "session": "b8dc400a",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     },
     {
-      "t": "2026-08-28T02:38:43.115Z",
+      "t": "2026-08-28T03:32:33.996Z",
       "event": "bb-session",
-      "session": "9f10bb31",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
-    {
-      "t": "2026-08-28T02:39:26.666Z",
-      "event": "bb-session",
-      "session": "df1bbba2",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-28T02:39:35.574Z",
-      "event": "bb-session",
-      "session": "7d2d45fc",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+      "session": "0099600c",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
     }
   ]
 }
