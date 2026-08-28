@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-08-28T19:29:23.463Z",
+  "updatedAt": "2026-08-28T19:31:33.707Z",
   "processed": 134,
-  "failed": 2214,
+  "failed": 2224,
   "successRate": "5.7%",
   "tierBreakdown": {
     "playwright": 76,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 13,
     "directCookies": 1,
     "scrapingbee": 24,
     "brightdata": 8,
@@ -15,6 +15,40 @@
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-28T17:16:21.570Z",
+      "event": "bb-session",
+      "session": "5bfdc32c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-28T17:16:26.035Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-28T17:30:02.634Z",
+      "event": "bb-session",
+      "session": "955ae043",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-08-28T17:40:19.046Z",
+      "event": "bb-session",
+      "session": "713ddd3e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-"
+    },
+    {
+      "t": "2026-08-28T17:40:19.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-28T18:14:28.943Z",
+      "event": "bb-session",
+      "session": "4b34fd7e",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
     {
       "t": "2026-08-28T18:14:29.887Z",
       "event": "bb-cookie-inject",
@@ -93,41 +127,6 @@
       "event": "bb-session",
       "session": "66a6c5a8",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-08-28T18:42:51.231Z",
-      "event": "bb-session",
-      "session": "876bf0f3",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-28T18:43:10.676Z",
-      "event": "bb-session",
-      "session": "5bada7d4",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-08-28T18:45:42.658Z",
-      "event": "bb-session",
-      "session": "03ab6d6f",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-28T18:45:43.608Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-28T18:49:06.545Z",
-      "event": "bb-session",
-      "session": "ed06a87f",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-08-28T18:49:15.434Z",
-      "event": "bb-session",
-      "session": "22728e51",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
