@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-28T17:34:27.845Z",
-  "processed": 126,
-  "failed": 1812,
-  "successRate": "6.5%",
+  "updatedAt": "2026-08-28T17:40:28.867Z",
+  "processed": 129,
+  "failed": 1819,
+  "successRate": "6.6%",
   "tierBreakdown": {
-    "playwright": 72,
+    "playwright": 73,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 12,
     "directCookies": 1,
-    "scrapingbee": 22,
+    "scrapingbee": 24,
     "brightdata": 6,
     "archiveToday": 0,
     "archive": 28
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-28T08:14:51.747Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-08-28T08:21:04.079Z",
-      "event": "bb-session",
-      "session": "984bb7dd",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
     {
       "t": "2026-08-28T08:21:24.214Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "955ae043",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-08-28T17:40:19.046Z",
+      "event": "bb-session",
+      "session": "713ddd3e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-"
+    },
+    {
+      "t": "2026-08-28T17:40:19.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

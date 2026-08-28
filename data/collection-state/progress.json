@@ -125,7 +125,10 @@
     "cinderella-west-end-2026/london-box-office--marian-pashley.json",
     "cinderella-west-end-2026/london-box-office--stuart-king.json",
     "cinderella-west-end-2026/telegraph--marianka-swain.json",
-    "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "a-christmas-carol-west-end-2026/broadwayworld--jo-caruana.json",
+    "a-christmas-carol-west-end-2026/broadwayworld--michael-dale.json",
+    "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -1939,7 +1942,14 @@
     "cinderella-west-end-2026/times-uk--quentin-letts.json",
     "galileo-2026/variety--dennis-harvey.json",
     "a-christmas-carol-west-end-2026/nytg--austin-fimmano.json",
-    "the-jungle-book-west-end-2026/ew--unknown.json"
+    "the-jungle-book-west-end-2026/ew--unknown.json",
+    "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
+    "a-christmas-carol-west-end-2026/telegraph--claire-allfree.json",
+    "a-christmas-carol-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-christmas-carol-west-end-2026/thestage--holly-o.json",
+    "a-christmas-carol-west-end-2026/thestage--tom-wicker.json",
+    "a-christmas-carol-west-end-2026/times-uk--clive-davis.json",
+    "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2015,7 +2025,8 @@
       "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
       "cinderella-west-end-2026/london-box-office--marian-pashley.json",
       "cinderella-west-end-2026/london-box-office--stuart-king.json",
-      "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json"
+      "a-christmas-carol-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2029,7 +2040,8 @@
       "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json"
+      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -2056,7 +2068,9 @@
       "the-sound-of-music-2027/broadwayworld--lauren-gienow.json",
       "the-sound-of-music-2027/broadwayworld--michael-quintos.json",
       "christmas-carol-goes-wrong-west-end-2026/telegraph--unknown.json",
-      "cinderella-west-end-2026/telegraph--marianka-swain.json"
+      "cinderella-west-end-2026/telegraph--marianka-swain.json",
+      "a-christmas-carol-west-end-2026/broadwayworld--jo-caruana.json",
+      "a-christmas-carol-west-end-2026/broadwayworld--michael-dale.json"
     ],
     "brightdata": [
       "oh-mary-west-end-2025/deadline--greg-evans.json",
@@ -2099,7 +2113,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "the-jungle-book-west-end-2026/ew--unknown.json",
+  "lastProcessed": "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -2405,6 +2419,17 @@
       "event": "bb-session",
       "session": "955ae043",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-08-28T17:40:19.046Z",
+      "event": "bb-session",
+      "session": "713ddd3e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-"
+    },
+    {
+      "t": "2026-08-28T17:40:19.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
