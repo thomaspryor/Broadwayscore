@@ -2059,7 +2059,17 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
-    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json"
+    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2229,7 +2239,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -2602,6 +2612,29 @@
       "t": "2026-08-28T18:21:16.928Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-28T18:26:43.527Z",
+      "event": "bb-session",
+      "session": "82a3a553",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-28T18:27:03.798Z",
+      "event": "bb-session",
+      "session": "f30e54f3",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-28T18:27:26.974Z",
+      "event": "bb-session",
+      "session": "0b5d8f5d",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-28T18:27:27.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
