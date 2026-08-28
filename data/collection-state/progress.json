@@ -65,7 +65,8 @@
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
-    "and-juliet-2022/newyorker--conde-nast.json"
+    "and-juliet-2022/newyorker--conde-nast.json",
+    "abba-voyage-off-west-end-2026/i-paper--kate-solomon.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -561,7 +562,16 @@
     "and-juliet-2022/standard--casey-cooper-fiske.json",
     "and-juliet-2022/standard--nick-curtis.json",
     "and-juliet-2022/telegraph--dominic-cavendish.json",
-    "and-juliet-2022/theater-pizzazz--unknown.json"
+    "and-juliet-2022/theater-pizzazz--unknown.json",
+    "and-juliet-2022/thestage--tim-bano.json",
+    "and-juliet-2022/times-uk--clive-davis.json",
+    "and-juliet-2022/west-end-best-friend--chris-abbott.json",
+    "abba-voyage-off-west-end-2026/daily-mail--adrian-thrills.json",
+    "abba-voyage-off-west-end-2026/daily-mail--tim-de-lisle.json",
+    "abba-voyage-off-west-end-2026/sunday-express--callum-crumlish.json",
+    "abba-voyage-off-west-end-2026/theatreboard--unknown.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -607,7 +617,8 @@
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "oh-mary-2024/one-minute-critic--matthew-wexler.json",
-      "hadestown-west-end-2024/columbus-dispatch--unknown.json"
+      "hadestown-west-end-2024/columbus-dispatch--unknown.json",
+      "abba-voyage-off-west-end-2026/i-paper--kate-solomon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -655,7 +666,7 @@
     ]
   },
   "startTime": "2026-08-28T20:28:43.159Z",
-  "lastProcessed": "and-juliet-2022/theater-pizzazz--unknown.json",
+  "lastProcessed": "mj-2022/nydailynews--karu-f-daniels.json",
   "log": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -818,6 +829,28 @@
       "event": "bb-session",
       "session": "64b014de",
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-08-28T22:07:22.639Z",
+      "event": "bb-session",
+      "session": "7a529449",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-lyric-theatre-belf"
+    },
+    {
+      "t": "2026-08-28T22:07:23.150Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T22:07:29.447Z",
+      "event": "bb-session",
+      "session": "2638e125",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-lyric-theatre-belf"
+    },
+    {
+      "t": "2026-08-28T22:07:29.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
