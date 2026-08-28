@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-28T21:41:03.178Z",
-  "processed": 3,
-  "failed": 17,
-  "successRate": "15.0%",
+  "updatedAt": "2026-08-28T21:45:33.374Z",
+  "processed": 8,
+  "failed": 22,
+  "successRate": "26.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 1,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-28T21:35:36.348Z",
@@ -37,6 +37,17 @@
       "event": "bb-session",
       "session": "06414cd9",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-28T21:44:37.007Z",
+      "event": "bb-session",
+      "session": "33246d79",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-28T21:44:37.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
