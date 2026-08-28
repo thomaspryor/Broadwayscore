@@ -1094,7 +1094,17 @@
     "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
     "the-story-west-end-2026/observer--david-cote.json",
     "the-story-west-end-2026/artsdesk--unknown.json",
-    "the-story-west-end-2026/london-box-office--phil-willmott.json"
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/londontheatre1--chris-omaweng.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/standard--unknown.json",
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1162,7 +1172,8 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
-      "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json"
+      "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -1214,7 +1225,7 @@
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "the-story-west-end-2026/london-box-office--phil-willmott.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -1377,6 +1388,17 @@
       "event": "bb-session",
       "session": "0099600c",
       "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
+    },
+    {
+      "t": "2026-08-28T08:10:46.500Z",
+      "event": "bb-session",
+      "session": "cc252545",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-28T08:10:47.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

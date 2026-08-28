@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-28T08:09:13.162Z",
+  "updatedAt": "2026-08-28T08:10:57.866Z",
   "processed": 89,
-  "failed": 1004,
+  "failed": 1014,
   "successRate": "8.1%",
   "tierBreakdown": {
     "playwright": 53,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 1,
     "scrapingbee": 15,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-08-27T20:50:26.889Z",
-      "event": "bb-session",
-      "session": "651b7beb",
-      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
-    },
-    {
-      "t": "2026-08-27T20:50:27.301Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-08-27T20:53:45.393Z",
       "event": "bb-session",
@@ -130,6 +119,17 @@
       "event": "bb-session",
       "session": "0099600c",
       "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
+    },
+    {
+      "t": "2026-08-28T08:10:46.500Z",
+      "event": "bb-session",
+      "session": "cc252545",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-28T08:10:47.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
