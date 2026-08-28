@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-22T18:50:46.257Z",
-    "completedAt": "2026-08-22T18:50:51.112Z",
-    "totalReviews": 37,
-    "processed": 1,
-    "skipped": 36,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5051,
-      "output": 312,
-      "total": 13412
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-23T00:37:41.376Z",
     "completedAt": "2026-08-23T00:37:46.567Z",
     "totalReviews": 15,
@@ -496634,5 +496620,25 @@
       "total": 23335
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-28T22:36:35.341Z",
+    "completedAt": "2026-08-28T22:36:45.706Z",
+    "totalReviews": 42343,
+    "processed": 0,
+    "skipped": 42339,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 12386,
+      "output": 496,
+      "total": 35379
+    },
+    "errorDetails": [
+      {
+        "showId": "hadestown-2019",
+        "outletId": "theatrely",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
