@@ -911,7 +911,17 @@
     "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json",
     "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
-    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
+    "no-mans-land-west-end-2026/amny--unknown.json",
+    "no-mans-land-west-end-2026/huffpost--unknown.json",
+    "billy-elliot-the-musical-west-end-2027/leicester-times--louise-steel.json",
+    "billy-elliot-the-musical-west-end-2027/times-uk--dominic-maxwell.json",
+    "billy-elliot-the-musical-west-end-2027/west-end-best-friend--laura-lott.json",
+    "dolly-an-original-musical-2026/hollywood-reporter--frank-scheck.json",
+    "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
+    "dolly-an-original-musical-2026/nydailynews--joe-dziemianowicz.json",
+    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1031,7 +1041,7 @@
     ]
   },
   "startTime": "2026-08-28T20:28:43.159Z",
-  "lastProcessed": "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
   "log": [
     {
       "t": "2026-08-28T20:31:37.995Z",
@@ -1238,6 +1248,28 @@
       "t": "2026-08-28T22:16:25.850Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-28T22:25:28.959Z",
+      "event": "bb-session",
+      "session": "f40594ac",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-28T22:25:29.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T22:25:35.803Z",
+      "event": "bb-session",
+      "session": "ad83cfd1",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-28T22:25:36.270Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
