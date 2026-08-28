@@ -1468,12 +1468,11 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-27T21:33:25.864Z",
-      "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-28T21:38:45.033Z",
+      "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2285",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-2285"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1588,12 +1587,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-27T21:33:20.909Z",
+      "lastSeen": "2026-08-28T21:38:45.030Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1719,11 +1718,58 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
       "firstSeen": "2026-08-27T21:33:20.912Z",
-      "lastSeen": "2026-08-27T21:33:20.912Z",
+      "lastSeen": "2026-08-28T21:38:45.032Z",
       "lastNotifiedAt": "2026-08-27T21:33:20.912Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2524"
+      "linearIdentifier": "BRO-2524",
+      "silentRefires": 1
+    },
+    "cron-health:Opening Night Express Retry Check": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Opening Night Express Retry Check",
+      "firstSeen": "2026-08-28T21:38:44.969Z",
+      "lastSeen": "2026-08-28T21:38:44.969Z",
+      "lastNotifiedAt": "2026-08-28T21:38:44.969Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Weekly Video Reviews": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Weekly Video Reviews",
+      "firstSeen": "2026-08-28T21:38:44.972Z",
+      "lastSeen": "2026-08-28T21:38:44.972Z",
+      "lastNotifiedAt": "2026-08-28T21:38:44.972Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Daily Data Health Check (digest snapshot carrier)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
+      "firstSeen": "2026-08-28T21:38:46.942Z",
+      "lastSeen": "2026-08-28T21:38:46.942Z",
+      "lastNotifiedAt": "2026-08-28T21:38:46.942Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2529"
+    },
+    "cron-health-chronic:Opening Night Checklist": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
+      "firstSeen": "2026-08-28T21:38:50.527Z",
+      "lastSeen": "2026-08-28T21:38:50.527Z",
+      "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2530"
     }
   }
 }
