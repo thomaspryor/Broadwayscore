@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-08-28T17:17:40.716Z",
-  "processed": 108,
-  "failed": 1690,
-  "successRate": "6.0%",
+  "updatedAt": "2026-08-28T17:43:46.082Z",
+  "processed": 133,
+  "failed": 1865,
+  "successRate": "6.7%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 76,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 1,
-    "scrapingbee": 18,
-    "brightdata": 6,
+    "scrapingbee": 24,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 28
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-28T08:14:51.270Z",
-      "event": "bb-session",
-      "session": "057eeb7a",
-      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
-    },
-    {
-      "t": "2026-08-28T08:14:51.747Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-08-28T08:21:04.079Z",
-      "event": "bb-session",
-      "session": "984bb7dd",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
     {
       "t": "2026-08-28T08:21:24.214Z",
       "event": "bb-session",
@@ -128,6 +111,23 @@
       "t": "2026-08-28T17:16:26.035Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-28T17:30:02.634Z",
+      "event": "bb-session",
+      "session": "955ae043",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-08-28T17:40:19.046Z",
+      "event": "bb-session",
+      "session": "713ddd3e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-"
+    },
+    {
+      "t": "2026-08-28T17:40:19.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
