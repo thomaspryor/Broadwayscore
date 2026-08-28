@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-28T08:00:40.739Z",
+    "generatedAt": "2026-08-28T18:28:55.750Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,58 +10,58 @@
     "minChurn": 30,
     "flaggedCount": 1,
     "exemptCount": 8,
-    "coveredCount": 13,
-    "highChurnTracked": 22
+    "coveredCount": 17,
+    "highChurnTracked": 26
   },
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 41
+      "churn": 39
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 134
+      "churn": 127
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 56
+      "churn": 57
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 48
+      "churn": 50
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 40
+      "churn": 37
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 40
+      "churn": 37
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 40
+      "churn": 37
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 38
+      "churn": 35
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 35
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 874,
+      "churn": 867,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 843,
+      "churn": 837,
       "mergeAttr": "ours"
     },
     {
@@ -71,37 +71,37 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 313,
+      "churn": 314,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 182,
+      "churn": 163,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 155,
+      "churn": 151,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 100,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
@@ -111,12 +111,32 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 41,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 40,
+      "churn": 37,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/abigails-party-west-end-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/anansi-the-spider-west-end-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/death-note-the-musical-west-end-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/how-the-other-half-loves-west-end-2026.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
