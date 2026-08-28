@@ -105,7 +105,9 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "hamilton-2015/theatermania--zachary-stewart.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json"
   ],
   "failed": [
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -1789,7 +1791,15 @@
     "matilda-the-musical-west-end-2021/northjerseycom--robert-feldberg.json",
     "matilda-the-musical-west-end-2021/operawire--unknown.json",
     "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json",
-    "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json"
+    "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
+    "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1854,7 +1864,8 @@
       "beetlejuice-west-end-2026/shinylife--unknown.json",
       "beetlejuice-west-end-2026/theatreboard--unknown.json",
       "beetlejuice-west-end-2026/visit-london--unknown.json",
-      "hamilton-2015/theatermania--zachary-stewart.json"
+      "hamilton-2015/theatermania--zachary-stewart.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1924,11 +1935,12 @@
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json"
+      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
+      "book-of-mormon-2011/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-08-27T19:41:37.543Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-27T19:42:24.701Z",
@@ -2206,6 +2218,28 @@
       "event": "bb-session",
       "session": "fbe19ba3",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-28T17:15:58.956Z",
+      "event": "bb-session",
+      "session": "8e930d02",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-28T17:16:03.354Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-28T17:16:21.570Z",
+      "event": "bb-session",
+      "session": "5bfdc32c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-28T17:16:26.035Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
