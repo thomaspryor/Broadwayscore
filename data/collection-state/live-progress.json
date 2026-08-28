@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-28T20:17:12.568Z",
-  "processed": 4,
-  "failed": 16,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-28T20:20:51.711Z",
+  "processed": 8,
+  "failed": 22,
+  "successRate": "26.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-28T20:11:10.178Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-08-28T20:16:44.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T20:19:58.889Z",
+      "event": "bb-session",
+      "session": "30d22d25",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-28T20:19:59.256Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

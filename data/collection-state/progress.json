@@ -3,7 +3,11 @@
     "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
-    "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
   ],
   "failed": [
     "the-story-west-end-2026/nytimes--jesse-green.json",
@@ -21,13 +25,23 @@
     "abigails-party-west-end-2026/london-box-office--stuart-king.json",
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
-    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -44,7 +58,7 @@
     ]
   },
   "startTime": "2026-08-28T20:08:53.094Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+  "lastProcessed": "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-08-28T20:11:10.178Z",
@@ -65,6 +79,17 @@
     },
     {
       "t": "2026-08-28T20:16:44.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-28T20:19:58.889Z",
+      "event": "bb-session",
+      "session": "30d22d25",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-28T20:19:59.256Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
