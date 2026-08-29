@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-29T17:32:11.290Z",
+  "updatedAt": "2026-08-29T20:42:53.456Z",
   "processed": 54,
-  "failed": 396,
-  "successRate": "12.0%",
+  "failed": 406,
+  "successRate": "11.7%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 11,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 7
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -105,6 +105,29 @@
       "t": "2026-08-29T17:29:32.153Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-29T20:37:34.244Z",
+      "event": "bb-session",
+      "session": "c0465aff",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-29T20:37:54.486Z",
+      "event": "bb-session",
+      "session": "86366945",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-29T20:41:23.531Z",
+      "event": "bb-session",
+      "session": "aa5295f2",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T20:41:24.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
