@@ -481,7 +481,15 @@
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
     "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -562,7 +570,7 @@
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -724,6 +732,29 @@
       "t": "2026-08-29T21:43:04.361Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-29T21:45:19.029Z",
+      "event": "bb-session",
+      "session": "7e7e72cb",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-29T21:45:27.889Z",
+      "event": "bb-session",
+      "session": "a5c802a4",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-29T21:48:10.465Z",
+      "event": "bb-session",
+      "session": "570e8e33",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-08-29T21:48:11.175Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
