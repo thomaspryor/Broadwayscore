@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-29T14:07:44.321Z",
-  "processed": 22,
-  "failed": 128,
-  "successRate": "14.7%",
+  "updatedAt": "2026-08-29T14:16:50.094Z",
+  "processed": 23,
+  "failed": 137,
+  "successRate": "14.4%",
   "tierBreakdown": {
     "playwright": 15,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-29T13:53:36.777Z",
@@ -54,6 +54,17 @@
       "event": "bb-session",
       "session": "8bcbfcc7",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-08-29T14:15:00.782Z",
+      "event": "bb-session",
+      "session": "d34516b4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-08-29T14:15:01.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

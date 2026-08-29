@@ -21,7 +21,8 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -151,7 +152,16 @@
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
     "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
     "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
-    "macbeth-off-broadway-2026/ew--leah-greenblatt.json"
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "paranormal-activity-2026/deadline--unknown.json",
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "benevolent-off-broadway-2026/theatermania--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -174,7 +184,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -193,7 +205,7 @@
     ]
   },
   "startTime": "2026-08-29T13:51:56.706Z",
-  "lastProcessed": "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
   "log": [
     {
       "t": "2026-08-29T13:53:36.777Z",
@@ -234,6 +246,17 @@
       "event": "bb-session",
       "session": "8bcbfcc7",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-08-29T14:15:00.782Z",
+      "event": "bb-session",
+      "session": "d34516b4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-08-29T14:15:01.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
