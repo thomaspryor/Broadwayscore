@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-29T16:22:29.571Z",
+    "generatedAt": "2026-08-29T21:22:33.096Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,138 +8,100 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 1,
-    "exemptCount": 16,
-    "coveredCount": 11,
-    "highChurnTracked": 28
+    "flaggedCount": 0,
+    "exemptCount": 9,
+    "coveredCount": 10,
+    "highChurnTracked": 19
   },
-  "flagged": [
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 36
-    }
-  ],
+  "flagged": [],
   "exempt": [
     {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 104
+      "path": "data/llm-scoring-runs.json",
+      "churn": 51
     },
     {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 52
+      "path": "data/audit/alert-ledger.json",
+      "churn": 39
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 43
-    },
-    {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 38
-    },
-    {
-      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
       "churn": 37
     },
     {
-      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 36
-    },
-    {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/beetlejuice-west-end-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/archduke-west-end-2026.json",
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
       "churn": 34
     },
     {
-      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 32
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 33
     },
     {
-      "path": "public/data/shows/hadestown-west-end-2024.json",
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
       "churn": 31
     },
     {
-      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "path": "public/data/shows/archduke-west-end-2026.json",
       "churn": 31
     },
     {
-      "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
+      "path": "public/data/shows/beetlejuice-west-end-2026.json",
       "churn": 31
     },
     {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 30
+      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 807,
+      "churn": 824,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 782,
+      "churn": 797,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 309,
+      "churn": 294,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 300,
+      "churn": 285,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 142,
+      "churn": 139,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 119,
+      "churn": 101,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 91,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 78,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 78,
+      "churn": 67,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 78,
+      "churn": 67,
       "mergeAttr": "ours"
-    },
-    {
-      "path": "tests/unit-test-manifest.txt",
-      "churn": 48,
-      "mergeAttr": "union"
     }
   ]
 }
