@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-27T01:23:54.169Z",
+  "generatedAt": "2026-08-29T15:02:47.868Z",
   "maxAgeHours": 12,
-  "showsAffected": 9,
-  "strandedFiles": 10,
+  "showsAffected": 11,
+  "strandedFiles": 12,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -25,7 +25,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 562.2985305555555
+          "ageHours": 623.9467802777777
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -57,23 +57,23 @@
         }
       ],
       "usable": 31,
-      "discovered": 38,
+      "discovered": 37,
       "totalBlackout": false
     },
     {
-      "showId": "moulin-rouge-2019",
-      "title": "Moulin Rouge! The Musical",
+      "showId": "and-juliet-2022",
+      "title": "& Juliet",
       "status": "open",
       "stranded": [
         {
-          "file": "musical-theatre-review--unknown.json",
-          "url": "https://musicaltheatrereview.com/new-additions-to-join-the-cast-of-the-west-ends-moulin-rouge/",
-          "outlet": "Musical Theatre Review",
-          "ageHours": 38.08204222222222
+          "file": "all-that-dazzles-uk--unknown.json",
+          "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
+          "outlet": "All That Dazzles  (UK)",
+          "ageHours": 42.16616333333333
         }
       ],
-      "usable": 69,
-      "discovered": 53,
+      "usable": 45,
+      "discovered": 68,
       "totalBlackout": false
     },
     {
@@ -125,6 +125,22 @@
       "totalBlackout": false
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "title": "Les Misérables",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--unknown.json",
+          "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
+          "outlet": "The New York Times",
+          "ageHours": 17.656429444444445
+        }
+      ],
+      "usable": 29,
+      "discovered": 29,
+      "totalBlackout": false
+    },
+    {
       "showId": "matilda-the-musical-west-end-2021",
       "title": "Matilda The Musical",
       "status": "open",
@@ -149,11 +165,27 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/the-best-of-burlesque-assembly-rooms/",
           "outlet": "North West End",
-          "ageHours": 373.7479025
+          "ageHours": 435.3961522222222
         }
       ],
       "usable": 22,
       "discovered": 28,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "status": "previews",
+      "stranded": [
+        {
+          "file": "londontheatre1--unknown.json",
+          "url": "https://www.londontheatre1.com/reviews/helen-bradley-painter-and-storyteller-pleasance-courtyard/",
+          "outlet": "LondonTheatre1",
+          "ageHours": 17.714354166666666
+        }
+      ],
+      "usable": 0,
+      "discovered": 14,
       "totalBlackout": false
     }
   ]

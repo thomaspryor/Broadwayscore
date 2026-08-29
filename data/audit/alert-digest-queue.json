@@ -231,17 +231,6 @@
     "queuedAt": "2026-08-26T14:33:02.785Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 38.2% of shows changed coverage state",
-    "description": "review-gap blast radius 38.2% (13/34 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, burlesque-west-end-2026, disruption-off-broadway-2026, game-of-thrones-the-mad-king-regional-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, midnight-at-the-never-get-west-end-2026, paranormal-activity-2026, romeo-and-juliet-off-broadway-2026, the-hunger-games-on-stage-west-end-2025, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, the-rocky-horror-show-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-26T18:50:46.770Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -277,5 +266,94 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-08-29T03:05:40.946Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 20.7% of shows changed coverage state",
+    "description": "review-gap blast radius 20.7% (6/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: 73-seconds-off-broadway-2026, disruption-off-broadway-2026, midnight-at-the-never-get-west-end-2026, that-math-show-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026, white-rabbit-red-rabbit-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-29T15:02:44.302Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 77.9% (398/511)\noff-broadway: 46% (149/324)\nwest-end: 73% (405/555)\n\nOldest gaps:\nA Midsummer Night's Dream - Globe — financialtimes (365h)\nA Midsummer Night's Dream - Globe — telegraph (365h)\nA Midsummer Night's Dream - Globe — thestage (365h)\nA Midsummer Night's Dream - Globe — times-uk (365h)\nA Midsummer Night's Dream — financialtimes (365h)\n… 201 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (365h)\nBuena Vista Social Club — broadwaynews (365h)\nHeathers The Musical — dailybeast (365h)\nJust in Time — broadwaynews (365h)\nOthello — broadwaynews (365h)\n… 5 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-29T15:02:54.181Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "2/144 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nAs You Like It - Globe: score-drift\nJust in Time: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-29T15:02:57.200Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "108 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Oh, Mary! — thestage (286h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — times-uk (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — financialtimes (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — guardian (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — i-paper (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — observer (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — telegraph (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oliver! — whatsonstage (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Operation Mincemeat — nydailynews (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Operation Mincemeat — timeout (365h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-2025\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-08-29T15:02:57.272Z"
   }
 ]
