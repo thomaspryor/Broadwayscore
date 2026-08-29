@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-28T23:35:47.329Z",
+  "updatedAt": "2026-08-29T01:42:34.178Z",
   "processed": 23,
-  "failed": 127,
-  "successRate": "15.3%",
+  "failed": 137,
+  "successRate": "14.4%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -61,6 +61,17 @@
       "event": "bb-session",
       "session": "e6478874",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-08-29T01:41:04.979Z",
+      "event": "bb-session",
+      "session": "88c91a1a",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T01:41:05.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

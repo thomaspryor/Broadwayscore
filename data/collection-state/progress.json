@@ -151,7 +151,17 @@
     "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
     "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
     "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json"
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -175,6 +185,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
@@ -195,7 +206,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -243,6 +254,17 @@
       "event": "bb-session",
       "session": "e6478874",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-08-29T01:41:04.979Z",
+      "event": "bb-session",
+      "session": "88c91a1a",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T01:41:05.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
