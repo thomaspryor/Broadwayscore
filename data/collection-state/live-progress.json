@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-29T02:44:49.268Z",
+  "updatedAt": "2026-08-29T02:47:20.784Z",
   "processed": 43,
-  "failed": 222,
-  "successRate": "16.2%",
+  "failed": 232,
+  "successRate": "15.6%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -95,6 +95,17 @@
       "t": "2026-08-29T02:25:47.524Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-29T02:46:32.502Z",
+      "event": "bb-session",
+      "session": "68832539",
+      "url": "https://www.thestage.co.uk/news/production-news/mel-giedroyc-and-munya-chawawa-j"
+    },
+    {
+      "t": "2026-08-29T02:46:33.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
