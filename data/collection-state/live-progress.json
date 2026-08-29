@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-29T06:35:03.406Z",
+  "updatedAt": "2026-08-29T06:56:54.489Z",
   "processed": 62,
-  "failed": 753,
-  "successRate": "7.6%",
+  "failed": 803,
+  "successRate": "7.2%",
   "tierBreakdown": {
     "playwright": 41,
     "amp": 0,
@@ -15,6 +15,29 @@
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-29T02:53:23.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-29T02:56:05.524Z",
+      "event": "bb-session",
+      "session": "15c5dac4",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-29T02:56:50.364Z",
+      "event": "bb-session",
+      "session": "d960c59d",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-08-29T02:57:07.341Z",
+      "event": "bb-session",
+      "session": "1e2bed91",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
     {
       "t": "2026-08-29T03:03:45.724Z",
       "event": "bb-session",
@@ -106,29 +129,6 @@
       "event": "bb-session",
       "session": "5bf001ad",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-08-29T06:04:56.746Z",
-      "event": "bb-session",
-      "session": "b4042f9b",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-29T06:05:15.985Z",
-      "event": "bb-session",
-      "session": "610f0393",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-29T06:05:42.089Z",
-      "event": "bb-session",
-      "session": "aeeb9394",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-29T06:05:42.605Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
