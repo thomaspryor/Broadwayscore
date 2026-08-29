@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-29T11:10:31.752Z",
+    "generatedAt": "2026-08-29T16:22:29.571Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,32 +9,32 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 1,
-    "exemptCount": 18,
-    "coveredCount": 13,
-    "highChurnTracked": 32
+    "exemptCount": 16,
+    "coveredCount": 11,
+    "highChurnTracked": 28
   },
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 38
+      "churn": 36
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 121
+      "churn": 104
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 54
+      "churn": 52
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 47
+      "churn": 43
     },
     {
       "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 37
+      "churn": 38
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
@@ -45,36 +45,20 @@
       "churn": 36
     },
     {
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 35
+    },
+    {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
       "churn": 35
     },
     {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 34
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 33
-    },
-    {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
       "churn": 32
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 31
     },
     {
       "path": "public/data/shows/hadestown-west-end-2024.json",
@@ -89,6 +73,14 @@
       "churn": 31
     },
     {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 30
+    },
+    {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
       "churn": 30
     }
@@ -96,68 +88,58 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 920,
+      "churn": 807,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 895,
+      "churn": 782,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 311,
+      "churn": 309,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 309,
+      "churn": 300,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 136,
+      "churn": 142,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 135,
+      "churn": 119,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 105,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 82,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 82,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 82,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 73,
+      "churn": 48,
       "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 33,
-      "mergeAttr": "ours"
     }
   ]
 }
