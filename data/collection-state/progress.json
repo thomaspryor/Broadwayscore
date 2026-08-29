@@ -706,7 +706,17 @@
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
     "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -763,7 +773,8 @@
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -796,7 +807,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json",
+  "lastProcessed": "avenue-q-west-end-2026/theatermania--andy-propst.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -993,6 +1004,29 @@
       "event": "bb-session",
       "session": "f9a5aa03",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-29T05:32:48.663Z",
+      "event": "bb-session",
+      "session": "42d35345",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-29T05:32:57.872Z",
+      "event": "bb-session",
+      "session": "fcab4aff",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-29T05:33:57.124Z",
+      "event": "bb-session",
+      "session": "8ee00702",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-29T05:33:58.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
