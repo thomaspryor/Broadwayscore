@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-08-29T13:53:33.778Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-08-29T13:56:30.148Z",
+  "processed": 8,
+  "failed": 12,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-29T13:53:36.777Z",
+      "event": "bb-session",
+      "session": "ceeec58e",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-29T13:53:37.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-29T13:56:01.948Z",
+      "event": "bb-session",
+      "session": "76b7f4c1",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-29T13:56:02.567Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
