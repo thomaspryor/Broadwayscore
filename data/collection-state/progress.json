@@ -9,7 +9,12 @@
     "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "hungry-women-off-broadway-2026/melissamaney--unknown.json"
+    "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -41,7 +46,12 @@
     "shifters-off-broadway-2026/standard--nick-curtis.json",
     "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
-    "shifters-off-broadway-2026/thestage--tom-wicker.json"
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,10 +61,17 @@
       "masticate-off-broadway-2026/nyu--unknown.json",
       "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -68,7 +85,7 @@
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "shifters-off-broadway-2026/thestage--tom-wicker.json",
+  "lastProcessed": "music-city-off-broadway-2026/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -91,6 +108,12 @@
       "t": "2026-08-29T15:16:52.441Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-29T15:20:45.022Z",
+      "event": "bb-session",
+      "session": "6a2db489",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
