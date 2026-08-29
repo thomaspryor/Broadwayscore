@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-29T01:51:12.680Z",
-  "processed": 28,
-  "failed": 147,
-  "successRate": "16.0%",
+  "updatedAt": "2026-08-29T01:55:52.969Z",
+  "processed": 30,
+  "failed": 154,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 1,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -95,6 +95,29 @@
       "t": "2026-08-29T01:48:03.360Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-29T01:52:02.128Z",
+      "event": "bb-session",
+      "session": "b358b585",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-29T01:52:22.453Z",
+      "event": "bb-session",
+      "session": "7f4e75c6",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-29T01:54:08.601Z",
+      "event": "bb-session",
+      "session": "af1125da",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-29T01:54:09.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
