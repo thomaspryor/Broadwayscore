@@ -1465,11 +1465,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-28T21:38:45.033Z",
+      "lastSeen": "2026-08-29T16:01:08.853Z",
       "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2285"
+      "linearIdentifier": "BRO-2285",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1584,12 +1585,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-28T21:38:45.030Z",
+      "lastSeen": "2026-08-29T16:01:08.850Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1604,7 +1605,7 @@
       "silentRefires": 1
     },
     "cron-health:Commercial RSS Poll": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial RSS Poll",
@@ -1613,7 +1614,8 @@
       "lastNotifiedAt": "2026-08-26T12:37:29.919Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-29T16:01:13.861Z"
     },
     "cron-health:Scrape WestEndTheatre": {
       "status": "resolved",
@@ -1711,7 +1713,7 @@
       "linearIdentifier": "BRO-2421"
     },
     "cron-health-chronic:Commercial RSS Poll": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
       "firstSeen": "2026-08-27T21:33:20.912Z",
@@ -1720,10 +1722,11 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2524",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-29T16:01:13.862Z"
     },
     "cron-health:Opening Night Express Retry Check": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Opening Night Express Retry Check",
@@ -1732,7 +1735,8 @@
       "lastNotifiedAt": "2026-08-28T21:38:44.969Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-29T16:01:13.864Z"
     },
     "cron-health:Weekly Video Reviews": {
       "status": "open",
@@ -1751,22 +1755,24 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
-      "lastSeen": "2026-08-28T21:38:46.942Z",
+      "lastSeen": "2026-08-29T16:01:08.855Z",
       "lastNotifiedAt": "2026-08-28T21:38:46.942Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2529"
+      "linearIdentifier": "BRO-2529",
+      "silentRefires": 1
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-08-28T21:38:50.527Z",
+      "lastSeen": "2026-08-29T16:01:08.857Z",
       "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2530"
+      "linearIdentifier": "BRO-2530",
+      "silentRefires": 1
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -1779,6 +1785,29 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "cron-health:Test Suite": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Test Suite",
+      "firstSeen": "2026-08-29T16:01:08.770Z",
+      "lastSeen": "2026-08-29T16:01:08.770Z",
+      "lastNotifiedAt": "2026-08-29T16:01:08.770Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Weekly Video Reviews": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
+      "firstSeen": "2026-08-29T16:01:08.858Z",
+      "lastSeen": "2026-08-29T16:01:08.858Z",
+      "lastNotifiedAt": "2026-08-29T16:01:08.858Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2534"
     }
   }
 }
