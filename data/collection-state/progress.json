@@ -771,7 +771,17 @@
     "paranormal-activity-west-end-2025/theatrely--kobi-kassal.json",
     "paranormal-activity-west-end-2025/exeunt-magazine--unknown.json",
     "paranormal-activity-west-end-2025/frontmezzjunkies--unknown.json",
-    "paranormal-activity-west-end-2025/nysr--unknown.json"
+    "paranormal-activity-west-end-2025/nysr--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -826,6 +836,7 @@
       "paranormal-activity-2026/deadline--erik-pedersen.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
@@ -860,7 +871,7 @@
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "paranormal-activity-west-end-2025/nysr--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -1011,6 +1022,40 @@
       "event": "bb-session",
       "session": "c92cebc0",
       "url": "https://cherylmarkosky.com/2026/08/12/london-theatre-review-how-the-other-half-l"
+    },
+    {
+      "t": "2026-08-29T22:52:56.181Z",
+      "event": "bb-session",
+      "session": "ef061d45",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-29T22:53:15.543Z",
+      "event": "bb-session",
+      "session": "2f39afd9",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-08-29T22:55:58.149Z",
+      "event": "bb-session",
+      "session": "b4777f15",
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-lond"
+    },
+    {
+      "t": "2026-08-29T22:55:58.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-29T22:57:08.037Z",
+      "event": "bb-session",
+      "session": "2ed592f4",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T22:57:08.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
