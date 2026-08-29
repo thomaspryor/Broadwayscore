@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-29T16:42:42.835Z",
-  "processed": 22,
-  "failed": 148,
-  "successRate": "12.9%",
+  "updatedAt": "2026-08-29T16:47:47.610Z",
+  "processed": 26,
+  "failed": 154,
+  "successRate": "14.4%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -42,6 +42,23 @@
       "event": "bb-session",
       "session": "6a2db489",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-29T16:42:46.557Z",
+      "event": "bb-session",
+      "session": "605ca215",
+      "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/"
+    },
+    {
+      "t": "2026-08-29T16:45:27.833Z",
+      "event": "bb-session",
+      "session": "f21e5a10",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T16:45:28.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

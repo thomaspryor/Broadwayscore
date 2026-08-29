@@ -21,7 +21,11 @@
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "the-story-west-end-2026/north-west-end--unknown.json",
-    "paranormal-activity-2026/nytimes--helen-shaw.json"
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "the-real-ivanov-off-broadway-2026/theater-pizzazz--unknown.json",
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -171,7 +175,13 @@
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/telegraph--unknown.json",
-    "the-story-west-end-2026/times-uk--unknown.json"
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -189,11 +199,16 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "the-story-west-end-2026/north-west-end--unknown.json"
+      "the-story-west-end-2026/north-west-end--unknown.json",
+      "the-real-ivanov-off-broadway-2026/theater-pizzazz--unknown.json",
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/paranormal-activity-2026/deadline--erik-pedersen.json",
+      "paranormal-activity-2026/deadline--erik-pedersen.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -208,11 +223,12 @@
     "archiveToday": [],
     "archive": [
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "paranormal-activity-2026/nytimes--helen-shaw.json",
+  "lastProcessed": "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -241,6 +257,23 @@
       "event": "bb-session",
       "session": "6a2db489",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-29T16:42:46.557Z",
+      "event": "bb-session",
+      "session": "605ca215",
+      "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/"
+    },
+    {
+      "t": "2026-08-29T16:45:27.833Z",
+      "event": "bb-session",
+      "session": "f21e5a10",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-29T16:45:28.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
