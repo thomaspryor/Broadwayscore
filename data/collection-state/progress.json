@@ -45,7 +45,9 @@
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -306,7 +308,15 @@
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
     "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -343,12 +353,15 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -375,7 +388,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alex-wood.json",
+  "lastProcessed": "avenue-q-west-end-2026/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -468,6 +481,29 @@
       "t": "2026-08-29T02:46:33.288Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-29T02:52:11.797Z",
+      "event": "bb-session",
+      "session": "c220c648",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-29T02:52:21.108Z",
+      "event": "bb-session",
+      "session": "568e1f92",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-29T02:53:22.439Z",
+      "event": "bb-session",
+      "session": "d324ddc6",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-29T02:53:23.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
