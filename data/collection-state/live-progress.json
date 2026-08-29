@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-08-29T08:26:19.704Z",
-  "processed": 62,
-  "failed": 1014,
-  "successRate": "5.8%",
+  "updatedAt": "2026-08-29T12:03:57.148Z",
+  "processed": 77,
+  "failed": 1299,
+  "successRate": "5.6%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 11,
-    "directCookies": 1,
-    "scrapingbee": 12,
-    "brightdata": 1,
+    "browserbase": 12,
+    "directCookies": 2,
+    "scrapingbee": 17,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 12
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-08-29T02:56:50.364Z",
-      "event": "bb-session",
-      "session": "d960c59d",
-      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    },
-    {
-      "t": "2026-08-29T02:57:07.341Z",
-      "event": "bb-session",
-      "session": "1e2bed91",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-08-29T03:03:45.724Z",
-      "event": "bb-session",
-      "session": "dbc142a0",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-08-29T03:03:46.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-08-29T03:10:35.157Z",
       "event": "bb-session",
@@ -130,6 +107,29 @@
       "event": "bb-session",
       "session": "1d33f378",
       "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-29T11:42:44.145Z",
+      "event": "bb-session",
+      "session": "a1dbe797",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-08-29T11:48:00.535Z",
+      "event": "bb-session",
+      "session": "c18d0c70",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-lyric-theatre-belf"
+    },
+    {
+      "t": "2026-08-29T11:48:00.915Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-29T11:55:00.187Z",
+      "event": "bb-session",
+      "session": "37e82535",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
     }
   ]
 }
