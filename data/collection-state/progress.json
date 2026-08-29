@@ -28,7 +28,10 @@
     "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-    "isla-off-broadway-2026/goseeashowpodcast--robby.json"
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+    "masticate-off-broadway-2026/nyu--unknown.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -186,7 +189,14 @@
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
-    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json"
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -208,7 +218,9 @@
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "isla-off-broadway-2026/goseeashowpodcast--robby.json"
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+      "masticate-off-broadway-2026/nyu--unknown.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -226,7 +238,8 @@
       "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "brightdata": [
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json"
@@ -240,7 +253,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -313,36 +326,13 @@
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     },
     {
-      "t": "2026-08-29T01:48:02.447Z",
+      "t": "2026-08-29T02:25:46.586Z",
       "event": "bb-session",
-      "session": "4ce5c94a",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+      "session": "ecc58edc",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-08-29T01:48:03.360Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-29T01:52:02.128Z",
-      "event": "bb-session",
-      "session": "b358b585",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-29T01:52:22.453Z",
-      "event": "bb-session",
-      "session": "7f4e75c6",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-29T01:54:08.601Z",
-      "event": "bb-session",
-      "session": "af1125da",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-29T01:54:09.629Z",
+      "t": "2026-08-29T02:25:47.524Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
