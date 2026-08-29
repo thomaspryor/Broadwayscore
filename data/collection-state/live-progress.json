@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-29T07:21:24.024Z",
+  "updatedAt": "2026-08-29T07:27:24.085Z",
   "processed": 62,
-  "failed": 853,
-  "successRate": "6.8%",
+  "failed": 863,
+  "successRate": "6.7%",
   "tierBreakdown": {
     "playwright": 41,
     "amp": 0,
@@ -13,8 +13,19 @@
     "archiveToday": 0,
     "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-08-29T02:53:23.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-29T02:56:05.524Z",
+      "event": "bb-session",
+      "session": "15c5dac4",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
     {
       "t": "2026-08-29T02:56:50.364Z",
       "event": "bb-session",
@@ -118,18 +129,6 @@
       "event": "bb-session",
       "session": "5bf001ad",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-08-29T07:19:38.175Z",
-      "event": "bb-session",
-      "session": "5f7ca1c4",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-29T07:19:58.554Z",
-      "event": "bb-session",
-      "session": "6a3102aa",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     }
   ]
 }
