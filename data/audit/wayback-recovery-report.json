@@ -1,20 +1,23 @@
 {
-  "totalCandidates": 15,
-  "cdxFound": 0,
-  "cdxNotFound": 1,
-  "recovered": 0,
+  "totalCandidates": 37,
+  "cdxFound": 23,
+  "cdxNotFound": 8,
+  "recovered": 2,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 2
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "playbill.com": 1,
+    "people.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 14,
-  "notInArchive": 1,
+  "errors": 6,
+  "notInArchive": 8,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
