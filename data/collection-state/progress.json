@@ -22,7 +22,12 @@
     "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -166,7 +171,12 @@
     "abigails-party-west-end-2026/london-box-office--stuart-king.json",
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
-    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json"
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "paranormal-activity-2026/deadline--unknown.json",
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "benevolent-off-broadway-2026/theatermania--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -191,7 +201,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -199,9 +211,14 @@
     "scrapingbee": [
       "the-story-west-end-2026/radio-times--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "spellbound-off-broadway-2026/amny--alexa-lutter.json",
+      "benevolent-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [],
     "archive": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -211,7 +228,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+  "lastProcessed": "marlise-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -282,6 +299,17 @@
       "event": "bb-session",
       "session": "0236250a",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-29T01:48:02.447Z",
+      "event": "bb-session",
+      "session": "4ce5c94a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-08-29T01:48:03.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
