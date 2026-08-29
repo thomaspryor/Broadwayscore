@@ -53,7 +53,8 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -396,7 +397,16 @@
     "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
     "burlesque-west-end-2026/north-west-end--greg-holstead.json",
     "burlesque-west-end-2026/people--unknown.json",
-    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -439,7 +449,8 @@
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -449,7 +460,8 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--unknown.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -477,7 +489,7 @@
     ]
   },
   "startTime": "2026-08-28T22:39:33.122Z",
-  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-08-28T22:49:28.862Z",
@@ -611,6 +623,17 @@
       "event": "bb-session",
       "session": "1e2bed91",
       "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-08-29T03:03:45.724Z",
+      "event": "bb-session",
+      "session": "dbc142a0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-08-29T03:03:46.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
