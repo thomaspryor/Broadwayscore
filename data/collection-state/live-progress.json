@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-08-30T16:13:25.921Z",
-  "processed": 3,
-  "failed": 120,
-  "successRate": "2.4%",
+  "updatedAt": "2026-08-30T16:15:14.839Z",
+  "processed": 10,
+  "failed": 40,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
+    "browserbase": 1,
+    "directCookies": 1,
     "scrapingbee": 1,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-08-30T16:04:04.659Z",
+      "event": "bb-session",
+      "session": "7c58a26d",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-30T16:04:05.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
