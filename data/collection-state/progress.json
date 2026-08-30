@@ -789,7 +789,17 @@
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
     "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
-    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -845,6 +855,7 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
@@ -879,7 +890,7 @@
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -1076,6 +1087,17 @@
       "event": "bb-session",
       "session": "da50343e",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-30T00:06:05.893Z",
+      "event": "bb-session",
+      "session": "8e6794ca",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-30T00:06:06.833Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
