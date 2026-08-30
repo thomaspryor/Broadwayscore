@@ -355,5 +355,29 @@
       }
     ],
     "queuedAt": "2026-08-29T15:02:57.272Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:electra-persona-west-end-2026",
+    "title": "Pre-opening publishDate on Electra / Persona",
+    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-23 (9d before openingDate 2026-09-01): https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-30T00:25:09.189Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-electra-persona-west-end-2026",
+    "title": "Stale 'upcoming' tag on Electra / Persona",
+    "description": "electra-persona-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=electra-persona-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-30T00:25:09.192Z"
   }
 ]
