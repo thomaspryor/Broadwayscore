@@ -833,15 +833,23 @@
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
     "an-american-daughter-off-broadway-2026/playbill--unknown.json",
     "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
-    "spellbound-off-broadway-2026/theweereview--unknown.json",
-    "benevolent-off-broadway-2026/theatermania--unknown.json",
-    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
-    "marlise-off-broadway-2026/donyc--unknown.json",
-    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
-    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
-    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
-    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -899,6 +907,7 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
@@ -933,7 +942,7 @@
     ]
   },
   "startTime": "2026-08-29T15:12:28.615Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-08-29T15:14:02.750Z",
@@ -1200,6 +1209,29 @@
       "event": "bb-session",
       "session": "b5ef6a3b",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-30T02:42:22.760Z",
+      "event": "bb-session",
+      "session": "d30d0e5e",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-30T02:42:25.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-30T02:44:50.410Z",
+      "event": "bb-session",
+      "session": "be288e03",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-08-30T02:44:58.724Z",
+      "event": "bb-session",
+      "session": "ced87ec1",
+      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
     }
   ]
 }
