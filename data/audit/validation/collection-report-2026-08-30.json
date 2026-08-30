@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-30T07:28:28.188Z",
+  "runDate": "2026-08-30T10:26:02.275Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 92,
+    "processed": 93,
     "failed": 1298,
     "skipped": 0,
-    "successRate": "6.6%"
+    "successRate": "6.7%"
   },
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 64,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 1,
@@ -27,26 +27,26 @@
     "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 1,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 10,
-    "tier3Attempts": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 72,
-    "scrapingBeePageCredits": 11,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 60,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -142,7 +142,8 @@
     "miss-saigon-1991/whatsonstage--unknown.json",
     "carrie-1988/nbcny--unknown.json",
     "glengarry-glen-ross-1984/artsfuse--unknown.json",
-    "death-of-a-salesman-2012/amny--matt-windman.json"
+    "death-of-a-salesman-2012/amny--matt-windman.json",
+    "china-doll-2015/timeout--david-cote.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1508,7 +1509,8 @@
       "miss-saigon-1991/theater-pizzazz--samuel-l-leiter.json",
       "miss-saigon-1991/whatsonstage--unknown.json",
       "carrie-1988/nbcny--unknown.json",
-      "glengarry-glen-ross-1984/artsfuse--unknown.json"
+      "glengarry-glen-ross-1984/artsfuse--unknown.json",
+      "china-doll-2015/timeout--david-cote.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1565,14 +1567,6 @@
       "death-of-a-salesman-2012/amny--matt-windman.json"
     ]
   },
-  "failuresByOutlet": {
-    "Associated Press": {
-      "count": 1,
-      "domain": "news.yahoo.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
