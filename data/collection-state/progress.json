@@ -1,6 +1,7 @@
 {
   "processed": [
-    "the-story-west-end-2026/monstagigz--unknown.json"
+    "the-story-west-end-2026/monstagigz--unknown.json",
+    "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -11,15 +12,27 @@
     "the-story-west-end-2026/london-box-office--phil-willmott.json",
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/londontheatre1--chris-omaweng.json",
-    "the-story-west-end-2026/north-west-end--greg-holstead.json"
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-story-west-end-2026/monstagigz--unknown.json"
+      "the-story-west-end-2026/monstagigz--unknown.json",
+      "as-you-like-it-globe-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -27,6 +40,18 @@
     "archive": []
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-story-west-end-2026/north-west-end--greg-holstead.json",
-  "log": []
+  "lastProcessed": "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+  "log": [
+    {
+      "t": "2026-08-30T16:04:04.659Z",
+      "event": "bb-session",
+      "session": "7c58a26d",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-30T16:04:05.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
