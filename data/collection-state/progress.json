@@ -17,7 +17,10 @@
     "now-you-see-me-live-west-end-2026/londontheatredirect--gary-harris.json",
     "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
     "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
-    "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json"
+    "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -101,7 +104,14 @@
     "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
     "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json",
     "tao-of-glass-west-end-2026/bachtrack--unknown.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json"
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "paranormal-activity-2026/deadline--erik-pedersen.json",
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "benevolent-off-broadway-2026/theatermania--unknown.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -128,7 +138,10 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -138,7 +151,7 @@
     ]
   },
   "startTime": "2026-08-30T13:48:14.113Z",
-  "lastProcessed": "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-08-30T13:50:30.425Z",
@@ -186,6 +199,40 @@
       "event": "bb-session",
       "session": "4249207f",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-08-30T14:23:33.552Z",
+      "event": "bb-session",
+      "session": "661ec307",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-30T14:23:33.939Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-30T14:23:50.889Z",
+      "event": "bb-session",
+      "session": "26ec64dd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-30T14:23:51.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-30T14:24:46.504Z",
+      "event": "bb-session",
+      "session": "16504c0a",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-30T14:25:05.190Z",
+      "event": "bb-session",
+      "session": "70960558",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     }
   ]
 }
