@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-25T06:07:08.466Z",
-    "completedAt": "2026-08-25T06:07:15.229Z",
-    "totalReviews": 42722,
-    "processed": 0,
-    "skipped": 42719,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 7618,
-      "output": 244,
-      "total": 22579
-    },
-    "errorDetails": [
-      {
-        "showId": "jack-and-the-beanstalk-off-west-end-2026",
-        "outletId": "telegraph",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-25T06:32:13.923Z",
     "completedAt": "2026-08-25T06:32:16.592Z",
     "totalReviews": 42721,
@@ -677004,6 +676984,20 @@
       "input": 3610,
       "output": 103,
       "total": 10927
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-30T17:32:50.897Z",
+    "completedAt": "2026-08-30T17:32:55.081Z",
+    "totalReviews": 42365,
+    "processed": 0,
+    "skipped": 42364,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 100,
+      "total": 10937
     },
     "errorDetails": []
   }
