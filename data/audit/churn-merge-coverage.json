@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-29T21:22:33.096Z",
+    "generatedAt": "2026-08-30T03:49:29.423Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,98 +9,66 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 9,
+    "exemptCount": 1,
     "coveredCount": 10,
-    "highChurnTracked": 19
+    "highChurnTracked": 11
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 51
-    },
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 39
-    },
-    {
-      "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 37
-    },
-    {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 34
-    },
-    {
-      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/beetlejuice-west-end-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 31
+      "churn": 49
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 824,
+      "churn": 788,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 797,
+      "churn": 763,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 294,
+      "churn": 279,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 285,
+      "churn": 261,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 139,
+      "churn": 135,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 101,
+      "churn": 93,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 84,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 67,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 67,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 67,
+      "churn": 55,
       "mergeAttr": "ours"
     }
   ]
