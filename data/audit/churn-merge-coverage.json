@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-30T11:11:58.811Z",
+    "generatedAt": "2026-08-30T12:03:20.448Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -17,7 +17,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 62
+      "churn": 63
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
@@ -59,22 +59,22 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 849,
+      "churn": 856,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 816,
+      "churn": 822,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 297,
+      "churn": 299,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 279,
+      "churn": 281,
       "mergeAttr": "union"
     },
     {
@@ -84,7 +84,7 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 103,
+      "churn": 104,
       "mergeAttr": "union"
     },
     {
