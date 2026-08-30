@@ -1,20 +1,20 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-08-24T07:46:40.492Z",
+  "lastChecked": "2026-08-30T12:17:13.966Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Coverage: SERP census recall",
-      "status": "warn",
-      "message": "Review coverage not judgeable yet: 0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend"
+      "status": "pass",
+      "message": "a plain Google search found 30%, reviews already collected found 94%, our targeted searches found 14% — across 5 recent opening(s); 125 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (6d ago)"
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "This week's sample had nothing measurable (settling/undated shows, or a SERP outage) — no evidence either way"
+      "message": "The naive search found 3 review URL(s) this pipeline hasn't discovered yet: the-gin-game-2026, the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
     }
   ]
 }

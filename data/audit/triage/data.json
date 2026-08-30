@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-08-24T07:46:40.493Z",
+  "lastChecked": "2026-08-30T12:17:13.970Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,12 +9,12 @@
     {
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
-      "message": "12 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "message": "13 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "4 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
+      "message": "4 discovered review(s) not reaching the composite score (1 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -24,7 +24,7 @@
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "10 aggregator-reviewed show(s) not in the catalogue. First: \"Game of Thrones: The Mad King\" (wet-roundup)"
+      "message": "14 aggregator-reviewed show(s) not in the catalogue. First: \"Who Killed Marilyn\" (wet-roundup)"
     },
     {
       "name": "Data: undispatchable backlog cards",

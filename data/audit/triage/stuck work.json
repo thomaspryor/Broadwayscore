@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-24T07:46:40.493Z",
+  "lastChecked": "2026-08-30T12:17:13.969Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "33 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: RECHECK-AFTER 2026-08-18: raise exit_intent dwell 5s-&gt;30s on (14d, stamp overdue 6d); P0: #483 drain cleared 64 provably-correct exclusion flags — (10d, stamp overdue 9d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (9d, stamp overdue 8d) (8 awaiting recheck, earliest due 2026-08-22; 4 parked via tab-close, oldest 2026-08-18 — resume: node scripts/bsc-next.js --id 1748 --force — not counted)"
+      "message": "47 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (16d, stamp overdue 15d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (15d, stamp overdue 14d); P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing (14d) (2 awaiting recheck, earliest due 2026-09-09; 3 parked via tab-close, oldest 2026-08-26 — resume: node scripts/bsc-next.js --id 1929 --force — not counted) [4 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "47 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (32d); Trainspotting: only 4 reviews on site + email said 7 (invest (32d); cmux-launch: adopt a late-alive workspace instead of close-a (31d)"
+      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (37d); P1: headless-claude fallback for the opening-night monitor l (37d); P1: register review-census carriers (audit-aggregator-gap +  (37d) [23 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",
       "status": "warn",
-      "message": "16 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
+      "message": "4 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     }
   ]
 }
