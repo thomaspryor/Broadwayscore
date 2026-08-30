@@ -1,26 +1,27 @@
 {
-  "generatedAt": "2026-08-28T19:11:27.434Z",
+  "generatedAt": "2026-08-30T12:20:02.697Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "8e80a44dc65705497e8f98d028da67ec668df8f1",
+  "latestRunHeadSha": "e2a6661bc2eaee647e5be85fd54b90bbcd98176b",
   "state": "RED",
   "consecutiveFailures": 86,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-26T17:52:33Z",
-  "redForHours": 49.31512055555555,
+  "redSince": "2026-08-26T18:05:35Z",
+  "redForHours": 90.24102694444444,
   "redDurationIsFloor": true,
   "lastSuccessAt": null,
-  "latestFailedRunId": "33198716918",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33198716918",
+  "latestFailedRunId": "33309000532",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33309000532",
   "decidedRuns": 86,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation",
+        "Audit sibling-title misroute (strict)",
+        "Audit review contamination",
         "Validate provisional show venue+dates against Playbill"
       ]
     },
