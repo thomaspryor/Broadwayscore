@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-30T15:12:17.346Z",
-  "processed": 12,
-  "failed": 48,
-  "successRate": "20.0%",
+  "updatedAt": "2026-08-30T15:16:37.320Z",
+  "processed": 15,
+  "failed": 55,
+  "successRate": "21.4%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-30T14:56:19.890Z",
@@ -25,6 +25,18 @@
       "t": "2026-08-30T14:56:21.041Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-30T15:14:23.312Z",
+      "event": "bb-session",
+      "session": "ebc1ed1a",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-30T15:14:43.866Z",
+      "event": "bb-session",
+      "session": "ed433f5b",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     }
   ]
 }
