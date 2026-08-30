@@ -1322,7 +1322,7 @@
       "silentRefires": 6
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
@@ -1331,7 +1331,8 @@
       "lastNotifiedAt": "2026-08-27T21:33:20.831Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-30T15:50:29.694Z"
     },
     "cron-health-chronic:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1466,12 +1467,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-29T16:01:08.853Z",
+      "lastSeen": "2026-08-30T15:50:24.904Z",
       "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1491,9 +1492,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
       "firstSeen": "2026-08-23T12:24:33.123Z",
-      "lastSeen": "2026-08-23T12:24:33.123Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.123Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-30T15:50:24.787Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.787Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1587,12 +1588,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-29T16:01:08.850Z",
+      "lastSeen": "2026-08-30T15:50:24.902Z",
       "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1753,7 +1754,7 @@
       "linearIdentifier": null
     },
     "cron-health-chronic:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
@@ -1762,19 +1763,20 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2529",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-30T15:50:29.695Z"
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-08-29T16:01:08.857Z",
+      "lastSeen": "2026-08-30T15:50:24.905Z",
       "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2530",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -1805,11 +1807,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
       "firstSeen": "2026-08-29T16:01:08.858Z",
-      "lastSeen": "2026-08-29T16:01:08.858Z",
+      "lastSeen": "2026-08-30T15:50:29.549Z",
       "lastNotifiedAt": "2026-08-29T16:01:08.858Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2534"
+      "linearIdentifier": "BRO-2534",
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:electra-persona-west-end-2026": {
       "status": "open",
@@ -1854,6 +1857,29 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2521"
+    },
+    "cron-health:Process Feedback Submissions": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Process Feedback Submissions",
+      "firstSeen": "2026-08-30T15:50:24.790Z",
+      "lastSeen": "2026-08-30T15:50:24.790Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.790Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Test Suite": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Test Suite",
+      "firstSeen": "2026-08-30T15:50:24.907Z",
+      "lastSeen": "2026-08-30T15:50:24.907Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.907Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2537"
     }
   }
 }
