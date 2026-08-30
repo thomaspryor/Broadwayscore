@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-27T01:23:51.910Z",
+  "generatedAt": "2026-08-30T07:41:12.140Z",
   "windowDays": 1095,
-  "targets": 120,
-  "auditedThisRun": 17,
-  "carriedForward": 431,
+  "targets": 137,
+  "auditedThisRun": 24,
+  "carriedForward": 429,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 287,
-    "totalMissing": 1339,
-    "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1617,
+    "totalMissing": 1379,
+    "totalCitedNoUrl": 0,
+    "totalFlaggedMisses": 1622,
     "totalRecoverable": 17,
     "totalRecovered": 2
   },
@@ -319,36 +319,21 @@
         "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
         "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
       ],
-      "dirFiles": 3,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 1
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--deirdre-donovan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -360,60 +345,28 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/"
-          },
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.theaterscene.net/multimedia/73-seconds/tony-marinelli/",
-            "outletId": "theater-scene",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "theaterscene.net",
+            "state": "live",
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           },
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/5/6/73-seconds",
-            "outletId": "off-off-online",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "offoffonline.com",
+            "state": "live",
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           }
         ],
-        "liveCount": 0,
+        "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-13T06:23:39.338Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -1662,6 +1615,291 @@
         "candidateCount": 19
       },
       "computedAt": "2026-08-16T05:24:26.828Z"
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-A-MONTH-IN-THE-COUNTRY-Opens-Off-Broadway-20150129"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2015/01/30/theater/taylor-schilling-and-peter-dinklage-in-a-month-in-the-country.html",
+        "http://abcnews.go.com/Entertainment/wireStory/review-cscs-month-country-lacks-nuance-28597322",
+        "http://www.hollywoodreporter.com/review/a-month-country-theater-review-768292",
+        "http://variety.com/2015/legit/reviews/month-in-the-country-review-dinklage-schilling-classic-stage-1201417325/",
+        "http://www.timeout.com/newyork/theater/a-month-in-the-country",
+        "http://www.usatoday.com/story/life/theater/2015/01/29/a-month-in-the-country-off-broadway-review/22472655/",
+        "http://www.amny.com/entertainment/a-month-in-the-country-theater-review-taylor-schilling-miscast-1.9881463",
+        "https://youtu.be/OvdrGwEnNBk"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://www.nytimes.com/2015/01/30/theater/taylor-schilling-and-peter-dinklage-in-a-month-in-the-country.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-cscs-month-country-lacks-nuance-28597322",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/a-month-country-theater-review-768292",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/month-in-the-country-review-dinklage-schilling-classic-stage-1201417325/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/a-month-in-the-country",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2015/01/29/a-month-in-the-country-off-broadway-review/22472655/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-month-in-the-country-theater-review-taylor-schilling-miscast-1.9881463",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://youtu.be/OvdrGwEnNBk",
+          "host": "youtu.be",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 282,
+        "byReason": {
+          "non-review-host": 15,
+          "aggregator-internal-nav": 226,
+          "not-http-url": 37,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-A-MONTH-IN-THE-COUNTRY-Opens-Off-Broadway-20150129",
+          "publishDate": "2015-01-29"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nytimes.com/2015/01/30/theater/taylor-schilling-and-peter-dinklage-in-a-month-in-the-country.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-cscs-month-country-lacks-nuance-28597322",
+          "host": "go.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/a-month-country-theater-review-768292",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/month-in-the-country-review-dinklage-schilling-classic-stage-1201417325/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/a-month-in-the-country",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2015/01/29/a-month-in-the-country-off-broadway-review/22472655/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-month-in-the-country-theater-review-taylor-schilling-miscast-1.9881463",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://youtu.be/OvdrGwEnNBk",
+          "host": "youtu.be",
+          "outletId": "youtu",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2015/01/30/theater/taylor-schilling-and-peter-dinklage-in-a-month-in-the-country.html"
+          },
+          {
+            "outletId": "abc-news",
+            "outlet": "abc-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://abcnews.go.com/Entertainment/wireStory/review-cscs-month-country-lacks-nuance-28597322"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/a-month-country-theater-review-768292"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2015/legit/reviews/month-in-the-country-review-dinklage-schilling-classic-stage-1201417325/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/a-month-in-the-country"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2015/01/29/a-month-in-the-country-off-broadway-review/22472655/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/a-month-in-the-country-theater-review-taylor-schilling-miscast-1.9881463"
+          },
+          {
+            "outletId": "youtu.be",
+            "outlet": "youtu.be",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://youtu.be/OvdrGwEnNBk"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2015/01/30/theater/taylor-schilling-and-peter-dinklage-in-a-month-in-the-country.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://abcnews.go.com/Entertainment/wireStory/review-cscs-month-country-lacks-nuance-28597322",
+            "outletId": "abc-news",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/a-month-country-theater-review-768292",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://variety.com/2015/legit/reviews/month-in-the-country-review-dinklage-schilling-classic-stage-1201417325/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/a-month-in-the-country",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2015/01/29/a-month-in-the-country-off-broadway-review/22472655/",
+            "outletId": "usatoday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/a-month-in-the-country-theater-review-taylor-schilling-miscast-1.9881463",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://youtu.be/OvdrGwEnNBk",
+            "outletId": "youtu.be",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -18530,12 +18768,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 301,
+        "count": 302,
         "byReason": {
-          "not-http-url": 59,
           "non-review-host": 15,
           "aggregator-internal-nav": 224,
-          "non-review-path": 3
+          "not-http-url": 59,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -18691,7 +18929,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-13T06:23:39.338Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "bull-durham-paper-mill-regional-2025",
@@ -19072,8 +19310,7 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-pony-cams-burnout-paradise-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-BURNOUT-PARADISE-Opens-At-Astor-Place-Theatre-20260305"
+        "https://playbill.com/article/read-the-reviews-for-pony-cams-burnout-paradise-off-broadway"
       ],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/burnout-paradise-off-broadway-review-2026",
@@ -19144,13 +19381,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 383,
+        "count": 91,
         "byReason": {
-          "aggregator-internal-nav": 267,
-          "not-http-url": 77,
-          "non-review-host": 34,
-          "roundup-page": 2,
-          "non-review-path": 3
+          "non-review-host": 19,
+          "aggregator-internal-nav": 47,
+          "not-http-url": 20,
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
@@ -19240,7 +19476,7 @@
         "liveCount": 8,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-16T05:24:26.828Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -30455,7 +30691,7 @@
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "title": "Dear England (New Wimbledon Theatre)",
       "openingDate": "2026-02-24",
-      "status": "announced",
+      "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -30466,11 +30702,19 @@
         "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
         "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
         "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-        "https://www.timeout.com/london/theatre/dear-england-review"
+        "https://www.timeout.com/london/theatre/dear-england-review",
+        "https://www.timeout.com/london/theatre/dear-england-review-2",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+        "https://www.thetimes.co.uk/article/dear-england-review-pitch-perfect-gareth-southgate-brings-the-game-home-f9vf7cgtm",
+        "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+        "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+        "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
       ],
       "dirFiles": 19,
       "dirClean": 1,
-      "inReviewsJson": 2,
+      "inReviewsJson": 1,
       "missing": [],
       "dirOnly": [
         {
@@ -30614,6 +30858,142 @@
               "urlInDir": "https://www.timeout.com/london/theatre/dear-england-review-2"
             }
           ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/dear-england-review-2"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/dear-england-review-pitch-perfect-gareth-southgate-brings-the-game-home-f9vf7cgtm",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--clive-davis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/dear-england-review-pitch-perfect-gareth-southgate-brings-the-game-home-f9vf7cgtm"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/"
+            }
+          ]
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--matt-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport"
+            }
+          ]
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--daz-gale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre#:~:text=A%20beautiful%20production%20about%20the,would%20be%20very%20well%20deserved."
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--mark-lawson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -30685,6 +31065,62 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/dear-england-review"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/dear-england-review-2"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/dear-england-review-pitch-perfect-gareth-southgate-brings-the-game-home-f9vf7cgtm"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre"
           }
         ],
         "suppressedMissing": [],
@@ -30744,12 +31180,68 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T16:48:58.521Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/dear-england-review-pitch-perfect-gareth-southgate-brings-the-game-home-f9vf7cgtm",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 9
       },
-      "computedAt": "2026-08-15T09:21:08.461Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "death-becomes-her-2024",
@@ -33770,46 +34262,42 @@
       "showId": "dog-man-the-musical-west-end-2026",
       "title": "Dog Man - The Musical",
       "openingDate": "2026-08-03",
-      "status": "open",
+      "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-        "https://www.timeout.com/london/theatre/the-truth-review",
-        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
+        "https://www.theatermania.com/off-broadway-theater/news/review-dog-man-the-musical-is-a-delightfully-silly-musical-romp_94961.html",
+        "https://www.nytimes.com/2019/07/09/theater/review-dog-man-the-musical.html",
+        "http://www.theaterscene.net/musicals/offbway/dog-man-the-musical/mark-dundas-wood/",
+        "http://www.theasy.com/Reviews/2019/D/dogmanthemusical.php"
       ],
       "dirFiles": 18,
       "dirClean": 10,
       "inReviewsJson": 9,
       "missing": [
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://www.theatermania.com/off-broadway-theater/news/review-dog-man-the-musical-is-a-delightfully-silly-musical-romp_94961.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
+          "url": "https://www.nytimes.com/2019/07/09/theater/review-dog-man-the-musical.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/offbway/dog-man-the-musical/mark-dundas-wood/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
         }
       ],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
           "count": 1
         },
         {
@@ -33829,6 +34317,14 @@
           "count": 1
         },
         {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        },
+        {
           "host": "westwaleschronicle.co.uk",
           "count": 1
         },
@@ -33837,120 +34333,30 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
-      "citedNoUrl": [
+      "flaggedMisses": [
         {
-          "outletId": "telegraph",
-          "outletName": "The Telegraph",
-          "stars": 4,
-          "source": "theatre-reviews",
-          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
-          "priorRun": false,
-          "hasExcludedFiles": false
+          "url": "http://www.theasy.com/Reviews/2019/D/dogmanthemusical.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-is-easy--kevin-del-aguila-and-brad.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theasy.com/Reviews/2019/D/dogmanthemusical.php"
+            }
+          ]
         }
       ],
-      "weReference": {
-        "rowCount": 6,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 6,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 6,
-        "corroborated": 3,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 3,
-            "corroborated": 3
-          }
-        }
-      },
+      "citedNoUrl": [],
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dog Man - The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Dog Man - The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Dog Man - The Musical\" review queen",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
         "count": 0,
@@ -33959,28 +34365,40 @@
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "reason": "dog-man-the-musical-west-end-2026: https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html is already owned by the-truth-a-comedy-by-florian-zeller-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
+          "url": "https://www.theatermania.com/off-broadway-theater/news/review-dog-man-the-musical-is-a-delightfully-silly-musical-romp_94961.html",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "reason": "Article extraction returned 101 chars — pattern may be missing for this outlet. Add an entry to scri"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/07/09/theater/review-dog-man-the-musical.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/offbway/dog-man-the-musical/mark-dundas-wood/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://www."
         }
       ],
       "ingestSkippedByCap": [],
@@ -33988,73 +34406,69 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "standard",
-            "outlet": "standard",
+            "outletId": "theatermania",
+            "outlet": "theatermania",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html"
+            "url": "https://www.theatermania.com/off-broadway-theater/news/review-dog-man-the-musical-is-a-delightfully-silly-musical-romp_94961.html"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "nytimes",
+            "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre"
+            "url": "https://www.nytimes.com/2019/07/09/theater/review-dog-man-the-musical.html"
           },
           {
-            "outletId": "telegraph",
-            "outlet": "The Telegraph",
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
             "critic": "Unknown",
             "stars": null,
-            "url": ""
+            "url": "http://www.theaterscene.net/musicals/offbway/dog-man-the-musical/mark-dundas-wood/"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2019/D/dogmanthemusical.php"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-truth-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-            "outletId": "standard",
+            "url": "https://www.theatermania.com/off-broadway-theater/news/review-dog-man-the-musical-is-a-delightfully-silly-musical-romp_94961.html",
+            "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-            "outletId": "london-theatre",
+            "url": "https://www.nytimes.com/2019/07/09/theater/review-dog-man-the-musical.html",
+            "outletId": "nytimes",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
-            "url": "",
-            "outletId": "telegraph",
+            "url": "http://www.theaterscene.net/musicals/offbway/dog-man-the-musical/mark-dundas-wood/",
+            "outletId": "theater-scene",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2019/D/dogmanthemusical.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 6
+        "liveCount": 0,
+        "candidateCount": 4
       },
-      "computedAt": "2026-08-14T16:42:17.748Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -35451,6 +35865,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-25T05:35:06.890Z"
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "title": "Electra / Persona",
+      "openingDate": "2026-09-01",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "electrapersona-west-end-2026",
@@ -44670,7 +45119,7 @@
         "http://www.telegraph.co.uk/theatre/what-to-see/savage-salesmen-drama-doesnt-quite-close-deal-glengarry-glen/",
         "http://ew.com/theater/2017/12/12/christian-slater-west-end-revival-glengarry-glen-ross-ew-review/"
       ],
-      "dirFiles": 72,
+      "dirFiles": 71,
       "dirClean": 21,
       "inReviewsJson": 26,
       "missing": [
@@ -44685,6 +45134,13 @@
           "url": "https://deadline.com/2025/03/glengarry-glen-ross-broadway-review-1236354230/",
           "host": "deadline.com",
           "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -44899,25 +45355,6 @@
               "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
               "flag": "wrongProduction",
               "urlInDir": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "front-row-center--yuval-jonas.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/"
             }
           ],
           "priorRun": true,
@@ -45254,12 +45691,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 969,
+        "count": 978,
         "byReason": {
-          "aggregator-internal-nav": 751,
-          "not-http-url": 142,
-          "non-review-host": 66,
-          "non-review-path": 9,
+          "non-review-host": 67,
+          "aggregator-internal-nav": 750,
+          "not-http-url": 144,
+          "aggregator-section-root": 16,
           "unparseable-url": 1
         }
       },
@@ -45292,6 +45729,12 @@
         {
           "url": "https://deadline.com/2025/03/glengarry-glen-ross-broadway-review-1236354230/",
           "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
+          "host": "thefrontrowcenter.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -45386,6 +45829,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://deadline.com/2025/03/glengarry-glen-ross-broadway-review-1236354230/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/"
           },
           {
             "outletId": "nypost",
@@ -45491,13 +45941,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926"
-          },
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/"
           },
           {
             "outletId": "hollywood-reporter",
@@ -45698,6 +46141,13 @@
             "firstSeenAt": "2026-08-03T15:12:46.515Z"
           },
           {
+            "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:12:46.515Z"
+          },
+          {
             "url": "https://nypost.com/2025/03/31/entertainment/glengarry-glen-ross-review-kieran-culkin-and-bob-odenkirks-play-is-bleeping-underwhelming/",
             "outletId": "nypost",
             "state": "GAP",
@@ -45805,13 +46255,6 @@
           {
             "url": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926",
             "outletId": "ew",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:12:46.515Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
-            "outletId": "front-row-center",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:12:46.515Z"
@@ -45939,7 +46382,7 @@
         "liveCount": 7,
         "candidateCount": 35
       },
-      "computedAt": "2026-08-16T05:24:26.828Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -46352,7 +46795,7 @@
         "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
         "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
       ],
-      "dirFiles": 16,
+      "dirFiles": 13,
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [
@@ -46360,6 +46803,13 @@
           "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
           "host": "cititour.com",
           "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -46433,25 +46883,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/gotta-dance-celebrating-classic-musicals-to-return-off-broadway_1826450/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
           "host": "theaterscene.net",
           "knownOutletId": "theater-scene",
@@ -46493,12 +46924,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 427,
+        "count": 436,
         "byReason": {
-          "not-http-url": 92,
-          "aggregator-internal-nav": 295,
-          "non-review-host": 37,
-          "non-review-path": 3
+          "non-review-host": 38,
+          "aggregator-internal-nav": 296,
+          "not-http-url": 94,
+          "aggregator-section-root": 8
         }
       },
       "dedupedVariants": [],
@@ -46518,6 +46949,12 @@
           "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
@@ -46531,6 +46968,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/"
           },
           {
             "outletId": "one-minute-critic",
@@ -46552,13 +46996,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://therecs.co.uk/gotta-dance/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/"
           },
           {
             "outletId": "theater-scene",
@@ -46609,6 +47046,13 @@
             "firstSeenAt": "2026-08-14T11:44:15.360Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-14T11:44:15.360Z"
+          },
+          {
             "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
             "outletId": "one-minute-critic",
             "state": "GAP",
@@ -46625,13 +47069,6 @@
           {
             "url": "https://therecs.co.uk/gotta-dance/",
             "outletId": "the-recs",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
-            "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-14T11:44:15.360Z"
@@ -46654,7 +47091,7 @@
         "liveCount": 4,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-14T11:44:15.360Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "grace-pervades-west-end-2026",
@@ -52016,12 +52453,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 493,
+        "count": 490,
         "byReason": {
-          "aggregator-internal-nav": 382,
-          "not-http-url": 53,
-          "non-review-host": 55,
-          "non-review-path": 3
+          "non-review-host": 57,
+          "aggregator-internal-nav": 365,
+          "not-http-url": 56,
+          "aggregator-section-root": 12
         }
       },
       "dedupedVariants": [],
@@ -52036,7 +52473,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~155675/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
         },
         {
           "url": "https://www.thedailybeast.com/harry-connick-jrs-broadway-tribute-to-cole-porter-is-missing-magic",
@@ -52321,7 +52758,7 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-13T04:13:42.713Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "hate-radio-off-broadway-2026",
@@ -59092,10 +59529,7 @@
         "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre-london-jonathan-lynn",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/im-sorry-prime-minister-yes-review-apollo-theatre-b2919769.html",
         "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
-        "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
-        "https://www.theguardian.com/stage/2026/feb/13/im-sorry-prime-minister-review-apollo-theatre-london-griff-rhys-jones",
-        "https://www.allthatdazzles.co.uk/post/review-i-m-sorry-prime-minister-apollo-theatre",
-        "https://www.westendbestfriend.co.uk/news/review-im-sorry-prime-minister-apollo-theatre"
+        "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
       ],
       "dirFiles": 23,
       "dirClean": 13,
@@ -59103,11 +59537,23 @@
       "missing": [],
       "dirOnly": [
         {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
           "host": "dailymail.co.uk",
           "count": 1
         },
         {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         },
         {
@@ -59201,24 +59647,6 @@
             "firstSeenAt": "2026-08-14T11:44:15.360Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/feb/13/im-sorry-prime-minister-review-apollo-theatre-london-griff-rhys-jones",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-i-m-sorry-prime-minister-apollo-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-im-sorry-prime-minister-apollo-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
             "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
             "outletId": "artsdesk",
             "state": "GAP",
@@ -59226,10 +59654,10 @@
             "firstSeenAt": "2026-08-14T11:44:15.360Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 11
+        "liveCount": 7,
+        "candidateCount": 8
       },
-      "computedAt": "2026-08-14T11:44:15.360Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "indian-princesses-off-broadway-2025",
@@ -76675,80 +77103,14 @@
       "openingDate": "2026-04-30",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821"
-      ],
-      "aggregatorListedUrls": [
-        "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
-        "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-        "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
-        "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667"
-      ],
-      "dirFiles": 9,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -76756,118 +77118,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 285,
-        "byReason": {
-          "not-http-url": 40,
-          "aggregator-internal-nav": 227,
-          "non-review-host": 15,
-          "non-review-path": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MERCURY-FUR-Opens-Off-Broadway-20150821",
-          "publishDate": "2015-08-21"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://thestage.co.uk/reviews/thespians-review-mercury-theatre-colchester",
-          "host": "thestage.co.uk",
-          "file": "thestage--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031"
-          },
-          {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html"
-          },
-          {
-            "outletId": "nypost",
-            "outlet": "nypost",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "http://www.hollywoodreporter.com/review/philip-ridleys-mercury-fur-theater-816031",
-            "outletId": "hollywood-reporter",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "http://www.amny.com/entertainment/mercury-fur-theater-review-3-5-stars-1.10758667",
-            "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          },
-          {
-            "url": "http://nypost.com/2015/08/21/its-physically-impossible-to-leave-new-play-mercury-fur-early/",
-            "outletId": "nypost",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T11:44:15.360Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-14T11:44:15.360Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "mermaids-and-pirates-west-end-2026",
@@ -82638,6 +82901,111 @@
         "candidateCount": 92
       },
       "computedAt": "2026-08-21T22:16:46.049Z"
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "title": "Monte Cristo (The York Theatre Company)",
+      "openingDate": "2026-03-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-york-theatres-monte-cristo",
+        "https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_News/Count-on-Great-Performances-in-Monte-Cristo-Musical/10514",
+        "https://culturesauce.com/2026/03/19/monte-cristo-musical-off-broadway-review/",
+        "https://www.nytimes.com/2026/03/20/theater/monte-cristo-review-norm-lewis-sierra-boggess.html",
+        "https://www.theatermania.com/news/review-adam-jacobs-and-sierra-boggess-are-impeccably-cast-in-a-disneyfied-monte-cristo_1828924/",
+        "https://nystagereview.com/2026/03/20/monte-cristo-alexander-dumas-brought-to-the-musical-stage/",
+        "https://www.theaterscene.net/musicals/offbway/monte-cristo-2/victor-gluck/"
+      ],
+      "dirFiles": 12,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "blogcritics.org",
+          "count": 1
+        },
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 382,
+        "byReason": {
+          "non-review-host": 35,
+          "roundup-page": 2,
+          "aggregator-internal-nav": 243,
+          "not-http-url": 93,
+          "aggregator-section-root": 9
+        }
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://cititour.com/NYC_News/Count-on-Great-Performances-in-Monte-Cristo-Musical/10514",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/03/19/monte-cristo-musical-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/03/20/theater/monte-cristo-review-norm-lewis-sierra-boggess.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-adam-jacobs-and-sierra-boggess-are-impeccably-cast-in-a-disneyfied-monte-cristo_1828924/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/03/20/monte-cristo-alexander-dumas-brought-to-the-musical-stage/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/monte-cristo-2/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          }
+        ],
+        "liveCount": 6,
+        "candidateCount": 6
+      },
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "mother-play-2024",
@@ -95110,38 +95478,28 @@
         "https://variety.com/2026/legit/reviews/paranormal-activity-review-broadway-stage-experience-1236841925/",
         "https://www.vulture.com/article/paranormal-activity-play-review-broadway.html",
         "https://www.newyorktheatreguide.com/reviews/paranormal-activity-broadway-review",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=8IHRX7",
+        "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/",
+        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
         "https://didtheylikeit.com/shows/paranormal-activity/",
-        "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-        "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+        "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+        "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/",
         "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-        "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
         "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
-        "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/"
+        "https://slate.com/culture/2026/08/paranormal-activity-broadway-play-2026-horror-movie-review.html",
+        "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
+        "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/amp/",
+        "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
       ],
-      "dirFiles": 37,
-      "dirClean": 22,
-      "inReviewsJson": 22,
-      "missing": [
-        {
-          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-          "host": "goldderby.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 47,
+      "dirClean": 31,
+      "inReviewsJson": 31,
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
         {
           "host": "people.com",
           "count": 1
@@ -95149,9 +95507,61 @@
         {
           "host": "talkinbroadway.com",
           "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "thedaviddesk2.blogspot.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--william-earl.json",
+              "flag": "clean",
+              "urlInDir": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://didtheylikeit.com/shows/paranormal-activity/",
           "host": "didtheylikeit.com",
@@ -95171,9 +95581,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-          "host": "onstageblog.com",
-          "knownOutletId": "onstage-blog",
+          "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -95181,9 +95591,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "onstage-blog--christopher-peterson.json",
+              "file": "frontmezzjunkies--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity"
+              "urlInDir": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
             }
           ],
           "serpCensus": true
@@ -95205,6 +95615,24 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
+          "host": "goldderby.com",
+          "knownOutletId": "goldderby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "goldderby--ethan-alter.json",
+              "flag": "roundup",
+              "urlInDir": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -95221,7 +95649,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -95231,7 +95659,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -95241,7 +95669,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -95251,7 +95679,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -95261,7 +95689,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -95277,82 +95705,37 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 19,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
         "count": 397,
         "byReason": {
-          "non-review-host": 46,
+          "non-review-host": 48,
+          "roundup-page": 3,
           "aggregator-internal-nav": 244,
           "not-http-url": 91,
           "aggregator-section-root": 9,
-          "roundup-page": 7
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-          "host": "goldderby.com",
-          "outletId": "goldderby",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "goldderby.com",
-            "outlet": "goldderby.com",
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
+            "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "variety",
+            "outlet": "variety",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway"
-          },
-          {
-            "outletId": "chicagotribune",
-            "outlet": "chicagotribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/"
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
           },
           {
             "outletId": "dtli",
@@ -95362,11 +95745,11 @@
             "url": "https://didtheylikeit.com/shows/paranormal-activity/"
           },
           {
-            "outletId": "onstage-blog",
-            "outlet": "onstage-blog",
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity"
+            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
           },
           {
             "outletId": "nyt-theater",
@@ -95374,6 +95757,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
+          },
+          {
+            "outletId": "goldderby",
+            "outlet": "goldderby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
           }
         ],
         "suppressedMissing": [],
@@ -95429,12 +95819,6 @@
           {
             "url": "https://nypost.com/2026/08/25/entertainment/paranormal-activity-on-broadway-review-freaky-horror-show-conjures-real-terror/",
             "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
-            "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/",
-            "outletId": "nydailynews.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
@@ -95499,31 +95883,60 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=8IHRX7",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/",
+            "outletId": "joshatthemovies.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
-            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-            "outletId": "goldderby.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "url": "https://slate.com/culture/2026/08/paranormal-activity-broadway-play-2026-horror-movie-review.html",
+            "outletId": "slate.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
             "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
-            "outletId": "chicagotribune",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/amp/",
+            "outletId": "joshatthemovies.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/",
+            "outletId": "nydailynews",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/paranormal-activity/",
@@ -95533,11 +95946,11 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://www.onstageblog.com/broadway/2026/6/25/how-excited-are-you-for-paranormal-activity",
-            "outletId": "onstage-blog",
+            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+            "outletId": "frontmezzjunkies",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
             "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
@@ -95545,12 +95958,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
+            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
+            "outletId": "goldderby",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
           }
         ],
-        "liveCount": 19,
-        "candidateCount": 25
+        "liveCount": 23,
+        "candidateCount": 29
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -97376,6 +97796,249 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-16T23:13:35.325Z"
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "title": "Pre-Existing Condition",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-critics-sound-off-on-pre-existing-condition-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Marin-Irelands-PRE-EXISTING-CONDITION-20240620"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.vulture.com/article/theater-reviews-dark-noon-pre-existing-condition.html",
+        "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+        "https://www.nysun.com/article/pre-existing-condition-may-have-worked-best-if-the-playwright-marin-ireland-had-taken-a-turn-as-the-protagonist",
+        "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
+        "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html",
+        "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/"
+      ],
+      "dirFiles": 2,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nysun.com/article/pre-existing-condition-may-have-worked-best-if-the-playwright-marin-ireland-had-taken-a-turn-as-the-protagonist",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.vulture.com/article/theater-reviews-dark-noon-pre-existing-condition.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/theater-reviews-dark-noon-pre-existing-condition.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 382,
+        "byReason": {
+          "non-review-host": 35,
+          "aggregator-internal-nav": 298,
+          "not-http-url": 41,
+          "aggregator-section-root": 8
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.nysun.com/article/pre-existing-condition-may-have-worked-best-if-the-playwright-marin-ireland-had-taken-a-turn-as-the-protagonist",
+          "host": "nysun.com",
+          "outletId": "new-york-sun",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 123 chars — pattern may be missing for this outlet. Add an entry to scri"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/pre-existing-condition-may-have-worked-best-if-the-playwright-marin-ireland-had-taken-a-turn-as-the-protagonist"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/theater-reviews-dark-noon-pre-existing-condition.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/pre-existing-condition-may-have-worked-best-if-the-playwright-marin-ireland-had-taken-a-turn-as-the-protagonist",
+            "outletId": "new-york-sun",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-dark-noon-pre-existing-condition.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "pride-west-end-2026",
@@ -100364,13 +101027,13 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-13T06:23:39.338Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "ragtime-2025",
       "title": "Ragtime",
       "openingDate": "2025-10-16",
-      "status": "open",
+      "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
@@ -100407,16 +101070,9 @@
         "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
         "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
         "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
-        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
-        "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K",
-        "https://www.talkinbroadway.com/page/world/Ragtime2025.html",
-        "https://www.theatrereviews.com/broadway-review-ragtime-at-lincoln-center-theaters-vivian-beaumont-theater-currently-on/",
-        "https://theaterlife.com/ragtime-5/",
-        "https://pagesonstages.com/2026/05/15/ragtime-bway/",
-        "https://lavocedinewyork.com/en/new-york/2025/10/20/ragtime-the-musical-returns-to-broadway-as-a-grand-unflinching-pageant/"
+        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/"
       ],
-      "dirFiles": 48,
+      "dirFiles": 47,
       "dirClean": 32,
       "inReviewsJson": 32,
       "missing": [
@@ -100448,7 +101104,23 @@
           "count": 1
         },
         {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "nypost.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
           "count": 1
         }
       ],
@@ -100469,57 +101141,6 @@
               "urlInDir": "https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/"
             }
           ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K"
-            }
-          ]
-        },
-        {
-          "url": "https://theaterlife.com/ragtime-5/",
-          "host": "theaterlife.com",
-          "knownOutletId": "theater-life",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-life--samuel-l-leiter.json",
-              "flag": "clean",
-              "urlInDir": "https://theaterlife.com/ragtime-5/"
-            }
-          ]
-        },
-        {
-          "url": "https://pagesonstages.com/2026/05/15/ragtime-bway/",
-          "host": "pagesonstages.com",
-          "knownOutletId": "pages-on-stages",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "pages-on-stages--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://pagesonstages.com/2026/05/15/ragtime-bway/"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -100529,11 +101150,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 215,
+        "count": 230,
         "byReason": {
-          "not-http-url": 8,
-          "aggregator-internal-nav": 163,
-          "non-review-host": 44
+          "non-review-host": 45,
+          "aggregator-internal-nav": 165,
+          "not-http-url": 12,
+          "aggregator-section-root": 8
         }
       },
       "dedupedVariants": [],
@@ -100554,7 +101176,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149673/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
+          "reason": "⚠️  provisional outlet \"open\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
         }
       ],
       "ingestSkippedByCap": [],
@@ -100574,27 +101196,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/"
-          },
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K"
-          },
-          {
-            "outletId": "theater-life",
-            "outlet": "theater-life",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterlife.com/ragtime-5/"
-          },
-          {
-            "outletId": "pages-on-stages",
-            "outlet": "pages-on-stages",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://pagesonstages.com/2026/05/15/ragtime-bway/"
           }
         ],
         "suppressedMissing": [],
@@ -100774,30 +101375,6 @@
             "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
-            "url": "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/world/Ragtime2025.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-ragtime-at-lincoln-center-theaters-vivian-beaumont-theater-currently-on/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://lavocedinewyork.com/en/new-york/2025/10/20/ragtime-the-musical-returns-to-broadway-as-a-grand-unflinching-pageant/",
-            "outletId": "lavocedinewyork.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
             "url": "https://open.substack.com/pub/newyorknotebook/p/ragtime",
             "outletId": "open.substack.com",
             "state": "GAP",
@@ -100810,33 +101387,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YD9L3K",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://theaterlife.com/ragtime-5/",
-            "outletId": "theater-life",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2026/05/15/ragtime-bway/",
-            "outletId": "pages-on-stages",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
           }
         ],
-        "liveCount": 25,
-        "candidateCount": 30
+        "liveCount": 21,
+        "candidateCount": 23
       },
-      "computedAt": "2026-08-14T14:19:24.571Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "redwood-2025",
@@ -119874,9 +120430,9 @@
         "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
         "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
       ],
-      "dirFiles": 36,
+      "dirFiles": 33,
       "dirClean": 19,
-      "inReviewsJson": 18,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
@@ -120122,13 +120678,13 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-16T05:24:26.828Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "that-math-show-off-broadway-2026",
       "title": "That Math Show",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-06-30",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -120136,46 +120692,11 @@
         "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
       ],
       "dirFiles": 3,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--victor-gluck.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--deirdre-donovan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -120188,44 +120709,27 @@
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/"
-          },
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.theaterscene.net/multimedia/that-math-show/victor-gluck/",
-            "outletId": "theater-scene",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "theaterscene.net",
+            "state": "live",
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           },
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/6/23/the-math-show",
-            "outletId": "off-off-online",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "offoffonline.com",
+            "state": "live",
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           }
         ],
-        "liveCount": 0,
+        "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-15T03:41:36.417Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -121158,6 +121662,969 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-25T04:40:59.293Z"
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "title": "The Children",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-lucy-kirkwoods-the-children-on-broadway",
+        "https://playbill.com/article/read-reviews-for-children-of-a-lesser-god-with-joshua-jackson-and-lauren-ridloff",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THE-CHILDREN-on-Broadway-20171212"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+        "http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+        "http://ew.com/theater/2017/12/12/the-children-broadway-review/",
+        "http://www.hollywoodreporter.com/review/children-1066778",
+        "http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html",
+        "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+        "http://www.nydailynews.com/entertainment/theater-arts/children-review-doomsday-drama-opens-broadway-article-1.3691676",
+        "http://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+        "http://www.timeout.com/newyork/theater/the-children",
+        "http://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+        "https://www.amny.com/entertainment/children-of-a-lesser-god-review-1.17982634",
+        "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/",
+        "https://www.thedailybeast.com/sharpen-your-senses-to-really-hear-children-of-a-lesser-god",
+        "http://deadline.com/2018/04/children-of-a-lesser-god-broadway-review-joshua-jackson-anthony-edwards-lauren-ridloff-1202361499/",
+        "http://ew.com/theater/2018/04/11/children-of-a-lesser-god-revival-review/",
+        "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-1101877",
+        "https://www.newsday.com/entertainment/theater/children-of-a-lesser-god-1.17969715",
+        "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/04/11/theater-review---children-of-a-lesser-god-",
+        "http://www.nydailynews.com/entertainment/theater-arts/children-lesser-god-review-broadway-revival-studio-54-article-1.3927862",
+        "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html",
+        "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html",
+        "https://www.timeout.com/newyork/theater/children-of-a-lesser-god-review",
+        "https://www.thestage.co.uk/reviews/2018/children-lesser-god-review-studio-54-new-york/",
+        "http://variety.com/2018/legit/reviews/children-of-a-lesser-god-review-joshua-jackson-1202747928/",
+        "https://www.thewrap.com/children-lesser-god-theater-review-joshua-jackson-must-speak-two-broadway-debut/",
+        "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+        "https://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+        "https://www.timeout.com/newyork/theater/the-children",
+        "https://www.hollywoodreporter.com/review/children-1066778",
+        "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+        "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+        "https://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+        "http://www.ny1.com/nyc/all-boroughs/news/2017/12/13/the-children-broadway-roma-torre-review-francesca-annis-deborah-findlay-ron-cook",
+        "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224",
+        "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/"
+      ],
+      "dirFiles": 3,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "http://ew.com/theater/2017/12/12/the-children-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/children-1066778",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/children-review-doomsday-drama-opens-broadway-article-1.3691676",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/the-children",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/children-of-a-lesser-god-review-1.17982634",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews"
+        },
+        {
+          "url": "https://www.thedailybeast.com/sharpen-your-senses-to-really-hear-children-of-a-lesser-god",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "http://deadline.com/2018/04/children-of-a-lesser-god-broadway-review-joshua-jackson-anthony-edwards-lauren-ridloff-1202361499/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "http://ew.com/theater/2018/04/11/children-of-a-lesser-god-revival-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-1101877",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/children-of-a-lesser-god-1.17969715",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/04/11/theater-review---children-of-a-lesser-god-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/children-lesser-god-review-broadway-revival-studio-54-article-1.3927862",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/children-of-a-lesser-god-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2018/children-lesser-god-review-studio-54-new-york/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/children-of-a-lesser-god-review-joshua-jackson-1202747928/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/children-lesser-god-theater-review-joshua-jackson-must-speak-two-broadway-debut/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-children",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/children-1066778",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "https://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2017/12/13/the-children-broadway-roma-torre-review-francesca-annis-deborah-findlay-ron-cook",
+          "host": "ny1.com",
+          "knownOutletId": "ny1"
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 514,
+        "byReason": {
+          "non-review-host": 55,
+          "aggregator-internal-nav": 386,
+          "not-http-url": 61,
+          "aggregator-section-root": 12
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "http://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://www."
+        },
+        {
+          "url": "http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-children-off-west-end-2026: http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children is already owned by the-children-2017 — one of the two is contaminated. Inspect data/review-texts/the-children-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "http://ew.com/theater/2017/12/12/the-children-broadway-review/",
+          "host": "ew.com",
+          "outletId": "ew",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/children-1066778",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://www."
+        },
+        {
+          "url": "http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-children-off-west-end-2026: http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html is already owned by the-children-2017 — one of the two is contaminated. Inspect data/review-texts/the-children-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/children-review-doomsday-drama-opens-broadway-article-1.3691676",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews"
+        },
+        {
+          "url": "http://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/the-children",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "http://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/children-of-a-lesser-god-review-1.17982634",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/",
+          "host": "broadway.news",
+          "outletId": "broadwaynews"
+        },
+        {
+          "url": "https://www.thedailybeast.com/sharpen-your-senses-to-really-hear-children-of-a-lesser-god",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        },
+        {
+          "url": "http://deadline.com/2018/04/children-of-a-lesser-god-broadway-review-joshua-jackson-anthony-edwards-lauren-ridloff-1202361499/",
+          "host": "deadline.com",
+          "outletId": "deadline"
+        },
+        {
+          "url": "http://ew.com/theater/2018/04/11/children-of-a-lesser-god-revival-review/",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-1101877",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/children-of-a-lesser-god-1.17969715",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/04/11/theater-review---children-of-a-lesser-god-",
+          "host": "ny1.com",
+          "outletId": "ny1"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/children-lesser-god-review-broadway-revival-studio-54-article-1.3927862",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews"
+        },
+        {
+          "url": "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/children-of-a-lesser-god-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2018/children-lesser-god-review-studio-54-new-york/",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/children-of-a-lesser-god-review-joshua-jackson-1202747928/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/children-lesser-god-theater-review-joshua-jackson-must-speak-two-broadway-debut/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-children",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/children-1066778",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "https://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2017/12/13/the-children-broadway-roma-torre-review-francesca-annis-deborah-findlay-ron-cook",
+          "host": "ny1.com",
+          "outletId": "ny1"
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/",
+          "host": "variety.com",
+          "outletId": "variety"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/the-children-broadway-review-1.15429621"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://ew.com/theater/2017/12/12/the-children-broadway-review/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/children-1066778"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/children-review-doomsday-drama-opens-broadway-article-1.3691676"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/the-children"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/entertainment/children-of-a-lesser-god-review-1.17982634"
+          },
+          {
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/sharpen-your-senses-to-really-hear-children-of-a-lesser-god"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2018/04/children-of-a-lesser-god-broadway-review-joshua-jackson-anthony-edwards-lauren-ridloff-1202361499/"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://ew.com/theater/2018/04/11/children-of-a-lesser-god-revival-review/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-1101877"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/theater/children-of-a-lesser-god-1.17969715"
+          },
+          {
+            "outletId": "ny1",
+            "outlet": "ny1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/04/11/theater-review---children-of-a-lesser-god-"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/children-lesser-god-review-broadway-revival-studio-54-article-1.3927862"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/children-of-a-lesser-god-review"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/2018/children-lesser-god-review-studio-54-new-york/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2018/legit/reviews/children-of-a-lesser-god-review-joshua-jackson-1202747928/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/children-lesser-god-theater-review-joshua-jackson-must-speak-two-broadway-debut/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/entertainment/the-children-broadway-review-1.15429621"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/the-children"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/children-1066778"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/"
+          },
+          {
+            "outletId": "ny1",
+            "outlet": "ny1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.ny1.com/nyc/all-boroughs/news/2017/12/13/the-children-broadway-roma-torre-review-francesca-annis-deborah-findlay-ron-cook"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "http://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+            "outletId": "dailybeast",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://ew.com/theater/2017/12/12/the-children-broadway-review/",
+            "outletId": "ew",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/children-1066778",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/12/the-ensemble-triple-threat-of-lucy-kirkwoods-the-children.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/children-review-doomsday-drama-opens-broadway-article-1.3691676",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/the-children",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/children-of-a-lesser-god-review-1.17982634",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://broadway.news/2018/04/11/review-children-lesser-god-struggles-connect/",
+            "outletId": "broadwaynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/sharpen-your-senses-to-really-hear-children-of-a-lesser-god",
+            "outletId": "dailybeast",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://deadline.com/2018/04/children-of-a-lesser-god-broadway-review-joshua-jackson-anthony-edwards-lauren-ridloff-1202361499/",
+            "outletId": "deadline",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://ew.com/theater/2018/04/11/children-of-a-lesser-god-revival-review/",
+            "outletId": "ew",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/children-of-a-lesser-god-theater-1101877",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/children-of-a-lesser-god-1.17969715",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/04/11/theater-review---children-of-a-lesser-god-",
+            "outletId": "ny1",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/children-lesser-god-review-broadway-revival-studio-54-article-1.3927862",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/04/theater-review-listening-to-children-of-a-lesser-god.html",
+            "outletId": "vulture",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/children-of-a-lesser-god-review",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/2018/children-lesser-god-review-studio-54-new-york/",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/children-of-a-lesser-god-review-joshua-jackson-1202747928/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thewrap.com/children-lesser-god-theater-review-joshua-jackson-must-speak-two-broadway-debut/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/the-children-broadway-review-1.15429621",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-children",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/children-1066778",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
+            "outletId": "dailybeast",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.thewrap.com/the-children-broadway-review-lucy-kirkwood-nuclear-meltdown/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://www.ny1.com/nyc/all-boroughs/news/2017/12/13/the-children-broadway-roma-torre-review-francesca-annis-deborah-findlay-ron-cook",
+            "outletId": "ny1",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 16
+      },
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -126498,7 +127965,7 @@
         "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
         "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
       ],
-      "dirFiles": 1,
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -126521,11 +127988,6 @@
           "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
           "host": "variety.com",
           "knownOutletId": "variety"
-        },
-        {
-          "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
         },
         {
           "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
@@ -126603,11 +128065,6 @@
           "knownOutletId": "the-globe-and-mail"
         },
         {
-          "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
           "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
           "host": "variety.com",
           "knownOutletId": "variety"
@@ -126646,15 +128103,62 @@
           "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
           "host": "chicagonow.com",
           "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--alan-light.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--alan-light.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
+            }
+          ]
         },
         {
           "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
           "host": "nytimes.com",
-          "knownOutletId": "nytimes"
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--alan-light.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
+            }
+          ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -126662,12 +128166,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1433,
+        "count": 1438,
         "byReason": {
-          "not-http-url": 213,
           "non-review-host": 75,
           "aggregator-internal-nav": 1130,
-          "non-review-path": 15
+          "not-http-url": 213,
+          "aggregator-section-root": 20
         }
       },
       "dedupedVariants": [],
@@ -126694,7 +128198,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~155781/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
         },
         {
           "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
@@ -126706,7 +128210,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~155781/day) projects exhaustion in ~17d, before the 21d-out renewal — still u"
+          "reason": "⚠️  provisional outlet \"easyreadernews\" (not in registry) — onboard to outlet-registry.json after re"
         },
         {
           "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
@@ -126721,24 +128225,19 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
+          "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
+          "host": "variety.com",
+          "outletId": "variety",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
-          "host": "variety.com",
-          "outletId": "variety"
-        },
         {
           "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
           "host": "amny.com",
@@ -126810,11 +128309,6 @@
           "outletId": "the-globe-and-mail"
         },
         {
-          "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
           "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
           "host": "variety.com",
           "outletId": "variety"
@@ -126853,11 +128347,6 @@
           "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
           "host": "chicagonow.com",
           "outletId": "chicagonow"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
         }
       ],
       "censusVerdict": {
@@ -126890,13 +128379,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html"
           },
           {
             "outletId": "variety",
@@ -127004,13 +128486,6 @@
             "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/"
           },
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html"
-          },
-          {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
@@ -127071,6 +128546,20 @@
             "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
+            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
             "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html"
           }
         ],
@@ -127100,13 +128589,6 @@
           {
             "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
             "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
-            "outletId": "nytimes",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
@@ -127217,13 +128699,6 @@
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           },
           {
-            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
-            "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
             "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
             "outletId": "variety",
             "state": "IN_FLIGHT",
@@ -127280,6 +128755,20 @@
             "firstSeenAt": "2026-08-13T06:23:39.338Z"
           },
           {
+            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-13T06:23:39.338Z"
+          },
+          {
             "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
             "outletId": "nytimes",
             "state": "IN_FLIGHT",
@@ -127290,7 +128779,7 @@
         "liveCount": 0,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-13T06:23:39.338Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
@@ -133345,24 +134834,27 @@
       "openingDate": "2026-08-25",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-REAL-IVANOV-Opens-Off-Broadway-20260828"
+      ],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/the-real-ivanov-off-broadway-review-chekhovs-classic-gets-a-thrilling-update",
         "https://www.theatermania.com/news/review-the-real-ivanov-is-a-real-snooze_1851051/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I",
         "https://www.talkinbroadway.com/page/ob/08_24_26.html",
         "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/",
         "https://culturesauce.com/chekhov-real-ivanov-off-broadway-review/",
         "https://theaterscene.com/reviews/the-real-ivanov/",
-        "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
         "https://nystagereview.com/2026/08/25/the-real-ivanov-diary-of-a-loser/",
-        "https://www.newyorktheatreguide.com/show/47351-the-real-ivanov",
+        "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
         "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
+        "https://www.newyorktheatreguide.com/show/47351-the-real-ivanov",
         "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer",
-        "https://twi-ny.com/tag/the-real-ivanov/"
+        "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/attachment/the-real-ivanov-08cruss-rowland/"
       ],
-      "dirFiles": 15,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirFiles": 17,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
@@ -133377,15 +134869,19 @@
           "count": 1
         },
         {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
           "host": "nysun.com",
           "count": 1
         },
         {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
           "count": 1
         }
       ],
@@ -133432,7 +134928,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -133442,8 +134938,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -133453,7 +134949,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -133463,21 +134959,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 22,
         "byReason": {
-          "non-review-host": 15,
-          "venue-production-page": 1,
-          "aggregator-internal-nav": 2
+          "non-review-host": 16,
+          "roundup-page": 3,
+          "venue-production-page": 2,
+          "aggregator-internal-nav": 1
         }
       },
       "dedupedVariants": [],
@@ -133529,6 +135026,12 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
             "url": "https://www.talkinbroadway.com/page/ob/08_24_26.html",
             "outletId": "talkinbroadway.com",
             "state": "live",
@@ -133553,14 +135056,14 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
-            "outletId": "joshatthemovies.com",
+            "url": "https://nystagereview.com/2026/08/25/the-real-ivanov-diary-of-a-loser/",
+            "outletId": "nystagereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://nystagereview.com/2026/08/25/the-real-ivanov-diary-of-a-loser/",
-            "outletId": "nystagereview.com",
+            "url": "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
+            "outletId": "joshatthemovies.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
@@ -133571,10 +135074,10 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://twi-ny.com/tag/the-real-ivanov/",
-            "outletId": "twi-ny.com",
+            "url": "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/attachment/the-real-ivanov-08cruss-rowland/",
+            "outletId": "exeuntnyc.com",
             "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
@@ -133594,7 +135097,7 @@
         "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "the-receptionist-off-broadway-2026",
@@ -134648,7 +136151,7 @@
       "showId": "the-saviors-off-broadway-2026",
       "title": "The Saviors",
       "openingDate": "2026-07-27",
-      "status": "open",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
@@ -134668,23 +136171,12 @@
         "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJ1Z5F",
         "https://www.talkinbroadway.com/page/ob/07_27_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
-        "https://newyorktheater.me/2026/08/01/the-saviors/",
-        "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
-        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
-        "https://www.theatermania.com/news/crystal-finn-ivan-howe-julius-rinzel-and-stanley-simons-cast-in-the-saviors-off-broadway_1836112/"
+        "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/"
       ],
       "dirFiles": 30,
-      "dirClean": 20,
-      "inReviewsJson": 20,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "dirClean": 21,
+      "inReviewsJson": 21,
+      "missing": [],
       "dirOnly": [
         {
           "host": "acsntn.substack.com",
@@ -134692,6 +136184,10 @@
         },
         {
           "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
           "count": 1
         },
         {
@@ -134709,27 +136205,17 @@
         {
           "host": "theaterpizzazz.com",
           "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--melissa-rose-bernardo.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
           "host": "theatermania.com",
@@ -134745,8 +136231,7 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
@@ -134760,147 +136245,31 @@
           "dirFlags": [
             {
               "file": "talkinbroadway--howard-miller.json",
-              "flag": "wrongShow",
+              "flag": "wrongProduction",
               "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
             }
           ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/crystal-finn-ivan-howe-julius-rinzel-and-stanley-simons-cast-in-the-saviors-off-broadway_1836112/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Saviors\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Saviors\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Saviors\" review atlantic",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Saviors\" Blain-Cruz review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Saviors Atlantic Stage 2 review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Saviors Atlantic Stage 2 review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Saviors Atlantic Stage 2 review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 406,
+        "count": 373,
         "byReason": {
-          "aggregator-internal-nav": 270,
-          "not-http-url": 81,
-          "non-review-host": 49,
-          "non-review-path": 3,
-          "roundup-page": 2,
-          "ticketing-reseller": 1
+          "non-review-host": 34,
+          "aggregator-internal-nav": 247,
+          "not-http-url": 83,
+          "aggregator-section-root": 9
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~149859/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/"
-          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -134914,13 +136283,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/crystal-finn-ivan-howe-julius-rinzel-and-stanley-simons-cast-in-the-saviors-off-broadway_1836112/"
           }
         ],
         "suppressedMissing": [],
@@ -134946,6 +136308,12 @@
           {
             "url": "https://thefrontrowcenter.com/2026/07/the-saviors/",
             "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T14:29:48.314Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
+            "outletId": "nystagereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
@@ -134992,38 +136360,6 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
-            "url": "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T05:11:59.987Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/08/01/the-saviors/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T21:37:11.248Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T14:29:48.314Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T21:37:11.248Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T14:29:48.314Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -135036,19 +136372,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/crystal-finn-ivan-howe-julius-rinzel-and-stanley-simons-cast-in-the-saviors-off-broadway_1836112/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 18
+        "liveCount": 11,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-14T15:47:11.265Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -146969,8 +148298,8 @@
         "https://youtu.be/iY5YMshpCcw"
       ],
       "dirFiles": 56,
-      "dirClean": 24,
-      "inReviewsJson": 24,
+      "dirClean": 25,
+      "inReviewsJson": 25,
       "missing": [
         {
           "url": "https://youtu.be/iY5YMshpCcw",
@@ -147065,7 +148394,7 @@
         },
         {
           "host": "whatsonstage.com",
-          "count": 1
+          "count": 2
         }
       ],
       "flaggedMisses": [],
@@ -147091,7 +148420,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~145715/day) projects exhaustion in ~17d, before the 20d-out renewal — still u"
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -147119,7 +148448,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-14T01:02:05.257Z"
+      "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
       "showId": "water-for-elephants-2024",

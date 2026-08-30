@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-08-29T15:02:46.119Z",
+  "generatedAt": "2026-08-30T07:41:14.170Z",
   "windowDays": 45,
-  "showsScanned": 65,
+  "showsScanned": 62,
   "gaps": [
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "title": "Trainspotting the musical",
+      "openingDate": "2026-07-22",
+      "file": "broadwayworld--team-bww.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "rejected-unscoreable",
+      "url": "https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-07-23T13:11:36.452Z",
+      "fileAgeHours": 906.4935930555556,
+      "gapSeenAt": "2026-08-30T07:41:14.170Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "disruption-off-broadway-2026",
       "title": "Disruption",
@@ -16,9 +33,43 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 580.2957486111111,
+      "fileAgeHours": 596.9368269444444,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 248.67393694444445
+      "nonTerminalAgeHours": 265.3150622222222
+    },
+    {
+      "showId": "marlise-off-broadway-2026",
+      "title": "Marlise",
+      "openingDate": "2026-08-13",
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "url": "https://www.broadwayworld.com/off-off-broadway/regional/Marlise-4396485",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
+      "firstSeen": "2026-08-13T09:30:35.424Z",
+      "fileAgeHours": 406.1773058333333,
+      "gapSeenAt": "2026-08-30T07:41:14.170Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "benevolent-off-broadway-2026",
+      "title": "Benevolent",
+      "openingDate": "2026-08-14",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "rejected-unscoreable",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669",
+      "recovery": null,
+      "recoveryCount": 1,
+      "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-28T17:16:41.421Z",
+      "fileAgeHours": 38.40909666666667,
+      "gapSeenAt": "2026-08-30T07:41:14.170Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
