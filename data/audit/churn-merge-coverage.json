@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-30T03:49:29.423Z",
+    "generatedAt": "2026-08-30T10:03:49.097Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,36 +9,56 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 1,
+    "exemptCount": 6,
     "coveredCount": 10,
-    "highChurnTracked": 11
+    "highChurnTracked": 16
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 49
+      "churn": 60
+    },
+    {
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 788,
+      "churn": 840,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 763,
+      "churn": 808,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 279,
+      "churn": 297,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 261,
+      "churn": 280,
       "mergeAttr": "union"
     },
     {
@@ -48,27 +68,27 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 93,
+      "churn": 101,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 75,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 55,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 55,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 55,
+      "churn": 57,
       "mergeAttr": "ours"
     }
   ]
