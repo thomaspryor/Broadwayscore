@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-30T10:03:49.097Z",
+    "generatedAt": "2026-08-30T11:11:58.811Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,46 +9,62 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 6,
+    "exemptCount": 10,
     "coveredCount": 10,
-    "highChurnTracked": 16
+    "highChurnTracked": 20
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 60
+      "churn": 62
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 31
+      "churn": 32
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 30
+      "churn": 31
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 30
+      "churn": 31
     },
     {
       "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 30
+      "churn": 31
     },
     {
       "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/beetlejuice-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/mass-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
       "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 840,
+      "churn": 849,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 808,
+      "churn": 816,
       "mergeAttr": "ours"
     },
     {
@@ -58,37 +74,37 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 280,
+      "churn": 279,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 135,
+      "churn": 136,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 101,
+      "churn": 103,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 57,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 57,
+      "churn": 58,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 57,
+      "churn": 58,
       "mergeAttr": "ours"
     }
   ]

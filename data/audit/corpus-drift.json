@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-30T10:04:08.202Z",
+    "generatedAt": "2026-08-30T11:12:23.095Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -36,7 +36,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "audit-pull-quotes: 20183 reviews across 2934 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
+      "detail": "audit-pull-quotes: 20182 reviews across 2934 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
     },
     {
       "name": "regex-fp",
@@ -81,7 +81,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 6 exempt, 10 covered\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 10 exempt, 10 covered\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -171,7 +171,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 10 stuck needsRescore flag(s) (non-scoreable) of 238 flagged; threshold --max=25\n     5  late-star-anchor\n     3  wrongProduction false-positive cleared (anticipatory grace re-evaluated)\n     1  fullText added after excerpt-based scoring\n     1  orphan-unscored-wp-cleared-2026-04-29\n    - burlesque-west-end-2026/west-end-best-friend--laura-harris.json  [late-star-anchor]\n    - china-doll-2015/timeout--david-cote.json  [wrongProduction false-positive cleared (anticipatory grace re-evaluated)]\n    - mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json  [late-star-anchor]\n    - mj-the-musical-west-end-2024/timeout-london--unknown.json  [fullText added after excerpt-based scoring]\n    - something-rotten-2015/wsj--terry-teachout.json  [wrongProduction false-positive cleared (anticipatory grace re-evaluated)]\n    - the-encounter-2016/wsj--terry-teachout.json  [wrongProduction false-positive cleared (anticipatory grace re-evaluated)]\n    - the-homecoming-2007/london-theatre--matt-wolf.json  [late-star-anchor]\n    - the-mousetrap-west-end-2021/guardian--arifa-akbar.json  [late-star-anchor]\n    - the-spy-who-came-in-from-the-cold-west-end-2025/guardian--mark-lawson.json  [late-star-anchor]\n    - time-stands-still-2010/stageandcinema--victoria-myers.json  [orphan-unscored-wp-cleared-2026-04-29]"
+      "detail": "[stuck-rescore] 6 stuck needsRescore flag(s) (non-scoreable) of 234 flagged; threshold --max=25\n     5  late-star-anchor\n     1  orphan-unscored-wp-cleared-2026-04-29\n    - burlesque-west-end-2026/west-end-best-friend--laura-harris.json  [late-star-anchor]\n    - mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json  [late-star-anchor]\n    - the-homecoming-2007/london-theatre--matt-wolf.json  [late-star-anchor]\n    - the-mousetrap-west-end-2021/guardian--arifa-akbar.json  [late-star-anchor]\n    - the-spy-who-came-in-from-the-cold-west-end-2025/guardian--mark-lawson.json  [late-star-anchor]\n    - time-stands-still-2010/stageandcinema--victoria-myers.json  [orphan-unscored-wp-cleared-2026-04-29]"
     },
     {
       "name": "stale-score-input",
