@@ -56,6 +56,28 @@ test('candidate-dedup findExistingMatch: still finds a genuine same-venue duplic
   assert.equal(match?.match.id, 'real-dup');
 });
 
+// ── HTML-entity encoding (2026-08-30) ────────────────────────────────────────
+// Scraped venue strings arrive entity-encoded: Playbill returns
+// "St. Ann&#039;s Warehouse" where shows.json holds "St. Ann's Warehouse".
+// Neither aliasCanonical's regexes nor normalizeVenueName's punctuation
+// stripping treat "&#039;" as an apostrophe, so the encoded side missed the
+// VENUE_ALIASES hit the plain side made and venuesMatch returned false for the
+// SAME venue — running Data Validation red on main
+// (kramerfauci-st-anns-off-broadway-2026).
+test('venuesMatch: an entity-encoded apostrophe matches its decoded form', () => {
+  assert.equal(venuesMatch("St. Ann's Warehouse", 'St. Ann&#039;s Warehouse'), true);
+  assert.equal(venuesMatch('St. Ann&#039;s Warehouse', "St. Ann's Warehouse"), true);
+  assert.equal(venuesMatch('St. Ann&#039;s Warehouse', 'St. Ann&#039;s Warehouse'), true);
+});
+
+test('venuesMatch: entity decoding does NOT make genuinely different venues match', () => {
+  // The decode must not WIDEN matching — these are the BRO-243 pairs this
+  // suite exists to keep false.
+  assert.equal(venuesMatch('The Duke on 42nd Street', 'The Public Theater'), false);
+  assert.equal(venuesMatch('Prince of Wales Theatre', 'Prince Edward Theatre'), false);
+  assert.equal(venuesMatch('St. Ann&#039;s Warehouse', 'The Public Theater'), false);
+});
+
 test('we-historical-corroboration recordsAgree: venue collision on a shared leading word does not count as agreement', () => {
   const a = { title: 'Some Fictional Show', venue: 'Prince of Wales Theatre', openingDate: '2024-01-01' };
   const b = { title: 'Some Fictional Show', venue: 'Prince Edward Theatre', openingDate: '2024-01-01' };
