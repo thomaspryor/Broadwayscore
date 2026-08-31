@@ -187,15 +187,15 @@ jobs:
           # The alert ledger and digest queue are part of this job's output:
           # routeAlert writes cooldown state there, and leaving them
           # uncommitted would re-queue the same digest line every single day.
-          # Guarded per-file (same shape as audit-aggregator-gap.yml): an
-          # unguarded `git add` on a path that is ever absent exits 1 and
-          # would drop the DMARC state this run just computed.
-          for f in data/audit/dmarc-summary.json \
-                   data/audit/dmarc-report-ledger.jsonl \
-                   data/audit/alert-ledger.json \
-                   data/audit/alert-digest-queue.json; do
-            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
-          done
+          # git-add-existing.sh stages each path independently: a plain
+          # `git add A B C` is atomic on pathspec-match failure, so one absent
+          # file (a first run, a run that routed no alert) would stage NONE of
+          # them and silently drop the DMARC state this run just computed.
+          bash scripts/lib/git-add-existing.sh \
+            data/audit/dmarc-summary.json \
+            data/audit/dmarc-report-ledger.jsonl \
+            data/audit/alert-ledger.json \
+            data/audit/alert-digest-queue.json
 
           if git diff --staged --quiet; then
             echo "No DMARC state changes."
