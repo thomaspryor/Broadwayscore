@@ -131,8 +131,34 @@ printf '{"runs":[1]}\n' > "$TMP/seed/data/audit/health-check-history.json"
 gitc "$TMP/seed" add -A; gitc "$TMP/seed" commit -q -m seed
 gitc "$TMP/seed" branch -M main; gitc "$TMP/seed" push -q "$TMP/origin.git" main
 
-git clone -q "file://$TMP/origin.git" "$TMP/runner"
+# --branch main is explicit (BRO-2597): the bare origin's HEAD is never set,
+# so without it the clone picks whatever init.defaultBranch the host
+# configures — CI and this Mac disagree, and when the host's default isn't
+# "main" the clone can't check out anything at all ("remote HEAD refers to
+# nonexistent ref"), leaving $TMP/runner with no working tree. Same fix as
+# push-with-retry.shallow-retry-escalation.test.sh's sibling clone.
+git clone -q --branch main "file://$TMP/origin.git" "$TMP/runner"
 gitc "$TMP/runner" config user.email t@t.t; gitc "$TMP/runner" config user.name t
+
+# PRECONDITION: the runner clone MUST actually have a working tree with the
+# seeded fixture files. If this ever regresses, the writes below don't fail
+# loudly at their own site — line 140/166 do `printf > path` (redirection
+# creates the file if the DIRECTORY exists, so a missing directory fails
+# there) but a missing/empty runner would silently produce empty commits.
+# HEAD stays unborn on "master" so the disqualifier's own precondition
+# collapses, and the failure surfaces as a confusing "the disqualifier did
+# not fire" many lines later instead of "the fixture was never built" here.
+for f in "$STRANDED_PATH" "data/audit/health-check-history.json"; do
+  if [ ! -s "$TMP/runner/$f" ]; then
+    echo "FAIL[A-fixture]: $TMP/runner/$f is missing or empty after cloning $TMP/origin.git —"
+    echo "         the runner clone did not check out a working tree (see any 'remote HEAD"
+    echo "         refers to nonexistent ref' warning above). Refusing to run PART A/B against"
+    echo "         an unbuilt fixture, which would misreport as the disqualifier failing to fire."
+    echo
+    echo "=== push-with-retry.stranded-commit-cascade.test.sh FAILED ==="
+    exit 1
+  fi
+done
 
 # A "Commit health check + triage data"-shaped step: it stages a genuinely
 # multi-writer, NOT-apiFallbackSafe path. Its own push-with-retry.sh call
