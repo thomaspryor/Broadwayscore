@@ -22,12 +22,18 @@ const {
   loadTitleExcludeFamilies,
   scanTitleFamilies,
   evaluateTitleFamilies,
+  OPERA_TITLE_EXCLUDE_FAMILIES,
+  OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  OPERA_TITLE_EXCLUDE_ALLOWLIST,
+  loadOperaTitleExcludeFamilies,
+  loadOperaTitleCorpus,
 } = require('./audit-regex-patterns.js');
 const {
   NON_THEATER_PATTERNS,
   WE_EXTRA_PATTERNS,
   VENUE_PAGE_EXCLUDE_PATTERNS,
 } = require('./discover-new-shows.js');
+const { NON_OPERA_TITLE_PATTERNS, isNonOpera } = require('./discover-opera-shows.js');
 
 test('discover-new-shows.js exports all three title exclude families', () => {
   assert.deepEqual(TITLE_EXCLUDE_FAMILIES, [
@@ -100,4 +106,55 @@ test('BRO-181 FP fixes: known-collision patterns are absent, real titles are not
   const violations = evaluateTitleFamilies({ counts });
   assert.equal(violations.length, 0,
     `expected no violations against known-real titles, got: ${JSON.stringify(violations)}`);
+});
+
+// BRO-2315: extends the same audit to discover-opera-shows.js's
+// NON_OPERA_TITLE_PATTERNS (isNonOpera()), scanned against a real opera-only
+// corpus rather than the general theatre-wide title list.
+
+test('discover-opera-shows.js exports NON_OPERA_TITLE_PATTERNS and isNonOpera without side effects', () => {
+  // Requiring the module must not trigger main()'s scrape/write pipeline —
+  // if it did, this require() call itself would hang or throw on missing
+  // network/credentials rather than returning synchronously.
+  assert.ok(Array.isArray(NON_OPERA_TITLE_PATTERNS) && NON_OPERA_TITLE_PATTERNS.length > 0);
+  assert.equal(typeof isNonOpera, 'function');
+  assert.equal(isNonOpera('La Bohème'), false);
+  assert.equal(isNonOpera('Met Orchestra Concert'), true);
+});
+
+test('OPERA_TITLE_EXCLUDE_FAMILIES points at NON_OPERA_TITLE_PATTERNS, default allowance is 0', () => {
+  assert.deepEqual(OPERA_TITLE_EXCLUDE_FAMILIES, ['NON_OPERA_TITLE_PATTERNS']);
+  assert.equal(OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS, 0);
+  const families = loadOperaTitleExcludeFamilies();
+  assert.ok(Array.isArray(families.NON_OPERA_TITLE_PATTERNS) && families.NON_OPERA_TITLE_PATTERNS.length > 0);
+});
+
+test('loadOperaTitleCorpus returns a real, non-empty opera-only title corpus', () => {
+  const titles = loadOperaTitleCorpus();
+  assert.ok(Array.isArray(titles) && titles.length > 0, 'expected at least one tracked opera title');
+  assert.ok(titles.every(t => typeof t === 'string' && t.length > 0));
+});
+
+test('NON_OPERA_TITLE_PATTERNS currently produces no hits against the real tracked opera corpus', () => {
+  const families = loadOperaTitleExcludeFamilies();
+  const titles = loadOperaTitleCorpus();
+  const counts = scanTitleFamilies({ families, titles });
+  const violations = evaluateTitleFamilies({
+    counts, allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  });
+  assert.equal(violations.length, 0,
+    `expected no violations against tracked opera titles, got: ${JSON.stringify(violations)}`);
+});
+
+test('scanTitleFamilies + evaluateTitleFamilies flag a bare opera-family substring against a synthetic real title', () => {
+  // Pins the collision risk called out in BRO-2315: 'jubilee' and 'mahler' are
+  // generic enough to collide with a legitimately-titled opera.
+  const families = { NON_OPERA_TITLE_PATTERNS };
+  const syntheticTitles = ['Jubilee', 'Mahler: A Life in Song', 'La Bohème'];
+  const counts = scanTitleFamilies({ families, titles: syntheticTitles });
+  const violations = evaluateTitleFamilies({
+    counts, allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  });
+  assert.ok(violations.length >= 2,
+    `expected 'jubilee' and 'mahler' to flag against synthetic collision titles, got: ${JSON.stringify(violations)}`);
 });
