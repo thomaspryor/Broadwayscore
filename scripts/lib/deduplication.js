@@ -59,6 +59,25 @@ function aliasCanonical(venue) {
  */
 function venuesMatch(a, b) {
   if (!a || !b) return false;
+  // Decode HTML entities on BOTH sides first (2026-08-30). Scraped venue
+  // strings arrive entity-encoded — Playbill returns "St. Ann&#039;s
+  // Warehouse" where shows.json holds "St. Ann's Warehouse". Neither
+  // aliasCanonical()'s regexes nor normalizeVenueName()'s punctuation
+  // stripping treat "&#039;" as an apostrophe, so the encoded side missed the
+  // VENUE_ALIASES hit the plain side made and the pair compared UNEQUAL.
+  // That reported the same venue as a mismatch and ran Data Validation red on
+  // main (kramerfauci-st-anns-off-broadway-2026).
+  //
+  // Decoded here rather than inside normalizeVenueName because aliasCanonical
+  // runs FIRST and would still see the raw entity — and because this keeps the
+  // change to the venue-equality DECISION, not to the shared normalizer that
+  // 19 other modules import.
+  //
+  // Lazy require: this module is imported by much of the scoring pipeline and
+  // a top-level require of text-cleaning here risks a cycle.
+  const { decodeHtmlEntities } = require('./text-cleaning.js');
+  a = decodeHtmlEntities(a);
+  b = decodeHtmlEntities(b);
   const aliasA = aliasCanonical(a);
   const aliasB = aliasCanonical(b);
   if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
