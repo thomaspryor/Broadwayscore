@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T05:05:44.144Z",
+  "generatedAt": "2026-08-31T02:43:12.578Z",
   "filter": {
-    "show": "school-girls-or-the-african-mean-girls-play-2026"
+    "show": "othello-bedlam-off-broadway-2026"
   },
   "counts": {
     "total": 1,
@@ -11,36 +11,48 @@
   },
   "results": [
     {
-      "id": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "venue": "Samuel J. Friedman Theatre",
+      "id": "othello-bedlam-off-broadway-2026",
+      "title": "Othello (Bedlam)",
+      "venue": "West End Theatre",
       "result": "match",
-      "playbillUrl": "https://playbill.com/production/school-girls-or-the-african-mean-girls-play-broadway-samuel-j-friedman-theatre-2026",
+      "playbillUrl": "https://playbill.com/production/othello-off-broadway-the-west-end-theatre-2026",
       "parsed": {
         "titleParse": {
-          "rawTitle": "School Girls; Or, The African Mean Girls Play",
-          "market": "Broadway",
-          "venue": "Samuel J. Friedman Theatre",
+          "rawTitle": "Othello",
+          "market": "Off-Broadway",
+          "venue": "The West End Theatre",
           "year": 2026
         },
         "dates": {
-          "firstPreview": "2026-09-08",
-          "openingDate": "2026-09-28",
-          "closingDate": null
+          "firstPreview": "2026-04-19",
+          "openingDate": "2026-05-10",
+          "closingDate": "2026-05-31"
         },
         "tagLine": {
           "tags": [
-            "Broadway",
+            "Off-Broadway",
             "Play",
-            "One Act",
             "Revival"
           ],
-          "market": "Broadway",
+          "market": "Off-Broadway",
           "showType": "play",
-          "revivalStatus": "revival"
+          "revivalStatus": "original"
         }
       },
-      "mismatches": []
+      "mismatches": [],
+      "explainedByPriorRun": [
+        {
+          "field": "closingDate",
+          "shows": "2026-11-29",
+          "playbill": "2026-05-31",
+          "deltaDays": 182,
+          "priorRun": {
+            "openingDate": "2026-05-10",
+            "closingDate": "2026-05-31",
+            "venue": "West End Theatre"
+          }
+        }
+      ]
     }
   ]
 }
