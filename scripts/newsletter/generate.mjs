@@ -100,14 +100,21 @@ const _stateOverride = (process.env.NEWSLETTER_STATE_PATH || '').trim();
 let STATE_PATH = path.join(repo, 'data/newsletter-state.json');
 if (_stateOverride) {
   const resolved = path.resolve(_stateOverride);
-  const tmpRoot = fs.realpathSync(os.tmpdir());
-  const resolvedRoot = path.resolve(resolved, '..');
-  let realParent = resolvedRoot;
-  try { realParent = fs.realpathSync(resolvedRoot); } catch { /* parent may not exist yet — fall through to the prefix check */ }
-  if (realParent === tmpRoot || realParent.startsWith(tmpRoot + path.sep)) {
+  // Compare against BOTH the raw and the realpath'd temp root. On macOS
+  // os.tmpdir() is /var/folders/... while its realpath is /private/var/... —
+  // checking only one side rejects a legitimate sandbox whenever the two
+  // spellings don't line up, which is exactly what happens when the parent dir
+  // doesn't exist yet and realpathSync throws (gpt-5.4-mini review, 2026-08-31).
+  const tmpRoots = new Set([os.tmpdir()]);
+  try { tmpRoots.add(fs.realpathSync(os.tmpdir())); } catch { /* raw value is the only root we have */ }
+  const parent = path.resolve(resolved, '..');
+  const candidates = new Set([parent]);
+  try { candidates.add(fs.realpathSync(parent)); } catch { /* parent may not exist yet — the raw form still gets checked */ }
+  const underTmp = [...candidates].some((c) => [...tmpRoots].some((r) => c === r || c.startsWith(r + path.sep)));
+  if (underTmp) {
     STATE_PATH = resolved;
   } else {
-    process.stderr.write(`[newsletter] ignoring NEWSLETTER_STATE_PATH=${_stateOverride} — only a path under ${tmpRoot} is honoured; using ${STATE_PATH}\n`);
+    process.stderr.write(`[newsletter] ignoring NEWSLETTER_STATE_PATH=${_stateOverride} — only a path under ${os.tmpdir()} is honoured; using ${STATE_PATH}\n`);
   }
 }
 let _priorState = { issues: [] };

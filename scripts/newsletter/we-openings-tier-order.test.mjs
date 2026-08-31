@@ -31,8 +31,13 @@ const repoRoot = path.resolve(__dirname, '..', '..');
 // concurrently, so sharing that one tracked path made these files race each
 // other, and a local run left the checkout dirty. One copy per file (not per
 // run) keeps the cross-run sharing these tests already had.
-const STATE_SANDBOX = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-state-sandbox-')), 'newsletter-state.json');
+const STATE_SANDBOX_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-state-sandbox-'));
+const STATE_SANDBOX = path.join(STATE_SANDBOX_DIR, 'newsletter-state.json');
 fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX);
+// Module scope, so an `after()` hook would not run if the file aborts before
+// the test runner takes over. 'exit' fires on a normal end AND on an early
+// throw, which is what leaves these behind on a CI runner otherwise.
+process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
 
 const WEEK_START = '2026-08-17';
 const WEST_END_SHOW = { id: 'abigails-party-west-end-2026', title: "Abigail’s Party" };

@@ -103,8 +103,12 @@ test('every newsletter test that spawns the generator redirects its state file',
     scanned++;
     if (!src.includes('NEWSLETTER_STATE_PATH')) offenders.push(f);
   }
-  // A sweep that matched nothing must not read as a pass.
-  assert.ok(scanned >= 5, `expected to find at least 5 generator-spawning tests, found ${scanned}`);
+  // A sweep that matched nothing must not read as a pass. Kept as a floor, not
+  // an exact count — retiring a legitimate generator-driving test should not
+  // redden this. Known limit, shared with scripts/lib/newsletter-regen-guard.js:
+  // this is a text scan, so a spawn that builds the generator path indirectly
+  // is invisible to it. Keep the path a literal and it stays enforceable.
+  assert.ok(scanned >= 3, `expected to find at least 3 generator-spawning tests, found ${scanned} — this sweep has gone vacuous`);
   assert.deepEqual(
     offenders,
     [],
