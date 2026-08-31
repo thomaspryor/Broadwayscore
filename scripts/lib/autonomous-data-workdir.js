@@ -110,6 +110,31 @@ function showIdsFromReviewTextsDiff(files) {
   return [...ids];
 }
 
+// Show id(s) added by a missing-show diff. Unlike review-texts (one dir per
+// show), a missing-show diff touches a single file (shows.json) — the
+// changed-file list can't tell us which show was added, so this diffs the
+// JSON content itself: ids present in the branch's current shows.json but
+// absent from origin/main's version (BRO-2226 — the Tier-2 verifier was
+// running --all-provisional, re-validating every one of the ~40 provisional
+// shows against Playbill on EVERY missing-show card attempt instead of just
+// the one show that card added, making validate-show-venue.js one of the
+// top Bright Data consumers on every day in the ledger for no correctness
+// benefit over --show=<addedId>).
+function showIdsFromShowsJsonDiff(wtPath) {
+  const parseIds = (text) => {
+    try {
+      const data = JSON.parse(text);
+      const arr = Array.isArray(data) ? data : (data.shows || []);
+      return new Set(arr.map((s) => s && s.id).filter(Boolean));
+    } catch { return new Set(); }
+  };
+  let before = new Set();
+  try { before = parseIds(git(wtPath, ['show', 'origin/main:shows.json'])); } catch { /* no prior file */ }
+  let after = new Set();
+  try { after = parseIds(fs.readFileSync(path.join(wtPath, 'shows.json'), 'utf8')); } catch { /* unreadable */ }
+  return [...after].filter((id) => !before.has(id));
+}
+
 module.exports = {
   scorecardDataRoot,
   reviewTextsRoot,
@@ -117,5 +142,6 @@ module.exports = {
   removeDataWorkdir,
   pushDataBranch,
   showIdsFromReviewTextsDiff,
+  showIdsFromShowsJsonDiff,
   primaryWorktree,
 };

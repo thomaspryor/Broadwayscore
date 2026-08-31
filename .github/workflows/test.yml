@@ -316,6 +316,12 @@ on:
       # cheap-tier fix from #756 above. Test registered in
       # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI.
       - 'scripts/tests/bww-roundup-yield-provenance.test.mjs'
+      # BRO-2226: locks in the missing-show Tier-2 verifier targeting fix
+      # (validate-show-venue --show=<addedId> instead of --all-provisional)
+      # + the brightdataDailyUsd threshold decision. Deps are all
+      # scripts/lib/** (already globbed above) — path-listed so a solo edit
+      # to this test alone still triggers CI.
+      - 'scripts/tests/brightdata-daily-spend.test.mjs'
       # Task #692: summarizeBwwRoundupMisses() (in the file above) + its digest
       # formatter bwwRoundupMissBacklogResults() (scripts/health-check.js, already
       # path-listed elsewhere). Test lives in tests/unit/ (node --test batch, not
