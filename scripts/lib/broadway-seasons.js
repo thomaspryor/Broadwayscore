@@ -81,10 +81,13 @@ function getSeasonDates(season) {
  * @returns {boolean}
  */
 function isDateInSeason(dateInput, season) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-  const { start, end } = getSeasonDates(season);
-
-  return date >= start && date <= end;
+  // Delegate to getSeasonForDate + string equality rather than comparing
+  // Date objects across representations: dateInput (parsed as UTC when it's
+  // a "YYYY-MM-DD" string) vs getSeasonDates' boundaries (constructed in
+  // local time) disagreed by up to a day at the season boundary itself —
+  // isDateInSeason('2026-07-01', '2026-2027') returned false (test caught
+  // this, 2026-08-30, while adding coverage for the getSeasonForDate fix).
+  return getSeasonForDate(dateInput) === season;
 }
 
 /**
