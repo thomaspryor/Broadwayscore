@@ -41,11 +41,12 @@ concurrency:
   group: finance-ingest
   cancel-in-progress: false
 
+# Workflow default stays read-only; only the dmarc job is granted write (see
+# its own permissions: block). Granting write at the workflow level would have
+# handed the pre-existing finance job — which installs an ad-hoc npm dependency
+# and needs no write access at all — a token it never had before.
 permissions:
-  # write (was read) for the dmarc job, which commits data/audit/dmarc-*.json
-  # to THIS repo. The finance job still writes nothing here — its ledgers go to
-  # the private data repo via REVIEW_TEXTS_TOKEN, never to this checkout.
-  contents: write
+  contents: read
 
 jobs:
   ingest:
@@ -137,6 +138,10 @@ jobs:
   dmarc:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Job-scoped: this job commits data/audit/ back to this repo; the finance
+    # job above stays read-only.
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -180,12 +185,17 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # The alert ledger and digest queue are part of this job's output:
-          # routeAlert writes cooldown state there, and leaving it uncommitted
-          # would re-queue the same digest line every single day.
-          git add data/audit/dmarc-summary.json \
-                  data/audit/dmarc-report-ledger.jsonl \
-                  data/audit/alert-ledger.json \
-                  data/audit/alert-digest-queue.json
+          # routeAlert writes cooldown state there, and leaving them
+          # uncommitted would re-queue the same digest line every single day.
+          # Guarded per-file (same shape as audit-aggregator-gap.yml): an
+          # unguarded `git add` on a path that is ever absent exits 1 and
+          # would drop the DMARC state this run just computed.
+          for f in data/audit/dmarc-summary.json \
+                   data/audit/dmarc-report-ledger.jsonl \
+                   data/audit/alert-ledger.json \
+                   data/audit/alert-digest-queue.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
 
           if git diff --staged --quiet; then
             echo "No DMARC state changes."

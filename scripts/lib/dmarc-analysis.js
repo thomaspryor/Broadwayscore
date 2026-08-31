@@ -11,7 +11,7 @@
 // Pure functions only — no fs, no network, no clock except an injected `now`,
 // so the findings are deterministic and testable.
 //
-// Tested by scripts/tests/dmarc-analysis.test.mjs (CLAUDE.md rule 15 — the
+// Tested by scripts/lib/dmarc-analysis.test.mjs (CLAUDE.md rule 15 — the
 // test require()s these functions, it does not restate them).
 
 'use strict';
@@ -34,19 +34,69 @@ const DEFAULTS = {
   staleAfterDays: 3,
 };
 
+/** True when `domain` is the policy domain itself or a subdomain of it. */
+function isUnderDomain(domain, policyDomain) {
+  if (!domain || !policyDomain) return false;
+  return domain === policyDomain || domain.endsWith(`.${policyDomain}`);
+}
+
 /**
  * Known-good sending infrastructure, identified by the authenticated domain
  * rather than by IP. IP allowlists rot the moment SES or ImprovMX renumbers;
  * the DKIM d= / SPF domain is the thing that is actually asserted and checked.
+ *
+ * The send.* and improvmx checks are anchored to OUR domain on purpose: an
+ * unanchored /send\./ would label a spoofer authenticating as
+ * send.attacker.example as our own Resend infrastructure, which is precisely
+ * the source this file exists to make visible.
  */
 function classifySource(source, policyDomain) {
-  const domains = new Set([...source.dkimDomains, ...source.spfDomains]);
-  const has = (re) => [...domains].some((d) => re.test(d));
-  if (has(/(^|\.)send\.[^.]+/) || has(/(^|\.)amazonses\.com$/) || source.dkimSelectors.has('resend')) return 'resend';
-  if (has(/improvmx/)) return 'improvmx-forward';
-  if (policyDomain && domains.has(policyDomain)) return 'domain-authenticated';
+  const domains = [...source.dkimDomains, ...source.spfDomains];
+  const spfOurs = [...(source.spfPassDomains || source.spfDomains)].filter((d) => isUnderDomain(d, policyDomain));
+  const dkimOurs = [...source.dkimDomains].filter((d) => isUnderDomain(d, policyDomain));
+
+  if (spfOurs.some((d) => /^send\./.test(d))) return 'resend';
+  if (spfOurs.length && (domains.includes('amazonses.com') || source.dkimSelectors.has('resend'))) return 'resend';
+  // ImprovMX relays pass SPF for our ROOT domain (whose record carries
+  // include:spf.improvmx.com) and sign as improvmx.net — so the vendor is
+  // named by the DKIM side, and only trusted because SPF already proved the
+  // connection was authorised by our own DNS.
+  if (spfOurs.length && (domains.some((d) => /improvmx/.test(d)) || [...source.dkimSelectors].some((s) => /improvmx/.test(s)))) {
+    return 'improvmx-forward';
+  }
+  if (spfOurs.length) return 'domain-authenticated';
+  // Carries our DKIM but connected from someone else's host: a forwarder,
+  // i.e. a recipient relaying our mail onward.
+  if (dkimOurs.length && source.pass > 0) return 'forwarder';
   if (source.pass > 0 && source.fail === 0) return 'authenticated-third-party';
   return 'unknown';
+}
+
+/**
+ * Whether a source may be named in the published summary.
+ *
+ * PRIVACY (this repo is public): when a subscriber forwards our mail, THEIR
+ * mail host becomes the "source" of the next hop — a university mail server, a
+ * residential ISP address, a small company's Exchange tenant. Publishing those
+ * IPs and domains discloses who reads the newsletter just as surely as
+ * <envelope_to> would. So only two kinds of source are named:
+ *   - our own sending infrastructure (authenticates under the policy domain)
+ *   - sources that FAILED authentication, which is the security signal the
+ *     owner needs to act on and is not a recipient disclosure
+ * Everything else is counted, never named.
+ */
+function isPublishableSource(source, policyDomain) {
+  if (source.fail > 0) return true;
+  // Ownership is decided on a PASSING SPF check, not DKIM and not the mere
+  // presence of our domain in the SPF result.
+  //
+  // DKIM travels with the message — that is exactly why forwarded mail still
+  // passes DMARC — so every forwarding recipient also presents d=ourdomain.
+  // And a forwarder often preserves our envelope sender, so the reporter
+  // records an SPF check against send.<ourdomain> that SOFTFAILED (24 such
+  // messages in this domain's corpus). Only a host actually authorised to
+  // send for us gets result=pass, so that is the test.
+  return [...source.spfPassDomains].some((d) => isUnderDomain(d, policyDomain));
 }
 
 /**
@@ -68,10 +118,13 @@ function reportKey(r) {
 /**
  * Aggregate parsed reports into a summary.
  *
- * Reports are deduplicated by reporter + identity: the same report is commonly
- * delivered twice (Microsoft sends both a "Preview" and a final copy of the
- * same run), and double-counting them would silently inflate every total and
- * halve any computed failure rate.
+ * Reports are deduplicated by reporter + identity. No duplicate has appeared
+ * in this domain's corpus yet (233 reports, duplicatesDropped = 0 — and note
+ * that "Outlook.com" and "Enterprise Outlook" are two DIFFERENT reporters
+ * covering the same day, not a duplicate). The guard is here because the
+ * ingest re-fetches an overlapping Gmail window on every run, so the same
+ * report is presented repeatedly by construction; without it, every total
+ * inflates and every failure rate is diluted toward zero.
  */
 function summarizeReports(reports, options = {}) {
   const opts = { ...DEFAULTS, ...options };
@@ -84,7 +137,15 @@ function summarizeReports(reports, options = {}) {
     seen.add(key);
     deduped.push(r);
   }
-  deduped.sort((a, b) => String(a.dateBegin).localeCompare(String(b.dateBegin)));
+  // Null-safe ordering. A report with an unparseable <date_range> yields null
+  // dates, and String(null) === "null" sorts AFTER every real ISO timestamp —
+  // so a single malformed report would become "the latest report", supplying
+  // the published policy and a null windowEnd that silently disables the
+  // staleness check forever.
+  const iso = (v) => (typeof v === 'string' && v ? v : '');
+  deduped.sort((a, b) => iso(a.dateBegin).localeCompare(iso(b.dateBegin)));
+  const dated = deduped.filter((r) => iso(r.dateBegin) && iso(r.dateEnd));
+  const undatedCount = deduped.length - dated.length;
 
   const reporters = {};
   const sources = new Map();
@@ -112,7 +173,7 @@ function summarizeReports(reports, options = {}) {
         src = {
           ip: rec.sourceIp,
           count: 0, pass: 0, fail: 0,
-          dkimDomains: new Set(), spfDomains: new Set(), dkimSelectors: new Set(),
+          dkimDomains: new Set(), spfDomains: new Set(), spfPassDomains: new Set(), dkimSelectors: new Set(),
           headerFroms: new Set(),
           firstSeen: r.dateBegin, lastSeen: r.dateEnd,
           dispositions: new Set(),
@@ -122,18 +183,37 @@ function summarizeReports(reports, options = {}) {
       src.count += n;
       if (passed) src.pass += n; else src.fail += n;
       rec.dkim.forEach((k) => { if (k.domain) src.dkimDomains.add(k.domain); if (k.selector) src.dkimSelectors.add(k.selector); });
-      rec.spf.forEach((k) => { if (k.domain) src.spfDomains.add(k.domain); });
+      rec.spf.forEach((k) => {
+        if (!k.domain) return;
+        src.spfDomains.add(k.domain);
+        // Tracked separately from spfDomains: a forwarder that preserves our
+        // envelope sender produces an SPF result for OUR domain that softfails,
+        // and only the passing case means the host is authorised to send for us.
+        if (k.result === 'pass') src.spfPassDomains.add(k.domain);
+      });
       if (rec.headerFrom) src.headerFroms.add(rec.headerFrom);
       src.dispositions.add(rec.disposition);
-      if (String(r.dateBegin) < String(src.firstSeen)) src.firstSeen = r.dateBegin;
-      if (String(r.dateEnd) > String(src.lastSeen)) src.lastSeen = r.dateEnd;
+      if (iso(r.dateBegin) && (!iso(src.firstSeen) || r.dateBegin < src.firstSeen)) src.firstSeen = r.dateBegin;
+      if (iso(r.dateEnd) && (!iso(src.lastSeen) || r.dateEnd > src.lastSeen)) src.lastSeen = r.dateEnd;
     }
   }
 
-  const latest = deduped[deduped.length - 1];
+  // The newest DATED report defines the published policy and the window end.
+  const latest = dated.length ? dated[dated.length - 1] : deduped[deduped.length - 1];
   const policyDomain = latest ? latest.policy.domain : '';
 
-  const sourceList = [...sources.values()]
+  const allSources = [...sources.values()];
+  // Forwarding recipients are counted, never named — see isPublishableSource.
+  const redacted = allSources.filter((s) => !isPublishableSource(s, policyDomain));
+  const forwarders = {
+    sourceCount: redacted.length,
+    messages: redacted.reduce((n, s) => n + s.count, 0),
+    pass: redacted.reduce((n, s) => n + s.pass, 0),
+    fail: redacted.reduce((n, s) => n + s.fail, 0),
+  };
+
+  const sourceList = allSources
+    .filter((s) => isPublishableSource(s, policyDomain))
     .map((s) => ({
       ip: s.ip,
       count: s.count,
@@ -151,8 +231,11 @@ function summarizeReports(reports, options = {}) {
     .sort((a, b) => b.count - a.count);
 
   const summary = {
-    windowStart: deduped.length ? deduped[0].dateBegin : null,
-    windowEnd: latest ? latest.dateEnd : null,
+    windowStart: dated.length ? dated[0].dateBegin : null,
+    windowEnd: dated.length ? dated.reduce((acc, r) => (r.dateEnd > acc ? r.dateEnd : acc), dated[0].dateEnd) : null,
+    undatedReports: undatedCount,
+    forwarders,
+    sourceCountTotal: allSources.length,
     reportCount: deduped.length,
     duplicatesDropped,
     reporters,
@@ -229,6 +312,19 @@ function evaluateFindings(summary, opts = DEFAULTS) {
     }
   }
 
+  // An attachment that could not be parsed is a hole in the evidence, and a
+  // hole reads as "no failures seen" — the reassuring direction. If Google's
+  // reports stop parsing while Microsoft's still arrive, the pass rate stays
+  // 100% and nothing else here would ever say otherwise.
+  if (o.parseFailures > 0) {
+    findings.push({
+      severity: 'action',
+      code: 'report-parse-failures',
+      message: `${o.parseFailures} report attachment(s) could not be parsed — this window's verdict is computed from incomplete evidence.`,
+      evidence: { parseFailures: o.parseFailures, examples: (o.parseFailureExamples || []).slice(0, 3) },
+    });
+  }
+
   // Sources sending as us that no aligned identifier vouches for. This is the
   // finding the whole pipeline exists to surface: spoofing, or a legitimate
   // sender someone added without configuring DKIM.
@@ -248,6 +344,27 @@ function evaluateFindings(summary, opts = DEFAULTS) {
         lastSeen: s.lastSeen,
         classification: s.classification,
       },
+    });
+  }
+
+  // Reports arrived but describe no mail at all. Every rate-based check
+  // divides by zero and abstains, so without this the verdict reads healthy
+  // on a corpus that says nothing.
+  if (summary.reportCount > 0 && messages.total === 0) {
+    findings.push({
+      severity: 'action',
+      code: 'no-messages-reported',
+      message: `${summary.reportCount} report(s) parsed but they describe zero messages — the reports may be malformed or the schema may have shifted.`,
+      evidence: { reportCount: summary.reportCount },
+    });
+  }
+
+  if (summary.undatedReports > 0) {
+    findings.push({
+      severity: 'warn',
+      code: 'undated-reports',
+      message: `${summary.undatedReports} report(s) had an unreadable <date_range> and are excluded from the window.`,
+      evidence: { undatedReports: summary.undatedReports },
     });
   }
 
@@ -332,16 +449,23 @@ function worstSeverity(findings) {
  * @returns {{status: 'pass'|'warn'|'error', message: string, hint?: string}}
  */
 function dmarcHealthResult(summary, opts = {}) {
-  const staleHours = opts.staleHours || 48;
+  // 96h, measured against the newest REPORT rather than the file's write time.
+  // The ingest deliberately does not rewrite an unchanged summary, so on a
+  // healthy, stable domain generatedAt goes stale by design — keying staleness
+  // to it would manufacture a daily false alarm. Report freshness catches both
+  // real failures anyway: if the job stops running, the newest report stops
+  // advancing too.
+  const staleHours = opts.staleHours || 96;
   if (!summary) {
     return { status: 'warn', message: 'No DMARC summary (the dmarc job in Daily Gmail Ingest may not have run)', hint: 'Run the "Daily Gmail Ingest" workflow' };
   }
   const now = opts.now ? Date.parse(opts.now) : Date.now();
-  const generated = Date.parse(summary.generatedAt);
-  const ageHours = Number.isFinite(generated) ? (now - generated) / 3600000 : Infinity;
+  const newestReport = (summary.lifetime && summary.lifetime.lastReport) || summary.windowEnd;
+  const reportAt = Date.parse(newestReport);
+  const ageHours = Number.isFinite(reportAt) ? (now - reportAt) / 3600000 : Infinity;
   if (ageHours > staleHours) {
-    const age = Number.isFinite(ageHours) ? `${Math.round(ageHours)}h` : 'never';
-    return { status: 'warn', message: `DMARC summary last written ${age} ago (>${staleHours}h)`, hint: 'The dmarc job in Daily Gmail Ingest may be failing or disabled' };
+    const age = Number.isFinite(ageHours) ? `${Math.round(ageHours / 24)}d` : 'never';
+    return { status: 'warn', message: `Newest DMARC report is ${age} old (reporters send daily)`, hint: 'The dmarc job in Daily Gmail Ingest may be failing, or the rua= address in the DMARC record may be wrong' };
   }
 
   const findings = Array.isArray(summary.findings) ? summary.findings : [];
@@ -374,7 +498,7 @@ function formatSummary(summary) {
   }
   lines.push(`  messages: ${m.total} total, ${m.pass} pass, ${m.fail} fail` + (m.passRate === null ? '' : ` (${(m.passRate * 100).toFixed(2)}% pass)`));
   lines.push(`  auth:    both=${summary.authSplit.both} dkim-only=${summary.authSplit.dkimOnly} spf-only=${summary.authSplit.spfOnly} neither=${summary.authSplit.neither}`);
-  lines.push(`  sources: ${summary.sources.length} distinct IPs`);
+  lines.push(`  sources: ${summary.sourceCountTotal} distinct IPs (${summary.sources.length} named, ${summary.forwarders.sourceCount} forwarding recipients counted but not named)`);
   if (!summary.findings.length) lines.push('  findings: none');
   for (const f of summary.findings) lines.push(`  [${f.severity}] ${f.code}: ${f.message}`);
   return lines.join('\n');

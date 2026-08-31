@@ -79,13 +79,21 @@ function readJson(p, fallback) {
  * which is what makes those diffs unreviewable and their merges conflict.
  */
 function readLedgerJsonl(p) {
-  try {
-    return fs.readFileSync(p, 'utf8')
-      .split('\n')
-      .filter((l) => l.trim())
-      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
-      .filter(Boolean);
-  } catch { return []; }
+  let raw;
+  try { raw = fs.readFileSync(p, 'utf8'); } catch { return []; }
+  const rows = [];
+  const badLines = [];
+  raw.split('\n').forEach((line, i) => {
+    if (!line.trim()) return;
+    try { rows.push(JSON.parse(line)); } catch { badLines.push(i + 1); }
+  });
+  // A dropped line is not harmless: its report looks un-ingested on the next
+  // run, gets appended again, and inflates every lifetime total. Silence here
+  // would make a corrupted ledger look like a healthy one.
+  if (badLines.length) {
+    console.error(`::warning::[dmarc] ${badLines.length} unparseable line(s) in ${p} (lines ${badLines.slice(0, 10).join(', ')}) — those reports will be re-appended and lifetime totals may double-count. Repair or regenerate the ledger with --backfill.`);
+  }
+  return rows;
 }
 
 /**
@@ -98,11 +106,17 @@ function readLedgerJsonl(p) {
  */
 function lifetimeStats(ledger) {
   if (!ledger.length) return null;
-  const sorted = [...ledger].sort((a, b) => String(a.dateBegin).localeCompare(String(b.dateBegin)));
   const messages = ledger.reduce((n, r) => n + (r.messageCount || 0), 0);
   const failures = ledger.reduce((n, r) => n + (r.failCount || 0), 0);
-  const first = sorted[0].dateBegin;
-  const last = sorted.reduce((acc, r) => (String(r.dateEnd) > String(acc) ? r.dateEnd : acc), sorted[0].dateEnd);
+  // Only dated rows define the span. A row with a null date would otherwise
+  // win a String() comparison ("null" > any ISO timestamp), making spanDays
+  // NaN -> null and permanently suppressing the policy-upgrade finding.
+  const dated = ledger.filter((r) => typeof r.dateBegin === 'string' && r.dateBegin && typeof r.dateEnd === 'string' && r.dateEnd);
+  if (!dated.length) {
+    return { reportCount: ledger.length, messages, failures, passRate: messages > 0 ? (messages - failures) / messages : null, firstReport: null, lastReport: null, spanDays: null };
+  }
+  const first = dated.reduce((acc, r) => (r.dateBegin < acc ? r.dateBegin : acc), dated[0].dateBegin);
+  const last = dated.reduce((acc, r) => (r.dateEnd > acc ? r.dateEnd : acc), dated[0].dateEnd);
   const spanDays = (Date.parse(last) - Date.parse(first)) / 86400000;
   return {
     reportCount: ledger.length,
@@ -259,7 +273,12 @@ async function main() {
   // Eligibility for a policy upgrade is a question about the whole record, not
   // about this fetch — so findings are evaluated against lifetime history.
   const lifetime = lifetimeStats(ledger.concat(fresh));
-  const summary = summarizeReports(reports, { now: new Date().toISOString(), lifetime });
+  const summary = summarizeReports(reports, {
+    now: new Date().toISOString(),
+    lifetime,
+    parseFailures: failures.length,
+    parseFailureExamples: failures.map((f) => `${f.filename}: ${f.error}`),
+  });
 
   if (!args.quiet) console.log(formatSummary(summary));
   if (lifetime) {
@@ -290,7 +309,14 @@ async function main() {
   if (args.alert && actionable.length) {
     const { routeAlert } = require('./lib/owner-alert-router.js');
     const crypto = require('crypto');
-    const signature = actionable.map((f) => `${f.code}:${JSON.stringify(f.evidence || {})}`).join('|');
+    // The condition key must be STABLE across days for routeAlert's cooldown
+    // to dedupe. Hashing the whole evidence blob would fold in counts and
+    // lastSeen timestamps, which move every run — so an ongoing spoofing
+    // incident would mint a fresh key daily and re-alert forever.
+    const signature = actionable
+      .map((f) => `${f.code}:${(f.evidence && (f.evidence.ip || f.evidence.p)) || ''}`)
+      .sort()
+      .join('|');
     const conditionKey = `dmarc:${crypto.createHash('sha1').update(signature).digest('hex').slice(0, 12)}`;
     try {
       await routeAlert({
@@ -307,7 +333,11 @@ async function main() {
       });
       console.log(`[dmarc] routed ${actionable.length} actionable finding(s)`);
     } catch (err) {
+      // A monitor whose alerting is broken must fail loudly. Swallowing this
+      // leaves a green run that found something and told nobody — the same
+      // shape of silence this whole card was filed about.
       console.error('[dmarc] alert routing failed:', err.message);
+      process.exitCode = 1;
     }
   } else if (args.alert) {
     console.log('[dmarc] no actionable findings to route.');

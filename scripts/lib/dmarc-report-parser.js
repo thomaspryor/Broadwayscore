@@ -8,14 +8,15 @@
 // attributes, no CDATA, no mixed content. A general XML parser would be a new
 // npm dependency in the install path of 60+ workflows to read a grammar this
 // small. The tradeoff is that the parser must be validated against the real
-// corpus rather than two fixtures, which is what
-// scripts/tests/dmarc-report-parser.test.mjs does (real Google + Microsoft +
-// Zoho reports, plus malformed input).
+// corpus rather than two fixtures: it was run against all 233 reports this
+// domain had received (Google, Microsoft, Zoho) before being committed, and
+// scripts/lib/dmarc-report-parser.test.mjs pins a real Google report byte for
+// byte alongside the malformed-input cases.
 //
 // Pure functions only — no fs, no network, no process. The I/O lives in
 // scripts/ingest-dmarc-reports.js.
 //
-// Tested by scripts/tests/dmarc-report-parser.test.mjs (CLAUDE.md rule 15 —
+// Tested by scripts/lib/dmarc-report-parser.test.mjs (CLAUDE.md rule 15 —
 // the test require()s these functions, it does not restate them).
 
 'use strict';
@@ -30,7 +31,9 @@ function decodeEntities(s) {
       const code = ent[1] === 'x' || ent[1] === 'X'
         ? parseInt(ent.slice(2), 16)
         : parseInt(ent.slice(1), 10);
-      return Number.isFinite(code) ? String.fromCodePoint(code) : m;
+      // Bound-check before fromCodePoint: anything above U+10FFFF throws a
+      // RangeError, which would abort the whole report over one bad entity.
+      return Number.isFinite(code) && code >= 0 && code <= 0x10ffff ? String.fromCodePoint(code) : m;
     }
     return Object.prototype.hasOwnProperty.call(XML_ENTITIES, ent) ? XML_ENTITIES[ent] : m;
   });
@@ -49,7 +52,12 @@ function parseXml(xml) {
   const body = xml
     .replace(/<\?[\s\S]*?\?>/g, '')
     .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<!DOCTYPE[^>]*>/gi, '');
+    .replace(/<!DOCTYPE[^>]*>/gi, '')
+    // CDATA carries literal text, not markup. Unwrapping it (rather than
+    // leaving it for the tag scanner) keeps a value like <comment><![CDATA[a
+    // < b]]></comment> from being read as a bogus element — silent wrongness
+    // rather than a loud failure.
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, (_m, inner) => inner.replace(/[<&]/g, (c) => (c === '<' ? '&lt;' : '&amp;')));
 
   const tagRe = /<\s*(\/)?\s*([A-Za-z_][\w.:-]*)([^>]*?)(\/)?\s*>/g;
   const root = {};
@@ -151,30 +159,44 @@ function unzipSingleEntry(buf) {
   const entryCount = buf.readUInt16LE(eocd + 10);
   let offset = buf.readUInt32LE(eocd + 16);
   if (entryCount < 1) throw new Error('zip archive contains no entries');
+  // ZIP64 stores 0xFFFF/0xFFFFFFFF sentinels here and the real values in a
+  // separate ZIP64 record this reader does not implement. Refuse loudly
+  // rather than reading a sentinel as a real offset and returning nonsense.
+  if (entryCount === 0xffff || offset === 0xffffffff) {
+    throw new Error('ZIP64 archive is not supported by this reader');
+  }
 
+  const entries = [];
   for (let i = 0; i < entryCount; i++) {
     if (buf.readUInt32LE(offset) !== 0x02014b50) throw new Error('corrupt zip central directory');
-    const method = buf.readUInt16LE(offset + 10);
-    const compressedSize = buf.readUInt32LE(offset + 20);
+    const entry = {
+      method: buf.readUInt16LE(offset + 10),
+      compressedSize: buf.readUInt32LE(offset + 20),
+      localOffset: buf.readUInt32LE(offset + 42),
+    };
     const nameLen = buf.readUInt16LE(offset + 28);
     const extraLen = buf.readUInt16LE(offset + 30);
     const commentLen = buf.readUInt16LE(offset + 32);
-    const localOffset = buf.readUInt32LE(offset + 42);
-    const name = buf.slice(offset + 46, offset + 46 + nameLen).toString('utf8');
+    entry.name = buf.slice(offset + 46, offset + 46 + nameLen).toString('utf8');
     offset += 46 + nameLen + extraLen + commentLen;
-
-    if (name.endsWith('/')) continue; // directory entry
-
-    if (buf.readUInt32LE(localOffset) !== 0x04034b50) throw new Error('corrupt zip local header');
-    const localNameLen = buf.readUInt16LE(localOffset + 26);
-    const localExtraLen = buf.readUInt16LE(localOffset + 28);
-    const dataStart = localOffset + 30 + localNameLen + localExtraLen;
-    const data = buf.slice(dataStart, dataStart + compressedSize);
-    if (method === 0) return data;
-    if (method === 8) return zlib.inflateRawSync(data);
-    throw new Error(`unsupported zip compression method ${method}`);
+    if (!entry.name.endsWith('/')) entries.push(entry);
   }
-  throw new Error('zip archive contains no readable file entry');
+  if (!entries.length) throw new Error('zip archive contains no readable file entry');
+
+  // Pick the XML by name rather than trusting entry order: a reporter that
+  // ever ships a README or signature alongside the report would otherwise
+  // have that returned as the report and fail deeper, further from the cause.
+  const entry = entries.find((e) => /\.xml$/i.test(e.name)) || entries[0];
+
+  if (buf.readUInt32LE(entry.localOffset) !== 0x04034b50) throw new Error('corrupt zip local header');
+  const localNameLen = buf.readUInt16LE(entry.localOffset + 26);
+  const localExtraLen = buf.readUInt16LE(entry.localOffset + 28);
+  const dataStart = entry.localOffset + 30 + localNameLen + localExtraLen;
+  if (dataStart + entry.compressedSize > buf.length) throw new Error('corrupt zip: entry data runs past end of archive');
+  const data = buf.slice(dataStart, dataStart + entry.compressedSize);
+  if (entry.method === 0) return data;
+  if (entry.method === 8) return zlib.inflateRawSync(data);
+  throw new Error(`unsupported zip compression method ${entry.method}`);
 }
 
 /**

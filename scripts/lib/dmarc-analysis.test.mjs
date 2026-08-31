@@ -266,13 +266,130 @@ test('spf-only passes are flagged as forward-fragile', () => {
   assert.equal(f.evidence.spfOnly, 4);
 });
 
-test('classifySource identifies infrastructure by auth domain, not by IP', () => {
-  const base = { pass: 1, fail: 0, dkimSelectors: new Set(), dkimDomains: new Set(), spfDomains: new Set() };
-  assert.equal(classifySource({ ...base, spfDomains: new Set(['send.broadwayscorecard.com']) }, 'broadwayscorecard.com'), 'resend');
-  assert.equal(classifySource({ ...base, dkimDomains: new Set(['amazonses.com']) }, 'broadwayscorecard.com'), 'resend');
-  assert.equal(classifySource({ ...base, dkimSelectors: new Set(['resend']) }, 'broadwayscorecard.com'), 'resend');
-  assert.equal(classifySource({ ...base, dkimDomains: new Set(['improvmx.net']) }, 'broadwayscorecard.com'), 'improvmx-forward');
-  assert.equal(classifySource({ ...base, pass: 0, fail: 3 }, 'broadwayscorecard.com'), 'unknown');
+test('PRIVACY: a forwarding recipient is counted, never named', () => {
+  // When a subscriber forwards our mail, THEIR mail host becomes the source.
+  // Publishing it in a public repo discloses who reads the newsletter — the
+  // same disclosure <envelope_to> would make.
+  const forwarder = record({
+    sourceIp: '2001:558:fd02:2446::b',
+    count: 11,
+    evaluatedSpf: 'fail',
+    dkim: [{ domain: 'comcastmailservice.net', result: 'pass', selector: '20211018a' }],
+    spf: [{ domain: 'comcast.net', result: 'pass', scope: 'mfrom' }],
+  });
+  const s = summarizeReports([report({ records: [record({ count: 100 }), forwarder] })]);
+
+  const serialized = JSON.stringify(s);
+  assert.equal(serialized.includes('comcast'), false, 'no recipient mail host in the summary');
+  assert.equal(serialized.includes('2001:558'), false, 'no recipient IP in the summary');
+
+  // Still counted, so the numbers stay honest.
+  assert.equal(s.messages.total, 111);
+  assert.equal(s.forwarders.sourceCount, 1);
+  assert.equal(s.forwarders.messages, 11);
+  assert.equal(s.sourceCountTotal, 2);
+  assert.equal(s.sources.length, 1, 'only our own infrastructure is named');
+  assert.equal(s.sources[0].ip, '54.240.9.36');
+});
+
+test('PRIVACY: a FAILING source is still named — that is the security signal', () => {
+  const spoof = record({
+    sourceIp: '203.0.113.9',
+    count: 40,
+    evaluatedDkim: 'fail',
+    evaluatedSpf: 'fail',
+    dkim: [],
+    spf: [{ domain: 'evil.example', result: 'fail', scope: 'mfrom' }],
+  });
+  const s = summarizeReports([report({ records: [spoof] })]);
+  assert.equal(s.sources.length, 1);
+  assert.equal(s.sources[0].ip, '203.0.113.9');
+  assert.equal(s.forwarders.sourceCount, 0);
+});
+
+test('one undated report cannot hijack the window or the policy', () => {
+  // String(null) === "null" sorts after every ISO timestamp, so a single
+  // malformed <date_range> would otherwise become "the latest report",
+  // supplying the published policy and a null windowEnd that permanently
+  // disables the staleness check.
+  const s = summarizeReports([
+    report({ reportId: 'good', dateBegin: '2026-08-20T00:00:00.000Z', dateEnd: '2026-08-20T23:59:59.000Z' }),
+    report({ reportId: 'bad', dateBegin: null, dateEnd: null, policy: { ...POLICY, p: 'none' } }),
+  ], { now: '2026-09-30T00:00:00.000Z' });
+
+  assert.equal(s.windowEnd, '2026-08-20T23:59:59.000Z');
+  assert.equal(s.policy.p, 'quarantine', 'policy comes from the newest DATED report');
+  assert.equal(s.undatedReports, 1);
+  assert.ok(s.findings.some((f) => f.code === 'undated-reports'));
+  assert.ok(s.findings.some((f) => f.code === 'reports-stale'), 'staleness detection still works');
+});
+
+test('reports that describe zero messages do not read as healthy', () => {
+  const s = summarizeReports([report({ records: [record({ count: 0 })] })]);
+  assert.equal(s.messages.total, 0);
+  assert.equal(s.messages.passRate, null);
+  const f = s.findings.find((x) => x.code === 'no-messages-reported');
+  assert.ok(f, 'zero messages across real reports is a schema/parse problem, not health');
+  assert.equal(f.severity, 'action');
+});
+
+test('unparseable attachments are an actionable finding, not silent absence', () => {
+  const s = summarizeReports([report()], { parseFailures: 3, parseFailureExamples: ['a.zip: corrupt'] });
+  const f = s.findings.find((x) => x.code === 'report-parse-failures');
+  assert.ok(f);
+  assert.equal(f.severity, 'action');
+  assert.equal(f.evidence.parseFailures, 3);
+});
+
+const src = (over = {}) => ({
+  pass: 1,
+  fail: 0,
+  dkimSelectors: new Set(),
+  dkimDomains: new Set(),
+  spfDomains: new Set(),
+  spfPassDomains: new Set(),
+  ...over,
+});
+
+test('classifySource identifies infrastructure by a PASSING SPF domain', () => {
+  assert.equal(classifySource(src({ spfPassDomains: new Set(['send.broadwayscorecard.com']) }), 'broadwayscorecard.com'), 'resend');
+  assert.equal(
+    classifySource(src({ spfPassDomains: new Set(['broadwayscorecard.com']), dkimDomains: new Set(['amazonses.com']) }), 'broadwayscorecard.com'),
+    'resend',
+  );
+  assert.equal(
+    classifySource(src({ spfPassDomains: new Set(['broadwayscorecard.com']), dkimDomains: new Set(['improvmx.net']) }), 'broadwayscorecard.com'),
+    'improvmx-forward',
+  );
+  assert.equal(classifySource(src({ pass: 0, fail: 3 }), 'broadwayscorecard.com'), 'unknown');
+});
+
+test('classifySource: a DKIM selector name alone does not make a source ours', () => {
+  // Selector names are published in DNS and trivially copyable, and DKIM
+  // travels with forwarded mail — so neither is proof of who connected.
+  assert.equal(classifySource(src({ dkimSelectors: new Set(['resend']) }), 'broadwayscorecard.com'), 'authenticated-third-party');
+});
+
+test('classifySource: shared ESP infrastructure alone is not "ours"', () => {
+  // amazonses.com is authenticated by thousands of unrelated SES customers.
+  assert.equal(classifySource(src({ dkimDomains: new Set(['amazonses.com']) }), 'broadwayscorecard.com'), 'authenticated-third-party');
+});
+
+test('classifySource: our DKIM from someone else\'s host is a forwarder', () => {
+  assert.equal(
+    classifySource(src({ dkimDomains: new Set(['broadwayscorecard.com']), spfDomains: new Set(['comcast.net']) }), 'broadwayscorecard.com'),
+    'forwarder',
+  );
+});
+
+test('classifySource: a lookalike send.* domain is NOT our infrastructure', () => {
+  // An unanchored /send\./ would label this "resend" — labelling a spoofer as
+  // our own sender in the published summary.
+  const base = { pass: 0, fail: 9, dkimSelectors: new Set(), dkimDomains: new Set(), spfDomains: new Set() };
+  assert.equal(
+    classifySource({ ...base, spfDomains: new Set(['send.attacker.example']) }, 'broadwayscorecard.com'),
+    'unknown',
+  );
 });
 
 test('buildPolicyTimeline records only changes', () => {
@@ -309,8 +426,15 @@ const summaryFile = (over = {}) => ({
   generatedAt: '2026-08-30T06:00:00.000Z',
   policy: { ...POLICY },
   findings: [],
-  lifetime: { messages: 12633, failures: 0, spanDays: 170, reportCount: 233 },
+  lifetime: { messages: 12633, failures: 0, spanDays: 170, reportCount: 233, lastReport: '2026-08-29T23:59:59.000Z' },
   ...over,
+});
+
+test('dmarcHealthResult: staleness tracks report freshness, not file write time', () => {
+  // The ingest does not rewrite an unchanged summary, so a healthy stable
+  // domain has an old generatedAt by design. Keying off it would warn daily.
+  const r = dmarcHealthResult(summaryFile({ generatedAt: '2026-07-01T00:00:00.000Z' }), { now: NOW });
+  assert.equal(r.status, 'pass', 'an old generatedAt with fresh reports is healthy');
 });
 
 test('dmarcHealthResult: clean record passes with the lifetime numbers', () => {
@@ -326,10 +450,12 @@ test('dmarcHealthResult: a missing summary warns rather than throwing', () => {
   assert.match(r.message, /No DMARC summary/);
 });
 
-test('dmarcHealthResult: a stale summary warns — the job stopped running', () => {
-  const r = dmarcHealthResult(summaryFile({ generatedAt: '2026-08-25T06:00:00.000Z' }), { now: NOW });
+test('dmarcHealthResult: reports drying up warns — the rua path broke', () => {
+  const r = dmarcHealthResult(summaryFile({
+    lifetime: { messages: 12633, failures: 0, spanDays: 170, lastReport: '2026-08-10T00:00:00.000Z' },
+  }), { now: NOW });
   assert.equal(r.status, 'warn');
-  assert.match(r.message, /last written \d+h ago/);
+  assert.match(r.message, /Newest DMARC report is \d+d old/);
 });
 
 test('dmarcHealthResult: action findings are an error', () => {
