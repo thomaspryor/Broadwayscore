@@ -25,9 +25,11 @@
 // reset, or it can silently reintroduce a red main.
 import { test, afterEach } from 'node:test';
 import assert from 'node:assert';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 afterEach(() => {
   process.exitCode = 0;
@@ -119,4 +121,126 @@ test('the guard is not vacuously green, and does not fire on look-alikes', () =>
   // A reset inside ONE test body protects only that test, so it must NOT count.
   const perTestOnly = bad + '\ntest("x", () => { process.exitCode = 0; });';
   assert.ok(!reset(perTestOnly), 'a reset in a single test body must not satisfy the guard');
+});
+
+// ── BRO-2647: the SILENT TAP DECAPITATION half of the same failure shape ─────
+//
+// process.exitCode = 1 (above) and a real process.exit(1) (below) produce the
+// SAME unreadable CI signature: the whole file `not ok`, failureType
+// 'testCodeFailure', exitCode 1, and NO named failing subtest. The first leaks a
+// global; the second kills the worker mid-file before node --test can flush.
+//
+// scripts/bsc-next.test.mjs:1261 hit the second one in CI for days: it stubs
+// eight collaborators but not process.exit, because it expects the dispatch to
+// SUCCEED — and in CI the BRO-2569 phantom-path guard refused instead.
+//
+// tests/helpers/process-exit-guard.mjs installs a throwing process.exit for
+// every test in a file, so a refusal becomes a named failing subtest. These two
+// tests ratchet it in and PROVE it works, by reproducing both shapes for real.
+
+function strippedSource(file) {
+  // Same normalisation as the exitCode ratchet above: drop line comments and
+  // string literals so prose about this bug is never mistaken for the real thing.
+  return readFileSync(file, 'utf8')
+    .split('\n')
+    .filter((line) => !line.trim().startsWith('//'))
+    .join('\n')
+    .replace(/'(?:[^'\\\n]|\\.)*'/g, "''")
+    .replace(/"(?:[^"\\\n]|\\.)*"/g, '""');
+}
+
+test('every test file that stubs process.exit also installs the unstubbed-exit guard', () => {
+  const files = [...walk(path.join(repoRoot, 'scripts')), ...walk(path.join(repoRoot, 'tests'))];
+  assert.ok(files.length > 50, `expected to find the test corpus, found ${files.length} files`);
+
+  const offenders = [];
+  for (const file of files) {
+    const src = strippedSource(file);
+    const stubsExit =
+      /process\.exit\s*=[^=]/.test(src) || /mock\.method\(\s*process\s*,\s*''\s*\)/.test(src);
+    if (!stubsExit) continue;
+    // The call must be at top level, not inside a single test body — a hook
+    // registered inside one test protects only that test.
+    if (/^guardProcessExit\(\);$/m.test(src)) continue;
+    offenders.push(path.relative(repoRoot, file));
+  }
+
+  assert.deepStrictEqual(
+    offenders,
+    [],
+    'These test files drive a CLI down paths that can call process.exit, but do not install ' +
+      'the guard. An unstubbed exit kills the node --test worker mid-file: the whole file fails ' +
+      'with ZERO named subtests and no exception text, and it only ever shows up in CI. Add ' +
+      "`import { guardProcessExit } from '<rel>/tests/helpers/process-exit-guard.mjs';` and a " +
+      'top-level `guardProcessExit();` to each:\n  ' +
+      offenders.join('\n  ')
+  );
+});
+
+test('the guard is what fixes it: an unstubbed process.exit decapitates TAP without it, and names a failing subtest with it', () => {
+  // Reproduces the real CI shape in a child node --test, both ways. Without this
+  // the ratchet above could pass forever while the helper does nothing.
+  const helperUrl = pathToFileURL(path.join(repoRoot, 'tests', 'helpers', 'process-exit-guard.mjs')).href;
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'process-exit-guard-proof-'));
+
+  const body = (preamble) => `${preamble}
+import { test } from 'node:test';
+test('subtest that is expected to succeed but hits a refusal', () => {
+  process.exit(1);
+});
+test('a later subtest that must still be reported', () => {});
+`;
+
+  // NODE_TEST_CONTEXT is set by the runner we are running under; inherited, the
+  // child refuses with "run() is being called recursively" and emits NOTHING,
+  // which would make every assertion below vacuously true. Strip it.
+  const childEnv = { ...process.env };
+  delete childEnv.NODE_TEST_CONTEXT;
+
+  const runFixture = (name, preamble) => {
+    const file = path.join(tmp, name);
+    writeFileSync(file, body(preamble));
+    const r = spawnSync(process.execPath, ['--test', file], { encoding: 'utf8', env: childEnv });
+    const out = `${r.stdout || ''}${r.stderr || ''}`;
+    assert.ok(
+      // Reporter-agnostic: the spec reporter prints "ℹ tests N", TAP prints "# tests N".
+      /(?:ℹ|#)\s*tests\s+\d/.test(out),
+      `the ${name} fixture produced no TAP summary at all, so this proof would be vacuous. Got:\n${out}`
+    );
+    return out;
+  };
+
+  try {
+    const unguarded = runFixture('unguarded.test.mjs', '');
+    const guarded = runFixture(
+      'guarded.test.mjs',
+      `import { guardProcessExit } from '${helperUrl}';\nguardProcessExit();`
+    );
+
+    // The bug, verbatim: the file dies before either subtest is reported.
+    assert.ok(
+      !/subtest that is expected to succeed but hits a refusal/.test(unguarded),
+      `without the guard the failing subtest must NOT be nameable — that IS the bug. Got:\n${unguarded}`
+    );
+    assert.ok(
+      !/a later subtest that must still be reported/.test(unguarded),
+      `without the guard the run must be decapitated before later subtests. Got:\n${unguarded}`
+    );
+
+    // With the guard: a named failing subtest, and the file keeps running.
+    assert.ok(
+      /subtest that is expected to succeed but hits a refusal/.test(guarded),
+      `with the guard the failing subtest must be NAMED. Got:\n${guarded}`
+    );
+    assert.ok(
+      /UNSTUBBED_PROCESS_EXIT|did not stub it/.test(guarded),
+      `with the guard the reason must appear in the output. Got:\n${guarded}`
+    );
+    assert.ok(
+      /a later subtest that must still be reported/.test(guarded),
+      `with the guard the rest of the file must still run. Got:\n${guarded}`
+    );
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
 });
