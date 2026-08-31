@@ -1317,7 +1317,17 @@
     "the-story-west-end-2026/nytimes--jesse-green.json",
     "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
     "the-story-west-end-2026/observer--david-cote.json",
-    "the-story-west-end-2026/london-box-office--phil-willmott.json"
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/londontheatre1--chris-omaweng.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1370,7 +1380,9 @@
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1406,7 +1418,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-story-west-end-2026/london-box-office--phil-willmott.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -1563,6 +1575,17 @@
       "event": "bb-session",
       "session": "55cbbeb1",
       "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-08-31T12:54:11.179Z",
+      "event": "bb-session",
+      "session": "d0864bac",
+      "url": "https://www.thetimes.com/article/as-you-like-it-review-stick-with-this-singalong"
+    },
+    {
+      "t": "2026-08-31T12:54:12.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
