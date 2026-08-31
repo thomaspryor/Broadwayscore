@@ -64,6 +64,13 @@ function sha256(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
+/** Two { name: hash } maps describe the same set of files with the same content. */
+function sameHashes(a, b) {
+  const aKeys = Object.keys(a);
+  if (aKeys.length !== Object.keys(b).length) return false;
+  return aKeys.every((k) => a[k] === b[k]);
+}
+
 /**
  * Hash every root-level *.md in `dir`. Returns { name: sha256 }.
  * Subdirectories, dotfiles and non-.md files are ignored — this matches the
@@ -295,8 +302,13 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date() }
 
   // Recompute rather than trusting the plan's projection: the manifest must
   // describe what is actually on disk now, or the next run's deletion
-  // decisions are made against a fiction.
-  writeManifest(manifestPath, hashDir(dest));
+  // decisions are made against a fiction. Skipped when it would rewrite the
+  // identical map — the common case is a session-stop that changed nothing,
+  // and rewriting keeps touching .git for no reason.
+  const finalHashes = hashDir(dest);
+  if (manifest === null || !sameHashes(manifest, finalHashes)) {
+    writeManifest(manifestPath, finalHashes);
+  }
 
   return { ...plan, conflictCopies, manifestPath, dryRun: false };
 }
@@ -306,6 +318,7 @@ module.exports = {
   MANIFEST_BASENAME,
   CONFLICT_DIR,
   sha256,
+  sameHashes,
   hashDir,
   planSync,
   applySync,

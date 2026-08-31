@@ -74,20 +74,40 @@ done
 # The merge is deletion-safe by construction: a mirror-side file is only
 # removed when the manifest proves this script put it there AND nobody has
 # touched it since. Anything else is adopted back into $SRC.
-MERGE_LIB="$SCRIPT_DIR/lib/cloud-memory-merge.js"
-if command -v node >/dev/null 2>&1 && [ -f "$MERGE_LIB" ]; then
-  node "$MERGE_LIB" "$SRC" "$DEST" --repo="$REPO" $VERBOSE $DRY_RUN
-else
-  # No node (or a checkout predating the merge lib): copy forward but NEVER
-  # pass --delete. Fail-safe direction — a stale extra file in the mirror is
-  # recoverable, a deleted memo written by a cloud session is not.
-  echo "sync-memory-to-repo: node/merge lib unavailable — copying without deletions" >&2
+# Copy forward but NEVER pass --delete. Fail-safe direction: a stale extra
+# file in the mirror is recoverable, a deleted memo written by a cloud session
+# is not. Used when node or the merge lib is missing, and when the merge
+# itself fails.
+_copy_without_deleting() {
   rsync -a $VERBOSE $DRY_RUN \
     --include='*.md' \
     --exclude='*' \
     --prune-empty-dirs \
     "$SRC/" "$DEST/"
+}
+
+MERGE_LIB="$SCRIPT_DIR/lib/cloud-memory-merge.js"
+if ! command -v node >/dev/null 2>&1 || [ ! -f "$MERGE_LIB" ]; then
+  echo "sync-memory-to-repo: node/merge lib unavailable — copying without deletions" >&2
+  _copy_without_deleting
+# `if !` rather than a bare call: under `set -e` a THROWING merge (an fs error,
+# not just a missing node) would abort this script outright, and session-stop.sh
+# invokes us as `... --commit 2>&1 | grep -v ... >/dev/null || true` — so the
+# mirror would silently stop syncing forever with no signal anywhere. `if !` is
+# exempt from set -e, which turns a crash into a loud warning plus the
+# no-deletion fallback.
+elif ! node "$MERGE_LIB" "$SRC" "$DEST" --repo="$REPO" $VERBOSE $DRY_RUN; then
+  echo "sync-memory-to-repo: merge failed — falling back to a copy with NO deletions" >&2
+  _copy_without_deleting
 fi
+
+# NOTE ON LOCKING: the merge deliberately runs outside the $LOCK below (which
+# only guards the git commit/push). Two session-stops racing here cannot lose
+# data: a mirror-side file is only ever deleted when the manifest proves we
+# mirrored it AND the local source no longer has it, and neither of those
+# becomes true because of an interleave. The worst case is a redundant copy
+# that the next run no-ops. Don't "fix" this by widening the lock — that would
+# serialise every session-stop behind a 663-file hash walk.
 
 # NOTE: the mirror's entry point is MEMORY.md (synced from the source index).
 # A hand-placed extra .md here is no longer deleted — it is adopted into the

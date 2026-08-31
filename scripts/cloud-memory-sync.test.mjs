@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -276,6 +276,21 @@ describe('applySync — real filesystem', () => {
     assert.deepEqual(hashDir(dest), before);
   });
 
+  test('an unchanged run does not rewrite the manifest', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'a.md', 'a\n');
+    applySync({ src, dest, manifestPath });
+    const stamp = fs.statSync(manifestPath).mtimeMs;
+
+    applySync({ src, dest, manifestPath });
+    assert.equal(fs.statSync(manifestPath).mtimeMs, stamp, 'a no-op sync must leave .git alone');
+
+    // ...but a real change still updates it.
+    write(src, 'b.md', 'b\n');
+    applySync({ src, dest, manifestPath });
+    assert.ok('b.md' in readManifest(manifestPath));
+  });
+
   test('dry-run touches nothing', () => {
     const { src, dest, manifestPath } = scratch();
     write(src, 'a.md', 'a\n');
@@ -386,6 +401,39 @@ describe('sync-memory-to-repo.sh end-to-end', () => {
     write(src, 'a.md', 'a\n');
     runSync(src, repo, ['--dry-run']);
     assert.deepEqual(listMd(dest), []);
+  });
+
+  test('a crashing merge lib falls back to a copy with NO deletions, loudly', () => {
+    // session-stop.sh invokes this script as `... --commit 2>&1 | grep -v ...
+    // >/dev/null || true`. Under a bare `set -e` call a throwing merge lib
+    // would abort the script and the mirror would silently stop syncing
+    // forever. The fallback must copy forward, delete nothing, and say so.
+    const { src, repo, dest, root } = scratch();
+    fs.mkdirSync(path.join(repo, '.git'), { recursive: true });
+    write(src, 'MEMORY.md', '# index\n');
+    write(dest, 'from_the_cloud.md', 'written elsewhere\n');
+
+    // SCRIPT_DIR comes from BASH_SOURCE, so a copy of the script next to a
+    // deliberately broken lib exercises the real failure branch.
+    const fakeScripts = path.join(root, 'fake-scripts');
+    fs.mkdirSync(path.join(fakeScripts, 'lib'), { recursive: true });
+    fs.copyFileSync(SYNC_SH, path.join(fakeScripts, 'sync-memory-to-repo.sh'));
+    fs.writeFileSync(
+      path.join(fakeScripts, 'lib', 'cloud-memory-merge.js'),
+      'throw new Error("simulated merge crash");\n',
+    );
+
+    // The warning goes to stderr (everything this script says does), so read
+    // stderr rather than stdout.
+    const run = spawnSync('bash', [path.join(fakeScripts, 'sync-memory-to-repo.sh')], {
+      env: { ...process.env, MEMORY_SYNC_SRC: src, MEMORY_SYNC_REPO: repo },
+      encoding: 'utf8',
+    });
+
+    assert.equal(run.status, 0, 'a merge crash must not abort the script');
+    assert.match(run.stderr, /merge failed — falling back to a copy with NO deletions/);
+    assert.ok(exists(dest, 'from_the_cloud.md'), 'the fallback must not delete anything');
+    assert.ok(exists(dest, 'MEMORY.md'), 'the fallback must still copy new local memos forward');
   });
 
   test('a missing source dir is a clean no-op (cloud sandbox)', () => {
