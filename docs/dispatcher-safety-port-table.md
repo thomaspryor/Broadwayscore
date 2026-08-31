@@ -91,6 +91,7 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 | # | Safety behaviour | Lives today (file : function) | Port or Delete | Rationale / target |
 |---|---|---|---|---|
 | G1 | **Linear idempotency (dual signal)** — refuse if the issue thread already carries an unresolved "Dispatched …" comment OR the ledger has a live entry; ledger write ordered BEFORE the Linear comment for crash-safety | `linear-dispatch.js : findUnresolvedDispatchComment` / `hasLiveLedgerEntry` (called in `linear-next.js`) | **PORT — done** | Linear-native replacement for the Notion duplicate machinery. Keep. |
+| G5 | **Reported-outcome guard** — refuse re-dispatch of a **started**-type issue whose most recent "Dispatched …" comment has already been answered by a `done`/`in-review` session report or a `PR-EVIDENCE:` marker; **not** bypassed by `--force`, only by `--allow-reported-work "<reason>"` (journaled on the ledger row) | `linear-dispatch.js : reportedOutcomeGuard` (called in `linear-next.js`) | **PORT — done** | Linear-native, no Notion analog (BRO-2543). Closes the gap G1 cannot: G1's signals both need a dispatch to look *live*, and this population is the opposite — a dispatch that already finished and reported, on a workspace the ledger has (sometimes wrongly) marked `dead`. Refuses only when the report is **newer than** the outstanding dispatch comment, so a genuine re-dispatch after a real death is untouched. `blocked`/`paused` reports deliberately do not count — that is the stall `--force` exists to recover. |
 | G2 | **Per-task headless lease** — one live headless job per task (cross-dispatcher; atomic file lease, PID-checked) | `bsc-runner.js : acquireLease` / `releaseLease` / `pidLooksLikeClaude` | **PORT — done** | Shared; `linear-next.js` reaches it via `runJob`. The lease is blind to a live cmux **tab** — which is why both dispatchers *also* keep the `findLiveWorkspaceForTask` tab check on the headless path. |
 | G3 | **Per-job spend / wall-clock budget** — headless job runs under a budget preamble + timeout | `bsc-runner.js : buildBudgetPreamble` / `runJob` (timeout) | **PORT — done** | Shared via `runJob`. `linear-next.js` passes `killSwitchEnv:'LINEAR_NEXT_DISABLED'` so the runner answers to the Linear switch, not the retired Notion one. |
 | G4 | **Headless worktree isolation** — each job runs in its own git worktree; kept only if it has unmerged work | `bsc-runner.js : provisionJobWorktree` / `teardownJobWorktree` | **PORT — done** | Shared via `runJob`. |
@@ -111,7 +112,7 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 
 | Decision | Count | Rows |
 |---|---|---|
-| **PORT — done** (already shared + used by `linear-next.js`) | 15 | A1–A5, A7, B1, B2, B4, C1–C5, E2, F2, G1–G4 |
+| **PORT — done** (already shared + used by `linear-next.js`) | 16 | A1–A5, A7, B1, B2, B4, C1–C5, E2, F2, G1–G5 |
 | **PORT — TODO** (bsc-next-only; needs a Linear equivalent) | 6 | C6, D1–D3, E1, E3, H1 |
 | **DELETE** (Notion/native-shaped; Linear has a native analog or it's moot post-cutover) | 5 | A6, B3, B5, F1, F3 (`BSC_RUNNER_DISABLED`) |
 | **N/A — inherited** (repo-global / session-side, not dispatcher-owned) | 5 | H2–H5 (+ push family) |

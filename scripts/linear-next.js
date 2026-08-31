@@ -50,6 +50,8 @@
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
  *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
+ *   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"
+ *                                                            the ONE guard --force does not cover (BRO-2543)
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
@@ -134,6 +136,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
+  node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
 
@@ -142,15 +145,24 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 `;
 
+// BRO-2543: `--flag=value` used to produce a key literally named "flag=value",
+// so `--force=1` left args.force undefined (every guard fired despite the
+// operator passing force) and `--model=opus` silently dispatched on the
+// default model. Harmless-looking until a flag that CARRIES a value depends on
+// it - which --allow-reported-work does. Split on the FIRST `=` only, so a
+// value containing `=` survives intact. linear-session.js's own parseArgs
+// already does this; this brings the dispatcher in line with it.
 function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
-      const k = t.slice(2);
+      const body = t.slice(2);
+      const eq = body.indexOf('=');
+      if (eq !== -1) { a[body.slice(0, eq)] = body.slice(eq + 1); continue; }
       const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[k] = true;
-      else { a[k] = n; i++; }
+      if (n === undefined || n.startsWith('--')) a[body] = true;
+      else { a[body] = n; i++; }
     } else a._.push(t);
   }
   return a;
@@ -474,6 +486,26 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Reported-outcome guard (BRO-2543): deliberately placed BEFORE
+  // startedStateGuard below, not after. Both refuse the same issue on a
+  // no-flag run, so ordering decides only WHICH message the operator reads -
+  // and startedStateGuard's remedy line is literally "Re-run with --force if
+  // you know this is a stalled issue that needs re-dispatch", which walks the
+  // operator straight into the exact action that caused BRO-2506's wasted
+  // dispatch. This one names the session report, quotes the acceptance
+  // command, and says --force will not help. More-specific-reason-first is
+  // this dispatcher's own convention (see the terminal-state/marketing/
+  // autofix ordering above).
+  //
+  // NOT gated on `!args.force` - that is the whole point of the guard; it
+  // self-exempts only on --dry-run/--print-prompt and its own
+  // --allow-reported-work "<reason>". See ld.reportedOutcomeGuard's header.
+  const reportedRefusal = ld.reportedOutcomeGuard(issue, args);
+  if (reportedRefusal) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${reportedRefusal}`);
+    process.exit(1);
+  }
+
   // Started-state guard (BRO-2518): the third clause of the same documented
   // funnel line the two guards above close ("Backlog/Todo, not `·
   // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a
@@ -689,7 +721,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
         // invisible.
-        allowAutofixFiled: args['allow-autofix-filed'] || null,
+        allowAutofixFiled: args['allow-autofix-filed'] || null, allowReportedWork: args[ld.REPORTED_WORK_BYPASS_FLAG] || null,
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -797,7 +829,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
-      allowAutofixFiled: args['allow-autofix-filed'] || null,
+      allowAutofixFiled: args['allow-autofix-filed'] || null, allowReportedWork: args[ld.REPORTED_WORK_BYPASS_FLAG] || null,
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.

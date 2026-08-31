@@ -14,8 +14,14 @@ import {
   marketingProjectGuard,
   autofixFiledIssueGuard,
   startedStateGuard,
+  reportedOutcomeGuard,
+  newestDispatchComment,
+  RESOLVED_REPORT_STATUSES,
+  REPORTED_WORK_BYPASS_FLAG,
+  REPORTED_WORK_BYPASS_MIN_REASON,
   findUnresolvedDispatchComment,
 } from './linear-dispatch.js';
+import { buildOutcomeCommentBody, VALID_STATUSES } from './linear-session-reporting.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
 
 test('TERMINAL_STATE_TYPES includes duplicate alongside completed/canceled', () => {
@@ -278,4 +284,239 @@ test('startedStateGuard: a freshly-filed digest-autofix / canary / drain-parked 
   const parkedCandidate = { identifier: 'BRO-2518', state: { type: 'unstarted', name: 'Todo' } };
   assert.equal(startedStateGuard(freshlyFiled, {}), null);
   assert.equal(startedStateGuard(parkedCandidate, {}), null);
+});
+
+
+// -- reportedOutcomeGuard (BRO-2543) -----------------------------------------
+// BRO-2506's fix landed on origin/main at 00:53Z; its worker posted a session
+// report at 01:31Z and the issue sat in In Review. At 02:15Z a crown-loop
+// dead-session recovery ran `linear-next.js --id BRO-2506 --model opus
+// --force` and a SECOND worker opened on it, re-did the discovery and closed
+// with "duplicate dispatch - no new code needed". startedStateGuard above
+// already refused that issue; --force cleared it. This guard is the one
+// --force does not clear.
+
+// The exact 02:15:05Z payload, reconstructed from BRO-2506's real comment
+// thread: In Review, the 00:43 dispatch comment, the 01:31 session report,
+// and nothing after (the 02:15 dispatch comment and 02:18 duplicate report
+// only exist BECAUSE this guard wasn't there). Comments are newest-first,
+// which is the order Linear's API actually returned them.
+const BRO_2506_AT_INCIDENT = Object.freeze({
+  identifier: 'BRO-2506',
+  state: { id: 's1', name: 'In Review', type: 'started' },
+  description: '## Acceptance criteria\n`node --test scripts/lib/digest-autofix.test.mjs`',
+  comments: { nodes: [
+    { body: '**Session report (in-review)**\n\nPorted the isDispatchResolved pattern from BRO-2434.', createdAt: '2026-08-31T01:31:24.775Z' },
+    { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+  ] },
+});
+
+const clone = (o) => JSON.parse(JSON.stringify(o));
+
+test('reportedOutcomeGuard: refuses the EXACT BRO-2506 incident — dead workspace, In Review, report already posted, --force passed', () => {
+  // The literal command that wasted a dispatch: --id BRO-2506 --model opus --force.
+  const refusal = reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { force: true, model: 'opus' });
+  assert.ok(refusal, 'the incident command must be refused');
+  assert.match(refusal, /BRO-2506/);
+  assert.match(refusal, /In Review/);
+  assert.match(refusal, /session report \(in-review\)/);
+  assert.match(refusal, /2026-08-31T01:31:24\.775Z/);
+});
+
+test('reportedOutcomeGuard: --force does NOT bypass it — the entire point of the guard', () => {
+  // If this ever passes with force, BRO-2506 recurs verbatim.
+  assert.ok(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, {}));
+  assert.ok(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { force: true }));
+});
+
+test('reportedOutcomeGuard: the refusal quotes the issue\'s own acceptance command and says --force will not help', () => {
+  // SHOULD-FIX from the plan review: "read the report" is advice an LLM
+  // operator skips; a pasteable command is one it runs.
+  const refusal = reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { force: true });
+  assert.match(refusal, /node --test scripts\/lib\/digest-autofix\.test\.mjs/);
+  assert.match(refusal, /--force alone does NOT bypass/);
+  // The refusal must name the COMPLETE working recovery command, not just its
+  // own flag: startedStateGuard independently refuses a started-type issue and
+  // still wants --force, so an operator handed half the invocation bounces off
+  // a second refusal. tests/unit/linear-next.test.mjs drives this exact flag
+  // pair through the real main() and proves it dispatches.
+  assert.match(refusal, new RegExp(`--force --${REPORTED_WORK_BYPASS_FLAG} "<reason`));
+});
+
+test('reportedOutcomeGuard: --allow-reported-work with a real reason is the escape hatch', () => {
+  assert.equal(
+    reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { [REPORTED_WORK_BYPASS_FLAG]: 'checked main, the commit is not there' }),
+    null,
+  );
+});
+
+test('reportedOutcomeGuard: a BARE --allow-reported-work (no reason) does not bypass — a reflex is not a claim', () => {
+  // parseArgs yields boolean true for a valueless flag. Requiring a reason is
+  // what stops an operator reaching for this the instant the message names it.
+  const refusal = reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { [REPORTED_WORK_BYPASS_FLAG]: true });
+  assert.ok(refusal);
+  assert.match(refusal, /without a reason/);
+  // ...and so does a too-short one.
+  assert.ok(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { [REPORTED_WORK_BYPASS_FLAG]: 'oops' }));
+});
+
+test('reportedOutcomeGuard: --dry-run/--print-prompt bypass it — a preview launches nothing', () => {
+  assert.equal(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { 'dry-run': true }), null);
+  assert.equal(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, { 'print-prompt': true }), null);
+});
+
+// -- the case the escape hatch exists for: it must stay dispatchable ---------
+
+test('reportedOutcomeGuard: a BLOCKED session report never refuses — that is exactly the stall --force exists to recover', () => {
+  // planCompletion() maps 'blocked' to NO state change, so a blocked worker's
+  // report sits on an issue still in a started type. Refusing on any report
+  // at all would have broken the crown loop's actual job.
+  const blocked = clone(BRO_2506_AT_INCIDENT);
+  blocked.comments.nodes[0].body = '**Session report (blocked)**\n\nMissing credential, cannot proceed.';
+  assert.equal(reportedOutcomeGuard(blocked, { force: true }), null);
+  assert.equal(reportedOutcomeGuard(blocked, {}), null);
+});
+
+test('reportedOutcomeGuard: a PAUSED session report never refuses either', () => {
+  const paused = clone(BRO_2506_AT_INCIDENT);
+  paused.comments.nodes[0].body = '**Session report (paused)**\n\nRECHECK-AFTER: 2026-09-15';
+  assert.equal(reportedOutcomeGuard(paused, { force: true }), null);
+});
+
+test('reportedOutcomeGuard: only done/in-review count as resolved — pinned against the writer\'s own status list', () => {
+  // Requires the REAL VALID_STATUSES so that adding a status upstream without
+  // deciding which side of this line it falls on fails here (CLAUDE.md rule 15).
+  assert.deepEqual([...VALID_STATUSES].sort(), ['blocked', 'done', 'in-review', 'paused']);
+  assert.deepEqual([...RESOLVED_REPORT_STATUSES].sort(), ['done', 'in-review']);
+  for (const status of VALID_STATUSES) {
+    const issue = clone(BRO_2506_AT_INCIDENT);
+    // Build the body with the REAL writer, never a hand-rolled copy of its format.
+    issue.comments.nodes[0].body = buildOutcomeCommentBody({ summary: 'did a thing', status });
+    const refused = !!reportedOutcomeGuard(issue, { force: true });
+    assert.equal(refused, RESOLVED_REPORT_STATUSES.has(status), `status "${status}" refused=${refused}`);
+  }
+});
+
+test('reportedOutcomeGuard: a report OLDER than the newest dispatch never refuses — a real re-dispatch that then died', () => {
+  // The load-bearing ordering rule (dispatch-reconcile.js: "resolved by an
+  // outcome recorded AT OR AFTER it, never by 'has an outcome somewhere in
+  // history'"). Without it an issue re-dispatched after a genuine death would
+  // stay refused forever on its previous run's report.
+  const redispatched = clone(BRO_2506_AT_INCIDENT);
+  redispatched.comments.nodes.unshift({
+    body: 'Dispatched aaaa1111 to workspace:99 at 2026-08-31T05:00:00.000Z (cmux)',
+    createdAt: '2026-08-31T05:00:00.000Z',
+  });
+  assert.equal(reportedOutcomeGuard(redispatched, { force: true }), null);
+  assert.equal(reportedOutcomeGuard(redispatched, {}), null);
+});
+
+test('reportedOutcomeGuard: a report after the NEWEST of several dispatch comments refuses again', () => {
+  // The mirror of the case above — proves the ordering rule is a real
+  // comparison and not a blanket "more than one dispatch comment ⇒ allow".
+  const reported = clone(BRO_2506_AT_INCIDENT);
+  reported.comments.nodes.unshift(
+    { body: '**Session report (done)**\n\nSecond run finished it.', createdAt: '2026-08-31T06:00:00.000Z' },
+    { body: 'Dispatched aaaa1111 to workspace:99 at 2026-08-31T05:00:00.000Z (cmux)', createdAt: '2026-08-31T05:00:00.000Z' },
+  );
+  assert.ok(reportedOutcomeGuard(reported, { force: true }));
+});
+
+// -- the second signal: PR-EVIDENCE ------------------------------------------
+
+test('reportedOutcomeGuard: a PR-EVIDENCE comment refuses even with no session report at all', () => {
+  // Covers the worker that commits and dies before reporting, and every
+  // worker still in flight under the pre-BRO-2543 seed (which told them to
+  // hand-roll commentCreate, producing no recognisable report header).
+  const prEvidence = clone(BRO_2506_AT_INCIDENT);
+  prEvidence.comments.nodes[0] = {
+    body: 'All done here.\n\nPR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/f3262ef00d5)',
+    createdAt: '2026-08-31T01:31:24.775Z',
+  };
+  const refusal = reportedOutcomeGuard(prEvidence, { force: true });
+  assert.ok(refusal);
+  assert.match(refusal, /PR-EVIDENCE marker/);
+});
+
+// -- must never fire ---------------------------------------------------------
+
+test('reportedOutcomeGuard: a Backlog/Todo/terminal issue is never refused, however many reports it carries', () => {
+  // The three machine dispatch paths (digest-autofix, canary, drain-parked)
+  // only ever hand --id a backlog- or unstarted-type issue, so none of them
+  // can be refused by this guard regardless of thread contents.
+  for (const state of [
+    { type: 'backlog', name: 'Backlog' },
+    { type: 'unstarted', name: 'Todo' },
+    { type: 'completed', name: 'Done' },
+    { type: 'canceled', name: 'Canceled' },
+  ]) {
+    const issue = clone(BRO_2506_AT_INCIDENT);
+    issue.state = state;
+    assert.equal(reportedOutcomeGuard(issue, {}), null, `state ${state.type} must not be refused`);
+  }
+});
+
+test('reportedOutcomeGuard: an issue with no comments / no state / malformed nodes fails open and never throws', () => {
+  assert.equal(reportedOutcomeGuard({ identifier: 'BRO-1' }, {}), null);
+  assert.equal(reportedOutcomeGuard({ identifier: 'BRO-1', state: { type: 'started' } }, {}), null);
+  assert.equal(reportedOutcomeGuard({ identifier: 'BRO-1', state: { type: 'started' }, comments: { nodes: null } }, {}), null);
+  assert.equal(reportedOutcomeGuard({ identifier: 'BRO-1', state: { type: 'started' }, comments: { nodes: [null, {}, { body: 42 }] } }, {}), null);
+  assert.equal(reportedOutcomeGuard(null, {}), null);
+});
+
+test('reportedOutcomeGuard: a report with no createdAt cannot be ordered, so it fails OPEN', () => {
+  // Absent ordering information the guard must not refuse — matching every
+  // other guard in this file, and keeping legacy/fixture payloads dispatchable.
+  const noTs = { identifier: 'BRO-1', state: { type: 'started', name: 'In Review' }, comments: { nodes: [
+    { body: '**Session report (done)**\n\nfinished' },
+  ] } };
+  assert.equal(reportedOutcomeGuard(noTs, {}), null);
+});
+
+test('reportedOutcomeGuard: a session report is matched only at the START of a body — quoting one does not count', () => {
+  // The refusal text itself names the format; a worker pasting it back into
+  // the thread must not thereby manufacture a "report".
+  const quoted = clone(BRO_2506_AT_INCIDENT);
+  quoted.comments.nodes[0].body = 'The guard said:\n\n**Session report (done)** was already posted';
+  assert.equal(reportedOutcomeGuard(quoted, { force: true }), null);
+});
+
+// -- newestDispatchComment ordering (the bug the incident exposed) -----------
+
+test('newestDispatchComment: picks the newest by createdAt from a NEWEST-FIRST array (Linear\'s real order)', () => {
+  // Linear's `comments` connection has no orderBy in buildIssueQuery, so it
+  // returns its default — updatedAt DESCENDING. Verified live on BRO-2506.
+  // The old `dispatched[length - 1]` returned the OLDEST here.
+  const newestFirst = [
+    { body: 'Dispatched cd34 to workspace:2 at t2 (cmux)', createdAt: 't2' },
+    { body: 'Dispatched ab12 to workspace:1 at t1 (cmux)', createdAt: 't1' },
+    { body: 'unrelated comment', createdAt: 't0' },
+  ];
+  assert.equal(newestDispatchComment(newestFirst).createdAt, 't2');
+});
+
+test('newestDispatchComment: also picks the newest from an OLDEST-FIRST array', () => {
+  const oldestFirst = [
+    { body: 'unrelated comment', createdAt: 't0' },
+    { body: 'Dispatched ab12 to workspace:1 at t1 (cmux)', createdAt: 't1' },
+    { body: 'Dispatched cd34 to workspace:2 at t2 (cmux)', createdAt: 't2' },
+  ];
+  assert.equal(newestDispatchComment(oldestFirst).createdAt, 't2');
+});
+
+test('newestDispatchComment: with no timestamps at all, last-in-array still wins (old behaviour preserved)', () => {
+  const noTs = [
+    { body: 'Dispatched ab12 to workspace:1 at t1 (cmux)', id: 'first' },
+    { body: 'Dispatched cd34 to workspace:2 at t2 (cmux)', id: 'last' },
+  ];
+  assert.equal(newestDispatchComment(noTs).id, 'last');
+});
+
+test('newestDispatchComment: null for an empty/absent list', () => {
+  assert.equal(newestDispatchComment([]), null);
+  assert.equal(newestDispatchComment(null), null);
+});
+
+test('REPORTED_WORK_BYPASS_MIN_REASON is long enough that a reflex answer will not clear it', () => {
+  assert.ok(REPORTED_WORK_BYPASS_MIN_REASON >= 10);
 });
