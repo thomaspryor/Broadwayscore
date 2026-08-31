@@ -2062,6 +2062,10 @@ on:
       # needsOverflowHydration (2026-08-14). Colocated test runs in the
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/audit-t1-silent-gaps.js'
+      # BRO-71: root-level scripts/*.test.mjs is NOT globbed (see the note near
+      # the top of this file) — a solo edit to this test needs its own entry
+      # or CI never runs it.
+      - 'scripts/audit-t1-silent-gaps.test.mjs'
       # ST-1 (2026-07-22): manual-entry merge-path force-override fix — a merge
       # onto an existing wrongProduction:true file now clears it instead of
       # silently preserving the stale flag (Grace Pervades). Colocated tests
