@@ -197,6 +197,23 @@ function formatSeasonDisplay(openingDate, closingDate) {
   return `${openSeason} - ${closeSeason} Seasons`;
 }
 
+/**
+ * Anchor date to use when computing which season a show's newsletter
+ * "opening event" belongs to. A reopening show's own openingDate can be from
+ * a much earlier season (e.g. a transfer or a show that closed and came back
+ * mid-season) — the event newsworthy THIS week is the reopening, so season
+ * comparisons must key off reopeningDate, not the stale original opening
+ * (BRO-2564; mirrors the reopeningDate precedence generate.mjs's
+ * openingEventsForWeek() already uses to decide whether a show qualifies for
+ * the week's Openings section in the first place).
+ * @param {{openingDate: string, reopeningDate?: string}} show
+ * @param {boolean} isReopening - true when this week's event is the reopening
+ * @returns {string} date string to feed into getSeasonForDate()
+ */
+function seasonStandingAnchorDate(show, isReopening) {
+  return isReopening && show.reopeningDate ? show.reopeningDate : show.openingDate;
+}
+
 module.exports = {
   getSeasonForDate,
   getSeasonDates,
@@ -206,4 +223,5 @@ module.exports = {
   getSeasonRange,
   validateSeason,
   formatSeasonDisplay,
+  seasonStandingAnchorDate,
 };
