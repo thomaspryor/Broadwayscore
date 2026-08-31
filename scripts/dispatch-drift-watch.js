@@ -33,6 +33,12 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
+// BRO-2603: dispatch-ledger.jsonl is one of the 7 ledgers BRO-385 froze for
+// 30 days (2026-08-26 -> 2026-09-25) — gate the alert this script files so
+// the freeze actually suppresses new cards instead of just documenting a
+// decision nothing reads.
+const { FROZEN_LEDGERS, isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
+const DISPATCH_LEDGER_NAME = FROZEN_LEDGERS.find((l) => l.endsWith('dispatch-ledger.jsonl'));
 
 const REPO = path.join(__dirname, '..');
 
@@ -142,7 +148,9 @@ async function main(argv = process.argv.slice(2)) {
   // this shipped. Paging the owner on that would train the digest to be
   // ignored; the weak rows are still printed here and listed in the alert body
   // whenever a proven one gets the alert sent.
-  if (args.alert && summary.exact > 0) {
+  if (args.alert && summary.exact > 0 && isLedgerFrozenNow(DISPATCH_LEDGER_NAME)) {
+    console.log(`[dispatch-drift-watch] ${freezeSkipMessage(DISPATCH_LEDGER_NAME)} — skipping alert`);
+  } else if (args.alert && summary.exact > 0) {
     try {
       const { routeAlert } = require('./lib/owner-alert-router.js');
       await routeAlert({

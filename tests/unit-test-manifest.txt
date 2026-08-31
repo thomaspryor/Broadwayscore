@@ -6,6 +6,7 @@ scripts/audit-cross-show-url-collisions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-errexit-unguarded-substitution.test.mjs
+scripts/audit-false-balance.test.mjs
 scripts/audit-fetch-timeouts.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
@@ -91,7 +92,10 @@ scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
+scripts/newsletter/featured-state-persist-order.test.mjs
+scripts/newsletter/lastfeatured-inweek.test.mjs
 scripts/newsletter/newsworthiness.test.mjs
+scripts/newsletter/out-of-town-openings.test.mjs
 scripts/newsletter/section-credential-guard.test.mjs
 scripts/newsletter/we-broadway-section.test.mjs
 scripts/newsletter/we-opening-stories.test.mjs
@@ -120,6 +124,7 @@ scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/alert-sender-bypass.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
+scripts/tests/brightdata-daily-spend.test.mjs
 scripts/tests/bww-roundup-yield-provenance.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
@@ -539,6 +544,7 @@ tests/unit/protected-field-lock.test.mjs
 tests/unit/protected-fields-sync.test.mjs
 tests/unit/protected-fields-three-way-sync.test.mjs
 tests/unit/provider-telemetry.test.mjs
+tests/unit/prune-dead-autodispatch-tabs.test.mjs
 tests/unit/pull-quote-guards.test.mjs
 tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-ledger-store.test.mjs
@@ -632,6 +638,7 @@ tests/unit/serp-session-cap.test.mjs
 tests/unit/serp-slug-discovery.test.mjs
 tests/unit/session-metrics.test.mjs
 tests/unit/session-start-disk-check.test.mjs
+tests/unit/settings-hook-paths.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs
@@ -662,6 +669,7 @@ tests/unit/t1t2-gap-card-terminal-states.test.mjs
 tests/unit/table-schema-assertion.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
 tests/unit/test-manifest-sort.test.mjs
+tests/unit/text-quality-nyt-bot-stub.test.mjs
 tests/unit/theater-scorecard-regression.test.mjs
 tests/unit/theater-scorecard-validators.test.mjs
 tests/unit/theater-tips-validators.test.mjs

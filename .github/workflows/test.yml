@@ -316,6 +316,12 @@ on:
       # cheap-tier fix from #756 above. Test registered in
       # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI.
       - 'scripts/tests/bww-roundup-yield-provenance.test.mjs'
+      # BRO-2226: locks in the missing-show Tier-2 verifier targeting fix
+      # (validate-show-venue --show=<addedId> instead of --all-provisional)
+      # + the brightdataDailyUsd threshold decision. Deps are all
+      # scripts/lib/** (already globbed above) — path-listed so a solo edit
+      # to this test alone still triggers CI.
+      - 'scripts/tests/brightdata-daily-spend.test.mjs'
       # Task #692: summarizeBwwRoundupMisses() (in the file above) + its digest
       # formatter bwwRoundupMissBacklogResults() (scripts/health-check.js, already
       # path-listed elsewhere). Test lives in tests/unit/ (node --test batch, not
@@ -636,6 +642,12 @@ on:
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
       - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
+      # BRO-164: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/audit-false-balance.js'
+      - 'scripts/audit-false-balance.test.mjs'
       # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
       # test registered explicitly in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — both need their own entry
@@ -1458,6 +1470,23 @@ on:
       # listed there — no glob).
       - 'scripts/tests/hook-liveness.test.mjs'
       - 'scripts/check-hook-liveness.js'
+      # BRO-2439 — the generalized hook-liveness check above reads
+      # <repo>/.claude/settings.json as its source of truth for every hook
+      # that SHOULD be running, but the file itself was never path-listed —
+      # same gap this fixed (a push touching only settings.json, exactly
+      # what BRO-2439's relative→CLAUDE_PROJECT_DIR-anchored resolver fix
+      # changed, would have triggered ZERO CI). Also lists the 7 repo-local
+      # hook scripts not already covered by an e2e test's own path-list entry
+      # above (pre-merge/pre-push-review-gate.sh, pre-push-visual-gate.sh,
+      # verify-edits.sh) so a solo edit to any of them triggers CI too.
+      - '.claude/settings.json'
+      - '.claude/hooks/notion-create-block.sh'
+      - '.claude/hooks/worktree-enforce.sh'
+      - '.claude/hooks/check-skill-redaction.sh'
+      - '.claude/hooks/enterworktree-guard.sh'
+      - '.claude/hooks/whitespace-nowrap-lint.sh'
+      - '.claude/hooks/session-start.sh'
+      - '.claude/hooks/cloud-bootstrap.sh'
       # BRO-193 — hook-syntax-guard.sh's restore loop now walks a manifest of
       # its own quarantines instead of globbing "*.sh.broken-*" on disk, so a
       # human-disabled hook stays disabled. The guarded script lives in the

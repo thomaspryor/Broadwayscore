@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { venuesMatch } = require('./lib/deduplication');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -73,21 +74,6 @@ function extractVenueFromTitle(rawTitle) {
   if (!match) return null;
   if (CATEGORY_TAGS.test(match[1].trim())) return null;
   return match[1].trim();
-}
-
-function venuesMatch(a, b) {
-  if (!a || !b) return false;
-  const norm = s => s.toLowerCase()
-    .replace(/\bthe\b/g, '')
-    .replace(/\btheatre\b/g, 'theater')
-    .replace(/[''""'":,.!?–—-]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  const na = norm(a);
-  const nb = norm(b);
-  if (na === nb) return true;
-  if (na.includes(nb) || nb.includes(na)) return true;
-  return false;
 }
 
 // ── Date-aware production validation ──

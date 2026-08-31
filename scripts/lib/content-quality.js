@@ -1294,6 +1294,13 @@ const TRUNCATION_SIGNALS = {
     // "verify access" interstitial mid-scrape. Observed in 6 complete-classified files
     // on 2026-06-09 audit — all short (<4k chars), all end with this chrome.
     /thank\s+you\s+for\s+your\s+patience\s+while\s+we\s+verify\s+access/i,
+    // Middle sentence of the same 3-sentence NYT stub, checked standalone (BRO-36):
+    // scripts/lib/text-quality.js's cleanText() runs an unrelated "Credit... X." strip
+    // pattern that can collaterally eat the "trouble retrieving" sentence (when a photo
+    // credit immediately precedes the stub) while leaving this middle sentence intact,
+    // so this file's own severeAnywhere-derived stripping needs it as an independent
+    // anchor rather than relying on the first pattern always being present verbatim.
+    /please\s+enable\s+javascript/i,
   ],
   // Moderate signals - likely truncated
   moderate: [
