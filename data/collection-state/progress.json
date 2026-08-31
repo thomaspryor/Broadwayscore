@@ -13,14 +13,7 @@
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "just-in-time-2025/timeout--unknown.json",
     "paranormal-activity-boston-regional-2026/nypost--unknown.json",
-    "paranormal-activity-boston-regional-2026/timeout--unknown.json",
-    "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "paranormal-activity-2026/deadline--erik-pedersen.json",
-    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json",
-    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
+    "paranormal-activity-boston-regional-2026/timeout--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -971,7 +964,17 @@
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
-    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json"
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -985,31 +988,22 @@
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
       "cats-west-end-2026/north-west-end--michelle-knight.json",
       "just-in-time-2025/timeout--unknown.json",
-      "paranormal-activity-boston-regional-2026/timeout--unknown.json",
-      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
+      "paranormal-activity-boston-regional-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/paranormal-activity-2026/deadline--erik-pedersen.json",
-      "paranormal-activity-2026/deadline--erik-pedersen.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ],
     "scrapingbee": [
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
     ],
     "brightdata": [
-      "paranormal-activity-boston-regional-2026/nypost--unknown.json",
-      "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+      "paranormal-activity-boston-regional-2026/nypost--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1017,7 +1011,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -1040,34 +1034,6 @@
       "t": "2026-08-30T20:47:54.479Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-31T01:56:36.508Z",
-      "event": "bb-session",
-      "session": "cf8ebf27",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-08-31T01:56:37.023Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-31T01:56:52.915Z",
-      "event": "bb-session",
-      "session": "906571f0",
-      "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/"
-    },
-    {
-      "t": "2026-08-31T02:00:19.087Z",
-      "event": "bb-session",
-      "session": "37b1daf8",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-31T02:00:19.840Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-31T02:04:22.236Z",
+  "updatedAt": "2026-08-31T02:05:28.115Z",
   "processed": 14,
-  "failed": 949,
-  "successRate": "1.5%",
+  "failed": 959,
+  "successRate": "1.4%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 2,
     "directCookies": 2,
-    "scrapingbee": 3,
-    "brightdata": 3,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -36,34 +36,6 @@
       "t": "2026-08-30T20:47:54.479Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-31T01:56:36.508Z",
-      "event": "bb-session",
-      "session": "cf8ebf27",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-08-31T01:56:37.023Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-31T01:56:52.915Z",
-      "event": "bb-session",
-      "session": "906571f0",
-      "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/"
-    },
-    {
-      "t": "2026-08-31T02:00:19.087Z",
-      "event": "bb-session",
-      "session": "37b1daf8",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-08-31T02:00:19.840Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
