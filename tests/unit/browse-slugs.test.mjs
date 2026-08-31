@@ -21,7 +21,11 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { getBrowseSlug, getSeasonSlug } from '../../src/lib/browse-slugs';
+
+const require = createRequire(import.meta.url);
+const { getSeasonForDate } = require('../../scripts/lib/broadway-seasons.js');
 
 const CATEGORIES = ['broadway', 'west-end', 'off-west-end', 'off-broadway', undefined];
 
@@ -59,6 +63,23 @@ test('special (concerts, galas, events) returns null — no dedicated browse pag
 test('opera returns null — no dedicated browse page exists', () => {
   for (const category of CATEGORIES) {
     assert.equal(getBrowseSlug(category, 'opera'), null, `category=${category}`);
+  }
+});
+
+// BRO-2563: getSeasonSlug used to reimplement the Jul1-Jun30 boundary inline
+// instead of delegating to scripts/lib/broadway-seasons.js's getSeasonForDate
+// (both independently carried, and independently fixed, the same UTC/local
+// boundary bug on 2026-08-30). Sweep a full calendar year — including a leap
+// day — proving the two call sites agree on every date, not just the
+// hand-picked boundary dates above, so a future re-fork of this logic would
+// have to break this test to reintroduce drift.
+test('getSeasonSlug agrees with broadway-seasons.js getSeasonForDate for every day of a full year', () => {
+  const start = new Date(Date.UTC(2027, 0, 1)); // 2027 is a leap-adjacent year; sweep includes 2028-02-29
+  for (let i = 0; i < 366 * 2; i++) {
+    const d = new Date(start.getTime() + i * 86400000);
+    const dateStr = d.toISOString().slice(0, 10);
+    const expected = `${getSeasonForDate(dateStr)}-broadway-season`;
+    assert.equal(getSeasonSlug('broadway', dateStr), expected, `mismatch at ${dateStr}`);
   }
 });
 

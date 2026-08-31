@@ -14,6 +14,7 @@
  */
 
 import type { ComputedShow } from '@/lib/data-types';
+import { getSeasonForDate } from '../../scripts/lib/broadway-seasons';
 
 /**
  * Returns null for `opera` and `special` (concerts, galas, immersive
@@ -63,28 +64,22 @@ export function getSeasonSlug(category: ComputedShow['category'] | undefined, op
   // date as the anchor (not the show's own opening date) since the rank cell
   // links to "this season" — same regardless of which show is being viewed.
   const today = openingDate ?? new Date().toISOString().slice(0, 10);
-  // Parse a plain "YYYY-MM-DD" string's components directly rather than via
-  // `new Date(str)` + local getters: `new Date("2026-07-01")` parses as UTC
-  // midnight, which reads back as June 30 in America/New_York — silently
-  // routing the season boundary's anchor date to the WRONG season one day a
-  // year (scripts/lib/broadway-seasons.js had the identical bug, fixed
-  // 2026-08-30 after it misclassified a show that opened exactly on the
-  // boundary; same fix applied here for consistency).
-  const isoMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(today);
-  let year: number, month: number;
-  if (isoMatch) {
-    year = Number(isoMatch[1]);
-    month = Number(isoMatch[2]) - 1; // 0-11, matches Date#getMonth() below
-    if (isNaN(year) || month < 0 || month > 11) return null;
-  } else {
-    const d = new Date(today);
-    if (isNaN(d.getTime())) return null;
-    month = d.getMonth(); // 0-11
-    year = d.getFullYear();
+  // Boundary math lives in scripts/lib/broadway-seasons.js (BRO-2563) — this
+  // used to be a second, independent Jul1-Jun30 implementation here that
+  // carried the same UTC/local-midnight boundary bug as that file, fixed
+  // twice in parallel on 2026-08-30. Delegate instead of re-deriving.
+  // Edge-case note (ship-check finding, 2026-08-31): getSeasonForDate's
+  // "YYYY-MM-DDT..." matching is looser than this file's old inline regex
+  // (any trailing T-suffix is accepted, not just a valid ISO time) — inert
+  // today since the only caller (WhereItRanks.tsx) always passes `openingDate:
+  // null`, routing through the plain-date branch below, not a datetime string.
+  let season: string;
+  try {
+    season = getSeasonForDate(today);
+  } catch {
+    return null;
   }
-  const firstYear = month >= 6 ? year : year - 1;
-  const secondYear = firstYear + 1;
-  return `${firstYear}-${secondYear}-broadway-season`;
+  return `${season}-broadway-season`;
 }
 
 /** Display label for the open-market column header. */
