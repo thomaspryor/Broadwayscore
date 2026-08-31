@@ -57,12 +57,22 @@ function candidatesFrom(text) {
 function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) {
   const text = String(notes || '');
   const scoped = [];
+  const verifyLineRaw = [];
   const section = SECTION_RE.exec(text);
   if (section) scoped.push(section[1]);
-  for (const m of text.matchAll(VERIFY_LINE_RE)) scoped.push(m[1]);
+  for (const m of text.matchAll(VERIFY_LINE_RE)) {
+    scoped.push(m[1]);
+    // Cards are routinely written as `VERIFY: node --test x.test.mjs` — no
+    // backticks — despite candidatesFrom() being backtick-only (BRO-2585).
+    // The line's own remainder is a candidate in its own right here, not just
+    // whatever backticked span it happens to contain; still run through the
+    // same isSafeCheckCommand gate below, so a raw VERIFY line can never arm
+    // anything a backticked one couldn't.
+    verifyLineRaw.push(m[1]);
+  }
   if (!scoped.length) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line', kind: 'no-section' };
 
-  const candidates = scoped.flatMap(candidatesFrom)
+  const candidates = [...scoped.flatMap(candidatesFrom), ...verifyLineRaw]
     // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
     .map(c => c.trim().replace(/^[$>]\s*/, ''))
     .filter(Boolean);
