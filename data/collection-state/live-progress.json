@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-31T20:01:42.078Z",
+  "updatedAt": "2026-08-31T21:28:19.515Z",
   "processed": 17,
-  "failed": 154,
+  "failed": 155,
   "successRate": "9.9%",
   "tierBreakdown": {
     "playwright": 11,
@@ -10,7 +10,7 @@
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 2,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 1
   },
   "browserbaseSessions": 2,
@@ -87,6 +87,28 @@
       "event": "bb-session",
       "session": "318e0a87",
       "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-31T21:27:42.875Z",
+      "event": "bb-session",
+      "session": "8f9ec8a6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648938"
+    },
+    {
+      "t": "2026-08-31T21:27:43.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-31T21:28:01.821Z",
+      "event": "bb-session",
+      "session": "805c498a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648938"
+    },
+    {
+      "t": "2026-08-31T21:28:03.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
