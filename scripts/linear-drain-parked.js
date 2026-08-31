@@ -163,38 +163,14 @@ function computeIssueContentHash(issue) {
   return computeContentHash({ name: issue && issue.title, notes: issue && issue.description });
 }
 
-// Same correlation logic as scripts/lib/digest-autofix.js's findMyJob (see
-// its header comment for why "latest ts for this taskId" is unsafe): scan
-// the raw shared dispatch-ledger for the job-spawned event THIS dispatch's
-// child process caused (earliest spawn at/after our own dispatch timestamp),
-// then follow any retry chain to read its current terminal state.
-function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
-  const sinceMs = new Date(sinceTs).getTime() - 5000;
-  const spawns = (dispatchLedgerEntries || [])
-    .filter((e) => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
-    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
-}
-
-// A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
-// identifier+contentHash has an outcome somewhere in history" (ship-check
-// Codex finding). The content-hash-keyed Set that scripts/lib/digest-autofix.js's
-// reconcileDigestOutcomes uses collapses two dispatches of the SAME unchanged
-// content onto one shared key — exactly the repeated-failure case this drain
-// exists to detect — so a card re-dispatched after its first attempt failed
-// would never produce a SECOND card-fail at all, and attempt-memory's
-// failure streak could never reach maxFailures. This ts-ordered check is the
-// same fix scripts/backlog-drain.js's own isDispatchResolved already applies
-// (see its header comment for the "old card-id Set" postmortem this mirrors).
+// Shared reconcile mechanics (BRO-2542) — see scripts/lib/dispatch-reconcile.js
+// header for the full history: this drain's isDispatchResolved/claimedJobIds
+// fix (BRO-2434, 1f0daa1100b) was the reference implementation, independently
+// ported into scripts/backlog-drain.js (BRO-2508) and
+// scripts/lib/digest-autofix.js (BRO-2506) before being extracted here.
+const { findMyJob, makeIsDispatchResolved, reconcileDispatches } = require('./lib/dispatch-reconcile.js');
 const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
-function isDispatchResolved(ledgerEntries, identifier, dispatchTs) {
-  const at = new Date(dispatchTs).getTime();
-  return (ledgerEntries || []).some((e) =>
-    e && String(e.cardId) === String(identifier) && e.ts &&
-    RESOLVING_EVENTS.has(e.event) &&
-    new Date(e.ts).getTime() >= at);
-}
+const isDispatchResolved = makeIsDispatchResolved(RESOLVING_EVENTS);
 
 // Resolves prior 'drain-parked-dispatch' breadcrumbs (this drain's own
 // ledger) into card-pass/card-fail by cross-referencing the SHARED
@@ -203,20 +179,6 @@ function isDispatchResolved(ledgerEntries, identifier, dispatchTs) {
 // checkPark/attemptOutcomesForCard key on; `identifier` stays on the
 // 'drain-parked-dispatch' entries only, where recentlyAttempted() already
 // expects it.
-//
-// isDispatchResolved is checked against the IMMUTABLE pre-pass ledgerEntries
-// only (never entries emitted earlier in this SAME loop) — an earlier draft
-// tagged same-pass emitted breadcrumbs with `now` and cross-checked against
-// them, which is wrong: `now` is later than every historical dispatch ts by
-// construction, so resolving ONE stale dispatch this pass would immediately
-// satisfy the `>= dispatchTs` check for every OTHER unresolved dispatch of
-// the same identifier too — collapsing genuinely separate, sequential
-// re-attempts (exactly what BRO-2434 needs to count separately) onto one
-// outcome. The real hazard the old code was trying to guard — two dispatch
-// rows racing onto the SAME underlying job (e.g. a duplicate-dispatch race
-// where only one job ever actually spawned) — is instead guarded directly by
-// jobId: claimedJobIds below skips emitting a second outcome for a jobId
-// already resolved earlier in this same pass, without touching timestamps.
 function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date()) {
   // Entries written before this feature shipped carry no contentHash and are
   // silently excluded — same convention attempt-memory.js's own header
@@ -231,45 +193,29 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
   const dispatches = (ledgerEntries || []).filter((e) =>
     e && e.event === 'drain-parked-dispatch' && e.identifier && e.contentHash &&
     Number.isFinite(new Date(e.ts).getTime()));
-  const claimedJobIds = new Set();
-  const newEntries = [];
-  for (const d of dispatches) {
-    if (isDispatchResolved(ledgerEntries, d.identifier, d.ts)) continue;
-    const taskId = `linear:${d.identifier}`;
-    const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
-    if (!job) {
-      const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next run
-      newEntries.push({
-        event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
-        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
-      });
-      continue;
-    }
-    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
-    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
-      // Chain ends at a retry whose successor hasn't spawned yet: still
-      // in-flight within the same orphan bound the no-spawn case uses.
-      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue;
-      newEntries.push({
-        event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
-        note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
-      });
-      if (job.jobId) claimedJobIds.add(job.jobId);
-      continue;
-    }
-    if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
-    const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
-    newEntries.push({
-      event: outcome, cardId: d.identifier, contentHash: d.contentHash,
-      note: outcome === 'card-pass'
-        ? 'session finished (job-done)'
-        : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
-    });
-    if (job.jobId) claimedJobIds.add(job.jobId);
-  }
-  return newEntries;
+  return reconcileDispatches(dispatches, {
+    identifierOf: (d) => d.identifier,
+    taskIdOf: (d) => `linear:${d.identifier}`,
+    isDispatchResolved, ledgerEntries, dispatchLedgerEntries, now,
+    orphanTimeoutH: ORPHAN_TIMEOUT_H,
+    onOrphan: (d) => ({
+      event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
+      note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
+    }),
+    onRetriedTimeout: (d, job) => ({
+      event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
+      note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
+    }),
+    onTerminal: (d, job) => {
+      const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
+      return {
+        event: outcome, cardId: d.identifier, contentHash: d.contentHash,
+        note: outcome === 'card-pass'
+          ? 'session finished (job-done)'
+          : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
+      };
+    },
+  });
 }
 
 async function main(argv = process.argv.slice(2), deps = {}) {
