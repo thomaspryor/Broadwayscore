@@ -21,6 +21,16 @@
  * Named autonomous-* on purpose: the loop's own eligibility gate refuses to
  * edit scripts/lib/autonomous-*, so a tier-3 card can never rewrite the thing
  * that audits its own completion.
+ *
+ * BRO-2585: a `VERIFY: <cmd>` line's own remainder is a candidate even
+ * without backticks — that's the form cards are actually written in. It
+ * takes the WHOLE line as one candidate (no trailing "passes"/"# comment"
+ * tolerance — fails closed, unarmed, same as before this existed), and goes
+ * through the identical isSafeCheckCommand gate as every backticked
+ * candidate, so it can never arm anything a backticked span couldn't. It
+ * does not require the VERIFY: line to sit inside "## Acceptance criteria"
+ * — that scope was already true for backticked VERIFY lines before this
+ * change (see VERIFY_LINE_RE below, which scans the whole text).
  */
 
 'use strict';
