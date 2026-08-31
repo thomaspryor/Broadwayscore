@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-31T00:29:19.514Z",
+  "generatedAt": "2026-08-31T01:03:49.518Z",
   "summary": {
-    "total": 7,
+    "total": 9,
     "high": 2,
-    "medium": 4,
+    "medium": 6,
     "low": 1
   },
   "collisions": [
@@ -168,6 +168,60 @@
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "publishDate 2025-10-31 is 1 days from little-bear-ridge-road-2025 opening (2025-10-30)",
       "confidence": "high"
+    },
+    {
+      "url": "https://nypost.com/2026/08/25/entertainment/paranormal-activity-on-broadway-review-freaky-horror-show-conjures-real-terror/",
+      "normalizedUrl": "https://nypost.com/2026/08/25/entertainment/paranormal-activity-on-broadway-review-freaky-horror-show-conjures-real-terror",
+      "candidates": [
+        {
+          "showId": "paranormal-activity-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "2026-08-25T20:51:56-04:00",
+          "openingDate": "2026-08-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        },
+        {
+          "showId": "paranormal-activity-boston-regional-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "2026-08-26",
+          "openingDate": "2026-07-15",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        }
+      ],
+      "suggestedWinner": "paranormal-activity-2026",
+      "reason": "publishDate 2026-08-25T20:51:56-04:00 is 0 days from paranormal-activity-2026 but also 42 days from paranormal-activity-boston-regional-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-paranormal-activity-delivers-stage-frights-082526",
+      "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-paranormal-activity-delivers-stage-frights-082526",
+      "candidates": [
+        {
+          "showId": "paranormal-activity-2026",
+          "file": "timeout--raven-snook.json",
+          "publishDate": "2026-08-25T20:51:56-04:00",
+          "openingDate": "2026-08-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "paranormal-activity-boston-regional-2026",
+          "file": "timeout--raven-snook.json",
+          "publishDate": "2026-08-26",
+          "openingDate": "2026-07-15",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "paranormal-activity-2026",
+      "reason": "publishDate 2026-08-25T20:51:56-04:00 is 0 days from paranormal-activity-2026 but also 42 days from paranormal-activity-boston-regional-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
