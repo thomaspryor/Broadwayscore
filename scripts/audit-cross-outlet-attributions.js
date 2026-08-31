@@ -81,6 +81,7 @@ const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isTriagedOut } = require('./lib/cross-outlet-triage');
+const { explainExclusion } = require('./lib/review-guards');
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -208,7 +209,7 @@ if (PLAYBILL_BLEED) {
       scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
-      if (isTriagedOut(d)) continue;
+      if (isTriagedOut(d, explainExclusion)) continue;
       if (!String(d.source || '').includes('playbill-verdict')) continue;
       const key = `${showId}||${criticName}`;
       if (!groups.has(key)) groups.set(key, { showId, criticName, entries: [] });
@@ -261,7 +262,7 @@ if (PLAYBILL_BLEED) {
       scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
-      if (isTriagedOut(d)) continue;
+      if (isTriagedOut(d, explainExclusion)) continue;
       const homes = defaultOf.get(criticName) || [];
       if (!homes.length || homes.includes(outletId)) continue;
       if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;

@@ -24,21 +24,28 @@
  * reported as an unreviewed cross-outlet suspect.
  *
  * @param {object} d parsed review-text JSON
+ * @param {(d: object) => (string|null)} explainExclusion review-guards' canonical
+ *   exclusion explainer, injected so this stays a pure function.
  * @returns {boolean}
  */
-function isTriagedOut(d) {
+function isTriagedOut(d, explainExclusion) {
   if (!d || typeof d !== 'object') return false;
   // A human/agent checked the page byline and confirmed the pairing is legit.
   if (d.crossOutletVerified === true) return true;
   // Already recorded as a bad attribution; reporting it again is noise.
   if (d.wrongAttribution === true) return true;
-  // Already excluded from scoring for being the wrong production/show. Whatever
-  // outlet it is credited to, it is not a cross-outlet attribution question.
+  // Excluded from scoring for being the wrong production/show. Whatever outlet
+  // it is credited to, it is not a cross-outlet attribution question.
   //
-  // wrongProduction is auto-clearable (rebuild-all-reviews.js dateless-revival
-  // release). That is fine: the predicate is evaluated per scan, so a cleared
-  // file re-surfaces as a suspect on the next run rather than being lost.
-  if (d.wrongProduction === true || d.wrongShow === true) return true;
+  // Asked through explainExclusion, NOT the raw flags. Those flags are
+  // clearable — manual clear, override, human-reviewed-false, and a
+  // freshness-bounded auto-clear — and 369 of 42,418 review files corpus-wide
+  // carry one while still being canonically includable, i.e. scored and live on
+  // the site. Testing the raw flag would hide those live files from the audit
+  // that exists to check their attribution. Cleared means scored, and scored
+  // means its outlet/critic pairing still matters.
+  const reason = explainExclusion(d);
+  if (reason === 'wrongShow' || reason === 'wrongProduction') return true;
   // NOT excluded: duplicateOf. It was added here and then removed on review.
   // Scoring's isScoreable() does group it with the wrong-show flags, but
   // duplication and attribution are INDEPENDENT dimensions: a duplicated

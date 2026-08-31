@@ -12,44 +12,45 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { isTriagedOut } = require('../../scripts/lib/cross-outlet-triage.js');
+const { explainExclusion } = require('../../scripts/lib/review-guards.js');
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('an untriaged record is not excluded', () => {
-  assert.strictEqual(isTriagedOut({ criticName: 'A', outletId: 'b' }), false);
+  assert.strictEqual(isTriagedOut({ criticName: 'A', outletId: 'b' }, explainExclusion), false);
 });
 
 test('crossOutletVerified excludes', () => {
-  assert.strictEqual(isTriagedOut({ crossOutletVerified: true }), true);
+  assert.strictEqual(isTriagedOut({ crossOutletVerified: true }, explainExclusion), true);
 });
 
 test('wrongAttribution excludes', () => {
-  assert.strictEqual(isTriagedOut({ wrongAttribution: true }), true);
+  assert.strictEqual(isTriagedOut({ wrongAttribution: true }, explainExclusion), true);
 });
 
 test('wrongShow excludes — the regression that held CI red', () => {
-  assert.strictEqual(isTriagedOut({ wrongShow: true }), true);
+  assert.strictEqual(isTriagedOut({ wrongShow: true }, explainExclusion), true);
 });
 
 test('wrongProduction excludes', () => {
-  assert.strictEqual(isTriagedOut({ wrongProduction: true }), true);
+  assert.strictEqual(isTriagedOut({ wrongProduction: true }, explainExclusion), true);
 });
 
 test('duplicateOf does NOT exclude — duplication and attribution are independent', () => {
   // A duplicated syndicated article can still carry the wrong outlet's critic.
   // Skipping it would hide a real misattribution just because scoring drops the
   // row. Pinned so it does not get "helpfully" added back.
-  assert.strictEqual(isTriagedOut({ duplicateOf: 'other-show/outlet--critic.json' }), false);
+  assert.strictEqual(isTriagedOut({ duplicateOf: 'other-show/outlet--critic.json' }, explainExclusion), false);
 });
 
 test('only literal true excludes, never a truthy string', () => {
-  assert.strictEqual(isTriagedOut({ wrongShow: 'yes' }), false);
-  assert.strictEqual(isTriagedOut({ crossOutletVerified: 1 }), false);
+  assert.strictEqual(isTriagedOut({ wrongShow: 'yes' }, explainExclusion), false);
+  assert.strictEqual(isTriagedOut({ crossOutletVerified: 1 }, explainExclusion), false);
 });
 
 test('a null or non-object record never throws', () => {
-  assert.strictEqual(isTriagedOut(null), false);
-  assert.strictEqual(isTriagedOut(undefined), false);
-  assert.strictEqual(isTriagedOut('nope'), false);
+  assert.strictEqual(isTriagedOut(null, explainExclusion), false);
+  assert.strictEqual(isTriagedOut(undefined, explainExclusion), false);
+  assert.strictEqual(isTriagedOut('nope', explainExclusion), false);
 });
 
 // The whole point of extracting the predicate is that the two scans cannot
@@ -65,7 +66,7 @@ test('both scans in the audit call the shared predicate, with no inline exclusio
   // scan fail here with a message that misdiagnoses the cause. What must hold
   // is that every scan routes through the helper -- which the field regexes
   // below actually enforce.
-  const calls = src.match(/isTriagedOut\(\s*\w+\s*\)/g) || [];
+  const calls = src.match(/isTriagedOut\(\s*\w+\s*,\s*\w+\s*\)/g) || [];
   assert.ok(
     calls.length >= 2,
     `both the playbill-bleed scan and the default-critic-of scan must call isTriagedOut (found ${calls.length})`

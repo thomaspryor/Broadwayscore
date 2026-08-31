@@ -19,7 +19,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { isEvidenceOfOpening, hasEvidenceOfOpening, NOT_EVIDENCE_OF_OPENING } = require(
+const { isEvidenceOfOpening, hasEvidenceOfOpening, describeOpeningEvidence, NOT_EVIDENCE_OF_OPENING } = require(
   '../../scripts/lib/stale-announced-audit.js'
 );
 const { explainExclusion } = require('../../scripts/lib/review-guards.js');
@@ -99,4 +99,11 @@ test('hasEvidenceOfOpening returns false for a directory that does not exist', (
     hasEvidenceOfOpening('/nonexistent/review-texts', 'no-such-show', () => null),
     false
   );
+});
+
+test('describeOpeningEvidence separates "no reviews" from "all reviews discounted"', () => {
+  // The two look identical in the flag list but mean opposite things: the
+  // second is a show whose only signal was thrown away.
+  const none = describeOpeningEvidence('/nonexistent/review-texts', 'no-such-show', () => null);
+  assert.deepStrictEqual(none, { hasEvidence: false, reviewFiles: 0, excludedFiles: 0 });
 });

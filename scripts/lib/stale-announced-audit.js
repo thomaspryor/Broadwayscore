@@ -138,14 +138,33 @@ function isEvidenceOfOpening(data, explainExclusion, show) {
  * @returns {boolean}
  */
 function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
+  return describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show).hasEvidence;
+}
+
+/**
+ * Same decision as hasEvidenceOfOpening, plus the counts behind it.
+ *
+ * A show whose review files ALL got discounted looks identical, from the
+ * flag list alone, to a show with no review files at all — and those are very
+ * different situations. The second is normal; the first means the only signal
+ * this show ever had was thrown away, and if those flags are false positives
+ * (the LLM wrongProduction FP rate is material) the show sits 'announced'
+ * forever with nothing pointing at it. Reporting the counts is what keeps the
+ * discount from being a silent hole.
+ *
+ * @returns {{hasEvidence: boolean, reviewFiles: number, excludedFiles: number}}
+ */
+function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show) {
   const dir = path.join(reviewTextsDir, showId);
   let files;
   try {
     files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
   } catch {
-    return false;
+    return { hasEvidence: false, reviewFiles: 0, excludedFiles: 0 };
   }
-  return files.some(f => {
+  let excluded = 0;
+  let hasEvidence = false;
+  for (const f of files) {
     let data;
     try {
       data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
@@ -153,10 +172,13 @@ function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
       // Unreadable file: something collected it, so treat it as evidence
       // rather than silently weakening the signal. This audit's safe
       // direction is to over-flag, never to go quiet.
-      return true;
+      hasEvidence = true;
+      continue;
     }
-    return isEvidenceOfOpening(data, explainExclusion, show);
-  });
+    if (isEvidenceOfOpening(data, explainExclusion, show)) hasEvidence = true;
+    else excluded++;
+  }
+  return { hasEvidence, reviewFiles: files.length, excludedFiles: excluded };
 }
 
 module.exports = {
@@ -169,5 +191,6 @@ module.exports = {
   evaluateAnnouncedShow,
   isEvidenceOfOpening,
   hasEvidenceOfOpening,
+  describeOpeningEvidence,
   NOT_EVIDENCE_OF_OPENING,
 };

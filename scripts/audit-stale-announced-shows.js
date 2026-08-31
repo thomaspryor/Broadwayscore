@@ -48,6 +48,7 @@ const {
   saveAcks,
   evaluateAnnouncedShow,
   hasEvidenceOfOpening,
+  describeOpeningEvidence,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 
@@ -74,6 +75,21 @@ function loadJSON(file, fallback = null) {
 
 function hasPopulatedReviewTextsDir(showId, show) {
   return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show);
+}
+
+// Announced shows that have review files but ALL of them discounted as
+// wrong-show contamination. Not flagged (the discount is deliberate), but
+// reported, so the case is visible instead of silent.
+function findSilencedByContamination(shows) {
+  const out = [];
+  for (const show of shows) {
+    if (show.status !== 'announced') continue;
+    const ev = describeOpeningEvidence(REVIEW_TEXTS_DIR, show.id, explainExclusion, show);
+    if (ev.reviewFiles > 0 && !ev.hasEvidence) {
+      out.push({ id: show.id, title: show.title, reviewFiles: ev.reviewFiles, excludedFiles: ev.excludedFiles });
+    }
+  }
+  return out;
 }
 
 function main() {
@@ -151,16 +167,31 @@ function main() {
     }
   }
 
+  const silencedByContamination = findSilencedByContamination(showsData.shows);
+
   const report = {
     generatedAt: now.toISOString(),
     staleDaysThreshold: STALE_DAYS,
     flaggedCount: flagged.length,
     flagged,
+    silencedByContaminationCount: silencedByContamination.length,
+    silencedByContamination,
   };
 
   console.log(`audit-stale-announced-shows: ${flagged.length} stale 'announced' show(s) (stale-days=${STALE_DAYS})`);
   for (const f of flagged) {
     console.log(`  - ${f.id} (${f.title}): ${f.reasons.join('; ')}`);
+  }
+  if (silencedByContamination.length > 0) {
+    console.log(
+      `\n${silencedByContamination.length} announced show(s) have review files but ALL are wrong-show/wrong-production contamination —`
+    );
+    console.log(
+      '  not flagged, but if any of those flags is a false positive the show has no other signal:'
+    );
+    for (const s of silencedByContamination) {
+      console.log(`  - ${s.id} (${s.title}): ${s.excludedFiles}/${s.reviewFiles} review file(s) discounted`);
+    }
   }
 
   if (!DRY_RUN) {
