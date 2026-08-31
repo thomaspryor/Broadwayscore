@@ -191,11 +191,13 @@ jobs:
           # `git add A B C` is atomic on pathspec-match failure, so one absent
           # file (a first run, a run that routed no alert) would stage NONE of
           # them and silently drop the DMARC state this run just computed.
-          bash scripts/lib/git-add-existing.sh \
-            data/audit/dmarc-summary.json \
-            data/audit/dmarc-report-ledger.jsonl \
-            data/audit/alert-ledger.json \
-            data/audit/alert-digest-queue.json
+          #
+          # Kept on ONE line per invocation on purpose: the alert-ledger guard
+          # (scripts/lint-workflow-guards.sh alert-ledger-commit) matches the
+          # staging command and the filename on the SAME line, so splitting
+          # these across backslash continuations reads to it as "never staged".
+          bash scripts/lib/git-add-existing.sh data/audit/dmarc-summary.json data/audit/dmarc-report-ledger.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json
 
           if git diff --staged --quiet; then
             echo "No DMARC state changes."
