@@ -392,6 +392,30 @@ jobs:
         timeout-minutes: 5
         run: node scripts/audit-cv-wrongproduction-lifetime.js
 
+      # BRO-80: unopened-show prior-run / readmission sweep. The pre-opening
+      # temporal gate (review-guards.js isPrematureReviewForUnopenedShow) is a
+      # TEMPORARY exclusion - it only fires while a show's status is
+      # announced/upcoming/previews. Every old review it silently holds out
+      # readmits into the live score the moment the show opens, so a
+      # contaminated review with no durable flag of its own becomes an
+      # opening-night landmine (6 such reviews were found and flagged
+      # 2026-08-30; 2 shows were genuine Edinburgh Fringe transfers and got
+      # priorRuns instead).
+      #
+      # This has to run on a CRON, not in test.yml: the risk is a DATA state
+      # that changes when update-show-status.js flips a show, with no code
+      # push involved, so a code-triggered gate would never see it.
+      #
+      # SHADOW MODE, non-blocking, same reasoning as the sweep above:
+      # explainExclusion is a strong diagnostic mirror of the rebuild's rules
+      # but explicitly NOT the audit of record (see its docstring), so a false
+      # positive must never be able to red main.
+      - name: unopened-show readmission-risk sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/triage-unopened-shows.mjs
+
       # 4 more lifetime corpus sweeps (task #1746), extending #1731's pattern
       # above to the other opening-night-checks plugins with the exact same
       # structural risk: wrong/mismatched content shipped into reviews.json,

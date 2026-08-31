@@ -38,8 +38,9 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { isPrematureReviewForUnopenedShow, hasValidScore } = require('./lib/review-guards');
-const { classifyPriorRunCandidate } = require('./lib/prior-run-triage');
+const { isPrematureReviewForUnopenedShow, hasValidScore, explainExclusion } = require('./lib/review-guards');
+const { classifyPriorRunCandidate, classifyReadmissionRisk } = require('./lib/prior-run-triage');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
 
 const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='));
@@ -54,6 +55,10 @@ const REPORT_PATH = path.join(TRIAGE_DIR, 'unopened-shows-prior-runs.json');
 
 const UNOPENED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 
+// Stand-in opening date when simulating a status flip on a show that has no
+// dates yet. Only used for the simulation, never written anywhere.
+const TODAY = new Date().toISOString().slice(0, 10);
+
 function hasDeclaredPriorRuns(show) {
   return Array.isArray(show.priorRuns)
     && show.priorRuns.some(r => r && (r.openingDate || r.closingDate || r.previewsStartDate));
@@ -67,11 +72,13 @@ function loadShows() {
 
 function collectPrematureScoredReviews(show, reviewTextsDir) {
   const dir = path.join(reviewTextsDir, show.id);
-  if (!fs.existsSync(dir)) return { reviews: [], unreadableCount: 0 };
+  if (!fs.existsSync(dir)) return { reviews: [], unreadableCount: 0, scannedCount: 0 };
   const out = [];
   let unreadableCount = 0;
+  let scannedCount = 0;
   for (const file of fs.readdirSync(dir)) {
     if (!file.endsWith('.json')) continue;
+    scannedCount++;
     let data;
     try {
       data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
@@ -81,7 +88,30 @@ function collectPrematureScoredReviews(show, reviewTextsDir) {
     }
     if (!isPrematureReviewForUnopenedShow(data, show)) continue;
     if (!hasValidScore(data)) continue;
+    // Readmission risk: the temporal gate expires when the show opens, so ask
+    // the canonical predicate what excludes this file NOW vs what would exclude
+    // it once status flips. filePath is mandatory — explainExclusion returns
+    // 'duplicateOf' for every file when it is omitted.
+    const fp = path.join(dir, file);
+    const openedShow = {
+      ...show,
+      status: 'open',
+      previewsStartDate: show.previewsStartDate || TODAY,
+      openingDate: show.openingDate || TODAY,
+    };
+    let beforeReason = null;
+    let afterReason = null;
+    try {
+      beforeReason = explainExclusion(data, show, fp);
+      afterReason = explainExclusion(data, openedShow, fp);
+    } catch {
+      // A predicate throw (missing registry, unreadable duplicate target) must
+      // not sink the whole sweep — the row simply carries no risk verdict.
+    }
     out.push({
+      readmissionRisk: classifyReadmissionRisk({ beforeReason, afterReason }),
+      beforeReason,
+      afterReason,
       file,
       outletId: data.outletId,
       criticName: data.criticName,
@@ -92,7 +122,7 @@ function collectPrematureScoredReviews(show, reviewTextsDir) {
       fullText: data.fullText,
     });
   }
-  return { reviews: out, unreadableCount };
+  return { reviews: out, unreadableCount, scannedCount };
 }
 
 function main() {
@@ -108,14 +138,16 @@ function main() {
   const candidates = ONLY_SHOW ? shows.filter(s => s.id === ONLY_SHOW) : shows;
   const results = [];
   let totalUnreadable = 0;
+  let totalScanned = 0;
 
   for (const show of candidates) {
     const status = String(show.status || '').toLowerCase();
     if (!UNOPENED_STATUSES.has(status)) continue;
     if (hasDeclaredPriorRuns(show)) continue;
 
-    const { reviews, unreadableCount } = collectPrematureScoredReviews(show, reviewTextsDir);
+    const { reviews, unreadableCount, scannedCount } = collectPrematureScoredReviews(show, reviewTextsDir);
     totalUnreadable += unreadableCount;
+    totalScanned += scannedCount;
     if (reviews.length === 0) continue;
 
     const classification = classifyPriorRunCandidate(show, reviews);
@@ -133,6 +165,9 @@ function main() {
       suggestedPriorRun: classification.suggestedPriorRun,
       reviews: reviews.map(r => ({
         file: r.file,
+        readmissionRisk: r.readmissionRisk,
+        beforeReason: r.beforeReason,
+        afterReason: r.afterReason,
         outletId: r.outletId,
         criticName: r.criticName,
         publishDate: r.publishDate,
@@ -143,11 +178,31 @@ function main() {
     });
   }
 
+  // FAIL LOUD on a vacuous sweep. review-texts is a private-repo checkout that
+  // can be missing/empty in CI or a worktree; reporting "readmission risk: none"
+  // in that state is worse than no check at all, because it goes quiet exactly
+  // when it can see nothing. Only gate the full sweep — a --show=ID run
+  // legitimately scans one directory.
+  assertCorpusScanned(totalScanned, { gate: !ONLY_SHOW, label: reviewTextsDir });
+
   const byVerdict = results.reduce((acc, r) => {
     acc[r.verdict] = (acc[r.verdict] || 0) + 1;
     return acc;
   }, {});
   const totalFiles = results.reduce((sum, r) => sum + r.stats.count, 0);
+  // Files the expiring temporal gate is the ONLY thing holding out. These are
+  // the opening-night landmines: each readmits into the live score the moment
+  // the show's status flips. Advisory, not a hard gate — explainExclusion is a
+  // strong diagnostic mirror of the rebuild's rules, not the audit of record
+  // (see its docstring), so a false positive must not be able to red main.
+  const readmissionRisks = [];
+  for (const r of results) {
+    for (const rv of r.reviews) {
+      if (rv.readmissionRisk === 'readmits-on-open') {
+        readmissionRisks.push({ showId: r.showId, file: rv.file, publishDate: rv.publishDate, outletId: rv.outletId });
+      }
+    }
+  }
 
   const report = {
     generatedAt: new Date().toISOString(),
@@ -155,6 +210,8 @@ function main() {
     scannedShows: candidates.length,
     flaggedShows: results.length,
     flaggedFiles: totalFiles,
+    readmissionRiskFiles: readmissionRisks.length,
+    readmissionRisks,
     unreadableFiles: totalUnreadable,
     byVerdict,
     shows: results.sort((a, b) => b.stats.count - a.stats.count),
@@ -169,6 +226,14 @@ function main() {
     console.log(`  ${r.verdict.padEnd(24)} ${r.showId} (${r.stats.count} files, venue=${r.venue || 'TBA'})`);
   }
 
+  if (readmissionRisks.length > 0) {
+    console.log(`\n[triage-unopened-shows] READMISSION RISK: ${readmissionRisks.length} review(s) are held out ONLY by the expiring pre-opening gate and will re-enter scoring when their show opens:`);
+    for (const x of readmissionRisks) console.log(`  ! ${x.showId} | ${x.file} | pub=${x.publishDate}`);
+    console.log('[triage-unopened-shows] Fix each: declare show.priorRuns if it is a genuine earlier run, else set wrongProduction + an operator wrongProductionReason.');
+  } else {
+    console.log('[triage-unopened-shows] readmission risk: none — every gate-excluded review also has a durable exclusion.');
+  }
+
   if (PRINT_JSON) {
     console.log(JSON.stringify(report, null, 2));
   }
@@ -180,4 +245,12 @@ function main() {
   }
 }
 
-main();
+try {
+  main();
+} catch (err) {
+  if (err instanceof CorpusNotScannedError) {
+    console.error(`[triage-unopened-shows] ${err.message}`);
+    process.exit(1);
+  }
+  throw err;
+}

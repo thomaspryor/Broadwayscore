@@ -7,6 +7,7 @@ const {
   classifyPriorRunCandidate,
   canonicalizeVenue,
   fullTextMentionsVenue,
+  classifyReadmissionRisk,
 } = require('./prior-run-triage.js');
 
 const SHOW = { id: 'kanpur-1857-off-west-end-2026', venue: 'Theatre Royal Stratford East' };
@@ -129,4 +130,43 @@ test('canonicalizeVenue: folds diacritics so accented and unaccented spellings m
 test('fullTextMentionsVenue: matches across the accent boundary in both directions', () => {
   assert.equal(fullTextMentionsVenue('A hit at the Café de Paris this week.', 'Cafe de Paris'), true);
   assert.equal(fullTextMentionsVenue('A hit at the Cafe de Paris this week.', 'Café de Paris'), true);
+});
+
+// --- classifyReadmissionRisk (BRO-80 follow-up) -----------------------------
+// The pre-opening temporal gate expires when a show opens. A review it is the
+// ONLY thing excluding therefore readmits into the live score on opening night;
+// one held out by a durable flag does not.
+
+test('classifyReadmissionRisk: gate-only exclusion that clears on open -> readmits-on-open', () => {
+  assert.equal(
+    classifyReadmissionRisk({ beforeReason: 'prematureForUnopenedShow', afterReason: null }),
+    'readmits-on-open'
+  );
+});
+
+test('classifyReadmissionRisk: durable flag underneath the gate -> durably-excluded', () => {
+  // explainExclusion returns the FIRST matching rule and wrongProduction is
+  // checked BEFORE the temporal gate, so a properly flagged file never even
+  // reports 'prematureForUnopenedShow'.
+  assert.equal(
+    classifyReadmissionRisk({ beforeReason: 'wrongProduction', afterReason: 'wrongProduction' }),
+    'durably-excluded'
+  );
+});
+
+test('classifyReadmissionRisk: gate-excluded but still excluded once open -> still-excluded-after-open', () => {
+  assert.equal(
+    classifyReadmissionRisk({ beforeReason: 'prematureForUnopenedShow', afterReason: 'contentTierInvalid' }),
+    'still-excluded-after-open'
+  );
+});
+
+test('classifyReadmissionRisk: already scoring -> already-included', () => {
+  assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
+});
+
+test('classifyReadmissionRisk: a declared priorRun readmitting a legit earlier run is not a risk', () => {
+  // Once priorRuns is declared the gate stops firing for the whole show, so the
+  // review is simply included — the intended outcome, not a landmine.
+  assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
 });

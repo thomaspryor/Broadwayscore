@@ -168,8 +168,43 @@ function classifyPriorRunCandidate(show, reviews) {
   };
 }
 
+/**
+ * Readmission-risk classifier (BRO-80 follow-up).
+ *
+ * isPrematureReviewForUnopenedShow is a TEMPORARY exclusion: it only applies
+ * while show.status is announced/upcoming/previews. The moment the show opens,
+ * the gate stops firing and every review it was silently holding out is
+ * re-evaluated by the ordinary guards — so a contaminated review with no
+ * durable flag of its own readmits straight into the live score on opening
+ * night. That is the failure this classifies.
+ *
+ * Deliberately takes PRE-COMPUTED exclusion reasons rather than calling
+ * explainExclusion itself: that predicate lazy-loads the outlet registry and
+ * reads duplicate-target files off disk, so it is not pure and cannot live
+ * here (the CLI owns that I/O). Both reasons must come from
+ * explainExclusion(data, show, filePath) — the filePath argument is NOT
+ * optional there (a missing path makes every file read as 'duplicateOf').
+ *
+ * explainExclusion returns the FIRST matching rule, not all of them, so
+ * "held out only by the gate" cannot be read off a single call — it needs
+ * this two-reason diff.
+ *
+ * @param {{beforeReason: string|null, afterReason: string|null}} o
+ *   beforeReason - explainExclusion against the show as it stands today
+ *   afterReason  - explainExclusion against the same show with status flipped open
+ * @returns {'readmits-on-open'|'durably-excluded'|'already-included'|'still-excluded-after-open'}
+ */
+function classifyReadmissionRisk({ beforeReason, afterReason }) {
+  if (!beforeReason) return 'already-included';
+  // Held out by a real flag (wrongProduction, wrongShow, contentTierInvalid, ...)
+  // rather than by the expiring temporal gate — opening changes nothing.
+  if (beforeReason !== 'prematureForUnopenedShow') return 'durably-excluded';
+  return afterReason === null ? 'readmits-on-open' : 'still-excluded-after-open';
+}
+
 module.exports = {
   classifyPriorRunCandidate,
+  classifyReadmissionRisk,
   canonicalizeVenue,
   fullTextMentionsVenue,
   SINGLE_RUN_MAX_SPAN_DAYS,
