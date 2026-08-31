@@ -17,7 +17,11 @@
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "masticate-off-broadway-2026/nyu--unknown.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -1012,16 +1016,26 @@
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/the-recs--unknown.json",
     "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "masticate-off-broadway-2026/nyu--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "brightdata": [
       "paranormal-activity-boston-regional-2026/nypost--unknown.json",
@@ -1032,10 +1046,34 @@
     ],
     "archiveToday": [],
     "archive": [
-      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-08-31T16:58:05.453Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
-  "log": []
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+  "log": [
+    {
+      "t": "2026-08-31T17:00:23.972Z",
+      "event": "bb-session",
+      "session": "557b4120",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-31T17:00:25.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-31T17:02:42.477Z",
+      "event": "bb-session",
+      "session": "b36ba45a",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-31T17:02:43.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
