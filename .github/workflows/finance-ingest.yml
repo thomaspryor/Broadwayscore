@@ -221,4 +221,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'DMARC Ingest Failed'
-          description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), a malformed report attachment, or a push conflict on data/audit/.'
+          severity: 'warning'
+          description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), a malformed report attachment, an alert-routing failure, or a push conflict on data/audit/.'
