@@ -12,6 +12,7 @@ const {
   getSeasonRange,
   validateSeason,
   formatSeasonDisplay,
+  isEligibleForSeasonStanding,
 } = require('./broadway-seasons.js');
 
 // Regression guard (2026-08-30, second-opinion review finding on BRO-2548):
@@ -73,6 +74,32 @@ test('isDateInSeason returns false (never throws) for unparseable input', () => 
 
 test('getCurrentSeason matches getSeasonForDate(now)', () => {
   assert.equal(getCurrentSeason(), getSeasonForDate(new Date()));
+});
+
+// Regression guard (BRO-2564): scripts/newsletter/generate.mjs's
+// seasonStandingFor() used to always key the season comparison off
+// openedShow.openingDate, even for a reopening whose ORIGINAL run opened
+// seasons ago — producing a populated "New Plays This Season" card that
+// compared the reopening against a season it isn't actually returning in.
+// The fix skips the card for reopenings entirely (isEligibleForSeasonStanding
+// returns false) rather than re-anchoring the season computation: the card's
+// peer list is filtered on each show's own openingDate, so re-anchoring only
+// the target's season would exclude the reopening from its own peer list
+// (second-opinion review finding on the first version of this fix).
+test('isEligibleForSeasonStanding: a reopening show is skipped, even if not a revival', () => {
+  const show = { openingDate: '2023-01-10', reopeningDate: '2026-08-20', isRevival: false };
+  assert.equal(isEligibleForSeasonStanding(show, /* isReopening */ true), false);
+});
+
+test('isEligibleForSeasonStanding: a normal (non-reopening, non-revival) opening is eligible', () => {
+  const show = { openingDate: '2026-08-25', isRevival: false };
+  assert.equal(isEligibleForSeasonStanding(show, false), true);
+});
+
+test('isEligibleForSeasonStanding: a revival is still skipped regardless of isReopening', () => {
+  const show = { openingDate: '2026-08-25', isRevival: true };
+  assert.equal(isEligibleForSeasonStanding(show, false), false);
+  assert.equal(isEligibleForSeasonStanding(show, true), false);
 });
 
 test('parseSeasonYears / getSeasonRange / validateSeason / formatSeasonDisplay basics', () => {

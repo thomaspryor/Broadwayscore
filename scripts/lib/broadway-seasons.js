@@ -197,6 +197,30 @@ function formatSeasonDisplay(openingDate, closingDate) {
   return `${openSeason} - ${closeSeason} Seasons`;
 }
 
+/**
+ * Whether the newsletter's "New Plays This Season" / "New Musicals This
+ * Season" card should be computed for this opening event at all.
+ *
+ * Reopenings are excluded (BRO-2564). The card's peer list is built by
+ * filtering ALL shows on their own (original) openingDate falling in the
+ * target season — so keying just the TARGET season off reopeningDate while
+ * leaving peer selection on openingDate would exclude the reopening show
+ * from its own peer list (its stale original openingDate falls outside the
+ * corrected season boundaries), leaving the card's "how X stacks up"
+ * heading pointing at a highlight row that never renders. Redefining peer
+ * selection to also key off reopeningDate is possible but adds real
+ * complexity for a low-frequency edge case; skipping the card for
+ * reopenings avoids the stale-season mixing bug this ticket reports without
+ * introducing that new failure mode (second-opinion review finding on the
+ * anchor-date approach, 2026-08-31).
+ * @param {{isRevival?: boolean}} show
+ * @param {boolean} isReopening - true when this week's qualifying event is the reopening
+ * @returns {boolean}
+ */
+function isEligibleForSeasonStanding(show, isReopening) {
+  return !show.isRevival && !isReopening;
+}
+
 module.exports = {
   getSeasonForDate,
   getSeasonDates,
@@ -206,4 +230,5 @@ module.exports = {
   getSeasonRange,
   validateSeason,
   formatSeasonDisplay,
+  isEligibleForSeasonStanding,
 };

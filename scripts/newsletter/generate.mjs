@@ -32,7 +32,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
-const { getSeasonForDate, getSeasonDates } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
+const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -670,7 +670,7 @@ function broadwayOpenings() {
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
-  if (!events.length) return { html: null, list: [] };
+  if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
   events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
@@ -681,7 +681,7 @@ function broadwayOpenings() {
   const title = hasOpen && hasReopen ? 'Opened on Broadway'
     : hasReopen && !hasOpen ? 'Reopened on Broadway'
     : 'Opened on Broadway';
-  return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list };
+  return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list, reopeningIds };
 }
 
 // SECTION: OB openings — only show scored, mention count of pending.
@@ -1940,9 +1940,11 @@ function buzziestSection() {
 }
 
 // SECTION: Season Standing — rank a newly-opened BW show against the season's same-category peers
-function seasonStandingFor(openedShow) {
-  // ONLY for NEW (non-revival) shows — revivals are judged differently
-  if (openedShow.isRevival) return null;
+function seasonStandingFor(openedShow, isReopening) {
+  // ONLY for NEW (non-revival), non-reopening shows — see
+  // isEligibleForSeasonStanding() for why reopenings are skipped rather than
+  // re-anchored (BRO-2564).
+  if (!isEligibleForSeasonStanding(openedShow, isReopening)) return null;
   // Same season = the real Broadway season (Jul 1 - Jun 30, scripts/lib/broadway-seasons.js)
   // that openedShow's own opening date falls in — the SAME boundary getSeasonSlug()
   // uses for the site's "This Season" browse pages/rank cells. Was previously a rolling
@@ -2226,7 +2228,7 @@ const sections = createSectionRunner();
 // data/newsletter-state.json featuredShowIds entry with Broadway/OB show ids
 // alongside its real West End ones (found + fixed 2026-08-30 while tracing
 // why a real NYC opening's own feature got suppressed weeks later).
-const bwO = IS_WE ? { html: null, list: [] } : broadwayOpenings();
+const bwO = IS_WE ? { html: null, list: [], reopeningIds: new Set() } : broadwayOpenings();
 const obO = IS_WE ? { html: null, list: [] } : offBroadwayOpenings();
 const otO = outOfTownOpenings(); // already IS_WE-gated inside its own body
 sections.run('broadway-openings', () => bwO.html);
@@ -2293,7 +2295,7 @@ const popular = sections.run('most-read-pages', () => mostReadSection(popularLis
 
 // Season standing renders one card per qualifying BW opening (not strictly
 // "a section"). Recorded as a single entry with the count baked in.
-const seasonStandings = bwO.list.map(s => seasonStandingFor(s)).filter(Boolean);
+const seasonStandings = bwO.list.map(s => seasonStandingFor(s, bwO.reopeningIds.has(s.id))).filter(Boolean);
 if (seasonStandings.length) {
   sections.run('season-standing', () => seasonStandings.join(''));
 }
