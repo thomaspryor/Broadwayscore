@@ -374,7 +374,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     // silently landing in the terminal branch here would dereference a job
     // this code has not established is terminal — at all three call sites at
     // once. Unknown kinds must stop the pass, not be guessed at.
-    if (kind !== 'terminal') throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
+    if (kind !== dispatchReconcile.KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const task = tasksById.get(taskId);
     const completed = !!(task && task.status === 'completed');
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
