@@ -35,6 +35,7 @@ const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
+const { summarizeFailureStreak } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
@@ -2096,6 +2097,13 @@ async function checkAlertRouterDeadman(isCI) {
   // of the logged error.
   const message = `Most recent auto-dispatch attempt failed (${succeeded}/${attempts.length} succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: ${mostRecent.error || '(none captured)'}`;
 
+  // How long has the CURRENT breakage actually been going on? This check fires
+  // on "the most recent attempt failed" (see the ship-check comment above), NOT
+  // on "7 days of failures" — but the alert title said "for 7 days"
+  // unconditionally, so on 2026-08-31 it reported a 7-day outage for a breakage
+  // ~12h old and sent triage looking through the wrong window.
+  const { consecutiveFailures, forHowLong } = summarizeFailureStreak(attempts);
+
   // Self-page via disposition='human' directly from here — that path calls
   // sendAlert() (Resend) and never shells out to notion-brain.js, so it
   // survives even though the exact thing we just detected as broken is that
@@ -2106,7 +2114,9 @@ async function checkAlertRouterDeadman(isCI) {
     try {
       await routeAlert({
         conditionKey: 'alert-router:deadman',
-        title: 'Alert Router: auto-dispatch has been silently failing for 7 days',
+        // conditionKey (not the title) is what the ledger dedups on, so making
+        // this title dynamic does not re-page or break the existing cooldown.
+        title: `Alert Router: auto-dispatch silently failing for ${forHowLong} (${consecutiveFailures} consecutive)`,
         description: message,
         severity: 'critical',
         disposition: 'human',

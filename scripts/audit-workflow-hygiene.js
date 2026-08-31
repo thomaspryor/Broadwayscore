@@ -289,6 +289,78 @@ function findShortPushTimeoutSteps(raw) {
   return violations;
 }
 
+// Mirrors scripts/llm-scoring/index.ts's mode-aware defaults. Kept as literals
+// (this file is a standalone CI gate and must not import a TS module), and
+// asserted against the real constants by the unit test so they cannot drift.
+const BATCH_MODE_POLL_MINUTES = 20;
+const INLINE_POLL_MINUTES = 0;
+
+/**
+ * Rule (k): a scoring step whose batch POLL BUDGET is not smaller than the
+ * `timeout-minutes:` box around it.
+ *
+ * scripts/llm-scoring/index.ts drains an in-flight vendor batch at the start of
+ * EVERY invocation (not just --batch runs). That drain polls for up to its
+ * budget, then returns cleanly. If the budget is >= the step's own timeout, the
+ * clean return is unreachable: Actions kills the step first, the step's
+ * $GITHUB_OUTPUT counters are never written, and the opening-night pipeline gate
+ * reads the missing counters as a hard stage failure — which is exactly how a
+ * run with a green gather/collect/rebuild/deploy paged the owner as
+ * "score: all 1 failed" on 2026-08-29..31.
+ *
+ * The budget is resolved the same way index.ts resolves it, so DELETING an
+ * explicit flag can't bypass the rule — absence falls back to the mode default.
+ */
+function findShortBatchPollTimeoutSteps(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+
+  const stepStarts = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^ {6}- name:\s*(.+?)\s*$/);
+    if (m) stepStarts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i });
+  }
+
+  for (let idx = 0; idx < stepStarts.length; idx++) {
+    const { name, startLine } = stepStarts[idx];
+    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const bodyLines = lines.slice(startLine, endLine).filter((l) => !l.trimStart().startsWith('#'));
+    const bodyText = bodyLines.join('\n');
+
+    if (!/llm-scoring\/index\.ts/.test(bodyText)) continue;
+
+    const timeoutMatch = bodyText.match(/^\s*timeout-minutes:\s*(\d+)\s*$/m);
+    if (!timeoutMatch) continue; // inherits the job timeout — a different concern
+    const timeoutMin = parseInt(timeoutMatch[1], 10);
+
+    // The flag may be assembled into an ARGS variable in a SEPARATE step and
+    // interpolated here (llm-ensemble-score.yml builds `args` that way), so fall
+    // back to a whole-file lookup before assuming the default. Over-approximating
+    // toward the explicit value is the safe direction: it can only make the rule
+    // read a real configured budget instead of a guessed one.
+    const pollMatch =
+      bodyText.match(/--batch-poll-minutes=(\d+)/) || raw.match(/--batch-poll-minutes=(\d+)/);
+    const batchMode = /--batch(?![\w-])/.test(bodyText) || /--batch(?![\w-])/.test(raw);
+    const budgetMin = pollMatch
+      ? parseInt(pollMatch[1], 10)
+      : batchMode
+        ? BATCH_MODE_POLL_MINUTES
+        : INLINE_POLL_MINUTES;
+
+    if (budgetMin >= timeoutMin) {
+      violations.push({
+        name,
+        lineNum: startLine + 1,
+        timeoutMin,
+        budgetMin,
+        explicit: Boolean(pollMatch),
+      });
+    }
+  }
+
+  return violations;
+}
+
 const API_TIMEOUT_MS = 10_000;
 
 /**
@@ -440,6 +512,7 @@ async function main() {
     coreDataPush: [],
     deadCommit: [],
     shortPushTimeout: [],
+    shortBatchPollTimeout: [],
     quoteApostrophe: [],
   };
 
@@ -526,6 +599,14 @@ async function main() {
       }
     }
 
+    // ── Rule (k): batch poll budget ≥ the step timeout that boxes it ─
+    if (!raw.includes('hygiene-batch-poll-timeout-ok:')) {
+      const hits = findShortBatchPollTimeoutSteps(raw);
+      if (hits.length > 0) {
+        violations.shortBatchPollTimeout.push({ file, hits });
+      }
+    }
+
     // ── Rule (j): stray apostrophe inside a multi-line single-quoted `-e '...'` eval ─
     if (!raw.includes('hygiene-quote-apostrophe-ok:')) {
       const hits = findUnescapedApostrophesInSingleQuotedEval(raw);
@@ -566,6 +647,7 @@ async function main() {
     violations.coreDataPush.length +
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
+    violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length;
 
   if (total === 0) {
@@ -688,6 +770,31 @@ async function main() {
     console.error("Exempt (legitimate): add  # hygiene-dead-commit-ok: <reason>  anywhere in the file.\n");
   }
 
+  if (violations.shortBatchPollTimeout.length) {
+    console.error('── (k) Batch poll budget ≥ the step timeout that boxes it ─');
+    console.error('This step runs scripts/llm-scoring/index.ts, which drains an in-flight vendor');
+    console.error('batch at the start of EVERY invocation. Its poll budget is not smaller than the');
+    console.error("step's own `timeout-minutes:`, so the drain's clean \"still in flight\" return is");
+    console.error('unreachable — Actions kills the step first, its $GITHUB_OUTPUT counters are never');
+    console.error('written, and the opening-night pipeline gate reads the missing counters as a hard');
+    console.error('stage failure (2026-08-29..31: "score: all 1 failed" on runs whose gather,');
+    console.error('collect, rebuild and deploy had all succeeded).\n');
+    for (const { file, hits } of violations.shortBatchPollTimeout) {
+      console.error(`  • ${file}`);
+      for (const h of hits) {
+        console.error(
+          `      "${h.name}" line ${h.lineNum}: timeout-minutes: ${h.timeoutMin} ` +
+            `(poll budget ${h.budgetMin}min, ${h.explicit ? 'explicit --batch-poll-minutes' : 'mode default'})`
+        );
+      }
+    }
+    console.error('\nFix: raise the step\'s timeout-minutes above the poll budget, or lower the');
+    console.error('budget with --batch-poll-minutes=N. Inline (non---batch) callers default to 0');
+    console.error('and never need a raise — see BATCH_MODE_POLL_MINUTES / INLINE_POLL_MINUTES in');
+    console.error('scripts/llm-scoring/index.ts.');
+    console.error('Exempt (legitimate): add  # hygiene-batch-poll-timeout-ok: <reason>  in the file.\n');
+  }
+
   if (violations.shortPushTimeout.length) {
     console.error('── (i) Short push timeout — timeout-minutes ≤ push-with-retry.sh deadline ─');
     console.error('This step calls push-with-retry.sh but its own `timeout-minutes:` leaves no');
@@ -739,6 +846,9 @@ module.exports = {
   findMissingGitIdentityCommits,
   findPipefailDeadExitCodeEcho,
   findShortPushTimeoutSteps,
+  findShortBatchPollTimeoutSteps,
+  BATCH_MODE_POLL_MINUTES,
+  INLINE_POLL_MINUTES,
   findUnescapedApostrophesInSingleQuotedEval,
 };
 

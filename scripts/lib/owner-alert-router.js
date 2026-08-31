@@ -340,6 +340,22 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
+    // A workflow that never wired LINEAR_API_KEY is a CONFIG gap, not a Linear
+    // outage, and it is invisible in the run: the router fails open, the email
+    // still sends, and only data/audit/alert-router-attempts.jsonl records that
+    // no card was filed. That is how audit-imageless-scored-shows.yml dropped
+    // every auto-dispatch on 2026-08-31 while its workflow stayed green.
+    // Surface it as a run annotation so the gap is visible where it happens.
+    // Deliberately an annotation, NOT a throw — fail-open is the router's
+    // contract and an alert must never be lost because dispatch broke.
+    if (process.env.GITHUB_ACTIONS && /LINEAR_API_KEY/.test(err.message || '')) {
+      console.error(
+        `::error title=Auto-dispatch disabled::LINEAR_API_KEY is not set in this workflow, so ` +
+          `routeAlert(disposition:'auto') could not file a card for "${conditionKey}". The email was ` +
+          `still sent, but nothing will be dispatched to fix it. Add ` +
+          `LINEAR_API_KEY: \${{ secrets.LINEAR_API_KEY }} to this step's env.`
+      );
+    }
     // BRO-281: a USAGE_LIMIT_EXCEEDED failure is not an ordinary dispatch
     // failure that can just retry next call — it means the Linear intake
     // front door is jammed for EVERY conditionKey's 'auto' disposition until
