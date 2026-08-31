@@ -675,6 +675,11 @@ on:
       # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a
       # solo edit to either triggers CI.
       - 'scripts/audit-regex-patterns.test.mjs'
+      # BRO-2315: discover-opera-shows.js's NON_OPERA_TITLE_PATTERNS is now
+      # audited by audit-regex-patterns.js (require() dependency) and
+      # covered by the same colocated test above — path-listed so a solo
+      # edit to it triggers CI.
+      - 'scripts/discover-opera-shows.js'
       - 'scripts/audit-broadway-category-predicate.js'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
