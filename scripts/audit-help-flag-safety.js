@@ -118,7 +118,50 @@ function firstIndex(re, src) {
   return m ? m.index : -1;
 }
 
-/** Index of the char matching src[openIdx] (openChar), skipping comments and string/template literals. */
+// A `/` opens a regex literal (not division) when the preceding non-space
+// token can't be an operand — the standard "operand can't precede a regex"
+// heuristic. Ported from scripts/audit-run-budget-coverage.js (BRO-109):
+// unskipped, a brace/paren inside a regex character class (e.g. the
+// `.replace(/\{\{/g, '')` markup scrubbers in scripts/lib/wiki-utils.js)
+// desyncs `depth` exactly like an unskipped string would.
+const REGEX_PRECEDING_CHAR_RE = /[([{,;:=!&|?+\-*%~^]$/;
+const REGEX_PRECEDING_KEYWORD_RE = /(?:^|[^\w$])(return|typeof|instanceof|in|of|new|delete|void|yield|case|do|else)$/;
+
+/** True if the `/` at src[slashIdx] plausibly opens a regex literal (vs. division), by inspecting the preceding token. */
+function looksLikeRegexStart(src, slashIdx) {
+  let k = slashIdx - 1;
+  while (k >= 0 && /\s/.test(src[k])) k--;
+  if (k < 0) return true; // nothing before it — can't be a binary division operator
+  if (REGEX_PRECEDING_CHAR_RE.test(src[k])) return true;
+  return REGEX_PRECEDING_KEYWORD_RE.test(src.slice(Math.max(0, k - 12), k + 1));
+}
+
+/**
+ * Index just past a regex literal (and its flags) starting at src[startIdx]
+ * (`src[startIdx] === '/'`), honoring backslash escapes and `[...]`
+ * character classes (where an unescaped `/` does NOT end the literal).
+ * Returns null if no unescaped, non-class closing `/` is found before a
+ * newline (bails rather than guessing).
+ */
+function skipRegexLiteral(src, startIdx) {
+  let i = startIdx + 1;
+  let inClass = false;
+  while (i < src.length && src[i] !== '\n') {
+    const c = src[i];
+    if (c === '\\') { i += 2; continue; }
+    if (c === '[') { inClass = true; i++; continue; }
+    if (c === ']') { inClass = false; i++; continue; }
+    if (c === '/' && !inClass) {
+      i++;
+      while (i < src.length && /[a-z]/i.test(src[i])) i++; // flags: g, i, m, ...
+      return i;
+    }
+    i++;
+  }
+  return null;
+}
+
+/** Index of the char matching src[openIdx] (openChar), skipping comments, string/template literals, and regex literals. */
 function findMatching(src, openIdx, openChar, closeChar) {
   let depth = 0;
   for (let i = openIdx; i < src.length; i++) {
@@ -132,6 +175,10 @@ function findMatching(src, openIdx, openChar, closeChar) {
       const end = src.indexOf('*/', i + 2);
       i = end === -1 ? src.length + 1 : end + 1;
       continue;
+    }
+    if (ch === '/' && looksLikeRegexStart(src, i)) {
+      const end = skipRegexLiteral(src, i);
+      if (end != null) { i = end - 1; continue; }
     }
     if (ch === '`' || ch === '"' || ch === "'") {
       const quote = ch;
@@ -612,4 +659,6 @@ module.exports = {
   blankStringContents,
   blankStringContentsViaAcorn,
   RISKY_CALL_RE,
+  findMatching,
+  stripNonInvokedFunctionBodies,
 };

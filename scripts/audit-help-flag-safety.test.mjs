@@ -11,6 +11,8 @@ const {
   blankStringContents,
   tokenizerStatus,
   RISKY_CALL_RE,
+  findMatching,
+  stripNonInvokedFunctionBodies,
 } = require('./audit-help-flag-safety.js');
 
 const riskyHits = (src) => (src.match(new RegExp(RISKY_CALL_RE.source, 'g')) || []).length;
@@ -153,4 +155,42 @@ test('acorn is declared in package.json, not just ambiently resolvable', () => {
     'acorn is missing from package.json — `npm ci` will not install it, so the help-flag audit ' +
       'degrades to its naive scanner in CI and reports clean files as blocking violations'
   );
+});
+
+// --- findMatching must not desync on regex literals (cousin of BRO-109) ---
+//
+// An unescaped brace/paren inside a regex character class (e.g.
+// `.replace(/\{\{/g, '')`) is idiomatic markup-scrubbing in this repo (see
+// scripts/lib/wiki-utils.js). If findMatching() doesn't skip regex literals,
+// it desyncs its depth counter on the stray `{`/`}` inside `/\{\{/` and
+// `/\}\}/`, truncating whatever brace body it's tasked with matching.
+
+test('findMatching skips regex-literal braces (real scripts/lib/wiki-utils.js)', () => {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const src = fs.readFileSync(path.join(__dirname, 'lib', 'wiki-utils.js'), 'utf8');
+  const openIdx = src.indexOf('function stripWikiMarkup');
+  const openBrace = src.indexOf('{', openIdx);
+  const closeBrace = findMatching(src, openBrace, '{', '}');
+  assert.ok(closeBrace != null, 'findMatching returned null — desynced before reaching the real close brace');
+  const body = src.slice(openBrace + 1, closeBrace);
+  assert.ok(body.includes('return cleaned;'), 'body truncated before its own return statement');
+  assert.ok(!body.includes('function hasWikiMarkup'), 'body swallowed the NEXT function — depth desynced');
+});
+
+test('findMatching: bare division after an operand is not mistaken for a regex', () => {
+  const src = 'function f() { const x = a / b; return x; }';
+  const openBrace = src.indexOf('{');
+  const closeBrace = findMatching(src, openBrace, '{', '}');
+  assert.equal(src.slice(openBrace, closeBrace + 1), src.slice(openBrace, src.lastIndexOf('}') + 1));
+});
+
+test('stripNonInvokedFunctionBodies does not desync on a regex-literal brace in a helper body', () => {
+  const src = [
+    'function helper(text) {',
+    "  return text.replace(/\\{\\{/g, '');",
+    '}',
+    'execSync("rm -rf /");',
+  ].join('\n');
+  const stripped = stripNonInvokedFunctionBodies(src);
+  assert.ok(stripped.includes('execSync("rm -rf /");'), 'top-level call after the helper got swallowed — depth desynced');
 });
