@@ -4,9 +4,10 @@ import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { findMyJob, isDispatchResolved, classifyDispatches } = require('./dispatch-reconcile.js');
+const { findMyJob, isDispatchResolved, classifyDispatches, KINDS } = require('./dispatch-reconcile.js');
 const dispatchLedger = require('./dispatch-ledger.js');
 
 // These tests cover the MECHANICS the three callers share (BRO-2542). Each
@@ -253,6 +254,26 @@ test('an already-resolved dispatch is skipped, but a LATER dispatch of the same 
   assert.equal(out[0].dispatch.ts, '2026-08-30T12:00:00Z');
 });
 
+test('classifying leaves the caller\'s ledger array untouched', () => {
+  // All three callers hand their LIVE pre-pass ledger straight in, and
+  // postmortem 2 depends on it staying immutable for the whole pass. Cheap to
+  // assert, and it catches in-place normalisation/annotation of rows — which
+  // the suppression tests would not, since such a mutation need not change
+  // any decision for a given fixture (code-review finding).
+  const ledger = [
+    { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: '8' },
+  ];
+  const dispatched = [
+    { ts: '2026-08-30T10:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T10:20:00Z', event: E.DONE, taskId: '7', jobId: 'j1' },
+  ];
+  const snapshot = structuredClone(ledger);
+  const out = classify(ledger, dispatched, '2026-08-30T23:00:00Z');
+  assert.ok(out.length > 0, 'fixture must actually produce decisions, or this asserts nothing');
+  assert.deepEqual(ledger, snapshot);
+});
+
 test('resolution reads ONLY the pre-pass ledger — one row resolving cannot resolve its siblings', () => {
   // Postmortem 2, the load-bearing version: an earlier draft cross-checked
   // against breadcrumbs emitted during the SAME pass, tagged `now`. Since
@@ -280,12 +301,23 @@ test('resolution reads ONLY the pre-pass ledger — one row resolving cannot res
     'each attempt must earn its own outcome, or the card can never reach its park threshold');
 });
 
-test('the kind vocabulary is closed — adding one is a breaking change for all four callers', () => {
-  // Every call site switches on `kind` and throws on an unrecognised one
-  // (scripts/backlog-drain.js, scripts/lib/digest-autofix.js,
-  // scripts/linear-drain-parked.js). If a new kind is introduced here, this
-  // assertion fails FIRST and names the contract, instead of the new kind
-  // reaching production and tripping three runtime throws on a cron.
+test('the kind vocabulary is EXACTLY these three — adding one is a breaking change for every caller', () => {
+  // Introspective on purpose (code-review finding). An earlier version only
+  // inspected the kinds four fixtures happened to produce, so adding a fourth
+  // kind that no fixture triggered would sail through here and then trip the
+  // three runtime throws on a cron — the precise outcome this is meant to
+  // prevent. Asserting the frozen export itself is what makes it a contract:
+  // a new kind cannot be added without editing this line, which is the prompt
+  // to go handle it at every call site.
+  assert.deepEqual(Object.entries(KINDS).sort(), [
+    ['ORPHAN', 'orphan'],
+    ['RETRY_TIMEOUT', 'retry-timeout'],
+    ['TERMINAL', 'terminal'],
+  ]);
+  assert.ok(Object.isFrozen(KINDS), 'KINDS must be frozen — callers branch on it');
+});
+
+test('every decision carries one of the three kinds, and a still-running job yields none', () => {
   const ledger = [
     { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'orphaned' },
     { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'retried' },
@@ -344,21 +376,40 @@ test('no file reimplements the spawn->job correlation outside this lib (BRO-2542
   // and the retry-chain follower: that pair is findMyJob's whole body, and
   // every one of the four copies matched it. Callers should require
   // dispatch-reconcile.js's findMyJob instead.
-  const repo = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  // fileURLToPath, not new URL(...).pathname: the latter is percent-encoded, so
+  // a checkout under a path with a space resolves to a directory that does not
+  // exist and the readFileSync below throws ENOENT (code-review finding).
+  const repo = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
   // dispatch-ledger.js DEFINES followRetryChain; dispatch-reconcile.js is the
-  // one sanctioned consumer. Nothing else may pair them.
+  // one sanctioned consumer. Nothing else may pair them. The two test files
+  // legitimately name both while testing them.
   const OWNERS = new Set([
     'scripts/lib/dispatch-ledger.js',
     'scripts/lib/dispatch-reconcile.js',
+    'scripts/lib/dispatch-ledger.test.mjs',
+    'scripts/lib/dispatch-reconcile.test.mjs',
   ]);
 
+  // .mjs and .cjs too, not just .js (code-review finding — demonstrated: a
+  // fifth copy written as scripts/__tmp_fifth.mjs passed this guard green
+  // while the identical .js file failed it, and there are 40+ non-test .mjs
+  // modules under scripts/ today).
   let files;
   try {
-    files = execFileSync('grep', ['-rl', '--include=*.js', 'followRetryChain', 'scripts'],
+    files = execFileSync('grep',
+      ['-rl', '--include=*.js', '--include=*.mjs', '--include=*.cjs', 'followRetryChain', 'scripts'],
       { cwd: repo, encoding: 'utf8' }).split('\n').filter(Boolean);
-  } catch {
-    files = []; // grep exits 1 when nothing matches
+  } catch (err) {
+    // grep exits 1 for "no matches" and 2 for real errors (missing binary,
+    // unsupported --include, unreadable path). Swallowing 2 as "nothing
+    // matched" would silently disable this guard while it reports green.
+    if (err.status !== 1) throw err;
+    files = [];
   }
+  // Positive control: if the grep silently matches nothing, the offender list
+  // is trivially empty and the assertion below passes while checking NOTHING.
+  assert.ok(files.includes('scripts/lib/dispatch-reconcile.js'),
+    `grep found no followRetryChain in the lib itself — the scan is broken, not clean (got: ${files.join(', ') || 'nothing'})`);
 
   const offenders = files.filter((rel) => {
     if (OWNERS.has(rel)) return false;
