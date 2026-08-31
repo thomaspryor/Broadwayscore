@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-30T12:17:13.969Z",
+  "lastChecked": "2026-08-31T14:28:16.876Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "47 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (16d, stamp overdue 15d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (15d, stamp overdue 14d); P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing (14d) (2 awaiting recheck, earliest due 2026-09-09; 3 parked via tab-close, oldest 2026-08-26 — resume: node scripts/bsc-next.js --id 1929 --force — not counted) [4 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "44 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (17d, stamp overdue 16d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (16d, stamp overdue 15d); P0: main red — drain→rebuild→re-flag loop between date guard (16d) (2 awaiting recheck, earliest due 2026-09-09; 3 parked via tab-close, oldest 2026-08-26 — resume: node scripts/bsc-next.js --id 1929 --force — not counted) [7 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (37d); P1: headless-claude fallback for the opening-night monitor l (37d); P1: register review-census carriers (audit-aggregator-gap +  (37d) [23 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (38d); P1: headless-claude fallback for the opening-night monitor l (38d); P1: register review-census carriers (audit-aggregator-gap +  (38d) [23 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",

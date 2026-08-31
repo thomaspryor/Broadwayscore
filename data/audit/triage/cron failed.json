@@ -1,7 +1,7 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-08-30T12:17:13.969Z",
+  "lastChecked": "2026-08-31T14:28:16.876Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,17 +9,12 @@
     {
       "name": "Cron failed: Test Suite",
       "status": "warn",
-      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+      "message": "Last run inconclusive: cancelled (1h ago), no success in 48h"
     },
     {
       "name": "Cron failed: Update Show Score",
       "status": "warn",
-      "message": "Last run inconclusive: failure (2h ago), no success in 192h"
-    },
-    {
-      "name": "Cron failed: Weekly Video Reviews",
-      "status": "warn",
-      "message": "Last run inconclusive: failure (23h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (3h ago), no success in 192h"
     }
   ]
 }
