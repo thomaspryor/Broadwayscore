@@ -501,11 +501,14 @@ fi
 # cheap (one df call). Also prunes ~/Library/Logs/bsc-jobs, which nothing
 # else does — unbounded growth at 1-2MB/job x ~40 jobs/day is itself a
 # slow-motion repeat of this exact incident; the prune itself is cooldown-
-# gated (pruneJobLogsIfDue, 1h file-mtime marker under data/audit/) so ~20
-# concurrent sessions firing this hook don't all redo the same
-# readdir+stat+unlink work on every fire. Both node calls are guarded by
-# `[ -f ... ]` existence checks and `2>/dev/null || true` so a missing file,
-# missing node, or any runtime exception is swallowed, never fails closed.
+# gated (pruneJobLogsIfDue, 1h atomic-mkdir claim under data/audit/ — NOT a
+# plain file-mtime check, which isn't atomic across processes; see the lib's
+# own header) so ~20 concurrent sessions firing this hook don't all redo the
+# same readdir+stat+unlink work on every fire. Both node calls are guarded
+# by `[ -f ... ]` existence checks and `2>/dev/null || true` so a missing
+# file, missing node, or any runtime exception is swallowed, never fails
+# closed. `df` itself is timeout-bounded inside disk-space-check.js so a
+# stuck mount can't hang session-start indefinitely (ship-check finding).
 # See scripts/lib/disk-space-check.js's header for the relationship to
 # scripts/health-check.js's existing (looser, daily-digest) disk-space row.
 if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] && command -v node >/dev/null 2>&1; then
@@ -526,6 +529,9 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
       if (r && r.deleted.length > 0) {
         const mb = (r.bytesFreed / 1024 / 1024).toFixed(1);
         console.log(`🔶 JOB-LOG RETENTION: pruned ${r.deleted.length} log(s) older than 14 days from ${r.dir} (freed ~${mb}MB).`);
+      }
+      if (r && r.errors.length > 0) {
+        console.log(`🔶 JOB-LOG RETENTION: ${r.errors.length} error(s) during prune (see ${r.dir} manually) — first: ${r.errors[0]}`);
       }
     ' "$REPO_ROOT/scripts/lib/job-log-retention.js" 2>/dev/null || true
   fi

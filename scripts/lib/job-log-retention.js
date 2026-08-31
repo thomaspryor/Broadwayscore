@@ -8,13 +8,15 @@
  * every write). Retention is generous (14 days by default) — job logs are a
  * debugging aid for recent jobs, not an archive.
  *
- * pruneJobLogsIfDue() adds a file-mtime cooldown (same shape as
- * bsc-runner.js's diskPressureAlertDue, ~line 187) so ~20 concurrent cmux
- * sessions each firing session-start.sh don't all redo the same
- * readdir+stat(N)+unlink work on every hook fire — one prune per cooldown
- * window, whichever session gets there first (second-opinion review finding,
- * BRO-2258 plan review). pruneJobLogs() itself stays cooldown-free and pure
- * for direct unit testing.
+ * pruneJobLogsIfDue() adds a cooldown so ~20 concurrent cmux sessions each
+ * firing session-start.sh don't all redo the same readdir+stat(N)+unlink
+ * work on every hook fire — one prune per cooldown window. The claim is an
+ * atomic `mkdir` (bsc-runner.js's lease pattern, acquireLease ~line 74: a
+ * plain check-then-write file-mtime check is NOT atomic across processes —
+ * two sessions can both observe "not on cooldown" and both proceed; `mkdir`
+ * fails EEXIST for every loser, so only one session per window ever prunes
+ * (ship-check finding, BRO-2258 review). pruneJobLogs() itself stays
+ * cooldown-free and pure for direct unit testing.
  */
 
 'use strict';
@@ -26,7 +28,7 @@ const { LOG_ROOT, REPO } = require('./bsc-runner.js');
 
 const DEFAULT_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000; // 14 days
 const DEFAULT_COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
-const DEFAULT_MARKER_PATH = path.join(REPO, 'data', 'audit', 'job-log-prune-last-run.json');
+const DEFAULT_MARKER_PATH = path.join(REPO, 'data', 'audit', 'job-log-prune.lock');
 
 /**
  * Pure selector: given entries of {name, mtimeMs}, returns the names older
@@ -68,8 +70,20 @@ function pruneJobLogs({ dir = LOG_ROOT, maxAgeMs = DEFAULT_MAX_AGE_MS, now = Dat
   const staleNames = new Set(selectStaleLogNames(entries, { now, maxAgeMs }));
   for (const entry of entries) {
     if (!staleNames.has(entry.name)) continue;
+    const filePath = path.join(dir, entry.name);
     try {
-      fs.unlinkSync(path.join(dir, entry.name));
+      // Re-stat immediately before unlink and require an exact match against
+      // the mtime recorded above — closes the TOCTOU window where a
+      // concurrent pruner (or a genuinely new job reusing a recycled name,
+      // vanishingly unlikely since bsc-runner job ids are unique but cheap
+      // to guard against anyway) replaces the file between the scan and the
+      // delete (ship-check finding, BRO-2258 review).
+      const recheck = fs.statSync(filePath);
+      if (recheck.mtimeMs !== entry.mtimeMs) {
+        result.errors.push(`skip ${entry.name}: mtime changed since scan, not deleting`);
+        continue;
+      }
+      fs.unlinkSync(filePath);
       result.deleted.push(entry.name);
       result.bytesFreed += entry.size;
     } catch (e) {
@@ -80,22 +94,44 @@ function pruneJobLogs({ dir = LOG_ROOT, maxAgeMs = DEFAULT_MAX_AGE_MS, now = Dat
 }
 
 /**
- * Cooldown check (and claim) — true at most once per cooldownMs across all
- * callers, regardless of process. Mirrors bsc-runner.js's
- * diskPressureAlertDue: file-mtime based (not in-memory), since callers are
- * separate processes (separate cmux sessions) that share nothing else.
- * Fail-open: a marker-write failure just means the next fire re-checks.
+ * Cooldown claim — true at most once per cooldownMs across all callers,
+ * regardless of process. `mkdir` on lockDir is the atomic part (EEXIST for
+ * every loser, bsc-runner.js's acquireLease pattern ~line 74) — a plain
+ * stat-then-write check (this function's first cut, since fixed) is NOT
+ * atomic: two sessions can both observe "not on cooldown" in the gap before
+ * either writes, and both proceed to prune concurrently. The lock dir is
+ * left in place after a successful claim (never rmdir'd) so its mtime IS
+ * the cooldown timestamp for the next fire — the loser path re-checks that
+ * mtime and reclaims (rmdir + mkdir) only once it's actually stale, which
+ * narrows the race to the rare instant a cooldown window rolls over, not
+ * every single hook fire. Fail-open: an unexpected fs error just skips this
+ * fire (returns false) rather than throwing.
  */
 function pruneDue({ markerPath = DEFAULT_MARKER_PATH, cooldownMs = DEFAULT_COOLDOWN_MS, now = Date.now() } = {}) {
   try {
-    const stat = fs.statSync(markerPath);
-    if (now - stat.mtimeMs < cooldownMs) return false;
-  } catch { /* no marker yet — due */ }
-  try {
     fs.mkdirSync(path.dirname(markerPath), { recursive: true });
-    fs.writeFileSync(markerPath, JSON.stringify({ ts: new Date(now).toISOString() }));
-  } catch { /* best-effort; next fire just re-checks */ }
-  return true;
+    fs.mkdirSync(markerPath);
+    return true; // no lock existed at all — first-ever claim
+  } catch (e) {
+    if (e.code !== 'EEXIST') return false; // unexpected fs error — skip this fire
+  }
+  // Someone (possibly an earlier run of this same process, e.g. a prior
+  // session) already holds/held the claim. Stale means the window elapsed —
+  // reclaim it for this fire.
+  let stat;
+  try {
+    stat = fs.statSync(markerPath);
+  } catch {
+    return false; // lock vanished between mkdir/EEXIST and stat — skip, next fire retries
+  }
+  if (now - stat.mtimeMs < cooldownMs) return false; // genuinely on cooldown
+  try {
+    fs.rmSync(markerPath, { recursive: true, force: true });
+    fs.mkdirSync(markerPath);
+    return true;
+  } catch {
+    return false; // lost the reclaim race (or fs error) — next fire retries
+  }
 }
 
 /** Convenience wrapper for the session-start hook: only prunes if due. */

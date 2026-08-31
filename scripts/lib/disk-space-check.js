@@ -31,11 +31,13 @@ const DEFAULT_WARN_BYTES = 5 * 1024 * 1024 * 1024; // 5GB
 const DEFAULT_ERROR_BYTES = 1 * 1024 * 1024 * 1024; // 1GB
 
 /**
- * Parses `df -k <path>` output into free bytes.
- * Header: Filesystem  1024-blocks  Used  Available  Capacity  iused  ifree  %iused  Mounted on
- * BSD/macOS df wraps the record onto a second physical line when the
- * filesystem name is long (common for network mounts) — join everything
- * after the header before splitting on whitespace so that case still parses.
+ * Parses `df -Pk <path>` output into free bytes.
+ * Header: Filesystem  1024-blocks  Used  Available  Capacity  Mounted on
+ * `-P` (POSIX format) guarantees exactly one line per filesystem — BSD/macOS
+ * `df` without it wraps onto a second physical line for long filesystem
+ * names, which `-P` avoids entirely (same flag bsc-runner.js's freeDiskGB
+ * already uses, ~line 163). Still joins defensively in case a future `df`
+ * variant ignores `-P`; cheap insurance, not load-bearing.
  */
 function parseDfKbOutput(output) {
   const lines = String(output).trim().split('\n').filter(Boolean);
@@ -49,8 +51,15 @@ function parseDfKbOutput(output) {
   return availableKb * 1024;
 }
 
+// 10s timeout matches bsc-runner.js's freeDiskGB (~line 163) — a stuck
+// network mount must not hang `df` forever, which on an ungated call would
+// hang every session-start hook fire indefinitely (ship-check finding,
+// BRO-2258: the exact "silent failure" this feature exists to prevent
+// visibility into becoming a silent HANG instead).
+const DF_TIMEOUT_MS = 10000;
+
 function getFreeBytes(volumePath = '/', execFn = execFileSync) {
-  const output = execFn('df', ['-k', volumePath], { encoding: 'utf8' });
+  const output = execFn('df', ['-Pk', volumePath], { encoding: 'utf8', timeout: DF_TIMEOUT_MS });
   return parseDfKbOutput(output);
 }
 

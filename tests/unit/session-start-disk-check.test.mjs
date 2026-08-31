@@ -57,21 +57,29 @@ test('formatDiskSpaceMessage: only warn/error levels produce a message', () => {
   assert.match(formatDiskSpaceMessage(checkDiskSpace({ freeBytes: 0.5 * 1024 ** 3 })), /DISK CRITICAL/);
 });
 
-test('parseDfKbOutput: parses real macOS `df -k /` output', () => {
+test('parseDfKbOutput: parses real macOS `df -Pk /` output', () => {
   const sample = [
-    'Filesystem     1024-blocks      Used Available Capacity iused     ifree %iused  Mounted on',
-    '/dev/disk3s1s1   482797652  17636172  40286204    31%  455008 402862040    0%   /',
+    'Filesystem     1024-blocks      Used Available Capacity  Mounted on',
+    '/dev/disk3s1s1   482797652  12343464  83050812    13%    /',
   ].join('\n');
-  assert.equal(parseDfKbOutput(sample), 40286204 * 1024);
+  assert.equal(parseDfKbOutput(sample), 83050812 * 1024);
+});
+
+test('parseDfKbOutput: parses real Linux coreutils `df -Pk /` output (cloud sandboxes)', () => {
+  const sample = [
+    'Filesystem     1024-blocks    Used Available Use% Mounted on',
+    'overlay          61255492 8214332  49882344   15% /',
+  ].join('\n');
+  assert.equal(parseDfKbOutput(sample), 49882344 * 1024);
 });
 
 test('parseDfKbOutput: tolerates a wrapped record (long filesystem name on its own line)', () => {
   const sample = [
-    'Filesystem     1024-blocks      Used Available Capacity iused     ifree %iused  Mounted on',
+    'Filesystem     1024-blocks      Used Available Capacity  Mounted on',
     '/dev/disk3s1s1',
-    '  482797652  17636172  40286204    31%  455008 402862040    0%   /',
+    '  482797652  12343464  83050812    13%    /',
   ].join('\n');
-  assert.equal(parseDfKbOutput(sample), 40286204 * 1024);
+  assert.equal(parseDfKbOutput(sample), 83050812 * 1024);
 });
 
 test('parseDfKbOutput: throws on unrecognized output rather than guessing', () => {
@@ -142,14 +150,68 @@ test('pruneJobLogs: a missing directory is a no-op, never throws (fresh machine 
   assert.deepEqual(result.errors, []);
 });
 
-test('pruneDue: file-mtime cooldown — true once, false until the window elapses', () => {
+test('pruneJobLogs: refuses to delete when the recheck-before-unlink sees a different mtime than the scan (TOCTOU guard)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2258-toctou-'));
+  const target = path.join(dir, 'raced.log');
+  const realStatSync = fs.statSync;
+  try {
+    fs.writeFileSync(target, 'x'.repeat(10));
+    const now = Date.now();
+    const twentyDaysAgo = (now - 20 * 24 * 60 * 60 * 1000) / 1000;
+    fs.utimesSync(target, twentyDaysAgo, twentyDaysAgo);
+
+    // Deterministically simulate the race pruneJobLogs guards against: the
+    // scan's statSync call (1st, during the initial per-file loop) sees the
+    // real stale mtime; the recheck's statSync call (2nd, immediately before
+    // unlink) sees a DIFFERENT mtime, as if some other process replaced the
+    // file in between. A real race is not reproducible deterministically at
+    // the JS layer (fs.statSync is synchronous, single call stack), so this
+    // patches the exact seam job-log-retention.js calls through.
+    let callsForTarget = 0;
+    fs.statSync = (p, ...rest) => {
+      const result = realStatSync(p, ...rest);
+      if (p === target) {
+        callsForTarget++;
+        if (callsForTarget === 2) return { ...result, mtimeMs: Date.now() };
+      }
+      return result;
+    };
+
+    const result = pruneJobLogs({ dir, now });
+    assert.deepEqual(result.deleted, [], 'recheck mismatch blocks the delete');
+    assert.match(result.errors[0], /mtime changed since scan/);
+    assert.equal(fs.existsSync(target), true, 'file survives the race');
+  } finally {
+    fs.statSync = realStatSync;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('pruneDue: atomic mkdir claim — true once, false until the window elapses', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2258-cooldown-'));
   try {
-    const markerPath = path.join(dir, 'marker.json');
+    const markerPath = path.join(dir, 'prune.lock');
     const now = Date.now();
-    assert.equal(pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now }), true, 'no marker yet — due');
+    assert.equal(pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now }), true, 'no lock yet — due, claims it');
+    assert.ok(fs.statSync(markerPath).isDirectory(), 'claim is a real directory (atomic mkdir, not a JSON file)');
     assert.equal(pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now: now + 1000 }), false, 'inside cooldown');
-    assert.equal(pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now: now + 61 * 60 * 1000 }), true, 'cooldown elapsed');
+    assert.equal(pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now: now + 61 * 60 * 1000 }), true, 'cooldown elapsed — reclaims');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('pruneDue: two "concurrent" claimants in the same window — only the first wins (atomicity, not just a race that usually resolves fine)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2258-atomic-'));
+  try {
+    const markerPath = path.join(dir, 'prune.lock');
+    const now = Date.now();
+    const results = [
+      pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now }),
+      pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now }),
+      pruneDue({ markerPath, cooldownMs: 60 * 60 * 1000, now }),
+    ];
+    assert.deepEqual(results, [true, false, false], 'exactly one claimant wins per window — mkdir EEXIST rejects the rest');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -158,7 +220,7 @@ test('pruneDue: file-mtime cooldown — true once, false until the window elapse
 test('pruneJobLogsIfDue: bounded age retention actually runs when due, and skips when on cooldown (prevents unbounded growth from silently refilling the disk)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2258-ifdue-'));
   try {
-    const markerPath = path.join(dir, 'marker.json');
+    const markerPath = path.join(dir, 'prune.lock');
     const oldFile = path.join(dir, 'old.log');
     fs.writeFileSync(oldFile, 'x'.repeat(1000));
     const now = Date.now();
