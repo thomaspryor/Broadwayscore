@@ -18,7 +18,9 @@
 // opening must appear in that issue's persisted featuredShowIds.
 //
 // Runs the real generator against the live data checkout (CLAUDE.md §15 — never
-// a copy of the logic).
+// a copy of the logic), with its state file redirected into a temp dir so this
+// file never races the other generator-driving tests on the tracked
+// data/newsletter-state.json (see NEWSLETTER_STATE_PATH in generate.mjs).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -29,41 +31,32 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..', '..');
-const STATE_PATH = path.join(repoRoot, 'data/newsletter-state.json');
+const REAL_STATE_PATH = path.join(repoRoot, 'data/newsletter-state.json');
 // A week with a real London/Off-West-End opening (As You Like It, 2026-08-21)
 // AND a real Broadway opening (Paranormal Activity, 2026-08-25), so both the
 // london-openings and broadway-we sections have something to feature.
 const WEEK = '2026-08-24';
 
-function runGenerator(weekStart, extraEnv = {}) {
-  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'featured-persist-order-test-'));
+// Runs the generator in a sandbox seeded from the real state file, and returns
+// both the draft meta and the state the run persisted. Nothing under data/ is
+// touched.
+function runGeneratorSandboxed(weekStart, extraEnv = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'featured-persist-order-test-'));
+  const statePath = path.join(dir, 'newsletter-state.json');
+  fs.copyFileSync(REAL_STATE_PATH, statePath);
   try {
     execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
       cwd: repoRoot,
-      env: { ...process.env, NEWSLETTER_OUT_DIR: outDir, ...extraEnv },
+      env: { ...process.env, NEWSLETTER_OUT_DIR: dir, NEWSLETTER_STATE_PATH: statePath, ...extraEnv },
       stdio: 'pipe',
       timeout: 120_000,
     });
-    return JSON.parse(fs.readFileSync(path.join(outDir, `A-${weekStart}.meta.json`), 'utf8'));
+    return {
+      meta: JSON.parse(fs.readFileSync(path.join(dir, `A-${weekStart}.meta.json`), 'utf8')),
+      state: JSON.parse(fs.readFileSync(statePath, 'utf8')),
+    };
   } finally {
-    fs.rmSync(outDir, { recursive: true, force: true });
-  }
-}
-
-function persistedRow(weekStart, edition) {
-  const state = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8'));
-  return (state.issues || []).find((i) => i.weekStart === weekStart && (i.edition || 'broadway') === edition);
-}
-
-// The generator writes the real data/newsletter-state.json as a side effect.
-// Snapshot and restore it so a test run never leaves the tracked file dirty for
-// the next session or for CI's own commit step.
-function withRestoredState(fn) {
-  const before = fs.readFileSync(STATE_PATH, 'utf8');
-  try {
-    fn();
-  } finally {
-    fs.writeFileSync(STATE_PATH, before);
+    fs.rmSync(dir, { recursive: true, force: true });
   }
 }
 
@@ -72,23 +65,33 @@ for (const [label, edition, env] of [
   ['west-end', 'west-end', { NEWSLETTER_EDITION: 'west-end' }],
 ]) {
   test(`${label} edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured)`, () => {
-    withRestoredState(() => {
-      const meta = runGenerator(WEEK, env);
-      const row = persistedRow(WEEK, edition);
-      assert.ok(row, `expected a ${edition} issue row for ${WEEK} in data/newsletter-state.json`);
+    const { meta, state } = runGeneratorSandboxed(WEEK, env);
 
-      const rendered = (meta.openingShows || []).map((s) => s.id);
-      assert.ok(rendered.length > 0, `expected the ${label} draft for ${WEEK} to render at least one opening`);
+    const row = (state.issues || []).find((i) => i.weekStart === WEEK && (i.edition || 'broadway') === edition);
+    assert.ok(row, `expected a ${edition} issue row for ${WEEK} in the persisted state`);
 
-      const persisted = new Set(row.featuredShowIds || []);
-      const missing = rendered.filter((id) => !persisted.has(id));
-      assert.deepEqual(
-        missing,
-        [],
-        `these shows were rendered as openings in the ${label} ${WEEK} issue but never reached its persisted featuredShowIds, `
-        + `so next week's lastFeaturedIds cannot suppress them: ${missing.join(', ')}. `
-        + 'The state-persist block in generate.mjs has to stay BELOW every section that calls markFeatured().',
-      );
-    });
+    const rendered = (meta.openingShows || []).map((s) => s.id);
+    assert.ok(rendered.length > 0, `expected the ${label} draft for ${WEEK} to render at least one opening`);
+
+    const persisted = new Set(row.featuredShowIds || []);
+    const missing = rendered.filter((id) => !persisted.has(id));
+    assert.deepEqual(
+      missing,
+      [],
+      `these shows were rendered as openings in the ${label} ${WEEK} issue but never reached its persisted featuredShowIds, `
+      + `so next week's lastFeaturedIds cannot suppress them: ${missing.join(', ')}. `
+      + 'The state-persist block in generate.mjs has to stay BELOW every section that calls markFeatured().',
+    );
   });
 }
+
+test('the generator leaves the tracked data/newsletter-state.json alone when NEWSLETTER_STATE_PATH is set', () => {
+  const before = fs.readFileSync(REAL_STATE_PATH, 'utf8');
+  runGeneratorSandboxed(WEEK);
+  assert.equal(
+    fs.readFileSync(REAL_STATE_PATH, 'utf8'),
+    before,
+    'a sandboxed generator run must not write the repo\'s tracked newsletter-state.json — '
+    + 'without that, concurrent test files race each other on it and local runs leave the checkout dirty',
+  );
+});

@@ -75,7 +75,16 @@ const BRAND = IS_WE
 // this file for the same weekStart, so keying by date alone let the second
 // run clobber the first edition's memory. Read + write filter on edition
 // (legacy entries with no `edition` field are treated as 'broadway').
-const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+// NEWSLETTER_STATE_PATH redirects this file for tests (BRO-2606). Several test
+// files drive the real generator against the real data checkout, and every one
+// of those runs used to read AND REWRITE the tracked data/newsletter-state.json:
+// `node --test` runs test FILES concurrently, so two of them racing on that one
+// path made both flaky, and a plain local test run left a tracked data file
+// dirty in a checkout shared with other sessions. Production callers (the
+// workflows and refresh-drafts.sh) never set it and keep the repo path.
+const STATE_PATH = process.env.NEWSLETTER_STATE_PATH
+  ? path.resolve(process.env.NEWSLETTER_STATE_PATH)
+  : path.join(repo, 'data/newsletter-state.json');
 let _priorState = { issues: [] };
 try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
 const _issueEdition = (i) => (i && i.edition) || 'broadway';

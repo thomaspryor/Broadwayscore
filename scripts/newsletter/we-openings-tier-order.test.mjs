@@ -24,6 +24,16 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..', '..');
+
+// Redirect the generator's cross-issue state file into a per-file temp copy
+// (BRO-2606). Every test here drives the real generate.mjs, which reads AND
+// REWRITES data/newsletter-state.json; `node --test` runs test FILES
+// concurrently, so sharing that one tracked path made these files race each
+// other, and a local run left the checkout dirty. One copy per file (not per
+// run) keeps the cross-run sharing these tests already had.
+const STATE_SANDBOX = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-state-sandbox-')), 'newsletter-state.json');
+fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX);
+
 const WEEK_START = '2026-08-17';
 const WEST_END_SHOW = { id: 'abigails-party-west-end-2026', title: "Abigail’s Party" };
 const OFF_WEST_END_SHOWS = ['jeeves-takes-charge-west-end-2026', 'anansi-the-spider-west-end-2026'];
@@ -33,7 +43,7 @@ test('west-end edition for weekStart 2026-08-17 leads subject/lede/cards with th
   try {
     execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), WEEK_START], {
       cwd: repoRoot,
-      env: { ...process.env, NEWSLETTER_EDITION: 'west-end', NEWSLETTER_OUT_DIR: outDir },
+      env: { ...process.env, NEWSLETTER_EDITION: 'west-end', NEWSLETTER_OUT_DIR: outDir, NEWSLETTER_STATE_PATH: STATE_SANDBOX },
       stdio: 'pipe',
       timeout: 60_000,
     });
