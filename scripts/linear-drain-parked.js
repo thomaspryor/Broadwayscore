@@ -236,6 +236,11 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
       });
       continue;
     }
+    // Explicit, not fall-through (ship-check finding) — see the same guard in
+    // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
+    // shared lib must stop the pass rather than be silently treated as
+    // terminal and dereference a job that may be null.
+    if (kind !== 'terminal') throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome, cardId, contentHash: d.contentHash,
