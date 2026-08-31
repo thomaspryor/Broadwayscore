@@ -394,6 +394,13 @@ on:
       - 'scripts/generate-stats-canon.js'
       - 'scripts/generate-stats-reviews.js'
       - 'data/tony-ceremony-dates.json'
+      # BRO-2544: scripts/lib/canonical-venue-consumers.test.mjs reads this
+      # file directly, and it sits outside the scripts/lib/** glob — the same
+      # dependency-outside-the-glob shape audit-test-yml-lib-deps.js exists to
+      # catch. That audit is a BLOCKING unit test (its "regression floor" case
+      # asserts the real repo has zero gaps), so main stays red until this is
+      # listed.
+      - 'data/west-end-venues.json'
       - 'scripts/audit-non-reviews.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
       # Notion 38e637c5). Each pure block/pass decision lives in scripts/lib/*-gate.js
@@ -1178,6 +1185,13 @@ on:
       - 'scripts/audit-venue-complex-slugs.test.mjs'
       - 'data/venue-complexes.json'
       - 'data/venue-complexes-west-end.json'
+      # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
+      # normalizeVenueName() doesn't over-strip a leading "The " against the frontend's
+      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads
+      # data/west-end-venues.json directly, but that JSON sits outside the
+      # scripts/lib/** glob above, so it's path-listed here too (audit-test-yml-lib-deps.js
+      # findGaps() flagged exactly this gap; its regression floor asserts zero gaps).
+      - 'data/west-end-venues.json'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
@@ -1426,6 +1440,12 @@ on:
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
       - 'scripts/tests/verify-edits-heredoc.test.mjs'
       - '.claude/hooks/verify-edits.sh'
+      # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
+      # wiring is asserted by tests/unit/session-start-disk-check.test.mjs
+      # (rides the 'tests/**' glob above), but the hook file itself is not
+      # globbed anywhere in this file — a solo revert of the wiring (e.g.
+      # someone dropping the block this test checks for) would run ZERO CI.
+      - '.claude/hooks/session-start.sh'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
