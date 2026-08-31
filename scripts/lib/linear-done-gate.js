@@ -29,7 +29,10 @@
  * recorded on the issue in an EARLIER call (e.g. an operator posts
  * "PR-EVIDENCE: ..." today, comes back tomorrow to move the state with no
  * --comment at all) must still count. linear-client.js's getIssue() already
- * fetches `comments(first: 20) { nodes { body } }` on every call (ship-check
+ * fetches `comments(first: 50) { nodes { body } }` on every call (20 before
+ * BRO-2543 widened the shared query; note this gate got slightly MORE
+ * permissive as a side effect, since it now scans 30 more comments of the
+ * same issue for the evidence it is looking for) (ship-check
  * finding on the first version of this gate, which read description +
  * in-flight commentText only and would silently re-refuse a close whose
  * evidence was sitting right there in issue history) — the caller passes

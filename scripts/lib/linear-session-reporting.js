@@ -195,7 +195,8 @@ const SESSION_REPORT_PREFIX = '**Session report';
 // QUOTING a previous report (or this very guard's refusal text, which names
 // the format) register as a fresh report of its own.
 function parseSessionReportStatus(body) {
-  const m = String(body == null ? '' : body).trim().match(/^\*\*Session report \(([^)]*)\)\*\*/);
+  const re = new RegExp('^' + SESSION_REPORT_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\(([^)]*)\\)\\*\\*');
+  const m = String(body == null ? '' : body).trim().match(re);
   return m ? m[1].trim().toLowerCase() : null;
 }
 

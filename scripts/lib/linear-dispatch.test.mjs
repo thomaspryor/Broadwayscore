@@ -18,12 +18,14 @@ import {
   newestDispatchComment,
   dispatchCommentMode,
   dispatchFloor,
+  isCompletePrEvidence,
+  bypassReasonForLedger,
   RESOLVED_REPORT_STATUSES,
   REPORTED_WORK_BYPASS_FLAG,
   REPORTED_WORK_BYPASS_MIN_REASON,
   findUnresolvedDispatchComment,
 } from './linear-dispatch.js';
-import { buildOutcomeCommentBody, VALID_STATUSES } from './linear-session-reporting.js';
+import { buildOutcomeCommentBody, VALID_STATUSES, SESSION_REPORT_PREFIX, parseSessionReportStatus } from './linear-session-reporting.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
 
 test('TERMINAL_STATE_TYPES includes duplicate alongside completed/canceled', () => {
@@ -634,4 +636,74 @@ test('reportedOutcomeGuard: REPORTED_OUTCOME_GUARD_DISABLED=1 is the incident ro
   }
   // ...and it is off by default: the same call refuses again once unset.
   assert.ok(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, {}));
+});
+
+
+// -- codebase-QA review findings (pre-ship) ---------------------------------
+
+test('reportedOutcomeGuard: a dispatch comment with no createdAt fails OPEN, not maximally strict', () => {
+  // Found pre-ship: with no timestamp on the dispatch comment the floor fell
+  // back to '', so ANY resolved comment anywhere on the thread refused — the
+  // guard was strictest exactly where it knew least, and the refusal read
+  // "after the dispatch comment at undefined".
+  const issue = {
+    identifier: 'BRO-1',
+    state: { name: 'In Review', type: 'started' },
+    comments: { nodes: [
+      { body: '**Session report (done)**\n\nancient history', createdAt: '2026-01-01T00:00:00.000Z' },
+      { body: 'Dispatched abcd to workspace:1 at t (cmux)' },
+    ] },
+  };
+  assert.equal(reportedOutcomeGuard(issue, { force: true }), null);
+});
+
+test('isCompletePrEvidence: "PR-EVIDENCE: not merged yet" does NOT count as landed', () => {
+  // linear-pr-evidence.js reports merged/deployed/checked by looking for each
+  // word ANYWHERE on the line, so the negated form parses as {merged:true}.
+  // Verified pre-ship that bare truthiness refused the dispatch on it.
+  assert.equal(isCompletePrEvidence('PR-EVIDENCE: not merged yet, still blocked on review'), false);
+  assert.equal(isCompletePrEvidence('PR-EVIDENCE: merged'), false, 'a partial claim is not "it landed"');
+  assert.equal(isCompletePrEvidence('PR-EVIDENCE: merged deployed'), false);
+  assert.equal(
+    isCompletePrEvidence('PR-EVIDENCE: merged deployed checked (https://github.com/x/y/commit/abc)'),
+    true,
+    'the complete CLAUDE.md section 6 form counts',
+  );
+  assert.equal(isCompletePrEvidence('no marker here'), false);
+  assert.equal(isCompletePrEvidence(null), false);
+});
+
+test('reportedOutcomeGuard: an incomplete/negated PR-EVIDENCE line leaves the issue dispatchable', () => {
+  const mk = (body) => ({
+    identifier: 'BRO-2',
+    state: { name: 'In Review', type: 'started' },
+    comments: { nodes: [
+      { body, createdAt: '2026-08-31T02:00:00.000Z' },
+      { body: 'Dispatched abcd to workspace:1 at t (cmux)', createdAt: '2026-08-31T01:00:00.000Z' },
+    ] },
+  });
+  assert.equal(reportedOutcomeGuard(mk('PR-EVIDENCE: not merged yet, still blocked on review'), { force: true }), null);
+  assert.equal(reportedOutcomeGuard(mk('PR-EVIDENCE: merged'), { force: true }), null);
+  assert.ok(reportedOutcomeGuard(mk('PR-EVIDENCE: merged deployed checked (https://github.com/x/y/commit/abc)'), { force: true }));
+});
+
+test('bypassReasonForLedger: journals only a bypass that actually applied', () => {
+  // A bare --allow-reported-work does NOT clear the guard, so recording `true`
+  // for it would leave the ledger implying a waiver that never happened.
+  assert.equal(bypassReasonForLedger({ [REPORTED_WORK_BYPASS_FLAG]: true }), null);
+  assert.equal(bypassReasonForLedger({ [REPORTED_WORK_BYPASS_FLAG]: 'short' }), null);
+  assert.equal(bypassReasonForLedger({}), null);
+  assert.equal(bypassReasonForLedger(null), null);
+  assert.equal(
+    bypassReasonForLedger({ [REPORTED_WORK_BYPASS_FLAG]: '  checked main, the commit is not there  ' }),
+    'checked main, the commit is not there',
+  );
+});
+
+test('parseSessionReportStatus regex is derived from SESSION_REPORT_PREFIX, not a second copy of it', () => {
+  // Pinned because the constant was exported with a "no second copy" rationale
+  // while the parser still hardcoded the literal in its own regex.
+  assert.ok(SESSION_REPORT_PREFIX.length > 0);
+  assert.ok(buildOutcomeCommentBody({ summary: 's', status: 'done' }).startsWith(SESSION_REPORT_PREFIX));
+  assert.equal(parseSessionReportStatus(buildOutcomeCommentBody({ summary: 's', status: 'done' })), 'done');
 });

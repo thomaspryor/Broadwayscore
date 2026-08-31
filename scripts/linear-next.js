@@ -718,7 +718,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
         // invisible.
-        allowAutofixFiled: args['allow-autofix-filed'] || null, allowReportedWork: args[ld.REPORTED_WORK_BYPASS_FLAG] || null,
+        allowAutofixFiled: args['allow-autofix-filed'] || null,
+        allowReportedWork: ld.bypassReasonForLedger(args),
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -826,7 +827,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
-      allowAutofixFiled: args['allow-autofix-filed'] || null, allowReportedWork: args[ld.REPORTED_WORK_BYPASS_FLAG] || null,
+      allowAutofixFiled: args['allow-autofix-filed'] || null,
+        allowReportedWork: ld.bypassReasonForLedger(args),
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.

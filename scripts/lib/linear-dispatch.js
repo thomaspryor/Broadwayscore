@@ -282,7 +282,11 @@ function generateCorrelationId() {
 //
 // `>=` (not `>`) so that when timestamps are absent or tied the LAST array
 // entry still wins, preserving the old behaviour exactly for fixtures and
-// legacy payloads that carry no createdAt.
+// legacy payloads that carry no createdAt. Note this fallback is the OLD,
+// wrong answer on Linear's real newest-first ordering — it is kept only so
+// that callers reading a payload with no timestamps see no behaviour change,
+// and reportedOutcomeGuard refuses to act on such a payload at all rather
+// than trusting it.
 function newestDispatchComment(comments) {
   const list = Array.isArray(comments) ? comments : [];
   let best = null;
@@ -613,6 +617,15 @@ function isValidBypassReason(flagValue) {
   return typeof flagValue === 'string' && flagValue.trim().length >= REPORTED_WORK_BYPASS_MIN_REASON;
 }
 
+// What linear-next.js writes onto the ledger launch row for this dispatch.
+// Only a reason that ACTUALLY cleared the guard is journaled: a bare
+// --allow-reported-work does not bypass, and recording `true` for it would
+// leave an audit trail implying a waiver that never happened.
+function bypassReasonForLedger(opts) {
+  const v = (opts || {})[REPORTED_WORK_BYPASS_FLAG];
+  return isValidBypassReason(v) ? v.trim() : null;
+}
+
 // buildDispatchComment ends its body with " (<mode>)" — 'cmux' or 'headless'.
 function dispatchCommentMode(comment) {
   const m = String((comment && comment.body) || '').trim().match(/\(([a-z-]+)\)\s*$/i);
@@ -656,6 +669,24 @@ function dispatchFloor(dispatch, comments) {
   return prev ? prev.createdAt : '';
 }
 
+// A PR-EVIDENCE line only counts as "the work landed" when it makes the
+// COMPLETE claim CLAUDE.md section 6 requires to close an issue:
+// `PR-EVIDENCE: merged deployed checked (<url>)`.
+//
+// Bare truthiness of extractPrRef() is not enough, and not for the obvious
+// reason. That parser reports each of merged/deployed/checked by looking for
+// that word anywhere on the line, so `PR-EVIDENCE: not merged yet, still
+// blocked on review` parses as {merged: true} — a line whose plain English
+// says the OPPOSITE of what it would be read as. (Verified before fixing: it
+// refused the dispatch.) That is fine for the done-gate, whose job is to
+// evaluate a claim a human already chose to make, but this guard is reading a
+// comment thread it does not control, so it requires all three words —
+// something the negated form above never satisfies.
+function isCompletePrEvidence(body) {
+  const ref = extractPrRef(body);
+  return !!(ref && ref.merged && ref.deployed && ref.checked);
+}
+
 // The newest comment strictly after `sinceTs` that carries a resolved-outcome
 // signal, or null. `sinceTs` of '' means "anything counts" (no dispatch
 // comment on the thread at all).
@@ -676,7 +707,7 @@ function findResolvedOutcomeComment(comments, sinceTs) {
     const status = parseSessionReportStatus(body);
     const signal = RESOLVED_REPORT_STATUSES.has(status)
       ? `session report (${status})`
-      : (extractPrRef(body) ? 'PR-EVIDENCE marker' : null);
+      : (isCompletePrEvidence(body) ? 'PR-EVIDENCE marker' : null);
     if (!signal) continue;
     if (!best || ts >= String(best.comment.createdAt || '')) best = { comment: c, signal };
   }
@@ -710,7 +741,13 @@ function reportedOutcomeGuard(issue, opts) {
   // grounds to refuse — on a long thread the relevant dispatch comment can
   // also simply have fallen outside the fetched window, and a confident
   // refusal built on a truncated view is worse than no refusal at all.
-  if (!dispatch) return null;
+  // ...and a dispatch comment with no createdAt cannot be ordered against
+  // either. Without this, `since` fell back to '' and the guard became
+  // MAXIMALLY strict exactly where it had the least information: any resolved
+  // comment anywhere on the thread refused, and the refusal said "after the
+  // dispatch comment at undefined". Fail open, consistent with
+  // findResolvedOutcomeComment's own missing-timestamp rule.
+  if (!dispatch || !dispatch.createdAt) return null;
   const found = findResolvedOutcomeComment(comments, dispatchFloor(dispatch, comments));
   if (!found) return null;
 
@@ -824,6 +861,8 @@ module.exports = {
   newestDispatchComment,
   dispatchCommentMode,
   dispatchFloor,
+  isCompletePrEvidence,
+  bypassReasonForLedger,
   findResolvedOutcomeComment,
   RESOLVED_REPORT_STATUSES,
   REPORTED_WORK_BYPASS_FLAG,
