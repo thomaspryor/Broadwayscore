@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-31T16:49:57.547Z",
-  "processed": 100,
-  "failed": 2316,
-  "successRate": "4.1%",
+  "updatedAt": "2026-08-31T16:51:57.922Z",
+  "processed": 101,
+  "failed": 2325,
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 57,
     "amp": 0,
     "browserbase": 21,
     "directCookies": 3,
@@ -13,19 +13,8 @@
     "archiveToday": 0,
     "archive": 25
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-08-31T15:47:13.482Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-31T15:50:30.172Z",
-      "event": "bb-session",
-      "session": "f95e6f61",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
     {
       "t": "2026-08-31T15:50:36.772Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "t": "2026-08-31T16:45:53.699Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-31T16:51:41.513Z",
+      "event": "bb-session",
+      "session": "e86afd03",
+      "url": "https://www.thestage.co.uk/news/production-news/agatha-christies-the-mousetrap-t"
+    },
+    {
+      "t": "2026-08-31T16:51:41.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
