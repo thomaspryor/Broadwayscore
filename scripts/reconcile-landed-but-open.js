@@ -68,6 +68,42 @@ function ledgerTaskId(identifier) { return `linear:${identifier}`; }
 
 const MERGE_SUBJECT_RE = /linear-([A-Za-z]+)-(\d+)-/;
 
+// The discriminator is merge DIRECTION, not the mere presence of the branch
+// name. A landing has the job branch as the merge SOURCE ("Merge branch
+// 'job/linear-BRO-406-msxc1v2h'"). "Merge ... into job/linear-BRO-N-..." has
+// it as the TARGET: that is a worker pulling main INTO its own branch
+// mid-flight, i.e. proof the card is being ACTIVELY WORKED — the exact
+// opposite of landed. Both shapes contain "linear-BRO-N-", so MERGE_SUBJECT_RE
+// alone cannot tell them apart.
+//
+// Measured on origin/main 2026-08-31: 46 target-side commits covering 31 cards,
+// of which 11 have NO other linear- commit at all — every one of those would
+// otherwise get a false hasMergeCommit and be offered as a close candidate
+// while its worker was still running. BRO-810 and BRO-867 are two of the 11,
+// and both were flagged as this exact false-positive class in the v22 and v23
+// handoff briefs.
+//
+// Rather than SKIP a target-side line, strike out just the target clause and
+// key off whatever remains. That matters for the both-sides shape, which is
+// real: `0a250f8b883 Merge branch 'job/linear-BRO-787-mt2lmgu8' into
+// job/linear-BRO-2267-mt2nixlc` is evidence for BRO-787 (source) and must NOT
+// be evidence for BRO-2267 (target). Skipping the whole line would lose
+// BRO-787. One rule covers every shape, so there is no second matcher to keep
+// in sync, and it does not depend on the merge verb — "Merged"/"Merging",
+// which git never writes but a human or a future script might, behave the same.
+// An ordinary subject that merely says "into" ("fold X into Y") is untouched,
+// because the clause must name a job branch to be struck.
+const MERGE_TARGET_CLAUSE_RE = /\binto\s+job\/linear-\S*/gi;
+
+// Exported for testing. Returns the card a subject is evidence FOR, or null.
+function mergeKeyForSubject(subject) {
+  // Fresh replace each call: MERGE_TARGET_CLAUSE_RE is /g, so it must never be
+  // used with .test/.exec here (lastIndex would carry between calls).
+  const evidence = subject.replace(MERGE_TARGET_CLAUSE_RE, '');
+  const m = MERGE_SUBJECT_RE.exec(evidence);
+  return m ? `${m[1]}-${m[2]}` : null;
+}
+
 // ONE git log call for the whole sweep, not one per candidate. An earlier cut
 // of this shelled out to `git log --grep=linear-BRO-<n>-` per issue — 263
 // issues meant 263 subprocess spawns, and against this repo's real history
@@ -82,20 +118,29 @@ const MERGE_SUBJECT_RE = /linear-([A-Za-z]+)-(\d+)-/;
 //
 // git log is newest-first, so the FIRST match for a key wins (most recent
 // merge for that card) — `!map.has(key)` below preserves that.
-function buildMergeCommitIndex() {
+// `injectedLines` exists so the indexing loop itself is testable — the
+// direction rule has to be verified AT ITS CALL SITE, not only on the helper,
+// or removing the call would still pass every test.
+function buildMergeCommitIndex(injectedLines = null) {
   const map = new Map(); // "BRO-2558" -> sha
   try {
-    const out = execFileSync('git', [
-      '-C', REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
-    ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
-    if (!out) return map;
-    for (const line of out.split('\n')) {
+    let lines = injectedLines;
+    if (!lines) {
+      const out = execFileSync('git', [
+        '-C', REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
+      ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+      if (!out) return map;
+      lines = out.split('\n');
+    }
+    for (const line of lines) {
       const sp = line.indexOf(' ');
       if (sp === -1) continue;
       const sha = line.slice(0, sp);
-      const m = MERGE_SUBJECT_RE.exec(line.slice(sp + 1));
-      if (!m) continue;
-      const key = `${m[1]}-${m[2]}`;
+      // Direction-aware: a mid-flight sync must never become this card's "most
+      // recent merge" and never displace a real landing further down the
+      // (newest-first) log.
+      const key = mergeKeyForSubject(line.slice(sp + 1));
+      if (!key) continue;
       if (!map.has(key)) map.set(key, sha);
     }
   } catch {
@@ -351,4 +396,9 @@ if (require.main === module) {
   main().catch((e) => { console.error(`[reconcile-landed-but-open] fatal: ${e.message}`); process.exit(1); });
 }
 
-module.exports = { main, USAGE, findMergeCommit, buildMergeCommitIndex, ledgerTaskId, liveLeaseForTask };
+module.exports = {
+  main, USAGE, findMergeCommit, buildMergeCommitIndex, ledgerTaskId, liveLeaseForTask,
+  // Exported so the merge-direction rule is tested against the REAL
+  // implementation rather than a copy of it (CLAUDE.md rule 15).
+  MERGE_SUBJECT_RE, mergeKeyForSubject,
+};
