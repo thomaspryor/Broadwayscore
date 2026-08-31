@@ -21,7 +21,7 @@ const {
   validateRoundupPageTitle,
   buildSiblingCategoriesByTitle,
 } = require('./show-matching.js');
-const { readCachedArchiveIfValid } = require('./bww-archive-category-guard.js');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./bww-archive-category-guard.js');
 
 const page = (title) => `<html><head><title>${title}</title></head><body>feedbacks</body></html>`;
 
@@ -83,7 +83,7 @@ test('scrape-bww-reviews.js actually calls the guard before writing the archive'
   const raw = fs.readFileSync(new URL('../scrape-bww-reviews.js', import.meta.url), 'utf8');
 
   // Strip comments first. The block comment above the guard NAMES
-  // validateRoundupPageTitle(), so a bare indexOf on the function name matches
+  // checkArchiveCategory(), so a bare indexOf on the function name matches
   // prose and would stay green even if the real call were deleted — the exact
   // weakness an adversarial review caught in the first version of this test.
   const src = raw
@@ -93,9 +93,9 @@ test('scrape-bww-reviews.js actually calls the guard before writing the archive'
     .join('\n');
 
   // Anchor on the ASSIGNMENT, which cannot appear in prose.
-  const guardIdx = src.indexOf('const catCheck = validateRoundupPageTitle(');
+  const guardIdx = src.indexOf('const catCheck = checkArchiveCategory(');
   const writeIdx = src.indexOf('fs.writeFileSync(archivePath, html)');
-  assert.ok(guardIdx > 0, 'scraper must call validateRoundupPageTitle and bind the result');
+  assert.ok(guardIdx > 0, 'scraper must call checkArchiveCategory and bind the result');
   assert.ok(writeIdx > 0, 'scraper must still write the archive');
   assert.ok(guardIdx < writeIdx,
     'the category guard must run BEFORE the cache write — otherwise the poisoned page is already on disk');
@@ -193,11 +193,13 @@ test('BRO-2549: roundup write paths now carry the same category guard the /revie
     .join('\n');
 
   // Without this, the read-path guard above (which DOES check
-  // validateRoundupPageTitle on roundup archives) would be the only place
-  // that validator ever ran against a roundup page — purging and refetching
-  // the same file forever since the write path kept re-writing content the
-  // read path then rejected.
-  const guardCalls = (src.match(/const catCheck = validateRoundupPageTitle\(/g) || []).length;
+  // checkArchiveCategory on roundup archives) would be the only place that
+  // validator ever ran against a roundup page — purging and refetching the
+  // same file forever since the write path kept re-writing content the read
+  // path then rejected. All three sites use checkArchiveCategory (not a bare
+  // validateRoundupPageTitle call) so the write path shares the read path's
+  // punctuation-false-positive rescue too — see the next test.
+  const guardCalls = (src.match(/const catCheck = checkArchiveCategory\(/g) || []).length;
   assert.equal(guardCalls, 3,
     'expected 3 catCheck call sites: /reviews/ write, forceRoundupUrl write, and the main roundup-search write');
 });
@@ -207,9 +209,7 @@ test('BRO-2549: a punctuation-formatting false positive is rescued, not purged (
   const archivePath = path.join(dir, 'on-your-feet-2026.html');
   // Same page-title-mismatch false positive documented in
   // show-matching.punctuation-fp-guard.test.mjs — the aggregator drops the
-  // "!" and adds a site suffix. The write-time guard never applied
-  // isPunctuationFalsePositive either, so without this rescue the read guard
-  // would purge a page the standing audit already treats as fine.
+  // "!" and adds a site suffix.
   fs.writeFileSync(archivePath, page('ON YOUR FEET Broadway Reviews | Broadway World'));
 
   const result = readCachedArchiveIfValid(
@@ -218,6 +218,37 @@ test('BRO-2549: a punctuation-formatting false positive is rescued, not purged (
 
   assert.equal(result.valid, true, JSON.stringify(result));
   assert.equal(fs.existsSync(archivePath), true, 'a rescued false positive must not be deleted');
+});
+
+test('BRO-2549: checkArchiveCategory (what the WRITE paths call directly) rescues the same false positive', () => {
+  // Round-1 adversarial review caught that the write-time guards initially
+  // called bare validateRoundupPageTitle() with no rescue, while the
+  // read-time guard rescued this exact case — meaning a rescued page could
+  // be read from cache but never re-written after a fresh fetch, an
+  // unrecoverable miss. All three write sites now call checkArchiveCategory
+  // directly (see the wiring test above), so this is the function that must
+  // rescue, independent of readCachedArchiveIfValid.
+  const check = checkArchiveCategory(
+    page('ON YOUR FEET Broadway Reviews | Broadway World'),
+    { title: 'On Your Feet!', category: 'broadway' },
+    [],
+  );
+  assert.equal(check.ok, true, JSON.stringify(check));
+  assert.equal(check.rescued, true, JSON.stringify(check));
+});
+
+test('BRO-2549: checkArchiveCategory does NOT rescue cross-market-sibling (distinct, deliberate check)', () => {
+  const idx = buildSiblingCategoriesByTitle({
+    'little-bear-ridge-road-regional-2024': { id: 'little-bear-ridge-road-regional-2024', title: 'Little Bear Ridge Road', category: 'regional' },
+    'little-bear-ridge-road-2025': { id: 'little-bear-ridge-road-2025', title: 'Little Bear Ridge Road', category: 'broadway' },
+  });
+  const check = checkArchiveCategory(
+    page('Little Bear Ridge Road Broadway Reviews'),
+    { title: 'Little Bear Ridge Road', category: 'regional' },
+    idx['little-bear-ridge-road-regional-2024'],
+  );
+  assert.equal(check.ok, false, JSON.stringify(check));
+  assert.equal(check.reason, 'cross-market-sibling', JSON.stringify(check));
 });
 
 test('BRO-2549: scrape-bww-reviews.js runs the read-path guard on BOTH cache lookups before returning the cached html', () => {

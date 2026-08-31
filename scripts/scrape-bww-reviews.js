@@ -31,10 +31,10 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, validateRoundupPageTitle, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { readCachedArchiveIfValid } = require('./lib/bww-archive-category-guard');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/bww-archive-category-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -331,10 +331,10 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
   const archivePath = path.join(reviewsArchiveDir, `${showId}.html`);
 
   // Check cache freshness. A fresh mtime alone is not trusted — BRO-2549:
-  // the write-time guard below (validateRoundupPageTitle) only stops a
-  // poisoned page being WRITTEN. A poisoned file that arrives some other way
-  // (a restore, a manual copy, a different writer, a rolled-back deploy)
-  // would otherwise be served as-is for up to 14 days.
+  // the write-time guard below (checkArchiveCategory) only stops a poisoned
+  // page being WRITTEN. A poisoned file that arrives some other way (a
+  // restore, a manual copy, a different writer, a rolled-back deploy) would
+  // otherwise be served as-is for up to 14 days.
   if (!options.force) {
     const cached = readCachedArchiveIfValid(
       archivePath, 14, show, siblingCategoriesByShowId()[showId],
@@ -369,13 +369,15 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
         // title + opening year, which CANNOT separate a regional premiere from
         // its later Broadway transfer: same title, and the transfer's page
         // carries the transfer's year. Re-use the exact predicate
-        // audit-aggregator-archive-integrity.js applies post-hoc, so a page
-        // the audit would call poisoned never reaches the cache in the first
-        // place. Without this, `fix: quarantine 3 poisoned bww-reviews caches`
-        // (2026-08-23) was silently undone by the next scrape run (2026-08-30)
-        // and the trunk went red again on the same three showIds.
-        const catCheck = validateRoundupPageTitle(
-          html, show.title, show.category, siblingCategoriesByShowId()[showId],
+        // audit-aggregator-archive-integrity.js applies post-hoc (including
+        // its punctuation-false-positive rescue, via checkArchiveCategory),
+        // so a page the audit would call poisoned never reaches the cache in
+        // the first place. Without this, `fix: quarantine 3 poisoned
+        // bww-reviews caches` (2026-08-23) was silently undone by the next
+        // scrape run (2026-08-30) and the trunk went red again on the same
+        // three showIds.
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
         );
         if (!catCheck.ok) {
           console.log(`  [SKIP] /reviews/${slug} category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
@@ -531,12 +533,12 @@ async function discoverBwwRoundup(show, showId, options = {}) {
       // Category-aware cache guard (BRO-2549) — roundups never got the
       // BRO-2547 write-time guard applied to /reviews/ pages, so this was the
       // one write path that could still poison the read-path guard: it would
-      // write a page validatePageMatchesShow() accepts but validateRoundupPageTitle()
+      // write a page validatePageMatchesShow() accepts but checkArchiveCategory()
       // (what the read-path guard checks) rejects, purging and refetching the
       // same file forever. See the /reviews/ catCheck block above for the
       // full contamination-class writeup.
-      const catCheck = validateRoundupPageTitle(
-        html, show.title, show.category, siblingCategoriesByShowId()[showId],
+      const catCheck = checkArchiveCategory(
+        html, show, siblingCategoriesByShowId()[showId],
       );
       if (!catCheck.ok) {
         console.log(`  [SKIP] forceRoundupUrl category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
@@ -675,8 +677,8 @@ async function discoverBwwRoundup(show, showId, options = {}) {
 
         // Category-aware cache guard (BRO-2549) — see the forceRoundupUrl
         // branch above for why roundups need this too.
-        const catCheck = validateRoundupPageTitle(
-          html, show.title, show.category, siblingCategoriesByShowId()[showId],
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
         );
         if (!catCheck.ok) {
           console.log(`  [SKIP] roundup category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
@@ -1492,7 +1494,7 @@ async function main() {
   }
   console.log(`Roundups: ${stats.roundupsHit} hit, ${stats.roundupsMiss} miss (${stats.roundupsFetched} fetched, ${stats.googleSearches} searches)`);
   if (stats.cachePurgedPoisoned > 0) {
-    console.log(`  ^ ${stats.cachePurgedPoisoned} cached archive(s) purged at read time: failed validateRoundupPageTitle() on disk`);
+    console.log(`  ^ ${stats.cachePurgedPoisoned} cached archive(s) purged at read time: failed checkArchiveCategory() on disk`);
   }
   console.log(`Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`New reviews: ${stats.newReviews}`);
