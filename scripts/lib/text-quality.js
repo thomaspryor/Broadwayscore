@@ -8,6 +8,20 @@
 // Excerpt field names — imported from excerpt-fields.js (single source of truth).
 // The objects add display names for use in getBestTextForScoring().
 const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
+// Bot-wall stub patterns (NYT anti-bot JS-loader + verify-access interstitial) —
+// imported from content-quality.js rather than re-declared here (BRO-36). This
+// module's own truncation/cleaning logic is a separate code path from
+// classifyContentTier's and was blind to the stub: getBestTextForScoring() fed
+// the raw stub text to the LLM scorer as 'complete'/high-confidence even for
+// reviews content-quality.js had already correctly relabeled contentTier=truncated.
+// This array is reused for three purposes here (signal detection in
+// checkTruncation, strip-anchors in stripTrailingJunk, and the raw-text
+// pre-check in assessFullText) as well as content-quality.js's own tier
+// classification — narrowing/widening a pattern there changes all four call
+// sites at once. That's the intended single-source-of-truth behavior, but
+// keep it in mind before tightening a pattern for classification purposes only.
+const { TRUNCATION_SIGNALS: _CONTENT_QUALITY_SIGNALS } = require('./content-quality');
+const BOT_STUB_PATTERNS = _CONTENT_QUALITY_SIGNALS.severeAnywhere;
 const EXCERPT_FIELDS = _EXCERPT_FIELD_NAMES.map(field => ({
   field,
   name: {
@@ -128,6 +142,18 @@ function checkTruncation(text) {
     }
   }
 
+  // Bot-wall stub — position-independent, full-text scan (mirrors
+  // content-quality.js detectTruncationSignals' severeAnywhere check). The stub
+  // appears at 90-95% of the file, so it can survive stripTrailingJunk's back-half
+  // guard on files where the min-remaining threshold isn't met; check the raw
+  // text directly rather than relying solely on stripping.
+  for (const pattern of BOT_STUB_PATTERNS) {
+    if (pattern.test(text)) {
+      signals.push('bot-wall-stub');
+      break;
+    }
+  }
+
   // Check for abrupt ending (no sentence-final punctuation in last 20 chars)
   const ending = text.slice(-20).trim();
   if (ending && !/[.!?]["']?\s*$/.test(ending)) {
@@ -201,6 +227,9 @@ function stripTrailingJunk(text) {
     // Generic WordPress sidebar widgets
     /\n\s*CategoriesCategories\n/i,
     /\n\s*Theater blogroll\n/i,
+    // NYT bot-wall stub (BRO-36) — never legitimate review content, strip so the
+    // raw "enable JavaScript" chrome doesn't reach the LLM scoring prompt.
+    ...BOT_STUB_PATTERNS,
   ];
 
   // Anchor patterns match the START of trailing junk sections (no greedy tails).
@@ -281,6 +310,17 @@ function endsProperlyWithPunctuation(text) {
 function assessFullText(fullText, useCleanedText = true) {
   if (!fullText || fullText.length < 50) {
     return null;
+  }
+
+  // Bot-wall stub — check the RAW text before cleaning. Once stripTrailingJunk
+  // removes the stub sentence(s), the surviving pre-stub prose can coincidentally
+  // end with proper punctuation and read as 'complete' — but the raw text proves
+  // the scraper hit NYT's bot wall, so the article is objectively incomplete
+  // regardless of how the cleaned remainder looks (BRO-36).
+  for (const pattern of BOT_STUB_PATTERNS) {
+    if (pattern.test(fullText)) {
+      return 'truncated';
+    }
   }
 
   // Clean text for assessment - removes known artifacts
