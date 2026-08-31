@@ -160,5 +160,29 @@
       }
     ],
     "queuedAt": "2026-08-31T16:59:23.724Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
+    "title": "Zombie-tab sweep closed workspace:87",
+    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2654 P1: main Unit Tests red — bsc-next.test.m\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T18:32:36.150Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:89:linear:BRO-2647",
+    "title": "Zombie-tab sweep closed workspace:89",
+    "description": "closed corpse workspace:89 \"🤖⚡ Data·BRO-2647 P1: main's Unit Tests still red on two di\" (live-duplicate)",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T18:37:22.097Z"
   }
 ]
