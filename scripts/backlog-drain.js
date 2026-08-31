@@ -352,14 +352,14 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
   });
   const newEntries = [];
   for (const { dispatch: d, cardId: taskId, job, kind } of decisions) {
-    if (kind === 'orphan') {
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
       continue;
     }
-    if (kind === 'retry-timeout') {
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, and the
       // attempt scores as a fail.
@@ -374,7 +374,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     // silently landing in the terminal branch here would dereference a job
     // this code has not established is terminal — at all three call sites at
     // once. Unknown kinds must stop the pass, not be guessed at.
-    if (kind !== dispatchReconcile.KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
+    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const task = tasksById.get(taskId);
     const completed = !!(task && task.status === 'completed');
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
