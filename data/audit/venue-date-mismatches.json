@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-31T02:44:15.760Z",
+  "generatedAt": "2026-08-31T02:43:12.578Z",
   "filter": {
-    "show": "kramerfauci-st-anns-off-broadway-2026"
+    "show": "othello-bedlam-off-broadway-2026"
   },
   "counts": {
     "total": 1,
@@ -11,36 +11,48 @@
   },
   "results": [
     {
-      "id": "kramerfauci-st-anns-off-broadway-2026",
-      "title": "Kramer/Fauci",
-      "venue": "St. Ann's Warehouse",
+      "id": "othello-bedlam-off-broadway-2026",
+      "title": "Othello (Bedlam)",
+      "venue": "West End Theatre",
       "result": "match",
-      "playbillUrl": "https://playbill.com/production/kramer-fauci-off-broadway-st-anns-warehouse-2026",
+      "playbillUrl": "https://playbill.com/production/othello-off-broadway-the-west-end-theatre-2026",
       "parsed": {
         "titleParse": {
-          "rawTitle": "Kramer/Fauci",
+          "rawTitle": "Othello",
           "market": "Off-Broadway",
-          "venue": "St. Ann's Warehouse",
+          "venue": "The West End Theatre",
           "year": 2026
         },
         "dates": {
-          "firstPreview": "2026-09-27",
-          "openingDate": "2026-10-04",
-          "closingDate": "2026-10-24"
+          "firstPreview": "2026-04-19",
+          "openingDate": "2026-05-10",
+          "closingDate": "2026-05-31"
         },
         "tagLine": {
           "tags": [
             "Off-Broadway",
             "Play",
-            "One Act",
-            "Original"
+            "Revival"
           ],
           "market": "Off-Broadway",
           "showType": "play",
           "revivalStatus": "original"
         }
       },
-      "mismatches": []
+      "mismatches": [],
+      "explainedByPriorRun": [
+        {
+          "field": "closingDate",
+          "shows": "2026-11-29",
+          "playbill": "2026-05-31",
+          "deltaDays": 182,
+          "priorRun": {
+            "openingDate": "2026-05-10",
+            "closingDate": "2026-05-31",
+            "venue": "West End Theatre"
+          }
+        }
+      ]
     }
   ]
 }
