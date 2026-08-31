@@ -1432,6 +1432,12 @@ on:
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
       - 'scripts/tests/verify-edits-heredoc.test.mjs'
       - '.claude/hooks/verify-edits.sh'
+      # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
+      # wiring is asserted by tests/unit/session-start-disk-check.test.mjs
+      # (rides the 'tests/**' glob above), but the hook file itself is not
+      # globbed anywhere in this file — a solo revert of the wiring (e.g.
+      # someone dropping the block this test checks for) would run ZERO CI.
+      - '.claude/hooks/session-start.sh'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
