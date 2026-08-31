@@ -636,6 +636,12 @@ on:
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
       - 'scripts/audit-aggregator-archive-integrity.js'
       - 'scripts/audit-critic-consensus-contamination.js'
+      # BRO-164: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/audit-false-balance.js'
+      - 'scripts/audit-false-balance.test.mjs'
       # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
       # test registered explicitly in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — both need their own entry
