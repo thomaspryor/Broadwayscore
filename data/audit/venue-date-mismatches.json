@@ -1,58 +1,14 @@
 {
-  "generatedAt": "2026-08-31T02:43:12.578Z",
+  "generatedAt": "2026-08-31T03:24:38.918Z",
   "filter": {
-    "show": "othello-bedlam-off-broadway-2026"
+    "allProvisional": true,
+    "limit": null
   },
   "counts": {
-    "total": 1,
-    "match": 1,
+    "total": 0,
+    "match": 0,
     "mismatch": 0,
     "unresolved": 0
   },
-  "results": [
-    {
-      "id": "othello-bedlam-off-broadway-2026",
-      "title": "Othello (Bedlam)",
-      "venue": "West End Theatre",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/othello-off-broadway-the-west-end-theatre-2026",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Othello",
-          "market": "Off-Broadway",
-          "venue": "The West End Theatre",
-          "year": 2026
-        },
-        "dates": {
-          "firstPreview": "2026-04-19",
-          "openingDate": "2026-05-10",
-          "closingDate": "2026-05-31"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Play",
-            "Revival"
-          ],
-          "market": "Off-Broadway",
-          "showType": "play",
-          "revivalStatus": "original"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [
-        {
-          "field": "closingDate",
-          "shows": "2026-11-29",
-          "playbill": "2026-05-31",
-          "deltaDays": 182,
-          "priorRun": {
-            "openingDate": "2026-05-10",
-            "closingDate": "2026-05-31",
-            "venue": "West End Theatre"
-          }
-        }
-      ]
-    }
-  ]
+  "results": []
 }
