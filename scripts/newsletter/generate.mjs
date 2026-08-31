@@ -2,6 +2,7 @@
 // Usage: node gen-newsletter.mjs YYYY-MM-DD (week-start Monday)
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -75,7 +76,47 @@ const BRAND = IS_WE
 // this file for the same weekStart, so keying by date alone let the second
 // run clobber the first edition's memory. Read + write filter on edition
 // (legacy entries with no `edition` field are treated as 'broadway').
-const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+// NEWSLETTER_STATE_PATH redirects this file for throwaway runs (BRO-2606): the
+// newsletter tests and regression-test.mjs's comparison re-run all drive the
+// real generator, and each of those used to read AND REWRITE the tracked
+// data/newsletter-state.json. `node --test` runs test FILES concurrently, so
+// they raced each other on that one path; regression-test.mjs worked around it
+// with a snapshot/restore that could itself clobber a concurrent legitimate
+// write; and a local test run left a tracked data file dirty in a checkout
+// shared with ~20 sessions.
+//
+// ONLY honoured for a path inside the OS temp dir. A real newsletter send must
+// never write its cross-issue memory anywhere but data/newsletter-state.json,
+// and this variable is inheritable: refresh-drafts.sh exports everything in
+// .env, and workflow/launchd/parent-shell environments flow into the spawn the
+// same way (Codex adversarial review, 2026-08-31). A stray value would send the
+// generator's ledger to a sandbox while verify-sent-vs-state.mjs and
+// newsletter-draft.yml's commit step still read the repo file — drafts would
+// look fine and next week's suppression would silently run on stale memory. The
+// tmpdir fence also stops a typo'd value (`NEWSLETTER_STATE_PATH=.env`) from
+// overwriting an unrelated file with ledger JSON, and stops a relative value
+// resolving against whatever cwd the caller happened to have.
+const _stateOverride = (process.env.NEWSLETTER_STATE_PATH || '').trim();
+let STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+if (_stateOverride) {
+  const resolved = path.resolve(_stateOverride);
+  // Compare against BOTH the raw and the realpath'd temp root. On macOS
+  // os.tmpdir() is /var/folders/... while its realpath is /private/var/... —
+  // checking only one side rejects a legitimate sandbox whenever the two
+  // spellings don't line up, which is exactly what happens when the parent dir
+  // doesn't exist yet and realpathSync throws (gpt-5.4-mini review, 2026-08-31).
+  const tmpRoots = new Set([os.tmpdir()]);
+  try { tmpRoots.add(fs.realpathSync(os.tmpdir())); } catch { /* raw value is the only root we have */ }
+  const parent = path.resolve(resolved, '..');
+  const candidates = new Set([parent]);
+  try { candidates.add(fs.realpathSync(parent)); } catch { /* parent may not exist yet — the raw form still gets checked */ }
+  const underTmp = [...candidates].some((c) => [...tmpRoots].some((r) => c === r || c.startsWith(r + path.sep)));
+  if (underTmp) {
+    STATE_PATH = resolved;
+  } else {
+    process.stderr.write(`[newsletter] ignoring NEWSLETTER_STATE_PATH=${_stateOverride} — only a path under ${os.tmpdir()} is honoured; using ${STATE_PATH}\n`);
+  }
+}
 let _priorState = { issues: [] };
 try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
 const _issueEdition = (i) => (i && i.edition) || 'broadway';
@@ -2310,8 +2351,27 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 
 const cas  = sections.run('casting-updates', () => castingSection());
 
+const lon  = sections.run('london-openings', () => londonSection());
+const bwWe = sections.run('broadway-we', () => weBroadwaySection());
+const opera = sections.run('opera-openings', () => operaOpeningsSection());
+// Runs AFTER london-openings + closing so its notFeatured() gate excludes both
+// this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
+const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
+
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
+//
+// MUST stay below EVERY section that calls markFeatured() — the last three are
+// london-openings, broadway-we and also-opened-recently, immediately above
+// (BRO-2606). This block used to sit above them, so the shows those sections
+// featured never reached the persisted featuredShowIds and next week's
+// lastFeaturedIds could not suppress them: the WE edition led with As You Like
+// It and gave it the hero "Opened in the West End" card in the 2026-08-24 AND
+// 2026-08-31 issues back to back. londonSection()'s own markFeatured() comment
+// describes the mechanism ("via lastFeaturedIds, sourced from this issue's
+// persisted featuredShowIds") that this ordering had silently disabled;
+// BRO-2590's inBroadwayOpeningWindowForWE() grace window depended on it too.
+// If you add a section that calls markFeatured(), put it ABOVE this block.
 try {
   // Drop only THIS edition's entry for the week — keep the other edition's so
   // the two weeklies don't clobber each other's memory (they commit the same
@@ -2327,12 +2387,6 @@ try {
   _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
-const lon  = sections.run('london-openings', () => londonSection());
-const bwWe = sections.run('broadway-we', () => weBroadwaySection());
-const opera = sections.run('opera-openings', () => operaOpeningsSection());
-// Runs AFTER london-openings + closing so its notFeatured() gate excludes both
-// this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
-const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
 const ravepan = sections.run('rave-pan-of-the-week', () => ravePanSection());
 
 // Most-read show pages — real GA4 page-view data via popular-pages.mjs.
