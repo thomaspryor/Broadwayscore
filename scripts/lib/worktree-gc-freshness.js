@@ -30,8 +30,8 @@ const STALE_ERROR_HOURS = 24;
 /**
  * @param {string|null|undefined} logText - contents of data/audit/worktree-gc.log
  * @returns {string|null} the newest `YYYY-MM-DD HH:MM:SS` timestamp found in a
- *   bracketed log line (local time, as written by gc-merged-worktrees.sh's
- *   `tee -a`), or null if no such line exists.
+ *   bracketed log line (UTC, as written by gc-merged-worktrees.sh's `date -u`
+ *   + `tee -a`), or null if no such line exists.
  */
 function lastTimestampFromLog(logText) {
   if (typeof logText !== 'string') return null;
@@ -44,13 +44,18 @@ function lastTimestampFromLog(logText) {
 }
 
 /**
- * @param {string|null|undefined} lastLineTimestamp - e.g. "2026-08-31 11:13:30", from lastTimestampFromLog()
+ * @param {string|null|undefined} lastLineTimestamp - e.g. "2026-08-31 11:13:30" (UTC), from lastTimestampFromLog()
  * @param {number} nowMs - current time in ms (Date.now() at call site)
  * @returns {{hoursStale: number, severity: 'warn'|'error'}|null} null when fresh or timestamp missing/unparseable
  */
 function checkWorktreeGcFreshness(lastLineTimestamp, nowMs) {
   if (typeof lastLineTimestamp !== 'string' || !lastLineTimestamp) return null;
-  const parsedMs = Date.parse(lastLineTimestamp.replace(' ', 'T'));
+  // Explicit 'Z': the log is written in UTC (`date -u`, BRO-2608 fix) but
+  // this runs on a UTC GitHub Actions runner (data-health-check.yml), not the
+  // Mac Studio that writes the log — an offset-less parse here would be
+  // read back as THIS process's local time instead, silently reintroducing
+  // the exact TZ-mismatch bug the UTC write was meant to close.
+  const parsedMs = Date.parse(`${lastLineTimestamp.replace(' ', 'T')}Z`);
   if (!Number.isFinite(parsedMs)) return null;
   const hoursStale = (nowMs - parsedMs) / (60 * 60 * 1000);
   if (hoursStale < STALE_WARN_HOURS) return null;
