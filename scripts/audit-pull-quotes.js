@@ -56,6 +56,7 @@ const {
 // Lastname", "Photo:", venue+address) are good and tested, so consume them here
 // rather than leave a second detector rotting unrun.
 const { isChromePrefix } = require('./audit-chrome-pullquotes');
+const { generateReviewFilename } = require('./lib/review-normalization');
 
 const ROOT = path.join(__dirname, '..');
 const REVIEWS_FILE = process.env.REVIEWS_FILE || path.join(ROOT, 'data', 'reviews.json');
@@ -102,6 +103,35 @@ function sourcesForReview(data) {
   ].filter(t => typeof t === 'string' && t);
 }
 
+/**
+ * Which review-texts file did this reviews.json record come from?
+ *
+ * A show directory can hold several files for the same outlet (a critic
+ * reviewed a return/transfer production, or a byline was later corrected).
+ * Their `data.criticName` fields can end up identical even though the files
+ * are for different reviews — a later correction rewrites the JSON's
+ * criticName but not the filename it was originally written under (BRO-180:
+ * hamlet-off-broadway-2026/nytg had two files both stamped "Austin Fimmano",
+ * one of them for a different Hamlet production entirely). Loosely scanning
+ * by `data.criticName` then picks whichever file sorts first, at random with
+ * respect to which review it's actually for.
+ *
+ * The filename itself is the authoritative link: it's generated at write
+ * time as generateReviewFilename(outletId, criticName) and never renamed on
+ * a later correction, so recomputing it from the reviews.json record's own
+ * outlet+critic and matching exactly resolves the ambiguity the loose scan
+ * can't. Only fall back to the loose scan when no file uses that exact name
+ * (legacy files, critic-name normalization drift, etc).
+ */
+function fileForReview(texts, r) {
+  const expectedFile = generateReviewFilename(r.outletId, r.criticName);
+  const exact = texts.find(({ file }) => file === expectedFile);
+  if (exact) return exact;
+
+  return texts.find(({ data }) => data.outletId === r.outletId
+    && (!r.criticName || !data.criticName || data.criticName === r.criticName));
+}
+
 /** Load every review-texts JSON for a show, keyed by outletId. */
 function loadShowTexts(showId, reviewTextsDir) {
   const dir = path.join(reviewTextsDir || REVIEW_TEXTS_DIR, showId);
@@ -136,15 +166,10 @@ function findBadPullQuotes(reviews, reviewTextsDir, textsByShow = new Map()) {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId, reviewTextsDir));
     return textsByShow.get(showId);
   }
-  function fileForReview(r) {
-    return textsFor(r.showId).find(({ data }) => data.outletId === r.outletId
-      && (!r.criticName || !data.criticName || data.criticName === r.criticName));
-  }
-
   const badQuotes = [];
   for (const r of reviews) {
     if (!r.pullQuote) continue;
-    const entry = fileForReview(r);
+    const entry = fileForReview(textsFor(r.showId), r);
     const reason = classifyBadQuote(r.pullQuote, sourcesForReview(entry && entry.data));
     if (reason) {
       badQuotes.push({
@@ -186,11 +211,6 @@ function main() {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId));
     return textsByShow.get(showId);
   }
-  function fileForReview(r) {
-    return textsFor(r.showId).find(({ data }) => data.outletId === r.outletId
-      && (!r.criticName || !data.criticName || data.criticName === r.criticName));
-  }
-
   // --- 1. QUALITY ---------------------------------------------------------
   const badQuotes = findBadPullQuotes(scoped, REVIEW_TEXTS_DIR, textsByShow);
 
@@ -215,7 +235,7 @@ function main() {
 
     const changes = { filled: [], cleared: [], changed: [], same: 0, skipped: 0 };
     for (const r of scoped) {
-      const entry = fileForReview(r);
+      const entry = fileForReview(textsFor(r.showId), r);
       if (!entry) { changes.skipped++; continue; }
       let next;
       try {
@@ -269,4 +289,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { classifyBadQuote, sourcesForReview, findBadPullQuotes, loadShowTexts, hasHelpFlag };
+module.exports = { classifyBadQuote, sourcesForReview, findBadPullQuotes, loadShowTexts, fileForReview, hasHelpFlag };
