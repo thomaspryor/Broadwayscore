@@ -30,6 +30,7 @@ const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(r
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
+const { isBroadwayCategory } = cjsRequire(path.join(repo, 'scripts/lib/venue-classification'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
@@ -2192,7 +2193,7 @@ function inBroadwayOpeningWindowForWE(s) {
 // WE-edition value.
 function weBroadwaySection() {
   if (!IS_WE) return null;
-  const list = shows.filter(s => s.category === 'broadway' && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
+  const list = shows.filter(s => isBroadwayCategory(s) && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
   if (!list.length) return null;
   const withScore = list
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
