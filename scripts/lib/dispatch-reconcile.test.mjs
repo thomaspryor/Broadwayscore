@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { findMyJob, isDispatchResolved, classifyDispatches } = require('./dispatch-reconcile.js');
@@ -325,4 +328,50 @@ test('taskIdOf may namespace the shared-ledger key independently of cardIdOf', (
   assert.equal(out.length, 1);
   assert.equal(out[0].cardId, 'BRO-1', 'the emitted key is the bare identifier attempt-memory expects');
   assert.equal(out[0].kind, 'terminal');
+});
+
+// ── class guard: no FIFTH copy of the spawn-correlation logic ───────────────
+
+test('no file reimplements the spawn->job correlation outside this lib (BRO-2542 class guard)', () => {
+  // The premise of BRO-2542 is that this logic gets COPIED and then drifts:
+  // three drains each grew their own byte-identical copy, the third silently
+  // dropped a guard the first two had, and a FOURTH copy
+  // (autofix-canary.js's findCanarySpawn) survived the first pass of the
+  // extraction itself — found only because a reviewer happened to grep for it.
+  // Consolidating without a guard just resets the clock on the same drift.
+  //
+  // The signature of a reimplementation is referencing BOTH the spawn event
+  // and the retry-chain follower: that pair is findMyJob's whole body, and
+  // every one of the four copies matched it. Callers should require
+  // dispatch-reconcile.js's findMyJob instead.
+  const repo = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  // dispatch-ledger.js DEFINES followRetryChain; dispatch-reconcile.js is the
+  // one sanctioned consumer. Nothing else may pair them.
+  const OWNERS = new Set([
+    'scripts/lib/dispatch-ledger.js',
+    'scripts/lib/dispatch-reconcile.js',
+  ]);
+
+  let files;
+  try {
+    files = execFileSync('grep', ['-rl', '--include=*.js', 'followRetryChain', 'scripts'],
+      { cwd: repo, encoding: 'utf8' }).split('\n').filter(Boolean);
+  } catch {
+    files = []; // grep exits 1 when nothing matches
+  }
+
+  const offenders = files.filter((rel) => {
+    if (OWNERS.has(rel)) return false;
+    const src = fs.readFileSync(path.join(repo, rel), 'utf8')
+      // Strip comments so a file merely DOCUMENTING the pair (as
+      // backlog-drain.js and autofix-canary.js now do, pointing readers at the
+      // shared implementation) is not mistaken for one reimplementing it.
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/(?<!:)\/\/[^\n]*/g, '');
+    return /followRetryChain\s*\(/.test(src) && /JOB_EVENTS\.SPAWNED/.test(src);
+  });
+
+  assert.deepEqual(offenders, [],
+    'these files pair JOB_EVENTS.SPAWNED with followRetryChain — that is findMyJob. '
+    + 'Require it from scripts/lib/dispatch-reconcile.js instead of writing a fifth copy.');
 });
