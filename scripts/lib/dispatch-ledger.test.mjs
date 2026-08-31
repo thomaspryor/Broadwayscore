@@ -1079,6 +1079,91 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
   assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
 });
 
+// ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
+// A 'dead' row proven false by the buried worker's own later Linear session
+// report (audit-false-dead-ledger-rows.js, BRO-2575) must not count toward
+// EITHER bucket — never substantive, never reclassified as infra.
+
+test('classifyDeadAttemptsForTask: a dead row matching opts.contradictedDeadKeys is dropped from both buckets', () => {
+  const entries = [
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:138', '2599a'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:138', '2599a', 'workspace idle, never booted'),
+  ];
+  const contradictedDeadKeys = new Set(['workspace:138|2026-08-31T00:55:32.380Z']);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599a', entries, { contradictedDeadKeys });
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 0);
+  // No opts at all: the exact same row is unaffected — purely additive/opt-in.
+  const unfiltered = classifyDeadAttemptsForTask('2599a', entries);
+  assert.equal(unfiltered.substantive.length, 1);
+});
+
+test('dispatchCapDecision: a contradicted dead row does not count toward the 2-death cap, so the task unblocks', () => {
+  // One real death (workspace:801, never contradicted) + one blackout-time
+  // false death (workspace:802, contradicted) — today this reads as 2
+  // substantive deaths and blocks; discounting the contradicted one must
+  // drop the count to 1 and unblock.
+  const entries = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:801', '2599b'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:801', '2599b', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:802', '2599b'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:802', '2599b', 'workspace idle, never booted'),
+  ];
+  const before = dispatchCapDecision('2599b', entries);
+  assert.equal(before.blocked, true);
+  assert.equal(before.reason, 'substantive');
+
+  const contradictedDeadKeys = new Set(['workspace:802|2026-08-31T00:55:32.380Z']);
+  const after = dispatchCapDecision('2599b', entries, { contradictedDeadKeys });
+  assert.equal(after.blocked, false);
+  assert.equal(after.substantive.length, 1, 'the real death (workspace:801) still counts');
+});
+
+test('classifyDeadAttemptsForTask: contradicting one dead row does not disturb a sibling dead row sharing the SAME recycled workspaceRef', () => {
+  // Plan-review catch: filtering must happen on the derived workspaceDeaths
+  // list, never by stripping the contradicted row out of `entries` before
+  // foldAttempts(entries) runs — otherwise a sibling dead row recycling the
+  // same ref would see a different candidatesByRef match count and flip to
+  // fail-closed-substantive for the wrong reason. Two dead rows for the SAME
+  // task on the SAME ref (an edge case foldAttempts already fails closed on,
+  // per the "matches.length !== 1" branch) must classify identically whether
+  // or not one of them is contradicted, since discounting must not change
+  // what foldAttempts itself sees.
+  const entries = [
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:900', '2599c'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:900', '2599c', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-31T01:00:00.000Z', 'workspace:900', '2599c'),
+    cmuxDead('2026-08-31T01:30:00.000Z', 'workspace:900', '2599c', 'workspace idle, never booted'),
+  ];
+  const baseline = classifyDeadAttemptsForTask('2599c', entries);
+  const contradictedDeadKeys = new Set(['workspace:900|2026-08-31T00:55:32.380Z']);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599c', entries, { contradictedDeadKeys });
+  // The contradicted row itself is gone from both buckets...
+  assert.equal(substantive.length + infra.length, baseline.substantive.length + baseline.infra.length - 1);
+  // ...and the SURVIVING sibling row's own classification (substantive vs
+  // infra) is byte-identical to what it got in the unfiltered baseline —
+  // proof foldAttempts saw the same untouched `entries` either way.
+  const survivorBaseline = [...baseline.substantive, ...baseline.infra].find(e => e.ts === '2026-08-31T01:30:00.000Z');
+  const survivorAfter = [...substantive, ...infra].find(e => e.ts === '2026-08-31T01:30:00.000Z');
+  assert.ok(survivorBaseline && survivorAfter);
+  const bucketOf = (list, e) => (list.substantive.includes(e) ? 'substantive' : list.infra.includes(e) ? 'infra' : null);
+  assert.equal(bucketOf(baseline, survivorBaseline), bucketOf({ substantive, infra }, survivorAfter));
+});
+
+test('classifyDeadAttemptsForTask: contradictedDeadKeys is matched byte-exact against a real ledger round-trip (appendEntry/readEntries), not a hand-typed literal', () => {
+  const ledgerPath = tmpLedger();
+  appendEntry({ event: 'launch', taskId: '2599d', subject: 'task 2599d', workspaceRef: 'workspace:911', model: 'sonnet' }, ledgerPath);
+  const deadLine = appendEntry({ event: 'dead', taskId: '2599d', subject: 'task 2599d', workspaceRef: 'workspace:911', failureReason: 'workspace idle, never booted', title: null }, ledgerPath);
+  const entries = readEntries(ledgerPath);
+  // deadLine.ts is exactly what a caller (audit-false-dead-ledger-rows.js)
+  // reads back as `row.ts` from the same file — the key must be built from
+  // that real value, not a re-derived/reformatted timestamp.
+  const contradictedDeadKeys = new Set([`workspace:911|${deadLine.ts}`]);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599d', entries, { contradictedDeadKeys });
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 0);
+});
+
 // ── Task #1904: a FINISHED dispatch must not be killed by ref recycling ────
 
 test('deadBreadcrumbs: a prune-closed (finished) launch is never journaled dead when cmux recycles its ref', () => {
