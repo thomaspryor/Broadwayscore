@@ -106,12 +106,31 @@ const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 // DISPATCH_CLAIM_DIR below).
 const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 
-// Hardcoded, not __dirname-relative: this script is routinely run from
+// Resolved, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
 // resolve into that worktree's own tree instead of the canonical checkout —
 // the same fix dispatch-ledger.js and bsc-next.js already apply to their own
 // REPO constants, for the same reason (their header comments explain why).
-const REPO = '/Users/tompryor/Broadwayscore';
+//
+// BRO-2668: routed through resolveCanonicalRepoRoot() (dispatch-guards.js) —
+// BRO-2647 fixed only the two resolvePathCheck call sites that used to read
+// this literal directly; every other REPO use (DISPATCH_CLAIM_DIR, subprocess
+// cwd, listWorkBranchStatusesFn's repoDir, ...) was still resolving the raw
+// hardcoded path, reproducing BRO-2647's same CI-only failure mode for any of
+// THEM. resolveCanonicalRepoRoot() is a no-op on the dev machine (returns
+// this literal unchanged whenever it exists on disk, which it always does
+// there, worktree or not) — byte-identical here, so cross-session dispatch-
+// claim coordination is unaffected. Aliased import (not the
+// `resolveCanonicalRepoRoot` name used by the guard destructure below) to
+// avoid a duplicate top-level binding for the same identifier.
+// Called eagerly here, unlike resolveCanonicalRepoRoot()'s own header
+// ("call this lazily... so --force/--dry-run/--print-prompt still skip the
+// fs I/O") — that convention is about the ternary at its own call site
+// skipping I/O whose result would be discarded; REPO itself is needed
+// unconditionally by DISPATCH_CLAIM_DIR/subprocess cwd regardless of any
+// flag, so deferring its own single fs.existsSync() stat buys nothing.
+const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 
 const CLI_NAME = 'scripts/linear-next.js';
 

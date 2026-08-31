@@ -24,7 +24,7 @@ const path = require('path');
 const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 
-// Hardcoded to the main checkout, not __dirname-relative — deliberate, same
+// Resolved to the main checkout, not __dirname-relative — deliberate, same
 // reasoning as QUEUE_PATH below: a dispatch (and everything it shells out to,
 // including `node scripts/notion-brain.js get <id>` inside fetchCardOnce)
 // must always run vetted/merged code, never an in-progress worktree's edits.
@@ -34,7 +34,26 @@ const { execFileSync, spawnSync } = require('child_process');
 // fix that only exists in the worktree will NOT take effect for such a call.
 // Merge to main first, or stick to --dry-run/--print-prompt for worktree-side
 // testing of anything this constant reaches.
-const REPO = '/Users/tompryor/Broadwayscore';
+//
+// BRO-2668: routed through resolveCanonicalRepoRoot() (dispatch-guards.js) —
+// BRO-2647 fixed only the two resolvePathCheck call sites that used to read
+// this literal directly; every other REPO use (DISPATCH_CLAIM_DIR,
+// SUCCESSION_LOCK_DIR, QUEUE_PATH, subprocess cwd, ...) was still resolving
+// the raw hardcoded path, reproducing BRO-2647's same CI-only failure mode
+// for any of THEM. resolveCanonicalRepoRoot() is a no-op on the dev machine
+// (returns this literal unchanged whenever it exists on disk, which it
+// always does there, worktree or not) — byte-identical here, so cross-session
+// dispatch-claim/succession-lock coordination is unaffected. Aliased import
+// (not the `resolveCanonicalRepoRoot` name used by the guard destructure
+// below) to avoid a duplicate top-level binding for the same identifier.
+// Called eagerly here, unlike resolveCanonicalRepoRoot()'s own header
+// ("call this lazily... so --force/--dry-run/--print-prompt still skip the
+// fs I/O") — that convention is about the ternary below skipping I/O whose
+// result would be discarded; REPO itself is needed unconditionally by
+// DISPATCH_CLAIM_DIR/SUCCESSION_LOCK_DIR/QUEUE_PATH/subprocess cwd regardless
+// of any flag, so deferring its own single fs.existsSync() stat buys nothing.
+const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
