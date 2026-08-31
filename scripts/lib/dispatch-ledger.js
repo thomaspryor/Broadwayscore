@@ -397,7 +397,58 @@ function launchByRef(workspaceRef, entries) {
 // comparison is against THIS launch's ts, so one stale terminal row from an
 // earlier occupant of a recycled ref cannot suppress a genuinely dying later
 // task's breadcrumb.
-function deadBreadcrumbs(idleWorkspaces, entries) {
+// THIRD SIGNAL — the OS process table (BRO-2575, 2026-08-31)
+// ─────────────────────────────────────────────────────────────────────────
+// The `idleWorkspaces` handed to this function are "dead by BOTH signals"
+// per cmux-workspaces.checkLiveness. That dual-signal design (cards
+// #559/#564) rests on the two signals being INDEPENDENT — but they are not:
+// claudeAliveIn reads `cmux top --processes` and terminalSurfaceAliveIn reads
+// `cmux read-screen`, both over the same socket, from the same daemon. When
+// cmux itself degrades, both go quiet together and every live session in the
+// fleet reads as dead at once.
+//
+// That is not hypothetical. On 2026-08-31T00:55:32Z one sweep journaled
+// 'dead' for FIVE workspaces in the same 2ms — every dispatch launched in the
+// preceding 20 minutes — while its "dead but un-marked" list jumped from 7
+// workspaces to 25 and the `⚠ Registry desync` list of surface-ALIVE
+// workspaces from the immediately preceding sweep dropped to zero. workspace:138
+// (linear:BRO-2506) was in that batch; it committed its fix at 00:53Z and
+// posted its session report at 01:31Z, 36 minutes after being declared dead.
+// The false row then drove a wasted --force opus re-dispatch at 02:15Z.
+// Across the whole ledger 52 of 61 sweep batches journal exactly ONE task;
+// every batch of 3+ is one of these correlated misreads.
+//
+// A per-workspace predicate cannot fix this, and it is worth being precise
+// about why: a live session whose terminal surface cmux has EVICTED and a
+// #1199 husk whose surface NEVER RENDERED emit the identical pair of cmux
+// signals (no process row, read-screen throwing "Terminal surface not
+// found"). Narrowing either signal to spare the first necessarily strands the
+// second — and nothing else reaps husks, since sweepNoPayload swallows the
+// read-screen throw into an empty screen (never flagging) and sweepVanished
+// only fires once a ref leaves the listing, which an open husk never does.
+//
+// What DOES separate them is a signal that is not cmux's to lie about. The
+// bash wrapper cmux-launch.js writes runs as the foreground parent of the real
+// claude process for the session's whole lifetime, so its presence in `ps` is
+// ground truth about THIS launch — cmux-launch.js already calls it "ground
+// truth, independent of cmux's internal bookkeeping" and gates every launch
+// on it (computeStrictAliveness). This wires the same check into the death
+// path: refuse to journal a death for a workspace whose wrapper is still
+// running. Evicted-surface live session -> wrapper alive -> spared. Husk ->
+// no wrapper -> journaled, and the zombie sweep still reaps it. Genuine mass
+// death -> no wrappers -> all journaled, so there is no stall.
+//
+// isWrapperAlive is OPTIONAL and defaults to "no opinion": callers that don't
+// pass it (and launches predating the ledger's `marker` field) keep the exact
+// pre-BRO-2575 behaviour rather than silently losing breadcrumbs. Suppressions
+// are reported through opts.onSuppressed — bsc-prune prints them, because a
+// suppression is direct evidence of the cmux desync and must never be silent.
+// The RETURN stays a plain array of breadcrumbs: every caller and a dozen
+// existing tests compare it with deepEqual, which an extra own property on the
+// array would break.
+function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
+  const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
+  const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   const out = [];
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   for (const w of idleWorkspaces) {
@@ -409,6 +460,21 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
     // the pre-existing `!e.ts || !launch.ts` fallback made the same choice.
     const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
     if (reconciled) continue;
+    // Only a launch that recorded its own marker can be cross-checked. Any
+    // throw from the probe means "no opinion", never "dead": this check exists
+    // to REFUSE deaths on positive evidence of life, so an unusable probe must
+    // fall back to the pre-existing verdict rather than invent one.
+    if (isWrapperAlive && launch.marker) {
+      let alive = false;
+      try { alive = isWrapperAlive(launch.marker) === true; } catch { alive = false; }
+      if (alive) {
+        if (onSuppressed) {
+          try { onSuppressed({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title }); }
+          catch { /* a reporting failure must never change the sweep's verdict */ }
+        }
+        continue;
+      }
+    }
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;

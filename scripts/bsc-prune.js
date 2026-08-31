@@ -44,6 +44,11 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { hasAutoDispatchMarker, isCrownTab } = require('./lib/prune-closeable.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
+// BRO-2575: the OS process table is the only liveness signal not read through
+// cmux, so it is the only one that still tells the truth when cmux's tag
+// registry and terminal surface go quiet together. See
+// dispatch-ledger.deadBreadcrumbs' header for the incident and the mechanism.
+const { makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 
 const USAGE = `bsc-prune — close finished Cmux workspaces.
 
@@ -77,6 +82,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
     loadNoPayloadState: loadNoPayloadStateFn = loadNoPayloadState,
     saveNoPayloadState: saveNoPayloadStateFn = saveNoPayloadState,
     pageNoPayloadClose: pageNoPayloadCloseFn = pageNoPayloadClose,
+    // BRO-2575. Built lazily, once per sweep, only when there is actually an
+    // idle candidate to test — a no-op sweep (the overwhelming majority, every
+    // 5 minutes) must not pay for a full `ps -e` dump.
+    makeWrapperAliveProbe: makeWrapperAliveProbeFn = makeSeedProcessProbe,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -101,7 +110,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     lockHeld = acquired === true;
   }
   try {
-    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn } });
+    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } });
   } finally {
     if (lockHeld) releaseRunLockFn();
   }
@@ -134,7 +143,7 @@ function releaseRunLock(lockDir = LOCK_DIR) {
 }
 
 function mainLocked({ dryRun, deps }) {
-  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn } = deps;
+  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } = deps;
 
   const all = listWorkspacesFn();
 
@@ -221,7 +230,7 @@ function mainLocked({ dryRun, deps }) {
   // fourth call site right next to the three already fixed. Both signals must
   // agree before a workspace counts as dead here too.
   const idleDisagreements = [];
-  const idle = all
+  const cmuxDead = all
     .filter(w => !closedRefs.has(w.ref) && !isDoneTitleFn(w.title))
     .filter(w => {
       const { dead, disagreement } = checkLiveness(w.ref, claudeAliveInFn, surfaceAliveInFn);
@@ -232,10 +241,55 @@ function mainLocked({ dryRun, deps }) {
     console.log(`\n⚠ Registry desync detected: ${idleDisagreements.length} idle-unmarked workspace(s) where claudeAliveIn() said dead but the terminal-surface signal said alive (would have gotten a WRONG dead-dispatch breadcrumb without the #564 fix):`);
     idleDisagreements.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
+
+  // The ledger is read once here (it was previously read inside the listing
+  // below) because the BRO-2575 wrapper cross-check needs each candidate's
+  // launch marker BEFORE `idle` is settled.
+  let ledgerEntries;
+  try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+
+  // BRO-2575 — THIRD SIGNAL. Everything downstream of `idle` treats membership
+  // as proof of death: the breadcrumb write, and sweepZombieTabs, which will
+  // CLOSE a 🤖 tab (and re-dispatch its task headless) when the task store says
+  // pending. So the cross-check has to run here, on the bucket itself, not just
+  // at the breadcrumb write — a live session mis-bucketed as idle risks losing
+  // its tab, which is strictly worse than a false ledger row.
+  //
+  // cmux's two liveness signals share a socket and a daemon, so they fail
+  // together; the launch wrapper in the OS process table does not. See
+  // dispatch-ledger.deadBreadcrumbs' header for the 2026-08-31 incident.
+  // The `ps` sample is taken once, and only when there is a candidate to test.
+  const wrapperAliveSuppressed = [];
+  let idle = cmuxDead;
+  if (cmuxDead.length) {
+    let isWrapperAlive = null;
+    try { isWrapperAlive = makeWrapperAliveProbeFn(); }
+    catch (e) { console.error(`[bsc-prune] WARN wrapper-process probe unavailable (${e.message}) — falling back to cmux-only liveness for this sweep`); }
+    if (isWrapperAlive) {
+      idle = cmuxDead.filter(w => {
+        const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
+        // No launch row, or a launch predating the ledger's `marker` field:
+        // nothing to cross-check, so keep the pre-BRO-2575 verdict rather than
+        // inventing either answer.
+        if (!launch || !launch.marker) return true;
+        let alive = false;
+        try { alive = isWrapperAlive(launch.marker) === true; } catch { alive = false; }
+        if (alive) wrapperAliveSuppressed.push({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title });
+        return !alive;
+      });
+    }
+  }
+  if (wrapperAliveSuppressed.length) {
+    // Never silent: cmux reported BOTH signals dead for a workspace whose
+    // wrapper process is demonstrably still running — direct evidence of the
+    // registry/surface desync happening in production right now, and the exact
+    // shape that buried five live dispatches in one 2ms batch on 2026-08-31.
+    console.log(`\n⚠ cmux said dead, the OS process table says ALIVE — ${wrapperAliveSuppressed.length} workspace(s) spared (no dead breadcrumb, no zombie close):`);
+    wrapperAliveSuppressed.forEach(s => console.log(`  ${s.workspaceRef}  task #${s.taskId} "${s.subject}" — wrapper ${s.marker} still running`));
+  }
+
   if (idle.length) {
     console.log(`\nDead but un-marked (no claude process at all — NOT closed, review yourself):`);
-    let ledgerEntries;
-    try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
     idle.forEach(w => {
       const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
       const label = launch ? ` — died mid task #${launch.taskId} "${launch.subject}"` : '';
@@ -246,6 +300,10 @@ function mainLocked({ dryRun, deps }) {
     // is a local jsonl line — it never closes or touches the workspace, so
     // it's safe to record even under --dry-run (bsc-conductor's orientation
     // sweep only ever runs --dry-run, and it should still see this).
+    // No isWrapperAlive here: `idle` was already cross-checked above, so every
+    // ref reaching this point is dead by all THREE signals. deadBreadcrumbs
+    // still accepts the probe for checkDeadDispatch, which builds its idle
+    // bucket itself and has no equivalent earlier filter.
     const breadcrumbs = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
     if (breadcrumbs.length) {
       breadcrumbs.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-prune] WARN dispatch-ledger write failed for ${b.workspaceRef}: ${e.message}`); } });

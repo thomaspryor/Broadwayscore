@@ -37,7 +37,7 @@ const { execFileSync, spawnSync } = require('child_process');
 const REPO = '/Users/tompryor/Broadwayscore';
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
-const { launchCmuxSession } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
@@ -1441,7 +1441,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // for bsc-prune.js's own (typically once/day) sweep to write the
       // breadcrumb.
       try {
-        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args);
+        // BRO-2575: give the self-heal path the same OS-process cross-check
+        // bsc-prune's sweep uses, so a cmux blackout can't manufacture a
+        // 'dead' row here and trip this very call's retry cap. The probe
+        // samples `ps` lazily — no cost when nothing is idle.
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn,
+          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[bsc-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for task #${s.taskId}`) });
         freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
@@ -1503,7 +1508,14 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // experiment on the machine — recording it makes every future dispatch a
       // data point, so "the rate climbs as the app fills up" is checkable from
       // the ledger instead of re-derived by hand.
-      liveRuntimes: res.liveRuntimes ?? null }); }
+      liveRuntimes: res.liveRuntimes ?? null,
+      // BRO-2575: this launch's own bash-wrapper basename. A later bsc-prune
+      // sweep re-checks it against the OS process table before journaling a
+      // 'dead' breadcrumb for this ref — the one liveness signal not read
+      // through cmux, so it still tells the truth when cmux's tag registry and
+      // terminal surface BOTH go silent at once (2026-08-31: five live
+      // dispatches buried in the same 2ms).
+      marker: res.marker || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else if (res.refusedForCapacity && !res.workspaceRef) {
     // Task #1904. Nothing was created, so there is no workspace to journal, no

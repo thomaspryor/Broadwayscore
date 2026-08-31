@@ -7,7 +7,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
-  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession } = require('./cmux-launch.js');
+  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession,
+  makeSeedProcessProbe } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // BRO-2251 (P0 regression, 2026-08-20): a crowned-successor handoff call
@@ -446,4 +447,41 @@ test('cmuxIdleSec: sub-ms negative jitter clamps to 0, a real clock step reads a
   assert.equal(cmuxIdleSec(marker, st.mtimeMs - 60_000), Infinity, 'a minute in the future is a clock step, not jitter');
   assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 60_000) }), true);
   fs.unlinkSync(marker);
+});
+
+// ── BRO-2575: makeSeedProcessProbe ─────────────────────────────────────────
+// The OS process table is the only liveness signal not read through cmux, so
+// it is the one that still tells the truth when cmux's tag registry and
+// terminal surface go quiet together (2026-08-31: five live dispatches
+// journaled dead in the same 2ms). bsc-prune and checkDeadDispatch both gate
+// their 'dead' verdict on it. These cover the two properties that matter:
+// the sample is taken at most once, and a broken `ps` never manufactures life.
+test('makeSeedProcessProbe: samples ps at most once, however many markers are tested', () => {
+  const probe = makeSeedProcessProbe();
+  // Two calls on a real machine; the memoization is what keeps a 25-workspace
+  // sweep from dumping the process table 25 times.
+  const before = process.hrtime.bigint();
+  probe('bsc-cmd-definitely-not-running-aaaa.sh');
+  const firstCallNs = process.hrtime.bigint() - before;
+  const mid = process.hrtime.bigint();
+  probe('bsc-cmd-definitely-not-running-bbbb.sh');
+  const secondCallNs = process.hrtime.bigint() - mid;
+  assert.ok(secondCallNs < firstCallNs,
+    `second call (${secondCallNs}ns) must reuse the first call's sample (${firstCallNs}ns), not re-spawn ps`);
+});
+
+test('makeSeedProcessProbe: a marker that is not running reports false, not a throw', () => {
+  const probe = makeSeedProcessProbe();
+  assert.equal(probe('bsc-cmd-no-such-launch-deadbeef.sh'), false);
+});
+
+// hasSeedProcess is the pure half both the launch path and the death path
+// share; the marker's nonce is what stops a stale wrapper from an OLDER
+// attempt vouching for a NEW workspace (card #548).
+test('hasSeedProcess: matches the real wrapper line shape, and only the exact nonce', () => {
+  const psText = 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n/sbin/launchd\n';
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-99999999.sh'), false,
+    'a different attempt of the SAME task must not vouch for this one');
+  assert.equal(hasSeedProcess('', 'bsc-cmd-linear_BRO-80-f09deda2.sh'), false);
 });

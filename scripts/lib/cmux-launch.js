@@ -404,22 +404,53 @@ function hasSeedProcess(psText, marker) {
   return String(psText).split('\n').some(line => line.includes(marker));
 }
 
-function osProcessAliveForSeed(marker) {
-  try {
-    // -ww: unlimited width, so a long command line isn't truncated before the
-    // marker. -e: every process, not just this terminal's. maxBuffer raised
-    // from spawnSync's 1MB default — measured ~500KB-1MB+ on a host running a
-    // dozen claude sessions (each session's full seed prompt is its own
-    // argv), and a default-sized buffer silently truncates output near the
-    // END of the process list without setting a non-zero exit status,
-    // producing a false "not alive" that would close/refuse a healthy launch
-    // (adversarial review, 2026-07-26). timeout guards a wedged ps hang.
-    const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 5000 });
-    if (r.error || (r.status !== 0 && !r.stdout)) return false; // ps failed/timed out/truncated — fail CLOSED (verifying a POSITIVE claim, unlike claudeAliveIn's close-path fail-open)
-    return hasSeedProcess(r.stdout || '', marker);
-  } catch {
-    return false;
+// One `ps` sample, reusable across many markers (BRO-2575). A bsc-prune sweep
+// tests every idle dispatched workspace at once; re-running `ps -e` per
+// workspace would be ~25 full process-table dumps per 5-minute tick for
+// identical data. Returns a predicate over markers.
+//
+// Fails CLOSED exactly like osProcessAliveForSeed below (which is now defined
+// in terms of this, so the two can never drift): if ps itself failed, every
+// marker reports not-alive. Both callers treat "not alive" as "no positive
+// evidence of life", never as proof of death — the launch path already
+// required a second signal to agree, and deadBreadcrumbs falls back to the
+// pre-existing cmux verdict rather than inventing one.
+// The sample is taken LAZILY, on the first marker tested, and memoized for the
+// probe's lifetime: callers (checkDeadDispatch) can hand this to a code path
+// that may never test a marker at all, and a dispatch that finds nothing idle
+// must not pay for a process-table dump.
+function makeSeedProcessProbe() {
+  let text = '';
+  let ok = false;
+  let sampled = false;
+  function sample() {
+    sampled = true;
+    try {
+      // -ww: unlimited width, so a long command line isn't truncated before the
+      // marker. -e: every process, not just this terminal's. maxBuffer raised
+      // from spawnSync's 1MB default — measured ~500KB-1MB+ on a host running a
+      // dozen claude sessions (each session's full seed prompt is its own
+      // argv), and a default-sized buffer silently truncates output near the
+      // END of the process list without setting a non-zero exit status,
+      // producing a false "not alive" that would close/refuse a healthy launch
+      // (adversarial review, 2026-07-26). timeout guards a wedged ps hang.
+      const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 5000 });
+      // ps failed/timed out/truncated — fail CLOSED (verifying a POSITIVE claim,
+      // unlike claudeAliveIn's close-path fail-open)
+      ok = !(r.error || (r.status !== 0 && !r.stdout));
+      text = r.stdout || '';
+    } catch {
+      ok = false;
+    }
   }
+  return (marker) => {
+    if (!sampled) sample();
+    return ok ? hasSeedProcess(text, marker) : false;
+  };
+}
+
+function osProcessAliveForSeed(marker) {
+  return makeSeedProcessProbe()(marker);
 }
 
 // Combined liveness gate for the launch-verification poll: cmux's tag/process
@@ -937,6 +968,13 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     recordCapacityOutcome(journalEntry.liveRuntimes, 'runtime-created', probes);
     return {
       ok: true, ref: journalEntry.workspaceRef, adoptedLate: true, reclaimedAcrossInvocation: true,
+      // The PRIOR invocation's marker, never this call's cmdMarker (BRO-2575):
+      // the wrapper actually running in the workspace being adopted is the one
+      // that launch wrote, and this call's cmdFile is never executed on the
+      // reclaim path. Journaling cmdMarker here would give the ledger a marker
+      // no process will ever carry, so every later sweep would read the
+      // workspace as wrapper-dead — worse than no marker at all.
+      marker: journalEntry.marker || null,
       // Finding 9: the count from the invocation that actually CREATED this
       // workspace — the honest value for a ledger row correlating deaths
       // against live-runtime pressure. Omitting it biased the correlation
@@ -1113,7 +1151,12 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
         // cmux DID attach a terminal at this live-runtime count, which is the
         // only evidence that can raise a ceiling learned too low (task #1904).
         recordCapacityOutcome(liveRuntimesBefore, 'runtime-created', probes);
-        return { ok: true, ref: ws.ref, state: outcome.state, liveRuntimes: liveRuntimesBefore, seedFile, command };
+        // marker (BRO-2575): the caller journals this on the ledger's `launch`
+        // row so a LATER bsc-prune sweep can re-run osProcessAliveForSeed()
+        // against this launch's own wrapper — the only liveness signal that is
+        // not read through cmux, and therefore the only one that survives cmux
+        // going silent fleet-wide. See dispatch-ledger.deadBreadcrumbs().
+        return { ok: true, ref: ws.ref, state: outcome.state, liveRuntimes: liveRuntimesBefore, seedFile, command, marker: cmdMarker };
       }
       // Confirmed dead by the one authoritative signal that disagrees with
       // wrapper+tag. Do NOT close it here — that is the same owner-approved
@@ -1224,7 +1267,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // a compensating 'runtime-created' the false low observation would
       // survive while its disproof never did (/code-review finding 3).
       recordCapacityOutcome(liveRuntimesBefore, 'runtime-created', probes);
-      return { ok: true, ref: failed.workspaceRef, adoptedLate: true, liveRuntimes: liveRuntimesBefore, seedFile, command };
+      return { ok: true, ref: failed.workspaceRef, adoptedLate: true, liveRuntimes: liveRuntimesBefore, seedFile, command, marker: cmdMarker };
     }
   }
   // The in-call grace (if any) is exhausted and the workspace is still
@@ -1256,7 +1299,7 @@ module.exports = {
   launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
   osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
   waitForLaunchOutcome,
-  hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
+  hasSeedProcess, osProcessAliveForSeed, makeSeedProcessProbe, verifiedAlive, shouldRefuseForAuth,
   buildLaunchCommand, isUsableString, describeLaunchArgError,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,

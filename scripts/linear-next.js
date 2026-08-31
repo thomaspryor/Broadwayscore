@@ -82,7 +82,7 @@ const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
 const lsr = require('./lib/linear-session-reporting.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { launchCmuxSession } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { buildAutoTitle, projectOf } = require('./lib/workspace-naming.js');
@@ -655,9 +655,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try { workspaces = listWorkspacesFn(); } catch (e) { console.error(`[linear-next] workspace list failed (continuing): ${e.message}`); }
     if (workspaces) {
       try {
+        // BRO-2575 — see bsc-next.js's identical call: the OS-process
+        // cross-check that keeps a cmux blackout from manufacturing a 'dead'
+        // row in this very dispatch's own self-heal pass.
         const { freshDead, refusal } = checkDeadDispatch(
           pseudoTask, workspaces, readLedgerEntriesFn(),
-          isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args,
+          isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn,
+          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[linear-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for ${s.taskId}`) },
         );
         freshDead.forEach((b) => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[linear-next] WARN ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[linear-next] ${refusal}`); process.exit(1); }
@@ -833,6 +837,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.
       liveRuntimes: res.liveRuntimes ?? null,
+      // BRO-2575 — see bsc-next.js's identical field: this launch's wrapper
+      // basename, re-checked against the OS process table before a sweep
+      // journals this ref dead.
+      marker: res.marker || null,
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 
