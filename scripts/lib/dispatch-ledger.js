@@ -167,14 +167,42 @@ function deadAttemptsForTask(taskId, entries) {
 // matched to any folded attempt at all (e.g. a rotated/truncated ledger),
 // this fails CLOSED to SUBSTANTIVE — never silently drops a death, and never
 // risks misreading an unclassifiable one as a free infra retry.
-function classifyDeadAttemptsForTask(taskId, entries) {
+//
+// ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
+// opts.contradictedDeadKeys is a Set of `${workspaceRef}|${ts}` strings for
+// 'dead' rows PROVEN false by an independent source outside this ledger: the
+// buried worker's own later Linear session-report comment landing on the same
+// issue with no re-dispatch in between (audit-false-dead-ledger-rows.js, added
+// by BRO-2575, is what derives this set — a worker cannot report back after
+// dying before it reported). A matching row is dropped from BOTH buckets
+// entirely, never reclassified as 'infra' — this is the one deliberate
+// exception to this function's own fail-closed doctrine two paragraphs up.
+// That doctrine exists for UNCERTAIN rows ("can't tell, so assume the worse
+// case"); a contradicted row isn't uncertain, it's disproven, so counting it
+// toward EITHER limit (including INFRA_DEAD_ATTEMPT_LIMIT) would still be
+// penalizing a task for a journal entry that never should have existed.
+// Filtering happens on the DERIVED workspaceDeaths list below, never by
+// stripping `entries` itself before foldAttempts(entries) runs a few lines
+// down — foldAttempts must see the ledger's true, unmodified shape (including
+// the contradicted row) or a sibling dead row sharing the same recycled
+// workspaceRef would silently see a different `matches.length` and flip to
+// fail-closed-substantive for the wrong reason (plan review catch).
+// Default empty Set: every existing caller (bsc-prune.js, bsc-reconcile.js,
+// dispatch-guards.js's deadDispatchGuard, dispatch-watchdog-core.js,
+// dispatch-attempts.js) keeps calling this with 2 args and gets identical
+// behavior to before this change.
+function classifyDeadAttemptsForTask(taskId, entries, opts = {}) {
+  const contradictedDeadKeys = opts.contradictedDeadKeys || null;
   const all = deadAttemptsForTask(taskId, entries);
   if (!all.length) return { substantive: [], infra: [] };
   // job-*-class deaths (job-failed/job-orphaned) have no workspaceRef and
   // only ever fire after job-spawned already ran — the wrapper unambiguously
   // executed, so these are always substantive.
   const jobDeaths = all.filter(e => e.event !== 'dead');
-  const workspaceDeaths = all.filter(e => e.event === 'dead');
+  let workspaceDeaths = all.filter(e => e.event === 'dead');
+  if (contradictedDeadKeys && contradictedDeadKeys.size) {
+    workspaceDeaths = workspaceDeaths.filter(e => !contradictedDeadKeys.has(`${e.workspaceRef}|${e.ts}`));
+  }
   if (!workspaceDeaths.length) return { substantive: jobDeaths, infra: [] };
 
   const { attempts } = foldAttempts(entries);
@@ -228,8 +256,8 @@ const INFRA_DEAD_ATTEMPT_LIMIT = 10;
 // infra ceiling) can't drift between bsc-next.js, bsc-prune.js,
 // bsc-reconcile.js and dispatch-watchdog-core.js. Callers own their own
 // message wording; this owns only the counts and the blocked/reason verdict.
-function dispatchCapDecision(taskId, entries) {
-  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries);
+function dispatchCapDecision(taskId, entries, opts = {}) {
+  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries, opts);
   if (substantive.length >= DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'substantive', substantive, infra };
   if (infra.length >= INFRA_DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'infra', substantive, infra };
   return { blocked: false, reason: null, substantive, infra };

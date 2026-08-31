@@ -39,6 +39,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseSessionReportStatus } = require('./lib/linear-session-reporting.js');
 const linear = require('./lib/linear-client.js');
+const { dispatchCapDecision } = require('./lib/dispatch-ledger.js');
 
 const LEDGER = process.env.DISPATCH_LEDGER_PATH
   || path.join(__dirname, '..', 'data', 'audit', 'dispatch-ledger.jsonl');
@@ -143,6 +144,32 @@ async function main() {
     else contradicted.push(record);
   }
 
+  // BRO-2599: does discounting this issue's contradicted row(s) actually
+  // change dispatchCapDecision's verdict? classifyDeadAttemptsForTask/
+  // dispatchCapDecision (BRO-2599) take an opts.contradictedDeadKeys Set of
+  // `${workspaceRef}|${ts}` — built here from `contradicted`, the exact rows
+  // this run just proved false via the worker's own later session report.
+  // Never sourced from `ambiguous` — a re-dispatch intervened there, so the
+  // report may belong to the successor, not the buried worker.
+  const contradictedByIssue = new Map();
+  for (const c of contradicted) {
+    if (!contradictedByIssue.has(c.identifier)) contradictedByIssue.set(c.identifier, new Set());
+    contradictedByIssue.get(c.identifier).add(`${c.workspaceRef}|${c.deadAt}`);
+  }
+  const capImpact = [...contradictedByIssue.entries()].map(([identifier, keys]) => {
+    const taskId = `linear:${identifier}`;
+    const before = dispatchCapDecision(taskId, allRows);
+    const after = dispatchCapDecision(taskId, allRows, { contradictedDeadKeys: keys });
+    return {
+      identifier,
+      wasBlocked: before.blocked,
+      nowBlocked: after.blocked,
+      unblocked: before.blocked && !after.blocked,
+      substantiveBefore: before.substantive.length,
+      substantiveAfter: after.substantive.length,
+    };
+  }).sort((a, b) => a.identifier.localeCompare(b.identifier));
+
   const checkable = dead.filter(d => reportsByIssue.get(d.identifier)).length;
   const result = {
     ledger: LEDGER,
@@ -156,6 +183,7 @@ async function main() {
     ambiguousRows: ambiguous.length,
     contradicted: contradicted.sort((a, b) => a.deadAt.localeCompare(b.deadAt)),
     ambiguous: ambiguous.sort((a, b) => a.deadAt.localeCompare(b.deadAt)),
+    capImpact,
   };
 
   if (asJson) {
@@ -181,6 +209,15 @@ async function main() {
     for (const c of result.ambiguous) {
       console.log(`  ${c.identifier.padEnd(9)} ${(c.workspaceRef || '?').padEnd(13)} dead ${c.deadAt}  →  relaunched ${c.nextLaunchAt}  →  reported ${c.reportedAt}`);
     }
+  }
+  if (capImpact.length) {
+    const unblocked = capImpact.filter(c => c.unblocked);
+    console.log(`\nDISPATCH CAP IMPACT — discounting each issue's own contradicted row(s) in dispatchCapDecision:`);
+    for (const c of capImpact) {
+      const verdict = c.unblocked ? 'UNBLOCKS' : c.wasBlocked ? 'still blocked' : 'was not blocked';
+      console.log(`  ${c.identifier.padEnd(9)} substantive ${c.substantiveBefore} → ${c.substantiveAfter}  (${verdict})`);
+    }
+    console.log(`\n${unblocked.length} issue(s) unblock once their proven-false row(s) are discounted: ${unblocked.map(c => c.identifier).join(', ') || 'none'}`);
   }
 }
 
