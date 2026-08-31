@@ -25,6 +25,21 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..', '..');
+
+// Redirect the generator's cross-issue state file into a per-file temp copy
+// (BRO-2606). Every test here drives the real generate.mjs, which reads AND
+// REWRITES data/newsletter-state.json; `node --test` runs test FILES
+// concurrently, so sharing that one tracked path made these files race each
+// other, and a local run left the checkout dirty. One copy per file (not per
+// run) keeps the cross-run sharing these tests already had.
+const STATE_SANDBOX_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-state-sandbox-'));
+const STATE_SANDBOX = path.join(STATE_SANDBOX_DIR, 'newsletter-state.json');
+fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX);
+// Module scope, so an `after()` hook would not run if the file aborts before
+// the test runner takes over. 'exit' fires on a normal end AND on an early
+// throw, which is what leaves these behind on a CI runner otherwise.
+process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
+
 const WEEK_START = '2026-07-27';
 // weOpeningStories() ranking (West End tier, most-reviewed-first): Tao of
 // Glass (28 reviews) > Brainiac Live (9 reviews, Critical Gold) > The Car Man
@@ -37,7 +52,7 @@ test('west-end edition for weekStart 2026-07-27 agrees on the lead West End stor
   try {
     execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), WEEK_START], {
       cwd: repoRoot,
-      env: { ...process.env, NEWSLETTER_EDITION: 'west-end', NEWSLETTER_OUT_DIR: outDir },
+      env: { ...process.env, NEWSLETTER_EDITION: 'west-end', NEWSLETTER_OUT_DIR: outDir, NEWSLETTER_STATE_PATH: STATE_SANDBOX },
       stdio: 'pipe',
       timeout: 60_000,
     });

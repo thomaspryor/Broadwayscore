@@ -2,6 +2,7 @@
 // Usage: node gen-newsletter.mjs YYYY-MM-DD (week-start Monday)
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -75,7 +76,47 @@ const BRAND = IS_WE
 // this file for the same weekStart, so keying by date alone let the second
 // run clobber the first edition's memory. Read + write filter on edition
 // (legacy entries with no `edition` field are treated as 'broadway').
-const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+// NEWSLETTER_STATE_PATH redirects this file for throwaway runs (BRO-2606): the
+// newsletter tests and regression-test.mjs's comparison re-run all drive the
+// real generator, and each of those used to read AND REWRITE the tracked
+// data/newsletter-state.json. `node --test` runs test FILES concurrently, so
+// they raced each other on that one path; regression-test.mjs worked around it
+// with a snapshot/restore that could itself clobber a concurrent legitimate
+// write; and a local test run left a tracked data file dirty in a checkout
+// shared with ~20 sessions.
+//
+// ONLY honoured for a path inside the OS temp dir. A real newsletter send must
+// never write its cross-issue memory anywhere but data/newsletter-state.json,
+// and this variable is inheritable: refresh-drafts.sh exports everything in
+// .env, and workflow/launchd/parent-shell environments flow into the spawn the
+// same way (Codex adversarial review, 2026-08-31). A stray value would send the
+// generator's ledger to a sandbox while verify-sent-vs-state.mjs and
+// newsletter-draft.yml's commit step still read the repo file — drafts would
+// look fine and next week's suppression would silently run on stale memory. The
+// tmpdir fence also stops a typo'd value (`NEWSLETTER_STATE_PATH=.env`) from
+// overwriting an unrelated file with ledger JSON, and stops a relative value
+// resolving against whatever cwd the caller happened to have.
+const _stateOverride = (process.env.NEWSLETTER_STATE_PATH || '').trim();
+let STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+if (_stateOverride) {
+  const resolved = path.resolve(_stateOverride);
+  // Compare against BOTH the raw and the realpath'd temp root. On macOS
+  // os.tmpdir() is /var/folders/... while its realpath is /private/var/... —
+  // checking only one side rejects a legitimate sandbox whenever the two
+  // spellings don't line up, which is exactly what happens when the parent dir
+  // doesn't exist yet and realpathSync throws (gpt-5.4-mini review, 2026-08-31).
+  const tmpRoots = new Set([os.tmpdir()]);
+  try { tmpRoots.add(fs.realpathSync(os.tmpdir())); } catch { /* raw value is the only root we have */ }
+  const parent = path.resolve(resolved, '..');
+  const candidates = new Set([parent]);
+  try { candidates.add(fs.realpathSync(parent)); } catch { /* parent may not exist yet — the raw form still gets checked */ }
+  const underTmp = [...candidates].some((c) => [...tmpRoots].some((r) => c === r || c.startsWith(r + path.sep)));
+  if (underTmp) {
+    STATE_PATH = resolved;
+  } else {
+    process.stderr.write(`[newsletter] ignoring NEWSLETTER_STATE_PATH=${_stateOverride} — only a path under ${os.tmpdir()} is honoured; using ${STATE_PATH}\n`);
+  }
+}
 let _priorState = { issues: [] };
 try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
 const _issueEdition = (i) => (i && i.edition) || 'broadway';
