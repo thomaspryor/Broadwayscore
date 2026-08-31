@@ -28,7 +28,11 @@ on:
 jobs:
   deploy-demo:
     runs-on: ubuntu-latest
-    if: true  # Simplified — workflow_run trigger removed
+    # (No job-level `if:` — the workflow_run trigger this once guarded was
+    # removed on 2026-04-01, leaving a literal `if: true` that actionlint
+    # flags as a constant condition. Removed 2026-08-31: the Lint Workflows
+    # job only runs when a workflow file changes, so this had sat latent
+    # since April and reddened main on the next unrelated workflow edit.)
     # Split concurrency by event type so user-initiated dispatches don't
     # get evicted from the queue by rapid main-push triggers. Both groups
     # still serialize against themselves (queued, not cancelled) — they

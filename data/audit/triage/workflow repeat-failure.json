@@ -1,30 +1,30 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-30T12:17:13.970Z",
+  "lastChecked": "2026-08-31T14:28:16.877Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Rebuild Reviews Data failed 10 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 25 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Fetch Show Images",
-      "status": "error",
-      "message": "Fetch Show Images failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Imageless Scored Shows",
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
       "status": "warn",
-      "message": "Audit Imageless Scored Shows failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
+      "name": "Workflow repeat-failure: Check Corpus Drift",
       "status": "warn",
-      "message": "Rebuild Reviews (Fast) failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "status": "warn",
+      "message": "Process Feedback Submissions failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

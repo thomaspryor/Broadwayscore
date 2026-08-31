@@ -32,7 +32,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
-const { getSeasonForDate, getSeasonDates } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
+const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -670,7 +670,7 @@ function broadwayOpenings() {
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
-  if (!events.length) return { html: null, list: [] };
+  if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
   events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
@@ -681,7 +681,7 @@ function broadwayOpenings() {
   const title = hasOpen && hasReopen ? 'Opened on Broadway'
     : hasReopen && !hasOpen ? 'Reopened on Broadway'
     : 'Opened on Broadway';
-  return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list };
+  return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list, reopeningIds };
 }
 
 // SECTION: OB openings — only show scored, mention count of pending.
@@ -700,7 +700,16 @@ function offBroadwayOpenings() {
   const withScore = shows
     .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
       && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
-      && notFeatured(s.id) && !lastFeaturedIds.has(s.id) // suppress last week's shows
+      // lastFeaturedIds suppresses a re-surface within the grace window — but
+      // never a show whose openingDate falls IN THIS WEEK: that event could not
+      // possibly have been legitimately covered by an earlier issue. Without
+      // this bypass a stale/incorrect state.json entry (e.g. an openingDate
+      // correction after the fact, or any other cause of bad history) can
+      // permanently block a show's real opening feature forever — exactly what
+      // happened to The Real Ivanov (owner-reported 2026-08-30): a "featured"
+      // entry from 2026-08-10, three weeks before its actual 2026-08-25 press
+      // night, suppressed it from ever getting an "Opened Off-Broadway" card.
+      && notFeatured(s.id) && (inWeek(s.openingDate) || !lastFeaturedIds.has(s.id))
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
@@ -1931,9 +1940,11 @@ function buzziestSection() {
 }
 
 // SECTION: Season Standing — rank a newly-opened BW show against the season's same-category peers
-function seasonStandingFor(openedShow) {
-  // ONLY for NEW (non-revival) shows — revivals are judged differently
-  if (openedShow.isRevival) return null;
+function seasonStandingFor(openedShow, isReopening) {
+  // ONLY for NEW (non-revival), non-reopening shows — see
+  // isEligibleForSeasonStanding() for why reopenings are skipped rather than
+  // re-anchored (BRO-2564).
+  if (!isEligibleForSeasonStanding(openedShow, isReopening)) return null;
   // Same season = the real Broadway season (Jul 1 - Jun 30, scripts/lib/broadway-seasons.js)
   // that openedShow's own opening date falls in — the SAME boundary getSeasonSlug()
   // uses for the site's "This Season" browse pages/rank cells. Was previously a rolling
@@ -2114,6 +2125,61 @@ function londonSection() {
   return sectionWrap(sectionHeading(IS_WE ? 'Opened in the West End' : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
+// Grace window for the WE edition's Broadway section — mirrors
+// inLondonOpeningWindow() (14-day catch-up, suppressed once lastFeaturedIds
+// has already shown it in a prior WE issue). lastFeaturedIds is edition-scoped
+// (see _issueEdition), so this reads the WE edition's OWN history, never the
+// BW edition's.
+function inBroadwayOpeningWindowForWE(s) {
+  if (inWeek(s.openingDate)) return true;
+  if (!s.openingDate) return false;
+  return s.openingDate >= _daysBefore(14) && s.openingDate < weekStartStr && !lastFeaturedIds.has(s.id);
+}
+
+// SECTION: Broadway Openings for the West End edition — mirrors London
+// Openings in the NYC edition (owner request 2026-08-31): West End
+// subscribers get a secondary feed of what opened on Broadway that week.
+// Broadway category ONLY, never Off-Broadway — asymmetric from
+// londonSection(), which includes both West End AND Off West End.
+// Self-gates on IS_WE (returns null immediately for the Broadway edition
+// run) rather than relying on the call site to skip it — bwO/obO were
+// unconditionally called until 2026-08-30 (BRO-2573), which fired
+// markFeatured() on every NYC opening even in WE runs where the output was
+// never rendered, polluting the WE edition's OWN featuredShowIds with
+// Broadway/OB ids. This function must not reintroduce that failure mode in
+// reverse (a Broadway-run call polluting WE-only state), so self-gating is
+// the safer default even though today's call site already only needs the
+// WE-edition value.
+function weBroadwaySection() {
+  if (!IS_WE) return null;
+  const list = shows.filter(s => s.category === 'broadway' && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
+  if (!list.length) return null;
+  const withScore = list
+    .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
+    .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
+  if (!withScore.length) return null;
+  // Sort: genuine in-week openings before grace-window catch-up shows, then
+  // Gold first, then by score desc, ties broken by review count — same
+  // ordering rules as londonSection() minus the WE-only tier split (this
+  // section is single-category).
+  withScore.sort((a, b) => {
+    const ac = Number(a.isCatchUp), bc = Number(b.isCatchUp);
+    if (ac !== bc) return ac - bc;
+    const ag = isGoldTier(a.agg.avg, 'broadway') ? 1 : 0;
+    const bg = isGoldTier(b.agg.avg, 'broadway') ? 1 : 0;
+    if (ag !== bg) return bg - ag;
+    const ar = a.agg.raw ?? a.agg.avg, br = b.agg.raw ?? b.agg.avg;
+    if (Math.round(ar) === Math.round(br)) return (b.agg.count ?? 0) - (a.agg.count ?? 0);
+    return br - ar;
+  });
+  markFeatured(...withScore.map(x => x.s.id));
+  markOpening('broadway-we', withScore.map(x => x.s));
+  const cards = withScore.map(x => showRow(x.s)).join('');
+  const seeAll = seeAllLink(SITE, 'Explore the full Broadway Scorecard', { color: '#d4a574' });
+  const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
+  return sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+}
+
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
 // accent color, see-all link to /opera). Opera shows are excluded from every
 // other section because their tier model (T1-flat) and audience expectations
@@ -2208,9 +2274,18 @@ const sections = createSectionRunner();
 // Reordering silently moves shows between sections (no crash). The subject/lede
 // block (below) ALSO depends on bwO/obO being computed first — it reads
 // bwO.list/obO.list, so it must stay after these calls.
-const bwO = broadwayOpenings();
-const obO = offBroadwayOpenings();
-const otO = outOfTownOpenings();
+//
+// IS_WE-gated like every other Broadway/OB-only section (see the mover/clo/
+// announced/box/commercial guards below, added 2026-07-12 for the exact same
+// failure mode): sectionOrder never renders bwO.html/obO.html in the WE
+// edition, but running them unconditionally still called markFeatured() on
+// every NYC show that opened that week, polluting the WE edition's own
+// data/newsletter-state.json featuredShowIds entry with Broadway/OB show ids
+// alongside its real West End ones (found + fixed 2026-08-30 while tracing
+// why a real NYC opening's own feature got suppressed weeks later).
+const bwO = IS_WE ? { html: null, list: [], reopeningIds: new Set() } : broadwayOpenings();
+const obO = IS_WE ? { html: null, list: [] } : offBroadwayOpenings();
+const otO = outOfTownOpenings(); // already IS_WE-gated inside its own body
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
 sections.run('out-of-town-openings', () => otO.html);
@@ -2254,6 +2329,7 @@ try {
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
+const bwWe = sections.run('broadway-we', () => weBroadwaySection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
@@ -2275,7 +2351,7 @@ const popular = sections.run('most-read-pages', () => mostReadSection(popularLis
 
 // Season standing renders one card per qualifying BW opening (not strictly
 // "a section"). Recorded as a single entry with the count baked in.
-const seasonStandings = bwO.list.map(s => seasonStandingFor(s)).filter(Boolean);
+const seasonStandings = bwO.list.map(s => seasonStandingFor(s, bwO.reopeningIds.has(s.id))).filter(Boolean);
 if (seasonStandings.length) {
   sections.run('season-standing', () => seasonStandings.join(''));
 }
@@ -2318,13 +2394,17 @@ function _slot(name, html) {
 if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
 if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
 // WE edition: a lean, West End-first order. No Box Office (no WE grosses feed),
-// no Broadway/OB openings, no Recoupment / Announced-Closings / Opera / Season
+// no Off-Broadway openings, no Recoupment / Announced-Closings / Opera / Season
 // Standing. The WE openings (londonSection, relabeled "Opened in the West End")
-// are the hero.
+// are the hero; Broadway (weBroadwaySection, "Opened on Broadway") is the
+// secondary cross-market feed, placed right after Closing this Week — the
+// same relative slot londonSection occupies in the Broadway edition's own
+// order below (right after Closing/Announced Closings).
 const sectionOrder = IS_WE ? [
   _slot('london-openings', lon),
   _slot('also-opened-recently', catchup),
   _slot('closing-this-week', clo),
+  _slot('broadway-we', bwWe),
   _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
   _slot('upcoming-openings', upcomingTop || upcomingBottom),
@@ -2805,7 +2885,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   // filter to the current edition's section set + honor NEWSLETTER_DROP_SECTIONS.
   openingShows: dedupeShowRefs(_openingShowRefs
     .filter(r => (IS_WE
-      ? ['london-openings', 'also-opened-recently']
+      ? ['london-openings', 'also-opened-recently', 'broadway-we']
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).

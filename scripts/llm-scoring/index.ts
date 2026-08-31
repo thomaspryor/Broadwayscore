@@ -94,6 +94,7 @@ import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
+const { decideBatchDrain } = require('../lib/batch-drain-decision');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure } = require('../lib/rescore-lifecycle');
@@ -472,6 +473,13 @@ function writeProgress(
  * discarded loudly rather than merged. (task #516 ship-check)
  */
 const BATCH_STATE_MAX_AGE_HOURS = 48;
+// A drain that cannot retrieve a paid vendor leg keeps the state and retries
+// next run — right for a transient 429, fatal for a batch that went terminal
+// with neither an output nor an error file, which can NEVER be fetched. The
+// 48h age gate above is far too slow to be the only escape (vendors expire
+// batches at 24h), so bound the retries too: after this many consecutive
+// refused drains the batch is abandoned and its reviews score fresh.
+const MAX_UNRETRIEVABLE_DRAINS = 3;
 
 function readProgressFile(): any {
   try {
@@ -1687,7 +1695,7 @@ async function main(): Promise<void> {
   async function processBatchResults(
     state: BatchState,
     items: Array<PendingBatchItem | null>
-  ): Promise<{ written: Set<string>; merged: boolean }> {
+  ): Promise<{ written: Set<string>; merged: boolean; abandoned: boolean }> {
     const { rows, unretrievableVendors } = await fetchAndMerge(state, batchKeys);
     const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
     const done = new Set<string>();
@@ -1698,10 +1706,30 @@ async function main(): Promise<void> {
     // 429 on a results download — and then clear the state so the paid results
     // could never be retried. Keep the state; the next run re-fetches.
     if (unretrievableVendors.length > 0) {
+      const { action, attempt } = decideBatchDrain({
+        unretrievableVendors,
+        drainCount: state.unretrievableDrainCount,
+        maxDrains: MAX_UNRETRIEVABLE_DRAINS,
+      });
       console.log(`\n   ⛔ REFUSING TO MERGE — could not retrieve results for: ${unretrievableVendors.join('; ')}`);
-      console.log(`      Merging would write a degraded ensemble corpus-wide. Batch state kept; the next run retries the fetch.`);
+      if (action === 'abandon') {
+        // Permanently unretrievable, not a transient blip. Keeping the state
+        // any longer only wedges every subsequent run until the 48h age gate.
+        // The paid leg is already lost either way, so abandon it and let the
+        // items rescore fresh below.
+        console.log(
+          `::warning::Abandoning batch submitted ${state.submittedAt} after ${attempt} consecutive unretrievable drains ` +
+            `(${unretrievableVendors.join('; ')}). The paid results are unrecoverable; these ${state.itemCount} review(s) will score fresh.`
+        );
+        return { written: done, merged: false, abandoned: true };
+      }
+      console.log(
+        `      Merging would write a degraded ensemble corpus-wide. Batch state kept ` +
+          `(drain ${attempt}/${MAX_UNRETRIEVABLE_DRAINS}); the next run retries the fetch.`
+      );
+      writeBatchState({ ...state, unretrievableDrainCount: attempt });
       process.exitCode = 2;
-      return { written: done, merged: false };
+      return { written: done, merged: false, abandoned: false };
     }
 
     for (const row of rows) {
@@ -1729,7 +1757,7 @@ async function main(): Promise<void> {
         errorDetails.push({ showId: item.showId, outletId: item.outletId, error: e.message });
       }
     }
-    return { written: done, merged: true };
+    return { written: done, merged: true, abandoned: false };
   }
 
   // ========================================
@@ -1802,6 +1830,12 @@ async function main(): Promise<void> {
           if (outcome.merged) {
             writeBatchState(null);
             console.log(`   ✓ Resumed batch merged — ${resumedFilePaths.size} file(s) written\n`);
+          } else if (outcome.abandoned) {
+            // State cleared, so this run proceeds to score normally instead of
+            // parking. Deliberately NOT exitCode 2: the wedge is resolved and
+            // the work happens now — failing here would page on every abandon.
+            writeBatchState(null);
+            console.log(`   🗑️  Batch abandoned — state cleared; those reviews will be scored fresh this run.\n`);
           } else {
             console.log(`   ⏸️  Merge refused — state kept for the next run.\n`);
             skipNewWork = true;

@@ -42,6 +42,13 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # scripts/ingest-dmarc-reports.js + its colocated test (BRO-525): the
+      # DMARC parser and analyzer live in scripts/lib/ (globbed above), but the
+      # ingest CLI and its test sit at the top level of scripts/, so a solo
+      # edit to either would trigger zero CI — same gap class as
+      # scripts/check-orphan-commits.js above.
+      - 'scripts/ingest-dmarc-reports.js'
+      - 'scripts/ingest-dmarc-reports.test.mjs'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
@@ -108,6 +115,18 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-103 cloud-memory merge-aware sync. Same shape as the
+      # opening-night-pipeline pair above: the merge logic lives in
+      # scripts/lib/cloud-memory-merge.js (already covered by scripts/lib/**),
+      # but the test also EXECUTES scripts/sync-memory-to-repo.sh end-to-end
+      # via execFileSync/spawnSync — it is shelled out to, not require()d, so
+      # neither of these two files is reachable from any glob above and a solo
+      # push touching only them would trigger ZERO CI
+      # (memory/feedback_test_yml_push_path_allowlist.md). Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); leaving
+      # it unregistered fails the blocking audit-orphan-tests.js gate below.
+      - 'scripts/sync-memory-to-repo.sh'
+      - 'scripts/cloud-memory-sync.test.mjs'
       # BRO-544: root-level regression guard scanning scripts/**, src/**, and
       # .github/workflows|actions/** for the deleted mcp_browser/
       # scraping_browser Bright Data zone being sent through the HTTP
@@ -375,6 +394,13 @@ on:
       - 'scripts/generate-stats-canon.js'
       - 'scripts/generate-stats-reviews.js'
       - 'data/tony-ceremony-dates.json'
+      # BRO-2544: scripts/lib/canonical-venue-consumers.test.mjs reads this
+      # file directly, and it sits outside the scripts/lib/** glob — the same
+      # dependency-outside-the-glob shape audit-test-yml-lib-deps.js exists to
+      # catch. That audit is a BLOCKING unit test (its "regression floor" case
+      # asserts the real repo has zero gaps), so main stays red until this is
+      # listed.
+      - 'data/west-end-venues.json'
       - 'scripts/audit-non-reviews.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
       # Notion 38e637c5). Each pure block/pass decision lives in scripts/lib/*-gate.js
@@ -526,6 +552,14 @@ on:
       # Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
       - 'scripts/lib/shallow-fetch-args.js'
+      # BRO-2538: a continue-on-error commit+push step that strands a
+      # non-apiFallbackSafe commit poisons every LATER commit+push-with-
+      # retry.sh step in the same job/checkout. Part A documents the
+      # by-design cascade against the real script; Part B is the regression
+      # guard on data-health-check.yml's step order (the actual fix). Path-
+      # listed so a solo edit to either file triggers CI.
+      - 'scripts/lib/push-with-retry.stranded-commit-cascade.test.sh'
+      - '.github/workflows/data-health-check.yml'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
       # content, so a concurrent writer that reverted our lines (leaving the
       # path in place) passed every check and the script reported success —
@@ -1151,6 +1185,13 @@ on:
       - 'scripts/audit-venue-complex-slugs.test.mjs'
       - 'data/venue-complexes.json'
       - 'data/venue-complexes-west-end.json'
+      # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
+      # normalizeVenueName() doesn't over-strip a leading "The " against the frontend's
+      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads
+      # data/west-end-venues.json directly, but that JSON sits outside the
+      # scripts/lib/** glob above, so it's path-listed here too (audit-test-yml-lib-deps.js
+      # findGaps() flagged exactly this gap; its regression floor asserts zero gaps).
+      - 'data/west-end-venues.json'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
@@ -1399,6 +1440,12 @@ on:
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
       - 'scripts/tests/verify-edits-heredoc.test.mjs'
       - '.claude/hooks/verify-edits.sh'
+      # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
+      # wiring is asserted by tests/unit/session-start-disk-check.test.mjs
+      # (rides the 'tests/**' glob above), but the hook file itself is not
+      # globbed anywhere in this file — a solo revert of the wiring (e.g.
+      # someone dropping the block this test checks for) would run ZERO CI.
+      - '.claude/hooks/session-start.sh'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
@@ -3586,6 +3633,26 @@ jobs:
         # repeating the identical failing bound forever.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.shallow-retry-escalation.test.sh
+
+      - name: Run push-with-retry stranded-commit-cascade test (bash integration)
+        # BRO-2538: data-health-check.yml run 33253487319 (2026-08-29) showed
+        # the Git Data API fallback disqualifier refusing to run for a step
+        # ("Commit health check audit snapshots (apiFallbackSafe)") whose own
+        # commit only touched apiFallbackSafe files. Root cause (reproduced,
+        # not just read): an EARLIER continue-on-error step in the same job
+        # ("Commit acceptance recheck ledger") can strand a non-safe, unpushed
+        # commit on the shared checkout when its own push exhausts every
+        # retry; every LATER commit+push-with-retry.sh step in that job then
+        # inherits it and gets disqualified too, even though its own work was
+        # safe. Part A of this test documents that cascade as a real, by-
+        # design property of push-with-retry.sh's disqualifier (not a bug to
+        # fix there — the fix landed 2026-08-16 for the DIFFERENT
+        # merge-fallback-pollution mechanism, confirmed still correct here).
+        # Part B is the actual regression guard: asserts data-health-check.yml
+        # now runs the strandable ledger step LAST among its commit+push
+        # steps, so nothing later in that job can be poisoned by it.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
 
       - name: Run merge-worktree-to-main content-drop test (bash integration)
         # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's

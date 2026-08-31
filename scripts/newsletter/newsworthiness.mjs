@@ -188,11 +188,19 @@ export function scoreCandidates(input) {
     // West End edition (the whole email IS the West End) — drop it there so it
     // reads "opens to strong reviews", not "opens in London..." (user 2026-07-12).
     const loc = isWeEdition ? '' : ' in London';
+    // Shakespeare's Globe / Sam Wanamaker Playhouse stage the same handful of
+    // generic classic titles every year (As You Like It, The Tempest, Much
+    // Ado...), so in the WE edition — where "in London" is already dropped —
+    // the bare title alone loses the one piece of context that actually
+    // distinguishes the story: it's playing at the Globe. Matches the
+    // isShakespeareInThePark venue-naming pattern below for OB openings.
+    const isGlobeVenue = s.venue === "Shakespeare's Globe" || s.venue === 'Sam Wanamaker Playhouse';
+    const venueSuffix = isWeEdition && isGlobeVenue ? ' at the Globe' : '';
     const headline = verdict
-      ? `${s.title} opens${loc} to ${verdict}`
-      : `${s.title} opens${loc}`;
+      ? `${s.title}${venueSuffix} opens${loc} to ${verdict}`
+      : `${s.title}${venueSuffix} opens${loc}`;
     out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} opens${loc} to `,
+      verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to `,
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 
@@ -413,7 +421,7 @@ export function buildLedeSentences(candidates, maxSentences = 3) {
   const unique = dedupeByKind(candidates).slice(0, maxSentences);
   // Per-tier counter so the Nth occurrence picks variantIndex N.
   const tierSeen = {};
-  const sentences = unique.map((c) => {
+  const withHeadline = unique.map((c) => {
     let headline = c.headline;
     if (c.verdictTier && c.verdictPrefix) {
       const i = (tierSeen[c.verdictTier] = (tierSeen[c.verdictTier] || 0) + 1) - 1;
@@ -422,13 +430,92 @@ export function buildLedeSentences(candidates, maxSentences = 3) {
         headline = c.verdictPrefix + pool[i];
       }
     }
-    return headlineToSentence({ ...c, headline });
+    return { ...c, headline };
   });
+  // BRO-2589: 3+ opening-kind candidates back to back all use the same
+  // "[Title] opens [market] to [adjective] reviews." template shape — reads
+  // monotonous even though the text isn't literally duplicated (owner report
+  // 2026-08-31, 1 BW + 2 OB openings in one week). Fold every opening past the
+  // first in a 3+ run into a trailing clause on the first's sentence instead
+  // of stacking N identically-shaped sentences. Gated on `verdictTier` (only
+  // set when a score produced the "... to <verdict>" phrase) so an unscored
+  // opening — "Title opens on Broadway" / "Title opens in London", a
+  // different, non-repetitive shape — never gets swept into a run or loses
+  // its own sentence (second-opinion/Codex review, 2026-08-31: the first cut
+  // of this compressed runs by bare `kind` membership alone). showRefs below
+  // is built from `unique` (untouched by this loop), so the lede-⊆-body
+  // invariant still sees every folded-in show even though `sentences` can now
+  // be SHORTER than `kinds`/`showRefs` — those two stay one-entry-per-
+  // candidate for membership checks (e.g. `_closingCtx(kinds)` in
+  // generate.mjs uses `.includes()`, not positional indexing), so do not add
+  // a caller that assumes `sentences[i]` lines up with `kinds[i]`.
+  const sentences = [];
+  let i = 0;
+  while (i < withHeadline.length) {
+    const c = withHeadline[i];
+    if (PER_SHOW_KINDS.has(c.kind) && c.verdictTier) {
+      let j = i + 1;
+      while (j < withHeadline.length && PER_SHOW_KINDS.has(withHeadline[j].kind) && withHeadline[j].verdictTier) j++;
+      const run = withHeadline.slice(i, j);
+      if (run.length >= 3) {
+        sentences.push(compressOpeningRun(run));
+        i = j;
+        continue;
+      }
+    }
+    sentences.push(headlineToSentence(c));
+    i++;
+  }
   const showRefs = unique
     .map(c => c.show)
     .filter(Boolean)
     .map(s => ({ id: s.id, slug: s.slug, title: s.title }));
   return { sentences, kinds: unique.map(c => c.kind), showRefs };
+}
+
+// Keeps the highest-weighted opening in `run` (already weight-sorted) as a
+// full sentence and folds the rest into "alongside <venue>'s A (tier) and B
+// (tier)" — grouped by openingVenue so a mixed BW+OB+WE run doesn't misname
+// an off-Broadway show as "Broadway's".
+function compressOpeningRun(run) {
+  const [anchor, ...rest] = run;
+  const anchorSentence = headlineToSentence(anchor).replace(/\.$/, '');
+  return `${anchorSentence}, ${buildCompressedOpeningClause(rest)}.`;
+}
+
+// Everything up to " opens"/" reopens" in the headline — not just
+// `show.title` — so a Globe production keeps its disambiguating "at the
+// Globe" suffix (line ~198) instead of folding into a bare, ambiguous title.
+function openingSubjectPhrase(c) {
+  const m = /^(.*?)\s+(?:re)?opens\b/.exec(c.headline);
+  let phrase = m ? m[1] : (c.show?.title || c.headline);
+  const title = c.show?.title;
+  if (title && phrase.includes(title)) phrase = phrase.replace(title, `<em>${title}</em>`);
+  return phrase;
+}
+
+function buildCompressedOpeningClause(rest) {
+  const groups = new Map();
+  for (const c of rest) {
+    const key = c.openingVenue || '';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(c);
+  }
+  const venuePhrases = [];
+  for (const [venue, shows] of groups) {
+    const named = shows.map((c) => {
+      const label = openingSubjectPhrase(c);
+      return c.verdictTier ? `${label} (${c.verdictTier})` : label;
+    });
+    venuePhrases.push(venue ? `${venue}'s ${joinWithAnd(named)}` : joinWithAnd(named));
+  }
+  return `alongside ${joinWithAnd(venuePhrases)}`;
+}
+
+function joinWithAnd(items) {
+  if (items.length <= 1) return items[0] || '';
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 }
 
 function headlineToSentence(c) {

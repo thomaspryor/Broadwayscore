@@ -62,6 +62,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
+const dispatchReconcile = require('./dispatch-reconcile.js');
 const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // BRO-2499: the marker this module stamps onto every issue it files (via the
 // --park reason, which linear-issue-create.js prepends to the description as
@@ -439,23 +440,13 @@ function appendJsonlLedger(p, entry) {
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
 }
 
-// Same correlation logic as scripts/lib/backlog-drain.js's findMyJob (see
-// its header comment for why "latest ts for this taskId" is unsafe): scan
-// the raw shared dispatch-ledger for the job-spawned event THIS dispatch's
-// child process caused (earliest spawn at/after our own dispatch timestamp),
-// then fold only that jobId's entries to read its current terminal state.
-function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
-  const sinceMs = new Date(sinceTs).getTime() - 5000;
-  const spawns = (dispatchLedgerEntries || [])
-    .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
-    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  // Task #1184 S1: follow job-retried chains (shared, causal implementation —
-  // see dispatch-ledger.followRetryChain's header) so a live resume is never
-  // scored card-fail. A chain ending at RETRIED (successor not spawned yet)
-  // is handled by the caller as still-in-flight, with its own orphan bound.
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
-}
+// Correlation logic shared with scripts/backlog-drain.js and
+// scripts/linear-drain-parked.js since BRO-2542 — see
+// dispatch-reconcile.findMyJob for why "latest ts for this taskId" is unsafe,
+// and why job-retried chains are followed (task #1184 S1) so a live resume is
+// never scored card-fail. Re-exported, not re-implemented: all three files
+// previously carried a byte-for-byte copy.
+const findMyJob = dispatchReconcile.findMyJob;
 
 // A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
 // cardId+contentHash has an outcome somewhere in history" (BRO-2506, same bug
@@ -470,49 +461,38 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
 // on unchanged content would never produce a SECOND card-fail at all, and
 // checkPark could never see two failures to park on.
 const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
+// Arity-3 wrapper binding this module's own outcome vocabulary — the shared
+// implementation takes the event set as a 4th argument, since
+// scripts/backlog-drain.js resolves on a richer set (card-stranded,
+// completion-unattributed) than this module's plain pass/fail.
 function isDispatchResolved(digestLedgerEntries, cardId, dispatchTs) {
-  const at = new Date(dispatchTs).getTime();
-  return (digestLedgerEntries || []).some(e =>
-    e && String(e.cardId) === String(cardId) && e.ts &&
-    RESOLVING_EVENTS.has(e.event) &&
-    new Date(e.ts).getTime() >= at);
+  return dispatchReconcile.isDispatchResolved(digestLedgerEntries, cardId, dispatchTs, RESOLVING_EVENTS);
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
 // card-pass/card-fail by cross-referencing the SHARED dispatch-ledger's job
-// lifecycle — same reconciliation shape as scripts/lib/backlog-drain.js's
-// reconcileOutcomes and scripts/linear-drain-parked.js's reconcileOutcomes
-// (isDispatchResolved + claimedJobIds), applied to this module's own ledger
-// file instead.
-//
-// isDispatchResolved is checked against the IMMUTABLE pre-pass
-// digestLedgerEntries only (never entries emitted earlier in this SAME
-// loop) — see scripts/linear-drain-parked.js's reconcileOutcomes header for
-// why tagging same-pass breadcrumbs with `now` and cross-checking against
-// them is wrong (it would collapse genuinely separate, sequential
-// re-attempts onto one outcome). The real hazard the old resolvedKeys Set
-// was guarding — two dispatch rows racing onto the SAME underlying job — is
-// instead guarded directly by jobId: claimedJobIds skips emitting a second
-// outcome for a jobId already resolved earlier in this same pass.
+// lifecycle. The correlation, resolution and same-pass jobId race guard are
+// scripts/lib/dispatch-reconcile.js's since BRO-2542 — including the
+// Number.isFinite(ts) filter and the "check only the IMMUTABLE pre-pass
+// entries" rule, whose postmortems live in that file's header. Applied here to
+// this module's own ledger file; what stays below is only this module's own
+// per-tracker completion criterion and note text.
 function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
-  // A malformed/missing ts (hand-edited or corrupted ledger line) would
-  // otherwise turn every downstream Date arithmetic into NaN, tripping
-  // `< ORPHAN_TIMEOUT_H` to false and firing an immediate fail instead of the
-  // intended grace window — same defensive guard scripts/linear-drain-parked.js's
-  // reconcileOutcomes and scripts/backlog-drain.js's reconcileOutcomes already
-  // apply, added here too since this is the same function (ship-check finding).
-  const dispatches = digestLedgerEntries.filter(e =>
-    e && e.event === 'auto-dispatch' && Number.isFinite(new Date(e.ts).getTime()));
-  const claimedJobIds = new Set();
+  const decisions = dispatchReconcile.classifyDispatches({
+    ledgerEntries: digestLedgerEntries,
+    dispatchLedgerEntries,
+    isDispatchRow: e => e.event === 'auto-dispatch',
+    resolvingEvents: RESOLVING_EVENTS,
+    orphanTimeoutH: ORPHAN_TIMEOUT_H,
+    cardIdOf: d => String(d.taskId),
+    taskIdOf: d => String(d.taskId),
+    now,
+  });
   const newEntries = [];
-  for (const d of dispatches) {
-    if (isDispatchResolved(digestLedgerEntries, d.taskId, d.ts)) continue;
-    const job = findMyJob(dispatchLedgerEntries, d.taskId, d.ts);
-    if (!job) {
-      const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next run
+  for (const { dispatch: d, cardId, job, kind } of decisions) {
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
         // BRO-2518: fileCard()'s exact-title dedup can reattach a row to an
         // issue a PRIOR dispatch already moved to a started Linear state (In
         // Progress/In Review) — linear-next.js's startedStateGuard refuses
@@ -522,39 +502,37 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       });
       continue;
     }
-    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
-    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
-      // Chain ends at a retry whose successor hasn't spawned yet: treat as
-      // still running inside the same orphan bound the no-spawn case uses —
-      // past it, the resume child died before spawning and the attempt fails.
-      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue;
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
+      // The retry chain ended at 'job-retried' and no successor spawned inside
+      // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
-    if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
+    // Explicit, not fall-through (ship-check finding) — see the same guard in
+    // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
+    // shared lib must stop the pass rather than be silently treated as
+    // terminal and dereference a job that may be null.
+    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileDigestOutcomes: unhandled dispatch kind '${kind}'`);
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
     const isLinear = /^linear:/.test(String(d.taskId));
     // Completion criterion differs by tracker (BRO-286): Notion-mirror rows
     // check the mirror task's status; Linear rows have no mirror — session
     // DONE is the pass signal here, and the board-level Done audit (Phase 3
     // teeth) is the independent check that the issue actually closed.
-    const task = isLinear ? null : tasksById.get(String(d.taskId));
+    const task = isLinear ? null : tasksById.get(cardId);
     const completed = isLinear ? sessionOk : !!(task && task.status === 'completed');
     const outcome = (sessionOk && completed) ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome,
-      cardId: String(d.taskId),
+      cardId,
       contentHash: d.contentHash,
       note: outcome === 'card-pass'
         ? (isLinear ? 'session finished (Linear-tracked; board Done-audit verifies closure separately)' : 'session finished, task marked completed')
         : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
     });
-    if (job.jobId) claimedJobIds.add(job.jobId);
   }
   return newEntries;
 }

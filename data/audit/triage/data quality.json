@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "warn",
-  "lastChecked": "2026-08-30T12:17:13.966Z",
+  "lastChecked": "2026-08-31T14:28:16.875Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,32 +9,32 @@
     {
       "name": "Data quality: cross-outlet attribution drift",
       "status": "warn",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (2d ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (1d ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
       "status": "warn",
-      "message": "12 NEW unhandled CV.wrongProduction review(s) since last run (862 total across 406 show(s), 2d ago)"
+      "message": "1 NEW unhandled CV.wrongProduction review(s) since last run (860 total across 404 show(s), 1d ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (613 known baseline across 2021 show(s), 2d ago)"
+      "message": "No new violations since last run (613 known baseline across 2021 show(s), 1d ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
       "status": "warn",
-      "message": "18 NEW cross-show URL mismatch(es) since last run (2165 total across 841 show(s), 2d ago)"
+      "message": "7 NEW cross-show URL mismatch(es) since last run (2163 total across 838 show(s), 1d ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (73 known baseline across 2021 show(s), 2d ago)"
+      "message": "No new violations since last run (73 known baseline across 2021 show(s), 1d ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "status": "warn",
-      "message": "2 NEW unverified revival flag(s) since last run (45 total across 45 show(s), 2d ago)"
+      "status": "pass",
+      "message": "No new violations since last run (44 known baseline across 2021 show(s), 1d ago)"
     }
   ]
 }

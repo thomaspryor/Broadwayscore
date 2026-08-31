@@ -50,6 +50,8 @@
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
  *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
+ *   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"
+ *                                                            the ONE guard --force does not cover (BRO-2543)
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
@@ -80,7 +82,7 @@ const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
 const lsr = require('./lib/linear-session-reporting.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { launchCmuxSession } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { buildAutoTitle, projectOf } = require('./lib/workspace-naming.js');
@@ -134,6 +136,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
+  node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
 
@@ -142,6 +145,12 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 `;
 
+// NOTE `--flag=value` is NOT supported here: it produces a key literally named
+// "flag=value", so `--model=opus` silently dispatches on the default model.
+// Every automated caller passes separated argv, and BRO-2543 deliberately did
+// NOT "fix" this in passing: naively splitting on `=` makes `--force=0` parse
+// as the truthy string "0" and bypass every guard it gates, where today it
+// bypasses none. Tracked separately; use the space form.
 function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
@@ -474,6 +483,26 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Reported-outcome guard (BRO-2543): deliberately placed BEFORE
+  // startedStateGuard below, not after. Both refuse the same issue on a
+  // no-flag run, so ordering decides only WHICH message the operator reads -
+  // and startedStateGuard's remedy line is literally "Re-run with --force if
+  // you know this is a stalled issue that needs re-dispatch", which walks the
+  // operator straight into the exact action that caused BRO-2506's wasted
+  // dispatch. This one names the session report, quotes the acceptance
+  // command, and says --force will not help. More-specific-reason-first is
+  // this dispatcher's own convention (see the terminal-state/marketing/
+  // autofix ordering above).
+  //
+  // NOT gated on `!args.force` - that is the whole point of the guard; it
+  // self-exempts only on --dry-run/--print-prompt and its own
+  // --allow-reported-work "<reason>". See ld.reportedOutcomeGuard's header.
+  const reportedRefusal = ld.reportedOutcomeGuard(issue, args);
+  if (reportedRefusal) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${reportedRefusal}`);
+    process.exit(1);
+  }
+
   // Started-state guard (BRO-2518): the third clause of the same documented
   // funnel line the two guards above close ("Backlog/Todo, not `·
   // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a
@@ -626,9 +655,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try { workspaces = listWorkspacesFn(); } catch (e) { console.error(`[linear-next] workspace list failed (continuing): ${e.message}`); }
     if (workspaces) {
       try {
+        // BRO-2575 — see bsc-next.js's identical call: the OS-process
+        // cross-check that keeps a cmux blackout from manufacturing a 'dead'
+        // row in this very dispatch's own self-heal pass.
         const { freshDead, refusal } = checkDeadDispatch(
           pseudoTask, workspaces, readLedgerEntriesFn(),
-          isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args,
+          isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn,
+          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[linear-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for ${s.taskId}`) },
         );
         freshDead.forEach((b) => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[linear-next] WARN ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[linear-next] ${refusal}`); process.exit(1); }
@@ -690,6 +723,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // the guard was waived is auditable in the ledger rather than
         // invisible.
         allowAutofixFiled: args['allow-autofix-filed'] || null,
+        allowReportedWork: ld.bypassReasonForLedger(args),
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -773,6 +807,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         taskId, subject: pseudoTask.subject, workspaceRef: res.workspaceRef, model,
         verifyCmd: gate.cmd, verifyReason: gate.reason,
         failureReason: res.reason, deadConfirmed: res.deadConfirmed !== false,
+        marker: res.marker || null, // BRO-2575
       });
       failedEntries.forEach((e) => appendLedgerEntryFn({ ...e, linearId: issue.identifier, correlationId }));
     } catch (e) { console.error(`[linear-next] WARN ledger dead write failed (non-fatal): ${e.message}`); }
@@ -798,10 +833,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,
+        allowReportedWork: ld.bypassReasonForLedger(args),
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.
       liveRuntimes: res.liveRuntimes ?? null,
+      // BRO-2575 — see bsc-next.js's identical field: this launch's wrapper
+      // basename, re-checked against the OS process table before a sweep
+      // journals this ref dead.
+      marker: res.marker || null,
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 

@@ -25,7 +25,16 @@ function normalizeVenueName(venue) {
   return venue.trim().toLowerCase()
     .replace(/[\u2018\u2019\u2032]/g, "'") // Normalize curly/prime apostrophes to straight
     .replace(/\s*\(.*\)$/, '')       // Strip parenthetical (e.g., "(National Theatre)")
-    .replace(/ theatre$| theater$/, ''); // Strip trailing "Theatre"/"Theater"
+    .replace(/ theatre$| theater$/, '') // Strip trailing "Theatre"/"Theater"
+    .replace(/^the\s+/, ''); // Strip leading "The " so "West End Theatre" normalizes the same
+    // as "The West End Theatre", and "American Irish Historical Society" the same as "The
+    // American Irish Historical Society" -- Playbill's <title> venue text carries the definite
+    // article, shows.json usually doesn't, and without this every such venue false-positived as
+    // a mismatch in validate-show-venue.js (BRO-2544). Safe against the "leading word collapse"
+    // hazard documented above venuesMatch() (deduplication.js) because this strips a fixed,
+    // meaningless article -- it never truncates to a shared first CONTENT word the way the old
+    // canonicalVenue() fallback did ("The Duke on 42nd Street" still normalizes to "duke on
+    // 42nd street", not "duke", so it stays distinct from "The Public Theater" -> "public").
 }
 
 function isOffWestEndVenue(venue) {

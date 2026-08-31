@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-30T12:17:13.966Z",
+  "lastChecked": "2026-08-31T14:28:16.875Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (20099/20380)"
+      "message": "98.5% scored (20113/20420)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), duplicate reviews (same showDir|outlet|critic), review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore"
+      "message": "10 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "warn",
+      "message": "Zero authentication failures across 12633 messages over 170 days. The domain qualifies for p=reject (currently p=quarantine)."
     },
     {
       "name": "Quality: missing contentTier",
@@ -29,12 +34,12 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 191 unregistered host(s)"
+      "message": "No probable domain moves in 188 unregistered host(s)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1142 outlet(s), 42306 review(s)"
+      "message": "No broken-extractor signature in 1143 outlet(s), 42359 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
@@ -54,7 +59,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "warn",
-      "message": "Heartbeat monitor last ran 20d ago (>8d)"
+      "message": "Heartbeat monitor last ran 21d ago (>8d)"
     }
   ]
 }

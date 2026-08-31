@@ -147,13 +147,27 @@ const CORE_DATA_MERGE_REGISTRY = [
   // TO ROLL BACK one entry: flip `apiFallbackSafe: true` to `false` (or
   // delete the field). The runtime behavior reverts immediately and safely —
   // reconcile-merged-json.js's API_FALLBACK_SAFE export and push-with-
-  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed,
-  // no other file touched (ship-check finding: this is NOT a zero-file
-  // revert though — core-data-merge-registry.test.mjs's "sanity: exactly the
-  // seeded apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
+  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed
+  // (ship-check finding: this is NOT a zero-file revert though —
+  // core-data-merge-registry.test.mjs's "sanity: exactly the seeded
+  // apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
   // live-repo regression test both hardcode "expect >=1 entry" and will fail
   // loudly until updated to match — deliberately, so removing the last entry
   // is a reviewed two-line PR, not a silent, unnoticed policy change).
+  //
+  // ONE ENTRY IS NOT PURELY LOCAL (BRO-2588, 2026-08-31): the earlier
+  // "no other file touched" claim on this rollback is no longer true for
+  // audit/autonomous-recheck-ledger.jsonl. That flag is load-bearing for
+  // .github/workflows/data-health-check.yml's STEP ORDER — flipping it off
+  // silently re-opens BRO-2538's stranded-commit cascade, because the
+  // continue-on-error "Commit acceptance recheck ledger" step no longer
+  // runs last in that job. Rolling that one back means also moving that step
+  // back to the end of the job. This is not left to memory:
+  // scripts/lib/push-with-retry.stranded-commit-cascade.test.sh PART B
+  // asserts the general property (every push-with-retry.sh-calling step in
+  // that job git-adds only apiFallbackSafe paths UNLESS it is the last such
+  // step), so a flag-only rollback fails CI loudly instead of quietly
+  // regressing the workflow.
   {
     file: 'audit/health-digest-snapshot.json',
     surface: 'public-repo',
@@ -308,6 +322,26 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  // BRO-2588 (2026-08-31): registering this file is what DISSOLVES BRO-2538's
+  // "the ledger commit step must run LAST in data-health-check.yml" ordering
+  // constraint — a constraint that directly contradicted BRO-386's own
+  // acceptance property ("the ledger-commit step runs BEFORE the bulk commit
+  // step"), leaving test.yml red on whichever of the two suites lost. The
+  // cascade BRO-2538 worked around only exists because a stranded, UNPUSHED
+  // commit from that continue-on-error step carried an UNAUDITED data/audit/
+  // path into every later step's SCRIPT_ENTRY_HEAD diff. Audit the path and
+  // there is nothing left to poison, so the step is free to sit wherever the
+  // job wants it. See data-health-check.yml's "Commit acceptance recheck
+  // ledger" header comment for the full history.
+  {
+    file: 'audit/autonomous-recheck-ledger.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
+    note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
   },
   // BRO-2435 (opening-night-broadcast.yml "Commit orphan-rescore-requeue
   // state" hard-failing every run, retries-exhausted): unlike alert-

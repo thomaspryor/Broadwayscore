@@ -213,6 +213,105 @@ test('3 same-week openings fill the lede cap; a same-week closing does not displ
   assert.deepEqual(showRefs.map(s => s.id), ['a', 'b', 'c']);
 });
 
+// ── BRO-2589: 3+ same-shaped openings must not stack N identical sentences ──
+// Owner report 2026-08-31: the real 2026-08-24 week (Paranormal Activity BW +
+// The House of the Negro Insane OB + The Real Ivanov OB) produced three
+// back-to-back "[Title] opens [market] to [adjective] reviews." sentences —
+// same rigid template shape three times, reads robotic even though the text
+// isn't literally duplicated. dedupeByKind correctly keeps all three (that's
+// intentional, PER_SHOW_KINDS) — buildLedeSentences must vary the STRUCTURE
+// when a run gets that long.
+test('3 opening-kind candidates in one week: the opens-to-reviews template appears at most twice, not stacked three times', () => {
+  const scores = { paranormal: 78, negro: 68, ivanov: 45 }; // strong / decent / rough
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'paranormal', slug: 'paranormal', title: 'Paranormal Activity', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'negro', slug: 'negro', title: 'The House of the Negro Insane', category: 'off-broadway' } },
+      { show: { id: 'ivanov', slug: 'ivanov', title: 'The Real Ivanov', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences, showRefs } = buildLedeSentences(candidates, 3);
+  const openingShapeRe = /\bopens\b[^.]*\bto\b[^.]*\breviews\b\.?$/i;
+  const shapedCount = sentences.filter((s) => openingShapeRe.test(s)).length;
+  assert.ok(shapedCount <= 2, `expected at most 2 "opens...to...reviews" sentences, got ${shapedCount}: ${sentences.join(' ')}`);
+  // All three shows must still be nameable in the body via showRefs — the
+  // lede-⊆-body invariant (scripts/lib/lede-body-invariant.js) checks this
+  // list against the rendered body, not the compressed prose itself.
+  assert.deepEqual(showRefs.map((s) => s.id).sort(), ['ivanov', 'negro', 'paranormal']);
+  // The two folded-in shows must still be named somewhere in the lede text.
+  const joined = sentences.join(' ');
+  assert.ok(joined.includes('Negro Insane'), joined);
+  assert.ok(joined.includes('Real Ivanov'), joined);
+  // Exact real-world shape (matches the 2026-08-24 repro render): one anchor
+  // sentence plus a venue-grouped "alongside" clause, tier words in parens.
+  assert.equal(sentences.length, 1);
+  assert.equal(
+    sentences[0],
+    "<em>Paranormal Activity</em> opens to strong reviews, alongside off-Broadway's <em>The House of the Negro Insane</em> (decent) and <em>The Real Ivanov</em> (rough)."
+  );
+});
+
+test('a 4-candidate opening run still compresses to one anchor sentence, not two', () => {
+  const scores = { a: 90, b: 78, c: 68, d: 58 };
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'a', slug: 'a', title: 'Show A', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'b', slug: 'b', title: 'Show B', category: 'off-broadway' } },
+      { show: { id: 'c', slug: 'c', title: 'Show C', category: 'off-broadway' } },
+      { show: { id: 'd', slug: 'd', title: 'Show D', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences, showRefs } = buildLedeSentences(candidates, 4);
+  assert.equal(sentences.length, 1, sentences.join(' '));
+  assert.deepEqual(showRefs.map((s) => s.id).sort(), ['a', 'b', 'c', 'd']);
+  for (const title of ['Show A', 'Show B', 'Show C', 'Show D']) {
+    assert.ok(sentences[0].includes(title), sentences[0]);
+  }
+});
+
+// An unscored opening ("Title opens on Broadway" — no score yet, so no "to
+// <verdict> reviews" tail) is a DIFFERENT shape than the scored ones, so it
+// must not be swept into a compression run and must not lose its own
+// sentence.
+test('an unscored opening breaks the run instead of being folded in', () => {
+  const scores = { negro: 68, ivanov: 58 }; // paranormal has no score entry
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'paranormal', slug: 'paranormal', title: 'Paranormal Activity', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'negro', slug: 'negro', title: 'The House of the Negro Insane', category: 'off-broadway' } },
+      { show: { id: 'ivanov', slug: 'ivanov', title: 'The Real Ivanov', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => (id in scores ? { avg: scores[id] } : { avg: null }),
+  });
+  const { sentences } = buildLedeSentences(candidates, 3);
+  // No verdict for paranormal means only 2 candidates share the scored-opening
+  // shape — below the 3+ threshold, so nothing compresses and every show gets
+  // its own sentence.
+  assert.equal(sentences.length, 3, sentences.join(' '));
+  assert.equal(sentences[0], '<em>Paranormal Activity</em> opens on Broadway.');
+});
+
+// Globe productions rely on "at the Globe" to disambiguate generic classic
+// titles (As You Like It, The Tempest) once "in London" is dropped in the WE
+// edition — the compressed clause must keep that suffix, not just show.title.
+test('a Globe production keeps its "at the Globe" suffix when folded into a compressed clause', () => {
+  const scores = { headliner: 80, globe: 70, third: 60 };
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'headliner', slug: 'headliner', title: 'Show Headliner', category: 'west-end' } },
+      { show: { id: 'globe', slug: 'globe', title: 'As You Like It', category: 'west-end', venue: "Shakespeare's Globe" } },
+      { show: { id: 'third', slug: 'third', title: 'Show Third', category: 'west-end' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences } = buildLedeSentences(candidates, 3);
+  assert.equal(sentences.length, 1, sentences.join(' '));
+  assert.ok(sentences[0].includes('<em>As You Like It</em> at the Globe'), sentences[0]);
+});
+
 // ── weGoldOpenings list order must survive a later item's gold bump ────────
 // Regression guard for BRO-273 (2026-08-02): a later-ranked West End opening
 // with a Critical Gold score used to be able to outweigh an earlier-ranked,

@@ -275,10 +275,24 @@ test('buildLinearSeed: names the issue, links it, and instructs comment + In Rev
   assert.match(seed, /Full description text here\./);
   // The load-bearing instruction the whole task exists to encode: report back
   // ON THE ISSUE, not just in the ledger.
-  assert.match(seed, /comment on this Linear issue \(BRO-123\)/);
+  //
+  // BRO-2543 changed HOW: the seed used to say "commentCreate ... issueUpdate",
+  // i.e. hand-roll the GraphQL call. That produced outcome comments in whatever
+  // prose the worker chose, so the canonical `**Session report (<status>)**`
+  // header existed only when the machine-local linear-issue-required-stop.sh
+  // Stop hook happened to force linear-session.js — never on a cloud session,
+  // and never for a worker killed at its runner timeout. reportedOutcomeGuard
+  // has to RECOGNISE these comments to stop a duplicate dispatch, so the seed
+  // now names the canonical reporter. Pinned here because a well-meaning
+  // rewrite back to "just post a comment" would silently re-open BRO-2506's
+  // wasted-dispatch hole with every test still green.
+  assert.match(seed, /node scripts\/linear-session\.js report --issue=BRO-123/);
+  assert.match(seed, /--status=<done\|in-review\|paused\|blocked>/);
+  // --status=blocked must stay described as leaving the state alone: that is
+  // what keeps a genuinely stalled issue re-dispatchable (reportedOutcomeGuard
+  // deliberately ignores blocked/paused reports).
+  assert.match(seed, /--status=blocked/);
   assert.match(seed, /"In Review"/);
-  assert.match(seed, /commentCreate/);
-  assert.match(seed, /issueUpdate/);
 });
 
 test('buildLinearSeed: falls back to a placeholder when description is empty', () => {
@@ -468,6 +482,170 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
   assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
+});
+
+// -- reportedOutcomeGuard wiring, BRO-2543 -----------------------------------
+//
+// This is a WIRING test on purpose, and it is the only kind that can catch
+// this ticket's own bug class. A pure-predicate test of reportedOutcomeGuard
+// passes identically whether linear-next.js calls it as
+// `ld.reportedOutcomeGuard(issue, args)` or hides it behind
+// `if (!args.force) { ... }` — and "the guard exists but can never fire" is
+// literally BRO-2488's root cause (no query ever fetched `project`, so no
+// predicate keyed on it could refuse anything). So: drive the real main()
+// in a real subprocess with the real 02:15:05Z payload and the real
+// --force, and assert nothing launches.
+test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outstanding dispatch already reported in-review (BRO-2506 incident)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    // BRO-2506 exactly as it stood at 02:15:05Z: In Review, the 00:43
+    // dispatch comment, the 01:31 session report. Comments newest-first,
+    // the order Linear's API really returns them in.
+    const issue = {
+      id: 'issue-uuid-2506', identifier: 'BRO-9506',
+      title: 'Reported-outcome guard regression fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9506/reported-outcome-guard-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (in-review)**\\n\\nFix landed on origin/main.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier, '--model', 'opus', '--force'], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (reported-outcome refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /ALREADY reported back/, 'must report the reported-outcome refusal, not some other gate');
+  assert.match(res.stderr, /session report \(in-review\)/);
+  // The regression that matters: --force must not reach a launch.
+  assert.doesNotMatch(res.stderr, /LAUNCHCMUX_WAS_CALLED/, 'launchCmux must NEVER be called — this is BRO-2506 recurring');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called — this is BRO-2506 recurring');
+});
+
+test('reportedOutcomeGuard wiring: it refuses BEFORE startedStateGuard, so the message never says "re-run with --force"', () => {
+  // Ordering matters for behaviour, not just prose: startedStateGuard's own
+  // remedy line is "Re-run with --force if you know this is a stalled issue
+  // that needs re-dispatch" — which, on THIS issue, is the exact instruction
+  // that wasted a dispatch. On a no-flag run both guards match, so whichever
+  // runs first owns the operator's next action.
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-2506b', identifier: 'BRO-9507',
+      title: 'Reported-outcome ordering fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9507/reported-outcome-ordering-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (done)**\\n\\nAll finished.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], isDoneTitle: () => false,
+      claudeAliveIn: () => true, terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [], appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [], loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /ALREADY reported back/, 'reportedOutcomeGuard must win the race with startedStateGuard');
+  assert.doesNotMatch(res.stderr, /is already in a started state/, 'startedStateGuard must not be the message the operator reads here');
+});
+
+test('reportedOutcomeGuard wiring: --allow-reported-work "<reason>" lets a genuine re-dispatch through', () => {
+  // The escape hatch has to actually work end-to-end, or an operator facing a
+  // truly-stalled issue is wedged. Proven by reaching a LATER gate (the
+  // kill switch) rather than this one.
+  //
+  // Both flags, because these are two independent guards: --force clears
+  // startedStateGuard ("something has hands on this"), --allow-reported-work
+  // clears this one ("...and it already reported back"). This pair IS the
+  // documented recovery command, and the refusal text names it verbatim —
+  // asserted below so the message can never drift out of sync with what
+  // actually works.
+  const script = `
+    process.env.LINEAR_NEXT_DISABLED = '1';
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-2506c', identifier: 'BRO-9508',
+      title: 'Reported-outcome bypass fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9508/reported-outcome-bypass-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (in-review)**\\n\\nClaimed done but never landed.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier, '--force', '--allow-reported-work', 'checked main, the commit is not there'], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], isDoneTitle: () => false,
+      claudeAliveIn: () => true, terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [], appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [], loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.doesNotMatch(res.stderr, /ALREADY reported back/, 'a reasoned bypass must clear reportedOutcomeGuard');
+  assert.match(res.stderr, /LINEAR_NEXT_DISABLED/, 'should reach the later kill-switch gate, proving it got past this guard');
+});
+
+test('parseArgs: --flag=value is NOT split, and --force=0 therefore cannot bypass anything (BRO-2543)', () => {
+  // BRO-2543 first "fixed" the `--k=v` form in passing and the pre-ship
+  // adversarial review caught that it made things WORSE: splitting on `=`
+  // turns `--force=0` into the truthy string "0", so a flag an operator wrote
+  // expressly to DISABLE forcing would instead bypass every guard --force
+  // gates. Reverted. Pinned here so the next person who notices `--model=opus`
+  // silently doesn't work reaches for the same trap and this test explains why.
+  const a = parseArgs(['--force=0']);
+  assert.equal(a.force, undefined, '--force=0 must not set force at all');
+  assert.equal(a['force=0'], true);
+
+  // The space form is the supported one, and is what the guard's own refusal
+  // message tells operators to type.
+  const b = parseArgs(['--id', 'BRO-1', '--force', '--allow-reported-work', 'checked main, not there']);
+  assert.equal(b.id, 'BRO-1');
+  assert.equal(b.force, true);
+  assert.equal(b['allow-reported-work'], 'checked main, not there');
+
+  // And the `=` form fails CLOSED for the bypass — the key lands elsewhere, so
+  // the guard sees no reason and its refusal stands.
+  const c = parseArgs(['--allow-reported-work=some reason here']);
+  assert.equal(c['allow-reported-work'], undefined);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
