@@ -603,17 +603,21 @@ flush() {
   # #1682: a run that reclaimed 26GB across dozens of worktree removals
   # logged "freed=797.9MB" because this size was never captured — accurate
   # for the wrong reason next time someone reads this log to judge impact).
-  local removal_sz remove_err
+  local removal_sz remove_err force_err diag_err
   removal_sz=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
   # Stderr is captured (not discarded) so the else-branch below can tell a
-  # real refusal reason apart from a bare assumption of dirtiness.
-  if remove_err=$(git worktree remove "$path" 2>&1); then
+  # real refusal reason apart from a bare assumption of dirtiness. LC_ALL=C
+  # pins git's fatal: message to English regardless of the operator's locale
+  # — the case match below is a substring match on that wording, and a
+  # localized message would silently fall through to "not removable" instead
+  # of correctly identifying dirty/locked.
+  if remove_err=$(LC_ALL=C git worktree remove "$path" 2>&1); then
     log "REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, worktree removed (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
-  elif is_safe_dirty "$path" && git worktree remove --force "$path" 2>/dev/null; then
+  elif is_safe_dirty "$path" && force_err=$(LC_ALL=C git worktree remove --force "$path" 2>&1); then
     # Only reached when the branch is already fully merged AND every dirty
     # path is generated data/ churn (is_safe_dirty) — this is what makes
     # --force safe here despite the file header's "never uses --force" claim
@@ -627,16 +631,22 @@ flush() {
   else
     # BRO-2624: `git worktree remove` fails for more reasons than a dirty tree
     # (the LOCKED case is already preempted above, but a lock race between
-    # that check and this remove call — or a submodule/permissions error — can
-    # still land here). Read the actual git error instead of assuming
-    # dirtiness, so the committed audit log names the real cause.
-    case "$remove_err" in
+    # that check and this remove call — or a submodule/permissions error —
+    # can still land here). Read the actual git error instead of assuming
+    # dirtiness, so the committed audit log names the real cause. Diagnose
+    # off the LAST attempt that actually ran: when is_safe_dirty took the
+    # --force branch and force_err came back non-empty, that failure (not the
+    # first plain-remove's "dirty" refusal) is why the worktree survives —
+    # e.g. it got locked in the gap between the two `git worktree remove`
+    # calls, which would otherwise still be misreported as plain dirtiness.
+    diag_err="${force_err:-$remove_err}"
+    case "$diag_err" in
       *"is locked"*|*"cannot remove a locked working tree"*)
         log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but worktree is LOCKED (locked between dry-run check and removal); not forcing" ;;
       *"contains modified or untracked files"*)
         log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing" ;;
       *)
-        log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but not removable (${remove_err:-unknown error}); not forcing" ;;
+        log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but not removable (${diag_err:-unknown error}); not forcing" ;;
     esac
     skipped=$((skipped+1))
     # Merged-but-dirty worktrees can sit indefinitely (git won't remove them
