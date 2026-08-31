@@ -1179,8 +1179,10 @@ on:
       - 'data/venue-complexes-west-end.json'
       # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
       # normalizeVenueName() doesn't over-strip a leading "The " against the frontend's
-      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads this file
-      # directly, so a solo data edit here needs to trigger CI too.
+      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads
+      # data/west-end-venues.json directly, but that JSON sits outside the
+      # scripts/lib/** glob above, so it's path-listed here too (audit-test-yml-lib-deps.js
+      # findGaps() flagged exactly this gap; its regression floor asserts zero gaps).
       - 'data/west-end-venues.json'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
