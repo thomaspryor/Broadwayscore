@@ -511,6 +511,11 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       });
       continue;
     }
+    // Explicit, not fall-through (ship-check finding) — see the same guard in
+    // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
+    // shared lib must stop the pass rather than be silently treated as
+    // terminal and dereference a job that may be null.
+    if (kind !== 'terminal') throw new Error(`reconcileDigestOutcomes: unhandled dispatch kind '${kind}'`);
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
     const isLinear = /^linear:/.test(String(d.taskId));
     // Completion criterion differs by tracker (BRO-286): Notion-mirror rows
