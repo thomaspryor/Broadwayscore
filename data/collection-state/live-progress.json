@@ -1,131 +1,47 @@
 {
-  "updatedAt": "2026-08-31T17:11:31.239Z",
+  "updatedAt": "2026-08-31T17:12:23.260Z",
   "processed": 16,
-  "failed": 84,
-  "successRate": "16.0%",
+  "failed": 94,
+  "successRate": "14.5%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 24,
-    "directCookies": 3,
-    "scrapingbee": 12,
-    "brightdata": 5,
+    "browserbase": 1,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 27
+    "archive": 3
   },
-  "browserbaseSessions": 25,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-08-31T16:19:54.346Z",
+      "t": "2026-08-31T17:00:23.972Z",
       "event": "bb-session",
-      "session": "ebd8e444",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+      "session": "557b4120",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
     },
     {
-      "t": "2026-08-31T16:19:54.793Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-08-31T16:28:48.142Z",
-      "event": "bb-session",
-      "session": "4d35247f",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-08-31T16:36:23.628Z",
-      "event": "bb-session",
-      "session": "caa4abcb",
-      "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
-    },
-    {
-      "t": "2026-08-31T16:39:45.594Z",
-      "event": "bb-session",
-      "session": "c06cc12b",
-      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
-    },
-    {
-      "t": "2026-08-31T16:41:41.587Z",
-      "event": "bb-session",
-      "session": "1a03333a",
-      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
-    },
-    {
-      "t": "2026-08-31T16:41:42.032Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-08-31T16:45:28.680Z",
-      "event": "bb-session",
-      "session": "74438852",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-08-31T16:45:32.645Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-08-31T16:45:49.704Z",
-      "event": "bb-session",
-      "session": "9966a1e6",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-08-31T16:45:53.699Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-08-31T16:51:41.513Z",
-      "event": "bb-session",
-      "session": "e86afd03",
-      "url": "https://www.thestage.co.uk/news/production-news/agatha-christies-the-mousetrap-t"
-    },
-    {
-      "t": "2026-08-31T16:51:41.962Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-08-31T16:52:42.835Z",
-      "event": "bb-session",
-      "session": "d8800cbf",
-      "url": "https://www.nytimes.com/2025/11/08/theater/purple-rain-review-prince.html"
-    },
-    {
-      "t": "2026-08-31T16:52:43.181Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-31T16:58:09.141Z",
-      "event": "bb-session",
-      "session": "c1b70e4b",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
-    },
-    {
-      "t": "2026-08-31T16:58:09.560Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-08-31T16:58:20.581Z",
-      "event": "bb-session",
-      "session": "c2cf59fc",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
-    },
-    {
-      "t": "2026-08-31T17:07:52.063Z",
-      "event": "bb-session",
-      "session": "64cbabb8",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-08-31T17:07:52.506Z",
+      "t": "2026-08-31T17:00:25.035Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-31T17:02:42.477Z",
+      "event": "bb-session",
+      "session": "b36ba45a",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-31T17:02:43.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-31T17:07:55.123Z",
+      "event": "bb-session",
+      "session": "e2678244",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
