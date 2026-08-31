@@ -179,6 +179,60 @@ function stateMap(results) {
 }
 
 /**
+ * Per-show state for the review-gap blast-radius guard (BRO-513), as an
+ * opaque `verdict:liveCount:candidateCount` string keyed by showId — the
+ * shape blastRadiusCheck's stateMap args expect. Unlike stateMap()/
+ * gapStateFor() above (the bare verdict word, used by every OTHER consumer
+ * of this audit file), this deliberately keeps liveCount/candidateCount
+ * alongside the verdict so isRiskyGapChange can tell "the census found a
+ * genuine NEW gap" (candidateCount grew, nothing previously live was lost)
+ * apart from "we lost coverage we used to have" (liveCount dropped — a
+ * broken/partial review-texts checkout makes loadDirFiles() return [] for
+ * every show, so previously-`live` outlets read as newly `missing`, the
+ * SAME complete → incomplete verdict transition as the benign case). See
+ * isRiskyGapChange below and coverage-gate.js's isRiskyChange rationale.
+ */
+function riskStateMap(results) {
+  const out = {};
+  for (const r of results || []) {
+    if (!r || !r.showId) continue;
+    // Prefer the ALREADY-STAMPED censusVerdict (mergeGapAudit computed it once
+    // with the run's real `now`/prevCandidates opts, which affect per-candidate
+    // live/in-flight classification) over recomputing with default opts here,
+    // which could disagree at the margin. Recompute only as a fallback for
+    // legacy rows that predate task #906's censusVerdict stamping.
+    const cv = (r.censusVerdict && typeof r.censusVerdict.liveCount === 'number') ? r.censusVerdict : censusVerdictFor(r);
+    const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
+    const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}`;
+  }
+  return out;
+}
+
+/**
+ * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
+ * output: risky iff EITHER count went DOWN. A verdict word changing while
+ * both counts hold or grow (new gap discovered, or a gap got filled) is the
+ * audit doing its job and is never risky.
+ *
+ * Known residual blind spot (adversarial ship-check follow-up): this is
+ * cardinality-only, not identity-aware — a run that loses one live outlet
+ * while simultaneously gaining a different one nets to an unchanged
+ * liveCount and would not register as risky. Accepted: the documented
+ * failure modes (dead SERP provider, empty census, partial checkout) zero
+ * counts out, they don't swap one outlet's identity for another's, so this
+ * doesn't match the guard's actual threat model. A full identity diff would
+ * need per-candidate URL comparison, not a per-show scalar blastRadiusCheck
+ * can consume — revisit only if a real incident ever shows this shape.
+ */
+function isRiskyGapChange(prevState, nextState) {
+  const counts = (s) => String(s).split(':').slice(1).map(Number);
+  const [prevLive, prevCandidates] = counts(prevState);
+  const [nextLive, nextCandidates] = counts(nextState);
+  return nextLive < prevLive || nextCandidates < prevCandidates;
+}
+
+/**
  * Merge this run's results into the previously-persisted audit.
  *
  * @param {Object|null} prevAudit  parsed previous show-review-gap.json (or null)
@@ -273,4 +327,4 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, withFileLock, DEFAULT_RETENTION_DAYS };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, withFileLock, DEFAULT_RETENTION_DAYS };

@@ -200,6 +200,23 @@ function scoreSerpResult(result, show) {
 // negative-scoring result from the title-token gate is filtered out.
 const SERP_MIN_SCORE = 2;
 
+// Minimum named cast members required to accept an LLM extraction as real
+// data. Solo/one-person shows are a normal case in this catalogue ("Jeeves
+// Takes Charge" — Sam Harrison playing every role solo, "We've Been Here
+// Before: A One-Woman Musical") — requiring >=2 permanently starved every
+// solo show of cast data: backfill-cast-web.js found the one legitimate
+// actor, rejected the page for having "too few" cast members, exhausted
+// its candidate URLs, and tombstoned the show as empty. Auto-remediation
+// then retried the same broken threshold twice a day forever and gave up
+// (BRO-504). enrich-cast-from-files.js already special-cases a 1-member
+// cast (labels the role "Narrator"), so >=1 here is consistent with what
+// downstream actually supports.
+const MIN_CAST_SIZE = 1;
+
+function isViableCastExtraction(cast) {
+  return Array.isArray(cast) && cast.length >= MIN_CAST_SIZE;
+}
+
 /**
  * Validate LLM-extracted cast for the wrong-show / corrupted-role patterns.
  *
@@ -258,6 +275,8 @@ module.exports = {
   scoreSerpResult,
   meaningfulTitleTokens,
   parseYearFromUrl,
+  isViableCastExtraction,
+  MIN_CAST_SIZE,
   detectMarketMismatch,
   SERP_MIN_SCORE,
   OPERA_TITLES,

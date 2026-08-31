@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -389,6 +389,53 @@ test('runAutofix: reconciles a prior dispatch into card-pass via the shared disp
   const resolved = entries.find(e => e.event === 'card-pass');
   assert.ok(resolved, 'expected the prior dispatch to resolve to card-pass');
   assert.equal(resolved.cardId, '504');
+});
+
+// BRO-2506 regression: a content-hash-keyed resolvedKeys Set (the bug already
+// fixed in scripts/linear-drain-parked.js/BRO-2434 and scripts/backlog-drain.js/
+// BRO-2508) collapses two dispatches of the SAME unchanged content onto one
+// key, so the second dispatch's outcome is silently swallowed and
+// attempt-memory's checkPark (2 failures to park) can never see two failures
+// for a repeatedly-failing card. Two REAL dispatches on identical content,
+// each with its own terminal job, must each resolve independently.
+test('reconcileDigestOutcomes: two dispatches on UNCHANGED content each resolve to their own outcome (BRO-2506, not collapsed onto one key)', () => {
+  const HASH = computeContentHash({ name: 'BSC Daily: Chronically broken row' });
+  const digestLedgerEntries = [
+    { event: 'auto-dispatch', taskId: '505', contentHash: HASH, ts: '2026-08-24T12:00:00Z' },
+    { event: 'auto-dispatch', taskId: '505', contentHash: HASH, ts: '2026-08-25T12:00:00Z' },
+  ];
+  const dispatchLedgerEntries = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '505', jobId: 'j1', ts: '2026-08-24T12:00:05Z' },
+    { event: dispatchLedger.JOB_EVENTS.DONE, taskId: '505', jobId: 'j1', ts: '2026-08-24T12:10:00Z' },
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '505', jobId: 'j2', ts: '2026-08-25T12:00:05Z' },
+    { event: dispatchLedger.JOB_EVENTS.FAILED, taskId: '505', jobId: 'j2', ts: '2026-08-25T12:10:00Z' },
+  ];
+  const tasksById = new Map([['505', { id: 505, status: 'completed', subject: 'x' }]]);
+  const now = new Date('2026-08-26T20:00:00Z');
+  const out = reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now);
+  assert.equal(out.length, 2, 'both dispatches must independently resolve — attempt-memory needs two card-fail entries to park after 2 failures');
+  assert.deepEqual(out.map(e => e.event).sort(), ['card-fail', 'card-pass']);
+  assert.ok(out.every(e => e.cardId === '505' && e.contentHash === HASH));
+});
+
+test('isDispatchResolved: true once a card-fail/card-pass exists for this cardId at or after the dispatch ts', () => {
+  const entries = [{ event: 'card-fail', cardId: '505', ts: '2026-08-26T12:05:00Z' }];
+  assert.equal(isDispatchResolved(entries, '505', '2026-08-26T12:00:00Z'), true);
+});
+
+test('isDispatchResolved: false when the only resolving event predates this dispatch (an OLDER dispatch it actually resolved)', () => {
+  const entries = [{ event: 'card-fail', cardId: '505', ts: '2026-08-24T12:05:00Z' }];
+  assert.equal(isDispatchResolved(entries, '505', '2026-08-25T12:00:00Z'), false);
+});
+
+test('reconcileDigestOutcomes: a malformed/missing ts is skipped, not treated as an immediate NaN-driven failure (ship-check finding)', () => {
+  const HASH = computeContentHash({ name: 'BSC Daily: Bad ts row' });
+  const digestLedgerEntries = [
+    { event: 'auto-dispatch', taskId: '506', contentHash: HASH, ts: 'not-a-date' },
+    { event: 'auto-dispatch', taskId: '507', contentHash: HASH }, // ts missing entirely
+  ];
+  const out = reconcileDigestOutcomes(digestLedgerEntries, new Map(), [], new Date('2026-08-26T13:00:00Z'));
+  assert.deepEqual(out, []);
 });
 
 // ── BRO-286: Linear repoint (fileCard → linear-brain, linear-id dispatch) ──
