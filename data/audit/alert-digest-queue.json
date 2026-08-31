@@ -117,24 +117,24 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 17 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33413588892",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33413712454",
     "decision": false,
     "decisionPrompt": null,
     "model": "opus",
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413588892)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413712454)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33409226939)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413588892)"
       },
       {
         "name": "Consecutive failures",
         "value": "17"
       }
     ],
-    "queuedAt": "2026-08-31T16:51:39.216Z"
+    "queuedAt": "2026-08-31T16:52:57.838Z"
   }
 ]
