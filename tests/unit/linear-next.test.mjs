@@ -6,6 +6,7 @@
 // production change to either file fails this test instead of drifting
 // silently past it.
 import { test, afterEach } from 'node:test';
+import { guardProcessExit } from '../helpers/process-exit-guard.mjs';
 
 // These tests drive main() down its REFUSAL paths, and the code under test
 // signals refusal with `process.exitCode = 1` (scripts/linear-next.js:774,783,793;
@@ -25,6 +26,10 @@ import { test, afterEach } from 'node:test';
 afterEach(() => {
   process.exitCode = 0;
 });
+
+// BRO-2647: turn any unstubbed process.exit into a NAMED failing subtest
+// instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
+guardProcessExit();
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
