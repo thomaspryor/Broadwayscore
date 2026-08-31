@@ -1478,6 +1478,14 @@ on:
       # globbed anywhere in this file — a solo revert of the wiring (e.g.
       # someone dropping the block this test checks for) would run ZERO CI.
       - '.claude/hooks/session-start.sh'
+      # BRO-2663: session-start.sh's code-checkout-staleness.js wiring is
+      # asserted by scripts/tests/session-start-staleness.test.mjs. The lib
+      # itself rides the 'scripts/lib/**' glob above, but scripts/tests/ has
+      # no glob in this file (same "scripts/tests/ is not scripts/lib/" gap
+      # as every other entry in this block) — a solo edit to the test would
+      # run ZERO CI without this line. Also registered in
+      # tests/unit-test-manifest.txt.
+      - 'scripts/tests/session-start-staleness.test.mjs'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
