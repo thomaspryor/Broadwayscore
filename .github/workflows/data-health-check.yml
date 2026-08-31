@@ -629,7 +629,7 @@ jobs:
             echo "No recheck ledger changes"
           else
             git commit -m "data: Update acceptance recheck ledger [skip ci]"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's

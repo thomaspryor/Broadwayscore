@@ -59,6 +59,11 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PUSH_SCRIPT="$SCRIPT_DIR/push-with-retry.sh"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# Single source for the registry module both PART A's premise probe and PART B
+# read (scripts/lib/reconcile-merged-json.js re-exports API_FALLBACK_SAFE from
+# core-data-merge-registry.js — the same list push-with-retry.sh's runtime
+# disqualifier consults).
+REGISTRY_PROBE_MODULE="$SCRIPT_DIR/reconcile-merged-json.js"
 fail=0
 
 TMP=$(mktemp -d)
@@ -76,10 +81,30 @@ echo "=== PART A: reproduce the stranded-commit cascade against the real script 
 # leaving PART A silently asserting nothing, which is exactly how the previous
 # fixture (autonomous-recheck-ledger.jsonl) would have decayed under BRO-2588.
 STRANDED_PATH="data/audit/alert-ledger.json"
-if node -e '
+# The probe must not fail OPEN. Running it bare inside `if ... 2>/dev/null`
+# collapsed two very different outcomes into the same "exit non-zero" branch:
+# the intended PASS (path genuinely not registered, exit 1) and the probe
+# itself throwing (module renamed, API_FALLBACK_SAFE export renamed, syntax
+# error — exit 1 from node with the stderr swallowed). The second case would
+# have printed PASS[A-premise] forever, which is exactly the silent decay this
+# block exists to prevent. So: capture the exit code, and treat anything that
+# is not a clean 0 or 1 — or ANY stderr output at all — as a hard FAIL.
+PREMISE_ERR="$TMP/a-premise.stderr"
+node -e '
     const { API_FALLBACK_SAFE } = require(process.argv[1]);
+    if (!Array.isArray(API_FALLBACK_SAFE)) throw new Error("API_FALLBACK_SAFE is not an array");
     process.exit(API_FALLBACK_SAFE.some((e) => e.file === process.argv[2]) ? 0 : 1);
-  ' "$SCRIPT_DIR/reconcile-merged-json.js" "$STRANDED_PATH" 2>/dev/null; then
+  ' "$REGISTRY_PROBE_MODULE" "$STRANDED_PATH" 2>"$PREMISE_ERR"
+premise_code=$?
+premise_err="$(cat "$PREMISE_ERR" 2>/dev/null)"
+if [ "$premise_code" -gt 1 ] || [ -n "$premise_err" ]; then
+  echo "FAIL[A-premise]: the apiFallbackSafe registration probe itself FAILED (exit $premise_code) — it could"
+  echo "         not answer whether $STRANDED_PATH is registered, so this fixture's premise is"
+  echo "         unverified, NOT confirmed. Most likely $REGISTRY_PROBE_MODULE was renamed/moved or"
+  echo "         its API_FALLBACK_SAFE export was renamed. Probe stderr:"
+  echo "${premise_err:-(none)}" | sed 's/^/           /'
+  fail=1
+elif [ "$premise_code" -eq 0 ]; then
   echo "FAIL[A-premise]: $STRANDED_PATH IS registered apiFallbackSafe — this fixture needs a"
   echo "         genuinely unregistered data/audit/ path to strand, or PART A asserts nothing."
   fail=1
@@ -205,15 +230,34 @@ else
 
     // Paths staged by a line, covering both shapes used in this repo:
     // `git add <paths...>` and `bash scripts/lib/git-add-existing.sh <paths...>`.
+    //
+    // A stage-EVERYTHING invocation is an automatic violation, never "zero
+    // paths, nothing to check": `git add -A` (or --all / -u / --update) stages
+    // every changed path in the tree, which in this job means every unaudited
+    // data/audit/* file the health-check run happened to touch — precisely the
+    // stranded-poisoning-commit regression this guard exists to catch. Simply
+    // skipping tokens that start with "-" made the guard blind to it: the
+    // extracted path list came back EMPTY and the step passed. The same
+    // reasoning applies to any matched `git add` that yields no concrete path
+    // (an unrecognised shape is not evidence of safety), so an empty list is
+    // reported too. `git add .` and `git add data/audit/` were already caught,
+    // since "." and "data/audit/" are concrete tokens absent from the registry.
+    const STAGE_ALL_FLAGS = new Set(["-A", "--all", "-u", "--update"]);
+    const STAGE_ALL_MARKER = "EVERY changed path (stage-everything `git add`, e.g. -A/--all/-u)";
     const pathsFrom = (line) => {
       const m = line.match(/\bgit add\s+(.*)$/) || line.match(/git-add-existing\.sh\s+(.*)$/);
       if (!m) return [];
       const out = [];
+      let stagesEverything = false;
       for (const tok of m[1].trim().split(/\s+/)) {
         if (/^(2>|1>|>|\|\||&&|;|#)/.test(tok) || tok === "true") break;
-        if (tok.startsWith("-")) continue; // flags: -A, --, ...
+        if (tok.startsWith("-")) {
+          if (STAGE_ALL_FLAGS.has(tok)) stagesEverything = true;
+          continue; // other flags: --, -f, ...
+        }
         out.push(tok.replace(/^["\x27]+|["\x27]+$/g, ""));
       }
+      if (stagesEverything || out.length === 0) return [STAGE_ALL_MARKER];
       return out;
     };
 
@@ -240,7 +284,7 @@ else
     } else {
       console.log(`FAIL|${names}|${violations.join("; ")}`);
     }
-  ' "$WORKFLOW" "$SCRIPT_DIR/reconcile-merged-json.js")
+  ' "$WORKFLOW" "$REGISTRY_PROBE_MODULE")
   B_STATUS="${B_RESULT%%|*}"
   B_REST="${B_RESULT#*|}"
   if [ "$B_STATUS" = "OK" ]; then
