@@ -86,6 +86,30 @@ test('a dispatch row with a malformed or missing ts is skipped, never scored as 
   assert.deepEqual(classify(ledger, [], '2026-08-30T23:00:00Z'), []);
 });
 
+test('an invalid `now` throws instead of silently failing every dispatch at once', () => {
+  // Postmortem 4 applies to the clock too: NaN makes every `ageH < timeout`
+  // false, so one bad clock scores the WHOLE board failed in a single pass —
+  // cards park, the spend breaker trips, and the notes read like real timeouts.
+  const ledger = [{ ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' }];
+  assert.throws(() => classify(ledger, [], 'not-a-date'), /must be a valid Date/);
+  assert.throws(
+    () => classifyDispatches({
+      ledgerEntries: ledger, dispatchLedgerEntries: [],
+      isDispatchRow: e => e.event === 'auto-dispatch', resolvingEvents: PASS_FAIL,
+      orphanTimeoutH: ORPHAN_H, cardIdOf: d => String(d.taskId), taskIdOf: d => String(d.taskId),
+      now: Date.now(), // a number, not a Date — .getTime() would not exist
+    }),
+    /must be a valid Date/);
+});
+
+test('a non-array dispatch ledger throws instead of orphaning every card', () => {
+  // findMyJob would read a missing ledger as "no job ever spawned", so every
+  // dispatch would age into a card-fail on a schedule, silently.
+  const ledger = [{ ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' }];
+  assert.throws(() => classify(ledger, undefined, '2026-08-30T23:00:00Z'), /must be an array/);
+  assert.throws(() => classify(ledger, null, '2026-08-30T23:00:00Z'), /must be an array/);
+});
+
 test('rows of other event types are ignored, and isDispatchRow can require extra fields', () => {
   const ledger = [
     { ts: '2026-08-30T06:00:00Z', event: 'card-fail', taskId: '7' },

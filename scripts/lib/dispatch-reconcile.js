@@ -180,6 +180,24 @@ function classifyDispatches({
   taskIdOf,
   now = new Date(),
 } = {}) {
+  // Postmortem 4 applies to the CLOCK as well as to the rows, and all three
+  // copies missed that half. Every grace-window test here is `ageH < timeout`,
+  // so a `now` that yields NaN makes each comparison false and fires an
+  // immediate failure for EVERY unresolved dispatch at once — the whole board
+  // scored failed in a single pass, cards parked, spend breaker tripped, with
+  // notes that read like ordinary timeouts. Loud and early beats that.
+  const nowMs = now instanceof Date ? now.getTime() : NaN;
+  if (!Number.isFinite(nowMs)) {
+    throw new TypeError(`classifyDispatches: \`now\` must be a valid Date (got ${JSON.stringify(now)})`);
+  }
+  // A non-array ledger is a caller bug, not a data condition: findMyJob would
+  // read it as "no job ever spawned" and every dispatch would age into an
+  // orphan failure, silently, on a schedule. dispatch-ledger.readEntries()
+  // always returns an array, so this only fires through an injected seam —
+  // exactly where a mistake would otherwise go unnoticed.
+  if (!Array.isArray(dispatchLedgerEntries)) {
+    throw new TypeError('classifyDispatches: `dispatchLedgerEntries` must be an array');
+  }
   // Entries written before a given feature shipped carry no contentHash and are
   // excluded by the caller's own isDispatchRow — the same convention
   // attempt-memory.js's header documents for pre-feature ledger history. The ts
@@ -199,7 +217,7 @@ function classifyDispatches({
     const job = findMyJob(dispatchLedgerEntries, taskIdOf(dispatch), dispatch.ts);
 
     if (!job) {
-      const ageH = (now.getTime() - new Date(dispatch.ts).getTime()) / 3600e3;
+      const ageH = (nowMs - new Date(dispatch.ts).getTime()) / 3600e3;
       if (ageH < orphanTimeoutH) continue; // may still spawn — recheck next pass
       decisions.push({ dispatch, cardId, job: null, kind: 'orphan' });
       continue;
@@ -211,7 +229,7 @@ function classifyDispatches({
     if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
       // Chain ends at a retry whose successor hasn't spawned yet: still
       // in-flight within the same grace window the no-spawn case uses.
-      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
+      const ageH = (nowMs - new Date(job.ts || 0).getTime()) / 3600e3;
       if (ageH < orphanTimeoutH) continue;
       decisions.push({ dispatch, cardId, job, kind: 'retry-timeout' });
       if (job.jobId) claimedJobIds.add(job.jobId);
