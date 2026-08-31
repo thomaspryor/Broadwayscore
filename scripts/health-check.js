@@ -3473,10 +3473,23 @@ function cardVerifiabilityBacklogResults(report, drainMetric) {
   if (report && Array.isArray(report.refused) && report.refused.length > 0) {
     const refused = report.refused;
     const first = refused[0];
+    // BRO-2570: turns "N refused" into "N cards, mostly one directory away
+    // from armed" — actionable instead of opaque. Always derived from
+    // refused[].kind (never report.byKind) so this can't silently diverge
+    // from the canonical per-card rows on a stale/partial/malformed
+    // aggregate (ship-check finding) — an older report with no per-entry
+    // kind just degrades cleanly to a single 'unknown' bucket.
+    const byKind = refused.reduce((acc, c) => {
+      const k = c.kind || 'unknown';
+      acc[k] = (acc[k] || 0) + 1;
+      return acc;
+    }, {});
+    const kindEntries = Object.entries(byKind).sort((a, b) => b[1] - a[1]);
+    const kindSummary = kindEntries.length ? ` Refusal causes: ${kindEntries.map(([k, n]) => `${k}=${n}`).join(', ')}.` : '';
     results.push({
       name: 'Data: undispatchable backlog cards',
       status: 'warn',
-      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}`,
+      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}${kindSummary}`,
       hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
     });
   }
