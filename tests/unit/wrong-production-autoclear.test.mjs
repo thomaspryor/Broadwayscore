@@ -28,6 +28,7 @@ const {
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
+  PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS,
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
@@ -499,6 +500,51 @@ describe('isWithinPriorRun', () => {
       isWithinPriorRun('2025-06-01', [
         { openingDate: '2025-04-15', closingDate: '2025-05-15' },
       ]),
+      false
+    );
+  });
+
+  it('BRO-2561: grants PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS of lag past closingDate', () => {
+    const runs = [{ openingDate: '2025-04-15', closingDate: '2025-05-15' }];
+    // Exactly at the grace boundary — still within.
+    assert.strictEqual(isWithinPriorRun('2025-05-22', runs), true);
+    // One day past the grace boundary — outside.
+    assert.strictEqual(isWithinPriorRun('2025-05-23', runs), false);
+    assert.strictEqual(PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS, 7);
+  });
+
+  it('BRO-80: a truthful closingDate no longer rejects a next-day review', () => {
+    // The Reviews Hub filed 2025-08-26 for a Summerhall Fringe run that
+    // closed 2025-08-25 — the incident that motivated this grace.
+    assert.strictEqual(
+      isWithinPriorRun('2025-08-26', [
+        { openingDate: '2025-08-01', closingDate: '2025-08-25', venue: 'Summerhall' },
+      ]),
+      true
+    );
+  });
+
+  it('BRO-2561: a strict match in a later run beats a graced match in an earlier one', () => {
+    // Run A closes June 1; run B opens June 3 (a multi-leg tour/festival
+    // pattern). A June 4 review is genuinely B's own opening-week coverage —
+    // it must not be swallowed by A's grace tail just because A comes first
+    // in the array.
+    const runs = [
+      { openingDate: '2025-04-15', closingDate: '2025-06-01', venue: 'Venue A' },
+      { openingDate: '2025-06-03', closingDate: '2025-06-20', venue: 'Venue B' },
+    ];
+    const { findMatchingPriorRun } = require('../../scripts/lib/wrong-production-autoclear');
+    assert.strictEqual(findMatchingPriorRun('2025-06-04', runs).venue, 'Venue B');
+  });
+
+  it('does not extend the 180-day default window when closingDate is absent', () => {
+    // 2025-04-15 + 180d = 2025-10-12; grace only applies to an explicit closingDate.
+    assert.strictEqual(
+      isWithinPriorRun('2025-10-12', [{ openingDate: '2025-04-15' }]),
+      true
+    );
+    assert.strictEqual(
+      isWithinPriorRun('2025-10-19', [{ openingDate: '2025-04-15' }]),
       false
     );
   });
