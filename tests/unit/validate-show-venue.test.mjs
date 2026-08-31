@@ -103,7 +103,7 @@ test('compareShow reports no mismatches when shows.json matches Playbill (Bronco
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Charing Cross Theatre', year: 2024 },
     dates: { firstPreview: '2024-01-24', openingDate: '2024-01-31', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.deepEqual(mismatches, []);
 });
 
@@ -112,7 +112,7 @@ test('compareShow flags a venue mismatch (wrong-venue stub guard)', () => {
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Prince Edward Theatre', year: 2024 },
     dates: { firstPreview: '2024-01-24', openingDate: '2024-01-31', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.ok(mismatches.some(m => m.field === 'venue'));
 });
 
@@ -121,7 +121,7 @@ test('compareShow flags an opening-date delta beyond the 30-day threshold', () =
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Charing Cross Theatre', year: 2024 },
     dates: { firstPreview: null, openingDate: '2024-04-01', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.ok(mismatches.some(m => m.field === 'openingDate'));
 });
 
@@ -135,7 +135,7 @@ test('compareShow flags isRevival mismatch when Playbill says Revival but shows.
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Play', 'Dark Comedy', 'Revival'], market: 'Broadway', showType: 'play', revivalStatus: 'revival' },
   };
-  const mismatches = compareShow(gloria, parsed, 'https://playbill.com/production/gloria-broadway-helen-hayes-theater-2027');
+  const { mismatches } = compareShow(gloria, parsed, 'https://playbill.com/production/gloria-broadway-helen-hayes-theater-2027');
   const m = mismatches.find(x => x.field === 'isRevival');
   assert.ok(m, 'expected an isRevival mismatch');
   assert.equal(m.shows, false);
@@ -148,7 +148,7 @@ test('compareShow flags isRevival mismatch when Playbill says Original but shows
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Play', 'Drama', 'One Act', 'Original'], market: 'Broadway', showType: 'play', revivalStatus: 'original' },
   };
-  const mismatches = compareShow(interAlia, parsed, 'https://playbill.com/production/inter-alia-broadway-music-box-theatre-2026');
+  const { mismatches } = compareShow(interAlia, parsed, 'https://playbill.com/production/inter-alia-broadway-music-box-theatre-2026');
   const m = mismatches.find(x => x.field === 'isRevival');
   assert.ok(m, 'expected an isRevival mismatch');
   assert.equal(m.shows, true);
@@ -158,7 +158,7 @@ test('compareShow flags isRevival mismatch when Playbill says Original but shows
 test('compareShow does not flag isRevival when Playbill tag line is absent/unknown', () => {
   const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', isRevival: false };
   const parsed = { titleParse: null, dates: {}, tagLine: { tags: [], market: null, showType: null, revivalStatus: 'unknown' } };
-  const mismatches = compareShow(show, parsed, 'https://playbill.com/production/x-2026');
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-2026');
   assert.ok(!mismatches.some(m => m.field === 'isRevival'));
 });
 
@@ -168,7 +168,7 @@ test('compareShow agrees — no isRevival mismatch when shows.json already match
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Musical', 'Revival'], market: 'Broadway', showType: 'musical', revivalStatus: 'revival' },
   };
-  const mismatches = compareShow(fantasticks, parsed, 'https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026');
+  const { mismatches } = compareShow(fantasticks, parsed, 'https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026');
   assert.ok(!mismatches.some(m => m.field === 'isRevival'));
 });
 

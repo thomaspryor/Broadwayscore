@@ -978,12 +978,22 @@ async function main() {
   // new pages since BRO-377, so anything it picked up would be work nobody is
   // filing any more.
   //
-  // It was already dormant when this guard was added — no launchd job, no
-  // crontab entry, no workflow, no running process (verified 2026-08-30). That
-  // is exactly why the guard exists rather than a plist deletion: there was
-  // nothing to unschedule, so 'retired' was indistinguishable from 'happens not
-  // to be running today', and a stray manual invocation would have quietly
-  // resumed spawning sessions off the old board.
+  // CORRECTION (2026-08-30, caught in review): an earlier version of this
+  // comment claimed the poller was already dormant with 'no launchd job'. That
+  // was wrong, and the method that produced it was wrong — it grepped plist
+  // FILENAMES for 'notion'. The scheduler is named for what it does, not what it
+  // talks to: com.bwsc.action-dispatcher, StartInterval 300, which had been
+  // polling normally until 03:34 that morning. Adding this guard therefore did
+  // not retire a dead script; it turned a live job into a failure every five
+  // minutes until the job was booted out and its plist moved aside.
+  //
+  // Lesson worth keeping next to the code: to find what schedules a script,
+  // grep plist CONTENTS for the script path, never plist names for a keyword.
+  //
+  // The guard still earns its place after the unschedule. A plist can be
+  // restored, and a manual invocation was always possible; without this, the
+  // poller would quietly resume spawning Claude sessions from cards on a board
+  // nobody files to any more.
   //
   // Deliberately BEFORE the argument parsing below, so no invocation shape --
   // --card included -- can reach the sweep. Escape hatch is an env var, not a
