@@ -88,6 +88,61 @@ test('fileForReview resolves a same-url, same-criticName-metadata collision via 
   });
 });
 
+// A file matches by exact filename, but it's flagged wrongProduction/
+// duplicateOf — it must never win. Mirrors findExistingReviewFile()'s own
+// exclusion rule in scripts/lib/review-normalization.js: a flagged file is
+// never a valid match target, so the real (unflagged, URL-unique) file must
+// be preferred even though its own filename doesn't match r.criticName.
+test('fileForReview skips a wrongProduction/duplicateOf file even when its filename matches exactly', () => {
+  withTmpReviewTextsDir((tmp) => {
+    writeShowTexts(tmp, 'some-show-2026', {
+      'outlet--jane-critic.json': {
+        outletId: 'outlet', criticName: 'Jane Critic', url: 'https://example.com/wrong-production',
+        wrongProduction: true, fullText: 'flagged — must not be returned',
+      },
+      'outlet--j-critic.json': {
+        outletId: 'outlet', criticName: 'Jane Critic', url: 'https://example.com/the-real-review',
+        fullText: 'the real review',
+      },
+    });
+    const texts = loadShowTexts('some-show-2026', tmp);
+    const r = { showId: 'some-show-2026', outletId: 'outlet', criticName: 'Jane Critic', url: 'https://example.com/the-real-review' };
+    const entry = fileForReview(texts, r);
+    assert.equal(entry.file, 'outlet--j-critic.json');
+  });
+});
+
+// an-american-daughter-off-broadway-2026/pages-on-stages shape: the review
+// was originally scraped byline-less ("--unknown.json", real content, real
+// URL). A later criticName backfill wrote "Mason Pilevsky" onto the
+// reviews.json record but produced an empty STUB file at the name an
+// exact-filename match would expect ("--mason-pilevsky.json", url: null, no
+// text) instead of renaming the original. Filename-first alone would silently
+// prefer the empty stub over the real content; the unambiguous-URL pass must
+// win here.
+test('fileForReview prefers the unambiguous URL match over an empty same-name stub', () => {
+  withTmpReviewTextsDir((tmp) => {
+    writeShowTexts(tmp, 'an-american-daughter-off-broadway-2026', {
+      'pages-on-stages--unknown.json': {
+        outletId: 'pages-on-stages', criticName: 'Unknown',
+        url: 'https://pagesonstages.com/2026/08/11/an-american-daughter/',
+        fullText: 'the real, full review text',
+      },
+      'pages-on-stages--mason-pilevsky.json': {
+        outletId: 'pages-on-stages', criticName: 'Mason Pilevsky', url: null, fullText: '',
+      },
+    });
+    const texts = loadShowTexts('an-american-daughter-off-broadway-2026', tmp);
+    const r = {
+      showId: 'an-american-daughter-off-broadway-2026', outletId: 'pages-on-stages', criticName: 'Mason Pilevsky',
+      url: 'https://pagesonstages.com/2026/08/11/an-american-daughter/',
+    };
+    const entry = fileForReview(texts, r);
+    assert.equal(entry.file, 'pages-on-stages--unknown.json');
+    assert.equal(entry.data.fullText, 'the real, full review text');
+  });
+});
+
 // No file matches the exact outlet+critic filename (legacy naming, or the
 // critic's byline normalizes differently than it did at write time) — must
 // still fall back to the old loose outletId+criticName scan rather than
