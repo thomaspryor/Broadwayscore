@@ -228,23 +228,24 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-31T00:09:53.149Z",
+      "lastSeen": "2026-08-31T14:44:11.426Z",
       "lastNotifiedAt": "2026-08-31T00:09:53.149Z",
       "notifyCount": 29,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-31T00:09:53.235Z",
-      "lastNotifiedAt": "2026-08-30T13:37:38.415Z",
-      "notifyCount": 33,
+      "lastSeen": "2026-08-31T14:44:11.504Z",
+      "lastNotifiedAt": "2026-08-31T14:44:06.426Z",
+      "notifyCount": 34,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -291,16 +292,15 @@
       "cardId": null
     },
     "backstop:trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — broadwayworld",
       "firstSeen": "2026-08-02T11:27:10.140Z",
-      "lastSeen": "2026-08-23T16:15:00.515Z",
-      "lastNotifiedAt": "2026-08-23T16:15:00.515Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-31T14:43:56.002Z",
+      "lastNotifiedAt": "2026-08-31T14:43:56.002Z",
+      "notifyCount": 5,
       "cardId": "3b7637c5-416f-81a1-aa84-eb96cbadff1c",
-      "linearIdentifier": "BRO-372",
-      "resolvedAt": "2026-08-26T18:50:48.172Z"
+      "linearIdentifier": "BRO-372"
     },
     "health-check:Workflow repeat-failure: Rebuild Reviews Data": {
       "status": "open",
@@ -912,12 +912,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-31T00:09:45.944Z",
+      "lastSeen": "2026-08-31T14:44:02.838Z",
       "lastNotifiedAt": "2026-08-29T15:02:49.382Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1876,27 +1876,16 @@
       "cardId": null,
       "linearIdentifier": "BRO-2537"
     },
-    "alert-router:deadman": {
-      "status": "open",
-      "disposition": "human",
-      "title": "Alert Router: auto-dispatch has been silently failing for 7 days",
-      "firstSeen": "2026-08-31T14:28:02.172Z",
-      "lastSeen": "2026-08-31T14:28:02.172Z",
-      "lastNotifiedAt": "2026-08-31T14:28:02.172Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "health-check:Quality: DMARC deliverability": {
+    "backstop:benevolent-off-broadway-2026/talkinbroadway--unknown.json": {
       "status": "open",
       "disposition": "auto",
-      "title": "BSC Daily: Quality: DMARC deliverability",
-      "firstSeen": "2026-08-31T14:28:24.145Z",
-      "lastSeen": "2026-08-31T14:28:24.145Z",
-      "lastNotifiedAt": "2026-08-31T14:28:24.145Z",
+      "title": "T1/T2 review stuck >24h: Benevolent — talkinbroadway",
+      "firstSeen": "2026-08-31T14:43:57.942Z",
+      "lastSeen": "2026-08-31T14:43:57.942Z",
+      "lastNotifiedAt": "2026-08-31T14:43:57.942Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2600"
+      "linearIdentifier": "BRO-2605"
     }
   }
 }
