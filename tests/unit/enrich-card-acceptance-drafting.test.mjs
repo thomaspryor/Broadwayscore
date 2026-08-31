@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: reads no data file at all — `data/shows.json`
+// appears only inside quoted COMMAND STRINGS that the tests assert are
+// REJECTED by the path-prefix allowlist (data/ is off it). It is the canonical
+// example from the issue, so the literal has to appear; nothing here opens it.
 /**
  * enrich-card-acceptance-drafting.test.mjs — BRO-2546.
  *
