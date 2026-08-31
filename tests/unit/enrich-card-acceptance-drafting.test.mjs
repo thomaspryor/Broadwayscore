@@ -1,11 +1,7 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: the `data/...json` strings here are FIXTURES for
-// a command-shape validator, never files this test opens. isSafeCheckCommand /
-// explainUnsafeCheckCommand decide whether a drafted acceptance command may run,
-// and `test -f data/shows.json` is the canonical example of one that must be
-// REFUSED (data/ is off the allowlist), so the literal has to appear verbatim to
-// pin that refusal. There is no derived-data claim here to rot: every assertion
-// is about the validator's verdict, not about anything inside data/. The audit's
-// substring heuristic cannot tell a fixture string from a read.
+// TESTS-VS-DERIVED-DATA-EXEMPT: reads no data file at all — `data/shows.json`
+// appears only inside quoted COMMAND STRINGS that the tests assert are
+// REJECTED by the path-prefix allowlist (data/ is off it). It is the canonical
+// example from the issue, so the literal has to appear; nothing here opens it.
 /**
  * enrich-card-acceptance-drafting.test.mjs — BRO-2546.
  *
