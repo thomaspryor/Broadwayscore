@@ -20,6 +20,7 @@ const { venuesMatch, aliasCanonical } = require('./deduplication.js');
 const { canonicalVenue } = require('./title-match.js');
 const { findExistingMatch } = require('./candidate-dedup.js');
 const { recordsAgree, isCorroborated } = require('./we-historical-corroboration.js');
+const westEndVenues = require('../../data/west-end-venues.json');
 
 test('canonicalVenue itself still collapses these to the same first word (documents the bug this suite guards against)', () => {
   assert.equal(canonicalVenue('The Duke on 42nd Street'), canonicalVenue('The Public Theater'));
@@ -93,4 +94,23 @@ test('we-historical-corroboration isCorroborated: two venue-colliding-but-unrela
   const result = isCorroborated(candidate, sources);
   assert.equal(result.corroborated, false);
   assert.deepEqual(result.agreeingSources, []);
+});
+
+// BRO-2544 near-miss (caught by ship-check adversarial review before merge):
+// scripts/lib/venue-classification.js's normalizeVenueName() now strips a
+// leading "The " too, so data/west-end-venues.json's separate "the old vic"
+// entry LOOKS redundant with the plain "old vic" entry already present
+// (build-ob-venues.js-generated files store pre-normalized names) — deleting
+// it as "cleanup" is the natural-looking edit. It is NOT safe to delete:
+// the live Next.js app does not import this Node normalizer. It goes through
+// src/lib/stats/venue-match.ts's normalizeVenueKey (explicitly FROZEN,
+// documented as not stripping a leading article) via
+// src/lib/venue-classification.ts's exact Set.has() lookup. shows.json has
+// several entries with venue:"The Old Vic" verbatim — deleting the prefixed
+// entry would silently reclassify them from West End to Off-West-End on the
+// live site. Keep BOTH forms in this file; only scripts/lib's own
+// normalizeVenueName may safely lose the leading-"The" distinction.
+test('data/west-end-venues.json keeps "the old vic" alongside "old vic" (frontend normalizer does not strip a leading "The")', () => {
+  assert.ok(westEndVenues.includes('old vic'));
+  assert.ok(westEndVenues.includes('the old vic'));
 });
