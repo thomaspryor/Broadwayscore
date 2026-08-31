@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: ROUNDUP_ENTRIES pins external facts from a
+// paywalled NYT article with no repo-resident precursor file (independently
+// corroborated via Playbill/TheaterMania/Stage and Cinema/local-press
+// coverage) — there is no data/precursors/ source to derive this from.
 /**
  * BRO-155: NYT's "14 Off Broadway Shows (and 1 Festival) to Elevate Your
  * August" (2026-08-01) listed 15 items; data/shows.json had only 6. Root
