@@ -275,6 +275,36 @@ function resolvePathCheck(gate, repoRoot) {
   return gate && gate.cmd ? resolveCheckPaths(gate.cmd, { repoRoot }) : null;
 }
 
+// BRO-2647: both dispatchers' own REPO constant is hardcoded to the dev
+// machine's checkout (see bsc-next.js's/linear-next.js's REPO header
+// comments — deliberate, so a dispatch always shells out to vetted/merged
+// code, never an in-progress worktree's edits) and doesn't exist on a CI
+// runner. Passing that straight into resolvePathCheck() as repoRoot made
+// this guard refuse EVERY real acceptance path as phantom in CI — including
+// inside bsc-next.test.mjs's/linear-next.test.mjs's own real-dispatch
+// tests, which never stubbed process.exit for this guard because before
+// this existed there was nothing here to stub. That refusal's real,
+// un-mocked process.exit(1) truncated the file's TAP output mid-run (a real
+// process.exit() does not flush pending stdout) — the exact "zero
+// subtests, exitCode 1" signature that made main's Unit Tests job red.
+//
+// Extracted to ONE place (rather than fixed ad hoc at each call site) so a
+// third dispatcher copying this REPO pattern can't silently reintroduce the
+// same CI-only failure — dispatch-guards.test.mjs pins this function's
+// behavior AND that both known call sites use it.
+//
+// Only falls back to `moduleDir`'s own on-disk location when the hardcoded
+// path is absent: on the dev machine that path always exists (it's the
+// permanent main checkout), so this is a no-op there regardless of whether
+// the CALLING process's cwd is inside a worktree — real dispatches keep
+// running vetted/merged code exactly as before. Call this lazily (only
+// when the path check itself will run) so --force/--dry-run/--print-prompt
+// still skip the fs I/O entirely, matching resolvePathCheck()'s own
+// "don't do work whose result gets discarded" convention above.
+function resolveCanonicalRepoRoot(hardcodedRepo, moduleDir) {
+  return fs.existsSync(hardcodedRepo) ? hardcodedRepo : path.resolve(moduleDir, '..');
+}
+
 // ok:true alone is not enough to pass (Codex adversarial review, BRO-2569):
 // resolveCheckPaths can return ok:true with corrected:true when the named
 // path is a near-match of a real file (e.g. `tests/foo.test.mjs` rewritten
@@ -932,5 +962,6 @@ module.exports = {
   HEADLESS_BLOCKERS,
   // BRO-2569 — deliberately not in GUARD_NAMES, see the guard's own header.
   resolvePathCheck,
+  resolveCanonicalRepoRoot,
   pathVerifiabilityGuard,
 };
