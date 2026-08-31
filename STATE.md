@@ -1,50 +1,52 @@
-# STATE — BRO-2275 crown session (headless, 2026-08-27)
+# BRO-2597 — state as of this session's time-budget cutoff
 
-## Done and verified
-- **Acceptance PASS**: `node --test tests/unit/dispatch-stall-detection.test.mjs` → 19/19.
-- **Fixed main-red**: `test.yml` had failed 4 consecutive push runs on main. Two real test
-  failures fixed, one self-healed. Merge commit `f984da52ca7` on `origin/main`, verified by
-  content (`git show 'origin/main:<file>'`), 0 unpushed, 0 conflicts.
-  - `tests/unit/audit-same-job-breadcrumb-coverage.test.mjs` — exact-count 11 → floor `>= 11`.
-    All 12 real sites enumerated, all fields allowlisted, no cross-attribution.
-  - `tests/unit/email-capture-integrity.test.mjs` — added `src/app/api/feedback/route.ts` to
-    KNOWN_FALLBACKS, then (post `/code-review`) tightened the exemption to require the
-    violating LINE be a `process.env.X || ...` fallback. Negative control proved it catches a
-    bare literal at `route.ts:146`.
-  - `no [AUTO-FLAGGED] entries older than 30 days` — self-healed on main at 01:44:09Z.
-- **Outcome comment posted on BRO-2275.**
+## Done
+- Root cause found and fixed: `scripts/lib/push-with-retry.stranded-commit-cascade.test.sh`'s
+  fixture clone (`git clone -q "file://$TMP/origin.git" "$TMP/runner"`) relied on the bare
+  origin's implicit HEAD to pick a branch. HEAD is set from `init.defaultBranch` at bare-init
+  time and never updated after the seed pushed "main" — on hosts where the default differs
+  (CI), the clone checks out nothing, matching the exact reported failure.
+- Fix: pinned `--branch main` on the clone + added a fail-loud assertion right after cloning.
+  Reproduced the CI failure locally via `git config --global init.defaultBranch master`,
+  confirmed the fix resolves it, then reverted the global config.
+- `/second-opinion` run BEFORE first edit (CLAUDE.md rule 18, shared-infra scope). Both plan
+  and implementation verdicts recorded in `.claude/review-verdicts.jsonl`.
+- `/what-else` found 2 real cousins with the identical dangling-HEAD clone pattern (not
+  CI-wired, dev-time-only tools, so they didn't cause the P0, but would silently misbehave on
+  a differently-configured host): `scripts/lib/push-mutex.race-test.sh:45` and
+  `scripts/lib/test-sync-check.sh:63,98`. Fixed both the same way. `test-sync-check.sh`
+  verified 11/11 pass. `push-mutex.race-test.sh` run was killed (exit 137) by the session's
+  own 10-min hard-kill / background-task teardown, NOT a regression — it's an unrelated
+  pre-existing slow race test (two pushers with sleeps + retry backoff), not touched
+  substantively by the fix (only the clone line changed). Re-run it standalone before trusting
+  it fully: `timeout 60 bash scripts/lib/push-mutex.race-test.sh`.
+- PR #769 opened, all its own CI checks passed (TypeScript, Lint, Design Token, **Unit Tests
+  pass @ 8m20s**, E2E), then merged to main via `gh pr merge 769 --merge --auto` →
+  merge commit `afad543aeb1` on origin/main.
+- Linear BRO-2597 updated to `in-review` mid-session with full summary (before the cousin-fix
+  commit landed).
 
-## Open at hand-off
-- **CI run `33032085979`** (on merge commit `f984da52c`) was still `in_progress` at session end.
-  Confirm it went green:
-  `gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'`
-  It should clear the `Unit Tests` job. The `Data Validation` job was ALSO failing before my
-  change, on two steps I did NOT touch: `Audit outlet-registry gaps` and
-  `Validate provisional show venue+dates against Playbill`. **Those are still open.**
-- **BRO-714 is complete and live on prod but its card sits in "In Progress" with no completion
-  comment.** Verified: prod serves 7 reviews incl. NYT @50 for
-  `monte-cristo-the-york-theatre-company-off-broadway-2026`. Just needs closing.
-- BRO-679, BRO-504 have unmerged remote branches. 31 unmerged job branches total.
+## NOT yet done — this is the one remaining acceptance-criteria step
+- **Confirm `Unit Tests` is green on the post-merge run on `main`** (not just the PR's own
+  run — the issue explicitly requires the main-branch confirmation, not just a passing PR).
+  A new run was queued for merge commit `afad543aeb18b1a563eee03965d1f0fa5d29de20`:
+  run id `33396778294`, status was `in_progress` at cutoff.
+  Next command: `gh run view 33396778294 --json status,conclusion,jobs`
+  (or `gh run list --branch main --workflow=test.yml --limit=1`)
+- Once confirmed green, report to Linear as done:
+  ```
+  node scripts/linear-session.js report --issue=BRO-2597 --status=done \
+    --summary="Fixed dangling-HEAD fixture clone bug in push-with-retry.stranded-commit-cascade.test.sh (pinned --branch main + fail-loud assertion) plus 2 cousins found via /what-else (push-mutex.race-test.sh, test-sync-check.sh). PR #769 merged to main (afad543aeb1). Confirmed Unit Tests green on main post-merge run <RUN_ID>." \
+    --key-files="scripts/lib/push-with-retry.stranded-commit-cascade.test.sh,scripts/lib/push-mutex.race-test.sh,scripts/lib/test-sync-check.sh" \
+    --verification="gh run view <RUN_ID> --json conclusion (Unit Tests job = success) on main post-merge"
+  ```
+- If the main run turns out RED (unlikely — PR's own run of the exact same tree state
+  passed), investigate immediately; do not just re-report done.
+- After Linear is updated to done, run `/wrap-up` to close out cleanly (not yet run this
+  session — deferred for the CI-confirmation step above).
 
-## The finding to act on next
-**Zero of the 13 open P1s are dispatchable** — 8 refused `NO_VERIFY_CMD`, 5 `ASYNC_WAIT_GATE`.
-The funnel's 119 "ready" cards are 116 P2s, mostly auto-filed `BSC Daily:` health cards.
-Fix by rewriting each P1's acceptance to put a safe-form command in **inline single backticks,
-first in the body**. Several already NAME real commands that the extractor cannot see because
-they are bare text, not backticked. Verified directly:
-- `node scripts/audit-help-flag-safety.js` → exit 0
-- `node scripts/audit-sibling-title-misroute.js --strict` → exit 0
-- `node scripts/audit-stale-flag-after-url-correction.js --gate` → **exit 1, 120 files** — the
-  #483 cluster (BRO-2050/2090/2093) is genuinely open. Remedy is a refetch, NEVER a flag-clear.
-
-## Exact next command
-```
-gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'
-```
-Then, if green, re-run the funnel: `node /tmp/funnel2.js` (recreate from BRO-2275 transcript if
-gone) and start rewriting P1 acceptance blocks.
-
-## Do not re-litigate
-BRO-268 FAIL verdict — do not merge. BRO-2439 deliberately held. BRO-113/140/580 stale
-ship-check verdicts. cmux still cannot attach a terminal — no tab successor crowned; needs an
-owner-side cmux restart. Forbes call with Marc Hershberg still unscheduled (Nov 1 publish).
+## Worktree state
+- Branch `job/linear-BRO-2597-mth8w89h` is fully pushed and merged into main. No uncommitted
+  changes. Safe to remove worktree AFTER the main-CI-confirmation step above is done and
+  Linear is marked done (or if abandoning, at least confirm main's CI first — that's the
+  actual point of this ticket).

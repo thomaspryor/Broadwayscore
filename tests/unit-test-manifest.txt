@@ -6,6 +6,7 @@ scripts/audit-cross-show-url-collisions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-errexit-unguarded-substitution.test.mjs
+scripts/audit-false-balance.test.mjs
 scripts/audit-fetch-timeouts.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
@@ -120,6 +121,7 @@ scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/alert-sender-bypass.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
+scripts/tests/brightdata-daily-spend.test.mjs
 scripts/tests/bww-roundup-yield-provenance.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
@@ -632,6 +634,7 @@ tests/unit/serp-session-cap.test.mjs
 tests/unit/serp-slug-discovery.test.mjs
 tests/unit/session-metrics.test.mjs
 tests/unit/session-start-disk-check.test.mjs
+tests/unit/settings-hook-paths.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs
