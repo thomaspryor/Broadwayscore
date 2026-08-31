@@ -138,6 +138,64 @@ jobs:
           git commit -m 'x'
 `;
 
+const MULTILINE_GIT_ADD_EXISTING_FIXTURE = `name: Good Example (git-add-existing.sh, multi-line args)
+on:
+  push:
+jobs:
+  dmarc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          bash scripts/lib/git-add-existing.sh \\
+            data/audit/dmarc-summary.json \\
+            data/audit/dmarc-report-ledger.jsonl \\
+            data/audit/alert-ledger.json \\
+            data/audit/alert-digest-queue.json
+          git commit -m 'x'
+`;
+
+const MULTILINE_BARE_GIT_ADD_FIXTURE = `name: Good Example (bare git add, multi-line args)
+on:
+  push:
+jobs:
+  ok:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          git add \\
+            data/video-reviews.json \\
+            data/audit/alert-ledger.json \\
+            public/images/video-reviews/
+
+          git commit -m 'x'
+`;
+
+const MULTILINE_MISSING_TARGET_FIXTURE = `name: Bad Example (multi-line git add, target file NOT in the list)
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          bash scripts/lib/git-add-existing.sh \\
+            data/audit/some-other-file.json \\
+            data/audit/another-file.json
+          git commit -m 'x'
+`;
+
 const NO_ROUTE_ALERT_FIXTURE = `name: Unrelated
 on:
   push:
@@ -192,6 +250,20 @@ test('flags routeAlert in one job when the commit happens in a DIFFERENT job', (
   const violations = findMissingLedgerCommits(OTHER_JOB_COMMIT_FIXTURE);
   assert.equal(violations.length, 1);
   assert.match(violations[0], /job 'alerter'/);
+});
+
+test('clean: git-add-existing.sh with args on separate continuation lines (finance-ingest.yml dmarc shape)', () => {
+  assert.deepEqual(findMissingLedgerCommits(MULTILINE_GIT_ADD_EXISTING_FIXTURE), []);
+});
+
+test('clean: bare `git add \\` with args on separate continuation lines (weekly-video-reviews.yml shape)', () => {
+  assert.deepEqual(findMissingLedgerCommits(MULTILINE_BARE_GIT_ADD_FIXTURE), []);
+});
+
+test('flags multi-line git-add-existing.sh whose continuation args do NOT include the ledger file', () => {
+  const violations = findMissingLedgerCommits(MULTILINE_MISSING_TARGET_FIXTURE);
+  assert.equal(violations.length, 1);
+  assert.match(violations[0], /job 'broken'/);
 });
 
 test('no violation when the workflow never calls routeAlert/resolveCondition', () => {

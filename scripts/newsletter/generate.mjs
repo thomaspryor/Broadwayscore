@@ -700,7 +700,16 @@ function offBroadwayOpenings() {
   const withScore = shows
     .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
       && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
-      && notFeatured(s.id) && !lastFeaturedIds.has(s.id) // suppress last week's shows
+      // lastFeaturedIds suppresses a re-surface within the grace window — but
+      // never a show whose openingDate falls IN THIS WEEK: that event could not
+      // possibly have been legitimately covered by an earlier issue. Without
+      // this bypass a stale/incorrect state.json entry (e.g. an openingDate
+      // correction after the fact, or any other cause of bad history) can
+      // permanently block a show's real opening feature forever — exactly what
+      // happened to The Real Ivanov (owner-reported 2026-08-30): a "featured"
+      // entry from 2026-08-10, three weeks before its actual 2026-08-25 press
+      // night, suppressed it from ever getting an "Opened Off-Broadway" card.
+      && notFeatured(s.id) && (inWeek(s.openingDate) || !lastFeaturedIds.has(s.id))
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
@@ -2208,9 +2217,18 @@ const sections = createSectionRunner();
 // Reordering silently moves shows between sections (no crash). The subject/lede
 // block (below) ALSO depends on bwO/obO being computed first — it reads
 // bwO.list/obO.list, so it must stay after these calls.
-const bwO = broadwayOpenings();
-const obO = offBroadwayOpenings();
-const otO = outOfTownOpenings();
+//
+// IS_WE-gated like every other Broadway/OB-only section (see the mover/clo/
+// announced/box/commercial guards below, added 2026-07-12 for the exact same
+// failure mode): sectionOrder never renders bwO.html/obO.html in the WE
+// edition, but running them unconditionally still called markFeatured() on
+// every NYC show that opened that week, polluting the WE edition's own
+// data/newsletter-state.json featuredShowIds entry with Broadway/OB show ids
+// alongside its real West End ones (found + fixed 2026-08-30 while tracing
+// why a real NYC opening's own feature got suppressed weeks later).
+const bwO = IS_WE ? { html: null, list: [] } : broadwayOpenings();
+const obO = IS_WE ? { html: null, list: [] } : offBroadwayOpenings();
+const otO = outOfTownOpenings(); // already IS_WE-gated inside its own body
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
 sections.run('out-of-town-openings', () => otO.html);
