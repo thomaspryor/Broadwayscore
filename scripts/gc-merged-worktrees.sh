@@ -97,18 +97,37 @@ GC_LOCK_DIR="$GC_LOCK_DIR_DEFAULT"
 # this guard accepted a scratchpad path and deleted it. So also require the
 # LAST path component to be lock-shaped, which no working directory is.
 if [ -n "${WORKTREE_GC_LOCK_DIR:-}" ]; then
+  gc_lock_override_ok=0
   case "$WORKTREE_GC_LOCK_DIR" in
     *..*) ;;                                       # reject traversal outright
     /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
       case "${WORKTREE_GC_LOCK_DIR##*/}" in
-        lock|*.lock|*-lock) GC_LOCK_DIR="$WORKTREE_GC_LOCK_DIR" ;;
+        lock|*.lock|*-lock) GC_LOCK_DIR="$WORKTREE_GC_LOCK_DIR"; gc_lock_override_ok=1 ;;
       esac
       ;;
   esac
-  if [ "$GC_LOCK_DIR" = "$GC_LOCK_DIR_DEFAULT" ]; then
+  # Track acceptance explicitly. Inferring it from
+  # [ "$GC_LOCK_DIR" = "$GC_LOCK_DIR_DEFAULT" ] mislabels the case where the
+  # caller passes the production path itself — that path ends in .lock and IS
+  # accepted, but the equality test called it "rejected" straight into the
+  # committed audit log people read during a disk incident.
+  if [ "$gc_lock_override_ok" != "1" ]; then
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
   fi
 fi
+# Validate-only mode: exit after the lock-path decision, before acquiring any
+# lock. Lets the lock suite assert the rejection branch WITHOUT the run going on
+# to take the PRODUCTION lock and delete it in its EXIT trap, which on this Mac
+# forces a concurrent launchd GC to SKIP-RUN. Production never sets it.
+if [ -n "${WORKTREE_GC_VALIDATE_ONLY:-}" ]; then
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] VALIDATE-ONLY  lock dir resolved to $GC_LOCK_DIR" | tee -a "$LOG"
+  exit 0
+fi
+# -p on the PARENT (not the lock dir itself — the lock's atomicity depends on
+# mkdir failing when it already exists). Without this a valid but parentless
+# override fails ENOENT, the stale-pid branch finds no pid file, and the script
+# reports "another invocation already in progress" forever when nothing is.
+mkdir -p "$(dirname "$GC_LOCK_DIR")" 2>/dev/null || true
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
@@ -165,10 +184,6 @@ is_stale() {
 # merged into origin/main, so nothing here risks losing committed work — only
 # whether it's safe to discard whatever LOCAL uncommitted noise is blocking
 # `git worktree remove`. Note: this only sees paths `git status --porcelain`
-# reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
-# content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
-# it either way and is deleted by ANY worktree removal, force or plain; that
-# exposure predates this function and is unchanged by it.
 # BRO-2607. The real removal path below calls `git worktree remove` with NO
 # --force, and git refuses that on ANY dirty tree. The dry-run branch must
 # model the same refusal, or a worktree holding uncommitted SOURCE gets
@@ -179,9 +194,21 @@ is_stale() {
 # the dry-run calling them "fully merged" was the defect. Keep the dry-run's
 # three-way split in lockstep with the real path's three outcomes.
 is_worktree_clean() {
-  [ -z "$(git -C "$1" status --porcelain 2>/dev/null)" ]
+  local st
+  # `|| return 1` is load-bearing: a worktree whose directory was deleted
+  # externally is still listed by `git worktree list --porcelain` (the prune
+  # runs after this loop), so flush() reaches it and `git status` FAILS with
+  # empty output. Treating that as clean would log "fully merged /
+  # WOULD-REMOVE" while the real `git worktree remove` errors and logs SKIP —
+  # exactly the divergence this whole change exists to remove.
+  st=$(git -C "$1" status --porcelain 2>/dev/null) || return 1
+  [ -z "$st" ]
 }
 
+# reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
+# content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
+# it either way and is deleted by ANY worktree removal, force or plain; that
+# exposure predates this function and is unchanged by it.
 is_safe_dirty() {
   local p="$1" status line f
   status=$(git -C "$p" status --porcelain 2>/dev/null)
@@ -531,6 +558,13 @@ flush() {
     else
       log "WOULD-SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
       skipped=$((skipped+1))
+      # Mirror the real SKIP arm's stale-artifact strip so freed= predicts the
+      # real run here too (strip_build_artifacts logs WOULD-STRIP and does not
+      # delete when DRY_RUN=1).
+      if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+        strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+        strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
+      fi
     fi
     path="" branch=""; return
   fi

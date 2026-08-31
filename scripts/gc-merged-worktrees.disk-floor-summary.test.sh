@@ -24,6 +24,10 @@ SCRIPT="$SCRIPT_DIR/gc-merged-worktrees.sh"
 # state a real GC then trips over.
 GC_TEST_LOCK_BASE="$(mktemp -d "${TMPDIR:-/tmp}/gc-df-test-XXXXXX")"
 export WORKTREE_GC_LOCK_DIR="$GC_TEST_LOCK_BASE/lock"
+# Redirect the audit log too — same reasoning as the lock suite: without
+# it this appends fixture lines to the TRACKED data/audit/worktree-gc.log,
+# and the hardcoded /Users/tompryor path does not exist on a Linux runner.
+export WORKTREE_GC_LOG="$GC_TEST_LOCK_BASE/worktree-gc.log"
 trap 'rm -rf "$GC_TEST_LOCK_BASE"' EXIT
 fail=0
 

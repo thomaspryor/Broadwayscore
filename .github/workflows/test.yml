@@ -1522,6 +1522,9 @@ on:
       # CI. It guards the mutual exclusion that stops two GCs deleting
       # worktrees concurrently.
       - 'scripts/gc-merged-worktrees.lock.test.sh'
+      # Same orphan state as the lock suite above: edited by BRO-2607 and
+      # wired into nothing. It guards the emergency disk-floor cleanup path.
+      - 'scripts/gc-merged-worktrees.disk-floor-summary.test.sh'
       # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
       # filing + headless dispatch; colocated test runs in the
       # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
@@ -3589,6 +3592,13 @@ jobs:
         # the WORKTREE_GC_LOCK_DIR seam so running it cannot unlock a live GC.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/gc-merged-worktrees.lock.test.sh
+
+      - name: Run worktree-gc disk-floor summary test (bash integration)
+        # BRO-2607: orphaned the same way the lock suite was — no paths entry,
+        # no run step, not in any manifest, so a break in the disk-floor
+        # emergency-cleanup guard was invisible.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/gc-merged-worktrees.disk-floor-summary.test.sh
 
       - name: Run sync-audit-checkout test (bash integration)
         # Task #1563: local main drifted 119 commits behind origin because

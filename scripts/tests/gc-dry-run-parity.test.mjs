@@ -26,6 +26,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SCRIPT = fileURLToPath(new URL('../gc-merged-worktrees.sh', import.meta.url));
+// The same helper gc-merged-worktrees.sh consults for its repo set, so the
+// pre-flight in runGc() resolves exactly what the script will.
+const REPOS_HELPER = fileURLToPath(new URL('../lib/worktree-gc-repos.js', import.meta.url));
 
 /** Every fixture root built by this suite, torn down in `after` (BRO-2607 is a
  *  disk-pressure card; a test that leaks ~2MB of git fixtures per run is the
@@ -88,39 +91,71 @@ function buildFixture() {
   return { tmp, repo, wtRoot };
 }
 
+function gcEnv(fixture, dryRun) {
+  return {
+    ...process.env,
+    WORKTREE_GC_LOG: path.join(fixture.tmp, dryRun ? 'dry.log' : 'real.log'),
+    // MUST end in lock / *.lock / *-lock. gc-merged-worktrees.sh validates this
+    // override (it is an `rm -rf` target) and silently falls back to the
+    // PRODUCTION lock otherwise — which would either make this suite flaky
+    // against the live hourly GC, or make that GC skip a real run during
+    // exactly the disk pressure this card is about.
+    WORKTREE_GC_LOCK_DIR: path.join(fixture.tmp, `${dryRun ? 'dry' : 'real'}.lock`),
+    WORKTREE_GC_REPOS_JSON: JSON.stringify([
+      { name: 'fx', path: fixture.repo, worktreeDir: '.claude/worktrees', buildArtifactDirs: [] },
+    ]),
+    // 0 disables the emergency disk-floor cleanup; a high stale-days keeps
+    // the build-artifact stripper away from these fresh fixtures. Neither
+    // path is under test here.
+    WORKTREE_GC_DISK_FLOOR_GB: '0',
+    WORKTREE_GC_STALE_DAYS: '9999',
+    WORKTREE_GC_SCRATCHPAD_STALE_DAYS: '9999',
+  };
+}
+
 function runGc(fixture, { dryRun }) {
-  const logFile = path.join(fixture.tmp, dryRun ? 'dry.log' : 'real.log');
+  const env = gcEnv(fixture, dryRun);
+
+  // PRE-FLIGHT ISOLATION GUARD — this must happen BEFORE anything destructive.
+  // These tests run the GC for real (dryRun:false genuinely removes worktrees)
+  // and the ONLY thing confining it to the fixture is WORKTREE_GC_REPOS_JSON.
+  // getGcRepos() in scripts/lib/worktree-gc-repos.js falls back to
+  // DEFAULT_REPOS — the real ~/Broadwayscore and ~/BroadwayScorecard-app —
+  // whenever the override is malformed or fails isValidRepoEntry (a tab,
+  // newline or comma anywhere in the path is enough, and TMPDIR can supply
+  // one), and it logs NOTHING when it does. Checking the script's output
+  // afterwards would be too late: the removals already happened. So resolve
+  // the repo set first and refuse to run unless it is exactly the fixture.
+  const repoList = execFileSync('node', [REPOS_HELPER, '--list'], {
+    encoding: 'utf8',
+    env,
+  }).trim();
+  const names = repoList.split('\n').filter(Boolean).map((l) => l.split('\t')[0]);
+  assert.deepEqual(
+    names,
+    ['fx'],
+    `WORKTREE_GC_REPOS_JSON was not honoured — the GC would run against [${names.join(', ')}], ` +
+      `which includes the REAL repos. Refusing to run it.\n${repoList}`
+  );
+
   const out = execFileSync('bash', [SCRIPT, ...(dryRun ? ['--dry-run'] : [])], {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: {
-      ...process.env,
-      WORKTREE_GC_LOG: logFile,
-      WORKTREE_GC_LOCK_DIR: path.join(fixture.tmp, `lock-${dryRun ? 'dry' : 'real'}`),
-      WORKTREE_GC_REPOS_JSON: JSON.stringify([
-        { name: 'fx', path: fixture.repo, worktreeDir: '.claude/worktrees', buildArtifactDirs: [] },
-      ]),
-      // 0 disables the emergency disk-floor cleanup; a high stale-days keeps
-      // the build-artifact stripper away from these fresh fixtures. Neither
-      // path is under test here.
-      WORKTREE_GC_DISK_FLOOR_GB: '0',
-      WORKTREE_GC_STALE_DAYS: '9999',
-      WORKTREE_GC_SCRATCHPAD_STALE_DAYS: '9999',
-    },
+    env,
   });
 
-  // ISOLATION GUARD, checked before any assertion can depend on the output.
-  // These tests run the GC DESTRUCTIVELY (dryRun:false actually removes
-  // worktrees) and the ONLY thing confining it to the fixture is
-  // WORKTREE_GC_REPOS_JSON. gc-merged-worktrees.sh logs
-  // "worktree-gc-repos.js unavailable — falling back to web repo only" and
-  // then GCs $PRIMARY_REPO (the developer's real ~/Broadwayscore) if that
-  // helper cannot be loaded. Fail loudly instead of quietly eating the
-  // developer's worktrees.
+  // Belt and braces: the LOGGED fallback (node or the helper missing entirely),
+  // which the pre-flight above cannot see because it needs node itself.
   assert.ok(
     !out.includes('falling back to web repo only'),
     `GC did not honour WORKTREE_GC_REPOS_JSON and fell back to the REAL repo. Refusing to ` +
       `assert on this run.\n${out}`
+  );
+  // And prove the lock seam was actually accepted, or this run silently took
+  // the production lock (the finding that motivated the *.lock naming above).
+  assert.ok(
+    !out.includes('WORKTREE_GC_LOCK_DIR rejected'),
+    `the fixture's lock path was rejected and this run took the PRODUCTION lock:\n${out}`
   );
   for (const line of out.split('\n')) {
     if (/^\[[^\]]+\] (WOULD-\S+|REMOVE|FORCE-REMOVE|SKIP|KEEP)\b/.test(line)) {

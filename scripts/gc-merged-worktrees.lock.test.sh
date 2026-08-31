@@ -16,8 +16,14 @@ SCRIPT="$SCRIPT_DIR/gc-merged-worktrees.sh"
 # This test rm -rf's LOCK_DIR in its own cleanup trap; against the production
 # path that deletes a live launchd/cron GC's lock and lets two real GCs run
 # concurrently, which is exactly what the lock exists to prevent.
-LOCK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/gc-lock-test-XXXXXX")/lock"
+LOCK_BASE="$(mktemp -d "${TMPDIR:-/tmp}/gc-lock-test-XXXXXX")"
+LOCK_DIR="$LOCK_BASE/lock"
 export WORKTREE_GC_LOCK_DIR="$LOCK_DIR"
+# Also redirect the audit log. Without this the suite appends fixture lines to
+# the TRACKED data/audit/worktree-gc.log, and on a Linux CI runner the
+# hardcoded /Users/tompryor path does not exist so every `tee -a` in the script
+# spews "No such file or directory" for the whole run.
+export WORKTREE_GC_LOG="$LOCK_BASE/worktree-gc.log"
 fail=0
 
 cleanup() { rm -rf "$LOCK_DIR"; }
@@ -82,7 +88,11 @@ VICTIM="$CASE3_BASE/not-a-lock-dir"
 mkdir -p "$VICTIM"; echo precious > "$VICTIM/keepme.txt"; echo 999999 > "$VICTIM/pid"
 NOWHERE='[{"name":"none","path":"/nonexistent-repo-for-lock-test","worktreeDir":".claude/worktrees","buildArtifactDirs":[]}]'
 
-C3_OUT=$(WORKTREE_GC_LOCK_DIR="$VICTIM" WORKTREE_GC_REPOS_JSON="$NOWHERE" bash "$SCRIPT" --dry-run 2>&1)
+# WORKTREE_GC_VALIDATE_ONLY exits right after the lock-path decision, before
+# any lock is acquired. Without it this case falls back to the PRODUCTION
+# lock, takes it, and deletes it in the EXIT trap — which on this machine
+# makes a concurrent hourly launchd GC skip a real run.
+C3_OUT=$(WORKTREE_GC_VALIDATE_ONLY=1 WORKTREE_GC_LOCK_DIR="$VICTIM" WORKTREE_GC_REPOS_JSON="$NOWHERE" bash "$SCRIPT" --dry-run 2>&1)
 if ! grep -q "WORKTREE_GC_LOCK_DIR rejected" <<< "$C3_OUT"; then
   echo "FAIL[3]: a non-lock-shaped WORKTREE_GC_LOCK_DIR was ACCEPTED — it is an rm -rf target"; fail=1
 elif [ ! -f "$VICTIM/keepme.txt" ]; then
@@ -93,7 +103,7 @@ fi
 
 # ...while a genuinely lock-shaped temp path is still honoured, or the seam
 # these tests depend on would be useless.
-C3B_OUT=$(WORKTREE_GC_LOCK_DIR="$CASE3_BASE/lock" WORKTREE_GC_REPOS_JSON="$NOWHERE" bash "$SCRIPT" --dry-run 2>&1)
+C3B_OUT=$(WORKTREE_GC_VALIDATE_ONLY=1 WORKTREE_GC_LOCK_DIR="$CASE3_BASE/lock" WORKTREE_GC_REPOS_JSON="$NOWHERE" bash "$SCRIPT" --dry-run 2>&1)
 if grep -q "WORKTREE_GC_LOCK_DIR rejected" <<< "$C3B_OUT"; then
   echo "FAIL[4]: a valid temp lock path was rejected — the test seam is broken"; fail=1
 else
