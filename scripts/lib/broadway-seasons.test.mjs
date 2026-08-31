@@ -53,6 +53,24 @@ test('isDateInSeason agrees with getSeasonForDate at the boundary', () => {
   assert.equal(isDateInSeason('2026-06-30', '2025-2026'), true);
 });
 
+// Regression guard (2026-08-30, second-opinion review finding on the review
+// above): getSeasonForDate('2026-07-01T00:00:00.000Z') used to fall through
+// to the untouched new Date(str) branch and reproduce the exact bug this
+// file exists to fix, just for an ISO-datetime string instead of a plain
+// date. And isDateInSeason's contract is a plain boolean (its old
+// Date-range-comparison implementation never threw on bad input) — delegating
+// to getSeasonForDate (which throws by design) must not leak that throw.
+test('getSeasonForDate: an ISO-datetime string with a date component is parsed the same as the plain date', () => {
+  assert.equal(getSeasonForDate('2026-07-01T00:00:00.000Z'), '2026-2027');
+  assert.equal(getSeasonForDate('2026-06-30T23:59:59.999Z'), '2025-2026');
+});
+
+test('isDateInSeason returns false (never throws) for unparseable input', () => {
+  assert.equal(isDateInSeason('not-a-date', '2026-2027'), false);
+  assert.equal(isDateInSeason(new Date('garbage'), '2026-2027'), false);
+  assert.doesNotThrow(() => isDateInSeason('not-a-date', '2026-2027'));
+});
+
 test('getCurrentSeason matches getSeasonForDate(now)', () => {
   assert.equal(getCurrentSeason(), getSeasonForDate(new Date()));
 });
