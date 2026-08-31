@@ -42,21 +42,31 @@ function candidatesFrom(text) {
 /**
  * @param {string} notes - the card's full notes/body
  * @param {(cmd:string)=>boolean} isSafeCheckCommand - injected validator
- * @returns {{cmd: string|null, reason: string|null}}
+ * @param {(cmd:string)=>{kind:string|null}} [explainUnsafeCheckCommand] - optional
+ *   injected diagnostic (autonomous-triage-core.js). When provided, a refusal
+ *   carries `kind` (one of 'no-section' | 'no-command' | the SAFE_CHECK_FORMS
+ *   kinds — 'shape' | 'path-prefix' | 'traversal' | 'mutating-script' |
+ *   'basename') so callers can distinguish "wrong directory" from "wrong
+ *   shape" from "no command at all" instead of one opaque reason string
+ *   (BRO-2570 — audit-card-verifiability.js reported one refusal reason
+ *   board-wide; this is what lets it report WHY). Optional and separate from
+ *   isSafeCheckCommand so this module stays dependency-free when a caller
+ *   doesn't need the breakdown.
+ * @returns {{cmd: string|null, reason: string|null, kind?: string|null}}
  */
-function extractVerifyCmd(notes, isSafeCheckCommand) {
+function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) {
   const text = String(notes || '');
   const scoped = [];
   const section = SECTION_RE.exec(text);
   if (section) scoped.push(section[1]);
   for (const m of text.matchAll(VERIFY_LINE_RE)) scoped.push(m[1]);
-  if (!scoped.length) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line' };
+  if (!scoped.length) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line', kind: 'no-section' };
 
   const candidates = scoped.flatMap(candidatesFrom)
     // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
     .map(c => c.trim().replace(/^[$>]\s*/, ''))
     .filter(Boolean);
-  if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)' };
+  if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)', kind: 'no-command' };
 
   // Prefer the SPECIFIC command over the generic one. A card that lists both
   // `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
@@ -69,9 +79,13 @@ function extractVerifyCmd(notes, isSafeCheckCommand) {
     const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
     return { cmd: best, reason: null };
   }
+  const kind = typeof explainUnsafeCheckCommand === 'function'
+    ? explainUnsafeCheckCommand(candidates[0]).kind
+    : null;
   return {
     cmd: null,
     reason: `no acceptance-criteria command passed safe-form validation (first candidate: ${candidates[0].slice(0, 120)})`,
+    kind,
   };
 }
 
