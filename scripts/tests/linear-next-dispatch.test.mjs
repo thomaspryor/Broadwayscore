@@ -12,7 +12,17 @@
 // real exported scripts/linear-next.js main() — same DI pattern already used
 // throughout tests/unit/linear-next.test.mjs — so a regression in the
 // production wiring, not just the underlying guard, fails this test.
-import { test, describe } from 'node:test';
+import { test, describe, afterEach } from 'node:test';
+// Same class as tests/unit/linear-next.test.mjs: this file stubs process.exit,
+// but code under test can also signal failure with `process.exitCode = 1`,
+// which a per-test finally cannot restore because it lives on the runner's own
+// process. node --test then fails the whole FILE with no named failing subtest.
+// Resetting after each test clears only that leak; a genuinely failing test
+// still fails the file (verified).
+afterEach(() => {
+  process.exitCode = 0;
+});
+
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
