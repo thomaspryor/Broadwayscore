@@ -1,44 +1,11 @@
 {
-  "generatedAt": "2026-08-29T15:02:57.194Z",
+  "generatedAt": "2026-08-31T00:09:53.046Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 144,
-  "clean": 142,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
-      "openingDate": "2026-08-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.05 vs local 75.21 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
-    },
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.66 vs local 79.82 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    }
-  ]
+  "checked": 139,
+  "clean": 139,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

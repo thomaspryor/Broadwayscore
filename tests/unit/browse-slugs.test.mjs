@@ -21,9 +21,20 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getBrowseSlug } from '../../src/lib/browse-slugs';
+import { getBrowseSlug, getSeasonSlug } from '../../src/lib/browse-slugs';
 
 const CATEGORIES = ['broadway', 'west-end', 'off-west-end', 'off-broadway', undefined];
+
+// Regression guard (2026-08-30): `new Date("2026-07-01")` parses as UTC
+// midnight, which reads back as June 30 in America/New_York — misrouting the
+// season-boundary anchor date to the PRIOR season on the one day a year the
+// boundary itself falls on. Fixed to parse "YYYY-MM-DD" components directly;
+// scripts/lib/broadway-seasons.js had the identical bug (see its own test).
+test('getSeasonSlug resolves the exact July 1 boundary to the NEW season, not the prior one', () => {
+  assert.equal(getSeasonSlug('broadway', '2026-07-01'), '2026-2027-broadway-season');
+  assert.equal(getSeasonSlug('broadway', '2026-06-30'), '2025-2026-broadway-season');
+  assert.equal(getSeasonSlug('off-broadway', '2026-01-01'), '2025-2026-broadway-season');
+});
 
 test('musical resolves to a musicals browse page in every category', () => {
   assert.equal(getBrowseSlug('broadway', 'musical'), 'best-broadway-musicals');

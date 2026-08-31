@@ -45,6 +45,7 @@ scripts/bsc-reconcile.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
 scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
+scripts/cloud-memory-sync.test.mjs
 scripts/discover-new-shows.test.mjs
 scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
@@ -56,8 +57,10 @@ scripts/fetch-show-images-auto.test.mjs
 scripts/flag-wrong-production-by-date.test.mjs
 scripts/gather-reviews.test.mjs
 scripts/import-notion-to-linear.test.mjs
+scripts/ingest-dmarc-reports.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
+scripts/lib/bww-archive-category-guard.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/cmux-workspaces.test.mjs
@@ -65,6 +68,8 @@ scripts/lib/collect-time-budget.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
 scripts/lib/cyrus-runner-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
+scripts/lib/dmarc-analysis.test.mjs
+scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs
@@ -88,6 +93,7 @@ scripts/newsletter/section-credential-guard.test.mjs
 scripts/newsletter/we-opening-stories.test.mjs
 scripts/newsletter/we-openings-section.test.mjs
 scripts/newsletter/we-openings-tier-order.test.mjs
+scripts/notion-action-poll-retired.test.mjs
 scripts/notion-action-poll.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
@@ -333,6 +339,7 @@ tests/unit/duplicate-dispatch-guard.test.mjs
 tests/unit/duplicate-flag-inheritance.test.mjs
 tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
+tests/unit/enrich-card-acceptance-drafting.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/essay-intro-nonreview-fp.test.mjs
 tests/unit/exact-title-and-clone-guards.test.mjs
@@ -702,6 +709,7 @@ tests/unit/wet-title-extraction.test.mjs
 tests/unit/whatsonstage-extractor.test.mjs
 tests/unit/workflow-line-length.test.mjs
 tests/unit/workflow-run-coverage.test.mjs
+tests/unit/worktree-gc-multi-repo.test.mjs
 tests/unit/worktree-gc-reclaim.test.mjs
 tests/unit/worktree-live-lease-check.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs

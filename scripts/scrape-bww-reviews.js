@@ -31,9 +31,10 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/bww-archive-category-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -52,6 +53,20 @@ const reviewsArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-r
 const roundupArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const showsPath = path.join(__dirname, '../data/shows.json');
 
+// Memoized showId -> same-title-sibling categories index, built once per
+// process from the same shows.json the audit reads. Lazy because loadShows()
+// is not cheap and most runs touch only a handful of shows.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  const showById = {};
+  for (const s of loadShows()) {
+    if (s && s.id) showById[s.id] = s;
+  }
+  _siblingCategoriesCache = buildSiblingCategoriesByTitle(showById);
+  return _siblingCategoriesCache;
+}
+
 // API keys
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
@@ -61,6 +76,8 @@ const stats = {
   reviewsPagesFetched: 0,
   reviewsPagesHit: 0,
   reviewsPagesMiss: 0,
+  reviewsPagesCategoryBlocked: 0,
+  cachePurgedPoisoned: 0,
   roundupsFetched: 0,
   roundupsHit: 0,
   roundupsMiss: 0,
@@ -313,12 +330,22 @@ function constructBwwReviewsSlugs(show) {
 async function fetchBwwReviewsPage(show, showId, options = {}) {
   const archivePath = path.join(reviewsArchiveDir, `${showId}.html`);
 
-  // Check cache freshness
-  if (!options.force && fs.existsSync(archivePath)) {
-    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-    if (age < 14) {
-      console.log(`  [CACHE] /reviews/ for ${showId}`);
-      return fs.readFileSync(archivePath, 'utf8');
+  // Check cache freshness. A fresh mtime alone is not trusted — BRO-2549:
+  // the write-time guard below (checkArchiveCategory) only stops a poisoned
+  // page being WRITTEN. A poisoned file that arrives some other way (a
+  // restore, a manual copy, a different writer, a rolled-back deploy) would
+  // otherwise be served as-is for up to 14 days.
+  if (!options.force) {
+    const cached = readCachedArchiveIfValid(
+      archivePath, 14, show, siblingCategoriesByShowId()[showId],
+    );
+    if (cached) {
+      if (cached.valid) {
+        console.log(`  [CACHE] /reviews/ for ${showId}`);
+        return cached.html;
+      }
+      console.log(`  [CACHE-POISONED] /reviews/ for ${showId}: ${cached.check.reason} (page "${(cached.check.pageTitle || '').substring(0, 80)}") — purging and refetching`);
+      stats.cachePurgedPoisoned++;
     }
   }
 
@@ -336,6 +363,25 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
         });
         if (!validation.valid) {
           console.log(`  [SKIP] /reviews/${slug} wrong show: ${validation.reason}`);
+          continue;
+        }
+        // Category-aware cache guard. validatePageMatchesShow() above compares
+        // title + opening year, which CANNOT separate a regional premiere from
+        // its later Broadway transfer: same title, and the transfer's page
+        // carries the transfer's year. Re-use the exact predicate
+        // audit-aggregator-archive-integrity.js applies post-hoc (including
+        // its punctuation-false-positive rescue, via checkArchiveCategory),
+        // so a page the audit would call poisoned never reaches the cache in
+        // the first place. Without this, `fix: quarantine 3 poisoned
+        // bww-reviews caches` (2026-08-23) was silently undone by the next
+        // scrape run (2026-08-30) and the trunk went red again on the same
+        // three showIds.
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
+        );
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] /reviews/${slug} category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
+          stats.reviewsPagesCategoryBlocked++;
           continue;
         }
         // Archive and return
@@ -429,12 +475,20 @@ function extractBwwReviewsPageData(html, showId) {
 async function discoverBwwRoundup(show, showId, options = {}) {
   const archivePath = path.join(roundupArchiveDir, `${showId}.html`);
 
-  // Check cache freshness
-  if (!options.force && fs.existsSync(archivePath)) {
-    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-    if (age < 14) {
-      console.log(`  [CACHE] roundup for ${showId}`);
-      return fs.readFileSync(archivePath, 'utf8');
+  // Check cache freshness. Same read-path guard as fetchBwwReviewsPage() above
+  // (BRO-2549) — a fresh mtime is not proof the file was written by this
+  // scraper's own validated path.
+  if (!options.force) {
+    const cached = readCachedArchiveIfValid(
+      archivePath, 14, show, siblingCategoriesByShowId()[showId],
+    );
+    if (cached) {
+      if (cached.valid) {
+        console.log(`  [CACHE] roundup for ${showId}`);
+        return cached.html;
+      }
+      console.log(`  [CACHE-POISONED] roundup for ${showId}: ${cached.check.reason} (page "${(cached.check.pageTitle || '').substring(0, 80)}") — purging and refetching`);
+      stats.cachePurgedPoisoned++;
     }
   }
 
@@ -475,6 +529,20 @@ async function discoverBwwRoundup(show, showId, options = {}) {
           console.log(`  [SKIP] forced URL doesn't match "${searchTitleForVal}": ${validation.reason}`);
           return null;
         }
+      }
+      // Category-aware cache guard (BRO-2549) — roundups never got the
+      // BRO-2547 write-time guard applied to /reviews/ pages, so this was the
+      // one write path that could still poison the read-path guard: it would
+      // write a page validatePageMatchesShow() accepts but checkArchiveCategory()
+      // (what the read-path guard checks) rejects, purging and refetching the
+      // same file forever. See the /reviews/ catCheck block above for the
+      // full contamination-class writeup.
+      const catCheck = checkArchiveCategory(
+        html, show, siblingCategoriesByShowId()[showId],
+      );
+      if (!catCheck.ok) {
+        console.log(`  [SKIP] forceRoundupUrl category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
+        return null;
       }
       if (!options.dryRun) {
         if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
@@ -604,6 +672,16 @@ async function discoverBwwRoundup(show, showId, options = {}) {
         });
         if (!validation.valid) {
           console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": ${validation.reason}`);
+          continue;
+        }
+
+        // Category-aware cache guard (BRO-2549) — see the forceRoundupUrl
+        // branch above for why roundups need this too.
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
+        );
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] roundup category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
           continue;
         }
 
@@ -1407,8 +1485,17 @@ async function main() {
   // Print summary
   console.log('\n=== BWW Scraper Summary ===');
   console.log(`Shows processed: ${stats.showsProcessed}`);
-  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss (${stats.reviewsPagesFetched} fetched)`);
+  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss, ${stats.reviewsPagesCategoryBlocked} category-blocked (${stats.reviewsPagesFetched} fetched)`);
+  if (stats.reviewsPagesCategoryBlocked > 0) {
+    // Loud on purpose: a category block is a page we FETCHED and then refused
+    // to cache. Folded into the miss count it would read as 'BWW had nothing',
+    // which is how a mis-tuned guard silently starves a show of reviews.
+    console.log(`  ^ ${stats.reviewsPagesCategoryBlocked} page(s) refused: title's market qualifier belongs to a same-title sibling in another category`);
+  }
   console.log(`Roundups: ${stats.roundupsHit} hit, ${stats.roundupsMiss} miss (${stats.roundupsFetched} fetched, ${stats.googleSearches} searches)`);
+  if (stats.cachePurgedPoisoned > 0) {
+    console.log(`  ^ ${stats.cachePurgedPoisoned} cached archive(s) purged at read time: failed checkArchiveCategory() on disk`);
+  }
   console.log(`Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`New reviews: ${stats.newReviews}`);
   console.log(`Updated reviews: ${stats.updatedReviews}`);

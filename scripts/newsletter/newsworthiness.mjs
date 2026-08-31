@@ -188,11 +188,19 @@ export function scoreCandidates(input) {
     // West End edition (the whole email IS the West End) — drop it there so it
     // reads "opens to strong reviews", not "opens in London..." (user 2026-07-12).
     const loc = isWeEdition ? '' : ' in London';
+    // Shakespeare's Globe / Sam Wanamaker Playhouse stage the same handful of
+    // generic classic titles every year (As You Like It, The Tempest, Much
+    // Ado...), so in the WE edition — where "in London" is already dropped —
+    // the bare title alone loses the one piece of context that actually
+    // distinguishes the story: it's playing at the Globe. Matches the
+    // isShakespeareInThePark venue-naming pattern below for OB openings.
+    const isGlobeVenue = s.venue === "Shakespeare's Globe" || s.venue === 'Sam Wanamaker Playhouse';
+    const venueSuffix = isWeEdition && isGlobeVenue ? ' at the Globe' : '';
     const headline = verdict
-      ? `${s.title} opens${loc} to ${verdict}`
-      : `${s.title} opens${loc}`;
+      ? `${s.title}${venueSuffix} opens${loc} to ${verdict}`
+      : `${s.title}${venueSuffix} opens${loc}`;
     out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} opens${loc} to `,
+      verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to `,
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 

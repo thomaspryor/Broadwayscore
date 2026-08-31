@@ -7,6 +7,14 @@
 # this comment used to carry; fixed after an adversarial review caught the
 # doc drift.
 #
+# MULTI-REPO (BRO-2540): the repo set is data-driven — see
+# scripts/lib/worktree-gc-repos.js — instead of a single hardcoded REPO=
+# constant. Before this, ~/BroadwayScorecard-app's own .claude/worktrees was
+# never touched by anything and grew to 51GB (34GB of it stale, gitignored
+# `ios/build` Xcode output) while this script correctly GC'd the web repo
+# and reported success every run. Adding a repo to the GC's coverage is now
+# a data change (scripts/lib/worktree-gc-repos.js), not a script edit.
+#
 # SAFETY: `git worktree remove` (plain, no --force) is the default and only path
 # for most worktrees — it refuses to remove one with uncommitted changes OR a
 # branch with unmerged commits, and that refusal IS the safety property we want.
@@ -18,10 +26,12 @@
 # the allowlist). Branches are KEPT (never `branch -d`) so no history is lost.
 # Installed via launchd: ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist
 #
-# node_modules/.next stripping (untouched >STALE_DAYS) never touches worktrees
+# Build-artifact stripping (untouched >STALE_DAYS) never touches worktrees
 # with recent file activity, and never touches action-*/detached worktrees —
-# same owner-managed exclusions as the merge-removal path. Re-running `npm
-# install` / `npm run build` in a stripped worktree is the recovery path.
+# same owner-managed exclusions as the merge-removal path. Each repo declares
+# its own reclaimable dirs (web: node_modules/.next; iOS: ios/build,
+# ios/Pods) — re-running `npm install` / `pod install` / an Xcode build in a
+# stripped worktree is the recovery path.
 #
 # Disk-free floor: below WORKTREE_GC_DISK_FLOOR_GB, run emergency cleanup of
 # Xcode DerivedData, stale scratchpad dirs, and unavailable simulators — none
@@ -32,14 +42,16 @@
 #   scripts/gc-merged-worktrees.sh --dry-run  # report only, change nothing
 #
 # Env overrides (all optional):
-#   WORKTREE_GC_STALE_DAYS=3        # node_modules/.next strip + stale-unmerged digest threshold
+#   WORKTREE_GC_STALE_DAYS=3        # build-artifact strip + stale-unmerged digest threshold
 #   WORKTREE_GC_DISK_FLOOR_GB=20    # emergency cleanup trigger
 #   WORKTREE_GC_SCRATCHPAD_STALE_DAYS=3
+#   WORKTREE_GC_REPOS_JSON='[...]'  # override the repo set (scripts/lib/worktree-gc-repos.js)
 #
 set -uo pipefail
 
-REPO="/Users/tompryor/Broadwayscore"
-LOG="$REPO/data/audit/worktree-gc.log"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PRIMARY_REPO="/Users/tompryor/Broadwayscore"
+LOG="$PRIMARY_REPO/data/audit/worktree-gc.log"
 DRY_RUN=0
 [ "${1:-}" = "--dry-run" ] && DRY_RUN=1
 
@@ -47,7 +59,6 @@ STALE_DAYS="${WORKTREE_GC_STALE_DAYS:-3}"
 DISK_FLOOR_GB="${WORKTREE_GC_DISK_FLOOR_GB:-20}"
 SCRATCHPAD_STALE_DAYS="${WORKTREE_GC_SCRATCHPAD_STALE_DAYS:-3}"
 
-cd "$REPO" || { echo "repo not found: $REPO" >&2; exit 1; }
 mkdir -p "$(dirname "$LOG")"
 
 # Single-source-of-truth serialization lock (task #968 follow-up). This
@@ -63,6 +74,12 @@ mkdir -p "$(dirname "$LOG")"
 # PID-liveness reclaim (not age-based) matches push-mutex.sh's documented
 # reasoning (task #556): age-only reclaim would race a legitimately slow
 # holder (a full scan across 60+ worktrees can genuinely take ~5min).
+#
+# One lock covers the WHOLE multi-repo run (BRO-2540) — a busy lock skips
+# every repo in one loud, logged SKIP-RUN line rather than silently
+# dropping only the newly added repos while the primary repo's run
+# proceeds. Per-repo locking would let a slow web-repo run silently starve
+# the iOS repo of GC forever with no log line naming that gap.
 GC_LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
@@ -75,7 +92,7 @@ else
   fi
 fi
 if [ "$gc_lock_acquired" != "1" ]; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress" | tee -a "$LOG"
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress (covers all repos)" | tee -a "$LOG"
   exit 0
 fi
 echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
@@ -84,18 +101,26 @@ trap 'rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXI
 ts() { date '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "[$(ts)] $*" | tee -a "$LOG"; }
 
-# Free space on the worktree filesystem, in whole GB.
+# Free space on the filesystem holding $1 (default PRIMARY_REPO), in whole GB.
+# All repos here live on the same local disk, so one check covers them all.
 disk_free_gb() {
-  df -Pk "$REPO" | awk 'NR==2 {print int($4/1024/1024)}'
+  local repo_path="${1:-$PRIMARY_REPO}"
+  df -Pk "$repo_path" | awk 'NR==2 {print int($4/1024/1024)}'
 }
 
-# True (exit 0) iff no file under $1 (excluding node_modules/.next/.git) was
-# modified in the last $2 days — i.e. the worktree looks abandoned rather than
-# mid-edit. Build-tool churn inside node_modules/.next doesn't count as "touched".
+# True (exit 0) iff no file under $1 (excluding node_modules/.next/.git plus
+# any extra dirs passed in $3+) was modified in the last $2 days — i.e. the
+# worktree looks abandoned rather than mid-edit. Build-tool churn inside
+# excluded dirs doesn't count as "touched" — an active Xcode build writing
+# into ios/build shouldn't make an otherwise-untouched worktree look fresh.
 is_stale() {
-  local p="$1" days="$2" hit
-  hit=$(find "$p" \
-    \( -path '*/node_modules' -o -path '*/.next' -o -path '*/.git' \) -prune -o \
+  local p="$1" days="$2"; shift 2
+  local extra_dirs=("$@") d hit
+  local prune_args=(-path '*/node_modules' -o -path '*/.next' -o -path '*/.git')
+  for d in "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
+    [ -n "$d" ] && prune_args+=(-o -path "*/$d")
+  done
+  hit=$(find "$p" \( "${prune_args[@]}" \) -prune -o \
     -type f -newermt "-${days} days" -print -quit 2>/dev/null)
   [ -z "$hit" ]
 }
@@ -140,15 +165,39 @@ human_kb() {
   else echo "${kb}KB"; fi
 }
 
-# Strips node_modules/.next from a stale worktree. Sets LAST_STRIP_FREED_KB
-# (global, not a subshell return) so the caller can accumulate totals without
-# mixing numeric output into log()'s tee'd stdout.
+# Strips node_modules/.next (plus any repo-specific extra dirs passed in $2+,
+# e.g. iOS's ios/build / ios/Pods) from a stale worktree. Sets
+# LAST_STRIP_FREED_KB (global, not a subshell return) so the caller can
+# accumulate totals without mixing numeric output into log()'s tee'd stdout.
+#
+# `git check-ignore` gates every candidate (adversarial review, BRO-2540):
+# isReclaimableBuildDir()'s isGitIgnored requirement is otherwise dead code —
+# nothing enforced it, so a WORKTREE_GC_REPOS_JSON typo or a future
+# buildArtifactDirs entry that isn't actually gitignored/regenerable would
+# have hit `rm -rf` unconditionally, same as node_modules/.next always did.
+# This makes "gitignored" a real, checked precondition for every dir this
+# function ever deletes, not just an unenforced doc comment.
+#
+# Symlinks bypass the check-ignore gate: `git check-ignore` only matches a
+# trailing-slash pattern (e.g. `node_modules/`) against an actual directory,
+# never a symlink pointing at one — found live in
+# BroadwayScorecard-app/.claude/worktrees/my-shows-redesign, whose
+# node_modules is a symlink to a shared install one level up. `rm -rf` on a
+# symlink only ever removes the link itself, never recurses into whatever it
+# points at, so it's unconditionally safe regardless of ignore status.
 LAST_STRIP_FREED_KB=0
 strip_build_artifacts() {
-  local p="$1" name freed=0 d sz
+  local p="$1"; shift
+  local extra_dirs=("$@")
+  local name freed=0 d sz
   name="$(basename "$p")"
-  for d in node_modules .next; do
+  for d in node_modules .next "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
+    [ -z "$d" ] && continue
     if [ -d "$p/$d" ]; then
+      if [ ! -L "$p/$d" ] && ! git -C "$p" check-ignore -q -- "$d" 2>/dev/null; then
+        log "WARN  [$CURRENT_REPO_NAME] $name/$d — not gitignored per \`git check-ignore\`, refusing to strip (config or .gitignore drift)"
+        continue
+      fi
       sz=$(du -sk "$p/$d" 2>/dev/null | awk '{print $1}')
       sz=${sz:-0}
       if [ "$DRY_RUN" = "1" ]; then
@@ -204,7 +253,7 @@ clean_stale_scratchpad() {
       log "CLEAN  scratchpad $(basename "$(dirname "$dir")")/$(basename "$dir") — freed $(human_kb "$sz"), untouched >${SCRATCHPAD_STALE_DAYS}d"
     fi
     total=$((total + sz))
-  done < <(find "$REPO" -maxdepth 3 -type d -name scratchpad -not -path '*/node_modules/*' 2>/dev/null)
+  done < <(find "$PRIMARY_REPO" -maxdepth 3 -type d -name scratchpad -not -path '*/node_modules/*' 2>/dev/null)
   LAST_SCRATCHPAD_FREED_KB=$total
 }
 
@@ -223,12 +272,13 @@ clean_unavailable_simulators() {
 
 # Emergency cleanup, gated on the free-space floor. None of these touch
 # worktree state or unmerged work — DerivedData/scratchpad/sims are all
-# regenerable caches.
+# regenerable caches. Runs once for the whole machine (shared disk), not
+# per repo.
 LAST_FLOOR_FREED_KB=0
 check_disk_floor() {
   local before after floor_freed=0
   LAST_FLOOR_FREED_KB=0
-  before=$(disk_free_gb)
+  before=$(disk_free_gb "$PRIMARY_REPO")
   if [ "$before" -ge "$DISK_FLOOR_GB" ]; then
     return 0
   fi
@@ -236,10 +286,13 @@ check_disk_floor() {
   clean_derived_data; floor_freed=$((floor_freed + LAST_CLEAN_DD_FREED_KB))
   clean_stale_scratchpad; floor_freed=$((floor_freed + LAST_SCRATCHPAD_FREED_KB))
   clean_unavailable_simulators
-  after=$(disk_free_gb)
+  after=$(disk_free_gb "$PRIMARY_REPO")
   log "DIGEST: disk-floor cleanup freed $(human_kb "$floor_freed") — free space ${before}GB -> ${after}GB (floor ${DISK_FLOOR_GB}GB)"
   LAST_FLOOR_FREED_KB=$floor_freed
 }
+
+check_disk_floor
+floor_freed_kb=$LAST_FLOOR_FREED_KB
 
 # Bound the fetch — a hung network call used to stall the whole GC (and the
 # emergency disk-floor cleanup that now runs after it) indefinitely. `timeout`
@@ -250,28 +303,24 @@ check_disk_floor() {
 # workflows' require graphs. Already timeout-wrapped below (20s), not the
 # unbounded-network-stall case this audit exists to catch.
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
-if [ -n "$TIMEOUT_BIN" ]; then
-  # unbounded-fetch-ok: bounded by $TIMEOUT_BIN 20s above; see block comment above.
-  "$TIMEOUT_BIN" 20s git fetch origin main -q 2>/dev/null || log "WARN: git fetch failed or timed out (offline?) — using cached origin/main"
-else
-  # unbounded-fetch-ok: only reached when timeout/gtimeout is absent (rare local machine); see block comment above.
-  git fetch origin main -q 2>/dev/null || log "WARN: git fetch failed (offline?) — using cached origin/main"
-fi
 
-check_disk_floor
-floor_freed_kb=$LAST_FLOOR_FREED_KB
-
-removed=0 kept=0 skipped=0 strip_freed_kb=0 removed_freed_kb=0
+removed=0 kept=0 skipped=0 strip_freed_kb=0 removed_freed_kb=0 orphan_freed_kb=0
+# Per-repo state, reset by gc_one_repo() for each repo it processes.
+REPO=""
+CURRENT_REPO_NAME=""
+CURRENT_BUILD_ARTIFACT_DIRS=()
 stale_unmerged=()
 
-# Parse `git worktree list --porcelain` into (path, branch) pairs.
+# Parse `git worktree list --porcelain` into (path, branch) pairs. Reads
+# $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS, which
+# gc_one_repo() sets before invoking this per repo.
 path="" branch=""
 flush() {
   [ -z "$path" ] && return
   # Skip the main checkout.
   if [ "$path" = "$REPO" ]; then path="" branch=""; return; fi
   if [ -z "$branch" ]; then
-    log "SKIP  $(basename "$path") — detached HEAD, leaving alone"
+    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — detached HEAD, leaving alone"
     skipped=$((skipped+1)); path="" branch=""; return
   fi
   # Leave worktrees owned by notion-action-poll.js alone. It creates
@@ -280,7 +329,7 @@ flush() {
   # freshly-created one is briefly clean before its agent writes anything — a
   # narrow window where this GC could remove it out from under an active poll.
   case "$(basename "$path")" in
-    action-*) log "SKIP  $(basename "$path") — notion-action-poll worktree, owner-managed"
+    action-*) log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — notion-action-poll worktree, owner-managed"
               skipped=$((skipped+1)); path="" branch=""; return ;;
   esac
   # Merged iff `git cherry` reports no commit missing from upstream ('+' prefix).
@@ -319,8 +368,8 @@ flush() {
   head_sha=$(git rev-parse "$branch" 2>/dev/null)
   landed_status=1
   if [ -n "$head_sha" ]; then
-    if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/landing-verify.js" ]; then
-      node "$REPO/scripts/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
+    if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/landing-verify.js" ]; then
+      node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
       landed_status=$?
     else
       git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null
@@ -338,7 +387,7 @@ flush() {
     cherry_status=$?
   fi
   if [ "$cherry_status" != "0" ]; then
-    log "WARN  $(basename "$path") — git cherry timed out/failed (exit $cherry_status); treating as unmerged (safety default)"
+    log "WARN  [$CURRENT_REPO_NAME] $(basename "$path") — git cherry timed out/failed (exit $cherry_status); treating as unmerged (safety default)"
     unmerged=1
   else
     unmerged=$(echo "$cherry_raw" | grep -c '^+')
@@ -360,12 +409,14 @@ flush() {
   # last line of defense for that gap. Scope: this only protects job-*
   # worktrees dispatched via bsc-runner.js's lease; other worktrees (e.g.
   # autonomous-run.js's auto-*) rely solely on the lsof-based check below.
+  # Generic across repos: it matches on the worktree's absolute path, not on
+  # which repo owns it, so iOS-repo worktrees get the same protection.
   has_live_lease=0
-  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/worktree-live-lease-check.js" ]; then
-    node "$REPO/scripts/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-live-lease-check.js" ]; then
+    node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
     [ "$?" = "0" ] && has_live_lease=1
   else
-    log "WARN  live-lease guard unavailable (node or worktree-live-lease-check.js missing) — skipping for $(basename "$path")"
+    log "WARN  live-lease guard unavailable (node or worktree-live-lease-check.js missing) — skipping for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
 
   # Single decision point (worktree-gc-decide.js -> decideWorktreeReclaim in
@@ -374,8 +425,8 @@ flush() {
   # SAME function this file's own unit tests exercise, instead of bash
   # re-deciding with its own parallel `if` chain.
   removable=1
-  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/worktree-gc-decide.js" ]; then
-    node "$REPO/scripts/lib/worktree-gc-decide.js" \
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-gc-decide.js" ]; then
+    node "$SCRIPT_DIR/lib/worktree-gc-decide.js" \
       --is-ancestor="$is_ancestor" --has-unmerged="$has_unmerged" --has-live-lease="$has_live_lease" >/dev/null 2>&1
     [ "$?" != "0" ] && removable=0
   else
@@ -384,19 +435,19 @@ flush() {
   fi
 
   if [ "$has_live_lease" = "1" ]; then
-    log "SKIP  $(basename "$path") — $branch has a live job-lease using this worktree as its cwd"
+    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch has a live job-lease using this worktree as its cwd"
     skipped=$((skipped+1))
     path="" branch=""; return
   fi
 
   if [ "$removable" != "1" ]; then
-    log "KEEP  $(basename "$path") — $unmerged unmerged commit(s) on $branch"
+    log "KEEP  [$CURRENT_REPO_NAME] $(basename "$path") — $unmerged unmerged commit(s) on $branch"
     kept=$((kept+1))
     # Never delete unmerged worktrees — they may hold stranded work (task
     # #335). Just flag them for the digest line if they've gone quiet.
-    if is_stale "$path" "$STALE_DAYS"; then
-      stale_unmerged+=("$(basename "$path")")
-      strip_build_artifacts "$path"
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+      stale_unmerged+=("$CURRENT_REPO_NAME/$(basename "$path")")
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
     path="" branch=""; return
@@ -407,28 +458,29 @@ flush() {
   # dirty for git to refuse on, so plain `git worktree remove` would happily
   # pull the rug out from under it. Found 2026-08-16: tony-page-season-guard
   # was removed while pids 93138/93152 still had it as their cwd. Skip, same
-  # as the dirty-tree skip below, rather than risk that.
+  # as the dirty-tree skip below, rather than risk that. Generic across
+  # repos, same reasoning as the live-lease guard above.
   # Exit-code contract: the CLI wrapper is a 2-way switch, not 3-way — exit 0
   # means "live, do not remove"; ANYTHING else (1 = clear, 2 = usage error,
   # or an unanticipated crash) falls through to removal below. Keep it that
   # way deliberately (an unexpected non-zero must never become a silent KEEP
   # that masks a real bug in the checker) but don't widen it without
   # re-reading this comment.
-  if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/lib/gc-worktree-liveness.js" ]; then
-    node "$REPO/scripts/lib/gc-worktree-liveness.js" --path="$path" >/dev/null 2>&1
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ]; then
+    node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$path" >/dev/null 2>&1
     if [ "$?" = "0" ]; then
-      log "SKIP  $(basename "$path") — $branch merged but a live process has this worktree as its cwd"
+      log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but a live process has this worktree as its cwd"
       skipped=$((skipped+1))
       path="" branch=""; return
     fi
   else
-    log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for $(basename "$path")"
+    log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
   if [ "$DRY_RUN" = "1" ]; then
     if is_safe_dirty "$path"; then
-      log "WOULD-FORCE-REMOVE  $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
     else
-      log "WOULD-REMOVE  $(basename "$path") — $branch fully merged"
+      log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
     fi
     removed=$((removed+1)); path="" branch=""; return
   fi
@@ -442,7 +494,7 @@ flush() {
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
   if git worktree remove "$path" 2>/dev/null; then
-    log "REMOVE $(basename "$path") — $branch merged, worktree removed (branch kept)"
+    log "REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, worktree removed (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
   elif is_safe_dirty "$path" && git worktree remove --force "$path" 2>/dev/null; then
@@ -453,95 +505,158 @@ flush() {
     # trivial cron-written diffs to data/audit/*.json (task #1682: 51/56
     # dirty worktrees were stuck this way, gc reporting freed=0KB run after
     # run while disk hit 99% full).
-    log "FORCE-REMOVE $(basename "$path") — $branch merged, discarded uncommitted data/ churn (branch kept)"
+    log "FORCE-REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, discarded uncommitted data/ churn (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
   else
-    log "SKIP  $(basename "$path") — merged but worktree dirty; not forcing"
+    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
     skipped=$((skipped+1))
     # Merged-but-dirty worktrees can sit indefinitely (git won't remove them
     # while dirty) — same staleness treatment as unmerged ones.
-    if is_stale "$path" "$STALE_DAYS"; then
-      strip_build_artifacts "$path"
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
   fi
   path="" branch=""
 }
 
-while IFS= read -r line; do
-  case "$line" in
-    "worktree "*) flush; path="${line#worktree }" ;;
-    "branch refs/heads/"*) branch="${line#branch refs/heads/}" ;;
-    "detached") branch="" ;;
-  esac
-done < <(git worktree list --porcelain)
-flush
+# Runs the full GC pass (merge-removal loop, worktree prune, orphan sweep,
+# per-repo digest) against one repo. $1=name $2=path $3=worktree-subdir,
+# remaining args = that repo's buildArtifactDirs.
+gc_one_repo() {
+  local repo_name="$1" repo_path="$2" worktree_subdir="$3"; shift 3
+  local build_dirs=("$@")
 
-git worktree prune 2>/dev/null
+  if [ ! -d "$repo_path/.git" ]; then
+    log "WARN  repo '$repo_name' — no .git at $repo_path, skipping"
+    return
+  fi
 
-# Orphaned worktree directories: present on disk under .claude/worktrees but
-# NOT registered with git (left behind by an interrupted `rm -rf` or a partial
-# force-remove elsewhere). `git worktree prune` only clears git's OWN
-# bookkeeping for a worktree whose directory went missing — the opposite case,
-# a directory git has no record of at all — is invisible to it, so these
-# silently accumulate disk forever (task #1682: found 5 such dirs, ~800MB,
-# sitting untouched for 3+ weeks).
-#
-# Two independent guards before deleting (adversarial review, task #1682):
-#  1. action-* excluded, same as the main loop — notion-action-poll.js manages
-#     these with its own --force lifecycle; one could be unregistered for a
-#     moment mid-cycle and this sweep must not race that.
-#  2. Any trace of `.git` (file or dir) inside the candidate — even a broken
-#     one pointing at a gitdir that no longer exists — means WARN-only, not
-#     delete. A directory with zero git artifacts at all can hold no commit
-#     unreachable from a branch ref; one that once had a `.git` might, and
-#     "the commits live on via their branch ref" is not something this loop
-#     can verify from a dead gitdir pointer. Left for manual triage.
-# A 15-minute freshness guard on top avoids racing a worktree that's
-# mid-creation (directory written before git's registration step completes).
-orphan_freed_kb=0
-if [ -d "$REPO/.claude/worktrees" ]; then
-  registered_paths=()
-  while IFS= read -r reg_line; do
-    case "$reg_line" in
-      "worktree "*) registered_paths+=("${reg_line#worktree }") ;;
+  REPO="$repo_path"
+  CURRENT_REPO_NAME="$repo_name"
+  CURRENT_BUILD_ARTIFACT_DIRS=("${build_dirs[@]+"${build_dirs[@]}"}")
+  stale_unmerged=()
+
+  if ! cd "$REPO"; then
+    log "WARN  repo '$repo_name' — cd to $REPO failed, skipping"
+    return
+  fi
+
+  if [ -n "$TIMEOUT_BIN" ]; then
+    # unbounded-fetch-ok: bounded by $TIMEOUT_BIN 20s; see file header.
+    "$TIMEOUT_BIN" 20s git fetch origin main -q 2>/dev/null || log "WARN: [$repo_name] git fetch failed or timed out (offline?) — using cached origin/main"
+  else
+    # unbounded-fetch-ok: only reached when timeout/gtimeout is absent (rare local machine); see file header.
+    git fetch origin main -q 2>/dev/null || log "WARN: [$repo_name] git fetch failed (offline?) — using cached origin/main"
+  fi
+
+  path="" branch=""
+  while IFS= read -r line; do
+    case "$line" in
+      "worktree "*) flush; path="${line#worktree }" ;;
+      "branch refs/heads/"*) branch="${line#branch refs/heads/}" ;;
+      "detached") branch="" ;;
     esac
   done < <(git worktree list --porcelain)
-  is_registered() {
-    local d="$1" r
-    for r in "${registered_paths[@]}"; do [ "$r" = "$d" ] && return 0; done
-    return 1
-  }
-  while IFS= read -r dir; do
-    [ -z "$dir" ] && continue
-    orphan_name="$(basename "$dir")"
-    is_registered "$dir" && continue
-    case "$orphan_name" in
-      action-*) continue ;;
-    esac
-    if [ -e "$dir/.git" ]; then
-      log "WARN  $orphan_name — unregistered but has a .git artifact; leaving for manual triage (not auto-deleted)"
-      continue
-    fi
-    find "$dir" -newermt '-15 minutes' -print -quit 2>/dev/null | grep -q . && continue
-    orphan_sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
-    orphan_sz=${orphan_sz:-0}
-    if [ "$DRY_RUN" = "1" ]; then
-      log "WOULD-REMOVE-ORPHAN  $orphan_name — $(human_kb "$orphan_sz"), not registered with git worktree list"
-    else
-      rm -rf "${dir:?}"
-      log "REMOVE-ORPHAN  $orphan_name — freed $(human_kb "$orphan_sz"), not registered with git worktree list"
-    fi
-    orphan_freed_kb=$((orphan_freed_kb + orphan_sz))
-  done < <(find "$REPO/.claude/worktrees" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+  flush
+
+  git worktree prune 2>/dev/null
+
+  # Orphaned worktree directories: present on disk under the repo's worktree
+  # dir but NOT registered with git (left behind by an interrupted `rm -rf`
+  # or a partial force-remove elsewhere). `git worktree prune` only clears
+  # git's OWN bookkeeping for a worktree whose directory went missing — the
+  # opposite case, a directory git has no record of at all — is invisible to
+  # it, so these silently accumulate disk forever (task #1682: found 5 such
+  # dirs, ~800MB, sitting untouched for 3+ weeks).
+  #
+  # Two independent guards before deleting (adversarial review, task #1682):
+  #  1. action-* excluded, same as the main loop — notion-action-poll.js
+  #     manages these with its own --force lifecycle; one could be
+  #     unregistered for a moment mid-cycle and this sweep must not race that.
+  #  2. Any trace of `.git` (file or dir) inside the candidate — even a
+  #     broken one pointing at a gitdir that no longer exists — means
+  #     WARN-only, not delete. A directory with zero git artifacts at all can
+  #     hold no commit unreachable from a branch ref; one that once had a
+  #     `.git` might, and "the commits live on via their branch ref" is not
+  #     something this loop can verify from a dead gitdir pointer. Left for
+  #     manual triage.
+  # A 15-minute freshness guard on top avoids racing a worktree that's
+  # mid-creation (directory written before git's registration step completes).
+  local worktrees_root="$REPO/$worktree_subdir"
+  if [ -d "$worktrees_root" ]; then
+    local registered_paths=() reg_line
+    while IFS= read -r reg_line; do
+      case "$reg_line" in
+        "worktree "*) registered_paths+=("${reg_line#worktree }") ;;
+      esac
+    done < <(git worktree list --porcelain)
+    is_registered() {
+      local d="$1" r
+      for r in "${registered_paths[@]+"${registered_paths[@]}"}"; do [ "$r" = "$d" ] && return 0; done
+      return 1
+    }
+    local dir orphan_name orphan_sz
+    while IFS= read -r dir; do
+      [ -z "$dir" ] && continue
+      orphan_name="$(basename "$dir")"
+      is_registered "$dir" && continue
+      case "$orphan_name" in
+        action-*) continue ;;
+      esac
+      if [ -e "$dir/.git" ]; then
+        log "WARN  [$repo_name] $orphan_name — unregistered but has a .git artifact; leaving for manual triage (not auto-deleted)"
+        continue
+      fi
+      find "$dir" -newermt '-15 minutes' -print -quit 2>/dev/null | grep -q . && continue
+      orphan_sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
+      orphan_sz=${orphan_sz:-0}
+      if [ "$DRY_RUN" = "1" ]; then
+        log "WOULD-REMOVE-ORPHAN  [$repo_name] $orphan_name — $(human_kb "$orphan_sz"), not registered with git worktree list"
+      else
+        rm -rf "${dir:?}"
+        log "REMOVE-ORPHAN  [$repo_name] $orphan_name — freed $(human_kb "$orphan_sz"), not registered with git worktree list"
+      fi
+      orphan_freed_kb=$((orphan_freed_kb + orphan_sz))
+    done < <(find "$worktrees_root" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+  fi
+
+  if [ "${#stale_unmerged[@]}" -gt 0 ]; then
+    log "DIGEST[$repo_name]: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]}"
+  else
+    log "DIGEST[$repo_name]: no stale-unmerged worktrees (>${STALE_DAYS}d untouched)"
+  fi
+}
+
+# Load the data-driven repo set. Falls back to the web repo alone (the
+# pre-BRO-2540 behaviour) if node or the config module is unavailable —
+# loud (WARN, tee'd to $LOG), never a silent zero-repo no-op.
+GC_REPO_LINES=""
+if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-gc-repos.js" ]; then
+  GC_REPO_LINES="$(node "$SCRIPT_DIR/lib/worktree-gc-repos.js" --list 2>/dev/null)"
+fi
+if [ -z "$GC_REPO_LINES" ]; then
+  log "WARN  worktree-gc-repos.js unavailable — falling back to web repo only"
+  GC_REPO_LINES=$'web\t'"$PRIMARY_REPO"$'\t.claude/worktrees\tnode_modules,.next'
 fi
 
-if [ "${#stale_unmerged[@]}" -gt 0 ]; then
-  log "DIGEST: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]}"
-else
-  log "DIGEST: no stale-unmerged worktrees (>${STALE_DAYS}d untouched)"
-fi
+while IFS=$'\t' read -r r_name r_path r_wtdir r_builddirs; do
+  [ -z "$r_name" ] && continue
+  # A repo with no configured build-artifact dirs (e.g. the web repo) leaves
+  # r_builddirs empty, so `read -a` produces a zero-element array. Bare
+  # "${build_dirs_arr[@]}" on a zero-element array trips "unbound variable"
+  # under `set -u` on macOS's /bin/bash (3.2 — the empty-array-expansion bug
+  # fixed upstream in bash 4.4), crashing the whole script on its very first
+  # loop iteration (BRO-2186: silent since the BRO-2540 multi-repo refactor
+  # landed — every launchd/manual run failed before gc_one_repo ran once).
+  # The `${arr[@]+"${arr[@]}"}` alternate-value form expands to nothing for
+  # a zero-element array instead of dereferencing it directly — verified
+  # against this exact bash 3.2 build. Same fix needed at every other
+  # CURRENT_BUILD_ARTIFACT_DIRS/build_dirs expansion site in this file.
+  IFS=',' read -r -a build_dirs_arr <<< "$r_builddirs"
+  gc_one_repo "$r_name" "$r_path" "$r_wtdir" "${build_dirs_arr[@]+"${build_dirs_arr[@]}"}"
+done <<< "$GC_REPO_LINES"
 
 total_freed_kb=$((floor_freed_kb + strip_freed_kb + orphan_freed_kb + removed_freed_kb))
 log "DONE  removed=$removed kept=$kept skipped=$skipped freed=$(human_kb "$total_freed_kb") (dry_run=$DRY_RUN)"

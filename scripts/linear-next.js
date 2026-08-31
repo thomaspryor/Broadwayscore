@@ -474,6 +474,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Started-state guard (BRO-2518): the third clause of the same documented
+  // funnel line the two guards above close ("Backlog/Todo, not `·
+  // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a
+  // STARTED workflow-state type (In Progress / In Review) that a backlog
+  // sweep should never pick up regardless of whether this dispatcher's own
+  // idempotency signals (checked further below) happen to see it. See
+  // ld.startedStateGuard's header for why this is a blanket
+  // --force-only guard, not a per-caller opt-in. Same placement rationale as
+  // the two guards above.
+  const startedRefusal = ld.startedStateGuard(issue, args);
+  if (startedRefusal) {
+    console.error(`[linear-next] ${startedRefusal}`);
+    process.exit(1);
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should

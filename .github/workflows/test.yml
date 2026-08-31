@@ -42,6 +42,13 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # scripts/ingest-dmarc-reports.js + its colocated test (BRO-525): the
+      # DMARC parser and analyzer live in scripts/lib/ (globbed above), but the
+      # ingest CLI and its test sit at the top level of scripts/, so a solo
+      # edit to either would trigger zero CI — same gap class as
+      # scripts/check-orphan-commits.js above.
+      - 'scripts/ingest-dmarc-reports.js'
+      - 'scripts/ingest-dmarc-reports.test.mjs'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
@@ -108,6 +115,18 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-103 cloud-memory merge-aware sync. Same shape as the
+      # opening-night-pipeline pair above: the merge logic lives in
+      # scripts/lib/cloud-memory-merge.js (already covered by scripts/lib/**),
+      # but the test also EXECUTES scripts/sync-memory-to-repo.sh end-to-end
+      # via execFileSync/spawnSync — it is shelled out to, not require()d, so
+      # neither of these two files is reachable from any glob above and a solo
+      # push touching only them would trigger ZERO CI
+      # (memory/feedback_test_yml_push_path_allowlist.md). Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); leaving
+      # it unregistered fails the blocking audit-orphan-tests.js gate below.
+      - 'scripts/sync-memory-to-repo.sh'
+      - 'scripts/cloud-memory-sync.test.mjs'
       # BRO-544: root-level regression guard scanning scripts/**, src/**, and
       # .github/workflows|actions/** for the deleted mcp_browser/
       # scraping_browser Bright Data zone being sent through the HTTP
@@ -375,6 +394,13 @@ on:
       - 'scripts/generate-stats-canon.js'
       - 'scripts/generate-stats-reviews.js'
       - 'data/tony-ceremony-dates.json'
+      # BRO-2544: scripts/lib/canonical-venue-consumers.test.mjs reads this
+      # file directly, and it sits outside the scripts/lib/** glob — the same
+      # dependency-outside-the-glob shape audit-test-yml-lib-deps.js exists to
+      # catch. That audit is a BLOCKING unit test (its "regression floor" case
+      # asserts the real repo has zero gaps), so main stays red until this is
+      # listed.
+      - 'data/west-end-venues.json'
       - 'scripts/audit-non-reviews.js'
       # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
       # Notion 38e637c5). Each pure block/pass decision lives in scripts/lib/*-gate.js
@@ -1151,6 +1177,11 @@ on:
       - 'scripts/audit-venue-complex-slugs.test.mjs'
       - 'data/venue-complexes.json'
       - 'data/venue-complexes-west-end.json'
+      # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
+      # normalizeVenueName() doesn't over-strip a leading "The " against the frontend's
+      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads this file
+      # directly, so a solo data edit here needs to trigger CI too.
+      - 'data/west-end-venues.json'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
