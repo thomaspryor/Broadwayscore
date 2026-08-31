@@ -62,6 +62,11 @@ on:
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
       - 'scripts/audit-test-yml-lib-deps.test.mjs'
+      # The blocking manifest-vs-push-paths gate (BRO-2647). Thin CLI outside
+      # scripts/lib/ — its logic and colocated test live in scripts/lib/ (globbed
+      # above), but this wrapper needs its own entry or a solo edit to the gate
+      # itself triggers zero CI, which is exactly the bug it exists to catch.
+      - 'scripts/audit-test-yml-manifest-paths.js'
       # scripts/lib/workflow-secret-scan.test.mjs (task #1855) requires this
       # top-level CLI wrapper directly (to test findGaps() end-to-end) — same
       # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
@@ -1621,6 +1626,37 @@ on:
       - 'scripts/opening-night-prompts/**'
       - 'scripts/local-triggers/weekly-retro.sh'
       - 'scripts/send-opening-night-broadcast.js'
+      # Its colocated test needs its OWN entry: it sits at the top level of
+      # scripts/ (outside the scripts/lib/** glob) and is registered in
+      # tests/unit-test-manifest.txt, so it RUNS in CI but a solo edit to the
+      # test alone triggered ZERO CI. Same gap class as
+      # scripts/check-orphan-commits.js above; found while wiring BRO-2647's
+      # process-exit guard, and now ratcheted by audit-test-yml-manifest-paths.js.
+      - 'scripts/send-opening-night-broadcast.test.mjs'
+
+      # ── Manifest-registered tests that no glob reached (BRO-2647 sweep) ──
+      # Each of these RUNS in CI (they are in tests/unit-test-manifest*.txt) but
+      # lived outside every push-path glob, so a push touching only the test —
+      # or only the code it is the sole test for — triggered ZERO CI. Found with
+      # 18 live instances while wiring BRO-2647. scripts/audit-test-yml-manifest-paths.js
+      # is now a BLOCKING gate so this list can never silently drift again.
+      - 'scripts/audit-cross-outlet-attributions.test.mjs'
+      - 'scripts/audit-errexit-unguarded-substitution.test.mjs'
+      - 'scripts/check-cross-outlet-attribution-drift.test.mjs'
+      - 'scripts/fetch-show-images-auto.test.mjs'
+      - 'scripts/llm-scoring/openai-leg-model.test.mjs'
+      - 'scripts/notion-action-poll-retired.test.mjs'
+      - 'scripts/tests/alert-sender-bypass.test.mjs'
+      - 'scripts/tests/dispatch-claim-requires-workspace.test.mjs'
+      - 'scripts/tests/dispatch-watchdog-staleness.test.mjs'
+      - 'scripts/tests/notion-action-poll-escalation-staleness.test.mjs'
+      - 'scripts/tests/record-push-ledger-redaction.test.mjs'
+      - 'scripts/tests/scripts-no-undef.test.mjs'
+      - 'scripts/tests/stale-wrongproduction-adjudication.test.mjs'
+      - 'scripts/tests/stuck-work-linear-reconcile.test.mjs'
+      - 'scripts/tests/verify-gate-ts-runner.test.mjs'
+      - 'scripts/verify-contamination-gate.test.mjs'
+      - 'scripts/tests/fix-platform-ticket-links.test.mjs'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
       # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
@@ -2450,6 +2486,20 @@ jobs:
         # own. Heuristic (regex require()/import parsing), non-blocking —
         # always exits 0 (see script header for why).
         run: node scripts/audit-test-yml-lib-deps.js
+
+      - name: Gate — every manifest-registered test is reachable by on.push.paths (BRO-2647)
+        # The last shape of the same gap the two entries above cover. A test can
+        # be in tests/unit-test-manifest*.txt (so it RUNS once CI fires) while
+        # sitting outside every push-path glob with no entry of its own — so a
+        # push touching only that test, or only the code it is the sole test
+        # for, triggers ZERO CI. Found with 18 live instances, including the
+        # only test for the CLAUDE.md §17 email-broadcast safety rules.
+        #
+        # BLOCKING, unlike the advisory audit above: that one resolves
+        # require()/import specifiers with regex and can false-positive. This
+        # compares two literal lists from the same repo — nothing is guessed, a
+        # finding is always real, and the fix is always one line.
+        run: node scripts/audit-test-yml-manifest-paths.js
 
       - name: Audit — workflow steps missing secrets their scripts require (advisory, task #1855)
         # Static analysis: traces which process.env.SECRET reads a workflow-
