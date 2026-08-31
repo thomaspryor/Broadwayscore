@@ -179,7 +179,7 @@ const {
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
-  dispatchClaimGuard,
+  dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard,
 } = require('./lib/dispatch-guards.js');
 // Shared atomic per-key claim primitive (task #1896) — also backs
 // acquireSuccessionLock/releaseSuccessionLock below. See its own header for
@@ -1306,6 +1306,21 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[bsc-next] WARN dispatching #${task.id} unarmed: full card unavailable (${pid ? 'Notion fetch failed' : 'native task, no card'}) — gate not enforceable on the truncated mirror.`);
   }
 
+  // Phantom-path guard (BRO-2569): a well-formed, safe-shaped verifyGate.cmd
+  // can still name a file/directory that will never exist — see
+  // dispatch-guards.js's pathVerifiabilityGuard header for the full
+  // rationale. Gated on fullCardInHand for the same reason the shape-check
+  // refusal above is: a truncated Notion-mirror description can produce a
+  // cmd extracted from garbled/incomplete text, and refusing dispatch on
+  // that would be a false positive layered onto an already-known-degraded
+  // data path. --force only (not dry-run/print-prompt — both already
+  // returned earlier in main(), so args['dry-run']/args['print-prompt'] can
+  // never be true by this point); skips the fs I/O entirely under --force,
+  // matching the "don't do work whose result gets discarded" convention.
+  const pathCheck = (fullCardInHand && !args.force) ? resolvePathCheck(verifyGate, REPO) : null;
+  const pathErr = pathVerifiabilityGuard(task, pathCheck, args);
+  if (pathErr) { console.error(`[bsc-next] ${pathErr}`); process.exit(1); }
+
   // CI-red claim auto-invocation (task #598): record a claim so another
   // in_progress task's pre-push-review-gate.sh check (task #584) sees it —
   // closes the gap where nothing ever called claim-ci-red.js automatically.
@@ -1392,7 +1407,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1508,7 +1523,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
       // Task #1904: the live cmux terminal-runtime count at create time. Until
       // now the ceiling correlation could only be established by live
       // experiment on the machine — recording it makes every future dispatch a

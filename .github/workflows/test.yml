@@ -2195,6 +2195,15 @@ on:
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/linear-next-overlap-guards.test.mjs'
+      # BRO-2569: wired dispatch-guards.js's new resolvePathCheck()/
+      # pathVerifiabilityGuard() into linear-next.js's main() (evaluateVerifiability
+      # only checks a card's acceptance command SHAPE, never whether its paths
+      # exist — BRO-2546 closed that for LLM-drafted acceptance criteria only).
+      # Its colocated test lives in scripts/tests/ (same "not covered by the
+      # 'tests/**' glob" gap as this block's siblings,
+      # feedback_test_yml_push_path_allowlist), so it needs its own explicit
+      # line; registered in tests/unit-test-manifest.txt.
+      - 'scripts/tests/linear-next-dispatch.test.mjs'
       # Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
       # Phase 2 completion): dispatches issues owner-alert-router.js's
       # dispatchCard() filed and parked, via linear-next.js's own --headless
