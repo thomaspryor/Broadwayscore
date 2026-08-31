@@ -87,7 +87,9 @@
     "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -2327,7 +2329,15 @@
     "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
     "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
     "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "book-of-mormon-2011/deadline--unknown.json"
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/nydailynews--howard-kissel.json",
+    "wicked-west-end-2021/timeout--david-cote.json",
+    "wicked-west-end-2021/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2381,7 +2391,8 @@
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json"
+      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2451,11 +2462,12 @@
       "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
       "hadestown-2019/theater-life--isa-goldberg.json",
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
+      "book-of-mormon-2011/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "book-of-mormon-2011/deadline--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/timeout--unknown.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2820,6 +2832,28 @@
       "t": "2026-08-31T16:41:42.032Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-31T16:45:28.680Z",
+      "event": "bb-session",
+      "session": "74438852",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-31T16:45:32.645Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-31T16:45:49.704Z",
+      "event": "bb-session",
+      "session": "9966a1e6",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-31T16:45:53.699Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }

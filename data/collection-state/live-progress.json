@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-08-31T16:44:49.166Z",
-  "processed": 88,
-  "failed": 2238,
-  "successRate": "3.8%",
+  "updatedAt": "2026-08-31T16:46:29.146Z",
+  "processed": 90,
+  "failed": 2246,
+  "successRate": "3.9%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 51,
     "amp": 0,
     "browserbase": 21,
     "directCookies": 3,
     "scrapingbee": 10,
     "brightdata": 5,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 20
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-08-31T15:39:28.720Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-31T15:46:30.689Z",
-      "event": "bb-session",
-      "session": "f9ef8e93",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-08-31T15:46:49.492Z",
-      "event": "bb-session",
-      "session": "089e4021",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-08-31T15:47:13.176Z",
-      "event": "bb-session",
-      "session": "717540b8",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
     {
       "t": "2026-08-31T15:47:13.482Z",
       "event": "bb-cookie-inject",
@@ -129,6 +106,28 @@
       "t": "2026-08-31T16:41:42.032Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-31T16:45:28.680Z",
+      "event": "bb-session",
+      "session": "74438852",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-31T16:45:32.645Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-08-31T16:45:49.704Z",
+      "event": "bb-session",
+      "session": "9966a1e6",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-08-31T16:45:53.699Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
