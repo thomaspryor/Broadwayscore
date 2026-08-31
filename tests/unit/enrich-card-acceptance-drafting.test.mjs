@@ -1,3 +1,11 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: the `data/...json` strings here are FIXTURES for
+// a command-shape validator, never files this test opens. isSafeCheckCommand /
+// explainUnsafeCheckCommand decide whether a drafted acceptance command may run,
+// and `test -f data/shows.json` is the canonical example of one that must be
+// REFUSED (data/ is off the allowlist), so the literal has to appear verbatim to
+// pin that refusal. There is no derived-data claim here to rot: every assertion
+// is about the validator's verdict, not about anything inside data/. The audit's
+// substring heuristic cannot tell a fixture string from a read.
 /**
  * enrich-card-acceptance-drafting.test.mjs — BRO-2546.
  *
