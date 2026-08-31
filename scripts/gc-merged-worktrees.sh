@@ -112,7 +112,10 @@ if [ -n "${WORKTREE_GC_LOCK_DIR:-}" ]; then
   # accepted, but the equality test called it "rejected" straight into the
   # committed audit log people read during a disk incident.
   if [ "$gc_lock_override_ok" != "1" ]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
+    # UTC (BRO-2608): this writes to the same $LOG the freshness guard reads
+    # on a UTC runner — a local-time stamp here would misreport hoursStale
+    # exactly like the bug that fix closed, if this line ever became newest.
+    echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
   fi
 fi
 # Validate-only mode: exit after the lock-path decision, before acquiring any
@@ -120,7 +123,7 @@ fi
 # to take the PRODUCTION lock and delete it in its EXIT trap, which on this Mac
 # forces a concurrent launchd GC to SKIP-RUN. Production never sets it.
 if [ -n "${WORKTREE_GC_VALIDATE_ONLY:-}" ]; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] VALIDATE-ONLY  lock dir resolved to $GC_LOCK_DIR" | tee -a "$LOG"
+  echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] VALIDATE-ONLY  lock dir resolved to $GC_LOCK_DIR" | tee -a "$LOG"
   exit 0
 fi
 # -p on the PARENT (not the lock dir itself — the lock's atomicity depends on
