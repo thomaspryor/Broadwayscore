@@ -112,9 +112,51 @@ const NOT_EVIDENCE_OF_OPENING = new Set(['wrongShow', 'wrongProduction']);
  *   this lib keeps no heavy require.
  * @returns {boolean}
  */
-function isEvidenceOfOpening(data, explainExclusion) {
+function isEvidenceOfOpening(data, explainExclusion, show) {
   if (!data || typeof data !== 'object') return true;
-  return !NOT_EVIDENCE_OF_OPENING.has(explainExclusion(data));
+  // `show` is forwarded because explainExclusion's wrongShow/wrongProduction
+  // rules consult show metadata for their stale-flag recovery paths. Calling it
+  // with data alone would discount a review whose flag the guard itself would
+  // have cleared.
+  return !NOT_EVIDENCE_OF_OPENING.has(explainExclusion(data, show));
+}
+
+/**
+ * The review-texts signal: does this show have at least one collected review
+ * that is evidence it opened?
+ *
+ * This lives here, not in the audit script, because scripts/audit-stale-announced-shows.test.mjs
+ * used to inline its own copy of the rule (`readdirSync(dir).some(f => f.endsWith('.json'))`).
+ * That copy is why fixing the script alone left the acceptance test asserting
+ * the OLD behaviour and CI still red — the exact failure CLAUDE.md §15 exists
+ * to prevent. Script and test now both call this.
+ *
+ * @param {string} reviewTextsDir absolute path to data/review-texts
+ * @param {string} showId
+ * @param {(d: object, show?: object) => (string|null)} explainExclusion
+ * @param {object} [show] the show record, forwarded to explainExclusion
+ * @returns {boolean}
+ */
+function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
+  const dir = path.join(reviewTextsDir, showId);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+  } catch {
+    return false;
+  }
+  return files.some(f => {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    } catch {
+      // Unreadable file: something collected it, so treat it as evidence
+      // rather than silently weakening the signal. This audit's safe
+      // direction is to over-flag, never to go quiet.
+      return true;
+    }
+    return isEvidenceOfOpening(data, explainExclusion, show);
+  });
 }
 
 module.exports = {
@@ -126,5 +168,6 @@ module.exports = {
   daysSince,
   evaluateAnnouncedShow,
   isEvidenceOfOpening,
+  hasEvidenceOfOpening,
   NOT_EVIDENCE_OF_OPENING,
 };

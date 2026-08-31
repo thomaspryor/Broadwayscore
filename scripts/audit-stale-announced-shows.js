@@ -47,7 +47,7 @@ const {
   addAck,
   saveAcks,
   evaluateAnnouncedShow,
-  isEvidenceOfOpening,
+  hasEvidenceOfOpening,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 
@@ -72,28 +72,8 @@ function loadJSON(file, fallback = null) {
   }
 }
 
-function readsAsEvidenceOfOpening(reviewFile) {
-  let data;
-  try {
-    data = JSON.parse(fs.readFileSync(reviewFile, 'utf8'));
-  } catch {
-    // Unreadable file: something collected it, so treat it as evidence rather
-    // than silently weakening the signal.
-    return true;
-  }
-  return isEvidenceOfOpening(data, explainExclusion);
-}
-
-function hasPopulatedReviewTextsDir(showId) {
-  const dir = path.join(REVIEW_TEXTS_DIR, showId);
-  try {
-    return fs
-      .readdirSync(dir)
-      .filter(f => f.endsWith('.json'))
-      .some(f => readsAsEvidenceOfOpening(path.join(dir, f)));
-  } catch {
-    return false;
-  }
+function hasPopulatedReviewTextsDir(showId, show) {
+  return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show);
 }
 
 function main() {
@@ -153,7 +133,7 @@ function main() {
     const reasons = evaluateAnnouncedShow(show, {
       now,
       staleDays: STALE_DAYS,
-      hasReviews: hasPopulatedReviewTextsDir(show.id),
+      hasReviews: hasPopulatedReviewTextsDir(show.id, show),
       acks,
     });
 

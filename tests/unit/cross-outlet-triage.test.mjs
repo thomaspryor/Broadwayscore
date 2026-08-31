@@ -34,9 +34,11 @@ test('wrongProduction excludes', () => {
   assert.strictEqual(isTriagedOut({ wrongProduction: true }), true);
 });
 
-test('duplicateOf excludes — same hard-excluded, untriageable class', () => {
-  assert.strictEqual(isTriagedOut({ duplicateOf: 'other-show/outlet--critic.json' }), true);
-  assert.strictEqual(isTriagedOut({ duplicateOf: '' }), false);
+test('duplicateOf does NOT exclude — duplication and attribution are independent', () => {
+  // A duplicated syndicated article can still carry the wrong outlet's critic.
+  // Skipping it would hide a real misattribution just because scoring drops the
+  // row. Pinned so it does not get "helpfully" added back.
+  assert.strictEqual(isTriagedOut({ duplicateOf: 'other-show/outlet--critic.json' }), false);
 });
 
 test('only literal true excludes, never a truthy string', () => {
@@ -68,7 +70,7 @@ test('both scans in the audit call the shared predicate, with no inline exclusio
     calls.length >= 2,
     `both the playbill-bleed scan and the default-critic-of scan must call isTriagedOut (found ${calls.length})`
   );
-  for (const field of ['crossOutletVerified', 'wrongAttribution', 'wrongProduction', 'wrongShow', 'duplicateOf']) {
+  for (const field of ['crossOutletVerified', 'wrongAttribution', 'wrongProduction', 'wrongShow']) {
     assert.ok(
       !new RegExp(`if \\(d\\.${field} === true`).test(src),
       `${field} must be checked only inside cross-outlet-triage.js, not re-inlined in a scan`

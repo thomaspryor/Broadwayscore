@@ -140,8 +140,8 @@ if (hasHelpFlag(process.argv)) {
       'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext] [--playbill-bleed]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
       'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
-      'Rows already hard-excluded from scoring (wrongShow, wrongProduction,\n' +
-      'wrongAttribution, duplicateOf) are skipped by both scans and need no triage\n' +
+      'Rows already flagged wrongShow, wrongProduction or wrongAttribution are\n' +
+      'skipped by both scans and need no triage\n' +
       'here — see scripts/lib/cross-outlet-triage.js.\n' +
       'Clear an unverifiable row by setting wrongAttribution: true in the file.\n' +
       '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).\n' +

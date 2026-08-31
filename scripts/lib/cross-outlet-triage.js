@@ -39,14 +39,15 @@ function isTriagedOut(d) {
   // release). That is fine: the predicate is evaluated per scan, so a cleared
   // file re-surfaces as a suspect on the next run rather than being lost.
   if (d.wrongProduction === true || d.wrongShow === true) return true;
-  // Same class: scoring's isScoreable() groups duplicateOf with the wrong-show
-  // flags (scripts/test-scoring-rejection-logs.js:19), and explainExclusion
-  // returns 'duplicateOf' for it. A duplicate is hard-excluded from scoring and
-  // no amount of cross-outlet triage can clear it, so reporting it as an
-  // unreviewed suspect is the same unfixable-CI-red trap this module exists to
-  // close. Today all such files clear the byline check, so this changes no
-  // count -- it stops one byline-check miss from turning into a red main.
-  if (d.duplicateOf) return true;
+  // NOT excluded: duplicateOf. It was added here and then removed on review.
+  // Scoring's isScoreable() does group it with the wrong-show flags, but
+  // duplication and attribution are INDEPENDENT dimensions: a duplicated
+  // syndicated article can still carry the wrong outlet's critic, and that is
+  // precisely the contamination this audit exists to surface. Skipping it would
+  // hide a real misattribution merely because scoring ignores that row. The
+  // wrong-show flags are different -- they say the file is not about this show
+  // at all, so its outlet/critic pairing is not a question this audit can even
+  // ask.
   return false;
 }
 

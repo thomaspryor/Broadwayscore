@@ -14,12 +14,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { isEvidenceOfOpening, NOT_EVIDENCE_OF_OPENING } = require(
+const { isEvidenceOfOpening, hasEvidenceOfOpening, NOT_EVIDENCE_OF_OPENING } = require(
   '../../scripts/lib/stale-announced-audit.js'
 );
 const { explainExclusion } = require('../../scripts/lib/review-guards.js');
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('a review flagged wrongShow is not evidence the show opened', () => {
   assert.strictEqual(isEvidenceOfOpening({ wrongShow: true }, explainExclusion), false);
@@ -61,4 +65,38 @@ test('the rule names match what review-guards actually returns for those flags',
   // silently stops discounting anything. Pin the contract.
   assert.strictEqual(explainExclusion({ wrongShow: true }), 'wrongShow');
   assert.strictEqual(explainExclusion({ wrongProduction: true }), 'wrongProduction');
+});
+
+// The bug that made the first fix a no-op: the acceptance test carried its own
+// inline `readdirSync(dir).some(f => f.endsWith(".json"))`, so fixing the
+// production script left the test asserting the OLD rule and CI still red.
+// Both the script and the acceptance test must route through the lib.
+test('neither the audit script nor its acceptance test re-inlines the review-texts rule', () => {
+  for (const rel of [
+    'scripts/audit-stale-announced-shows.js',
+    'scripts/audit-stale-announced-shows.test.mjs',
+  ]) {
+    // Strip line comments first: both files legitimately DESCRIBE the old rule
+    // in prose, and matching that prose would be a false positive.
+    const src = readFileSync(path.join(repoRoot, rel), 'utf8')
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('//'))
+      .join('\n');
+    assert.ok(
+      /hasEvidenceOfOpening\(/.test(src),
+      `${rel} must call hasEvidenceOfOpening from scripts/lib/stale-announced-audit.js`
+    );
+    assert.ok(
+      !/readdirSync\([^)]*\)[\s\S]{0,80}endsWith\('\.json'\)/.test(src),
+      `${rel} must not re-inline the "any .json counts" rule — that copy is why ` +
+        'a production fix stopped reaching the acceptance assertion'
+    );
+  }
+});
+
+test('hasEvidenceOfOpening returns false for a directory that does not exist', () => {
+  assert.strictEqual(
+    hasEvidenceOfOpening('/nonexistent/review-texts', 'no-such-show', () => null),
+    false
+  );
 });
