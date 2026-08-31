@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-31T16:38:31.572Z",
+  "timestamp": "2026-08-31T17:21:36.228Z",
   "stats": {
     "totalReviews": 42125,
-    "alreadyFlagged": 17607,
-    "dateGuardCatches": 234,
+    "alreadyFlagged": 17612,
+    "dateGuardCatches": 235,
     "directorMismatch": 1036,
     "tvFilmSignals": 1240,
     "londonSignals": 947,
     "offBroadwaySignals": 498,
     "yearMismatch": 90,
-    "noPublishDate": 3628
+    "noPublishDate": 3624
   },
   "findings": [
     {
@@ -18835,6 +18835,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 615d before show (2025-02-23 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2025-02-19",
+      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-tom-hiddleston-and-hayley-atwell-review-simply-sublime-shakespeare_1665700/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 619d before show (2025-02-19 vs 2026-10-31)"
         }
       ]
     },
