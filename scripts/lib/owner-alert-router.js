@@ -1,6 +1,18 @@
 /**
  * Owner Alert Router — single funnel for owner-facing automated alerts.
  *
+ * audit-secret-scan-always-trace: required by 48+ scripts (well over
+ * workflow-secret-scan.js's SHARED_MODULE_THRESHOLD), which normally means
+ * "shared infra, don't trace its deps" — correct for an optional-provider
+ * fallback chain, wrong here: dispatchCard()/sendAlert() below reach
+ * linear-client.js's and discord-notify.js's hard, no-fallback secret reads
+ * (LINEAR_API_KEY, RESEND_API_KEY, OWNER_EMAIL) for every one of those 48
+ * callers. Without this marker on the gateway itself, the BFS in
+ * collectTransitiveSource() never even reaches those files to check THEIR
+ * own markers — this is how audit-imageless-scored-shows.yml shipped
+ * without LINEAR_API_KEY for a week (2026-08-31 incident) even though the
+ * audit correctly flagged that same step's other missing secrets.
+ *
  * Problem this solves: 34 independent code paths email thomas.pryor@gmail.com
  * directly, most ending in a paste-into-Claude-Code prompt, and re-alert the
  * same known condition every run because nothing remembers what was already

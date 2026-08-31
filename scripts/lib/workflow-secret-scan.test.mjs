@@ -223,6 +223,61 @@ test('buildRequirerCounts + collectTransitiveSource: a module required by many f
   }
 });
 
+test('collectTransitiveSource: a shared module WITH the always-trace marker IS traced despite being over threshold (owner-alert-router.js shape, 2026-08-31 incident)', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wss-always-trace-'));
+  try {
+    fs.writeFileSync(
+      path.join(tmpDir, 'gateway.js'),
+      '// audit-secret-scan-always-trace: hard dependency, no fallback\nmodule.exports.x = process.env.GATEWAY_SECRET;\n'
+    );
+    // 6 distinct requirers — over SHARED_MODULE_THRESHOLD (5) — but the
+    // marker above must override the threshold exclusion.
+    for (let i = 0; i < 6; i++) {
+      fs.writeFileSync(path.join(tmpDir, `caller${i}.js`), `require('./gateway.js');\n`);
+    }
+    fs.writeFileSync(path.join(tmpDir, 'entry.js'), "require('./caller0.js');\n");
+
+    const requirerCounts = buildRequirerCounts(tmpDir);
+    const entryAbs = path.join(tmpDir, 'entry.js');
+    const src = collectTransitiveSource(entryAbs, { requirerCounts });
+    const reads = extractEnvReads(src);
+    assert.ok(reads.has('GATEWAY_SECRET'), 'a marked file must be traced even when required by >5 files');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+test('collectTransitiveSource: the always-trace marker only rescues the marked file, not its own high-fanout deps — a second hop needs its own marker', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wss-always-trace-chain-'));
+  try {
+    // gateway.js is marked and required by >5 files, but its own dependency
+    // (unmarked-shared.js) is ALSO required by >5 files independently —
+    // mirrors linear-client.js needing its OWN marker, not just
+    // owner-alert-router.js's, to survive the BFS.
+    fs.writeFileSync(
+      path.join(tmpDir, 'gateway.js'),
+      "// audit-secret-scan-always-trace\nrequire('./unmarked-shared.js');\n"
+    );
+    fs.writeFileSync(
+      path.join(tmpDir, 'unmarked-shared.js'),
+      'module.exports.x = process.env.DEEP_SECRET;\n'
+    );
+    for (let i = 0; i < 6; i++) {
+      fs.writeFileSync(path.join(tmpDir, `gwcaller${i}.js`), `require('./gateway.js');\n`);
+      fs.writeFileSync(path.join(tmpDir, `deepcaller${i}.js`), `require('./unmarked-shared.js');\n`);
+    }
+    fs.writeFileSync(path.join(tmpDir, 'entry.js'), "require('./gwcaller0.js');\n");
+
+    const requirerCounts = buildRequirerCounts(tmpDir);
+    const entryAbs = path.join(tmpDir, 'entry.js');
+    const src = collectTransitiveSource(entryAbs, { requirerCounts });
+    const reads = extractEnvReads(src);
+    assert.ok(!reads.has('DEEP_SECRET'), 'an unmarked high-fanout second hop must still be excluded');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
 test('collectTransitiveSource: a narrowly-used module (below threshold) IS traced — the real BRO-67 shape (multi-hop through a small number of specific callers)', () => {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wss-narrow-'));
   try {

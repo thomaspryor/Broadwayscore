@@ -2,6 +2,14 @@
  * Minimal Linear GraphQL client. No SDK dependency — the whole surface this
  * project needs is 4 queries/mutations, and pulling in @linear/sdk for that
  * would be a bigger footprint than a fetch() wrapper.
+ *
+ * audit-secret-scan-always-trace: required by 19+ scripts (well over
+ * workflow-secret-scan.js's SHARED_MODULE_THRESHOLD), but getApiKey() below
+ * is a hard, no-fallback dependency for every one of them — not an optional
+ * provider in a degrade-gracefully chain. Without this marker,
+ * scripts/audit-workflow-secret-gaps.js silently never traces LINEAR_API_KEY
+ * for any caller, which is exactly how audit-imageless-scored-shows.yml
+ * shipped without it for a week (2026-08-31 incident).
  */
 
 const fs = require('fs');

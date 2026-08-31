@@ -60,11 +60,68 @@
  * introduction), but it is an undocumented blind spot in exactly the shape
  * of script this tool exists to cover — worth resolving `npm run` through
  * package.json if a workflow ever adopts that style for one of these.
+ *
+ * Third known false-negative, found live (not theoretical) 2026-08-31:
+ * `SHARED_MODULE_THRESHOLD`'s "high fan-out = shared infra, don't trace"
+ * heuristic is correct for an OPTIONAL-provider fallback chain (scraper.js's
+ * multi-provider degradation — see buildRequirerCounts's own doc comment)
+ * but wrong for a mandatory, no-fallback CHOKEPOINT that happens to also be
+ * imported everywhere: scripts/lib/owner-alert-router.js (required by 48
+ * scripts — the shared funnel for owner-facing alerts) calls into
+ * linear-client.js (19 requirers) for its 'auto' disposition and
+ * discord-notify.js (26 requirers) for 'human'/digest delivery. Both sit
+ * well over the threshold, so this tool never traced past
+ * owner-alert-router.js at all — LINEAR_API_KEY, RESEND_API_KEY, and
+ * OWNER_EMAIL were structurally invisible to this audit for every one of
+ * those 48 callers. That is exactly how
+ * audit-imageless-scored-shows.yml shipped without LINEAR_API_KEY for
+ * weeks: this audit DID flag that same step's missing GITHUB_TOKEN and
+ * REVIEW_TEXTS_TOKEN (read directly, no shared chokepoint in the way) but
+ * said nothing about LINEAR_API_KEY, and the gap only surfaced 7 days later
+ * via health-check.js's alert-router deadman check.
+ *
+ * Fixed with an opt-in marker rather than raising/removing the threshold
+ * (which would resurrect the ~150-line scraper.js false-positive flood the
+ * threshold exists to prevent): a file containing the literal comment
+ * `audit-secret-scan-always-trace` is traced regardless of its requirer
+ * count (see ALWAYS_TRACE_MARKER_RE / collectTransitiveSource below). Add
+ * it to a shared module's own header when — like owner-alert-router.js,
+ * linear-client.js, and discord-notify.js — a missing secret there degrades
+ * silently for every caller rather than gracefully falling back to a
+ * sibling provider.
+ *
+ * Precision/recall tradeoff accepted knowingly: routeAlert()'s 'auto' and
+ * 'human' dispositions need LINEAR_API_KEY / RESEND_API_KEY+OWNER_EMAIL
+ * respectively, but 'digest' (queue a line for the daily email, the most
+ * common disposition in this codebase per CLAUDE.md's "NO sender emails me
+ * directly" rule) needs neither. This scanner is text/require-graph based,
+ * not control-flow aware, so it cannot tell which disposition a given
+ * caller's routeAlert() invocation actually uses — marking the chokepoint
+ * always-trace means every caller of owner-alert-router.js now gets flagged
+ * for all three secrets, including 'digest'-only callers that never need
+ * them (confirmed false positive: scripts/disposition-misroute.js). That is
+ * the deliberate, documented direction of error for an advisory tool per
+ * this file's own header ("false negatives are expected... false positives
+ * are possible... needs a period of human-reviewed warnings") — silently
+ * missing LINEAR_API_KEY entirely (the actual 2026-08-31 incident) is worse
+ * than an extra advisory line a caller can suppress with
+ * `# audit-secret-gap-ok: SECRET_NAME`. A disposition-aware refinement
+ * (only attribute these secrets when the caller's own source also matches
+ * `disposition:\s*['"]auto['"]` / `'human'`) would tighten this further but
+ * is real, separate work — not done here.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+
+// Opt-in escape hatch from the SHARED_MODULE_THRESHOLD exclusion below — see
+// the "Third known false-negative" header comment above for why a module can
+// be both widely-required AND load-bearing enough that this tool must still
+// trace through it. Any comment form works (`//`, `/* */`, or `#` — the
+// marker is just a literal substring match, not anchored to a comment
+// syntax) since this is checked against files of several languages/exts.
+const ALWAYS_TRACE_MARKER_RE = /audit-secret-scan-always-trace/;
 
 const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.ts', '.json', '/index.js', '/index.ts'];
 const REQUIRE_RE = /require\(\s*['"](\.[^'"]+)['"]\s*\)/g;
@@ -328,15 +385,15 @@ function collectTransitiveSource(entryAbsPath, { maxFiles = 60, requirerCounts =
     const cur = queue.shift();
     if (visited.has(cur)) continue;
     visited.add(cur);
-    if (requirerCounts && cur !== entryAbsPath) {
-      const requirers = requirerCounts.get(cur);
-      if (requirers && requirers.size > SHARED_MODULE_THRESHOLD) continue;
-    }
     let src;
     try {
       src = fs.readFileSync(cur, 'utf8');
     } catch {
       continue;
+    }
+    if (requirerCounts && cur !== entryAbsPath && !ALWAYS_TRACE_MARKER_RE.test(src)) {
+      const requirers = requirerCounts.get(cur);
+      if (requirers && requirers.size > SHARED_MODULE_THRESHOLD) continue;
     }
     chunks.push(src);
     for (const dep of extractLocalDeps(src, cur)) {
