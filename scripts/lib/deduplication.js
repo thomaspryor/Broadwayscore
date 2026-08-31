@@ -80,8 +80,19 @@ function venuesMatch(a, b) {
   const aliasA = aliasCanonical(a);
   const aliasB = aliasCanonical(b);
   if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
-  const normA = normalizeVenueName(a);
-  return normA !== '' && normA === normalizeVenueName(b);
+  // Strip a leading "The " before the plain-string fallback ONLY — not before
+  // aliasCanonical() above (2026-08-31). venue-classification.js's
+  // normalizeVenueName() strips trailing "Theatre"/"Theater" and parentheticals
+  // but not a leading article, so "West End Theatre" vs "The West End Theatre" —
+  // the same venue, one side just informally dropping "The" — compared UNEQUAL
+  // and ran Data Validation red on main (othello-bedlam-off-broadway-2026,
+  // the-dead-1904-off-broadway-2026). Must run AFTER aliasCanonical: several
+  // VENUE_ALIASES regexes are anchored on a literal "the" (e.g. title-match.js's
+  // /^the\s*new\s*group$/i for The New Group ≡ Signature Center) and stripping it
+  // upstream broke those matches.
+  const stripThe = v => v.replace(/^the\s+/i, '');
+  const normA = normalizeVenueName(stripThe(a));
+  return normA !== '' && normA === normalizeVenueName(stripThe(b));
 }
 
 const KNOWN_DUPLICATES = {
