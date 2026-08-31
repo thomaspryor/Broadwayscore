@@ -324,6 +324,15 @@ test('venuesMatch does NOT collapse two unrelated venues that merely share a lea
   // (not first-word) buys over a naive strict === would.
   assert.equal(venuesMatch("St. Luke's Theatre", "St. Luke's Theater"), true);
   assert.equal(venuesMatch('  The Duke on 42nd Street  ', 'The Duke on 42nd Street'), true);
+  // BRO-2567: leading whitespace must not change whether the article is
+  // stripped. venuesMatch's own stripThe regex runs BEFORE normalizeVenueName
+  // does its .trim(), so an un-trimmed padded venue used to keep its "The "
+  // while the unpadded side lost it. Scraped venue strings routinely arrive
+  // padded; both sides of the comparison must normalize identically.
+  assert.equal(venuesMatch('  The Theatre  ', 'The Theatre'), true);
+  assert.equal(venuesMatch('\n\tThe Public Theater ', 'The Public Theater'), true);
+  // ...and trimming must not soften the collapse guard above.
+  assert.equal(venuesMatch('  The Duke on 42nd Street  ', '  The Public Theater  '), false);
   // Identical strings and null/empty inputs.
   assert.equal(venuesMatch('Signature Center', 'Signature Center'), true);
   assert.equal(venuesMatch('', 'Signature Center'), false);

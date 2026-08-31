@@ -90,7 +90,11 @@ function venuesMatch(a, b) {
   // VENUE_ALIASES regexes are anchored on a literal "the" (e.g. title-match.js's
   // /^the\s*new\s*group$/i for The New Group ≡ Signature Center) and stripping it
   // upstream broke those matches.
-  const stripThe = v => v.replace(/^the\s+/i, '');
+  // .trim() FIRST (BRO-2567): normalizeVenueName() trims internally, but this
+  // regex runs BEFORE it, so a leading-whitespace venue never matched /^the\s+/
+  // and kept its article while the unpadded side lost it. Same venue, opposite
+  // sides of a scrape, compared UNEQUAL.
+  const stripThe = v => v.trim().replace(/^the\s+/i, '');
   const normA = normalizeVenueName(stripThe(a));
   return normA !== '' && normA === normalizeVenueName(stripThe(b));
 }
