@@ -133,17 +133,16 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-31T16:04:59.428Z",
-      "lastNotifiedAt": "2026-08-31T16:04:59.428Z",
-      "notifyCount": 51,
+      "lastSeen": "2026-08-31T16:51:39.215Z",
+      "lastNotifiedAt": "2026-08-31T16:51:39.215Z",
+      "notifyCount": 52,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-08-31T16:24:45.235Z"
+      "linearIdentifier": null
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -777,12 +776,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-31T16:04:56.565Z",
+      "lastSeen": "2026-08-31T16:51:39.213Z",
       "lastNotifiedAt": "2026-08-31T16:04:56.565Z",
       "notifyCount": 28,
       "cardId": null,
       "linearIdentifier": "BRO-296",
-      "resolvedAt": "2026-08-31T16:44:34.643Z"
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
