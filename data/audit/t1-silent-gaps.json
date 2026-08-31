@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T13:37:32.729Z",
+  "generatedAt": "2026-08-31T00:09:40.532Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 912.4321677777777,
+      "fileAgeHours": 922.9675908333334,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 5.9384886111111115
+      "nonTerminalAgeHours": 16.473989166666666
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 602.8753788888889,
+      "fileAgeHours": 613.4108241666667,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 271.25355083333335
+      "nonTerminalAgeHours": 281.7890513888889
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
       "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 412.1158433333333,
+      "fileAgeHours": 422.65130166666665,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 5.9384886111111115
+      "nonTerminalAgeHours": 16.473989166666666
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=an-american-daughter-off-broadway-2026",
       "firstSeen": "2026-08-21T11:19:24.394Z",
-      "fileAgeHours": 218.30227055555557,
+      "fileAgeHours": 228.8377438888889,
       "gapSeenAt": "2026-08-30T13:37:32.729Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 10.535500555555556
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -84,9 +84,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 44.347585277777775,
+      "fileAgeHours": 54.88308611111111,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 5.9384886111111115
+      "nonTerminalAgeHours": 16.473989166666666
     }
   ],
   "contradictions": []
