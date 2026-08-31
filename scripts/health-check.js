@@ -1038,6 +1038,19 @@ function checkQuality() {
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
     }),
 
+    // Surfaces the DMARC deliverability verdict (BRO-525). The ingest routes
+    // only 'action' findings through routeAlert; everything milder — including
+    // 'policy-upgrade-available', the payoff of a clean authentication record
+    // — would otherwise sit in a file nobody opens, which is the exact failure
+    // that card was filed about (233 unread reports). Warn-level so it shows
+    // in the digest without paging.
+    runCheck('Quality: DMARC deliverability', () => {
+      const { dmarcHealthResult } = require('./lib/dmarc-analysis.js');
+      const summaryFile = path.join(AUDIT_DIR, 'dmarc-summary.json');
+      const summary = fs.existsSync(summaryFile) ? readJSON(summaryFile) : null;
+      return { name: 'Quality: DMARC deliverability', ...dmarcHealthResult(summary) };
+    }),
+
     // Silent-exclusion detectors (#1147 tracker, card #1188): a pipeline stage
     // refuses to include a review and records nothing an operator would ever
     // look at. Two live incidents, both fixed by hand with no detector left

@@ -57,6 +57,7 @@ scripts/fetch-show-images-auto.test.mjs
 scripts/flag-wrong-production-by-date.test.mjs
 scripts/gather-reviews.test.mjs
 scripts/import-notion-to-linear.test.mjs
+scripts/ingest-dmarc-reports.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/bww-archive-category-guard.test.mjs
@@ -67,6 +68,8 @@ scripts/lib/collect-time-budget.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
 scripts/lib/cyrus-runner-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
+scripts/lib/dmarc-analysis.test.mjs
+scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs

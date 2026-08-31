@@ -42,6 +42,13 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # scripts/ingest-dmarc-reports.js + its colocated test (BRO-525): the
+      # DMARC parser and analyzer live in scripts/lib/ (globbed above), but the
+      # ingest CLI and its test sit at the top level of scripts/, so a solo
+      # edit to either would trigger zero CI — same gap class as
+      # scripts/check-orphan-commits.js above.
+      - 'scripts/ingest-dmarc-reports.js'
+      - 'scripts/ingest-dmarc-reports.test.mjs'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
