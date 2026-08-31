@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-31T02:53:45.950Z",
+  "generatedAt": "2026-08-31T14:37:47.074Z",
   "linearIssue": "BRO-80",
   "scannedShows": 2938,
   "flaggedShows": 52,
-  "flaggedFiles": 210,
+  "flaggedFiles": 211,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -2333,6 +2333,84 @@
       ]
     },
     {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "National Theatre (Olivier)",
+      "previewsStartDate": "2026-08-27",
+      "openingDate": "2026-09-03",
+      "verdict": "likely-contamination",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 4,
+        "distinctYears": [
+          2016,
+          2023,
+          2024,
+          2025
+        ],
+        "spanDays": 3384,
+        "flaggedCount": 4,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2016-08-22",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-946-amazing-story",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2023-05-31",
+          "url": "https://www.londonboxoffice.co.uk/news/post/a-ghost-story-apollo-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "nysr--frank-scheck.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "nysr",
+          "criticName": "Frank Scheck",
+          "publishDate": "2024-06-05",
+          "url": "https://nystagereview.com/2024/06/04/breaking-the-story-war-is-hell-and-so-is-remembering-it/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Unknown",
+          "publishDate": "2025-11-27",
+          "url": "https://standard.co.uk/culture/theatre/a-christmas-carol-at-alexandra-palace-review-2025-mark-gatiss-b1260042.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "title": "Who’s Afraid of Virginia Woolf?",
       "market": "west-end",
@@ -2527,70 +2605,6 @@
           "url": "https://www.thetimes.co.uk/article/theatre-review-woyzeck-at-the-old-vic-se1-7cr52zb6k",
           "wrongProduction": false,
           "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "National Theatre (Olivier)",
-      "previewsStartDate": "2026-08-27",
-      "openingDate": "2026-09-03",
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2016,
-          2023,
-          2024
-        ],
-        "spanDays": 2844,
-        "flaggedCount": 3,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2016-08-22",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-946-amazing-story",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2023-05-31",
-          "url": "https://www.londonboxoffice.co.uk/news/post/a-ghost-story-apollo-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "nysr--frank-scheck.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "nysr",
-          "criticName": "Frank Scheck",
-          "publishDate": "2024-06-05",
-          "url": "https://nystagereview.com/2024/06/04/breaking-the-story-war-is-hell-and-so-is-remembering-it/",
-          "wrongProduction": true,
-          "wrongShow": false,
           "evaluationError": null
         }
       ]
