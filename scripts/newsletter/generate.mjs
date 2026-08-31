@@ -2010,9 +2010,24 @@ let _londonHasGoldOpening = false;
 // this same tier split) can never disagree about which show is "first."
 function weTierRank(category) { return category === 'west-end' ? 0 : 1; }
 
+// Grace window (mirrors offBroadwayOpenings()'s 14-day catch-up): a WE/OWE
+// show whose openingDate falls in-week always qualifies; one that opened up
+// to 14 days earlier still qualifies IF it hasn't already been featured in a
+// recent issue (lastFeaturedIds). Without this, a show that opens late in the
+// week and only crosses minReviews() after that Saturday's cron has already
+// run (e.g. As You Like It - Globe: opened Aug 21, still only had 2 reviews
+// at the Aug 22 11:30 UTC cron, didn't cross the 5-review threshold until
+// Aug 23) falls through permanently — inWeek() never matches again the
+// following week since its openingDate has moved out of window.
+function inLondonOpeningWindow(s) {
+  if (inWeek(s.openingDate)) return true;
+  if (!s.openingDate) return false;
+  return s.openingDate >= _daysBefore(14) && s.openingDate < weekStartStr && !lastFeaturedIds.has(s.id);
+}
+
 function weOpeningStories() {
   const ranked = shows
-    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
     .sort((a, b) => (weTierRank(a.s.category) - weTierRank(b.s.category))
@@ -2026,7 +2041,7 @@ function weOpeningStories() {
 }
 
 function londonSection() {
-  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
+  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
