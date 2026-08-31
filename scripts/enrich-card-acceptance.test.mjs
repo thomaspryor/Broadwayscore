@@ -181,7 +181,7 @@ test('eligible card: LLM drafts a mutating command — rejected before ever writ
   // here — unlike `test -f data/shows.json`, which used to be reported the
   // same way and is not a shape problem. Covered in
   // tests/unit/enrich-card-acceptance-drafting.test.mjs.
-  assert.match(r.detail, /command rejected \(shape\)/);
+  assert.match(r.detail, /draft rejected \(shape\)/);
   assert.match(r.detail, /rebuild-all-reviews\.js/);
   assert.equal(calls.length, 0);
 });
@@ -388,21 +388,61 @@ test('guardrail 3: demotions are recorded in the enrichment audit log, not just 
   fs.unlinkSync(logPath);
 });
 
-test('guardrail 3: an ADDITIONAL safe command keeps its backticks (no gratuitous behavior change)', async () => {
+// BRO-2546 narrowed this deliberately. The original decision — "an ADDITIONAL
+// safe command keeps its backticks, no gratuitous behavior change" — was made
+// without knowing that such a span can STEAL the arming slot: extractVerifyCmd
+// picks the FIRST span of the highest rank, so the section below arms the card
+// on `npx next lint` while the enricher validated, logged and audited
+// `npx tsc --noEmit`. Harmless for two path-free repo-wide checks; the same
+// shape with a `node --test` span names a test file whose paths were never
+// resolved, and the card can never pass (the #171 unpassable-card class).
+// So the invariant is now "the command the dispatcher extracts is the command
+// whose paths were validated", and a section naming two competing commands is
+// re-prompted rather than written. Measured cost on the live 8-card Linear
+// sweep: none — still 7 enriched, 0 failed.
+test('guardrail 3: a safe extra command that would outrank the validated one is re-prompted, never written', async () => {
   const calls = [];
+  let llmCalls = 0;
   const card = {
     id: 'c7c', name: 'Fix types', category: 'Product', tags: [],
     notes: '## Problem\nTypes are wrong.',
   };
   const r = await enrichOneCard(card, {
+    callLLM: async () => {
+      llmCalls += 1;
+      return JSON.stringify({
+        command: 'npx tsc --noEmit',
+        acceptanceCriteria: '## Acceptance criteria\nAlso `npx next lint` stays clean; verify with `npx tsc --noEmit`.',
+      });
+    },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /command-mismatch/);
+  assert.match(r.detail, /npx next lint/, 'the refusal must name the command that would actually have run');
+  assert.equal(llmCalls, 2, 'a mismatch is retryable — the model gets told to name exactly one command');
+  assert.equal(calls.length, 0);
+});
+
+test('guardrail 3: a safe extra command that does NOT outrank the validated one keeps its backticks', async () => {
+  // The other half of the original decision still holds. `node --test` outranks
+  // everything, so the validated command wins the arming slot and the extra
+  // safe span is preserved as documentation, undemoted.
+  const calls = [];
+  const cmd = 'node --test tests/unit/bro-2546-rank.test.mjs';
+  const r = await enrichOneCard({
+    id: 'c7d', name: 'Fix types', category: 'Product', tags: [],
+    notes: '## Problem\nTypes are wrong.',
+  }, {
     callLLM: async () => JSON.stringify({
-      command: 'npx tsc --noEmit',
-      acceptanceCriteria: '## Acceptance criteria\nAlso `npx next lint` stays clean; verify with `npx tsc --noEmit`.',
+      command: cmd,
+      acceptanceCriteria: `## Acceptance criteria\nAlso \`npx next lint\` stays clean; verify with \`${cmd}\`.`,
     }),
     notionBrain: fakeNotionBrain(calls),
     logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'llm-enriched');
+  assert.equal(r.action, 'llm-enriched', r.detail);
   assert.ok(/`npx next lint`/.test(writtenNotes(calls)), 'a safe extra command must keep its backticks');
   assert.deepEqual(r.demotedSpans, [], 'nothing should be demoted when every span is safe');
 });

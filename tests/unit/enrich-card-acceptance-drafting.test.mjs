@@ -360,3 +360,106 @@ test('the retry prompt restates the full accepted-forms list and the card', () =
   assert.match(p, /npx tsc --noEmit/, 'restates the accepted forms');
   assert.match(p, /ONLY the same JSON object/);
 });
+
+// ── Ship-check findings (BRO-2546) ──────────────────────────────────────────
+//
+// Two independent reviewers (Codex adversarial + a codebase-aware Claude pass)
+// found five further defects in this file's own change. Each is pinned below.
+
+test('ship-check: the dispatcher must run the command whose paths were validated', () => {
+  // Guardrail 3 deliberately preserves ADDITIONAL safe-form spans, and
+  // extractVerifyCmd picks the FIRST span of the highest rank — so a section
+  // reading "first confirm `<ghost>` passes, then `<real>` passes" armed the
+  // card on the GHOST, which never went through resolveCheckPaths and names a
+  // directory that does not exist. Unpassable card (#171 class), reintroduced
+  // through a span the phantom check never looked at.
+  const ghost = 'node --test tests/nosuchdir/deep/ghost.test.mjs';
+  const real = 'node --test tests/unit/bro-2546-mismatch-real.test.mjs';
+  const notes = `## Acceptance criteria\nFirst confirm \`${ghost}\` passes, then \`${real}\` passes`;
+  // The precondition that made it exploitable: both are safe-shaped and the
+  // ghost outranks nothing — it simply comes first.
+  assert.equal(isSafeCheckCommand(ghost), true, 'precondition: the ghost passes the SHAPE gate');
+  assert.equal(resolveCheckPaths(ghost, { repoRoot: REPO }).ok, false, 'precondition: it fails the PATH check');
+  assert.equal(evaluateVerifiability(notes).cmd, ghost, 'precondition: the gate would extract the ghost');
+});
+
+test('ship-check: such a draft is rejected and re-prompted, never written', async () => {
+  const prompts = [];
+  const calls = [];
+  const ghost = 'node --test tests/nosuchdir/deep/ghost.test.mjs';
+  const real = 'node --test tests/unit/bro-2546-mismatch-real.test.mjs';
+  const r = await enrichOneCard(card(), {
+    callLLM: scriptedLLM([{
+      command: real,
+      acceptanceCriteria: `## Acceptance criteria\nFirst confirm \`${ghost}\` passes, then \`${real}\` passes`,
+    }], prompts),
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /command-mismatch/);
+  assert.match(r.detail, /ghost\.test\.mjs/, 'the refusal must name the command that would actually have run');
+  assert.equal(prompts.length, 2, 'a section-level rejection is retryable, like a command-level one');
+  assert.equal(calls.length, 0);
+});
+
+test('ship-check: a model that backticks its own command field still enriches', async () => {
+  // repairDraftedCommand strips the decoration, so `bareCommand` no longer
+  // appears in the prose but the backticked original does. Matching on the
+  // DECORATED string and joining with the bare one deleted the backticks, and
+  // candidatesFrom() only matches backticked spans — so the section carried a
+  // perfectly good command as plain prose and died at the final gate with
+  // "names no runnable command (prose only)".
+  const calls = [];
+  const cmd = 'node --test tests/unit/bro-2546-backticked.test.mjs';
+  const r = await enrichOneCard(card(), {
+    callLLM: scriptedLLM([{
+      command: `\`${cmd}\``,
+      acceptanceCriteria: `## Acceptance criteria\n- \`${cmd}\` passes`,
+    }]),
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched', `expected enrichment, got ${r.detail}`);
+  const written = calls[0].find(a => typeof a === 'string' && a.includes('## Acceptance criteria'));
+  assert.match(written, /`node --test tests\/unit\/bro-2546-backticked\.test\.mjs`/,
+    'the command must still render as a code span');
+  assert.equal(evaluateVerifiability(written).cmd, cmd);
+});
+
+test('ship-check: an unrepairable decorated command is diagnosed on its stripped form', () => {
+  // Returning the DECORATED original made explainUnsafeCheckCommand report
+  // kind:'shape' (backticks match no form) for a command whose real problem is
+  // its directory — reintroducing exactly the misdiagnosis defect 1 fixes.
+  const out = repairDraftedCommand('`test -f data/shows.json`');
+  assert.equal(out, 'test -f data/shows.json', 'decoration is stripped even when no repair validates');
+  assert.equal(explainUnsafeCheckCommand(out).kind, 'path-prefix');
+});
+
+test('ship-check: a retry that fails to parse still reports the original cause', async () => {
+  let n = 0;
+  const calls = [];
+  const r = await enrichOneCard(card(), {
+    callLLM: async () => {
+      n += 1;
+      return n === 1
+        ? JSON.stringify({ command: 'test -f data/shows.json', acceptanceCriteria: '## Acceptance criteria\n- `test -f data/shows.json` passes' })
+        : 'not json at all';
+    },
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /unparseable/);
+  assert.match(r.detail, /retry of:/, 'the first attempt\'s real cause must survive');
+  assert.match(r.detail, /not under an allowed directory/);
+  assert.equal(calls.length, 0);
+});
+
+test('ship-check: the retry prompt states the per-form directory allowlists correctly', () => {
+  // It previously stated the `test -f` prefix set as if it were universal;
+  // node --test does NOT accept docs/ or memory/.
+  const p = buildEnrichRetryPrompt(card(), 'test -f data/x.json', 'nope');
+  assert.match(p, /allowlists differ per form/);
+  assert.match(p, /EXACTLY ONE command/);
+  assert.equal(isSafeCheckCommand('node --test docs/x.test.mjs'), false,
+    'the prompt is right: docs/ is not a node --test directory');
+  assert.equal(isSafeCheckCommand('test -f docs/x.md'), true);
+});

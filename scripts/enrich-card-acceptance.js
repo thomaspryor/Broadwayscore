@@ -470,7 +470,13 @@ function repairDraftedCommand(cmd) {
   if (bareTsx) push(`npx tsx --test${bareTsx[1]}`);
 
   for (const c of candidates) if (isSafeCheckCommand(c)) return c;
-  return original;
+  // Undecorated even on failure (ship-check finding): the caller's next move is
+  // to ASK THE VALIDATOR WHY, and a verdict on "`test -f data/x.json`" is
+  // kind:'shape' (backticks match no form) where the verdict on the stripped
+  // command is the true kind:'path-prefix'. Returning the stripped form costs
+  // nothing — if it were safe, the loop above would already have returned it —
+  // and it is what makes the refusal message honest.
+  return stripped || original;
 }
 
 // The one retry (BRO-2546 defect 2). Same shape as triageCard's retry in
@@ -487,7 +493,8 @@ Rejected command: ${String(rejectedCommand).slice(0, 200)}
 Validator verdict: ${String(rejectionReason).slice(0, 400)}
 
 Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
-If the file you want to assert on is not under docs/, memory/, tests/, src/ or scripts/, do NOT use \`test -f\` at all — name a \`node --test <path>.test.mjs\` test under tests/unit/ that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
+Note the directory allowlists differ per form: \`test -f\` accepts docs/, memory/, tests/, src/ and scripts/; \`node --test\` and \`npx tsx --test\` accept only tests/, scripts/ and src/. If the file you want to assert on is outside the relevant list, do NOT force that form — name a \`node --test tests/unit/<name>.test.mjs\` test that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
+Name EXACTLY ONE command anywhere in acceptanceCriteria. A second backticked command, even a safe one, can outrank the one you named and become the command that actually runs.
 Respond with ONLY the same JSON object as before.`;
 }
 
@@ -699,6 +706,149 @@ function spliceNotes(notes, draftedSection) {
   return text.slice(0, section.index) + draftedSection.trim() + '\n' + text.slice(section.index + section[0].length);
 }
 
+// Build the acceptance-criteria section for one validated draft and run every
+// section-level guardrail on it. Split out of enrichOneCard (BRO-2546) so the
+// retry loop can treat a section-level rejection exactly like a command-level
+// one: returns { rejection } for something a re-prompt could fix,
+// { hardFailure } for something it could not, or the accepted section.
+function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
+  // resolveCheckPaths may canonicalize the command (e.g. tests/x.test.mjs →
+  // tests/unit/x.test.mjs) — substitute the corrected form into the
+  // LLM's prose so the section and the actually-checked command can't diverge.
+  const finalCommand = pathCheck.checkableDone;
+  // The prose the model wrote quotes the command IT produced, which
+  // repairDraftedCommand may have rewritten (`node x.test.mjs` → `node --test
+  // x.test.mjs`) and resolveCheckPaths may have rewritten again (tests/ →
+  // tests/unit/). Substitute whichever spelling actually appears, so the
+  // section and the executed command can never disagree; if neither does,
+  // fall back to a minimal section naming only the validated command.
+  //
+  // Match on the UNDECORATED spelling only (ship-check finding). When the model
+  // backticks its own `command` field — reachable whenever repairDraftedCommand
+  // stripped that decoration, so `bareCommand` no longer appears in the prose but
+  // the backticked original does — matching on the decorated string and joining
+  // with the bare one DELETES the backticks. candidatesFrom() matches backticked
+  // spans only, so the section would then carry a perfectly good command as
+  // plain prose and die at the final gate with "names no runnable command
+  // (prose only)": a card burned on a draft that was actually fine, which is the
+  // exact class BRO-2546 exists to drain.
+  const drafted = parsed.acceptanceCriteria;
+  const bare = c => String(c || '').replace(/^`+|`+$/g, '').trim();
+  const quoted = [bareCommand, parsed.command].map(bare).find(c => c && drafted.includes(c));
+  const draftedSection = quoted
+    ? drafted.split(quoted).join(finalCommand)
+    : `## Acceptance criteria\n- \`${finalCommand}\` passes`;
+
+  // Guardrail 3 (ship-check finding): the LLM's free-form prose can carry a
+  // SECOND backticked command alongside the validated one — e.g. "run `node
+  // scripts/rebuild-all-reviews.js` and check the diff, then `npx tsc
+  // --noEmit`". Only the first candidate was ever being validated; the
+  // mutating second one would ride along into Notion verbatim, since
+  // evaluateVerifiability only needs ONE safe command in the section to
+  // arm. Reject the whole draft if any candidate besides the validated one
+  // isn't itself safe-shaped — never write a card whose own notes document
+  // an unsanctioned command, even if it isn't the one that gets executed.
+  // task #1713 (considered and reverted): Gemini, the fallback provider on a
+  // machine with no funded ANTHROPIC_API_KEY/OPENROUTER_API_KEY credits,
+  // sometimes wraps a bare identifier in backticks as Markdown inline code
+  // (`wrongProduction`), which used to trip this guardrail even though it
+  // isn't a real command. A narrowed "only flag spans with whitespace or /"
+  // filter was tried and reverted after adversarial review (Codex) pointed
+  // out a single PATH executable IS a valid unsafe command with neither
+  // (e.g. `make`) — this guardrail is deliberately conservative defense in
+  // depth (never write a card whose own notes document an unsanctioned
+  // command, even one nothing today would execute).
+  //
+  // The DETECTOR below is unchanged and still fires on every one of those
+  // spans, including bare identifiers. What changed is the RESPONSE to it.
+  // Measured on a real 60-card Linear sweep (2026-08-20): 40 of 60 cards
+  // (67%) died here, and the flagged spans were overwhelmingly not commands
+  // at all — `normalizeUrl`, `wrongProduction`, `rescoreFlaggedAt`,
+  // `NEWSLETTER_PATTERNS[4]`, show ids like `wicked-2003`, and bare file
+  // paths. Since an un-armed card cannot be dispatched at all, "fail the
+  // whole draft" was the single largest structural cap on backlog
+  // throughput.
+  //
+  // So: instead of discarding the draft, DEMOTE every offending span out of
+  // command position — rewrite `foo` to 'foo' — and then re-run the exact
+  // same detector on the rewritten section, accepting only if it now comes
+  // back clean. Because candidatesFrom() only ever matches backticked spans,
+  // a demoted span is provably no longer a candidate, so the invariant
+  // ("never write a card whose own notes document an unsanctioned command")
+  // holds by construction rather than by inspection. Spans that are the
+  // validated command, or are themselves safe-form, keep their backticks.
+  //
+  // This is NOT the reverted #1713 change wearing a hat: #1713 narrowed what
+  // COUNTS as unsafe, so `make` slipped through into a card verbatim and
+  // still backticked. Here `make` is still detected, and still never reaches
+  // the card as a command — it lands as prose. If a demotion somehow fails to
+  // clear the detector, the original zero-write 'failed' outcome stands.
+  // Demotion runs UNCONDITIONALLY, not only when candidatesFrom() flags
+  // something. The detector cannot see a code span that straddles a newline,
+  // so gating demotion on the detector's own verdict would leave exactly the
+  // spans it is blindest to untouched. When every span is already sanctioned
+  // this is a no-op and demoted comes back empty.
+  const demotion = demoteUnsafeSpans(draftedSection, finalCommand);
+  const sectionToWrite = demotion.section;
+  const demotedSpans = demotion.demoted;
+
+  // Structural assertion, not a hope: nothing that renders as a code span may
+  // survive unless it is the validated command or itself safe-form. If a
+  // demotion somehow failed to clear it (re-paired backticks, nesting), the
+  // original zero-write 'failed' outcome stands.
+  const survivingUnsafe = unsanctionedRenderedSpans(sectionToWrite, finalCommand);
+  if (survivingUnsafe.length) {
+    return { rejection: { kind: 'unsafe-span', reason: `the drafted section names an additional unsafe command: ${survivingUnsafe[0].slice(0, 120)}` } };
+  }
+
+  const newNotes = spliceNotes(sanitizedNotes, sectionToWrite);
+
+  // Guardrail 4 structural re-check (BRO-2232): sectionToWrite alone
+  // (guardrail 3, above) can't see a pre-existing VERIFY: line living
+  // outside the drafted section — demoteUnsafeVerifyLines is a best-effort
+  // rewrite, not a proof by itself. Re-run the detector across the FULL
+  // written notes and refuse the write if anything survives.
+  // NOT retryable, unlike the rejections above: this one is about the card's
+  // OWN pre-existing notes, which the model cannot rewrite however many times
+  // it is asked. Fail hard rather than burn a retry that cannot help.
+  const survivingVerifyUnsafe = unsanctionedVerifyLineSpans(newNotes);
+  if (survivingVerifyUnsafe.length) {
+    return { hardFailure: `pre-existing VERIFY line still names an unsanctioned command: ${survivingVerifyUnsafe[0].slice(0, 120)}` };
+  }
+
+  // Final safety net: re-run the SAME gate the audit/dispatch use before ever
+  // writing — an LLM that ignored instructions must not slip a bad or
+  // mutating command into Notion.
+  const finalGate = evaluateVerifiability(newNotes);
+  if (!finalGate.armed) {
+    return { rejection: { kind: 'unarmed', reason: `the drafted notes still fail the verify gate: ${finalGate.reason}` } };
+  }
+
+  // BRO-2546 ship-check (Codex, confirmed by probe): "armed" was never the
+  // invariant this needed. Guardrail 3 deliberately preserves ADDITIONAL
+  // safe-form spans, and extractVerifyCmd picks the FIRST span of the highest
+  // rank — so a section reading "first confirm `node --test
+  // tests/nosuchdir/ghost.test.mjs` passes, then `node --test
+  // tests/unit/real.test.mjs` passes" armed the card on the GHOST command.
+  // That command never went through resolveCheckPaths, so it names a
+  // directory that does not exist and the card can never pass: precisely the
+  // unpassable-card class (#171) the phantom-path check exists to prevent,
+  // reintroduced through a span the check never looked at. The run log even
+  // reported the ghost as the enriched command.
+  //
+  // The honest invariant is that the command the DISPATCHER will extract is
+  // the command whose paths were actually validated. Anything else is a card
+  // we cannot stand behind, so it is rejected and re-prompted.
+  if (finalGate.cmd !== finalCommand) {
+    return { rejection: {
+      kind: 'command-mismatch',
+      reason: `the section's first-ranked command (${String(finalGate.cmd).slice(0, 80)}) is not the one whose paths were validated (${finalCommand.slice(0, 80)}) — a dispatcher would run an unchecked command; name exactly ONE command in the section`,
+    } };
+  }
+
+  return { finalCommand, sectionToWrite, newNotes, allDemotedSpans: demotedSpans, finalGate, newPaths: pathCheck.newPaths || [] };
+}
+
 /**
  * Enrich one card. Returns { id, name, action, detail }.
  * action: 'skipped' | 'owner-judgment' | 'llm-enriched' | 'failed'
@@ -777,6 +927,7 @@ async function enrichOneCard(card, opts = {}) {
   let parsed = null;
   let bareCommand = null;
   let pathCheck = null;
+  let accepted = null;
   let lastRejection = null;
   let retried = false;
 
@@ -790,17 +941,23 @@ async function enrichOneCard(card, opts = {}) {
     try {
       raw = await opts.callLLM(prompt);
     } catch (e) {
-      return { id: card.id, name: card.name, action: 'failed', detail: `LLM call failed: ${e.message}` };
+      const why = lastRejection ? ` (retry of: ${lastRejection.reason})` : '';
+      return { id: card.id, name: card.name, action: 'failed', detail: `LLM call failed: ${e.message}${why}` };
     }
 
+    // Carry the first attempt's rejection into any second-attempt transport or
+    // parse failure (ship-check finding): reporting only "unparseable LLM
+    // response" would throw away the one thing that says WHY this card is
+    // stuck, which is the whole point of defect 1.
+    const because = lastRejection ? ` (retry of: ${lastRejection.reason})` : '';
     try {
       parsed = parseEnrichResponse(raw);
     } catch (e) {
-      return { id: card.id, name: card.name, action: 'failed', detail: `unparseable LLM response: ${e.message}` };
+      return { id: card.id, name: card.name, action: 'failed', detail: `unparseable LLM response: ${e.message}${because}` };
     }
     if (!parsed || typeof parsed.command !== 'string' || !parsed.command.trim()
         || typeof parsed.acceptanceCriteria !== 'string' || !parsed.acceptanceCriteria.trim()) {
-      return { id: card.id, name: card.name, action: 'failed', detail: 'LLM response missing command/acceptanceCriteria' };
+      return { id: card.id, name: card.name, action: 'failed', detail: `LLM response missing command/acceptanceCriteria${because}` };
     }
 
     // Deterministic repair BEFORE validation: a missing `--test` is the
@@ -839,6 +996,19 @@ async function enrichOneCard(card, opts = {}) {
       lastRejection = { command: bareCommand, reason: pathCheck.reason, kind: 'phantom-path' };
       continue;
     }
+
+    // Everything from here to the verify-gate check is part of ACCEPTING a
+    // draft, so it lives inside the loop: a section-level rejection is just
+    // as recoverable by re-prompting as a command-level one, and leaving it
+    // outside would have made "drafted section names an additional unsafe
+    // command" the one draft defect the model never got told about.
+    const built = buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes);
+    if (built.rejection) {
+      lastRejection = { command: bareCommand, ...built.rejection };
+      continue;
+    }
+    if (built.hardFailure) return { id: card.id, name: card.name, action: 'failed', detail: built.hardFailure };
+    accepted = built;
     lastRejection = null;
     break;
   }
@@ -847,7 +1017,7 @@ async function enrichOneCard(card, opts = {}) {
     // Name the CAUSE, not a guess at it. `kind` comes from the validator that
     // actually refused, so 'path-prefix' can never be logged as a shape
     // problem again.
-    const label = lastRejection.kind === 'phantom-path' ? 'phantom path rejected' : `command rejected (${lastRejection.kind})`;
+    const label = lastRejection.kind === 'phantom-path' ? 'phantom path rejected' : `draft rejected (${lastRejection.kind})`;
     return {
       id: card.id,
       name: card.name,
@@ -856,104 +1026,11 @@ async function enrichOneCard(card, opts = {}) {
     };
   }
 
-  // resolveCheckPaths may canonicalize the command (e.g. tests/x.test.mjs →
-  // tests/unit/x.test.mjs) — substitute the corrected form into the
-  // LLM's prose so the section and the actually-checked command can't diverge.
-  const finalCommand = pathCheck.checkableDone;
-  // The prose the model wrote quotes the command IT produced, which
-  // repairDraftedCommand may have rewritten (`node x.test.mjs` → `node --test
-  // x.test.mjs`) and resolveCheckPaths may have rewritten again (tests/ →
-  // tests/unit/). Substitute whichever spelling actually appears, so the
-  // section and the executed command can never disagree; if neither does,
-  // fall back to a minimal section naming only the validated command.
-  const drafted = parsed.acceptanceCriteria;
-  const quoted = [bareCommand, parsed.command.trim()].find(c => c && drafted.includes(c));
-  const draftedSection = quoted
-    ? drafted.split(quoted).join(finalCommand)
-    : `## Acceptance criteria\n- \`${finalCommand}\` passes`;
-
-  // Guardrail 3 (ship-check finding): the LLM's free-form prose can carry a
-  // SECOND backticked command alongside the validated one — e.g. "run `node
-  // scripts/rebuild-all-reviews.js` and check the diff, then `npx tsc
-  // --noEmit`". Only the first candidate was ever being validated; the
-  // mutating second one would ride along into Notion verbatim, since
-  // evaluateVerifiability only needs ONE safe command in the section to
-  // arm. Reject the whole draft if any candidate besides the validated one
-  // isn't itself safe-shaped — never write a card whose own notes document
-  // an unsanctioned command, even if it isn't the one that gets executed.
-  // task #1713 (considered and reverted): Gemini, the fallback provider on a
-  // machine with no funded ANTHROPIC_API_KEY/OPENROUTER_API_KEY credits,
-  // sometimes wraps a bare identifier in backticks as Markdown inline code
-  // (`wrongProduction`), which used to trip this guardrail even though it
-  // isn't a real command. A narrowed "only flag spans with whitespace or /"
-  // filter was tried and reverted after adversarial review (Codex) pointed
-  // out a single PATH executable IS a valid unsafe command with neither
-  // (e.g. `make`) — this guardrail is deliberately conservative defense in
-  // depth (never write a card whose own notes document an unsanctioned
-  // command, even one nothing today would execute).
-  //
-  // The DETECTOR below is unchanged and still fires on every one of those
-  // spans, including bare identifiers. What changed is the RESPONSE to it.
-  // Measured on a real 60-card Linear sweep (2026-08-20): 40 of 60 cards
-  // (67%) died here, and the flagged spans were overwhelmingly not commands
-  // at all — `normalizeUrl`, `wrongProduction`, `rescoreFlaggedAt`,
-  // `NEWSLETTER_PATTERNS[4]`, show ids like `wicked-2003`, and bare file
-  // paths. Since an un-armed card cannot be dispatched at all, "fail the
-  // whole draft" was the single largest structural cap on backlog
-  // throughput.
-  //
-  // So: instead of discarding the draft, DEMOTE every offending span out of
-  // command position — rewrite `foo` to 'foo' — and then re-run the exact
-  // same detector on the rewritten section, accepting only if it now comes
-  // back clean. Because candidatesFrom() only ever matches backticked spans,
-  // a demoted span is provably no longer a candidate, so the invariant
-  // ("never write a card whose own notes document an unsanctioned command")
-  // holds by construction rather than by inspection. Spans that are the
-  // validated command, or are themselves safe-form, keep their backticks.
-  //
-  // This is NOT the reverted #1713 change wearing a hat: #1713 narrowed what
-  // COUNTS as unsafe, so `make` slipped through into a card verbatim and
-  // still backticked. Here `make` is still detected, and still never reaches
-  // the card as a command — it lands as prose. If a demotion somehow fails to
-  // clear the detector, the original zero-write 'failed' outcome stands.
-  // Demotion runs UNCONDITIONALLY, not only when candidatesFrom() flags
-  // something. The detector cannot see a code span that straddles a newline,
-  // so gating demotion on the detector's own verdict would leave exactly the
-  // spans it is blindest to untouched. When every span is already sanctioned
-  // this is a no-op and demoted comes back empty.
-  const demotion = demoteUnsafeSpans(draftedSection, finalCommand);
-  const sectionToWrite = demotion.section;
-  const demotedSpans = demotion.demoted;
-
-  // Structural assertion, not a hope: nothing that renders as a code span may
-  // survive unless it is the validated command or itself safe-form. If a
-  // demotion somehow failed to clear it (re-paired backticks, nesting), the
-  // original zero-write 'failed' outcome stands.
-  const survivingUnsafe = unsanctionedRenderedSpans(sectionToWrite, finalCommand);
-  if (survivingUnsafe.length) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `drafted section names an additional unsafe command: ${survivingUnsafe[0].slice(0, 120)}` };
-  }
-
-  const newNotes = spliceNotes(sanitizedNotes, sectionToWrite);
-  const allDemotedSpans = [...demotedSpans, ...preexistingDemoted];
-
-  // Guardrail 4 structural re-check (BRO-2232): sectionToWrite alone
-  // (guardrail 3, above) can't see a pre-existing VERIFY: line living
-  // outside the drafted section — demoteUnsafeVerifyLines is a best-effort
-  // rewrite, not a proof by itself. Re-run the detector across the FULL
-  // written notes and refuse the write if anything survives.
-  const survivingVerifyUnsafe = unsanctionedVerifyLineSpans(newNotes);
-  if (survivingVerifyUnsafe.length) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `pre-existing VERIFY line still names an unsanctioned command: ${survivingVerifyUnsafe[0].slice(0, 120)}` };
-  }
-
-  // Final safety net: re-run the SAME gate the audit/dispatch use before ever
-  // writing — an LLM that ignored instructions must not slip a bad or
-  // mutating command into Notion.
-  const finalGate = evaluateVerifiability(newNotes);
-  if (!finalGate.armed) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `drafted notes still fail verify-gate: ${finalGate.reason}` };
-  }
+  // preexistingDemoted comes from the card's OWN notes (guardrail 4), which
+  // buildDraftSection never sees — merged here so the run log names every
+  // span demoted on this card, whichever pass demoted it.
+  const { newNotes, finalGate } = accepted;
+  const allDemotedSpans = [...accepted.allDemotedSpans, ...preexistingDemoted];
 
   if (!opts.dryRun) {
     logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans });
@@ -977,7 +1054,7 @@ async function enrichOneCard(card, opts = {}) {
       ? `${finalGate.cmd} (demoted ${allDemotedSpans.length} non-command span(s) to prose: ${allDemotedSpans.slice(0, 3).join(', ').slice(0, 120)})`
       : finalGate.cmd,
     demotedSpans: allDemotedSpans,
-    newPaths: pathCheck.newPaths || [],
+    newPaths: accepted.newPaths || [],
   };
 }
 
