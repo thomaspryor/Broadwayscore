@@ -117,7 +117,7 @@ is_stale() {
   local p="$1" days="$2"; shift 2
   local extra_dirs=("$@") d hit
   local prune_args=(-path '*/node_modules' -o -path '*/.next' -o -path '*/.git')
-  for d in "${extra_dirs[@]}"; do
+  for d in "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
     [ -n "$d" ] && prune_args+=(-o -path "*/$d")
   done
   hit=$(find "$p" \( "${prune_args[@]}" \) -prune -o \
@@ -191,7 +191,7 @@ strip_build_artifacts() {
   local extra_dirs=("$@")
   local name freed=0 d sz
   name="$(basename "$p")"
-  for d in node_modules .next "${extra_dirs[@]}"; do
+  for d in node_modules .next "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
     [ -z "$d" ] && continue
     if [ -d "$p/$d" ]; then
       if [ ! -L "$p/$d" ] && ! git -C "$p" check-ignore -q -- "$d" 2>/dev/null; then
@@ -445,9 +445,9 @@ flush() {
     kept=$((kept+1))
     # Never delete unmerged worktrees — they may hold stranded work (task
     # #335). Just flag them for the digest line if they've gone quiet.
-    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]}"; then
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
       stale_unmerged+=("$CURRENT_REPO_NAME/$(basename "$path")")
-      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]}"
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
     path="" branch=""; return
@@ -513,8 +513,8 @@ flush() {
     skipped=$((skipped+1))
     # Merged-but-dirty worktrees can sit indefinitely (git won't remove them
     # while dirty) — same staleness treatment as unmerged ones.
-    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]}"; then
-      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]}"
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
   fi
@@ -535,7 +535,7 @@ gc_one_repo() {
 
   REPO="$repo_path"
   CURRENT_REPO_NAME="$repo_name"
-  CURRENT_BUILD_ARTIFACT_DIRS=("${build_dirs[@]}")
+  CURRENT_BUILD_ARTIFACT_DIRS=("${build_dirs[@]+"${build_dirs[@]}"}")
   stale_unmerged=()
 
   if ! cd "$REPO"; then
@@ -594,7 +594,7 @@ gc_one_repo() {
     done < <(git worktree list --porcelain)
     is_registered() {
       local d="$1" r
-      for r in "${registered_paths[@]}"; do [ "$r" = "$d" ] && return 0; done
+      for r in "${registered_paths[@]+"${registered_paths[@]}"}"; do [ "$r" = "$d" ] && return 0; done
       return 1
     }
     local dir orphan_name orphan_sz
@@ -643,8 +643,19 @@ fi
 
 while IFS=$'\t' read -r r_name r_path r_wtdir r_builddirs; do
   [ -z "$r_name" ] && continue
+  # A repo with no configured build-artifact dirs (e.g. the web repo) leaves
+  # r_builddirs empty, so `read -a` produces a zero-element array. Bare
+  # "${build_dirs_arr[@]}" on a zero-element array trips "unbound variable"
+  # under `set -u` on macOS's /bin/bash (3.2 — the empty-array-expansion bug
+  # fixed upstream in bash 4.4), crashing the whole script on its very first
+  # loop iteration (BRO-2186: silent since the BRO-2540 multi-repo refactor
+  # landed — every launchd/manual run failed before gc_one_repo ran once).
+  # The `${arr[@]+"${arr[@]}"}` alternate-value form expands to nothing for
+  # a zero-element array instead of dereferencing it directly — verified
+  # against this exact bash 3.2 build. Same fix needed at every other
+  # CURRENT_BUILD_ARTIFACT_DIRS/build_dirs expansion site in this file.
   IFS=',' read -r -a build_dirs_arr <<< "$r_builddirs"
-  gc_one_repo "$r_name" "$r_path" "$r_wtdir" "${build_dirs_arr[@]}"
+  gc_one_repo "$r_name" "$r_path" "$r_wtdir" "${build_dirs_arr[@]+"${build_dirs_arr[@]}"}"
 done <<< "$GC_REPO_LINES"
 
 total_freed_kb=$((floor_freed_kb + strip_freed_kb + orphan_freed_kb + removed_freed_kb))
