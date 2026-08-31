@@ -323,6 +323,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
+  {
+    file: 'audit/stale-announced-shows.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-31 (BRO-2620): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check. RESIDUAL RISK (ship-check/Codex adversarial finding, same class already accepted for audit/autonomous-recheck-ledger.jsonl above): the CLI writer (scripts/audit-stale-announced-shows.js, including its --ack/--unack paths) can also be run locally by a human. The concurrency group only serializes CI against CI, not CI against a local run — a locally-pushed snapshot can be silently overwritten by the next CI run\'s Git Data API fallback. Accepted because the file is disposable telemetry regenerated fresh by the next scheduled run; --ack/--unack state lives in the separate acks file this entry does not cover.',
+  },
   // BRO-2588 (2026-08-31): registering this file is what DISSOLVES BRO-2538's
   // "the ledger commit step must run LAST in data-health-check.yml" ordering
   // constraint — a constraint that directly contradicted BRO-386's own

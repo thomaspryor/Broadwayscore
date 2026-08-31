@@ -106,10 +106,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 20);
+  assert.equal(publicSafe.length, 21);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/autonomous-recheck-ledger.jsonl',
@@ -128,6 +128,7 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/revival-unverified-lifetime.json',
     'audit/roundup-url-mismatch-lifetime.json',
     'audit/slug-mismatch-lifetime.json',
+    'audit/stale-announced-shows.json',
     'audit/time-to-publish-sla.json',
     'audit/trunk-status-snapshot.json',
     'audit/workflow-run-coverage.json',

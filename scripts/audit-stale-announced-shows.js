@@ -139,7 +139,8 @@ function main() {
   const acks = loadAcks();
   const flagged = [];
 
-  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+  const reviewTextsAvailable = fs.existsSync(REVIEW_TEXTS_DIR);
+  if (!reviewTextsAvailable) {
     console.log(`  ⚠️  ${REVIEW_TEXTS_DIR} not found — review-texts signal is disabled in this environment (private repo not checked out); only date-based signals will fire`);
   }
 
@@ -172,6 +173,7 @@ function main() {
   const report = {
     generatedAt: now.toISOString(),
     staleDaysThreshold: STALE_DAYS,
+    reviewTextsAvailable,
     flaggedCount: flagged.length,
     flagged,
     silencedByContaminationCount: silencedByContamination.length,
