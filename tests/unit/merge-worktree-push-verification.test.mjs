@@ -114,6 +114,49 @@ exec "${realGit}" "$@"
   return shimPath;
 }
 
+// BRO-2552: a `git` shim whose FIRST `push` call simulates the exact race
+// that made the retry loop die on "local changes would be overwritten by
+// merge" — a rival session pushes an ACTUAL CHANGE TO THE DAEMON FILE ITSELF
+// to origin first (forcing our push to land on a stale base, so the script's
+// ancestor check reports not-yet-landed AND makes the retry's own remote
+// merge need to rewrite that exact path), AND the background data daemon
+// re-dirties the SAME tracked file locally in the SAME window, after the
+// script's initial top-of-script stash already ran. Both sides touching the
+// same file is load-bearing: git only refuses "local changes would be
+// overwritten by merge" when the incoming merge actually needs to rewrite a
+// path with uncommitted local edits — an unrelated (e.g. empty) rival commit
+// would let even the UNFIXED script sail through this test for the wrong
+// reason (Codex adversarial review before this shipped). Every later `push`
+// call just proxies to the real git so the (now-clean, re-merged) retry can
+// actually land.
+function installDaemonChurnRetryGitShim(binDir, repoDir, rivalCloneDir, daemonFile) {
+  fs.mkdirSync(binDir, { recursive: true });
+  const realGit = execFileSync('which', ['git'], { encoding: 'utf8' }).trim();
+  const counterFile = path.join(binDir, 'push-call-count');
+  fs.writeFileSync(counterFile, '0');
+  const shim = `#!/usr/bin/env bash
+args=("$@")
+i=0
+if [ "\${args[0]:-}" = "-C" ]; then i=2; fi
+if [ "\${args[$i]:-}" = "push" ]; then
+  N=$(cat "${counterFile}" 2>/dev/null || echo 0)
+  N=$((N + 1))
+  echo "$N" > "${counterFile}"
+  if [ "$N" = "1" ]; then
+    echo "rival advanced this line" >> "${rivalCloneDir}/daemon-file.txt"
+    "${realGit}" -C "${rivalCloneDir}" commit -q -a -m "rival session advances the same daemon file on origin" >/dev/null 2>&1
+    "${realGit}" -C "${rivalCloneDir}" push -q origin main >/dev/null 2>&1
+    echo "daemon churn between initial stash and retry" >> "${daemonFile}"
+  fi
+fi
+exec "${realGit}" "$@"
+`;
+  const shimPath = path.join(binDir, 'git');
+  fs.writeFileSync(shimPath, shim);
+  fs.chmodSync(shimPath, 0o755);
+  return shimPath;
+}
+
 function runMergeScript(cwd, args, envOverrides = {}) {
   return spawnSync('bash', [MERGE_SCRIPT, ...args], {
     cwd,
@@ -222,6 +265,83 @@ test('merge-worktree-to-main.sh: a conflicted stash from a prior failed run is s
         result.stdout + result.stderr,
         /stash|conflict/i,
         `script exited 0 after touching another session's stash without mentioning it anywhere in its output. stdout:\n${result.stdout}\nstderr:\n${result.stderr}`
+      );
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('merge-worktree-to-main.sh: daemon re-dirties a tracked file during the push-retry loop — script re-stashes and completes instead of dying (BRO-2552)', () => {
+  const dir = mkTmpDir('bro2552-retry-stash-');
+  try {
+    const { originDir, repoDir } = setupRepo(dir);
+
+    // A tracked "daemon" file, already committed, that the background data
+    // daemon will touch AGAIN mid-run — mirrors data/audit/stage-latency.jsonl.
+    const daemonFile = path.join(repoDir, 'daemon-file.txt');
+    writeFile(daemonFile, 'initial\n');
+    git(repoDir, ['add', '-A']);
+    git(repoDir, ['commit', '-q', '-m', 'add daemon-file.txt']);
+    git(repoDir, ['push', '-q', 'origin', 'main']);
+
+    // Stands in for a concurrent session that advances origin/main between
+    // this run's first push attempt and its retry, forcing the push-retry
+    // loop's merge_or_die(origin/main) branch to actually execute.
+    const rivalClone = path.join(dir, 'rival-clone');
+    execFileSync('git', ['clone', '-q', originDir, rivalClone], { env: GIT_ENV });
+    git(rivalClone, ['config', 'user.email', 't@t']);
+    git(rivalClone, ['config', 'user.name', 't']);
+
+    const binDir = path.join(dir, 'fakebin');
+    installDaemonChurnRetryGitShim(binDir, repoDir, rivalClone, daemonFile);
+
+    const result = runMergeScript(repoDir, ['feature-branch'], {
+      PATH: `${binDir}:${process.env.PATH}`,
+    });
+
+    assert.doesNotMatch(
+      result.stderr,
+      /would be overwritten by merge/,
+      `script hit the exact bug BRO-2552 reports — retry merge failed on re-dirtied daemon churn instead of re-stashing. stdout:\n${result.stdout}\nstderr:\n${result.stderr}`
+    );
+    assert.equal(
+      result.status,
+      0,
+      `script should stash the re-dirtied daemon file before the retry merge and complete. stdout:\n${result.stdout}\nstderr:\n${result.stderr}`
+    );
+
+    const postOriginHead = git(originDir, ['rev-parse', 'main']);
+    const localHead = git(repoDir, ['rev-parse', 'main']);
+    assert.equal(localHead, postOriginHead, 'local main should match what actually landed on origin after the retry');
+
+    // The daemon's re-dirtied content must not be silently lost. Both sides
+    // (the rival's push and the local dirty edit) append at the SAME
+    // insertion point relative to the stash's base, so the retry-scoped
+    // stash's `git stash pop` can itself genuinely conflict (an add/add case,
+    // not a clean non-overlapping append) — pop_stash_safely()'s existing,
+    // intentional fallback for that shape (no MERGE_HEAD, real stash-pop
+    // conflict) is to reset the working tree to HEAD but KEEP the stash entry
+    // for manual recovery, exactly like the sibling BRO-253 test above
+    // accepts. So "recovered" means the working tree OR that kept stash
+    // entry — never require an empty stash list, and if one IS left behind
+    // the script's own output must say so (loud, not silent).
+    const fileContent = fs.readFileSync(daemonFile, 'utf8');
+    const stashList = git(repoDir, ['stash', 'list']);
+    const ourStashLine = stashList.split('\n').find((l) => l.includes('wt-integ-retry-'));
+    const preservedInStash = ourStashLine
+      ? git(repoDir, ['stash', 'show', '-p', ourStashLine.split(':')[0]])
+      : '';
+    const recovered = fileContent.includes('daemon churn') || preservedInStash.includes('daemon churn');
+    assert.ok(
+      recovered,
+      `daemon's re-dirtied content lost with no trace — neither the working tree nor any "wt-integ-retry-" stash entry contains it. file:\n${fileContent}\nstash list:\n${stashList}`
+    );
+    if (stashList.trim() !== '') {
+      assert.match(
+        result.stdout + result.stderr,
+        /stash|conflict/i,
+        `a stash entry was left behind but the script's output never mentioned it anywhere — silent, not loud. stdout:\n${result.stdout}\nstderr:\n${result.stderr}`
       );
     }
   } finally {
