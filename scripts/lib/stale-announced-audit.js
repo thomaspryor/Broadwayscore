@@ -86,6 +86,37 @@ function evaluateAnnouncedShow(show, opts) {
   return reasons;
 }
 
+
+// Reviews already triaged as belonging to a DIFFERENT show, or to a different
+// production of it, are not evidence that THIS show has opened - they are
+// contamination a rebuild already drops. Counting them produced 19 of 43
+// stale-announced flags on shows whose every review file was flagged out
+// (measured 2026-08-31; e.g. private-lives-2025 had 23 files, all 23 flagged).
+//
+// Every OTHER exclusion reason still counts as evidence. A truncated,
+// paywalled or otherwise unscoreable review is still a real critic writing
+// about this production, which is exactly the signal this audit wants.
+//
+// Rule names come from review-guards.explainExclusion, the single
+// implementation of the includability decision. Never re-test the raw
+// wrongShow/wrongProduction flags here
+// (memory/feedback_includability_predicates_must_be_canonical.md).
+const NOT_EVIDENCE_OF_OPENING = new Set(['wrongShow', 'wrongProduction']);
+
+/**
+ * True when a parsed review-text record is evidence that its show has opened.
+ *
+ * @param {object} data parsed review-text JSON
+ * @param {(d: object) => (string|null)} explainExclusion review-guards'
+ *   canonical exclusion explainer, injected so this stays a pure function and
+ *   this lib keeps no heavy require.
+ * @returns {boolean}
+ */
+function isEvidenceOfOpening(data, explainExclusion) {
+  if (!data || typeof data !== 'object') return true;
+  return !NOT_EVIDENCE_OF_OPENING.has(explainExclusion(data));
+}
+
 module.exports = {
   ACK_PATH,
   loadAcks,
@@ -94,4 +125,6 @@ module.exports = {
   saveAcks,
   daysSince,
   evaluateAnnouncedShow,
+  isEvidenceOfOpening,
+  NOT_EVIDENCE_OF_OPENING,
 };

@@ -47,7 +47,9 @@ const {
   addAck,
   saveAcks,
   evaluateAnnouncedShow,
+  isEvidenceOfOpening,
 } = require('./lib/stale-announced-audit');
+const { explainExclusion } = require('./lib/review-guards');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -70,10 +72,25 @@ function loadJSON(file, fallback = null) {
   }
 }
 
+function readsAsEvidenceOfOpening(reviewFile) {
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(reviewFile, 'utf8'));
+  } catch {
+    // Unreadable file: something collected it, so treat it as evidence rather
+    // than silently weakening the signal.
+    return true;
+  }
+  return isEvidenceOfOpening(data, explainExclusion);
+}
+
 function hasPopulatedReviewTextsDir(showId) {
   const dir = path.join(REVIEW_TEXTS_DIR, showId);
   try {
-    return fs.readdirSync(dir).some(f => f.endsWith('.json'));
+    return fs
+      .readdirSync(dir)
+      .filter(f => f.endsWith('.json'))
+      .some(f => readsAsEvidenceOfOpening(path.join(dir, f)));
   } catch {
     return false;
   }

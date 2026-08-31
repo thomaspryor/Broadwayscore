@@ -17,6 +17,12 @@
  *   4. the critic appears at this outlet at most once in reviews.json
  *      (legit syndication/freelancing shows repeat appearances)
  *
+ * BOTH scans share ONE exclusion predicate, scripts/lib/cross-outlet-triage.js.
+ * They used to inline their own lists and drifted: the bleed scan skipped
+ * wrongShow/wrongProduction and the default-critic-of scan did not, so a file
+ * already excluded from scoring was reported forever as an unreviewed suspect
+ * that no triage could clear. Add exclusions there, never inline here.
+ *
  * Files annotated with `crossOutletVerified: true` (set after a human/agent
  * checked the page byline) are skipped — that is how triaged legit rows are
  * cleared. Files annotated with `wrongAttribution: true` (unverifiable —
@@ -134,6 +140,9 @@ if (hasHelpFlag(process.argv)) {
       'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext] [--playbill-bleed]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
       'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
+      'Rows already hard-excluded from scoring (wrongShow, wrongProduction,\n' +
+      'wrongAttribution, duplicateOf) are skipped by both scans and need no triage\n' +
+      'here — see scripts/lib/cross-outlet-triage.js.\n' +
       'Clear an unverifiable row by setting wrongAttribution: true in the file.\n' +
       '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).\n' +
       '--playbill-bleed groups by (showId, criticName) for playbill-verdict sources and flags 3+ outlet spans (task #1008).'

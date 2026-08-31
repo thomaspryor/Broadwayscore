@@ -34,7 +34,19 @@ function isTriagedOut(d) {
   if (d.wrongAttribution === true) return true;
   // Already excluded from scoring for being the wrong production/show. Whatever
   // outlet it is credited to, it is not a cross-outlet attribution question.
+  //
+  // wrongProduction is auto-clearable (rebuild-all-reviews.js dateless-revival
+  // release). That is fine: the predicate is evaluated per scan, so a cleared
+  // file re-surfaces as a suspect on the next run rather than being lost.
   if (d.wrongProduction === true || d.wrongShow === true) return true;
+  // Same class: scoring's isScoreable() groups duplicateOf with the wrong-show
+  // flags (scripts/test-scoring-rejection-logs.js:19), and explainExclusion
+  // returns 'duplicateOf' for it. A duplicate is hard-excluded from scoring and
+  // no amount of cross-outlet triage can clear it, so reporting it as an
+  // unreviewed suspect is the same unfixable-CI-red trap this module exists to
+  // close. Today all such files clear the byline check, so this changes no
+  // count -- it stops one byline-check miss from turning into a red main.
+  if (d.duplicateOf) return true;
   return false;
 }
 

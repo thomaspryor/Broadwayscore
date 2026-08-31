@@ -34,6 +34,11 @@ test('wrongProduction excludes', () => {
   assert.strictEqual(isTriagedOut({ wrongProduction: true }), true);
 });
 
+test('duplicateOf excludes — same hard-excluded, untriageable class', () => {
+  assert.strictEqual(isTriagedOut({ duplicateOf: 'other-show/outlet--critic.json' }), true);
+  assert.strictEqual(isTriagedOut({ duplicateOf: '' }), false);
+});
+
 test('only literal true excludes, never a truthy string', () => {
   assert.strictEqual(isTriagedOut({ wrongShow: 'yes' }), false);
   assert.strictEqual(isTriagedOut({ crossOutletVerified: 1 }), false);
@@ -53,13 +58,17 @@ test('both scans in the audit call the shared predicate, with no inline exclusio
     path.join(repoRoot, 'scripts', 'audit-cross-outlet-attributions.js'),
     'utf8'
   );
-  const calls = src.match(/if \(isTriagedOut\(d\)\) continue;/g) || [];
-  assert.strictEqual(
-    calls.length,
-    2,
-    'both the playbill-bleed scan and the default-critic-of scan must call isTriagedOut'
+  // Tolerant on purpose: pinning the exact call arity or the parameter name
+  // makes an innocent rename, a brace-wrapped continue, or a legitimate THIRD
+  // scan fail here with a message that misdiagnoses the cause. What must hold
+  // is that every scan routes through the helper -- which the field regexes
+  // below actually enforce.
+  const calls = src.match(/isTriagedOut\(\s*\w+\s*\)/g) || [];
+  assert.ok(
+    calls.length >= 2,
+    `both the playbill-bleed scan and the default-critic-of scan must call isTriagedOut (found ${calls.length})`
   );
-  for (const field of ['crossOutletVerified', 'wrongAttribution', 'wrongProduction', 'wrongShow']) {
+  for (const field of ['crossOutletVerified', 'wrongAttribution', 'wrongProduction', 'wrongShow', 'duplicateOf']) {
     assert.ok(
       !new RegExp(`if \\(d\\.${field} === true`).test(src),
       `${field} must be checked only inside cross-outlet-triage.js, not re-inlined in a scan`
