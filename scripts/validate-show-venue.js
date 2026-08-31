@@ -41,7 +41,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, getScraperStats } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
@@ -264,14 +264,29 @@ async function validateOne(show, log) {
   log(`  url (${urlResult.source}): ${urlResult.url}`);
 
   let html = '';
+  const pwMissingBefore = getScraperStats().pwBrowserMissingCount;
   try {
     const r = await fetchPage(urlResult.url, { timeout: 30000 });
     html = r.html || r.content || '';
   } catch (e) {
-    log(`  ⚠ fetch error: ${e.message}`);
+    // fetchPage() only throws once EVERY transport it tried has failed. If
+    // Playwright was one of those transports for THIS fetch and it failed
+    // because no browser is installed in this environment (not because the
+    // page itself rejected the request), this show could not actually be
+    // checked — it is an infrastructure gap, not evidence of a venue/date
+    // mismatch. Reporting it as a generic 'fetch-error' let a missing-browser
+    // CI job read exactly like a pile of real scrape failures (BRO-2560).
+    //
+    // Compares the counter before/after THIS call rather than reading a
+    // sticky "ever happened" flag — a global flag would misattribute a
+    // LATER, unrelated total-fetch-failure (a real 404, a real block, both
+    // paid providers exhausted) to "missing browser" just because some
+    // earlier show in the same process happened to hit that error.
+    const infra = getScraperStats().pwBrowserMissingCount > pwMissingBefore;
+    log(`  ⚠ ${infra ? 'infra-unavailable (Playwright browser missing)' : 'fetch error'}: ${e.message}`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'fetch-error', error: e.message,
+      result: infra ? 'infra-unavailable' : 'fetch-error', error: e.message,
       mismatches: [], playbillUrl: urlResult.url, parsed: null,
     };
   }
@@ -354,12 +369,29 @@ async function main() {
   }
 
   const mismatches = results.filter(r => r.result === 'mismatch');
+  const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
   const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
   const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
   console.log('');
-  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved / ${infraUnavailable.length} infra-unavailable${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  if (infraUnavailable.length) {
+    // A distinct, non-failing category: these shows were NOT checked at all,
+    // so their absence from `mismatches` is not a clean bill of health — it
+    // means the environment couldn't reach Playbill for them (e.g. `npx
+    // playwright install` was never run in this job). Surfaced as a
+    // ::warning:: (not ::error::) so it shows up in the CI annotations
+    // without failing the step on an infra basis alone (BRO-2560).
+    console.log(`::warning::validate-show-venue: ${infraUnavailable.length} show(s) could not be checked — Playwright browser missing in this environment (infra gap, NOT a venue/date mismatch): ${infraUnavailable.map(r => r.id).join(', ')}`);
+    // Not failing the step is correct (BRO-2560 acceptance criteria), but a
+    // run that validated NOTHING must not look identical to a clean pass —
+    // that silently hides any real mismatch among the unchecked shows. Loud,
+    // still non-failing.
+    if (infraUnavailable.length === results.length) {
+      console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were infra-unavailable this run — ZERO real venue/date validation coverage, not a clean pass`);
+    }
+  }
   if (mismatches.length) {
     console.log('Mismatches:');
     for (const r of mismatches) {
@@ -376,13 +408,17 @@ async function main() {
     const out = {
       generatedAt: new Date().toISOString(),
       filter: showFilter ? { show: showFilter } : { allProvisional: true, limit: limit || null },
-      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length },
+      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length },
       results,
     };
     fs.writeFileSync(AUDIT_PATH, JSON.stringify(out, null, 2));
     console.log(`Wrote audit: ${AUDIT_PATH}`);
   }
 
+  // Gated on `mismatches` only — infra-unavailable and other unresolved
+  // shows never fail this step on their own (BRO-2560: a CI job with no
+  // Playwright browser installed must not read as a wall of venue/date
+  // mismatches).
   if (failOnMismatch && mismatches.length) {
     for (const r of mismatches) {
       for (const m of r.mismatches) {
