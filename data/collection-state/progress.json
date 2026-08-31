@@ -1847,7 +1847,17 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
     "sabrage-off-west-end-2026/guardian--brian-logan.json",
     "sabrage-off-west-end-2026/standard--nick-curtis.json",
-    "the-lost-boys-2026/bloomberg--chris-rovzar.json"
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1908,7 +1918,8 @@
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
-      "cats-west-end-2026/nytimes--helen-shaw.json"
+      "cats-west-end-2026/nytimes--helen-shaw.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1945,7 +1956,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+  "lastProcessed": "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2235,6 +2246,29 @@
       "event": "bb-session",
       "session": "cf856afc",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-31T16:09:52.786Z",
+      "event": "bb-session",
+      "session": "6f9850e1",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-31T16:10:00.693Z",
+      "event": "bb-session",
+      "session": "8b0d2961",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-08-31T16:11:10.373Z",
+      "event": "bb-session",
+      "session": "064b86d7",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-08-31T16:11:10.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
