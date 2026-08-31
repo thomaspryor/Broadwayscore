@@ -7,8 +7,18 @@
 # get zero project learnings. This script keeps cloud-memory/ in the repo in sync
 # with the local-authoritative source.
 #
-# Idempotent. Safe to run multiple times. rsync only copies changed files.
-# --delete propagates local deletions to the mirror.
+# Idempotent. Safe to run multiple times; only changed files are copied.
+#
+# MERGE-AWARE, NOT REPLACE-FROM-MASTER (BRO-103). This used to be a plain
+# `rsync -a --delete`, which silently deleted any memo a cloud or parallel
+# session had committed straight into cloud-memory/ (that dir has a second set
+# of writers — cloud sessions have no ~/.claude to write to). 2026-05-24:
+# cloud-memory/feedback_nonprofit_venue_vs_production.md was wiped 12 minutes
+# after a cloud session committed it. The reconcile now runs through
+# scripts/lib/cloud-memory-merge.js, which uses a last-sync manifest as the
+# common ancestor so it can tell "the owner deleted this locally" (delete it
+# from the mirror) apart from "this arrived from somewhere else" (adopt it into
+# the local memory dir). Nothing is ever dropped without a copy surviving.
 #
 # Invocation:
 #   ./scripts/sync-memory-to-repo.sh                # silent unless changed
@@ -25,7 +35,10 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-SRC="$HOME/.claude/projects/-Users-tompryor-Broadwayscore/memory"
+# MEMORY_SYNC_SRC overrides the source dir for tests only (see
+# scripts/cloud-memory-sync.test.mjs, which drives this script end-to-end
+# against scratch dirs); production callers never set it.
+SRC="${MEMORY_SYNC_SRC:-$HOME/.claude/projects/-Users-tompryor-Broadwayscore/memory}"
 # Always sync to the main Broadwayscore repo (not whatever worktree cwd happens
 # to be in when SessionStop fires). Cloud-memory/ lives in main; worktree
 # branches will see it on next pull/merge.
@@ -53,18 +66,53 @@ for arg in "$@"; do
   esac
 done
 
-# --include='*.md' --exclude='*' --prune-empty-dirs limits the mirror to
-# memory markdown files only — no checkpoints, scratch files, or anything else
-# that might appear in the source dir.
-rsync -a --delete $VERBOSE $DRY_RUN \
-  --include='*.md' \
-  --exclude='*' \
-  --prune-empty-dirs \
-  "$SRC/" "$DEST/"
+# Root-level *.md only, on both sides — no checkpoints, scratch files,
+# subdirectories, or anything else that might appear in either dir. (Same
+# filter the old `--include='*.md' --exclude='*' --prune-empty-dirs` rsync
+# applied; cloud-memory-merge.js reimplements it in hashDir().)
+#
+# The merge is deletion-safe by construction: a mirror-side file is only
+# removed when the manifest proves this script put it there AND nobody has
+# touched it since. Anything else is adopted back into $SRC.
+# Copy forward but NEVER pass --delete. Fail-safe direction: a stale extra
+# file in the mirror is recoverable, a deleted memo written by a cloud session
+# is not. Used when node or the merge lib is missing, and when the merge
+# itself fails.
+_copy_without_deleting() {
+  rsync -a $VERBOSE $DRY_RUN \
+    --include='*.md' \
+    --exclude='*' \
+    --prune-empty-dirs \
+    "$SRC/" "$DEST/"
+}
 
-# NOTE: --delete removes any dest-root .md not present in the source — that's
-# how the old INDEX.md/README.md got deleted. The mirror's entry point is
-# MEMORY.md (synced from the source index); don't hand-place extra .md files here.
+MERGE_LIB="$SCRIPT_DIR/lib/cloud-memory-merge.js"
+if ! command -v node >/dev/null 2>&1 || [ ! -f "$MERGE_LIB" ]; then
+  echo "sync-memory-to-repo: node/merge lib unavailable — copying without deletions" >&2
+  _copy_without_deleting
+# `if !` rather than a bare call: under `set -e` a THROWING merge (an fs error,
+# not just a missing node) would abort this script outright, and session-stop.sh
+# invokes us as `... --commit 2>&1 | grep -v ... >/dev/null || true` — so the
+# mirror would silently stop syncing forever with no signal anywhere. `if !` is
+# exempt from set -e, which turns a crash into a loud warning plus the
+# no-deletion fallback.
+elif ! node "$MERGE_LIB" "$SRC" "$DEST" --repo="$REPO" $VERBOSE $DRY_RUN; then
+  echo "sync-memory-to-repo: merge failed — falling back to a copy with NO deletions" >&2
+  _copy_without_deleting
+fi
+
+# NOTE ON LOCKING: the merge deliberately runs outside the $LOCK below (which
+# only guards the git commit/push). Two session-stops racing here cannot lose
+# data: a mirror-side file is only ever deleted when the manifest proves we
+# mirrored it AND the local source no longer has it, and neither of those
+# becomes true because of an interleave. The worst case is a redundant copy
+# that the next run no-ops. Don't "fix" this by widening the lock — that would
+# serialise every session-stop behind a 663-file hash walk.
+
+# NOTE: the mirror's entry point is MEMORY.md (synced from the source index).
+# A hand-placed extra .md here is no longer deleted — it is adopted into the
+# local memory dir on the next sync, so don't hand-place files you don't want
+# to become real memories.
 
 if [ -z "$DRY_RUN" ]; then
   COUNT=$(find "$DEST" -name '*.md' | wc -l | tr -d ' ')
