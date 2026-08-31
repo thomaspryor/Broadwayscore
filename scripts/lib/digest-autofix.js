@@ -490,7 +490,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
   });
   const newEntries = [];
   for (const { dispatch: d, cardId, job, kind } of decisions) {
-    if (kind === 'orphan') {
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
         event: 'card-fail', cardId, contentHash: d.contentHash,
         // BRO-2518: fileCard()'s exact-title dedup can reattach a row to an
@@ -502,7 +502,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       });
       continue;
     }
-    if (kind === 'retry-timeout') {
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
@@ -515,7 +515,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
     // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
     // shared lib must stop the pass rather than be silently treated as
     // terminal and dereference a job that may be null.
-    if (kind !== 'terminal') throw new Error(`reconcileDigestOutcomes: unhandled dispatch kind '${kind}'`);
+    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileDigestOutcomes: unhandled dispatch kind '${kind}'`);
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
     const isLinear = /^linear:/.test(String(d.taskId));
     // Completion criterion differs by tracker (BRO-286): Notion-mirror rows

@@ -55,6 +55,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
+const { protectStagedDeletions } = require('./lib/review-write-guard.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -5477,6 +5478,21 @@ function pushReviewTextsCheckpoint(processed) {
 
     // Stage all changes
     execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+
+    // BRO-2559: `git add -A` stages a deletion for ANY tracked file this
+    // job's local working copy happens to be missing — regardless of why
+    // (this checkpoint runs mid-collection on whatever subset of shows the
+    // process touched; a file this job never fetched into its own working
+    // tree is indistinguishable to `git add -A` from one someone deleted on
+    // purpose). A hand-flagged wrongProduction/wrongShow verdict living only
+    // in that file is silently discarded the moment this commits — safe
+    // WriteReview never runs, so its disk-level protection never gets a
+    // chance to fire. Reverse any such deletion for a file that still
+    // carries a protected field at HEAD before it can land.
+    const restoredDeletions = protectStagedDeletions(rtDir);
+    if (restoredDeletions.length > 0) {
+      console.log(`  ⚠ Restored ${restoredDeletions.length} file(s) staged for deletion with protected fields (BRO-2559): ${restoredDeletions.slice(0, 5).join(', ')}${restoredDeletions.length > 5 ? '…' : ''}`);
+    }
 
     // Check if there are changes
     try {
