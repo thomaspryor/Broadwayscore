@@ -2310,8 +2310,27 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 
 const cas  = sections.run('casting-updates', () => castingSection());
 
+const lon  = sections.run('london-openings', () => londonSection());
+const bwWe = sections.run('broadway-we', () => weBroadwaySection());
+const opera = sections.run('opera-openings', () => operaOpeningsSection());
+// Runs AFTER london-openings + closing so its notFeatured() gate excludes both
+// this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
+const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
+
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
+//
+// MUST stay below EVERY section that calls markFeatured() — the last three are
+// london-openings, broadway-we and also-opened-recently, immediately above
+// (BRO-2606). This block used to sit above them, so the shows those sections
+// featured never reached the persisted featuredShowIds and next week's
+// lastFeaturedIds could not suppress them: the WE edition led with As You Like
+// It and gave it the hero "Opened in the West End" card in the 2026-08-24 AND
+// 2026-08-31 issues back to back. londonSection()'s own markFeatured() comment
+// describes the mechanism ("via lastFeaturedIds, sourced from this issue's
+// persisted featuredShowIds") that this ordering had silently disabled;
+// BRO-2590's inBroadwayOpeningWindowForWE() grace window depended on it too.
+// If you add a section that calls markFeatured(), put it ABOVE this block.
 try {
   // Drop only THIS edition's entry for the week — keep the other edition's so
   // the two weeklies don't clobber each other's memory (they commit the same
@@ -2327,12 +2346,6 @@ try {
   _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
-const lon  = sections.run('london-openings', () => londonSection());
-const bwWe = sections.run('broadway-we', () => weBroadwaySection());
-const opera = sections.run('opera-openings', () => operaOpeningsSection());
-// Runs AFTER london-openings + closing so its notFeatured() gate excludes both
-// this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
-const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
 const ravepan = sections.run('rave-pan-of-the-week', () => ravePanSection());
 
 // Most-read show pages — real GA4 page-view data via popular-pages.mjs.
