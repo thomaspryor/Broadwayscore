@@ -35,18 +35,31 @@ const WEEK = '2026-08-24';
 const SHOW_ID = 'the-real-ivanov-off-broadway-2026';
 const SHOW_TITLE = 'The Real Ivanov';
 
+// The generator's state file is redirected into a temp dir, seeded from the real
+// one (BRO-2606). These runs used to read AND REWRITE the tracked
+// data/newsletter-state.json; `node --test` runs test FILES concurrently, so this
+// file and featured-state-persist-order.test.mjs raced each other on it — and a
+// local run left a tracked data file dirty in a shared checkout. Seeding from the
+// real file keeps the stale-entry history the first test below depends on.
 function runGenerator(weekStart, extraEnv = {}) {
-  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lastfeatured-inweek-test-'));
-  execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
-    cwd: repoRoot,
-    env: { ...process.env, NEWSLETTER_OUT_DIR: outDir, ...extraEnv },
-    stdio: 'pipe',
-    timeout: 60_000,
-  });
-  const meta = JSON.parse(fs.readFileSync(path.join(outDir, `A-${weekStart}.meta.json`), 'utf8'));
-  const html = fs.readFileSync(path.join(outDir, `A-${weekStart}.html`), 'utf8');
-  fs.rmSync(outDir, { recursive: true, force: true });
-  return { meta, html };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lastfeatured-inweek-test-'));
+  const statePath = path.join(dir, 'newsletter-state.json');
+  fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), statePath);
+  try {
+    execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
+      cwd: repoRoot,
+      env: { ...process.env, NEWSLETTER_OUT_DIR: dir, NEWSLETTER_STATE_PATH: statePath, ...extraEnv },
+      stdio: 'pipe',
+      timeout: 60_000,
+    });
+    return {
+      meta: JSON.parse(fs.readFileSync(path.join(dir, `A-${weekStart}.meta.json`), 'utf8')),
+      html: fs.readFileSync(path.join(dir, `A-${weekStart}.html`), 'utf8'),
+      state: JSON.parse(fs.readFileSync(statePath, 'utf8')),
+    };
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 test('broadway edition renders an in-week off-Broadway opening even when a stale lastFeaturedIds entry claims it was already featured', () => {
@@ -73,8 +86,7 @@ test('broadway edition renders an in-week off-Broadway opening even when a stale
 // never appear, and off-Broadway can never appear at all (broadway-we is
 // Broadway-category only).
 test('west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution', () => {
-  const { meta } = runGenerator(WEEK, { NEWSLETTER_EDITION: 'west-end' });
-  const state = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/newsletter-state.json'), 'utf8'));
+  const { meta, state } = runGenerator(WEEK, { NEWSLETTER_EDITION: 'west-end' });
   const issue = state.issues.find((i) => i.weekStart === WEEK && i.edition === 'west-end');
   assert.ok(issue, `expected a west-end issue row for ${WEEK}`);
 
