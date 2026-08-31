@@ -26,6 +26,8 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { STRICT_CLASSES, countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate.js');
+const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization.js');
+const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(__dirname, '..');
@@ -86,6 +88,61 @@ test('BRO-65: even one class-A cross-market leak blocks --gate regardless of the
   assert.equal(blocked, true, 'class A (wrong show\'s reviews shown) is zero-tolerance even at 1 hit');
 });
 
+// BRO-74: fixture-based coverage for c2-live-scored-check.js — the ground-
+// truth gate the C2 detector uses instead of trusting duplicateOf/
+// duplicateTextOf. Deterministic synthetic reviews + fake normalizers, so
+// this exercises the real decision logic (CLAUDE.md §15: require() the real
+// function, don't re-copy it into the test) without depending on the corpus
+// or the real outlet registry. Covers the exact gaps a Codex adversarial
+// review found in an earlier version of this fix: an unnamed critic must
+// never count as a second byline, and outlet aliases must still match.
+const fakeNormalizers = {
+  normalizeOutlet: (s) => (s === 'ny-times' ? 'nytimes' : s),
+  normalizeUrl: (s) => (s || '').replace(/\/$/, '').toLowerCase(),
+};
+
+test('c2-live-scored-check: 2 distinct named critics on the same URL is a genuine double-count', () => {
+  const index = buildLiveScoredIndex([
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic A' },
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic B' },
+  ], fakeNormalizers);
+  assert.equal(isGenuineDoubleCount(index, { showId: 'x', outletId: 'nytimes', url: 'https://a/1' }, fakeNormalizers), true);
+});
+
+test('c2-live-scored-check: only 1 live critic (already resolved) is NOT a double-count — the BRO-74 case', () => {
+  const index = buildLiveScoredIndex([
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic A' },
+  ], fakeNormalizers);
+  assert.equal(isGenuineDoubleCount(index, { showId: 'x', outletId: 'nytimes', url: 'https://a/1' }, fakeNormalizers), false);
+});
+
+test('c2-live-scored-check: a named critic + an "Unknown"/unnamed entry does NOT count as 2 distinct bylines', () => {
+  const index = buildLiveScoredIndex([
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic A' },
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Unknown' },
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: '' },
+  ], fakeNormalizers);
+  assert.equal(isGenuineDoubleCount(index, { showId: 'x', outletId: 'nytimes', url: 'https://a/1' }, fakeNormalizers), false);
+});
+
+test('c2-live-scored-check: outlet aliases on either side of the comparison still match', () => {
+  const index = buildLiveScoredIndex([
+    { showId: 'x', outletId: 'ny-times', url: 'https://a/1', criticName: 'Critic A' }, // raw alias, as reviews.json might carry pre-canonicalization
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic B' },
+  ], fakeNormalizers);
+  // Query with the OTHER alias spelling than either fixture used, to prove both sides canonicalize.
+  assert.equal(isGenuineDoubleCount(index, { showId: 'x', outletId: 'ny-times', url: 'https://a/1/' }, fakeNormalizers), true);
+});
+
+test('c2-live-scored-check: different shows or different URLs never collide', () => {
+  const index = buildLiveScoredIndex([
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic A' },
+    { showId: 'y', outletId: 'nytimes', url: 'https://a/1', criticName: 'Critic B' },
+    { showId: 'x', outletId: 'nytimes', url: 'https://a/2', criticName: 'Critic C' },
+  ], fakeNormalizers);
+  assert.equal(isGenuineDoubleCount(index, { showId: 'x', outletId: 'nytimes', url: 'https://a/1' }, fakeNormalizers), false);
+});
+
 // audit-review-contamination.js prints two different GATE line shapes: the
 // failing form ("N cross-market leak(s) ... + N strict hit(s) vs floor N")
 // and the passing form ("0 cross-market leaks, N strict hit(s) ≤ floor N").
@@ -117,3 +174,36 @@ test('live corpus: --gate\'s strict-hit count matches --json\'s own countStrictH
   assert.equal(gate.strict, expectedStrict, '--gate\'s printed strict-hit count must match countStrictHits() over the same scan — single source of truth (BRO-65)');
   assert.equal(gate.leaks, parsed.hits.A_cross_market.length);
 });
+
+// BRO-74 regression: the C2 detector must never report a URL-collision pair
+// that isn't actually double-counted in the live rebuild output right now.
+// Before this fix, C2 decided "already handled" from a static field
+// (duplicateOf) that missed duplicateTextOf — the field
+// dedupe-same-url-bylines.js writes on the loser of a same-URL pair — so an
+// already-deduped pair (duplicateTextOf set, single scored entry) kept
+// surfacing forever (the 7, later 11, cases named in BRO-74). The fix gates
+// every hit on data/reviews.json ground truth (c2-live-scored-check.js)
+// instead of any duplicate-pointer field. This test re-derives that ground
+// truth by calling the REAL exported lib function against reviews.json read
+// independently here (not by trusting the script's own reported hit list),
+// so it's a real regression guard, not a tautology.
+const reviewsJsonPresent = fs.existsSync(path.join(REPO, 'data', 'reviews.json'));
+
+test('live corpus: every C2_url_multi_critic hit is a genuine 2+-critic double-count in reviews.json',
+  { skip: (!corpusPresent && 'review-texts corpus not checked out') || (!reviewsJsonPresent && 'data/reviews.json not present') },
+  () => {
+    const jsonRun = run(['--json', '--classes', 'C2']);
+    const parsed = JSON.parse(jsonRun.out);
+    const hits = parsed.hits.C2_url_multi_critic;
+
+    const reviewsData = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'reviews.json'), 'utf-8'));
+    const liveScored = buildLiveScoredIndex(Object.values(reviewsData.reviews || {}), { normalizeOutlet, normalizeUrl });
+
+    for (const h of hits) {
+      const dir = path.join(CORPUS, h.showId);
+      const f1 = JSON.parse(fs.readFileSync(path.join(dir, h.file1), 'utf-8'));
+      const outletId = f1.outletId || h.file1.split('--')[0];
+      assert.ok(isGenuineDoubleCount(liveScored, { showId: h.showId, outletId, url: f1.url }, { normalizeOutlet, normalizeUrl }),
+        `${h.showId} ${h.file1} vs ${h.file2}: reviews.json is not a live 2+-critic double-count for this URL — C2 should not have flagged it`);
+    }
+  });
