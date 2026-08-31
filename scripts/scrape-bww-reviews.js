@@ -31,7 +31,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, validateRoundupPageTitle, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
@@ -52,6 +52,20 @@ const reviewsArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-r
 const roundupArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const showsPath = path.join(__dirname, '../data/shows.json');
 
+// Memoized showId -> same-title-sibling categories index, built once per
+// process from the same shows.json the audit reads. Lazy because loadShows()
+// is not cheap and most runs touch only a handful of shows.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  const showById = {};
+  for (const s of loadShows()) {
+    if (s && s.id) showById[s.id] = s;
+  }
+  _siblingCategoriesCache = buildSiblingCategoriesByTitle(showById);
+  return _siblingCategoriesCache;
+}
+
 // API keys
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
@@ -61,6 +75,7 @@ const stats = {
   reviewsPagesFetched: 0,
   reviewsPagesHit: 0,
   reviewsPagesMiss: 0,
+  reviewsPagesCategoryBlocked: 0,
   roundupsFetched: 0,
   roundupsHit: 0,
   roundupsMiss: 0,
@@ -336,6 +351,23 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
         });
         if (!validation.valid) {
           console.log(`  [SKIP] /reviews/${slug} wrong show: ${validation.reason}`);
+          continue;
+        }
+        // Category-aware cache guard. validatePageMatchesShow() above compares
+        // title + opening year, which CANNOT separate a regional premiere from
+        // its later Broadway transfer: same title, and the transfer's page
+        // carries the transfer's year. Re-use the exact predicate
+        // audit-aggregator-archive-integrity.js applies post-hoc, so a page
+        // the audit would call poisoned never reaches the cache in the first
+        // place. Without this, `fix: quarantine 3 poisoned bww-reviews caches`
+        // (2026-08-23) was silently undone by the next scrape run (2026-08-30)
+        // and the trunk went red again on the same three showIds.
+        const catCheck = validateRoundupPageTitle(
+          html, show.title, show.category, siblingCategoriesByShowId()[showId],
+        );
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] /reviews/${slug} category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
+          stats.reviewsPagesCategoryBlocked++;
           continue;
         }
         // Archive and return
@@ -1407,7 +1439,13 @@ async function main() {
   // Print summary
   console.log('\n=== BWW Scraper Summary ===');
   console.log(`Shows processed: ${stats.showsProcessed}`);
-  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss (${stats.reviewsPagesFetched} fetched)`);
+  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss, ${stats.reviewsPagesCategoryBlocked} category-blocked (${stats.reviewsPagesFetched} fetched)`);
+  if (stats.reviewsPagesCategoryBlocked > 0) {
+    // Loud on purpose: a category block is a page we FETCHED and then refused
+    // to cache. Folded into the miss count it would read as 'BWW had nothing',
+    // which is how a mis-tuned guard silently starves a show of reviews.
+    console.log(`  ^ ${stats.reviewsPagesCategoryBlocked} page(s) refused: title's market qualifier belongs to a same-title sibling in another category`);
+  }
   console.log(`Roundups: ${stats.roundupsHit} hit, ${stats.roundupsMiss} miss (${stats.roundupsFetched} fetched, ${stats.googleSearches} searches)`);
   console.log(`Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`New reviews: ${stats.newReviews}`);

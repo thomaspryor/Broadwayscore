@@ -28,7 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateRoundupPageTitle, normalizeTitle, isPunctuationFalsePositive } = require('./lib/show-matching');
+const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -66,25 +66,6 @@ function loadShowMap() {
 // against the categories of any OTHER show sharing this title — catches an
 // archive filed under a same-title sibling's showId (BRO-363: a Broadway
 // Show Score page archived under a regional show's id).
-function buildSiblingCategoriesByTitle(showById) {
-  const byTitle = new Map();
-  for (const s of Object.values(showById)) {
-    const t = normalizeTitle(s.title || '');
-    if (!t) continue;
-    if (!byTitle.has(t)) byTitle.set(t, []);
-    byTitle.get(t).push(s);
-  }
-  const siblingCategoriesById = {};
-  for (const s of Object.values(showById)) {
-    const t = normalizeTitle(s.title || '');
-    const group = byTitle.get(t) || [];
-    siblingCategoriesById[s.id] = group
-      .filter(x => x.id !== s.id)
-      .map(x => x.category)
-      .filter(Boolean);
-  }
-  return siblingCategoriesById;
-}
 
 function audit() {
   const showById = loadShowMap();
