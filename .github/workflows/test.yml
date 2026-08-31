@@ -4703,13 +4703,30 @@ jobs:
         # `always()` keeps this gate independent of upstream audit failures
         # (cast-changes, regex FP rate, etc.) since they cover different
         # concerns and shouldn't share a fail-fast.
+        #
+        # --time-budget-min=9 (BRO-2627, 2026-08-31): this step alone
+        # measured 881s (14.7min) on run 33410708893 — it re-fetches every
+        # provisional show's Playbill page on EVERY push (73 shows at
+        # measurement time, ~12s/show, unbounded as the count grows).
+        # Combined with Checkout's own 569s that run, the two consumed
+        # 1450s of this job's 1800s (30min) budget, leaving ~350s for the
+        # other 40+ fast audits — the CANCELLED-not-FAILED timeout this job
+        # was hitting on main. The script now stops starting new shows past
+        # the budget instead of being SIGKILLed mid-run (scripts/lib/
+        # run-budget.js — the same pattern the weekly scraper crons use for
+        # unbounded backlogs), and orders shows new/previously-broken-first
+        # (orderProvisionalTargets in lib/venue-date-compare.js) so a tight
+        # budget never starves the incident-relevant case (a bad NEW stub
+        # entry) regardless of how large the provisional backlog grows —
+        # only the re-sweep of already-clean legacy entries degrades
+        # gracefully. See tests/unit/data-validation-job-budget.test.mjs.
         if: always() && env.HAS_SCRAPE_SECRETS == 'true'
         env:
           HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
+        run: node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch --time-budget-min=9
 
       # `audit-regex-patterns.js --full` MOVED to check-corpus-drift.yml
       # (2026-06-21). Its per-pattern FP counts drift as the corpus grows hourly

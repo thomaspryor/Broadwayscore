@@ -13,8 +13,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { compareShow, findCorroboratingPriorRun, daysBetween, urlYear } =
-  require('./venue-date-compare.js');
+const {
+  compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
+  orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
+} = require('./venue-date-compare.js');
 
 const DEAD_1904_SHOW = {
   id: 'the-dead-1904-off-broadway-2026',
@@ -137,4 +139,66 @@ test('daysBetween / urlYear still work as re-exported (parity with the pre-extra
   assert.equal(daysBetween(null, '2025-01-05'), null);
   assert.equal(urlYear('https://playbill.com/production/foo-off-broadway-bar-2026'), 2026);
   assert.equal(urlYear('https://playbill.com/production/foo-off-broadway-bar'), null);
+});
+
+// BRO-2627: --time-budget-min caps how many provisional shows a CI run can
+// afford to check, so ordering determines which shows are actually covered.
+test('orderProvisionalTargets: new (absent from prior report) shows sort before previously-broken, before previously-clean', () => {
+  const shows = [
+    { id: 'clean-old' },
+    { id: 'new-stub' },
+    { id: 'still-broken' },
+    { id: 'another-new-stub' },
+  ];
+  const prev = { 'clean-old': 'match', 'still-broken': 'mismatch' };
+  const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
+  assert.deepEqual(ordered, ['new-stub', 'another-new-stub', 'still-broken', 'clean-old']);
+});
+
+test('orderProvisionalTargets: any non-match prior result counts as still-broken (not just mismatch)', () => {
+  const shows = [{ id: 'was-clean' }, { id: 'was-fetch-error' }];
+  const prev = { 'was-clean': 'match', 'was-fetch-error': 'fetch-error' };
+  const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
+  assert.deepEqual(ordered, ['was-fetch-error', 'was-clean']);
+});
+
+test('orderProvisionalTargets: no prior report (undefined map) treats every show as new — stable, original order preserved', () => {
+  const shows = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+  assert.deepEqual(orderProvisionalTargets(shows, undefined).map((s) => s.id), ['a', 'b', 'c']);
+});
+
+test('orderProvisionalTargets: stable within a tier (does not reorder same-priority shows)', () => {
+  const shows = [{ id: 'z' }, { id: 'a' }, { id: 'm' }];
+  assert.deepEqual(orderProvisionalTargets(shows, {}).map((s) => s.id), ['z', 'a', 'm']);
+});
+
+test('deferredHighPriorityShows: previously-clean deferrals are fine; new/broken deferrals are flagged', () => {
+  const prev = { clean: 'match', broken: 'mismatch' };
+  const deferred = [{ id: 'clean' }, { id: 'broken' }, { id: 'never-seen' }];
+  const flagged = deferredHighPriorityShows(deferred, prev).map((s) => s.id);
+  assert.deepEqual(flagged, ['broken', 'never-seen']);
+});
+
+test('deferredHighPriorityShows: empty deferred tail flags nothing', () => {
+  assert.deepEqual(deferredHighPriorityShows([], { anything: 'match' }), []);
+});
+
+test('mergeCarriedForwardResults: fresh results win; untouched-but-still-provisional rows carry forward; retired rows drop', () => {
+  const fresh = [{ id: 'checked-this-run', result: 'match' }];
+  const previous = {
+    'checked-this-run': { id: 'checked-this-run', result: 'mismatch' }, // stale — fresh wins
+    'deferred-still-provisional': { id: 'deferred-still-provisional', result: 'match' },
+    'no-longer-provisional': { id: 'no-longer-provisional', result: 'match' },
+  };
+  const currentProvisionalIds = new Set(['checked-this-run', 'deferred-still-provisional']);
+  const merged = mergeCarriedForwardResults(fresh, previous, currentProvisionalIds);
+  assert.deepEqual(
+    merged.map((r) => [r.id, r.result]).sort(),
+    [['checked-this-run', 'match'], ['deferred-still-provisional', 'match']],
+  );
+});
+
+test('mergeCarriedForwardResults: no prior report is a no-op (returns fresh results unchanged)', () => {
+  const fresh = [{ id: 'a', result: 'match' }];
+  assert.deepEqual(mergeCarriedForwardResults(fresh, {}, new Set(['a'])), fresh);
 });

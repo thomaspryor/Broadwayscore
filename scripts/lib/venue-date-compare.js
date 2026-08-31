@@ -159,10 +159,81 @@ function compareShow(show, parsed, playbillUrl) {
   return { mismatches, explainedByPriorRun };
 }
 
+/**
+ * Order provisional shows for a time-budgeted --all-provisional run (BRO-2627).
+ *
+ * A fixed --time-budget-min caps how many shows get network-checked per run,
+ * so which shows are checked first matters: entries absent from the prior
+ * audit report (new — never checked, or the report predates this show) come
+ * first, then entries the prior report flagged as NOT a clean match (still
+ * broken — needs re-checking so a fix gets picked up), then previously-clean
+ * entries last. This keeps the audit's actual incident-relevant job — catch
+ * a bad NEW venue-page stub before it lands — guaranteed regardless of how
+ * large the total provisional backlog grows; only the "re-sweep of
+ * already-clean legacy entries" portion degrades gracefully under budget
+ * pressure, the same shape as check-seo-health.yml's "resubmit stale pages,
+ * capped at 50/week".
+ *
+ * `previousResultById` maps show id -> the `result` field from the last
+ * written venue-date-mismatches.json (e.g. 'match', 'mismatch', 'fetch-error'
+ * — anything other than 'match' counts as "still needs a recheck"). Absent
+ * entries (id not a key) are treated as new. Stable within each bucket —
+ * does not reorder shows that land in the same priority tier.
+ */
+/** 0 = new/never-checked, 1 = previously broken (needs recheck), 2 = previously clean. */
+function provisionalPriorityTier(showId, previousResultById) {
+  const prev = previousResultById ? previousResultById[showId] : undefined;
+  if (prev === undefined) return 0;
+  if (prev !== 'match') return 1;
+  return 2;
+}
+
+function orderProvisionalTargets(shows, previousResultById) {
+  return shows
+    .map((show, index) => ({ show, index, tier: provisionalPriorityTier(show.id, previousResultById) }))
+    .sort((a, b) => (a.tier - b.tier) || (a.index - b.index))
+    .map((entry) => entry.show);
+}
+
+/**
+ * From a budget-deferred tail (shows a --time-budget-min run never reached),
+ * which ones are NOT tier-2 (previously-clean) — i.e. new or still-broken.
+ * A non-empty result means the run cannot certify clean coverage of the
+ * class this audit exists to catch, however small `mismatches` looks this
+ * run (BRO-2627 adversarial review).
+ */
+function deferredHighPriorityShows(deferredShows, previousResultById) {
+  return deferredShows.filter((s) => provisionalPriorityTier(s.id, previousResultById) !== 2);
+}
+
+/**
+ * Merge this run's fresh results over the prior audit report's rows for any
+ * currently-provisional show this run didn't reach (deferred by budget, or
+ * simply outside a --limit slice). Without this, a deferred show's last-
+ * known state is dropped from the file entirely and looks "new" again next
+ * run instead of retaining its real priority tier.
+ *
+ * `previousResultsById` maps id -> the FULL prior result row (not just
+ * `.result`). `currentProvisionalIds` is a Set of ids that are still
+ * provisional as of THIS run's shows.json (a show that got promoted/fixed
+ * and is no longer provisional is dropped, not carried forward forever).
+ */
+function mergeCarriedForwardResults(freshResults, previousResultsById, currentProvisionalIds) {
+  const freshIds = new Set(freshResults.map((r) => r.id));
+  const carriedForward = Object.values(previousResultsById || {}).filter(
+    (row) => currentProvisionalIds.has(row.id) && !freshIds.has(row.id),
+  );
+  return [...freshResults, ...carriedForward];
+}
+
 module.exports = {
   DATE_DELTA_DAYS,
   daysBetween,
   urlYear,
   findCorroboratingPriorRun,
   compareShow,
+  orderProvisionalTargets,
+  provisionalPriorityTier,
+  deferredHighPriorityShows,
+  mergeCarriedForwardResults,
 };

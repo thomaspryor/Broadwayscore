@@ -29,6 +29,17 @@
  *   --data-dir=PATH        validate PATH/shows.json instead of the live
  *                          checkout's data/shows.json (autonomous loop
  *                          Tier-2 verification against a candidate branch)
+ *   --time-budget-min=N    (--all-provisional only, BRO-2627) stop starting
+ *                          new shows once N minutes have elapsed; writes
+ *                          whatever was completed so far (never mid-show —
+ *                          checked between shows, not via a process-level
+ *                          kill, so the audit file always reflects a clean
+ *                          boundary). Targets are ordered new/previously-
+ *                          broken-first (orderProvisionalTargets in
+ *                          lib/venue-date-compare.js) so a tight budget never
+ *                          starves the incident-relevant class this audit
+ *                          exists to catch, regardless of total provisional
+ *                          count.
  *
  * Usage:
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
@@ -49,7 +60,9 @@ const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
   DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
+  orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
 } = require('./lib/venue-date-compare');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -73,6 +86,7 @@ const failOnMismatch = args.includes('--fail-on-mismatch');
 const dryRun = args.includes('--dry-run');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
 const verbose = args.includes('--verbose');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const MONTH_MAP = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
                     jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
@@ -87,6 +101,24 @@ function loadShows() {
 function loadPlaybillUrlCache() {
   try { return JSON.parse(fs.readFileSync(PLAYBILL_URLS_PATH, 'utf8')); }
   catch { return { shows: {} }; }
+}
+
+// BRO-2627: id -> full last-known result row, read from the audit file THIS
+// run is about to overwrite. Missing/unparsable is treated as "no prior
+// data" (every show sorts as new) rather than an error. Used two ways: (1)
+// just the `.result` field feeds orderProvisionalTargets' prioritization,
+// (2) a budget-cut run merges these rows forward for any show it didn't
+// reach this time, so a deferred show's last-known state survives instead
+// of silently vanishing from the file and looking "new" again next run
+// (adversarial review finding, BRO-2627) — a best-effort prioritization
+// hint either way, never a correctness dependency for the checks themselves.
+function loadPreviousResultById() {
+  try {
+    const prev = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+    const out = {};
+    for (const r of prev.results || []) out[r.id] = r;
+    return out;
+  } catch { return {}; }
 }
 
 function isProvisional(show) {
@@ -327,6 +359,15 @@ async function validateOne(show, log) {
 
 async function main() {
   let targets;
+  // Populated only in the --all-provisional branch; used after the loop to
+  // (a) merge a budget-deferred show's last-known state forward into this
+  // run's output instead of losing it, and (b) escalate rather than exit
+  // clean when the deferred tail included a new/still-broken show (BRO-2627
+  // adversarial review — a --fail-on-mismatch gate that silently drops
+  // coverage of the exact class it exists to catch is not actually strict).
+  let previousResultsById = {};
+  let previousResultOnlyById = {};
+  let currentProvisionalIds = null;
   if (candidatesFile) {
     // Validate candidates from an external JSON file (no shows.json entry
     // required). Used by discover-ob-historical.js to surface authoritative
@@ -350,7 +391,13 @@ async function main() {
     }
   } else if (allProvisional) {
     const shows = loadShows();
-    targets = shows.filter(isProvisional);
+    const provisionalShows = shows.filter(isProvisional);
+    currentProvisionalIds = new Set(provisionalShows.map(s => s.id));
+    previousResultsById = loadPreviousResultById();
+    previousResultOnlyById = Object.fromEntries(
+      Object.entries(previousResultsById).map(([id, row]) => [id, row.result]),
+    );
+    targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
   } else {
     console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
     process.exit(2);
@@ -363,9 +410,26 @@ async function main() {
   const log = verbose || targets.length <= 5 ? console.log : () => {};
   const results = [];
   for (const show of targets) {
+    if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
     results.push(r);
     await sleep(400);
+  }
+  const deferredShows = targets.slice(results.length);
+  const deferred = deferredShows.length;
+  // orderProvisionalTargets puts new/still-broken shows first, so under
+  // normal load a budget cut only defers the lowest-priority (previously-
+  // clean) tail — but if new/broken volume itself exceeds the budget in one
+  // run, some of THOSE land in the deferred tail too. That's the exact
+  // incident class this audit exists to catch, so it must not exit clean.
+  const deferredHighPriority = deferredHighPriorityShows(deferredShows, previousResultOnlyById);
+  if (deferred > 0) {
+    // Loud, not silent — a partial run must not look identical to full
+    // coverage (same rationale as the infra-unavailable warning below).
+    console.log(`::warning::validate-show-venue: time budget (${timeBudget.minutes} min) reached — ${deferred} show(s) deferred to the next run, ${results.length}/${targets.length} checked this run.`);
+    if (deferredHighPriority.length) {
+      console.log(`::warning::validate-show-venue: ${deferredHighPriority.length} of the deferred show(s) are new or previously-broken — NOT a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
+    }
   }
 
   const mismatches = results.filter(r => r.result === 'mismatch');
@@ -403,13 +467,29 @@ async function main() {
     }
   }
 
+  // Merge this run's fresh results over the prior report's rows for any
+  // currently-provisional show this run didn't reach (deferred, or simply
+  // outside a --limit slice) — otherwise a deferred show's last-known state
+  // vanishes from the file entirely and every future run sees it as "new"
+  // again instead of retaining its real priority tier (BRO-2627 adversarial
+  // review). Only applies in --all-provisional mode; --show/--candidates-file
+  // runs write exactly what they checked, as before.
+  const outputResults = currentProvisionalIds
+    ? mergeCarriedForwardResults(results, previousResultsById, currentProvisionalIds)
+    : results;
+  const carriedForwardCount = outputResults.length - results.length;
+
   if (!dryRun) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
     const out = {
       generatedAt: new Date().toISOString(),
       filter: showFilter ? { show: showFilter } : { allProvisional: true, limit: limit || null },
-      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length },
-      results,
+      timeBudgetMin: timeBudget.enabled ? timeBudget.minutes : null,
+      // `counts` describes what THIS run checked; `total` in the output
+      // file (outputResults.length) can exceed it when prior rows were
+      // carried forward — see carriedForward above.
+      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length, deferred, carriedForward: carriedForwardCount },
+      results: outputResults,
     };
     fs.writeFileSync(AUDIT_PATH, JSON.stringify(out, null, 2));
     console.log(`Wrote audit: ${AUDIT_PATH}`);
@@ -418,12 +498,18 @@ async function main() {
   // Gated on `mismatches` only — infra-unavailable and other unresolved
   // shows never fail this step on their own (BRO-2560: a CI job with no
   // Playwright browser installed must not read as a wall of venue/date
-  // mismatches).
-  if (failOnMismatch && mismatches.length) {
+  // mismatches). deferredHighPriority is a second, independent gate: the
+  // budget cut off before reaching a new-or-still-broken show, so this run
+  // cannot claim clean coverage of the exact class the STRICT gate exists
+  // to catch (BRO-2627).
+  if (failOnMismatch && (mismatches.length || deferredHighPriority.length)) {
     for (const r of mismatches) {
       for (const m of r.mismatches) {
         console.log(`::error::${r.id}: ${m.field} shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}`);
       }
+    }
+    if (deferredHighPriority.length) {
+      console.log(`::error::validate-show-venue: time budget exhausted before checking ${deferredHighPriority.length} new/previously-broken show(s) — cannot certify a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
     }
     process.exit(1);
   }
