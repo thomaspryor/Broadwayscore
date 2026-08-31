@@ -108,6 +108,18 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-103 cloud-memory merge-aware sync. Same shape as the
+      # opening-night-pipeline pair above: the merge logic lives in
+      # scripts/lib/cloud-memory-merge.js (already covered by scripts/lib/**),
+      # but the test also EXECUTES scripts/sync-memory-to-repo.sh end-to-end
+      # via execFileSync/spawnSync — it is shelled out to, not require()d, so
+      # neither of these two files is reachable from any glob above and a solo
+      # push touching only them would trigger ZERO CI
+      # (memory/feedback_test_yml_push_path_allowlist.md). Test registered in
+      # tests/unit-test-manifest.txt (tests/** already globbed above); leaving
+      # it unregistered fails the blocking audit-orphan-tests.js gate below.
+      - 'scripts/sync-memory-to-repo.sh'
+      - 'scripts/cloud-memory-sync.test.mjs'
       # BRO-544: root-level regression guard scanning scripts/**, src/**, and
       # .github/workflows|actions/** for the deleted mcp_browser/
       # scraping_browser Bright Data zone being sent through the HTTP
