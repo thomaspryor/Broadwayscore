@@ -868,22 +868,52 @@ const MERGE_WRAPPER_BASENAME = 'merge-worktree-to-main.sh';
 // silently treated as "not a merge" — `timeout 900 bash <wrapper>` was the
 // reported bypass: `timeout` alone wasn't a KNOWN issue, the missing keyword
 // wasn't the point, the fail-open DEFAULT for anything unrecognised was.
-const SCRIPT_INTERPRETERS = new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time', 'timeout', 'nice', 'stdbuf', 'command']);
-
-// Flags on the wrappers above that consume a SEPARATE following value token
-// (as opposed to a `--flag=value` single token, which needs no extra skip).
-// Without this, `nice -n 10 bash <wrapper>` misreads "10" as the wrapped
-// command name and the unwrap loop stops one token too early.
-const WRAPPER_VALUE_FLAGS = {
+//
+// Canonical home is scripts/lib/infra-review-scope.js — bashWriteTargets()
+// there needed this exact list (BRO-2450) and a second hand-maintained copy
+// here would recreate the drift risk BRO-2436 exists to fix. Loaded lazily
+// with the same degrade-don't-crash contract as shellLex() below: a checkout
+// carrying a stale infra-review-scope.js without these exports must not
+// disable the merge gate over one missing optional import — the embedded
+// FALLBACK_* literals are byte-identical to what this file shipped with
+// before the shared helper existed.
+const FALLBACK_WRAPPER_COMMANDS = new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time', 'timeout', 'nice', 'stdbuf', 'command']);
+const FALLBACK_WRAPPER_VALUE_FLAGS = {
   timeout: new Set(['-s', '--signal', '-k', '--kill-after']),
   nice: new Set(['-n', '--adjustment']),
   stdbuf: new Set(['-i', '--input', '-o', '--output', '-e', '--error']),
 };
+const FALLBACK_WRAPPER_LEADING_ARG = new Set(['timeout']);
 
-// Wrappers with a MANDATORY bare positional before the wrapped command
-// (`timeout DURATION cmd…`), distinct from any flag — consumed once the
-// flag-skip loop is done so the unwrap can continue to the real command.
-const WRAPPER_LEADING_ARG = new Set(['timeout']);
+let _wrapperConfig = null;
+function wrapperConfig() {
+  if (_wrapperConfig !== null) return _wrapperConfig;
+  try {
+    const { WRAPPER_COMMANDS, WRAPPER_VALUE_FLAGS, WRAPPER_LEADING_ARG } = require('./infra-review-scope.js');
+    if (!(WRAPPER_COMMANDS instanceof Set) || typeof WRAPPER_VALUE_FLAGS !== 'object' || !(WRAPPER_LEADING_ARG instanceof Set)) {
+      throw new Error('missing exports');
+    }
+    // Codex adversarial review (BRO-2450): the outer-shape check above passes
+    // even if a nested value is not actually a Set — the unwrap loop below
+    // calls `.has()` on each WRAPPER_VALUE_FLAGS entry, and a non-Set value
+    // there would THROW mid-classification instead of degrading to the
+    // fallback, taking the whole merge gate down with it. Validate every
+    // nested entry too.
+    for (const v of Object.values(WRAPPER_VALUE_FLAGS)) {
+      if (!(v instanceof Set)) throw new Error('malformed WRAPPER_VALUE_FLAGS entry');
+    }
+    _wrapperConfig = { interpreters: WRAPPER_COMMANDS, valueFlags: WRAPPER_VALUE_FLAGS, leadingArg: WRAPPER_LEADING_ARG };
+  } catch (e) {
+    // Same shellLex() precedent as above: surface a genuine break instead of
+    // silently absorbing it as an expected version-skew degrade (Claude
+    // codebase review, BRO-2450) — this catch is deliberately broad (any
+    // require()/init failure), so a real bug here must still be visible
+    // somewhere, not just quietly downgrade to the embedded fallback.
+    process.stderr.write(`review-gate: infra-review-scope.js wrapper constants unavailable (${e.code || e.message}) — merge gate using embedded fallback\n`);
+    _wrapperConfig = { interpreters: FALLBACK_WRAPPER_COMMANDS, valueFlags: FALLBACK_WRAPPER_VALUE_FLAGS, leadingArg: FALLBACK_WRAPPER_LEADING_ARG };
+  }
+  return _wrapperConfig;
+}
 
 // `git merge` flags that consume a FOLLOWING value; that value must not be
 // mistaken for the merge source ref. (`--flag=value` forms are single tokens
@@ -982,6 +1012,7 @@ function withoutEnvPrefix(tokens) {
 
 // Classify ONE simple command. Returns null when it is not merge-relevant.
 function classifySegment(rawTokens) {
+  const { interpreters: SCRIPT_INTERPRETERS, valueFlags: WRAPPER_VALUE_FLAGS, leadingArg: WRAPPER_LEADING_ARG } = wrapperConfig();
   let toks = withoutEnvPrefix(rawTokens);
   if (toks.length === 0) return null;
 

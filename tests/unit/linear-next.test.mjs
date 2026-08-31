@@ -624,28 +624,51 @@ test('reportedOutcomeGuard wiring: --allow-reported-work "<reason>" lets a genui
   assert.match(res.stderr, /LINEAR_NEXT_DISABLED/, 'should reach the later kill-switch gate, proving it got past this guard');
 });
 
-test('parseArgs: --flag=value is NOT split, and --force=0 therefore cannot bypass anything (BRO-2543)', () => {
+test('parseArgs: --flag=value form is honoured, and --force=0/false/"" cannot bypass anything (BRO-2576)', () => {
   // BRO-2543 first "fixed" the `--k=v` form in passing and the pre-ship
-  // adversarial review caught that it made things WORSE: splitting on `=`
-  // turns `--force=0` into the truthy string "0", so a flag an operator wrote
-  // expressly to DISABLE forcing would instead bypass every guard --force
-  // gates. Reverted. Pinned here so the next person who notices `--model=opus`
-  // silently doesn't work reaches for the same trap and this test explains why.
+  // adversarial review caught that it made things WORSE: naively splitting on
+  // `=` turns `--force=0` into the truthy string "0", so a flag an operator
+  // wrote expressly to DISABLE forcing would instead bypass every guard
+  // --force gates. Reverted there. BRO-2576 fixes it properly by deciding the
+  // `=0`/`=false`/`=` "off" semantics up front (coerceFlagValue) before ever
+  // splitting on `=`, so `--model=opus` works AND `--force=0` stays inert.
   const a = parseArgs(['--force=0']);
-  assert.equal(a.force, undefined, '--force=0 must not set force at all');
-  assert.equal(a['force=0'], true);
+  assert.equal(a.force, false, '--force=0 must coerce to false, not the truthy string "0"');
+  assert.equal(a['force=0'], undefined);
 
-  // The space form is the supported one, and is what the guard's own refusal
-  // message tells operators to type.
+  const a2 = parseArgs(['--force=false']);
+  assert.equal(a2.force, false);
+
+  const a3 = parseArgs(['--force=']);
+  assert.equal(a3.force, false, 'a bare trailing = is also "off", not the truthy empty string');
+
+  // Every guard in linear-next.js reads args.force via truthiness
+  // (`!args.force`, `args.force || ...`), so `false` behaves exactly like
+  // "flag never passed" — no guard needs to know about the `=` form.
+  assert.ok(!a.force && !a2.force && !a3.force);
+
+  // The space form still works, unchanged.
   const b = parseArgs(['--id', 'BRO-1', '--force', '--allow-reported-work', 'checked main, not there']);
   assert.equal(b.id, 'BRO-1');
   assert.equal(b.force, true);
   assert.equal(b['allow-reported-work'], 'checked main, not there');
 
-  // And the `=` form fails CLOSED for the bypass — the key lands elsewhere, so
-  // the guard sees no reason and its refusal stands.
-  const c = parseArgs(['--allow-reported-work=some reason here']);
-  assert.equal(c['allow-reported-work'], undefined);
+  // And the `=` form now genuinely carries a value-flag's payload.
+  const c = parseArgs(['--allow-reported-work=some reason here', '--id=BRO-1', '--model=opus']);
+  assert.equal(c['allow-reported-work'], 'some reason here');
+  assert.equal(c.id, 'BRO-1');
+  assert.equal(c.model, 'opus');
+
+  // Only the first `=` splits the key from the value.
+  assert.equal(parseArgs(['--note=a=b']).note, 'a=b');
+
+  // Case-insensitive: an operator typing --force=FALSE means the same thing
+  // as --force=false. A pre-ship review of this exact commit caught that
+  // matching only the lowercase literal would leave --force=FALSE (or
+  // =False, =0 has no case) as the truthy string "FALSE" — reopening the
+  // BRO-2543 hazard under different casing.
+  assert.equal(parseArgs(['--force=FALSE']).force, false);
+  assert.equal(parseArgs(['--force=False']).force, false);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
