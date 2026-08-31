@@ -47,8 +47,7 @@ const { DEFAULTS, detectDeadArms, todayKey } = require('./lib/arm-yield');
 // 30 days (2026-08-26 -> 2026-09-25) — this is its sole producer, so gating
 // here is what makes that freeze actually suppress new cards instead of just
 // documenting a decision nothing reads.
-const { FROZEN_LEDGERS, isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
-const ARM_YIELD_LEDGER_NAME = FROZEN_LEDGERS.find((l) => l.endsWith('arm-yield-ledger.jsonl'));
+const { isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const DEFAULT_LEDGER = path.join(REPO_ROOT, 'data', 'audit', 'arm-yield-ledger.jsonl');
@@ -170,9 +169,17 @@ async function main() {
 
   // Required lazily so --dry-run/--json replays never touch the alert ledger.
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
-  const frozen = isLedgerFrozenNow(ARM_YIELD_LEDGER_NAME);
+  // Freeze check keys off the LEDGER FILE THIS RUN ACTUALLY READ (args.ledger,
+  // relative to the repo root), not a hardcoded default — code-review finding
+  // (BRO-2603): `--ledger=PATH` (used for replay/testing against an alternate
+  // file) previously always checked the canonical arm-yield-ledger.jsonl name
+  // regardless of which file was read, so a replay against an unrelated file
+  // could suppress real alerts, or a same-named-but-relocated ledger could
+  // dodge suppression.
+  const ledgerName = path.relative(REPO_ROOT, args.ledger).split(path.sep).join('/');
+  const frozen = isLedgerFrozenNow(ledgerName);
   if (frozen) {
-    console.log(`[arm-yield] ${freezeSkipMessage(ARM_YIELD_LEDGER_NAME)} — suppressing all card filing this run`);
+    console.log(`[arm-yield] ${freezeSkipMessage(ledgerName)} — suppressing all card filing this run`);
   }
 
   for (const s of dead) {

@@ -47,7 +47,11 @@ const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 // 2026-08-26 -> 2026-09-25) actually suppress card filing for the checks below
 // that are sourced from a frozen ledger, instead of the record just sitting
 // unread. See AUTO_FIX_PLAYBOOK entries with a `ledger` field.
-const { isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
+const { FROZEN_LEDGERS, isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
+// Reused (never re-typed) by the two AUTO_FIX_PLAYBOOK entries below — a
+// literal string here that drifted from FROZEN_LEDGERS would silently defeat
+// suppression (code-review finding, BRO-2603).
+const DISPATCH_LEDGER_NAME = FROZEN_LEDGERS.find((l) => l.endsWith('dispatch-ledger.jsonl'));
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -94,7 +98,7 @@ const AUTO_FIX_PLAYBOOK = [
   // filing a card for it while that ledger is frozen (falls back to the same
   // "no card, show the raw instruction" path already used when
   // MAX_CARD_DISPATCHES_PER_RUN caps out).
-  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week', ledger: 'data/audit/dispatch-ledger.jsonl',
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Card #1714, same #1199 trap: an unregistered check name defaults to
   // urgency 'low' and never files a card even on 'error'. 'this-week' to
@@ -103,7 +107,7 @@ const AUTO_FIX_PLAYBOOK = [
   // means nothing is silently lost.
   // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
   // sourced from dispatch-ledger.jsonl.
-  { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: 'data/audit/dispatch-ledger.jsonl',
+  { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     humanAction: 'Headless (job-lane) dispatches are failing more often than the 80% success floor. Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then open Claude Code and say: "Investigate the headless dispatch success rate (card #1714) — judge any fix by this rate over the window, never by one clean dispatch."' },
   // Task #1648, same #1199 trap: without an explicit entry this row defaults
   // to urgency 'low' and renders as an anonymous count instead of a named
