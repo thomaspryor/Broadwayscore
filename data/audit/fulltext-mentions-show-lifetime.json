@@ -1,10 +1,14 @@
 {
-  "updatedAt": "2026-08-30T12:19:57.709Z",
-  "scanned": 2021,
-  "showsWithViolations": 315,
-  "totalViolations": 613,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-08-31T14:29:55.889Z",
+  "scanned": 2023,
+  "showsWithViolations": 318,
+  "totalViolations": 616,
+  "newSinceLastRun": 3,
+  "newViolationKeys": [
+    "every-brilliant-thing-2026::wsj--charles-isherwood.json",
+    "as-you-like-it-globe-west-end-2026::guardian--miriam-gillinson.json",
+    "the-tempest-globe-west-end-2026::british-theatre--howard-loxton.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -19,6 +23,7 @@
     "death-of-a-salesman-2026::nypost--elisabeth-vincentelli.json",
     "becky-shaw-2026::nysr--david-finkle.json",
     "dog-day-afternoon-2026::theatre-reviews-limited--david-roberts.json",
+    "every-brilliant-thing-2026::wsj--charles-isherwood.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
     "stranger-things-2024::broadwaynews--brittani-samuel.json",
     "stranger-things-2024::nytimes--houman-barekat.json",
@@ -550,9 +555,11 @@
     "please-please-me-west-end-2026::guardian--unknown.json",
     "please-please-me-west-end-2026::thestage--unknown.json",
     "the-playboy-of-the-western-world-west-end-2025::guardian--arifa-akbar.json",
+    "as-you-like-it-globe-west-end-2026::guardian--miriam-gillinson.json",
     "les-liaisons-dangereuses-west-end-2026::london-theatre--marianka-swain.json",
     "les-liaisons-dangereuses-west-end-2026::thestage--sam-marlowe.json",
     "are-you-watching-west-end-2026::london-theatre--matt-wolf.json",
+    "the-tempest-globe-west-end-2026::british-theatre--howard-loxton.json",
     "man-and-boy-west-end-2026::guardian--arifa-akbar.json",
     "man-and-boy-west-end-2026::guardian--sign-has-arifa-akbar.json",
     "man-and-boy-west-end-2026::standard--nick-curtis.json",
@@ -770,6 +777,22 @@
           "criticName": "David Roberts",
           "haystackLength": 3170,
           "textIssuesFlag": true
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "message": "wsj/Charles Isherwood (wsj--charles-isherwood.json) SHIPPED but fullText never mentions 'Every Brilliant Thing' (303 chars): https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+      "violations": [
+        {
+          "filename": "wsj--charles-isherwood.json",
+          "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+          "outletId": "wsj",
+          "criticName": "Charles Isherwood",
+          "haystackLength": 303,
+          "textIssuesFlag": false
         }
       ]
     },
@@ -3457,7 +3480,7 @@
       "showId": "the-encounter-2016",
       "title": "The Encounter",
       "openingDate": "2016-09-29",
-      "message": "act-three-the-reviews/Doug Marino (act-three-the-reviews--doug-marino.json) SHIPPED but fullText never mentions 'The Encounter' (2425 chars, textIssues flag set): https://dougmarino.blogspot.com/2016/09/the-encounter.html",
+      "message": "act-three-the-reviews/Doug Marino (act-three-the-reviews--doug-marino.json) SHIPPED but fullText never mentions 'The Encounter' (2425 chars, textIssues flag set): https://dougmarino.blogspot.com/2016/09/the-encounter.html\n⚠️  wsj/Terry Teachout (wsj--terry-teachout.json) also too short to assess (0 chars): http://www.wsj.com/articles/the-encounter-review-take-a-trip-to-the-jungle-1475195401",
       "violations": [
         {
           "filename": "act-three-the-reviews--doug-marino.json",
@@ -7198,6 +7221,22 @@
       ]
     },
     {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It",
+      "openingDate": "2026-08-21",
+      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED but fullText never mentions 'As You Like It' (3251 chars): https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london\n⚠️  times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) also too short to assess (0 chars): https://www.thetimes.com/culture/theatre-dance/article/as-you-like-it-review-the-globe-london-2026-qb7pgdzf2\n⚠️  times-uk/Victoria Segal (times-uk--victoria-segal.json) also too short to assess (0 chars): https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2",
+      "violations": [
+        {
+          "filename": "guardian--miriam-gillinson.json",
+          "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+          "outletId": "guardian",
+          "criticName": "Miriam Gillinson",
+          "haystackLength": 3251,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "title": "Les Liaisons Dangereuses",
       "openingDate": "2026-04-01",
@@ -7233,6 +7272,22 @@
           "outletId": "london-theatre",
           "criticName": "Matt Wolf",
           "haystackLength": 3168,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "title": "The Tempest",
+      "openingDate": "2026-01-29",
+      "message": "british-theatre/Howard Loxton (british-theatre--howard-loxton.json) SHIPPED but fullText never mentions 'The Tempest' (2827 chars): https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272",
+      "violations": [
+        {
+          "filename": "british-theatre--howard-loxton.json",
+          "url": "https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272",
+          "outletId": "british-theatre",
+          "criticName": "Howard Loxton",
+          "haystackLength": 2827,
           "textIssuesFlag": false
         }
       ]

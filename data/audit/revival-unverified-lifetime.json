@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-30T12:20:02.642Z",
-  "scanned": 2021,
-  "showsWithViolations": 44,
-  "totalViolations": 44,
+  "updatedAt": "2026-08-31T14:30:00.975Z",
+  "scanned": 2023,
+  "showsWithViolations": 42,
+  "totalViolations": 42,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "violationKeys": [
@@ -18,7 +18,6 @@
     "the-outsiders-2024",
     "and-juliet-2022",
     "mj-2022",
-    "moulin-rouge-2019",
     "hadestown-2019",
     "harry-potter-2021",
     "wicked-2003",
@@ -48,8 +47,7 @@
     "the-smile-of-her-off-west-end-2026",
     "abigails-party-west-end-2026",
     "disruption-off-broadway-2026",
-    "the-real-ivanov-off-broadway-2026",
-    "hungry-women-off-broadway-2026"
+    "the-real-ivanov-off-broadway-2026"
   ],
   "hits": [
     {
@@ -156,15 +154,6 @@
       "title": "MJ The Musical",
       "openingDate": "2022-02-01",
       "message": "mj-2022 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2019-07-25",
-      "message": "moulin-rouge-2019 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -288,7 +277,7 @@
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
+      "title": "As You Like It",
       "openingDate": "2026-08-21",
       "message": "as-you-like-it-globe-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
@@ -297,7 +286,7 @@
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost - Globe",
+      "title": "Love's Labour's Lost",
       "openingDate": "2026-07-28",
       "message": "loves-labours-lost-globe-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
@@ -371,7 +360,7 @@
       "showId": "paranormal-activity-2026",
       "title": "Paranormal Activity",
       "openingDate": "2026-08-25",
-      "message": "paranormal-activity-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "paranormal-activity-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -435,15 +424,6 @@
       "title": "The Real Ivanov",
       "openingDate": "2026-08-25",
       "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "hungry-women-off-broadway-2026",
-      "title": "Hungry Women",
-      "openingDate": "2026-07-25",
-      "message": "hungry-women-off-broadway-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

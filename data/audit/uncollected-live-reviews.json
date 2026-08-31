@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-31T00:09:43.358Z",
+  "generatedAt": "2026-08-31T14:44:00.630Z",
   "maxAgeHours": 12,
-  "showsAffected": 9,
-  "strandedFiles": 10,
+  "showsAffected": 12,
+  "strandedFiles": 16,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -17,6 +17,34 @@
       "totalBlackout": true
     },
     {
+      "showId": "wicked-2003",
+      "title": "Wicked",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "ew--christian-holub.json",
+          "url": "https://ew.com/wicked-review-musical-adaptation-hits-right-notes-lacks-visual-variety-8747457",
+          "outlet": "Entertainment Weekly",
+          "ageHours": null
+        },
+        {
+          "file": "thewrap--jeremy-fuster.json",
+          "url": "https://www.thewrap.com/wicked-for-good-off-and-flying-with-30-million-from-box-office-previews/",
+          "outlet": "TheWrap",
+          "ageHours": null
+        },
+        {
+          "file": "thewrap--william-bibbiani.json",
+          "url": "https://www.thewrap.com/wicked-for-good-review-cynthia-erivo-ariana-grande/",
+          "outlet": "TheWrap",
+          "ageHours": null
+        }
+      ],
+      "usable": 59,
+      "discovered": 92,
+      "totalBlackout": false
+    },
+    {
       "showId": "the-lost-boys-2026",
       "title": "The Lost Boys",
       "status": "open",
@@ -25,7 +53,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 657.0621941666667
+          "ageHours": 671.6336586111111
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -61,6 +89,28 @@
       "totalBlackout": false
     },
     {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "status": "previews",
+      "stranded": [
+        {
+          "file": "londontheatre1--unknown.json",
+          "url": "https://www.londontheatre1.com/reviews/helen-bradley-painter-and-storyteller-pleasance-courtyard/",
+          "outlet": "LondonTheatre1",
+          "ageHours": 65.4012325
+        },
+        {
+          "file": "north-west-end--unknown.json",
+          "url": "https://northwestend.com/the-bowie-story-the-space-symposium-hall/",
+          "outlet": "North West End",
+          "ageHours": 23.53720861111111
+        }
+      ],
+      "usable": 4,
+      "discovered": 18,
+      "totalBlackout": false
+    },
+    {
       "showId": "and-juliet-2022",
       "title": "& Juliet",
       "status": "open",
@@ -69,11 +119,27 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 75.28157722222223
+          "ageHours": 89.85304166666667
         }
       ],
       "usable": 45,
       "discovered": 68,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "title": "The Lion King",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "thewrap--william-bibbiani.json",
+          "url": "https://www.thewrap.com/mufasa-the-lion-king-review/",
+          "outlet": "TheWrap",
+          "ageHours": null
+        }
+      ],
+      "usable": 49,
+      "discovered": 74,
       "totalBlackout": false
     },
     {
@@ -89,7 +155,7 @@
         }
       ],
       "usable": 55,
-      "discovered": 78,
+      "discovered": 77,
       "totalBlackout": false
     },
     {
@@ -125,6 +191,22 @@
       "totalBlackout": false
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "title": "Les Misérables",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--unknown.json",
+          "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
+          "outlet": "The New York Times",
+          "ageHours": 23.5729675
+        }
+      ],
+      "usable": 29,
+      "discovered": 30,
+      "totalBlackout": false
+    },
+    {
       "showId": "matilda-the-musical-west-end-2021",
       "title": "Matilda The Musical",
       "status": "open",
@@ -138,22 +220,6 @@
       ],
       "usable": 41,
       "discovered": 51,
-      "totalBlackout": false
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "status": "previews",
-      "stranded": [
-        {
-          "file": "londontheatre1--unknown.json",
-          "url": "https://www.londontheatre1.com/reviews/helen-bradley-painter-and-storyteller-pleasance-courtyard/",
-          "outlet": "LondonTheatre1",
-          "ageHours": 50.829768055555554
-        }
-      ],
-      "usable": 0,
-      "discovered": 18,
       "totalBlackout": false
     }
   ]

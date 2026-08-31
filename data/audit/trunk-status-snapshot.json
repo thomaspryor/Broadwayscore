@@ -1,28 +1,26 @@
 {
-  "generatedAt": "2026-08-30T12:20:02.697Z",
+  "generatedAt": "2026-08-31T14:30:01.033Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "e2a6661bc2eaee647e5be85fd54b90bbcd98176b",
+  "latestRunHeadSha": "afad543aeb18b1a563eee03965d1f0fa5d29de20",
   "state": "RED",
-  "consecutiveFailures": 86,
+  "consecutiveFailures": 91,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-26T18:05:35Z",
-  "redForHours": 90.24102694444444,
+  "redSince": "2026-08-26T19:52:26Z",
+  "redForHours": 114.62639805555555,
   "redDurationIsFloor": true,
   "lastSuccessAt": null,
-  "latestFailedRunId": "33309000532",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33309000532",
-  "decidedRuns": 86,
+  "latestFailedRunId": "33396107553",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33396107553",
+  "decidedRuns": 91,
   "failingJobs": [
     {
-      "name": "Data Validation",
+      "name": "Unit Tests",
       "steps": [
-        "Audit sibling-title misroute (strict)",
-        "Audit review contamination",
-        "Validate provisional show venue+dates against Playbill"
+        "Run push-with-retry stranded-commit-cascade test (bash integration)"
       ]
     },
     {
@@ -32,6 +30,13 @@
       ]
     }
   ],
-  "failingPaths": [],
-  "topFailingJob": "Data Validation"
+  "failingPaths": [
+    {
+      "path": "scripts/lib/merge-worktree-to-main.content-drop.test.sh",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }

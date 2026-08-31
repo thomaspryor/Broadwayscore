@@ -2,14 +2,14 @@
   {
     "conditionKey": "provider-spend:overspend",
     "title": "Scraping spend over budget",
-    "description": "Day 2026-08-29. Over budget: browserbase $8.4 > $4 (84 sessions); brightdata $2.97 > $2.5 (1132 serp + 851 unlocker reqs). 2026-08-29 · Browserbase: $8.4 (84 sessions) · 2026-08-29 · Bright Data: $2.97 (1132 serp / 851 unlocker) · ScrapingBee: baseline day (cycle 849557) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 2325406) — day figure starts tomorrow · Browserbase attribution: 12% attributed — top: collect-review-texts.js 10 · Bright Data attribution: 56% attributed — top: validate-show-venue.js 688, opening-night-poller.js 357, collect-review-texts.js 19, audit-show-review-gap.js 12, collect-outlet-reviews.js 9. Verification streak reset to 0.",
+    "description": "Day 2026-08-30. Over budget: browserbase $6.2 > $4 (62 sessions); brightdata $2.9 > $2.5 (1069 serp + 867 unlocker reqs); scrapingbee 42484 credits > 35000. 2026-08-30 · Browserbase: $6.2 (62 sessions) · 2026-08-30 · Bright Data: $2.9 (1069 serp / 867 unlocker) · ScrapingBee: 42484 credits (892041 this cycle) · ScrapingDog: 24663 credits (2350069 this cycle) · Browserbase attribution: 3% attributed — top: collect-review-texts.js 2 · Bright Data attribution: 65% attributed — top: validate-show-venue.js 680, opening-night-poller.js 330, collect-review-texts.js 159, recollect-for-scores.js 37, audit-show-review-gap.js 30 · ScrapingBee attribution: 1% attributed — top: validate-show-venue.js 205, collect-review-texts.js 63, recollect-for-scores.js 36, opening-night-poller.js 35, audit-show-review-gap.js 18 · ScrapingDog attribution: 11% attributed — top: collect-review-texts.js 1440, opening-night-poller.js 446, audit-show-review-gap.js 356, recover-explicit-ratings.js 250, recollect-for-scores.js 77. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": true,
-    "decisionPrompt": "Scraping spend over budget: browserbase $8.4 > $4 (84 sessions); brightdata $2.97 > $2.5 (1132 serp + 851 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "decisionPrompt": "Scraping spend over budget: browserbase $6.2 > $4 (62 sessions); brightdata $2.9 > $2.5 (1069 serp + 867 unlocker reqs); scrapingbee 42484 credits > 35000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
     "model": null,
     "fields": [],
-    "queuedAt": "2026-08-30T12:17:33.906Z"
+    "queuedAt": "2026-08-31T14:28:35.954Z"
   },
   {
     "conditionKey": "review-gap:blast-radius-refused",
@@ -22,18 +22,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-08-30T13:37:31.398Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 77.9% (398/511)\noff-broadway: 45.8% (147/321)\nwest-end: 73.4% (401/546)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (388h)\nA Midsummer Night's Dream — observer (388h)\nA Midsummer Night's Dream — standard (388h)\nA Midsummer Night's Dream — times-uk (388h)\nA Woman Among Women — nyt-theater (388h)\n… 178 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (388h)\nThe Book of Mormon — usatoday (388h)\nBuena Vista Social Club — broadwaynews (388h)\nBuena Vista Social Club — nydailynews (388h)\nHadestown — nydailynews (388h)\n… 22 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-08-30T13:37:38.415Z"
   },
   {
     "conditionKey": "deployed-coverage:stale",
@@ -136,5 +124,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-08-31T02:52:09.998Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.8% (374/487)\noff-broadway: 45.1% (144/319)\nwest-end: 73.4% (401/546)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (413h)\nA Midsummer Night's Dream — observer (413h)\nA Midsummer Night's Dream — standard (413h)\nA Midsummer Night's Dream — times-uk (413h)\nA Woman Among Women — nyt-theater (413h)\n… 194 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (413h)\nBuena Vista Social Club — broadwaynews (413h)\nHeathers The Musical — dailybeast (413h)\nJust in Time — broadwaynews (413h)\nOthello — broadwaynews (413h)\n… 5 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T14:44:06.426Z"
   }
 ]
