@@ -76,11 +76,30 @@ test('an unqualified page is ACCEPTED for the regional show (no false positive o
 
 test('scrape-bww-reviews.js actually calls the guard before writing the archive', () => {
   const fs = require('fs');
-  const src = fs.readFileSync(new URL('../scrape-bww-reviews.js', import.meta.url), 'utf8');
-  const guardIdx = src.indexOf('validateRoundupPageTitle(');
+  const raw = fs.readFileSync(new URL('../scrape-bww-reviews.js', import.meta.url), 'utf8');
+
+  // Strip comments first. The block comment above the guard NAMES
+  // validateRoundupPageTitle(), so a bare indexOf on the function name matches
+  // prose and would stay green even if the real call were deleted — the exact
+  // weakness an adversarial review caught in the first version of this test.
+  const src = raw
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .split('\n')
+    .map(l => l.replace(/(^|[^:])\/\/.*$/, '$1'))
+    .join('\n');
+
+  // Anchor on the ASSIGNMENT, which cannot appear in prose.
+  const guardIdx = src.indexOf('const catCheck = validateRoundupPageTitle(');
   const writeIdx = src.indexOf('fs.writeFileSync(archivePath, html)');
-  assert.ok(guardIdx > 0, 'scraper must import and call validateRoundupPageTitle');
+  assert.ok(guardIdx > 0, 'scraper must call validateRoundupPageTitle and bind the result');
   assert.ok(writeIdx > 0, 'scraper must still write the archive');
   assert.ok(guardIdx < writeIdx,
     'the category guard must run BEFORE the cache write — otherwise the poisoned page is already on disk');
+
+  // ...and that a failed check actually short-circuits rather than logging on.
+  const between = src.slice(guardIdx, writeIdx);
+  assert.match(between, /if\s*\(\s*!catCheck\.ok\s*\)/,
+    'the guard result must be branched on');
+  assert.match(between, /continue\s*;/,
+    'a failed category check must `continue` to the next slug, not fall through to the write');
 });

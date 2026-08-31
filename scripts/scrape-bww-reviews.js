@@ -75,6 +75,7 @@ const stats = {
   reviewsPagesFetched: 0,
   reviewsPagesHit: 0,
   reviewsPagesMiss: 0,
+  reviewsPagesCategoryBlocked: 0,
   roundupsFetched: 0,
   roundupsHit: 0,
   roundupsMiss: 0,
@@ -366,7 +367,7 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
         );
         if (!catCheck.ok) {
           console.log(`  [SKIP] /reviews/${slug} category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
-          stats.reviewsPagesCategoryBlocked = (stats.reviewsPagesCategoryBlocked || 0) + 1;
+          stats.reviewsPagesCategoryBlocked++;
           continue;
         }
         // Archive and return
@@ -1438,7 +1439,13 @@ async function main() {
   // Print summary
   console.log('\n=== BWW Scraper Summary ===');
   console.log(`Shows processed: ${stats.showsProcessed}`);
-  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss (${stats.reviewsPagesFetched} fetched)`);
+  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss, ${stats.reviewsPagesCategoryBlocked} category-blocked (${stats.reviewsPagesFetched} fetched)`);
+  if (stats.reviewsPagesCategoryBlocked > 0) {
+    // Loud on purpose: a category block is a page we FETCHED and then refused
+    // to cache. Folded into the miss count it would read as 'BWW had nothing',
+    // which is how a mis-tuned guard silently starves a show of reviews.
+    console.log(`  ^ ${stats.reviewsPagesCategoryBlocked} page(s) refused: title's market qualifier belongs to a same-title sibling in another category`);
+  }
   console.log(`Roundups: ${stats.roundupsHit} hit, ${stats.roundupsMiss} miss (${stats.roundupsFetched} fetched, ${stats.googleSearches} searches)`);
   console.log(`Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`New reviews: ${stats.newReviews}`);
