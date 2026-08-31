@@ -250,13 +250,58 @@ test('an already-resolved dispatch is skipped, but a LATER dispatch of the same 
   assert.equal(out[0].dispatch.ts, '2026-08-30T12:00:00Z');
 });
 
-test('classifying does not mutate the ledger it was given', () => {
-  // Postmortem 2: decisions are never fed back into the resolution check
-  // mid-pass, so the input must come out untouched.
-  const ledger = [{ ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' }];
-  const snapshot = JSON.parse(JSON.stringify(ledger));
-  classify(ledger, [], '2026-08-30T23:00:00Z');
-  assert.deepEqual(ledger, snapshot);
+test('resolution reads ONLY the pre-pass ledger — one row resolving cannot resolve its siblings', () => {
+  // Postmortem 2, the load-bearing version: an earlier draft cross-checked
+  // against breadcrumbs emitted during the SAME pass, tagged `now`. Since
+  // `now` is later than every historical dispatch ts by construction,
+  // resolving one stale dispatch would instantly satisfy `>= dispatchTs` for
+  // every other unresolved dispatch of that card — collapsing genuinely
+  // separate sequential re-attempts onto one outcome, which is precisely the
+  // failure-streak counting BRO-2434 needs. Three separate attempts, three
+  // distinct jobs: all three must score.
+  const ledger = [
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: '7' },
+    { ts: '2026-08-30T08:00:00Z', event: 'auto-dispatch', taskId: '7' },
+    { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
+  ];
+  const dispatched = [
+    { ts: '2026-08-30T06:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T06:30:00Z', event: E.FAILED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T08:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j2' },
+    { ts: '2026-08-30T08:30:00Z', event: E.FAILED, taskId: '7', jobId: 'j2' },
+    { ts: '2026-08-30T10:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j3' },
+    { ts: '2026-08-30T10:30:00Z', event: E.FAILED, taskId: '7', jobId: 'j3' },
+  ];
+  const out = classify(ledger, dispatched, '2026-08-30T11:00:00Z');
+  assert.deepEqual(out.map(d => d.job.jobId), ['j1', 'j2', 'j3'],
+    'each attempt must earn its own outcome, or the card can never reach its park threshold');
+});
+
+test('the kind vocabulary is closed — adding one is a breaking change for all four callers', () => {
+  // Every call site switches on `kind` and throws on an unrecognised one
+  // (scripts/backlog-drain.js, scripts/lib/digest-autofix.js,
+  // scripts/linear-drain-parked.js). If a new kind is introduced here, this
+  // assertion fails FIRST and names the contract, instead of the new kind
+  // reaching production and tripping three runtime throws on a cron.
+  const ledger = [
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'orphaned' },
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'retried' },
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'finished' },
+    { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: 'running' },
+  ];
+  const dispatched = [
+    { ts: '2026-08-30T06:00:05Z', event: E.SPAWNED, taskId: 'retried', jobId: 'r1' },
+    { ts: '2026-08-30T06:10:00Z', event: E.RETRIED, taskId: 'retried', jobId: 'r1' },
+    { ts: '2026-08-30T06:00:05Z', event: E.SPAWNED, taskId: 'finished', jobId: 'f1' },
+    { ts: '2026-08-30T06:10:00Z', event: E.DONE, taskId: 'finished', jobId: 'f1' },
+    { ts: '2026-08-30T06:00:05Z', event: E.SPAWNED, taskId: 'running', jobId: 'x1' },
+  ];
+  const out = classify(ledger, dispatched, '2026-08-30T12:00:00Z');
+  assert.deepEqual(out.map(d => `${d.cardId}:${d.kind}`),
+    ['orphaned:orphan', 'retried:retry-timeout', 'finished:terminal'],
+    'a still-running job yields no decision; every other row maps to exactly one of the three kinds');
+  assert.deepEqual([...new Set(out.map(d => d.kind))].sort(),
+    ['orphan', 'retry-timeout', 'terminal']);
 });
 
 test('taskIdOf may namespace the shared-ledger key independently of cardIdOf', () => {

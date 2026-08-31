@@ -245,4 +245,4 @@ function classifyDispatches({
   return decisions;
 }
 
-module.exports = { findMyJob, isDispatchResolved, classifyDispatches, SPAWN_LOOKBACK_MS };
+module.exports = { findMyJob, isDispatchResolved, classifyDispatches };
