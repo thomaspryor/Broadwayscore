@@ -43,6 +43,12 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { selectArms } = require('./lib/arm-registry');
 const { DEFAULTS, detectDeadArms, todayKey } = require('./lib/arm-yield');
+// BRO-2603: arm-yield-ledger.jsonl is one of the 7 ledgers BRO-385 froze for
+// 30 days (2026-08-26 -> 2026-09-25) — this is its sole producer, so gating
+// here is what makes that freeze actually suppress new cards instead of just
+// documenting a decision nothing reads.
+const { FROZEN_LEDGERS, isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
+const ARM_YIELD_LEDGER_NAME = FROZEN_LEDGERS.find((l) => l.endsWith('arm-yield-ledger.jsonl'));
 
 const REPO_ROOT = path.join(__dirname, '..');
 const DEFAULT_LEDGER = path.join(REPO_ROOT, 'data', 'audit', 'arm-yield-ledger.jsonl');
@@ -164,9 +170,14 @@ async function main() {
 
   // Required lazily so --dry-run/--json replays never touch the alert ledger.
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+  const frozen = isLedgerFrozenNow(ARM_YIELD_LEDGER_NAME);
+  if (frozen) {
+    console.log(`[arm-yield] ${freezeSkipMessage(ARM_YIELD_LEDGER_NAME)} — suppressing all card filing this run`);
+  }
 
   for (const s of dead) {
     const conditionKey = `arm-yield:${s.id}`;
+    if (frozen) { console.log(`[arm-yield] ${conditionKey}: skipped (frozen)`); continue; }
     const result = await routeAlert({
       conditionKey,
       // Impact first, mechanism second. The owner reads this in a 7am digest
@@ -207,6 +218,7 @@ async function main() {
 
   for (const s of collapsed) {
     const conditionKey = `arm-yield-collapse:${s.id}`;
+    if (frozen) { console.log(`[arm-yield] ${conditionKey}: skipped (frozen)`); continue; }
     const c = s.collapse;
     const result = await routeAlert({
       conditionKey,
@@ -236,6 +248,7 @@ async function main() {
   // only reads the last row, so it gets its own condition rather than silence.
   for (const s of unobserved) {
     const conditionKey = `arm-yield-unobserved:${s.id}`;
+    if (frozen) { console.log(`[arm-yield] ${conditionKey}: skipped (frozen)`); continue; }
     const result = await routeAlert({
       conditionKey,
       title: `Arm yield ledger has no rows for ${s.label}`,

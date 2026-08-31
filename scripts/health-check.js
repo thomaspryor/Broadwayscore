@@ -43,6 +43,11 @@ const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
+// BRO-2603: makes the BRO-385 ledger freeze (data/audit/BRO-385-ledger-freeze.json,
+// 2026-08-26 -> 2026-09-25) actually suppress card filing for the checks below
+// that are sourced from a frozen ledger, instead of the record just sitting
+// unread. See AUTO_FIX_PLAYBOOK entries with a `ledger` field.
+const { isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -84,14 +89,21 @@ const AUTO_FIX_PLAYBOOK = [
   // defect the card exists to close (caught by the ship-check reviewer).
   // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
   // dead rate is expensive and worth chasing but never data loss.
-  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+  // `ledger`: BRO-2603 — this check is sourced from dispatch-ledger.jsonl, one
+  // of the 7 ledgers BRO-385 froze. The actionable-dispatch loop below skips
+  // filing a card for it while that ledger is frozen (falls back to the same
+  // "no card, show the raw instruction" path already used when
+  // MAX_CARD_DISPATCHES_PER_RUN caps out).
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week', ledger: 'data/audit/dispatch-ledger.jsonl',
     humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Card #1714, same #1199 trap: an unregistered check name defaults to
   // urgency 'low' and never files a card even on 'error'. 'this-week' to
   // match its sibling dead-launch row — a low headless success rate is
   // expensive (burned launches, stuck tasks) but the retry/reconcile layer
   // means nothing is silently lost.
-  { match: /^Headless dispatch: success rate$/, urgency: 'this-week',
+  // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
+  // sourced from dispatch-ledger.jsonl.
+  { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: 'data/audit/dispatch-ledger.jsonl',
     humanAction: 'Headless (job-lane) dispatches are failing more often than the 80% success floor. Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then open Claude Code and say: "Investigate the headless dispatch success rate (card #1714) — judge any fix by this rate over the window, never by one clean dispatch."' },
   // Task #1648, same #1199 trap: without an explicit entry this row defaults
   // to urgency 'low' and renders as an anonymous count instead of a named
@@ -3956,6 +3968,14 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       for (const r of actionable) {
         const entry = getPlaybookEntry(r.name);
         if (!entry || entry.workflow || !entry.humanAction) continue;
+        // BRO-2603: entry.ledger names the frozen ledger this check is
+        // sourced from (see AUTO_FIX_PLAYBOOK above). Skip filing — falls
+        // back to the same "no card, raw instruction only" render as the
+        // MAX_CARD_DISPATCHES_PER_RUN cap just below.
+        if (entry.ledger && isLedgerFrozenNow(entry.ledger)) {
+          console.log(`[Alert Router] ${freezeSkipMessage(entry.ledger)} — skipping "${r.name}"`);
+          continue;
+        }
         if (dispatchBudget <= 0) { dispatchCapped = true; continue; }
         dispatchBudget--;
         try {
