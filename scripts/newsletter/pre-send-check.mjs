@@ -363,7 +363,7 @@ if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0
 const fired = meta.sections.filter(s => s.fired);
 if (fired.length < 6) softIssues.push(`Only ${fired.length} sections fired (expected ≥ 6)`);
 const hasOpening = meta.sections.some(s =>
-  ['broadway-openings', 'offbroadway-openings', 'london-openings'].includes(s.name) && s.fired);
+  ['broadway-openings', 'offbroadway-openings', 'london-openings', 'broadway-we'].includes(s.name) && s.fired);
 if (!hasOpening) softIssues.push('No opening section fired — newsletter has no main story');
 
 // ── SOFT: preheader ───────────────────────────────────────────────────────────
