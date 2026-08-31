@@ -31,6 +31,7 @@ const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
+const { parseDate } = require('./lib/date-utils');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DEFAULT_INPUT = path.join(__dirname, '..', 'data', 'west-end-reviews-input.json');
@@ -117,9 +118,9 @@ function main() {
 
     // Skip reviews published before the show opened (wrong production)
     if (publishDate && showOpenDates[showId]) {
-      const pubDate = new Date(publishDate);
+      const pubDate = parseDate(publishDate);
       const openDate = new Date(showOpenDates[showId]);
-      const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
+      const daysBefore = pubDate ? Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24)) : 0;
       if (daysBefore > 14) {
         console.warn(`Skipping pre-opening review: ${showId} ${outletId} published ${daysBefore} days before opening`);
         skippedPreOpening++;

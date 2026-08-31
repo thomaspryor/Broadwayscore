@@ -18,6 +18,7 @@ import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks, getVisibleTicketLinks } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
 import { showFormatTitle } from '@/lib/show-format';
+import { getBrowseSlug } from '@/lib/browse-slugs';
 
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
@@ -172,6 +173,11 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
   const isLondonB = isLondonMarket(showB.category);
   const currencyA = isLondonA ? '£' : '$';
   const currencyB = isLondonB ? '£' : '$';
+  // null for opera/special (no dedicated browse page fits) — same fix as BRO-183's
+  // show-page breadcrumb; this Type row previously hardcoded best-broadway-musicals/
+  // best-broadway-dramas regardless of category or opera/special type.
+  const typeSlugA = getBrowseSlug(showA.category, showA.type);
+  const typeSlugB = getBrowseSlug(showB.category, showB.type);
   const currency = currencyA;
 
   // Theater data (Broadway only — WE theaters don't have pages)
@@ -401,8 +407,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           <SectionLabel>Show Details</SectionLabel>
           <Row
             label="Type"
-            valueA={<Link href={showA.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showA.type)}</Link>}
-            valueB={<Link href={showB.type === 'musical' ? '/browse/best-broadway-musicals' : '/browse/best-broadway-dramas'} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showB.type)}</Link>}
+            valueA={typeSlugA ? <Link href={`/browse/${typeSlugA}`} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showA.type)}</Link> : <span className="text-gray-300">{showFormatTitle(showA.type)}</span>}
+            valueB={typeSlugB ? <Link href={`/browse/${typeSlugB}`} className="text-gray-300 hover:text-brand transition-colors">{showFormatTitle(showB.type)}</Link> : <span className="text-gray-300">{showFormatTitle(showB.type)}</span>}
           />
           <Row
             label="Production"

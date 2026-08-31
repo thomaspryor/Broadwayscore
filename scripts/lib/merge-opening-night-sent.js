@@ -8,10 +8,17 @@
 // side's "we already sent this" record vanished — risking a duplicate send on the
 // next run, the exact failure class this ledger exists to prevent.
 //
-// Merge rule: simple union by compositeKey. Each key is written once, at send
-// time, by whichever workflow sent it — there is no meaningful "newer" version
-// to pick, so on the (essentially never-expected) case both sides have the
-// same key, keep ours.
+// Merge rule: union by compositeKey. Originally each key was assumed written
+// ONCE at send time, so a both-present conflict just kept `ours` — but
+// reconcile-broadcast-state.js (task #1853) repeatedly mutates existing keys
+// (draft→sending→sent transitions), so that assumption no longer holds. On a
+// both-present conflict, `ours` still wins by default, UNLESS `remote`'s
+// recorded content is strictly newer per recordRecencyMs (task #1914) — see
+// scripts/lib/tracker-record-recency.js for the shared comparator and why
+// lastReconciledAt (an observation stamp, not a content stamp) is excluded
+// from it.
+
+const { recordRecencyMs } = require('./tracker-record-recency');
 
 function mergeOpeningNightSent(ours, remote) {
   ours = ours || { shows: {} };
@@ -21,16 +28,21 @@ function mergeOpeningNightSent(ours, remote) {
   const merged = { ...ours };
   merged.shows = { ...oursShows };
 
-  let added = 0, kept = 0;
+  let added = 0, kept = 0, remoteNewer = 0;
   const allKeys = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const key of allKeys) {
     const o = oursShows[key];
     const r = remoteShows[key];
     if (!o && r) { merged.shows[key] = r; added++; continue; }
-    kept++; // o present (ours wins on the rare both-present case) or neither
+    if (o && r && recordRecencyMs(r) > recordRecencyMs(o)) {
+      merged.shows[key] = r;
+      remoteNewer++;
+      continue;
+    }
+    kept++; // o present and not older than r (or neither present)
   }
 
-  return { merged, stats: { added, kept, totalKeys: allKeys.size } };
+  return { merged, stats: { added, kept, remoteNewer, totalKeys: allKeys.size } };
 }
 
 module.exports = { mergeOpeningNightSent };

@@ -25,7 +25,16 @@ function normalizeVenueName(venue) {
   return venue.trim().toLowerCase()
     .replace(/[\u2018\u2019\u2032]/g, "'") // Normalize curly/prime apostrophes to straight
     .replace(/\s*\(.*\)$/, '')       // Strip parenthetical (e.g., "(National Theatre)")
-    .replace(/ theatre$| theater$/, ''); // Strip trailing "Theatre"/"Theater"
+    .replace(/ theatre$| theater$/, '') // Strip trailing "Theatre"/"Theater"
+    .replace(/^the\s+/, ''); // Strip leading "The " so "West End Theatre" normalizes the same
+    // as "The West End Theatre", and "American Irish Historical Society" the same as "The
+    // American Irish Historical Society" -- Playbill's <title> venue text carries the definite
+    // article, shows.json usually doesn't, and without this every such venue false-positived as
+    // a mismatch in validate-show-venue.js (BRO-2544). Safe against the "leading word collapse"
+    // hazard documented above venuesMatch() (deduplication.js) because this strips a fixed,
+    // meaningless article -- it never truncates to a shared first CONTENT word the way the old
+    // canonicalVenue() fallback did ("The Duke on 42nd Street" still normalizes to "duke on
+    // 42nd street", not "duke", so it stays distinct from "The Public Theater" -> "public").
 }
 
 function isOffWestEndVenue(venue) {
@@ -82,6 +91,20 @@ function getMarketPool(category) {
 /** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
 function isLondonMarket(category) {
   return getMarketPool(category) === 'london';
+}
+
+/**
+ * Show-entry `market` field for a given `category` — the actual string
+ * value shows.json stores (NOT getMarketPool's 'nyc'/'london' dedup-pool
+ * label, which folds 'regional' into 'nyc'). Verified against the live
+ * catalog: every broadway/off-broadway show carries market:'broadway',
+ * every west-end/off-west-end show carries market:'west-end', every
+ * regional show carries market:'regional' (2026-08-26 census, 2790 shows).
+ */
+function marketForCategory(category) {
+  if (category === 'regional') return 'regional';
+  if (category === 'west-end' || category === 'off-west-end') return 'west-end';
+  return 'broadway';
 }
 
 /**
@@ -260,4 +283,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

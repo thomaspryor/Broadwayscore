@@ -248,13 +248,25 @@ function clusterDates(extractions, opts = {}) {
 
 /**
  * Generic field discovery. fieldType in {'closing','opening','previews-start'}.
+ * `budget` (optional) is a scripts/lib/run-budget.js budget object — when it
+ * reports exceeded(), the per-candidate fetch/extract loop below stops early
+ * instead of working through the remaining candidates.
  * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...], fieldType }
  */
-async function discoverAnnouncedDate(showTitle, fieldType, opts = {}) {
+async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = null) {
   // Fail fast on missing/unknown fieldType — silently defaulting to 'closing'
   // would run a closing-date SERP/prompt on an opening-date call site and
   // return plausibly-wrong data. Caller MUST pass an explicit fieldType.
   const log = (opts && opts.log) || (() => {});
+  // Checked before the SERP call, not just inside the per-candidate loop
+  // below: a caller that invokes this twice per show (audit-opening-dates.js
+  // calls it once for 'opening', once for 'previews-start') would otherwise
+  // fire a fresh SERP query on the second call even though the budget
+  // already expired during the first.
+  if (budget && budget.exceeded()) {
+    log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) already exceeded — skipping`);
+    return null;
+  }
   const cfg = getFieldConfig(fieldType);
   const query = cfg.serpQuery(showTitle);
   log(`  [discovery:${fieldType}] SERP: ${query}`);
@@ -281,7 +293,12 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}) {
   }
 
   const extractions = [];
-  for (const c of candidates) {
+  for (let ci = 0; ci < candidates.length; ci++) {
+    const c = candidates[ci];
+    if (budget && budget.exceeded()) {
+      log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — ${candidates.length - ci} candidate(s) skipped`);
+      break;
+    }
     try {
       const page = await fetchPage(c.url, { source: `audit-${fieldType}-dates` });
       if (!page || !page.content) continue;

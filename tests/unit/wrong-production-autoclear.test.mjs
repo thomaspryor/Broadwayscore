@@ -31,6 +31,7 @@ const {
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearAnticipatoryGrace,
   hasEnsembleConsensus,
   shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
@@ -937,6 +938,128 @@ describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () =
       shouldAutoClearStaleDateGuard(
         { wrongProduction: true, wrongProductionNote: 'Pre-opening guard: ...' },
         {}
+      ),
+      false
+    );
+  });
+});
+
+describe('shouldAutoClearAnticipatoryGrace (BRO-39: retroactive OB 14-day grace)', () => {
+  it('clears when the re-run gate no longer rejects (category lookup fixed / date corrected)', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          wrongProductionDetail: 'published 4d before openingDate (2026-06-29); exceeds 2-day grace',
+        },
+        { stillRejected: false }
+      ),
+      true
+    );
+  });
+
+  it('does NOT clear when the re-run gate still rejects (genuinely 15+ days early)', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        { wrongProduction: true, wrongProductionReason: 'anticipatory_pre_opening_post' },
+        { stillRejected: true }
+      ),
+      false
+    );
+  });
+
+  it('does NOT clear a flag set by something other than the anticipatory gate', () => {
+    for (const reason of ['CV-promoted: wrong venue', 'dateless-revival', '', undefined]) {
+      assert.strictEqual(
+        shouldAutoClearAnticipatoryGrace(
+          { wrongProduction: true, wrongProductionReason: reason },
+          { stillRejected: false }
+        ),
+        false,
+        `should not clear reason=${JSON.stringify(reason)}`
+      );
+    }
+  });
+
+  it('does NOT clear when wrongProduction is not set', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        { wrongProductionReason: 'anticipatory_pre_opening_post' },
+        { stillRejected: false }
+      ),
+      false
+    );
+  });
+
+  it('does NOT clear when stillRejected is omitted/undefined/true', () => {
+    for (const stillRejected of [undefined, true]) {
+      assert.strictEqual(
+        shouldAutoClearAnticipatoryGrace(
+          { wrongProduction: true, wrongProductionReason: 'anticipatory_pre_opening_post' },
+          { stillRejected }
+        ),
+        false
+      );
+    }
+  });
+
+  it('does NOT clear when high-confidence CV independently confirms wrongProduction', () => {
+    // a-midsummer-nights-dream-west-end-2026/east-midlands-theatre--unknown.json shape:
+    // the anticipatory date math flips, but the fetched text is a DIFFERENT
+    // production (RSC/Unicorn Theatre at The Other Place, not the West End show).
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          contentVerification: { wrongProduction: true, confidence: 'high' },
+        },
+        { stillRejected: false }
+      ),
+      false
+    );
+  });
+
+  it('clears when CV wrongProduction confidence was downgraded to low by the temporal override', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          contentVerification: { wrongProduction: true, confidence: 'low' },
+        },
+        { stillRejected: false }
+      ),
+      true
+    );
+  });
+
+  it('does NOT clear when high-confidence CV confirms wrongArticle', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          contentVerification: { wrongArticle: true, confidence: 'high' },
+        },
+        { stillRejected: false }
+      ),
+      false
+    );
+  });
+
+  it('does NOT clear on ensemble wrong_production consensus', () => {
+    assert.strictEqual(
+      shouldAutoClearAnticipatoryGrace(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          rejectionReason: 'wrong_production',
+          rejectedBy: 'ensemble-scoreability-check',
+          rejectionReasoning: 'claude: different venue; openai: different venue',
+        },
+        { stillRejected: false }
       ),
       false
     );

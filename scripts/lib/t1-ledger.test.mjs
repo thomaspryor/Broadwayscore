@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet } = require('./t1-ledger.js');
+const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision } = require('./t1-ledger.js');
 
 test('isDispatchTierOutlet: T1/T2 only, unregistered/junk excluded', () => {
   const outlets = {
@@ -143,4 +143,89 @@ test('re-merging a serialized ledger with the SAME fresh cells is a fixed point 
   // Second run: prior = run1, a LATER nowIso — but the existing cell keeps its firstSeenAt.
   const run2 = mergeLedger(run1, fresh, '2026-07-22T11:00:00.000Z');
   assert.equal(serializeLedger(run2), bytes1, 'consecutive runs on unchanged data produce no diff');
+});
+
+
+// --- BRO-89: dispatch-storm tier-scoping (computeDispatchDecision) ---
+//
+// Failure mode that shipped in T1-retrieval Sprint 2 and was caught by a later
+// two-model ship-check against live code: censusMissing (the hard, roundup-named
+// bucket) counted EVERY tier, so a show with 3+ unscored T3 blogs and no real
+// T1/T2 gap still went `dispatchable` + `severity:'major'` and re-fired a FULL
+// gather+collect every audit run. Only registered T1/T2 outlets may drive a
+// fetch or escalate severity.
+
+const DISPATCH_OUTLETS = {
+  nytimes: { tier: 1, displayName: 'The New York Times' },
+  nypost: { tier: 2, displayName: 'New York Post' },
+  variety: { tier: 1, displayName: 'Variety' },
+  // Three REGISTERED T3 blogs (they have a tier, they are just not
+  // dispatch-tier). Registered and phantom are separate cases and each needs
+  // its own fixture -- an unregistered id would exercise the phantom path
+  // below instead of the registered-T3 path this fixture is here to cover.
+  'some-blog': { tier: 3, displayName: 'Some Blog' },
+  'another-blog': { tier: 3, displayName: 'Another Blog' },
+  'third-blog': { tier: 3, displayName: 'Third Blog' },
+};
+
+test('computeDispatchDecision: isTripped is required, and its absence throws at the call', () => {
+  assert.throws(
+    () => computeDispatchDecision({ censusMissing: ['nytimes'], outlets: DISPATCH_OUTLETS }),
+    /isTripped is required/,
+    'omitting the breaker must fail loudly, not silently re-enable dispatch for every circuit-open outlet',
+  );
+  // The dangerous shape: with no T1/T2 gap the filter callback never runs, so a
+  // missing isTripped would go unnoticed until the first show that has one.
+  assert.throws(
+    () => computeDispatchDecision({ censusMissing: [], outlets: DISPATCH_OUTLETS }),
+    /isTripped is required/,
+    'must throw even when there is no gap to test the breaker against',
+  );
+});
+
+test('dispatch storm: 3+ registered T3 census-missing outlets alone must NOT make a show dispatchable or major', () => {
+  const censusMissing = ['some-blog', 'another-blog', 'third-blog'];
+  const { censusMissingT12, dispatchable, severity } = computeDispatchDecision({ censusMissing, outlets: DISPATCH_OUTLETS, isTripped: () => false });
+  assert.deepEqual(censusMissingT12, [], 'no T1/T2 outlet is missing -- three registered T3 blogs and nothing else');
+  assert.equal(dispatchable, false, 'a T3-only census gap must never re-fire a gather (the storm)');
+  assert.equal(severity, 'minor', 'T3 volume alone must never escalate to major');
+});
+
+test('dispatch storm: phantom (completely unregistered) outletIds are excluded from tier counting without throwing', () => {
+  const censusMissing = ['phantom-outlet-1', 'phantom-outlet-2', 'phantom-outlet-3', 'variety'];
+  assert.doesNotThrow(() => computeDispatchDecision({ censusMissing, outlets: DISPATCH_OUTLETS, isTripped: () => false }));
+  const { censusMissingT12, censusMissingActionable, dispatchable, severity } =
+    computeDispatchDecision({ censusMissing, outlets: DISPATCH_OUTLETS, isTripped: () => false });
+  assert.deepEqual(censusMissingT12, ['variety'], 'phantom outletIds (undefined tier) must not count as T1/T2');
+  assert.deepEqual(censusMissingActionable, ['variety']);
+  assert.equal(dispatchable, true, 'the one real T1 gap must still be dispatchable');
+  assert.equal(severity, 'minor', 'a single actionable miss stays minor regardless of phantom-outlet count');
+});
+
+test('dispatch storm: 3+ real T1/T2 misses correctly escalate to dispatchable + major', () => {
+  const censusMissing = ['nytimes', 'nypost', 'variety', 'some-blog'];
+  const { censusMissingT12, dispatchable, severity } = computeDispatchDecision({ censusMissing, outlets: DISPATCH_OUTLETS, isTripped: () => false });
+  assert.deepEqual(censusMissingT12.sort(), ['nypost', 'nytimes', 'variety']);
+  assert.equal(dispatchable, true);
+  assert.equal(severity, 'major', '3 actionable T1/T2 misses must still escalate');
+});
+
+test('dispatch storm: a circuit-open T1/T2 outlet is visible in censusMissingT12 but excluded from dispatchable/severity', () => {
+  const censusMissing = ['nytimes', 'nypost', 'variety'];
+  const { censusMissingT12, circuitOpenIds, censusMissingActionable, dispatchable, severity } = computeDispatchDecision({
+    censusMissing, outlets: DISPATCH_OUTLETS, isTripped: (id) => id === 'nytimes',
+  });
+  assert.deepEqual(censusMissingT12.sort(), ['nypost', 'nytimes', 'variety'], 'tripped outlet stays visible');
+  assert.deepEqual(circuitOpenIds, ['nytimes']);
+  assert.deepEqual(censusMissingActionable.sort(), ['nypost', 'variety']);
+  assert.equal(dispatchable, true, 'the other two non-tripped T1/T2 misses still make it dispatchable');
+  assert.equal(severity, 'minor', 'only 2 actionable misses -- below the major threshold once the tripped outlet is excluded');
+});
+
+test('dispatch storm: a broken census extractor escalates to major even with zero actionable misses', () => {
+  const { dispatchable, severity } = computeDispatchDecision({
+    censusMissing: [], outlets: DISPATCH_OUTLETS, censusExtractorBroken: true, isTripped: () => false,
+  });
+  assert.equal(dispatchable, false, 'no actionable outlet to fetch -- extractor breakage alone must not storm-dispatch');
+  assert.equal(severity, 'major', 'a broken extractor is still alert-worthy at major severity');
 });

@@ -207,7 +207,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, stateMap, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -233,6 +233,7 @@ const { blastRadiusCheck } = require('./lib/coverage-gate');
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
 const { classifyReviewUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
 // gap audit and its unit test share one implementation (CLAUDE.md §15).
@@ -1228,7 +1229,14 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   try {
     // Capture stdout: the child's `⚠️  Skipped: <reason>` line is the ONLY
     // signal that separates a benign no-op from a data conflict (both exit 0).
-    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000 }) || '');
+    // killSignal: on timeout, execFileSync's default SIGTERM can be caught
+    // or ignored by the child (a stuck fetch/browser call) and leave it
+    // running past the timeout window. SIGKILL guarantees the immediate
+    // child dies. It does NOT reach any grandchild process the child itself
+    // spawned (no detached/process-group kill here) — if grandchild orphaning
+    // turns out to be the real problem, this needs `detached: true` on spawn
+    // + `process.kill(-pid)` on timeout instead (ship-check finding, task #361).
+    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
   } catch (e) {
     return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
@@ -1875,9 +1883,9 @@ async function main(argv = process.argv.slice(2)) {
         const openingMs = s.openingDate ? new Date(s.openingDate).getTime() : null;
         const notPriorRun = (d) => {
           if (!openingMs || !d.publishDate) return true;
-          const pd = new Date(d.publishDate).getTime();
-          if (Number.isNaN(pd)) return true;
-          return pd >= openingMs - 30 * 86400000;
+          const parsed = parseHistoricalDate(d.publishDate);
+          if (!parsed) return true;
+          return parsed.getTime() >= openingMs - 30 * 86400000;
         };
         const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d));
         const uncitedBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
@@ -2102,10 +2110,17 @@ async function main(argv = process.argv.slice(2)) {
       // outage this guard exists to catch (ship-check finding, task #902).
       const auditedIds = new Set(results.map(r => r && r.showId).filter(Boolean));
       const only = (m) => Object.fromEntries(Object.entries(m).filter(([id]) => auditedIds.has(id)));
+      // BRO-513 (2026-08-26, recurrence of a 2026-08-03 16.7% refusal): a
+      // bare verdict diff can't tell "the census found a genuine NEW gap"
+      // (complete → incomplete, benign) apart from "we lost coverage we used
+      // to have" (also complete → incomplete, but the exact broken-input
+      // failure this guard exists to catch). riskStateMap/isRiskyGapChange
+      // (gap-audit-merge.js) compare liveCount/candidateCount instead of the
+      // verdict word — see their doc comments for the full rationale.
       return blastRadiusCheck(
-        only(stateMap(prevAudit && prevAudit.results)),
-        only(stateMap(mergedResults)),
-        { label: 'review-gap' }
+        only(riskStateMap(prevAudit && prevAudit.results)),
+        only(riskStateMap(mergedResults)),
+        { label: 'review-gap', isRiskyChange: isRiskyGapChange }
       );
     })();
 

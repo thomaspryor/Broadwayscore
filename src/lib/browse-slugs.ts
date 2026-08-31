@@ -15,7 +15,16 @@
 
 import type { ComputedShow } from '@/lib/data-types';
 
-export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string {
+/**
+ * Returns null for `opera` and `special` (concerts, galas, immersive
+ * experiences, cabaret, dance) — no browse page lists those pools yet, and
+ * the binary `isMusical` check used to silently fall through to the
+ * plays/dramas page, which is wrong for a concert or opera. Callers must
+ * treat null as "no browse page exists" and render the breadcrumb/link
+ * unlinked rather than guessing a mismatched destination.
+ */
+export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string | null {
+  if (type === 'opera' || type === 'special') return null;
   const isMusical = type === 'musical';
   switch (category) {
     case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';
@@ -54,10 +63,25 @@ export function getSeasonSlug(category: ComputedShow['category'] | undefined, op
   // date as the anchor (not the show's own opening date) since the rank cell
   // links to "this season" — same regardless of which show is being viewed.
   const today = openingDate ?? new Date().toISOString().slice(0, 10);
-  const d = new Date(today);
-  if (isNaN(d.getTime())) return null;
-  const month = d.getMonth(); // 0-11
-  const year = d.getFullYear();
+  // Parse a plain "YYYY-MM-DD" string's components directly rather than via
+  // `new Date(str)` + local getters: `new Date("2026-07-01")` parses as UTC
+  // midnight, which reads back as June 30 in America/New_York — silently
+  // routing the season boundary's anchor date to the WRONG season one day a
+  // year (scripts/lib/broadway-seasons.js had the identical bug, fixed
+  // 2026-08-30 after it misclassified a show that opened exactly on the
+  // boundary; same fix applied here for consistency).
+  const isoMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(today);
+  let year: number, month: number;
+  if (isoMatch) {
+    year = Number(isoMatch[1]);
+    month = Number(isoMatch[2]) - 1; // 0-11, matches Date#getMonth() below
+    if (isNaN(year) || month < 0 || month > 11) return null;
+  } else {
+    const d = new Date(today);
+    if (isNaN(d.getTime())) return null;
+    month = d.getMonth(); // 0-11
+    year = d.getFullYear();
+  }
   const firstYear = month >= 6 ? year : year - 1;
   const secondYear = firstYear + 1;
   return `${firstYear}-${secondYear}-broadway-season`;

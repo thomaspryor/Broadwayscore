@@ -1,26 +1,28 @@
 {
-  "generatedAt": "2026-08-24T07:48:16.207Z",
+  "generatedAt": "2026-08-30T12:20:02.697Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "022ce15b7701a8d6c77459ec2e70a71ef2371603",
+  "latestRunHeadSha": "e2a6661bc2eaee647e5be85fd54b90bbcd98176b",
   "state": "RED",
-  "consecutiveFailures": 1,
+  "consecutiveFailures": 86,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-24T07:00:36Z",
-  "redForHours": 0.7945019444444444,
-  "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-23T22:10:38Z",
-  "latestFailedRunId": "32699645957",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/32699645957",
-  "decidedRuns": 89,
+  "redSince": "2026-08-26T18:05:35Z",
+  "redForHours": 90.24102694444444,
+  "redDurationIsFloor": true,
+  "lastSuccessAt": null,
+  "latestFailedRunId": "33309000532",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33309000532",
+  "decidedRuns": 86,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Audit outlet-registry gaps"
+        "Audit sibling-title misroute (strict)",
+        "Audit review contamination",
+        "Validate provisional show venue+dates against Playbill"
       ]
     },
     {

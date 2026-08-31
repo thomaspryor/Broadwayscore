@@ -71,6 +71,15 @@ function baseDeps(claims, launchResult = { ok: true, ref: 'workspace:1' }) {
     readLedgerEntries: () => [],
     appendLedgerEntry: () => {},
     appendCiRedClaim: (opts) => { claims.push(opts); return { ts: '2026-07-27T00:00:00.000Z', ...opts }; },
+    // Task #1896: MUST be stubbed. Several tests below dispatch the SAME
+    // task id '563' repeatedly in this one process (no intervening process
+    // exit to release it) — unstubbed, the second/third dispatch would find
+    // the first one's claim still held and either get refused (killing the
+    // test via a REAL, unstubbed process.exit(1) in the tests that don't use
+    // withStubbedExit) or, worse, mkdir a real claim dir under this CI
+    // runner's checkout path.
+    acquireDispatchClaim: () => true,
+    releaseDispatchClaim: () => {},
   };
 }
 

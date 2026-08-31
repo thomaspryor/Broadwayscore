@@ -1,6 +1,24 @@
 'use strict';
 
 /**
+ * outlet-registry.json `region` values that mean "this outlet is UK-side, not
+ * a London-city outlet specifically" — e.g. New Statesman and Morning Star
+ * are real UK nationals but not registered `region: 'london'`. `'dual'`
+ * outlets (Observer, NY Theatre Guide, Musical Theatre Review) already carry
+ * `isDualMarket: true` and get skipped earlier by dedicated checks in most
+ * callers, but are included here too so any guard consulting this set alone
+ * doesn't have to know that.
+ *
+ * Single source of truth for "which regions are exempt from the US-outlet
+ * cross-market flag" — classifyUsOnWeCrossMarket() and
+ * evaluateForwardCrossMarketGuard() previously each hardcoded this list
+ * separately and silently drifted apart (evaluateForwardCrossMarketGuard only
+ * checked 'london', false-flagging every 'uk'/'dual'-region outlet — BRO-591).
+ * A future UK-adjacent region string only needs to be added here once.
+ */
+const UK_SIDE_REGIONS = new Set(['london', 'uk', 'dual']);
+
+/**
  * Reverse cross-market classification.
  *
  * A "reverse cross-market" review is a non-West-End (NYC: Broadway / off-Broadway)
@@ -203,7 +221,7 @@ function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindow
   if (isTier12) {
     return { level: 'skip', reason: 'Tier 1/2 outlet — prestige papers legitimately review the West End' };
   }
-  if (region === 'london' || region === 'uk' || region === 'dual') {
+  if (UK_SIDE_REGIONS.has(region)) {
     return { level: 'skip', reason: 'UK-side outlet' };
   }
   // Registry regions other than london/uk/dual are all US-side ('us' or a US
@@ -299,7 +317,14 @@ function evaluateForwardCrossMarketGuard({
   priorRuns,
 }) {
   const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
-  if (outletRegion === 'london') return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  // Was `outletRegion === 'london'` only — every 'uk'/'dual'-region outlet
+  // (e.g. New Statesman) got treated as US-side and false-flagged as
+  // cross-market contamination on a real WE review (found via BRO-591's
+  // ground-truth coverage check). classifyUsOnWeCrossMarket() above already
+  // exempts all of UK_SIDE_REGIONS; this brings the two guards back in sync.
+  if (UK_SIDE_REGIONS.has(outletRegion)) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  }
   if (isUkUrl(url)) return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
 
   // Production-continuity exemption (BRO-222 cousin, opposite direction): a

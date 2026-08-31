@@ -16,14 +16,28 @@
  * @returns {string} Season in "YYYY-YYYY" format (e.g., "2024-2025")
  */
 function getSeasonForDate(dateInput) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-
-  if (isNaN(date.getTime())) {
-    throw new Error(`Invalid date: ${dateInput}`);
+  // Parse a plain "YYYY-MM-DD" string's components directly rather than via
+  // `new Date(str)` + local getters: `new Date("2026-07-01")` parses as UTC
+  // midnight, which reads back as "2026-06-30T20:00" in America/New_York —
+  // June, not July — silently misclassifying any show that opened exactly on
+  // the season-boundary date into the PRIOR season (ship-check finding,
+  // 2026-08-30: reproduces the exact cross-season-mix bug this file exists
+  // to prevent, just shifted one day earlier). Date objects (already in
+  // local time, no string to reparse) keep using the getters below.
+  let year, month;
+  if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+    const [y, m] = dateInput.split('-').map(Number);
+    if (m < 1 || m > 12) throw new Error(`Invalid date: ${dateInput}`);
+    year = y;
+    month = m - 1; // 0-indexed, matches Date#getMonth() below
+  } else {
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (isNaN(date.getTime())) {
+      throw new Error(`Invalid date: ${dateInput}`);
+    }
+    year = date.getFullYear();
+    month = date.getMonth(); // 0-indexed (0 = January, 6 = July)
   }
-
-  const year = date.getFullYear();
-  const month = date.getMonth(); // 0-indexed (0 = January, 6 = July)
 
   // July (6) through December (11) = first year of season
   // January (0) through June (5) = second year of season
@@ -67,10 +81,13 @@ function getSeasonDates(season) {
  * @returns {boolean}
  */
 function isDateInSeason(dateInput, season) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-  const { start, end } = getSeasonDates(season);
-
-  return date >= start && date <= end;
+  // Delegate to getSeasonForDate + string equality rather than comparing
+  // Date objects across representations: dateInput (parsed as UTC when it's
+  // a "YYYY-MM-DD" string) vs getSeasonDates' boundaries (constructed in
+  // local time) disagreed by up to a day at the season boundary itself —
+  // isDateInSeason('2026-07-01', '2026-2027') returned false (test caught
+  // this, 2026-08-30, while adding coverage for the getSeasonForDate fix).
+  return getSeasonForDate(dateInput) === season;
 }
 
 /**

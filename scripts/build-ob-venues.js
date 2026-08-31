@@ -39,7 +39,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'off-broadway-venues.json
 const BLOCKLIST = new Set([
   '', 'tba',
   'midtown e', 'midtown w', 'greenwich v', 'east village', 'west village',
-  'soho/tribeca', 'the west end',
+  'soho/tribeca', 'west end',
   'music city', 'magic mike live', 'masquerade nyc', 'paradise club',
   'bowery ballroom', 'lotte new york palace hotel',
   'please check your confirmation email for address',

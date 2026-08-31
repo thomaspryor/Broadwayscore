@@ -52,6 +52,7 @@
  *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+ *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
  *   node scripts/linear-next.js --help, -h                   show this message, do nothing else
  *
@@ -89,9 +90,19 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
-  exactTitleOverlapGuard, sessionTrackingCloneGuard,
+  exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
+  workBranchCollisionGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
+// Cross-session work-branch collision guard (BRO-278, port of card #1281's
+// bsc-next.js check — see docs/dispatcher-safety-port-table.md row A5). Was
+// never wired into this dispatcher; combined with dispatch-guards.js's own
+// id-sanitization gap, every Linear-issue collision was invisible.
+const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
+// Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
+// task #1896 fix) — same shared primitive, separate claim dir/id-space (see
+// DISPATCH_CLAIM_DIR below).
+const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 
 // Hardcoded, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
@@ -101,6 +112,15 @@ const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 const REPO = '/Users/tompryor/Broadwayscore';
 
 const CLI_NAME = 'scripts/linear-next.js';
+
+// Fresh-dispatch claim (task #1898, mirrors bsc-next.js's DISPATCH_CLAIM_DIR
+// from task #1896) — a SEPARATE dir from bsc-next.js's own dispatch-claims/,
+// since Linear issue ids (`BRO-123`) and Notion task ids are different id
+// spaces that could theoretically collide as bare strings. Same 8-minute
+// staleMs as bsc-next.js's, for the same reason (cmux-launch.js's
+// slowBootCapSec allows up to 6 minutes of boot).
+const DISPATCH_CLAIM_DIR = path.join(REPO, 'data', 'audit', 'linear-dispatch-claims');
+const DISPATCH_CLAIM_STALE_MS = 8 * 60 * 1000;
 
 const USAGE = `linear-next — fetch a Linear issue and dispatch a Claude Code worker on it.
 
@@ -113,6 +133,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+  node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
 
@@ -209,7 +230,15 @@ async function runList() {
   sorted.slice(0, 25).forEach((iss, i) => {
     const labels = ld.issueLabelNames(iss);
     const stateName = (iss.state && iss.state.name) || '?';
-    console.log(`  ${i + 1}. ${iss.identifier} [${ld.priorityLabel(iss)}] [${stateName}]${labels.length ? ` [${labels.join(',')}]` : ''} ${iss.title}`);
+    // BRO-2499 (code-review finding): this is the only candidate list this CLI
+    // offers, and it is where selection actually happens — an operator reading
+    // it and picking an auto-filed issue burns a refused --id per pick. Mark
+    // them rather than hide them: a crown loop reporting funnel counts needs
+    // to see the whole list, and a silently shortened list is its own bug.
+    // Annotation only, so the refusal itself stays the single enforcement
+    // point (autofixFiledIssueGuard) rather than becoming two half-guards.
+    const owned = ld.autofixFiledIssueGuard(iss, {}) ? ' [auto-filed — a pipeline owns this, --id will refuse]' : '';
+    console.log(`  ${i + 1}. ${iss.identifier} [${ld.priorityLabel(iss)}] [${stateName}]${labels.length ? ` [${labels.join(',')}]` : ''} ${iss.title}${owned}`);
   });
 }
 
@@ -217,13 +246,14 @@ async function runList() {
 // into a reported failure — the dispatch already happened and is already
 // journaled locally (BEFORE this runs — see the header's ordering note).
 // Logs and moves on.
-async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
+async function reportDispatchOnIssue(issue, ref, mode, correlationId, deps = {}) {
+  const linearClient = deps.linear || linear; // test seam — see reportDispatchOnIssue tests in tests/unit/linear-next.test.mjs
   try {
     const body = ld.buildDispatchComment({ ref, ts: new Date().toISOString(), mode, correlationId });
-    await linear.createComment(issue.id, body);
+    await linearClient.createComment(issue.id, body);
   } catch (e) { console.error(`[linear-next] WARN could not post dispatch comment on ${issue.identifier}: ${e.message}`); }
   try {
-    const team = await linear.getTeam();
+    const team = await linearClient.getTeam();
     // Team BRO has TWO states of type 'started' (In Progress, In Review) —
     // the old `.find(s => s.type === 'started')` picked whichever one the
     // API happened to return first, order-dependent and unverified against a
@@ -232,11 +262,38 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId) {
     // "In Review" with zero work done on it). Prefer the literal "In
     // Progress" name; fall back to the first started-type state only if that
     // exact name doesn't exist on this team.
-    const stateList = Array.isArray(team.states) ? team.states : (team.states && team.states.nodes) || []; // getTeam() returns the GraphQL {nodes} connection shape (same class as linear-issue-create's 2026-08-12 fix)
+    // team.states can be a bare array or getTeam()'s raw GraphQL {nodes: [...]}
+    // connection shape — pickStateByName/pickStateByType normalize either via
+    // their own normalizeStates(), so team.states is passed through as-is
+    // rather than re-normalized here (BRO-287: an earlier inline
+    // normalization duplicating that logic was provably dead — pickStateByName
+    // already unwraps {nodes} internally, so the duplicate had no effect on
+    // behavior and made the {nodes}-shape regression test it was meant to
+    // guard untestable).
     const started =
-      lsr.pickStateByName(stateList, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(stateList, 'started');
-    if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linear.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
-    await linear.updateIssue(issue.id, { stateId: started.id });
+      lsr.pickStateByName(team.states, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(team.states, 'started');
+    if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linearClient.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
+    // For 'headless' mode this runs AFTER the worker session has already
+    // finished (main() awaits runJob() to completion before calling this —
+    // see the caller) and may itself have moved the issue on completion
+    // (e.g. to "In Review" or "Done" per its own instructions, or a human
+    // could have touched it in the meantime). `issue` here is the object
+    // fetched at DISPATCH time, now stale, so blindly writing stateId would
+    // silently clobber whatever ran during that window. Re-fetch and only
+    // claim the state if it's still sitting where it was at dispatch
+    // (backlog/unstarted) — found live (BRO-287): this exact function would
+    // have overwritten the "In Review" state the BRO-287 session set on
+    // itself moments before exiting.
+    let currentType = issue.state && issue.state.type;
+    try {
+      const fresh = await linearClient.getIssue(issue.identifier);
+      if (fresh && fresh.state) currentType = fresh.state.type;
+    } catch (e) { /* refetch failure — fall back to the stale type below rather than block the claim */ }
+    if (currentType && currentType !== 'backlog' && currentType !== 'unstarted') {
+      console.log(`[linear-next] ${issue.identifier} is already "${currentType}" (moved since dispatch) — leaving its state alone`);
+      return;
+    }
+    await linearClient.updateIssue(issue.id, { stateId: started.id });
   } catch (e) { console.error(`[linear-next] WARN could not move ${issue.identifier} to In Progress: ${e.message}`); }
 }
 
@@ -255,6 +312,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    // BRO-278: same test-seam convention — real git I/O by default,
+    // injectable so tests exercise workBranchCollisionGuard's refusal
+    // without shelling out to git in this repo.
+    listWorkBranchStatuses: listWorkBranchStatusesFn = listWorkBranchStatuses,
     // Cross-task/cross-system overlap check (task #1696) I/O seams — same
     // convention as the rest of this list: real implementation by default,
     // injectable so tests never make a live Linear API call or read this
@@ -263,6 +324,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // an explicit invariant).
     listOpenIssuesWithDescriptions: listOpenIssuesWithDescriptionsFn = linear.listOpenIssuesWithDescriptions,
     loadNotionMirrorTasks: loadNotionMirrorTasksFn = loadNotionMirrorTasks,
+    // Task #1898: injectable so tests can simulate "another attempt already
+    // holds this issue's claim" without touching the real filesystem dir.
+    acquireDispatchClaim: acquireDispatchClaimFn = (id, opts) => acquireClaim(DISPATCH_CLAIM_DIR, id, opts),
+    releaseDispatchClaim: releaseDispatchClaimFn = (id) => releaseClaim(DISPATCH_CLAIM_DIR, id),
+    // BRO-287: reportDispatchOnIssue()'s own Linear client, threaded through
+    // so a successful dispatch in a test never falls through to the real
+    // network client — closes the same "no live Linear API calls" gap the
+    // comment above already claims for this file (a --force/cmux-success
+    // test path was calling the real getTeam/getIssue/createComment/
+    // updateIssue with no override before this was added).
+    linear: reportLinearFn = linear,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -375,6 +447,48 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
   }
 
+  // Marketing-project guard (BRO-2488): closes the gap that let BRO-128
+  // (Linear project "Marketing/distribution") dispatch cleanly with no
+  // refusal — see ld.marketingProjectGuard's header for the incident and why
+  // it self-exempts only --force, not --id. Same placement rationale as the
+  // terminal-state guard above: a Marketing card should never even reach the
+  // verify/idempotency gates below, which assume a card safe for unattended
+  // work.
+  const marketingRefusal = ld.marketingProjectGuard(issue, args);
+  if (marketingRefusal) {
+    console.error(`[linear-next] ${marketingRefusal}`);
+    process.exit(1);
+  }
+
+  // Auto-filed-pipeline guard (BRO-2499): the other half of the SAME
+  // documented funnel line the marketing guard above closes ("Backlog/Todo,
+  // not `· Marketing`, not BSC Daily/CANARY"). Refuses a backlog sweep that
+  // picks up an issue digest-autofix / autofix-canary filed and is already
+  // dispatching itself; those two pipelines pass --allow-autofix-filed at
+  // their own call sites. See ld.autofixFiledIssueGuard's header for why
+  // this is an opt-in bypass and not a blanket title refusal. Same placement
+  // rationale as the two guards above.
+  const autofixRefusal = ld.autofixFiledIssueGuard(issue, args);
+  if (autofixRefusal) {
+    console.error(`[linear-next] ${autofixRefusal}`);
+    process.exit(1);
+  }
+
+  // Started-state guard (BRO-2518): the third clause of the same documented
+  // funnel line the two guards above close ("Backlog/Todo, not `·
+  // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a
+  // STARTED workflow-state type (In Progress / In Review) that a backlog
+  // sweep should never pick up regardless of whether this dispatcher's own
+  // idempotency signals (checked further below) happen to see it. See
+  // ld.startedStateGuard's header for why this is a blanket
+  // --force-only guard, not a per-caller opt-in. Same placement rationale as
+  // the two guards above.
+  const startedRefusal = ld.startedStateGuard(issue, args);
+  if (startedRefusal) {
+    console.error(`[linear-next] ${startedRefusal}`);
+    process.exit(1);
+  }
+
   // Kill switch (task #1303 plan review item 3): refuses ALL dispatch,
   // checked after --dry-run/--print-prompt (which stay side-effect-free
   // previews) but before every other gate — a session that hits this should
@@ -382,6 +496,51 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (process.env.LINEAR_NEXT_DISABLED === '1') {
     console.error('[linear-next] LINEAR_NEXT_DISABLED=1 — this dispatcher is switched off (cmux and headless both); rerun once it is re-enabled.');
     process.exit(1);
+  }
+
+  // Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
+  // task #1896 fix — see that file's own claim block for the full race
+  // analysis and dispatchClaimGuard's header in dispatch-guards.js). Placed
+  // after the terminal-state guard and kill switch above (both read freshly-
+  // fetched live state, not a stale local mirror, so they're not part of the
+  // race and gain nothing from running after the claim) but before every
+  // guard below that DOES read a locally-cached snapshot (the overlap check,
+  // idempotency, parked, dead-dispatch/duplicate-tab) — a second
+  // linear-next.js process racing on this SAME issue is refused here instead
+  // of independently passing every guard below on an equally stale snapshot.
+  // Keyed on the bare `identifier` (e.g. "BRO-123"), not the ledger-
+  // namespaced `taskId` ("linear:BRO-123") — dispatchClaimGuard's refusal
+  // text prints `#${task.id}` verbatim, and this file's own top-level
+  // refusals (terminal-state, kill switch, idempotency's console lines)
+  // already print the bare identifier that way; the `linear:` prefix exists
+  // to avoid collision in the SHARED dispatch-ledger.jsonl (and the guards
+  // imported from dispatch-guards.js that build messages from pseudoTask.id
+  // still print the namespaced form — that's pre-existing, unrelated to this
+  // claim), which DISPATCH_CLAIM_DIR (a separate directory from bsc-next.js's
+  // own) doesn't need.
+  // `dispatchConfirmed` guards the process.on('exit', ...) release below —
+  // set true only at this issue's two real dispatch-success points (the
+  // headless branch once a job is actually spawned, and the cmux `res.ok`
+  // branch) so the claim survives long enough to block a near-simultaneous
+  // second success, while any guard refusal or failed launch after claiming
+  // releases immediately so a legitimate same-session retry isn't blocked
+  // for the full staleMs window.
+  //
+  // process.on('exit', ...) rather than try/finally, matching bsc-next.js's
+  // identical reasoning: this file has many process.exit(1) calls between
+  // here and the launch branches below, and process.exit() skips pending
+  // finally blocks — process.on('exit', cb) is a DIFFERENT mechanism, run
+  // synchronously as an explicit part of process.exit()'s own implementation
+  // (the standard idiom lock-file libraries use for exactly this reason), so
+  // it needs no changes to any existing guard's exit sites.
+  let dispatchConfirmed = false;
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    const claimResult = acquireDispatchClaimFn(identifier, { staleMs: DISPATCH_CLAIM_STALE_MS });
+    const claimErr = dispatchClaimGuard({ id: identifier }, claimResult, args);
+    if (claimErr) { console.error(`[linear-next] ${claimErr}`); process.exit(1); }
+    if (claimResult === true) {
+      process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(identifier); });
+    }
   }
 
   await runOverlapCheck();
@@ -429,6 +588,27 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       const parkErr = parkedGuard(pseudoTask, entries0, args, CLI_NAME);
       if (parkErr) { console.error(`[linear-next] ${parkErr}`); process.exit(1); }
     } catch (e) { console.error(`[linear-next] park check failed (continuing): ${e.message}`); }
+  }
+
+  // Cross-session work-branch collision guard (BRO-278, card #1281's A5 port
+  // — see docs/dispatcher-safety-port-table.md). Mirrors bsc-next.js's own
+  // call site: runs unconditionally (not gated on cmuxAvailableFn(), like the
+  // cmux duplicate-tab check below) because local git state exists
+  // independent of cmux, and both routing modes continue past this point
+  // with no other check of local branch state. --dry-run/--print-prompt skip
+  // the git I/O itself, not just the refusal, so a "dry" preview never
+  // shells out.
+  if (!args.force && !args['dry-run'] && !args['print-prompt']) {
+    let branchStatuses = null;
+    try {
+      branchStatuses = listWorkBranchStatusesFn(taskId, { repoDir: REPO });
+    } catch (e) {
+      console.error(`[linear-next] WARN worktree-branch collision check failed (continuing): ${e.message}`);
+    }
+    if (branchStatuses) {
+      const branchErr = workBranchCollisionGuard(pseudoTask, branchStatuses, args);
+      if (branchErr) { console.error(`[linear-next] ${branchErr}`); process.exit(1); }
+    }
   }
 
   // Dead-dispatch self-heal (both routing modes — task-level, not mode-
@@ -505,6 +685,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+        // BRO-2499: the autofix-pipeline bypass is journaled the same way
+        // --allow-unverifiable is, so a dispatch that only happened because
+        // the guard was waived is auditable in the ledger rather than
+        // invisible.
+        allowAutofixFiled: args['allow-autofix-filed'] || null,
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -518,6 +703,20 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exitCode = 1;
       return;
     }
+    if (res.stage === 'disk-pressure') {
+      // BRO-2319: same "nothing was actually spawned" shape as lease-held —
+      // dispatchConfirmed must stay false so the claim releases immediately
+      // and a retry once disk pressure clears isn't blocked for the full
+      // staleMs window.
+      console.error(`[linear-next] ${identifier} dispatch refused: disk pressure. Retry once GC/disk clears.`);
+      process.exitCode = 1;
+      return;
+    }
+    // Task #1898: only NOW (not before runJob() was even called) is this a
+    // real dispatch — 'lease-held' above means nothing was actually spawned,
+    // and the dispatch claim must release immediately in that case rather
+    // than sit held for the full staleMs window blocking a legitimate retry.
+    dispatchConfirmed = true;
     console.log(`[linear-next] headless job ${res.jobId} ${res.ok ? 'DONE' : `FAILED (${res.stage})`}`);
     if (res.logFile) console.log(`  log: ${res.logFile}`);
     if (!res.ok) { process.exitCode = 1; return; }
@@ -525,7 +724,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // header's crash-safety ordering — a crash between them leaves the
     // ledger (not the issue thread) as the authoritative "this was
     // dispatched" record, and hasLiveLedgerEntry() still catches it on retry.
-    await reportDispatchOnIssue(issue, res.jobId, 'headless', correlationId);
+    await reportDispatchOnIssue(issue, res.jobId, 'headless', correlationId, { linear: reportLinearFn });
     return;
   }
 
@@ -534,11 +733,38 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const res = launchCmuxFn({
     title, seed, seedKey: taskId.replace(/[^a-zA-Z0-9-]/g, '_'), cwd: REPO, model,
     focus: true, autoColor: !!project,
+    // Task #1904: --force must actually reach the terminal-capacity preflight
+    // — it is the documented escape hatch from a ceiling learned too low, and
+    // the refusal message advertises it. It does NOT weaken the reclaim or
+    // liveness checks; see launchCmuxSession's @param note.
+    force: !!args.force,
     // Same launch-verification budget bsc-next.js uses (card #503/#705): 90s
     // for the typed command to start, 360s slow-boot cap, 60s late-adopt
     // grace. NOT re-tuned here — this is the same primitive, same host.
     verifyTimeoutSec: 90, lateAdoptSec: 60, slowBootCapSec: 360,
   });
+
+  if (!res.ok && res.refusedForCapacity && !res.workspaceRef) {
+    // Task #1904: a REFUSAL, not a failure. cmux is at its terminal-runtime
+    // ceiling, so nothing was created — there is no workspace to journal and
+    // no dead attempt to burn against this issue.
+    console.error(`[linear-next] LAUNCH REFUSED — ${res.reason}`);
+    console.error(`  Nothing was created for ${identifier}. Past this ceiling cmux opens the workspace and accepts the`);
+    console.error('  command but never attaches a terminal, so the command can never run there.');
+    console.error(`    node scripts/linear-next.js --id ${identifier} --headless   # needs no cmux terminal (0 dead in 158 launches)`);
+    console.error('    node scripts/bsc-prune.js                                    # owner-run: close finished tabs to free a runtime');
+    try {
+      appendLedgerEntryFn({
+        // 'launch-refused', not 'launch-failed' — see bsc-next.js's identical
+        // branch: 'launch-failed' is a START_EVENT in
+        // audit-archived-in-progress.js, and nothing started here.
+        event: 'launch-refused', taskId, subject: pseudoTask.subject, workspaceRef: null, model,
+        failureReason: res.reason, refusedForCapacity: true, liveRuntimes: res.liveRuntimes ?? null,
+        terminalCeiling: res.terminalCeiling ?? null, linearId: issue.identifier, correlationId,
+      });
+    } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
+    process.exit(1);
+  }
 
   if (!res.ok) {
     console.error(`[linear-next] LAUNCH NOT VERIFIED (${res.reason}).`);
@@ -556,6 +782,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Task #1898: this is a real dispatch — hold the claim (let it expire via
+  // staleMs) instead of releasing on exit, so a near-simultaneous second
+  // dispatch attempt still sees it held.
+  dispatchConfirmed = true;
   console.log(`[linear-next] opened Cmux tab "${title}" (${res.ref}) on ${identifier} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''}, correlation ${correlationId})`);
   // Ledger write BEFORE the Linear comment/state mutation — see this file's
   // header for why (crash-safety: a crash here still leaves a live ledger
@@ -565,11 +795,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+      // BRO-2499 — see the headless launch entry above for why the
+      // autofix-pipeline bypass is journaled.
+      allowAutofixFiled: args['allow-autofix-filed'] || null,
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
+      // Task #1904 — see bsc-next.js's identical field for why the live cmux
+      // terminal-runtime count is worth carrying on every launch row.
+      liveRuntimes: res.liveRuntimes ?? null,
     });
   } catch (e) { console.error(`[linear-next] WARN ledger write failed (non-fatal): ${e.message}`); }
 
-  await reportDispatchOnIssue(issue, res.ref, 'cmux', correlationId);
+  await reportDispatchOnIssue(issue, res.ref, 'cmux', correlationId, { linear: reportLinearFn });
 }
 
 if (require.main === module) {
@@ -582,4 +818,8 @@ module.exports = {
   // scripts/tests/linear-next-overlap-guards.test.mjs (CLAUDE.md rule 15 —
   // the test require()s these real functions rather than restating them).
   buildOverlapComparisonPool, checkLinearOverlapGuards, loadNotionMirrorTasks, TASKS_DIR,
+  // BRO-287: exported so tests/unit/linear-next.test.mjs can drive its
+  // {nodes}-shape state normalization via the injected `deps.linear` seam
+  // without a live Linear API call.
+  reportDispatchOnIssue,
 };

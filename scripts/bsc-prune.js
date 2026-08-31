@@ -41,7 +41,7 @@ const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
-const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
+const { hasAutoDispatchMarker, isCrownTab } = require('./lib/prune-closeable.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
 
@@ -340,8 +340,15 @@ function pageNoPayloadClose(observation, launch) {
 function sweepNoPayload({ all, closedRefs, idleRefs, dryRun, isDoneTitleFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, readLedgerEntriesFn, appendLedgerEntryFn }) {
   if (process.env.NO_PAYLOAD_REAPER_DISABLED === '1') return;
 
+  // …and never a crown (owner-loop) tab, task #1751. This is the THIRD close
+  // path in this file — pruneDone's isCloseable and sweepZombieTabs's
+  // classifyZombieTabs are the other two, and both got the crown veto first.
+  // This one is reached by a DIFFERENT route (screen CONTENTS, not process
+  // liveness), so it needs its own check: an owner loop parked at an empty
+  // prompt reads exactly like a no-payload husk.
   const candidates = all.filter(w =>
-    !closedRefs.has(w.ref) && !idleRefs.has(w.ref) && !isDoneTitleFn(w.title) && !w.selected && hasAutoDispatchMarker(w.title)
+    !closedRefs.has(w.ref) && !idleRefs.has(w.ref) && !isDoneTitleFn(w.title) && !w.selected
+    && hasAutoDispatchMarker(w.title) && !isCrownTab(w.title)
   );
   if (!candidates.length) return;
 
@@ -374,6 +381,12 @@ function sweepNoPayload({ all, closedRefs, idleRefs, dryRun, isDoneTitleFn, read
   let ledgerEntries;
   try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
   for (const o of toClose) {
+    // Hard safety at the close SITE, not just the candidate filter (reviewer
+    // catch, task #1751): the filter above stops crown tabs being observed at
+    // all today, but toClose is also fed from `priorState`, and a future
+    // refactor or a new observation source could route one here. A crown tab
+    // is never closed by this reaper, whatever it looks like on screen.
+    if (isCrownTab(o.title)) { console.log(`  ${o.ref}  ${o.title}  — crown tab, left alone`); continue; }
     console.log(`  ${o.ref}  ${o.title}`);
     try { closeWorkspaceFn(o.ref); } catch (e) { console.error(`[no-payload] WARN close failed for ${o.ref}: ${e.message}`); }
     const launch = dispatchLedger.launchByRef(o.ref, ledgerEntries);

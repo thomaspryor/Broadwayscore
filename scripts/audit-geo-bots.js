@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const { routeAlert } = require('./lib/owner-alert-router');
+const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
 
 const KNOWN_BOTS_FILE = path.join(__dirname, '..', 'data', 'audit', 'known-bot-geos.json');
 
@@ -99,6 +100,27 @@ async function main() {
   }
 
   const client = getClient();
+
+  // BRO-44 — report the headline traffic KPI (engaged sessions, not raw
+  // sessions) at the top of this cron's output. This is the one recurring
+  // GA4 job in the repo, so it's the natural default location for the
+  // headline number. See scripts/lib/ga4-engaged-sessions.js.
+  try {
+    const engaged = await fetchEngagedSessionsSummary(client, propertyId, {
+      startDate: '7daysAgo',
+      endDate: 'today',
+    });
+    console.log(
+      `Headline KPI — Engaged Sessions (7d): ${engaged.headline.toLocaleString()} ` +
+        `(raw sessions: ${engaged.totalSessions.toLocaleString()}, ` +
+        `${engaged.inflationRatio ? engaged.inflationRatio.toFixed(1) + 'x' : 'n/a'} inflation; ` +
+        `Direct channel: ${engaged.direct.sessions.toLocaleString()} raw / ` +
+        `${engaged.direct.engagedSessions.toLocaleString()} engaged)\n`
+    );
+  } catch (err) {
+    console.error(`Headline KPI fetch failed (non-fatal): ${err.message}`);
+  }
+
   const stats = await fetchGeoStats(client, propertyId, 7);
   console.log(`Geo audit: ${stats.length} countries in last 7 days\n`);
 

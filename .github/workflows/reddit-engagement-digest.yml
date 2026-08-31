@@ -69,9 +69,9 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
-          ARGS=""
+          ARGS="--time-budget-min=16"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            ARGS="--dry-run --verbose"
+            ARGS="$ARGS --dry-run --verbose"
           fi
           node scripts/reddit-engagement-digest.js $ARGS
 

@@ -448,15 +448,16 @@ async function scrapeVenueListing(venue) {
 // ============================================================
 
 const crypto = require('crypto');
+const { withFileLock } = require('./file-lock');
 
 function candidateHash({ title, venue }) {
   const norm = `${(title || '').toLowerCase().trim()}|${(venue || '').toLowerCase().trim()}`;
   return crypto.createHash('sha256').update(norm).digest('hex').slice(0, 16);
 }
 
-function loadStaging() {
+function loadStaging(stagingPath = STAGING_PATH) {
   try {
-    const text = fs.readFileSync(STAGING_PATH, 'utf8');
+    const text = fs.readFileSync(stagingPath, 'utf8');
     const data = JSON.parse(text);
     return Array.isArray(data) ? data : [];
   } catch { return []; }
@@ -464,26 +465,88 @@ function loadStaging() {
 
 /**
  * Atomic write — tmp file + rename. Prevents half-written staging on crash.
+ * tmp name is PID-scoped so two concurrent writers (even ones NOT going
+ * through updateStaging's lock — e.g. a caller mid-migration to it) can't
+ * clobber each other's in-flight tmp file.
+ *
+ * `stagingPath` defaults to the real STAGING_PATH; every call site below
+ * threads its own override through (or omits one) — it exists so
+ * venue-listing-discover.test.mjs can exercise the real locked
+ * read-modify-write against a scratch file instead of the committed
+ * data/audit/ob-venue-candidates.json.
  */
-function writeStaging(entries) {
-  fs.mkdirSync(path.dirname(STAGING_PATH), { recursive: true });
-  const tmp = STAGING_PATH + '.tmp';
+function writeStaging(entries, stagingPath = STAGING_PATH) {
+  fs.mkdirSync(path.dirname(stagingPath), { recursive: true });
+  const tmp = `${stagingPath}.tmp.${process.pid}`;
   fs.writeFileSync(tmp, JSON.stringify(entries, null, 2));
-  fs.renameSync(tmp, STAGING_PATH);
+  fs.renameSync(tmp, stagingPath);
+}
+
+/**
+ * Locked read-modify-write for the staging file (BRO-158, the #788 class).
+ *
+ * This file has 4 independent producers — discover-new-shows.js's OB venue
+ * fan-out, add-requested-show.js, extract-aggregator-candidates.js, and
+ * promote-ob-venue-candidates.js's post-promotion prune — each doing its own
+ * read-modify-write with no coordination. Two producers running close
+ * together (a manual add-requested-show.yml dispatch overlapping the hourly
+ * scrape, or a slow promote run still fetching Playbill/Lortel while a fresh
+ * discover-new-shows.js run lands) is a classic lost-update race: whichever
+ * writes last wins and silently drops the other's candidates. This is the
+ * same shape as #893/#923 (show-review-gap.json) — same fix, same helper
+ * (scripts/lib/file-lock.js's withFileLock), applied here as its own lock
+ * file rather than sharing gap-audit-merge.js's, since the two guard
+ * unrelated files.
+ *
+ * `mutateFn` is called with the CURRENT on-disk entries, read fresh AFTER
+ * the lock is acquired — never a snapshot a caller read before a long fetch
+ * — so callers that need to filter/prune (promote-ob-venue-candidates.js,
+ * extract-aggregator-candidates.js) must express the removal as a predicate
+ * over candidateHash rather than writing back a pre-computed array; see
+ * those call sites. writeStaging only runs if mutateFn returns without
+ * throwing, so a mutateFn error leaves the on-disk file untouched instead of
+ * reverting valid concurrent updates.
+ *
+ * Fails open (same as withFileLock generally): if the lock can't be
+ * acquired within the timeout, the read-modify-write still runs, just
+ * unprotected — a warning is logged rather than blocking the caller forever.
+ *
+ * `stagingPath` overrides both STAGING_PATH and its lock file (defaults to
+ * the real STAGING_PATH); see writeStaging's docstring for why it exists.
+ *
+ * @param {(current: object[]) => object[]} mutateFn
+ * @param {string} [stagingPath]
+ * @returns {object[]} the entries actually written
+ */
+function updateStaging(mutateFn, stagingPath = STAGING_PATH) {
+  const lockPath = `${stagingPath}.lock`;
+  let lockHeld = false;
+  const next = withFileLock(lockPath, (held) => {
+    lockHeld = held;
+    const current = loadStaging(stagingPath);
+    const updated = mutateFn(current);
+    writeStaging(updated, stagingPath);
+    return updated;
+  });
+  if (!lockHeld) {
+    console.warn('::warning::ob-venue-candidates staging lock could not be acquired (assumed stale/unwritable) — the read-modify-write ran unprotected. A concurrent producer could have lost data.');
+  }
+  return next;
 }
 
 /**
  * Insert-or-update candidates by hash. Existing entries with the same hash
  * are replaced (refreshes discoveredAt + evidence); new ones are appended.
  */
-function writeStagingCandidates(newCandidates) {
-  const existing = loadStaging();
-  const byHash = new Map(existing.map(e => [e.candidateHash, e]));
-  for (const c of newCandidates) {
-    const h = candidateHash(c);
-    byHash.set(h, { ...c, candidateHash: h });
-  }
-  writeStaging([...byHash.values()]);
+function writeStagingCandidates(newCandidates, stagingPath = STAGING_PATH) {
+  return updateStaging((existing) => {
+    const byHash = new Map(existing.map(e => [e.candidateHash, e]));
+    for (const c of newCandidates) {
+      const h = candidateHash(c);
+      byHash.set(h, { ...c, candidateHash: h });
+    }
+    return [...byHash.values()];
+  }, stagingPath);
 }
 
 module.exports = {
@@ -499,5 +562,6 @@ module.exports = {
   writeStagingCandidates,
   writeStaging,
   loadStaging,
+  updateStaging,
   candidateHash,
 };

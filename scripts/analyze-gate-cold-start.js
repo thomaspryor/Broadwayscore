@@ -99,16 +99,36 @@ async function main() {
   say(`FLAG HEALTH: ${health.ok ? '✅ active, 50/50, 100% rollout' : `🛑 ${health.problem}`}`);
   if (!health.ok) say('  → fix the flag BEFORE reading any numbers below; data during the broken window is contaminated.');
 
-  // Person → arm from the FIRST flag response in-window (sticky assignment
-  // means later responses should agree; first-wins makes the mapping stable).
+  // Person → arm from the FIRST RESOLVED flag response in-window (sticky
+  // assignment means later responses should agree; first-wins makes the
+  // mapping stable). Excludes unresolved (null) responses from the argMin
+  // candidates — PostHog's getFeatureFlag() fires $feature_flag_called on
+  // every call, including the ones ProGateContext's poll loop makes before
+  // the flags network response lands, so an unfiltered argMin can pick a
+  // premature null over the real value a moment later.
+  //
+  // ROOT CAUSE (2026-08-26, diagnosed via scripts/diagnose-gate-cold-start-
+  // join.js after this script reported 0.00% captures/exposed in BOTH arms
+  // since launch): NOT the null-argMin issue above (real, worth keeping, but
+  // it barely moved the count). The actual cause is that PostHog's HogQL
+  // query API silently caps GROUP BY result sets at ~100 rows when no LIMIT
+  // is given — every GROUP BY query in this file was returning ~100 rows
+  // regardless of the true cardinality (confirmed: the exact same query with
+  // an explicit `LIMIT 100000` returned 21,234 rows — control:10,648 /
+  // cold-start:10,586 real exposed people, not 51/49). Every hogql() call
+  // below that returns MULTIPLE rows (GROUP BY) needs an explicit LIMIT well
+  // above any realistic result size; count(DISTINCT ...) scalar aggregates
+  // (a single row) were never affected.
   const exposure = await hogql(`
     SELECT person_id,
       argMin(JSONExtractString(properties,'$feature_flag_response'), timestamp) AS arm
     FROM events
     WHERE event = '$feature_flag_called'
       AND JSONExtractString(properties,'$feature_flag') = '${FLAG_KEY}'
+      AND JSONExtractString(properties,'$feature_flag_response') IN ('control', 'cold-start')
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY person_id`);
+    GROUP BY person_id
+    LIMIT 1000000`);
   const personArm = new Map(exposure.map(([pid, arm]) => [pid, arm]));
 
   // ALL modal events per person in-window (label-agnostic — see header).
@@ -120,7 +140,8 @@ async function main() {
     WHERE ((event IN ('gate_modal_shown','gate_modal_dismissed') AND JSONExtractString(properties,'ab_cold_start') != '')
         OR (event = 'email_captured' AND JSONExtractString(properties,'trigger') != ''))
       AND ${WINDOW} AND ${REAL_USERS}
-    GROUP BY person_id, event`);
+    GROUP BY person_id, event
+    LIMIT 1000000`);
 
   const arms = { control: {}, 'cold-start': {}, unexposed: {} };
   const seen = { control: new Set(), 'cold-start': new Set(), unexposed: new Set() };

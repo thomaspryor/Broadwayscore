@@ -80,23 +80,23 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-08-24T07:46:45.184Z",
-      "lastNotifiedAt": "2026-08-19T14:07:16.866Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-30T12:17:22.180Z",
+      "lastNotifiedAt": "2026-08-30T12:17:22.180Z",
+      "notifyCount": 5,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-428",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-428"
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-24T07:46:47.215Z",
+      "lastSeen": "2026-08-30T12:17:23.233Z",
       "lastNotifiedAt": "2026-08-24T07:46:47.215Z",
       "notifyCount": 5,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
-      "linearIdentifier": "BRO-365"
+      "linearIdentifier": "BRO-365",
+      "silentRefires": 1
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -134,29 +134,29 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-23T17:22:00.286Z",
-      "lastNotifiedAt": "2026-08-23T04:28:36.328Z",
-      "notifyCount": 46,
+      "lastSeen": "2026-08-31T03:20:05.428Z",
+      "lastNotifiedAt": "2026-08-31T01:06:41.654Z",
+      "notifyCount": 50,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7,
-      "resolvedAt": "2026-08-23T20:20:15.377Z"
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-08-24T07:46:45.192Z",
+      "lastSeen": "2026-08-30T12:17:23.232Z",
       "lastNotifiedAt": "2026-08-24T07:46:45.192Z",
       "notifyCount": 3,
       "cardId": "3b8637c5-416f-817d-832d-eac6c91739ee",
-      "linearIdentifier": "BRO-434"
+      "linearIdentifier": "BRO-434",
+      "silentRefires": 1
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -229,36 +229,34 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-24T17:31:08.007Z",
-      "lastNotifiedAt": "2026-08-24T06:28:00.472Z",
-      "notifyCount": 25,
+      "lastSeen": "2026-08-31T00:09:53.149Z",
+      "lastNotifiedAt": "2026-08-31T00:09:53.149Z",
+      "notifyCount": 29,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 9
+      "linearIdentifier": null
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-24T17:31:08.095Z",
-      "lastNotifiedAt": "2026-08-24T12:19:42.444Z",
-      "notifyCount": 29,
+      "lastSeen": "2026-08-31T00:09:53.235Z",
+      "lastNotifiedAt": "2026-08-30T13:37:38.415Z",
+      "notifyCount": 33,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 3
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-24T16:30:22.977Z",
-      "lastNotifiedAt": "2026-08-23T23:14:32.017Z",
-      "notifyCount": 21,
+      "lastSeen": "2026-08-30T13:37:41.484Z",
+      "lastNotifiedAt": "2026-08-30T13:37:41.484Z",
+      "notifyCount": 25,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -276,9 +274,9 @@
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-24T07:47:04.916Z",
-      "lastNotifiedAt": "2026-08-24T07:47:04.916Z",
-      "notifyCount": 17,
+      "lastSeen": "2026-08-30T12:17:33.905Z",
+      "lastNotifiedAt": "2026-08-30T12:17:33.905Z",
+      "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -294,7 +292,7 @@
       "cardId": null
     },
     "backstop:trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — broadwayworld",
       "firstSeen": "2026-08-02T11:27:10.140Z",
@@ -302,19 +300,19 @@
       "lastNotifiedAt": "2026-08-23T16:15:00.515Z",
       "notifyCount": 4,
       "cardId": "3b7637c5-416f-81a1-aa84-eb96cbadff1c",
-      "linearIdentifier": "BRO-372"
+      "linearIdentifier": "BRO-372",
+      "resolvedAt": "2026-08-26T18:50:48.172Z"
     },
     "health-check:Workflow repeat-failure: Rebuild Reviews Data": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
       "firstSeen": "2026-08-02T21:53:33.271Z",
-      "lastSeen": "2026-08-19T14:07:14.419Z",
-      "lastNotifiedAt": "2026-08-16T12:27:17.084Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-30T12:17:20.994Z",
+      "lastNotifiedAt": "2026-08-30T12:17:20.994Z",
+      "notifyCount": 3,
       "cardId": "3b0637c5-416f-8159-a5c9-d106e8586882",
-      "linearIdentifier": "BRO-346",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-346"
     },
     "gap:brainiac-live-west-end-2026/theatre-weekly--unknown.json": {
       "status": "open",
@@ -349,14 +347,15 @@
       "silentRefires": 3
     },
     "backstop:trainspotting-the-musical-west-end-2026/daily-mail--georgina-brown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Trainspotting the musical — daily-mail",
       "firstSeen": "2026-08-03T12:09:29.992Z",
       "lastSeen": "2026-08-10T12:47:35.007Z",
       "lastNotifiedAt": "2026-08-10T12:47:35.007Z",
       "notifyCount": 2,
-      "cardId": "3b8637c5-416f-81e9-99d5-fdac6ace3005"
+      "cardId": "3b8637c5-416f-81e9-99d5-fdac6ace3005",
+      "resolvedAt": "2026-08-26T18:50:48.174Z"
     },
     "arm-yield:workflow:sweep-we-aggregators": {
       "status": "resolved",
@@ -375,12 +374,12 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-24T13:26:25.714Z",
-      "lastNotifiedAt": "2026-08-18T13:14:46.576Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-30T16:49:03.001Z",
+      "lastNotifiedAt": "2026-08-25T13:17:56.577Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 5
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -397,14 +396,13 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 18.5% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-24T12:19:32.010Z",
-      "lastNotifiedAt": "2026-08-24T09:49:33.784Z",
-      "notifyCount": 30,
+      "lastSeen": "2026-08-30T13:37:31.398Z",
+      "lastNotifiedAt": "2026-08-30T13:37:31.398Z",
+      "notifyCount": 34,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 3
+      "linearIdentifier": null
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -448,14 +446,15 @@
       "cardId": "3b3637c5-416f-816f-a51f-f5b8162b1ba6"
     },
     "gap:disruption-off-broadway-2026/nytimes--tim-teeman.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Disruption — nytimes",
       "firstSeen": "2026-08-05T13:38:48.951Z",
       "lastSeen": "2026-08-05T13:38:48.951Z",
       "lastNotifiedAt": "2026-08-05T13:38:48.951Z",
       "notifyCount": 1,
-      "cardId": "3b3637c5-416f-8156-a1db-ed21db5c94c7"
+      "cardId": "3b3637c5-416f-8156-a1db-ed21db5c94c7",
+      "resolvedAt": "2026-08-26T18:50:48.646Z"
     },
     "scheduled-email-missing:morning-digest:2026-08-04": {
       "status": "open",
@@ -479,14 +478,15 @@
       "silentRefires": 1
     },
     "gap:now-you-see-me-live-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Now You See Me Live — thestage",
       "firstSeen": "2026-08-05T20:33:16.050Z",
       "lastSeen": "2026-08-05T20:33:16.050Z",
       "lastNotifiedAt": "2026-08-05T20:33:16.050Z",
       "notifyCount": 1,
-      "cardId": "3b3637c5-416f-81b2-8bb2-d5cebcb05a0c"
+      "cardId": "3b3637c5-416f-81b2-8bb2-d5cebcb05a0c",
+      "resolvedAt": "2026-08-26T18:50:48.255Z"
     },
     "feedback-requests-live:missing-show:two strangers (carry a cake across new york):2026-08-04T17:27:01.614593+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:53:33.054218+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:59:44.465941+00:00": {
       "status": "open",
@@ -515,9 +515,9 @@
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Disruption — wsj",
       "firstSeen": "2026-08-06T11:25:10.363Z",
-      "lastSeen": "2026-08-20T20:19:28.556Z",
-      "lastNotifiedAt": "2026-08-20T20:19:28.556Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-08-29T15:02:46.121Z",
+      "lastNotifiedAt": "2026-08-29T15:02:46.121Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-327"
     },
@@ -544,14 +544,15 @@
       "cardId": null
     },
     "backstop:now-you-see-me-live-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Now You See Me Live — thestage",
       "firstSeen": "2026-08-07T00:48:20.096Z",
       "lastSeen": "2026-08-07T00:48:20.096Z",
       "lastNotifiedAt": "2026-08-07T00:48:20.096Z",
       "notifyCount": 1,
-      "cardId": "3b5637c5-416f-815c-9f7b-f6ae7424da68"
+      "cardId": "3b5637c5-416f-815c-9f7b-f6ae7424da68",
+      "resolvedAt": "2026-08-26T18:50:48.256Z"
     },
     "health-check:Workflow repeat-failure: Collect WE/OB Review Texts": {
       "status": "open",
@@ -569,11 +570,12 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-08-24T07:48:26.323Z",
+      "lastSeen": "2026-08-30T12:20:12.546Z",
       "lastNotifiedAt": "2026-08-24T07:48:26.323Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 3
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -712,11 +714,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet invalid-content rate",
       "firstSeen": "2026-08-12T08:06:37.851Z",
-      "lastSeen": "2026-08-24T07:46:49.202Z",
+      "lastSeen": "2026-08-30T12:17:23.234Z",
       "lastNotifiedAt": "2026-08-24T07:46:49.202Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2295"
+      "linearIdentifier": "BRO-2295",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:death-note-the-musical-west-end-2026": {
       "status": "open",
@@ -743,12 +746,11 @@
     "sd-circuit-breaker": {
       "status": "open",
       "disposition": "digest",
-      "requestedDisposition": "human",
-      "title": "Scrapingdog daily breaker TRIPPED: 39276/39000 credits",
+      "title": "Scrapingdog daily breaker TRIPPED: 27167/24000 credits",
       "firstSeen": "2026-08-12T14:11:05.654Z",
-      "lastSeen": "2026-08-24T12:21:02.005Z",
-      "lastNotifiedAt": "2026-08-24T12:21:02.005Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-08-31T02:52:09.998Z",
+      "lastNotifiedAt": "2026-08-31T02:52:09.998Z",
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -756,11 +758,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4410/3250 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2834/2750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.704Z",
-      "lastSeen": "2026-08-23T22:09:06.919Z",
-      "lastNotifiedAt": "2026-08-23T22:09:06.919Z",
-      "notifyCount": 10,
+      "lastSeen": "2026-08-26T18:33:53.803Z",
+      "lastNotifiedAt": "2026-08-26T18:33:53.803Z",
+      "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -768,24 +770,25 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (5558/3250 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (7810/2750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-08-23T22:09:06.962Z",
-      "lastNotifiedAt": "2026-08-23T22:09:06.962Z",
-      "notifyCount": 11,
+      "lastSeen": "2026-08-26T18:33:53.915Z",
+      "lastNotifiedAt": "2026-08-26T18:33:53.915Z",
+      "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
       "status": "open",
       "disposition": "auto",
-      "title": "Main test.yml red — no confirmed-green run in 9.6h",
+      "title": "Main test.yml red — no confirmed-green run in 85.8h",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-24T07:46:20.285Z",
-      "lastNotifiedAt": "2026-08-24T07:46:20.285Z",
-      "notifyCount": 23,
+      "lastSeen": "2026-08-31T03:20:05.427Z",
+      "lastNotifiedAt": "2026-08-30T12:16:52.787Z",
+      "notifyCount": 26,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -913,12 +916,12 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-08-24T17:30:59.571Z",
-      "lastNotifiedAt": "2026-08-21T03:53:05.139Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-31T00:09:45.944Z",
+      "lastNotifiedAt": "2026-08-29T15:02:49.382Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-328",
-      "silentRefires": 18
+      "silentRefires": 3
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -933,7 +936,7 @@
       "silentRefires": 3
     },
     "gap:an-american-daughter-off-broadway-2026/nysr--david-finkle.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: An American Daughter — nysr",
       "firstSeen": "2026-08-14T01:02:20.644Z",
@@ -941,7 +944,8 @@
       "lastNotifiedAt": "2026-08-14T01:02:20.644Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-329"
+      "linearIdentifier": "BRO-329",
+      "resolvedAt": "2026-08-26T18:50:49.037Z"
     },
     "affiliate:provider-auth:impact": {
       "status": "resolved",
@@ -956,7 +960,7 @@
       "resolvedAt": "2026-08-15T01:33:42.978Z"
     },
     "gap:an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: An American Daughter — nytimes",
       "firstSeen": "2026-08-14T10:00:01.123Z",
@@ -964,7 +968,8 @@
       "lastNotifiedAt": "2026-08-14T10:00:01.123Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-332"
+      "linearIdentifier": "BRO-332",
+      "resolvedAt": "2026-08-26T18:50:49.041Z"
     },
     "cron-health:Collect WE/OB Reviews": {
       "status": "open",
@@ -1039,16 +1044,17 @@
       "silentRefires": 6
     },
     "arm-yield:outlet:nypost": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "New York Post (reviews collected) has stopped updating (20 days)",
       "firstSeen": "2026-08-15T13:04:25.661Z",
-      "lastSeen": "2026-08-24T13:26:25.718Z",
+      "lastSeen": "2026-08-25T13:17:56.579Z",
       "lastNotifiedAt": "2026-08-22T13:06:14.175Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3,
+      "resolvedAt": "2026-08-26T13:29:18.282Z"
     },
     "tier-skip-drift": {
       "status": "open",
@@ -1077,88 +1083,96 @@
       "disposition": "digest",
       "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.853Z",
-      "lastSeen": "2026-08-24T15:14:48.801Z",
+      "lastSeen": "2026-08-26T16:06:19.759Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.801Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.854Z",
-      "lastSeen": "2026-08-24T15:14:48.803Z",
+      "lastSeen": "2026-08-26T16:06:19.760Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.803Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:an-ideal-husband-hammersmith-review2-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.855Z",
-      "lastSeen": "2026-08-24T15:14:48.804Z",
+      "lastSeen": "2026-08-26T16:06:19.761Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.804Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:krapps-last-tape-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Krapps Last Tape @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.856Z",
-      "lastSeen": "2026-08-24T15:14:48.805Z",
+      "lastSeen": "2026-08-26T16:06:19.762Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.805Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.856Z",
-      "lastSeen": "2026-08-24T15:14:48.806Z",
+      "lastSeen": "2026-08-26T16:06:19.763Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.806Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:dracula-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Dracula @ noel coward — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.857Z",
-      "lastSeen": "2026-08-24T15:14:48.807Z",
+      "lastSeen": "2026-08-26T16:06:19.763Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.807Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:john-proctor-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "John Proctor @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.858Z",
-      "lastSeen": "2026-08-24T15:14:48.808Z",
+      "lastSeen": "2026-08-26T16:06:19.764Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.808Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:pride-the-musical-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Pride the Musical @ National Theatre — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.859Z",
-      "lastSeen": "2026-08-24T15:14:48.809Z",
+      "lastSeen": "2026-08-26T16:06:19.765Z",
       "lastNotifiedAt": "2026-08-24T15:14:48.809Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-empty-cast:jeeves-takes-charge-west-end-2026": {
       "status": "open",
@@ -1233,7 +1247,7 @@
       "silentRefires": 6
     },
     "arm-yield:outlet:newsday": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Newsday (reviews collected) has stopped updating (9 days)",
       "firstSeen": "2026-08-18T13:14:46.580Z",
@@ -1242,7 +1256,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-08-25T13:17:56.590Z"
     },
     "feedback-outcomes:2026-08-18T13:13:20.604143+00:00": {
       "status": "open",
@@ -1305,16 +1320,17 @@
       "silentRefires": 6
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-08-23T12:24:33.120Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.120Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-08-27T21:33:20.831Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.831Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-30T15:50:29.694Z"
     },
     "cron-health-chronic:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1363,7 +1379,7 @@
       "linearIdentifier": null
     },
     "gap:anansi-the-spider-west-end-2026/thestage--anna-james.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Anansi the Spider — thestage",
       "firstSeen": "2026-08-19T22:17:11.539Z",
@@ -1371,7 +1387,8 @@
       "lastNotifiedAt": "2026-08-19T22:17:11.539Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-462"
+      "linearIdentifier": "BRO-462",
+      "resolvedAt": "2026-08-26T18:50:47.913Z"
     },
     "opening-night-cv-wrongproduction-unhandled-abigails-party-west-end-2026": {
       "status": "open",
@@ -1448,24 +1465,24 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-24T12:34:09.890Z",
-      "lastNotifiedAt": "2026-08-21T12:33:44.570Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-30T15:50:24.904Z",
+      "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 3
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Paranormal Activity",
       "firstSeen": "2026-08-23T02:02:50.903Z",
-      "lastSeen": "2026-08-24T14:08:14.994Z",
+      "lastSeen": "2026-08-26T23:42:01.692Z",
       "lastNotifiedAt": "2026-08-23T02:02:50.903Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 15
     },
     "cron-health:Enrich Off-Broadway Dates": {
       "status": "open",
@@ -1473,9 +1490,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
       "firstSeen": "2026-08-23T12:24:33.123Z",
-      "lastSeen": "2026-08-23T12:24:33.123Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.123Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-30T15:50:24.787Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.787Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1485,9 +1502,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
       "firstSeen": "2026-08-23T12:24:33.125Z",
-      "lastSeen": "2026-08-23T12:24:33.125Z",
-      "lastNotifiedAt": "2026-08-23T12:24:33.125Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-08-27T21:33:20.834Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.834Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1496,11 +1513,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: coverageExpectation drift",
       "firstSeen": "2026-08-24T07:46:55.105Z",
-      "lastSeen": "2026-08-24T07:46:55.105Z",
+      "lastSeen": "2026-08-30T12:17:23.236Z",
       "lastNotifiedAt": "2026-08-24T07:46:55.105Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2297"
+      "linearIdentifier": "BRO-2297",
+      "silentRefires": 1
     },
     "cron-health:Commercial Friday Refresh": {
       "status": "open",
@@ -1519,25 +1537,28 @@
       "disposition": "digest",
       "title": "Scrape WestEndTheatre has stopped updating (22 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-08-24T13:26:25.716Z",
+      "lastSeen": "2026-08-30T16:49:03.003Z",
       "lastNotifiedAt": "2026-08-24T13:26:25.716Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 6
     },
     "arm-yield:outlet:nysr": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "New York Stage Review (reviews collected) has stopped updating (10 days)",
       "firstSeen": "2026-08-24T13:26:25.720Z",
-      "lastSeen": "2026-08-24T13:26:25.720Z",
+      "lastSeen": "2026-08-25T13:17:56.581Z",
       "lastNotifiedAt": "2026-08-24T13:26:25.720Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-26T13:29:18.289Z"
     },
     "gap:as-you-like-it-globe-west-end-2026/thestage--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: As You Like It - Globe — thestage",
       "firstSeen": "2026-08-24T14:43:58.754Z",
@@ -1545,7 +1566,319 @@
       "lastNotifiedAt": "2026-08-24T14:43:58.754Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2300"
+      "linearIdentifier": "BRO-2300",
+      "resolvedAt": "2026-08-26T18:50:47.684Z"
+    },
+    "opening-night-stale-upcoming-tag-paranormal-activity-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Paranormal Activity",
+      "firstSeen": "2026-08-25T09:54:54.016Z",
+      "lastSeen": "2026-08-26T23:42:01.693Z",
+      "lastNotifiedAt": "2026-08-25T09:54:54.016Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 4
+    },
+    "cron-health-chronic:Commercial Friday Refresh": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
+      "firstSeen": "2026-08-25T12:35:43.960Z",
+      "lastSeen": "2026-08-30T15:50:24.902Z",
+      "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2303",
+      "silentRefires": 5
+    },
+    "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "origin/claude/ios-session-behavior-review-zadpk1 lost a CI-pushed commit (unknown workflow)",
+      "firstSeen": "2026-08-25T13:31:17.179Z",
+      "lastSeen": "2026-08-25T14:23:53.035Z",
+      "lastNotifiedAt": "2026-08-25T13:31:17.179Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2304",
+      "silentRefires": 1
+    },
+    "cron-health:Commercial RSS Poll": {
+      "status": "resolved",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Commercial RSS Poll",
+      "firstSeen": "2026-08-26T12:37:29.919Z",
+      "lastSeen": "2026-08-26T12:37:29.919Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.919Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-29T16:01:13.861Z"
+    },
+    "cron-health:Scrape WestEndTheatre": {
+      "status": "resolved",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Scrape WestEndTheatre",
+      "firstSeen": "2026-08-26T12:37:29.921Z",
+      "lastSeen": "2026-08-26T12:37:29.921Z",
+      "lastNotifiedAt": "2026-08-26T12:37:29.921Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-27T21:33:25.935Z"
+    },
+    "opening-night-slug-mismatch-paranormal-activity-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on Paranormal Activity",
+      "firstSeen": "2026-08-26T12:39:41.328Z",
+      "lastSeen": "2026-08-26T12:39:41.328Z",
+      "lastNotifiedAt": "2026-08-26T12:39:41.328Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-cv-wrongproduction-unhandled-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.765Z",
+      "lastSeen": "2026-08-26T23:42:03.907Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.765Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-publish-date-pre-opening:missing:the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T23:42:03.909Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-revival-unverified-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unverified revival on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:43.767Z",
+      "lastSeen": "2026-08-26T23:42:03.910Z",
+      "lastNotifiedAt": "2026-08-26T12:39:43.767Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-slug-mismatch-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:44.012Z",
+      "lastSeen": "2026-08-26T23:42:03.911Z",
+      "lastNotifiedAt": "2026-08-26T12:39:44.012Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-stale-upcoming-tag-the-real-ivanov-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on The Real Ivanov",
+      "firstSeen": "2026-08-26T12:39:44.014Z",
+      "lastSeen": "2026-08-26T23:42:03.912Z",
+      "lastNotifiedAt": "2026-08-26T12:39:44.014Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "alert-sender-direct-bypass": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "New/grown direct alert sender bypassing owner-alert-router (3 total)",
+      "firstSeen": "2026-08-26T16:14:56.459Z",
+      "lastSeen": "2026-08-26T16:14:56.459Z",
+      "lastNotifiedAt": "2026-08-26T16:14:56.459Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2421"
+    },
+    "cron-health-chronic:Commercial RSS Poll": {
+      "status": "resolved",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
+      "firstSeen": "2026-08-27T21:33:20.912Z",
+      "lastSeen": "2026-08-28T21:38:45.032Z",
+      "lastNotifiedAt": "2026-08-27T21:33:20.912Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2524",
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-29T16:01:13.862Z"
+    },
+    "cron-health:Opening Night Express Retry Check": {
+      "status": "resolved",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Opening Night Express Retry Check",
+      "firstSeen": "2026-08-28T21:38:44.969Z",
+      "lastSeen": "2026-08-28T21:38:44.969Z",
+      "lastNotifiedAt": "2026-08-28T21:38:44.969Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-08-29T16:01:13.864Z"
+    },
+    "cron-health:Weekly Video Reviews": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Weekly Video Reviews",
+      "firstSeen": "2026-08-28T21:38:44.972Z",
+      "lastSeen": "2026-08-28T21:38:44.972Z",
+      "lastNotifiedAt": "2026-08-28T21:38:44.972Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Daily Data Health Check (digest snapshot carrier)": {
+      "status": "resolved",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
+      "firstSeen": "2026-08-28T21:38:46.942Z",
+      "lastSeen": "2026-08-29T16:01:08.855Z",
+      "lastNotifiedAt": "2026-08-28T21:38:46.942Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2529",
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-30T15:50:29.695Z"
+    },
+    "cron-health-chronic:Opening Night Checklist": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
+      "firstSeen": "2026-08-28T21:38:50.527Z",
+      "lastSeen": "2026-08-30T15:50:24.905Z",
+      "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2530",
+      "silentRefires": 2
+    },
+    "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Opening Night Express retry still found thin review coverage for matilda-the-musical-theatre-row-off-broadway-2026",
+      "firstSeen": "2026-08-29T03:05:40.945Z",
+      "lastSeen": "2026-08-29T14:57:23.870Z",
+      "lastNotifiedAt": "2026-08-29T03:05:40.945Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "cron-health:Test Suite": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Test Suite",
+      "firstSeen": "2026-08-29T16:01:08.770Z",
+      "lastSeen": "2026-08-29T16:01:08.770Z",
+      "lastNotifiedAt": "2026-08-29T16:01:08.770Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Weekly Video Reviews": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
+      "firstSeen": "2026-08-29T16:01:08.858Z",
+      "lastSeen": "2026-08-30T15:50:29.549Z",
+      "lastNotifiedAt": "2026-08-29T16:01:08.858Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2534",
+      "silentRefires": 1
+    },
+    "opening-night-publish-date-pre-opening:electra-persona-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Pre-opening publishDate on Electra / Persona",
+      "firstSeen": "2026-08-30T00:25:09.189Z",
+      "lastSeen": "2026-08-30T21:11:43.361Z",
+      "lastNotifiedAt": "2026-08-30T00:25:09.189Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-stale-upcoming-tag-electra-persona-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Electra / Persona",
+      "firstSeen": "2026-08-30T00:25:09.192Z",
+      "lastSeen": "2026-08-30T00:25:09.192Z",
+      "lastNotifiedAt": "2026-08-30T00:25:09.192Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Fetch Show Images": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Fetch Show Images",
+      "firstSeen": "2026-08-30T12:17:22.021Z",
+      "lastSeen": "2026-08-30T12:17:22.021Z",
+      "lastNotifiedAt": "2026-08-30T12:17:22.021Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2526"
+    },
+    "health-check:Quality: outlet-heartbeat red flags": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Quality: outlet-heartbeat red flags",
+      "firstSeen": "2026-08-30T12:17:23.237Z",
+      "lastSeen": "2026-08-30T12:17:23.237Z",
+      "lastNotifiedAt": "2026-08-30T12:17:23.237Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2521"
+    },
+    "cron-health:Process Feedback Submissions": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Process Feedback Submissions",
+      "firstSeen": "2026-08-30T15:50:24.790Z",
+      "lastSeen": "2026-08-30T15:50:24.790Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.790Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Test Suite": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Test Suite",
+      "firstSeen": "2026-08-30T15:50:24.907Z",
+      "lastSeen": "2026-08-30T15:50:24.907Z",
+      "lastNotifiedAt": "2026-08-30T15:50:24.907Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2537"
     }
   }
 }

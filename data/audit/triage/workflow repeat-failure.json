@@ -1,50 +1,30 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-24T07:46:40.493Z",
+  "lastChecked": "2026-08-30T12:17:13.970Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "status": "warn",
-      "message": "Rebuild Reviews (Fast) failed 9 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "error",
-      "message": "Audit Aggregator Review Gap failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "status": "warn",
-      "message": "Rebuild Reviews Data failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
       "status": "error",
-      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Process Feedback Submissions",
-      "status": "warn",
-      "message": "Process Feedback Submissions failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Checklist",
-      "status": "warn",
-      "message": "Opening Night Checklist failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Rebuild Reviews Data failed 10 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Fetch Show Images",
-      "status": "warn",
-      "message": "Fetch Show Images failed 2 times in the last 24h — likely broken, not transient."
+      "status": "error",
+      "message": "Fetch Show Images failed 4 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "name": "Workflow repeat-failure: Audit Imageless Scored Shows",
       "status": "warn",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Audit Imageless Scored Shows failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
+      "status": "warn",
+      "message": "Rebuild Reviews (Fast) failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

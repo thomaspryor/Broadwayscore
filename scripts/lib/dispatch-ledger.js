@@ -46,11 +46,27 @@ const { stripAutoPrefix } = require('./workspace-naming.js');
 // was opened).
 const DEAD_ATTEMPT_LIMIT = 2;
 
+// BRO-395: `{ ts: new Date().toISOString(), ...entry }` below means an entry
+// that carries its OWN `ts` field silently overrides the safe self-stamped
+// default — no current caller does this (every appendEntry() call site in
+// scripts/ was grepped), but nothing stopped it, and a single bad row is
+// enough to poison every `now - t < window` freshness check downstream
+// forever (a future ts makes `now - t` negative, which is always < any
+// positive window). 5 minutes matches the CLOCK_SKEW_TOLERANCE_MS /
+// STATUS_CLOCK_SKEW_TOLERANCE_MS convention already used elsewhere in this
+// codebase (cmux-terminal-capacity.js, pr-supervisor-core.js) for "how much
+// clock skew is plausible, versus corrupt input."
+const FUTURE_TS_GRACE_MS = 5 * 60 * 1000;
+
 function appendEntry(entry, ledgerPath = LEDGER_PATH) {
   if (!entry || typeof entry.event !== 'string' || !entry.event || !entry.taskId) {
     throw new Error('dispatch-ledger entry requires an event string and a taskId');
   }
   const line = { ts: new Date().toISOString(), ...entry };
+  const lineTs = Date.parse(line.ts);
+  if (Number.isFinite(lineTs) && lineTs - Date.now() > FUTURE_TS_GRACE_MS) {
+    throw new Error(`dispatch-ledger entry has a future ts (${line.ts}) — refusing to write corrupt input`);
+  }
   fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
   fs.appendFileSync(ledgerPath, JSON.stringify(line) + '\n');
   return line;
@@ -361,15 +377,38 @@ function launchByRef(workspaceRef, entries) {
 // for it — the opposite failure from first-match, but just as poisonous,
 // since a genuinely dying later task would then never trip
 // deadAttemptsForTask at all.
+// ANY terminal event, not just 'dead' (task #1904, 2026-08-26). cmux RECYCLES
+// workspace refs, and this function's only question was "is there already a
+// death for this ref since its launch?" — so once a finished dispatch's ref
+// was handed to a brand-new, unrelated tab, the next sweep that found that tab
+// idle journaled a death against the OLD task, hours after it had completed.
+// Live: #1887 and #1888 both finished (prune-closed, ✅ titles, 05:03Z/05:16Z)
+// and were journaled dead at 13:19:55Z on refs cmux had reassigned to
+// ZZ-probe tabs; 11 such rows since 08-19. Those rows are not merely a
+// metric artifact — deadAttemptsForTask() counts RAW 'dead' rows by taskId, so
+// each one burns one of the task's two DEAD_ATTEMPT_LIMIT dispatch attempts.
+// This is the rule vanishedEntries() below already states for itself ("Only
+// launches with no terminal entry recorded after them, which is what makes
+// ✅-then-closed workspaces (prune-closed) immune"); deadBreadcrumbs was the
+// one ref-reconciling function in this file still gating on a bare
+// already-dead check instead of TERMINAL_LAUNCH_EVENTS.
+//
+// Still scoped to the CURRENT launch, never the ref (card #960): the
+// comparison is against THIS launch's ts, so one stale terminal row from an
+// earlier occupant of a recycled ref cannot suppress a genuinely dying later
+// task's breadcrumb.
 function deadBreadcrumbs(idleWorkspaces, entries) {
   const out = [];
+  const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   for (const w of idleWorkspaces) {
     const launch = launchByRef(w.ref, entries);
     if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
-    const alreadyDead = entries.some(e =>
-      e.event === 'dead' && e.workspaceRef === w.ref && (!e.ts || !launch.ts || e.ts >= launch.ts)
-    );
-    if (alreadyDead) continue;
+    const term = lastTerminal.get(w.ref);
+    // A launch with no ts can't be ordered against anything; treat any
+    // terminal row for the ref as already-reconciled rather than guessing —
+    // the pre-existing `!e.ts || !launch.ts` fallback made the same choice.
+    const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
+    if (reconciled) continue;
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;
@@ -722,6 +761,32 @@ function openWorkspaceLaunchCount(entries, { epochTs, now } = {}) {
   return n;
 }
 
+// Raw count of 'launch' entries within a trailing window (task #1915,
+// dispatch-watchdog's flow-dead check). Deliberately simpler than
+// openWorkspaceLaunchCount above — that function answers "how many OPEN
+// tasks have an unreconciled launch," folding in terminal-event
+// resolution and the historical-exclusion grace period; this one answers
+// "did ANY launch happen recently at all," which needs none of that. A
+// dead flow (zero launches in the window) can't be masked by an event
+// happening to be terminal — a terminal entry is itself proof something
+// dispatched.
+function countRecentLaunches(entries, { now, windowMs }) {
+  if (!Number.isFinite(now)) throw new Error('countRecentLaunches requires now (ms epoch)');
+  const cutoff = now - windowMs;
+  let n = 0;
+  for (const e of entries) {
+    if (e.event !== 'launch' || !e.ts) continue;
+    const ts = Date.parse(e.ts);
+    // ts <= now (BRO-395): a future-dated row must never count as "recent" —
+    // `ts > cutoff` alone is satisfied forever by a future timestamp, since
+    // now-t is negative and always < any positive window. This is the exact
+    // mechanism that gave dispatch-watchdog's flow-dead check three
+    // consecutive false "still alive" readings against a real dead flow.
+    if (Number.isFinite(ts) && ts > cutoff && ts <= now) n++;
+  }
+  return n;
+}
+
 // Conservative on purpose (owner escalation 2026-08-03 is the incident this
 // exists to prevent): a false "looks like restart" only costs one extra
 // sweep before parking resumes; a false "not a restart" wrongly parks live
@@ -804,7 +869,15 @@ const OUTAGE_LOOKBACK_MS = 30 * 60 * 1000; // matches the observed 8/3 cluster w
 // launcher failing to inject. Conflating it here would raise a confident,
 // false "cmux is not accepting commands" alarm off three unrelated task
 // bugs, exactly the kind of silent-wrongness this detector exists to avoid.
-const OUTAGE_REASON_RE = /injection never ran/;
+// 'never attached a terminal' INCLUDED (task #1904): that is the same class as
+// 'injection never ran' — the launcher handed cmux a command that cmux never
+// ran — and it is now the DOMINANT signature, since the capacity fix
+// reclassifies exactly those deaths under a more precise name. Leaving it out
+// would have silently retired this cross-task alarm for the failure mode it
+// most needs to catch (ship-check catch): the reason strings would simply have
+// stopped matching and the detector would have gone quiet with nothing to
+// indicate it had.
+const OUTAGE_REASON_RE = /injection never ran|never attached a terminal/;
 
 // entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
 // is unavailable in workflow scripts, callers pass it explicitly).
@@ -832,6 +905,50 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
     count: deaths.length,
     taskIds,
     sinceTs: oldestDeathTs,
+  };
+}
+
+// ── Leaky-launcher failure-rate detector (BRO-2318) ─────────────────────────
+// detectLauncherOutage above is tuned for a SUSTAINED outage — it deliberately
+// calls a run "recovered" the moment one verified launch lands after the
+// newest injection death, because that is real evidence the launcher is
+// healthy again RIGHT NOW (see the 2026-08-03 Codex-review comment above).
+// That rule is correct for the failure mode it targets and must not change.
+// But it is blind to a different regime: a launcher that drops roughly one
+// dispatch in three, where a verified success always follows the next death
+// within minutes. Every such window has a success newer than the newest
+// death, so `recovered` is always true — and nobody is told that a third of
+// dispatches never start. This is an independent signal, not a replacement:
+// a launcher can be leaky without ever sustaining an outage, and vice versa.
+//
+// Denominator is every cmux-tab launch attempt (isWorkspaceRef), verified or
+// not — failedLaunchEntries() always pairs a 'dead' with an unverified
+// 'launch', so this counts every attempt exactly once. Restricting to
+// isWorkspaceRef on BOTH sides matters: headless/linear-prefixed launches
+// never go through cmux injection at all, so folding them into the
+// denominator only dilutes the rate with attempts that were never at risk of
+// this failure mode (confirmed against the live ledger: including them pulls
+// an 8/25 ≈ 32% cmux-only rate down to 8/62 ≈ 13%, silently masking the leak).
+const FAILURE_RATE_LOOKBACK_MS = 6 * 60 * 60 * 1000; // wide enough to see a slow leak across a normal dispatch cadence; OUTAGE_LOOKBACK_MS's 30min is tuned for a tight sustained-outage cluster instead
+const FAILURE_RATE_MIN_LAUNCHES = 8; // below this a single bad dispatch swings the rate past any threshold — not enough sample to alarm on
+const FAILURE_RATE_THRESHOLD = 0.2; // the observed incident ran 29-36%; 1-in-5 sustained is already worth paging
+
+// entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
+// is unavailable in workflow scripts, callers pass it explicitly).
+function detectLauncherFailureRate(entries, { now, lookbackMs = FAILURE_RATE_LOOKBACK_MS, minLaunches = FAILURE_RATE_MIN_LAUNCHES, rateThreshold = FAILURE_RATE_THRESHOLD } = {}) {
+  if (!Number.isFinite(now)) throw new Error('detectLauncherFailureRate requires now (ms epoch)');
+  const cutoff = now - lookbackMs;
+  const inWindow = e => e && e.ts && Date.parse(e.ts) >= cutoff;
+  const totalLaunches = entries.filter(e => e.event === 'launch' && isWorkspaceRef(e.workspaceRef) && inWindow(e)).length;
+  const failures = entries.filter(e => e.event === 'dead' && isWorkspaceRef(e.workspaceRef) && inWindow(e) &&
+    OUTAGE_REASON_RE.test(String(e.failureReason || '')));
+  const rate = totalLaunches > 0 ? failures.length / totalLaunches : 0;
+  return {
+    leaking: totalLaunches >= minLaunches && rate >= rateThreshold,
+    rate,
+    failureCount: failures.length,
+    totalLaunches,
+    taskIds: [...new Set(failures.map(e => String(e.taskId)))],
   };
 }
 
@@ -969,10 +1086,12 @@ module.exports = {
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
-  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
+  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,
   looksLikeRestart, RESTART_MIN_COUNT, RESTART_FRACTION,
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
   remapEntries,
   openTaskWorkspaceLaunches,
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
+  detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
+  FUTURE_TS_GRACE_MS,
 };

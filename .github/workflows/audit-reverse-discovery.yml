@@ -117,7 +117,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
-        run: node scripts/backfill-dates-from-roundups.js
+        run: node scripts/backfill-dates-from-roundups.js --time-budget-min=12
 
       # ALWAYS validate before push-core-data (same gate scrape-new-aggregators
       # uses) — a bad backfill must never reach the private repo.

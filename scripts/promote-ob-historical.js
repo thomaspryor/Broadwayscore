@@ -48,6 +48,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 // promote-historical-we.js — see that file's identical dedup pattern) wrap
 // both of these plus venuesMatch().
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -85,7 +86,15 @@ function buildShowEntry(r) {
     // validate-data.js requires OB slugs to contain "off-broadway". Use the
     // full id so the slug is unique even across cross-year revivals.
     slug: id,
-    venue: r.parsed?.titleParse?.venue || r.venue,
+    // sanitizeVenueForWrite (card #994) refuses a placeholder/neighbourhood-
+    // blob venue string, returning null — main()'s promotion loop must skip
+    // a null-venue entry rather than write it (card #1922, cousin of #1921).
+    // Sanitize each source BEFORE falling back, not after: sanitizing the
+    // combined `titleParse.venue || r.venue` would let a placeholder
+    // titleParse.venue (e.g. "TBA") suppress a genuinely valid r.venue,
+    // losing an otherwise-promotable candidate (ship-check adversarial
+    // review finding, 2026-08-26).
+    venue: sanitizeVenueForWrite(r.parsed?.titleParse?.venue) || sanitizeVenueForWrite(r.venue),
     openingDate: opening,
     previewsStartDate: r.parsed?.dates?.firstPreview || null,
     closingDate: closing,
@@ -126,6 +135,16 @@ function main() {
   const skipped = [];
   for (const r of matches) {
     const entry = buildShowEntry(r);
+    // sanitizeVenueForWrite (card #994) returns null for a placeholder/
+    // neighbourhood-blob venue — refuse to write a garbage venue string
+    // rather than silently promoting it (card #1922, cousin of BRO-160/#1921).
+    if (!entry.venue) {
+      const rawVenue = r.parsed?.titleParse?.venue || r.venue;
+      const reason = `venue "${rawVenue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
+      skipped.push({ entry, reason });
+      logEntry({ kind: 'skip-invalid-venue', title: entry.title, venue: rawVenue, reason });
+      continue;
+    }
     const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
     const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
     if (exactDup) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
@@ -174,4 +193,8 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { buildShowEntry };

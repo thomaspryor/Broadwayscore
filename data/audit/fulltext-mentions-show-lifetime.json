@@ -1,14 +1,13 @@
 {
-  "updatedAt": "2026-08-24T07:48:13.394Z",
-  "scanned": 2016,
-  "showsWithViolations": 316,
-  "totalViolations": 615,
+  "updatedAt": "2026-08-30T12:19:57.709Z",
+  "scanned": 2021,
+  "showsWithViolations": 315,
+  "totalViolations": 613,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
-    "schmigadoon-2026::theatrely--juan-a-ramirez.json",
     "titanique-2026::chicagotribune--chris-jones.json",
     "titanique-2026::deadline--greg-evans.json",
     "titanique-2026::talkinbroadway--howard-miller.json",
@@ -509,7 +508,6 @@
     "copenhagen-2000::the-nation--carol-rocamora.json",
     "bloodlove-off-broadway-2026::front-row-center--kendra-jones.json",
     "an-ark-off-broadway-2026::ap--mark-kennedy.json",
-    "kramerfauci-off-broadway-2026::one-minute-critic--matthew-wexler.json",
     "avenue-q-west-end-2026::theupcoming--benedetta-mancusi.json",
     "back-to-the-future-west-end-2021::times-uk--clive-davis.json",
     "teeth-n-smiles-west-end-2026::financialtimes--tim-bano.json",
@@ -643,7 +641,7 @@
       "showId": "schmigadoon-2026",
       "title": "Schmigadoon!",
       "openingDate": "2026-04-20",
-      "message": "nytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Schmigadoon!' (303 chars): https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html\ntheatrely/Juan A. Ramirez (theatrely--juan-a-ramirez.json) SHIPPED but fullText never mentions 'Schmigadoon!' (500 chars): https://www.theatrely.com/post/schmigadoon-original-broadway-cast-recording-set-to-release-this-summer",
+      "message": "nytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Schmigadoon!' (303 chars): https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
       "violations": [
         {
           "filename": "nytimes--jesse-green.json",
@@ -651,14 +649,6 @@
           "outletId": "nytimes",
           "criticName": "Jesse Green",
           "haystackLength": 303,
-          "textIssuesFlag": false
-        },
-        {
-          "filename": "theatrely--juan-a-ramirez.json",
-          "url": "https://www.theatrely.com/post/schmigadoon-original-broadway-cast-recording-set-to-release-this-summer",
-          "outletId": "theatrely",
-          "criticName": "Juan A. Ramirez",
-          "haystackLength": 500,
           "textIssuesFlag": false
         }
       ]
@@ -6712,22 +6702,6 @@
       ]
     },
     {
-      "showId": "kramerfauci-off-broadway-2026",
-      "title": "Kramer/Fauci",
-      "openingDate": "2026-02-11",
-      "message": "one-minute-critic/Matthew Wexler (one-minute-critic--matthew-wexler.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (2485 chars, textIssues flag set): https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
-      "violations": [
-        {
-          "filename": "one-minute-critic--matthew-wexler.json",
-          "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
-          "outletId": "one-minute-critic",
-          "criticName": "Matthew Wexler",
-          "haystackLength": 2485,
-          "textIssuesFlag": true
-        }
-      ]
-    },
-    {
       "showId": "avenue-q-west-end-2026",
       "title": "Avenue Q",
       "openingDate": "2026-04-16",
@@ -6907,7 +6881,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED but fullText never mentions 'Shadowlands' (3205 chars): https://www.ft.com/content/8d97790f-df25-4cbf-90c9-61e9d4b7ba95\n⚠️  daily-mail/Paul Raven (daily-mail--paul-raven.json) also too short to assess (0 chars): https://www.dailymail.co.uk/tv/article-15559075/PATRICK-MARMION-review-Shadowlands-London-Aldwych-Theatre-Hugh-Bonneville.html",
+      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED but fullText never mentions 'Shadowlands' (3205 chars): https://www.ft.com/content/8d97790f-df25-4cbf-90c9-61e9d4b7ba95",
       "violations": [
         {
           "filename": "financialtimes--sarah-hemming.json",

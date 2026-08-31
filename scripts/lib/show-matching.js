@@ -1018,6 +1018,44 @@ function detectPageMarketQualifier(html, pageTitle) {
  * (e.g. the-gin-game-2026, filed off-broadway in shows.json, sits under
  * Show Score's broadway-shows/ path with no separate production involved).
  */
+/**
+ * Build a showId -> sibling-categories index for validateRoundupPageTitle().
+ *
+ * Two shows sharing a normalized title but sitting in DIFFERENT categories
+ * (a regional premiere and its later Broadway transfer, say) produce pages
+ * that are title-identical, so a title-only match cannot tell them apart.
+ * validateRoundupPageTitle() needs the OTHER categories a title occupies to
+ * make that call, and both the write-time cache guard in
+ * scrape-bww-reviews.js and the post-hoc audit in
+ * audit-aggregator-archive-integrity.js must derive it the same way — a
+ * scraper that computed this differently from the audit would cache exactly
+ * the pages the audit then reddens the trunk over (BRO: three bww-reviews
+ * caches quarantined 2026-08-23 and re-created by the next scrape run
+ * 2026-08-30).
+ *
+ * @param {Object<string,{id:string,title:string,category:string}>} showById
+ * @returns {Object<string,string[]>} showId -> categories of same-title siblings
+ */
+function buildSiblingCategoriesByTitle(showById) {
+  const byTitle = new Map();
+  for (const s of Object.values(showById)) {
+    const t = normalizeTitle(s.title || '');
+    if (!t) continue;
+    if (!byTitle.has(t)) byTitle.set(t, []);
+    byTitle.get(t).push(s);
+  }
+  const siblingCategoriesById = {};
+  for (const s of Object.values(showById)) {
+    const t = normalizeTitle(s.title || '');
+    const group = byTitle.get(t) || [];
+    siblingCategoriesById[s.id] = group
+      .filter(x => x.id !== s.id)
+      .map(x => x.category)
+      .filter(Boolean);
+  }
+  return siblingCategoriesById;
+}
+
 function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategories) {
   if (!html || typeof html !== 'string') {
     return { ok: false, reason: 'no-html', pageTitle: null };
@@ -1552,6 +1590,7 @@ module.exports = {
   titleWordsMatch,
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
+  buildSiblingCategoriesByTitle,
   detectPageMarketQualifier,
   isPunctuationFalsePositive,
   pageTitleConfirmsShow,

@@ -36,7 +36,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
+const { evaluateCurrentRunCorroboration, bucketDateGuardCandidate } = require('./lib/wrong-production-corroboration');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
   || path.join(__dirname, '..', 'data', 'review-texts');
@@ -98,7 +98,6 @@ function run() {
       const corrob = evaluateCurrentRunCorroboration({ review: data, show });
       if (!corrob.strength) continue;
 
-      const trSignal = corrob.signals.find(s => s.startsWith('theatre-record-month:'));
       const entry = {
         showId: showDir,
         title: show.title,
@@ -111,9 +110,10 @@ function run() {
         theatreRecordUrl: data.theatreRecordUrl || null,
       };
 
-      if (trSignal && isBeforePreview) {
+      const bucket = bucketDateGuardCandidate({ corrob, isBeforePreview });
+      if (bucket === 'strong') {
         strong.push(entry);
-      } else if (corrob.strength === 'weak') {
+      } else if (bucket === 'weak') {
         weak.push(entry);
       } else {
         // strong on cv-affirms-production alone, or an after_close TR-month

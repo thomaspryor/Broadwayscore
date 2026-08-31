@@ -17,6 +17,9 @@
 const { normalizeVenueName, getMarketPool } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
 const { VENUE_ALIASES } = require('./title-match');
+// Top-level, not lazy (review catch): text-cleaning.js has no imports of its
+// own, so there is no direct or transitive cycle back to this module.
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 /**
  * Alias-table canonical for a venue string, or null when the table has no
@@ -59,11 +62,37 @@ function aliasCanonical(venue) {
  */
 function venuesMatch(a, b) {
   if (!a || !b) return false;
+  // Decode HTML entities on BOTH sides first (2026-08-30). Scraped venue
+  // strings arrive entity-encoded — Playbill returns "St. Ann&#039;s
+  // Warehouse" where shows.json holds "St. Ann's Warehouse". Neither
+  // aliasCanonical()'s regexes nor normalizeVenueName()'s punctuation
+  // stripping treat "&#039;" as an apostrophe, so the encoded side missed the
+  // VENUE_ALIASES hit the plain side made and the pair compared UNEQUAL.
+  // That reported the same venue as a mismatch and ran Data Validation red on
+  // main (kramerfauci-st-anns-off-broadway-2026).
+  //
+  // Decoded here rather than inside normalizeVenueName because aliasCanonical
+  // runs FIRST and would still see the raw entity — and because this keeps the
+  // change to the venue-equality DECISION, not to the shared normalizer that
+  // 19 other modules import.
+  a = decodeHtmlEntities(a);
+  b = decodeHtmlEntities(b);
   const aliasA = aliasCanonical(a);
   const aliasB = aliasCanonical(b);
   if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
-  const normA = normalizeVenueName(a);
-  return normA !== '' && normA === normalizeVenueName(b);
+  // Strip a leading "The " before the plain-string fallback ONLY — not before
+  // aliasCanonical() above (2026-08-31). venue-classification.js's
+  // normalizeVenueName() strips trailing "Theatre"/"Theater" and parentheticals
+  // but not a leading article, so "West End Theatre" vs "The West End Theatre" —
+  // the same venue, one side just informally dropping "The" — compared UNEQUAL
+  // and ran Data Validation red on main (othello-bedlam-off-broadway-2026,
+  // the-dead-1904-off-broadway-2026). Must run AFTER aliasCanonical: several
+  // VENUE_ALIASES regexes are anchored on a literal "the" (e.g. title-match.js's
+  // /^the\s*new\s*group$/i for The New Group ≡ Signature Center) and stripping it
+  // upstream broke those matches.
+  const stripThe = v => v.replace(/^the\s+/i, '');
+  const normA = normalizeVenueName(stripThe(a));
+  return normA !== '' && normA === normalizeVenueName(stripThe(b));
 }
 
 const KNOWN_DUPLICATES = {

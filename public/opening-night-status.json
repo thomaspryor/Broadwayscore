@@ -1,202 +1,80 @@
 {
-  "generatedAt": "2026-08-24T15:23:49.056Z",
+  "generatedAt": "2026-08-31T01:34:37.499Z",
   "lookbackDays": 3,
-  "shows": [
-    {
-      "id": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-08-21",
-      "status": "open",
-      "slug": "as-you-like-it-globe-west-end",
-      "thumbnail": "/images/shows/as-you-like-it-globe-west-end-2026/thumbnail.webp",
-      "siteScore": 74.54,
-      "liveScore": 75,
-      "scoreDrift": 0.45999999999999375,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 19,
-      "t1": 3,
-      "t2": 9,
-      "t3": 7,
-      "positive": 12,
-      "mixed": 6,
-      "negative": 1,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 9,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-08-24T08:10:21.007Z",
-          "rc": 5,
-          "s": 59.79,
-          "t1": 3,
-          "t2": 2,
-          "t3": 0,
-          "p": 0,
-          "m": 5,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T09:56:08.018Z",
-          "rc": 7,
-          "s": 65.83,
-          "t1": 3,
-          "t2": 3,
-          "t3": 1,
-          "p": 2,
-          "m": 5,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T10:05:26.343Z",
-          "rc": 12,
-          "s": 70.36,
-          "t1": 3,
-          "t2": 4,
-          "t3": 5,
-          "p": 6,
-          "m": 6,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T10:16:01.640Z",
-          "rc": 12,
-          "s": 69.84,
-          "t1": 3,
-          "t2": 4,
-          "t3": 5,
-          "p": 6,
-          "m": 6,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T10:48:24.877Z",
-          "rc": 18,
-          "s": 74.28,
-          "t1": 3,
-          "t2": 8,
-          "t3": 7,
-          "p": 11,
-          "m": 6,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T14:58:21.045Z",
-          "rc": 18,
-          "s": 74.17,
-          "t1": 3,
-          "t2": 8,
-          "t3": 7,
-          "p": 11,
-          "m": 6,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-24T15:23:49.056Z",
-          "rc": 19,
-          "s": 74.54,
-          "t1": 3,
-          "t2": 9,
-          "t3": 7,
-          "p": 12,
-          "m": 6,
-          "n": 1,
-          "bc": "waiting"
-        }
-      ]
-    }
-  ],
+  "shows": [],
   "upcoming": [
     {
-      "id": "paranormal-activity-2026",
-      "title": "Paranormal Activity",
-      "market": "broadway",
-      "category": "broadway",
+      "id": "electra-persona-west-end-2026",
+      "title": "Electra / Persona",
+      "market": "west-end",
+      "category": "west-end",
       "type": "play",
-      "openingDate": "2026-08-25",
+      "openingDate": "2026-09-01",
       "status": "previews",
-      "slug": "paranormal-activity",
-      "thumbnail": "/images/shows/paranormal-activity-2026/thumbnail.webp",
+      "slug": "electra-persona-west-end",
+      "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
       "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
           "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
-          "warn": true
         }
       },
       "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-02",
+      "status": "previews",
+      "slug": "a-month-in-the-country-west-end",
+      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
+      "daysUntil": 2,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-story-west-end-2026",
+      "title": "The Story",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-09-03",
+      "status": "previews",
+      "slug": "the-story-west-end",
+      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
+      "daysUntil": 3,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
       },
       "preflight": false
     }

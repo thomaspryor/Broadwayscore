@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor } = require('./gap-audit-merge.js');
+const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange } = require('./gap-audit-merge.js');
 
 const result = (showId, over = {}) => ({
   showId,
@@ -146,6 +146,44 @@ test('stateMap keys by showId and skips junk rows', () => {
     { title: 'no id' },
   ]);
   assert.deepStrictEqual(m, { 'a-show': 'complete', 'b-show': 'incomplete' });
+});
+
+// BRO-513: review-gap's blast-radius guard needs to tell "the census found a
+// genuine NEW gap" apart from "we lost coverage we used to have" even though
+// both are the SAME complete -> incomplete verdict transition. riskStateMap +
+// isRiskyGapChange are the real functions the guard call site uses (not
+// hand-rolled test doubles), exercised against realistic result() shapes.
+test('riskStateMap/isRiskyGapChange: a NEW aggregator-listed gap is not risky', () => {
+  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  // Same covered URL still present, PLUS a brand-new URL the census just found
+  // that we don't have yet — candidateCount grows, liveCount is unaffected.
+  const next = result('a-show', {
+    aggregatorListedUrls: ['https://x.com/review-a'],
+    missing: [{ host: 'y.com', url: 'https://y.com/review-b' }],
+  });
+  const prevMap = riskStateMap([prev]);
+  const nextMap = riskStateMap([next]);
+  assert.strictEqual(prevMap['a-show'], 'complete:1:1');
+  assert.strictEqual(nextMap['a-show'], 'incomplete:1:2');
+  assert.strictEqual(isRiskyGapChange(prevMap['a-show'], nextMap['a-show']), false);
+});
+
+test('riskStateMap/isRiskyGapChange: the SAME URL flipping from covered to missing IS risky (broken checkout)', () => {
+  // Simulates a broken/partial review-texts checkout: the exact same
+  // aggregator-listed URL that used to resolve as covered now shows up in
+  // `missing` (loadDirFiles() returned [] this run) — liveCount drops even
+  // though the verdict transition (complete -> incomplete) looks identical
+  // to the benign new-gap case above.
+  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  const next = result('a-show', {
+    aggregatorListedUrls: ['https://x.com/review-a'],
+    missing: [{ host: 'x.com', url: 'https://x.com/review-a' }],
+  });
+  const prevMap = riskStateMap([prev]);
+  const nextMap = riskStateMap([next]);
+  assert.strictEqual(prevMap['a-show'], 'complete:1:1');
+  assert.strictEqual(nextMap['a-show'], 'incomplete:0:1');
+  assert.strictEqual(isRiskyGapChange(prevMap['a-show'], nextMap['a-show']), true);
 });
 
 test('countsFor tolerates missing arrays on legacy rows', () => {

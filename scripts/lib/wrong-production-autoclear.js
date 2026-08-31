@@ -586,6 +586,49 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
 }
 
 /**
+ * Decide whether a STALE anticipatory_pre_opening_post wrongProduction flag
+ * should be auto-cleared because re-running isAnticipatoryPreviewPost on the
+ * review's CURRENT publishDate/showCategory/openingDate no longer rejects it.
+ *
+ * Background (BRO-39): the OB/OWE 14-day anticipatory grace
+ * (OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING, bumped from 2 days 2026-05-27 —
+ * see content-filters.js) only applies at ingest time. A file flagged when
+ * the show's category lookup fell through to the 2-day Broadway default (or
+ * before an openingDate correction landed) carries a permanently stale flag
+ * — collect-review-texts.js never re-runs the gate on an already-flagged
+ * file. Mirrors shouldAutoClearStaleDateGuard's re-evaluate-and-compare
+ * shape, but for the anticipatory gate instead of the dated pre-opening one.
+ *
+ * SAFETY: only touches flags the anticipatory ingest gate itself set
+ * (wrongProductionReason === 'anticipatory_pre_opening_post' — the exact
+ * value collect-review-texts.js writes, same value keyed in
+ * DATE_ONLY_AUTO_REASONS above). Manual / CV / cross-market / other auto-flag
+ * reasons are untouched. Still respects high-confidence CV wrongProduction/
+ * wrongArticle, ensemble consensus, and stale-relative-to-URL-rewrite text —
+ * same bar as every other predicate in this file.
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.stillRejected - isAnticipatoryPreviewPost(...).rejected
+ *   recomputed on the review's CURRENT resolved publishDate, the show's
+ *   CURRENT category, and the show's CURRENT openingDate
+ * @returns {boolean}
+ */
+function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionReason !== 'anticipatory_pre_opening_post') return false;
+  if (stillRejected !== false) return false;
+  const cvConfirmedWrongProduction = data.contentVerification?.wrongProduction === true
+    && data.contentVerification?.confidence === 'high';
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  if (cvConfirmedWrongProduction || cvConfirmedWrongArticle) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
+/**
  * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
  * strip wrongProduction from a London-market show reviewed by a UK or
  * dual-market outlet.
@@ -669,5 +712,6 @@ module.exports = {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
 };

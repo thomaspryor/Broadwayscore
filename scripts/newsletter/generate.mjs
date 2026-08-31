@@ -27,10 +27,12 @@ const cjsRequire = createRequire(import.meta.url);
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
+const { getSeasonForDate, getSeasonDates } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -658,12 +660,18 @@ function openingEventsForWeek(category) {
 }
 
 // SECTION: BW openings (includes reopenings — see openingEventsForWeek)
+// Card order must match the subject/lede's newsworthiness pick — the same
+// class of bug fixed for WE (see londonSection()'s ledeStory float and
+// scripts/lib/opening-story-order.js's header comment: BRO-177, a gold-tier
+// BW opening rendered second because this section had no sort at all and
+// simply mirrored shows.json insertion order).
 function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
@@ -1926,15 +1934,26 @@ function buzziestSection() {
 function seasonStandingFor(openedShow) {
   // ONLY for NEW (non-revival) shows — revivals are judged differently
   if (openedShow.isRevival) return null;
-  // Same season = openingDate within ~12 months before weekEnd (Tony eligibility window approximation)
-  const seasonStart = new Date(weekEndStr + 'T12:00:00'); seasonStart.setMonth(seasonStart.getMonth() - 12);
-  const seasonStartStr = seasonStart.toISOString().slice(0, 10);
+  // Same season = the real Broadway season (Jul 1 - Jun 30, scripts/lib/broadway-seasons.js)
+  // that openedShow's own opening date falls in — the SAME boundary getSeasonSlug()
+  // uses for the site's "This Season" browse pages/rank cells. Was previously a rolling
+  // "12 months before weekEnd" window, which happily spanned a season boundary: a show
+  // that opened in the first days of a brand-new season (e.g. late Aug) got compared
+  // against shows from the tail of the PRIOR season (as late as the previous Sep),
+  // reading as "New Plays This Season" while actually mixing two different seasons
+  // (owner-flagged, 2026-08-30 — Paranormal Activity opened Aug 25 2026, the start of
+  // 2026-27, and was shown ranked against Punch/Giant/etc. from the 2025-26 season).
+  const openedSeason = getSeasonForDate(openedShow.openingDate);
+  const { start: seasonStartDate, end: seasonEndDate } = getSeasonDates(openedSeason);
+  const seasonStartStr = seasonStartDate.toISOString().slice(0, 10);
+  const seasonEndStr = seasonEndDate.toISOString().slice(0, 10);
   const peers = shows.filter(s =>
     s.category === 'broadway'
     && s.type === openedShow.type
     && !!s.isRevival === !!openedShow.isRevival
     && s.openingDate
     && s.openingDate >= seasonStartStr
+    && s.openingDate <= seasonEndStr
     && s.openingDate <= weekEndStr
   );
   if (peers.length < 3) return null;
@@ -2003,12 +2022,32 @@ let _londonHasGoldOpening = false;
 // this same tier split) can never disagree about which show is "first."
 function weTierRank(category) { return category === 'west-end' ? 0 : 1; }
 
+// Grace window (mirrors offBroadwayOpenings()'s 14-day catch-up): a WE/OWE
+// show whose openingDate falls in-week always qualifies; one that opened up
+// to 14 days earlier still qualifies IF it hasn't already been featured in a
+// recent issue (lastFeaturedIds). Without this, a show that opens late in the
+// week and only crosses minReviews() after that Saturday's cron has already
+// run (e.g. As You Like It - Globe: opened Aug 21, still only had 2 reviews
+// at the Aug 22 11:30 UTC cron, didn't cross the 5-review threshold until
+// Aug 23) falls through permanently — inWeek() never matches again the
+// following week since its openingDate has moved out of window.
+function inLondonOpeningWindow(s) {
+  if (inWeek(s.openingDate)) return true;
+  if (!s.openingDate) return false;
+  return s.openingDate >= _daysBefore(14) && s.openingDate < weekStartStr && !lastFeaturedIds.has(s.id);
+}
+
 function weOpeningStories() {
   const ranked = shows
-    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
-    .map(s => ({ s, agg: aggregateScore(s.id) }))
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
+    .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
-    .sort((a, b) => (weTierRank(a.s.category) - weTierRank(b.s.category))
+    // Genuine in-week openings always outrank a grace-window catch-up show
+    // (openingDate outside this week — see inLondonOpeningWindow()), however
+    // many reviews the catch-up show has: a catch-up show is there to be
+    // caught, not to steal this week's subject/lede from the real story.
+    .sort((a, b) => (Number(a.isCatchUp) - Number(b.isCatchUp))
+      || (weTierRank(a.s.category) - weTierRank(b.s.category))
       || ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   const weLead = (process.env.NEWSLETTER_WE_LEAD || '').trim();
   if (weLead) {
@@ -2019,16 +2058,19 @@ function weOpeningStories() {
 }
 
 function londonSection() {
-  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
+  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // Sort: West End before Off West End (see weTierRank), then Gold first, then
-  // by score desc. When the DISPLAYED (rounded) scores tie, rank the
-  // better-reviewed show first — more reviews is a more settled verdict —
-  // rather than letting a sub-point raw difference decide order (Sinatra 64
-  // on 29 reviews should sit above Archduke 64 on 7).
+  // Sort: genuine in-week openings before grace-window catch-up shows (see
+  // weOpeningStories()), then West End before Off West End (see weTierRank),
+  // then Gold first, then by score desc. When the DISPLAYED (rounded) scores
+  // tie, rank the better-reviewed show first — more reviews is a more
+  // settled verdict — rather than letting a sub-point raw difference decide
+  // order (Sinatra 64 on 29 reviews should sit above Archduke 64 on 7).
   withScore.sort((a, b) => {
+    const ac = Number(a.isCatchUp), bc = Number(b.isCatchUp);
+    if (ac !== bc) return ac - bc;
     const at = weTierRank(a.s.category), bt = weTierRank(b.s.category);
     if (at !== bt) return at - bt;
     const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
@@ -2051,6 +2093,15 @@ function londonSection() {
     if (li > 0) withScore.unshift(withScore.splice(li, 1)[0]);
   }
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
+  // Mark featured (mirrors offBroadwayOpenings()) so next week's
+  // inLondonOpeningWindow() grace window — via lastFeaturedIds, sourced from
+  // this issue's persisted featuredShowIds — doesn't re-surface a show
+  // that's already been rendered here. Without this, every WE/OWE opening
+  // stayed eligible for up to 14 more days and could out-rank (by review
+  // count) the following week's actual in-week lead story — caught by
+  // we-opening-stories.test.mjs (Trainspotting the Musical, opened Jul 22,
+  // outranking the real Jul 27 week's Tao of Glass lead).
+  markFeatured(...withScore.map(x => x.s.id));
   markOpening('london-openings', withScore.map(x => x.s));
   // Every opening is a full feature card — same large size for all opening
   // shows (user 2026-07-11). The old gold-hero / non-gold-compact split (which

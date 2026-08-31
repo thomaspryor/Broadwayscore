@@ -87,6 +87,13 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   // Aug 5 cron). BD web_unlocker2 fetches IBDB fine — let it go straight there.
   'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
   'broadway.org',       // Playbill/closing dates — public HTML
+  'playbill.com',       // Production pages — public static HTML, but the "last
+                         // resort" Playwright tier waits for networkidle, and
+                         // playbill.com's ad/analytics XHRs never let it settle
+                         // (times out at 30s, same failure mode as Signature
+                         // Theatre). Fast domcontentloaded works fine (BRO-2023).
+  'web.playbill.com',   // Same site, alternate hostname seen in cached URLs
+                         // (data/playbill-urls.json) — same fix applies.
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
   // talkinbroadway.com removed — behind Cloudflare managed challenge since ~2026-04;
@@ -1195,6 +1202,48 @@ async function fetchJSON(url, options = {}) {
 // Pattern: title starts with the site name followed by punctuation or "Latest News" etc.
 const HOMEPAGE_TITLE_RE = /^BroadwayWorld:|^The Wall Street Journal\s*$|^The New York Sun\s*$|^Playbill\s*[-|]|^TimeOut\s*[-|]/i;
 
+// Host-scoped trailing-ID extractors for verifyFetchedUrl's post_id_match check
+// (task #6 Variety, BRO-151 ft.com). Hoisted to module scope — these are static
+// and were previously rebuilt on every verifyFetchedUrl() call.
+//
+// `exactActual`: when true, the ACTUAL (modern/canonical) segment must be
+// nothing but the extracted ID — ft.com's real /content/<uuid> paths are
+// always bare, so requiring an exact match there (while still tolerating
+// cruft like `,Authorised=false.html` on the legacy/expected side) rules out
+// a hypothetical future suffixed variant, e.g. /content/<uuid>-related,
+// matching on a shared ID prefix (adversarial review finding, BRO-151).
+// Variety's end-anchored digit ID is a suffix of a full slug on both sides,
+// so it must stay exempt from this constraint.
+const TRAILING_ID_EXTRACTORS = {
+  'variety.com': {
+    extract: (s) => { const m = s && s.match(/(\d{6,})$/); return m && m[1]; },
+    exactActual: false,
+  },
+  'ft.com': {
+    extract: (s) => {
+      const m = s && s.match(/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+      return m && m[1].toLowerCase();
+    },
+    exactActual: true,
+  },
+};
+
+// BRO-151: show-score.com re-categorizes shows across market/venue-type
+// directories (broadway-shows ↔ off-broadway-shows ↔ off-off-broadway-shows
+// ↔ uk/london/{west-end,off-west-end}-shows) while keeping the show's own
+// slug stable. Unlike the generic suffix_redirect check (same host, same
+// parent directory, word-boundary suffix), this drops the parent-directory
+// requirement entirely — so it intentionally requires an EXACT final-segment
+// match rather than a word-boundary suffix match: two independent adversarial
+// reviews (BRO-151) flagged that a word-boundary allowance here (e.g.
+// requested .../bull matching actual .../bull-2) has no directory constraint
+// backing it up, unlike suffix_redirect, and show-score's slugs are
+// human-readable titles (not opaque IDs), so a same-titled-but-different
+// production (a revival, a transfer) could collide. Exact match gives up the
+// small number of suspects where show-score also appends a suffix (e.g.
+// "-offline-productions") but eliminates that false-accept class entirely.
+const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
+
 /**
  * Verify that fetched HTML actually corresponds to the requested URL.
  * Detects Cloudflare redirects, homepage returns, and canonical URL mismatches.
@@ -1250,11 +1299,28 @@ function verifyFetchedUrl(html, expectedUrl) {
   //   - http:// vs https:// (e.g. old NYPost URLs stored as http but canonicalized to https)
   //   - invisible/bidi Unicode marks (see stripInvisibleUnicode above)
   // Path-only comparison is robust: none of these change the article served.
+  //
+  // Second arg to `new URL()` resolves relative canonical/og:url values (legal
+  // per the HTML spec, resolved against the page's own URL absent a <base>
+  // tag) — e.g. todaytix.com's og:url is a bare `/nyc/shows/<id>-<slug>?...`
+  // path with no scheme/host. Without a base, `new URL()` throws and the catch
+  // branch compared the raw relative string against a full hostname+path,
+  // guaranteeing a false url_mismatch even when the path matched exactly.
+  //
+  // Base resolution is deliberately restricted to unambiguous ROOT-RELATIVE
+  // paths (`/foo`, not `//foo`, `?foo`, `#foo`, or `foo`) — a query-only or
+  // fragment-only reference resolved against a base silently INHERITS the
+  // base's path, which would make a page with a vacuous/malformed canonical
+  // tag falsely verify against whatever we requested (adversarial review
+  // finding, BRO-151). Root-relative is the only shape confirmed in the wild.
+  const ROOT_RELATIVE_RE = /^\/[^/]/;
   function normalizeForVerify(u) {
+    const cleaned = stripInvisibleUnicode(u);
+    const base = ROOT_RELATIVE_RE.test(cleaned) ? expectedUrl : undefined;
     try {
-      const parsed = new URL(stripInvisibleUnicode(u));
+      const parsed = new URL(cleaned, base);
       return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
-    } catch { return stripInvisibleUnicode(u).toLowerCase().replace(/\/$/, ''); }
+    } catch { return cleaned.toLowerCase().replace(/\/$/, ''); }
   }
 
   const normExpected = normalizeForVerify(expectedUrl);
@@ -1315,13 +1381,36 @@ function verifyFetchedUrl(html, expectedUrl) {
       // false-match under this rule with no host restriction — confirmed in
       // review. Only allowlist hosts verified to use a CMS-unique numeric
       // post ID (not a date/index) in this position.
-      const POST_ID_HOSTS = new Set(['variety.com']);
-      if (POST_ID_HOSTS.has(expHost)) {
-        const expIdMatch = expLast && expLast.match(/(\d{6,})$/);
-        const actIdMatch = actLast && actLast.match(/(\d{6,})$/);
-        if (expIdMatch && actIdMatch && expIdMatch[1] === actIdMatch[1]) {
+      //
+      // BRO-151: audited the top hosts in url-mismatch-suspects.json for the
+      // same class of bug. ft.com's legacy /cms/s/<n>/<uuid>.html permalinks
+      // (pre-2016) redirect to a totally different /content/<uuid> structure
+      // — the FT.com content UUID is embedded at the START of the legacy
+      // segment (sometimes followed by `,Authorised=false.html` cruft). 17
+      // live suspects (all same-article) confirmed this is safe to allowlist.
+      // See TRAILING_ID_EXTRACTORS (module scope, above) for extractor defs.
+      const idCfg = TRAILING_ID_EXTRACTORS[expHost];
+      if (idCfg) {
+        const expId = idCfg.extract(expLast);
+        const actId = idCfg.extract(actLast);
+        const actualIsBareId = !idCfg.exactActual || (actLast && actLast.toLowerCase() === actId);
+        if (expId && actId && expId === actId && actualIsBareId) {
           return { verified: true, reason: 'post_id_match' };
         }
+      }
+
+      // BRO-151: show-score.com re-categorizes shows across market/venue-type
+      // directories (broadway-shows ↔ off-broadway-shows ↔ off-off-broadway-shows
+      // ↔ uk/london/{west-end,off-west-end}-shows) while keeping the show's own
+      // slug stable — the suffix_redirect check above requires matching parent
+      // directories, which fails here because the ENTIRE directory changes, not
+      // just the final segment. See CATEGORY_DRIFT_HOSTS (module scope, above)
+      // for why this requires an EXACT slug match rather than a word-boundary
+      // suffix match. 29 of 30 live suspects confirmed safe under exact match
+      // (the 30th, a show-score-appended "-offline-productions" suffix, is
+      // deliberately left unmatched — see comment above).
+      if (CATEGORY_DRIFT_HOSTS.has(expHost) && expLast && actLast && expLast === actLast) {
+        return { verified: true, reason: 'category_redirect' };
       }
     }
   } catch { /* fall through */ }

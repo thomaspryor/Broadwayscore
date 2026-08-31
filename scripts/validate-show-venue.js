@@ -45,6 +45,11 @@ const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
+const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
+const { decodeEntities } = require('./lib/reverse-discovery');
+const {
+  DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
+} = require('./lib/venue-date-compare');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -69,7 +74,6 @@ const dryRun = args.includes('--dry-run');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
 const verbose = args.includes('--verbose');
 
-const DATE_DELTA_DAYS = 30;
 const MONTH_MAP = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
                     jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
 
@@ -213,7 +217,10 @@ function parseTitleVenueYear(html) {
   // Page title pattern: "Title (Off-Broadway, Venue, YYYY) | Playbill"
   const tm = html.match(/<title>([^<]+)<\/title>/);
   if (!tm) return null;
-  const t = tm[1].trim();
+  // Playbill's raw <title> text carries HTML entities (e.g. "St. Ann&#039;s
+  // Warehouse") — decode before parsing/comparing or venuesMatch() never
+  // matches an apostrophe-bearing venue against shows.json's plain text.
+  const t = decodeEntities(tm[1]).trim();
   const m = t.match(/^(.*?)\s*\(\s*(Broadway|Off-Broadway|Off-Off-Broadway|West End|Tour)\s*,\s*([^,]+?)\s*,\s*(\d{4})\s*\)/i);
   if (!m) return { rawTitle: t, market: null, venue: null, year: null };
   return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };
@@ -241,78 +248,6 @@ function parseFactDates(html) {
     else if (label.includes('closing')) out.closingDate = iso;
   }
   return out;
-}
-
-function urlYear(url) {
-  const m = url.match(/-(\d{4})(?:[\/?#]|$)/);
-  return m ? parseInt(m[1], 10) : null;
-}
-
-function daysBetween(a, b) {
-  if (!a || !b) return null;
-  const da = new Date(a);
-  const db = new Date(b);
-  if (isNaN(da.getTime()) || isNaN(db.getTime())) return null;
-  return Math.round(Math.abs((db - da) / 86400000));
-}
-
-function compareShow(show, parsed, playbillUrl) {
-  const mismatches = [];
-  const showVenueCanon = canonicalVenue(show.venue || '');
-  const pageVenueCanon = canonicalVenue(parsed.titleParse?.venue || '');
-  // The actual mismatch decision uses venuesMatch(), not the showVenueCanon/
-  // pageVenueCanon equality above (those two stay as display-only fields in
-  // the audit record below) — canonicalVenue()'s fallback for a venue
-  // outside VENUE_ALIASES is just the lowercased FIRST WORD, so two
-  // genuinely different venues sharing a leading word ("The X") would
-  // silently PASS this check as "not a mismatch" (BRO-243). That's the wrong
-  // direction of error for a venue-mismatch DETECTOR — false negatives are
-  // exactly what this script exists to catch.
-  if (show.venue && parsed.titleParse?.venue && !venuesMatch(show.venue, parsed.titleParse.venue)) {
-    mismatches.push({
-      field: 'venue',
-      shows: show.venue,
-      showsCanonical: showVenueCanon,
-      playbill: parsed.titleParse?.venue,
-      playbillCanonical: pageVenueCanon,
-    });
-  }
-
-  // Year: prefer URL year (always present); cross-check with title year.
-  const pbYear = urlYear(playbillUrl) || parsed.titleParse?.year || null;
-  const showYear = (() => {
-    if (show.openingDate) return parseInt(show.openingDate.slice(0, 4), 10);
-    const idy = (show.id || '').match(/\d{4}/);
-    return idy ? parseInt(idy[0], 10) : null;
-  })();
-  if (pbYear && showYear && pbYear !== showYear) {
-    mismatches.push({ field: 'opening-year', shows: showYear, playbill: pbYear });
-  }
-
-  // Date deltas (only when both ends are known).
-  if (show.openingDate && parsed.dates?.openingDate) {
-    const delta = daysBetween(show.openingDate, parsed.dates.openingDate);
-    if (delta !== null && delta > DATE_DELTA_DAYS) {
-      mismatches.push({
-        field: 'openingDate',
-        shows: show.openingDate,
-        playbill: parsed.dates.openingDate,
-        deltaDays: delta,
-      });
-    }
-  }
-  if (show.closingDate && parsed.dates?.closingDate) {
-    const delta = daysBetween(show.closingDate, parsed.dates.closingDate);
-    if (delta !== null && delta > DATE_DELTA_DAYS) {
-      mismatches.push({
-        field: 'closingDate',
-        shows: show.closingDate,
-        playbill: parsed.dates.closingDate,
-        deltaDays: delta,
-      });
-    }
-  }
-  return mismatches;
 }
 
 async function validateOne(show, log) {
@@ -351,22 +286,27 @@ async function validateOne(show, log) {
 
   const titleParse = parseTitleVenueYear(html);
   const dates = parseFactDates(html);
-  const parsed = { titleParse, dates };
-  log(`  parsed venue: ${titleParse?.venue || '(none)'} | year ${titleParse?.year || '(none)'} | opening ${dates.openingDate || '(none)'}`);
+  const tagLine = parsePlaybillTagLine(html);
+  const parsed = { titleParse, dates, tagLine };
+  log(`  parsed venue: ${titleParse?.venue || '(none)'} | year ${titleParse?.year || '(none)'} | opening ${dates.openingDate || '(none)'} | revival ${tagLine.revivalStatus}`);
 
-  const mismatches = compareShow(show, parsed, urlResult.url);
+  const { mismatches, explainedByPriorRun } = compareShow(show, parsed, urlResult.url);
+  if (explainedByPriorRun.length) {
+    log(`  ℹ ${explainedByPriorRun.length} field(s) explained by priorRuns (Playbill page describes an earlier run):`);
+    explainedByPriorRun.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
+  }
   if (mismatches.length === 0) {
     log(`  ✓ match`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'match', playbillUrl: urlResult.url, parsed, mismatches: [],
+      result: 'match', playbillUrl: urlResult.url, parsed, mismatches: [], explainedByPriorRun,
     };
   }
   log(`  ✗ ${mismatches.length} mismatch(es):`);
   mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
   return {
     id: show.id, title: show.title, venue: show.venue,
-    result: 'mismatch', playbillUrl: urlResult.url, parsed, mismatches,
+    result: 'mismatch', playbillUrl: urlResult.url, parsed, mismatches, explainedByPriorRun,
   };
 }
 
@@ -416,9 +356,10 @@ async function main() {
   const mismatches = results.filter(r => r.result === 'mismatch');
   const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
+  const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
   console.log('');
-  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved`);
+  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
   if (mismatches.length) {
     console.log('Mismatches:');
     for (const r of mismatches) {
@@ -459,4 +400,5 @@ if (require.main === module) {
 module.exports = {
   isProvisional, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
+  findCorroboratingPriorRun, findPlaybillUrl, validateOne,
 };

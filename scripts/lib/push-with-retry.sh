@@ -135,6 +135,43 @@ git_push() {
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
 }
 
+# Strips credential-shaped text out of captured git stderr before it's echoed
+# to CI logs (ship-check adversarial finding, task #1849). Two passes:
+#  1. Embedded URL userinfo — https://x-access-token:TOKEN@github.com/...,
+#     used by the review-texts/private-repo callers of this shared script.
+#  2. Authorization header values — defense-in-depth for the extraheader-based
+#     auth actions/checkout normally uses (a base64 token in
+#     http.<url>.extraheader, never URL-embedded); git does not echo this in
+#     ordinary fetch failures, but redact on sight rather than assume.
+_redact_creds() {
+  sed -E \
+    -e 's#://[^/@[:space:]]*@#://***@#g' \
+    -e 's#([Aa][Uu][Tt][Hh][Oo][Rr][Ii][Zz][Aa][Tt][Ii][Oo][Nn]:? *)(([Bb][Aa][Ss][Ii][Cc]|[Bb][Ee][Aa][Rr][Ee][Rr]) +)?[A-Za-z0-9+/=_.-]{8,}#\1[REDACTED]#g'
+}
+
+# Task #1849: the shallow-fetch block's two retry-loop fetch attempts
+# (explicit-refspec + bare-form fallback) both swallowed stderr via
+# `2>/dev/null`, so a real incident (data-health-check.yml run 32399332590,
+# 2026-08-20: all 25 retries failed identically at rc=128) left CI logs with
+# only the rc code, never the actual git error — impossible to root-cause
+# without reproducing live. This wrapper captures stderr to a temp file and
+# echoes its (redacted, truncated) tail whenever the fetch fails, so the next
+# failure is diagnosable from its own log instead of requiring a fresh
+# incident. Success path is unaffected — no output beyond what callers already
+# print. Always cleans up its temp file, on both outcomes.
+_fetch_with_captured_stderr() {
+  local errfile
+  errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-fetch-err.$$.$RANDOM")
+  chmod 600 "$errfile" 2>/dev/null || true
+  git_fetch "$@" 2>"$errfile"
+  local rc=$?
+  if [ "$rc" -ne 0 ] && [ -s "$errfile" ]; then
+    echo "  fetch stderr: $(tail -c 800 "$errfile" | _redact_creds | tr '\n' ' ')"
+  fi
+  rm -f "$errfile" 2>/dev/null || true
+  return $rc
+}
+
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
 # abandoned — either the no-op-rebase abort or full retry exhaustion below — so
 # repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
@@ -146,6 +183,18 @@ git_push() {
 # explicit-destination fetch below prevents the no-op in the first place. The log
 # reliably captures local runs and any job that lands a LATER successful push.
 PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$SCRIPT_DIR/../../data/audit/push-retry-failures.jsonl}"
+# _FAILURE_TELEMETRY_SENT: fires the durable (git-branch) telemetry write
+# only on this invocation's FIRST call to record_push_failure(), not every
+# one (task: push-retry-failure telemetry, 2026-08-23, /plan-review'd —
+# three independent reviewers caught that this function is called from
+# MULTIPLE points inside the retry loop under real contention, not only once
+# at final exhaustion — e.g. line ~994/~1551's commit-dropped-post-push path
+# can recur across attempts. One durable record per invocation is enough to
+# make the failure OBSERVABLE; spawning a background process per retry
+# attempt would waste runner resources for zero additional signal value).
+# The LOCAL log below is unaffected — it still appends on every call, as
+# before, for full-detail post-hoc debugging when a later job's log survives.
+_FAILURE_TELEMETRY_SENT=false
 record_push_failure() {
   local reason="${1:-unknown}" attempt="${2:-0}"
   local ts remote workflow
@@ -173,6 +222,38 @@ record_push_failure() {
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
     "$workflow" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
+
+  # Durable telemetry (task: push-retry-failure telemetry, 2026-08-23).
+  # SYNCHRONOUS but HARD-CAPPED at 15s via the existing _timeout helper above
+  # (not backgrounded+disowned) — deliberate choice over fire-and-forget: a
+  # GitHub Actions step's process group can be reaped moments after the
+  # step's own script exits, so a truly backgrounded child has no guarantee
+  # of surviving long enough to complete its CAS write on an ephemeral
+  # runner. 15s (not the original 5s — ship-check adversarial review caught
+  # that 5s killed record-push-retry-failure.js's own CAS retry logic before
+  # it could complete even ONE attempt cycle under real contention, making
+  # the retry budget theoretical rather than real; see that script's header
+  # CALLING CONTRACT for the matching arithmetic — its 6-attempt/full-jitter
+  # budget is sized to fit inside this 15s ceiling with margin) is still a
+  # small, PREDICTABLE latency tax — a world apart from the original design 3
+  # independent plan-review reviewers flagged (an unbounded-feeling wait,
+  # called from inside a hot loop, up to ~25x per invocation in the
+  # documented worst case). Firing only once per invocation (the
+  # _FAILURE_TELEMETRY_SENT gate above) already bounds the worst-case total
+  # added latency to this single 15s cap, not 15s times the retry count.
+  # PUSH_SKIP_FAILURE_LEDGER=1 disables it independently of PUSH_SKIP_LEDGER
+  # (the unrelated push-success ledger's own switch).
+  if [ "$_FAILURE_TELEMETRY_SENT" = "false" ] \
+     && [ "${PUSH_SKIP_FAILURE_LEDGER:-}" != "1" ] \
+     && command -v node >/dev/null 2>&1 \
+     && [ -f "$SCRIPT_DIR/../record-push-retry-failure.js" ]; then
+    _FAILURE_TELEMETRY_SENT=true
+    _timeout 15 node "$SCRIPT_DIR/../record-push-retry-failure.js" \
+      "--reason=$reason" "--attempt=$attempt" "--max-retries=${MAX_RETRIES:-0}" \
+      "--branch=${PULL_BRANCH:-main}" "--remote=$remote" \
+      "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
+      >/dev/null 2>&1 || true
+  fi
 }
 
 # Pre-push conflict-marker guard (root-cause fix, 2026-06-29 / Notion 38e637c5).
@@ -698,6 +779,38 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/audit/express-retry-queue.json)
+        # Multi-writer (card #1889): opening-night-express.yml uses a
+        # per-show concurrency group, so multiple shows opening the same
+        # night can each append a retry entry around the same time. Unlike
+        # the per-run-independent audit/ logs below, a whole-file keep-local
+        # here would silently drop one show's queued retry — same class as
+        # feedback-request-ledger.json above and social-post-history.json.
+        echo "  Auto-resolving (express-retry-queue merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::express-retry-queue merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
+      data/audit/ob-venue-candidates.json)
+        # BRO-158 ("the #788 class"): 4 independent producers, each in its
+        # own GitHub Actions checkout. Falling to the generic keep-local case
+        # below would silently drop every candidate the OTHER run staged or
+        # pruned this push cycle — the exact real merge conflict this ticket
+        # was filed against (2026-08-03). mergeObVenueCandidates unions both
+        # sides by candidateHash; ours wins on shared keys. (The likelier
+        # non-conflicting-rebase shape of this same race is covered by
+        # reconcile_merged_json() instead — see this file's registry entry.)
+        echo "  Auto-resolving (ob-venue-candidates merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::ob-venue-candidates merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"
@@ -1157,29 +1270,60 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 
   FETCH_DEPTH_ARGS=()
   if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
-    # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
-    # only a handful of commits). This is the commit that must remain an
-    # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
-    # captured above, before the unshallow attempt — reused here, not
-    # recomputed (still memoized the same way if this repo was never touched
-    # by that block, e.g. inside GITHUB_ACTIONS).
-    if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
-      # None of the emitted args can contain whitespace (asserted in the test),
-      # so unquoted word-splitting into the array is safe here.
-      # shellcheck disable=SC2207
-      FETCH_DEPTH_ARGS=($(node "$SCRIPT_DIR/shallow-fetch-args.js" \
-        --is-shallow=true \
-        --oldest-epoch="${_shallow_base_epoch:-}" \
-        --slack-sec="${SHALLOW_SINCE_SLACK_SEC:-1800}" 2>/dev/null || true))
+    if [ "${_shallow_bound_escalated:-0}" = "1" ] && [ "${PUSH_SKIP_SHALLOW_ESCALATION:-}" != "1" ]; then
+      # Task #1849: a PRIOR iteration's shallow-bounded fetch already failed
+      # FAST (rejected outright — rc != 124, not a timeout) using this exact
+      # memoized bound (_shallow_base_epoch is captured ONCE for the whole
+      # run, see above and its "Computed ONCE" comment below) — reusing the
+      # identical bound here would just repeat the identical rejection on
+      # every remaining retry, which is exactly the incident this fixes
+      # (data-health-check.yml run 32399332590: 25/25 identical rc=128
+      # failures, main never pushed). Skip the node computation entirely and
+      # widen with a single fixed --deepen instead: 2000, matching the
+      # value the existing ancestry-escalation block below already uses for
+      # its own "epoch unusable" widen case, not a bespoke number — one
+      # rung, not a ladder (ship-check adversarial finding, task #1849: a
+      # multi-level ladder guesses at how much wider is "enough" with zero
+      # evidence a wider bound helps if 2000 doesn't — if the real rejection
+      # cause isn't about window size at all, no amount of further widening
+      # would fix it either). Not restarting at 200: the bare-form fallback
+      # below already tries --deepen=200 once before this branch is ever
+      # reached, so resetting to 200 here would just replay that already-
+      # failed value (second-opinion review finding, task #1849). --deepen
+      # never SHORTENS existing history (see shallow-fetch-args.js's
+      # DEFAULT_FALLBACK_DEPTH comment), so it's safe to reissue verbatim on
+      # later iterations too — once escalated we stay escalated for the rest
+      # of this run, same as _shallow_base_sha/_shallow_base_epoch's own
+      # memoization above. PUSH_SKIP_SHALLOW_ESCALATION=1 is an incident
+      # escape hatch back to the pre-#1849 behavior, matching this file's
+      # existing PUSH_SKIP_UNSHALLOW/PUSH_SKIP_CONFLICT_CHECK pattern.
+      FETCH_DEPTH_ARGS=(--deepen=2000)
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — prior bound was REJECTED outright (not a timeout); escalating to ${FETCH_DEPTH_ARGS[*]} instead of repeating the identical failing bound (task #1849)"
+    else
+      # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
+      # only a handful of commits). This is the commit that must remain an
+      # ancestor of the fetched tip. _shallow_base_sha/_shallow_base_epoch are
+      # captured above, before the unshallow attempt — reused here, not
+      # recomputed (still memoized the same way if this repo was never touched
+      # by that block, e.g. inside GITHUB_ACTIONS).
+      if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
+        # None of the emitted args can contain whitespace (asserted in the test),
+        # so unquoted word-splitting into the array is safe here.
+        # shellcheck disable=SC2207
+        FETCH_DEPTH_ARGS=($(node "$SCRIPT_DIR/shallow-fetch-args.js" \
+          --is-shallow=true \
+          --oldest-epoch="${_shallow_base_epoch:-}" \
+          --slack-sec="${SHALLOW_SINCE_SLACK_SEC:-1800}" 2>/dev/null || true))
+      fi
+      # Fail CLOSED, not open: if node is missing or the helper crashed, an empty
+      # array would silently restore the unbounded fetch this block exists to
+      # prevent. A fixed depth is still bounded (and the ancestry check below
+      # escalates if that depth doesn't reach our base).
+      if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
+        FETCH_DEPTH_ARGS=(--deepen=200)
+      fi
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
     fi
-    # Fail CLOSED, not open: if node is missing or the helper crashed, an empty
-    # array would silently restore the unbounded fetch this block exists to
-    # prevent. A fixed depth is still bounded (and the ancestry check below
-    # escalates if that depth doesn't reach our base).
-    if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
-      FETCH_DEPTH_ARGS=(--deepen=200)
-    fi
-    echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
   fi
   # NOTE on the ${arr[@]+"${arr[@]}"} expansions below: bash 3.2 (stock
   # /usr/bin/bash on macOS) treats "${arr[@]}" on an EMPTY array as an unbound
@@ -1187,7 +1331,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # checkout. Same guard scripts/hooks/pre-push uses for PUSH_SPECS.
   fetch_ok=false
   fetch_start=$SECONDS
-  if git_fetch ${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"} origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
+  if _fetch_with_captured_stderr ${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"} origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH"; then
     fetch_ok=true
     echo "  fetch(explicit-refspec) OK in $((SECONDS - fetch_start))s"
   else
@@ -1205,17 +1349,39 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # which is the whole point of this block (ship-check finding).
       _fallback_depth_args=()
       if [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ]; then
-        _fallback_depth_args=(--deepen=200)
-        echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
+        if [ "${_shallow_bound_escalated:-0}" = "1" ]; then
+          # Already escalated to --deepen=2000 above (task #1849) — reissue
+          # that same wider bound on the bare form instead of regressing to
+          # --deepen=200, which already failed once before escalation.
+          _fallback_depth_args=("${FETCH_DEPTH_ARGS[@]}")
+          echo "  Bare-form fallback reuses the escalated bound ${_fallback_depth_args[*]} (not regressing to --deepen=200, which already failed — task #1849)"
+        else
+          _fallback_depth_args=(--deepen=200)
+          echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
+        fi
       fi
       fetch_start=$SECONDS
-      if git_fetch ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH" 2>/dev/null; then
+      if _fetch_with_captured_stderr ${_fallback_depth_args[@]+"${_fallback_depth_args[@]}"} origin "$PULL_BRANCH"; then
         fetch_ok=true
         echo "  fetch(bare-form fallback) OK in $((SECONDS - fetch_start))s"
       else
         echo "  fetch(bare-form fallback) FAILED in $((SECONDS - fetch_start))s (rc=$?)"
       fi
     fi
+  fi
+
+  # Task #1849: both fetch attempts above were shallow-bounded and both
+  # failed FAST (not a 124 timeout — a timeout means "still too slow", not
+  # "bound rejected", and already gets fresh network budget next iteration
+  # via the ordinary retry/backoff path, no escalation needed). A repeat of
+  # this exact iteration next time would recompute the identical memoized
+  # bound and fail identically forever (the incident this whole block
+  # exists to fix) — escalate so the NEXT iteration's FETCH_DEPTH_ARGS
+  # computation above takes the widening branch instead.
+  if [ "$fetch_ok" != "true" ] && [ ${#FETCH_DEPTH_ARGS[@]} -gt 0 ] && [ "${explicit_fetch_rc:-0}" -ne 124 ] \
+     && [ "${_shallow_bound_escalated:-0}" != "1" ]; then
+    _shallow_bound_escalated=1
+    echo "  ::warning::push-with-retry: shallow-bounded fetch failed fast (rc=${explicit_fetch_rc:-?}, not a timeout) — the bound itself was likely rejected, not just slow. Escalating to --deepen=2000 for the next retry instead of repeating this identical bound (task #1849)."
   fi
 
   # Ancestry escalation (task #466). A depth-bounded fetch is only correct if it

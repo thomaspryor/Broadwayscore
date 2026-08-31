@@ -62,7 +62,14 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
+const dispatchReconcile = require('./dispatch-reconcile.js');
 const { checkPark, computeContentHash } = require('./attempt-memory.js');
+// BRO-2499: the marker this module stamps onto every issue it files (via the
+// --park reason, which linear-issue-create.js prepends to the description as
+// `PARKED: <reason>`) and which linear-dispatch.js's autofixFiledIssueGuard
+// recognises. Defined in the leaf so the writer and the recogniser cannot
+// drift apart.
+const { AUTOFIX_FILED_MARKER, BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
@@ -183,7 +190,9 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     // raw r.name (never family-collapsed) still drives buildCardNotes' prose
     // and its check-health-row-absent.js verify command, which must keep
     // checking the SPECIFIC health-check row that was actually seen.
-    const title = `BSC Daily: ${familyDisplayName(r.name)}`;
+    // Built from the shared constant (code-review finding, BRO-2499) so this
+    // producer and autofix-filed-marker.js's title matcher cannot drift.
+    const title = `${BSC_DAILY_TITLE_PREFIX}${familyDisplayName(r.name)}`;
     const conditionKey = r.conditionKey || null;
 
     // Decision items (owner-alert-router callers that opted in via
@@ -327,7 +336,7 @@ function fileCard(title, notes, { log = () => {} } = {}) {
       // task #1310: filing and dispatching are deliberately separate steps
       // here (see header comment above) — this call only ever files; the
       // caller's own dispatchDetached() (below) is the real dispatch.
-      '--park', 'Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.',
+      '--park', `${AUTOFIX_FILED_MARKER}; runAutofix dispatches via linear-next separately in the same pass.`,
     ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
     // linear-brain prints the issue JSON then a PARKED: line — the field is
     // `.identifier` (NOT `.id`, which is the opaque UUID).
@@ -363,7 +372,17 @@ function syncTasks({ log = () => {} } = {}) {
 // for a row's 2nd+ attempt on unchanged content, or a caller-supplied hint
 // (e.g. test.yml's streak escalation, which wants opus on its first try here
 // since it's already the SECOND machine attempt at the underlying failure).
-function dispatchDetached(taskId, log, delaySec = 0, model = null) {
+// `opts.allowAutofixFiled` (BRO-2499) appends --allow-autofix-filed on the
+// linear-next path, waiving linear-dispatch.js's autofixFiledIssueGuard for
+// THIS dispatch. Opt-in per call site, not defaulted on, so a future caller
+// never inherits a bypass it never asked for (second-opinion review,
+// BRO-2499). All three of today's callers legitimately own their population
+// and pass it: runAutofix below, autofix-canary.js's two sites, and
+// scripts/linear-drain-parked.js — that last one is NOT redundant, see its
+// call site: health-check.js routes alert-router trackers under the same
+// "BSC Daily:" title, so the guard refuses them too. Never appended on the
+// bsc-next.js branch: that CLI has no such flag and no such guard.
+function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // Validate BEFORE opening the log fd — throwing after openSync leaked a
   // file descriptor per rejected dispatch (Codex review, 2026-08-02).
   //
@@ -393,7 +412,8 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null) {
     : path.join(REPO, 'scripts', 'bsc-next.js');
   const safeModel = model && VALID_MODELS.has(model) ? model : null;
   const modelArg = safeModel ? ` --model ${safeModel}` : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}`;
+  const autofixArg = linearMatch && opts && opts.allowAutofixFiled ? ' --allow-autofix-filed' : '';
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}${autofixArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
@@ -420,80 +440,99 @@ function appendJsonlLedger(p, entry) {
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
 }
 
-// Same correlation logic as scripts/lib/backlog-drain.js's findMyJob (see
-// its header comment for why "latest ts for this taskId" is unsafe): scan
-// the raw shared dispatch-ledger for the job-spawned event THIS dispatch's
-// child process caused (earliest spawn at/after our own dispatch timestamp),
-// then fold only that jobId's entries to read its current terminal state.
-function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
-  const sinceMs = new Date(sinceTs).getTime() - 5000;
-  const spawns = (dispatchLedgerEntries || [])
-    .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
-    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  // Task #1184 S1: follow job-retried chains (shared, causal implementation —
-  // see dispatch-ledger.followRetryChain's header) so a live resume is never
-  // scored card-fail. A chain ending at RETRIED (successor not spawned yet)
-  // is handled by the caller as still-in-flight, with its own orphan bound.
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
+// Correlation logic shared with scripts/backlog-drain.js and
+// scripts/linear-drain-parked.js since BRO-2542 — see
+// dispatch-reconcile.findMyJob for why "latest ts for this taskId" is unsafe,
+// and why job-retried chains are followed (task #1184 S1) so a live resume is
+// never scored card-fail. Re-exported, not re-implemented: all three files
+// previously carried a byte-for-byte copy.
+const findMyJob = dispatchReconcile.findMyJob;
+
+// A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
+// cardId+contentHash has an outcome somewhere in history" (BRO-2506, same bug
+// class as BRO-2434's scripts/linear-drain-parked.js fix — see 1f0daa1100b,
+// and BRO-2508's scripts/backlog-drain.js fix). The content-hash-keyed
+// resolvedKeys Set this used to use collapses two dispatches of the SAME
+// unchanged content onto one key — exactly the repeated-failure case
+// attempt-memory's park mechanism exists to detect (the digest hashes a
+// row's canonical family title alone, stable run over run for the same
+// recurring condition — see runAutofix's own contentHash comment below) — so
+// a card auto-dispatched, failed, and auto-dispatched again the next morning
+// on unchanged content would never produce a SECOND card-fail at all, and
+// checkPark could never see two failures to park on.
+const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
+// Arity-3 wrapper binding this module's own outcome vocabulary — the shared
+// implementation takes the event set as a 4th argument, since
+// scripts/backlog-drain.js resolves on a richer set (card-stranded,
+// completion-unattributed) than this module's plain pass/fail.
+function isDispatchResolved(digestLedgerEntries, cardId, dispatchTs) {
+  return dispatchReconcile.isDispatchResolved(digestLedgerEntries, cardId, dispatchTs, RESOLVING_EVENTS);
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
 // card-pass/card-fail by cross-referencing the SHARED dispatch-ledger's job
-// lifecycle — same reconciliation shape as scripts/lib/backlog-drain.js's
-// reconcileOutcomes, applied to this module's own ledger file instead.
+// lifecycle. The correlation, resolution and same-pass jobId race guard are
+// scripts/lib/dispatch-reconcile.js's since BRO-2542 — including the
+// Number.isFinite(ts) filter and the "check only the IMMUTABLE pre-pass
+// entries" rule, whose postmortems live in that file's header. Applied here to
+// this module's own ledger file; what stays below is only this module's own
+// per-tracker completion criterion and note text.
 function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
-  const resolvedKeys = new Set(
-    digestLedgerEntries.filter(e => e.event === 'card-pass' || e.event === 'card-fail')
-      .map(e => `${e.cardId}:${e.contentHash}`));
-  const dispatches = digestLedgerEntries.filter(e => e.event === 'auto-dispatch');
+  const decisions = dispatchReconcile.classifyDispatches({
+    ledgerEntries: digestLedgerEntries,
+    dispatchLedgerEntries,
+    isDispatchRow: e => e.event === 'auto-dispatch',
+    resolvingEvents: RESOLVING_EVENTS,
+    orphanTimeoutH: ORPHAN_TIMEOUT_H,
+    cardIdOf: d => String(d.taskId),
+    taskIdOf: d => String(d.taskId),
+    now,
+  });
   const newEntries = [];
-  for (const d of dispatches) {
-    const key = `${d.taskId}:${d.contentHash}`;
-    if (resolvedKeys.has(key)) continue;
-    const job = findMyJob(dispatchLedgerEntries, d.taskId, d.ts);
-    if (!job) {
-      const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next run
+  for (const { dispatch: d, cardId, job, kind } of decisions) {
+    if (kind === 'orphan') {
       newEntries.push({
-        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
-        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
+        // BRO-2518: fileCard()'s exact-title dedup can reattach a row to an
+        // issue a PRIOR dispatch already moved to a started Linear state (In
+        // Progress/In Review) — linear-next.js's startedStateGuard refuses
+        // that cleanly (correctly: it's the guard closing exactly this class
+        // of stray double-dispatch), so it belongs in this likely-cause list.
+        note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)`,
       });
-      resolvedKeys.add(key);
       continue;
     }
-    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
-      // Chain ends at a retry whose successor hasn't spawned yet: treat as
-      // still running inside the same orphan bound the no-spawn case uses —
-      // past it, the resume child died before spawning and the attempt fails.
-      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue;
+    if (kind === 'retry-timeout') {
+      // The retry chain ended at 'job-retried' and no successor spawned inside
+      // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      resolvedKeys.add(key);
       continue;
     }
-    if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
+    // Explicit, not fall-through (ship-check finding) — see the same guard in
+    // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
+    // shared lib must stop the pass rather than be silently treated as
+    // terminal and dereference a job that may be null.
+    if (kind !== 'terminal') throw new Error(`reconcileDigestOutcomes: unhandled dispatch kind '${kind}'`);
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
     const isLinear = /^linear:/.test(String(d.taskId));
     // Completion criterion differs by tracker (BRO-286): Notion-mirror rows
     // check the mirror task's status; Linear rows have no mirror — session
     // DONE is the pass signal here, and the board-level Done audit (Phase 3
     // teeth) is the independent check that the issue actually closed.
-    const task = isLinear ? null : tasksById.get(String(d.taskId));
+    const task = isLinear ? null : tasksById.get(cardId);
     const completed = isLinear ? sessionOk : !!(task && task.status === 'completed');
     const outcome = (sessionOk && completed) ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome,
-      cardId: String(d.taskId),
+      cardId,
       contentHash: d.contentHash,
       note: outcome === 'card-pass'
         ? (isLinear ? 'session finished (Linear-tracked; board Done-audit verifies closure separately)' : 'session finished, task marked completed')
         : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
     });
-    resolvedKeys.add(key);
   }
   return newEntries;
 }
@@ -617,7 +656,11 @@ function runAutofix({
     const attempt = priorAttempts + 1;
     const model = row.model || (attempt >= 2 ? 'opus' : null);
     try {
-      dispatchFn(row.taskId, log, (cap - budget) * 45, model);
+      // allowAutofixFiled (BRO-2499): every row dispatched here is an issue
+      // THIS module filed moments ago (fileCard, above), so it is exactly the
+      // population autofixFiledIssueGuard refuses — waived at the one call
+      // site that legitimately owns it.
+      dispatchFn(row.taskId, log, (cap - budget) * 45, model, { allowAutofixFiled: true });
       row.state = 'dispatched';
       row.attempt = attempt;
       if (model) row.model = model;
@@ -637,6 +680,6 @@ function runAutofix({
 
 module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
-  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, findMyJob, readJsonlLedger, appendJsonlLedger,
+  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
 };

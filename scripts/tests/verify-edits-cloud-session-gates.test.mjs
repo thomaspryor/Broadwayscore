@@ -117,6 +117,247 @@ const QUALIFYING_EDIT = toolUse('Edit', { file_path: 'src/lib/scoring.ts', old_s
 const GIT_PUSH = toolUse('Bash', { command: 'git push -u origin some-branch' });
 const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' });
 const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 });
+const WRAP_UP = toolUse('Skill', { skill: 'wrap-up' });
+// A real Notion close-out call in the shape this repo actually uses (see
+// scripts/notion-brain.js's own usage header: `update <page-id> [--status
+// Done] [--outcome "..."] ...`). Kept as separate Done/Paused/In-progress
+// variants because the whole point of the redesign below is that the
+// STATUS VALUE, not just the presence of a notion-brain.js call, is what
+// satisfies the gate.
+const NOTION_CLOSEOUT_DONE = toolUse('Bash', { command: 'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status="Done" --outcome="Shipped and verified."' });
+const NOTION_CLOSEOUT_PAUSED = toolUse('Bash', { command: 'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status "Paused" --notes "Blocked on owner decision."' });
+const NOTION_UPDATE_IN_PROGRESS = toolUse('Bash', { command: 'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status="In progress" --outcome="Still working on this."' });
+
+// ─────────────────────────── wrap-up-close-out gate ────────────────────────
+// Root cause (v1): a real session's final message read "SAFE TO EXIT — fix
+// confirmed live in production, nothing outstanding" — a perfectly formatted
+// status line — but when the owner directly asked "did you run /wrap-up and
+// /what-else?" the session admitted it had run neither. The status-line gate
+// only checks the LINE'S TEXT SHAPE; these cases prove it can't be gamed by a
+// well-formatted lie.
+//
+// Root cause (v2 — this redesign): v1 required a `Skill(wrap-up)` tool_use,
+// which the owner correctly rejected as a token-gesture check — invoking the
+// skill doesn't prove any of its mandatory phases actually happened. The
+// redesign instead requires the concrete artifact CLAUDE.md §6 independently
+// mandates: this session's Notion card actually set to Done/Paused. Cases
+// below cover both the original "no close-out at all" failure mode AND the
+// new failure modes a plan-review pass surfaced: a Skill call with no real
+// close-out, a real notion-brain.js call that never actually closes the card
+// (still "In progress"), and — the concrete exploit a SECOND /second-opinion
+// review found in the first regex-based draft of this redesign — quoted
+// example text inside --outcome/--notes that LOOKS like a close-out to a
+// naive whole-string regex search but isn't the real --status flag.
+
+test('substantial work + SAFE TO EXIT + no Notion close-out at all → BLOCKED (NOWRAPUP)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-none');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed and verified live.\n\nSAFE TO EXIT — fix confirmed live in production, nothing outstanding.');
+  assertBlocked(r, 'claims SAFE TO EXIT after real work but never closed out the Notion card');
+  assert.match(r.stderr, /wrap-up/i, `expected a wrap-up reminder, got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CRITICAL (owner-rejected v1 behavior): Skill(wrap-up) called but NO real Notion close-out → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-token-gesture');
+  // This is exactly the case the owner called out: invoking the skill alone
+  // (a tool-name gesture) must NOT satisfy the gate — only v1 would have
+  // passed this. Proves the redesign actually changed behavior, not just
+  // its rationale comment.
+  const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
+  const r = runHook(transcript, 'Pushed, then ran /wrap-up.\n\nSAFE TO EXIT — pushed, wrap-up complete, nothing pending.');
+  assertBlocked(r, 'invoking the wrap-up skill without a real Notion close-out must no longer satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('Notion card touched but left "In progress" (not Done/Paused) → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-still-in-progress');
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_UPDATE_IN_PROGRESS]);
+  const r = runHook(transcript, 'Pushed and updated the card.\n\nSAFE TO EXIT — pushed, card updated.');
+  assertBlocked(r, 'a notion-brain.js update that never actually closes the card (still In progress) must not satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('EXPLOIT REGRESSION (2nd /second-opinion finding): quoted example "--status Done" inside --outcome, real status still In progress → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-exploit-quoted-example');
+  // The real --status is "In progress"; the --outcome value merely QUOTES
+  // the example command `notion-brain.js update <id> --status Done` as
+  // documentation text (this repo's own docs do exactly this). A naive
+  // regex search across the whole raw command string would have matched
+  // "--status Done" inside that quoted text and wrongly passed. The
+  // tokenized (shlex) check must only look at the REAL --status flag's
+  // value, so this must still block.
+  const exploitCmd = toolUse('Bash', {
+    command: 'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status="In progress" --outcome="documented as e.g. notion-brain.js update <id> --status Done for closeout"',
+  });
+  const transcript = writeTranscript(dir, [GIT_PUSH, exploitCmd]);
+  const r = runHook(transcript, 'Pushed and updated the card with docs about the gate.\n\nSAFE TO EXIT — pushed, card updated.');
+  assertBlocked(r, 'quoted example text inside --outcome must not satisfy the gate when the real --status is not Done/Paused');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('substantial work + real Notion close-out (Done) AFTER the work + SAFE TO EXIT → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-after');
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
+  const r = runHook(transcript, 'Pushed, then closed out the Notion card.\n\nSAFE TO EXIT — pushed, Notion card set to Done, nothing pending.');
+  assertAllowed(r, 'a genuine Notion close-out after the work it is meant to cover must satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('substantial work + real Notion close-out (Paused, space-separated flag form) + SAFE TO EXIT → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-paused-space-form');
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_PAUSED]);
+  const r = runHook(transcript, 'Pushed, paused the card pending an owner decision.\n\nSAFE TO EXIT — pushed, nothing hanging, card paused with context.');
+  assertAllowed(r, 'Paused is a legitimate close-out status too, and the space-separated --status "Paused" form must parse');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('real-world shape: heredoc-wrapped --outcome with apostrophed prose around a real --status=Done → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-heredoc-real');
+  // Matches this repo's actual convention (CLAUDE.md's own heredoc
+  // commit-message rule, applied the same way to notion-brain.js --outcome
+  // values) — multi-line prose via `$(cat <<'EOF' ... EOF)`, including
+  // apostrophes that would break a naive shlex.split without heredoc
+  // stripping first.
+  const heredocCmd = toolUse('Bash', {
+    command: [
+      'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status="Done" --outcome="$(cat <<\'EOF\'',
+      "Shipped the fix. It's done, no loose ends, didn't need anything paused.",
+      'EOF',
+      ')"',
+    ].join('\n'),
+  });
+  const transcript = writeTranscript(dir, [GIT_PUSH, heredocCmd]);
+  const r = runHook(transcript, 'Pushed and wrote up the full outcome.\n\nSAFE TO EXIT — pushed, card closed out.');
+  assertAllowed(r, 'a real heredoc-wrapped close-out call (this repo\'s actual convention) must parse and satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ── composition-seam regression pins (two independent /ship-check reviewers,
+// same finding): _strip_heredocs() (built for a different gate, task #1606,
+// with a documented KNOWN GAP around quoting/nested-`<<` context) now feeds
+// its output into shlex.split() for this gate. Composing two independently
+// heuristic parsers is exactly where surprising interaction bugs hide from
+// each piece's own isolated test suite — these pin the seam itself, not just
+// each piece separately. All three verified against the real hook, not just
+// reasoned about.
+
+test('composition seam: single-line --outcome mentioning heredoc syntax as PROSE (no real heredoc) + real Done → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-seam-prose-mention');
+  const mentionCmd = toolUse('Bash', {
+    command: `node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status=Done --outcome="uses a heredoc like <<'EOF' internally"`,
+  });
+  const transcript = writeTranscript(dir, [GIT_PUSH, mentionCmd]);
+  const r = runHook(transcript, 'Pushed and documented it.\n\nSAFE TO EXIT — pushed, card closed out.');
+  assertAllowed(r, 'a short --outcome that merely MENTIONS heredoc syntax as text, with no actual multi-line heredoc structure, must still parse to a real Done');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('composition seam: real heredoc body whose OWN prose mentions "<<TAG" on its own line + real Done → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-seam-nested-mention');
+  // The exact shape both reviewers flagged as a hypothetical risk: inside a
+  // REAL heredoc body, a line that itself looks like it could open another
+  // heredoc. _strip_heredocs() only scans for new opens on lines it APPENDS
+  // to output (lines outside any currently-open heredoc) — lines being
+  // skipped as body content are never re-scanned — so this must not
+  // truncate the strip early or corrupt the surrounding --status flag.
+  const nestedCmd = toolUse('Bash', {
+    command: [
+      'node scripts/notion-brain.js update 3c5637c5-416f-81a0-bd7e-c388c5673dc5 --status="Done" --outcome="$(cat <<\'EOF\'',
+      'Explaining the fix: heredocs open with <<TAG',
+      'EOF',
+      ')"',
+    ].join('\n'),
+  });
+  const transcript = writeTranscript(dir, [GIT_PUSH, nestedCmd]);
+  const r = runHook(transcript, 'Pushed and documented it.\n\nSAFE TO EXIT — pushed, card closed out.');
+  assertAllowed(r, 'a heredoc body that describes heredoc syntax on its own line must not confuse the stripper into corrupting the real --status flag');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('composition seam: unterminated/malformed heredoc → gate fails toward BLOCKED, hook does not crash', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-seam-unterminated');
+  // A truncated/malformed command (no closing heredoc tag) must not throw an
+  // unhandled exception that takes down the whole Stop hook script — it
+  // should fail toward "no close-out detected" (block) via the inner
+  // try/except in _notion_closeout_status, same as any other unparseable
+  // command. Exit code 2 (not e.g. a spawn error / non-2/0 code) is itself
+  // proof the process didn't crash.
+  const malformedCmd = toolUse('Bash', {
+    command: "node scripts/notion-brain.js update abc --status=\"Done\" --outcome=\"$(cat <<'EOF'\nsome unterminated body with no closing tag",
+  });
+  const transcript = writeTranscript(dir, [GIT_PUSH, malformedCmd]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.');
+  assertBlocked(r, 'a malformed/unterminated heredoc must fail toward blocking, not crash the hook or silently pass');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CRITICAL gaming case (found by /second-opinion review): close-out happened, then MORE work happened after it, then SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-stale');
+  // The close-out happened early, but a second push happened afterward that
+  // it never covered — an "anywhere in session" check would wrongly pass
+  // this.
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE, toolUse('Bash', { command: 'git push -u origin some-branch --force-with-lease' })]);
+  const r = runHook(transcript, 'Pushed, closed out, then had to push a follow-up fix.\n\nSAFE TO EXIT — follow-up pushed, nothing pending.');
+  assertBlocked(r, 'a stale close-out that happened BEFORE the last substantial work must not satisfy the gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate: NOT SAFE TO EXIT + no close-out → ALLOWED (session has not claimed full completion)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-notsafe');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed. Deploy still running.\n\nNOT SAFE TO EXIT — deploy still running, will verify next check-in.');
+  assertAllowed(r, 'NOT SAFE TO EXIT does not claim completion, so a close-out is not required yet');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('CRITICAL false-positive guard: no substantial work at all → ALLOWED regardless of close-out', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-no-work');
+  const transcript = writeTranscript(dir, []);
+  const r = runHook(transcript, 'Sure, happy to answer that question.');
+  assertAllowed(r, 'a plain conversational reply must never require a Notion close-out');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate bypass: NO-VERIFY: allows a missing close-out', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-noverify');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed a trivial fix. NO-VERIFY: docs-only, close-out ceremony not needed.\n\nSAFE TO EXIT — pushed.');
+  assertAllowed(r, 'NO-VERIFY bypass must still work for the wrap-up gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate kill switch: WRAPUP_GATE_DISABLE=1 allows a missing close-out', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-allow-killswitch');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { WRAPUP_GATE_DISABLE: '1' });
+  assertAllowed(r, 'kill switch must fully disable the wrap-up gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('wrap-up gate: independent of SESSION_STATUS_GATE_DISABLE (no coupling — /second-opinion review finding)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-independent-killswitch');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  // Disabling the STATUS-LINE gate must not also silently disable the
+  // wrap-up gate — they are deliberately separate top-level blocks.
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed, nothing pending.', { SESSION_STATUS_GATE_DISABLE: '1' });
+  assertBlocked(r, 'disabling the status-line gate must not disable the independent wrap-up gate');
+  assert.match(r.stderr, /wrap-up/i);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: a fully clean session (edit + verify + push + Notion close-out + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-regress-clean');
+  const transcript = writeTranscript(dir, [
+    QUALIFYING_EDIT,
+    toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
+    GIT_PUSH,
+    NOTION_CLOSEOUT_DONE,
+  ]);
+  const r = runHook(transcript, 'Fixed, verified, pushed, closed out the card.\n\nSAFE TO EXIT — verified with tsc, pushed, card set to Done.');
+  assertAllowed(r, 'a fully clean, fully reported session must pass all gates including the redesigned wrap-up one');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
 
 // ─────────────────────────── status-line gate ────────────────────────────
 
@@ -139,7 +380,7 @@ test('substantial work (git push) + no closing status line → BLOCKED (NOSTATUS
 
 test('substantial work (git push) + valid SAFE TO EXIT line → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-safe');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'Pushed and verified CI green.\n\nSAFE TO EXIT — branch pushed, CI green, nothing pending.');
   assertAllowed(r, 'valid SAFE TO EXIT line');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -155,7 +396,7 @@ test('substantial work (git push) + valid NOT SAFE TO EXIT line → ALLOWED', sk
 
 test('regression (ship-check adversarial review 2026-08-23): canonical wrap-up.md SESSION STATUS block, WITH its trailing divider rule after SAFE TO EXIT, must pass', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-canonical-divider');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
   // Exact shape wrap-up.md specifies: a divider line, DONE/CONTINUING/NEEDS YOU
   // rows, the SAFE TO EXIT line, then ANOTHER divider line below it. Before the
   // fix, checking the literal last non-empty line saw the divider, not the
@@ -213,7 +454,7 @@ test('regression (ship-check adversarial review 2026-08-23): empty final message
 
 test('regression: "DECISION NEEDED" mentioned in prose (not the template header) does not falsely trip FALSESAFE', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-decision-prose');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
   const msg = [
     "There's no DECISION NEEDED here — I already decided retries stay at 3 and pushed it.",
     '',
@@ -227,15 +468,24 @@ test('regression: "DECISION NEEDED" mentioned in prose (not the template header)
 test('regression: PR gate strips fenced quotes too — a quoted example blocker phrase does not satisfy the check', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-block-fenced-quote-gaming');
   const transcript = writeTranscript(dir, [CREATE_PR]);
+  // A valid closing status line is REQUIRED here (found during this session's
+  // own /ship-check — a codebase-aware review agent caught it): without one,
+  // the earlier session-status-line gate fires first (NOSTATUSLINE) and the
+  // test still passes exit-code-wise, but for the wrong reason — it never
+  // actually reaches the PR-follow-through gate's own fenced-quote-stripping
+  // logic this test claims to isolate.
   const msg = [
     'Opened PR #42. For reference, here is what a blocked run looks like:',
     '```',
     'CI is red on the typecheck job',
     '```',
     "That's just an example from an old run, not this one.",
+    '',
+    'SAFE TO EXIT — PR open, nothing else pending.',
   ].join('\n');
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a blocker phrase inside a fenced quote must not satisfy the PR follow-through gate');
+  assert.match(r.stderr, /merge it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -310,7 +560,7 @@ test('status-line gate: fenced code block containing SAFE TO EXIT text is stripp
 
 test('status-line gate: real status line survives when an UNRELATED fenced block precedes it', skipNoRepoHook, () => {
   const dir = makeTmpDir('status-allow-fence-then-real');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
   const msg = [
     'Pushed. Here is the diff for reference:',
     '```diff',
@@ -353,7 +603,7 @@ test('PR opened via MCP, never merged, no stated blocker → BLOCKED (PRUNMERGED
 
 test('PR opened via MCP AND merged same session → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-merged');
-  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR]);
+  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, NOTION_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Opened PR #42, CI passed, merged it.\n\nSAFE TO EXIT — merged and live.");
   assertAllowed(r, 'PR opened and merged same session');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -369,7 +619,7 @@ test('PR opened, not merged, but a real blocker (CI red) is stated → ALLOWED',
 
 test('CRITICAL false-positive guard: no PR tool calls at all → ALLOWED regardless of message content', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-no-pr');
-  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Pushed directly, no PR needed for this repo's workflow.\n\nSAFE TO EXIT — pushed to branch, no PR opened this session.");
   assertAllowed(r, 'a session that never touched PR tools must never trip the PR gate');
   fs.rmSync(dir, { recursive: true, force: true });
@@ -385,7 +635,7 @@ test('PR follow-through bypass: NO-VERIFY: allows an unmerged PR', skipNoRepoHoo
 
 test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an unmerged PR', skipNoRepoHook, () => {
   const dir = makeTmpDir('pr-allow-killswitch');
-  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const transcript = writeTranscript(dir, [CREATE_PR, NOTION_CLOSEOUT_DONE]);
   // Valid status line included deliberately: this case isolates the PR gate's
   // OWN kill switch. Disabling only PR_FOLLOWTHROUGH_GATE_DISABLE must not
   // also bypass the separate, still-active session-status gate — a message
@@ -403,19 +653,20 @@ test('regression: existing UNVERIFIED gate still blocks an unrun code edit when 
   // and the edit is never verified by a subsequent Bash run — this must
   // still trip the PRE-EXISTING UNVERIFIED:<file> gate, proving the new
   // gates were inserted without disturbing it.
-  const transcript = writeTranscript(dir, [QUALIFYING_EDIT]);
-  const r = runHook(transcript, 'SAFE TO EXIT — done.'); // valid status line, so the NEW gates pass clean
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, NOTION_CLOSEOUT_DONE]);
+  const r = runHook(transcript, 'SAFE TO EXIT — done.'); // valid status line + Notion close-out done, so the NEW gates pass clean
   assertBlocked(r, 'an unverified code edit must still block on its own pre-existing gate');
   assert.match(r.stderr, /unverified edit/i, `expected the pre-existing UNVERIFIED message, got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('regression: a fully clean session (edit + verify + push + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
+test('regression: a fully clean session, standalone check (edit + verify + push + wrap-up + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
   const dir = makeTmpDir('regress-clean');
   const transcript = writeTranscript(dir, [
     QUALIFYING_EDIT,
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
     GIT_PUSH,
+    NOTION_CLOSEOUT_DONE,
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed.\n\nSAFE TO EXIT — verified with tsc, pushed to branch.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates');

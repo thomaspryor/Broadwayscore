@@ -46,3 +46,12 @@ test('getMarketMinReviews returns the right base per market', () => {
   assert.equal(minReviews.getMarketMinReviews('broadway'), 5);
   assert.equal(minReviews.getMarketMinReviews(undefined), 5);
 });
+
+// BRO-159: an unhandled category value used to fall through `default` and get
+// the Broadway threshold (5) instead of the Off-Broadway one (3) — a
+// Broadway-shaped default for a market nobody wrote a case for. Enumerated
+// off-off-broadway (owner decision 2026-08-03, Option A) must get the
+// Off-Broadway threshold, same as its parent market.
+test('getMarketMinReviews: off-off-broadway gets the Off-Broadway threshold, not the Broadway default', () => {
+  assert.equal(minReviews.getMarketMinReviews('off-off-broadway'), 3);
+});

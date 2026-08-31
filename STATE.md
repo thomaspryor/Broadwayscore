@@ -1,28 +1,50 @@
-# BRO-848 session state (handoff)
+# STATE — BRO-2275 crown session (headless, 2026-08-27)
 
-## Done
-- Root-caused + fixed a real gating bug in `scripts/migrate-reroute-backlog.js --cross-market`: it pre-filtered on the same-market `pickRerouteTarget()` decision before `classifyCandidate()` ever ran, so cross-market-flagged reviews never got a shot at West-End-sibling routing.
-- Broadened + then re-tightened (after Codex ship-check review) two year-detection regexes.
-- Closed a TOCTOU race in `--execute`'s write-target step (`{flag:'wx'}` + `targetWrittenByUs` gate on cleanup).
-- Found + closed a real copyright leak: the migration's plan/log JSON wrote full review `fullText` into the *public* repo's `data/` dir, outside the CI "no copyrighted content" guard's scope. Added `.gitignore` entries.
-- Generated + executed a 47-entry cross-market reroute plan against the live corpus (44/47 already scored). Committed + pushed to the private `broadway-review-texts` repo: commit `1f810c1204e`.
-- Added `scripts/verify-reroute-migration.test.mjs` (delegates to `--verify`), registered in `test.yml` push-paths + `tests/unit-test-manifest.txt`. Fixed it once more after finding a real edge case live (present-but-empty log = skip, not fail).
-- All commits merged to `main` and pushed: `104a688c5ec`, `7ce229a5d23`.
-- Commented on Linear BRO-848 with full findings (the specific hamlet/godot/sunset-boulevard-1994 examples from the original card have no valid West End sibling show — separate task) and moved it to **In Review**.
-- Dispatched a manual rebuild so the 47 fixed reviews actually land on the live site (nothing else would have triggered it — a direct `git push` to the private review-texts repo doesn't fire `rebuild-reviews.yml`'s `workflow_run` trigger, which only listens for "Collect Review Texts" completing).
+## Done and verified
+- **Acceptance PASS**: `node --test tests/unit/dispatch-stall-detection.test.mjs` → 19/19.
+- **Fixed main-red**: `test.yml` had failed 4 consecutive push runs on main. Two real test
+  failures fixed, one self-healed. Merge commit `f984da52ca7` on `origin/main`, verified by
+  content (`git show 'origin/main:<file>'`), 0 unpushed, 0 conflicts.
+  - `tests/unit/audit-same-job-breadcrumb-coverage.test.mjs` — exact-count 11 → floor `>= 11`.
+    All 12 real sites enumerated, all fields allowlisted, no cross-attribution.
+  - `tests/unit/email-capture-integrity.test.mjs` — added `src/app/api/feedback/route.ts` to
+    KNOWN_FALLBACKS, then (post `/code-review`) tightened the exemption to require the
+    violating LINE be a `process.env.X || ...` fallback. Negative control proved it catches a
+    bare literal at `route.ts:146`.
+  - `no [AUTO-FLAGGED] entries older than 30 days` — self-healed on main at 01:44:09Z.
+- **Outcome comment posted on BRO-2275.**
 
-## In flight — NEEDS FOLLOW-UP
-- **GH Actions run 32456719610** ("Rebuild Reviews Data", dispatched ~07:00 UTC 2026-08-21) was still `pending`/running when this session hit its time budget. A resumed session should:
-  1. `gh run view 32456719610 --json status,conclusion` (or `scripts/lib/wait-for-run.sh 32456719610`, NOT `gh run watch`)
-  2. If green: verify the collision-drops metric and that the 47 moved reviews are now scoring — check e.g. `romeo-and-juliet-off-broadway-2026`'s review count/score on prod (may need `scripts/check-prod-deploy.js` + the next Vercel deploy cycle too, since a rebuild alone doesn't deploy).
-  3. If red/failed: diagnose from the run log — nothing about my fix should make rebuild fail (the 47 moved files are ordinary, keyword-verified, already-scored reviews), so a failure is more likely unrelated ambient corpus flap; don't assume it's caused by this session's changes without checking.
+## Open at hand-off
+- **CI run `33032085979`** (on merge commit `f984da52c`) was still `in_progress` at session end.
+  Confirm it went green:
+  `gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'`
+  It should clear the `Unit Tests` job. The `Data Validation` job was ALSO failing before my
+  change, on two steps I did NOT touch: `Audit outlet-registry gaps` and
+  `Validate provisional show venue+dates against Playbill`. **Those are still open.**
+- **BRO-714 is complete and live on prod but its card sits in "In Progress" with no completion
+  comment.** Verified: prod serves 7 reviews incl. NYT @50 for
+  `monte-cristo-the-york-theatre-company-off-broadway-2026`. Just needs closing.
+- BRO-679, BRO-504 have unmerged remote branches. 31 unmerged job branches total.
 
-## Not done (scoped as follow-up, not this ticket)
-- `sunset-boulevard-1994`, `waiting-for-godot-2009/2013/2025`: no West End sibling show exists in `shows.json` at all. Their flagged reviews are mostly correctly-excluded exact-URL duplicates of copies already filed at the right Broadway target. A few (e.g. the 1993 London premiere AP wire review) need a **new show entry** (editorial judgment + Playbill/venue verification per CLAUDE.md rule 3) before they can be routed anywhere — out of scope for a pure reroute-execution task.
-- `hamlet-1975/1995/2009`: already fixed via **BRO-867**, which landed on `main` mid-session via a parallel worktree (flag+exclude, since no valid target existed for the Eddie Izzard solo show or the pre-transfer Oct 2025 National Theatre run).
-- `rollback-reroute-backlog.js` still hardcodes the non-cross-market log path only — would need a `--cross-market` flag mirroring `migrate-reroute-backlog.js` if a cross-market run ever needs rolling back. Minor, not urgent (the executed 47-move log is `data/reroute-migration-log-cross-market.json`, gitignored, still present locally on this machine at `/Users/tompryor/Broadwayscore/data/`).
+## The finding to act on next
+**Zero of the 13 open P1s are dispatchable** — 8 refused `NO_VERIFY_CMD`, 5 `ASYNC_WAIT_GATE`.
+The funnel's 119 "ready" cards are 116 P2s, mostly auto-filed `BSC Daily:` health cards.
+Fix by rewriting each P1's acceptance to put a safe-form command in **inline single backticks,
+first in the body**. Several already NAME real commands that the extractor cannot see because
+they are bare text, not backticked. Verified directly:
+- `node scripts/audit-help-flag-safety.js` → exit 0
+- `node scripts/audit-sibling-title-misroute.js --strict` → exit 0
+- `node scripts/audit-stale-flag-after-url-correction.js --gate` → **exit 1, 120 files** — the
+  #483 cluster (BRO-2050/2090/2093) is genuinely open. Remedy is a refetch, NEVER a flag-clear.
 
-## Next command for a resumed session
+## Exact next command
 ```
-gh run view 32456719610 --json status,conclusion,url
+gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'
 ```
+Then, if green, re-run the funnel: `node /tmp/funnel2.js` (recreate from BRO-2275 transcript if
+gone) and start rewriting P1 acceptance blocks.
+
+## Do not re-litigate
+BRO-268 FAIL verdict — do not merge. BRO-2439 deliberately held. BRO-113/140/580 stale
+ship-check verdicts. cmux still cannot attach a terminal — no tab successor crowned; needs an
+owner-side cmux restart. Forbes call with Marc Hershberg still unscheduled (Nov 1 publish).

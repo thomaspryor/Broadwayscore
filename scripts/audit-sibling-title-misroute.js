@@ -126,8 +126,16 @@ function isHumanCleared(d) {
 }
 
 // Already flagged (by this guard or any other) — not this audit's job to redo.
+// isNonReview/nonReviewFlag/nonReviewContent mirrors the skip convention used by
+// audit-review-contamination.js: a file classified as not-a-review isn't a
+// production-routing candidate in the first place (oh-mary-west-end-2025's
+// deadline--unknown.json — a Broadway casting-news piece with a malformed
+// publishDate — was marked isNonReview but still tripped this gate).
 function isAlreadyFlagged(d) {
-  return !!(d && (d.wrongProduction === true || d.wrongShow === true));
+  return !!(d && (
+    d.wrongProduction === true || d.wrongShow === true ||
+    d.isNonReview === true || d.nonReviewFlag === true || d.nonReviewContent === true
+  ));
 }
 
 // Ordinal content-quality rank so --fix's dedup-by-URL path never discards

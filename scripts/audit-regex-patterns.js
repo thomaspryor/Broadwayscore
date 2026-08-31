@@ -11,6 +11,19 @@
  * — 167 hits / 5.9% of reviews. Unit tests with synthetic samples never
  * exercised real-review metaphors. This is the empirical gate.
  *
+ * Also audits the discovery exclude-substring arrays in
+ * scripts/discover-new-shows.js (NON_THEATER_PATTERNS, WE_EXTRA_PATTERNS,
+ * VENUE_PAGE_EXCLUDE_PATTERNS) against real tracked show titles
+ * (public/data/mobile-shows.json). Those arrays gate which candidate shows
+ * ever reach shows.json — a hit against a real title means a real production
+ * would be silently dropped from discovery, so unlike the content-quality
+ * families above (which only affect review-scoring, not existence), the
+ * default allowance here is 0. Confirmed 2026-07-31: bare 'gala' matched
+ * "Via Galactica"; confirmed 2026-08-26 (BRO-181): bare 'quartet' matched
+ * "Million Dollar Quartet", bare 'tour' matched "Armory Public Tours" /
+ * "September L. Davis: The Apology Tour", and 'classic penguins' matched a
+ * since-legitimized tracked show — all fixed in discover-new-shows.js.
+ *
  * Usage:
  *   node scripts/audit-regex-patterns.js              # sample 400 recent shows, threshold 5
  *   node scripts/audit-regex-patterns.js --full       # scan all ~36k reviews
@@ -88,10 +101,24 @@ const PATTERN_ALLOWLIST = {
   'LEGAL_PAGE_PATTERNS::6': 1000, // /©\s*\d{4}.*all\s+rights\s+reserved/
   // Cookie consent: Telegraph GDPR text bleeds into many Telegraph scrapes
   'COOKIE_CONSENT_PATTERNS::1': 100, // /legitimate\s+interest/
+  // BRO-38: STRONG_CHROME_DUMP_PATTERNS::6/7/8 mirror LEGAL_PAGE_PATTERNS::0/1
+  // and COOKIE_CONSENT_PATTERNS::1 position-independently (see content-quality.js
+  // comment above the array). Same underlying raw-hit source as those families —
+  // real "Privacy Policy"/"Terms of Use" footer links and WhatsOnStage's embedded
+  // GDPR cookie-notice bleed — but a 2026-08-26 full-corpus parity diff (33,945
+  // files) confirmed 0 of those raw hits reach isGarbageContent's actual gate
+  // (hasSubstantialReviewContent + non-trailing), because every hit either sits
+  // in a substantial real review (gate blocks it) or in trailing junk. Sized to
+  // the observed full-corpus raw count + 30% headroom, same convention as the
+  // source families.
+  'STRONG_CHROME_DUMP_PATTERNS::6': 60,  // /^privacy\s+policy/im — raw 43
+  'STRONG_CHROME_DUMP_PATTERNS::7': 20,  // /^terms\s+(of\s+)?(use|service)/im — raw 14
+  'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
   // Newsletter: real newsletter prompts in Guardian, artsdesk, TimeOut scrapes —
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 200,  // /thanks?\s+for\s+subscribing/ — raw 154, 2026-08-15 recal
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'NEWSLETTER_PATTERNS::3': 10,   // /subscribe\s+to\s+(our\s+)?newsletter/i — raw 7, 2026-08-26 (BRO-33, see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::4': 28,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 21, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::5': 22,   // /newsletter\s+sign[-\s]?up/ — raw 17, 2026-08-15 recal (see PATTERN_CALIBRATION)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
@@ -128,7 +155,7 @@ const PATTERN_ALLOWLIST = {
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
   'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
   'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
-  'HORROR_FILM_PATTERNS::3': 70,  // /haunted\s+(family|house|lambert)/ — raw 47
+  'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
   'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
@@ -193,6 +220,33 @@ const PATTERN_CALIBRATION = {
         + 'widget pattern (Playbill, Daily Beast), diffuse across outlets, not '
         + 'a scraper regression. Sized to baseline + ~30%.',
   },
+  'NEWSLETTER_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 7,
+    headroom: 1.43,
+    note: 'BRO-33 triage: /subscribe to (our )?newsletter/i first breached the '
+        + 'default-5 threshold (raw 7). Diffuse across 4 outlets — nytg (New '
+        + 'York Theatre Guide, 4 hits), new-statesman, queerty, london-theatre '
+        + '— corpus growth, not a scraper regression. 5/7 hits sit in the '
+        + 'trailing >60% of fullText (footer CTA) and are absorbed by '
+        + "isGarbageContent's trailing-junk mitigation (_isPatternInTrailingJunk); "
+        + 'the queerty hit at 16% is absorbed by the leading-junk mitigation '
+        + '(<20%). The new-statesman hit at 56% sits in neither safe window —  '
+        + 'verified this file is NOT protected by position, but detectNewsletter() '
+        + 'iterates NEWSLETTER_PATTERNS in array order and returns on the first '
+        + 'INDEX that matches anywhere in the text, not the first occurrence by '
+        + 'position; this file also matches NEWSLETTER_PATTERNS[1] '
+        + '("enter your email", allowlisted at 150) at 59%, which is checked '
+        + 'first and wins, so index 3 is never the operative match for this '
+        + 'file today. That is order-of-evaluation luck, not a structural '
+        + 'guarantee — if a future scrape drops the "enter your email" phrase '
+        + 'from this outlet while keeping "subscribe to our newsletter" in the '
+        + 'unprotected 20-60% zone, this specific file would flip to garbage. '
+        + 'Next bump: if this pattern regresses again, check whether the new '
+        + 'hits are mid-text (unprotected) rather than assuming trailing/leading '
+        + 'absorption. Sized to raw + 30%.',
+  },
   'NEWSLETTER_PATTERNS::4': {
     commit: 'pending',
     date: '2026-08-15',
@@ -251,11 +305,43 @@ const PATTERN_CALIBRATION = {
         + 'one outlet (Playbill), consistent with a static footer widget, '
         + 'not a scraper regression. Sized to raw + ~35%.',
   },
+  'HORROR_FILM_PATTERNS::3': {
+    commit: 'pending',
+    date: '2026-08-26',
+    rawHits: 76,
+    headroom: 1.32,
+    note: 'BRO-33 triage: /haunted (family|house|lambert)/i corpus growth from '
+        + 'raw 47 (prior baseline) to 76 — theater-metaphor bleed ("haunted '
+        + 'house version of the Seventies", horror-adjacent staging '
+        + 'descriptions in Appropriate, Abigail\'s Party reviews), diffuse '
+        + "across outlets, not concentrated in one active scraper. detectHorror"
+        + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
+        + 'zero pass through to rejection. Sized to raw + 30%.',
+  },
 };
 
 const DEFAULT_MAX_HITS = 5;
 const DEFAULT_SAMPLE_SHOWS = 400;
 const MAX_REVIEWS_PER_SHOW = 30;
+
+// Discovery exclude-substring families (scripts/discover-new-shows.js). Unlike
+// PATTERN_FAMILIES above (regex, tested against review fullText), these are
+// plain lowercase substrings tested via String.includes() against show
+// titles — they gate which candidates ever become shows.json entries. See
+// the file-header comment for why the default allowance is 0.
+const TITLE_EXCLUDE_FAMILIES = [
+  'NON_THEATER_PATTERNS',
+  'WE_EXTRA_PATTERNS',
+  'VENUE_PAGE_EXCLUDE_PATTERNS',
+];
+const TITLE_EXCLUDE_DEFAULT_MAX_HITS = 0;
+
+// Calibrated exceptions, mirrors PATTERN_ALLOWLIST. Empty by design — a hit
+// here means a currently-tracked real show would be excluded from future
+// re-discovery, which should be fixed (tighten the pattern), not allowlisted.
+// Add an entry ONLY if a pattern is confirmed intentional against a specific
+// title (document why in a comment here, same as PATTERN_CALIBRATION above).
+const TITLE_EXCLUDE_ALLOWLIST = {};
 
 function parseArgs(argv) {
   const args = { full: false, maxHits: DEFAULT_MAX_HITS, json: false };
@@ -284,6 +370,109 @@ function loadPatterns() {
     families[name] = arr;
   }
   return families;
+}
+
+function loadTitleExcludeFamilies() {
+  let discovery;
+  try {
+    discovery = require('./discover-new-shows.js');
+  } catch (e) {
+    console.error(`FATAL: failed to require discover-new-shows.js: ${e.message}`);
+    process.exit(2);
+  }
+  const families = {};
+  for (const name of TITLE_EXCLUDE_FAMILIES) {
+    const arr = discovery[name];
+    if (!Array.isArray(arr)) {
+      console.error(`FATAL: ${name} not exported from discover-new-shows.js (got ${typeof arr})`);
+      process.exit(2);
+    }
+    families[name] = arr;
+  }
+  return families;
+}
+
+function loadTitleCorpus() {
+  const p = path.resolve(__dirname, '..', 'public', 'data', 'mobile-shows.json');
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(p, 'utf-8'));
+  } catch (e) {
+    console.error(`FATAL: failed to read/parse ${p}: ${e.message}`);
+    process.exit(2);
+  }
+  if (!Array.isArray(raw.shows)) {
+    console.error(`FATAL: ${p} has no shows array`);
+    process.exit(2);
+  }
+  return raw.shows.map(s => s.t).filter(Boolean);
+}
+
+// Substring (not regex) scan: real discovery call sites use
+// title.toLowerCase().includes(pattern), so the audit mirrors that exactly.
+function scanTitleFamilies({ families, titles }) {
+  const lowerTitles = titles.map(t => ({ title: t, lower: t.toLowerCase() }));
+  const counts = {};
+  for (const [familyName, patterns] of Object.entries(families)) {
+    counts[familyName] = patterns.map(pattern => {
+      const matches = lowerTitles.filter(t => t.lower.includes(pattern));
+      return {
+        hits: matches.length,
+        examples: matches.slice(0, 3).map(m => ({ match: m.title })),
+      };
+    });
+  }
+  return counts;
+}
+
+function evaluateTitleFamilies({ counts }) {
+  const violations = [];
+  for (const [familyName, arr] of Object.entries(counts)) {
+    arr.forEach((entry, i) => {
+      const allow = TITLE_EXCLUDE_ALLOWLIST[`${familyName}::${i}`] ?? TITLE_EXCLUDE_DEFAULT_MAX_HITS;
+      if (entry.hits > allow) {
+        violations.push({ family: familyName, index: i, hits: entry.hits, allow, examples: entry.examples });
+      }
+    });
+  }
+  return violations;
+}
+
+function reportTitleFamilies({ titleCount, counts, violations, families }) {
+  const lines = [];
+  lines.push('');
+  lines.push(`[audit-regex-patterns] Discovery exclude-substring audit: ${titleCount} tracked show titles ` +
+    '(public/data/mobile-shows.json), threshold 0 hits per pattern.');
+  lines.push('');
+  lines.push('Pattern family              Patterns  Max hits  Over threshold');
+  lines.push('--------------------------  --------  --------  --------------');
+  for (const [familyName, arr] of Object.entries(counts)) {
+    const max = Math.max(0, ...arr.map(e => e.hits));
+    const over = arr.filter((e, i) => e.hits > (TITLE_EXCLUDE_ALLOWLIST[`${familyName}::${i}`] ?? TITLE_EXCLUDE_DEFAULT_MAX_HITS)).length;
+    lines.push(`${familyName.padEnd(26)}  ${String(arr.length).padStart(8)}  ${String(max).padStart(8)}  ${String(over).padStart(14)}`);
+  }
+  lines.push('');
+
+  if (violations.length === 0) {
+    lines.push('✅ No discovery exclude pattern matches a tracked show title.');
+    return lines.join('\n');
+  }
+
+  lines.push(`❌ ${violations.length} discovery exclude pattern(s) match a real tracked show title:`);
+  lines.push('');
+  for (const v of violations) {
+    const pattern = families[v.family][v.index];
+    lines.push(`  ${v.family}[${v.index}] — ${v.hits} hits (allow ${v.allow})`);
+    lines.push(`    pattern: ${JSON.stringify(pattern)}`);
+    for (const ex of v.examples) {
+      lines.push(`    matched title: "${ex.match}"`);
+    }
+    lines.push('');
+  }
+  lines.push('A hit here means a real production would be silently excluded from ' +
+    'discovery — tighten the pattern (multi-word variant, see the "gala"/"quartet" ' +
+    'precedents in discover-new-shows.js), do not allowlist unless confirmed intentional.');
+  return lines.join('\n');
 }
 
 function findReviewTextsDir() {
@@ -413,14 +602,39 @@ function main() {
   const { scanned, counts } = scanCorpus({ full: args.full, families });
   const violations = evaluate({ counts, maxHits: args.maxHits });
 
+  const titleFamilies = loadTitleExcludeFamilies();
+  const titles = loadTitleCorpus();
+  const titleCounts = scanTitleFamilies({ families: titleFamilies, titles });
+  const titleViolations = evaluateTitleFamilies({ counts: titleCounts });
+
+  const allViolations = violations.length + titleViolations.length;
+
   if (args.json) {
-    const out = { scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST, calibration: PATTERN_CALIBRATION };
+    const out = {
+      scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST, calibration: PATTERN_CALIBRATION,
+      titleCorpusSize: titles.length, titleViolations, titleAllowlist: TITLE_EXCLUDE_ALLOWLIST,
+    };
     console.log(JSON.stringify(out, null, 2));
   } else {
     console.log(reportText({ scanned, counts, violations, args, families }));
+    console.log(reportTitleFamilies({ titleCount: titles.length, counts: titleCounts, violations: titleViolations, families: titleFamilies }));
   }
 
-  process.exit(violations.length > 0 ? 1 : 0);
+  process.exit(allViolations > 0 ? 1 : 0);
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+// Exports for unit tests (scripts/audit-regex-patterns.test.mjs) — guarded
+// above so requiring this file doesn't also execute main()/process.exit().
+module.exports = {
+  TITLE_EXCLUDE_FAMILIES,
+  TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  TITLE_EXCLUDE_ALLOWLIST,
+  loadTitleExcludeFamilies,
+  loadTitleCorpus,
+  scanTitleFamilies,
+  evaluateTitleFamilies,
+};
