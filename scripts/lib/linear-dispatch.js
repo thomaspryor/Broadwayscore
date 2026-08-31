@@ -72,7 +72,7 @@ function buildIssueQuery() {
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }
-      comments(first: 50) { nodes { id body createdAt user { name } } }
+      comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
     }
   }`;
 }
@@ -613,6 +613,49 @@ function isValidBypassReason(flagValue) {
   return typeof flagValue === 'string' && flagValue.trim().length >= REPORTED_WORK_BYPASS_MIN_REASON;
 }
 
+// buildDispatchComment ends its body with " (<mode>)" — 'cmux' or 'headless'.
+function dispatchCommentMode(comment) {
+  const m = String((comment && comment.body) || '').trim().match(/\(([a-z-]+)\)\s*$/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
+// The timestamp a resolved-outcome comment must beat to count as answering
+// `dispatch`.
+//
+// For a cmux dispatch this is simply the dispatch comment's own createdAt:
+// linear-next.js posts it immediately after launchCmux() returns, before the
+// worker has done anything, so the comment really does mark the start of that
+// dispatch.
+//
+// The headless path does NOT work that way, and reading it as if it did was a
+// live bug in the first cut of this guard (caught by the pre-ship adversarial
+// review). There, `await runJob(...)` runs the ENTIRE worker to completion and
+// reportDispatchOnIssue() only runs afterwards, past an `if (!res.ok) return`
+// — so a headless "Dispatched ..." comment is written at the END of a job that
+// SUCCEEDED, and the worker's own session report is necessarily OLDER than it.
+// Using its createdAt as the floor would discard exactly the report the guard
+// exists to notice, silently, on every headless dispatch.
+//
+// So for headless, the window that dispatch actually occupied began no later
+// than the PREVIOUS dispatch comment; use that instead. With no previous one,
+// there is no lower bound to apply and any resolved report on the thread
+// counts — which is right: a headless dispatch comment is itself proof that
+// that job ran to completion, so it is not an outstanding dispatch awaiting an
+// answer.
+function dispatchFloor(dispatch, comments) {
+  if (dispatchCommentMode(dispatch) !== 'headless') return dispatch.createdAt;
+  const ts = String(dispatch.createdAt || '');
+  let prev = null;
+  for (const c of (Array.isArray(comments) ? comments : [])) {
+    if (!c || c === dispatch) continue;
+    if (!/^Dispatched\b/.test(String(c.body || '').trim())) continue;
+    const cts = String(c.createdAt || '');
+    if (!(cts < ts)) continue;
+    if (!prev || cts >= String(prev.createdAt || '')) prev = c;
+  }
+  return prev ? prev.createdAt : '';
+}
+
 // The newest comment strictly after `sinceTs` that carries a resolved-outcome
 // signal, or null. `sinceTs` of '' means "anything counts" (no dispatch
 // comment on the thread at all).
@@ -642,6 +685,15 @@ function findResolvedOutcomeComment(comments, sinceTs) {
 
 function reportedOutcomeGuard(issue, opts) {
   const o = opts || {};
+  // Rollback story (adversarial review): every other way out of this guard is
+  // per-dispatch, so without this a guard that started refusing wrongly at 2am
+  // could only be escaped by pasting the bypass onto every single dispatch, or
+  // by reverting and redeploying. LINEAR_NEXT_DISABLED is not the answer -- it
+  // is checked AFTER this guard and disables the whole dispatcher rather than
+  // one predicate. An env var (not a flag) deliberately: it is set once by a
+  // human fixing an incident, not reached for mid-prompt by an operator who
+  // just read a refusal.
+  if (process.env.REPORTED_OUTCOME_GUARD_DISABLED === '1') return null;
   // --dry-run/--print-prompt launch nothing, so there is nothing to refuse.
   // NOTE the absence of `o.force` here - that omission IS this guard.
   if (o['dry-run'] || o['print-prompt']) return null;
@@ -652,7 +704,14 @@ function reportedOutcomeGuard(issue, opts) {
 
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   const dispatch = newestDispatchComment(comments);
-  const found = findResolvedOutcomeComment(comments, dispatch ? dispatch.createdAt : '');
+  // No dispatch comment at all means there is no identified outstanding
+  // dispatch for a report to be answering, and nothing to order against.
+  // Fail OPEN rather than treating every historical outcome on the thread as
+  // grounds to refuse — on a long thread the relevant dispatch comment can
+  // also simply have fallen outside the fetched window, and a confident
+  // refusal built on a truncated view is worse than no refusal at all.
+  if (!dispatch) return null;
+  const found = findResolvedOutcomeComment(comments, dispatchFloor(dispatch, comments));
   if (!found) return null;
 
   const identifier = (issue && issue.identifier) || '(unknown)';
@@ -763,6 +822,8 @@ module.exports = {
   startedStateGuard,
   reportedOutcomeGuard,
   newestDispatchComment,
+  dispatchCommentMode,
+  dispatchFloor,
   findResolvedOutcomeComment,
   RESOLVED_REPORT_STATUSES,
   REPORTED_WORK_BYPASS_FLAG,

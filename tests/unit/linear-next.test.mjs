@@ -624,18 +624,28 @@ test('reportedOutcomeGuard wiring: --allow-reported-work "<reason>" lets a genui
   assert.match(res.stderr, /LINEAR_NEXT_DISABLED/, 'should reach the later kill-switch gate, proving it got past this guard');
 });
 
-test('parseArgs: --flag=value form is honoured (BRO-2543) — a value-carrying bypass flag depends on it', () => {
-  // Before this fix `--force=1` produced a key literally named "force=1", so
-  // args.force stayed undefined and `--allow-reported-work=<reason>` would
-  // have silently failed to bypass anything.
-  const a = parseArgs(['--id=BRO-1', '--allow-reported-work=checked main, not there', '--force']);
-  assert.equal(a.id, 'BRO-1');
-  assert.equal(a['allow-reported-work'], 'checked main, not there');
-  assert.equal(a.force, true);
-  // Split on the FIRST `=` only, so a value containing `=` survives.
-  assert.equal(parseArgs(['--note=a=b'])['note'], 'a=b');
-  // Space form still works.
-  assert.equal(parseArgs(['--id', 'BRO-2']).id, 'BRO-2');
+test('parseArgs: --flag=value is NOT split, and --force=0 therefore cannot bypass anything (BRO-2543)', () => {
+  // BRO-2543 first "fixed" the `--k=v` form in passing and the pre-ship
+  // adversarial review caught that it made things WORSE: splitting on `=`
+  // turns `--force=0` into the truthy string "0", so a flag an operator wrote
+  // expressly to DISABLE forcing would instead bypass every guard --force
+  // gates. Reverted. Pinned here so the next person who notices `--model=opus`
+  // silently doesn't work reaches for the same trap and this test explains why.
+  const a = parseArgs(['--force=0']);
+  assert.equal(a.force, undefined, '--force=0 must not set force at all');
+  assert.equal(a['force=0'], true);
+
+  // The space form is the supported one, and is what the guard's own refusal
+  // message tells operators to type.
+  const b = parseArgs(['--id', 'BRO-1', '--force', '--allow-reported-work', 'checked main, not there']);
+  assert.equal(b.id, 'BRO-1');
+  assert.equal(b.force, true);
+  assert.equal(b['allow-reported-work'], 'checked main, not there');
+
+  // And the `=` form fails CLOSED for the bypass — the key lands elsewhere, so
+  // the guard sees no reason and its refusal stands.
+  const c = parseArgs(['--allow-reported-work=some reason here']);
+  assert.equal(c['allow-reported-work'], undefined);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's

@@ -145,24 +145,21 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 `;
 
-// BRO-2543: `--flag=value` used to produce a key literally named "flag=value",
-// so `--force=1` left args.force undefined (every guard fired despite the
-// operator passing force) and `--model=opus` silently dispatched on the
-// default model. Harmless-looking until a flag that CARRIES a value depends on
-// it - which --allow-reported-work does. Split on the FIRST `=` only, so a
-// value containing `=` survives intact. linear-session.js's own parseArgs
-// already does this; this brings the dispatcher in line with it.
+// NOTE `--flag=value` is NOT supported here: it produces a key literally named
+// "flag=value", so `--model=opus` silently dispatches on the default model.
+// Every automated caller passes separated argv, and BRO-2543 deliberately did
+// NOT "fix" this in passing: naively splitting on `=` makes `--force=0` parse
+// as the truthy string "0" and bypass every guard it gates, where today it
+// bypasses none. Tracked separately; use the space form.
 function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
-      const body = t.slice(2);
-      const eq = body.indexOf('=');
-      if (eq !== -1) { a[body.slice(0, eq)] = body.slice(eq + 1); continue; }
+      const k = t.slice(2);
       const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[body] = true;
-      else { a[body] = n; i++; }
+      if (n === undefined || n.startsWith('--')) a[k] = true;
+      else { a[k] = n; i++; }
     } else a._.push(t);
   }
   return a;

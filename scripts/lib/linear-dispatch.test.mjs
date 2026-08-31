@@ -16,6 +16,8 @@ import {
   startedStateGuard,
   reportedOutcomeGuard,
   newestDispatchComment,
+  dispatchCommentMode,
+  dispatchFloor,
   RESOLVED_REPORT_STATUSES,
   REPORTED_WORK_BYPASS_FLAG,
   REPORTED_WORK_BYPASS_MIN_REASON,
@@ -519,4 +521,117 @@ test('newestDispatchComment: null for an empty/absent list', () => {
 
 test('REPORTED_WORK_BYPASS_MIN_REASON is long enough that a reflex answer will not clear it', () => {
   assert.ok(REPORTED_WORK_BYPASS_MIN_REASON >= 10);
+});
+
+
+// -- headless dispatch ordering (adversarial pre-ship review) ---------------
+//
+// The first cut of this guard compared a report against the newest dispatch
+// comment's createdAt unconditionally. That is right for cmux (the comment is
+// posted immediately after launch) and WRONG for headless: linear-next.js
+// awaits runJob() to completion and only then calls reportDispatchOnIssue(),
+// past an `if (!res.ok) return` — so a headless "Dispatched ..." comment is
+// written at the END of a job that succeeded, and the worker's own report is
+// necessarily older than it. The guard silently ignored that report on every
+// headless dispatch: a false negative on exactly the case it exists for.
+
+const HEADLESS_DISPATCHED = 'Dispatched 0e0f245d to headless:linear:BRO-2506 at 2026-08-31T02:00:00.000Z (headless)';
+const CMUX_DISPATCHED = 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)';
+
+test('dispatchCommentMode: reads the trailing (mode) buildDispatchComment writes', () => {
+  assert.equal(dispatchCommentMode({ body: CMUX_DISPATCHED }), 'cmux');
+  assert.equal(dispatchCommentMode({ body: HEADLESS_DISPATCHED }), 'headless');
+  assert.equal(dispatchCommentMode({ body: 'Dispatched abc to workspace:1 at t' }), null);
+  assert.equal(dispatchCommentMode(null), null);
+});
+
+test('reportedOutcomeGuard: a HEADLESS dispatch whose report predates its own comment still refuses', () => {
+  // Report at 01:31, headless dispatch comment at 02:00 (written when the job
+  // finished). Naive ordering discards the report; the mode-aware floor keeps it.
+  const issue = {
+    identifier: 'BRO-2506',
+    state: { name: 'In Review', type: 'started' },
+    description: '## Acceptance criteria\n`node --test scripts/lib/digest-autofix.test.mjs`',
+    comments: { nodes: [
+      { body: HEADLESS_DISPATCHED, createdAt: '2026-08-31T02:00:00.000Z' },
+      { body: '**Session report (in-review)**\n\nFix landed.', createdAt: '2026-08-31T01:31:24.775Z' },
+    ] },
+  };
+  const refusal = reportedOutcomeGuard(issue, { force: true });
+  assert.ok(refusal, 'a headless worker report must not be discarded as "older than the dispatch"');
+  assert.match(refusal, /session report \(in-review\)/);
+});
+
+test('reportedOutcomeGuard: a headless re-dispatch after an EARLIER cmux run only counts reports from the newer window', () => {
+  // Thread: cmux dispatch 00:43 -> report 01:31 -> headless re-dispatch
+  // comment 05:00. The headless floor is the previous dispatch comment
+  // (00:43), so the 01:31 report still counts — correct, because that headless
+  // comment proves its own job ran to completion.
+  const issue = {
+    identifier: 'BRO-2506',
+    state: { name: 'In Review', type: 'started' },
+    comments: { nodes: [
+      { body: HEADLESS_DISPATCHED.replace('02:00:00', '05:00:00'), createdAt: '2026-08-31T05:00:00.000Z' },
+      { body: '**Session report (in-review)**\n\nFix landed.', createdAt: '2026-08-31T01:31:24.775Z' },
+      { body: CMUX_DISPATCHED, createdAt: '2026-08-31T00:43:00.704Z' },
+    ] },
+  };
+  assert.ok(reportedOutcomeGuard(issue, { force: true }));
+});
+
+test('reportedOutcomeGuard: a CMUX re-dispatch after a report still allows — the cmux floor is its own createdAt', () => {
+  // The mode-aware floor must not weaken the cmux case: a cmux dispatch
+  // comment IS posted at launch, so a report older than it belongs to a
+  // previous run and a genuine recovery must stay dispatchable.
+  const issue = {
+    identifier: 'BRO-2506',
+    state: { name: 'In Review', type: 'started' },
+    comments: { nodes: [
+      { body: CMUX_DISPATCHED.replace('00:43:00.598', '05:00:00.000'), createdAt: '2026-08-31T05:00:00.000Z' },
+      { body: '**Session report (in-review)**\n\nFix landed.', createdAt: '2026-08-31T01:31:24.775Z' },
+      { body: CMUX_DISPATCHED, createdAt: '2026-08-31T00:43:00.704Z' },
+    ] },
+  };
+  assert.equal(reportedOutcomeGuard(issue, { force: true }), null);
+});
+
+test('dispatchFloor: cmux uses its own ts; headless falls back to the previous dispatch comment, else empty', () => {
+  const cmux = { body: CMUX_DISPATCHED, createdAt: 't5' };
+  assert.equal(dispatchFloor(cmux, [cmux]), 't5');
+  const headless = { body: HEADLESS_DISPATCHED, createdAt: 't5' };
+  assert.equal(dispatchFloor(headless, [headless]), '', 'no previous dispatch ⇒ no lower bound');
+  const prior = { body: CMUX_DISPATCHED, createdAt: 't1' };
+  assert.equal(dispatchFloor(headless, [headless, prior]), 't1');
+});
+
+test('reportedOutcomeGuard: no "Dispatched ..." comment at all fails OPEN, however many reports exist', () => {
+  // With no identified outstanding dispatch there is nothing to order against,
+  // and on a long thread the dispatch comment may simply have fallen outside
+  // the fetched window — a confident refusal built on a truncated view is
+  // worse than none. (Pre-ship review: `since=''` previously let any historical
+  // outcome block dispatch here.)
+  const issue = {
+    identifier: 'BRO-2506',
+    state: { name: 'In Review', type: 'started' },
+    comments: { nodes: [
+      { body: '**Session report (done)**\n\nAncient history.', createdAt: '2026-01-01T00:00:00.000Z' },
+    ] },
+  };
+  assert.equal(reportedOutcomeGuard(issue, {}), null);
+  assert.equal(reportedOutcomeGuard(issue, { force: true }), null);
+});
+
+test('reportedOutcomeGuard: REPORTED_OUTCOME_GUARD_DISABLED=1 is the incident rollback path', () => {
+  // The only non-per-dispatch way out. LINEAR_NEXT_DISABLED cannot serve here:
+  // it is checked AFTER this guard and kills the whole dispatcher.
+  const prev = process.env.REPORTED_OUTCOME_GUARD_DISABLED;
+  try {
+    process.env.REPORTED_OUTCOME_GUARD_DISABLED = '1';
+    assert.equal(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, {}), null);
+  } finally {
+    if (prev === undefined) delete process.env.REPORTED_OUTCOME_GUARD_DISABLED;
+    else process.env.REPORTED_OUTCOME_GUARD_DISABLED = prev;
+  }
+  // ...and it is off by default: the same call refuses again once unset.
+  assert.ok(reportedOutcomeGuard(BRO_2506_AT_INCIDENT, {}));
 });
