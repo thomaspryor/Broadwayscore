@@ -489,6 +489,48 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
   fi
 fi
 
+# Disk-space check (BRO-2258). Added 2026-08-30 after the machine silently
+# hit 100% disk (117Mi free of 460Gi) — nothing warned, and it silently broke
+# both cmux runtime spawning (can't write workspace state, so tabs came up
+# runtime=0/tty=nil) and headless job logging (bsc-runner reported "headless
+# job starting" then wrote no log and took no lease — a dispatcher trusting
+# that stdout line would have reported a phantom dispatch as successful). A
+# whole shift went into diagnosing "cmux is broken" / "the launcher is
+# broken" before ENOSPC was found by accident. Runs every fire (not just
+# startup/resume) since free space can change mid-session and the check is
+# cheap (one df call). Also prunes ~/Library/Logs/bsc-jobs, which nothing
+# else does — unbounded growth at 1-2MB/job x ~40 jobs/day is itself a
+# slow-motion repeat of this exact incident; the prune itself is cooldown-
+# gated (pruneJobLogsIfDue, 1h file-mtime marker under data/audit/) so ~20
+# concurrent sessions firing this hook don't all redo the same
+# readdir+stat+unlink work on every fire. Both node calls are guarded by
+# `[ -f ... ]` existence checks and `2>/dev/null || true` so a missing file,
+# missing node, or any runtime exception is swallowed, never fails closed.
+# See scripts/lib/disk-space-check.js's header for the relationship to
+# scripts/health-check.js's existing (looser, daily-digest) disk-space row.
+if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] && command -v node >/dev/null 2>&1; then
+  DISK_MSG=$(node -e '
+    const { runDiskSpaceCheck } = require(process.argv[1]);
+    const r = runDiskSpaceCheck({});
+    if (r.message) process.stdout.write(r.message);
+  ' "$REPO_ROOT/scripts/lib/disk-space-check.js" 2>/dev/null || true)
+  if [ -n "$DISK_MSG" ]; then
+    echo ""
+    echo "$DISK_MSG"
+    echo ""
+  fi
+  if [ -f "$REPO_ROOT/scripts/lib/job-log-retention.js" ]; then
+    node -e '
+      const { pruneJobLogsIfDue } = require(process.argv[1]);
+      const r = pruneJobLogsIfDue({});
+      if (r && r.deleted.length > 0) {
+        const mb = (r.bytesFreed / 1024 / 1024).toFixed(1);
+        console.log(`🔶 JOB-LOG RETENTION: pruned ${r.deleted.length} log(s) older than 14 days from ${r.dir} (freed ~${mb}MB).`);
+      }
+    ' "$REPO_ROOT/scripts/lib/job-log-retention.js" 2>/dev/null || true
+  fi
+fi
+
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 6 are the most-violated):
 1. NOTION: create card immediately via `node scripts/notion-brain.js create` (CLI, not MCP — MCP is blocked).
