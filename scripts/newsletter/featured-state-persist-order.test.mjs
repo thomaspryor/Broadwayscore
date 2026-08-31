@@ -85,13 +85,33 @@ for (const [label, edition, env] of [
   });
 }
 
-test('the generator leaves the tracked data/newsletter-state.json alone when NEWSLETTER_STATE_PATH is set', () => {
-  const before = fs.readFileSync(REAL_STATE_PATH, 'utf8');
-  runGeneratorSandboxed(WEEK);
-  assert.equal(
-    fs.readFileSync(REAL_STATE_PATH, 'utf8'),
-    before,
-    'a sandboxed generator run must not write the repo\'s tracked newsletter-state.json — '
-    + 'without that, concurrent test files race each other on it and local runs leave the checkout dirty',
+// Prevention for the race itself, rather than a before/after comparison of the
+// tracked file: that comparison is a shared-resource read and any other process
+// on the machine (a background refresh, another session, a parallel workflow)
+// legitimately writing between the two reads would fail it for the wrong reason
+// (Codex adversarial review, 2026-08-31). This is deterministic instead.
+test('every newsletter test that spawns the generator redirects its state file', () => {
+  const dir = path.join(repoRoot, 'scripts/newsletter');
+  const offenders = [];
+  let scanned = 0;
+  for (const f of fs.readdirSync(dir)) {
+    if (!/\.test\.mjs$/.test(f)) continue;
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    // Only files that actually launch the generator — the argv literal, the
+    // same shape scripts/lib/newsletter-regen-guard.js keys on.
+    if (!/['"`][^'"`]*generate\.mjs['"`]/.test(src)) continue;
+    scanned++;
+    if (!src.includes('NEWSLETTER_STATE_PATH')) offenders.push(f);
+  }
+  // A sweep that matched nothing must not read as a pass.
+  assert.ok(scanned >= 5, `expected to find at least 5 generator-spawning tests, found ${scanned}`);
+  assert.deepEqual(
+    offenders,
+    [],
+    'these tests spawn scripts/newsletter/generate.mjs without setting NEWSLETTER_STATE_PATH, so each one '
+    + `reads and REWRITES the tracked data/newsletter-state.json: ${offenders.join(', ')}. `
+    + '`node --test` runs test FILES concurrently, so they clobber the row the others are asserting on, '
+    + 'and a local run leaves a tracked data file dirty. Point the spawn at a temp copy — see '
+    + 'runGeneratorSandboxed() in this file.',
   );
 });

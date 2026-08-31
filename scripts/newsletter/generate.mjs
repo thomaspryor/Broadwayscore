@@ -2,6 +2,7 @@
 // Usage: node gen-newsletter.mjs YYYY-MM-DD (week-start Monday)
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -75,16 +76,40 @@ const BRAND = IS_WE
 // this file for the same weekStart, so keying by date alone let the second
 // run clobber the first edition's memory. Read + write filter on edition
 // (legacy entries with no `edition` field are treated as 'broadway').
-// NEWSLETTER_STATE_PATH redirects this file for tests (BRO-2606). Several test
-// files drive the real generator against the real data checkout, and every one
-// of those runs used to read AND REWRITE the tracked data/newsletter-state.json:
-// `node --test` runs test FILES concurrently, so two of them racing on that one
-// path made both flaky, and a plain local test run left a tracked data file
-// dirty in a checkout shared with other sessions. Production callers (the
-// workflows and refresh-drafts.sh) never set it and keep the repo path.
-const STATE_PATH = process.env.NEWSLETTER_STATE_PATH
-  ? path.resolve(process.env.NEWSLETTER_STATE_PATH)
-  : path.join(repo, 'data/newsletter-state.json');
+// NEWSLETTER_STATE_PATH redirects this file for throwaway runs (BRO-2606): the
+// newsletter tests and regression-test.mjs's comparison re-run all drive the
+// real generator, and each of those used to read AND REWRITE the tracked
+// data/newsletter-state.json. `node --test` runs test FILES concurrently, so
+// they raced each other on that one path; regression-test.mjs worked around it
+// with a snapshot/restore that could itself clobber a concurrent legitimate
+// write; and a local test run left a tracked data file dirty in a checkout
+// shared with ~20 sessions.
+//
+// ONLY honoured for a path inside the OS temp dir. A real newsletter send must
+// never write its cross-issue memory anywhere but data/newsletter-state.json,
+// and this variable is inheritable: refresh-drafts.sh exports everything in
+// .env, and workflow/launchd/parent-shell environments flow into the spawn the
+// same way (Codex adversarial review, 2026-08-31). A stray value would send the
+// generator's ledger to a sandbox while verify-sent-vs-state.mjs and
+// newsletter-draft.yml's commit step still read the repo file — drafts would
+// look fine and next week's suppression would silently run on stale memory. The
+// tmpdir fence also stops a typo'd value (`NEWSLETTER_STATE_PATH=.env`) from
+// overwriting an unrelated file with ledger JSON, and stops a relative value
+// resolving against whatever cwd the caller happened to have.
+const _stateOverride = (process.env.NEWSLETTER_STATE_PATH || '').trim();
+let STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+if (_stateOverride) {
+  const resolved = path.resolve(_stateOverride);
+  const tmpRoot = fs.realpathSync(os.tmpdir());
+  const resolvedRoot = path.resolve(resolved, '..');
+  let realParent = resolvedRoot;
+  try { realParent = fs.realpathSync(resolvedRoot); } catch { /* parent may not exist yet — fall through to the prefix check */ }
+  if (realParent === tmpRoot || realParent.startsWith(tmpRoot + path.sep)) {
+    STATE_PATH = resolved;
+  } else {
+    process.stderr.write(`[newsletter] ignoring NEWSLETTER_STATE_PATH=${_stateOverride} — only a path under ${tmpRoot} is honoured; using ${STATE_PATH}\n`);
+  }
+}
 let _priorState = { issues: [] };
 try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
 const _issueEdition = (i) => (i && i.edition) || 'broadway';
