@@ -18,15 +18,31 @@
 
 const { parseDate } = require('./date-utils');
 
+// Review-lag grace on the CLOSE side of a declared priorRun window (BRO-2561).
+// Critics routinely file 1-7 days after a run's final performance — the window
+// was strictly inclusive of openingDate..closingDate with zero grace, so a
+// truthful closingDate on a priorRun caused legitimate late-filed coverage of
+// that run to fail as "likely a different production" (Notion 386637c5 /
+// BRO-80: The Reviews Hub filed 2025-08-26 for a Summerhall Fringe run that
+// closed 2025-08-25 — worked around there by omitting closingDate entirely,
+// which is a per-show dodge, not a fix). Matches DAYS_AFTER_CLOSE in
+// date-guard.js — the same post-close lag grace already given to the CURRENT
+// run's own window — so a priorRun gets no more benefit of the doubt than the
+// run it transferred from. No symmetric grace is added before openingDate:
+// the blast radius that motivated this (measured 2026-08-30, BRO-2561) was
+// entirely late reviews trailing a close, and a priorRun's own opening date
+// is already the earliest a review about it can legitimately exist.
+const PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS = 7;
+
 /**
  * Decide whether a review's publishDate falls inside any of the show's
  * prior-run windows (Phase 1 production-continuity model).
  *
  * Each priorRun describes a previous run of the same artistic production
  * (workshop → mainstage transfer, return engagement, etc.). A review whose
- * publishDate sits inside priorRun.openingDate..closingDate is legitimate
- * coverage of an earlier run of THIS production and must not be flagged
- * wrongProduction by date-only guards.
+ * publishDate sits inside priorRun.openingDate..(closingDate + grace) is
+ * legitimate coverage of an earlier run of THIS production and must not be
+ * flagged wrongProduction by date-only guards.
  *
  * Defaults / edge cases:
  *  - reviewDate / priorRuns missing or empty → false (caller falls back to
@@ -35,7 +51,11 @@ const { parseDate } = require('./date-utils');
  *    skipped (other entries still evaluated).
  *  - closingDate missing on a priorRun → window extends 180 days past
  *    openingDate (limited-run default; matches OB lab/showcase typical run).
- *  - Comparison is inclusive of both bounds and date-only (UTC midnight).
+ *    The post-close grace does not additionally extend this default — 180
+ *    days already dwarfs any review-lag window.
+ *  - Comparison is inclusive of both bounds and date-only (UTC midnight);
+ *    the close bound gets PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS of grace, the
+ *    open bound does not.
  *
  * @param {Date|string|null} reviewDate - Review publish date (Date or ISO/parseable string)
  * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} priorRuns
@@ -63,20 +83,37 @@ function findMatchingPriorRun(reviewDate, priorRuns) {
   if (!rd || isNaN(rd.getTime())) return null;
   const rdMs = rd.getTime();
 
+  // Two passes so a run's OWN strict window always outranks another run's
+  // grace-extended tail (BRO-2561 ship-check finding): with grace, a review
+  // just past run A's close can now also fall in run A's grace tail AND run
+  // B's strict window if B opens shortly after A closes (multi-leg tours /
+  // festival runs). Array order alone would have let an earlier-declared A
+  // shadow the run the review actually belongs to. A strict match anywhere
+  // in the array always wins over a graced match anywhere else.
+  const strict = matchPriorRuns(rdMs, priorRuns, false);
+  if (strict) return strict;
+  return matchPriorRuns(rdMs, priorRuns, true);
+}
+
+function matchPriorRuns(rdMs, priorRuns, allowGrace) {
   for (const run of priorRuns) {
     if (!run || !run.openingDate) continue;
     const open = parseDate(run.openingDate);
     if (!open || isNaN(open.getTime())) continue;
     let close;
+    let hasExplicitClose = false;
     if (run.closingDate) {
       close = parseDate(run.closingDate);
-      if (!close || isNaN(close.getTime())) close = undefined;
+      if (close && !isNaN(close.getTime())) hasExplicitClose = true;
+      else close = undefined;
     }
     if (!close) {
       close = new Date(open.getTime());
       close.setUTCDate(close.getUTCDate() + 180);
     }
-    if (rdMs >= open.getTime() && rdMs <= close.getTime()) return run;
+    const graceMs = (allowGrace && hasExplicitClose) ? PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS * 86400000 : 0;
+    const closeMs = close.getTime() + graceMs;
+    if (rdMs >= open.getTime() && rdMs <= closeMs) return run;
   }
   return null;
 }
@@ -697,6 +734,7 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
 
 module.exports = {
   DATE_ONLY_AUTO_REASONS,
+  PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS,
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
