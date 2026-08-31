@@ -64,7 +64,8 @@
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "now-you-see-me-live-west-end-2026/londontheatredirect--sheila-elizabeth.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "cats-west-end-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -1687,7 +1688,16 @@
     "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
     "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
-    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json",
+    "cats-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "cats-west-end-2026/vulture--jackson-mchenry.json",
+    "cats-west-end-2026/deadline--liz-shackleton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1746,7 +1756,9 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
+      "cats-west-end-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1783,7 +1795,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+  "lastProcessed": "cats-west-end-2026/deadline--liz-shackleton.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2027,6 +2039,17 @@
       "event": "bb-session",
       "session": "7ee11159",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-31T15:39:28.368Z",
+      "event": "bb-session",
+      "session": "a3f62fdf",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-31T15:39:28.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-08-31T15:37:36.775Z",
-  "processed": 65,
-  "failed": 1621,
+  "updatedAt": "2026-08-31T15:39:52.968Z",
+  "processed": 66,
+  "failed": 1630,
   "successRate": "3.9%",
   "tierBreakdown": {
     "playwright": 41,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 3,
     "scrapingbee": 4,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-08-31T12:13:53.559Z",
-      "event": "bb-session",
-      "session": "024a62fe",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-08-31T12:13:54.094Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-08-31T12:15:49.897Z",
       "event": "bb-session",
@@ -130,6 +119,17 @@
       "event": "bb-session",
       "session": "7ee11159",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-08-31T15:39:28.368Z",
+      "event": "bb-session",
+      "session": "a3f62fdf",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-"
+    },
+    {
+      "t": "2026-08-31T15:39:28.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
