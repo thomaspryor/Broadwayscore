@@ -74,6 +74,7 @@ scripts/lib/cyrus-runner-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
 scripts/lib/dispatch-guards.test.mjs
 scripts/lib/dispatch-ledger.test.mjs
+scripts/lib/dispatch-repo-root.test.mjs
 scripts/lib/dmarc-analysis.test.mjs
 scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
@@ -164,6 +165,7 @@ scripts/tests/recheck-ledger-persistence.test.mjs
 scripts/tests/record-push-ledger-redaction.test.mjs
 scripts/tests/recover-serp-exhausted-outlets.test.mjs
 scripts/tests/scripts-no-undef.test.mjs
+scripts/tests/session-start-staleness.test.mjs
 scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/stuck-work-linear-reconcile.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
@@ -444,6 +446,7 @@ tests/unit/lint-canonical-writers.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/live-rc-missing-drift.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
+tests/unit/llm-ensemble-max-cost-wiring.test.mjs
 tests/unit/llm-extractor.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
 tests/unit/llm-scoring-rebuild-parity.test.mjs
@@ -486,6 +489,7 @@ tests/unit/notion-feedback-integration.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
+tests/unit/nyt-roundup-discovery.test.mjs
 tests/unit/nytheater-openings.test.mjs
 tests/unit/nytimes-attribution-suppression.test.mjs
 tests/unit/ob-candidates-digest.test.mjs
@@ -495,6 +499,7 @@ tests/unit/olivier-awards.test.mjs
 tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
+tests/unit/opening-night-checklist-push.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
 tests/unit/opening-night-checks-critics-take.test.mjs
 tests/unit/opening-night-checks-dtli.test.mjs

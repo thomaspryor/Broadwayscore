@@ -774,17 +774,15 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-31T19:13:14.299Z",
-      "lastNotifiedAt": "2026-08-31T17:38:21.427Z",
-      "notifyCount": 29,
+      "lastSeen": "2026-08-31T21:09:40.191Z",
+      "lastNotifiedAt": "2026-08-31T21:09:40.191Z",
+      "notifyCount": 30,
       "cardId": null,
-      "linearIdentifier": "BRO-296",
-      "silentRefires": 3,
-      "resolvedAt": "2026-08-31T19:30:50.064Z"
+      "linearIdentifier": "BRO-296"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1945,6 +1943,94 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2657"
+    },
+    "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served",
+      "firstSeen": "2026-08-31T20:41:27.376Z",
+      "lastSeen": "2026-08-31T20:41:27.376Z",
+      "lastNotifiedAt": "2026-08-31T20:41:27.376Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2673"
+    },
+    "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549: a punctuation-formatting false positive is rescued, not purged (matches the audit's policy)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549: a punctuation-formatting false positive is rescued, not purged (matches the audit's policy)",
+      "firstSeen": "2026-08-31T20:41:30.095Z",
+      "lastSeen": "2026-08-31T20:41:30.095Z",
+      "lastNotifiedAt": "2026-08-31T20:41:30.095Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2674"
+    },
+    "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549: a valid cache entry under 14 days old is served": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549: a valid cache entry under 14 days old is served",
+      "firstSeen": "2026-08-31T20:41:33.977Z",
+      "lastSeen": "2026-08-31T20:41:33.977Z",
+      "lastNotifiedAt": "2026-08-31T20:41:33.977Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2675"
+    },
+    "time-bomb-tests:unit:scripts/lib/cmux-launch.test.mjs::cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/lib/cmux-launch.test.mjs — cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent",
+      "firstSeen": "2026-08-31T20:41:37.061Z",
+      "lastSeen": "2026-08-31T20:41:37.061Z",
+      "lastNotifiedAt": "2026-08-31T20:41:37.061Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2676"
+    },
+    "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneDue: atomic mkdir claim — true once, false until the window elapses": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneDue: atomic mkdir claim — true once, false until the window elapses",
+      "firstSeen": "2026-08-31T20:41:40.088Z",
+      "lastSeen": "2026-08-31T20:41:40.088Z",
+      "lastNotifiedAt": "2026-08-31T20:41:40.088Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2677"
+    },
+    "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneDue: two \"concurrent\" claimants in the same window — only the first wins (atomicity, not just a race that usually resolves fine)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneDue: two \"concurrent\" claimants in the same window — only the first wins (atomicity, not just a race that usually resolves fine)",
+      "firstSeen": "2026-08-31T20:41:42.259Z",
+      "lastSeen": "2026-08-31T20:41:42.259Z",
+      "lastNotifiedAt": "2026-08-31T20:41:42.259Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2678"
+    },
+    "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneJobLogs: deletes only log files older than maxAgeMs, from a real temp dir": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneJobLogs: deletes only log files older than maxAgeMs, from a real temp dir",
+      "firstSeen": "2026-08-31T20:41:44.634Z",
+      "lastSeen": "2026-08-31T20:41:44.634Z",
+      "lastNotifiedAt": "2026-08-31T20:41:44.634Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2679"
+    },
+    "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneJobLogsIfDue: bounded age retention actually runs when due, and skips when on cooldown (prevents unbounded growth from silently refilling the disk)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneJobLogsIfDue: bounded age retention actually runs when due, and skips when on cooldown (prevents unbounded growth from silently refilling the disk)",
+      "firstSeen": "2026-08-31T20:41:46.928Z",
+      "lastSeen": "2026-08-31T20:41:46.928Z",
+      "lastNotifiedAt": "2026-08-31T20:41:46.928Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2680"
     }
   }
 }
