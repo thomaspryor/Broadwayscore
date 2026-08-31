@@ -191,11 +191,18 @@ describe('detectPullQuoteCompilation (task #1888)', () => {
   });
 
   test('does NOT flag when the byline critic is themselves attributed via the possessive shape (own-byline escape hatch survives the possessive/"of"-shape group reordering)', () => {
+    // outletId is deliberately a DIFFERENT outlet than any of the three
+    // quoted below (a wire-syndication shape, like the existing comma-shape
+    // "syndicated wire digest" test above) — that's what proves this returns
+    // null via isSameCritic(name, byline), not via the unrelated "don't count
+    // the byline's own outlet" exclusion. Confirmed by construction: the same
+    // fullText with a non-matching criticName DOES flag (3 outlets), so
+    // isSameCritic is what's actually doing the work here.
     const fullText = "Here's a sampling of the critical reaction. "
       + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
       + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
-      + 'And Gold Derby\'s Ethan Alter found real dramatic dead spots amid the scares, writing: "It carries the play through some flat stretches."';
-    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+      + 'And Time Out New York\'s Raven Snook pens a four-star rave, adding: "The whole show is a scream."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'associatedpress', criticName: 'Frank Rizzo' });
     assert.equal(r, null);
   });
 });
