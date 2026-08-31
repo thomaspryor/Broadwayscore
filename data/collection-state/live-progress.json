@@ -1,46 +1,68 @@
 {
-  "updatedAt": "2026-08-31T17:35:51.930Z",
-  "processed": 17,
-  "failed": 143,
-  "successRate": "10.6%",
+  "updatedAt": "2026-08-31T17:55:54.300Z",
+  "processed": 14,
+  "failed": 136,
+  "successRate": "9.3%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-08-31T17:00:23.972Z",
+      "t": "2026-08-31T17:43:36.154Z",
       "event": "bb-session",
-      "session": "557b4120",
+      "session": "d5e072bb",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-31T17:43:37.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-31T17:43:55.325Z",
+      "event": "bb-session",
+      "session": "be07e4f7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-08-31T17:43:56.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-31T17:44:23.330Z",
+      "event": "bb-session",
+      "session": "eee4738f",
       "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
     },
     {
-      "t": "2026-08-31T17:00:25.035Z",
+      "t": "2026-08-31T17:44:24.203Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-31T17:02:42.477Z",
+      "t": "2026-08-31T17:46:48.774Z",
       "event": "bb-session",
-      "session": "b36ba45a",
+      "session": "81b28407",
       "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-08-31T17:02:43.493Z",
+      "t": "2026-08-31T17:46:49.794Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-31T17:07:55.123Z",
+      "t": "2026-08-31T17:52:18.720Z",
       "event": "bb-session",
-      "session": "e2678244",
+      "session": "52cf0715",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
