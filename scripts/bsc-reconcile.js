@@ -63,7 +63,7 @@ const ledger = require('./lib/dispatch-ledger.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
-const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
+const { setAppFocus, osActivateCmuxApp, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
@@ -201,6 +201,9 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     isDoneTitleFn = cmuxws.isDoneTitle,
     claudeAliveInFn = cmuxws.claudeAliveIn,
     surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    // BRO-2575 test seam — the OS-process third signal. Same default and same
+    // lazy `ps` sampling as bsc-prune's.
+    makeWrapperAliveProbe: makeWrapperAliveProbeFn = makeSeedProcessProbe,
     readLedgerEntriesFn = ledger.readEntries,
     wakeFn = () => { osActivateCmuxApp(); return setAppFocus('active'); },
     clearWakeFn = () => setAppFocus('clear'),
@@ -265,6 +268,28 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   }
   if (!candidates.length) return { checked: tasks.length, dead: [], redispatched: [] };
 
+  // BRO-2575: checkLiveness's two signals are both cmux reads over one socket,
+  // so a daemon blackout reports the whole fleet dead — and THIS reconciler
+  // responds by re-dispatching with --force, which is a duplicate worker on
+  // live work, not just a bogus ledger row. The wake+recheck below only asks
+  // cmux again, so it cannot see through a blackout either. Drop any candidate
+  // whose launch wrapper is still in the OS process table — the one signal not
+  // read through cmux. Same fail directions as bsc-prune: no marker (a launch
+  // predating this field) or an unbuildable probe leaves the verdict exactly as
+  // it was. See dispatch-ledger.deadBreadcrumbs' header for the mechanism.
+  let isWrapperAlive = null;
+  try { isWrapperAlive = makeWrapperAliveProbeFn(); }
+  catch (e) { reportFn({ kind: 'task-sweep-error', taskId: 'sweep', detail: `wrapper-process probe unavailable (${e.message}) — cmux-only liveness this tick` }); }
+  const confirmedDead = candidates.filter(({ task, launch }) => {
+    if (!ledger.wrapperVouchesAlive(launch, isWrapperAlive)) return true;
+    reportFn({
+      kind: 'task-session-wrapper-alive', taskId: task.id,
+      detail: `cmux reported ${launch.workspaceRef} dead but its launch wrapper ${launch.marker} is still running — NOT re-dispatching in_progress task #${task.id} "${task.subject}"`,
+    });
+    return false;
+  });
+  if (!confirmedDead.length) return { checked: tasks.length, dead: [], redispatched: [] };
+
   // Wake cmux once before trusting a "dead" verdict (#849 lazy-exec fix): a
   // backgrounded app can leave an EXISTING tab's surface dormant the same
   // way it defers a brand-new launch's typed command. Re-list and re-check
@@ -275,7 +300,7 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   catch { /* keep the pre-wake snapshot — a failed re-list must not block the sweep */ }
   clearWakeFn();
 
-  const dead = candidates.filter(({ launch }) => {
+  const dead = confirmedDead.filter(({ launch }) => {
     const ws = byRef.get(launch.workspaceRef);
     if (!ws) return false; // vanished between the two listings — bsc-prune's call now, not ours
     return cmuxws.checkLiveness(ws.ref, claudeAliveInFn, surfaceAliveInFn).dead;

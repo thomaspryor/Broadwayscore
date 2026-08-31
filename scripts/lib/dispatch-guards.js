@@ -348,9 +348,19 @@ function closedCardGuard(task, card, opts) {
 // working on. Same fix shape as #559's pruneDone: require the independent
 // terminal-surface signal (surfaceAliveFn) to ALSO say not-alive before a
 // workspace counts as idle-and-dead.
+// BRO-2575: opts.isWrapperAlive is forwarded to deadBreadcrumbs so this
+// same-session self-heal path gets the OS-process cross-check the scheduled
+// bsc-prune sweep gets. It must — this path exists precisely to synthesise
+// breadcrumbs WITHOUT waiting for a sweep, so leaving it on the cmux-only
+// signals would just move the false-dead from the sweep into the dispatcher
+// (and straight into deadDispatchGuard's retry cap in the same call). Absent,
+// behaviour is exactly as before. See deadBreadcrumbs' header for the mechanism.
 function checkDeadDispatch(task, workspaces, ledgerEntries, isDoneTitleFn, claudeAliveInFn, surfaceAliveFn, opts) {
   const idle = workspaces.filter(w => !isDoneTitleFn(w.title) && cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveFn).dead);
-  const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries);
+  const freshDead = dispatchLedger.deadBreadcrumbs(idle, ledgerEntries, {
+    isWrapperAlive: opts && opts.isWrapperAlive,
+    onSuppressed: opts && opts.onSuppressed,
+  });
   const refusal = deadDispatchGuard(task, ledgerEntries.concat(freshDead), opts);
   return { freshDead, refusal };
 }
