@@ -55,9 +55,10 @@ const REPORT_PATH = path.join(TRIAGE_DIR, 'unopened-shows-prior-runs.json');
 
 const UNOPENED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 
-// Stand-in opening date when simulating a status flip on a show that has no
-// dates yet. Only used for the simulation, never written anywhere.
-const TODAY = new Date().toISOString().slice(0, 10);
+// Files whose exclusion reasons could not be evaluated (predicate threw).
+// Surfaced loudly: an unevaluated file is not a safe file.
+let unknownCount = 0;
+const unknownSamples = [];
 
 function hasDeclaredPriorRuns(show) {
   return Array.isArray(show.priorRuns)
@@ -93,20 +94,25 @@ function collectPrematureScoredReviews(show, reviewTextsDir) {
     // it once status flips. filePath is mandatory — explainExclusion returns
     // 'duplicateOf' for every file when it is omitted.
     const fp = path.join(dir, file);
-    const openedShow = {
-      ...show,
-      status: 'open',
-      previewsStartDate: show.previewsStartDate || TODAY,
-      openingDate: show.openingDate || TODAY,
-    };
-    let beforeReason = null;
-    let afterReason = null;
+    // Flip ONLY the status. Deliberately does NOT fabricate previews/opening
+    // dates for an undated show: several downstream guards derive a production
+    // YEAR from those fields, so a synthetic "today" would answer a different
+    // question than "what happens when this show opens" (it would answer "what
+    // happens if it opened today"). Leaving them absent keeps the simulation to
+    // the one variable that actually expires — the temporal gate itself.
+    const openedShow = { ...show, status: 'open' };
+    // undefined (not null) means "could not evaluate" — see classifyReadmissionRisk.
+    let beforeReason;
+    let afterReason;
     try {
       beforeReason = explainExclusion(data, show, fp);
       afterReason = explainExclusion(data, openedShow, fp);
-    } catch {
+    } catch (err) {
       // A predicate throw (missing registry, unreadable duplicate target) must
-      // not sink the whole sweep — the row simply carries no risk verdict.
+      // not sink the whole sweep, but it must not read as "safe" either: the
+      // reasons stay undefined and the row is classified 'unknown'.
+      unknownCount++;
+      unknownSamples.push(`${show.id}/${file}: ${err && err.message}`);
     }
     out.push({
       readmissionRisk: classifyReadmissionRisk({ beforeReason, afterReason }),
@@ -196,10 +202,13 @@ function main() {
   // strong diagnostic mirror of the rebuild's rules, not the audit of record
   // (see its docstring), so a false positive must not be able to red main.
   const readmissionRisks = [];
+  const unevaluated = [];
   for (const r of results) {
     for (const rv of r.reviews) {
       if (rv.readmissionRisk === 'readmits-on-open') {
         readmissionRisks.push({ showId: r.showId, file: rv.file, publishDate: rv.publishDate, outletId: rv.outletId });
+      } else if (rv.readmissionRisk === 'unknown') {
+        unevaluated.push({ showId: r.showId, file: rv.file });
       }
     }
   }
@@ -212,6 +221,8 @@ function main() {
     flaggedFiles: totalFiles,
     readmissionRiskFiles: readmissionRisks.length,
     readmissionRisks,
+    unevaluatedFiles: unevaluated.length,
+    unevaluated,
     unreadableFiles: totalUnreadable,
     byVerdict,
     shows: results.sort((a, b) => b.stats.count - a.stats.count),
@@ -227,11 +238,19 @@ function main() {
   }
 
   if (readmissionRisks.length > 0) {
-    console.log(`\n[triage-unopened-shows] READMISSION RISK: ${readmissionRisks.length} review(s) are held out ONLY by the expiring pre-opening gate and will re-enter scoring when their show opens:`);
+    // "would", not "will": explainExclusion mirrors the rebuild's rules but is
+    // explicitly NOT the audit of record (see its docstring), so each hit is a
+    // candidate to confirm against the rebuild, not a settled fact.
+    console.log(`\n[triage-unopened-shows] READMISSION RISK: ${readmissionRisks.length} review(s) appear to be held out ONLY by the expiring pre-opening gate and would re-enter scoring when their show opens:`);
     for (const x of readmissionRisks) console.log(`  ! ${x.showId} | ${x.file} | pub=${x.publishDate}`);
-    console.log('[triage-unopened-shows] Fix each: declare show.priorRuns if it is a genuine earlier run, else set wrongProduction + an operator wrongProductionReason.');
+    console.log('[triage-unopened-shows] Confirm against the rebuild, then fix each: declare show.priorRuns if it is a genuine earlier run, else set wrongProduction + an operator wrongProductionReason.');
   } else {
     console.log('[triage-unopened-shows] readmission risk: none — every gate-excluded review also has a durable exclusion.');
+  }
+
+  if (unevaluated.length > 0) {
+    console.log(`[triage-unopened-shows] WARNING: ${unevaluated.length} file(s) could NOT be evaluated (exclusion predicate threw) — these are UNKNOWN, not safe:`);
+    for (const s of unknownSamples.slice(0, 10)) console.log(`  ? ${s}`);
   }
 
   if (PRINT_JSON) {
@@ -240,8 +259,28 @@ function main() {
 
   if (!ONLY_SHOW) {
     fs.mkdirSync(TRIAGE_DIR, { recursive: true });
-    fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + '\n');
-    console.log(`[triage-unopened-shows] wrote ${REPORT_PATH}`);
+    const next = JSON.stringify(report, null, 2) + '\n';
+    // Skip the write when only generatedAt would change. This report lives in
+    // data/audit/triage/, which BOTH data-health-check.yml and
+    // rebuild-reviews.yml stage and commit — an unconditional write would mint
+    // a no-op commit on every cron run and add avoidable push contention on a
+    // directory the merge registry already documents as multi-writer.
+    let prevBody = null;
+    try {
+      const prev = JSON.parse(fs.readFileSync(REPORT_PATH, 'utf8'));
+      delete prev.generatedAt;
+      prevBody = JSON.stringify(prev);
+    } catch {
+      // No previous report (or unreadable) — fall through and write.
+    }
+    const nextCompare = { ...report };
+    delete nextCompare.generatedAt;
+    if (prevBody !== null && prevBody === JSON.stringify(nextCompare)) {
+      console.log(`[triage-unopened-shows] unchanged since last run — left ${REPORT_PATH} untouched`);
+    } else {
+      fs.writeFileSync(REPORT_PATH, next);
+      console.log(`[triage-unopened-shows] wrote ${REPORT_PATH}`);
+    }
   }
 }
 

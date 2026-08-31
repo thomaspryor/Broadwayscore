@@ -192,9 +192,15 @@ function classifyPriorRunCandidate(show, reviews) {
  * @param {{beforeReason: string|null, afterReason: string|null}} o
  *   beforeReason - explainExclusion against the show as it stands today
  *   afterReason  - explainExclusion against the same show with status flipped open
- * @returns {'readmits-on-open'|'durably-excluded'|'already-included'|'still-excluded-after-open'}
+ * `unknown` is returned when either reason could not be computed (the caller
+ * caught a predicate throw and passed undefined). It must NOT collapse into
+ * 'already-included': a swallowed error is an unevaluated file, and reporting
+ * one as safe is exactly the silent false negative this sweep exists to stop.
+ *
+ * @returns {'readmits-on-open'|'durably-excluded'|'already-included'|'still-excluded-after-open'|'unknown'}
  */
 function classifyReadmissionRisk({ beforeReason, afterReason }) {
+  if (beforeReason === undefined || afterReason === undefined) return 'unknown';
   if (!beforeReason) return 'already-included';
   // Held out by a real flag (wrongProduction, wrongShow, contentTierInvalid, ...)
   // rather than by the expiring temporal gate — opening changes nothing.

@@ -170,3 +170,21 @@ test('classifyReadmissionRisk: a declared priorRun readmitting a legit earlier r
   // review is simply included — the intended outcome, not a landmine.
   assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
 });
+
+test('classifyReadmissionRisk: an unevaluable file is unknown, never "already-included"', () => {
+  // The CLI leaves both reasons undefined when explainExclusion throws. Reading
+  // that as "no exclusion reason -> already scoring" would report an
+  // unevaluated file as safe: the exact silent false negative this sweep exists
+  // to prevent.
+  assert.equal(classifyReadmissionRisk({ beforeReason: undefined, afterReason: undefined }), 'unknown');
+  assert.equal(classifyReadmissionRisk({ beforeReason: 'prematureForUnopenedShow', afterReason: undefined }), 'unknown');
+  assert.equal(classifyReadmissionRisk({ beforeReason: undefined, afterReason: null }), 'unknown');
+});
+
+test('classifyReadmissionRisk: null (evaluated, not excluded) stays distinct from undefined (not evaluated)', () => {
+  assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
+  assert.notEqual(
+    classifyReadmissionRisk({ beforeReason: undefined, afterReason: undefined }),
+    classifyReadmissionRisk({ beforeReason: null, afterReason: null })
+  );
+});
