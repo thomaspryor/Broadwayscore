@@ -79,7 +79,10 @@
     "six-2021/one-minute-critic--matthew-wexler.json",
     "hadestown-2019/theatrely--theatrely-staff.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--scott-harrah.json",
-    "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json"
+    "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "hamilton-west-end-2021/variety--kj-yossman.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -2217,7 +2220,14 @@
     "six-the-musical-west-end-2021/nysr--bob-verini.json",
     "six-the-musical-west-end-2021/patriot-ledger--iris-fanger.json",
     "six-the-musical-west-end-2021/wttw--hedy-weiss.json",
-    "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json"
+    "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+    "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+    "magic-mike-live-west-end-2021/timeout--nicola-dowse.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/british-theatre--unknown.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/whatsonstage--ben-hewis.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2267,7 +2277,8 @@
       "hadestown-west-end-2024/columbus-dispatch--unknown.json",
       "six-2021/one-minute-critic--matthew-wexler.json",
       "the-play-that-goes-wrong-off-broadway-2019/stagezine--scott-harrah.json",
-      "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json"
+      "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2289,7 +2300,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
-      "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json"
+      "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
+      "hamilton-west-end-2021/variety--kj-yossman.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -2304,7 +2317,8 @@
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "and-juliet-2022/newyorker--conde-nast.json",
-      "hadestown-2019/theatrely--theatrely-staff.json"
+      "hadestown-2019/theatrely--theatrely-staff.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
       "paranormal-activity-boston-regional-2026/nypost--unknown.json",
@@ -2336,7 +2350,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+  "lastProcessed": "hamilton-west-end-2021/variety--kj-yossman.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2690,6 +2704,17 @@
       "event": "bb-session",
       "session": "c06cc12b",
       "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
+    },
+    {
+      "t": "2026-08-31T16:41:41.587Z",
+      "event": "bb-session",
+      "session": "1a03333a",
+      "url": "https://variety.com/2026/theater/global/leslie-odom-jr-hamilton-london-returning"
+    },
+    {
+      "t": "2026-08-31T16:41:42.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
