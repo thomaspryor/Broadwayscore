@@ -61,8 +61,19 @@ test('broadway edition renders an in-week off-Broadway opening even when a stale
   assert.ok(openingRef, `expected ${SHOW_ID} in meta.openingShows (lede/completeness gates read this list)`);
 });
 
-test('west-end edition run leaves no Broadway/off-Broadway show ids in its own featuredShowIds state', () => {
-  runGenerator(WEEK, { NEWSLETTER_EDITION: 'west-end' });
+// Narrowed 2026-08-31 (BRO-2606). The original assertion was "a WE run records
+// ZERO Broadway/off-Broadway ids", which was the right invariant while the WE
+// edition rendered no NYC shows at all. BRO-2590 then added the broadway-we
+// section, so the WE edition now legitimately renders (and must therefore
+// remember) the week's Broadway openings — its own inBroadwayOpeningWindowForWE()
+// grace window reads them back out of lastFeaturedIds next week. The real
+// invariant underneath both cases is unchanged and is what this now asserts: a
+// WE run may only record NYC ids it actually RENDERED. bwO/obO's ids — the
+// BRO-2573 pollution — are never rendered in the WE edition, so they must still
+// never appear, and off-Broadway can never appear at all (broadway-we is
+// Broadway-category only).
+test('west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution', () => {
+  const { meta } = runGenerator(WEEK, { NEWSLETTER_EDITION: 'west-end' });
   const state = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/newsletter-state.json'), 'utf8'));
   const issue = state.issues.find((i) => i.weekStart === WEEK && i.edition === 'west-end');
   assert.ok(issue, `expected a west-end issue row for ${WEEK}`);
@@ -73,5 +84,12 @@ test('west-end edition run leaves no Broadway/off-Broadway show ids in its own f
     const cat = categoryById.get(id);
     return cat === 'broadway' || cat === 'off-broadway';
   });
-  assert.deepEqual(nyc, [], `expected no Broadway/off-Broadway ids in the West End edition's own state row, found: ${nyc.join(', ')}`);
+
+  const offBroadway = nyc.filter((id) => categoryById.get(id) === 'off-broadway');
+  assert.deepEqual(offBroadway, [], `the West End edition renders no off-Broadway show anywhere, so none may be recorded; found: ${offBroadway.join(', ')}`);
+
+  // Everything else must be a show the WE draft actually put on the page.
+  const renderedIds = new Set((meta.openingShows || []).map((s) => s.id));
+  const unrendered = nyc.filter((id) => !renderedIds.has(id));
+  assert.deepEqual(unrendered, [], `expected every Broadway id in the West End edition's own state row to have been rendered in the draft (BRO-2573 pollution guard), found unrendered: ${unrendered.join(', ')}`);
 });
