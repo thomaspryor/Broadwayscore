@@ -307,6 +307,22 @@ test('extractHookCommandPaths walks every hook-event key, not just PreToolUse', 
   assert.deepEqual(matched.map((e) => e.event).sort(), ['PostToolUse', 'PreToolUse', 'SessionStart', 'Stop']);
 });
 
+test('extractHookCommandPaths pulls the relative suffix out of a CLAUDE_PROJECT_DIR-anchored resolver, not the "/" glued to the variable (BRO-2439 regression)', () => {
+  const settings = settingsWith([{
+    event: 'PreToolUse',
+    command: 'G="$(git rev-parse --show-toplevel 2>/dev/null)"; R="${CLAUDE_PROJECT_DIR:-$G}"; H="$R/.claude/hooks/worktree-enforce.sh"; if [ -n "$R" ] && [ -f "$H" ]; then exec bash "$H"; else echo "FATAL: cannot resolve hook script $H" >&2; exit 2; fi',
+  }]);
+  const { matched } = extractHookCommandPaths(settings);
+  assert.equal(matched.length, 1);
+  // Must be the bare relative suffix (resolved against baseDir/repo root),
+  // NOT "/.claude/hooks/worktree-enforce.sh" — the naive absolute-looking
+  // match a bare `[~./]` start-class would produce by matching the "/" that
+  // immediately follows "$R", which then resolves to a nonexistent path at
+  // filesystem root and reports every hook as dead (the regression this
+  // guards against).
+  assert.equal(matched[0].rawPath, '.claude/hooks/worktree-enforce.sh');
+});
+
 test('extractHookCommandPaths reports a command with no recognizable .sh path as unmatched, not silently dropped', () => {
   const settings = settingsWith([{ event: 'PreToolUse', command: 'node ~/.claude/hooks/future-hook.mjs' }]);
   const { matched, unmatched } = extractHookCommandPaths(settings);

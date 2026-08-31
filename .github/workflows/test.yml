@@ -1464,6 +1464,23 @@ on:
       # listed there — no glob).
       - 'scripts/tests/hook-liveness.test.mjs'
       - 'scripts/check-hook-liveness.js'
+      # BRO-2439 — the generalized hook-liveness check above reads
+      # <repo>/.claude/settings.json as its source of truth for every hook
+      # that SHOULD be running, but the file itself was never path-listed —
+      # same gap this fixed (a push touching only settings.json, exactly
+      # what BRO-2439's relative→CLAUDE_PROJECT_DIR-anchored resolver fix
+      # changed, would have triggered ZERO CI). Also lists the 7 repo-local
+      # hook scripts not already covered by an e2e test's own path-list entry
+      # above (pre-merge/pre-push-review-gate.sh, pre-push-visual-gate.sh,
+      # verify-edits.sh) so a solo edit to any of them triggers CI too.
+      - '.claude/settings.json'
+      - '.claude/hooks/notion-create-block.sh'
+      - '.claude/hooks/worktree-enforce.sh'
+      - '.claude/hooks/check-skill-redaction.sh'
+      - '.claude/hooks/enterworktree-guard.sh'
+      - '.claude/hooks/whitespace-nowrap-lint.sh'
+      - '.claude/hooks/session-start.sh'
+      - '.claude/hooks/cloud-bootstrap.sh'
       # BRO-193 — hook-syntax-guard.sh's restore loop now walks a manifest of
       # its own quarantines instead of globbing "*.sh.broken-*" on disk, so a
       # human-disabled hook stays disabled. The guarded script lives in the
