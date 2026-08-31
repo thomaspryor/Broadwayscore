@@ -13,7 +13,11 @@
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "just-in-time-2025/timeout--unknown.json",
     "paranormal-activity-boston-regional-2026/nypost--unknown.json",
-    "paranormal-activity-boston-regional-2026/timeout--unknown.json"
+    "paranormal-activity-boston-regional-2026/timeout--unknown.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -974,7 +978,13 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "benevolent-off-broadway-2026/theatermania--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -993,17 +1003,22 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ],
     "scrapingbee": [
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
-      "paranormal-activity-boston-regional-2026/nypost--unknown.json"
+      "paranormal-activity-boston-regional-2026/nypost--unknown.json",
+      "benevolent-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1011,7 +1026,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -1034,6 +1049,29 @@
       "t": "2026-08-30T20:47:54.479Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-31T03:01:41.776Z",
+      "event": "bb-session",
+      "session": "060a8202",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-08-31T03:01:42.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-31T03:04:20.668Z",
+      "event": "bb-session",
+      "session": "1fddd4cf",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-31T03:04:40.542Z",
+      "event": "bb-session",
+      "session": "4d6ce383",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     }
   ]
 }
