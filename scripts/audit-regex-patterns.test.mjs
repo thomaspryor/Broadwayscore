@@ -108,6 +108,29 @@ test('BRO-181 FP fixes: known-collision patterns are absent, real titles are not
     `expected no violations against known-real titles, got: ${JSON.stringify(violations)}`);
 });
 
+// Pins the BRO-2662 fix: bare 'circus' matched "The Secret Circus Musical",
+// a live tracked Off-Broadway musical in previews. Unlike 'gala'/'tour', no
+// multi-word replacement was added — real tracked shows are titled
+// "Cirque du Soleil Paramour", "Cirque Berserk", "Scrooge: Cirque
+// Extravaganza", "Cirque Alice", so any "cirque"/"circus"-branded
+// multi-word pattern would reintroduce the same false-positive class.
+test('circus FP fix (BRO-2662): no NON_THEATER_PATTERNS entry is the bare word "circus", real title not matched', () => {
+  assert.ok(!NON_THEATER_PATTERNS.includes('circus'), 'bare "circus" must not be reintroduced — matches "The Secret Circus Musical"');
+
+  const realTitles = [
+    'The Secret Circus Musical',
+    'Cirque du Soleil Paramour',
+    'Cirque Berserk',
+    'Scrooge: Cirque Extravaganza',
+    'Cirque Alice',
+  ];
+  const families = loadTitleExcludeFamilies();
+  const counts = scanTitleFamilies({ families, titles: realTitles });
+  const violations = evaluateTitleFamilies({ counts });
+  assert.equal(violations.length, 0,
+    `expected no violations against known-real circus-titled shows, got: ${JSON.stringify(violations)}`);
+});
+
 // BRO-2315: extends the same audit to discover-opera-shows.js's
 // NON_OPERA_TITLE_PATTERNS (isNonOpera()), scanned against a real opera-only
 // corpus rather than the general theatre-wide title list.
