@@ -46,5 +46,58 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-08-30T13:37:41.484Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "91 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Operation Mincemeat — independent (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Operation Mincemeat — whatsonstage (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — deadline (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — ew (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — guardian (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — hollywood-reporter (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — nypost (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — nytg (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — nytimes (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — theatermania (398h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-08-31T00:09:53.149Z"
   }
 ]
