@@ -92,13 +92,18 @@ else
   fi
 fi
 if [ "$gc_lock_acquired" != "1" ]; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress (covers all repos)" | tee -a "$LOG"
+  # UTC (BRO-2608): health-check.js's freshness guard reads this log from a
+  # UTC GitHub Actions runner, not this (local-TZ) machine — a local-time
+  # stamp here would misreport hoursStale by the host's UTC offset.
+  echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress (covers all repos)" | tee -a "$LOG"
   exit 0
 fi
 echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
 trap 'rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
 
-ts() { date '+%Y-%m-%d %H:%M:%S'; }
+# UTC (BRO-2608): see SKIP-RUN comment above — this log is read for
+# freshness from a UTC runner, so its timestamps must be TZ-independent.
+ts() { date -u '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "[$(ts)] $*" | tee -a "$LOG"; }
 
 # Free space on the filesystem holding $1 (default PRIMARY_REPO), in whole GB.

@@ -3412,6 +3412,23 @@ function reverseDiscoveryFreshnessResults(report, nowMs) {
   }];
 }
 
+// Freshness guard for data/audit/worktree-gc.log (BRO-2608) — see
+// scripts/lib/worktree-gc-freshness.js for the incident this closes. This is
+// the only automated brake on disk growth from abandoned worktrees; a
+// silently-stopped log previously went five days unnoticed while disk fell
+// from 88Gi to 26Gi free.
+function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
+  const { checkWorktreeGcFreshness } = require('./lib/worktree-gc-freshness');
+  const stale = checkWorktreeGcFreshness(lastLineTimestamp, nowMs);
+  if (!stale) return [];
+  return [{
+    name: 'Infra: worktree GC log stale',
+    status: stale.severity,
+    message: `worktree-gc.log has no line in the last ${stale.hoursStale.toFixed(1)}h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing.`,
+    hint: 'launchctl print gui/501/com.broadwayscore.worktree-gc — check "last exit code" and whether runs have advanced; run scripts/gc-merged-worktrees.sh manually if stuck. BRO-2608.',
+  }];
+}
+
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
 // uncollected-live-reviews.json, written hourly by
 // audit-uncollected-live-reviews.js — card #1408). That script's own --alert
@@ -4558,6 +4575,12 @@ async function main() {
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
     try {
+      const { lastTimestampFromLog } = require('./lib/worktree-gc-freshness');
+      const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
+      allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
+    } catch { /* log absent — nothing to surface */ }
+
+    try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
       allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
@@ -4692,4 +4715,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
