@@ -145,8 +145,6 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 `;
 
-// NOTE `--flag=value` is NOT supported here: it produces a key literally named
-// "flag=value", so `--model=opus` silently dispatches on the default model.
 // Every downstream read of a boolean-switch flag (--force, --headless,
 // --dry-run, ...) is a truthiness check (`!args.force`, `args.force || ...`),
 // so a `--flag=<value>` form has to decide what "off" looks like BEFORE
@@ -155,10 +153,14 @@ a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 // idempotency, started-state), the opposite of what typing `=0` means.
 // BRO-2543 shipped the naive `raw.slice(eq + 1)` split in passing and the
 // pre-ship review caught exactly this; reverted there, tracked here as
-// BRO-2576. `''`, `'0'`, `'false'` all mean "off"; anything else is passed
-// through as the string value (so `--model=opus` still resolves to 'opus').
+// BRO-2576. `''`, `'0'`, `'false'` all mean "off" (case-insensitively — an
+// operator typing `--force=FALSE` means the same thing as `--force=false`,
+// and matching only the lowercase form would leave that variant as a truthy
+// string, reopening the exact BRO-2543 hazard under different casing);
+// anything else is passed through as the string value (so `--model=opus`
+// still resolves to 'opus').
 function coerceFlagValue(v) {
-  if (v === '' || v === '0' || v === 'false') return false;
+  if (v === '' || v.toLowerCase() === '0' || v.toLowerCase() === 'false') return false;
   return v;
 }
 

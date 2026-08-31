@@ -661,6 +661,14 @@ test('parseArgs: --flag=value form is honoured, and --force=0/false/"" cannot by
 
   // Only the first `=` splits the key from the value.
   assert.equal(parseArgs(['--note=a=b']).note, 'a=b');
+
+  // Case-insensitive: an operator typing --force=FALSE means the same thing
+  // as --force=false. A pre-ship review of this exact commit caught that
+  // matching only the lowercase literal would leave --force=FALSE (or
+  // =False, =0 has no case) as the truthy string "FALSE" — reopening the
+  // BRO-2543 hazard under different casing.
+  assert.equal(parseArgs(['--force=FALSE']).force, false);
+  assert.equal(parseArgs(['--force=False']).force, false);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
