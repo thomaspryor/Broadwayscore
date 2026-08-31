@@ -21,6 +21,16 @@
  * Named autonomous-* on purpose: the loop's own eligibility gate refuses to
  * edit scripts/lib/autonomous-*, so a tier-3 card can never rewrite the thing
  * that audits its own completion.
+ *
+ * BRO-2585: a `VERIFY: <cmd>` line's own remainder is a candidate even
+ * without backticks — that's the form cards are actually written in. It
+ * takes the WHOLE line as one candidate (no trailing "passes"/"# comment"
+ * tolerance — fails closed, unarmed, same as before this existed), and goes
+ * through the identical isSafeCheckCommand gate as every backticked
+ * candidate, so it can never arm anything a backticked span couldn't. It
+ * does not require the VERIFY: line to sit inside "## Acceptance criteria"
+ * — that scope was already true for backticked VERIFY lines before this
+ * change (see VERIFY_LINE_RE below, which scans the whole text).
  */
 
 'use strict';
@@ -57,12 +67,22 @@ function candidatesFrom(text) {
 function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) {
   const text = String(notes || '');
   const scoped = [];
+  const verifyLineRaw = [];
   const section = SECTION_RE.exec(text);
   if (section) scoped.push(section[1]);
-  for (const m of text.matchAll(VERIFY_LINE_RE)) scoped.push(m[1]);
+  for (const m of text.matchAll(VERIFY_LINE_RE)) {
+    scoped.push(m[1]);
+    // Cards are routinely written as `VERIFY: node --test x.test.mjs` — no
+    // backticks — despite candidatesFrom() being backtick-only (BRO-2585).
+    // The line's own remainder is a candidate in its own right here, not just
+    // whatever backticked span it happens to contain; still run through the
+    // same isSafeCheckCommand gate below, so a raw VERIFY line can never arm
+    // anything a backticked one couldn't.
+    verifyLineRaw.push(m[1]);
+  }
   if (!scoped.length) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line', kind: 'no-section' };
 
-  const candidates = scoped.flatMap(candidatesFrom)
+  const candidates = [...scoped.flatMap(candidatesFrom), ...verifyLineRaw]
     // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
     .map(c => c.trim().replace(/^[$>]\s*/, ''))
     .filter(Boolean);

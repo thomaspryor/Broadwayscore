@@ -13,7 +13,7 @@ const {
 // Rule 15: assert against the REAL validator the production path uses, never a
 // copy — if isSafeCheckCommand's notion of "safe" drifts, these tests move with
 // it instead of silently pinning the old definition.
-const { isSafeCheckCommand } = require('./lib/verify-gate.js');
+const { isSafeCheckCommand, evaluateVerifiability } = require('./lib/verify-gate.js');
 
 function fakeNotionBrain(calls) {
   return (args) => { calls.push(args); return { id: args[1] }; };
@@ -523,6 +523,34 @@ test('BRO-2232: a pre-existing unsafe VERIFY line whose backtick span straddles 
   const unsafeRendered = renderedCodeSpans(written).filter(c => !isSafeCheckCommand(c));
   assert.deepEqual(unsafeRendered, [], `card renders an unsanctioned command as code: ${unsafeRendered.join(', ')}`);
   assert.ok(r.demotedSpans.some(s => /rm -rf/.test(s)), 'the multiline span should be reported as demoted');
+});
+
+// BRO-2585 regression: extractVerifyCmd now also reads a VERIFY: line's raw,
+// un-backticked remainder as a candidate. Demotion here only strips the
+// span's BACKTICKS (`rm -rf /` -> 'rm -rf /'), so the demoted text still sits
+// right after "VERIFY:" — confirm the raw-fallback candidate still can't arm
+// the card on it: SAFE_CHECK_FORMS is an allowlist, not a denylist, so the
+// demoted prose can never match it, and the write must still land on the
+// LLM-validated command, not the demoted one.
+test('BRO-2585: a demoted (backtick-stripped) unsafe VERIFY line does not arm via the raw-VERIFY-line candidate path', async () => {
+  const calls = [];
+  const card = {
+    id: 'bro2585-a', name: 'Fix scoring bug', category: 'Product', tags: [],
+    notes: '## Problem\nx.\nVERIFY: `rm -rf /`',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  const written = writtenNotes(calls);
+  const gate = evaluateVerifiability(written);
+  assert.equal(gate.armed, true);
+  assert.equal(gate.cmd, 'npx tsc --noEmit', 'the armed command must be the validated one, never the demoted VERIFY line');
 });
 
 // Note: a card whose pre-existing notes already carry a SAFE VERIFY line
