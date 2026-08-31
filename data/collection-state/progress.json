@@ -100,7 +100,10 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
-    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "purple-rain-2026/nytimes--elisabeth-vincentelli.json",
+    "purple-rain-2026/minneapolis-star-tribune--unknown.json",
+    "purple-rain-2026/unscripted-takes--brett-burger.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -2437,7 +2440,14 @@
     "miss-saigon-west-end-2026/nbcny--robert-kahn.json",
     "the-sound-of-music-2027/deadline--unknown.json",
     "the-sound-of-music-2027/albany-times-union--katherine-kiessling.json",
-    "the-sound-of-music-2027/broadwayworld--greg-dalton-white.json"
+    "the-sound-of-music-2027/broadwayworld--greg-dalton-white.json",
+    "the-sound-of-music-2027/daily-bruin--mya-ward.json",
+    "the-sound-of-music-2027/dayton-local--michael-woody.json",
+    "the-sound-of-music-2027/oc-register--christopher-smith.json",
+    "the-sound-of-music-2027/talkinbroadway--unknown.json",
+    "the-sound-of-music-2027/the-chronicle--howard-gollop.json",
+    "the-sound-of-music-2027/the-suburban--alexandra-cohen.json",
+    "gloria-2026/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2522,7 +2532,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/hadestown-2019/times-square-chronicles--unknown.json",
       "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "data/review-texts/purple-rain-2026/nytimes--elisabeth-vincentelli.json",
+      "purple-rain-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -2539,7 +2551,8 @@
       "and-juliet-2022/newyorker--conde-nast.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+      "purple-rain-2026/unscripted-takes--brett-burger.json"
     ],
     "brightdata": [
       "paranormal-activity-boston-regional-2026/nypost--unknown.json",
@@ -2574,11 +2587,12 @@
       "wicked-2003/thewrap--jeremy-fuster.json",
       "wicked-2003/thewrap--william-bibbiani.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-      "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json"
+      "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
+      "purple-rain-2026/minneapolis-star-tribune--unknown.json"
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-sound-of-music-2027/broadwayworld--greg-dalton-white.json",
+  "lastProcessed": "gloria-2026/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2976,6 +2990,17 @@
       "t": "2026-08-31T16:51:41.962Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-31T16:52:42.835Z",
+      "event": "bb-session",
+      "session": "d8800cbf",
+      "url": "https://www.nytimes.com/2025/11/08/theater/purple-rain-review-prince.html"
+    },
+    {
+      "t": "2026-08-31T16:52:43.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
