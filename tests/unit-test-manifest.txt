@@ -166,6 +166,7 @@ scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/aggregator-score-strip-guard.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
+tests/unit/alert-dispatch-streak.test.mjs
 tests/unit/alert-email-policy.test.mjs
 tests/unit/anchored-precedence.test.mjs
 tests/unit/announced-promotion.test.mjs
@@ -188,6 +189,7 @@ tests/unit/audit-ensemble-rejections.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-url-collisions.test.mjs
+tests/unit/audit-workflow-hygiene-batch-poll-timeout.test.mjs
 tests/unit/audit-workflow-hygiene-core-data-push.test.mjs
 tests/unit/audit-workflow-hygiene-dead-commit.test.mjs
 tests/unit/audit-workflow-hygiene-push-timeout.test.mjs
@@ -198,6 +200,7 @@ tests/unit/awards-person-winner-pairing.test.mjs
 tests/unit/backfill-html-override-rename.test.mjs
 tests/unit/backfill-lbo-help-safety.test.mjs
 tests/unit/backfill-unknown-critics-locked.test.mjs
+tests/unit/batch-drain-followup.test.mjs
 tests/unit/bd-telemetry.test.mjs
 tests/unit/block-review-cli.test.mjs
 tests/unit/board-card-marker.test.mjs
