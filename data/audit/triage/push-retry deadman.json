@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-08-30T12:17:13.969Z",
+  "lastChecked": "2026-08-31T14:28:16.876Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "999 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x188, Rebuild Reviews (Fast) x137, Rebuild Reviews Data x97, Process Feedback Submissions x70, Gather Review Data x61, Fetch Show Images x51, Commercial RSS Poll x47, Opening Night Checklist x46, Audit Aggregator Review Gap x44, Fetch Guardian Reviews via API x27, Scrape New Aggregators x26, Update Show Score Data x24, Audit Imageless Scored Shows x21, Check Opening Night Drift x21, Check Corpus Drift x15, Reverse Discovery Audit x14, Opening Night Completeness Check x12, Daily Data Health Check x10, Opening Night Express x8, unknown x7, Auto-Maintain Show Data x6, Outlet Registry Baseline Maintenance x5, Check Review-Count Drift x5, Opening Night Broadcast x5, Opening Night Express Retry Check x5, Promote West End Aggregator Candidates x4, Monitor Scheduled Email Count x4, Audit Opening Dates x4, Reddit Engagement Digest x4, Weekly Video Reviews x4, Refresh Review Data x3, Check Performance Budget x3, Update Deploy Watermark x3, Commercial Weekly Orchestrator x3, Refresh Show Score (opening-night window) x2, Backfill Cast Data (Web Search) x2, Enrich Off-Broadway Dates x2, Audit Review Quality x1, Deep Research Commercial x1, Scrape WestEndTheatre Roundups x1, Weekly Broadway Grosses x1, Backfill Cast Data x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1, Weekly Newsletter Draft x1, Weekly Data Integrity Check x1]. Most recent reason: retries-exhausted."
+      "message": "1166 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x237, Rebuild Reviews (Fast) x149, Rebuild Reviews Data x121, Process Feedback Submissions x76, Gather Review Data x61, Fetch Show Images x58, Commercial RSS Poll x53, Opening Night Checklist x50, Audit Aggregator Review Gap x47, Scrape New Aggregators x31, Fetch Guardian Reviews via API x29, Update Show Score Data x28, Check Opening Night Drift x25, Audit Imageless Scored Shows x24, Check Corpus Drift x21, Reverse Discovery Audit x15, unknown x15, Opening Night Completeness Check x12, Daily Data Health Check x10, Opening Night Express x8, Auto-Maintain Show Data x6, Outlet Registry Baseline Maintenance x6, Check Review-Count Drift x6, Refresh Review Data x5, Promote West End Aggregator Candidates x5, Monitor Scheduled Email Count x5, Audit Opening Dates x5, Reddit Engagement Digest x5, Backfill Cast Data (Web Search) x5, Opening Night Broadcast x5, Weekly Video Reviews x5, Opening Night Express Retry Check x5, Check Performance Budget x3, Update Deploy Watermark x3, Commercial Weekly Orchestrator x3, Newsletter Draft Refresh (Sunday) x3, Scrape WestEndTheatre Roundups x2, Refresh Show Score (opening-night window) x2, Enrich Off-Broadway Dates x2, Weekly Newsletter Draft x2, Scrape BWW Reviews x2, Audit Review Quality x1, Deep Research Commercial x1, Weekly Broadway Grosses x1, Backfill Cast Data x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1, Weekly Data Integrity Check x1, Update Lottery/Rush Data x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Reconcile Newsletter Dedup State x1]. Most recent reason: retries-exhausted."
     }
   ]
 }

@@ -301,6 +301,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # result. The card's acceptance criteria is literally
 # `test -f docs/Phase-1-drill-results.md`, so it has to be committed.
 !/docs/Phase-1-drill-results.md
+# BRO-382 Phase 3 deliverable: the dispatcher shadow review that had to be
+# recorded BEFORE anything was switched off. Committed so the evidence for
+# switching the Notion dispatcher off outlives this machine.
+!/docs/BRO-382-dispatcher-shadow-review.md
 # BRO-44: the sessions_engaged GA4 headline-KPI report definition. Acceptance
 # criteria is literally `test -f docs/GA4_Engaged_Sessions_Report.md`, so it
 # has to be committed rather than scratch/local like the rest of /docs/.
