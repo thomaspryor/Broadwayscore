@@ -676,9 +676,14 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // wording anywhere — e.g. New York Theater's (newyorktheater.me) "critical
   // consensus" posts, bylined to the site's own writer (task #1888). Unlike
   // Guard E3 above, not gated to one aggregator host: detection is purely
-  // content-based (3+ distinct outlet attributions, or a consensus-intro
-  // phrase corroborated by 2+), so it won't fire on a real critic's review
-  // that quotes one rival in passing. Skip if already flagged.
+  // content-based (3+ distinct outlet attributions — comma-shape "{Name},
+  // {Outlet}.", prose "{Outlet}'s {Critic}", or "{Critic} of {Outlet}", each
+  // requiring a quoted excerpt in the trailing span — or a consensus-intro
+  // phrase corroborated by 2+; BRO-2520 added the possessive/"of"-prose
+  // shapes after Gold Derby's "sampling of the critical reaction"
+  // compilation slipped past the original comma-only shape), so it won't
+  // fire on a real critic's review that quotes one rival in passing. Skip if
+  // already flagged.
   if (!fields.isRoundupArticle) {
     const compilation = detectPullQuoteCompilation({
       fullText: input.fullText || fields.fullText,
