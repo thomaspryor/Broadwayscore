@@ -80,13 +80,27 @@ function buildFixture() {
 
   const wtRoot = path.join(repo, '.claude/worktrees');
   fs.mkdirSync(wtRoot, { recursive: true });
-  for (const name of ['wt-clean', 'wt-safe-dirty', 'wt-src-dirty']) {
+  // Names are chosen so none is a substring of another (see decisionFor's
+  // word-boundary anchoring below) — 'wt-locked' and 'wt-lock-bare' would
+  // otherwise collide, since 'wt-locked\b' matches inside
+  // 'wt-locked-noreason' too.
+  for (const name of ['wt-clean', 'wt-safe-dirty', 'wt-src-dirty', 'wt-locked', 'wt-lock-bare']) {
     git(repo, 'worktree', 'add', '-q', '-b', `worktree-${name}`, path.join(wtRoot, name), 'main');
   }
 
   // Dirty exactly one file in each of the two dirty worktrees.
   fs.appendFileSync(path.join(wtRoot, 'wt-safe-dirty/data/audit/churn.json'), '{"n":1}\n');
   fs.appendFileSync(path.join(wtRoot, 'wt-src-dirty/src/real.ts'), 'export const b = 2;\n');
+  // Locked but otherwise CLEAN (BRO-2624) — `git worktree remove` refuses a
+  // locked tree regardless of cleanliness, so this is a distinct case from
+  // wt-src-dirty: nothing under `git status --porcelain` for is_worktree_clean()
+  // to see, only the lock itself blocks removal.
+  git(repo, 'worktree', 'lock', path.join(wtRoot, 'wt-locked'), '--reason', 'BRO-2624 fixture lock');
+  // Locked with NO reason given — `git worktree list --porcelain` emits a
+  // bare `locked` line (no trailing text) for this case, a distinct porcelain
+  // shape from the reason-bearing `locked <reason>` line above that the
+  // parser must also handle.
+  git(repo, 'worktree', 'lock', path.join(wtRoot, 'wt-lock-bare'));
 
   return { tmp, repo, wtRoot };
 }
@@ -226,6 +240,48 @@ test('dry-run counts match the real run exactly (the parity property)', () => {
   // The parity assertion above is the property under test; the source-dirty
   // worktree is pinned by name below.
   assert.match(decisionFor(realOut, 'wt-src-dirty'), /SKIP/);
+});
+
+test('dry-run predicts a skip for a locked-but-clean worktree, not WOULD-REMOVE (BRO-2624)', () => {
+  const out = runGc(buildFixture(), { dryRun: true });
+
+  const locked = decisionFor(out, 'wt-locked');
+  assert.ok(
+    !/WOULD-REMOVE\b/.test(locked),
+    `wt-locked is clean but locked; git worktree remove refuses it regardless of cleanliness, ` +
+      `so the dry-run must not say WOULD-REMOVE. Got: ${locked}`
+  );
+  assert.match(locked, /SKIP/);
+});
+
+test("real run's skip message for a locked worktree names the lock, not dirtiness (BRO-2624)", () => {
+  const out = runGc(buildFixture(), { dryRun: false });
+
+  const locked = decisionFor(out, 'wt-locked');
+  assert.match(locked, /LOCKED/, `must name the lock: ${locked}`);
+  assert.match(locked, /BRO-2624 fixture lock/, `must include the lock reason: ${locked}`);
+  assert.ok(!/dirty/.test(locked), `must not claim dirtiness for a clean locked worktree: ${locked}`);
+});
+
+test('the locked worktree is never removed by the real run', () => {
+  const fx = buildFixture();
+  runGc(fx, { dryRun: false });
+
+  assert.ok(fs.existsSync(path.join(fx.wtRoot, 'wt-locked')), 'a locked worktree must survive the GC run');
+});
+
+test('a lock with no reason given still parses and reports LOCKED, not dirty, in both modes (BRO-2624)', () => {
+  const dryOut = runGc(buildFixture(), { dryRun: true });
+  const realOut = runGc(buildFixture(), { dryRun: false });
+
+  const dryDecision = decisionFor(dryOut, 'wt-lock-bare');
+  assert.match(dryDecision, /SKIP/);
+  assert.ok(!/WOULD-REMOVE\b/.test(dryDecision), `bare-locked worktree must not predict WOULD-REMOVE: ${dryDecision}`);
+
+  const realDecision = decisionFor(realOut, 'wt-lock-bare');
+  assert.match(realDecision, /LOCKED/, `must name the lock even with no reason given: ${realDecision}`);
+  assert.match(realDecision, /no reason given/, `must fall back to a placeholder, not an empty/garbled reason: ${realDecision}`);
+  assert.ok(!/dirty/.test(realDecision), `must not claim dirtiness: ${realDecision}`);
 });
 
 test('the real run leaves the source-dirty worktree and its edit on disk', () => {
