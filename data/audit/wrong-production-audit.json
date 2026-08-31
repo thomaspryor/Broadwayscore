@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-31T17:21:36.228Z",
+  "timestamp": "2026-08-31T17:56:51.072Z",
   "stats": {
-    "totalReviews": 42125,
-    "alreadyFlagged": 17612,
+    "totalReviews": 42128,
+    "alreadyFlagged": 17614,
     "dateGuardCatches": 235,
-    "directorMismatch": 1036,
+    "directorMismatch": 1035,
     "tvFilmSignals": 1240,
     "londonSignals": 947,
     "offBroadwaySignals": 498,
     "yearMismatch": 90,
-    "noPublishDate": 3624
+    "noPublishDate": 3626
   },
   "findings": [
     {
@@ -18848,20 +18848,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 619d before show (2025-02-19 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "file": "artsdesk--rachel-halliburton.json",
-      "score": 63,
-      "publishDate": "2026-06-23",
-      "url": "https://theartsdesk.com/theatre/much-ado-about-nothing-shakespeares-globe-conceptually-fascinating-production-leaves-bitter-taste",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
         }
       ]
     },
