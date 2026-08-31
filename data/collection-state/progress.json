@@ -1517,7 +1517,17 @@
     "titanique-2026/new-york-city-theatre--unknown.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/frontmezzjunkies--unknown.json",
-    "titanique-2026/playbill--unknown.json"
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1574,7 +1584,8 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
       "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1610,7 +1621,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "titanique-2026/playbill--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -1836,6 +1847,12 @@
       "t": "2026-08-31T13:30:24.568Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-31T13:32:00.878Z",
+      "event": "bb-session",
+      "session": "4e4b506a",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
