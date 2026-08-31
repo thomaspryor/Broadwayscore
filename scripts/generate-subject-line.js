@@ -50,6 +50,7 @@ const fs = require('fs');
 const path = require('path');
 const { isOperaShow } = require('./lib/opera-prompt-context');
 const { classifyOpeningEvent } = require('./lib/opening-events-for-week');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const repo = path.join(__dirname, '..');
 
@@ -132,7 +133,7 @@ async function main() {
   // reopeningDate takes precedence when both dates fall in the same week —
   // same BRO-2594 precedence fix as generate.mjs's openingEventsForWeek().
   const bwOpenings = isWe ? [] : shows
-    .filter(s => s.category === 'broadway' && !isOperaShow(s) && getCriticScore(s.id) != null)
+    .filter(s => isBroadwayCategory(s) && !isOperaShow(s) && getCriticScore(s.id) != null)
     .filter(s => inWeek(s.openingDate) || inWeek(s.reopeningDate))
     .map(show => ({ show, isReopening: classifyOpeningEvent(show, inWeek).isReopening }));
 
