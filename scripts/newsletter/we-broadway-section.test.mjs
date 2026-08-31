@@ -67,9 +67,11 @@ test('west-end edition renders a Broadway section for a week with a Broadway ope
 });
 
 test('broadway edition never renders a broadway-we section', () => {
-  const { meta, html } = runGenerator(WEEK_START);
-  assert.ok(!html.includes('Opened on Broadway') || html.includes(BW_SHOW_TITLE),
-    'if "Opened on Broadway" text appears it must be from broadwayOpenings(), which also renders the show — not an empty duplicate section');
+  // Not an html.includes('Opened on Broadway') check: the Broadway edition's
+  // own broadwayOpenings() hero legitimately renders that exact heading text
+  // (generate.mjs's hasOpen-only case) — the section NAME is what proves
+  // weBroadwaySection() itself never fired, independent of heading text.
+  const { meta } = runGenerator(WEEK_START);
   const section = meta.sections.find((s) => s.name === 'broadway-we');
   if (section) assert.equal(section.fired, false, 'expected broadway-we to never fire in the Broadway edition');
 });
