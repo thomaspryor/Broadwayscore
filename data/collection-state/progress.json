@@ -1857,7 +1857,57 @@
     "avenue-q-west-end-2026/nytimes--ben-brantley.json",
     "avenue-q-west-end-2026/variety--david-rooney.json",
     "avenue-q-west-end-2026/theatermania--andy-propst.json",
-    "avenue-q-west-end-2026/1883-magazine--nick-barr.json"
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/talkinbroadway--unknown.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
+    "titanique-2026/new-york-city-theatre--unknown.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/frontmezzjunkies--unknown.json",
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
+    "oh-mary-west-end-2025/british-theatre--susan-novak.json",
+    "oh-mary-west-end-2025/chicagotribune--chris-jones.json",
+    "oh-mary-west-end-2025/dailybeast--tim-teeman.json",
+    "oh-mary-west-end-2025/financialtimes--unknown.json",
+    "oh-mary-west-end-2025/frontmezzjunkies--unknown.json",
+    "oh-mary-west-end-2025/njcom--christopher-kelly.json",
+    "oh-mary-west-end-2025/nysr--michael-sommers.json",
+    "oh-mary-west-end-2025/nysr--unknown.json",
+    "oh-mary-west-end-2025/talkinbroadway--unknown.json",
+    "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
+    "paranormal-activity-west-end-2025/newyorker--unknown.json",
+    "paranormal-activity-west-end-2025/nytg--unknown.json",
+    "paranormal-activity-west-end-2025/deadline--unknown.json",
+    "paranormal-activity-west-end-2025/new-york-sun--unknown.json",
+    "paranormal-activity-west-end-2025/theatrely--kobi-kassal.json",
+    "paranormal-activity-west-end-2025/exeunt-magazine--unknown.json",
+    "paranormal-activity-west-end-2025/frontmezzjunkies--unknown.json",
+    "paranormal-activity-west-end-2025/nysr--unknown.json",
+    "paranormal-activity-west-end-2025/talkinbroadway--unknown.json",
+    "paranormal-activity-west-end-2025/theater-life--unknown.json",
+    "paranormal-activity-west-end-2025/times-square-chronicles--unknown.json",
+    "paranormal-activity-west-end-2025/variety--peter-debruge.json",
+    "paddington-the-musical-west-end-2025/nyt-theater--unknown.json",
+    "paddington-the-musical-west-end-2025/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/here--unknown.json",
+    "paddington-the-musical-west-end-2025/talkinbroadway--unknown.json",
+    "two-strangers-bway-2025/new-york-city-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1919,7 +1969,9 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/cats-west-end-2026/nytimes--helen-shaw.json",
       "cats-west-end-2026/nytimes--helen-shaw.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1956,7 +2008,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+  "lastProcessed": "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -2269,6 +2321,18 @@
       "t": "2026-08-31T16:11:10.804Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-08-31T16:12:42.524Z",
+      "event": "bb-session",
+      "session": "c738d85e",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-08-31T16:13:21.909Z",
+      "event": "bb-session",
+      "session": "0898763b",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
