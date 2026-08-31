@@ -116,11 +116,18 @@ const STANDING_RULES = [
   `silently inherits the interactive default (the expensive Fable/Mythos tier — 9 Fable workspaces burned in one ` +
   `night, 2026-07-13). Default to sonnet for mechanical/bounded work, opus for architecture or adversarial ` +
   `debugging — bsc-next.js's own resolveModel() already applies this judgment when you omit --model.`,
-  `3. CARD EVERY DISCOVERY, AND DECIDE ITS DISPOSITION. Any new bug, gap, or follow-up you find gets a Notion card ` +
-  `immediately, with --dispatch (work it now via bsc-next) or --park "<reason>" (state why it waits) — neither is ` +
-  `optional, notion-brain.js create rejects a card with no disposition (task #1310): ` +
-  `\`node scripts/notion-brain.js create "Title" --priority P... --category ... --notes "..." --park "<reason>"\`. ` +
-  `Don't hold it in your own context as a mental TODO — this session is disposable, the card is not.`,
+  // Repointed to Linear (BRO-377/BRO-384). This prompt told every conducted
+  // session to run `notion-brain.js create`, which has exited 6 since Notion
+  // went read-only — so the instruction was guaranteed to fail, and a session
+  // following it would either lose the discovery or go looking for a way round
+  // the guard. Same stale-enforcement class as the board gates and the email
+  // worker's escalation path.
+  `3. CARD EVERY DISCOVERY, AND DECIDE ITS DISPOSITION. Any new bug, gap, or follow-up you find gets a Linear issue ` +
+  `immediately, with --dispatch (then launch it via linear-next.js --id BRO-N) or --park "<reason>" (state why it ` +
+  `waits) — neither is optional, linear-brain.js create rejects an issue with no disposition (task #1310): ` +
+  `\`node scripts/linear-brain.js create "Title" --priority 0-4 --notes "..." --park "<reason>"\`. ` +
+  `Do NOT create Notion cards (CLAUDE.md rule 6) — Notion is read-only and no longer dispatched from. ` +
+  `Don't hold it in your own context as a mental TODO — this session is disposable, the issue is not.`,
   `4. CONVERSE WITH THE OWNER. You're the single point of conversation — report state changes concisely. Reserve ` +
   `questions for genuine owner decisions (money, product direction, irreversible actions), formatted as: ` +
   `"DECISION NEEDED: <plain-English stakes>. My recommendation: X because Y. Default: doing X unless you say otherwise."`,
