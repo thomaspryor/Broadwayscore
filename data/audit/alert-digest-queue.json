@@ -113,28 +113,52 @@
     "queuedAt": "2026-08-31T14:44:06.426Z"
   },
   {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4016/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 4016 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\nNo show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).\nTop attributed BD callers today: validate-show-venue.js (443), gather-reviews.js (400), fetch-show-images-auto.js (329).",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T16:35:32.170Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (11461/1750 reqs)",
+    "description": "Zone serp_api1 billed 11461 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\nNo show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).\nTop attributed BD callers today: validate-show-venue.js (443), gather-reviews.js (400), fetch-show-images-auto.js (329).",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T16:35:32.214Z"
+  },
+  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 17 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33413712454",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33415087186",
     "decision": false,
     "decisionPrompt": null,
     "model": "opus",
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413712454)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33415087186)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413588892)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33413712454)"
       },
       {
         "name": "Consecutive failures",
         "value": "17"
       }
     ],
-    "queuedAt": "2026-08-31T16:52:57.838Z"
+    "queuedAt": "2026-08-31T16:59:23.724Z"
   }
 ]

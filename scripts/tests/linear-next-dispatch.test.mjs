@@ -150,6 +150,16 @@ test('main(): refuses to dispatch an issue whose acceptance command names a phan
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a phantom-path issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
+      // Task #1898: without this, main() (no --force here) falls through to
+      // the REAL acquireClaim(DISPATCH_CLAIM_DIR, ...) and touches
+      // data/audit/linear-dispatch-claims/BRO-25690.claim/ on disk — a stray
+      // leftover claim dir (from a prior local run, or a concurrent process
+      // touching the same path in CI) makes acquireClaim() return 'error'
+      // instead of true, which fails BEFORE the phantom-path check this test
+      // is actually about ever runs. Every sibling test in this file that
+      // reaches main() without --force/--dry-run mocks this same way.
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
     }), /EXIT/);
   } finally {
     process.exit = origExit;
