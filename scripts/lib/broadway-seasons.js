@@ -24,12 +24,18 @@ function getSeasonForDate(dateInput) {
   // 2026-08-30: reproduces the exact cross-season-mix bug this file exists
   // to prevent, just shifted one day earlier). Date objects (already in
   // local time, no string to reparse) keep using the getters below.
+  // Also matches an ISO-datetime string with a "YYYY-MM-DD" date component
+  // ("2026-07-01T00:00:00.000Z") — second-opinion review finding, 2026-08-30:
+  // without the optional `T...` suffix, a datetime string fell through to the
+  // `new Date()` branch below and reproduced the exact bug this function
+  // exists to fix, just for a slightly different input shape.
+  const isoMatch = typeof dateInput === 'string' && /^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/.exec(dateInput);
   let year, month;
-  if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
-    const [y, m] = dateInput.split('-').map(Number);
-    if (m < 1 || m > 12) throw new Error(`Invalid date: ${dateInput}`);
-    year = y;
-    month = m - 1; // 0-indexed, matches Date#getMonth() below
+  if (isoMatch) {
+    const [, y, m] = isoMatch;
+    year = Number(y);
+    month = Number(m) - 1; // 0-indexed, matches Date#getMonth() below
+    if (month < 0 || month > 11) throw new Error(`Invalid date: ${dateInput}`);
   } else {
     const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
     if (isNaN(date.getTime())) {
@@ -87,7 +93,17 @@ function isDateInSeason(dateInput, season) {
   // local time) disagreed by up to a day at the season boundary itself —
   // isDateInSeason('2026-07-01', '2026-2027') returned false (test caught
   // this, 2026-08-30, while adding coverage for the getSeasonForDate fix).
-  return getSeasonForDate(dateInput) === season;
+  //
+  // getSeasonForDate throws on unparseable input (by design, for callers
+  // that need to fail loud) — but isDateInSeason's own contract is a plain
+  // boolean (its old Date-range-comparison implementation returned false for
+  // an invalid date, never threw). Preserve that: an unparseable dateInput
+  // just isn't in any season (second-opinion review finding, 2026-08-30).
+  try {
+    return getSeasonForDate(dateInput) === season;
+  } catch {
+    return false;
+  }
 }
 
 /**
