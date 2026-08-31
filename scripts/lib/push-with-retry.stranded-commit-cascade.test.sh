@@ -122,24 +122,78 @@ exec "$REAL_GIT_BIN" "\$@"
 WRAPPER
 chmod +x "$TMP/fakebin/git"
 
-git init -q --bare "$TMP/origin.git"
-git init -q "$TMP/seed"
+# A broken fixture must NEVER reach the PART A assertion: an assertion that
+# fires on a repo the script never really got to inspect reports the wrong
+# cause and sends the next reader hunting a disqualifier bug that isn't there.
+# So every environment assumption below is checked, and any missing one aborts
+# HERE, naming the precondition.
+die_precondition() {
+  echo "FAIL[A-precondition]: $1"
+  echo "         The PART A fixture is not in the state this test requires, so its disqualifier"
+  echo "         assertion would be meaningless (pass OR fail). Refusing to report either."
+  echo
+  echo "=== push-with-retry.stranded-commit-cascade.test.sh FAILED ==="
+  exit 1
+}
+
+# --initial-branch=main is LOAD-BEARING, not cosmetic (CI failure, 2026-08-31).
+# `git init --bare` points the new repo's HEAD at init.defaultBranch. On this
+# repo's dev Macs Xcode's system gitconfig sets that to `main`, but a stock
+# GitHub Actions runner has it unset, so HEAD became refs/heads/master while
+# the seed pushed refs/heads/main. `git clone` of that origin then warned
+# "remote HEAD refers to nonexistent ref, unable to checkout" and produced an
+# EMPTY working tree on an UNBORN master: every later `printf > runner/...`
+# failed, every commit was a no-op, and push-with-retry.sh's orphan guard
+# (assert_no_orphan_commit, push-with-retry.sh:318 — `git rev-list --parents
+# origin/main..HEAD` on an unborn HEAD) aborted BOTH steps before the
+# apiFallbackSafe disqualifier was ever consulted. PART A then failed with
+# "expected the disqualifier to fire", pointing at the wrong subsystem.
+git init -q --bare --initial-branch=main "$TMP/origin.git" \
+  || die_precondition "could not create the bare origin at \$TMP/origin.git with --initial-branch=main (git >= 2.28 required)"
+git init -q --initial-branch=main "$TMP/seed" \
+  || die_precondition "could not create the seed repo at \$TMP/seed with --initial-branch=main (git >= 2.28 required)"
 gitc "$TMP/seed" config user.email t@t.t; gitc "$TMP/seed" config user.name t
 mkdir -p "$TMP/seed/data/audit"
 printf '{}\n' > "$TMP/seed/$STRANDED_PATH"
 printf '{"runs":[1]}\n' > "$TMP/seed/data/audit/health-check-history.json"
 gitc "$TMP/seed" add -A; gitc "$TMP/seed" commit -q -m seed
-gitc "$TMP/seed" branch -M main; gitc "$TMP/seed" push -q "$TMP/origin.git" main
+gitc "$TMP/seed" branch -M main; gitc "$TMP/seed" push -q "$TMP/origin.git" main \
+  || die_precondition "seed push of branch main to \$TMP/origin.git failed"
 
-git clone -q "file://$TMP/origin.git" "$TMP/runner"
+git clone -q "file://$TMP/origin.git" "$TMP/runner" \
+  || die_precondition "clone of the bare origin into \$TMP/runner failed"
 gitc "$TMP/runner" config user.email t@t.t; gitc "$TMP/runner" config user.name t
+
+# Preconditions the rest of PART A silently depended on until 2026-08-31.
+gitc "$TMP/runner" rev-parse --verify --quiet HEAD >/dev/null \
+  || die_precondition "the runner clone has an UNBORN HEAD (nothing checked out). The bare origin's HEAD does not point at the branch the seed pushed, so clone checked nothing out. Every commit below would be a no-op and push-with-retry.sh's orphan guard would abort before the disqualifier."
+gitc "$TMP/runner" rev-parse --verify --quiet origin/main >/dev/null \
+  || die_precondition "the runner clone has no origin/main ref. push-with-retry.sh's assert_no_orphan_commit fails open without it and its diff/disqualifier logic has no base to compare against."
+[ "$(gitc "$TMP/runner" symbolic-ref --short -q HEAD)" = "main" ] \
+  || die_precondition "the runner clone is not on branch main (on '$(gitc "$TMP/runner" symbolic-ref --short -q HEAD || echo "detached/unborn")'), but push-with-retry.sh is invoked below with branch 'main'."
+for required in "$STRANDED_PATH" "data/audit/health-check-history.json"; do
+  [ -f "$TMP/runner/$required" ] \
+    || die_precondition "$required is missing from the runner clone's working tree — the seeded checkout is incomplete, so the commits below would stage nothing."
+done
+
+# Commits are the fixture, not incidental setup: a `git commit` that no-ops
+# (nothing staged) leaves HEAD where it was and turns the whole cascade into a
+# test of an empty range. Assert each one actually advanced HEAD.
+commit_step() {  # commit_step <repo> <message> <label>
+  local repo="$1" msg="$2" label="$3" before after
+  before="$(gitc "$repo" rev-parse HEAD)"
+  gitc "$repo" commit -q -m "$msg" || die_precondition "$label: git commit failed"
+  after="$(gitc "$repo" rev-parse HEAD)"
+  [ "$before" != "$after" ] \
+    || die_precondition "$label: git commit did not advance HEAD (nothing was staged) — the fixture has no commit to strand."
+}
 
 # A "Commit health check + triage data"-shaped step: it stages a genuinely
 # multi-writer, NOT-apiFallbackSafe path. Its own push-with-retry.sh call
 # always fails here (simulated contention), so its commit strands.
 printf '{"n":1}\n' > "$TMP/runner/$STRANDED_PATH"
 gitc "$TMP/runner" add -A
-gitc "$TMP/runner" commit -q -m "data: Update health check + triage state [skip ci]"
+commit_step "$TMP/runner" "data: Update health check + triage state [skip ci]" "step 1 (stranding commit)"
 
 step1_out=$(
   cd "$TMP/runner" && \
@@ -152,6 +206,18 @@ if [ "$step1_code" -eq 0 ]; then
   echo "FAIL[A-fixture]: step 1's push should have failed (simulating exhausted contention) but succeeded"
   fail=1
 else
+  # A non-zero exit alone is NOT evidence the fixture worked: push-with-retry.sh
+  # also exits non-zero when one of its corruption guards aborts, which is
+  # exactly how the broken-clone bug above hid for so long (this branch printed
+  # PASS while the run had actually died in assert_no_orphan_commit).
+  grep -q "an outgoing commit has NO parent" <<<"$step1_out" \
+    && die_precondition "step 1 died in push-with-retry.sh's orphan-commit guard, not in the simulated push contention this fixture intends. Guard output:
+$(echo "$step1_out" | sed 's/^/           /')"
+  # The stranded commit must genuinely still be on local HEAD and absent from origin.
+  [ "$(gitc "$TMP/runner" rev-list --count origin/main..HEAD)" -ge 1 ] \
+    || die_precondition "step 1's commit is not stranded ahead of origin/main — there is nothing for step 2 to inherit."
+  gitc "$TMP/runner" diff --name-only origin/main..HEAD | grep -qx "$STRANDED_PATH" \
+    || die_precondition "the commit stranded ahead of origin/main does not touch $STRANDED_PATH, so it cannot disqualify step 2's fallback."
   echo "PASS[A-fixture]: step 1's push exhausted and its commit is now stranded, unpushed, on local HEAD"
 fi
 
@@ -164,8 +230,9 @@ gitc "$TMP/seed" push -q "$TMP/origin.git" main
 # "Step: Commit health check audit snapshots (apiFallbackSafe)" — its own
 # commit touches ONLY an apiFallbackSafe file.
 printf '{"runs":[1,2]}\n' > "$TMP/runner/data/audit/health-check-history.json"
-gitc "$TMP/runner" add -- data/audit/health-check-history.json
-gitc "$TMP/runner" commit -q -m "data: Update health check audit snapshots [skip ci]"
+gitc "$TMP/runner" add -- data/audit/health-check-history.json \
+  || die_precondition "step 2: could not stage data/audit/health-check-history.json in the runner clone"
+commit_step "$TMP/runner" "data: Update health check audit snapshots [skip ci]" "step 2 (apiFallbackSafe-only commit)"
 
 step2_out=$(
   cd "$TMP/runner" && \
@@ -173,6 +240,13 @@ step2_out=$(
   GITHUB_ACTIONS=true PUSH_SKIP_UNSHALLOW=1 GIT_NET_TIMEOUT_SEC=10 PUSH_DEADLINE_SEC=30 \
   bash "$PUSH_SCRIPT" 3 main 2>&1
 ); step2_code=$?
+
+# Same reasoning as step 1: if step 2 never got past a corruption guard, the
+# disqualifier was never consulted and "it did not fire" says nothing about the
+# disqualifier.
+grep -q "an outgoing commit has NO parent" <<<"$step2_out" \
+  && die_precondition "step 2 died in push-with-retry.sh's orphan-commit guard before the apiFallbackSafe disqualifier was reached. Guard output:
+$(echo "$step2_out" | sed 's/^/           /')"
 
 if grep -q "skipping Git Data API fallback — our outgoing diff touches" <<<"$step2_out"; then
   echo "PASS[A]: reproduced — step 2's OWN commit was 100% apiFallbackSafe, but its fallback was"
