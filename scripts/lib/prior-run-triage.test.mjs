@@ -165,10 +165,15 @@ test('classifyReadmissionRisk: already scoring -> already-included', () => {
   assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
 });
 
-test('classifyReadmissionRisk: a declared priorRun readmitting a legit earlier run is not a risk', () => {
-  // Once priorRuns is declared the gate stops firing for the whole show, so the
-  // review is simply included — the intended outcome, not a landmine.
-  assert.equal(classifyReadmissionRisk({ beforeReason: null, afterReason: null }), 'already-included');
+test('classifyReadmissionRisk: the rebuild pre-window guard downgrades an apparent risk', () => {
+  // explainExclusion does not mirror the rebuild's pre-opening date guard, so
+  // the CLI applies it separately and passes 'preWindowDate' as afterReason.
+  // A review 3,000 days early is NOT a landmine: the 60d/14d guard excludes it
+  // as soon as the show has a real opening date.
+  assert.equal(
+    classifyReadmissionRisk({ beforeReason: 'prematureForUnopenedShow', afterReason: 'preWindowDate' }),
+    'still-excluded-after-open'
+  );
 });
 
 test('classifyReadmissionRisk: an unevaluable file is unknown, never "already-included"', () => {

@@ -398,9 +398,14 @@ jobs:
       # announced/upcoming/previews. Every old review it silently holds out
       # readmits into the live score the moment the show opens, so a
       # contaminated review with no durable flag of its own becomes an
-      # opening-night landmine (6 such reviews were found and flagged
-      # 2026-08-30; 2 shows were genuine Edinburgh Fringe transfers and got
-      # priorRuns instead).
+      # opening-night landmine. The 2026-08-30 triage of 54 unopened shows
+      # found 2 genuine Edinburgh Fringe transfers (declared via priorRuns,
+      # readmitting 4 legitimate reviews) and 6 contaminated reviews with no
+      # durable flag of their own, now explicitly flagged. Those 6 would ALSO
+      # have been caught by the rebuild's own pre-window date guard once their
+      # show had a real opening date, so the flags are defence in depth rather
+      # than a rescue - which is why this sweep now models that guard too and
+      # only reports what survives BOTH.
       #
       # This has to run on a CRON, not in test.yml: the risk is a DATA state
       # that changes when update-show-status.js flips a show, with no code

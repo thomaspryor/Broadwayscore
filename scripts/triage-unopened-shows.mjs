@@ -41,6 +41,7 @@ const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isPrematureReviewForUnopenedShow, hasValidScore, explainExclusion } = require('./lib/review-guards');
 const { classifyPriorRunCandidate, classifyReadmissionRisk } = require('./lib/prior-run-triage');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { evaluatePreWindowInclusion } = require('./lib/date-guard');
 
 const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='));
@@ -59,6 +60,10 @@ const UNOPENED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 // Surfaced loudly: an unevaluated file is not a safe file.
 let unknownCount = 0;
 const unknownSamples = [];
+
+// Categories the rebuild's pre-window guard treats with the wider 60d lead
+// (vs 14d for Broadway) — mirrors date-guard.js's isFlexCategory callers.
+const FLEX_CATEGORIES = new Set(['off-broadway', 'off-west-end', 'west-end']);
 
 function hasDeclaredPriorRuns(show) {
   return Array.isArray(show.priorRuns)
@@ -104,20 +109,43 @@ function collectPrematureScoredReviews(show, reviewTextsDir) {
     // undefined (not null) means "could not evaluate" — see classifyReadmissionRisk.
     let beforeReason;
     let afterReason;
+    let evaluationError = null;
     try {
       beforeReason = explainExclusion(data, show, fp);
       afterReason = explainExclusion(data, openedShow, fp);
+      // explainExclusion does NOT mirror the rebuild's pre-opening date guard
+      // — its own docstring lists that as a known limitation. Without this the
+      // sweep over-reports: a review 3,000 days early reads as "readmits on
+      // open" even though the rebuild's 60d/14d pre-window guard excludes it
+      // the moment the show has a real opening date. Apply that guard here so
+      // a hit means a genuine landmine, not a gap in the mirror.
+      if (afterReason === null) {
+        const earliest = show.openingDate || show.previewsStartDate;
+        const pubDate = new Date(data.publishDate);
+        if (earliest && !Number.isNaN(pubDate.getTime())) {
+          const preWindow = evaluatePreWindowInclusion({
+            pubDate,
+            showEarliest: new Date(earliest),
+            isFlexCategory: FLEX_CATEGORIES.has(String(show.category || '')),
+            priorRuns: show.priorRuns,
+            tourLegs: show.tourLegs,
+          });
+          if (preWindow && preWindow.exclude) afterReason = 'preWindowDate';
+        }
+      }
     } catch (err) {
       // A predicate throw (missing registry, unreadable duplicate target) must
       // not sink the whole sweep, but it must not read as "safe" either: the
       // reasons stay undefined and the row is classified 'unknown'.
       unknownCount++;
-      unknownSamples.push(`${show.id}/${file}: ${err && err.message}`);
+      evaluationError = (err && err.message) || String(err);
+      unknownSamples.push(`${show.id}/${file}: ${evaluationError}`);
     }
     out.push({
       readmissionRisk: classifyReadmissionRisk({ beforeReason, afterReason }),
       beforeReason,
       afterReason,
+      evaluationError,
       file,
       outletId: data.outletId,
       criticName: data.criticName,
@@ -208,7 +236,7 @@ function main() {
       if (rv.readmissionRisk === 'readmits-on-open') {
         readmissionRisks.push({ showId: r.showId, file: rv.file, publishDate: rv.publishDate, outletId: rv.outletId });
       } else if (rv.readmissionRisk === 'unknown') {
-        unevaluated.push({ showId: r.showId, file: rv.file });
+        unevaluated.push({ showId: r.showId, file: rv.file, error: rv.evaluationError || null });
       }
     }
   }
@@ -244,8 +272,10 @@ function main() {
     console.log(`\n[triage-unopened-shows] READMISSION RISK: ${readmissionRisks.length} review(s) appear to be held out ONLY by the expiring pre-opening gate and would re-enter scoring when their show opens:`);
     for (const x of readmissionRisks) console.log(`  ! ${x.showId} | ${x.file} | pub=${x.publishDate}`);
     console.log('[triage-unopened-shows] Confirm against the rebuild, then fix each: declare show.priorRuns if it is a genuine earlier run, else set wrongProduction + an operator wrongProductionReason.');
-  } else {
+  } else if (unevaluated.length === 0) {
     console.log('[triage-unopened-shows] readmission risk: none — every gate-excluded review also has a durable exclusion.');
+  } else {
+    console.log('[triage-unopened-shows] readmission risk: none among the files that could be evaluated (see the UNKNOWN warning below).');
   }
 
   if (unevaluated.length > 0) {
