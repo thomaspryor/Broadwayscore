@@ -147,19 +147,35 @@ a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 
 // NOTE `--flag=value` is NOT supported here: it produces a key literally named
 // "flag=value", so `--model=opus` silently dispatches on the default model.
-// Every automated caller passes separated argv, and BRO-2543 deliberately did
-// NOT "fix" this in passing: naively splitting on `=` makes `--force=0` parse
-// as the truthy string "0" and bypass every guard it gates, where today it
-// bypasses none. Tracked separately; use the space form.
+// Every downstream read of a boolean-switch flag (--force, --headless,
+// --dry-run, ...) is a truthiness check (`!args.force`, `args.force || ...`),
+// so a `--flag=<value>` form has to decide what "off" looks like BEFORE
+// splitting on `=` — otherwise `--force=0` parses as the truthy string "0"
+// and silently bypasses every guard --force gates (terminal-state, parked,
+// idempotency, started-state), the opposite of what typing `=0` means.
+// BRO-2543 shipped the naive `raw.slice(eq + 1)` split in passing and the
+// pre-ship review caught exactly this; reverted there, tracked here as
+// BRO-2576. `''`, `'0'`, `'false'` all mean "off"; anything else is passed
+// through as the string value (so `--model=opus` still resolves to 'opus').
+function coerceFlagValue(v) {
+  if (v === '' || v === '0' || v === 'false') return false;
+  return v;
+}
+
 function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
-      const k = t.slice(2);
+      const raw = t.slice(2);
+      const eq = raw.indexOf('=');
+      if (eq !== -1) {
+        a[raw.slice(0, eq)] = coerceFlagValue(raw.slice(eq + 1));
+        continue;
+      }
       const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[k] = true;
-      else { a[k] = n; i++; }
+      if (n === undefined || n.startsWith('--')) a[raw] = true;
+      else { a[raw] = n; i++; }
     } else a._.push(t);
   }
   return a;
