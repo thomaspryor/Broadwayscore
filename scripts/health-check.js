@@ -1402,6 +1402,20 @@ function checkQuality() {
     // so a too-aggressive contamination filter stays visible instead of
     // silently zeroing out flaggedCount; a digest row that only ever reports
     // flaggedCount would defeat that.
+    //
+    // Warns on flaggedCount TOTAL, not a newSinceLastRun delta (unlike the
+    // cv-wrongproduction/4-sweep checks above) — deliberately: this audit has
+    // a per-show --ack mechanism (evaluateAnnouncedShow excludes acked shows
+    // from `flagged` entirely), so a real flag stays actionable rather than
+    // becoming permanent background noise the way an untriaged lifetime-sweep
+    // total would. Triage via --ack and flaggedCount drops back to 0.
+    //
+    // reviewTextsAvailable: false (ship-check/Codex adversarial finding) is
+    // its own distinct warn, mirroring the cross-outlet-attribution-drift
+    // check's `allSkipped` handling above — without it, a failed/skipped
+    // review-texts checkout in this job silently downgrades the audit to
+    // date-only signal and can report "no stale shows" while never having
+    // scanned the review-driven cases at all.
     runCheck('Data quality: stale announced shows', () => {
       const name = 'Data quality: stale announced shows';
       const snapPath = path.join(AUDIT_DIR, 'stale-announced-shows.json');
@@ -1412,6 +1426,9 @@ function checkQuality() {
       const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
       if (age > 48) {
         return { name, status: 'error', message: `Stale-announced-shows snapshot is ${formatAge(age)} old (>48h) — the daily audit itself has stopped running`, hint: 'Check the "Stale announced shows audit" step in data-health-check.yml' };
+      }
+      if (snap.reviewTextsAvailable === false) {
+        return { name, status: 'warn', message: `data/review-texts was not checked out in that run (${formatAge(age)} ago) — only date-based signals fired, review-driven stale flags may be missed`, hint: 'Check the "Checkout review-texts (private repo)" step in data-health-check.yml' };
       }
       const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
       if (snap.flaggedCount > 0) {
