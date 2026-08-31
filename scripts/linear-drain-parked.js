@@ -220,14 +220,14 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
   });
   const newEntries = [];
   for (const { dispatch: d, cardId, job, kind } of decisions) {
-    if (kind === 'orphan') {
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
         event: 'card-fail', cardId, contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
       continue;
     }
-    if (kind === 'retry-timeout') {
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
@@ -240,7 +240,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
     // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
     // shared lib must stop the pass rather than be silently treated as
     // terminal and dereference a job that may be null.
-    if (kind !== dispatchReconcile.KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
+    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome, cardId, contentHash: d.contentHash,

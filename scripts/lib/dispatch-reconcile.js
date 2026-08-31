@@ -89,12 +89,17 @@ const dispatchLedger = require('./dispatch-ledger.js');
 const SPAWN_LOOKBACK_MS = 5000;
 
 // The COMPLETE set of decisions classifyDispatches can return. Every call site
-// switches on these and throws on anything else, so adding one is a breaking
-// change for all of them at once — frozen and exported so that contract is
-// checkable (dispatch-reconcile.test.mjs asserts these exact members) rather
-// than a claim in a comment. A new kind must be added here, asserted there,
-// and handled at every call site in the same change.
-const KINDS = Object.freeze({
+// branches on these members — never on the bare strings — and throws on
+// anything else, so adding one is a breaking change for all of them at once.
+// Frozen and exported so that contract is checkable
+// (dispatch-reconcile.test.mjs asserts these exact members) rather than a
+// claim in a comment. A new kind must be added here, asserted there, and
+// handled at every call site in the same change.
+//
+// Named to match the neighbouring dispatch-ledger.js's JOB_EVENTS /
+// TERMINAL_JOB_EVENTS convention: self-describing, frozen, SCREAMING_SNAKE
+// keys over kebab string values, consumed namespaced.
+const DECISION_KINDS = Object.freeze({
   ORPHAN: 'orphan',              // no job ever spawned, grace window expired; job is null
   RETRY_TIMEOUT: 'retry-timeout', // chain ends at job-retried, successor never spawned in the window
   TERMINAL: 'terminal',           // the job reached a terminal event; the caller decides what it MEANS
@@ -231,7 +236,7 @@ function classifyDispatches({
     if (!job) {
       const ageH = (nowMs - new Date(dispatch.ts).getTime()) / 3600e3;
       if (ageH < orphanTimeoutH) continue; // may still spawn — recheck next pass
-      decisions.push({ dispatch, cardId, job: null, kind: KINDS.ORPHAN });
+      decisions.push({ dispatch, cardId, job: null, kind: DECISION_KINDS.ORPHAN });
       continue;
     }
 
@@ -243,18 +248,18 @@ function classifyDispatches({
       // in-flight within the same grace window the no-spawn case uses.
       const ageH = (nowMs - new Date(job.ts || 0).getTime()) / 3600e3;
       if (ageH < orphanTimeoutH) continue;
-      decisions.push({ dispatch, cardId, job, kind: KINDS.RETRY_TIMEOUT });
+      decisions.push({ dispatch, cardId, job, kind: DECISION_KINDS.RETRY_TIMEOUT });
       if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
 
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
 
-    decisions.push({ dispatch, cardId, job, kind: KINDS.TERMINAL });
+    decisions.push({ dispatch, cardId, job, kind: DECISION_KINDS.TERMINAL });
     if (job.jobId) claimedJobIds.add(job.jobId);
   }
 
   return decisions;
 }
 
-module.exports = { findMyJob, isDispatchResolved, classifyDispatches, KINDS };
+module.exports = { findMyJob, isDispatchResolved, classifyDispatches, DECISION_KINDS };

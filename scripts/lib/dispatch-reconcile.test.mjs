@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { findMyJob, isDispatchResolved, classifyDispatches, KINDS } = require('./dispatch-reconcile.js');
+const { findMyJob, isDispatchResolved, classifyDispatches, DECISION_KINDS } = require('./dispatch-reconcile.js');
 const dispatchLedger = require('./dispatch-ledger.js');
 
 // These tests cover the MECHANICS the three callers share (BRO-2542). Each
@@ -268,10 +268,15 @@ test('classifying leaves the caller\'s ledger array untouched', () => {
     { ts: '2026-08-30T10:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
     { ts: '2026-08-30T10:20:00Z', event: E.DONE, taskId: '7', jobId: 'j1' },
   ];
-  const snapshot = structuredClone(ledger);
+  // BOTH arrays (code-review finding): the in-place hazard actually lives in
+  // findMyJob's `.filter().sort()` over dispatchLedgerEntries — drop the
+  // .filter() and .sort() reorders the CALLER's live shared ledger in place.
+  const ledgerSnapshot = structuredClone(ledger);
+  const dispatchedSnapshot = structuredClone(dispatched);
   const out = classify(ledger, dispatched, '2026-08-30T23:00:00Z');
   assert.ok(out.length > 0, 'fixture must actually produce decisions, or this asserts nothing');
-  assert.deepEqual(ledger, snapshot);
+  assert.deepEqual(ledger, ledgerSnapshot);
+  assert.deepEqual(dispatched, dispatchedSnapshot, 'the SHARED dispatch ledger must not be reordered in place');
 });
 
 test('resolution reads ONLY the pre-pass ledger — one row resolving cannot resolve its siblings', () => {
@@ -309,12 +314,12 @@ test('the kind vocabulary is EXACTLY these three — adding one is a breaking ch
   // prevent. Asserting the frozen export itself is what makes it a contract:
   // a new kind cannot be added without editing this line, which is the prompt
   // to go handle it at every call site.
-  assert.deepEqual(Object.entries(KINDS).sort(), [
+  assert.deepEqual(Object.entries(DECISION_KINDS).sort((a, b) => a[0].localeCompare(b[0])), [
     ['ORPHAN', 'orphan'],
     ['RETRY_TIMEOUT', 'retry-timeout'],
     ['TERMINAL', 'terminal'],
   ]);
-  assert.ok(Object.isFrozen(KINDS), 'KINDS must be frozen — callers branch on it');
+  assert.ok(Object.isFrozen(DECISION_KINDS), 'DECISION_KINDS must be frozen — callers branch on it');
 });
 
 test('every decision carries one of the three kinds, and a still-running job yields none', () => {
@@ -383,11 +388,15 @@ test('no file reimplements the spawn->job correlation outside this lib (BRO-2542
   // dispatch-ledger.js DEFINES followRetryChain; dispatch-reconcile.js is the
   // one sanctioned consumer. Nothing else may pair them. The two test files
   // legitimately name both while testing them.
+  // Deliberately NOT exempting this test file: it names neither pattern in a
+  // matching form, so leaving it policed costs nothing and halves the hole an
+  // allowlist opens (a real fifth copy could otherwise hide in an exempt
+  // file). dispatch-ledger.test.mjs's exemption IS load-bearing — it genuinely
+  // exercises followRetryChain( against JOB_EVENTS.SPAWNED fixtures.
   const OWNERS = new Set([
     'scripts/lib/dispatch-ledger.js',
     'scripts/lib/dispatch-reconcile.js',
     'scripts/lib/dispatch-ledger.test.mjs',
-    'scripts/lib/dispatch-reconcile.test.mjs',
   ]);
 
   // .mjs and .cjs too, not just .js (code-review finding — demonstrated: a
@@ -411,15 +420,25 @@ test('no file reimplements the spawn->job correlation outside this lib (BRO-2542
   assert.ok(files.includes('scripts/lib/dispatch-reconcile.js'),
     `grep found no followRetryChain in the lib itself — the scan is broken, not clean (got: ${files.join(', ') || 'nothing'})`);
 
+  // Only TRACKED files (code-review finding): the scan reads the working tree,
+  // so an untracked scratch file under scripts/ would otherwise fail this test
+  // locally with a "you wrote a fifth copy" message. A real fifth copy gets
+  // committed; a scratch file does not.
+  const tracked = new Set(
+    execFileSync('git', ['ls-files', 'scripts'], { cwd: repo, encoding: 'utf8' })
+      .split('\n').filter(Boolean));
+
+  // Per-LINE filtering, not region-stripping (code-review finding). A
+  // `/\/\*/` inside a regex literal — which this very file contains — makes
+  // block-comment stripping swallow real code to the next `*/`, and every such
+  // failure mode is a FALSE NEGATIVE: a genuine fifth copy hides. Dropping
+  // only lines whose own text is commentary is strictly safer.
+  const isCommentary = (line) => /^\s*(\/\/|\*|\/\*)/.test(line);
   const offenders = files.filter((rel) => {
-    if (OWNERS.has(rel)) return false;
-    const src = fs.readFileSync(path.join(repo, rel), 'utf8')
-      // Strip comments so a file merely DOCUMENTING the pair (as
-      // backlog-drain.js and autofix-canary.js now do, pointing readers at the
-      // shared implementation) is not mistaken for one reimplementing it.
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .replace(/(?<!:)\/\/[^\n]*/g, '');
-    return /followRetryChain\s*\(/.test(src) && /JOB_EVENTS\.SPAWNED/.test(src);
+    if (OWNERS.has(rel) || !tracked.has(rel)) return false;
+    const code = fs.readFileSync(path.join(repo, rel), 'utf8')
+      .split('\n').filter((l) => !isCommentary(l)).join('\n');
+    return /followRetryChain\s*\(/.test(code) && /JOB_EVENTS\.SPAWNED/.test(code);
   });
 
   assert.deepEqual(offenders, [],
