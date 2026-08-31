@@ -179,7 +179,7 @@ const {
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
-  dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard,
+  dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
 // Shared atomic per-key claim primitive (task #1896) — also backs
 // acquireSuccessionLock/releaseSuccessionLock below. See its own header for
@@ -1319,21 +1319,14 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // matching the "don't do work whose result gets discarded" convention.
   // BRO-2647: REPO is hardcoded to this dev machine's checkout (see its own
   // header comment above) and doesn't exist on a CI runner, which made this
-  // check refuse EVERY real acceptance path as phantom there — including
-  // inside scripts/bsc-next.test.mjs's own real-dispatch tests, which never
-  // stub process.exit for this guard because before this existed there was
-  // nothing here to stub. That refusal's real, un-mocked process.exit(1)
-  // truncated the file's TAP output mid-run (a real process.exit() does not
-  // flush pending stdout), which is why main's Unit Tests job saw the file
-  // as one bare `not ok` with zero subtests. Falling back to this file's own
-  // on-disk location only when the hardcoded path is absent fixes the CI
-  // case without touching REPO's other uses (dispatch-claim/lock dirs, the
-  // notion-brain.js/claude subprocess cwd) — those never run for real in CI
-  // and the tests that exercise them already stub the calls that would
-  // otherwise touch REPO, so leaving them exactly as-is keeps that existing
-  // loud-crash-if-unstubbed safety net intact.
-  const pathCheckRepo = fs.existsSync(REPO) ? REPO : path.resolve(__dirname, '..');
-  const pathCheck = (fullCardInHand && !args.force) ? resolvePathCheck(verifyGate, pathCheckRepo) : null;
+  // check refuse EVERY real acceptance path as phantom there. See
+  // resolveCanonicalRepoRoot()'s own header (dispatch-guards.js) for the
+  // full trace of how that produced main's red Unit Tests job. Called
+  // lazily inside the ternary, not hoisted above it, so --force still skips
+  // the fs I/O entirely per this guard's own convention (comment above).
+  const pathCheck = (fullCardInHand && !args.force)
+    ? resolvePathCheck(verifyGate, resolveCanonicalRepoRoot(REPO, __dirname))
+    : null;
   const pathErr = pathVerifiabilityGuard(task, pathCheck, args);
   if (pathErr) { console.error(`[bsc-next] ${pathErr}`); process.exit(1); }
 
