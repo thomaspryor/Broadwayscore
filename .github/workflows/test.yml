@@ -545,6 +545,14 @@ on:
       # Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
       - 'scripts/lib/shallow-fetch-args.js'
+      # BRO-2538: a continue-on-error commit+push step that strands a
+      # non-apiFallbackSafe commit poisons every LATER commit+push-with-
+      # retry.sh step in the same job/checkout. Part A documents the
+      # by-design cascade against the real script; Part B is the regression
+      # guard on data-health-check.yml's step order (the actual fix). Path-
+      # listed so a solo edit to either file triggers CI.
+      - 'scripts/lib/push-with-retry.stranded-commit-cascade.test.sh'
+      - '.github/workflows/data-health-check.yml'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
       # content, so a concurrent writer that reverted our lines (leaving the
       # path in place) passed every check and the script reported success —
@@ -3605,6 +3613,26 @@ jobs:
         # repeating the identical failing bound forever.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.shallow-retry-escalation.test.sh
+
+      - name: Run push-with-retry stranded-commit-cascade test (bash integration)
+        # BRO-2538: data-health-check.yml run 33253487319 (2026-08-29) showed
+        # the Git Data API fallback disqualifier refusing to run for a step
+        # ("Commit health check audit snapshots (apiFallbackSafe)") whose own
+        # commit only touched apiFallbackSafe files. Root cause (reproduced,
+        # not just read): an EARLIER continue-on-error step in the same job
+        # ("Commit acceptance recheck ledger") can strand a non-safe, unpushed
+        # commit on the shared checkout when its own push exhausts every
+        # retry; every LATER commit+push-with-retry.sh step in that job then
+        # inherits it and gets disqualified too, even though its own work was
+        # safe. Part A of this test documents that cascade as a real, by-
+        # design property of push-with-retry.sh's disqualifier (not a bug to
+        # fix there — the fix landed 2026-08-16 for the DIFFERENT
+        # merge-fallback-pollution mechanism, confirmed still correct here).
+        # Part B is the actual regression guard: asserts data-health-check.yml
+        # now runs the strandable ledger step LAST among its commit+push
+        # steps, so nothing later in that job can be poisoned by it.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
 
       - name: Run merge-worktree-to-main content-drop test (bash integration)
         # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's
