@@ -125,15 +125,19 @@ const NON_THEATER_PATTERNS = [
   'meet the music', 'lyrics & lyricists',
   'uptown showdown', 'amateur night',
   'flamenco festival',
-  // NOT 'circus' alone (false-positive: "The Secret Circus Musical", a real
-  // off-Broadway production in previews). Corpus-audited: of 2938 tracked shows the
-  // bare substring matched that title and nothing else, so its only effect was to
-  // silently drop a real production from discovery. Same precedent as 'quartet' and
-  // 'gala' above. And do NOT "fix" this by adding 'cirque' — that substring matches
-  // five more real tracked productions (Cirque du Soleil Paramour, Cirque Dreams,
-  // Cirque Berserk, Scrooge: Cirque Extravaganza, Cirque Alice). If genuine
-  // non-theater circus programming ever shows up in a venue feed, add the specific
-  // multi-word phrase for it and re-run scripts/audit-regex-patterns.js --full.
+  // NOT bare 'circus' alone (BRO-2662: matched "The Secret Circus Musical",
+  // a live tracked Off-Broadway musical currently in previews). No safe
+  // multi-word replacement exists either — unlike 'gala'/'tour', "circus" as
+  // a genre has no noise-vs-signal split by title shape: real tracked shows
+  // are titled "Cirque du Soleil Paramour" (Broadway musical),
+  // "Cirque Berserk", "Scrooge: Cirque Extravaganza", "Cirque Alice" (West
+  // End/Off-West End plays) — any "cirque"/"circus"-branded multi-word
+  // pattern collides with one of these. Genuine non-theatrical circus
+  // listings from TodayTix are already routed correctly downstream via
+  // show.todayTixCategory === 'Circus and Magic' (see type-detection below),
+  // so no title-substring gate is needed for that source. No historical log
+  // of the noise titles this bare token was originally added to catch
+  // exists, so it's removed rather than replaced with a guessed list.
   'in concert', 'concert performance',
   'company xiv', // burlesque/cabaret company
   'rakugo', // Japanese storytelling

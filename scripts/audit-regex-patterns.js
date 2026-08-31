@@ -162,11 +162,11 @@ const PATTERN_ALLOWLIST = {
   // detectHorrorFilmContent's 3+-theater-keyword guard absorbs 100% — zero pass
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
   'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
-  'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
+  'HORROR_FILM_PATTERNS::1': 205, // /horror\s*(film|movie|sequel)/ — raw 158, 2026-08-31 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
-  'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
+  'HORROR_FILM_PATTERNS::6': 110, // /horror\s+film/ — raw 82, 2026-08-31 recal (duplicate of ::1, see PATTERN_CALIBRATION)
 };
 
 // Per-pattern calibration provenance. Optional companion to PATTERN_ALLOWLIST.
@@ -325,6 +325,36 @@ const PATTERN_CALIBRATION = {
         + "across outlets, not concentrated in one active scraper. detectHorror"
         + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
         + 'zero pass through to rejection. Sized to raw + 30%.',
+  },
+  'HORROR_FILM_PATTERNS::1': {
+    commit: 'pending',
+    date: '2026-08-31',
+    rawHits: 158,
+    headroom: 1.3,
+    note: 'BRO-2662 triage (surfaced while confirming --full exits 0 after the '
+        + 'circus title-exclude fix): /horror\\s*(film|movie|sequel)/i corpus '
+        + 'growth from raw 107 (prior baseline) to 158 — theater-metaphor '
+        + 'bleed ("worthy of a Blumhouse horror film", "reminiscent of a '
+        + 'horror movie", genre-comparison prose in Appropriate, American '
+        + 'Son, Variety/LSA/TWiNY reviews), diffuse across outlets, not a '
+        + 'scraper regression. Verified directly: scanning the full corpus '
+        + "with detectHorrorFilmContent() (not the bare regex) finds only 2 "
+        + 'texts where the 3+-theater-keyword guard fails to absorb the '
+        + 'match (My Neighbour Totoro / Paranormal Activity West End '
+        + "reviews), and both already carry contentTier: 'invalid' — outside "
+        + "this audit's own tier filter and already excluded by other gates, "
+        + 'not caused by this pattern. Sized to raw + 30%.',
+  },
+  'HORROR_FILM_PATTERNS::6': {
+    commit: 'pending',
+    date: '2026-08-31',
+    rawHits: 82,
+    headroom: 1.34,
+    note: 'BRO-2662 triage, same corpus-growth event as HORROR_FILM_PATTERNS::1 '
+        + '(this pattern is a subset/duplicate of ::1 — /horror\\s+film/i vs '
+        + '/horror\\s*(film|movie|sequel)/i). Raw 43 (prior baseline) to 82. '
+        + 'See ::1 above for the verification that detectHorrorFilmContent\'s '
+        + 'guard absorbs these. Sized to raw + 30%.',
   },
 };
 
