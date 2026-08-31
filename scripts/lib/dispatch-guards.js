@@ -69,6 +69,15 @@ const cmuxws = require('./cmux-workspaces.js');
 // worktree-gc-reclaim.js — never reach back to this file).
 const { gitSafeJobId } = require('./bsc-runner.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
+// resolveCheckPaths only (no triage-prompt/LLM machinery pulled in) —
+// resolvePathCheck()/pathVerifiabilityGuard() below need the identical
+// phantom-path check enrich-card-acceptance.js already runs on LLM-drafted
+// acceptance criteria (BRO-2546), applied once more at the point a
+// dispatcher actually commits to launching a workspace on a hand-written or
+// imported command that never went through that check (BRO-2569). No cycle:
+// autonomous-triage-core.js's own requires (autonomous-eligibility.js,
+// attempt-memory.js) never reach back to this file.
+const { resolveCheckPaths } = require('./autonomous-triage-core.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
@@ -215,6 +224,87 @@ function staleOutcomeGuard(task, card, opts) {
     `    1. Close the card as Done if the recorded Outcome is sufficient${pid ? ` (Notion): node scripts/notion-brain.js update ${pid} --status Done` : ''}.\n` +
     `    2. Add a backticked safe-form command to the card's "## Acceptance criteria" stating what's still missing.\n` +
     `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
+}
+
+// ── Phantom-path guard (BRO-2569) ───────────────────────────────────────────
+// evaluateVerifiability only checks the acceptance command's SHAPE (safe
+// form, no mutation, no path traversal) — it never asks whether the paths
+// the command names actually exist on disk, or sit in a directory the
+// dispatched work can plausibly create them in. BRO-2546 closed that hole for
+// LLM-drafted acceptance criteria (enrich-card-acceptance.js, via
+// resolveCheckPaths in autonomous-triage-core.js) but every OTHER path a
+// card's acceptance command can arrive by — hand-written, `linear-brain.js
+// create`, the plan-tasks skill, an imported Notion card — reached both real
+// dispatchers with no path check at all, arming a card on a command that can
+// never pass (the #171 class: a session burns a full executor envelope on an
+// unpassable check). This is the same resolveCheckPaths call, run once more
+// at the point each dispatcher actually commits to launching a workspace.
+//
+// Split into two functions (second-opinion review, BRO-2569): every sibling
+// guard in this file is pure `(task, data, opts)` with callers owning any
+// I/O (this file's own header says so) — resolvePathCheck() below is the
+// I/O-doing half a caller runs once against its own `gate.cmd` and
+// `repoRoot`, and pathVerifiabilityGuard() stays pure over the result,
+// matching workBranchCollisionGuard/staleOutcomeGuard's shape.
+//
+// Deliberately NOT added to GUARD_NAMES: that array is blind-simulated by
+// predispatch-queue-audit.js across the WHOLE backlog with a task-shaped
+// `{id, subject, description}` object, and dispatch-guard-queue-audit.test.mjs
+// pins its length. Unlike dispatchClaimGuard/checkTerminalStateGuard (excluded
+// for being stateful or shape-incompatible), this guard IS blind-simulatable
+// — leaving it out is a real, acknowledged audit-coverage gap (a phantom-path
+// card stays invisible to the proactive sweep and is only caught here, at
+// actual dispatch time), not a structural incompatibility. Wiring it into the
+// audit is separate scope from this dispatch-time fix; tracked as BRO-2626.
+//
+// A dedicated `--allow-phantom-path` bypass (not `--allow-unverifiable`,
+// which every sibling guard here already uses for "no command exists to
+// check at all") keeps the ledger's allow-flag legible: a phantom-path
+// override means "a command exists and is well-formed but names a path that
+// can never resolve," a materially different fact than "no command exists."
+// Callers must persist it on their launch ledger row exactly as they already
+// do for allowUnverifiable — see linear-next.js/bsc-next.js's launch-event
+// payloads — since the refusal message below promises it is "recorded."
+//
+// Callers skip resolvePathCheck() entirely under force/dry-run/print-prompt
+// (matching workBranchCollisionGuard's convention of skipping its own I/O
+// for the same three flags, rather than doing the fs work and discarding
+// it) — pathVerifiabilityGuard's own bypass check below exists only for a
+// caller that already has a pathCheck in hand from elsewhere.
+function resolvePathCheck(gate, repoRoot) {
+  return gate && gate.cmd ? resolveCheckPaths(gate.cmd, { repoRoot }) : null;
+}
+
+// ok:true alone is not enough to pass (Codex adversarial review, BRO-2569):
+// resolveCheckPaths can return ok:true with corrected:true when the named
+// path is a near-match of a real file (e.g. `tests/foo.test.mjs` rewritten
+// to the real `tests/unit/foo.test.mjs`) — the EXACT card #171 correction
+// class BRO-2546 built this resolver to fix. enrich-card-acceptance.js's own
+// write path applies that correction before recording anything
+// (demoteUnsafeVerifyLines / finalCommand); a dispatcher has no notes-write
+// path to do the same, so silently accepting corrected:true would record
+// and later re-verify the ORIGINAL, still-wrong command while the resolver
+// quietly approved a DIFFERENT one — reintroducing the phantom-command class
+// this guard exists to close, just one layer up. Refuse instead and ask the
+// card's acceptance criteria to name the real path directly.
+function pathVerifiabilityGuard(task, pathCheck, opts) {
+  if (!pathCheck) return null;
+  if (pathCheck.ok && !pathCheck.corrected) return null;
+  if (opts.force || opts['allow-phantom-path'] || opts['dry-run'] || opts['print-prompt']) return null;
+  if (pathCheck.corrected) {
+    return `REFUSING to dispatch #${task.id}: the acceptance command names a path resolveCheckPaths would silently ` +
+      `correct to a different one it actually verified (${pathCheck.checkableDone}) — recording and later re-checking ` +
+      `the ORIGINAL command would re-arm the exact phantom-command class this guard exists to close, one layer up.\n` +
+      `  Fix one of:\n` +
+      `    1. Update the acceptance criteria to name ${pathCheck.checkableDone} directly.\n` +
+      `    2. Add "VERIFY: owner-judgment" if this outcome genuinely cannot be machine-checked.\n` +
+      `    3. Re-run with --allow-phantom-path to dispatch anyway (recorded in the ledger).`;
+  }
+  return `REFUSING to dispatch #${task.id}: the acceptance command names a path that can never pass (${pathCheck.reason}).\n` +
+    `  Fix one of:\n` +
+    `    1. Correct the acceptance criteria to name a file that exists, or a path inside a directory that does.\n` +
+    `    2. Add "VERIFY: owner-judgment" if this outcome genuinely cannot be machine-checked.\n` +
+    `    3. Re-run with --allow-phantom-path to dispatch anyway (recorded in the ledger).`;
 }
 
 // ── Closed-card guard (task #1790, the stall-sweep half of the mirror problem) ──
@@ -840,4 +930,7 @@ module.exports = {
   evaluateVerifiability,
   classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS,
+  // BRO-2569 — deliberately not in GUARD_NAMES, see the guard's own header.
+  resolvePathCheck,
+  pathVerifiabilityGuard,
 };

@@ -93,7 +93,7 @@ const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
-  workBranchCollisionGuard,
+  workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
@@ -593,6 +593,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Phantom-path guard (BRO-2569): a well-formed, safe-shaped gate.cmd can
+  // still name a file/directory that will never exist — see
+  // dispatch-guards.js's pathVerifiabilityGuard header for the full
+  // rationale (BRO-2546 closed this for LLM-drafted acceptance criteria
+  // only; every other route a Linear issue's description arrives by never
+  // got the check until now). Skips the fs I/O entirely under force/dry-run/
+  // print-prompt, same convention as workBranchCollisionGuard's call site
+  // below (ship-check finding, BRO-2569: doing the I/O and then discarding
+  // it for a preview is the exact inconsistency that guard's own comment
+  // warns against).
+  const skipPathCheck = args.force || args['dry-run'] || args['print-prompt'];
+  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, REPO);
+  const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
+  if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
+
   // Idempotency (task #1303 plan review item 4) — two independent "this
   // already looks dispatched" signals, checked before any launch attempt.
   // See linear-dispatch.js's findUnresolvedDispatchComment/hasLiveLedgerEntry
@@ -718,6 +733,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+        // BRO-2569: journals a phantom-path override the same way — the
+        // guard's own refusal message promises this is "recorded in the
+        // ledger" (ship-check finding: it wasn't, until this field existed).
+        allowPhantomPath: args['allow-phantom-path'] || null,
         // BRO-2499: the autofix-pipeline bypass is journaled the same way
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
@@ -830,6 +849,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+      // BRO-2569 — see the headless launch entry above for why this is journaled.
+      allowPhantomPath: args['allow-phantom-path'] || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,
