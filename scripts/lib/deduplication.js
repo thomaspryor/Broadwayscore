@@ -75,24 +75,38 @@ function venuesMatch(a, b) {
   // runs FIRST and would still see the raw entity — and because this keeps the
   // change to the venue-equality DECISION, not to the shared normalizer that
   // 19 other modules import.
-  a = decodeHtmlEntities(a);
-  b = decodeHtmlEntities(b);
+  //
+  // .trim() here too (BRO-2567). Scraped venue strings routinely arrive padded
+  // — 13 shows.json venues carry a trailing space today — and VENUE_ALIASES'
+  // regexes are ANCHORED (title-match.js's /^the\s*new\s*group$/i). A padded
+  // side therefore missed its alias entirely while the unpadded side hit one,
+  // and the `aliasA || aliasB` early return below turned that into a hard
+  // false: venuesMatch('  The New Group  ', 'Pershing Square Signature Center')
+  // was false where the unpadded form was true. normalizeVenueName() trims,
+  // but it runs after this early return, so it never saw these pairs.
+  a = decodeHtmlEntities(a).trim();
+  b = decodeHtmlEntities(b).trim();
   const aliasA = aliasCanonical(a);
   const aliasB = aliasCanonical(b);
   if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
-  // Strip a leading "The " before the plain-string fallback ONLY — not before
-  // aliasCanonical() above (2026-08-31). venue-classification.js's
-  // normalizeVenueName() strips trailing "Theatre"/"Theater" and parentheticals
-  // but not a leading article, so "West End Theatre" vs "The West End Theatre" —
-  // the same venue, one side just informally dropping "The" — compared UNEQUAL
-  // and ran Data Validation red on main (othello-bedlam-off-broadway-2026,
-  // the-dead-1904-off-broadway-2026). Must run AFTER aliasCanonical: several
-  // VENUE_ALIASES regexes are anchored on a literal "the" (e.g. title-match.js's
-  // /^the\s*new\s*group$/i for The New Group ≡ Signature Center) and stripping it
-  // upstream broke those matches.
-  const stripThe = v => v.replace(/^the\s+/i, '');
-  const normA = normalizeVenueName(stripThe(a));
-  return normA !== '' && normA === normalizeVenueName(stripThe(b));
+  // The leading-article strip lives in normalizeVenueName() (venue-classification.js:29,
+  // added by 43b3e4828df), NOT here. venuesMatch used to carry its own copy so
+  // "West End Theatre" would match "The West End Theatre"; once the shared
+  // normalizer owned that rule the local copy became actively harmful, because
+  // it ran at a DIFFERENT point in the pipeline — before normalizeVenueName's
+  // trailing-"Theatre"/"Theater" and parenthetical strips rather than after:
+  //
+  //   'The Theatre' vs 'The Theater'      -> 'theatre' vs 'theater'  FALSE MISS
+  //   'The Theatre' vs 'Theatre Theatre'  -> 'theatre' == 'theatre'  FALSE MATCH
+  //   'The (National Theatre)'            -> '' -> force-rejected by normA !== ''
+  //
+  // Normalizing once, through the one shared normalizer, gets all three right
+  // ('the' vs 'the', 'the' vs 'theatre', 'the'). Verified: all 21 venuesMatch
+  // assertions across aggregator-candidate-extract.test.mjs and
+  // canonical-venue-consumers.test.mjs pass without the local strip, and all
+  // 356 distinct shows.json venues normalize identically. (BRO-2567)
+  const normA = normalizeVenueName(a);
+  return normA !== '' && normA === normalizeVenueName(b);
 }
 
 const KNOWN_DUPLICATES = {

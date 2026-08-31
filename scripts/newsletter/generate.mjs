@@ -2125,6 +2125,61 @@ function londonSection() {
   return sectionWrap(sectionHeading(IS_WE ? 'Opened in the West End' : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
+// Grace window for the WE edition's Broadway section — mirrors
+// inLondonOpeningWindow() (14-day catch-up, suppressed once lastFeaturedIds
+// has already shown it in a prior WE issue). lastFeaturedIds is edition-scoped
+// (see _issueEdition), so this reads the WE edition's OWN history, never the
+// BW edition's.
+function inBroadwayOpeningWindowForWE(s) {
+  if (inWeek(s.openingDate)) return true;
+  if (!s.openingDate) return false;
+  return s.openingDate >= _daysBefore(14) && s.openingDate < weekStartStr && !lastFeaturedIds.has(s.id);
+}
+
+// SECTION: Broadway Openings for the West End edition — mirrors London
+// Openings in the NYC edition (owner request 2026-08-31): West End
+// subscribers get a secondary feed of what opened on Broadway that week.
+// Broadway category ONLY, never Off-Broadway — asymmetric from
+// londonSection(), which includes both West End AND Off West End.
+// Self-gates on IS_WE (returns null immediately for the Broadway edition
+// run) rather than relying on the call site to skip it — bwO/obO were
+// unconditionally called until 2026-08-30 (BRO-2573), which fired
+// markFeatured() on every NYC opening even in WE runs where the output was
+// never rendered, polluting the WE edition's OWN featuredShowIds with
+// Broadway/OB ids. This function must not reintroduce that failure mode in
+// reverse (a Broadway-run call polluting WE-only state), so self-gating is
+// the safer default even though today's call site already only needs the
+// WE-edition value.
+function weBroadwaySection() {
+  if (!IS_WE) return null;
+  const list = shows.filter(s => s.category === 'broadway' && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
+  if (!list.length) return null;
+  const withScore = list
+    .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
+    .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
+  if (!withScore.length) return null;
+  // Sort: genuine in-week openings before grace-window catch-up shows, then
+  // Gold first, then by score desc, ties broken by review count — same
+  // ordering rules as londonSection() minus the WE-only tier split (this
+  // section is single-category).
+  withScore.sort((a, b) => {
+    const ac = Number(a.isCatchUp), bc = Number(b.isCatchUp);
+    if (ac !== bc) return ac - bc;
+    const ag = isGoldTier(a.agg.avg, 'broadway') ? 1 : 0;
+    const bg = isGoldTier(b.agg.avg, 'broadway') ? 1 : 0;
+    if (ag !== bg) return bg - ag;
+    const ar = a.agg.raw ?? a.agg.avg, br = b.agg.raw ?? b.agg.avg;
+    if (Math.round(ar) === Math.round(br)) return (b.agg.count ?? 0) - (a.agg.count ?? 0);
+    return br - ar;
+  });
+  markFeatured(...withScore.map(x => x.s.id));
+  markOpening('broadway-we', withScore.map(x => x.s));
+  const cards = withScore.map(x => showRow(x.s)).join('');
+  const seeAll = seeAllLink(SITE, 'Explore the full Broadway Scorecard', { color: '#d4a574' });
+  const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
+  return sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+}
+
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
 // accent color, see-all link to /opera). Opera shows are excluded from every
 // other section because their tier model (T1-flat) and audience expectations
@@ -2274,6 +2329,7 @@ try {
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
+const bwWe = sections.run('broadway-we', () => weBroadwaySection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
@@ -2338,13 +2394,17 @@ function _slot(name, html) {
 if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
 if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
 // WE edition: a lean, West End-first order. No Box Office (no WE grosses feed),
-// no Broadway/OB openings, no Recoupment / Announced-Closings / Opera / Season
+// no Off-Broadway openings, no Recoupment / Announced-Closings / Opera / Season
 // Standing. The WE openings (londonSection, relabeled "Opened in the West End")
-// are the hero.
+// are the hero; Broadway (weBroadwaySection, "Opened on Broadway") is the
+// secondary cross-market feed, placed right after Closing this Week — the
+// same relative slot londonSection occupies in the Broadway edition's own
+// order below (right after Closing/Announced Closings).
 const sectionOrder = IS_WE ? [
   _slot('london-openings', lon),
   _slot('also-opened-recently', catchup),
   _slot('closing-this-week', clo),
+  _slot('broadway-we', bwWe),
   _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
   _slot('upcoming-openings', upcomingTop || upcomingBottom),
@@ -2825,7 +2885,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   // filter to the current edition's section set + honor NEWSLETTER_DROP_SECTIONS.
   openingShows: dedupeShowRefs(_openingShowRefs
     .filter(r => (IS_WE
-      ? ['london-openings', 'also-opened-recently']
+      ? ['london-openings', 'also-opened-recently', 'broadway-we']
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
