@@ -23,7 +23,10 @@
     "masticate-off-broadway-2026/nyu--unknown.json",
     "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
     "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--costas-kas.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -1027,7 +1030,14 @@
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
     "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
     "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
-    "im-every-woman-off-west-end-2026/theupcoming--unknown.json"
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1045,7 +1055,10 @@
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "masticate-off-broadway-2026/nyu--unknown.json",
       "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
-      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+      "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--costas-kas.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1075,7 +1088,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+  "lastProcessed": "disruption-off-broadway-2026/everything-theatre--dave-b.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -1144,6 +1157,29 @@
       "event": "bb-session",
       "session": "39c24094",
       "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-08-31T11:35:00.536Z",
+      "event": "bb-session",
+      "session": "bf0b44cb",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-31T11:35:19.766Z",
+      "event": "bb-session",
+      "session": "2ab50f08",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-31T11:36:36.572Z",
+      "event": "bb-session",
+      "session": "a84bfee8",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-31T11:36:37.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
