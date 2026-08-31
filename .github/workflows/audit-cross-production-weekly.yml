@@ -104,7 +104,14 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null; then
+          # alert-ledger.json / alert-digest-queue.json: "Report new slug
+          # misroutes" (disposition-misroute.js) calls routeAlert(disposition:
+          # 'digest'), which writes only these two files on a NEW finding — if
+          # neither of the other audit outputs also changed that run, has_changes
+          # stayed 'false' and the whole commit step below was skipped, silently
+          # dropping the digest queue entry / ledger cooldown state (same bug
+          # class as check-cron-health.yml's alert-ledger.json comment).
+          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -128,7 +135,11 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json
-          bash scripts/lib/git-add-existing.sh data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json
+          # alert-ledger.json / alert-digest-queue.json: routeAlert()'s cooldown
+          # ledger + digest queue (see the "Check for changes" step comment
+          # above) — must be committed here or the per-condition cooldown and
+          # any queued digest line never persist across runs.
+          bash scripts/lib/git-add-existing.sh data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json
           CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           AGG=$(node -e "const d=require('./data/audit/ob-aggregator-rejections.json'); console.log((d.counts&&d.counts.accepted||0)+' new, '+(d.counts&&d.counts.rejected||0)+' rejected')" 2>/dev/null || echo "0 new")
