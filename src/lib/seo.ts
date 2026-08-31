@@ -398,14 +398,18 @@ export function generateTheaterSchema(theater: {
     name: theater.name,
     url: `${BASE_URL}/theater/${theater.slug}`,
     ...(theater.address && { address: toPostalAddress(theater.address, country) }),
-    event: theater.currentShow ? {
+    // Event.location requires an address per Google's structured data spec
+    // (GSC flags "Missing field 'address' (in 'location')" otherwise). Venues
+    // without a known address (e.g. a not-yet-announced "TBA" house) omit the
+    // event entirely rather than emit an incomplete TheaterEvent.
+    event: (theater.currentShow && theater.address) ? {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
       url: `${BASE_URL}/show/${theater.currentShow.slug}`,
       location: {
         '@type': 'PerformingArtsTheater',
         name: theater.name,
-        ...(theater.address && { address: toPostalAddress(theater.address, country) }),
+        address: toPostalAddress(theater.address, country),
       },
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
