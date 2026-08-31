@@ -51,7 +51,10 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PRIMARY_REPO="/Users/tompryor/Broadwayscore"
-LOG="$PRIMARY_REPO/data/audit/worktree-gc.log"
+# WORKTREE_GC_LOG is a test seam only (BRO-2607): the parity test drives this
+# real script against fixture worktrees and must not append fixture lines to
+# the committed audit log. Production never sets it.
+LOG="${WORKTREE_GC_LOG:-$PRIMARY_REPO/data/audit/worktree-gc.log}"
 DRY_RUN=0
 [ "${1:-}" = "--dry-run" ] && DRY_RUN=1
 
@@ -80,7 +83,8 @@ mkdir -p "$(dirname "$LOG")"
 # dropping only the newly added repos while the primary repo's run
 # proceeds. Per-repo locking would let a slow web-repo run silently starve
 # the iOS repo of GC forever with no log line naming that gap.
-GC_LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
+# WORKTREE_GC_LOCK_DIR: same test-seam reasoning as WORKTREE_GC_LOG above.
+GC_LOCK_DIR="${WORKTREE_GC_LOCK_DIR:-/tmp/broadwayscore-disk-floor-gc.lock}"
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
@@ -141,6 +145,19 @@ is_stale() {
 # content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
 # it either way and is deleted by ANY worktree removal, force or plain; that
 # exposure predates this function and is unchanged by it.
+# BRO-2607. The real removal path below calls `git worktree remove` with NO
+# --force, and git refuses that on ANY dirty tree. The dry-run branch must
+# model the same refusal, or a worktree holding uncommitted SOURCE gets
+# reported as "fully merged / WOULD-REMOVE" and counted in removed=. Measured
+# 2026-08-31 on one machine two minutes apart: dry-run removed=15 skipped=2,
+# real run removed=2 skipped=16. 13 of the 15 were iOS worktrees carrying real
+# edits (e.g. `M app/(tabs)/watched.tsx`). The GC refusing them was correct;
+# the dry-run calling them "fully merged" was the defect. Keep the dry-run's
+# three-way split in lockstep with the real path's three outcomes.
+is_worktree_clean() {
+  [ -z "$(git -C "$1" status --porcelain 2>/dev/null)" ]
+}
+
 is_safe_dirty() {
   local p="$1" status line f
   status=$(git -C "$p" status --porcelain 2>/dev/null)
@@ -477,12 +494,21 @@ flush() {
     log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
   if [ "$DRY_RUN" = "1" ]; then
-    if is_safe_dirty "$path"; then
-      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
-    else
+    # Three-way, mirroring the real path's three outcomes exactly (BRO-2607):
+    # clean -> plain remove succeeds; safe-dirty -> --force path; anything else
+    # -> git refuses and the run logs SKIP. A dirty-source worktree must NOT be
+    # counted in removed=, or the dry-run overstates reclaimable headroom.
+    if is_worktree_clean "$path"; then
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
+      removed=$((removed+1))
+    elif is_safe_dirty "$path"; then
+      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      removed=$((removed+1))
+    else
+      log "WOULD-SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
+      skipped=$((skipped+1))
     fi
-    removed=$((removed+1)); path="" branch=""; return
+    path="" branch=""; return
   fi
   # Measured before removal so the DONE summary's freed= reflects what
   # actually left disk, not just the floor/strip/orphan side-cleanups (task
