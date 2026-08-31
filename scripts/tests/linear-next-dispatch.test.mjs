@@ -145,6 +145,13 @@ test('main(): refuses to dispatch an issue whose acceptance command names a phan
   console.error = (msg) => errors.push(String(msg));
   try {
     await assert.rejects(() => main(['--id', 'BRO-25690'], {
+      // Every other main()-driving test in tests/unit/linear-next.test.mjs
+      // stubs the dispatch claim (it defaults to the REAL atomic-claim.js
+      // filesystem I/O otherwise) — this one didn't, and passed locally by
+      // accident while failing in CI with an unrelated "claim dir unreadable/
+      // corrupt" refusal that masked the phantom-path guard entirely
+      // (caught live: BRO-2569 landed on main red because of exactly this).
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {},
       getIssue: async () => makePhantomPathIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a phantom-path issue'); },
