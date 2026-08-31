@@ -1,47 +1,41 @@
 {
-  "updatedAt": "2026-08-31T17:35:51.930Z",
-  "processed": 17,
-  "failed": 143,
-  "successRate": "10.6%",
+  "updatedAt": "2026-08-31T17:44:19.815Z",
+  "processed": 2,
+  "failed": 8,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-08-31T17:00:23.972Z",
+      "t": "2026-08-31T17:43:36.154Z",
       "event": "bb-session",
-      "session": "557b4120",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+      "session": "d5e072bb",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
     },
     {
-      "t": "2026-08-31T17:00:25.035Z",
+      "t": "2026-08-31T17:43:37.078Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-08-31T17:02:42.477Z",
+      "t": "2026-08-31T17:43:55.325Z",
       "event": "bb-session",
-      "session": "b36ba45a",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+      "session": "be07e4f7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
     },
     {
-      "t": "2026-08-31T17:02:43.493Z",
+      "t": "2026-08-31T17:43:56.199Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-31T17:07:55.123Z",
-      "event": "bb-session",
-      "session": "e2678244",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
