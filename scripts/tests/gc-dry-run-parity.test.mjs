@@ -17,7 +17,7 @@
  * throwaway fixture repo, via the WORKTREE_GC_REPOS_JSON seam the script
  * already documents, and asserts dry-run/real parity on all three outcomes.
  */
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -26,6 +26,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SCRIPT = fileURLToPath(new URL('../gc-merged-worktrees.sh', import.meta.url));
+
+/** Every fixture root built by this suite, torn down in `after` (BRO-2607 is a
+ *  disk-pressure card; a test that leaks ~2MB of git fixtures per run is the
+ *  wrong shape for it). Mirrors scripts/tests/gc-merged-worktrees-liveness.test.mjs. */
+const FIXTURE_ROOTS = [];
+after(() => {
+  for (const root of FIXTURE_ROOTS) fs.rmSync(root, { recursive: true, force: true });
+});
 
 function git(cwd, ...args) {
   return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
@@ -39,9 +47,14 @@ function git(cwd, ...args) {
  *   wt-clean       — no uncommitted changes
  *   wt-safe-dirty  — dirty ONLY under data/audit/ (is_safe_dirty)
  *   wt-src-dirty   — dirty in real source (git refuses a plain remove)
+ *
+ * The three names are deliberately chosen so none is a substring of another;
+ * `decisionFor` anchors on the decision keyword anyway and asserts uniqueness,
+ * so that property is a convenience, not a correctness dependency.
  */
 function buildFixture() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gc-parity-'));
+  FIXTURE_ROOTS.push(tmp);
   const origin = path.join(tmp, 'origin.git');
   const repo = path.join(tmp, 'repo');
 
@@ -77,8 +90,7 @@ function buildFixture() {
 
 function runGc(fixture, { dryRun }) {
   const logFile = path.join(fixture.tmp, dryRun ? 'dry.log' : 'real.log');
-  const args = dryRun ? ['--dry-run'] : [];
-  const out = execFileSync('bash', [SCRIPT, ...args], {
+  const out = execFileSync('bash', [SCRIPT, ...(dryRun ? ['--dry-run'] : [])], {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
     env: {
@@ -96,13 +108,38 @@ function runGc(fixture, { dryRun }) {
       WORKTREE_GC_SCRATCHPAD_STALE_DAYS: '9999',
     },
   });
+
+  // ISOLATION GUARD, checked before any assertion can depend on the output.
+  // These tests run the GC DESTRUCTIVELY (dryRun:false actually removes
+  // worktrees) and the ONLY thing confining it to the fixture is
+  // WORKTREE_GC_REPOS_JSON. gc-merged-worktrees.sh logs
+  // "worktree-gc-repos.js unavailable — falling back to web repo only" and
+  // then GCs $PRIMARY_REPO (the developer's real ~/Broadwayscore) if that
+  // helper cannot be loaded. Fail loudly instead of quietly eating the
+  // developer's worktrees.
+  assert.ok(
+    !out.includes('falling back to web repo only'),
+    `GC did not honour WORKTREE_GC_REPOS_JSON and fell back to the REAL repo. Refusing to ` +
+      `assert on this run.\n${out}`
+  );
+  for (const line of out.split('\n')) {
+    if (/^\[[^\]]+\] (WOULD-\S+|REMOVE|FORCE-REMOVE|SKIP|KEEP)\b/.test(line)) {
+      assert.match(line, /\[fx\]/, `decision line escaped the fixture repo: ${line}`);
+    }
+  }
   return out;
 }
 
+/**
+ * The single decision line for one fixture worktree. Anchored on the decision
+ * keyword and the [fx] repo tag, and asserted unique, so a WARN/DIGEST line
+ * that merely mentions the same worktree can never be what gets asserted.
+ */
 function decisionFor(out, name) {
-  const line = out.split('\n').find((l) => l.includes(` ${name} `) || l.endsWith(` ${name}`));
-  assert.ok(line, `no decision line for ${name} in:\n${out}`);
-  return line;
+  const re = new RegExp(`^\\[[^\\]]+\\] (WOULD-\\S+|REMOVE|FORCE-REMOVE|SKIP|KEEP)\\s+\\[fx\\] ${name}\\b`);
+  const matches = out.split('\n').filter((l) => re.test(l));
+  assert.equal(matches.length, 1, `expected exactly one decision line for ${name}, got ${matches.length}:\n${out}`);
+  return matches[0];
 }
 
 function summary(out) {
@@ -114,8 +151,7 @@ function summary(out) {
 }
 
 test('dry-run does not call a source-dirty merged worktree "fully merged"', () => {
-  const fx = buildFixture();
-  const out = runGc(fx, { dryRun: true });
+  const out = runGc(buildFixture(), { dryRun: true });
 
   const srcDirty = decisionFor(out, 'wt-src-dirty');
   assert.ok(
@@ -128,19 +164,16 @@ test('dry-run does not call a source-dirty merged worktree "fully merged"', () =
 });
 
 test('dry-run classifies clean and safe-dirty worktrees as before', () => {
-  const fx = buildFixture();
-  const out = runGc(fx, { dryRun: true });
+  const out = runGc(buildFixture(), { dryRun: true });
 
   assert.match(decisionFor(out, 'wt-clean'), /WOULD-REMOVE {2}\[fx\].*fully merged/);
   assert.match(decisionFor(out, 'wt-safe-dirty'), /WOULD-FORCE-REMOVE {2}\[fx\]/);
 });
 
 test('dry-run counts match the real run exactly (the parity property)', () => {
-  const dryFx = buildFixture();
-  const realFx = buildFixture();
-
-  const dry = summary(runGc(dryFx, { dryRun: true }));
-  const real = summary(runGc(realFx, { dryRun: false }));
+  const dry = summary(runGc(buildFixture(), { dryRun: true }));
+  const realOut = runGc(buildFixture(), { dryRun: false });
+  const real = summary(realOut);
 
   assert.deepEqual(
     { removed: dry.removed, skipped: dry.skipped },
@@ -148,13 +181,16 @@ test('dry-run counts match the real run exactly (the parity property)', () => {
     `dry-run must predict the real run.\n  dry:  ${dry.line}\n  real: ${real.line}`
   );
   assert.equal(real.removed, 2, 'clean + safe-dirty are removable');
-  // 2 skips, not 1: the enumeration also reaches the fixture repo's own main
-  // checkout, which the liveness guard always skips ("a live process has this
-  // worktree as its cwd" — that process is this test). The source-dirty
-  // worktree is the second, asserted by name rather than by count so a future
-  // change to the enumeration cannot quietly satisfy this.
-  assert.equal(real.skipped, 2);
-  assert.match(decisionFor(runGc(buildFixture(), { dryRun: false }), 'wt-src-dirty'), /SKIP/);
+  // Deliberately NOT asserting a literal skipped count. The fixture repo's own
+  // main checkout is filtered by the `[ "$path" = "$REPO" ]` guard in
+  // gc-merged-worktrees.sh — but ONLY when git reports the same string the
+  // script holds. On macOS, os.tmpdir() is a symlink (/var/... vs /private/var/...)
+  // so that guard misses, the main checkout falls through to the liveness guard
+  // and is counted, giving skipped=2; on a Linux CI runner os.tmpdir() is a real
+  // /tmp, the guard fires, and skipped=1. Verified both ways on 2026-08-31.
+  // The parity assertion above is the property under test; the source-dirty
+  // worktree is pinned by name below.
+  assert.match(decisionFor(realOut, 'wt-src-dirty'), /SKIP/);
 });
 
 test('the real run leaves the source-dirty worktree and its edit on disk', () => {

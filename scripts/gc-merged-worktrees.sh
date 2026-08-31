@@ -83,8 +83,32 @@ mkdir -p "$(dirname "$LOG")"
 # dropping only the newly added repos while the primary repo's run
 # proceeds. Per-repo locking would let a slow web-repo run silently starve
 # the iOS repo of GC forever with no log line naming that gap.
-# WORKTREE_GC_LOCK_DIR: same test-seam reasoning as WORKTREE_GC_LOG above.
-GC_LOCK_DIR="${WORKTREE_GC_LOCK_DIR:-/tmp/broadwayscore-disk-floor-gc.lock}"
+# WORKTREE_GC_LOCK_DIR: same test-seam reasoning as WORKTREE_GC_LOG above, but
+# validated, because this path becomes an `rm -rf` target twice below (the
+# stale-pid reclaim and the EXIT trap). Only a temp-dir path is accepted; any
+# other value falls back to the production lock rather than pointing a delete
+# at, say, a home directory. Same posture as worktree-gc-repos.js, whose
+# override for this script is validated by isValidRepoEntry().
+GC_LOCK_DIR_DEFAULT="/tmp/broadwayscore-disk-floor-gc.lock"
+GC_LOCK_DIR="$GC_LOCK_DIR_DEFAULT"
+# A temp-root prefix ALONE is not enough: session scratchpads and other real
+# working directories live under /private/tmp, and an accepted value is an
+# `rm -rf` target. Verified 2026-08-31 — an earlier, prefix-only version of
+# this guard accepted a scratchpad path and deleted it. So also require the
+# LAST path component to be lock-shaped, which no working directory is.
+if [ -n "${WORKTREE_GC_LOCK_DIR:-}" ]; then
+  case "$WORKTREE_GC_LOCK_DIR" in
+    *..*) ;;                                       # reject traversal outright
+    /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
+      case "${WORKTREE_GC_LOCK_DIR##*/}" in
+        lock|*.lock|*-lock) GC_LOCK_DIR="$WORKTREE_GC_LOCK_DIR" ;;
+      esac
+      ;;
+  esac
+  if [ "$GC_LOCK_DIR" = "$GC_LOCK_DIR_DEFAULT" ]; then
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
+  fi
+fi
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
