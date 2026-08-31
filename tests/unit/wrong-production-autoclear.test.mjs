@@ -28,7 +28,7 @@ const {
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
-  PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS,
+  REVIEW_LAG_GRACE_DAYS,
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
@@ -504,13 +504,13 @@ describe('isWithinPriorRun', () => {
     );
   });
 
-  it('BRO-2561: grants PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS of lag past closingDate', () => {
+  it('BRO-2561: grants REVIEW_LAG_GRACE_DAYS of lag past closingDate', () => {
     const runs = [{ openingDate: '2025-04-15', closingDate: '2025-05-15' }];
     // Exactly at the grace boundary — still within.
     assert.strictEqual(isWithinPriorRun('2025-05-22', runs), true);
     // One day past the grace boundary — outside.
     assert.strictEqual(isWithinPriorRun('2025-05-23', runs), false);
-    assert.strictEqual(PRIOR_RUN_AFTER_CLOSE_GRACE_DAYS, 7);
+    assert.strictEqual(REVIEW_LAG_GRACE_DAYS, 7);
   });
 
   it('BRO-80: a truthful closingDate no longer rejects a next-day review', () => {
