@@ -172,6 +172,34 @@ function extractIssueId(combined, stdout) {
   return uuidMatch ? uuidMatch[0] : null;
 }
 
+// The literal every session-report comment opens with. Exported (BRO-2543)
+// because linear-dispatch.js's reportedOutcomeGuard has to RECOGNISE these
+// comments on an issue's thread, and a second hand-rolled copy of the string
+// in that file is exactly the drift CLAUDE.md rule 15 forbids — the guard
+// requires this module and matches against parseSessionReportStatus() rather
+// than re-deriving the format. Kept without the trailing " (" so the same
+// constant serves both the writer (which appends the status) and the reader.
+const SESSION_REPORT_PREFIX = '**Session report';
+
+// Pulls the status back out of a comment body this module wrote.
+//
+// Returns the lowercased status string ('done'/'in-review'/'paused'/
+// 'blocked'), or null when the body is not a session report at all. A report
+// carrying a status this module doesn't recognise still parses — the caller
+// decides what to do with an unknown status, rather than this parser silently
+// reclassifying it as "not a report" (a body that opens with the prefix IS a
+// report, whatever the parenthetical says).
+//
+// Deliberately anchored at the START of the body: buildOutcomeCommentBody
+// always puts the header on line 1, and matching mid-body would let a worker
+// QUOTING a previous report (or this very guard's refusal text, which names
+// the format) register as a fresh report of its own.
+function parseSessionReportStatus(body) {
+  const re = new RegExp('^' + SESSION_REPORT_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\(([^)]*)\\)\\*\\*');
+  const m = String(body == null ? '' : body).trim().match(re);
+  return m ? m[1].trim().toLowerCase() : null;
+}
+
 /**
  * Formats the session-end outcome comment body posted to the Linear issue.
  * Mirrors what Notion's wrap-up writes into a card's Outcome/Key Files
@@ -180,7 +208,7 @@ function extractIssueId(combined, stdout) {
  */
 function buildOutcomeCommentBody({ summary, keyFiles, verification, status }) {
   if (!summary) throw new Error('buildOutcomeCommentBody: summary is required');
-  const lines = [`**Session report (${status || 'unknown'})**`, '', summary.trim()];
+  const lines = [`${SESSION_REPORT_PREFIX} (${status || 'unknown'})**`, '', summary.trim()];
 
   const files = Array.isArray(keyFiles) ? keyFiles.filter(Boolean) : [];
   if (files.length) {
@@ -284,6 +312,8 @@ module.exports = {
   buildIssueIdMarker,
   extractIssueId,
   buildOutcomeCommentBody,
+  SESSION_REPORT_PREFIX,
+  parseSessionReportStatus,
   VALID_STATUSES,
   planCompletion,
   hasBypass,

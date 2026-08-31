@@ -264,9 +264,13 @@ test('classifying leaves the caller\'s ledger array untouched', () => {
     { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
     { ts: '2026-08-30T06:00:00Z', event: 'auto-dispatch', taskId: '8' },
   ];
+  // Deliberately OUT of ts order, with TWO spawns (code-review finding): an
+  // already-sorted single-spawn fixture makes an in-place sort a no-op, so the
+  // assertion below could not fail for the hazard it names.
   const dispatched = [
-    { ts: '2026-08-30T10:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
     { ts: '2026-08-30T10:20:00Z', event: E.DONE, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T10:00:05Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T09:00:00Z', event: E.SPAWNED, taskId: '9', jobId: 'j0' },
   ];
   // BOTH arrays (code-review finding): the in-place hazard actually lives in
   // findMyJob's `.filter().sort()` over dispatchLedgerEntries — drop the
@@ -420,25 +424,48 @@ test('no file reimplements the spawn->job correlation outside this lib (BRO-2542
   assert.ok(files.includes('scripts/lib/dispatch-reconcile.js'),
     `grep found no followRetryChain in the lib itself — the scan is broken, not clean (got: ${files.join(', ') || 'nothing'})`);
 
-  // Only TRACKED files (code-review finding): the scan reads the working tree,
-  // so an untracked scratch file under scripts/ would otherwise fail this test
-  // locally with a "you wrote a fifth copy" message. A real fifth copy gets
-  // committed; a scratch file does not.
-  const tracked = new Set(
-    execFileSync('git', ['ls-files', 'scripts'], { cwd: repo, encoding: 'utf8' })
-      .split('\n').filter(Boolean));
+  // Tracked OR untracked-but-not-ignored (code-review finding). Scoping to
+  // `git ls-files` alone disabled the guard at exactly the moment it exists to
+  // fire: a freshly written fifth copy passes green until someone stages it.
+  // --others --exclude-standard keeps the original fix (a gitignored scratch
+  // file must not fail the suite) without that hole.
+  // -c core.quotePath=false: quotePath is ON by default and emits
+  // "scripts/lib/caf\303\251.js" for a non-ASCII name while grep emits raw
+  // bytes, which would silently exempt that file.
+  const visible = new Set(
+    execFileSync('git', ['-c', 'core.quotePath=false', 'ls-files', '--cached', '--others', '--exclude-standard', 'scripts'],
+      { cwd: repo, encoding: 'utf8' }).split('\n').filter(Boolean));
+  // Same positive control the grep gets, and for the same reason: if this set
+  // ever stops lining up with grep's path format, every candidate is filtered
+  // out and the assertion below passes while checking nothing.
+  assert.ok(visible.has('scripts/lib/dispatch-reconcile.js'),
+    'git ls-files output does not line up with grep paths — the filter is broken, not clean');
 
-  // Per-LINE filtering, not region-stripping (code-review finding). A
-  // `/\/\*/` inside a regex literal — which this very file contains — makes
-  // block-comment stripping swallow real code to the next `*/`, and every such
-  // failure mode is a FALSE NEGATIVE: a genuine fifth copy hides. Dropping
-  // only lines whose own text is commentary is strictly safer.
-  const isCommentary = (line) => /^\s*(\/\/|\*|\/\*)/.test(line);
+  // Comment handling, per line so a block-stripping regex can never swallow
+  // real code to the next `*/` (every such failure is a FALSE NEGATIVE — a
+  // genuine fifth copy hides). Two rules, because dropping whole lines alone
+  // reintroduced a FALSE-POSITIVE class: a trailing `// ... followRetryChain(
+  // ... JOB_EVENTS.SPAWNED` on a code line flagged a documenting file as a
+  // fifth copy (code-review finding).
+  //   1. strip a trailing line comment — (?<!:) so a `https://` URL survives;
+  //   2. drop a whole line only when it is a doc-comment body (`* text`) or
+  //      opens a block comment. `\*\s` not `\*`, so a generator declaration
+  //      (`*someGen() {`) is code, not commentary.
+  const stripComment = (line) => line.replace(/(?<!:)\/\/.*$/, '');
+  const isCommentary = (line) => /^\s*(\*\s|\/\*)/.test(line);
+
+  // Needles built by concatenation so this file does not match its OWN
+  // detector. That matters because dispatch-reconcile.test.mjs is deliberately
+  // NOT in OWNERS — it polices itself like any other file — and the previous
+  // spelling escaped only by accident (the source read `\s*\(` and `\.`, not
+  // `(` and `.`), which would break the moment anyone simplified the regex.
+  const NEEDLE_FOLLOW = 'followRetryChain' + '(';
+  const NEEDLE_SPAWNED = 'JOB_EVENTS' + '.SPAWNED';
   const offenders = files.filter((rel) => {
-    if (OWNERS.has(rel) || !tracked.has(rel)) return false;
+    if (OWNERS.has(rel) || !visible.has(rel)) return false;
     const code = fs.readFileSync(path.join(repo, rel), 'utf8')
-      .split('\n').filter((l) => !isCommentary(l)).join('\n');
-    return /followRetryChain\s*\(/.test(code) && /JOB_EVENTS\.SPAWNED/.test(code);
+      .split('\n').filter((l) => !isCommentary(l)).map(stripComment).join('\n');
+    return code.includes(NEEDLE_FOLLOW) && code.includes(NEEDLE_SPAWNED);
   });
 
   assert.deepEqual(offenders, [],

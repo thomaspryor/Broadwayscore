@@ -30,6 +30,13 @@ const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-ty
 // / canary pipeline filed and dispatches itself. Leaf module, no I/O — see
 // its header for why the signal lives there and not in this file.
 const { isAutofixFiledIssue, hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+// BRO-2543 - reportedOutcomeGuard's two "already reported back" signals plus
+// the acceptance-command parse it quotes. All three are leaf modules
+// (linear-session-reporting.js has zero require()s of its own), so requiring
+// them here introduces no cycle.
+const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+const { extractPrRef } = require('./linear-pr-evidence.js');
+const { evaluateVerifiability } = require('./verify-gate.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -65,7 +72,7 @@ function buildIssueQuery() {
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }
-      comments(first: 20) { nodes { id body createdAt user { name } } }
+      comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
     }
   }`;
 }
@@ -211,7 +218,7 @@ function buildLinearSeed({ identifier, title, description, url, model, project, 
       ? `This workspace is named "${buildAutoTitle({ subject: `${identifier} ${title}`, project, model })}" — the 🤖 marks it as auto-dispatched, "${project}" is its project bucket.`
       : null,
     ``,
-    `When you are done (or blocked), report the outcome as a comment on this Linear issue (${identifier}) via the Linear GraphQL API (commentCreate — see scripts/lib/linear-client.js's createComment()) and set the issue's state to "In Review" (issueUpdate — linear-client.js's updateIssue()). Do not leave it silently sitting in "In Progress" with no comment — that is how work goes untracked. If you cannot finish, comment what's blocking it and leave the state as-is rather than guessing at "In Review".`,
+    `When you are done (or blocked), report the outcome by running: node scripts/linear-session.js report --issue=${identifier} --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."]. That posts the comment AND moves the issue's state in one step, in the one format the dispatcher can recognise later — reportedOutcomeGuard reads it to stop a second worker being dispatched onto work you already finished (BRO-2543), so a hand-rolled commentCreate is not equivalent. Do not leave it silently sitting in "In Progress" with no comment — that is how work goes untracked. If you cannot finish, report --status=blocked with what is blocking it; that deliberately leaves the state as-is rather than guessing at "In Review", and keeps the issue re-dispatchable.`,
     ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter((v) => v !== null).join('\n');
@@ -253,17 +260,52 @@ function generateCorrelationId() {
 //      fast, but host-local (a different machine's ledger won't see it) —
 //      exactly why (1) exists as a second, independent check.
 
+// The newest "Dispatched ..." comment on a thread, by createdAt — ignoring
+// workflow state entirely (findUnresolvedDispatchComment below layers the
+// state precondition on top; reportedOutcomeGuard wants the raw "when was
+// this issue last sent to a worker" fact regardless).
+//
+// BRO-2543: this used to be inlined in findUnresolvedDispatchComment as
+// `dispatched[dispatched.length - 1]` with the comment "most-recent comment
+// wins (last-in-array), matching this codebase's lastByRef/foldJobs 'last
+// record wins' convention". That reasoning does not transfer: lastByRef folds
+// an APPEND-ONLY ledger this repo writes itself, where array order IS time
+// order. These comments come off Linear's API, whose `comments` connection
+// has no orderBy here and so returns its default — updatedAt DESCENDING.
+// Verified live against BRO-2506's own thread while closing this issue: the
+// nodes came back 03:18, 02:18, 02:15, 01:31, 00:43, i.e. last-in-array was
+// the OLDEST dispatch comment, the exact opposite of what the comment
+// claimed. Harmless where it stood (the caller only prints the body), but
+// reportedOutcomeGuard compares timestamps against it, so it is fixed here
+// rather than worked around with a second, differently-wrong ordering rule
+// next to it.
+//
+// `>=` (not `>`) so that when timestamps are absent or tied the LAST array
+// entry still wins, preserving the old behaviour exactly for fixtures and
+// legacy payloads that carry no createdAt. Note this fallback is the OLD,
+// wrong answer on Linear's real newest-first ordering — it is kept only so
+// that callers reading a payload with no timestamps see no behaviour change,
+// and reportedOutcomeGuard refuses to act on such a payload at all rather
+// than trusting it.
+function newestDispatchComment(comments) {
+  const list = Array.isArray(comments) ? comments : [];
+  let best = null;
+  for (const c of list) {
+    if (!c || !/^Dispatched\b/.test(String(c.body || '').trim())) continue;
+    if (!best || String(c.createdAt || '') >= String(best.createdAt || '')) best = c;
+  }
+  return best;
+}
+
 // An issue already moved to a terminal workflow-state type (completed/
 // canceled) has resolved whatever a prior "Dispatched ..." comment was
 // about, one way or another — a stale comment on a now-closed issue is not
-// evidence of a LIVE dispatch. Most-recent comment wins (last-in-array),
-// matching this codebase's lastByRef/foldJobs "last record wins" convention.
+// evidence of a LIVE dispatch.
 function findUnresolvedDispatchComment(issue) {
   const stateType = issue && issue.state && issue.state.type;
   if (isTerminalStateType(stateType)) return null;
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
-  const dispatched = comments.filter((c) => /^Dispatched\b/.test(String((c && c.body) || '').trim()));
-  return dispatched.length ? dispatched[dispatched.length - 1] : null;
+  return newestDispatchComment(comments);
 }
 
 // The most recent dispatch-ledger attempt for this task exists and is
@@ -481,6 +523,265 @@ function startedStateGuard(issue, opts) {
     `is a stalled issue that needs re-dispatch.`;
 }
 
+// -- reportedOutcomeGuard (BRO-2543) ----------------------------------------
+//
+// The incident: BRO-2506's worker committed its fix to origin/main at
+// 00:53Z, posted a `**Session report (in-review)**` comment at 01:31Z, and
+// the issue sat in In Review. At 02:15Z a crown-loop dead-session recovery
+// ran `linear-next.js --id BRO-2506 --model opus --force` and a SECOND
+// worker opened on it, re-did the discovery, found the fix already merged
+// and closed with "duplicate dispatch - no new code needed". A whole
+// dispatch, wasted.
+//
+// startedStateGuard above ALREADY refuses this issue - verified live against
+// the real BRO-2506: `startedStateGuard(issue, {})` returns its refusal
+// string. The bypass was `--force`, whose very first line clears it. And the
+// crown loop was not being reckless: the local ledger carried a `dead` row
+// for that worker's workspace:138, so "the session died, re-dispatch it" was
+// the correct read of everything it could see. (That `dead` row was itself
+// wrong - written at 00:55:32Z, 36 minutes BEFORE the same worker posted its
+// session report at 01:31Z. Tracked separately; this guard is the
+// defense-in-depth that holds even when the liveness signal lies, which is
+// exactly why it must not key on the ledger.)
+//
+// So the defect is not that --force exists. --force is the right and
+// necessary escape hatch for a genuinely stalled issue, and re-dispatch is a
+// normal operation (~14% of tracked tasks carry more than one launch). The
+// defect is that ONE boolean clears every started-state signal at once,
+// including the one signal that does not mean "a human has hands on this"
+// but "the work is already done" - and no amount of care at the call site
+// recovers a signal the flag has already erased. Hence a separate predicate
+// with its own narrow bypass, rather than a fourth clause inside
+// startedStateGuard. That follows closedCardGuard's precedent in
+// dispatch-guards.js (see its header): a guard whose refused population has
+// a legitimate escape gets its own flag, not a share of --force.
+//
+// Two independent "this dispatch already reported back" signals, either
+// sufficient, both already present on the payload buildIssueQuery fetches
+// (zero extra round trips, zero I/O - this stays a pure predicate):
+//
+//   1. A session report of status `done` or `in-review`, parsed via
+//      linear-session-reporting.js's own parseSessionReportStatus (rule 15:
+//      the writer's format is required, never re-derived here).
+//      DELIBERATELY NOT `paused`/`blocked`: planCompletion() leaves a blocked
+//      issue's state untouched, so a blocked worker's report sits on an issue
+//      still in a started type - and re-dispatching THAT is precisely the
+//      crown loop's job. Refusing on any-report-at-all would have broken the
+//      case this escape hatch exists for.
+//   2. A `PR-EVIDENCE:` marker (linear-pr-evidence.js), which CLAUDE.md section 6
+//      already requires to close an issue. This covers the worker that
+//      commits and dies before it can report - and, more importantly, the
+//      worker that reports in its own words: buildLinearSeed instructs
+//      workers to comment via raw `commentCreate`, so the canonical
+//      `**Session report` prefix is produced only when the machine-local
+//      `linear-issue-required-stop.sh` Stop hook forces linear-session.js.
+//      That hook does not exist on cloud sessions and never fires for a
+//      worker killed at its runner timeout. The seed has been pointed at
+//      `linear-session.js report` as part of this fix so signal 1 becomes
+//      structural rather than hook-dependent, but signal 2 covers the
+//      workers already in flight under the old seed.
+//
+// "Reported AFTER the outstanding dispatch, not merely somewhere in the
+// thread's history" is the load-bearing part, and it is this repo's own
+// hard-won rule: dispatch-reconcile.js's header states it outright - "a
+// dispatch is resolved by an outcome recorded AT OR AFTER it, never by 'this
+// identifier has an outcome somewhere in history'" - and
+// dispatch-dead-launch-guard.js reaches the same conclusion independently.
+// Without it, an issue re-dispatched after a REAL death would stay refused
+// forever on the strength of its previous run's report.
+//
+// Lives here next to startedStateGuard, NOT in dispatch-guards.js's
+// GUARD_NAMES family, for the reason that file's header already documents
+// for checkTerminalStateGuard and marketingProjectGuard:
+// predispatch-queue-audit.js blind-simulates every GUARD_NAMES guard against
+// Notion-shaped `{id, subject, description}` tasks, which have no
+// `.comments` - a comment-relation guard added there would report 100%
+// "error" forever.
+const RESOLVED_REPORT_STATUSES = new Set(['done', 'in-review']);
+
+// The bypass takes a REASON, not a bare boolean - linear-session.js's own
+// done-gate established that shape for waiving a "did the work actually
+// happen" check, and it is the right one here: the population this refuses is
+// an operator (increasingly an LLM operator) who just reached for --force and
+// is about to reach for whatever flag the refusal names. Making them type a
+// reason turns a reflex into a claim, and the reason is journaled onto the
+// ledger launch row so a dispatch that only happened because the guard was
+// waived stays auditable after the fact.
+const REPORTED_WORK_BYPASS_FLAG = 'allow-reported-work';
+const REPORTED_WORK_BYPASS_MIN_REASON = 10;
+
+// Is `flagValue` a usable bypass reason? A bare `--allow-reported-work` (which
+// parseArgs yields as boolean true) is NOT - that is the reflex this guard
+// exists to interrupt.
+function isValidBypassReason(flagValue) {
+  return typeof flagValue === 'string' && flagValue.trim().length >= REPORTED_WORK_BYPASS_MIN_REASON;
+}
+
+// What linear-next.js writes onto the ledger launch row for this dispatch.
+// Only a reason that ACTUALLY cleared the guard is journaled: a bare
+// --allow-reported-work does not bypass, and recording `true` for it would
+// leave an audit trail implying a waiver that never happened.
+function bypassReasonForLedger(opts) {
+  const v = (opts || {})[REPORTED_WORK_BYPASS_FLAG];
+  return isValidBypassReason(v) ? v.trim() : null;
+}
+
+// buildDispatchComment ends its body with " (<mode>)" — 'cmux' or 'headless'.
+function dispatchCommentMode(comment) {
+  const m = String((comment && comment.body) || '').trim().match(/\(([a-z-]+)\)\s*$/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
+// The timestamp a resolved-outcome comment must beat to count as answering
+// `dispatch`.
+//
+// For a cmux dispatch this is simply the dispatch comment's own createdAt:
+// linear-next.js posts it immediately after launchCmux() returns, before the
+// worker has done anything, so the comment really does mark the start of that
+// dispatch.
+//
+// The headless path does NOT work that way, and reading it as if it did was a
+// live bug in the first cut of this guard (caught by the pre-ship adversarial
+// review). There, `await runJob(...)` runs the ENTIRE worker to completion and
+// reportDispatchOnIssue() only runs afterwards, past an `if (!res.ok) return`
+// — so a headless "Dispatched ..." comment is written at the END of a job that
+// SUCCEEDED, and the worker's own session report is necessarily OLDER than it.
+// Using its createdAt as the floor would discard exactly the report the guard
+// exists to notice, silently, on every headless dispatch.
+//
+// So for headless, the window that dispatch actually occupied began no later
+// than the PREVIOUS dispatch comment; use that instead. With no previous one,
+// there is no lower bound to apply and any resolved report on the thread
+// counts — which is right: a headless dispatch comment is itself proof that
+// that job ran to completion, so it is not an outstanding dispatch awaiting an
+// answer.
+function dispatchFloor(dispatch, comments) {
+  if (dispatchCommentMode(dispatch) !== 'headless') return dispatch.createdAt;
+  const ts = String(dispatch.createdAt || '');
+  let prev = null;
+  for (const c of (Array.isArray(comments) ? comments : [])) {
+    if (!c || c === dispatch) continue;
+    if (!/^Dispatched\b/.test(String(c.body || '').trim())) continue;
+    const cts = String(c.createdAt || '');
+    if (!(cts < ts)) continue;
+    if (!prev || cts >= String(prev.createdAt || '')) prev = c;
+  }
+  return prev ? prev.createdAt : '';
+}
+
+// A PR-EVIDENCE line only counts as "the work landed" when it makes the
+// COMPLETE claim CLAUDE.md section 6 requires to close an issue:
+// `PR-EVIDENCE: merged deployed checked (<url>)`.
+//
+// Bare truthiness of extractPrRef() is not enough, and not for the obvious
+// reason. That parser reports each of merged/deployed/checked by looking for
+// that word anywhere on the line, so `PR-EVIDENCE: not merged yet, still
+// blocked on review` parses as {merged: true} — a line whose plain English
+// says the OPPOSITE of what it would be read as. (Verified before fixing: it
+// refused the dispatch.) That is fine for the done-gate, whose job is to
+// evaluate a claim a human already chose to make, but this guard is reading a
+// comment thread it does not control, so it requires all three words —
+// something the negated form above never satisfies.
+function isCompletePrEvidence(body) {
+  const ref = extractPrRef(body);
+  return !!(ref && ref.merged && ref.deployed && ref.checked);
+}
+
+// The newest comment strictly after `sinceTs` that carries a resolved-outcome
+// signal, or null. `sinceTs` of '' means "anything counts" (no dispatch
+// comment on the thread at all).
+//
+// A comment with no createdAt can never clear `> sinceTs` and so never
+// refuses: absent ordering information, this fails OPEN, matching every other
+// guard in this file rather than blocking a dispatch on a payload it cannot
+// actually order.
+function findResolvedOutcomeComment(comments, sinceTs) {
+  const list = Array.isArray(comments) ? comments : [];
+  const since = String(sinceTs || '');
+  let best = null;
+  for (const c of list) {
+    if (!c) continue;
+    const ts = String(c.createdAt || '');
+    if (!(ts > since)) continue;
+    const body = String(c.body || '');
+    const status = parseSessionReportStatus(body);
+    const signal = RESOLVED_REPORT_STATUSES.has(status)
+      ? `session report (${status})`
+      : (isCompletePrEvidence(body) ? 'PR-EVIDENCE marker' : null);
+    if (!signal) continue;
+    if (!best || ts >= String(best.comment.createdAt || '')) best = { comment: c, signal };
+  }
+  return best;
+}
+
+function reportedOutcomeGuard(issue, opts) {
+  const o = opts || {};
+  // Rollback story (adversarial review): every other way out of this guard is
+  // per-dispatch, so without this a guard that started refusing wrongly at 2am
+  // could only be escaped by pasting the bypass onto every single dispatch, or
+  // by reverting and redeploying. LINEAR_NEXT_DISABLED is not the answer -- it
+  // is checked AFTER this guard and disables the whole dispatcher rather than
+  // one predicate. An env var (not a flag) deliberately: it is set once by a
+  // human fixing an incident, not reached for mid-prompt by an operator who
+  // just read a refusal.
+  if (process.env.REPORTED_OUTCOME_GUARD_DISABLED === '1') return null;
+  // --dry-run/--print-prompt launch nothing, so there is nothing to refuse.
+  // NOTE the absence of `o.force` here - that omission IS this guard.
+  if (o['dry-run'] || o['print-prompt']) return null;
+  if (isValidBypassReason(o[REPORTED_WORK_BYPASS_FLAG])) return null;
+
+  const stateType = issue && issue.state && issue.state.type;
+  if (stateType !== 'started') return null;
+
+  const comments = (issue && issue.comments && issue.comments.nodes) || [];
+  const dispatch = newestDispatchComment(comments);
+  // No dispatch comment at all means there is no identified outstanding
+  // dispatch for a report to be answering, and nothing to order against.
+  // Fail OPEN rather than treating every historical outcome on the thread as
+  // grounds to refuse — on a long thread the relevant dispatch comment can
+  // also simply have fallen outside the fetched window, and a confident
+  // refusal built on a truncated view is worse than no refusal at all.
+  // ...and a dispatch comment with no createdAt cannot be ordered against
+  // either. Without this, `since` fell back to '' and the guard became
+  // MAXIMALLY strict exactly where it had the least information: any resolved
+  // comment anywhere on the thread refused, and the refusal said "after the
+  // dispatch comment at undefined". Fail open, consistent with
+  // findResolvedOutcomeComment's own missing-timestamp rule.
+  if (!dispatch || !dispatch.createdAt) return null;
+  const found = findResolvedOutcomeComment(comments, dispatchFloor(dispatch, comments));
+  if (!found) return null;
+
+  const identifier = (issue && issue.identifier) || '(unknown)';
+  const stateName = (issue.state && issue.state.name) || stateType;
+  const bareFlag = o[REPORTED_WORK_BYPASS_FLAG] !== undefined && !isValidBypassReason(o[REPORTED_WORK_BYPASS_FLAG])
+    ? ` (--${REPORTED_WORK_BYPASS_FLAG} was passed without a reason of at least ${REPORTED_WORK_BYPASS_MIN_REASON} characters, so it did not apply)`
+    : '';
+
+  // Name the issue's own acceptance command in the refusal. "Read the report
+  // before re-dispatching" is advice an operator skips; a pasteable command
+  // is one it runs, and running it is the cheapest possible answer to "did
+  // this actually land". evaluateVerifiability is the same parse
+  // linear-next.js already applies to this description further down, so the
+  // command quoted here is exactly the one the dispatch would have armed.
+  let verifyLine = '';
+  try {
+    const gate = evaluateVerifiability((issue && issue.description) || '');
+    if (gate && gate.cmd) verifyLine = `\n  Check whether it landed first:  ${gate.cmd}`;
+  } catch { /* a description this can't parse must never break dispatch */ }
+
+  return `${identifier} is in a started state ("${stateName}") and its most recent dispatch has ALREADY reported back - `
+    + `${found.signal} at ${found.comment.createdAt}, after the dispatch comment at ${dispatch ? dispatch.createdAt : '(none)'}. `
+    + `Refusing to re-dispatch${bareFlag}: a dead/stalled WORKSPACE is not the same as work that did not land, and this is `
+    + `what a wasted duplicate dispatch looks like before it happens (BRO-2506).`
+    + verifyLine
+    // Name the WHOLE recovery command, not just this guard's own flag.
+    // startedStateGuard still refuses a started-type issue and still wants
+    // --force, so an operator given only half the invocation bounces off a
+    // second refusal and learns the wrong lesson ("these guards are noise").
+    + `\n  If it genuinely did not land, re-run with:  --force --${REPORTED_WORK_BYPASS_FLAG} "<reason, at least ${REPORTED_WORK_BYPASS_MIN_REASON} chars>"`
+    + `\n  --force alone does NOT bypass this one, deliberately: it is what turned BRO-2506 into a wasted dispatch.`;
+}
+
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
@@ -556,6 +857,16 @@ module.exports = {
   marketingProjectGuard,
   autofixFiledIssueGuard,
   startedStateGuard,
+  reportedOutcomeGuard,
+  newestDispatchComment,
+  dispatchCommentMode,
+  dispatchFloor,
+  isCompletePrEvidence,
+  bypassReasonForLedger,
+  findResolvedOutcomeComment,
+  RESOLVED_REPORT_STATUSES,
+  REPORTED_WORK_BYPASS_FLAG,
+  REPORTED_WORK_BYPASS_MIN_REASON,
   MARKETING_PROJECT_NAMES,
   buildLinearSeed,
   buildDispatchComment,

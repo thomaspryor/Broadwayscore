@@ -205,6 +205,11 @@ data/audit/remediation-log.jsonl merge=union
 # legitimately belongs in the count. Verified 2026-08-26 (BRO-2493, Codex
 # ship-check review) against health-check.js:4158.
 data/audit/owner-email-log.jsonl merge=union
+# Bot-only append log, written by scripts/ingest-dmarc-reports.js (BRO-525)
+# from finance-ingest.yml's daily-scheduled `dmarc` job — same
+# separate-checkout-per-run shape as the ledgers above, so merge=union
+# concatenates both sides on conflict instead of picking one.
+data/audit/dmarc-report-ledger.jsonl merge=union
 
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
 # `ours` would silently discard the other side's accrued state (open alert
