@@ -428,6 +428,16 @@ test('isDispatchResolved: false when the only resolving event predates this disp
   assert.equal(isDispatchResolved(entries, '505', '2026-08-25T12:00:00Z'), false);
 });
 
+test('reconcileDigestOutcomes: a malformed/missing ts is skipped, not treated as an immediate NaN-driven failure (ship-check finding)', () => {
+  const HASH = computeContentHash({ name: 'BSC Daily: Bad ts row' });
+  const digestLedgerEntries = [
+    { event: 'auto-dispatch', taskId: '506', contentHash: HASH, ts: 'not-a-date' },
+    { event: 'auto-dispatch', taskId: '507', contentHash: HASH }, // ts missing entirely
+  ];
+  const out = reconcileDigestOutcomes(digestLedgerEntries, new Map(), [], new Date('2026-08-26T13:00:00Z'));
+  assert.deepEqual(out, []);
+});
+
 // ── BRO-286: Linear repoint (fileCard → linear-brain, linear-id dispatch) ──
 //
 // digest-autofix.js destructures { spawn, execFileSync } at module load, so

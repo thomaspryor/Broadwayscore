@@ -495,7 +495,14 @@ function isDispatchResolved(digestLedgerEntries, cardId, dispatchTs) {
 // instead guarded directly by jobId: claimedJobIds skips emitting a second
 // outcome for a jobId already resolved earlier in this same pass.
 function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
-  const dispatches = digestLedgerEntries.filter(e => e.event === 'auto-dispatch');
+  // A malformed/missing ts (hand-edited or corrupted ledger line) would
+  // otherwise turn every downstream Date arithmetic into NaN, tripping
+  // `< ORPHAN_TIMEOUT_H` to false and firing an immediate fail instead of the
+  // intended grace window — same defensive guard scripts/linear-drain-parked.js's
+  // reconcileOutcomes and scripts/backlog-drain.js's reconcileOutcomes already
+  // apply, added here too since this is the same function (ship-check finding).
+  const dispatches = digestLedgerEntries.filter(e =>
+    e && e.event === 'auto-dispatch' && Number.isFinite(new Date(e.ts).getTime()));
   const claimedJobIds = new Set();
   const newEntries = [];
   for (const d of dispatches) {
