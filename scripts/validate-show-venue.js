@@ -46,6 +46,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
+const { decodeEntities } = require('./lib/reverse-discovery');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -214,7 +215,10 @@ function parseTitleVenueYear(html) {
   // Page title pattern: "Title (Off-Broadway, Venue, YYYY) | Playbill"
   const tm = html.match(/<title>([^<]+)<\/title>/);
   if (!tm) return null;
-  const t = tm[1].trim();
+  // Playbill's raw <title> text carries HTML entities (e.g. "St. Ann&#039;s
+  // Warehouse") — decode before parsing/comparing or venuesMatch() never
+  // matches an apostrophe-bearing venue against shows.json's plain text.
+  const t = decodeEntities(tm[1]).trim();
   const m = t.match(/^(.*?)\s*\(\s*(Broadway|Off-Broadway|Off-Off-Broadway|West End|Tour)\s*,\s*([^,]+?)\s*,\s*(\d{4})\s*\)/i);
   if (!m) return { rawTitle: t, market: null, venue: null, year: null };
   return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };
