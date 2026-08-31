@@ -12,7 +12,17 @@
 // swallow a thrown process.exit stub (main()'s own .catch() only wraps
 // main(), never a direct cmdReport() call), so a stub-that-throws propagates
 // cleanly as a rejected promise here.
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
+// Same class as tests/unit/linear-next.test.mjs: this file stubs process.exit,
+// but code under test can also signal failure with `process.exitCode = 1`,
+// which a per-test finally cannot restore because it lives on the runner's own
+// process. node --test then fails the whole FILE with no named failing subtest.
+// Resetting after each test clears only that leak; a genuinely failing test
+// still fails the file (verified).
+afterEach(() => {
+  process.exitCode = 0;
+});
+
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
