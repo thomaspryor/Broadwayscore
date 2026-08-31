@@ -60,8 +60,29 @@ const MANIFEST_BASENAME = 'cloud-memory-sync-manifest.json';
 // cannot start a ping-pong of conflict files between the two sides.
 const CONFLICT_DIR = '_conflicts';
 
+// Files that are never adopted from the mirror into the local memory dir even
+// when the mirror's copy is the changed one. MEMORY.md is the auto-loaded
+// index, hard-capped at 180 lines by ~/.claude/hooks/memory-index-cap-guard.sh
+// — and that hook is a PreToolUse guard on Edit/Write, so a plain
+// fs.copyFileSync sails straight past it. Adopting a cloud-written index would
+// silently install an over-cap index that later sessions truncate from the
+// bottom. Local wins instead, and the mirror's version is preserved like any
+// other conflict, so nothing is lost and a human decides.
+const NEVER_ADOPT = new Set(['MEMORY.md']);
+
 function sha256(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex');
+}
+
+/** Hash one file, or undefined if it isn't there. Used to re-check a target
+ *  immediately before mutating it (see applySync's verify-before-mutate). */
+function hashFile(filePath) {
+  try {
+    return sha256(fs.readFileSync(filePath));
+  } catch (err) {
+    if (err.code === 'ENOENT') return undefined;
+    throw err;
+  }
 }
 
 /** Two { name: hash } maps describe the same set of files with the same content. */
@@ -135,6 +156,17 @@ function planSync({ src, dest, manifest }) {
       continue;
     }
 
+    const adopt = (n) => {
+      // NEVER_ADOPT files still have their mirror version preserved — the
+      // local copy just wins in the mirror rather than being overwritten.
+      if (NEVER_ADOPT.has(n) && s !== undefined) {
+        conflicts.push(n);
+        copyToDest.push(n);
+      } else {
+        adoptToSrc.push(n);
+      }
+    };
+
     if (s === undefined && d !== undefined) {
       // Present in the mirror, absent locally — the case that caused the
       // 2026-05-24 data loss. Only a file we ourselves mirrored, and which
@@ -160,8 +192,8 @@ function planSync({ src, dest, manifest }) {
     // Present on both sides with different content.
     if (!bootstrap && m !== undefined && m === s) {
       // Local unchanged since the last sync, mirror changed -> a cloud-side
-      // edit. Take it.
-      adoptToSrc.push(name);
+      // edit. Take it (unless it's a NEVER_ADOPT file — see the helper).
+      adopt(name);
     } else if (!bootstrap && m !== undefined && m === d) {
       // Mirror untouched since the last sync, local changed -> normal case.
       copyToDest.push(name);
@@ -230,7 +262,7 @@ function defaultManifestPath(repoRoot) {
  *  empty one, because empty would mean "we mirrored nothing", which makes
  *  every dest-only file look foreign rather than deletable. Null is the safe
  *  reading either way: bootstrap deletes nothing. */
-function readManifest(manifestPath) {
+function readManifest(manifestPath, expectedDest) {
   if (!manifestPath) return null;
   let parsed;
   try {
@@ -241,20 +273,56 @@ function readManifest(manifestPath) {
   if (!parsed || parsed.version !== MANIFEST_VERSION || typeof parsed.files !== 'object' || parsed.files === null) {
     return null;
   }
+  // The manifest is bound to the mirror it describes. A worktree shares its
+  // main checkout's git common dir, so without this check a sync pointed at a
+  // worktree's cloud-memory/ would authorise deletions using a manifest
+  // written for a DIFFERENT tree. Mismatch reads as unknown -> bootstrap ->
+  // no deletions.
+  if (expectedDest !== undefined && parsed.dest !== undefined && parsed.dest !== expectedDest) {
+    return null;
+  }
   return parsed.files;
 }
 
-function writeManifest(manifestPath, files) {
+function writeManifest(manifestPath, files, dest) {
   if (!manifestPath) return;
   fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
   const tmp = `${manifestPath}.tmp-${process.pid}`;
-  fs.writeFileSync(tmp, `${JSON.stringify({ version: MANIFEST_VERSION, syncedAt: new Date().toISOString(), files }, null, 0)}\n`);
+  const body = { version: MANIFEST_VERSION, dest, syncedAt: new Date().toISOString(), files };
+  // tmp + rename: a torn write leaves the tmp file, never a half-parsed
+  // manifest. Not fsync'd, so a power loss can still yield a zero-length file
+  // — which readManifest reads as null, i.e. bootstrap, i.e. no deletions.
+  // Correct in the safe direction either way.
+  fs.writeFileSync(tmp, `${JSON.stringify(body, null, 0)}\n`);
   fs.renameSync(tmp, manifestPath);
 }
 
+let conflictSeq = 0;
+
 function conflictCopyName(name, now = new Date()) {
   const stamp = now.toISOString().replace(/[:.]/g, '-').replace(/Z$/, '');
-  return `${name.replace(/\.md$/, '')}.cloud-conflict-${stamp}.md`;
+  // The sequence suffix matters: two conflicts on the same file in one run
+  // share a single `now`, so a name built from the timestamp alone would have
+  // the second copy silently overwrite the first.
+  return `${name.replace(/\.md$/, '')}.cloud-conflict-${stamp}-${conflictSeq++}.md`;
+}
+
+/**
+ * Copy atomically: write a sibling temp file, then rename over the target.
+ * Two reasons, both load-bearing:
+ *  - fs.copyFileSync truncates the destination before writing, so a SIGKILL
+ *    mid-copy leaves a TRUNCATED memo that looks like real content to the next
+ *    run. rename() is all-or-nothing.
+ *  - rename() replaces the directory entry, so a symlink at the target is
+ *    replaced rather than FOLLOWED. copyFileSync would write through the link,
+ *    clobbering whatever it points at — possibly outside the mirror entirely.
+ *    (hashDir skips symlinks, so they never even appear in a plan.)
+ */
+function copyAtomic(fromPath, toPath) {
+  const data = fs.readFileSync(fromPath);
+  const tmp = `${toPath}.tmp-${process.pid}-${conflictSeq++}`;
+  fs.writeFileSync(tmp, data);
+  fs.renameSync(tmp, toPath);
 }
 
 /**
@@ -268,36 +336,75 @@ function conflictCopyName(name, now = new Date()) {
  * @param {Date}     args.now           injected for deterministic tests
  * @returns the plan, plus { conflictCopies: string[], manifestPath }
  */
-function applySync({ src, dest, manifestPath, dryRun = false, now = new Date() }) {
+function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), isTracked = null }) {
   const srcHashes = hashDir(src);
   const destHashes = hashDir(dest);
-  const manifest = readManifest(manifestPath);
+  const manifest = readManifest(manifestPath, dest);
   const plan = planSync({ src: srcHashes, dest: destHashes, manifest });
   const conflictCopies = [];
+  const skipped = [];
 
-  if (dryRun) return { ...plan, conflictCopies, manifestPath, dryRun: true };
+  if (dryRun) return { ...plan, conflictCopies, skipped, manifestPath, dryRun: true };
 
   fs.mkdirSync(dest, { recursive: true });
 
-  // Preserve the losing mirror-side version BEFORE anything overwrites it.
-  if (plan.conflicts.length) {
+  // VERIFY BEFORE MUTATE. Everything below re-reads its target immediately
+  // before touching it and compares against the hash the plan was built from.
+  // Planning walks ~660 files, and during that window a concurrent
+  // `git merge` (another session-stop's memory-sync-pull.js, or the pull that
+  // cloud-memory-pull-first.sh tells sessions to do) can rewrite any file in
+  // the mirror. Acting on the stale plan would delete or overwrite content
+  // that arrived after we looked. A changed target is never destroyed: it is
+  // preserved or skipped, and the next run re-plans against the new reality.
+  const preserve = (name, fromPath) => {
     const conflictDir = path.join(src, CONFLICT_DIR);
     fs.mkdirSync(conflictDir, { recursive: true });
-    for (const name of plan.conflicts) {
-      const target = path.join(conflictDir, conflictCopyName(name, now));
-      fs.copyFileSync(path.join(dest, name), target);
-      conflictCopies.push(target);
-    }
-  }
+    const target = path.join(conflictDir, conflictCopyName(name, now));
+    copyAtomic(fromPath, target);
+    conflictCopies.push(target);
+    return target;
+  };
 
   for (const name of plan.adoptToSrc) {
-    fs.copyFileSync(path.join(dest, name), path.join(src, name));
+    const from = path.join(dest, name);
+    const to = path.join(src, name);
+    if (hashFile(to) !== srcHashes[name]) {
+      // The local memo changed under us — never clobber it; keep the mirror's
+      // version where a human can find it and let the next run re-plan.
+      preserve(name, from);
+      skipped.push({ name, action: 'adopt', reason: 'local copy changed since planning' });
+      continue;
+    }
+    copyAtomic(from, to);
   }
+
   for (const name of plan.copyToDest) {
-    fs.copyFileSync(path.join(src, name), path.join(dest, name));
+    const target = path.join(dest, name);
+    const current = hashFile(target);
+    // Preserve when the plan already called this a conflict, and ALSO when the
+    // mirror changed after planning (a conflict the plan could not have seen).
+    if (current !== undefined && (plan.conflicts.includes(name) || current !== destHashes[name])) {
+      preserve(name, target);
+    }
+    copyAtomic(path.join(src, name), target);
   }
+
   for (const name of plan.deleteFromDest) {
-    fs.rmSync(path.join(dest, name), { force: true });
+    const target = path.join(dest, name);
+    if (hashFile(target) !== destHashes[name]) {
+      skipped.push({ name, action: 'delete', reason: 'mirror copy changed since planning' });
+      continue;
+    }
+    // A file git has never committed exists ONLY here — deleting it is
+    // unrecoverable, and adoption records a file in the manifest before
+    // anything guarantees it was committed (the --commit branch declines in
+    // four different ways). Skip once: the same run's commit stages it, and
+    // the next run deletes it with the content safe in git history.
+    if (isTracked && !isTracked(name)) {
+      skipped.push({ name, action: 'delete', reason: 'not committed to git yet — deferred to the next run' });
+      continue;
+    }
+    fs.rmSync(target, { force: true });
   }
 
   // Recompute rather than trusting the plan's projection: the manifest must
@@ -307,10 +414,32 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date() }
   // and rewriting keeps touching .git for no reason.
   const finalHashes = hashDir(dest);
   if (manifest === null || !sameHashes(manifest, finalHashes)) {
-    writeManifest(manifestPath, finalHashes);
+    writeManifest(manifestPath, finalHashes, dest);
   }
 
-  return { ...plan, conflictCopies, manifestPath, dryRun: false };
+  return { ...plan, conflictCopies, skipped, manifestPath, dryRun: false };
+}
+
+/**
+ * Build the `isTracked` guard for a real checkout: one `git ls-files` call,
+ * not one per file. Returns null when the mirror is not in a git repo at all
+ * (nothing to be recoverable from, so the manifest logic governs alone).
+ */
+function gitTrackedGuard(repoRoot, destDir) {
+  const rel = path.relative(repoRoot, destDir);
+  let out;
+  try {
+    out = require('child_process').execFileSync('git', ['-C', repoRoot, 'ls-files', '--', rel], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    return null;
+  }
+  const tracked = new Set(
+    out.split('\n').filter(Boolean).map((line) => path.basename(line)),
+  );
+  return (name) => tracked.has(name);
 }
 
 module.exports = {
@@ -320,6 +449,10 @@ module.exports = {
   sha256,
   sameHashes,
   hashDir,
+  hashFile,
+  copyAtomic,
+  gitTrackedGuard,
+  NEVER_ADOPT,
   planSync,
   applySync,
   defaultManifestPath,
@@ -347,11 +480,14 @@ if (require.main === module) {
   const repo = getOpt('repo') || path.dirname(path.resolve(destDir));
   const manifestPath = getOpt('manifest') || defaultManifestPath(repo);
   const verbose = flags.has('--verbose');
+  const resolvedSrc = path.resolve(srcDir);
+  const resolvedDest = path.resolve(destDir);
   const result = applySync({
-    src: path.resolve(srcDir),
-    dest: path.resolve(destDir),
+    src: resolvedSrc,
+    dest: resolvedDest,
     manifestPath,
     dryRun: flags.has('--dry-run'),
+    isTracked: gitTrackedGuard(repo, resolvedDest),
   });
 
   const say = (msg) => console.error(`cloud-memory-merge: ${msg}`);
@@ -363,6 +499,9 @@ if (require.main === module) {
   if (result.deleteFromDest.length) {
     say(`deleted ${result.deleteFromDest.length} file(s) from the mirror (deleted locally, unmodified in the mirror)`);
     for (const n of result.deleteFromDest) say(`  delete ${n}`);
+  }
+  for (const s of result.skipped) {
+    say(`SKIPPED ${s.action} ${s.name} — ${s.reason}`);
   }
   if (result.conflicts.length) {
     say(`${result.conflicts.length} file(s) changed on BOTH sides — local version kept, mirror version preserved:`);

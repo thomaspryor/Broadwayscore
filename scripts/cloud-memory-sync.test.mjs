@@ -35,6 +35,7 @@ const {
   readManifest,
   writeManifest,
   defaultManifestPath,
+  gitTrackedGuard,
   CONFLICT_DIR,
 } = require(path.join(REPO_ROOT, 'scripts', 'lib', 'cloud-memory-merge.js'));
 
@@ -318,11 +319,218 @@ describe('applySync — real filesystem', () => {
   });
 });
 
+describe('concurrent mutation — verify before mutate', () => {
+  // Planning walks ~660 files. A concurrent `git merge` (another session-stop's
+  // memory-sync-pull.js, or the pull cloud-memory-pull-first.sh mandates) can
+  // rewrite any mirror file inside that window. Acting on the stale plan would
+  // destroy content that arrived after we looked. These tests force the race
+  // deterministically by mutating between the plan and the apply.
+  //
+  // planSync is pure, so "plan, mutate, apply" is expressed by running a first
+  // applySync to fix the manifest, changing the world, then asserting on what
+  // the SECOND applySync does with a target that no longer matches its plan.
+
+  test('a mirror file that changes after planning is not deleted', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'MEMORY.md', '# index\n');
+    write(src, 'doomed.md', 'v1\n');
+    applySync({ src, dest, manifestPath });
+
+    // The owner deletes it locally, so the next run plans a deletion...
+    fs.rmSync(path.join(src, 'doomed.md'));
+    // ...but a git merge lands a NEWER version in the mirror first. The plan
+    // is built from the on-disk state, so simulate the post-plan write by
+    // handing applySync a stale view via the manifest+dest mismatch below.
+    const planned = planSync({
+      src: hashDir(src),
+      dest: { 'MEMORY.md': h('# index\n'), 'doomed.md': h('v1\n') },
+      manifest: readManifest(manifestPath, dest),
+    });
+    assert.deepEqual(planned.deleteFromDest, ['doomed.md'], 'precondition: a deletion is planned');
+
+    write(dest, 'doomed.md', 'v2 from a cloud session\n');
+    const result = applySync({ src, dest, manifestPath });
+
+    assert.ok(exists(dest, 'doomed.md'), 'the newer mirror version must survive');
+    assert.equal(read(dest, 'doomed.md'), 'v2 from a cloud session\n');
+    assert.deepEqual(result.deleteFromDest, [], 're-planning sees the change and adopts instead');
+  });
+
+  test('a mirror file changed after planning is preserved, not blind-overwritten', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'memo.md', 'v1\n');
+    applySync({ src, dest, manifestPath });
+
+    // Local edit -> the plan says copyToDest with no conflict. The mirror then
+    // changes underneath, which the plan cannot have seen.
+    write(src, 'memo.md', 'local v2\n');
+    write(dest, 'memo.md', 'cloud v2\n');
+    const result = applySync({ src, dest, manifestPath, now: new Date('2026-08-30T12:00:00Z') });
+
+    assert.equal(read(dest, 'memo.md'), 'local v2\n');
+    assert.equal(result.conflictCopies.length, 1, 'the mirror version must not vanish');
+    assert.equal(fs.readFileSync(result.conflictCopies[0], 'utf8'), 'cloud v2\n');
+  });
+
+  test('a local memo changed after planning is never clobbered by adoption', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'MEMORY.md', '# index\n');
+    applySync({ src, dest, manifestPath });
+    write(dest, 'cloud.md', 'from the cloud\n');
+
+    // The plan (built from an empty src slot) says adopt. Between plan and
+    // apply, a local session writes its own cloud.md.
+    const stalePlan = planSync({
+      src: hashDir(src),
+      dest: hashDir(dest),
+      manifest: readManifest(manifestPath, dest),
+    });
+    assert.deepEqual(stalePlan.adoptToSrc, ['cloud.md'], 'precondition: adoption is planned');
+
+    write(src, 'cloud.md', 'a local memo written in the same window\n');
+    const result = applySync({ src, dest, manifestPath });
+
+    assert.equal(
+      read(src, 'cloud.md'),
+      'a local memo written in the same window\n',
+      'the local memo must win over an adoption it did not know about',
+    );
+    assert.ok(result.conflictCopies.length >= 1, 'and the mirror version is preserved');
+  });
+
+  test('two conflicts in one run do not overwrite each other', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'a.md', 'v1\n');
+    write(src, 'b.md', 'v1\n');
+    applySync({ src, dest, manifestPath });
+    for (const n of ['a.md', 'b.md']) {
+      write(src, n, 'local v2\n');
+      write(dest, n, `cloud v2 ${n}\n`);
+    }
+    // One shared `now` for the whole run — the timestamp alone cannot separate them.
+    const result = applySync({ src, dest, manifestPath, now: new Date('2026-08-30T12:00:00Z') });
+
+    assert.equal(result.conflictCopies.length, 2);
+    assert.equal(new Set(result.conflictCopies).size, 2, 'conflict copies must have distinct names');
+    const bodies = result.conflictCopies.map((p) => fs.readFileSync(p, 'utf8')).sort();
+    assert.deepEqual(bodies, ['cloud v2 a.md\n', 'cloud v2 b.md\n']);
+  });
+
+  test('a symlink in the mirror is replaced, never written through', () => {
+    const { src, dest, root, manifestPath } = scratch();
+    const outside = path.join(root, 'outside-the-mirror.md');
+    fs.writeFileSync(outside, 'DO NOT CLOBBER\n');
+    write(src, 'memo.md', 'real content\n');
+    fs.symlinkSync(outside, path.join(dest, 'memo.md'));
+
+    applySync({ src, dest, manifestPath });
+
+    assert.equal(fs.readFileSync(outside, 'utf8'), 'DO NOT CLOBBER\n', 'the symlink target must be untouched');
+    assert.equal(read(dest, 'memo.md'), 'real content\n');
+    assert.ok(!fs.lstatSync(path.join(dest, 'memo.md')).isSymbolicLink(), 'the link is replaced by a real file');
+  });
+
+  test('MEMORY.md is never adopted — the index cap guard cannot see a raw copy', () => {
+    const { src, dest, manifestPath } = scratch();
+    write(src, 'MEMORY.md', '# local index\n');
+    applySync({ src, dest, manifestPath });
+
+    write(dest, 'MEMORY.md', `# cloud index\n${'- line\n'.repeat(300)}`);
+    const result = applySync({ src, dest, manifestPath });
+
+    assert.deepEqual(result.adoptToSrc, [], 'the index must never be adopted wholesale');
+    assert.equal(read(src, 'MEMORY.md'), '# local index\n', 'the local index is untouched');
+    assert.equal(read(dest, 'MEMORY.md'), '# local index\n', 'and wins in the mirror');
+    assert.equal(result.conflictCopies.length, 1, 'but the cloud index is preserved, not lost');
+  });
+});
+
+describe('deletion requires git recoverability', () => {
+  const gitInit = (repo) => {
+    for (const args of [
+      ['init', '-q', '-b', 'main'],
+      ['config', 'user.email', 'test@example.com'],
+      ['config', 'user.name', 'Test'],
+    ]) execFileSync('git', ['-C', repo, ...args], { stdio: 'ignore' });
+  };
+  const gitCommitAll = (repo) => {
+    execFileSync('git', ['-C', repo, 'add', '-A'], { stdio: 'ignore' });
+    execFileSync('git', ['-C', repo, 'commit', '-q', '-m', 'mirror'], { stdio: 'ignore' });
+  };
+
+  test('a committed memo deleted locally IS removed from the mirror', () => {
+    const { src, repo, dest, manifestPath } = scratch();
+    gitInit(repo);
+    write(src, 'MEMORY.md', '# index\n');
+    write(src, 'wrong.md', 'wrong\n');
+    applySync({ src, dest, manifestPath });
+    gitCommitAll(repo);
+
+    fs.rmSync(path.join(src, 'wrong.md'));
+    const result = applySync({ src, dest, manifestPath, isTracked: gitTrackedGuard(repo, dest) });
+
+    assert.deepEqual(result.deleteFromDest, ['wrong.md']);
+    assert.ok(!exists(dest, 'wrong.md'), 'git still has it, so removing it is recoverable');
+  });
+
+  test('an uncommitted memo is NOT deleted — it would exist nowhere else', () => {
+    const { src, repo, dest, manifestPath } = scratch();
+    gitInit(repo);
+    write(src, 'MEMORY.md', '# index\n');
+    applySync({ src, dest, manifestPath });
+    gitCommitAll(repo);
+
+    // A cloud session's memo is adopted but the --commit branch declines
+    // (not on main / lock held / push failed), so it is never committed...
+    write(dest, 'orphan.md', 'exists only here\n');
+    applySync({ src, dest, manifestPath, isTracked: gitTrackedGuard(repo, dest) });
+    assert.ok(exists(src, 'orphan.md'), 'precondition: adopted into the local dir');
+
+    // ...and then the local copy disappears (index pruning, /triage-feedback).
+    fs.rmSync(path.join(src, 'orphan.md'));
+    const result = applySync({ src, dest, manifestPath, isTracked: gitTrackedGuard(repo, dest) });
+
+    assert.ok(exists(dest, 'orphan.md'), 'the only surviving copy must not be deleted');
+    assert.equal(
+      result.skipped.find((s) => s.name === 'orphan.md')?.action,
+      'delete',
+      'and the skip must be reported, not silent',
+    );
+
+    // Once it is committed, the same deletion is safe and proceeds.
+    gitCommitAll(repo);
+    const second = applySync({ src, dest, manifestPath, isTracked: gitTrackedGuard(repo, dest) });
+    assert.deepEqual(second.deleteFromDest, ['orphan.md']);
+    assert.ok(!exists(dest, 'orphan.md'));
+  });
+
+  test('gitTrackedGuard returns null outside a git repo, leaving the manifest in charge', () => {
+    const { repo, dest } = scratch();
+    assert.equal(gitTrackedGuard(repo, dest), null);
+  });
+});
+
 describe('manifest plumbing', () => {
   test('round-trips through write/read', () => {
     const { manifestPath } = scratch();
     writeManifest(manifestPath, { 'a.md': h('a') });
     assert.deepEqual(readManifest(manifestPath), { 'a.md': h('a') });
+  });
+
+  test('a manifest written for a DIFFERENT mirror is refused', () => {
+    // A worktree shares its main checkout's git common dir, so both resolve to
+    // the same manifest path. Without this binding, syncing a worktree's
+    // cloud-memory/ would authorise deletions using the main checkout's state.
+    const { dest, manifestPath } = scratch();
+    writeManifest(manifestPath, { 'a.md': h('a') }, '/some/other/repo/cloud-memory');
+    assert.equal(readManifest(manifestPath, dest), null);
+    assert.deepEqual(readManifest(manifestPath, '/some/other/repo/cloud-memory'), { 'a.md': h('a') });
+  });
+
+  test('a zero-length manifest reads as unknown, not as empty', () => {
+    const { manifestPath } = scratch();
+    fs.writeFileSync(manifestPath, '');
+    assert.equal(readManifest(manifestPath), null);
   });
 
   test('a manifest of an unknown version reads as unknown', () => {
