@@ -28,6 +28,7 @@ const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../l
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
+const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
@@ -643,18 +644,16 @@ function sectionWrap(headingHtml, bodyHtml) {
 // can use the right verbiage ("Opens on Broadway" vs "Reopens on Broadway").
 // reopeningDate is a manual data-repo field; populated when a show closes
 // and returns mid-season (e.g. Can I Be Frank, off-Broadway, May 2026).
+// Per-show classification (reopeningDate takes precedence when both dates
+// fall in the same week — see scripts/lib/opening-events-for-week.js,
+// BRO-2594) lives in that colocated lib so it stays unit-testable.
 function openingEventsForWeek(category) {
   const out = [];
   for (const s of shows) {
     if (s.category !== category) continue;
     if (isOperaShow(s)) continue;
-    if (inWeek(s.openingDate)) {
-      out.push({ show: s, isReopening: false });
-      continue;
-    }
-    if (inWeek(s.reopeningDate)) {
-      out.push({ show: s, isReopening: true });
-    }
+    const event = classifyOpeningEvent(s, inWeek);
+    if (event) out.push({ show: s, isReopening: event.isReopening });
   }
   return out;
 }
