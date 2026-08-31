@@ -29,6 +29,11 @@ on:
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
       - 'vercel.json'
+      # scripts/lib/freeze-ledgers.test.mjs requires ../freeze-ledgers.js (a
+      # top-level scripts/ file, outside the glob above) — same gap shape as
+      # check-orphan-commits.js above (BRO-2603, caught by
+      # scripts/audit-test-yml-lib-deps.js).
+      - 'scripts/freeze-ledgers.js'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
