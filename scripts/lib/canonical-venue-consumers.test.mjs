@@ -114,3 +114,26 @@ test('data/west-end-venues.json keeps "the old vic" alongside "old vic" (fronten
   assert.ok(westEndVenues.includes('old vic'));
   assert.ok(westEndVenues.includes('the old vic'));
 });
+
+// BRO-2592 — two scripts had re-implemented their own LOCAL venuesMatch()
+// using plain substring matching (na.includes(nb) || nb.includes(na)) after
+// stripping "the"/"theatre"->"theater" — looser than even the old
+// canonicalVenue() first-word fallback this suite guards against ("Studio"
+// substring-matched "Studio 54", "Public Theater" substring-matched "The
+// Public Theater Anspacher"). Both were missed by the sweep that moved every
+// other automated-decision consumer onto the shared guard. Fixed by deleting
+// both local copies and importing venuesMatch from deduplication.js — this
+// test polices against either script re-introducing a local copy.
+test('discover-show-score-urls-from-listings.js and audit-show-score-urls.js do not define a local venuesMatch (must import the shared guard)', () => {
+  const require2 = createRequire(import.meta.url);
+  const discoverSrc = require2('fs').readFileSync(
+    require2.resolve('../discover-show-score-urls-from-listings.js'), 'utf8'
+  );
+  const auditSrc = require2('fs').readFileSync(
+    require2.resolve('../audit-show-score-urls.js'), 'utf8'
+  );
+  assert.doesNotMatch(discoverSrc, /function\s+venuesMatch\s*\(/);
+  assert.doesNotMatch(auditSrc, /function\s+venuesMatch\s*\(/);
+  assert.match(discoverSrc, /require\(['"]\.\/lib\/deduplication['"]\)/);
+  assert.match(auditSrc, /require\(['"]\.\/lib\/deduplication['"]\)/);
+});
