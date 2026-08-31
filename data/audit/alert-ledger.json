@@ -133,18 +133,16 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-31T19:13:14.301Z",
-      "lastNotifiedAt": "2026-08-31T16:59:23.723Z",
-      "notifyCount": 52,
+      "lastSeen": "2026-08-31T21:22:40.032Z",
+      "lastNotifiedAt": "2026-08-31T21:22:40.032Z",
+      "notifyCount": 53,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 4,
-      "resolvedAt": "2026-08-31T19:30:50.129Z"
+      "linearIdentifier": null
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -778,8 +776,8 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-31T21:09:40.191Z",
-      "lastNotifiedAt": "2026-08-31T21:09:40.191Z",
+      "lastSeen": "2026-08-31T21:22:37.340Z",
+      "lastNotifiedAt": "2026-08-31T21:22:37.340Z",
       "notifyCount": 30,
       "cardId": null,
       "linearIdentifier": "BRO-296"
