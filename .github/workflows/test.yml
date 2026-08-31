@@ -1177,11 +1177,12 @@ on:
       - 'scripts/audit-venue-complex-slugs.test.mjs'
       - 'data/venue-complexes.json'
       - 'data/venue-complexes-west-end.json'
-      # scripts/lib/canonical-venue-consumers.test.mjs loads
+      # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
+      # normalizeVenueName() doesn't over-strip a leading "The " against the frontend's
+      # separate, frozen normalizer (src/lib/stats/venue-match.ts) — reads
       # data/west-end-venues.json directly, but that JSON sits outside the
-      # scripts/lib/** glob above — path-listed so a solo edit to the data
-      # file it guards triggers CI (audit-test-yml-lib-deps.js findGaps()
-      # flagged exactly this gap; its regression floor asserts zero gaps).
+      # scripts/lib/** glob above, so it's path-listed here too (audit-test-yml-lib-deps.js
+      # findGaps() flagged exactly this gap; its regression floor asserts zero gaps).
       - 'data/west-end-venues.json'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
@@ -1431,6 +1432,12 @@ on:
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
       - 'scripts/tests/verify-edits-heredoc.test.mjs'
       - '.claude/hooks/verify-edits.sh'
+      # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
+      # wiring is asserted by tests/unit/session-start-disk-check.test.mjs
+      # (rides the 'tests/**' glob above), but the hook file itself is not
+      # globbed anywhere in this file — a solo revert of the wiring (e.g.
+      # someone dropping the block this test checks for) would run ZERO CI.
+      - '.claude/hooks/session-start.sh'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on

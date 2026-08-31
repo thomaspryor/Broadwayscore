@@ -2204,4 +2204,123 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, _setShowsCacheForTest };
+/**
+ * BRO-2559: safeWriteReview only protects a field when the file it's about to
+ * overwrite is still ON DISK — its whole preserve/merge machinery reads
+ * `fs.existsSync(filePath)` and merges from there. That is a no-op when the
+ * file has already been DELETED from the working tree by something upstream
+ * of any writer: a `git add -A` checkpoint (scripts/collect-review-texts.js's
+ * pushReviewTextsCheckpoint(), the confirmed root cause — a local working
+ * copy that was missing the-producers-west-end-2025/variety--bob-verini.json
+ * staged its absence as an intentional deletion and committed it) stages
+ * EVERY tracked-but-locally-absent file as removed, with zero awareness of
+ * what it's discarding. By the time the next scraper run recreates the file
+ * at that same path, safeWriteReview correctly sees "no existing file" and
+ * has nothing left to merge from — the flag was already gone.
+ *
+ * This is the git-level counterpart to safeWriteReview's disk-level
+ * protection: call it right after `git add -A` (or equivalent) in any
+ * checkpoint/commit path that stages a working tree wholesale. It walks the
+ * staged deletions, and for any whose HEAD (pre-deletion) copy carries a real
+ * value in a protected field, restores that file from HEAD and re-stages it
+ * — reversing just that one deletion — instead of letting it commit.
+ *
+ * NOT a blanket "undelete anything protected" — a same-run rename
+ * (renameReviewFileForCriticOverride() in collect-review-texts.js calls
+ * safeRenameReview(), an fs.renameSync-based move that deletes the OLD path
+ * and creates the NEW one with the same content, including protected
+ * fields, carried forward) stages exactly this shape: a `D` for the old
+ * filename. Restoring that old file back onto disk would resurrect a stale
+ * duplicate sitting alongside the correctly-renamed file — trading BRO-2559's
+ * data loss for a corpus duplicate, which is its own class of bug (ship-check
+ * adversarial finding on this fix). Adversarial run confirmed the codebase's
+ * OWN rename path collides with a naive "restore every flagged deletion"
+ * rule. Guarded by requiring the deletion to be ISOLATED: if this same staged
+ * diff touches ANY other path in the same directory (an add, modify, or
+ * another delete — a rename shows up as a same-directory D+A pair when git's
+ * similarity heuristic doesn't cross the rename-detection threshold), this
+ * function leaves it alone rather than guess whether it's a rename. Verified
+ * against the real incident: commit 6f36468ea3d (broadway-review-texts) that
+ * deleted the-producers-west-end-2025/variety--bob-verini.json touched no
+ * other path under that show directory in the same commit — an isolated
+ * deletion, exactly what this guard is for.
+ *
+ * @param {string} cwd - git working directory with changes already staged
+ * @param {object} [options]
+ * @param {(path: string) => boolean} [options.filter] - only consider staged-deleted
+ *   paths for which this returns true (default: '*.json' files)
+ * @returns {string[]} repo-relative paths restored (deletion reversed)
+ */
+function protectStagedDeletions(cwd, options = {}) {
+  const { execFileSync } = require('child_process');
+  const filter = options.filter || ((f) => f.endsWith('.json'));
+
+  let statusOut;
+  try {
+    statusOut = execFileSync('git', ['diff', '--cached', '--name-status'], { cwd, encoding: 'utf8' });
+  } catch {
+    return [];
+  }
+
+  const stagedLines = statusOut.split('\n').filter(Boolean);
+  // path -> set of OTHER staged paths in the same directory (any status),
+  // built once so a same-directory sibling change (a same-run rename/merge)
+  // disqualifies a deletion from restoration without an O(n^2) rescan.
+  const dirCounts = new Map();
+  for (const line of stagedLines) {
+    const tab = line.indexOf('\t');
+    if (tab === -1) continue;
+    const p = line.slice(tab + 1).trim().split('\t')[0];
+    if (!p) continue;
+    const dir = path.posix.dirname(p);
+    dirCounts.set(dir, (dirCounts.get(dir) || 0) + 1);
+  }
+
+  const restored = [];
+  for (const line of stagedLines) {
+    // Deletion lines are "D\t<path>". Skip renames/copies (R100\told\tnew)
+    // and any other status — this function only reverses plain deletions.
+    if (!line.startsWith('D\t')) continue;
+    const f = line.slice(2).trim();
+    if (!f || !filter(f)) continue;
+
+    // Not isolated — some other staged change shares this file's directory
+    // in the SAME commit. Could be an in-progress rename/merge that already
+    // carries the protected data forward under a different name; restoring
+    // the old path here would create a stale duplicate. Leave it to the
+    // normal duplicate/data-loss audits rather than guess.
+    if ((dirCounts.get(path.posix.dirname(f)) || 0) > 1) continue;
+
+    let committed;
+    try {
+      committed = JSON.parse(execFileSync('git', ['show', `HEAD:${f}`], { cwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }));
+    } catch {
+      continue; // nothing committed at HEAD to restore from (genuinely new/renamed-away file)
+    }
+    if (!committed || typeof committed !== 'object') continue;
+
+    const effectiveFields = getEffectiveProtectedFields(committed);
+    const hasProtectedContent = effectiveFields.some((k) => {
+      const v = committed[k];
+      return v !== undefined && v !== null
+        && !(typeof v === 'string' && v.length === 0)
+        && !(Array.isArray(v) && v.length === 0);
+    });
+    if (!hasProtectedContent) continue;
+
+    try {
+      execFileSync('git', ['checkout', 'HEAD', '--', f], { cwd, stdio: 'pipe' });
+      execFileSync('git', ['add', '--', f], { cwd, stdio: 'pipe' });
+      restored.push(f);
+      console.warn(`[review-write-guard] protectStagedDeletions: reversed staged deletion of ${f} (carries protected fields: ${effectiveFields.filter(k => {
+        const v = committed[k];
+        return v !== undefined && v !== null && !(typeof v === 'string' && v.length === 0) && !(Array.isArray(v) && v.length === 0);
+      }).join(', ')})`);
+    } catch (e) {
+      console.warn(`[review-write-guard] protectStagedDeletions: failed to restore ${f}: ${e.message}`);
+    }
+  }
+  return restored;
+}
+
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, _setShowsCacheForTest };
