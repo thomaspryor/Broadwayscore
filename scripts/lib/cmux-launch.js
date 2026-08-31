@@ -419,12 +419,23 @@ function hasSeedProcess(psText, marker) {
 // probe's lifetime: callers (checkDeadDispatch) can hand this to a code path
 // that may never test a marker at all, and a dispatch that finds nothing idle
 // must not pay for a process-table dump.
-function makeSeedProcessProbe() {
+// sampleFn is a test-only seam (same pattern as this file's other probes) so
+// the memoization is provable by COUNTING calls rather than by timing them —
+// a timing assertion is scheduler folklore and would flake in CI.
+function makeSeedProcessProbe(sampleFn = null) {
   let text = '';
   let ok = false;
   let sampled = false;
   function sample() {
     sampled = true;
+    if (sampleFn) {
+      try {
+        const out = sampleFn();
+        ok = typeof out === 'string';
+        text = ok ? out : '';
+      } catch { ok = false; }
+      return;
+    }
     try {
       // -ww: unlimited width, so a long command line isn't truncated before the
       // marker. -e: every process, not just this terminal's. maxBuffer raised
@@ -442,6 +453,11 @@ function makeSeedProcessProbe() {
     } catch {
       ok = false;
     }
+    // Never silent (ship-check P2): with ok=false every marker reports
+    // not-alive, so the whole fleet quietly reverts to the cmux-only verdict
+    // this check exists to correct. A third signal that has switched itself off
+    // must say so — once per probe, not once per marker.
+    if (!ok) console.error('[cmux-launch] WARN process-table read failed — wrapper liveness unavailable; callers fall back to cmux-only liveness');
   }
   return (marker) => {
     if (!sampled) sample();
@@ -1238,6 +1254,11 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     // NOT a corpse, must not be closed, and must not be journaled as a death.
     wrapperAlive: !!(outcome && outcome.wrapperAlive),
     deadConfirmed: !slowBoot,
+    // BRO-2575: carried on FAILURE too, not just success. The deadConfirmed
+    // =false (slow-boot) case is precisely "the wrapper is still running" —
+    // exactly what a later sweep's wrapper cross-check needs in order not to
+    // bury a session that was merely slow to verify.
+    marker: cmdMarker,
     workspaceRef: survivingWs ? survivingWs.ref : null,
     seedFile, command,
   };

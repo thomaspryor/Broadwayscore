@@ -807,6 +807,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         taskId, subject: pseudoTask.subject, workspaceRef: res.workspaceRef, model,
         verifyCmd: gate.cmd, verifyReason: gate.reason,
         failureReason: res.reason, deadConfirmed: res.deadConfirmed !== false,
+        marker: res.marker || null, // BRO-2575
       });
       failedEntries.forEach((e) => appendLedgerEntryFn({ ...e, linearId: issue.identifier, correlationId }));
     } catch (e) { console.error(`[linear-next] WARN ledger dead write failed (non-fatal): ${e.message}`); }

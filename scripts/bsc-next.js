@@ -633,6 +633,11 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         allowReopenSuspect: args['allow-reopen-suspect'] || null,
         verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
         notionId: pid || null, adoptedLate: res.adoptedLate || null,
+        // BRO-2575 (ship-check catch): a succession dispatch opens a REAL cmux
+        // session like any other, so without its own marker it stays fully
+        // exposed to the false-dead bug the main dispatch path is now guarded
+        // against. Same field, same meaning as the primary launch row below.
+        marker: res.marker || null,
         // Card #1009: hash of the card body this session was seeded with, so a
         // later edit is detectable as drift instead of silently diverging.
         // null when the Notion fetch degraded — an honest "unknown", never a
@@ -709,6 +714,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
       verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
       notionId: pid || null, failureReason: res.reason,
       deadConfirmed: !stillBooting,
+      marker: res.marker || null, // BRO-2575
     });
     if (failedEntries.length) {
       try {
@@ -1564,6 +1570,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // 'dead' breadcrumb so a live session is neither counted toward the
       // 2-death dispatch guard nor treated as a corpse by the pruner.
       deadConfirmed: res.deadConfirmed !== false,
+      marker: res.marker || null, // BRO-2575
     });
     if (failedEntries.length) {
       try {

@@ -125,6 +125,16 @@ function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, wrap
       // REAL `cmux set-app-focus active` on the host with no clear (lazy-exec
       // fix ship-check finding, 2026-08-02).
       wake: () => {},
+      // Likewise MUST be stubbed (BRO-2575 ship-check): unstubbed, this falls
+      // through to the REAL cmuxws.terminalSurfaceConfirmedMissing, which asks
+      // the live cmux on the host about workspace:900. On a machine running
+      // cmux that ref is genuinely not found, so the harness reported
+      // surfaceConfirmedMissing=true and every INJECTION_NEVER_RAN expectation
+      // below resolved to TERMINAL_RUNTIME_MISSING instead — 4 tests that fail
+      // locally and pass in CI (where there is no cmux binary and the throw is
+      // an unrecognised ENOENT). Host-dependent tests are worse than no tests;
+      // callers that want the surface-missing branch pass it explicitly.
+      surfaceConfirmedMissing: () => false,
     },
   });
   return { res, polls, startedCalls: () => startedCalls };
@@ -456,18 +466,24 @@ test('cmuxIdleSec: sub-ms negative jitter clamps to 0, a real clock step reads a
 // journaled dead in the same 2ms). bsc-prune and checkDeadDispatch both gate
 // their 'dead' verdict on it. These cover the two properties that matter:
 // the sample is taken at most once, and a broken `ps` never manufactures life.
-test('makeSeedProcessProbe: samples ps at most once, however many markers are tested', () => {
-  const probe = makeSeedProcessProbe();
-  // Two calls on a real machine; the memoization is what keeps a 25-workspace
-  // sweep from dumping the process table 25 times.
-  const before = process.hrtime.bigint();
-  probe('bsc-cmd-definitely-not-running-aaaa.sh');
-  const firstCallNs = process.hrtime.bigint() - before;
-  const mid = process.hrtime.bigint();
-  probe('bsc-cmd-definitely-not-running-bbbb.sh');
-  const secondCallNs = process.hrtime.bigint() - mid;
-  assert.ok(secondCallNs < firstCallNs,
-    `second call (${secondCallNs}ns) must reuse the first call's sample (${firstCallNs}ns), not re-spawn ps`);
+test('makeSeedProcessProbe: samples the process table exactly once, however many markers are tested', () => {
+  let samples = 0;
+  const probe = makeSeedProcessProbe(() => {
+    samples++;
+    return 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n';
+  });
+  assert.equal(samples, 0, 'the sample must be lazy — a probe nobody consults must not spawn ps');
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(probe('bsc-cmd-linear_BRO-99-00000000.sh'), false);
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(samples, 1,
+    'a 25-workspace sweep must dump the process table once, not 25 times');
+});
+
+test('makeSeedProcessProbe: a failing process-table read reports every marker not-alive (fail CLOSED)', () => {
+  const probe = makeSeedProcessProbe(() => { throw new Error('ps: cannot allocate memory'); });
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), false,
+    'a broken ps must never vouch for a session — the caller then keeps its pre-existing verdict');
 });
 
 test('makeSeedProcessProbe: a marker that is not running reports false, not a throw', () => {

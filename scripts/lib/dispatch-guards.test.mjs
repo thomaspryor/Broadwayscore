@@ -297,3 +297,70 @@ test('BRO-2575: the real 5-workspace blackout batch produces ZERO dead rows when
   assert.deepEqual(freshDead, [],
     'all five sessions were alive; the pre-fix code wrote five dead rows in the same 2ms');
 });
+
+// ── BRO-2575 ship-check follow-ups ─────────────────────────────────────────
+const ledger = require('./dispatch-ledger.js');
+
+// Codex/Claude P1: bsc-prune's idle filter resolves the owning launch itself,
+// so it must apply deadBreadcrumbs' OWN reconciliation rule. Without it, cmux
+// renumbering (which writes a terminal 'remapped' row for the old ref) lets a
+// live session's still-running wrapper vouch for whatever husk later lands on
+// its recycled ref — sparing that husk from BOTH the breadcrumb and
+// sweepZombieTabs, permanently.
+test('BRO-2575: unreconciledLaunchForRef returns the owning launch while the ref is unreconciled', () => {
+  const entries = [{ ts: '2026-08-31T00:43:00.000Z', event: 'launch', taskId: 'linear:BRO-2506', workspaceRef: 'workspace:138', marker: 'm1' }];
+  assert.equal(ledger.unreconciledLaunchForRef('workspace:138', entries).marker, 'm1');
+});
+
+test('BRO-2575: unreconciledLaunchForRef returns null once a terminal row reconciles the ref (recycled-ref strand)', () => {
+  const entries = [
+    { ts: '2026-08-31T00:43:00.000Z', event: 'launch', taskId: 'linear:BRO-2506', workspaceRef: 'workspace:138', marker: 'm1' },
+    { ts: '2026-08-31T01:00:00.000Z', event: 'remapped', taskId: 'linear:BRO-2506', workspaceRef: 'workspace:138', newRef: 'workspace:120' },
+  ];
+  assert.equal(ledger.unreconciledLaunchForRef('workspace:138', entries), null,
+    "a live session's wrapper must not vouch for the next occupant of its old ref");
+});
+
+test('BRO-2575: a husk on a recycled ref is still journaled dead even though the old launch\'s wrapper is alive', () => {
+  const entries = [
+    { ts: '2026-08-31T00:43:00.000Z', event: 'launch', taskId: 'linear:BRO-2506', workspaceRef: 'workspace:138', marker: 'm-alive' },
+    { ts: '2026-08-31T01:00:00.000Z', event: 'remapped', taskId: 'linear:BRO-2506', workspaceRef: 'workspace:138', newRef: 'workspace:120' },
+    { ts: '2026-08-31T01:05:00.000Z', event: 'launch', taskId: 'linear:BRO-999', workspaceRef: 'workspace:138', marker: 'm-husk' },
+  ];
+  const { freshDead } = checkDeadDispatch(
+    { id: 'linear:BRO-999', subject: 'husk', status: 'in_progress' },
+    [{ ref: 'workspace:138', title: '🤖⚡ husk' }], entries,
+    CMUX_SAYS_DEAD.isDoneTitleFn, CMUX_SAYS_DEAD.claudeAliveInFn, CMUX_SAYS_DEAD.surfaceAliveFn,
+    { isWrapperAlive: m => m === 'm-alive' }, // only the OLD session's wrapper is running
+  );
+  assert.deepEqual(freshDead.map(b => b.taskId), ['linear:BRO-999'],
+    'the husk owns the ref now; the remapped session\'s wrapper is not evidence about it');
+});
+
+// Codex P1: every behaviour-changing sweep in this fleet ships with a way to
+// turn it off without a deploy (ZOMBIE_TAB_SWEEP_DISABLED, NO_PAYLOAD_REAPER_DISABLED).
+test('BRO-2575: DEAD_WRAPPER_CHECK_DISABLED=1 restores the exact pre-fix behaviour', () => {
+  const prior = process.env.DEAD_WRAPPER_CHECK_DISABLED;
+  process.env.DEAD_WRAPPER_CHECK_DISABLED = '1';
+  try {
+    const { freshDead } = checkDeadDispatch(
+      TASK_2506, WORKSPACES, ledgerFor(LIVE_MARKER),
+      CMUX_SAYS_DEAD.isDoneTitleFn, CMUX_SAYS_DEAD.claudeAliveInFn, CMUX_SAYS_DEAD.surfaceAliveFn,
+      { isWrapperAlive: probeOver(PS_WITH_WRAPPER) },
+    );
+    assert.deepEqual(freshDead.map(b => b.workspaceRef), ['workspace:138']);
+  } finally {
+    if (prior === undefined) delete process.env.DEAD_WRAPPER_CHECK_DISABLED;
+    else process.env.DEAD_WRAPPER_CHECK_DISABLED = prior;
+  }
+});
+
+test('BRO-2575: wrapperVouchesAlive says "no evidence" for every degraded input, never "dead"', () => {
+  const yes = () => true;
+  assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, yes), true);
+  assert.equal(ledger.wrapperVouchesAlive(null, yes), false, 'no launch row');
+  assert.equal(ledger.wrapperVouchesAlive({}, yes), false, 'launch predating the marker field');
+  assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, null), false, 'no probe supplied');
+  assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, () => { throw new Error('ps died'); }), false, 'throwing probe');
+  assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, () => 'truthy-but-not-true'), false, 'strict true only');
+});

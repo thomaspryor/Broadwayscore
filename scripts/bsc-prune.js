@@ -244,9 +244,13 @@ function mainLocked({ dryRun, deps }) {
 
   // The ledger is read once here (it was previously read inside the listing
   // below) because the BRO-2575 wrapper cross-check needs each candidate's
-  // launch marker BEFORE `idle` is settled.
-  let ledgerEntries;
-  try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+  // launch marker BEFORE `idle` is settled. Still gated on there being a
+  // candidate at all: the scheduled tick runs every 5 minutes and the great
+  // majority are no-ops that must not re-read the whole jsonl (ship-check P2).
+  let ledgerEntries = [];
+  if (cmuxDead.length) {
+    try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+  }
 
   // BRO-2575 — THIRD SIGNAL. Everything downstream of `idle` treats membership
   // as proof of death: the breadcrumb write, and sweepZombieTabs, which will
@@ -267,15 +271,20 @@ function mainLocked({ dryRun, deps }) {
     catch (e) { console.error(`[bsc-prune] WARN wrapper-process probe unavailable (${e.message}) — falling back to cmux-only liveness for this sweep`); }
     if (isWrapperAlive) {
       idle = cmuxDead.filter(w => {
-        const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
-        // No launch row, or a launch predating the ledger's `marker` field:
-        // nothing to cross-check, so keep the pre-BRO-2575 verdict rather than
-        // inventing either answer.
-        if (!launch || !launch.marker) return true;
-        let alive = false;
-        try { alive = isWrapperAlive(launch.marker) === true; } catch { alive = false; }
-        if (alive) wrapperAliveSuppressed.push({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title });
-        return !alive;
+        // unreconciledLaunchForRef, not launchByRef: a recycled ref whose old
+        // launch was already reconciled (cmux renumber, owner close, prior
+        // death) must NOT have that stale launch's still-live wrapper vouch for
+        // its new occupant — that would spare a husk from both the breadcrumb
+        // and sweepZombieTabs forever. Same ownership rule deadBreadcrumbs uses.
+        const launch = dispatchLedger.unreconciledLaunchForRef(w.ref, ledgerEntries);
+        // wrapperVouchesAlive owns every fail direction (no launch, a launch
+        // predating the `marker` field, a throwing probe, the kill switch) —
+        // all of them answer "no positive evidence of life", which leaves the
+        // pre-BRO-2575 verdict standing. Shared with bsc-reconcile so the two
+        // sweeps can never disagree about what the wrapper proves.
+        if (!dispatchLedger.wrapperVouchesAlive(launch, isWrapperAlive)) return true;
+        wrapperAliveSuppressed.push({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title });
+        return false;
       });
     }
   }
@@ -336,7 +345,17 @@ function mainLocked({ dryRun, deps }) {
   // stuck on an auth-dead screen ("Not logged in") that will otherwise sit
   // open forever, since it's neither idle nor ever going to self-mark ✅.
   // idle's refs are dead-process by definition and never candidates here.
-  const idleRefs = new Set(idle.map(w => w.ref));
+  //
+  // BRO-2575 (ship-check, Codex P1): the wrapper-alive suppressions above LEFT
+  // the idle bucket, so without adding them back here they would become
+  // no-payload CANDIDATES for the first time — and that reaper closes a tab
+  // after 3 consecutive sightings. A workspace we just proved is running its
+  // real wrapper process must not become newly eligible for a close path it
+  // was never exposed to before this change. (A total read-screen failure
+  // happens to read as empty text, which screenLooksNoPayload does not flag,
+  // but relying on that accident is exactly the kind of silent coupling this
+  // whole issue is about.)
+  const idleRefs = new Set([...idle.map(w => w.ref), ...wrapperAliveSuppressed.map(s => s.workspaceRef)]);
   sweepNoPayload({
     all, closedRefs, idleRefs, dryRun,
     isDoneTitleFn, readScreenFn, closeWorkspaceFn,
@@ -675,6 +694,10 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
         model: (orig && orig.model) || null,
         verifyCmd: (orig && orig.verifyCmd) || null,
         verifyReason: (orig && orig.verifyReason) || null,
+        // BRO-2575: same session, new ref — its wrapper process is unchanged,
+        // so the marker must survive the renumber or the remapped ref silently
+        // drops back to the cmux-only verdict.
+        marker: (orig && orig.marker) || null,
       });
       // Old ref's terminal entry FIRST (see remapEntries' header comment for
       // why order matters here, same as failedLaunchEntries above).

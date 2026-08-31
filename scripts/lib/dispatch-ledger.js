@@ -446,34 +446,70 @@ function launchByRef(workspaceRef, entries) {
 // The RETURN stays a plain array of breadcrumbs: every caller and a dozen
 // existing tests compare it with deepEqual, which an extra own property on the
 // array would break.
+// Kill switch, matching ZOMBIE_TAB_SWEEP_DISABLED / NO_PAYLOAD_REAPER_DISABLED.
+// This check can only ever SUPPRESS a death, so a bug in it strands tabs and
+// tasks rather than killing them — but "strands forever" is still an outage,
+// and every other behaviour-changing sweep in this fleet ships with a way to
+// turn it off without a deploy (ship-check, Codex P1).
+function wrapperCheckDisabled() {
+  return process.env.DEAD_WRAPPER_CHECK_DISABLED === '1';
+}
+
+// Shared BRO-2575 predicate: does this launch's wrapper process vouch that the
+// session is still alive? Used by deadBreadcrumbs (bsc-prune + checkDeadDispatch)
+// AND bsc-reconcile, which re-dispatches with --force off the same cmux-only
+// verdict — one predicate rather than two hand-rolled copies (CLAUDE.md rule 15).
+//
+// Every "no" answer means "no positive evidence of life", never "proved dead":
+// no probe, no launch, a launch predating the `marker` field, a throwing probe,
+// or the kill switch all fall back to whatever the caller already believed.
+function wrapperVouchesAlive(launch, isWrapperAlive) {
+  if (wrapperCheckDisabled()) return false;
+  if (typeof isWrapperAlive !== 'function') return false;
+  if (!launch || !launch.marker) return false;
+  try { return isWrapperAlive(launch.marker) === true; } catch { return false; }
+}
+
+// The launch that OWNS a ref right now — null once a terminal event has
+// reconciled it. This is deadBreadcrumbs' own ownership rule, extracted so
+// bsc-prune's idle filter applies exactly the same one (ship-check, Claude P1).
+//
+// Without it the filter strands husks permanently: cmux renumbers on restart,
+// live session S moves workspace:138 -> workspace:120 (remapEntries writes a
+// terminal row for 138), a dead husk lands on the recycled 138, launchByRef
+// still returns S's launch, S's wrapper is alive in `ps` — so the husk is
+// spared from `idle` forever, getting neither a breadcrumb nor a
+// sweepZombieTabs close. deadBreadcrumbs would have skipped that ref as
+// already-reconciled; the filter has to skip it for the same reason.
+function unreconciledLaunchForRef(ref, entries, lastTerminal = null) {
+  const launch = launchByRef(ref, entries);
+  if (!launch) return null; // not a bsc-next auto-dispatch — not ours to judge
+  const terminals = lastTerminal || lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
+  const term = terminals.get(ref);
+  // A launch with no ts can't be ordered against anything; treat any terminal
+  // row for the ref as already-reconciled rather than guessing — the
+  // pre-existing `!e.ts || !launch.ts` fallback made the same choice.
+  const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
+  return reconciled ? null : launch;
+}
+
 function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
   const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
   const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   const out = [];
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   for (const w of idleWorkspaces) {
-    const launch = launchByRef(w.ref, entries);
-    if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
-    const term = lastTerminal.get(w.ref);
-    // A launch with no ts can't be ordered against anything; treat any
-    // terminal row for the ref as already-reconciled rather than guessing —
-    // the pre-existing `!e.ts || !launch.ts` fallback made the same choice.
-    const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
-    if (reconciled) continue;
-    // Only a launch that recorded its own marker can be cross-checked. Any
-    // throw from the probe means "no opinion", never "dead": this check exists
-    // to REFUSE deaths on positive evidence of life, so an unusable probe must
-    // fall back to the pre-existing verdict rather than invent one.
-    if (isWrapperAlive && launch.marker) {
-      let alive = false;
-      try { alive = isWrapperAlive(launch.marker) === true; } catch { alive = false; }
-      if (alive) {
-        if (onSuppressed) {
-          try { onSuppressed({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title }); }
-          catch { /* a reporting failure must never change the sweep's verdict */ }
-        }
-        continue;
+    // Not a bsc-next auto-dispatch, or already reconciled by a terminal event
+    // (prune-closed / vanished / remapped / an earlier death) — not ours to
+    // journal either way. See unreconciledLaunchForRef.
+    const launch = unreconciledLaunchForRef(w.ref, entries, lastTerminal);
+    if (!launch) continue;
+    if (wrapperVouchesAlive(launch, isWrapperAlive)) {
+      if (onSuppressed) {
+        try { onSuppressed({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title }); }
+        catch { /* a reporting failure must never change the sweep's verdict */ }
       }
+      continue;
     }
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
@@ -504,10 +540,14 @@ function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
 // and skips it as already-recorded. No lock needed.
 //
 // Returns [] when cmux left no workspace behind (nothing to attribute).
-function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null, deadConfirmed = true }) {
+function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null, deadConfirmed = true, marker = null }) {
   if (!workspaceRef) return [];
   const base = { taskId: String(taskId), subject, workspaceRef, failureReason };
-  const launch = { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true };
+  // marker (BRO-2575, ship-check catch): the deadConfirmed=false branch below
+  // is literally "verification gave up while this launch's wrapper was STILL
+  // RUNNING" — the highest-value case for a later sweep's wrapper cross-check,
+  // and the one most likely to be wrongly journaled dead without it.
+  const launch = { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, marker, unverified: true };
   // deadConfirmed=false is the card #705 slow-boot case: verification gave up
   // while this launch's wrapper process was STILL RUNNING, so the workspace is
   // very likely booting a real session. Recording a 'dead' breadcrumb for it
@@ -792,11 +832,16 @@ function findRenumberedWorkspace(launch, liveWorkspaces, excludeRefs = new Set()
 // model/verifyCmd/verifyReason are carried forward from the ORIGINAL launch
 // so the nightly acceptance recheck (which reads the latest launch per
 // notionId) doesn't silently downgrade a remapped card to "unverifiable".
-function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model = null, verifyCmd = null, verifyReason = null }) {
+// marker is carried across a remap (BRO-2575, ship-check catch): the SESSION is
+// the same one — cmux only renumbered its ref — so the same wrapper process is
+// still its ground-truth liveness signal. Dropping it would silently revert
+// every remapped ref to the pre-fix, cmux-only verdict, and a cmux restart is
+// exactly when the fleet-wide desync this guards against is most likely.
+function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model = null, verifyCmd = null, verifyReason = null, marker = null }) {
   const id = String(taskId);
   return [
     { event: 'remapped', taskId: id, subject, workspaceRef: oldRef, newRef },
-    { event: 'launch', taskId: id, subject, workspaceRef: newRef, notionId, model, verifyCmd, verifyReason, remapped: true, previousRef: oldRef },
+    { event: 'launch', taskId: id, subject, workspaceRef: newRef, notionId, model, verifyCmd, verifyReason, marker, remapped: true, previousRef: oldRef },
   ];
 }
 
@@ -1140,6 +1185,7 @@ module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
+  wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef,
   failedLaunchEntries, foldJobs, openJobs,
   // isInfraDeadEntry/deadDispatchCapStatus were card #1233's v1 API. The v2
   // implementation (ba2a4f22d3f) replaced both with classifyDeadAttemptsForTask
