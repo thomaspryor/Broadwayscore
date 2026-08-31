@@ -32,6 +32,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
+const { getSeasonForDate, getSeasonDates } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1933,15 +1934,26 @@ function buzziestSection() {
 function seasonStandingFor(openedShow) {
   // ONLY for NEW (non-revival) shows — revivals are judged differently
   if (openedShow.isRevival) return null;
-  // Same season = openingDate within ~12 months before weekEnd (Tony eligibility window approximation)
-  const seasonStart = new Date(weekEndStr + 'T12:00:00'); seasonStart.setMonth(seasonStart.getMonth() - 12);
-  const seasonStartStr = seasonStart.toISOString().slice(0, 10);
+  // Same season = the real Broadway season (Jul 1 - Jun 30, scripts/lib/broadway-seasons.js)
+  // that openedShow's own opening date falls in — the SAME boundary getSeasonSlug()
+  // uses for the site's "This Season" browse pages/rank cells. Was previously a rolling
+  // "12 months before weekEnd" window, which happily spanned a season boundary: a show
+  // that opened in the first days of a brand-new season (e.g. late Aug) got compared
+  // against shows from the tail of the PRIOR season (as late as the previous Sep),
+  // reading as "New Plays This Season" while actually mixing two different seasons
+  // (owner-flagged, 2026-08-30 — Paranormal Activity opened Aug 25 2026, the start of
+  // 2026-27, and was shown ranked against Punch/Giant/etc. from the 2025-26 season).
+  const openedSeason = getSeasonForDate(openedShow.openingDate);
+  const { start: seasonStartDate, end: seasonEndDate } = getSeasonDates(openedSeason);
+  const seasonStartStr = seasonStartDate.toISOString().slice(0, 10);
+  const seasonEndStr = seasonEndDate.toISOString().slice(0, 10);
   const peers = shows.filter(s =>
     s.category === 'broadway'
     && s.type === openedShow.type
     && !!s.isRevival === !!openedShow.isRevival
     && s.openingDate
     && s.openingDate >= seasonStartStr
+    && s.openingDate <= seasonEndStr
     && s.openingDate <= weekEndStr
   );
   if (peers.length < 3) return null;
