@@ -357,6 +357,40 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'broadcast-send',
     verifiedBy: '2026-08-26: grepped every .github/workflows/*.yml for the literal filename — only opening-night-broadcast.yml writes it; that workflow declares concurrency: {group: broadcast-send, cancel-in-progress: false}, so overlapping runs queue rather than race.',
   },
+  // BRO-2670 (opening-night-checklist.yml "Commit audit data" hard-failing 6
+  // of 8 runs, losing the attempt-history ledger and re-dispatching the same
+  // workflow forever): split into its own commit+push step, same class as
+  // the two entries above. opening-night-orchestrator.yml also invokes
+  // scripts/opening-night-checklist.js / scripts/opening-night-sla-
+  // dispatch.js (which write these paths locally), but grepping that
+  // workflow's file for `git add`/commit/push shows it never stages either
+  // path — findWritingWorkflows() (scripts/lib/api-fallback-writer-drift.js)
+  // against every .github/workflows/*.yml confirms exactly one writer for
+  // each.
+  {
+    file: 'audit/opening-night-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-checklist',
+    verifiedBy: '2026-08-31: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist (moved from a non-serializing per-run-id job-level group to a fixed workflow-level one as part of this same fix — see that workflow\'s own concurrency: block comment).',
+  },
+  {
+    file: 'audit/opening-night-sla-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-checklist',
+    verifiedBy: '2026-08-31: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist. Written by scripts/lib/opening-night-sla.js:saveSlaState(), also invoked (locally, not committed) by opening-night-orchestrator.yml.',
+  },
+  // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
+  // — filename is date-stamped, and BOTH places that check apiFallbackSafe
+  // membership (push-with-retry.sh's inline disqualifier and audit-push-
+  // retry-budgets.js's classifyPushFallbackSafety) do exact-suffix
+  // `.endsWith()` matching with no glob/prefix support. Extending that
+  // shared, duplicated matching logic for one non-gating, continue-on-error
+  // telemetry file isn't worth the blast radius — it stays on the slow path,
+  // unchanged from before this fix.
   // NOT added, deliberately: data/audit/triage/ (also written by
   // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
   // data/audit/alert-digest-queue.json (8 writers — the exact file the

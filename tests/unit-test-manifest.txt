@@ -73,6 +73,7 @@ scripts/lib/cyrus-runner-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
 scripts/lib/dispatch-guards.test.mjs
 scripts/lib/dispatch-ledger.test.mjs
+scripts/lib/dispatch-repo-root.test.mjs
 scripts/lib/dmarc-analysis.test.mjs
 scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
@@ -496,6 +497,7 @@ tests/unit/olivier-awards.test.mjs
 tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
+tests/unit/opening-night-checklist-push.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
 tests/unit/opening-night-checks-critics-take.test.mjs
 tests/unit/opening-night-checks-dtli.test.mjs
