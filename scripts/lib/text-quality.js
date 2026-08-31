@@ -227,9 +227,6 @@ function stripTrailingJunk(text) {
     // Generic WordPress sidebar widgets
     /\n\s*CategoriesCategories\n/i,
     /\n\s*Theater blogroll\n/i,
-    // NYT bot-wall stub (BRO-36) — never legitimate review content, strip so the
-    // raw "enable JavaScript" chrome doesn't reach the LLM scoring prompt.
-    ...BOT_STUB_PATTERNS,
   ];
 
   // Anchor patterns match the START of trailing junk sections (no greedy tails).
@@ -268,6 +265,20 @@ function stripTrailingJunk(text) {
 
     if (match.index < minRemainingHighConf) continue;
 
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  // Pass 1b: NYT bot-wall stub (BRO-36) — unlike the anchors above (built for
+  // WordPress sidebar chrome that could theoretically appear mid-review), these
+  // patterns are position-independent and never legitimate content at all, so
+  // they strip unconditionally — no minRemainingHighConf floor. That floor is
+  // exactly what let the stub's own opening sentences ("trouble retrieving...",
+  // "please enable javascript...") survive uncut on short/thin scrapes, the
+  // files with the LEAST real prose before the bot wall and the highest need
+  // for cleanup — the ship-check follow-up that caught this (2026-08-31).
+  for (const pattern of BOT_STUB_PATTERNS) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
     cleaned = cleaned.slice(0, match.index);
   }
 

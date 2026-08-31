@@ -81,6 +81,37 @@ test('cleanText strips the stub even when a photo-credit regex eats the first se
   assert.ok(!/verify\s+access/i.test(cleaned), 'verify-access fragment must not survive cleaning');
 });
 
+test('cleanText strips the stub even on a short/thin scrape (little real prose before the bot wall)', () => {
+  // Regression for ship-check follow-up (2026-08-31): stripTrailingJunk's
+  // minRemainingHighConf floor (max(100, 10% of length)) gated the bot-stub
+  // anchors along with the WordPress-sidebar anchors they were shared with,
+  // so on short files the stub's own opening sentences fell under the floor
+  // and survived cleaning — leaking raw "trouble retrieving"/"enable
+  // javascript" chrome into the LLM-facing text for exactly the files with
+  // the least real prose and the highest need for cleanup.
+  const THIN_SCRAPE = 'By Jesse Green, Aug 12, 2026. ' + NYT_STUB;
+  const cleaned = cleanText(THIN_SCRAPE);
+  assert.ok(!/trouble\s+retrieving/i.test(cleaned),
+    `stub JS-loader sentence leaked on a thin scrape: ${JSON.stringify(cleaned)}`);
+  assert.ok(!/enable\s+javascript/i.test(cleaned),
+    `enable-javascript fragment leaked on a thin scrape: ${JSON.stringify(cleaned)}`);
+  assert.ok(!/verify\s+access/i.test(cleaned),
+    `verify-access fragment leaked on a thin scrape: ${JSON.stringify(cleaned)}`);
+});
+
+test('getBestTextForScoring is stub-free and low-confidence on a short/thin scrape', () => {
+  const review = {
+    showId: 'test-thin-scrape',
+    outletId: 'nytimes',
+    fullText: 'By Jesse Green, Aug 12, 2026. ' + NYT_STUB,
+  };
+  const result = getBestTextForScoring(review);
+  assert.equal(result.status, 'truncated', `expected 'truncated', got '${result.status}'`);
+  assert.notEqual(result.confidence, 'high', 'thin-scrape bot-stub text must not score high confidence');
+  assert.ok(!/enable\s+javascript|trouble\s+retrieving|verify\s+access/i.test(result.text || ''),
+    `LLM-facing scoring text leaked stub chrome on a thin scrape: ${JSON.stringify(result.text)}`);
+});
+
 test('assessFullText returns truncated (not complete) for NYT bot-stub file', () => {
   const status = assessFullText(NYT_STUB_TEXT, true);
   assert.equal(status, 'truncated', `expected 'truncated', got '${status}'`);
