@@ -622,7 +622,19 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // it for a preview is the exact inconsistency that guard's own comment
   // warns against).
   const skipPathCheck = args.force || args['dry-run'] || args['print-prompt'];
-  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, REPO);
+  // BRO-2647: REPO is hardcoded to this dev machine's checkout and doesn't
+  // exist on a CI runner, which made this check refuse every real
+  // acceptance path as phantom there — including inside
+  // tests/unit/linear-next.test.mjs's own real-dispatch tests, which never
+  // stub process.exit for this guard because before this existed there was
+  // nothing here to stub. That refusal's real, un-mocked process.exit(1)
+  // truncated the file's TAP output mid-run (a real process.exit() does not
+  // flush pending stdout) — see bsc-next.js's identical fix for the full
+  // trace. Falling back to this file's own on-disk location only when the
+  // hardcoded path is absent fixes the CI case without touching REPO's
+  // other uses.
+  const pathCheckRepo = fs.existsSync(REPO) ? REPO : path.resolve(__dirname, '..');
+  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, pathCheckRepo);
   const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
   if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
 
