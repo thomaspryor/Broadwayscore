@@ -324,15 +324,25 @@ test('venuesMatch does NOT collapse two unrelated venues that merely share a lea
   // (not first-word) buys over a naive strict === would.
   assert.equal(venuesMatch("St. Luke's Theatre", "St. Luke's Theater"), true);
   assert.equal(venuesMatch('  The Duke on 42nd Street  ', 'The Duke on 42nd Street'), true);
-  // BRO-2567: leading whitespace must not change whether the article is
-  // stripped. venuesMatch's own stripThe regex runs BEFORE normalizeVenueName
-  // does its .trim(), so an un-trimmed padded venue used to keep its "The "
-  // while the unpadded side lost it. Scraped venue strings routinely arrive
-  // padded; both sides of the comparison must normalize identically.
+  // BRO-2567: padding must never change the verdict. Scraped venue strings
+  // routinely arrive padded (13 shows.json venues carry a trailing space), and
+  // both the alias table and the article strip used to see the raw string.
   assert.equal(venuesMatch('  The Theatre  ', 'The Theatre'), true);
   assert.equal(venuesMatch('\n\tThe Public Theater ', 'The Public Theater'), true);
   // ...and trimming must not soften the collapse guard above.
   assert.equal(venuesMatch('  The Duke on 42nd Street  ', '  The Public Theater  '), false);
+  // BRO-2567: VENUE_ALIASES regexes are anchored (/^the\s*new\s*group$/i), so a
+  // padded side missed its alias entirely and the aliasA||aliasB early return
+  // turned that miss into a hard false. Padded and unpadded must agree.
+  assert.equal(venuesMatch('The New Group', 'Pershing Square Signature Center'), true);
+  assert.equal(venuesMatch('  The New Group  ', 'Pershing Square Signature Center'), true);
+  // BRO-2567: the leading-article strip belongs to normalizeVenueName ALONE.
+  // venuesMatch's own copy ran before the trailing-"Theatre"/parenthetical
+  // strips instead of after, which broke Theatre/Theater equivalence, collapsed
+  // two distinct venues onto each other, and emptied a parenthetical venue.
+  assert.equal(venuesMatch('The Theatre', 'The Theater'), true);   // was false
+  assert.equal(venuesMatch('The Theatre', 'Theatre Theatre'), false); // was true
+  assert.equal(venuesMatch('The (National Theatre)', 'The (National Theatre)'), true); // was false
   // Identical strings and null/empty inputs.
   assert.equal(venuesMatch('Signature Center', 'Signature Center'), true);
   assert.equal(venuesMatch('', 'Signature Center'), false);
