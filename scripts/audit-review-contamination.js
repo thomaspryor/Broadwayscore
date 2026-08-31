@@ -88,7 +88,7 @@ function detectMarket(id) {
 }
 
 const { parseDate } = require('./lib/date-utils');
-const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl, normalizeCritic } = require('./lib/review-normalization');
 const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
@@ -109,24 +109,46 @@ const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-sc
 // duplicateTextOf as exclusion for exactly this reason), so a static field
 // check can't reliably tell "excluded" from "recovered". reviews.json is the
 // actual scored output — the only thing that can answer the question directly.
-// Decision logic (unnamed-critic filtering, outlet canonicalization) lives in
-// c2-live-scored-check.js so it can be unit-tested with synthetic fixtures.
+// Decision logic (unnamed-critic filtering, outlet/critic canonicalization,
+// per-pair membership check) lives in c2-live-scored-check.js so it can be
+// unit-tested with synthetic fixtures.
+//
+// REJECTED ALTERNATIVE (/code-review, BRO-74): use the codebase's existing
+// canonical predicate isIncludableForRebuild() instead of reading
+// reviews.json. Verified empirically this does NOT work — explainExclusion
+// (review-guards.js) deliberately does not check duplicateTextOf at all (see
+// its own docstring), so isIncludableForRebuild returns true for BOTH files
+// in an already-deduped pair, which is exactly the false positive this fix
+// exists to eliminate. Confirmed against cats-west-end-2026's
+// guardian--richard-lawson.json (duplicateTextOf set, genuinely excluded from
+// reviews.json): isIncludableForRebuild returns true anyway.
+//
 // NOTE on freshness: this compares against whatever reviews.json currently
 // contains, which can lag the corpus by up to one rebuild cycle — a
 // just-introduced collision may not yet show as 2 critics (false negative for
 // one cycle), and a just-resolved one may briefly still show as 2 (false
 // positive for one cycle). C2 is report-only (not in STRICT_CLASSES), so a
 // one-cycle lag here is far cheaper than the alternative this replaced: a
-// false positive that never self-corrects. Missing/unreadable reviews.json
-// degrades to an empty map — logged below so a suppressed C2 pass isn't silent.
-let liveScoredUrls;
-try {
-  const reviewsData = require(REVIEWS_JSON_PATH);
-  const reviews = reviewsData && reviewsData.reviews ? Object.values(reviewsData.reviews) : [];
-  liveScoredUrls = buildLiveScoredIndex(reviews, { normalizeOutlet, normalizeUrl });
-} catch (e) {
-  liveScoredUrls = new Map();
-  if (shouldRunClass('C2')) console.warn(`[audit-review-contamination] could not read ${REVIEWS_JSON_PATH} (${e.message}) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+// false positive that never self-corrects. Missing/unreadable/wrong-shape
+// reviews.json degrades to an empty map — warned below either way so a
+// suppressed C2 pass is never silent.
+//
+// Gated behind shouldRunClass('C2') — building the ~20k-entry index is
+// wasted I/O and O(n) work on every invocation that excludes C2 via
+// --classes, unlike every other detector class (all already gated the same way).
+let liveScoredUrls = new Map();
+if (shouldRunClass('C2')) {
+  try {
+    const reviewsData = require(REVIEWS_JSON_PATH);
+    const reviews = reviewsData && reviewsData.reviews ? Object.values(reviewsData.reviews) : null;
+    if (!reviews) {
+      console.warn(`[audit-review-contamination] ${REVIEWS_JSON_PATH} has no "reviews" key (unexpected shape) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+    } else {
+      liveScoredUrls = buildLiveScoredIndex(reviews, { normalizeOutlet, normalizeUrl, normalizeCritic });
+    }
+  } catch (e) {
+    console.warn(`[audit-review-contamination] could not read ${REVIEWS_JSON_PATH} (${e.message}) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+  }
 }
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
@@ -598,12 +620,15 @@ for (const showId of showDirs) {
           if (a.criticName === b.criticName) continue;
           if (a.textLen !== b.textLen || a.textLen < 50) continue;
           // BRO-74 ground-truth gate: only a REAL double-count if the live
-          // rebuild output (reviews.json) actually carries 2+ distinct NAMED
-          // critics for this exact show+outlet+URL right now. A pair that's
-          // already resolved via duplicateTextOf (or any of the rebuild's
-          // other conditional recovery paths) shows up here with only 1 —
-          // that's not a live bug, so don't report it.
-          if (!isGenuineDoubleCount(liveScoredUrls, { showId, outletId: a.outletId, url }, { normalizeOutlet, normalizeUrl })) continue;
+          // rebuild output (reviews.json) actually carries BOTH of these two
+          // specific critics as live, distinct entries for this exact
+          // show+outlet+URL right now. A pair that's already resolved via
+          // duplicateTextOf (or any of the rebuild's other conditional
+          // recovery paths) fails this — that's not a live bug, don't report
+          // it. Checking the specific pair (not just "2+ critics exist
+          // somewhere for this URL") matters when 3+ corpus files share a
+          // URL — see c2-live-scored-check.js's docstring.
+          if (!isGenuineDoubleCount(liveScoredUrls, { showId, outletId: a.outletId, url, critic1: a.criticName, critic2: b.criticName }, { normalizeOutlet, normalizeUrl, normalizeCritic })) continue;
           hits.C2_url_multi_critic.push({
             showId, url: url.substring(0, 80),
             file1: a.file, critic1: a.criticName,
