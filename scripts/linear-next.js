@@ -93,7 +93,7 @@ const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
-  workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard,
+  workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
@@ -624,17 +624,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const skipPathCheck = args.force || args['dry-run'] || args['print-prompt'];
   // BRO-2647: REPO is hardcoded to this dev machine's checkout and doesn't
   // exist on a CI runner, which made this check refuse every real
-  // acceptance path as phantom there — including inside
-  // tests/unit/linear-next.test.mjs's own real-dispatch tests, which never
-  // stub process.exit for this guard because before this existed there was
-  // nothing here to stub. That refusal's real, un-mocked process.exit(1)
-  // truncated the file's TAP output mid-run (a real process.exit() does not
-  // flush pending stdout) — see bsc-next.js's identical fix for the full
-  // trace. Falling back to this file's own on-disk location only when the
-  // hardcoded path is absent fixes the CI case without touching REPO's
-  // other uses.
-  const pathCheckRepo = fs.existsSync(REPO) ? REPO : path.resolve(__dirname, '..');
-  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, pathCheckRepo);
+  // acceptance path as phantom there. See resolveCanonicalRepoRoot()'s own
+  // header (dispatch-guards.js) for the full trace of how that produced
+  // main's red Unit Tests job. Called lazily inside the ternary so
+  // force/dry-run/print-prompt still skip the fs I/O entirely.
+  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, resolveCanonicalRepoRoot(REPO, __dirname));
   const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
   if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
 
