@@ -247,6 +247,32 @@ test('collectTransitiveSource: a shared module WITH the always-trace marker IS t
   }
 });
 
+test('collectTransitiveSource: prose merely MENTIONING the marker (backtick-wrapped, mid-sentence, not at line start) does NOT count — self-match regression guard', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wss-marker-selfmatch-'));
+  try {
+    // Mirrors the real bug found in review: this file's OWN header explains
+    // the marker convention using the literal string, which a bare
+    // substring match would wrongly treat as the file opting itself in.
+    fs.writeFileSync(
+      path.join(tmpDir, 'shared.js'),
+      ' * A file containing `audit-secret-scan-always-trace` opts in — this one does not.\n' +
+        'module.exports.x = process.env.SHARED_SECRET;\n'
+    );
+    for (let i = 0; i < 6; i++) {
+      fs.writeFileSync(path.join(tmpDir, `caller${i}.js`), `require('./shared.js');\n`);
+    }
+    fs.writeFileSync(path.join(tmpDir, 'entry.js'), "require('./caller0.js');\n");
+
+    const requirerCounts = buildRequirerCounts(tmpDir);
+    const entryAbs = path.join(tmpDir, 'entry.js');
+    const src = collectTransitiveSource(entryAbs, { requirerCounts });
+    const reads = extractEnvReads(src);
+    assert.ok(!reads.has('SHARED_SECRET'), 'prose merely mentioning the marker must not opt a file in');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
 test('collectTransitiveSource: the always-trace marker only rescues the marked file, not its own high-fanout deps — a second hop needs its own marker', () => {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wss-always-trace-chain-'));
   try {

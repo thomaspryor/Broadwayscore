@@ -118,10 +118,17 @@ const path = require('path');
 // Opt-in escape hatch from the SHARED_MODULE_THRESHOLD exclusion below — see
 // the "Third known false-negative" header comment above for why a module can
 // be both widely-required AND load-bearing enough that this tool must still
-// trace through it. Any comment form works (`//`, `/* */`, or `#` — the
-// marker is just a literal substring match, not anchored to a comment
-// syntax) since this is checked against files of several languages/exts.
-const ALWAYS_TRACE_MARKER_RE = /audit-secret-scan-always-trace/;
+// trace through it. Anchored to a comment-opening token (`//`, `/*`, `*`, or
+// `#`) at the start of a line, not a bare substring match — this file's own
+// header text ABOVE mentions the marker (wrapped in backticks, mid-sentence)
+// to document it, and a bare substring match would self-match that prose the
+// same way DYNAMIC_DIR_GLOB_RE once self-matched its own definition (see that
+// regex's comment below for the full incident). Anchoring doesn't fully close
+// the loophole (a line like `// we deliberately did NOT add
+// audit-secret-scan-always-trace here` still opens it), but it is the same
+// residual-risk level this file already accepts for EXEMPT_RE below, and is
+// enough to stop the concrete self-match found in review.
+const ALWAYS_TRACE_MARKER_RE = /^[ \t]*(?:\/\/|\/\*+|\*|#)[ \t]*audit-secret-scan-always-trace\b/m;
 
 const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.ts', '.json', '/index.js', '/index.ts'];
 const REQUIRE_RE = /require\(\s*['"](\.[^'"]+)['"]\s*\)/g;
