@@ -148,6 +148,20 @@ describe('planSync — content decisions', () => {
     assert.deepEqual(plan.copyToDest, ['memo.md']);
   });
 
+  test('a mirror-side deletion does not propagate back — the local memo is restored', () => {
+    // Deliberate asymmetry: the local dir is where the owner and the memory
+    // tooling curate memories, so a file vanishing from the mirror (a bad
+    // merge, a stray `git rm`) must not delete the real memory. It gets
+    // re-mirrored instead.
+    const plan = planSync({
+      src: { 'memo.md': h('still here locally') },
+      dest: {},
+      manifest: { 'memo.md': h('still here locally') },
+    });
+    assert.deepEqual(plan.copyToDest, ['memo.md']);
+    assert.deepEqual(plan.deleteFromDest, []);
+  });
+
   test('identical content on both sides is a no-op', () => {
     const plan = planSync({
       src: { 'memo.md': h('same') },
