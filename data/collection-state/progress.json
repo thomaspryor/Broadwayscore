@@ -108,7 +108,9 @@
     "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
-    "the-children-off-west-end-2026/london-box-office--stuart-king.json"
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -2627,7 +2629,15 @@
     "school-girls-or-the-african-mean-girls-play-2026/thestage--unknown.json",
     "school-girls-or-the-african-mean-girls-play-2026/times-uk--rachel-halliburton.json",
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
-    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json"
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2691,7 +2701,9 @@
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "cinderella-west-end-2026/london-box-office--marian-pashley.json",
       "much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json",
-      "the-children-off-west-end-2026/london-box-office--stuart-king.json"
+      "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+      "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2778,7 +2790,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+  "lastProcessed": "isla-off-broadway-2026/goseeashowpodcast--robby.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -3204,6 +3216,17 @@
       "event": "bb-session",
       "session": "c2cf59fc",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-08-31T17:07:52.063Z",
+      "event": "bb-session",
+      "session": "64cbabb8",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-08-31T17:07:52.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
