@@ -168,8 +168,14 @@ test('every test file that stubs process.exit also installs the unstubbed-exit g
   assert.deepStrictEqual(
     offenders,
     [],
-    'These test files drive a CLI down paths that can call process.exit, but do not install ' +
-      'the guard. An unstubbed exit kills the node --test worker mid-file: the whole file fails ' +
+    // Scope, stated accurately: this catches files that ALREADY stub process.exit
+    // and then drop the guard. It does NOT catch a brand-new file that drives a
+    // CLI main() and never stubs exit at all — the naive case. Detecting that
+    // needs call-graph analysis, not a regex, and a heuristic guess would either
+    // miss it anyway or flag every test that calls any main(). The helper, not
+    // this ratchet, is what protects the naive case once a file adopts it.
+    'These test files stub process.exit but do not install the guard. An unstubbed exit ' +
+      'kills the node --test worker mid-file: the whole file fails ' +
       'with ZERO named subtests and no exception text, and it only ever shows up in CI. Add ' +
       "`import { guardProcessExit } from '<rel>/tests/helpers/process-exit-guard.mjs';` and a " +
       'top-level `guardProcessExit();` to each:\n  ' +
@@ -239,6 +245,89 @@ test('a later subtest that must still be reported', () => {});
     assert.ok(
       /a later subtest that must still be reported/.test(guarded),
       `with the guard the rest of the file must still run. Got:\n${guarded}`
+    );
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('the guard STAYS armed after a nested subtest finishes (afterEach-swap hole, found in review)', () => {
+  // afterEach fires for every subtest, including a nested t.test(). Restoring the
+  // real process.exit there disarmed the guard for the REST of the enclosing
+  // parent test, which then ran unguarded while the ratchet still reported the
+  // file as protected. Arming once per file with before/after has no such window.
+  const helperUrl = pathToFileURL(path.join(repoRoot, 'tests', 'helpers', 'process-exit-guard.mjs')).href;
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'process-exit-guard-nested-'));
+  const childEnv = { ...process.env };
+  delete childEnv.NODE_TEST_CONTEXT;
+  try {
+    const file = path.join(tmp, 'nested.test.mjs');
+    writeFileSync(
+      file,
+      `import { guardProcessExit } from '${helperUrl}';
+import { test } from 'node:test';
+guardProcessExit();
+test('parent that runs a subtest and THEN hits an unstubbed exit', async (t) => {
+  await t.test('inner subtest', () => {});
+  process.exit(1);
+});
+test('a later top-level subtest that must still be reported', () => {});
+`
+    );
+    const r = spawnSync(process.execPath, ['--test', file], { encoding: 'utf8', env: childEnv });
+    const out = `${r.stdout || ''}${r.stderr || ''}`;
+    assert.match(out, /(?:ℹ|#)\s*tests\s+\d/, `fixture produced no TAP summary, proof would be vacuous:\n${out}`);
+    assert.match(
+      out,
+      /parent that runs a subtest and THEN hits an unstubbed exit/,
+      `the parent must still be NAMED after its subtest ran — the guard was disarmed. Got:\n${out}`
+    );
+    assert.match(
+      out,
+      /a later top-level subtest that must still be reported/,
+      `the file must survive the parent's exit attempt. Got:\n${out}`
+    );
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('an exit SWALLOWED by a catch in the code under test still fails the test', () => {
+  // The reason the guard records as well as throws. scripts/linear-next.js wraps
+  // three refusal paths in `try { process.exit(1) } catch { console.error(...) }`.
+  // With only a throw, the refusal is caught, logged as a warning, and execution
+  // continues past the guard into dispatch — a regression there would be a silent
+  // PASS, strictly worse than the loud-but-unreadable failure this replaced.
+  const helperUrl = pathToFileURL(path.join(repoRoot, 'tests', 'helpers', 'process-exit-guard.mjs')).href;
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'process-exit-guard-swallow-'));
+  const childEnv = { ...process.env };
+  delete childEnv.NODE_TEST_CONTEXT;
+  try {
+    const file = path.join(tmp, 'swallowed.test.mjs');
+    writeFileSync(
+      file,
+      `import { guardProcessExit } from '${helperUrl}';
+import { test } from 'node:test';
+guardProcessExit();
+// Mirrors linear-next.js's real shape: the CLI catches its own exit and continues.
+function cliThatSwallowsItsOwnRefusal() {
+  try { process.exit(1); } catch { console.error('guard failed (continuing)'); }
+  return 'dispatched anyway';
+}
+test('a refusal the CLI swallows must NOT pass silently', () => {
+  const result = cliThatSwallowsItsOwnRefusal();
+  if (result !== 'dispatched anyway') throw new Error('unexpected');
+});
+`
+    );
+    const r = spawnSync(process.execPath, ['--test', file], { encoding: 'utf8', env: childEnv });
+    const out = `${r.stdout || ''}${r.stderr || ''}`;
+    assert.match(out, /(?:ℹ|#)\s*tests\s+\d/, `fixture produced no TAP summary:\n${out}`);
+    assert.notEqual(r.status, 0, `a swallowed unstubbed exit must FAIL the run, got exit 0:\n${out}`);
+    assert.match(
+      out,
+      /UNSTUBBED_PROCESS_EXIT/,
+      `the swallowed exit must be reported, not lost. Got:\n${out}`
     );
   } finally {
     rmSync(tmp, { recursive: true, force: true });

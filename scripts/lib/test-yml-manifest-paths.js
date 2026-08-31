@@ -13,7 +13,18 @@ const fs = require('fs');
 const path = require('path');
 const { readPushPathsFrom, isCovered } = require('./test-yml-push-paths.js');
 
-const MANIFEST_FILES = ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt'];
+// All THREE manifests test.yml actually consumes. The e2e one was missed on the
+// first pass and caught in pre-merge review: test.yml:4996 reads it exactly the
+// way :3539/:3545 read the other two, so omitting it left the gate green while an
+// e2e-unit test registered there but placed outside tests/** would reintroduce
+// precisely the bug this gate blocks. All 75 of its entries sit under tests/**
+// today, so there was no live gap — but an invisible blind spot in a blocking
+// gate is the thing that lets the bug class come back a fifth time.
+const MANIFEST_FILES = [
+  'tests/unit-test-manifest.txt',
+  'tests/unit-test-manifest-tsx.txt',
+  'tests/e2e-unit-test-manifest.txt',
+];
 const WORKFLOW_REL = '.github/workflows/test.yml';
 
 /** Manifest lines are one repo-relative path each; `#` comments and blanks skipped. */

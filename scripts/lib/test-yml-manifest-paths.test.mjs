@@ -35,8 +35,17 @@ function fixture({ pushPaths, manifestEntries, tsxEntries = [] }) {
       ...pushPaths.map((p) => `      - '${p}'`),
       '  schedule:', "    - cron: '0 6 * * *'", 'jobs: {}', ''].join('\n')
   );
-  fs.writeFileSync(path.join(dir, 'tests/unit-test-manifest.txt'), manifestEntries.join('\n') + '\n');
-  fs.writeFileSync(path.join(dir, 'tests/unit-test-manifest-tsx.txt'), tsxEntries.join('\n') + '\n');
+  // Derived from MANIFEST_FILES, never a hardcoded pair: when the gate learned
+  // about a third manifest, a hardcoded fixture broke every test with
+  // "manifest not found" instead of exercising the rule.
+  const contents = {
+    'tests/unit-test-manifest.txt': manifestEntries,
+    'tests/unit-test-manifest-tsx.txt': tsxEntries,
+  };
+  for (const m of MANIFEST_FILES) {
+    fs.mkdirSync(path.dirname(path.join(dir, m)), { recursive: true });
+    fs.writeFileSync(path.join(dir, m), (contents[m] ?? []).join('\n') + '\n');
+  }
   return dir;
 }
 
@@ -160,8 +169,41 @@ test('push-path globs keep GitHub Actions semantics: ** crosses segments, bare *
   assert.ok(!isCovered('scripts/top-level.js', entries));
 });
 
-test('MANIFEST_FILES names both manifests that actually exist in the repo', () => {
+test('MANIFEST_FILES covers EVERY manifest test.yml actually consumes — not just the ones we remembered', () => {
+  // The first version of this gate scanned two manifests and its assertion said
+  // "both", while test.yml reads three. That is the shape of blind spot that lets
+  // this bug class return: a gate that is green because it never looked. So do not
+  // assert against a hardcoded list — derive the truth from test.yml itself.
+  const yml = fs.readFileSync(path.join(REPO, '.github/workflows/test.yml'), 'utf8');
+  const consumed = [...yml.matchAll(/tests\/[a-z0-9-]*manifest[a-z0-9-]*\.txt/g)].map((m) => m[0]);
+  const missing = [...new Set(consumed)].filter((m) => !MANIFEST_FILES.includes(m));
+  assert.deepEqual(
+    missing,
+    [],
+    `test.yml consumes manifest(s) the gate never scans: ${missing.join(', ')}. ` +
+      'A test registered there but placed outside every push-path glob would trigger zero CI ' +
+      'with this gate reporting green. Add them to MANIFEST_FILES.'
+  );
   for (const m of MANIFEST_FILES) {
     assert.ok(fs.existsSync(path.join(REPO, m)), `${m} is named by the gate but missing from the repo`);
   }
+  assert.ok(MANIFEST_FILES.length >= 3, `expected at least the 3 known manifests, got ${MANIFEST_FILES.length}`);
+});
+
+test('glob translation handles the forms a blocking gate must not get wrong', () => {
+  // All three were latent (no current entry hits them) and all three were found in
+  // pre-merge review. On a BLOCKING gate a crash or a false green is a CI outage.
+  const q = readPushPaths(["on:", "  push:", "    paths:", "      - 'foo?.js'", 'jobs: {}'].join('\n'));
+  assert.ok(isCovered('foo?.js', q), "'?' must be a literal, not a regex quantifier");
+  assert.ok(!isCovered('fo.js', q), "unescaped '?' would have matched 'fo.js'");
+
+  const spaced = ["dir with space/**"];
+  assert.ok(isCovered('dir with space/a.test.mjs', spaced), 'a real space must stay literal');
+  assert.ok(!isCovered('dirXwithXspace/a.test.mjs', spaced), 'the space placeholder must not leak into .*');
+
+  // GitHub applies paths in order, last match wins, so an exclusion takes coverage back.
+  const negated = ['scripts/lib/**', '!scripts/lib/generated/**'];
+  assert.ok(isCovered('scripts/lib/real.test.mjs', negated));
+  assert.ok(!isCovered('scripts/lib/generated/x.test.mjs', negated), 'a ! entry must REMOVE coverage, not add it');
+  assert.ok(isCovered('scripts/lib/generated/x.test.mjs', ['scripts/lib/**']), 'control: positive-only still covers');
 });

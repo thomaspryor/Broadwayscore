@@ -48,18 +48,43 @@ function readPushPaths(yml) {
  * not just the `dir/**` entries.
  */
 function globToRegExp(entry) {
-  const escaped = entry.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+  // A leading '!' is GitHub's NEGATION marker, not part of the path — strip it
+  // here and let isCovered() apply the negation. See isCovered's note.
+  const body = entry.startsWith('!') ? entry.slice(1) : entry;
+  // '?' MUST be escaped: unescaped, 'foo?.js' compiles to the quantifier
+  // /^foo?\.js$/ (which matches 'fo.js'), and a leading '?' throws
+  // "Nothing to repeat". Found in pre-merge review — latent today, but this
+  // parser now backs a BLOCKING gate, so a crash or an over-match is a CI
+  // outage rather than a warning.
+  const escaped = body.replace(/[.+^${}()|[\]\\?]/g, '\\$&');
+  // NUL as the '**' placeholder, NOT a space. A space is a legal character in a
+  // path, so the old space placeholder turned any real space in an entry into
+  // '.*' and silently over-matched. NUL cannot occur in a path.
+  const SENTINEL = '\u0000';
   const pattern = escaped
-    .replace(/\*\*/g, ' ')
-    .replace(/\*/g, '[^/]*')
-    .replace(/ /g, '.*');
+    .split('**').join(SENTINEL)
+    .split('*').join('[^/]*')
+    .split(SENTINEL).join('.*');
   return new RegExp(`^${pattern}$`);
 }
 
-/** Would a push touching only `repoRel` match any entry in the allow-list? */
+/**
+ * Would a push touching only `repoRel` be matched by the allow-list?
+ *
+ * GitHub evaluates `paths` in order and LAST MATCH WINS, so a later `!foo/**`
+ * exclusion can take back coverage an earlier positive entry granted. Treating a
+ * `!` entry as a positive literal (the pre-review behaviour) reported a file as
+ * reachable when the filter actually excludes it — a false GREEN on a blocking
+ * gate. There are no negation entries in test.yml today; this keeps it correct
+ * if one is ever added.
+ */
 function isCovered(repoRel, pathEntries) {
   const posixRel = repoRel.split(path.sep).join('/');
-  return pathEntries.some((entry) => globToRegExp(entry).test(posixRel));
+  let covered = false;
+  for (const entry of pathEntries) {
+    if (globToRegExp(entry).test(posixRel)) covered = !entry.startsWith('!');
+  }
+  return covered;
 }
 
 /** Convenience: read the allow-list straight off disk. */
