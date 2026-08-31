@@ -27,6 +27,15 @@
  * closes it and pages the owner via the digest. Kill switch:
  * NO_PAYLOAD_REAPER_DISABLED=1. See scripts/lib/no-payload-reaper.js.
  *
+ * BRO-2586: a second narrow exception — a 🤖 auto-dispatched workspace that
+ * is dead (no claude process at all, the idle-unmarked case above) AND has no
+ * dispatch-ledger launch record and no task file ("unmapped" in
+ * scripts/lib/zombie-tab-sweep.js) is reclaimed (closed, never re-dispatched)
+ * instead of sitting open forever holding a cmux terminal-runtime slot. Tab
+ * provenance alone (never owner-opened, never selected, confirmed dead) is
+ * the basis — see scripts/lib/prune-dead-autodispatch-tabs.js. Kill switch:
+ * RECLAIM_UNMAPPED_DISABLED=1.
+ *
  *   bsc-prune            close every ✅-marked workspace, list idle un-marked
  *   bsc-prune --dry-run  show what would close, close nothing
  *   bsc-prune --help, -h show this message, do nothing else
@@ -42,6 +51,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { hasAutoDispatchMarker, isCrownTab } = require('./lib/prune-closeable.js');
+const { isReclaimable } = require('./lib/prune-dead-autodispatch-tabs.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
 // BRO-2575: the OS process table is the only liveness signal not read through
@@ -329,14 +339,18 @@ function mainLocked({ dryRun, deps }) {
   // only when the task store gives a decisive answer: completed/duplicate →
   // corpse (close), pending → never booted (close + re-dispatch headless,
   // where surface attachment cannot bite). in_progress stays with the #883
-  // reconciler; unmapped tabs are report-only. The idle bucket's dead
-  // breadcrumbs above are terminal ledger entries, so these closes can never
-  // be mistaken for owner closes by sweepVanished; revival recurrence is
-  // capped by an explicit deadAttemptsForTask check inside the sweep (the
+  // reconciler; unmapped tabs with no task/ledger mapping at all are
+  // RECLAIMED (closed, never re-dispatched — see prune-dead-autodispatch-tabs.js:
+  // BRO-2586, cmux's terminal-runtime ceiling was throttled by these
+  // accumulating with nothing ever allowed to touch them). The idle bucket's
+  // dead breadcrumbs above are terminal ledger entries, so these closes can
+  // never be mistaken for owner closes by sweepVanished; revival recurrence
+  // is capped by an explicit deadAttemptsForTask check inside the sweep (the
   // --headless path never reaches bsc-next's own deadDispatchGuard).
   sweepZombieTabs({
     all, idle, dryRun,
-    closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn,
+    closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn,
+    claudeAliveInFn, surfaceAliveInFn,
   });
 
   // No-payload reaper (card #856, Session-system overhaul S3, 4b): distinct
@@ -488,15 +502,24 @@ function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
   return (archived && archived.status) || null;
 }
 
-function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep }) {
+function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, listWorkspacesFn = listWorkspaces, claudeAliveInFn = claudeAliveIn, surfaceAliveInFn = terminalSurfaceAliveIn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep }) {
   if (process.env.ZOMBIE_TAB_SWEEP_DISABLED === '1') return;
 
   const idleRefs = new Set(idle.map(w => w.ref));
   const deadAutoTabs = idle.filter(w => hasAutoDispatchMarker(w.title));
   if (!deadAutoTabs.length) return;
 
+  // Ship-check catch (Codex adversarial review, BRO-2586): a ledger-read
+  // failure already fell back to entries=[] for classifyZombieTabs, which
+  // pre-existing corpses/revive treat as "no launch found for anyone" — safe,
+  // because that just means MORE tabs land in report/'unmapped' (harmless,
+  // reported not closed). The new reclaim path below turns that same failure
+  // mode destructive (mass-closes 'unmapped' tabs instead of mass-reporting
+  // them) unless it explicitly fails closed on a bad read — reclaimActive
+  // below is gated on ledgerReadOk staying true.
   let entries;
-  try { entries = readLedgerEntriesFn(); } catch { entries = []; }
+  let ledgerReadOk = true;
+  try { entries = readLedgerEntriesFn(); } catch { entries = []; ledgerReadOk = false; }
   // dispatchLedger.launchByRef is last-match (card #960) — cmux recycles
   // workspace refs across restarts, so first-match could close/redispatch
   // the wrong, long-gone task's tab.
@@ -508,10 +531,33 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
     hasAutoDispatchMarker,
   });
 
-  if (report.length) {
-    console.log(`\n[zombie-sweep] ${report.length} dead 🤖 tab(s) left alone (${report.map(r => `${r.ref} ${r.reason}`).join(', ')})`);
+  // BRO-2586: 'unmapped' report entries (no ledger launch record, no task
+  // file) are the case that accumulates — classifyZombieTabs is right to
+  // decline them (no task-STATUS evidence), but tab PROVENANCE is a separate,
+  // sufficient question (prune-dead-autodispatch-tabs.js's isReclaimable):
+  // never owner-opened (🤖 is never stamped on an owner tab), never selected,
+  // never a crown tab, and confirmed dead — already guaranteed for every
+  // 'unmapped' entry by classifyZombieTabs's own upstream filtering (it never
+  // reports a selected/crown/non-🤖 tab), so the split here is just a name
+  // filter. The real safety check is the FRESH re-list immediately before
+  // close, below — RECLAIM_UNMAPPED_DISABLED=1 kill switch, same convention
+  // as ZOMBIE_TAB_SWEEP_DISABLED / NO_PAYLOAD_REAPER_DISABLED.
+  const reclaimCandidates = report.filter(r => r.reason === 'unmapped');
+  const stillReported = report.filter(r => r.reason !== 'unmapped');
+  const reclaimDisabled = process.env.RECLAIM_UNMAPPED_DISABLED === '1';
+
+  if (stillReported.length) {
+    console.log(`\n[zombie-sweep] ${stillReported.length} dead 🤖 tab(s) left alone (${stillReported.map(r => `${r.ref} ${r.reason}`).join(', ')})`);
   }
-  if (!corpses.length && !revive.length) return;
+  if (reclaimCandidates.length && reclaimDisabled) {
+    console.log(`\n[zombie-sweep] ${reclaimCandidates.length} unmapped dead 🤖 tab(s) eligible to reclaim but RECLAIM_UNMAPPED_DISABLED=1 (${reclaimCandidates.map(r => r.ref).join(', ')})`);
+  }
+  if (reclaimCandidates.length && !reclaimDisabled && !ledgerReadOk) {
+    console.log(`\n[zombie-sweep] ${reclaimCandidates.length} unmapped dead 🤖 tab(s) left alone this tick — ledger read failed, reclaim fails closed on uncertainty (${reclaimCandidates.map(r => r.ref).join(', ')})`);
+  }
+  const reclaimActive = reclaimCandidates.length && !reclaimDisabled && ledgerReadOk;
+
+  if (!corpses.length && !revive.length && !reclaimActive) return;
 
   // Recurrence guard BEFORE the fan-out cap (ship-check catch: a guarded
   // task in a cap slot starved a revivable one for a tick). The guard must
@@ -542,6 +588,7 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
     corpses.forEach(c => console.log(`[dry-run][zombie-sweep] would close corpse ${c.ref} "${c.title}" (${c.reason})`));
     guarded.forEach(g => console.log(`[dry-run][zombie-sweep] would close guarded husk ${g.ref} task #${g.taskId} (${g.reason === 'infra' ? `failed to boot ${g.deaths}x in a row` : `died ${g.deaths}x`}, no re-dispatch)`));
     toRevive.forEach(r => console.log(`[dry-run][zombie-sweep] would close + re-dispatch headless ${r.ref} task #${r.taskId}`));
+    if (reclaimActive) reclaimCandidates.forEach(r => console.log(`[dry-run][zombie-sweep] would reclaim unmapped dead 🤖 tab ${r.ref} "${r.title}" (no ledger/task mapping)`));
     return;
   }
 
@@ -572,7 +619,44 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
   }
   if (deferred.length) console.log(`[zombie-sweep] ${deferred.length} more never-booted tab(s) deferred to the next tick (per-tick cap)`);
 
-  pageFn({ corpses, revive: revived, guarded: guardedClosed });
+  // Reclaim unmapped dead 🤖 tabs (BRO-2586). This is the ONE close path in
+  // this file with zero task-status evidence (no ledger launch record, or a
+  // launch record whose task file/status is unresolvable), so unlike
+  // corpses/guarded/revive above it gets a genuine TOCTOU re-list AND a fresh
+  // two-signal liveness re-probe (cmux-workspaces.js checkLiveness — the same
+  // claudeAliveIn + terminalSurfaceAliveIn pair the `idle` bucket itself was
+  // built from) right before the destructive call, using FRESH title/
+  // selected/liveness — not the classify-time snapshot, which by
+  // construction already reads reclaimable-except-liveness for every
+  // candidate here (ship-check catch, Codex adversarial review: hardcoding
+  // hasLiveClaude:false at close time would prove nothing about the window
+  // between classification and this loop, the exact TOCTOU gap this re-check
+  // exists to close). Never re-dispatched: there is no known task to revive,
+  // only a dead husk to free the cmux slot from.
+  const reclaimed = [];
+  if (reclaimActive) {
+    for (const r of reclaimCandidates) {
+      let fresh;
+      try { fresh = listWorkspacesFn().find(x => x.ref === r.ref); }
+      catch (e) { console.error(`[zombie-sweep] WARN re-list failed for ${r.ref}, skipping reclaim this tick: ${e.message}`); continue; }
+      if (!fresh) {
+        console.log(`[zombie-sweep] ${r.ref} no longer reclaimable at close time (already gone) — left alone`);
+        continue;
+      }
+      const { dead: freshDead } = checkLiveness(fresh.ref, claudeAliveInFn, surfaceAliveInFn);
+      if (!isReclaimable({ title: fresh.title, selected: fresh.selected, hasLiveClaude: !freshDead, isAutoDispatched: hasAutoDispatchMarker(fresh.title) })) {
+        console.log(`[zombie-sweep] ${r.ref} no longer reclaimable at close time (selected, renamed, or a live claude process now) — left alone`);
+        continue;
+      }
+      console.log(`[zombie-sweep] reclaiming unmapped dead 🤖 tab ${r.ref} "${r.title}" (no ledger/task mapping)`);
+      try { closeWorkspaceFn(r.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${r.ref}: ${e.message}`); continue; }
+      try { appendLedgerEntryFn({ event: 'prune-closed', taskId: r.taskId || 'unknown', subject: r.subject || null, title: r.title, workspaceRef: r.ref, reason: `zombie-${r.reason}` }); }
+      catch (e) { console.error(`[zombie-sweep] WARN ledger write failed for ${r.ref}: ${e.message}`); }
+      reclaimed.push(r);
+    }
+  }
+
+  pageFn({ corpses, revive: revived, guarded: guardedClosed, reclaimed });
 }
 
 // Fresh entries so the death count includes THIS tick's idle-bucket
@@ -605,7 +689,7 @@ function redispatchHeadless(taskId) {
 // mass-outage scenario this sweep exists for (second-opinion catch). The
 // taskId is in the key because cmux recycles refs — a recycled ref's fresh
 // incident within the cooldown must not be swallowed either (Codex catch).
-function pageZombieSweep({ corpses, revive, guarded = [] }) {
+function pageZombieSweep({ corpses, revive, guarded = [], reclaimed = [] }) {
   try {
     const { routeAlert } = require('./lib/owner-alert-router.js');
     const events = [
@@ -615,6 +699,12 @@ function pageZombieSweep({ corpses, revive, guarded = [] }) {
       // task that keeps dying with no more automatic retries (QA catch:
       // these were console-only before). Warning severity, not info.
       ...guarded.map(g => ({ ref: g.ref, taskId: g.taskId, severity: 'warning', line: `closed ${g.ref} for task #${g.taskId} which has ${g.reason === 'infra' ? `failed to boot ${g.deaths}x in a row (cmux itself looks wedged)` : `died ${g.deaths}x`} — automatic revival stopped (deadDispatchGuard threshold). Investigate, then re-dispatch with: node scripts/bsc-next.js --id ${g.taskId} --force` })),
+      // Reclaimed 'unmapped' tabs (BRO-2586) are the LOWEST-evidence close
+      // path here — no ledger launch record, no task file, so warning
+      // severity even though nothing failed: if this ever closes a tab whose
+      // real task was in-progress with a lost ledger write, this line is the
+      // only place that surfaces it (no re-dispatch happens for these).
+      ...reclaimed.map(r => ({ ref: r.ref, taskId: r.taskId, severity: 'warning', line: `closed ${r.ref} "${r.title}" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.` })),
     ];
     for (const e of events) {
       routeAlert({

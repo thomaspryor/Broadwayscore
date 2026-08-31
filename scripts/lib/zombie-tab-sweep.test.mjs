@@ -305,6 +305,117 @@ test('sweepZombieTabs kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 does nothing', ()
   assert.deepEqual(calls.closed, []);
 });
 
+// ── BRO-2586: reclaiming 'unmapped' dead 🤖 tabs (no ledger/task mapping) ──
+
+test('sweepZombieTabs reclaim: an unmapped dead 🤖 tab (no ledger record) is closed, ledger-written, and reaches pageFn', () => {
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [], ledger: [], paged: null };
+  const ws = { ref: 'workspace:70', title: '🤖⚡ Data·orphan task', selected: false };
+  prune.sweepZombieTabs({
+    all: [ws],
+    idle: [ws],
+    dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: (e) => calls.ledger.push(e),
+    readLedgerEntriesFn: () => [], // no launch record for this ref anywhere
+    listWorkspacesFn: () => [ws], // fresh re-list: unchanged
+    claudeAliveInFn: () => false,
+    surfaceAliveInFn: () => false,
+    taskStatusByIdFn: () => null,
+    redispatchFn: () => { throw new Error('must not redispatch an unmapped reclaim — no known task'); },
+    pageFn: (payload) => { calls.paged = payload; },
+  });
+  assert.deepEqual(calls.closed, ['workspace:70']);
+  assert.equal(calls.ledger.length, 1);
+  assert.equal(calls.ledger[0].event, 'prune-closed');
+  assert.equal(calls.ledger[0].reason, 'zombie-unmapped');
+  assert.equal(calls.ledger[0].workspaceRef, 'workspace:70');
+  assert.deepEqual(calls.paged.reclaimed.map(r => r.ref), ['workspace:70']);
+});
+
+test('sweepZombieTabs reclaim: RECLAIM_UNMAPPED_DISABLED=1 leaves unmapped dead 🤖 tabs alone', () => {
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [] };
+  const ws = { ref: 'workspace:71', title: '🤖⚡ Data·orphan task 2', selected: false };
+  process.env.RECLAIM_UNMAPPED_DISABLED = '1';
+  try {
+    prune.sweepZombieTabs({
+      all: [ws], idle: [ws], dryRun: false,
+      closeWorkspaceFn: (ref) => calls.closed.push(ref),
+      appendLedgerEntryFn: () => {},
+      readLedgerEntriesFn: () => [],
+      listWorkspacesFn: () => { throw new Error('must not re-list when reclaim is disabled'); },
+      taskStatusByIdFn: () => null,
+      redispatchFn: () => {},
+      pageFn: () => {},
+    });
+  } finally { delete process.env.RECLAIM_UNMAPPED_DISABLED; }
+  assert.deepEqual(calls.closed, []);
+});
+
+test('sweepZombieTabs reclaim: a fresh close-time liveness re-probe that says ALIVE overrides the classify-time dead verdict', () => {
+  // Ship-check catch (Codex adversarial review): a hardcoded hasLiveClaude:
+  // false at close time would prove nothing about a process that started (or
+  // was found alive) in the window between classification and this loop.
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [] };
+  const ws = { ref: 'workspace:72', title: '🤖⚡ Data·revived task', selected: false };
+  prune.sweepZombieTabs({
+    all: [ws], idle: [ws], dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: () => {},
+    readLedgerEntriesFn: () => [],
+    listWorkspacesFn: () => [ws],
+    claudeAliveInFn: () => true,
+    surfaceAliveInFn: () => true,
+    taskStatusByIdFn: () => null,
+    redispatchFn: () => {},
+    pageFn: () => {},
+  });
+  assert.deepEqual(calls.closed, []);
+});
+
+test('sweepZombieTabs reclaim: a ledger read failure fails closed — no reclaim this tick', () => {
+  // Pre-existing behavior for corpses/revive already treats a ledger-read
+  // failure as "no launch found for anyone" (harmless — lands in report, not
+  // closed). This proves the NEW destructive reclaim path doesn't inherit
+  // that fail-open direction.
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [] };
+  const ws = { ref: 'workspace:73', title: '🤖⚡ Data·orphan task 3', selected: false };
+  prune.sweepZombieTabs({
+    all: [ws], idle: [ws], dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: () => {},
+    readLedgerEntriesFn: () => { throw new Error('ledger unreadable'); },
+    listWorkspacesFn: () => { throw new Error('must not re-list when the ledger read already failed closed'); },
+    taskStatusByIdFn: () => null,
+    redispatchFn: () => {},
+    pageFn: () => {},
+  });
+  assert.deepEqual(calls.closed, []);
+});
+
+test('sweepZombieTabs reclaim: TOCTOU re-list catches the tab becoming selected between classify and close', () => {
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [] };
+  const stale = { ref: 'workspace:74', title: '🤖⚡ Data·orphan task 4', selected: false };
+  const fresh = { ref: 'workspace:74', title: '🤖⚡ Data·orphan task 4', selected: true };
+  prune.sweepZombieTabs({
+    all: [stale], idle: [stale], dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: () => {},
+    readLedgerEntriesFn: () => [],
+    listWorkspacesFn: () => [fresh],
+    claudeAliveInFn: () => false,
+    surfaceAliveInFn: () => false,
+    taskStatusByIdFn: () => null,
+    redispatchFn: () => {},
+    pageFn: () => {},
+  });
+  assert.deepEqual(calls.closed, []);
+});
+
 // ── Crown (owner-loop) tabs — task #1751 ───────────────────────────────────
 
 test('crown tab with a completed task → reported, never a corpse', () => {
