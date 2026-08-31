@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-31T13:06:13.405Z",
-  "processed": 62,
-  "failed": 1304,
-  "successRate": "4.5%",
+  "updatedAt": "2026-08-31T13:11:10.118Z",
+  "processed": 63,
+  "failed": 1313,
+  "successRate": "4.6%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 3,
@@ -13,31 +13,8 @@
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-31T03:05:12.827Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-31T05:24:46.416Z",
-      "event": "bb-session",
-      "session": "0cf2e6fd",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-31T05:25:06.664Z",
-      "event": "bb-session",
-      "session": "39c24094",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-08-31T11:35:00.536Z",
-      "event": "bb-session",
-      "session": "bf0b44cb",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
     {
       "t": "2026-08-31T11:35:19.766Z",
       "event": "bb-session",
@@ -130,6 +107,29 @@
       "t": "2026-08-31T12:54:12.241Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-31T13:07:07.048Z",
+      "event": "bb-session",
+      "session": "bd9a1c0b",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-31T13:07:27.627Z",
+      "event": "bb-session",
+      "session": "8ca529a3",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-08-31T13:08:16.952Z",
+      "event": "bb-session",
+      "session": "09b778a3",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-31T13:08:17.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
