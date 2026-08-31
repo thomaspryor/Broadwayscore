@@ -137,3 +137,26 @@ test('discover-show-score-urls-from-listings.js and audit-show-score-urls.js do 
   assert.match(discoverSrc, /require\(['"]\.\/lib\/deduplication['"]\)/);
   assert.match(auditSrc, /require\(['"]\.\/lib\/deduplication['"]\)/);
 });
+
+// BRO-2592 parity check on live Show Score listing data found 8 lost
+// listing-venue -> show-venue matches after the swap; 7 were real gaps now
+// covered by these two new VENUE_ALIASES entries (Met Opera, spit&vigor).
+// Anchored full-string (Met Opera) / start-anchored (spit&vigor) per
+// ship-check adversarial review, so they don't also swallow an unrelated
+// venue that merely contains the same words.
+test('venuesMatch: new BRO-2592 aliases match the real Show Score listing forms', () => {
+  assert.equal(venuesMatch('The Metropolitan Opera', 'Metropolitan Opera House'), true);
+  assert.equal(venuesMatch('Metropolitan Opera', 'Metropolitan Opera House'), true);
+  assert.equal(venuesMatch("spit&vigor", "spit&vigor's Tiny Baby Blackbox Theatre"), true);
+});
+
+test('venuesMatch: new BRO-2592 aliases do not widen to swallow a distinct room sharing the same words', () => {
+  assert.equal(venuesMatch('Metropolitan Opera', 'Metropolitan Opera Guild Auditorium'), false);
+  assert.equal(venuesMatch('Metropolitan Opera House', 'Metropolitan Opera Guild Auditorium'), false);
+});
+
+test('venuesMatch: bare "BAM" stays unaliased — three distinct BAM stages must not collapse', () => {
+  assert.equal(venuesMatch('BAM', 'BAM Harvey Theater'), false);
+  assert.equal(venuesMatch('BAM', 'BAM Fisher (Fishman Space)'), false);
+  assert.equal(venuesMatch('BAM Harvey Theater', 'BAM Fisher (Fishman Space)'), false);
+});
