@@ -175,7 +175,14 @@ test('eligible card: LLM drafts a mutating command — rejected before ever writ
     notionBrain: fakeNotionBrain(calls),
   });
   assert.equal(r.action, 'failed');
-  assert.match(r.detail, /not a safe-form shape/);
+  // BRO-2546: the refusal now names the CAUSE the validator actually gave.
+  // `node scripts/rebuild-all-reviews.js` really is a shape refusal (it
+  // matches no SAFE_CHECK_FORMS regex at all), so 'shape' is the honest tag
+  // here — unlike `test -f data/shows.json`, which used to be reported the
+  // same way and is not a shape problem. Covered in
+  // tests/unit/enrich-card-acceptance-drafting.test.mjs.
+  assert.match(r.detail, /command rejected \(shape\)/);
+  assert.match(r.detail, /rebuild-all-reviews\.js/);
   assert.equal(calls.length, 0);
 });
 

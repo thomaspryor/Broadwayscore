@@ -219,15 +219,45 @@ const SAFE_CHECK_FORMS = [
 // audit-/lint- prefix.
 const MUTATING_SCRIPT_RE = /(^|\/)(rebuild-all-reviews|gather-reviews|collect-review-texts)\.(m|c)?js$|(^|\/)(push|send|fix|ingest)-[^/]*\.(m|c)?js$/i;
 
-function isSafeCheckCommand(cmd) {
+// BRO-2546: every caller used to get one bit back ("safe" or "not safe") and
+// then had to invent its own explanation for the refusal. enrich-card-
+// acceptance.js invented "command is not a safe-form shape", which is simply
+// wrong for the most common real refusal: `test -f data/shows.json` is
+// PERFECTLY shaped, it just names a directory the `test -f` form's prefix
+// allowlist (docs/ memory/ tests/ src/ scripts/) does not cover. A card
+// author told "not a safe-form shape" rewrites a well-formed command and gets
+// refused again — measured as 7-of-8 enrichment failures on 2026-08-30, with
+// two live cards (BRO-2311, BRO-2538) refusing mid-dispatch for exactly this.
+//
+// So the decision and its REASON are produced together, by one function, and
+// isSafeCheckCommand is a thin `.ok` on top of it — there is no second copy of
+// the rules that could drift (CLAUDE.md §15).
+//
+// `kind` is a stable machine-readable tag so callers can BRANCH on the cause
+// (the enricher re-prompts differently for 'shape' than for 'path-prefix')
+// rather than string-matching a human sentence:
+//   'shape'           — no SAFE_CHECK_FORMS regex matched the command at all
+//   'path-prefix'     — correct shape, file argument outside the allowed dirs
+//   'traversal'       — correct shape, argument contains a `..` segment
+//   'mutating-script' — correct shape, argument names a data-mutating script
+//   'basename'        — correct shape, script not on the vetted allowlist
+// A command matching several forms is safe if ANY form fully accepts it, so
+// the failure reported is the first matching form's — the most specific
+// diagnosis available, and never a refusal for a command that is in fact ok.
+function explainUnsafeCheckCommand(cmd) {
   const s = String(cmd || '').trim();
+  let firstFailure = null;
   for (const form of SAFE_CHECK_FORMS) {
     const m = form.re.exec(s);
     if (!m) continue;
-    if (!form.pathsGroup) return true;
+    if (!form.pathsGroup) return { ok: true, kind: null, reason: null, path: null };
     const args = m[form.pathsGroup].trim().split(/\s+/);
-    const ok = args.every(a =>
-      !a.split('/').includes('..') &&
+    let failure = null;
+    for (const a of args) {
+      if (a.split('/').includes('..')) {
+        failure = { kind: 'traversal', path: a, reason: `path argument contains a '..' traversal segment: ${a}` };
+        break;
+      }
       // .test.* files are harmless test runs even when their name shares a
       // push-/send- prefix; everything else gets the mutation deny (case-
       // insensitive — APFS is case-insensitive — and covers .mjs/.cjs).
@@ -239,8 +269,18 @@ function isSafeCheckCommand(cmd) {
       // cover `.ts` mutating scripts in the future. Spelling it out here
       // keeps the carve-out's own suffix list in sync with what
       // SAFE_CHECK_FORMS actually allows, independent of that future.
-      (/\.test\.(?:(?:m|c)?js|ts)$/i.test(a) || !MUTATING_SCRIPT_RE.test(a)) &&
-      form.pathPrefix.some(p => a.startsWith(p)) &&
+      if (!/\.test\.(?:(?:m|c)?js|ts)$/i.test(a) && MUTATING_SCRIPT_RE.test(a)) {
+        failure = { kind: 'mutating-script', path: a, reason: `path argument names a data-mutating script, which a verify command may never run: ${a}` };
+        break;
+      }
+      if (!form.pathPrefix.some(p => a.startsWith(p))) {
+        failure = {
+          kind: 'path-prefix',
+          path: a,
+          reason: `command shape is valid but the path '${a}' is not under an allowed directory for this form (allowed prefixes: ${form.pathPrefix.join(', ')})`,
+        };
+        break;
+      }
       // allowBasenames (task #1827's generic audit-/lint- form only): an
       // ALLOWLIST, not a denylist — see AUDIT_LINT_GENERIC_FORM_ALLOWED's
       // comment for why. Case-insensitive comparison, same reasoning as
@@ -251,10 +291,29 @@ function isSafeCheckCommand(cmd) {
       // case-insensitive here too even though an allowlist fails closed by
       // default, since a case-varied match should still resolve to the one
       // vetted script, not silently refuse a legitimate command.
-      (!form.allowBasenames || form.allowBasenames.has(path.basename(a).toLowerCase())));
-    if (ok) return true;
+      if (form.allowBasenames && !form.allowBasenames.has(path.basename(a).toLowerCase())) {
+        failure = {
+          kind: 'basename',
+          path: a,
+          reason: `command shape is valid but '${path.basename(a)}' is not on the vetted read-only allowlist for this form (allowed: ${[...form.allowBasenames].join(', ')})`,
+        };
+        break;
+      }
+    }
+    if (!failure) return { ok: true, kind: null, reason: null, path: null };
+    if (!firstFailure) firstFailure = failure;
   }
-  return false;
+  if (firstFailure) return { ok: false, ...firstFailure };
+  return {
+    ok: false,
+    kind: 'shape',
+    path: null,
+    reason: `command matches none of the allowed safe-check forms: ${s.slice(0, 120)}`,
+  };
+}
+
+function isSafeCheckCommand(cmd) {
+  return explainUnsafeCheckCommand(cmd).ok;
 }
 
 const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), or `bash scripts/lib/sync-audit-checkout.test.sh`';
@@ -706,6 +765,7 @@ module.exports = {
   SCHEMA_PATH,
   SAFE_CHECK_FORMS,
   isSafeCheckCommand,
+  explainUnsafeCheckCommand,
   extractCheckPaths,
   resolveCheckPaths,
   buildTriagePrompt,

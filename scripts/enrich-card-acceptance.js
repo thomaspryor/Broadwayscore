@@ -76,7 +76,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
-const { resolveCheckPaths } = require('./lib/autonomous-triage-core.js');
+const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // task #1830: the ONE chokepoint for Linear reads/writes — never a second,
@@ -415,6 +415,82 @@ function unsanctionedVerifyLineSpans(text) {
   return out;
 }
 
+// BRO-2546 defect 3: the phantom-path refusal these log lines carry is
+// ~127 chars and puts the ONE piece of information a reader needs — the path
+// — at the very end. A flat .slice(0, 100) therefore cut it at exactly the
+// path's first character, and the 2026-08-30 run reported two cards as
+// `... does not exist on disk: s` and `... on disk: d`. Those were read as a
+// single-letter path-extraction bug (they are `scripts/...` and `docs/...`);
+// a whole triage went into a defect that never existed. Truncation that
+// silently eats its own payload is the bug — so keep both ends, and say so
+// with the ellipsis rather than pretending the message ended there.
+const DETAIL_LOG_MAX = 220;
+function truncateDetail(detail, max = DETAIL_LOG_MAX) {
+  const s = String(detail ?? '');
+  if (s.length <= max) return s;
+  const head = Math.ceil((max - 1) * 0.6);
+  return `${s.slice(0, head)}…${s.slice(s.length - (max - 1 - head))}`;
+}
+
+// BRO-2546 defect 2: the drafting model repeatedly emitted `node
+// scripts/x.test.mjs` and `node tests/unit/y.test.mjs` — the right FILE, the
+// right intent, one missing `--test` away from the form its own prompt spells
+// out — and the enricher then refused its own output. Two of the eight cards
+// in the 2026-08-30 run died on exactly this.
+//
+// These rewrites are deliberately mechanical and never widen the gate: each
+// candidate is handed back to isSafeCheckCommand, and the FIRST one that the
+// unmodified validator accepts wins. If none does, the original string is
+// returned unchanged and the normal refusal path runs. So a repair can only
+// ever turn a command the gate already understands the shape of into the
+// canonical spelling of that same shape — it can never launder an unsafe
+// command through.
+function repairDraftedCommand(cmd) {
+  const original = String(cmd || '').trim();
+  // Markdown/shell decoration the model sometimes leaves on the bare command
+  // even though the prompt asks for none (`node --test x`, `$ node --test x`).
+  const stripped = original.replace(/^`+|`+$/g, '').trim().replace(/^[$>]\s+/, '').trim();
+  const candidates = [];
+  const push = c => { const t = String(c).trim(); if (t && !candidates.includes(t)) candidates.push(t); };
+  push(stripped);
+
+  const FILES = String.raw`(?: [\w@./-]+\.test\.(?:m?js|ts))+`;
+  // `node <files>` → `node --test <files>`: the single most common miss.
+  const bareNode = new RegExp(`^node(${FILES})$`).exec(stripped);
+  if (bareNode) {
+    push(`node --test${bareNode[1]}`);
+    // A .test.ts file can only run under the tsx form — plain `node --test`
+    // never gets TS-aware resolution (see SAFE_CHECK_FORMS' own comment).
+    push(`npx tsx --test${bareNode[1]}`);
+  }
+  const nodeTest = new RegExp(`^node --test((?: --test-timeout \\d+)?)(${FILES})$`).exec(stripped);
+  if (nodeTest) push(`npx tsx --test${nodeTest[1]}${nodeTest[2]}`);
+  // `npx tsx <files>` → `npx tsx --test <files>`.
+  const bareTsx = new RegExp(`^npx tsx(${FILES})$`).exec(stripped);
+  if (bareTsx) push(`npx tsx --test${bareTsx[1]}`);
+
+  for (const c of candidates) if (isSafeCheckCommand(c)) return c;
+  return original;
+}
+
+// The one retry (BRO-2546 defect 2). Same shape as triageCard's retry in
+// autonomous-triage-core.js: echo the ACTUAL validator verdict back to the
+// model exactly once, then take whatever comes back or fail for good. The
+// verdict text is the same string the refusal would have been logged with,
+// so a model that reads it is told the real cause — "the path is not under an
+// allowed directory", not "your shape is wrong" (defect 1).
+function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason) {
+  return `${buildEnrichPrompt(card)}
+
+YOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR.
+Rejected command: ${String(rejectedCommand).slice(0, 200)}
+Validator verdict: ${String(rejectionReason).slice(0, 400)}
+
+Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
+If the file you want to assert on is not under docs/, memory/, tests/, src/ or scripts/, do NOT use \`test -f\` at all — name a \`node --test <path>.test.mjs\` test under tests/unit/ that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
+Respond with ONLY the same JSON object as before.`;
+}
+
 function buildEnrichPrompt(card) {
   return `You are drafting the missing "## Acceptance criteria" section for a software backlog card so a dispatcher can verify it was actually done, by RE-RUNNING one command.
 
@@ -681,51 +757,119 @@ async function enrichOneCard(card, opts = {}) {
     return { id: card.id, name: card.name, action: 'owner-judgment', detail: eligibility.reason };
   }
 
-  let raw;
-  try {
-    raw = await opts.callLLM(buildEnrichPrompt(card));
-  } catch (e) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `LLM call failed: ${e.message}` };
+  // BRO-2546 defects 1+2: draft, then validate, then — exactly once — hand
+  // the validator's OWN verdict back to the model and let it try again.
+  //
+  // Before this, a first-draft validation failure was terminal, and the
+  // failure detail said "command is not a safe-form shape" for every cause,
+  // including the two that are not shape problems at all (an off-allowlist
+  // directory, and a phantom path). On the 2026-08-30 8-card run that was 7
+  // failures, 0 enrichments — the enricher exists to unclog the dispatch
+  // funnel and was instead the clog. Retry budget is ONE, matching
+  // triageCard's, so the worst case is 2 cheap calls per card rather than an
+  // unbounded argue-with-the-model loop.
+  //
+  // Transport and parse failures deliberately do NOT retry: an LLM outage or
+  // a malformed response says nothing the model could act on, and doubling
+  // call volume during a provider outage is how a cheap sweep becomes an
+  // expensive one.
+  const MAX_DRAFT_ATTEMPTS = 2;
+  let parsed = null;
+  let bareCommand = null;
+  let pathCheck = null;
+  let lastRejection = null;
+  let retried = false;
+
+  for (let attempt = 0; attempt < MAX_DRAFT_ATTEMPTS; attempt++) {
+    const prompt = attempt === 0
+      ? buildEnrichPrompt(card)
+      : buildEnrichRetryPrompt(card, lastRejection.command, lastRejection.reason);
+    if (attempt > 0) retried = true;
+
+    let raw;
+    try {
+      raw = await opts.callLLM(prompt);
+    } catch (e) {
+      return { id: card.id, name: card.name, action: 'failed', detail: `LLM call failed: ${e.message}` };
+    }
+
+    try {
+      parsed = parseEnrichResponse(raw);
+    } catch (e) {
+      return { id: card.id, name: card.name, action: 'failed', detail: `unparseable LLM response: ${e.message}` };
+    }
+    if (!parsed || typeof parsed.command !== 'string' || !parsed.command.trim()
+        || typeof parsed.acceptanceCriteria !== 'string' || !parsed.acceptanceCriteria.trim()) {
+      return { id: card.id, name: card.name, action: 'failed', detail: 'LLM response missing command/acceptanceCriteria' };
+    }
+
+    // Deterministic repair BEFORE validation: a missing `--test` is the
+    // model's spelling mistake, not a disagreement worth a network round
+    // trip. repairDraftedCommand only ever returns a string the unmodified
+    // isSafeCheckCommand already accepts, or the original untouched.
+    bareCommand = repairDraftedCommand(parsed.command);
+
+    // Guardrail 1: the bare command must itself be one of the allowed shapes
+    // BEFORE path-resolution runs (ship-check finding — resolveCheckPaths only
+    // validates paths for commands that already matched a SAFE_CHECK_FORMS
+    // regex; an unrecognized command like `git push --force` has no path
+    // group at all and sails through resolveCheckPaths as ok:true since there
+    // is nothing for it to check). Reject unsafe shapes here, before ever
+    // touching the filesystem or Notion.
+    //
+    // explainUnsafeCheckCommand, not a bare boolean: `test -f
+    // data/shows.json` is correctly SHAPED and refused purely on its
+    // directory prefix, and reporting that as "not a safe-form shape" sent
+    // every reader — human and model — off rewriting a command that was
+    // already well-formed (BRO-2546 defect 1, and the reason BRO-2311 and
+    // BRO-2538 each got refused twice).
+    const verdict = explainUnsafeCheckCommand(bareCommand);
+    if (!verdict.ok) {
+      lastRejection = { command: bareCommand, reason: verdict.reason, kind: verdict.kind };
+      continue;
+    }
+
+    // Guardrail 2: validate the BARE command's path(s) BEFORE ever writing (task
+    // #171 class — a phantom test path for existing code must never be
+    // accepted just because it's shaped like a safe-form command). Must run on
+    // the bare command, not the surrounding markdown — the safe-form regexes
+    // are anchored (^...$) and never match free text around a backtick span.
+    pathCheck = resolveCheckPaths(bareCommand, { repoRoot: REPO });
+    if (!pathCheck.ok) {
+      lastRejection = { command: bareCommand, reason: pathCheck.reason, kind: 'phantom-path' };
+      continue;
+    }
+    lastRejection = null;
+    break;
   }
 
-  let parsed;
-  try {
-    parsed = parseEnrichResponse(raw);
-  } catch (e) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `unparseable LLM response: ${e.message}` };
-  }
-  if (!parsed || typeof parsed.command !== 'string' || !parsed.command.trim()
-      || typeof parsed.acceptanceCriteria !== 'string' || !parsed.acceptanceCriteria.trim()) {
-    return { id: card.id, name: card.name, action: 'failed', detail: 'LLM response missing command/acceptanceCriteria' };
-  }
-
-  // Guardrail 1: the bare command must itself be one of the allowed shapes
-  // BEFORE path-resolution runs (ship-check finding — resolveCheckPaths only
-  // validates paths for commands that already matched a SAFE_CHECK_FORMS
-  // regex; an unrecognized command like `git push --force` has no path
-  // group at all and sails through resolveCheckPaths as ok:true since there
-  // is nothing for it to check). Reject unsafe shapes here, before ever
-  // touching the filesystem or Notion.
-  const bareCommand = parsed.command.trim();
-  if (!isSafeCheckCommand(bareCommand)) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `command is not a safe-form shape: ${bareCommand.slice(0, 120)}` };
+  if (lastRejection) {
+    // Name the CAUSE, not a guess at it. `kind` comes from the validator that
+    // actually refused, so 'path-prefix' can never be logged as a shape
+    // problem again.
+    const label = lastRejection.kind === 'phantom-path' ? 'phantom path rejected' : `command rejected (${lastRejection.kind})`;
+    return {
+      id: card.id,
+      name: card.name,
+      action: 'failed',
+      detail: `${label}: ${lastRejection.reason}${retried ? ' [after 1 retry]' : ''}`,
+    };
   }
 
-  // Guardrail 2: validate the BARE command's path(s) BEFORE ever writing (task
-  // #171 class — a phantom test path for existing code must never be
-  // accepted just because it's shaped like a safe-form command). Must run on
-  // the bare command, not the surrounding markdown — the safe-form regexes
-  // are anchored (^...$) and never match free text around a backtick span.
-  const pathCheck = resolveCheckPaths(bareCommand, { repoRoot: REPO });
-  if (!pathCheck.ok) {
-    return { id: card.id, name: card.name, action: 'failed', detail: `phantom path rejected: ${pathCheck.reason}` };
-  }
   // resolveCheckPaths may canonicalize the command (e.g. tests/x.test.mjs →
   // tests/unit/x.test.mjs) — substitute the corrected form into the
   // LLM's prose so the section and the actually-checked command can't diverge.
   const finalCommand = pathCheck.checkableDone;
-  const draftedSection = parsed.acceptanceCriteria.includes(bareCommand)
-    ? parsed.acceptanceCriteria.replace(bareCommand, finalCommand)
+  // The prose the model wrote quotes the command IT produced, which
+  // repairDraftedCommand may have rewritten (`node x.test.mjs` → `node --test
+  // x.test.mjs`) and resolveCheckPaths may have rewritten again (tests/ →
+  // tests/unit/). Substitute whichever spelling actually appears, so the
+  // section and the executed command can never disagree; if neither does,
+  // fall back to a minimal section naming only the validated command.
+  const drafted = parsed.acceptanceCriteria;
+  const quoted = [bareCommand, parsed.command.trim()].find(c => c && drafted.includes(c));
+  const draftedSection = quoted
+    ? drafted.split(quoted).join(finalCommand)
     : `## Acceptance criteria\n- \`${finalCommand}\` passes`;
 
   // Guardrail 3 (ship-check finding): the LLM's free-form prose can carry a
@@ -865,7 +1009,7 @@ async function runNotionLeg(args, { dryRun, limit }) {
     const result = await enrichOneCard(card, { callLLM, notionBrain, dryRun, force: !!args.force });
     result.source = 'notion';
     results.push(result);
-    console.error(`[enrich-card-acceptance] notion ${i + 1}/${ids.length} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
+    console.error(`[enrich-card-acceptance] notion ${i + 1}/${ids.length} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     // Rate limiting — same 1s spacing adjudicate-review-queue.js uses between LLM calls.
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
@@ -911,7 +1055,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
     } catch (e) {
       const failResult = { id: identifier, name: identifier, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' };
       results.push(failResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → failed (${failResult.detail.slice(0, 100)})`);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → failed (${truncateDetail(failResult.detail)})`);
       continue;
     }
     if (!full) continue;
@@ -937,7 +1081,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
     results.push(result);
-    console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${String(result.detail).slice(0, 100)})` : ''}`);
+    console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
   return results;
@@ -1006,7 +1150,8 @@ if (require.main === module) {
 }
 
 module.exports = {
-  enrichOneCard, buildEnrichPrompt, parseEnrichResponse, mergeTags, spliceNotes, allFailed,
+  enrichOneCard, buildEnrichPrompt, buildEnrichRetryPrompt, repairDraftedCommand, truncateDetail,
+  parseEnrichResponse, mergeTags, spliceNotes, allFailed,
   logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
   selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
   OPENROUTER_MODEL, GEMINI_MODEL,
