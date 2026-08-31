@@ -1,50 +1,64 @@
-# STATE — BRO-2275 crown session (headless, 2026-08-27)
+# STATE — BRO-2542 (headless, 2026-08-30/31)
 
 ## Done and verified
-- **Acceptance PASS**: `node --test tests/unit/dispatch-stall-detection.test.mjs` → 19/19.
-- **Fixed main-red**: `test.yml` had failed 4 consecutive push runs on main. Two real test
-  failures fixed, one self-healed. Merge commit `f984da52ca7` on `origin/main`, verified by
-  content (`git show 'origin/main:<file>'`), 0 unpushed, 0 conflicts.
-  - `tests/unit/audit-same-job-breadcrumb-coverage.test.mjs` — exact-count 11 → floor `>= 11`.
-    All 12 real sites enumerated, all fields allowlisted, no cross-attribution.
-  - `tests/unit/email-capture-integrity.test.mjs` — added `src/app/api/feedback/route.ts` to
-    KNOWN_FALLBACKS, then (post `/code-review`) tightened the exemption to require the
-    violating LINE be a `process.env.X || ...` fallback. Negative control proved it catches a
-    bare literal at `route.ts:146`.
-  - `no [AUTO-FLAGGED] entries older than 30 days` — self-healed on main at 01:44:09Z.
-- **Outcome comment posted on BRO-2275.**
+- `scripts/lib/dispatch-reconcile.js` created — exports `findMyJob`,
+  `makeIsDispatchResolved(resolvingEvents)`, `reconcileDispatches(dispatches, opts)`.
+  Plan reviewed via `/second-opinion` ("Ready to implement"), recorded via
+  `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion --result=pass`.
+  Commit `038d7bb80b4`.
+- `scripts/linear-drain-parked.js` ported (reference/simplest case, 2-outcome
+  card-pass/card-fail). `findMyJob`/`isDispatchResolved` now delegate to the
+  shared lib; `reconcileOutcomes` keeps its own dispatch-filter + note text,
+  calls `reconcileDispatches()` for the rest. Commit `d2dfa926d00`.
+  Verified: `node --test tests/unit/linear-drain-parked.test.mjs` → 48/48 pass.
 
-## Open at hand-off
-- **CI run `33032085979`** (on merge commit `f984da52c`) was still `in_progress` at session end.
-  Confirm it went green:
-  `gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'`
-  It should clear the `Unit Tests` job. The `Data Validation` job was ALSO failing before my
-  change, on two steps I did NOT touch: `Audit outlet-registry gaps` and
-  `Validate provisional show venue+dates against Playbill`. **Those are still open.**
-- **BRO-714 is complete and live on prod but its card sits in "In Progress" with no completion
-  comment.** Verified: prod serves 7 reviews incl. NYT @50 for
-  `monte-cristo-the-york-theatre-company-off-broadway-2026`. Just needs closing.
-- BRO-679, BRO-504 have unmerged remote branches. 31 unmerged job branches total.
-
-## The finding to act on next
-**Zero of the 13 open P1s are dispatchable** — 8 refused `NO_VERIFY_CMD`, 5 `ASYNC_WAIT_GATE`.
-The funnel's 119 "ready" cards are 116 P2s, mostly auto-filed `BSC Daily:` health cards.
-Fix by rewriting each P1's acceptance to put a safe-form command in **inline single backticks,
-first in the body**. Several already NAME real commands that the extractor cannot see because
-they are bare text, not backticked. Verified directly:
-- `node scripts/audit-help-flag-safety.js` → exit 0
-- `node scripts/audit-sibling-title-misroute.js --strict` → exit 0
-- `node scripts/audit-stale-flag-after-url-correction.js --gate` → **exit 1, 120 files** — the
-  #483 cluster (BRO-2050/2090/2093) is genuinely open. Remedy is a refetch, NEVER a flag-clear.
+## Remaining (port order per issue body)
+1. **`scripts/backlog-drain.js`** (lines ~314-421 pre-port — re-check line
+   numbers, they've shifted from linear-drain-parked's edit only in that
+   file, not this one). RESOLVING_EVENTS = `{card-pass, card-fail,
+   card-stranded, completion-unattributed}` — richer vocabulary than the
+   reference. `onTerminal` callback must retain the stranded-commit /
+   attribution logic (lines ~385-439 in the original: `strandedCommitsFn`,
+   `landedFn`, `commitRefFn`, `attribution`, `landedLate`) verbatim — do not
+   simplify it, just move it into the `onTerminal(d, job)` callback closure
+   (it already closes over `tasksById`, `opts.strandedCommits`, etc., so no
+   new plumbing needed per the second-opinion review).
+   `identifierOf`/`taskIdOf` are the same field (`d.taskId`, no `linear:`
+   prefix) — pass `taskIdOf: undefined` or omit it (shared lib defaults to
+   `identifierOf`).
+   Verify: `node --test scripts/backlog-drain.test.mjs`
+2. **`scripts/lib/digest-autofix.js`** (lines ~442-559 pre-port). Same
+   RESOLVING_EVENTS as linear-drain-parked ({card-pass, card-fail}).
+   `onTerminal` must retain the `isLinear`/`completed` branching (lines
+   ~540-548 of the original — Linear-tracked rows use `sessionOk` alone as
+   the pass signal; Notion-mirror rows check `tasksById` status).
+   Exported name is `reconcileDigestOutcomes` (not `reconcileOutcomes`) —
+   keep that export name, just delegate internals.
+   Verify: `node --test scripts/lib/digest-autofix.test.mjs`
+3. After both ports: re-run all three test files together (the issue's
+   acceptance criterion):
+   `node --test scripts/backlog-drain.test.mjs scripts/lib/digest-autofix.test.mjs tests/unit/linear-drain-parked.test.mjs`
+   — must be all-pass, unchanged (parity, not new behavior).
+4. `/ship-check` on the full diff before closing.
+5. Comment outcome on BRO-2542 (Linear GraphQL, `createComment()` in
+   `scripts/lib/linear-client.js`) and set state to "In Review"
+   (`updateIssue()` in same file). Do NOT leave it silently in "In Progress".
 
 ## Exact next command
 ```
-gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'
+cd /Users/tompryor/Broadwayscore/.claude/worktrees/job-linear-BRO-2542-mtgkdpzm
+grep -n "findMyJob\|isDispatchResolved\|RESOLVING_EVENTS\|function reconcileOutcomes" scripts/backlog-drain.js
 ```
-Then, if green, re-run the funnel: `node /tmp/funnel2.js` (recreate from BRO-2275 transcript if
-gone) and start rewriting P1 acceptance blocks.
+Then port backlog-drain.js the same way linear-drain-parked.js was ported
+(see commit `d2dfa926d00` for the exact pattern: replace the duplicated
+findMyJob/isDispatchResolved/reconcileOutcomes block with a `require('./lib/dispatch-reconcile.js')`
++ thin `reconcileOutcomes` wrapper calling `reconcileDispatches()`).
 
-## Do not re-litigate
-BRO-268 FAIL verdict — do not merge. BRO-2439 deliberately held. BRO-113/140/580 stale
-ship-check verdicts. cmux still cannot attach a terminal — no tab successor crowned; needs an
-owner-side cmux restart. Forbes call with Marc Hershberg still unscheduled (Nov 1 publish).
+## Gotchas
+- `scripts/lib/dispatch-reconcile.js` is classified as "session dispatch
+  layer" shared infra by `~/.claude/hooks/infra-plan-review-gate.sh` — any
+  FURTHER edit to that file (not the three callers) needs a fresh
+  `/second-opinion` + `record-plan` before the edit, in a NEW session (the
+  gate is per-session). Editing the three caller files does not trigger it.
+- No behavior change intended anywhere in this issue — pure extraction.
+  Any test diff is a bug in the port, not an accepted new behavior.
