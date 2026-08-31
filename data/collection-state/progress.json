@@ -2477,7 +2477,17 @@
     "billy-elliot-the-musical-west-end-2027/times-uk--dominic-maxwell.json",
     "billy-elliot-the-musical-west-end-2027/west-end-best-friend--laura-lott.json",
     "dolly-an-original-musical-2026/hollywood-reporter--frank-scheck.json",
-    "dolly-an-original-musical-2026/newsday--barbara-schuler.json"
+    "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
+    "dolly-an-original-musical-2026/nydailynews--joe-dziemianowicz.json",
+    "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+    "cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
+    "cinderella-west-end-2026/broadwaynews--brittani-samuel.json",
+    "cinderella-west-end-2026/ew--emlyn-travis.json",
+    "cinderella-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cinderella-west-end-2026/observer--david-cote.json",
+    "cinderella-west-end-2026/bloomberg--chris-rovzar.json",
+    "cinderella-west-end-2026/financialtimes--sarah-hemming.json",
+    "cinderella-west-end-2026/independent--oliver-browning.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2564,7 +2574,8 @@
       "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
       "hamilton-west-end-2021/variety--kj-yossman.json",
       "data/review-texts/purple-rain-2026/nytimes--elisabeth-vincentelli.json",
-      "purple-rain-2026/nytimes--elisabeth-vincentelli.json"
+      "purple-rain-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -2622,7 +2633,7 @@
     ]
   },
   "startTime": "2026-08-30T16:01:37.862Z",
-  "lastProcessed": "dolly-an-original-musical-2026/newsday--barbara-schuler.json",
+  "lastProcessed": "cinderella-west-end-2026/independent--oliver-browning.json",
   "log": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -3031,6 +3042,23 @@
       "t": "2026-08-31T16:52:43.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-31T16:58:09.141Z",
+      "event": "bb-session",
+      "session": "c1b70e4b",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-08-31T16:58:09.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-31T16:58:20.581Z",
+      "event": "bb-session",
+      "session": "c2cf59fc",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
     }
   ]
 }
