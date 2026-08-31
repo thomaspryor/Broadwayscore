@@ -19,6 +19,14 @@
  *     wrongProduction/wrongShow; the gate is corroborating a known-bad file
  *   - needs-human-review       — ambiguous (multiple year-clusters, wide span)
  *
+ * It ALSO answers a second question the gate raises: the gate is a TEMPORARY
+ * exclusion that stops applying the moment the show's status flips to open, so
+ * any review it is the only thing holding out would re-enter scoring on
+ * opening night. Each report row carries a readmissionRisk verdict, and the
+ * run prints the at-risk list. A hit must survive BOTH the flipped-status
+ * exclusion check and the rebuild's own pre-window date guard, so it is a
+ * genuine landmine rather than a gap in explainExclusion's mirror.
+ *
  * This is a READ-ONLY report generator. It never writes to shows.json or any
  * review-text file — declaring priorRuns needs a human (or a follow-up script)
  * to confirm real dates/venue via Playbill/IBDB per CLAUDE.md §3.
@@ -208,6 +216,7 @@ function main() {
         url: r.url,
         wrongProduction: r.wrongProduction,
         wrongShow: r.wrongShow,
+        evaluationError: r.evaluationError,
       })),
     });
   }
