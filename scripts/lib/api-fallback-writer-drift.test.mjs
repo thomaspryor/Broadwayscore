@@ -106,12 +106,13 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 17);
+  assert.equal(publicSafe.length, 18);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
+    'audit/autonomous-recheck-ledger.jsonl',
     'audit/cross-outlet-attribution-drift.json',
     'audit/cv-wrongproduction-lifetime.json',
     'audit/fulltext-mentions-show-lifetime.json',
