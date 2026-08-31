@@ -1129,6 +1129,11 @@ on:
       # either got ZERO CI. Colocated coverage is
       # tests/unit/pull-quote-guards.test.mjs (tests/** trigger).
       - 'scripts/audit-pull-quotes.js'
+      # BRO-180: fileForReview's duplicate-criticName ambiguous-match fix.
+      # Root-level scripts/*.test.mjs is NOT globbed — registered in
+      # tests/unit-test-manifest.txt and path-listed here so a solo edit
+      # triggers CI.
+      - 'scripts/audit-pull-quotes.test.mjs'
       # Card re-armed 2026-08-16 (#727/#728): the LLM extraction side of the
       # same bug class — a too-short/too-long candidate gave up after one try
       # and fell through to the raw-fullText scrape instead of retrying with a
@@ -1518,6 +1523,18 @@ on:
       # Test is also registered in tests/unit-test-manifest.txt.
       - 'scripts/tests/gc-merged-worktrees-liveness.test.mjs'
       - 'scripts/gc-merged-worktrees.sh'
+      # Dry-run/real parity guard (BRO-2607) — the dry-run branch reported a
+      # merged-but-source-dirty worktree as "fully merged / WOULD-REMOVE" and
+      # counted it in removed=, while the real path's plain `git worktree
+      # remove` refuses it. Same "scripts/tests/ is not scripts/lib/" gap.
+      - 'scripts/tests/gc-dry-run-parity.test.mjs'
+      # The GC lock test had NO paths entry and no run step, so it ran in ZERO
+      # CI. It guards the mutual exclusion that stops two GCs deleting
+      # worktrees concurrently.
+      - 'scripts/gc-merged-worktrees.lock.test.sh'
+      # Same orphan state as the lock suite above: edited by BRO-2607 and
+      # wired into nothing. It guards the emergency disk-floor cleanup path.
+      - 'scripts/gc-merged-worktrees.disk-floor-summary.test.sh'
       # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
       # filing + headless dispatch; colocated test runs in the
       # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
@@ -3577,6 +3594,21 @@ jobs:
         # invisible to worktree-launched sessions).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/detect-stale-merge-head.test.sh
+
+      - name: Run worktree-gc lock test (bash integration)
+        # BRO-2607: this suite existed but was wired into nothing — no paths
+        # entry, no run step — so the GC's mutual-exclusion guard had zero CI.
+        # It also used to rm -rf the PRODUCTION lock dir; it now goes through
+        # the WORKTREE_GC_LOCK_DIR seam so running it cannot unlock a live GC.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/gc-merged-worktrees.lock.test.sh
+
+      - name: Run worktree-gc disk-floor summary test (bash integration)
+        # BRO-2607: orphaned the same way the lock suite was — no paths entry,
+        # no run step, not in any manifest, so a break in the disk-floor
+        # emergency-cleanup guard was invisible.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/gc-merged-worktrees.disk-floor-summary.test.sh
 
       - name: Run sync-audit-checkout test (bash integration)
         # Task #1563: local main drifted 119 commits behind origin because

@@ -16,6 +16,19 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT="$SCRIPT_DIR/gc-merged-worktrees.sh"
+# Run against a private lock (BRO-2607 seam), not the production one. Without
+# this the test both (a) contends with a live launchd/cron GC and with its own
+# earlier invocations — observed 2026-08-31 as FAIL[3]/FAIL[4] whose only
+# output was "SKIP-RUN — another invocation already in progress", which reads
+# as a real failure and is not — and (b) can leave the production lock in a
+# state a real GC then trips over.
+GC_TEST_LOCK_BASE="$(mktemp -d "${TMPDIR:-/tmp}/gc-df-test-XXXXXX")"
+export WORKTREE_GC_LOCK_DIR="$GC_TEST_LOCK_BASE/lock"
+# Redirect the audit log too — same reasoning as the lock suite: without
+# it this appends fixture lines to the TRACKED data/audit/worktree-gc.log,
+# and the hardcoded /Users/tompryor path does not exist on a Linux runner.
+export WORKTREE_GC_LOG="$GC_TEST_LOCK_BASE/worktree-gc.log"
+trap 'rm -rf "$GC_TEST_LOCK_BASE"' EXIT
 fail=0
 
 # Force the disk-floor path to trigger regardless of this machine's actual

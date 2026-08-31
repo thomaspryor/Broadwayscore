@@ -12,6 +12,7 @@ scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
+scripts/audit-pull-quotes.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
 scripts/audit-regex-patterns.test.mjs
 scripts/audit-review-contamination.test.mjs
@@ -135,6 +136,7 @@ scripts/tests/dispatch-outcome.test.mjs
 scripts/tests/dispatch-watchdog-core.test.mjs
 scripts/tests/dispatch-watchdog-staleness.test.mjs
 scripts/tests/enrich-card-acceptance-fallback.test.mjs
+scripts/tests/gc-dry-run-parity.test.mjs
 scripts/tests/gc-merged-worktrees-liveness.test.mjs
 scripts/tests/headless-dispatch-telemetry.test.mjs
 scripts/tests/headless-dispatchability.test.mjs
@@ -305,6 +307,7 @@ tests/unit/critics-label-interactivity.test.mjs
 tests/unit/cron-health-chronic-refresh-show-score.test.mjs
 tests/unit/cross-market-contamination.test.mjs
 tests/unit/cross-market-write-guard.test.mjs
+tests/unit/cross-outlet-triage.test.mjs
 tests/unit/cross-production-guards.test.mjs
 tests/unit/cross-show-url-cv-authority.test.mjs
 tests/unit/cross-show-url-reroute.test.mjs
@@ -654,6 +657,7 @@ tests/unit/sibling-matchers-diacritics.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
 tests/unit/stage-pagesonstages-extractor.test.mjs
+tests/unit/stale-announced-evidence.test.mjs
 tests/unit/stale-wrong-production.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
