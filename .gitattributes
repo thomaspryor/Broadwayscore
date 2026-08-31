@@ -183,6 +183,15 @@ data/audit/bww-roundup-miss-ledger.jsonl merge=union
 data/audit/linear-archive-done.jsonl merge=union
 data/audit/ob-promotion-log.jsonl merge=union
 data/audit/we-promotion-log.jsonl merge=union
+# dmarc-report-ledger.jsonl (scripts/lib/dmarc-*.js, landed with BRO-525's
+# DMARC ingest): append-only, one JSON object per report, and every reader
+# keys off each entry's own fields rather than array position — the same
+# property the other ledgers here rely on. It arrived without a merge
+# attribute, which is exactly what the colocated CI gate
+# (scripts/lib/audit-ledger-merge-attrs.test.mjs) exists to catch: it was
+# failing on main, since a concurrent CI append to an unmerged JSONL
+# conflicts instead of unioning.
+data/audit/dmarc-report-ledger.jsonl merge=union
 # remediation-log.jsonl (scripts/lib/opening-night-remediation.js):
 # readAttempts() and readGiveUps() both explicitly re-sort/re-derive by the
 # entry's own `at` timestamp instead of trusting array position — their doc
