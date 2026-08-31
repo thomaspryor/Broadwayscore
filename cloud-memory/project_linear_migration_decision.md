@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 76cfeb74-28a2-45d0-bc25-b0c25b19e227
-  modified: 2026-08-27T00:04:05.949Z
+  modified: 2026-08-31T17:18:47.325Z
 ---
 
 2026-08-11: After ~35 sessions proposing incremental fixes, the owner explicitly rejected repair of the Notion + cmux + dispatcher session system and asked for a best-in-class replacement. An evidence audit (verified from raw ledgers) found: 39% of "Done" cards fail next-day recheck (56/143), 30% workspace dead-launch rate over 7d (60% on 8/11, worsening), 48/420 dispatches abandoned, digest-autofix 4/17 success, ~94% of token spend was context replay (8/2 transcript audit), ~1/3 of open backlog is self-referential system cards.
@@ -29,3 +29,5 @@ metadata:
 **2026-08-26 (BRO-268) — stale global hooks still hard-require a Notion card, even though CLAUDE.md §6 forbids creating one:** `~/.claude/hooks/notion-card-required-commit.sh` (fires on every `git commit`) and `notion-card-required-stop.sh` block a Linear-only BWSC session the moment Notion is reachable (its own reachability probe succeeds, so it does NOT fail open) — these hooks were never updated for the Notion→Linear cutover and directly contradict "do NOT create Notion cards." The sanctioned, documented fix is `/Users/tompryor/Broadwayscore/board-gate-escape-hatch.md`'s off switch: create `~/.claude/BOARD_GATE_DISABLED` (any content, even empty) to make every board-gate hook stand down immediately; remove it right after the commit so it doesn't blanket-disable the gate for other concurrent sessions longer than needed. This is a real, still-open gap (not yet fixed at the hook level) — expect to hit it on any future headless/autonomous Linear-tracked BWSC session that needs to `git commit`.
 
 **2026-08-26 (BRO-44) — prefer the env-var form over the file for a single gated commit:** `BOARD_GATE_DISABLED=1 git commit ...` (the hook checks both) skips the create/remove-file race entirely — no window where concurrent sessions see the gate disabled, no risk of forgetting to remove the file. Use the file only if the hatch needs to stay up across multiple commands.
+
+**2026-08-31 (BRO-2576) — still open, hit twice in one session:** used the file form (touch/rm around each commit) instead of the env-var form above — worked, but carried the exact race window this entry already warns about. Filed a new card proposing a Linear-aware sentinel, then found it already exists as **BRO-2510** ("P1: commit gate has no Linear path — a session dispatched onto an existing Linear issue cannot commit") via `linear-brain.js find` — canceled the duplicate. **BRO-2510 is the live tracking issue for this gap; check its state before refiling.** Next session that hits this gate: use `BOARD_GATE_DISABLED=1 git commit ...`, not the file — and `linear-brain.js find "<distinctive phrase>"` BEFORE creating any new card, not after (this session created one first and found the duplicate second).
