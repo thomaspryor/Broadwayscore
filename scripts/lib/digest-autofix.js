@@ -457,19 +457,56 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
   return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
+// A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
+// cardId+contentHash has an outcome somewhere in history" (BRO-2506, same bug
+// class as BRO-2434's scripts/linear-drain-parked.js fix — see 1f0daa1100b,
+// and BRO-2508's scripts/backlog-drain.js fix). The content-hash-keyed
+// resolvedKeys Set this used to use collapses two dispatches of the SAME
+// unchanged content onto one key — exactly the repeated-failure case
+// attempt-memory's park mechanism exists to detect (the digest hashes a
+// row's canonical family title alone, stable run over run for the same
+// recurring condition — see runAutofix's own contentHash comment below) — so
+// a card auto-dispatched, failed, and auto-dispatched again the next morning
+// on unchanged content would never produce a SECOND card-fail at all, and
+// checkPark could never see two failures to park on.
+const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
+function isDispatchResolved(digestLedgerEntries, cardId, dispatchTs) {
+  const at = new Date(dispatchTs).getTime();
+  return (digestLedgerEntries || []).some(e =>
+    e && String(e.cardId) === String(cardId) && e.ts &&
+    RESOLVING_EVENTS.has(e.event) &&
+    new Date(e.ts).getTime() >= at);
+}
+
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
 // card-pass/card-fail by cross-referencing the SHARED dispatch-ledger's job
 // lifecycle — same reconciliation shape as scripts/lib/backlog-drain.js's
-// reconcileOutcomes, applied to this module's own ledger file instead.
+// reconcileOutcomes and scripts/linear-drain-parked.js's reconcileOutcomes
+// (isDispatchResolved + claimedJobIds), applied to this module's own ledger
+// file instead.
+//
+// isDispatchResolved is checked against the IMMUTABLE pre-pass
+// digestLedgerEntries only (never entries emitted earlier in this SAME
+// loop) — see scripts/linear-drain-parked.js's reconcileOutcomes header for
+// why tagging same-pass breadcrumbs with `now` and cross-checking against
+// them is wrong (it would collapse genuinely separate, sequential
+// re-attempts onto one outcome). The real hazard the old resolvedKeys Set
+// was guarding — two dispatch rows racing onto the SAME underlying job — is
+// instead guarded directly by jobId: claimedJobIds skips emitting a second
+// outcome for a jobId already resolved earlier in this same pass.
 function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
-  const resolvedKeys = new Set(
-    digestLedgerEntries.filter(e => e.event === 'card-pass' || e.event === 'card-fail')
-      .map(e => `${e.cardId}:${e.contentHash}`));
-  const dispatches = digestLedgerEntries.filter(e => e.event === 'auto-dispatch');
+  // A malformed/missing ts (hand-edited or corrupted ledger line) would
+  // otherwise turn every downstream Date arithmetic into NaN, tripping
+  // `< ORPHAN_TIMEOUT_H` to false and firing an immediate fail instead of the
+  // intended grace window — same defensive guard scripts/linear-drain-parked.js's
+  // reconcileOutcomes and scripts/backlog-drain.js's reconcileOutcomes already
+  // apply, added here too since this is the same function (ship-check finding).
+  const dispatches = digestLedgerEntries.filter(e =>
+    e && e.event === 'auto-dispatch' && Number.isFinite(new Date(e.ts).getTime()));
+  const claimedJobIds = new Set();
   const newEntries = [];
   for (const d of dispatches) {
-    const key = `${d.taskId}:${d.contentHash}`;
-    if (resolvedKeys.has(key)) continue;
+    if (isDispatchResolved(digestLedgerEntries, d.taskId, d.ts)) continue;
     const job = findMyJob(dispatchLedgerEntries, d.taskId, d.ts);
     if (!job) {
       const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
@@ -478,9 +515,9 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
-      resolvedKeys.add(key);
       continue;
     }
+    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
     if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
       // Chain ends at a retry whose successor hasn't spawned yet: treat as
       // still running inside the same orphan bound the no-spawn case uses —
@@ -491,7 +528,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      resolvedKeys.add(key);
+      if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
@@ -512,7 +549,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
         ? (isLinear ? 'session finished (Linear-tracked; board Done-audit verifies closure separately)' : 'session finished, task marked completed')
         : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
     });
-    resolvedKeys.add(key);
+    if (job.jobId) claimedJobIds.add(job.jobId);
   }
   return newEntries;
 }
@@ -660,6 +697,6 @@ function runAutofix({
 
 module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
-  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, findMyJob, readJsonlLedger, appendJsonlLedger,
+  DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
 };
