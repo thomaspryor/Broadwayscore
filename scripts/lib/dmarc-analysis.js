@@ -50,12 +50,28 @@ function classifySource(source, policyDomain) {
 }
 
 /**
+ * Stable identity for a report.
+ *
+ * report_id is the natural key, but it is optional in the schema and some
+ * reporters omit it. Falling back to the covered time range keeps those
+ * reports deduplicated too — without the fallback, an id-less report is
+ * counted once per ingest run (about 30 times over a 30-day lookback), which
+ * inflates message totals and dilutes the failure rate toward zero. That is
+ * the failure mode that makes a monitor lie in the safe-looking direction.
+ */
+function reportKey(r) {
+  return r.reportId
+    ? `${r.orgName}|id:${r.reportId}`
+    : `${r.orgName}|range:${r.dateBegin}|${r.dateEnd}`;
+}
+
+/**
  * Aggregate parsed reports into a summary.
  *
- * Reports are deduplicated by reporter + report_id: the same report is
- * commonly delivered twice (Microsoft sends both a "Preview" and a final copy
- * of the same run), and double-counting them would silently inflate every
- * total and halve any computed failure rate.
+ * Reports are deduplicated by reporter + identity: the same report is commonly
+ * delivered twice (Microsoft sends both a "Preview" and a final copy of the
+ * same run), and double-counting them would silently inflate every total and
+ * halve any computed failure rate.
  */
 function summarizeReports(reports, options = {}) {
   const opts = { ...DEFAULTS, ...options };
@@ -63,9 +79,9 @@ function summarizeReports(reports, options = {}) {
   const deduped = [];
   let duplicatesDropped = 0;
   for (const r of reports) {
-    const key = `${r.orgName}|${r.reportId}`;
-    if (r.reportId && seen.has(key)) { duplicatesDropped++; continue; }
-    if (r.reportId) seen.add(key);
+    const key = reportKey(r);
+    if (seen.has(key)) { duplicatesDropped++; continue; }
+    seen.add(key);
     deduped.push(r);
   }
   deduped.sort((a, b) => String(a.dateBegin).localeCompare(String(b.dateBegin)));
@@ -254,18 +270,30 @@ function evaluateFindings(summary, opts = DEFAULTS) {
   }
 
   // The payoff of a clean history: enough evidence to tighten enforcement.
-  const windowDays = daysBetween(summary.windowStart, summary.windowEnd);
+  //
+  // Evaluated against lifetime totals when the caller supplies them (the cron
+  // fetches a bounded recent window, so the window alone would never
+  // accumulate the required history and this finding could never fire).
+  const evidenceTotal = o.lifetime ? o.lifetime.messages : messages.total;
+  const evidenceFail = o.lifetime ? o.lifetime.failures : messages.fail;
+  const evidenceDays = o.lifetime ? o.lifetime.spanDays : daysBetween(summary.windowStart, summary.windowEnd);
   if (
     policy && policy.p && policy.p !== 'reject' &&
-    messages.fail === 0 &&
-    messages.total >= o.upgradeMinMessages &&
-    windowDays >= o.upgradeMinDays
+    evidenceFail === 0 &&
+    evidenceTotal >= o.upgradeMinMessages &&
+    evidenceDays >= o.upgradeMinDays
   ) {
     findings.push({
       severity: 'info',
       code: 'policy-upgrade-available',
-      message: `Zero authentication failures across ${messages.total} messages over ${Math.round(windowDays)} days. The domain qualifies for p=reject (currently p=${policy.p}).`,
-      evidence: { p: policy.p, total: messages.total, windowDays: Math.round(windowDays), distinctSources: summary.sources.length },
+      message: `Zero authentication failures across ${evidenceTotal} messages over ${Math.round(evidenceDays)} days. The domain qualifies for p=reject (currently p=${policy.p}).`,
+      evidence: {
+        p: policy.p,
+        total: evidenceTotal,
+        windowDays: Math.round(evidenceDays),
+        distinctSources: summary.sources.length,
+        basis: o.lifetime ? 'lifetime-ledger' : 'fetched-window',
+      },
     });
   }
 
@@ -290,6 +318,51 @@ function worstSeverity(findings) {
   return 'ok';
 }
 
+/**
+ * Health-check verdict over a written dmarc-summary.json.
+ *
+ * WHY THIS EXISTS: routeAlert only fires on 'action' findings. Everything
+ * milder — including 'policy-upgrade-available', which is the entire payoff of
+ * a clean history — would otherwise be written to a file nobody opens, which
+ * is the exact failure this card was filed about. This is the wiring that puts
+ * the softer findings in the daily digest instead.
+ *
+ * @param {object|null} summary  Parsed data/audit/dmarc-summary.json, or null.
+ * @param {object} opts          { now, staleHours } — injected for testability.
+ * @returns {{status: 'pass'|'warn'|'error', message: string, hint?: string}}
+ */
+function dmarcHealthResult(summary, opts = {}) {
+  const staleHours = opts.staleHours || 48;
+  if (!summary) {
+    return { status: 'warn', message: 'No DMARC summary (the dmarc job in Daily Gmail Ingest may not have run)', hint: 'Run the "Daily Gmail Ingest" workflow' };
+  }
+  const now = opts.now ? Date.parse(opts.now) : Date.now();
+  const generated = Date.parse(summary.generatedAt);
+  const ageHours = Number.isFinite(generated) ? (now - generated) / 3600000 : Infinity;
+  if (ageHours > staleHours) {
+    const age = Number.isFinite(ageHours) ? `${Math.round(ageHours)}h` : 'never';
+    return { status: 'warn', message: `DMARC summary last written ${age} ago (>${staleHours}h)`, hint: 'The dmarc job in Daily Gmail Ingest may be failing or disabled' };
+  }
+
+  const findings = Array.isArray(summary.findings) ? summary.findings : [];
+  const actionable = findings.filter((f) => f.severity === 'action');
+  if (actionable.length) {
+    return { status: 'error', message: `${actionable.length} DMARC finding(s): ${actionable.map((f) => f.code).join(', ')}`, hint: actionable[0].message };
+  }
+  const warnings = findings.filter((f) => f.severity === 'warn');
+  if (warnings.length) {
+    return { status: 'warn', message: `${warnings.length} DMARC warning(s): ${warnings.map((f) => f.code).join(', ')}`, hint: warnings[0].message };
+  }
+
+  const lifetime = summary.lifetime || {};
+  const upgrade = findings.find((f) => f.code === 'policy-upgrade-available');
+  if (upgrade) {
+    return { status: 'warn', message: upgrade.message, hint: 'Tighten the _dmarc TXT record to p=reject once you are ready' };
+  }
+  const p = summary.policy ? summary.policy.p : '?';
+  return { status: 'pass', message: `${lifetime.messages || 0} messages, ${lifetime.failures || 0} auth failures (p=${p})` };
+}
+
 /** Human-readable digest — used by the CLI and by the owner alert body. */
 function formatSummary(summary) {
   const m = summary.messages;
@@ -309,10 +382,12 @@ function formatSummary(summary) {
 
 module.exports = {
   DEFAULTS,
+  reportKey,
   summarizeReports,
   evaluateFindings,
   classifySource,
   buildPolicyTimeline,
   worstSeverity,
+  dmarcHealthResult,
   formatSummary,
 };

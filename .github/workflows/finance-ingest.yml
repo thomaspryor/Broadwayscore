@@ -1,5 +1,18 @@
-name: Finance Ingest
+name: Daily Gmail Ingest
 
+# Two independent jobs that both read the owner's Gmail with the same
+# read-only OAuth credentials, on the same daily schedule:
+#
+#   ingest — Phase D of the finance tracker (vendor receipts -> expense ledger)
+#   dmarc  — DMARC aggregate reports -> deliverability verdict (BRO-525)
+#
+# They share a workflow rather than getting one each because the alternative is
+# a second copy of the OAuth wiring and the googleapis install, plus another
+# scheduled workflow for GitHub to auto-disable after ~60 days of repo
+# inactivity. They are separate JOBS, not steps, so a Gmail hiccup in one does
+# not mask or block the other.
+#
+# ---- finance (job: ingest) ----
 # Phase D of the finance tracker: pull vendor receipt emails from Gmail
 # (read-only OAuth), book them into the expense ledger, and sync the ledgers
 # to the PRIVATE data repo (amounts + billing PII never touch this repo —
@@ -29,7 +42,10 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  # write (was read) for the dmarc job, which commits data/audit/dmarc-*.json
+  # to THIS repo. The finance job still writes nothing here — its ledgers go to
+  # the private data repo via REVIEW_TEXTS_TOKEN, never to this checkout.
+  contents: write
 
 jobs:
   ingest:
@@ -112,3 +128,87 @@ jobs:
         with:
           title: 'Finance Ingest Failed'
           description: 'Daily Gmail receipt ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), REVIEW_TEXTS_TOKEN expiry, or a private-repo push conflict.'
+
+  # ---- DMARC aggregate reports (BRO-525) ----
+  # Google, Microsoft and Zoho send a report a day for broadwayscorecard.com to
+  # the rua= address in the DMARC record. This job reads them and turns them
+  # into a verdict, so that domain spoofing surfaces as an alert instead of as
+  # an unopened attachment (233 had arrived unread before this existed).
+  dmarc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # Same lazy-require pattern as the finance job above: googleapis is not a
+      # package.json dependency (keeps the install lean for the 60+ other
+      # workflows), so it is installed ad hoc here.
+      - name: Install googleapis
+        run: npm install --no-save --no-audit --no-fund googleapis
+
+      # --days=7 is deliberately short: reporters send daily, and the lifetime
+      # record lives in data/audit/dmarc-report-ledger.jsonl, so a week of
+      # overlap is all the redundancy the ingest needs. --backfill (400 days)
+      # is for seeding the ledger on the first run or after a gap.
+      #
+      # The ingest calls routeAlert(...) for action-severity findings — the
+      # literal name is here so scripts/lib/alert-ledger-commit-check.js can
+      # see that this job routes alerts and therefore must commit the alert
+      # ledger below (that gate greps the YAML for `routeAlert(`).
+      - name: Ingest DMARC reports
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          BACKFILL: ${{ inputs.backfill }}
+        run: |
+          FLAGS="--days=7"
+          if [ "$BACKFILL" = "true" ]; then FLAGS="--backfill"; fi
+          node scripts/ingest-dmarc-reports.js $FLAGS --alert
+
+      - name: Commit and push DMARC audit state
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # The alert ledger and digest queue are part of this job's output:
+          # routeAlert writes cooldown state there, and leaving it uncommitted
+          # would re-queue the same digest line every single day.
+          git add data/audit/dmarc-summary.json \
+                  data/audit/dmarc-report-ledger.jsonl \
+                  data/audit/alert-ledger.json \
+                  data/audit/alert-digest-queue.json
+
+          if git diff --staged --quiet; then
+            echo "No DMARC state changes."
+            exit 0
+          fi
+
+          SUMMARY=$(node -e "
+            try {
+              const s = require('./data/audit/dmarc-summary.json');
+              const l = s.lifetime || {};
+              console.log(\`\${l.messages || 0} msgs, \${l.failures || 0} failures, \${(s.findings || []).length} finding(s)\`);
+            } catch { console.log('summary unavailable'); }
+          ")
+
+          git commit -m "audit: DMARC aggregate report ingest ($SUMMARY)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'DMARC Ingest Failed'
+          description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), a malformed report attachment, or a push conflict on data/audit/.'

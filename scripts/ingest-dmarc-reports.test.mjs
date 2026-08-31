@@ -1,4 +1,4 @@
-// scripts/tests/dmarc-ingest.test.mjs
+// scripts/ingest-dmarc-reports.test.mjs
 //
 // Tests the ingest script's pure functions (CLAUDE.md rule 15 — require()d
 // from the real module, not restated).
@@ -13,7 +13,13 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parseArgs, stripForPersistence, filterByDomain } = require('../ingest-dmarc-reports.js');
+const {
+  parseArgs,
+  stripForPersistence,
+  filterByDomain,
+  lifetimeStats,
+  summaryChanged,
+} = require('./ingest-dmarc-reports.js');
 
 const reportWith = (domain, records = []) => ({
   orgName: 'Outlook.com',
@@ -111,4 +117,57 @@ test('filterByDomain: "all" and empty keep everything', () => {
   const reports = [reportWith('a.com'), reportWith('b.com')];
   assert.equal(filterByDomain(reports, 'all').length, 2);
   assert.equal(filterByDomain(reports, '').length, 2);
+});
+
+const ledgerRow = (over = {}) => ({
+  orgName: 'google.com',
+  reportId: 'x',
+  dateBegin: '2026-03-01T00:00:00.000Z',
+  dateEnd: '2026-03-01T23:59:59.000Z',
+  messageCount: 100,
+  recordCount: 3,
+  failCount: 0,
+  ...over,
+});
+
+test('lifetimeStats: totals and span across the whole ledger', () => {
+  const s = lifetimeStats([
+    ledgerRow({ reportId: 'a', messageCount: 100, failCount: 0 }),
+    ledgerRow({ reportId: 'b', dateBegin: '2026-08-17T00:00:00.000Z', dateEnd: '2026-08-17T23:59:59.000Z', messageCount: 50, failCount: 2 }),
+  ]);
+  assert.equal(s.reportCount, 2);
+  assert.equal(s.messages, 150);
+  assert.equal(s.failures, 2);
+  assert.equal(s.passRate, 148 / 150);
+  assert.equal(s.firstReport, '2026-03-01T00:00:00.000Z');
+  assert.equal(s.lastReport, '2026-08-17T23:59:59.000Z');
+  assert.equal(s.spanDays, 170, 'Mar 1 00:00:00 to Aug 17 23:59:59 rounds to 170 days');
+});
+
+test('lifetimeStats: empty ledger is null, not a divide-by-zero', () => {
+  assert.equal(lifetimeStats([]), null);
+});
+
+test('lifetimeStats: out-of-order rows still yield the true span', () => {
+  const s = lifetimeStats([
+    ledgerRow({ dateBegin: '2026-08-01T00:00:00.000Z', dateEnd: '2026-08-01T23:59:59.000Z' }),
+    ledgerRow({ dateBegin: '2026-03-01T00:00:00.000Z', dateEnd: '2026-03-01T23:59:59.000Z' }),
+  ]);
+  assert.equal(s.firstReport, '2026-03-01T00:00:00.000Z');
+  assert.equal(s.lastReport, '2026-08-01T23:59:59.000Z');
+});
+
+test('summaryChanged: generatedAt alone is not a change', () => {
+  // Otherwise the cron commits an identical file every day forever, and the
+  // noise trains everyone to ignore this file's diffs.
+  const a = { generatedAt: '2026-08-01T00:00:00.000Z', messages: { total: 10 } };
+  const b = { generatedAt: '2026-08-02T00:00:00.000Z', messages: { total: 10 } };
+  assert.equal(summaryChanged(a, b), false);
+});
+
+test('summaryChanged: real content changes are detected', () => {
+  const a = { generatedAt: '2026-08-01T00:00:00.000Z', messages: { total: 10 } };
+  const b = { generatedAt: '2026-08-01T00:00:00.000Z', messages: { total: 11 } };
+  assert.equal(summaryChanged(a, b), true);
+  assert.equal(summaryChanged(null, b), true, 'first ever run must write');
 });

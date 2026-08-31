@@ -49,7 +49,7 @@
 const fs = require('fs');
 const path = require('path');
 const { unpackReport, parseAggregateReport } = require('./lib/dmarc-report-parser');
-const { summarizeReports, formatSummary, worstSeverity } = require('./lib/dmarc-analysis');
+const { summarizeReports, formatSummary, worstSeverity, reportKey } = require('./lib/dmarc-analysis');
 
 const REPORT_QUERY = 'subject:"Report Domain" OR from:noreply-dmarc-support@google.com OR from:dmarcreport@microsoft.com OR from:noreply-dmarc@zoho.com';
 
@@ -70,6 +70,62 @@ function parseArgs(argv) {
 
 function readJson(p, fallback) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
+}
+
+/**
+ * The ledger is append-only JSONL, matching the ~20 other data/audit/*.jsonl
+ * ledgers in this repo (scraper-spend-ledger.jsonl, stage-latency.jsonl). A
+ * daily append to a single JSON array would rewrite the whole file every run,
+ * which is what makes those diffs unreviewable and their merges conflict.
+ */
+function readLedgerJsonl(p) {
+  try {
+    return fs.readFileSync(p, 'utf8')
+      .split('\n')
+      .filter((l) => l.trim())
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+  } catch { return []; }
+}
+
+/**
+ * Lifetime totals across every report ever ingested.
+ *
+ * This is why the ledger exists and is read rather than merely written: the
+ * cron fetches a bounded recent window, so without the ledger the record of
+ * "no failure has EVER been seen" is only ever as long as that window, and
+ * the evidence for a policy upgrade could never accumulate.
+ */
+function lifetimeStats(ledger) {
+  if (!ledger.length) return null;
+  const sorted = [...ledger].sort((a, b) => String(a.dateBegin).localeCompare(String(b.dateBegin)));
+  const messages = ledger.reduce((n, r) => n + (r.messageCount || 0), 0);
+  const failures = ledger.reduce((n, r) => n + (r.failCount || 0), 0);
+  const first = sorted[0].dateBegin;
+  const last = sorted.reduce((acc, r) => (String(r.dateEnd) > String(acc) ? r.dateEnd : acc), sorted[0].dateEnd);
+  const spanDays = (Date.parse(last) - Date.parse(first)) / 86400000;
+  return {
+    reportCount: ledger.length,
+    messages,
+    failures,
+    passRate: messages > 0 ? (messages - failures) / messages : null,
+    firstReport: first,
+    lastReport: last,
+    spanDays: Number.isFinite(spanDays) ? Math.round(spanDays) : null,
+  };
+}
+
+/**
+ * True when the summary changed in a way worth committing.
+ *
+ * generatedAt moves every run by construction, so comparing whole files would
+ * commit a no-op diff daily forever — noise that trains everyone to ignore
+ * this file's diffs, which is exactly when a real change gets missed.
+ */
+function summaryChanged(previous, next) {
+  if (!previous) return true;
+  const strip = (o) => { const { generatedAt, ...rest } = o || {}; return JSON.stringify(rest); };
+  return strip(previous) !== strip(next);
 }
 
 /**
@@ -185,35 +241,50 @@ async function main() {
     // silence means the rua path broke. Surface it as a finding, exit clean.
   }
 
-  const summary = summarizeReports(reports, { now: new Date().toISOString() });
+  const ledgerPath = path.join(args.out, 'dmarc-report-ledger.jsonl');
+  const summaryPath = path.join(args.out, 'dmarc-summary.json');
+
+  // The ledger is read and the new rows computed BEFORE anything is printed,
+  // so a --dry-run reports exactly the findings a real run would write.
+  const ledger = readLedgerJsonl(ledgerPath);
+  const seen = new Set(ledger.map(reportKey));
+  const fresh = [];
+  for (const r of reports) {
+    const key = reportKey(r);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    fresh.push(stripForPersistence(r));
+  }
+
+  // Eligibility for a policy upgrade is a question about the whole record, not
+  // about this fetch — so findings are evaluated against lifetime history.
+  const lifetime = lifetimeStats(ledger.concat(fresh));
+  const summary = summarizeReports(reports, { now: new Date().toISOString(), lifetime });
 
   if (!args.quiet) console.log(formatSummary(summary));
+  if (lifetime) {
+    console.log(`  lifetime: ${lifetime.messages} messages, ${lifetime.failures} failures over ${lifetime.spanDays} days (${lifetime.reportCount} reports)`);
+  }
 
   if (args.dryRun) {
-    console.log('\n[dmarc] --dry-run: no files written, no alerts sent.');
+    console.log(`\n[dmarc] --dry-run: ${fresh.length} report(s) would be appended; nothing written, nothing sent.`);
     return;
   }
 
   fs.mkdirSync(args.out, { recursive: true });
-  const ledgerPath = path.join(args.out, 'dmarc-report-ledger.json');
-  const summaryPath = path.join(args.out, 'dmarc-summary.json');
-
-  const ledger = readJson(ledgerPath, []);
-  const seen = new Set(ledger.map((r) => `${r.orgName}|${r.reportId}`));
-  let added = 0;
-  for (const r of reports) {
-    const key = `${r.orgName}|${r.reportId}`;
-    if (r.reportId && seen.has(key)) continue;
-    if (r.reportId) seen.add(key);
-    ledger.push(stripForPersistence(r));
-    added++;
+  if (fresh.length) {
+    fs.appendFileSync(ledgerPath, `${fresh.map((r) => JSON.stringify(r)).join('\n')}\n`);
   }
-  ledger.sort((a, b) => String(a.dateBegin).localeCompare(String(b.dateBegin)));
 
-  fs.writeFileSync(ledgerPath, `${JSON.stringify(ledger, null, 2)}\n`);
-  fs.writeFileSync(summaryPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), ...summary }, null, 2)}\n`);
-  console.log(`\n[dmarc] ${added} new report(s) added to ledger (${ledger.length} total) → ${ledgerPath}`);
-  console.log(`[dmarc] summary → ${summaryPath}`);
+  const next = { ...summary, lifetime };
+  const previous = readJson(summaryPath, null);
+  const changed = summaryChanged(previous, next);
+  if (changed) {
+    fs.writeFileSync(summaryPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), ...next }, null, 2)}\n`);
+  }
+
+  console.log(`\n[dmarc] ${fresh.length} new report(s) appended (${ledger.length + fresh.length} in ledger) → ${ledgerPath}`);
+  console.log(`[dmarc] summary ${changed ? 'updated' : 'unchanged (not rewritten)'} → ${summaryPath}`);
 
   const actionable = summary.findings.filter((f) => f.severity === 'action');
   if (args.alert && actionable.length) {
@@ -252,4 +323,14 @@ if (require.main === module) {
   });
 }
 
-module.exports = { parseArgs, stripForPersistence, filterByDomain, readReportsFromDir, walkParts, REPORT_QUERY };
+module.exports = {
+  parseArgs,
+  stripForPersistence,
+  filterByDomain,
+  lifetimeStats,
+  summaryChanged,
+  readLedgerJsonl,
+  readReportsFromDir,
+  walkParts,
+  REPORT_QUERY,
+};

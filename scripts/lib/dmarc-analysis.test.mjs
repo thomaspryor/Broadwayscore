@@ -1,4 +1,4 @@
-// scripts/tests/dmarc-analysis.test.mjs
+// scripts/lib/dmarc-analysis.test.mjs
 //
 // Tests the real analysis functions (CLAUDE.md rule 15 — require()d, not
 // restated). The findings here are the product: the ingest exists so that a
@@ -12,12 +12,14 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   summarizeReports,
+  reportKey,
   evaluateFindings,
   classifySource,
   buildPolicyTimeline,
   worstSeverity,
+  dmarcHealthResult,
   formatSummary,
-} = require('../lib/dmarc-analysis.js');
+} = require('./dmarc-analysis.js');
 
 const POLICY = { domain: 'broadwayscorecard.com', adkim: 'r', aspf: 'r', p: 'quarantine', sp: 'quarantine', np: '', pct: 100 };
 
@@ -76,6 +78,58 @@ test('summarizeReports: deduplicates the same report_id from the same reporter',
   assert.equal(s.reportCount, 1);
   assert.equal(s.duplicatesDropped, 1);
   assert.equal(s.messages.total, 100);
+});
+
+test('a report with NO report_id still deduplicates, by covered range', () => {
+  // Regression: keyed on report_id alone, an id-less report was re-counted on
+  // every ingest run (~30 times over a 30-day lookback), inflating the message
+  // total and diluting the failure rate toward zero — a monitor lying in the
+  // safe-looking direction.
+  const idless = () => report({ reportId: '', records: [record({ count: 100 })] });
+  const s = summarizeReports([idless(), idless(), idless()]);
+  assert.equal(s.reportCount, 1);
+  assert.equal(s.duplicatesDropped, 2);
+  assert.equal(s.messages.total, 100);
+});
+
+test('id-less reports covering DIFFERENT ranges are distinct', () => {
+  const s = summarizeReports([
+    report({ reportId: '', dateBegin: '2026-08-01T00:00:00.000Z', dateEnd: '2026-08-01T23:59:59.000Z', records: [record({ count: 5 })] }),
+    report({ reportId: '', dateBegin: '2026-08-02T00:00:00.000Z', dateEnd: '2026-08-02T23:59:59.000Z', records: [record({ count: 7 })] }),
+  ]);
+  assert.equal(s.reportCount, 2);
+  assert.equal(s.messages.total, 12);
+});
+
+test('reportKey: prefers report_id, falls back to reporter + range', () => {
+  assert.equal(reportKey({ orgName: 'google.com', reportId: '42', dateBegin: 'a', dateEnd: 'b' }), 'google.com|id:42');
+  assert.equal(reportKey({ orgName: 'google.com', reportId: '', dateBegin: 'a', dateEnd: 'b' }), 'google.com|range:a|b');
+});
+
+test('policy-upgrade-available uses lifetime evidence when supplied', () => {
+  // The cron fetches a short recent window; without lifetime context the
+  // 30-day/1000-message evidence bar could never be met and this finding
+  // would never fire in production.
+  const shortWindow = [report({ records: [record({ count: 12 })] })];
+  assert.equal(
+    summarizeReports(shortWindow).findings.some((f) => f.code === 'policy-upgrade-available'),
+    false,
+    'one day of 12 messages is not evidence',
+  );
+  const withLifetime = summarizeReports(shortWindow, {
+    lifetime: { messages: 12633, failures: 0, spanDays: 170 },
+  });
+  const f = withLifetime.findings.find((x) => x.code === 'policy-upgrade-available');
+  assert.ok(f, 'lifetime history supplies the evidence');
+  assert.equal(f.evidence.basis, 'lifetime-ledger');
+  assert.equal(f.evidence.total, 12633);
+});
+
+test('lifetime evidence with any failure blocks the upgrade suggestion', () => {
+  const s = summarizeReports([report({ records: [record({ count: 12 })] })], {
+    lifetime: { messages: 12633, failures: 1, spanDays: 170 },
+  });
+  assert.equal(s.findings.some((f) => f.code === 'policy-upgrade-available'), false);
 });
 
 test('summarizeReports: same report_id from DIFFERENT reporters both count', () => {
@@ -248,6 +302,61 @@ test('formatSummary renders the headline numbers and every finding', () => {
   assert.match(text, /p=quarantine/);
   assert.match(text, /12 total, 12 pass, 0 fail/);
   for (const f of s.findings) assert.ok(text.includes(f.code), `finding ${f.code} must appear in the digest`);
+});
+
+const NOW = '2026-08-30T12:00:00.000Z';
+const summaryFile = (over = {}) => ({
+  generatedAt: '2026-08-30T06:00:00.000Z',
+  policy: { ...POLICY },
+  findings: [],
+  lifetime: { messages: 12633, failures: 0, spanDays: 170, reportCount: 233 },
+  ...over,
+});
+
+test('dmarcHealthResult: clean record passes with the lifetime numbers', () => {
+  const r = dmarcHealthResult(summaryFile(), { now: NOW });
+  assert.equal(r.status, 'pass');
+  assert.match(r.message, /12633 messages, 0 auth failures/);
+  assert.match(r.message, /p=quarantine/);
+});
+
+test('dmarcHealthResult: a missing summary warns rather than throwing', () => {
+  const r = dmarcHealthResult(null, { now: NOW });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /No DMARC summary/);
+});
+
+test('dmarcHealthResult: a stale summary warns — the job stopped running', () => {
+  const r = dmarcHealthResult(summaryFile({ generatedAt: '2026-08-25T06:00:00.000Z' }), { now: NOW });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /last written \d+h ago/);
+});
+
+test('dmarcHealthResult: action findings are an error', () => {
+  const r = dmarcHealthResult(summaryFile({
+    findings: [{ severity: 'action', code: 'unauthenticated-source', message: '40 messages from 203.0.113.9' }],
+  }), { now: NOW });
+  assert.equal(r.status, 'error');
+  assert.match(r.message, /unauthenticated-source/);
+  assert.match(r.hint, /203\.0\.113\.9/);
+});
+
+test('dmarcHealthResult: the upgrade suggestion reaches the digest as a warn', () => {
+  // This is the finding that routeAlert never sends, so if it is not surfaced
+  // here it is not surfaced anywhere.
+  const r = dmarcHealthResult(summaryFile({
+    findings: [{ severity: 'info', code: 'policy-upgrade-available', message: 'Zero failures across 12633 messages over 170 days. The domain qualifies for p=reject (currently p=quarantine).' }],
+  }), { now: NOW });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /qualifies for p=reject/);
+  assert.match(r.hint, /p=reject/);
+});
+
+test('dmarcHealthResult: info findings other than the upgrade do not warn', () => {
+  const r = dmarcHealthResult(summaryFile({
+    findings: [{ severity: 'info', code: 'spf-only-passes', message: '1 message passed on SPF alone' }],
+  }), { now: NOW });
+  assert.equal(r.status, 'pass');
 });
 
 test('worstSeverity ranks action over warn over info', () => {

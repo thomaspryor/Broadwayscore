@@ -1,4 +1,4 @@
-// scripts/tests/dmarc-report-parser.test.mjs
+// scripts/lib/dmarc-report-parser.test.mjs
 //
 // Tests the real parser (CLAUDE.md rule 15 — require()s the functions, never
 // restates the logic). The zip fixture is a REAL Google aggregate report for
@@ -25,7 +25,7 @@ const {
   unpackReport,
   recordPasses,
   decodeEntities,
-} = require('../lib/dmarc-report-parser.js');
+} = require('./dmarc-report-parser.js');
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.join(HERE, 'fixtures', 'dmarc-google-sample.zip');
