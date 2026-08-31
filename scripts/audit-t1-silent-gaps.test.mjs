@@ -17,9 +17,11 @@ const classify = (file, over = {}) =>
 
 test('Playbill "Verdict" roundup class (girl-interrupted, celebrity-autobiography): ' +
   'content landed in the wrong field (wrongFullText) after a URL-correction clear, ' +
-  'leaving fullText null — empty-body gap until the roundup is re-ingested and ' +
-  'classified not_a_review (same pattern the ensemble already applies to this exact ' +
-  'Playbill URL shape, confirmed on caroline-off-broadway-2026)', () => {
+  'leaving fullText null — an ordinary empty-body/stub gap (this fixture\'s URL slug ' +
+  'does NOT match isRoundupUrl\'s patterns, so isRoundupPageAsReview never fires here; ' +
+  'the eventual not_a_review verdict below comes from the real ensemble re-reading the ' +
+  're-ingested text, the same verdict it already gave this exact Playbill "what are/did ' +
+  'critics think" template on caroline-off-broadway-2026, not from roundup-URL matching)', () => {
   const stuckAfterUrlCorrection = {
     url: 'https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted',
     contentTier: 'stub',
