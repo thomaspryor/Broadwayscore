@@ -854,6 +854,174 @@ test('main(): an ordinary backlog issue is unaffected by the auto-filed guard (B
   assert.match(logs.join('\n'), /would launch/);
 });
 
+// ── started-state dispatch guard, end-to-end (BRO-2518) ────────────────────
+// The third clause of the same documented funnel line BRO-2488/BRO-2499
+// closed ("Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY").
+// checkTerminalStateGuard only ever refused TERMINAL types; nothing refused
+// a STARTED one (In Progress / In Review) — these drive the real main() to
+// prove the guard is actually wired into the --id path, the same way the
+// BRO-2488/BRO-2499 tests above proved theirs.
+function makeStartedIssue(stateName = 'In Progress') {
+  return {
+    id: 'issue-uuid-2518', identifier: 'BRO-2518', title: 'Some in-flight issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-2518/some-in-flight-issue',
+    priority: 2,
+    state: { id: 'state-1', name: stateName, type: 'started' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): refuses to dispatch an In Progress issue (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2518'], {
+      getIssue: async () => makeStartedIssue('In Progress'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /already in a started state \("In Progress"\)/);
+});
+
+test('main(): refuses to dispatch an In Review issue too (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  console.error = () => {};
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2518'], {
+      getIssue: async () => makeStartedIssue('In Review'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+});
+
+test('main(): --force overrides the started-state refusal and proceeds to launch (BRO-2518)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-2518', '--force'], {
+      getIssue: async () => makeStartedIssue('In Progress'),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+test('main(): a non-started (Backlog) issue is unaffected by the guard (dry-run reaches the seed print) (BRO-2518)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-2518', '--dry-run'], {
+      getIssue: async () => ({ ...makeStartedIssue(), state: { id: 'state-1', name: 'Backlog', type: 'backlog' } }),
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
+});
+
+// The load-bearing half of the acceptance criteria: the three machine
+// dispatch paths (digest-autofix.js, autofix-canary.js,
+// linear-drain-parked.js) must still dispatch their common case — a
+// freshly-filed (backlog-type) or explicitly backlog/unstarted-filtered
+// issue (see startedStateGuard's header in linear-dispatch.js) — this proves
+// the auto-filed-pipeline path (BRO-2499's own load-bearing test above)
+// still launches now that the started-state guard sits right next to it in
+// the chain.
+test('main(): --allow-autofix-filed still dispatches a freshly-filed (backlog) auto-filed issue with the started-state guard in place (BRO-2518 regression)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+      getIssue: async () => makeAutofixFiledIssue(),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+// Test gap closed (independent code-review finding on BRO-2518): the common
+// case above is NOT the only one. digest-autofix.js's fileCard() dedups by
+// exact-title match against LIVE Linear state — a reattach hit can land on
+// an issue a PRIOR dispatch already moved to a started state (cross-host, or
+// a stalled prior attempt), and runAutofix's dispatch-loop skip-list
+// ('in-progress'/'card-failed'/'acknowledged'/'decision') does not include
+// the 'card-filed' state a reattached row carries, so it reaches
+// dispatchDetached the same as a freshly-filed row. Refusing here is the
+// CORRECT outcome (this guard closing exactly that class of stray
+// double-dispatch onto still-active work) — proving it explicitly, rather
+// than assuming it, since a --allow-autofix-filed issue is exactly the
+// population where a silent regression (dispatching a duplicate onto active
+// work) would have been easy to miss.
+test('main(): --allow-autofix-filed does NOT bypass the started-state guard — a reattached auto-filed issue already In Progress is still refused (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+      getIssue: async () => ({ ...makeAutofixFiledIssue(), state: { id: 'state-1', name: 'In Progress', type: 'started' } }),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /already in a started state \("In Progress"\)/);
+});
+
 // bsc-next.js's own completedLaunchGuard (the Notion-mirror counterpart)
 // self-exempts --dry-run/--print-prompt, and this file's own header/USAGE
 // both document "--list/--dry-run still work" even under the kill switch —

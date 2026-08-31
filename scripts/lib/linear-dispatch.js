@@ -416,6 +416,71 @@ function autofixFiledIssueGuard(issue, opts) {
     `rolling health snapshot. Re-run with --force if you have checked that ${owner.check}.`;
 }
 
+// Started-state guard (BRO-2518): the THIRD clause of the same documented
+// funnel line marketingProjectGuard/autofixFiledIssueGuard above close —
+// "Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY". "Backlog/Todo"
+// was never enforced either: checkTerminalStateGuard only refuses TERMINAL
+// state types (completed/canceled/duplicate); nothing refused an issue
+// already in a STARTED type (In Progress / In Review). Found by the
+// /what-else pass on BRO-2499, same way BRO-2499 itself was found closing
+// BRO-2488. Against the live snapshot at filing time: 238 of 807 open
+// issues were started-type and freely dispatchable.
+//
+// The existing idempotency guards (findUnresolvedDispatchComment,
+// hasLiveLedgerEntry, checked later in linear-next.js) do NOT cover the
+// gap: both need a positive signal (a "Dispatched ..." comment, or a local
+// ledger row) that a dispatch actually recorded. An issue moved to In
+// Progress by a human, by another machine, or by a session whose
+// reportDispatchOnIssue() comment-post step failed (best-effort,
+// logs-and-continues — see linear-next.js's reportDispatchOnIssue) carries
+// NEITHER signal, especially cross-machine (the ledger is host-local) — so
+// it dispatches cleanly on top of live work today.
+//
+// Deliberately a blanket "started ⇒ refuse unless --force" rather than
+// "started AND no live signal ⇒ refuse": the population this guard needs to
+// stop is exactly issues a human/other-machine already has hands on, and a
+// same-pipeline retry (state started WITH a live signal) is already refused
+// by the idempotency checks below regardless — this guard firing first for
+// that overlapping case changes only which message prints, not the outcome.
+// --force is the deliberate escape hatch for the legitimate "this stalled,
+// re-dispatch it" operation (dispatch-ledger data at filing time: ~14% of
+// tracked tasks carry more than one 'launch' entry, i.e. genuine re-dispatch
+// is a normal, not rare, event) — matching checkTerminalStateGuard's own
+// --force-only exemption, not autofixFiledIssueGuard's per-caller opt-in
+// flag: no machine caller here legitimately WANTS to re-dispatch an
+// already-started issue without a human deciding to force it — but one CAN
+// still hit this refusal in normal operation (ship-check finding, BRO-2518):
+// digest-autofix.js's fileCard() dedups by exact-title match against LIVE
+// Linear state (not the local task mirror) — a reattach hit can land on an
+// issue a PRIOR dispatch already moved to a started state (cross-host, or a
+// stalled prior attempt), and runAutofix's dispatch-loop skip-list
+// ('in-progress'/'card-failed'/'acknowledged'/'decision') does not include
+// the 'card-filed' state a reattached row carries, so it reaches dispatchFn
+// same as a freshly-filed row would. That is this guard doing its job, not a
+// bug: refusing IS the correct outcome (prevents a stray double-dispatch
+// onto still-active work), and digest-autofix's own attempt-memory
+// (reconcileDigestOutcomes' orphan-timeout branch, digest-autofix.js) scores
+// the un-spawned attempt 'card-fail' and eventually parks a row that keeps
+// hitting this — no bypass flag needed, unlike autofixFiledIssueGuard, whose
+// refused population (its OWN freshly-filed tracker) has no other path to
+// resolution. autofix-canary.js's "existingTask" sync-lag branch is a
+// separate, narrower check (matches the legacy Notion-mirror task list,
+// which has no sync path for Linear-filed issues, so it never even reaches a
+// live started Linear issue this way) — unaffected. linear-drain-parked.js
+// (selectDrainCandidates filters to PARKED_STATE_TYPES = backlog/unstarted
+// only) never selects a started issue in the first place.
+function startedStateGuard(issue, opts) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const stateType = issue && issue.state && issue.state.type;
+  if (stateType !== 'started') return null;
+  const stateName = (issue.state && issue.state.name) || stateType;
+  return `${(issue && issue.identifier) || '(unknown)'} is already in a started state ("${stateName}") — refusing to ` +
+    `dispatch. It may have been picked up by a human, another machine, or a session whose dispatch comment failed to ` +
+    `post — check it (comment thread, cmux/workspace list) before re-dispatching. Re-run with --force if you know this ` +
+    `is a stalled issue that needs re-dispatch.`;
+}
+
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
@@ -490,6 +555,7 @@ module.exports = {
   checkTerminalStateGuard,
   marketingProjectGuard,
   autofixFiledIssueGuard,
+  startedStateGuard,
   MARKETING_PROJECT_NAMES,
   buildLinearSeed,
   buildDispatchComment,

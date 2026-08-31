@@ -16,6 +16,7 @@ const {
   parseYearFromUrl,
   detectMarketMismatch,
   SERP_MIN_SCORE,
+  isViableCastExtraction,
 } = require('../../scripts/lib/cast-extraction-guards.js');
 
 test('rejects Met Opera contamination (Kavalier-Clay case)', () => {
@@ -100,6 +101,24 @@ test('single column-header role does not trigger swap/contamination', () => {
   ];
   const r = validateCastExtraction(cast, 'Test Show');
   assert.equal(r.ok, true);
+});
+
+// KNOWN LIMITATION (BRO-504 second-opinion review): the opera/TV/name-swap
+// contamination checks above all require >=2 matching entries to flag, by
+// design (a lone coincidental hit shouldn't fail the whole page — see the
+// test above). Before backfill-cast-web.js accepted single-member casts
+// (isViableCastExtraction, MIN_CAST_SIZE=1), this didn't matter: any
+// accepted extraction already had >=2 entries, so a single bad name always
+// had a real castmate to trigger against. Now a genuine 1-member extraction
+// reaches isViableCastExtraction with zero content-based scrutiny from this
+// file — the pre-fetch SERP scorer, the opera-domain skip, and the LLM's own
+// wrong-show refusal are the only defenses left for that case. Documented
+// here as an accepted boundary, not silently untested.
+test('KNOWN LIMITATION: a single wrong-show (opera) name is NOT caught by validateCastExtraction alone', () => {
+  const cast = [{ name: 'Anna Netrebko', role: 'Abigaille' }];
+  const r = validateCastExtraction(cast, 'Some Non-Opera Play');
+  assert.equal(r.ok, true, 'contamination checks need >=2 hits to fire, so a lone opera-role name passes through');
+  assert.equal(isViableCastExtraction(r.cleaned), true, 'and would now be accepted as a solo-show cast — defense relies on SERP scoring + LLM prompt refusal instead');
 });
 
 test('isOperaSourceUrl flags opera-publication domains', () => {
@@ -434,4 +453,26 @@ test('honest scope: short-titled shows STILL bypass SERP scorer (caughtBy=llm-pr
   );
   assert.ok(m2m.score >= SERP_MIN_SCORE,
     `Man to Man still expected to pass SERP scorer (downstream defense: LLM prompt year/venue refusal), got ${m2m.score}`);
+});
+
+// BRO-504: backfill-cast-web.js used to require >=2 named cast members to
+// accept an extraction, which permanently starved solo shows (one actor
+// playing every role, e.g. "Jeeves Takes Charge") of cast data — every run
+// found the lone real cast member, rejected it as "too few", and tombstoned
+// the show empty, so auto-remediation retried forever and gave up.
+test('isViableCastExtraction accepts a single named cast member (solo shows)', () => {
+  assert.equal(isViableCastExtraction([{ name: 'Sam Harrison', role: 'Jeeves' }]), true);
+});
+
+test('isViableCastExtraction accepts multi-member casts', () => {
+  assert.equal(isViableCastExtraction([{ name: 'A' }, { name: 'B' }]), true);
+});
+
+test('isViableCastExtraction rejects an empty extraction', () => {
+  assert.equal(isViableCastExtraction([]), false);
+});
+
+test('isViableCastExtraction rejects non-array input', () => {
+  assert.equal(isViableCastExtraction(null), false);
+  assert.equal(isViableCastExtraction(undefined), false);
 });
