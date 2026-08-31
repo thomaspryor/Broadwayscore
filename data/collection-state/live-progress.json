@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-31T02:00:14.992Z",
-  "processed": 19,
-  "failed": 904,
-  "successRate": "2.1%",
+  "updatedAt": "2026-08-31T02:01:36.666Z",
+  "processed": 21,
+  "failed": 908,
+  "successRate": "2.3%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 2,
     "scrapingbee": 3,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-30T16:04:04.659Z",
@@ -53,6 +53,17 @@
       "event": "bb-session",
       "session": "906571f0",
       "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/"
+    },
+    {
+      "t": "2026-08-31T02:00:19.087Z",
+      "event": "bb-session",
+      "session": "37b1daf8",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-08-31T02:00:19.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
