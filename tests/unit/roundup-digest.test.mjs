@@ -110,4 +110,92 @@ describe('detectPullQuoteCompilation (task #1888)', () => {
     assert.equal(detectPullQuoteCompilation(null), null);
     assert.equal(detectPullQuoteCompilation({ outletId: 'nytimes' }), null);
   });
+
+  // BRO-2520: Gold Derby's goldderby--ethan-alter.json (paranormal-activity-2026)
+  // slipped past the comma-shape-only detector — its "sampling of the critical
+  // reaction" section uses prose narrative attribution ("Variety's Frank Rizzo
+  // agrees, writing: ...") instead of the "{Name}, {Outlet}." shape. These tests
+  // cover the two new prose shapes added to catch it.
+  test('flags a prose-narrative compilation using the possessive "{Outlet}\'s {Critic}" shape (the Gold Derby shape)', () => {
+    const fullText = "It's a real scream, and here's a sampling of the reaction. "
+      + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'And Time Out New York\'s Raven Snook pens a four-star rave, adding: "The whole show is a scream."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r?.isRoundup, true);
+  });
+
+  test('tolerates the scraper artifact of a stray space before the possessive apostrophe ("Variety \'s Frank Rizzo")', () => {
+    const fullText = "It's a real scream, and here's a sampling of the reaction. "
+      + 'Entertainment Weekly \'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety \'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'And Time Out New York \'s Raven Snook pens a four-star rave, adding: "The whole show is a scream."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r?.isRoundup, true);
+  });
+
+  test('flags a prose-narrative compilation using the "{Critic} of {Outlet}" shape', () => {
+    const fullText = "It's a real scream, and here's a sampling of the reaction. "
+      + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'Ron Fassler of Theater Pizzazz also yearned for something more, adding: "It does not amount to much more than a stretched-out episode."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r?.isRoundup, true);
+  });
+
+  test('does NOT flag a possessive-shape mention without a quoted excerpt — ordinary prose apostrophes (contractions) must not count as a quote', () => {
+    // Regression test: an earlier version of QUOTE_CHAR_RE included a bare
+    // apostrophe, so ordinary contractions ("didn't", "it's") anywhere in the
+    // trailing span satisfied the "quoted excerpt" guard, making it a no-op.
+    const fullText = "It's a real scream, and here's a sampling of the reaction. Erivo told the paper she doesn't pay attention to the noise online — "
+      + "she's got a job to do, and she isn't going to let anyone's comments take the energy she needs for the stage, no matter what people think. "
+      + 'Variety\'s Frank Rizzo also weighed in on the production values without directly praising or panning the show itself, focusing instead on the design choices made by the creative team throughout its long and winding two-hour running time. '
+      + "And Time Out New York's Raven Snook wasn't available for comment, though the piece notes she's expected to weigh in once the show settles into its run over the coming weeks and months ahead.";
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'bbc-news', criticName: 'Yasmin Rufo' });
+    assert.equal(r, null);
+  });
+
+  test('strips a leading conjunction from a possessive-shape outlet capture ("And Time Out New York\'s..." resolves to the registered outlet "Time Out New York")', () => {
+    const fullText = "It's a real scream, and here's a sampling of the reaction. "
+      + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'And Time Out New York\'s Raven Snook pens a four-star rave, adding: "The whole show is a scream."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r?.isRoundup, true);
+    assert.match(r.reason, /timeout/);
+  });
+
+  // Review-flagged residual risk (BRO-2520): the outlet registry legitimately
+  // registers several bare common-English-word aliases (Time, Post, Stage,
+  // Mirror, Observer, People, Herald...), so a possessive/"of" construction
+  // that happens to land on one of those words in ordinary prose — not an
+  // actual outlet attribution — is a structural coincidence risk shared with
+  // the pre-existing comma shape. A SINGLE such coincidental match can never
+  // trigger the ≥3-distinct-outlets threshold or the intro-phrase+2 fallback
+  // on its own, so an isolated one-off mention must not flag.
+  test('does NOT flag on an isolated "{bare-common-word-outlet}\'s {Phrase}" coincidence with no surrounding compilation', () => {
+    const fullText = 'This revival is a triumph of staging and voice. The design team clearly had one eye on next year\'s '
+      + "People's Choice Award, and it shows in the lavish, crowd-pleasing spectacle they've built around a game cast "
+      + 'that never lets the material down across a brisk and thoroughly satisfying two hours.';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'nytimes', criticName: 'Jesse Green' });
+    assert.equal(r, null);
+  });
+
+  test('does NOT flag a compilation whose excerpts use only curly single quotes (‘…’), not double quotes — known limitation, see QUOTE_CHAR_RE comment', () => {
+    const fullText = "It's a real scream, and here's a sampling of the reaction. "
+      + "Entertainment Weekly's Emlyn Travis got the shivers, raving that the show is ‘jam-packed with jaw-dropping illusions.’ "
+      + "Variety's Frank Rizzo agrees, writing: ‘The stage version delivers more thrills and chills than Broadway has seen in years.’ "
+      + "Time Out New York's Raven Snook pens a four-star rave, adding: ‘The whole show is a scream.’";
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r, null);
+  });
+
+  test('does NOT flag when the byline critic is themselves attributed via the possessive shape (own-byline escape hatch survives the possessive/"of"-shape group reordering)', () => {
+    const fullText = "Here's a sampling of the critical reaction. "
+      + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'And Gold Derby\'s Ethan Alter found real dramatic dead spots amid the scares, writing: "It carries the play through some flat stretches."';
+    const r = detectPullQuoteCompilation({ fullText, outletId: 'goldderby', criticName: 'Ethan Alter' });
+    assert.equal(r, null);
+  });
 });
