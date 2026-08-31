@@ -323,6 +323,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
+  {
+    file: 'audit/stale-announced-shows.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-31 (BRO-2620): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
   // BRO-2588 (2026-08-31): registering this file is what DISSOLVES BRO-2538's
   // "the ledger commit step must run LAST in data-health-check.yml" ordering
   // constraint — a constraint that directly contradicted BRO-386's own

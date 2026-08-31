@@ -1391,6 +1391,35 @@ function checkQuality() {
       return { name, status: 'pass', message: `No new violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
     })),
 
+    // Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
+    // shows.js now runs in this same job's "Stale announced shows audit
+    // (shadow mode)" step — see that step's own comment for why nothing ran
+    // it before this. A warn, not an error, mirrors every other shadow-mode
+    // check in this file: a real flag is a data-quality issue (a show
+    // showing the wrong status and no score on the live site), not this
+    // job's own health failing. silencedByContaminationCount always rides in
+    // the message, flagged or not — BRO-2611 added that discount specifically
+    // so a too-aggressive contamination filter stays visible instead of
+    // silently zeroing out flaggedCount; a digest row that only ever reports
+    // flaggedCount would defeat that.
+    runCheck('Data quality: stale announced shows', () => {
+      const name = 'Data quality: stale announced shows';
+      const snapPath = path.join(AUDIT_DIR, 'stale-announced-shows.json');
+      if (!fs.existsSync(snapPath)) {
+        return { name, status: 'warn', message: 'No stale-announced-shows snapshot yet (cron not yet run)', hint: 'node scripts/audit-stale-announced-shows.js' };
+      }
+      const snap = readJSON(snapPath);
+      const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Stale-announced-shows snapshot is ${formatAge(age)} old (>48h) — the daily audit itself has stopped running`, hint: 'Check the "Stale announced shows audit" step in data-health-check.yml' };
+      }
+      const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
+      if (snap.flaggedCount > 0) {
+        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) still 'announced' after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+      }
+      return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${formatAge(age)} ago)` };
+    }),
+
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
     // once, after four owner spot-checks in a row found published reviews the
     // census reported absent — then nothing measured it again, so the next arm

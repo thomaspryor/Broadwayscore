@@ -358,6 +358,29 @@ jobs:
         timeout-minutes: 2
         run: node scripts/audit-revival-unverified-lifetime.js
 
+      # Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
+      # shows.js catches a show still marked status='announced' after it has
+      # demonstrably already opened (Sherlock Holmes WE ran and closed entirely
+      # in 'announced' status, scoring nothing — see that script's own header).
+      # Nothing ran this in CI before now: it appeared in test.yml only as a
+      # push-path trigger for its own unit test, and that Unit Tests job has no
+      # data/review-texts checkout, so even the test's review-texts-driven
+      # signal was vacuous there. This job is the right home because it already
+      # checks out data/review-texts (private repo) above, giving the audit its
+      # full signal. SHADOW MODE like every other sweep in this job: writes a
+      # snapshot, never fails the step — a hard CI gate would have turned main
+      # red on real, still-open true positives the day this landed (BRO-2611
+      # already discounts wrong-show/wrong-production contamination out of
+      # flaggedCount via silencedByContamination; a gate would still be wrong
+      # to trip on the rest). The digest check in health-check.js surfaces
+      # flaggedCount and silencedByContaminationCount; --fail-on-gap is for
+      # manual/local triage runs, not this cron.
+      - name: Stale announced shows audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-stale-announced-shows.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -528,6 +551,7 @@ jobs:
           git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          git add data/audit/stale-announced-shows.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check audit snapshot changes"
           else
