@@ -12,7 +12,7 @@ const {
   getSeasonRange,
   validateSeason,
   formatSeasonDisplay,
-  seasonStandingAnchorDate,
+  isEligibleForSeasonStanding,
 } = require('./broadway-seasons.js');
 
 // Regression guard (2026-08-30, second-opinion review finding on BRO-2548):
@@ -79,30 +79,27 @@ test('getCurrentSeason matches getSeasonForDate(now)', () => {
 // Regression guard (BRO-2564): scripts/newsletter/generate.mjs's
 // seasonStandingFor() used to always key the season comparison off
 // openedShow.openingDate, even for a reopening whose ORIGINAL run opened
-// seasons ago. openingEventsForWeek() already treats reopeningDate as the
-// qualifying date for a reopening event (a show can appear in the week's
-// openings purely because it reopened, not because it opened) — the season
-// anchor must follow the same precedence, or the "New Plays This Season"
-// card silently compares a reopening against a season it isn't returning in.
-test('seasonStandingAnchorDate: a reopening show anchors on reopeningDate, not the stale original opening', () => {
-  const show = { openingDate: '2023-01-10', reopeningDate: '2026-08-20' };
-  const anchor = seasonStandingAnchorDate(show, /* isReopening */ true);
-  assert.equal(anchor, '2026-08-20');
-  // The bug this fixes: anchoring on openingDate instead would land in a
-  // completely different, stale season.
-  assert.notEqual(getSeasonForDate(anchor), getSeasonForDate(show.openingDate));
-  assert.equal(getSeasonForDate(anchor), '2026-2027');
-  assert.equal(getSeasonForDate(show.openingDate), '2022-2023');
+// seasons ago — producing a populated "New Plays This Season" card that
+// compared the reopening against a season it isn't actually returning in.
+// The fix skips the card for reopenings entirely (isEligibleForSeasonStanding
+// returns false) rather than re-anchoring the season computation: the card's
+// peer list is filtered on each show's own openingDate, so re-anchoring only
+// the target's season would exclude the reopening from its own peer list
+// (second-opinion review finding on the first version of this fix).
+test('isEligibleForSeasonStanding: a reopening show is skipped, even if not a revival', () => {
+  const show = { openingDate: '2023-01-10', reopeningDate: '2026-08-20', isRevival: false };
+  assert.equal(isEligibleForSeasonStanding(show, /* isReopening */ true), false);
 });
 
-test('seasonStandingAnchorDate: a normal (non-reopening) opening still anchors on openingDate', () => {
-  const show = { openingDate: '2026-08-25', reopeningDate: undefined };
-  assert.equal(seasonStandingAnchorDate(show, false), '2026-08-25');
+test('isEligibleForSeasonStanding: a normal (non-reopening, non-revival) opening is eligible', () => {
+  const show = { openingDate: '2026-08-25', isRevival: false };
+  assert.equal(isEligibleForSeasonStanding(show, false), true);
 });
 
-test('seasonStandingAnchorDate: isReopening=true but no reopeningDate on the show falls back to openingDate', () => {
-  const show = { openingDate: '2026-08-25' };
-  assert.equal(seasonStandingAnchorDate(show, true), '2026-08-25');
+test('isEligibleForSeasonStanding: a revival is still skipped regardless of isReopening', () => {
+  const show = { openingDate: '2026-08-25', isRevival: true };
+  assert.equal(isEligibleForSeasonStanding(show, false), false);
+  assert.equal(isEligibleForSeasonStanding(show, true), false);
 });
 
 test('parseSeasonYears / getSeasonRange / validateSeason / formatSeasonDisplay basics', () => {

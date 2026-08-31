@@ -32,7 +32,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
-const { getSeasonForDate, getSeasonDates, seasonStandingAnchorDate } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
+const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1941,8 +1941,10 @@ function buzziestSection() {
 
 // SECTION: Season Standing — rank a newly-opened BW show against the season's same-category peers
 function seasonStandingFor(openedShow, isReopening) {
-  // ONLY for NEW (non-revival) shows — revivals are judged differently
-  if (openedShow.isRevival) return null;
+  // ONLY for NEW (non-revival), non-reopening shows — see
+  // isEligibleForSeasonStanding() for why reopenings are skipped rather than
+  // re-anchored (BRO-2564).
+  if (!isEligibleForSeasonStanding(openedShow, isReopening)) return null;
   // Same season = the real Broadway season (Jul 1 - Jun 30, scripts/lib/broadway-seasons.js)
   // that openedShow's own opening date falls in — the SAME boundary getSeasonSlug()
   // uses for the site's "This Season" browse pages/rank cells. Was previously a rolling
@@ -1952,12 +1954,7 @@ function seasonStandingFor(openedShow, isReopening) {
   // reading as "New Plays This Season" while actually mixing two different seasons
   // (owner-flagged, 2026-08-30 — Paranormal Activity opened Aug 25 2026, the start of
   // 2026-27, and was shown ranked against Punch/Giant/etc. from the 2025-26 season).
-  // For a reopening (this week's qualifying event is reopeningDate, not the
-  // original openingDate — see openingEventsForWeek()), the anchor must be the
-  // reopening date: otherwise a show whose original run opened seasons ago
-  // gets compared against that stale season's peers (BRO-2564, the same
-  // mixing bug just for reopenings instead of new openings).
-  const openedSeason = getSeasonForDate(seasonStandingAnchorDate(openedShow, isReopening));
+  const openedSeason = getSeasonForDate(openedShow.openingDate);
   const { start: seasonStartDate, end: seasonEndDate } = getSeasonDates(openedSeason);
   const seasonStartStr = seasonStartDate.toISOString().slice(0, 10);
   const seasonEndStr = seasonEndDate.toISOString().slice(0, 10);
