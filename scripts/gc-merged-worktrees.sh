@@ -51,7 +51,10 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PRIMARY_REPO="/Users/tompryor/Broadwayscore"
-LOG="$PRIMARY_REPO/data/audit/worktree-gc.log"
+# WORKTREE_GC_LOG is a test seam only (BRO-2607): the parity test drives this
+# real script against fixture worktrees and must not append fixture lines to
+# the committed audit log. Production never sets it.
+LOG="${WORKTREE_GC_LOG:-$PRIMARY_REPO/data/audit/worktree-gc.log}"
 DRY_RUN=0
 [ "${1:-}" = "--dry-run" ] && DRY_RUN=1
 
@@ -80,7 +83,51 @@ mkdir -p "$(dirname "$LOG")"
 # dropping only the newly added repos while the primary repo's run
 # proceeds. Per-repo locking would let a slow web-repo run silently starve
 # the iOS repo of GC forever with no log line naming that gap.
-GC_LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
+# WORKTREE_GC_LOCK_DIR: same test-seam reasoning as WORKTREE_GC_LOG above, but
+# validated, because this path becomes an `rm -rf` target twice below (the
+# stale-pid reclaim and the EXIT trap). Only a temp-dir path is accepted; any
+# other value falls back to the production lock rather than pointing a delete
+# at, say, a home directory. Same posture as worktree-gc-repos.js, whose
+# override for this script is validated by isValidRepoEntry().
+GC_LOCK_DIR_DEFAULT="/tmp/broadwayscore-disk-floor-gc.lock"
+GC_LOCK_DIR="$GC_LOCK_DIR_DEFAULT"
+# A temp-root prefix ALONE is not enough: session scratchpads and other real
+# working directories live under /private/tmp, and an accepted value is an
+# `rm -rf` target. Verified 2026-08-31 — an earlier, prefix-only version of
+# this guard accepted a scratchpad path and deleted it. So also require the
+# LAST path component to be lock-shaped, which no working directory is.
+if [ -n "${WORKTREE_GC_LOCK_DIR:-}" ]; then
+  gc_lock_override_ok=0
+  case "$WORKTREE_GC_LOCK_DIR" in
+    *..*) ;;                                       # reject traversal outright
+    /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
+      case "${WORKTREE_GC_LOCK_DIR##*/}" in
+        lock|*.lock|*-lock) GC_LOCK_DIR="$WORKTREE_GC_LOCK_DIR"; gc_lock_override_ok=1 ;;
+      esac
+      ;;
+  esac
+  # Track acceptance explicitly. Inferring it from
+  # [ "$GC_LOCK_DIR" = "$GC_LOCK_DIR_DEFAULT" ] mislabels the case where the
+  # caller passes the production path itself — that path ends in .lock and IS
+  # accepted, but the equality test called it "rejected" straight into the
+  # committed audit log people read during a disk incident.
+  if [ "$gc_lock_override_ok" != "1" ]; then
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
+  fi
+fi
+# Validate-only mode: exit after the lock-path decision, before acquiring any
+# lock. Lets the lock suite assert the rejection branch WITHOUT the run going on
+# to take the PRODUCTION lock and delete it in its EXIT trap, which on this Mac
+# forces a concurrent launchd GC to SKIP-RUN. Production never sets it.
+if [ -n "${WORKTREE_GC_VALIDATE_ONLY:-}" ]; then
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] VALIDATE-ONLY  lock dir resolved to $GC_LOCK_DIR" | tee -a "$LOG"
+  exit 0
+fi
+# -p on the PARENT (not the lock dir itself — the lock's atomicity depends on
+# mkdir failing when it already exists). Without this a valid but parentless
+# override fails ENOENT, the stale-pid branch finds no pid file, and the script
+# reports "another invocation already in progress" forever when nothing is.
+mkdir -p "$(dirname "$GC_LOCK_DIR")" 2>/dev/null || true
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
@@ -142,6 +189,27 @@ is_stale() {
 # merged into origin/main, so nothing here risks losing committed work — only
 # whether it's safe to discard whatever LOCAL uncommitted noise is blocking
 # `git worktree remove`. Note: this only sees paths `git status --porcelain`
+# BRO-2607. The real removal path below calls `git worktree remove` with NO
+# --force, and git refuses that on ANY dirty tree. The dry-run branch must
+# model the same refusal, or a worktree holding uncommitted SOURCE gets
+# reported as "fully merged / WOULD-REMOVE" and counted in removed=. Measured
+# 2026-08-31 on one machine two minutes apart: dry-run removed=15 skipped=2,
+# real run removed=2 skipped=16. 13 of the 15 were iOS worktrees carrying real
+# edits (e.g. `M app/(tabs)/watched.tsx`). The GC refusing them was correct;
+# the dry-run calling them "fully merged" was the defect. Keep the dry-run's
+# three-way split in lockstep with the real path's three outcomes.
+is_worktree_clean() {
+  local st
+  # `|| return 1` is load-bearing: a worktree whose directory was deleted
+  # externally is still listed by `git worktree list --porcelain` (the prune
+  # runs after this loop), so flush() reaches it and `git status` FAILS with
+  # empty output. Treating that as clean would log "fully merged /
+  # WOULD-REMOVE" while the real `git worktree remove` errors and logs SKIP —
+  # exactly the divergence this whole change exists to remove.
+  st=$(git -C "$1" status --porcelain 2>/dev/null) || return 1
+  [ -z "$st" ]
+}
+
 # reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
 # content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
 # it either way and is deleted by ANY worktree removal, force or plain; that
@@ -482,12 +550,28 @@ flush() {
     log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
   if [ "$DRY_RUN" = "1" ]; then
-    if is_safe_dirty "$path"; then
-      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
-    else
+    # Three-way, mirroring the real path's three outcomes exactly (BRO-2607):
+    # clean -> plain remove succeeds; safe-dirty -> --force path; anything else
+    # -> git refuses and the run logs SKIP. A dirty-source worktree must NOT be
+    # counted in removed=, or the dry-run overstates reclaimable headroom.
+    if is_worktree_clean "$path"; then
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
+      removed=$((removed+1))
+    elif is_safe_dirty "$path"; then
+      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      removed=$((removed+1))
+    else
+      log "WOULD-SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
+      skipped=$((skipped+1))
+      # Mirror the real SKIP arm's stale-artifact strip so freed= predicts the
+      # real run here too (strip_build_artifacts logs WOULD-STRIP and does not
+      # delete when DRY_RUN=1).
+      if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+        strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+        strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
+      fi
     fi
-    removed=$((removed+1)); path="" branch=""; return
+    path="" branch=""; return
   fi
   # Measured before removal so the DONE summary's freed= reflects what
   # actually left disk, not just the floor/strip/orphan side-cleanups (task
