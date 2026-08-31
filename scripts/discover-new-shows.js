@@ -124,7 +124,16 @@ const NON_THEATER_PATTERNS = [
   'lottery', 'accessible lottery',
   'meet the music', 'lyrics & lyricists',
   'uptown showdown', 'amateur night',
-  'flamenco festival', 'circus',
+  'flamenco festival',
+  // NOT 'circus' alone (false-positive: "The Secret Circus Musical", a real
+  // off-Broadway production in previews). Corpus-audited: of 2938 tracked shows the
+  // bare substring matched that title and nothing else, so its only effect was to
+  // silently drop a real production from discovery. Same precedent as 'quartet' and
+  // 'gala' above. And do NOT "fix" this by adding 'cirque' — that substring matches
+  // five more real tracked productions (Cirque du Soleil Paramour, Cirque Dreams,
+  // Cirque Berserk, Scrooge: Cirque Extravaganza, Cirque Alice). If genuine
+  // non-theater circus programming ever shows up in a venue feed, add the specific
+  // multi-word phrase for it and re-run scripts/audit-regex-patterns.js --full.
   'in concert', 'concert performance',
   'company xiv', // burlesque/cabaret company
   'rakugo', // Japanese storytelling
