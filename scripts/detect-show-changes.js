@@ -20,13 +20,30 @@ const path = require('path');
 const crypto = require('crypto');
 
 const DIGEST_PATH = path.join(__dirname, '..', 'data', 'audit', 'show-changes-digest.json');
+const SLIM_DIR = path.join(__dirname, '..', 'public', 'data', 'shows');
 
 // Thresholds for change detection — only report high-signal changes
 const THRESHOLDS = {
   minNewReviews: 3,        // 3+ new reviews to report
-  minScoreChange: 3,       // 3+ point critic score change to report
+  minScoreChange: 3,       // 3+ point critic score change to report (shows open <=30 days)
+  minScoreChangeMature: 6, // 6+ point change for shows open 30+ days — the tier-weighted composite is damped by then, so a smaller move is more likely noise/data churn than a real critical shift
   minAudienceChange: 5,    // 5+ point audience score change to report
 };
+
+// Canonical Critic Score, straight from the show's slim public file — the
+// same source scripts/lib/canonical-critic-scores.ts wraps (CLAUDE.md §3).
+// Do NOT raw-mean data/reviews.json here: it diverges from what the site
+// (and this email) claims to report on, and is far more volatile than the
+// tier-weighted composite (score-stability incident, 2026-08-31: Oh, Mary!
+// was reported as 82.4 -> 86.7 off a raw mean while the live cs barely moved).
+function getCriticScore(showId) {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(SLIM_DIR, `${showId}.json`), 'utf8'));
+    return typeof j.cs === 'number' ? Math.round(j.cs * 10) / 10 : null;
+  } catch {
+    return null;
+  }
+}
 
 function loadJSON(filePath) {
   try {
@@ -58,7 +75,8 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz
   const showsList = shows.shows || shows;
   const showsArr = Array.isArray(showsList) ? showsList : Object.values(showsList);
 
-  // Build review counts and scores per show from reviews
+  // Build review counts per show from reviews (score comes from the
+  // canonical slim file, not a mean over these — see getCriticScore above)
   const reviewsByShow = {};
   if (reviews) {
     const reviewsList = reviews.reviews || reviews;
@@ -66,11 +84,8 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz
     for (const review of reviewsArr) {
       const sid = review.showId;
       if (!sid) continue;
-      if (!reviewsByShow[sid]) reviewsByShow[sid] = { count: 0, scores: [] };
+      if (!reviewsByShow[sid]) reviewsByShow[sid] = { count: 0 };
       reviewsByShow[sid].count++;
-      if (review.assignedScore != null) {
-        reviewsByShow[sid].scores.push(review.assignedScore);
-      }
     }
   }
 
@@ -114,15 +129,12 @@ function buildCurrentState(shows, reviews, lotteryRush, commercial, audienceBuzz
     // Only track open and previews shows (closed shows don't change)
     if (show.status === 'closed') continue;
 
-    const reviewData = reviewsByShow[id] || { count: 0, scores: [] };
-    const avgScore = reviewData.scores.length > 0
-      ? Math.round(reviewData.scores.reduce((a, b) => a + b, 0) / reviewData.scores.length * 10) / 10
-      : null;
+    const reviewData = reviewsByShow[id] || { count: 0 };
 
     state[id] = {
       status: show.status || 'unknown',
       reviewCount: reviewData.count,
-      score: avgScore,
+      score: getCriticScore(id),
       openingDate: show.openingDate || null,
       closingDate: show.closingDate || null,
       crewHash: hashCreativeTeam(show.creativeTeam),
@@ -232,10 +244,16 @@ function detectChanges(currentState, previousState, extras) {
       });
     }
 
-    // Critic score shift (threshold: 3+)
+    // Critic score shift (threshold: 3+, or 6+ for shows open 30+ days)
     if (current.score != null && prev.score != null) {
       const scoreDiff = Math.round((current.score - prev.score) * 10) / 10;
-      if (Math.abs(scoreDiff) >= THRESHOLDS.minScoreChange) {
+      const daysSinceOpening = current.openingDate
+        ? (Date.now() - new Date(current.openingDate + 'T12:00:00Z').getTime()) / 86400000
+        : null;
+      const scoreThreshold = daysSinceOpening != null && daysSinceOpening > 30
+        ? THRESHOLDS.minScoreChangeMature
+        : THRESHOLDS.minScoreChange;
+      if (Math.abs(scoreDiff) >= scoreThreshold) {
         const direction = scoreDiff > 0 ? '+' : '';
         showChanges.push({
           type: 'score-change',
