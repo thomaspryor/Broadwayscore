@@ -13,6 +13,7 @@ import {
   checkTerminalStateGuard,
   marketingProjectGuard,
   autofixFiledIssueGuard,
+  startedStateGuard,
   findUnresolvedDispatchComment,
 } from './linear-dispatch.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
@@ -216,4 +217,65 @@ test('autofixFiledIssueGuard: --force/--dry-run/--print-prompt and the pipeline 
   assert.equal(autofixFiledIssueGuard(issue, { 'print-prompt': true }), null);
   assert.equal(autofixFiledIssueGuard(issue, { 'allow-autofix-filed': true }), null,
     'digest-autofix / autofix-canary pass this flag — without the bypass the daily drain and canary stop dispatching');
+});
+
+// ── startedStateGuard (BRO-2518) ────────────────────────────────────────────
+// The third clause of the same documented funnel line marketingProjectGuard
+// (BRO-2488) and autofixFiledIssueGuard (BRO-2499) close — "Backlog/Todo,
+// not `· Marketing`, not BSC Daily/CANARY". checkTerminalStateGuard only
+// ever refused TERMINAL state types; nothing refused a STARTED one (In
+// Progress / In Review), so 238 of 807 open issues on the live snapshot at
+// filing time were freely dispatchable despite being mid-flight.
+
+test('startedStateGuard: refuses an In Progress issue, names the state', () => {
+  const issue = { identifier: 'BRO-2510', state: { type: 'started', name: 'In Progress' } };
+  const refusal = startedStateGuard(issue, {});
+  assert.match(refusal, /BRO-2510/);
+  assert.match(refusal, /In Progress/);
+});
+
+test('startedStateGuard: refuses an In Review issue too — same "started" type', () => {
+  const issue = { identifier: 'BRO-2511', state: { type: 'started', name: 'In Review' } };
+  assert.match(startedStateGuard(issue, {}), /In Review/);
+});
+
+test('startedStateGuard: a Backlog issue is allowed', () => {
+  const issue = { identifier: 'BRO-2512', state: { type: 'backlog', name: 'Backlog' } };
+  assert.equal(startedStateGuard(issue, {}), null);
+});
+
+test('startedStateGuard: a Todo (unstarted) issue is allowed', () => {
+  const issue = { identifier: 'BRO-2513', state: { type: 'unstarted', name: 'Todo' } };
+  assert.equal(startedStateGuard(issue, {}), null);
+});
+
+test('startedStateGuard: a terminal-type issue (completed/canceled/duplicate) is allowed — checkTerminalStateGuard owns that refusal', () => {
+  assert.equal(startedStateGuard({ identifier: 'BRO-2514', state: { type: 'completed', name: 'Done' } }, {}), null);
+});
+
+test('startedStateGuard: no state on the issue at all is allowed — fails open like every other guard', () => {
+  assert.equal(startedStateGuard({ identifier: 'BRO-2515' }, {}), null);
+});
+
+test('startedStateGuard: --force/--dry-run/--print-prompt all bypass it', () => {
+  const issue = { identifier: 'BRO-2516', state: { type: 'started', name: 'In Progress' } };
+  assert.equal(startedStateGuard(issue, { force: true }), null);
+  assert.equal(startedStateGuard(issue, { 'dry-run': true }), null);
+  assert.equal(startedStateGuard(issue, { 'print-prompt': true }), null);
+});
+
+// Acceptance criteria: prove the three machine dispatch paths still
+// dispatch. Each owns a population that is, by construction, never already
+// started when it calls --id (see startedStateGuard's header for the
+// per-caller check) — this guard must not refuse any of them.
+test('startedStateGuard: a freshly-filed digest-autofix / canary / drain-parked issue (Backlog or Todo at file time) is never refused', () => {
+  // digest-autofix.js's fileCard / autofix-canary.js's fileCard both create
+  // issues that start in the team's default (backlog-type) state; linear-
+  // drain-parked.js's selectDrainCandidates only ever selects from
+  // PARKED_STATE_TYPES = backlog/unstarted (scripts/lib/linear-drain-
+  // parked.js). None of these three ever hand --id a started-type issue.
+  const freshlyFiled = { identifier: 'BRO-2517', state: { type: 'backlog', name: 'Backlog' } };
+  const parkedCandidate = { identifier: 'BRO-2518', state: { type: 'unstarted', name: 'Todo' } };
+  assert.equal(startedStateGuard(freshlyFiled, {}), null);
+  assert.equal(startedStateGuard(parkedCandidate, {}), null);
 });
