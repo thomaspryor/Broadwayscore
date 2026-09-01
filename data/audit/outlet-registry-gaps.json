@@ -1,12 +1,30 @@
 {
-  "generatedAt": "2026-09-01T12:51:30.687Z",
+  "generatedAt": "2026-09-01T13:53:40.796Z",
   "summary": {
-    "totalOutletsInReviews": 699,
-    "inRegistry": 699,
-    "missing": 0,
+    "totalOutletsInReviews": 703,
+    "inRegistry": 701,
+    "missing": 2,
     "unused": 465
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "time-ou",
+      "count": 2,
+      "shows": [
+        "jesus-christ-superstar-west-end-2026",
+        "midnight-at-the-never-get-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/time-ou--andrzej-lukowski.json"
+    },
+    {
+      "outletId": "he-standard",
+      "count": 1,
+      "shows": [
+        "the-truth-a-comedy-by-florian-zeller-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/he-standard--nicjk-curtis.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1869,7 +1887,28 @@
       "displayName": "Thenorthernecho"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "time-ou",
+      "displayName": "Time Ou",
+      "tier": 3,
+      "aliases": [
+        "time-ou",
+        "time ou"
+      ],
+      "domain": "timeout.com"
+    },
+    {
+      "outletId": "he-standard",
+      "displayName": "he Standard",
+      "tier": 3,
+      "aliases": [
+        "he-standard",
+        "he standard"
+      ],
+      "domain": "standard.co.uk"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -2083,6 +2122,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/standard--nick-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/inter-alia-west-end-2026/standard--nick-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/standard--nick-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/marie-and-rosetta-west-end-2026/standard--nick-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mass-west-end-2026/standard--nick-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/please-please-me-west-end-2026/standard--unknown.json",
@@ -3599,11 +3639,14 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/all-in-comedy-about-love-2024/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/american-son-2018/timeout--helen-shaw.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/anastasia-2017/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/avenue-q-west-end-2026/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/be-more-chill-2019/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/beautiful-the-carole-king-musical-2014/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/beetlejuice-west-end-2026/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/bernhardthamlet-2018/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/birthday-candles-2022/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/blackbird-2016/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/burlesque-west-end-2026/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/casa-valentina-2014/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/choir-boy-2019/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cult-of-love-2024/timeout--adam-feldman.json",
@@ -3618,6 +3661,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/grand-horizons-2020/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/groundhog-day-2017/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hangmen-2022/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hillary-and-clinton-2019/timeout--adam-feldman.json",
@@ -3648,6 +3692,8 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/mr-saturday-night-2022/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/noises-off-2016/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-west-end-2025/timeout--andrjez-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-west-end-2025/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/on-the-town-2014/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/othello-2025/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/peter-pan-goes-wrong-2023/timeout--adam-feldman.json",
@@ -3679,9 +3725,11 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-lifespan-of-a-fact-2018/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-little-foxes-2017/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-nap-2018/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-oresteia-west-end-2026/timeout--andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-other-place-off-broadway-2026/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-picture-of-dorian-gray-2025/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-realistic-joneses-2014/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-rose-tattoo-2019/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-seagull-2008/timeout--adam-feldman.json",
@@ -3689,6 +3737,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-snow-geese-2013/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-thanksgiving-play-2023/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-trip-to-bountiful-2013/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-unknown-off-broadway-2026/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-velocity-of-autumn-2014/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-waverly-gallery-2018/timeout--matt-windman.json",
@@ -3696,6 +3745,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/therese-raquin-2015/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/tina-2019/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/to-kill-a-mockingbird-2018/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/trainspotting-the-musical-west-end-2026/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/violet-2014/timeout--unknown.json"
       ]
     },
@@ -4242,6 +4292,32 @@
       "canonicalId": "mirror",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/abba-voyage-off-west-end-2026/mirror--tom-bryant.json"
+      ]
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "outletId": "timeout",
+      "currentDisplayName": "TimeOut",
+      "expectedDisplayName": "Time Out New York",
+      "canonicalId": "timeout",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/abba-voyage-off-west-end-2026/timeout--chiara-wilkinson.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/abigails-party-west-end-2026/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/elf-2024/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/little-shop-of-horrors-off-broadway-2019/timeout--adam-feldman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-west-end-2025/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-comedy-about-spies-west-end-2026/timeout--tom-wicker.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-producers-west-end-2025/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/timeout--andrzej-lukowski.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/venus-in-fur-2011/timeout--david-cote.json"
       ]
     },
     {
@@ -6420,18 +6496,6 @@
       "canonicalId": "musical-theatre-report",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/elephant-shoes-regional-2026/musical-theatre-report--ben-west.json"
-      ]
-    },
-    {
-      "showId": "elf-2024",
-      "outletId": "timeout",
-      "currentDisplayName": "TimeOut",
-      "expectedDisplayName": "Time Out New York",
-      "canonicalId": "timeout",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/elf-2024/timeout--adam-feldman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/little-shop-of-horrors-off-broadway-2019/timeout--adam-feldman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/venus-in-fur-2011/timeout--david-cote.json"
       ]
     },
     {
@@ -9738,7 +9802,15 @@
   ],
   "skippedJunkOutlets": [
     {
+      "outletId": "buy-tickets-directly-from-shakespearesglobecom",
+      "count": 1
+    },
+    {
       "outletId": "buy-tickets",
+      "count": 1
+    },
+    {
+      "outletId": "wwwandrewlloydwebbercomshowjesus-christ-superstar",
       "count": 1
     },
     {
