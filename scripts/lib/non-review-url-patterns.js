@@ -212,6 +212,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)charingcrosstheatre\.co\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)londontopia\.net$/, path: /^\/london-events\//, reason: 'event-listing' },
   { host: /(^|\.)hoteldirect\.co\.uk$/, reason: 'ticketing-reseller' },
+  // BRO-2712 (main-red audit-outlet-registry incident): both ingested via the
+  // public /submit-review form after validate-review-submission.js's LLM gate
+  // wrongly approved them. domain-filters.js's isBlockedReviewUrl (the
+  // write-path/scoring gate) already blocks these two hosts; mirrored here so
+  // this module's discovery-time gate agrees — without this, a future SERP
+  // census could still report either host as a "missing review" gap for the
+  // shows they were mistakenly ingested for.
+  { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
+  { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
 ];
 
 /**

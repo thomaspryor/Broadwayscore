@@ -41,6 +41,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -323,6 +324,18 @@ function auditOutletRegistry() {
       // (scripts/audit-unknown-outlets.js:55) — mirrored here so this audit
       // doesn't re-derive its own narrower version of the same predicate.
       if (isRejectedNonReview(review)) continue;
+
+      // Third exclusion pipeline: a URL on a known non-review domain (ticket/
+      // listing/social/reference/venue/PR-firm — domain-filters.js's
+      // isBlockedReviewUrl) never needs a registry entry either, regardless of
+      // contentTier or classification flags (BRO-2712: a venue "what's on"
+      // page and a PR firm's press release both landed via /submit-review with
+      // no rejectionReason/contentVerification set — isRejectedNonReview alone
+      // doesn't catch a blocked domain). This is the SAME predicate
+      // rebuild-all-reviews.js and explainExclusion() use to drop these files
+      // from scoring (skippedBlockedUrl / blockedReviewUrl) — reusing it here
+      // keeps outlet-level classification canonical instead of a per-file flag.
+      if (review.url && isBlockedReviewUrl(review.url)) continue;
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {

@@ -81,6 +81,24 @@ const REFERENCE_DOMAINS = new Set([
   'iloveny.com',
 ]);
 
+// Venue/producer own-site listing pages — box-office "what's on" copy, never
+// criticism (BRO-2712: southbank.london's Electra/Persona page was "Home
+// What's On ... Save this Dates ... Ticket Information ... Location Info",
+// ingested via /submit-review and scored as a "truncated" review).
+const VENUE_DOMAINS = new Set([
+  'southbank.london',
+]);
+
+// Theatre PR firms — press releases, not criticism, but they read as
+// well-formed prose (byline, dateline, plot summary) so structural
+// heuristics like isJunkOutlet() never catch them (BRO-2712: spincyclenyc.com
+// filed a 4300-char SparkPlug Productions press release for The Bathroom
+// Attendant with a "critic" name of "Ron" and contentTier=complete — a live
+// candidate for scoring as a critic review before this was caught).
+const PR_FIRM_DOMAINS = new Set([
+  'spincyclenyc.com',
+]);
+
 /**
  * Check if a hostname matches any domain in a set (exact or subdomain match).
  * e.g., "m.facebook.com" matches "facebook.com"
@@ -115,7 +133,9 @@ function isBlockedReviewUrl(url) {
     if (matchesDomainSet(hostname, SOCIAL_DOMAINS)
       || matchesDomainSet(hostname, TICKET_DOMAINS)
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
-      || matchesDomainSet(hostname, REFERENCE_DOMAINS)) return true;
+      || matchesDomainSet(hostname, REFERENCE_DOMAINS)
+      || matchesDomainSet(hostname, VENUE_DOMAINS)
+      || matchesDomainSet(hostname, PR_FIRM_DOMAINS)) return true;
     // Path-based blocking for sites that publish BOTH reviews and listings
     const lowerPath = parsed.pathname.toLowerCase();
     // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
@@ -145,7 +165,8 @@ function isBlockedReviewUrl(url) {
 function isBlockedDomain(domain) {
   const d = domain.replace(/^www\./, '').toLowerCase();
   return SOCIAL_DOMAINS.has(d) || TICKET_DOMAINS.has(d)
-    || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d);
+    || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d)
+    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d);
 }
 
 module.exports = {
@@ -153,6 +174,8 @@ module.exports = {
   TICKET_DOMAINS,
   AGGREGATOR_DOMAINS,
   REFERENCE_DOMAINS,
+  VENUE_DOMAINS,
+  PR_FIRM_DOMAINS,
   isSocialMediaUrl,
   isBlockedReviewUrl,
   isBlockedDomain,
