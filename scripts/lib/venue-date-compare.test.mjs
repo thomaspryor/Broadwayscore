@@ -156,11 +156,71 @@ test('orderProvisionalTargets: new (absent from prior report) shows sort before 
   assert.deepEqual(ordered, ['new-stub', 'another-new-stub', 'still-broken', 'clean-old']);
 });
 
-test('orderProvisionalTargets: any non-match prior result counts as still-broken (not just mismatch)', () => {
+test('orderProvisionalTargets: a TRANSIENT prior error outranks previously-clean (a retry may yet yield evidence)', () => {
   const shows = [{ id: 'was-clean' }, { id: 'was-fetch-error' }];
   const prev = { 'was-clean': 'match', 'was-fetch-error': 'fetch-error' };
   const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
   assert.deepEqual(ordered, ['was-fetch-error', 'was-clean']);
+});
+
+// BRO-2701 — 'no-playbill-url' means the show has no Playbill production page
+// at all, so a recheck can never produce evidence in either direction, and it
+// is the MOST expensive target in the set (~24s burning the full SERP fallback
+// chain looking for a page that is not there, vs ~11s for a findable one).
+// It must therefore sort behind previously-clean, not ahead of it.
+test('orderProvisionalTargets: previously no-playbill-url sorts LAST, behind previously-clean (BRO-2701)', () => {
+  const shows = [{ id: 'no-page' }, { id: 'was-clean' }, { id: 'was-mismatch' }, { id: 'brand-new' }];
+  const prev = { 'no-page': 'no-playbill-url', 'was-clean': 'match', 'was-mismatch': 'mismatch' };
+  const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
+  assert.deepEqual(ordered, ['brand-new', 'was-mismatch', 'was-clean', 'no-page']);
+});
+
+test('deferredHighPriorityShows: a deferred no-playbill-url show does NOT block certification (BRO-2701)', () => {
+  // validate-show-venue.js --fail-on-mismatch gates on `mismatches` only and
+  // explicitly excludes no-playbill-url when the show IS checked (BRO-2560).
+  // An outcome that cannot fail the build when seen must not fail it when unseen.
+  const prev = { 'no-page': 'no-playbill-url', 'was-transient': 'fetch-error' };
+  const deferred = [{ id: 'no-page' }, { id: 'was-transient' }];
+  assert.deepEqual(deferredHighPriorityShows(deferred, prev), []);
+});
+
+test('deferredHighPriorityShows: an unrecognised prior result still blocks (fail safe, BRO-2701)', () => {
+  const prev = { weird: 'some-future-result-value' };
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'weird' }], prev).map((s) => s.id),
+    ['weird'],
+  );
+});
+
+// The exact production shape that made main permanently red: the tracked
+// ledger held 32 'match' + 33 'no-playbill-url' (run 33458412904). Under the
+// old `!== 2` rule all 33 no-playbill-url shows tiered as "still broken", sorted
+// ahead of the 32 clean ones, and at ~24s each could not fit a 9-minute budget
+// (~13.2 min) — so the deferred tail ALWAYS held a blocking show and the step
+// ALWAYS exited 1, with zero mismatches in the data, on every push forever.
+test('the 32-match/33-no-playbill ledger can certify a clean pass under a partial budget (BRO-2701)', () => {
+  const shows = [];
+  const prev = {};
+  for (let i = 0; i < 32; i += 1) { shows.push({ id: `clean-${i}` }); prev[`clean-${i}`] = 'match'; }
+  for (let i = 0; i < 33; i += 1) { shows.push({ id: `nopage-${i}` }); prev[`nopage-${i}`] = 'no-playbill-url'; }
+
+  const ordered = orderProvisionalTargets(shows, prev);
+  // Evidence-bearing targets run first, so a budget cut costs only no-evidence ones.
+  assert.deepEqual(ordered.slice(0, 32).map((s) => s.id), shows.slice(0, 32).map((s) => s.id));
+
+  // Budget reaches 40 of 65; the 25 deferred are all no-playbill-url.
+  const deferred = ordered.slice(40);
+  assert.equal(deferred.length, 25);
+  assert.deepEqual(deferredHighPriorityShows(deferred, prev), [], 'must not block a clean pass');
+
+  // And the guarantee BRO-2627 added is intact: add one genuinely new stub and
+  // deferring it still fails closed.
+  const withStub = orderProvisionalTargets([...shows, { id: 'bad-new-stub' }], prev);
+  assert.equal(withStub[0].id, 'bad-new-stub', 'a new stub is always checked first');
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'bad-new-stub' }], prev).map((s) => s.id),
+    ['bad-new-stub'],
+  );
 });
 
 test('orderProvisionalTargets: no prior report (undefined map) treats every show as new — stable, original order preserved', () => {

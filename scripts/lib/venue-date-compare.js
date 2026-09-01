@@ -163,29 +163,46 @@ function compareShow(show, parsed, playbillUrl) {
  * Order provisional shows for a time-budgeted --all-provisional run (BRO-2627).
  *
  * A fixed --time-budget-min caps how many shows get network-checked per run,
- * so which shows are checked first matters: entries absent from the prior
- * audit report (new — never checked, or the report predates this show) come
- * first, then entries the prior report flagged as NOT a clean match (still
- * broken — needs re-checking so a fix gets picked up), then previously-clean
- * entries last. This keeps the audit's actual incident-relevant job — catch
- * a bad NEW venue-page stub before it lands — guaranteed regardless of how
- * large the total provisional backlog grows; only the "re-sweep of
- * already-clean legacy entries" portion degrades gracefully under budget
- * pressure, the same shape as check-seo-health.yml's "resubmit stale pages,
- * capped at 50/week".
+ * so which shows are checked first matters. Shows are ordered by how much
+ * evidence checking them can produce about the incident class this audit
+ * exists to catch (a bad venue/date stub landing in shows.json):
+ *
+ *   0  new / never-checked  — could BE the bad new stub. Always first.
+ *   1  previously 'mismatch' — a known data defect; recheck so a fix is seen.
+ *   2  previously a TRANSIENT error (fetch-error / short-response /
+ *      infra-unavailable) — no evidence last time, but a retry plausibly
+ *      yields some.
+ *   3  previously 'match' — clean; a re-sweep can still catch a regression,
+ *      and these are the CHEAPEST targets (a findable Playbill URL
+ *      resolves in ~11s, vs ~24s for a show with no Playbill page at all).
+ *   4  previously 'no-playbill-url' — the show has no Playbill production
+ *      page, so a recheck yields no evidence in either direction, and each
+ *      one burns the full SERP fallback chain (BD SERP API 20s timeout ->
+ *      BD Web Unlocker 30s timeout -> ScrapingBee) looking for a page that
+ *      is not there. Lowest value per budget-second: last.
+ *
+ * BRO-2701: tiers 3 and 4 used to be a single tier 1 ("anything that is not
+ * 'match' needs a recheck"), which put all 33 no-playbill-url shows AHEAD of
+ * the 32 clean ones. At ~24s each those 33 cannot fit a 9-minute budget
+ * (~13.2 min), so the deferred tail ALWAYS contained tier-<=1 shows and
+ * deferredHighPriorityShows() always refused to certify — main red on every
+ * push with zero real mismatches, permanently and independently of the data.
  *
  * `previousResultById` maps show id -> the `result` field from the last
- * written venue-date-mismatches.json (e.g. 'match', 'mismatch', 'fetch-error'
- * — anything other than 'match' counts as "still needs a recheck"). Absent
- * entries (id not a key) are treated as new. Stable within each bucket —
- * does not reorder shows that land in the same priority tier.
+ * written venue-date-mismatches.json. Absent entries (id not a key) are
+ * treated as new. Stable within each bucket — does not reorder shows that
+ * land in the same priority tier.
  */
-/** 0 = new/never-checked, 1 = previously broken (needs recheck), 2 = previously clean. */
+/** Prior results that produced no evidence because the environment, not the data, was at fault. */
+const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable']);
+
 function provisionalPriorityTier(showId, previousResultById) {
   const prev = previousResultById ? previousResultById[showId] : undefined;
   if (prev === undefined) return 0;
-  if (prev !== 'match') return 1;
-  return 2;
+  if (prev === 'no-playbill-url') return 4;
+  if (prev === 'match') return 3;
+  if (TRANSIENT_PRIOR_RESULTS.has(prev)) return 2;
+  return 1; // 'mismatch', and any unknown or future result value — fail safe, recheck early.
 }
 
 function orderProvisionalTargets(shows, previousResultById) {
@@ -197,13 +214,25 @@ function orderProvisionalTargets(shows, previousResultById) {
 
 /**
  * From a budget-deferred tail (shows a --time-budget-min run never reached),
- * which ones are NOT tier-2 (previously-clean) — i.e. new or still-broken.
- * A non-empty result means the run cannot certify clean coverage of the
- * class this audit exists to catch, however small `mismatches` looks this
- * run (BRO-2627 adversarial review).
+ * which ones the run cannot afford to have skipped — tier 0 (new: could be
+ * the bad stub this audit exists to catch) and tier 1 (a known 'mismatch'
+ * whose fix or persistence is unverified). A non-empty result means the run
+ * cannot certify clean coverage of that class, however small `mismatches`
+ * looks this run (BRO-2627 adversarial review).
+ *
+ * BRO-2701: tiers 2-4 are deliberately NOT included. Every one of them is an
+ * outcome that validate-show-venue.js has already decided cannot fail the
+ * step when it IS observed — `--fail-on-mismatch` gates on `mismatches` only,
+ * and 'no-playbill-url' / 'fetch-error' / 'short-response' /
+ * 'infra-unavailable' are explicitly excluded there (BRO-2560). An outcome
+ * that cannot fail the build when seen must not fail it when unseen; the
+ * previous `!== 2` made exactly that contradiction the permanent state of
+ * main.
  */
+const DEFERRAL_BLOCKING_TIERS = new Set([0, 1]);
+
 function deferredHighPriorityShows(deferredShows, previousResultById) {
-  return deferredShows.filter((s) => provisionalPriorityTier(s.id, previousResultById) !== 2);
+  return deferredShows.filter((s) => DEFERRAL_BLOCKING_TIERS.has(provisionalPriorityTier(s.id, previousResultById)));
 }
 
 /**
