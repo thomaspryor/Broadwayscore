@@ -302,3 +302,25 @@ Found on the electra-persona-west-end-2026 opening night, monitor attempt 9. The
 **Ruled out on the night:** write contention (core-data took 2 commits in the surrounding 90 min, the web repo 12 — nowhere near enough for 25 consecutive failures, and ~90s per attempt is a hang signature, not a rejection). Suspects: push timeout on the 16.8MB `reviews.json` (it lives at the core-data repo **root**, `/reviews.json`, not under `data/`); protected-branch/pre-receive rejection; stale credential. The log names `PUSH_RECONCILE_MERGED_JSON=1` as the intended path for MANAGED files.
 
 **Fix order:** un-swallow the stderr first — everything else is guesswork without the real error. Shared push infra, so CLAUDE.md rule 18 (review gate before first edit) applies.
+
+## Gate: includable + content-complete review-text with NO llmScore is silently dropped by rebuild
+
+**Class:** scoring / silent skip of newly-ingested review-texts. Carded BRO-2733 (P1, 2026-09-01).
+
+`ingest-review-from-url.js` does NOT trigger scoring, and nothing retries a review the scorer
+skipped. `rebuild-all-reviews.js` only emits SCORED reviews — so a file that passes every
+exclusion check, has full content and zero blocking flags still never reaches `reviews.json`
+or prod, while every workflow reports green.
+
+**Repro (electra-persona-west-end-2026, 2026-09-01):** `boycotting-trends--alex-ramon.json`
+ingested + pushed 19:28Z (contentTier=complete, 6295 chars, no flags). At 20:22Z — 54 min and
+one successful rebuild-fast push later — `verify-review-recovery.js --production` said:
+Step 3 "3 files pass exclusion checks", Step 4 "has content but NO LLM score (scoring pipeline
+missed it)", Step 5 "Reviews in reviews.json: 2". Fix: `gh workflow run "LLM Ensemble Score
+Reviews" -f show_id=<id>`; live on prod 104 min after ingest.
+
+**Diagnostic ordering (the expensive lesson):** monitor attempt 9 burned a whole pass blaming
+the `rebuild-reviews.yml` push defect ([[BRO-2732]]) and filed a P0 against the wrong layer.
+ALWAYS run `node scripts/verify-review-recovery.js --show=<id> --production` BEFORE theorising
+about the rebuild/push layer — it names the failing stage directly. A green rebuild-fast run
+masks this gate completely.
