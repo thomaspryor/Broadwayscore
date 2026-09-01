@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-01T01:55:37.113Z",
+  "generatedAt": "2026-09-01T09:06:27.744Z",
   "summary": {
-    "totalOutletsInReviews": 719,
-    "inRegistry": 716,
-    "missing": 3,
-    "unused": 447
+    "totalOutletsInReviews": 711,
+    "inRegistry": 707,
+    "missing": 4,
+    "unused": 456
   },
   "missingOutlets": [
     {
-      "outletId": "the-washington-post",
+      "outletId": "southbank",
       "count": 1,
       "shows": [
-        "falsettos-1992"
+        "electra-persona-west-end-2026"
       ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/falsettos-1992/the-washington-post--peter-marks.json"
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/electra-persona-west-end-2026/southbank--unknown.json"
     },
     {
       "outletId": "ticketline",
@@ -30,6 +30,14 @@
         "spellbound-off-broadway-2026"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/spellbound-off-broadway-2026/theweereview--unknown.json"
+    },
+    {
+      "outletId": "spincyclenyc",
+      "count": 1,
+      "shows": [
+        "the-bathroom-attendant-off-broadway-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-bathroom-attendant-off-broadway-2026/spincyclenyc--ron.json"
     }
   ],
   "unusedInRegistry": [
@@ -514,6 +522,10 @@
       "displayName": "Click on Detroit"
     },
     {
+      "outletId": "el-paso-times",
+      "displayName": "El Paso Times"
+    },
+    {
       "outletId": "fort-worth-star-telegram",
       "displayName": "Fort Worth Star Telegram"
     },
@@ -644,6 +656,10 @@
     {
       "outletId": "la-art-party",
       "displayName": "La Art Party"
+    },
+    {
+      "outletId": "haineshisway",
+      "displayName": "Haines His Way"
     },
     {
       "outletId": "blogcritics",
@@ -1690,6 +1706,10 @@
       "displayName": "Rating"
     },
     {
+      "outletId": "portsmouth-news",
+      "displayName": "Portsmouth News"
+    },
+    {
       "outletId": "west-sussex-gazette",
       "displayName": "West Sussex Gazette"
     },
@@ -1740,6 +1760,10 @@
     {
       "outletId": "the-spot-518",
       "displayName": "The Spot 518"
+    },
+    {
+      "outletId": "trinity-tripod",
+      "displayName": "Trinity Tripod"
     },
     {
       "outletId": "dancetabs",
@@ -1794,8 +1818,28 @@
       "displayName": "The Daily Texan"
     },
     {
+      "outletId": "raring2go",
+      "displayName": "raring2go"
+    },
+    {
+      "outletId": "myshrewsbury",
+      "displayName": "myshrewsbury"
+    },
+    {
+      "outletId": "politeonsociety",
+      "displayName": "politeonsociety"
+    },
+    {
+      "outletId": "ipswich24",
+      "displayName": "ipswich24"
+    },
+    {
       "outletId": "staybook",
       "displayName": "Staybook"
+    },
+    {
+      "outletId": "unknownkentandsussex",
+      "displayName": "Unknown Kent & Sussex"
     },
     {
       "outletId": "48hills",
@@ -1824,14 +1868,13 @@
   ],
   "suggestedAdditions": [
     {
-      "outletId": "the-washington-post",
-      "displayName": "The Washington Post",
+      "outletId": "southbank",
+      "displayName": "southbank",
       "tier": 3,
       "aliases": [
-        "the-washington-post",
-        "the washington post"
+        "southbank"
       ],
-      "domain": "washingtonpost.com"
+      "domain": "southbank.london"
     },
     {
       "outletId": "ticketline",
@@ -1850,6 +1893,15 @@
         "theweereview"
       ],
       "domain": "theweereview.com"
+    },
+    {
+      "outletId": "spincyclenyc",
+      "displayName": "spincyclenyc",
+      "tier": 3,
+      "aliases": [
+        "spincyclenyc"
+      ],
+      "domain": "spincyclenyc.com"
     }
   ],
   "displayNameMismatches": [
@@ -1863,7 +1915,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/11-to-midnight-off-broadway-2026/front-row-center--kendra-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/1984-2017/front-row-center--casey-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/a-christmas-carol-2019/front-row-center--tulis-mccall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/a-christmas-carol-2019/front-row-center--victoria-weisfeld.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/a-night-with-janis-joplin-2013/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/a-time-to-kill-2013/front-row-center--kathleen-campion.json",
@@ -1899,7 +1950,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/cats-2016/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/company-2021/front-row-center--brittany-crowell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cult-of-love-2024/front-row-center--david-walters.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/days-of-wine-and-roses-2024/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/dead-outlaw-2025/front-row-center--kendra-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/death-becomes-her-2024/front-row-center--kendra-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/diana-the-musical-2021/front-row-center--tulis-mccall.json",
@@ -1933,7 +1983,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/ink-2019/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/it-shoulda-been-you-2015/front-row-center--daniel-dunlow.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jagged-little-pill-2019/front-row-center--margret-echeverria.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/job-2024/front-row-center--david-walters.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/job-2024/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/just-in-time-2025/front-row-center--tulis-mccall.json",
@@ -1944,7 +1993,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/left-on-tenth-2024/front-row-center--brittany-crowell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/lempicka-2024/front-row-center--holli-harms.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-2014/front-row-center--tulis-mccall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/liberation-2025/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/little-bear-ridge-road-2025/front-row-center--david-walters.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/living-on-love-2015/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/love-letters-2014/front-row-center--stanford-friedman.json",
@@ -1954,7 +2002,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/marcel-on-the-train-off-broadway-2026/front-row-center--kendra-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/marjorie-prime-2025/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mary-jane-2024/front-row-center--kendra-jones.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/front-row-center--brittany-crowell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mother-play-2024/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mothers-and-sons-2014/front-row-center--tulis-mccall.json",
@@ -1989,7 +2036,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-2023/front-row-center--stanford-friedman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/spongebob-squarepants-2017/front-row-center--casey-curtis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/spring-awakening-2015/front-row-center--tulis-mccall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/front-row-center--cameron-hughes.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-2024/front-row-center--brittany-crowell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/summer-2018/front-row-center--donna-herman.json",
@@ -2009,7 +2055,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-gin-game-2015/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-glass-menagerie-2013/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/front-row-center--cameron-hughes.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/front-row-center--margret-echeverria.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-great-society-2019/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-heidi-chronicles-2015/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-hills-of-california-2024/front-row-center--david-walters.json",
@@ -2025,7 +2070,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-phantom-of-the-opera-1988/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-picture-of-dorian-gray-2025/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/front-row-center--tulis-mccall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-porch-on-windy-hill-off-broadway-2026/front-row-center--david-walters.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-present-2017/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2014/front-row-center--elise-marenson.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-realistic-joneses-2014/front-row-center--tulis-mccall.json",
@@ -2175,7 +2219,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-2025/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-charles-iii-2015/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/amny--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/king-lear-2004/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/lackawanna-blues-2021/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/latin-history-for-morons-2017/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/les-liaisons-dangereuses-2016/amny--matt-windman.json",
@@ -2247,7 +2290,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-parisian-woman-2017/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-performers-2012/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/amny--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-off-broadway-2019/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-prom-2018/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/amny--matt-windman.json",
@@ -2394,7 +2436,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/mean-girls-2018/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/thewrap--william-bibbiani.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/meteor-shower-2017/thewrap--robert-hofler.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/mexodus-off-broadway-2026/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/thewrap--thom-geier.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/misery-2015/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/miss-saigon-1991/thewrap--robert-hofler.json",
@@ -2418,7 +2459,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/once-on-this-island-2017/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/othello-2025/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/outside-mullingar-2014/thewrap--robert-hofler.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/pal-joey-2008/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/parade-2023/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pass-over-2021/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/peter-pan-goes-wrong-2023/thewrap--robert-hofler.json",
@@ -2492,7 +2532,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-piano-lesson-2022/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-picture-of-dorian-gray-2025/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/thewrap--thom-geier.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-off-broadway-2019/thewrap--thom-geier.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-present-2017/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/thewrap--chris-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/thewrap--robert-hofler.json",
@@ -2744,8 +2783,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/elling-2010/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/first-date-2013/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/heisenberg-2016/amny--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hello-dolly-1978/amny--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hello-dolly-1995/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/holler-if-ya-hear-me-2014/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/ill-eat-you-last-a-chat-with-sue-mengers-2013/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/its-only-a-play-2014/amny--matt-windman.json",
@@ -2860,7 +2897,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/kinky-boots-2013/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/kiss-me-kate-2019/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/leap-of-faith-2012/hollywood-reporter--david-rooney.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-2014/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/little-shop-of-horrors-off-broadway-2019/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/m-butterfly-2017/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/marvins-room-2017/hollywood-reporter--david-rooney.json",
@@ -2885,14 +2921,12 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/pretty-woman-the-musical-2018/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/private-lives-2011/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/purpose-2025/hollywood-reporter--lovia-gayarkye.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/runaways-1978/hollywood-reporter--frank-scheck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/saint-joan-2018/hollywood-reporter--frank-scheck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/seminar-2011/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/side-show-2014/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/six-degrees-of-separation-2017/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/soul-doctor-2013/hollywood-reporter--frank-scheck.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/spring-awakening-2006/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/stick-fly-2011/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/straight-white-men-2018/hollywood-reporter--frank-scheck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-bridges-of-madison-county-2014/hollywood-reporter--david-rooney.json",
@@ -2917,7 +2951,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-parisian-woman-2017/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-piano-lesson-2022/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/hollywood-reporter--frank-scheck.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2000/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-realistic-joneses-2014/hollywood-reporter--david-rooney.json",
@@ -3139,7 +3172,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/ifthen-2014/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-2014/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/life-of-pi-2023/amny--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/macbeth-1981/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mothers-and-sons-2014/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mr-saturday-night-2022/amny--matt-windman.json",
@@ -3371,7 +3403,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/china-doll-2015/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/dames-at-sea-2015/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/disaster-2016/huffpost--steven-suskin.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/falsettos-1992/huffpost--david-finkle.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/farinelli-and-the-king-2017/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/fiddler-on-the-roof-2015/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/fish-in-the-dark-2015/huffpost--steven-suskin.json",
@@ -3447,7 +3478,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/a-view-from-the-bridge-2015/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/guardian--arifa-akbar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/an-american-in-paris-2015/guardian--alexis-soloski.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/blood-of-my-blood-west-end-2026/guardian--arifa-akbar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-2014/guardian--emma-brockes.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cats-2016/guardian--emma-brockes.json",
@@ -3457,10 +3487,8 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/fish-in-the-dark-2015/guardian--maraithe-thomas.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/fully-committed-2016/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/gigi-2015/guardian--alexis-soloski.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/guardian--michael-billington.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hand-to-god-2015/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hedwig-and-the-angry-inch-2014/guardian--alexis-soloski.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/guardian--mark-lawson.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/honeymoon-in-vegas-2015/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/guardian--brian-logan.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/guardian--alexis-soloski.json",
@@ -3478,7 +3506,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-father-2016/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-gin-game-2015/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-humans-2016/guardian--alexis-soloski.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-west-end-2021/guardian--arifa-akbar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-river-2014/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-visit-2015/guardian--alexis-soloski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-waverly-gallery-2018/guardian--alexis-soloski.json",
@@ -3521,7 +3548,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/private-lives-1992/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/private-lives-2002/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/rodgers-hammersteins-cinderella-2013/vulture--scott-brown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-peewee-herman-show-2010/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/vulture--scott-brown.json"
       ]
     },
@@ -3535,7 +3561,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/a-delicate-balance-2014/ap--mark-kennedy.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/bring-it-on-the-musical-2012/ap--mark-kennedy.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cats-west-end-2026/ap--mark-kennedy.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/dont-dress-for-dinner-2012/ap--mark-kennedy.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/parade-2023/ap--mark-kennedy.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-audience-2015/ap--mark-kennedy.json",
@@ -3589,7 +3614,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/seminar-2011/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-columnist-2012/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-heiress-2012/timeout--david-cote.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-maids-off-broadway-2026/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-nance-2013/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-terms-of-my-surrender-2017/timeout--adam-feldman.json",
@@ -3629,7 +3653,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--melissa-rose-bernardo.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/glengarry-glen-ross-2025/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/timeout--adam-feldman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/grace-pervades-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/grand-horizons-2020/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/groundhog-day-2017/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hangmen-2022/timeout--adam-feldman.json",
@@ -3884,7 +3907,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/bright-star-2016/washpost--peter-marks.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/company-2021/washpost--peter-marks.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/english-2025/washpost--naveen-kumar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/escape-to-margaritaville-2018/washpost--peter-marks.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/first-date-2013/washpost--unknown.json",
@@ -4014,7 +4036,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-king-and-i-2015/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-nance-2013/huffpost--david-finkle.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-parisian-woman-2017/huffpost--steven-suskin.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2014/huffpost--david-finkle.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-snow-geese-2013/huffpost--steven-suskin.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-winslow-boy-2013/huffpost--david-finkle.json"
@@ -4200,7 +4221,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/starlight-express-west-end-2024/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/daily-mail--mark-cook.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/teeth-n-smiles-west-end-2026/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/daily-mail--mark-cook.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-holy-rosenbergs-west-end-2026/daily-mail--robert-gore-langton.json",
@@ -4208,7 +4228,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/daily-mail--neil-armstrong.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/waiting-for-godot-2025/daily-mail--robert-gore-langton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/daily-mail--robert-gore-langton.json"
       ]
     },
@@ -4230,9 +4249,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/times-uk--quentin-letts.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/much-ado-about-nothing-2026/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/times-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/present-laughter-2017/times-uk--quentin-letts.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/times-uk--patricia-nicol.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
@@ -4250,10 +4267,8 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/abba-voyage-off-west-end-2026/financialtimes--ludovic-hunter-tilney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/abba-voyage-off-west-end-2026/financialtimes--ludovic-hunter.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/betrayal-2013/financialtimes--financial-times.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/matilda-the-musical-2013/financialtimes--brendan-lemon.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/financialtimes--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/starlight-express-west-end-2024/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/financialtimes--sarah-hemming.json",
@@ -4324,7 +4339,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/macbeth-2000/nypost--johnny-oleksinski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nypost--johnny-oleksinski.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-2005/nypost--johnny-oleksinski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/true-west-2019/nypost--paul-dziemianowicz.json"
       ]
     },
@@ -4352,32 +4366,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-heidi-chronicles-2015/njcom--ronnie-reich.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-king-and-i-2015/njcom--ronni-reich.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-visit-2015/njcom--ronni-reich.json"
-      ]
-    },
-    {
-      "showId": "all-my-sons-1987",
-      "outletId": "latimes",
-      "currentDisplayName": "LA Times",
-      "expectedDisplayName": "Los Angeles Times",
-      "canonicalId": "latimes",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-1987/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-2019/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/blackbird-2016/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/china-doll-2015/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dead-accounts-2012/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dead-outlaw-2025/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/eclipsed-2016/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/gigi-2015/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/ink-2019/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/king-lear-2004/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/lucky-guy-2013/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/once-2012/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-columnist-2012/latimes--charles-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-terms-of-my-surrender-2017/latimes--chales-mcnulty.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/west-side-story-2009/latimes--charles-mcnulty.json"
       ]
     },
     {
@@ -4440,6 +4428,30 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/venus-in-fur-2011/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/war-horse-2011/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
+      ]
+    },
+    {
+      "showId": "all-my-sons-2019",
+      "outletId": "latimes",
+      "currentDisplayName": "LA Times",
+      "expectedDisplayName": "Los Angeles Times",
+      "canonicalId": "latimes",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-2019/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/blackbird-2016/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/china-doll-2015/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/dead-accounts-2012/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/dead-outlaw-2025/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/eclipsed-2016/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/gigi-2015/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/ink-2019/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/lucky-guy-2013/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/once-2012/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-columnist-2012/latimes--charles-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-terms-of-my-surrender-2017/latimes--chales-mcnulty.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/west-side-story-2009/latimes--charles-mcnulty.json"
       ]
     },
     {
@@ -4514,7 +4526,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/independent--annabel-nugent.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/city-of-angels-1989/independent--paul-taylor.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dear-england-new-wimbledon-theatre-west-end-2026/independent--jessie-thomspon.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/independent--alive-saville.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/machinal-2014/independent--tom-teodorczuk.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2014/independent--tom-teodorczuk.json"
@@ -4571,7 +4582,6 @@
       "canonicalId": "thestage",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/thestage--sam-marlowe.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/thestage--sam-marlowe.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/thestage--tim-bano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/thestage--dave-fargnoli.json"
@@ -4587,13 +4597,10 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/broken-glass-west-end-2026/times-uk--observes-andrzej-lukowski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/giant-west-end-2025/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/times-uk--ann-treneman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/man-and-boy-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/man-and-boy-west-end-2026/times-uk--tim-bano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/times-uk--clive-davis.json"
       ]
     },
@@ -4605,7 +4612,6 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/all-the-way-2014/telegraph--hermione-hoby.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/telegraph--dominic-cavendish.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/betrayal-2013/telegraph--matt-wolf.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/broken-glass-west-end-2026/telegraph--asserts-dominic-cavendish.json",
@@ -4615,12 +4621,10 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/hercules-west-end-2025/telegraph--claire-allfree.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hughie-2016/telegraph--hermione-hoby.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/im-every-woman-off-west-end-2026/telegraph--fiona-mountford-reviewing.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/telegraph--diane-snyder.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/les-liaisons-dangereuses-2016/telegraph--matt-wolf.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/m-butterfly-2017/telegraph--david-snyder.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pretty-woman-the-musical-2018/telegraph--diane-snyder.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/telegraph--nick-ferris.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/telegraph--dominic-cavendish.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/telegraph--claire-allfree.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2000/telegraph--matt-wolf.json",
@@ -4980,19 +4984,6 @@
     },
     {
       "showId": "an-act-of-god-2016",
-      "outletId": "northjerseycom",
-      "currentDisplayName": "The Record (Bergen)",
-      "expectedDisplayName": "NorthJersey.com",
-      "canonicalId": "northjerseycom",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/an-act-of-god-2016/northjerseycom--robert-feldberg.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/butley-2006/northjerseycom--robert-feldberg.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/northjerseycom--robert-feldberg.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/northjerseycom--robert-feldberg.json"
-      ]
-    },
-    {
-      "showId": "an-act-of-god-2016",
       "outletId": "star-watch-byline",
       "currentDisplayName": "star-watch-byline",
       "expectedDisplayName": "Star Watch Byline",
@@ -5288,7 +5279,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-west-end-2024/guardian--emma-john.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-west-end-2025/guardian--kate-wyver.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/shadowlands-west-end-2026/guardian--arifa-akbar.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/six-the-musical-west-end-2021/guardian--lyn-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/guardian--arifa-akbar.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-book-of-mormon-west-end-2024/guardian--euan-ferguson.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/guardian--arifa-akbar.json"
@@ -5328,21 +5318,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/independent--alice-saville.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-book-of-mormon-west-end-2024/independent--paul-taylor.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-spy-who-came-in-from-the-cold-west-end-2025/independent--alice-saville.json"
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "outletId": "metro-uk",
-      "currentDisplayName": "Metro",
-      "expectedDisplayName": "Metro UK",
-      "canonicalId": "metro-uk",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/metro-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/consumed-west-end-2026/metro-uk--adam-bloodworth.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/metro-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-west-end-2021/metro-uk--claire-allfree.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/metro-uk--luke-dillon.json"
       ]
     },
     {
@@ -5402,7 +5377,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-tempest-globe-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/times-uk--donald-hutera.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/times-uk--clive-davis.json"
       ]
     },
@@ -5456,7 +5430,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-glass-menagerie-2017/dailybeast--tim-teeman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-last-five-years-2025/dailybeast--tim-teeman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-parisian-woman-2017/dailybeast--tim-teeman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-off-broadway-2019/dailybeast--tim-teeman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-waverly-gallery-2018/dailybeast--tim-teeman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/war-paint-2017/dailybeast--tim-teeman.json"
       ]
@@ -6016,6 +5989,18 @@
       ]
     },
     {
+      "showId": "butley-2006",
+      "outletId": "northjerseycom",
+      "currentDisplayName": "The Record (Bergen)",
+      "expectedDisplayName": "NorthJersey.com",
+      "canonicalId": "northjerseycom",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/butley-2006/northjerseycom--robert-feldberg.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/northjerseycom--robert-feldberg.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/northjerseycom--robert-feldberg.json"
+      ]
+    },
+    {
       "showId": "cabaret-2014",
       "outletId": "northjerseycom",
       "currentDisplayName": "NorthJerey.com",
@@ -6229,8 +6214,7 @@
       "expectedDisplayName": "Time Out London",
       "canonicalId": "timeout-london",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/cleansed-off-west-end-2026/timeout-london--tim-bano.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/timeout-london--andrzej-lukowski.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/cleansed-off-west-end-2026/timeout-london--tim-bano.json"
       ]
     },
     {
@@ -6295,6 +6279,20 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/death-of-a-salesman-2022/theater-scene--joseph-pisano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/macbeth-2022/theater-scene--victor-gluck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-color-purple-2015/theater-scene--darryl-reilly.json"
+      ]
+    },
+    {
+      "showId": "consumed-west-end-2026",
+      "outletId": "metro-uk",
+      "currentDisplayName": "Metro",
+      "expectedDisplayName": "Metro UK",
+      "canonicalId": "metro-uk",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/consumed-west-end-2026/metro-uk--adam-bloodworth.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/metro-uk--unknown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-west-end-2021/metro-uk--claire-allfree.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-west-end-2025/metro-uk--brooke-ivey-johnson.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/metro-uk--luke-dillon.json"
       ]
     },
     {
@@ -6369,17 +6367,6 @@
       "canonicalId": "theatrely",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/dead-outlaw-2025/theatrely--andrew-martini.json"
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "outletId": "thereviewshub",
-      "currentDisplayName": "Reviews Hub",
-      "expectedDisplayName": "The Reviews Hub",
-      "canonicalId": "thereviewshub",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/dear-england-new-wimbledon-theatre-west-end-2026/thereviewshub--maryam-philpott.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/thereviewshub--scott-matthewman.json"
       ]
     },
     {
@@ -6770,8 +6757,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/fosse-1999/times-uk--john-peter.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/times-uk--christopher-hart.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/jumpers-2004/times-uk--john-peter.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/lend-me-a-tenor-2010/times-uk--jane-edwardes.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/matilda-the-musical-west-end-2021/times-uk--dan-cairns.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-west-end-2021/times-uk--johnpeter.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/wicked-west-end-2021/times-uk--clifford-bishop.json"
@@ -6957,7 +6942,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/broadwayworld--aliya-al-hassan.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/broadwayworld--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/broadwayworld--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--laura-jones.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/broadwayworld--cindy-marcolina.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
       ]
@@ -7020,16 +7004,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/theatre-weekly--greg-stewart.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-producers-west-end-2025/theatre-weekly--greg-stewart.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/theatre-weekly--greg-stewart.json"
-      ]
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "outletId": "theatrecat",
-      "currentDisplayName": "TheatreCat",
-      "expectedDisplayName": "Theatrecat",
-      "canonicalId": "theatrecat",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/theatrecat--libby-purves.json"
       ]
     },
     {
@@ -7136,7 +7110,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/thestage--tim-bano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/thestage--mark-shenton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/thestage--sam-marlowe.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/inter-alia-west-end-2026/thestage--sam-marlowe.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/thestage--tim-bano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-west-end-2024/thestage--tim-bano.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/paddington-the-musical-west-end-2025/thestage--sam-marlowe.json",
@@ -7400,7 +7373,6 @@
       "canonicalId": "i-paper",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/i-paper--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/inter-alia-west-end-2026/i-paper--anya-ryan.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/i-paper--fiona-mountford.json"
@@ -7793,7 +7765,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/express-uk--neil-norman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/sinatra-the-musical-west-end-2026/express-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/express-uk--neil-norman.json"
       ]
     },
@@ -8020,16 +7991,6 @@
       "canonicalId": "real-mrhousewife",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/motown-the-musical-2016/real-mrhousewife--matt-richards.json"
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "outletId": "jewishnews",
-      "currentDisplayName": "The Jewish News",
-      "expectedDisplayName": "Jewishnews",
-      "canonicalId": "jewishnews",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/jewishnews--ronelle-grier.json"
       ]
     },
     {
@@ -8586,16 +8547,6 @@
       ]
     },
     {
-      "showId": "spamalot-off-broadway-2026",
-      "outletId": "trinity-tripod",
-      "currentDisplayName": "trinity-tripod",
-      "expectedDisplayName": "Trinity Tripod",
-      "canonicalId": "trinity-tripod",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-off-broadway-2026/trinity-tripod--savannah-brooks.json"
-      ]
-    },
-    {
       "showId": "spring-awakening-2015",
       "outletId": "broadwayspotted",
       "currentDisplayName": "broadwayspotted",
@@ -8614,16 +8565,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/summer-2018/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-bands-visit-2017/nydailynews--joe-dziemianowicz.json"
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2008",
-      "outletId": "express-uk",
-      "currentDisplayName": "Sundayexpress",
-      "expectedDisplayName": "Express  (UK)",
-      "canonicalId": "express-uk",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/sunday-in-the-park-with-george-2008/express-uk--markshenton.json"
       ]
     },
     {
@@ -9129,16 +9070,6 @@
       "canonicalId": "thesetheatrethoughts",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json"
-      ]
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "outletId": "unknownkentandsussex",
-      "currentDisplayName": "unknownkentandsussex",
-      "expectedDisplayName": "Unknown Kent & Sussex",
-      "canonicalId": "unknownkentandsussex",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-importance-of-being-oscar-off-west-end-2026/unknownkentandsussex--maria-bligh.json"
       ]
     },
     {
@@ -9681,16 +9612,6 @@
       "canonicalId": "thefilmexperience",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/three-tall-women-2018/thefilmexperience--eric-blume.json"
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "outletId": "theater-news-online",
-      "currentDisplayName": "David Cote",
-      "expectedDisplayName": "Theater News Online",
-      "canonicalId": "theater-news-online",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json"
       ]
     },
     {
