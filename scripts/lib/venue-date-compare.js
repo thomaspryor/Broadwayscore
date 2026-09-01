@@ -204,6 +204,45 @@ function compareShow(show, parsed, playbillUrl) {
 const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable', 'serp-error']);
 
 /**
+ * Results that answer the question this audit asks. Everything else — a fetch
+ * timeout, a SERP outage, a missing browser — is the environment failing to
+ * deliver an answer, not an answer.
+ *
+ * 'no-playbill-url' IS definitive: we reached the providers, they answered, and
+ * the show has no Playbill production page. That is a real, stable fact about
+ * the show, and it is why such a show can never be validated and must not hold
+ * the gate red forever.
+ */
+const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url']);
+
+/**
+ * What this run leaves as the last thing we actually KNOW about a show.
+ *
+ * BRO-2701 review 4. Across four review rounds every finding traced back to one
+ * error: `result` was made to answer two different questions at once. Ordering
+ * asks "what should I spend the next 24 seconds on"; the deferral gate asks "is
+ * there an open question about this show". A transient outcome changes the
+ * first and must not change the second, and squeezing both out of one field is
+ * why a fetch timeout could erase a mismatch, and why a brand-new stub checked
+ * during an outage could slip out of the blocking set. So they are two fields
+ * now: `result` drives ordering, `lastDefinitiveResult` drives blocking.
+ *
+ * Two rules:
+ *  - A transient outcome never displaces what we knew. It cannot manufacture
+ *    certainty, and it cannot destroy it.
+ *  - 'no-playbill-url' cannot clear a recorded 'mismatch'. Losing track of the
+ *    Playbill page is not evidence the venue/date defect was fixed; it just
+ *    means we can no longer see it. Only a fresh 'match' or 'mismatch' — an
+ *    actual look at an actual page — may supersede a mismatch.
+ */
+function resolveLastDefinitive(freshResult, priorRow) {
+  const prior = priorRow ? priorRow.lastDefinitiveResult : undefined;
+  if (!DEFINITIVE_RESULTS.has(freshResult)) return prior;
+  if (freshResult === 'no-playbill-url' && prior === 'mismatch') return 'mismatch';
+  return freshResult;
+}
+
+/**
  * Did a serpQuery() call actually reach a provider?
  *
  * BRO-2701 second review, finding 1: the first attempt at this guarded only
@@ -253,8 +292,17 @@ function missingUrlOutcome({ anyQueryCompleted }) {
 function priorRowOf(previousResultById, showId) {
   const prev = previousResultById ? previousResultById[showId] : undefined;
   if (prev === undefined || prev === null) return undefined;
-  if (typeof prev === 'string') return { result: prev, checkedAt: undefined };
-  return { result: prev.result, checkedAt: prev.checkedAt };
+  const row = typeof prev === 'string' ? { result: prev } : prev;
+  return {
+    result: row.result,
+    checkedAt: row.checkedAt,
+    // Rows written before this field existed (and the bare-string form used by
+    // callers that only have results) derive it, so the whole committed ledger
+    // migrates with no backfill.
+    lastDefinitiveResult: row.lastDefinitiveResult !== undefined
+      ? row.lastDefinitiveResult
+      : (DEFINITIVE_RESULTS.has(row.result) ? row.result : undefined),
+  };
 }
 
 function provisionalPriorityTier(showId, previousResultById) {
@@ -315,10 +363,34 @@ function orderProvisionalTargets(shows, previousResultById) {
  * previous `!== 2` made exactly that contradiction the permanent state of
  * main.
  */
-const DEFERRAL_BLOCKING_TIERS = new Set([0, 1]);
+/**
+ * Does deferring this show leave an OPEN QUESTION about it?
+ *
+ * Deliberately NOT expressed in tiers (BRO-2701 review 4): tiers rank what to
+ * spend the budget on, which is a different question and answering both with
+ * one number is what produced this card's whole review history. A show holds
+ * the gate red when, and only when:
+ *
+ *   - nothing has ever been recorded for it (a brand-new stub — the incident
+ *     class this audit exists to catch), or
+ *   - every run so far hit a transient failure, so it has never once been
+ *     definitively looked at, or
+ *   - the last real look found a 'mismatch' that is still unresolved.
+ *
+ * A previously-clean show that hits a fetch error does NOT block: we still know
+ * what we knew. That is what keeps a provider outage from turning main red
+ * across the whole corpus while still failing closed on the shows an outage
+ * genuinely leaves unvalidated.
+ */
+function blocksOnDeferral(showId, previousResultById) {
+  const row = priorRowOf(previousResultById, showId);
+  if (row === undefined) return true;
+  if (row.lastDefinitiveResult === undefined) return true;
+  return row.lastDefinitiveResult === 'mismatch';
+}
 
 function deferredHighPriorityShows(deferredShows, previousResultById) {
-  return deferredShows.filter((s) => DEFERRAL_BLOCKING_TIERS.has(provisionalPriorityTier(s.id, previousResultById)));
+  return deferredShows.filter((s) => blocksOnDeferral(s.id, previousResultById));
 }
 
 /**
@@ -402,7 +474,14 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
     .map((r) => {
       const fingerprint = showFingerprint(byId[r.id]);
       const base = fingerprint === undefined ? { ...r, checkedAt } : { ...r, fingerprint, checkedAt };
-      return preserveEarnedPriority(base, (previousResultsById || {})[r.id]);
+      // Only evidence that is still ABOUT this show may carry forward. Reading
+      // the raw prior row here would resurrect a mismatch recorded against a
+      // venue the owner has since corrected, and stamp today's fingerprint on
+      // it so it looked freshly confirmed (BRO-2701 review 4, finding 3).
+      const rawPrior = (previousResultsById || {})[r.id];
+      const prior = rawPrior && rowIsStillAboutShow(rawPrior, byId, r.id) ? rawPrior : undefined;
+      const lastDefinitiveResult = resolveLastDefinitive(r.result, priorRowOf({ [r.id]: prior }, r.id));
+      return lastDefinitiveResult === undefined ? base : { ...base, lastDefinitiveResult };
     });
   // A carried-forward row asserts "this is what we found last time we looked".
   // If the entry has been edited since, that assertion is about values that no
@@ -418,47 +497,6 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
     // pre-filter, which is why it passes its map key instead (finding 5).
     fresh, previousResultsById, currentProvisionalIds, (row) => rowIsStillAboutShow(row, byId, row.id),
   );
-}
-
-/**
- * A fresh row must never lower a show's priority below what its prior evidence
- * earned (BRO-2701 review 3, finding 1).
- *
- * buildAuditResults lets a fresh row overwrite the prior one unconditionally,
- * and transient outcomes now tier as 2, which the deferral gate does not block
- * on. Without this rule: run 1 stamps 'mismatch' on show X and CI goes red,
- * correctly. Run 2 the Playbill fetch times out, so X's row becomes
- * 'fetch-error'. Run 3 the budget defers X, deferredHighPriorityShows returns
- * nothing, --fail-on-mismatch exits 0, and main goes GREEN with X's venue
- * mismatch still unfixed and never re-verified. The same erasure is reachable
- * from the workflow CLAUDE.md rule 3 documents: a local
- * `validate-show-venue.js --show=X` on a machine with no SERP keys writes
- * 'serp-error' straight over a real 'mismatch'.
- *
- * Before the re-tiering this could not happen, because every non-'match'
- * result blocked on deferral. So the rule: if the prior result earned a
- * stricter tier than this run's result, the prior result stands as the row's
- * `result`, and this run's outcome is recorded alongside it as `lastAttempt`.
- * `checkedAt` still advances, so rotation is unaffected.
- */
-function preserveEarnedPriority(freshRow, priorRow) {
-  // ONLY a transient outcome is blocked from overwriting. A fresh DEFINITIVE
-  // verdict — 'match', 'mismatch', 'no-playbill-url' — always wins, including
-  // a 'match' that supersedes a prior 'mismatch', which is how a landed fix
-  // clears the gate. Getting this backwards would freeze every mismatch on the
-  // board forever.
-  if (!TRANSIENT_PRIOR_RESULTS.has(freshRow.result)) return freshRow;
-  if (!priorRow || priorRow.result === undefined) return freshRow;
-  if (TRANSIENT_PRIOR_RESULTS.has(priorRow.result)) return freshRow;
-  const priorTier = provisionalPriorityTier('x', { x: priorRow.result });
-  const freshTier = provisionalPriorityTier('x', { x: freshRow.result });
-  if (priorTier >= freshTier) return freshRow;
-  return {
-    ...freshRow,
-    result: priorRow.result,
-    mismatches: priorRow.mismatches || freshRow.mismatches,
-    lastAttempt: { result: freshRow.result, at: freshRow.checkedAt },
-  };
 }
 
 /**
@@ -480,7 +518,12 @@ function buildPriorTierMap({ previousResultsById, showsById }) {
   const out = {};
   for (const [id, row] of Object.entries(previousResultsById || {})) {
     if (!rowIsStillAboutShow(row, byId, id)) continue;
-    out[id] = { result: row.result, checkedAt: row.checkedAt };
+    const normalized = priorRowOf({ [id]: row }, id);
+    out[id] = {
+      result: row.result,
+      checkedAt: row.checkedAt,
+      lastDefinitiveResult: normalized.lastDefinitiveResult,
+    };
   }
   return out;
 }
@@ -513,7 +556,9 @@ module.exports = {
   buildPriorTierMap,
   missingUrlOutcome,
   serpQueryCompleted,
-  preserveEarnedPriority,
+  resolveLastDefinitive,
+  blocksOnDeferral,
+  DEFINITIVE_RESULTS,
   TRANSIENT_PRIOR_RESULTS,
   showFingerprint,
 };

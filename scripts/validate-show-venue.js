@@ -533,11 +533,21 @@ async function main() {
   // validating nothing — and 60 serp-error + 5 match was silent too. Since
   // tiers 2-4 no longer block on deferral, this is the ONLY signal a degraded
   // run leaves behind, so it must fire on degradation, not just on totality.
+  // The denominator is only the shows that COULD produce a verdict (BRO-2701
+  // review 4, finding 4). A 'no-playbill-url' show has no Playbill page, so it
+  // can never yield one by design, and roughly half the committed ledger is
+  // exactly that (32 match / 33 no-playbill-url today). Counting them made a
+  // perfectly healthy full sweep report 32/65 and warn "DEGRADED" on every run
+  // — and since tiers 2-4 no longer block on deferral, this warning is the only
+  // signal a genuinely degraded run leaves behind, so a permanent false
+  // positive on it would be worse than not having it.
   const definitive = matches.length + mismatches.length;
-  if (results.length && definitive === 0) {
-    console.log(`::warning::validate-show-venue: NONE of the ${results.length} target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);
-  } else if (results.length && definitive < results.length / 2) {
-    console.log(`::warning::validate-show-venue: only ${definitive}/${results.length} target(s) produced a venue/date verdict this run — DEGRADED coverage, treat a green result with suspicion`);
+  const noPage = results.filter(r => r.result === 'no-playbill-url').length;
+  const answerable = results.length - noPage;
+  if (answerable > 0 && definitive === 0) {
+    console.log(`::warning::validate-show-venue: NONE of the ${answerable} answerable target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);
+  } else if (answerable > 0 && definitive < answerable / 2) {
+    console.log(`::warning::validate-show-venue: only ${definitive}/${answerable} answerable target(s) produced a venue/date verdict this run — DEGRADED coverage, treat a green result with suspicion`);
   }
   if (mismatches.length) {
     console.log('Mismatches:');

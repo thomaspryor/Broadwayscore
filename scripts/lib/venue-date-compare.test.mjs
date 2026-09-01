@@ -16,7 +16,8 @@ const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults, buildPriorTierMap,
-  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier, preserveEarnedPriority,
+  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
+  resolveLastDefinitive, blocksOnDeferral,
   buildAuditResults, showFingerprint,
 } = require('./venue-date-compare.js');
 
@@ -180,9 +181,24 @@ test('deferredHighPriorityShows: a deferred no-playbill-url show does NOT block 
   // validate-show-venue.js --fail-on-mismatch gates on `mismatches` only and
   // explicitly excludes no-playbill-url when the show IS checked (BRO-2560).
   // An outcome that cannot fail the build when seen must not fail it when unseen.
-  const prev = { 'no-page': 'no-playbill-url', 'was-transient': 'fetch-error' };
-  const deferred = [{ id: 'no-page' }, { id: 'was-transient' }];
-  assert.deepEqual(deferredHighPriorityShows(deferred, prev), []);
+  // 'no-playbill-url' is a DEFINITIVE answer (we reached the providers; the show
+  // has no Playbill page), so nothing about it is left open.
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'no-page' }], { 'no-page': 'no-playbill-url' }), []);
+});
+
+test('deferredHighPriorityShows: a show known ONLY through a transient failure DOES block (BRO-2701 review 4)', () => {
+  // It has never once been definitively looked at, so deferring it leaves the
+  // question wide open — this is the brand-new-stub-during-an-outage case.
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'was-transient' }], { 'was-transient': 'fetch-error' }).map((x) => x.id),
+    ['was-transient'],
+  );
+  // But a show we HAVE looked at before does not block on a later transient
+  // failure: we still know what we knew, so an outage cannot redden the corpus.
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'known' }], { known: { result: 'fetch-error', lastDefinitiveResult: 'match' } }),
+    [],
+  );
 });
 
 test('deferredHighPriorityShows: an unrecognised prior result still blocks (fail safe, BRO-2701)', () => {
@@ -547,10 +563,10 @@ test('a SERP outage cannot demote a show into the never-blocking tail (BRO-2701 
   const outcome = missingUrlOutcome({ anyQueryCompleted });
   assert.equal(outcome.result, 'serp-error');
   assert.ok(TRANSIENT_PRIOR_RESULTS.has(outcome.result));
-  assert.equal(provisionalPriorityTier('s', { s: outcome.result }), 2);
+  assert.equal(provisionalPriorityTier('s', { s: outcome.result }), 2, 'rechecked early, not parked');
   assert.deepEqual(
-    deferredHighPriorityShows([{ id: 's' }], { s: outcome.result }), [],
-    'transient is non-blocking, but it is rechecked early rather than parked forever',
+    deferredHighPriorityShows([{ id: 's' }], { s: outcome.result }).map((x) => x.id), ['s'],
+    'and with no definitive verdict on record, deferring it still fails closed',
   );
 
   // And the contrast: a provider that answered with nothing is a real no-page.
@@ -593,8 +609,8 @@ test('a transient outcome cannot erase a known mismatch (BRO-2701 review 3)', ()
     showsById,
   });
   const row = out.find((r) => r.id === 'x');
-  assert.equal(row.result, 'mismatch', 'the known mismatch must survive a failed re-check');
-  assert.deepEqual(row.lastAttempt.result, 'fetch-error', 'but the failed attempt is still recorded');
+  assert.equal(row.result, 'fetch-error', 'the row honestly records what this run actually got');
+  assert.equal(row.lastDefinitiveResult, 'mismatch', 'but the last thing we KNEW survives it');
   assert.ok(row.checkedAt, 'and checkedAt still advances, so rotation is unaffected');
 
   // Run 3: the budget defers x. It must STILL block.
@@ -612,16 +628,59 @@ test('a DEFINITIVE fresh verdict still wins, so a landed fix clears the gate (BR
     showsById,
   });
   assert.equal(out.find((r) => r.id === 'x').result, 'match', 'a fixed show must be able to go clean');
-  assert.equal(out.find((r) => r.id === 'x').lastAttempt, undefined);
+  assert.equal(out.find((r) => r.id === 'x').lastDefinitiveResult, 'match');
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'x' }], { x: { result: 'match', lastDefinitiveResult: 'match' } }), []);
 });
 
-test('preserveEarnedPriority: transient-over-transient and no-prior are pass-throughs (BRO-2701 review 3)', () => {
-  const fresh = { id: 'x', result: 'serp-error', checkedAt: 'T' };
-  assert.equal(preserveEarnedPriority(fresh, undefined).result, 'serp-error');
-  assert.equal(preserveEarnedPriority(fresh, { result: 'fetch-error' }).result, 'serp-error');
-  // A transient run over a previously-CLEAN show is allowed to lower the row to
-  // transient: tier 2 is stricter than tier 3, so nothing is weakened.
-  assert.equal(preserveEarnedPriority(fresh, { result: 'match' }).result, 'serp-error');
+test('resolveLastDefinitive: a transient outcome neither creates nor destroys certainty (BRO-2701 review 4)', () => {
+  assert.equal(resolveLastDefinitive('fetch-error', undefined), undefined, 'cannot manufacture certainty');
+  assert.equal(resolveLastDefinitive('serp-error', { lastDefinitiveResult: 'mismatch' }), 'mismatch', 'cannot destroy it');
+  assert.equal(resolveLastDefinitive('serp-error', { lastDefinitiveResult: 'match' }), 'match');
+});
+
+test('resolveLastDefinitive: losing the Playbill page cannot clear a mismatch (BRO-2701 review 4)', () => {
+  // Google's top-10 shifting, or a title slug drifting, must not be able to
+  // retire a recorded venue/date defect into the never-blocking tier.
+  assert.equal(resolveLastDefinitive('no-playbill-url', { lastDefinitiveResult: 'mismatch' }), 'mismatch');
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'x' }], { x: { result: 'no-playbill-url', lastDefinitiveResult: 'mismatch' } }).map((r) => r.id),
+    ['x'],
+  );
+  // Only an actual look at an actual page may supersede it.
+  assert.equal(resolveLastDefinitive('match', { lastDefinitiveResult: 'mismatch' }), 'match');
+  assert.equal(resolveLastDefinitive('mismatch', { lastDefinitiveResult: 'match' }), 'mismatch');
+  // And with no prior mismatch, no-playbill-url is simply the answer.
+  assert.equal(resolveLastDefinitive('no-playbill-url', { lastDefinitiveResult: 'match' }), 'no-playbill-url');
+});
+
+test('blocksOnDeferral: a legacy row with no lastDefinitiveResult derives one from result (BRO-2701 review 4)', () => {
+  // The committed ledger has 65 rows and none of them carry the new field, so
+  // the migration has to work with no backfill step.
+  assert.equal(blocksOnDeferral('a', { a: { result: 'match' } }), false);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'no-playbill-url' } }), false);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'mismatch' } }), true);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'fetch-error' } }), true);
+  assert.equal(blocksOnDeferral('a', {}), true, 'never seen at all');
+});
+
+test('a stale mismatch is NOT resurrected onto a corrected show (BRO-2701 review 4, finding 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'New Venue', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = {
+    x: {
+      id: 'x', result: 'mismatch', lastDefinitiveResult: 'mismatch',
+      fingerprint: 'Wrong Venue|2026-01-01||false',
+      mismatches: [{ field: 'venue', shows: 'Wrong Venue' }],
+    },
+  };
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'fetch-error', mismatches: [] }],
+    previousResultsById, currentProvisionalIds: new Set(['x']), showsById,
+  });
+  const row = out.find((r) => r.id === 'x');
+  assert.equal(row.lastDefinitiveResult, undefined,
+    'evidence about a venue the owner has since corrected must not carry forward');
+  assert.equal(blocksOnDeferral('x', { x: row }), true,
+    'and the show is treated as never-validated, so it still fails closed');
 });
 
 // FINDING 4 — isRevival is validated by compareShow, so it must be part of the
