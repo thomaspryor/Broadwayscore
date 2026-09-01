@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-01T21:42:50.132Z",
+  "updatedAt": "2026-09-01T21:43:14.950Z",
   "processed": 64,
-  "failed": 815,
-  "successRate": "7.3%",
+  "failed": 825,
+  "successRate": "7.2%",
   "tierBreakdown": {
     "playwright": 37,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 2,
     "scrapingbee": 15,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -124,6 +124,12 @@
       "t": "2026-09-01T21:36:41.530Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-01T21:43:04.432Z",
+      "event": "bb-session",
+      "session": "c733fe15",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
