@@ -38,6 +38,7 @@ const {
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { parseArgs: parseArgsLib, setDefaultBaselinePath } = require('./lib/audit-self-contradictory-clears-args.js');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
 
@@ -143,32 +144,11 @@ const BASELINE_TOLERANCE = 15;
 const SKIP_DIRS = new Set(['_superseded-misattributed']);
 
 function parseArgs(argv) {
-  // --max via the shared parser: the old inline parseInt returned NaN for
-  // `--max=abc`/`--max=`, and `unhandled > NaN` is always false, which would
-  // have silently disabled this gate. test.yml now gates on --baseline instead,
-  // but --max is still the fallback path whenever --baseline is absent, so the
-  // NaN-safety it provides still matters.
-  const args = {
-    gate: false,
-    max: parseMaxArgOrExit(argv, { scriptName: 'audit-self-contradictory-clears' }),
-    fix: false,
-    fixSafe: false,
-    show: null,
-    json: false,
-    baseline: null,
-    recordBaseline: false,
-  };
-  for (const a of argv) {
-    if (a === '--gate') args.gate = true;
-    else if (a === '--fix') args.fix = true;
-    else if (a === '--fix-safe') args.fixSafe = true;
-    else if (a === '--json') args.json = true;
-    else if (a === '--record-baseline') args.recordBaseline = true;
-    else if (a === '--baseline') args.baseline = DEFAULT_BASELINE_PATH;
-    else if (a.startsWith('--baseline=')) args.baseline = a.slice('--baseline='.length);
-    else if (a.startsWith('--show=')) args.show = a.split('=')[1];
-  }
-  return args;
+  // Delegates to scripts/lib/audit-self-contradictory-clears-args.js so the
+  // unit test can exercise the REAL parser. See that file for why an
+  // unrecognised flag is now fatal (BRO-2705).
+  setDefaultBaselinePath(DEFAULT_BASELINE_PATH);
+  return parseArgsLib(argv);
 }
 
 // Committed baseline: { count, tolerance, recordedAt, note }. A missing or
@@ -214,6 +194,7 @@ function main() {
 
   const hits = [];
   let fixed = 0;
+  let wouldFix = 0;
   let scanned = 0;
   const showsById = args.fixSafe ? loadShowsById() : new Map();
 
@@ -256,7 +237,12 @@ function main() {
             removedAny = true;
           }
         }
-        if (removedAny) {
+        if (removedAny && args.dryRun) {
+          // --dry-run: report the resolution without touching the corpus. The
+          // mutation above already happened in memory on a parsed copy, which
+          // is discarded when this file's loop iteration ends.
+          wouldFix++;
+        } else if (removedAny) {
           // Deliberately a plain write, not safeWriteReview(): the whole point
           // is to REMOVE breadcrumbs that safeWriteReview's isIntentionalClear
           // machinery would otherwise treat as protected and restore. Listed in
@@ -285,8 +271,12 @@ function main() {
       for (const h of list.slice(0, 5)) console.log(`         ${h.showId}/${h.file}`);
       if (list.length > 5) console.log(`         … and ${list.length - 5} more`);
     }
-    if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
-    if (args.fixSafe) console.log(`\nResolved zero-score-impact contradictions on ${fixed} file(s). Re-run without --fix-safe to see what's left for adjudication.`);
+    if (args.dryRun && (args.fix || args.fixSafe)) {
+      console.log(`\nDRY RUN: would resolve ${wouldFix} file(s). Nothing was written.`);
+    } else {
+      if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
+      if (args.fixSafe) console.log(`\nResolved zero-score-impact contradictions on ${fixed} file(s). Re-run without --fix-safe to see what's left for adjudication.`);
+    }
   }
 
   // FAIL LOUD on an empty corpus. review-texts is a private-repo checkout; when
