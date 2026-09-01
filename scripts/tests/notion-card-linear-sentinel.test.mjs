@@ -28,9 +28,21 @@
 // which makes both hooks exit 0 unconditionally before ever reaching the
 // logic under test — a first draft of this file that used the ambient
 // HOME/BROADWAYSCORE_REPO passed 11/11 even with the fix's code block
-// deleted entirely. Every test here is written to fail if the Linear-sentinel
-// branch is removed, verified by literally removing it and re-running (see
-// the BRO-2510 session notes) — not just to pass with the fix present.
+// deleted entirely. Every test below EXCEPT the two explicitly-labeled
+// "regression" ones (which are deliberately branch-independent — they cover
+// pre-existing behavior the fix must not disturb) is written to fail if the
+// Linear-sentinel branch is removed; verified by literally removing it and
+// re-running (see the BRO-2510 session notes), not just by passing with the
+// fix present.
+//
+// This suite can only exercise whatever notion-card-required-{commit,stop}.sh
+// happen to be installed at ~/.claude/hooks/ on the machine running it — it
+// has no way to pin a specific committed revision of the SEPARATE
+// claude-config repo those hooks live in, and CI (no ~/.claude at all) never
+// runs it either. It proves the fix works on this machine today; the
+// claude-config repo carries its own hook test suite (run on every push
+// there, see hooks/tests/) for regression coverage that survives edits made
+// from a different machine or session.
 //
 // Real /tmp sentinel files are used (that's what the hooks actually read),
 // scoped to randomUUID() session ids so this suite never collides with a
@@ -48,35 +60,51 @@ import { randomUUID } from 'node:crypto';
 const REAL_HOME = os.homedir();
 const COMMIT_HOOK = path.join(REAL_HOME, '.claude', 'hooks', 'notion-card-required-commit.sh');
 const STOP_HOOK = path.join(REAL_HOME, '.claude', 'hooks', 'notion-card-required-stop.sh');
-const hasHooks = fs.existsSync(COMMIT_HOOK) && fs.existsSync(STOP_HOOK);
-const skip = !hasHooks && 'notion-card-required-{commit,stop}.sh live in the separate ~/.claude claude-config repo (expected in CI)';
+const hasCommitHook = fs.existsSync(COMMIT_HOOK);
+const hasStopHook = fs.existsSync(STOP_HOOK);
+// Per-hook skip reasons (not a single combined flag) — a machine missing only
+// one of the two scripts should still run tests for whichever is present.
+const skipCommit = !hasCommitHook && 'notion-card-required-commit.sh lives in the separate ~/.claude claude-config repo (expected in CI)';
+const skipStop = !hasStopHook && 'notion-card-required-stop.sh lives in the separate ~/.claude claude-config repo (expected in CI)';
 
 const HOOK_TIMEOUT_MS = 20_000;
 
-let FAKE_HOME;      // no .claude/BOARD_GATE_DISABLED* — defeats the kill switch
-let REACHABLE_REPO; // scripts/notion-brain.js stub that always exits 0 ("reachable")
-let SLOW_REPO;      // same, but sleeps 8s first — proves the probe is skipped, not raced
+let FAKE_HOME;       // no .claude/BOARD_GATE_DISABLED* — defeats the kill switch
+let REACHABLE_REPO;  // scripts/notion-brain.js stub that always exits 0 ("reachable")
+let PROBE_MARKER_REPO;  // dir holding MARKER_REPO's stub + the marker file it writes if invoked
+let MARKER_PATH;
 
 before(() => {
-  if (!hasHooks) return;
+  if (!hasCommitHook && !hasStopHook) return;
   FAKE_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'ncc-fakehome-'));
   fs.mkdirSync(path.join(FAKE_HOME, '.claude'), { recursive: true });
   REACHABLE_REPO = makeFakeRepo('reachable', { exitCode: 0 });
-  SLOW_REPO = makeFakeRepo('slow', { exitCode: 0, sleepMs: 8000 });
+  MARKER_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'ncc-marker-')), 'probe-invoked.marker');
+  PROBE_MARKER_REPO = makeFakeRepo('marker', { exitCode: 0, markerPath: MARKER_PATH });
 });
 
 after(() => {
-  for (const d of [FAKE_HOME, REACHABLE_REPO, SLOW_REPO]) {
+  for (const d of [FAKE_HOME, REACHABLE_REPO, PROBE_MARKER_REPO]) {
     if (d) fs.rmSync(d, { recursive: true, force: true });
   }
+  if (MARKER_PATH) fs.rmSync(path.dirname(MARKER_PATH), { recursive: true, force: true });
 });
 
-function makeFakeRepo(label, { exitCode = 0, sleepMs = 0 } = {}) {
+function makeFakeRepo(label, { exitCode = 0, markerPath = null } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `ncc-fakerepo-${label}-`));
   const scriptsDir = path.join(dir, 'scripts');
   fs.mkdirSync(scriptsDir, { recursive: true });
   const cliPath = path.join(scriptsDir, 'notion-brain.js');
-  fs.writeFileSync(cliPath, `#!/usr/bin/env node\n${sleepMs > 0 ? `setTimeout(() => process.exit(${exitCode}), ${sleepMs});` : `process.exit(${exitCode});`}\n`);
+  // If markerPath is set, the stub writes it the INSTANT it starts (before
+  // any exit) — this proves whether the probe was invoked AT ALL, with no
+  // wall-clock dependency. A wall-clock race ("must return in under Nms")
+  // is inherently flaky on a loaded dev machine (this one runs ~20 parallel
+  // Claude Code sessions); writing a marker at process start and asserting
+  // its absence is not.
+  const body = markerPath
+    ? `#!/usr/bin/env node\nrequire('fs').writeFileSync(${JSON.stringify(markerPath)}, String(Date.now()));\nprocess.exit(${exitCode});\n`
+    : `#!/usr/bin/env node\nprocess.exit(${exitCode});\n`;
+  fs.writeFileSync(cliPath, body);
   fs.chmodSync(cliPath, 0o755);
   return dir;
 }
@@ -149,7 +177,7 @@ function runStopHook({ sessionId, transcriptPath = '/nonexistent/transcript.json
 
 // ── commit hook: Linear sentinel satisfies the gate ─────────────────────────
 
-test('commit hook: linear-issue-claimed sentinel alone (no Notion sentinel) allows the commit despite Notion being reachable', { skip }, () => {
+test('commit hook: linear-issue-claimed sentinel alone (no Notion sentinel) allows the commit despite Notion being reachable', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   writeSentinel(claimPath, 'BRO-2510');
@@ -161,7 +189,7 @@ test('commit hook: linear-issue-claimed sentinel alone (no Notion sentinel) allo
   }
 });
 
-test('commit hook: linear-issue-reported sentinel alone (no claimed, no Notion sentinel) allows the commit', { skip }, () => {
+test('commit hook: linear-issue-reported sentinel alone (no claimed, no Notion sentinel) allows the commit', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const reportPath = reportSentinelPath(sessionId);
   writeSentinel(reportPath, 'BRO-2510');
@@ -173,7 +201,7 @@ test('commit hook: linear-issue-reported sentinel alone (no claimed, no Notion s
   }
 });
 
-test('commit hook: both linear sentinels present is also allowed (no special-casing needed)', { skip }, () => {
+test('commit hook: both linear sentinels present is also allowed (no special-casing needed)', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   const reportPath = reportSentinelPath(sessionId);
@@ -187,7 +215,7 @@ test('commit hook: both linear sentinels present is also allowed (no special-cas
   }
 });
 
-test('commit hook: regression — the original Notion CARD_SENTINEL path is unaffected', { skip }, () => {
+test('commit hook: regression — the original Notion CARD_SENTINEL path is unaffected', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const cardPath = cardSentinelPath(sessionId);
   writeSentinel(cardPath, '12345678-1234-1234-1234-123456789012');
@@ -199,7 +227,7 @@ test('commit hook: regression — the original Notion CARD_SENTINEL path is unaf
   }
 });
 
-test('commit hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gate — falls through and BLOCKS when Notion is reachable', { skip }, () => {
+test('commit hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gate — falls through and BLOCKS when Notion is reachable', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   writeSentinel(claimPath, ''); // zero-byte — same -s emptiness test as CARD_SENTINEL
@@ -212,22 +240,21 @@ test('commit hook: an EMPTY linear-issue-claimed sentinel does not satisfy the g
   }
 });
 
-test('commit hook: with no sentinel of any kind and a reachable (fake) Notion, the hook still BLOCKS — negative control proving the suite has teeth', { skip }, () => {
+test('commit hook: with no sentinel of any kind and a reachable (fake) Notion, the hook still BLOCKS — negative control proving the suite has teeth', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const r = runCommitHook({ sessionId });
   assert.equal(r.status, 2, `expected BLOCKED, got exit ${r.status}. stderr: ${r.stderr.slice(0, 300)}`);
 });
 
-test('commit hook: a claimed sentinel skips the reachability probe entirely — returns fast even against a Notion CLI stub that sleeps 8s', { skip }, () => {
+test('commit hook: a claimed sentinel skips the reachability probe entirely — the probe CLI stub never gets invoked at all', { skip: skipCommit }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   writeSentinel(claimPath, 'BRO-2510');
   try {
-    const start = Date.now();
-    const r = runCommitHook({ sessionId, env: { BROADWAYSCORE_REPO: SLOW_REPO } });
-    const elapsedMs = Date.now() - start;
+    fs.rmSync(MARKER_PATH, { force: true });
+    const r = runCommitHook({ sessionId, env: { BROADWAYSCORE_REPO: PROBE_MARKER_REPO } });
     assert.equal(r.status, 0, `expected allowed, got exit ${r.status}. stderr: ${r.stderr.slice(0, 300)}`);
-    assert.ok(elapsedMs < 3000, `hook took ${elapsedMs}ms — the linear-sentinel check must short-circuit before the (8s-sleeping) reachability probe, not race it`);
+    assert.ok(!fs.existsSync(MARKER_PATH), 'the reachability probe stub wrote its marker — the linear-sentinel check did not short-circuit before it ran');
   } finally {
     cleanupSentinels([claimPath]);
   }
@@ -242,7 +269,7 @@ test('commit hook: a claimed sentinel skips the reachability probe entirely — 
 // these vacuous (the hook's own pre-existing "no transcript -> pass" branch
 // produces the same exit 0 the fix does, for an unrelated reason).
 
-test('stop hook: linear-issue-claimed sentinel allows Stop even with a real tracked-code-edit transcript and no card update', { skip }, () => {
+test('stop hook: linear-issue-claimed sentinel allows Stop even with a real tracked-code-edit transcript and no card update', { skip: skipStop }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   writeSentinel(claimPath, 'BRO-2510');
@@ -256,7 +283,7 @@ test('stop hook: linear-issue-claimed sentinel allows Stop even with a real trac
   }
 });
 
-test('stop hook: linear-issue-reported sentinel alone also allows Stop with a real tracked-code-edit transcript', { skip }, () => {
+test('stop hook: linear-issue-reported sentinel alone also allows Stop with a real tracked-code-edit transcript', { skip: skipStop }, () => {
   const sessionId = randomUUID();
   const reportPath = reportSentinelPath(sessionId);
   writeSentinel(reportPath, 'BRO-2510');
@@ -270,7 +297,7 @@ test('stop hook: linear-issue-reported sentinel alone also allows Stop with a re
   }
 });
 
-test('stop hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gate — falls through and BLOCKS on a tracked-edit transcript with no card update', { skip }, () => {
+test('stop hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gate — falls through and BLOCKS on a tracked-edit transcript with no card update', { skip: skipStop }, () => {
   const sessionId = randomUUID();
   const claimPath = claimSentinelPath(sessionId);
   writeSentinel(claimPath, '');
@@ -285,7 +312,7 @@ test('stop hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gat
   }
 });
 
-test('stop hook: with no sentinel of any kind, a tracked-edit transcript still BLOCKS — negative control proving the suite has teeth', { skip }, () => {
+test('stop hook: with no sentinel of any kind, a tracked-edit transcript still BLOCKS — negative control proving the suite has teeth', { skip: skipStop }, () => {
   const sessionId = randomUUID();
   const transcriptPath = makeTrackedEditTranscript('control');
   try {
@@ -296,7 +323,7 @@ test('stop hook: with no sentinel of any kind, a tracked-edit transcript still B
   }
 });
 
-test('stop hook: regression — an unrelated session with no sentinels and no tracked edits (no transcript) still passes through untouched (pre-existing behavior)', { skip }, () => {
+test('stop hook: regression — an unrelated session with no sentinels and no tracked edits (no transcript) still passes through untouched (pre-existing behavior)', { skip: skipStop }, () => {
   const sessionId = randomUUID();
   const r = runStopHook({ sessionId });
   assert.equal(r.status, 0, `expected allowed, got exit ${r.status}. stderr: ${r.stderr.slice(0, 300)}`);
