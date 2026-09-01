@@ -52,9 +52,10 @@
 
 'use strict';
 
-const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale } = require('./review-guards');
+const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
+const { getBestScore } = require('./rebuild-helpers');
 
 /**
  * A file whose flag a human has already ruled on — never escalate it. Covers:
@@ -251,7 +252,10 @@ function detectCvFlagContradiction(file) {
  *
  * NOT a judgement about which side is stale. Callers decide: the auditor
  * escalates, --fix retracts the breadcrumb (the flag is the live verdict, since
- * the flag setters are the ones that run last).
+ * the flag setters are the ones that run last). That default is only actually
+ * true for records with no live score signal — see isZeroScoreImpactFix()
+ * below (BRO-185) and memory/feedback_audit_fix_remediation_untrusted.md for
+ * the corpus scan that disproved it as a blanket rule.
  */
 
 /**
@@ -525,6 +529,63 @@ function demoteStaleWrongShowPromotion(file, contradiction, now = new Date()) {
   return true;
 }
 
+/**
+ * BRO-185. Whether resolving one self-contradiction is safe to bulk-apply
+ * without human adjudication.
+ *
+ * memory/feedback_audit_fix_remediation_untrusted.md (2026-08-14): this same
+ * corpus's own `--fix` was caught flipping 438 live-scored reviews (NYT/
+ * Brantley, WSJ/Teachout, The Stage, FT among them) from valid to invalid,
+ * because retracting the breadcrumb is only a NO-OP resolution when nothing
+ * downstream was reading the breadcrumb to stay included. `resolution` in
+ * SELF_CLEAR_PAIRS records which side wins the contradiction; it is silent on
+ * whether winning actually MOVES a scored review in or out of the corpus.
+ * That's a different question and this is where it gets answered.
+ *
+ * Ships against the SAME two functions rebuild-all-reviews.js itself calls —
+ * isIncludableForRebuild (review-guards.js) for inclusion and getBestScore
+ * (rebuild-helpers.js) for the value — not a re-derived proxy. An earlier
+ * draft of this function used classifyContentTier plus a hand-maintained
+ * score-signal field list; a codebase-aware review (BRO-185) caught that
+ * classifyContentTier's tier label doesn't fully determine rebuild inclusion
+ * (e.g. explainExclusion's wrongProduction gate only honors a FRESH
+ * wrongProductionAutoCleared stamp, not the allowEarlyDate/allowCrossMarket
+ * bypass classifyContentTier itself checks) and that a hand-listed score
+ * field set is exactly the "must-match-X" pattern
+ * memory/feedback_includability_predicates_must_be_canonical.md already
+ * names as a recurring bug class. Retrofitting a THIRD independent notion of
+ * "is this scored" was rejected in favor of calling the two the pipeline
+ * already trusts.
+ *
+ * @param {object} file - parsed review-text JSON (read-only)
+ * @param {object} contradiction - one detectAllSelfContradictoryClears() entry
+ * @param {object} [ctx]
+ * @param {object} [ctx.show] - the show record from shows.json (for
+ *   isIncludableForRebuild's wrongShow/premature-review checks; omitting it
+ *   only risks a false NEGATIVE — explainExclusion documents itself as
+ *   conservative without a show — never a false-safe positive)
+ * @param {string} [ctx.filePath] - absolute path to the review file (for
+ *   isIncludableForRebuild's duplicateOf sibling lookup)
+ * @returns {boolean}
+ */
+function isZeroScoreImpactFix(file, contradiction, { show, filePath } = {}) {
+  if (!file || !contradiction) return false;
+
+  const includedBefore = isIncludableForRebuild(file, show, filePath);
+  const scoreBefore = includedBefore ? getBestScore(file) : null;
+
+  const clone = JSON.parse(JSON.stringify(file));
+  const applied = contradiction.resolution === 'demote-flag'
+    ? demoteStaleWrongShowPromotion(clone, contradiction)
+    : retractStaleClearBreadcrumb(clone, contradiction).length > 0;
+  if (!applied) return false; // resolver declined (e.g. demote-flag's strict predicate) — nothing to safely apply
+
+  const includedAfter = isIncludableForRebuild(clone, show, filePath);
+  if (includedBefore !== includedAfter) return false;
+  const scoreAfter = includedAfter ? getBestScore(clone) : null;
+  return JSON.stringify(scoreBefore) === JSON.stringify(scoreAfter);
+}
+
 module.exports = {
   detectFlagContradiction,
   detectCvFlagContradiction,
@@ -538,6 +599,7 @@ module.exports = {
   isHumanDecided,
   flagTimestamp,
   cvIsNewerThanFlag,
+  isZeroScoreImpactFix,
   SELF_CLEAR_PAIRS,
   CONTRADICTION_REALERT_DAYS,
 };
