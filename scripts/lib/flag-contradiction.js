@@ -52,10 +52,10 @@
 
 'use strict';
 
-const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale } = require('./review-guards');
+const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
-const { classifyContentTier } = require('./content-quality');
+const { getBestScore } = require('./rebuild-helpers');
 
 /**
  * A file whose flag a human has already ruled on — never escalate it. Covers:
@@ -529,19 +529,6 @@ function demoteStaleWrongShowPromotion(file, contradiction, now = new Date()) {
   return true;
 }
 
-// Live score-signal fields (audit-self-contradictory-clears.js's own count,
-// mirrored here so the safety check and the report agree on what "carries a
-// score" means): a bodyless record with one of these is still fully
-// scoreable, so `!fullText` alone is never a safe stand-in.
-const SCORE_SIGNAL_FIELDS = [
-  'assignedScore', 'aggregatorStars', 'showScoreExcerpt', 'llmScore',
-  'dtliExcerpt', 'bwwExcerpt', 'nycTheatreExcerpt', 'lboRoundupExcerpt',
-];
-
-function hasLiveScoreSignal(file) {
-  return SCORE_SIGNAL_FIELDS.some((k) => file && file[k] != null && file[k] !== false);
-}
-
 /**
  * BRO-185. Whether resolving one self-contradiction is safe to bulk-apply
  * without human adjudication.
@@ -553,36 +540,50 @@ function hasLiveScoreSignal(file) {
  * downstream was reading the breadcrumb to stay included. `resolution` in
  * SELF_CLEAR_PAIRS records which side wins the contradiction; it is silent on
  * whether winning actually MOVES a scored review in or out of the corpus.
- * That's a different question and this is where it gets answered: simulate
- * the resolution on a clone and compare classifyContentTier before/after.
+ * That's a different question and this is where it gets answered.
  *
- *   - contentTier unchanged            → the resolution touches metadata a
- *     reader doesn't gate on; always safe.
- *   - contentTier flips AND no live score signal (SCORE_SIGNAL_FIELDS) →
- *     the flip can't move a review in or out of a composite score either,
- *     because nothing here was ever contributing one; safe.
- *   - contentTier flips AND a score signal is present → resolving this one
- *     requires knowing which side (the flag or its own clear) is actually
- *     correct, which this detector cannot determine from state alone. NOT
- *     safe to auto-apply; leave it flagged for adjudication.
- *
- * Pure — clones before mutating, never touches the caller's `file`.
+ * Ships against the SAME two functions rebuild-all-reviews.js itself calls —
+ * isIncludableForRebuild (review-guards.js) for inclusion and getBestScore
+ * (rebuild-helpers.js) for the value — not a re-derived proxy. An earlier
+ * draft of this function used classifyContentTier plus a hand-maintained
+ * score-signal field list; a codebase-aware review (BRO-185) caught that
+ * classifyContentTier's tier label doesn't fully determine rebuild inclusion
+ * (e.g. explainExclusion's wrongProduction gate only honors a FRESH
+ * wrongProductionAutoCleared stamp, not the allowEarlyDate/allowCrossMarket
+ * bypass classifyContentTier itself checks) and that a hand-listed score
+ * field set is exactly the "must-match-X" pattern
+ * memory/feedback_includability_predicates_must_be_canonical.md already
+ * names as a recurring bug class. Retrofitting a THIRD independent notion of
+ * "is this scored" was rejected in favor of calling the two the pipeline
+ * already trusts.
  *
  * @param {object} file - parsed review-text JSON (read-only)
  * @param {object} contradiction - one detectAllSelfContradictoryClears() entry
+ * @param {object} [ctx]
+ * @param {object} [ctx.show] - the show record from shows.json (for
+ *   isIncludableForRebuild's wrongShow/premature-review checks; omitting it
+ *   only risks a false NEGATIVE — explainExclusion documents itself as
+ *   conservative without a show — never a false-safe positive)
+ * @param {string} [ctx.filePath] - absolute path to the review file (for
+ *   isIncludableForRebuild's duplicateOf sibling lookup)
  * @returns {boolean}
  */
-function isZeroScoreImpactFix(file, contradiction) {
+function isZeroScoreImpactFix(file, contradiction, { show, filePath } = {}) {
   if (!file || !contradiction) return false;
-  const before = classifyContentTier(file);
+
+  const includedBefore = isIncludableForRebuild(file, show, filePath);
+  const scoreBefore = includedBefore ? getBestScore(file) : null;
+
   const clone = JSON.parse(JSON.stringify(file));
   const applied = contradiction.resolution === 'demote-flag'
     ? demoteStaleWrongShowPromotion(clone, contradiction)
     : retractStaleClearBreadcrumb(clone, contradiction).length > 0;
   if (!applied) return false; // resolver declined (e.g. demote-flag's strict predicate) — nothing to safely apply
-  const after = classifyContentTier(clone);
-  if (before.contentTier === after.contentTier) return true;
-  return !hasLiveScoreSignal(file);
+
+  const includedAfter = isIncludableForRebuild(clone, show, filePath);
+  if (includedBefore !== includedAfter) return false;
+  const scoreAfter = includedAfter ? getBestScore(clone) : null;
+  return JSON.stringify(scoreBefore) === JSON.stringify(scoreAfter);
 }
 
 module.exports = {
@@ -598,9 +599,7 @@ module.exports = {
   isHumanDecided,
   flagTimestamp,
   cvIsNewerThanFlag,
-  hasLiveScoreSignal,
   isZeroScoreImpactFix,
-  SCORE_SIGNAL_FIELDS,
   SELF_CLEAR_PAIRS,
   CONTRADICTION_REALERT_DAYS,
 };

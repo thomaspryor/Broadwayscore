@@ -67,6 +67,21 @@ Usage:
 const ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradictory-clears-baseline.json');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+
+// Show context for isZeroScoreImpactFix's isIncludableForRebuild calls
+// (wrongShow/premature-review checks). Missing/unparseable shows.json only
+// risks a false NEGATIVE (--fix-safe skips a fixable file) — never a
+// false-safe positive — so this degrades to an empty map rather than failing
+// the whole sweep.
+function loadShowsById() {
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    return new Map((shows.shows || shows).map((s) => [s.id, s]));
+  } catch {
+    return new Map();
+  }
+}
 
 // Why this gate is a BAND around a committed baseline rather than an absolute
 // ceiling (2026-08-14).
@@ -101,14 +116,24 @@ const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradicto
 //
 // BRO-185 (2026-09-01) drained the part of the backlog that WASN'T structural
 // in this sense: --fix-safe (see isZeroScoreImpactFix() in
-// lib/flag-contradiction.js) resolved the 267 contradictions where the fix
-// provably moves no scored review in or out of the corpus, dropping the
-// baseline 776 -> 451. The remaining 451 are exactly the ones this comment
-// describes — every one carries a live score signal, so which side (the flag
-// or its own clear) is correct is a per-record judgement call, not a state a
-// detector can settle. --fix-safe is safe to re-run any time new zero-impact
-// contradictions accumulate; it is not a path to draining the other 451.
-const BASELINE_TOLERANCE = 25;
+// lib/flag-contradiction.js) resolves every contradiction where the fix
+// provably moves no scored review in or out of the corpus, checked against
+// the SAME canonical functions rebuild-all-reviews.js calls
+// (isIncludableForRebuild, getBestScore) — not the classifyContentTier proxy
+// an earlier draft used, which turned out to be needlessly conservative (it
+// doesn't apply isFreshWrongProductionAutoClear's 7-day freshness bound, so
+// it treated hundreds of already-stale, already-excluded records as "risky").
+// Draining against the canonical check dropped the baseline 776 -> 11.
+//
+// The remaining ~11 are genuinely different in kind from the old 776: each
+// one has a wrongProduction/wrongShow auto-clear stamped within the last few
+// days, still inside the freshness window, so resolving it right now WOULD
+// move a live score — which side (the flag or its own clear) is correct is a
+// per-record judgement call, not a state a detector can settle. --fix-safe is
+// safe to re-run any time (it will keep resolving these once they age past
+// the freshness window on their own); it is not a path to resolving the fresh
+// ones while they're still fresh.
+const BASELINE_TOLERANCE = 15;
 
 // Tombstone directories only. `_pending/` is deliberately NOT here: it holds
 // real reviews awaiting a byline strand that later land on a live show, so a
@@ -190,12 +215,14 @@ function main() {
   const hits = [];
   let fixed = 0;
   let scanned = 0;
+  const showsById = args.fixSafe ? loadShowsById() : new Map();
 
   for (const showId of listShowDirs(args.show)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }
     catch { continue; }
+    const show = showsById.get(showId) || null;
 
     for (const file of files) {
       const filePath = path.join(showDir, file);
@@ -218,7 +245,7 @@ function main() {
           // out of the corpus (BRO-185) — see isZeroScoreImpactFix()'s
           // docstring and memory/feedback_audit_fix_remediation_untrusted.md
           // for why blind resolution is not that same thing as a safe one.
-          if (args.fixSafe && !isZeroScoreImpactFix(data, c)) continue;
+          if (args.fixSafe && !isZeroScoreImpactFix(data, c, { show, filePath })) continue;
           // Dispatch per pair: demote-flag (currently only #1022, wrongShow +
           // contentVerificationPromoted) clears the stale FLAG instead of the
           // breadcrumb — see demoteStaleWrongShowPromotion's docstring for why

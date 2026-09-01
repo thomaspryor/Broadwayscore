@@ -4378,6 +4378,19 @@ jobs:
         # --record-baseline ONLY to capture a genuine improvement, never to make
         # a red build pass. Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
 
+      - name: Run self-contradictory-clear drain acceptance test (needs review-texts)
+        # BRO-185: same corpus-missing trap as explainExclusion above (search
+        # "needs review-texts" in this job) — registered in tests/unit-test-
+        # manifest.txt, but that batch runs in the unit-tests job which never
+        # checks out data/review-texts, so it would only ever exercise its own
+        # skip branch there. Re-run HERE with REQUIRE_REVIEW_CORPUS=1 so "the
+        # zero-score-impact bucket stays drained" is a real assertion, not a
+        # silent no-op.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/audit-self-contradictory-clear-drained.test.mjs
+
       # ── RETIRED 2026-08-14: "Audit stale flag after URL correction" (#483) ──
       #
       # There is no step here any more, on purpose. Do not re-add one that runs
