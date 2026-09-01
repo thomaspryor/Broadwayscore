@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-01T14:42:12.668Z",
-  "processed": 2,
-  "failed": 8,
-  "successRate": "20.0%",
+  "updatedAt": "2026-09-01T14:45:28.834Z",
+  "processed": 5,
+  "failed": 15,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-01T14:42:05.848Z",
@@ -25,6 +25,39 @@
       "t": "2026-09-01T14:42:06.504Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-01T14:42:14.976Z",
+      "event": "bb-session",
+      "session": "ef47d4bb",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-09-01T14:42:15.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-01T14:42:23.446Z",
+      "event": "bb-session",
+      "session": "ec749123",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-01T14:42:24.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-01T14:44:39.732Z",
+      "event": "bb-session",
+      "session": "d602c579",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-01T14:44:40.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
