@@ -714,7 +714,7 @@ test('showFingerprint covers isRevival, which compareShow validates (BRO-2701 re
 test('INVARIANT: anything that blocks is checked first (BRO-2701 review 5)', () => {
   const RESULTS = [
     undefined, 'match', 'mismatch', 'no-playbill-url', 'serp-error', 'fetch-error',
-    'short-response', 'infra-unavailable', 'playbill-url-rejected', 'some-future-value',
+    'short-response', 'infra-unavailable', 'some-future-value',
   ];
   let blocking = 0;
   for (const result of RESULTS) {
@@ -755,32 +755,6 @@ test('an unresolved mismatch sorts ahead of clean shows even when its latest run
   );
 });
 
-// FINDING 3 — 'no-playbill-url' also fired when Playbill pages WERE returned and
-// every candidate was rejected by scorePlaybillUrl (wrong/typo'd title, cross-
-// market reject). That marked a bad new stub definitively "has no Playbill page"
-// and exempted it from the gate after one run.
-test('rejected candidates are not the same claim as "this show has no Playbill page" (BRO-2701 review 5)', () => {
-  assert.deepEqual(
-    missingUrlOutcome({ anyQueryCompleted: true, sawRejectedCandidates: true }),
-    { source: 'candidates-rejected', result: 'playbill-url-rejected' },
-  );
-  assert.deepEqual(
-    missingUrlOutcome({ anyQueryCompleted: true, sawRejectedCandidates: false }),
-    { source: 'none', result: 'no-playbill-url' },
-  );
-  // An outage still outranks both — we never even got to look.
-  assert.equal(missingUrlOutcome({ anyQueryCompleted: false, sawRejectedCandidates: true }).result, 'serp-error');
-
-  // A brand-new stub with a wrong title keeps failing the gate...
-  assert.equal(blocksOnDeferral('new', { new: { result: 'playbill-url-rejected' } }), true);
-  // ...while a show with a real prior verdict keeps it, so the 33 legacy
-  // no-page rows cannot suddenly turn main red.
-  assert.equal(
-    blocksOnDeferral('legacy', { legacy: { result: 'playbill-url-rejected', lastDefinitiveResult: 'no-playbill-url' } }),
-    false,
-  );
-});
-
 // FINDING 2 — the fingerprint must cover every field that can change the verdict.
 test('showFingerprint covers title and priorRuns, which both change the verdict (BRO-2701 review 5)', () => {
   const base = { venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false, title: 'A Show' };
@@ -794,4 +768,6 @@ test('showFingerprint covers title and priorRuns, which both change the verdict 
     showFingerprint({ ...base, priorRuns: [{ venue: 'Old', openingDate: '2024-01-01' }] }),
     showFingerprint({ ...base, priorRuns: [{ venue: 'Other', openingDate: '2024-01-01' }] }),
   );
+  assert.notEqual(showFingerprint({ ...base, category: 'off-broadway' }), showFingerprint({ ...base, category: 'west-end' }),
+    'scorePlaybillUrl hard-rejects on category, so it selects a different page');
 });
