@@ -2,6 +2,12 @@
 // actually landed, the same way BRO-2188 verified the Notion side. Read-only
 // against Linear (never calls writeReport) — a live network check, not a
 // fixture test, because the thing being verified IS live Linear state.
+//
+// Deliberately NOT registered in test.yml's manifest/push-path allowlist:
+// this asserts a FUTURE state (the backlog swept) and fails against today's
+// real Linear board by design — wiring it into CI now would turn the suite
+// red for something no code change fixes. It exists to be run directly as
+// BRO-2718's acceptance-criteria command once that sweep is done.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
