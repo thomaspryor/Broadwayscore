@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults, buildPriorTierMap,
-  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
+  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier, preserveEarnedPriority,
   buildAuditResults, showFingerprint,
 } = require('./venue-date-compare.js');
 
@@ -465,8 +465,11 @@ test('buildPriorTierMap drops a fingerprint-stale row so an edited show tiers as
     untouched: { id: 'untouched', venue: 'Old Venue', openingDate: '2026-03-01', closingDate: null },
   };
   const previousResultsById = {
-    edited: { id: 'edited', result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01|' },
-    untouched: { id: 'untouched', result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01|' },
+    // Compute the "unchanged" fingerprint from the real helper so this test
+    // tracks the fingerprint FORMAT rather than hard-coding one (the format
+    // gained isRevival in BRO-2701 review 3, finding 4).
+    edited: { id: 'edited', result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01||false' },
+    untouched: { id: 'untouched', result: 'no-playbill-url', fingerprint: showFingerprint(showsById.untouched) },
   };
   const tierMap = buildPriorTierMap({ previousResultsById, showsById });
   assert.equal(tierMap.edited, undefined, 'the edited show has no valid prior evidence');
@@ -566,5 +569,68 @@ test('buildPriorTierMap uses the map key, not row.id, for the staleness check (B
   assert.equal(
     buildPriorTierMap({ previousResultsById, showsById }).edited, undefined,
     'a fingerprint-stale row must be dropped even when the row body has no id',
+  );
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 third adversarial review.
+// ---------------------------------------------------------------------------
+
+// FINDING 1 — the serious one. Transient outcomes tier as 2, which the deferral
+// gate does not block on, and a fresh row overwrites the prior one. So a run
+// that merely FAILED TO REACH a show could erase a known mismatch's blocking
+// status and let main go green over an unfixed venue error.
+test('a transient outcome cannot erase a known mismatch (BRO-2701 review 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = {
+    x: { id: 'x', result: 'mismatch', fingerprint: showFingerprint(showsById.x), mismatches: [{ field: 'venue' }] },
+  };
+  // Run 2: the fetch times out.
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'fetch-error', mismatches: [] }],
+    previousResultsById,
+    currentProvisionalIds: new Set(['x']),
+    showsById,
+  });
+  const row = out.find((r) => r.id === 'x');
+  assert.equal(row.result, 'mismatch', 'the known mismatch must survive a failed re-check');
+  assert.deepEqual(row.lastAttempt.result, 'fetch-error', 'but the failed attempt is still recorded');
+  assert.ok(row.checkedAt, 'and checkedAt still advances, so rotation is unaffected');
+
+  // Run 3: the budget defers x. It must STILL block.
+  const tierMap = buildPriorTierMap({ previousResultsById: Object.fromEntries(out.map((r) => [r.id, r])), showsById });
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'x' }], tierMap).map((r) => r.id), ['x']);
+});
+
+test('a DEFINITIVE fresh verdict still wins, so a landed fix clears the gate (BRO-2701 review 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = { x: { id: 'x', result: 'mismatch', fingerprint: showFingerprint(showsById.x) } };
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'match', mismatches: [] }],
+    previousResultsById,
+    currentProvisionalIds: new Set(['x']),
+    showsById,
+  });
+  assert.equal(out.find((r) => r.id === 'x').result, 'match', 'a fixed show must be able to go clean');
+  assert.equal(out.find((r) => r.id === 'x').lastAttempt, undefined);
+});
+
+test('preserveEarnedPriority: transient-over-transient and no-prior are pass-throughs (BRO-2701 review 3)', () => {
+  const fresh = { id: 'x', result: 'serp-error', checkedAt: 'T' };
+  assert.equal(preserveEarnedPriority(fresh, undefined).result, 'serp-error');
+  assert.equal(preserveEarnedPriority(fresh, { result: 'fetch-error' }).result, 'serp-error');
+  // A transient run over a previously-CLEAN show is allowed to lower the row to
+  // transient: tier 2 is stricter than tier 3, so nothing is weakened.
+  assert.equal(preserveEarnedPriority(fresh, { result: 'match' }).result, 'serp-error');
+});
+
+// FINDING 4 — isRevival is validated by compareShow, so it must be part of the
+// evidence fingerprint, or flipping it leaves a stale 'match' looking valid.
+test('showFingerprint covers isRevival, which compareShow validates (BRO-2701 review 3)', () => {
+  const base = { venue: 'V', openingDate: '2026-01-01', closingDate: null };
+  assert.notEqual(
+    showFingerprint({ ...base, isRevival: false }),
+    showFingerprint({ ...base, isRevival: true }),
+    'flipping isRevival must invalidate prior evidence',
   );
 });

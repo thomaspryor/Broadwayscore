@@ -274,7 +274,12 @@ async function findPlaybillUrl(show, log) {
   // Every query threw: we have no evidence about this show either way, and
   // saying so is what keeps it in the retry-worthy tier instead of the
   // "this show has no Playbill page" one.
-  return { url: null, source: missingUrlOutcome({ anyQueryCompleted }).source };
+  // Return the WHOLE outcome, not just `.source` (BRO-2701 review 3, finding 3).
+  // validateOne used to rebuild the decision with `source !== 'serp-error'`, so
+  // any third failure source added here later would silently default to
+  // 'no-playbill-url' — the permanently-parked tier this refactor exists to
+  // keep shows out of.
+  return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
 }
 
 function parseTitleVenueYear(html) {
@@ -318,7 +323,7 @@ async function validateOne(show, log) {
   log(`\n${show.id}  "${show.title}"  (${show.venue})`);
   const urlResult = await findPlaybillUrl(show, log);
   if (!urlResult.url) {
-    const outcome = missingUrlOutcome({ anyQueryCompleted: urlResult.source !== 'serp-error' });
+    const outcome = { source: urlResult.source, result: urlResult.result };
     log(outcome.result === 'serp-error'
       ? `  ⚠ Playbill lookup FAILED (every SERP query errored) — not evidence of a missing page`
       : `  ⚠ no Playbill URL found`);
@@ -521,8 +526,18 @@ async function main() {
   // with no SERP keys — exits 0 with nothing to say, which is indistinguishable
   // from a clean pass and is exactly the state that then gets committed as the
   // rotation ledger. Loud, still non-failing (unresolved is not a mismatch).
-  if (results.length && errors.length === results.length && !infraUnavailable.length) {
-    console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were unresolved this run (${[...new Set(errors.map(r => r.result))].join(', ')}) — ZERO real venue/date validation coverage, not a clean pass`);
+  // Gate on what was actually LEARNED, not on one bucket filling up (BRO-2701
+  // review 3, finding 2). The first cut required errors.length === results.length,
+  // but infra-unavailable rows are deliberately excluded from `errors`, so a run
+  // of 30 serp-error + 35 infra-unavailable tripped neither guard despite
+  // validating nothing — and 60 serp-error + 5 match was silent too. Since
+  // tiers 2-4 no longer block on deferral, this is the ONLY signal a degraded
+  // run leaves behind, so it must fire on degradation, not just on totality.
+  const definitive = matches.length + mismatches.length;
+  if (results.length && definitive === 0) {
+    console.log(`::warning::validate-show-venue: NONE of the ${results.length} target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);
+  } else if (results.length && definitive < results.length / 2) {
+    console.log(`::warning::validate-show-venue: only ${definitive}/${results.length} target(s) produced a venue/date verdict this run — DEGRADED coverage, treat a green result with suspicion`);
   }
   if (mismatches.length) {
     console.log('Mismatches:');

@@ -349,7 +349,15 @@ function mergeCarriedForwardResults(freshResults, previousResultsById, currentPr
  */
 function showFingerprint(show) {
   if (!show) return undefined;
-  return [show.venue || '', show.openingDate || '', show.closingDate || ''].join('|');
+  // isRevival is included because compareShow() VALIDATES it (a Playbill
+  // "Revival"/"Original" tagline mismatch is a real finding). Leaving it out
+  // meant flipping isRevival left the fingerprint unchanged, so a prior
+  // 'match' row stayed valid evidence and the show kept its low-priority tier
+  // — CI could certify a clean pass over an isRevival value nobody checked
+  // (BRO-2701 review 3, finding 4). Rows written before this have a 3-part
+  // fingerprint that no longer equals the 4-part one, so they are treated as
+  // stale and re-checked once, which is the correct conservative direction.
+  return [show.venue || '', show.openingDate || '', show.closingDate || '', String(!!show.isRevival)].join('|');
 }
 
 /**
@@ -393,7 +401,8 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
     .filter((r) => currentProvisionalIds.has(r.id))
     .map((r) => {
       const fingerprint = showFingerprint(byId[r.id]);
-      return fingerprint === undefined ? { ...r, checkedAt } : { ...r, fingerprint, checkedAt };
+      const base = fingerprint === undefined ? { ...r, checkedAt } : { ...r, fingerprint, checkedAt };
+      return preserveEarnedPriority(base, (previousResultsById || {})[r.id]);
     });
   // A carried-forward row asserts "this is what we found last time we looked".
   // If the entry has been edited since, that assertion is about values that no
@@ -403,8 +412,53 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
   // existed have none — carry those (a stale-but-real ledger still beats
   // treating every show as new, which is the BRO-2696 red itself).
   return mergeCarriedForwardResults(
+    // `row.id` is safe HERE specifically because mergeCarriedForwardResults has
+    // already filtered on `currentProvisionalIds.has(row.id)`, so any row that
+    // reaches this predicate provably has one. buildPriorTierMap has no such
+    // pre-filter, which is why it passes its map key instead (finding 5).
     fresh, previousResultsById, currentProvisionalIds, (row) => rowIsStillAboutShow(row, byId, row.id),
   );
+}
+
+/**
+ * A fresh row must never lower a show's priority below what its prior evidence
+ * earned (BRO-2701 review 3, finding 1).
+ *
+ * buildAuditResults lets a fresh row overwrite the prior one unconditionally,
+ * and transient outcomes now tier as 2, which the deferral gate does not block
+ * on. Without this rule: run 1 stamps 'mismatch' on show X and CI goes red,
+ * correctly. Run 2 the Playbill fetch times out, so X's row becomes
+ * 'fetch-error'. Run 3 the budget defers X, deferredHighPriorityShows returns
+ * nothing, --fail-on-mismatch exits 0, and main goes GREEN with X's venue
+ * mismatch still unfixed and never re-verified. The same erasure is reachable
+ * from the workflow CLAUDE.md rule 3 documents: a local
+ * `validate-show-venue.js --show=X` on a machine with no SERP keys writes
+ * 'serp-error' straight over a real 'mismatch'.
+ *
+ * Before the re-tiering this could not happen, because every non-'match'
+ * result blocked on deferral. So the rule: if the prior result earned a
+ * stricter tier than this run's result, the prior result stands as the row's
+ * `result`, and this run's outcome is recorded alongside it as `lastAttempt`.
+ * `checkedAt` still advances, so rotation is unaffected.
+ */
+function preserveEarnedPriority(freshRow, priorRow) {
+  // ONLY a transient outcome is blocked from overwriting. A fresh DEFINITIVE
+  // verdict — 'match', 'mismatch', 'no-playbill-url' — always wins, including
+  // a 'match' that supersedes a prior 'mismatch', which is how a landed fix
+  // clears the gate. Getting this backwards would freeze every mismatch on the
+  // board forever.
+  if (!TRANSIENT_PRIOR_RESULTS.has(freshRow.result)) return freshRow;
+  if (!priorRow || priorRow.result === undefined) return freshRow;
+  if (TRANSIENT_PRIOR_RESULTS.has(priorRow.result)) return freshRow;
+  const priorTier = provisionalPriorityTier('x', { x: priorRow.result });
+  const freshTier = provisionalPriorityTier('x', { x: freshRow.result });
+  if (priorTier >= freshTier) return freshRow;
+  return {
+    ...freshRow,
+    result: priorRow.result,
+    mismatches: priorRow.mismatches || freshRow.mismatches,
+    lastAttempt: { result: freshRow.result, at: freshRow.checkedAt },
+  };
 }
 
 /**
@@ -459,6 +513,7 @@ module.exports = {
   buildPriorTierMap,
   missingUrlOutcome,
   serpQueryCompleted,
+  preserveEarnedPriority,
   TRANSIENT_PRIOR_RESULTS,
   showFingerprint,
 };
