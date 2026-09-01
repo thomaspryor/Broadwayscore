@@ -204,6 +204,28 @@ function compareShow(show, parsed, playbillUrl) {
 const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable', 'serp-error']);
 
 /**
+ * Did a serpQuery() call actually reach a provider?
+ *
+ * BRO-2701 second review, finding 1: the first attempt at this guarded only
+ * against a THROWN error, which made the whole 'serp-error' path dead code.
+ * serpQuery() (scripts/lib/url-discovery.js) does not throw on an outage — it
+ * returns null when there are no SERP keys, and _serpWithChain returns
+ * `{results: null}` when every provider fails, because each provider helper
+ * catches its own error and returns null. `null` and `[]` are a deliberate,
+ * load-bearing distinction in that chain: null means "we never got an answer",
+ * `[]` means "the provider answered, and the answer was nothing".
+ *
+ * Getting this wrong is not cosmetic. If Bright Data and ScrapingBee both 429
+ * during one CI push, every provisional show gets stamped 'no-playbill-url',
+ * the rotation step commits that ledger, and from then on all 65 shows sit in
+ * tier 4 — sorted last and structurally unable to block the gate — including
+ * any brand-new bad stub. That is the entire audit switched off by one outage.
+ */
+function serpQueryCompleted(results) {
+  return results !== null && results !== undefined;
+}
+
+/**
  * What a failed Playbill-URL lookup MEANS — the single decision behind both
  * findPlaybillUrl()'s `source` and validateOne()'s `result`, so the two can
  * never drift apart (CLAUDE.md rule 15).
@@ -381,7 +403,7 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
   // existed have none — carry those (a stale-but-real ledger still beats
   // treating every show as new, which is the BRO-2696 red itself).
   return mergeCarriedForwardResults(
-    fresh, previousResultsById, currentProvisionalIds, (row) => rowIsStillAboutShow(row, byId),
+    fresh, previousResultsById, currentProvisionalIds, (row) => rowIsStillAboutShow(row, byId, row.id),
   );
 }
 
@@ -403,14 +425,22 @@ function buildPriorTierMap({ previousResultsById, showsById }) {
   const byId = showsById || {};
   const out = {};
   for (const [id, row] of Object.entries(previousResultsById || {})) {
-    if (!rowIsStillAboutShow(row, byId)) continue;
+    if (!rowIsStillAboutShow(row, byId, id)) continue;
     out[id] = { result: row.result, checkedAt: row.checkedAt };
   }
   return out;
 }
 
-function rowIsStillAboutShow(row, byId) {
-  const now = showFingerprint(byId[row.id]);
+/**
+ * `showId` is passed explicitly rather than read from `row.id` (BRO-2701
+ * second review, finding 3): buildPriorTierMap iterates by MAP KEY, and a row
+ * whose body happens to lack an `id` would look up `byId[undefined]`, get
+ * undefined, and be declared "still valid" — silently skipping the very
+ * staleness check this function exists to enforce. The key is already in hand
+ * at both call sites, so trust it instead of the row body.
+ */
+function rowIsStillAboutShow(row, byId, showId) {
+  const now = showFingerprint(byId[showId !== undefined ? showId : row.id]);
   if (row.fingerprint === undefined || now === undefined) return true;
   return row.fingerprint === now;
 }
@@ -428,6 +458,7 @@ module.exports = {
   buildAuditResults,
   buildPriorTierMap,
   missingUrlOutcome,
+  serpQueryCompleted,
   TRANSIENT_PRIOR_RESULTS,
   showFingerprint,
 };

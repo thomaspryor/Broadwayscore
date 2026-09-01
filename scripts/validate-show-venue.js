@@ -67,7 +67,7 @@ const { decodeEntities } = require('./lib/reverse-discovery');
 const {
   DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
   orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults, buildPriorTierMap,
-  missingUrlOutcome,
+  missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -253,8 +253,11 @@ async function findPlaybillUrl(show, log) {
     let results = null;
     try { results = await serpQuery(q, { nbResults: 10 }); }
     catch (e) { log(`    serp error: ${e.message}`); continue; }
+    // null (not []) is how serpQuery reports "no provider answered" — a thrown
+    // error is NOT the outage path. See serpQueryCompleted's docblock.
+    if (!serpQueryCompleted(results)) { log(`    serp unavailable (no provider answered)`); continue; }
     anyQueryCompleted = true;
-    if (!results || !results.length) continue;
+    if (!results.length) continue;
     const candidates = results
       .filter(r => r.url && r.url.includes('playbill.com/production/'))
       .map(r => {
@@ -511,6 +514,15 @@ async function main() {
     if (infraUnavailable.length === results.length) {
       console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were infra-unavailable this run — ZERO real venue/date validation coverage, not a clean pass`);
     }
+  }
+  // Same rule, the other way a run can validate nothing (BRO-2701 second
+  // review, finding 2). Since tiers 2-4 no longer populate deferredHighPriority,
+  // a run where EVERY show came back unresolved — a SERP outage, or a local run
+  // with no SERP keys — exits 0 with nothing to say, which is indistinguishable
+  // from a clean pass and is exactly the state that then gets committed as the
+  // rotation ledger. Loud, still non-failing (unresolved is not a mismatch).
+  if (results.length && errors.length === results.length && !infraUnavailable.length) {
+    console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were unresolved this run (${[...new Set(errors.map(r => r.result))].join(', ')}) — ZERO real venue/date validation coverage, not a clean pass`);
   }
   if (mismatches.length) {
     console.log('Mismatches:');

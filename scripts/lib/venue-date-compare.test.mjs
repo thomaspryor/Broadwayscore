@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults, buildPriorTierMap,
-  missingUrlOutcome, TRANSIENT_PRIOR_RESULTS,
+  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
   buildAuditResults, showFingerprint,
 } = require('./venue-date-compare.js');
 
@@ -515,5 +515,56 @@ test("missingUrlOutcome's failure result is in the transient set, so it never la
   assert.deepEqual(
     orderProvisionalTargets([{ id: 'clean' }, { id: 'failed' }], { clean: 'match', failed }).map((x) => x.id),
     ['failed', 'clean'],
+  );
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 second adversarial review.
+// ---------------------------------------------------------------------------
+
+// FINDING 1 — the one that mattered. The first cut of the serp-error fix set
+// anyQueryCompleted on any iteration that did not THROW, but serpQuery() does
+// not throw on an outage: it returns null when there are no SERP keys, and
+// _serpWithChain returns {results: null} when every provider fails (each
+// provider helper catches its own error and returns null). null vs [] is a
+// deliberate distinction in that chain. Guarding only against throws made the
+// entire serp-error path unreachable.
+test('serpQueryCompleted: null is a provider outage, [] is a real empty answer (BRO-2701 review 2)', () => {
+  assert.equal(serpQueryCompleted(null), false, 'null = no provider answered');
+  assert.equal(serpQueryCompleted(undefined), false);
+  assert.equal(serpQueryCompleted([]), true, 'an empty array IS an answer: we looked, there was nothing');
+  assert.equal(serpQueryCompleted([{ url: 'https://playbill.com/production/x' }]), true);
+});
+
+test('a SERP outage cannot demote a show into the never-blocking tail (BRO-2701 review 2)', () => {
+  // The full chain the bug ran through: every query returns null (not throws),
+  // so the show must end up transient/tier-2, never 'no-playbill-url'/tier-4.
+  const anyQueryCompleted = [null, null, null].some(serpQueryCompleted);
+  assert.equal(anyQueryCompleted, false);
+  const outcome = missingUrlOutcome({ anyQueryCompleted });
+  assert.equal(outcome.result, 'serp-error');
+  assert.ok(TRANSIENT_PRIOR_RESULTS.has(outcome.result));
+  assert.equal(provisionalPriorityTier('s', { s: outcome.result }), 2);
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 's' }], { s: outcome.result }), [],
+    'transient is non-blocking, but it is rechecked early rather than parked forever',
+  );
+
+  // And the contrast: a provider that answered with nothing is a real no-page.
+  const looked = missingUrlOutcome({ anyQueryCompleted: [null, [], null].some(serpQueryCompleted) });
+  assert.equal(looked.result, 'no-playbill-url');
+  assert.equal(provisionalPriorityTier('s', { s: looked.result }), 4);
+});
+
+// FINDING 3 — buildPriorTierMap iterates by MAP KEY, so a row body missing its
+// own `id` must not silently bypass the staleness check via byId[undefined].
+test('buildPriorTierMap uses the map key, not row.id, for the staleness check (BRO-2701 review 2)', () => {
+  const showsById = { edited: { id: 'edited', venue: 'New Venue', openingDate: '2026-03-01', closingDate: null } };
+  const previousResultsById = {
+    edited: { result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01|' }, // NOTE: no `id` field
+  };
+  assert.equal(
+    buildPriorTierMap({ previousResultsById, showsById }).edited, undefined,
+    'a fingerprint-stale row must be dropped even when the row body has no id',
   );
 });
