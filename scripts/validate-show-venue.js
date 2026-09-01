@@ -58,7 +58,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { fetchPage, getScraperStats } = require('./lib/scraper');
+const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
@@ -618,12 +618,33 @@ async function main() {
     if (deferredHighPriority.length) {
       console.log(`::error::validate-show-venue: time budget exhausted before checking ${deferredHighPriority.length} new/previously-broken show(s) — cannot certify a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
     }
+    await cleanup();
     process.exit(1);
   }
+  // BRO-2701: this script never released the scraper, and until now it never
+  // had to — every CI run ended at the process.exit(1) above, which force-exits
+  // regardless of open handles. Making the gate PASSABLE made the success path
+  // reachable for the first time, and it hung: run 33471909555 wrote its audit
+  // at 05:20:28 and was still alive at 05:35:03 when the job's cancellation
+  // SIGTERMed it (exit 143), turning a clean pass into a red step ~15 minutes
+  // later. Playwright's Chromium keeps its stdio pipes open, so node's event
+  // loop never drains on its own — the identical shape as task #438, which
+  // cleanup() in lib/scraper.js was written to solve (10s close race, then
+  // SIGKILL the subprocess). discover-new-shows.js already calls it; this
+  // script simply never did.
+  await cleanup();
 }
 
 if (require.main === module) {
-  main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+  main()
+    .then(() => process.exit(0))
+    .catch(async (e) => {
+      console.error('Fatal:', e.stack || e.message);
+      // Release the browser on the error path too, or a thrown error leaves the
+      // same hung Chromium behind that the success path just learned about.
+      try { await cleanup(); } catch (_) { /* best-effort */ }
+      process.exit(2);
+    });
 }
 
 module.exports = {
