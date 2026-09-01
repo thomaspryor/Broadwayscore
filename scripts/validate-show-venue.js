@@ -632,7 +632,13 @@ async function main() {
   // cleanup() in lib/scraper.js was written to solve (10s close race, then
   // SIGKILL the subprocess). discover-new-shows.js already calls it; this
   // script simply never did.
-  await cleanup();
+  //
+  // Wrapped, exactly like the catch path below (second-opinion warning): an
+  // unwrapped throw here would reject main(), fall into the catch, and exit 2 —
+  // converting a PASSING run into a red step, which is the precise failure this
+  // commit exists to remove. cleanup() swallows its own errors internally so
+  // this should never fire, but the asymmetry was indefensible.
+  try { await cleanup(); } catch (_) { /* best-effort */ }
 }
 
 if (require.main === module) {
