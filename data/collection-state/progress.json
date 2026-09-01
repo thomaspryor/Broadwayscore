@@ -27,7 +27,11 @@
     "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-    "cats-west-end-2026/north-west-end--michelle-knight.json"
+    "cats-west-end-2026/north-west-end--michelle-knight.json",
+    "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
+    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--sheila-elizabeth.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -221,7 +225,13 @@
     "cats-west-end-2026/times-uk--donald-hutera.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
-    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json"
+    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -242,7 +252,11 @@
       "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-      "cats-west-end-2026/north-west-end--michelle-knight.json"
+      "cats-west-end-2026/north-west-end--michelle-knight.json",
+      "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
+      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--sheila-elizabeth.json"
     ],
     "amp": [],
     "browserbase": [
@@ -271,7 +285,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -289,6 +303,17 @@
       "event": "bb-session",
       "session": "a513c598",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-01T15:17:34.422Z",
+      "event": "bb-session",
+      "session": "f991e7dc",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-01T15:17:35.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
