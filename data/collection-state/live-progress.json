@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-01T20:59:44.207Z",
-  "processed": 56,
-  "failed": 713,
-  "successRate": "7.3%",
+  "updatedAt": "2026-09-01T21:57:50.595Z",
+  "processed": 79,
+  "failed": 990,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 2,
-    "scrapingbee": 11,
-    "brightdata": 4,
+    "scrapingbee": 18,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 16
   },
   "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-09-01T14:00:39.220Z",
-      "event": "bb-session",
-      "session": "84a01e3c",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-09-01T14:00:39.935Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-09-01T14:03:06.302Z",
       "event": "bb-session",
@@ -113,6 +102,35 @@
       "event": "bb-session",
       "session": "cd862afe",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-09-01T21:36:40.841Z",
+      "event": "bb-session",
+      "session": "efc199a0",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-01T21:36:41.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-01T21:43:04.432Z",
+      "event": "bb-session",
+      "session": "c733fe15",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-09-01T21:47:26.313Z",
+      "event": "bb-session",
+      "session": "21697216",
+      "url": "https://www.express.co.uk/entertainment/music/1617674/Abba-Voyage-review-London-"
+    },
+    {
+      "t": "2026-09-01T21:53:02.067Z",
+      "event": "bb-session",
+      "session": "7bc8ba48",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
     }
   ]
 }
