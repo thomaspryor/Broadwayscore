@@ -55,6 +55,7 @@
 const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
+const { classifyContentTier } = require('./content-quality');
 
 /**
  * A file whose flag a human has already ruled on — never escalate it. Covers:
@@ -251,7 +252,10 @@ function detectCvFlagContradiction(file) {
  *
  * NOT a judgement about which side is stale. Callers decide: the auditor
  * escalates, --fix retracts the breadcrumb (the flag is the live verdict, since
- * the flag setters are the ones that run last).
+ * the flag setters are the ones that run last). That default is only actually
+ * true for records with no live score signal — see isZeroScoreImpactFix()
+ * below (BRO-185) and memory/feedback_audit_fix_remediation_untrusted.md for
+ * the corpus scan that disproved it as a blanket rule.
  */
 
 /**
@@ -525,6 +529,62 @@ function demoteStaleWrongShowPromotion(file, contradiction, now = new Date()) {
   return true;
 }
 
+// Live score-signal fields (audit-self-contradictory-clears.js's own count,
+// mirrored here so the safety check and the report agree on what "carries a
+// score" means): a bodyless record with one of these is still fully
+// scoreable, so `!fullText` alone is never a safe stand-in.
+const SCORE_SIGNAL_FIELDS = [
+  'assignedScore', 'aggregatorStars', 'showScoreExcerpt', 'llmScore',
+  'dtliExcerpt', 'bwwExcerpt', 'nycTheatreExcerpt', 'lboRoundupExcerpt',
+];
+
+function hasLiveScoreSignal(file) {
+  return SCORE_SIGNAL_FIELDS.some((k) => file && file[k] != null && file[k] !== false);
+}
+
+/**
+ * BRO-185. Whether resolving one self-contradiction is safe to bulk-apply
+ * without human adjudication.
+ *
+ * memory/feedback_audit_fix_remediation_untrusted.md (2026-08-14): this same
+ * corpus's own `--fix` was caught flipping 438 live-scored reviews (NYT/
+ * Brantley, WSJ/Teachout, The Stage, FT among them) from valid to invalid,
+ * because retracting the breadcrumb is only a NO-OP resolution when nothing
+ * downstream was reading the breadcrumb to stay included. `resolution` in
+ * SELF_CLEAR_PAIRS records which side wins the contradiction; it is silent on
+ * whether winning actually MOVES a scored review in or out of the corpus.
+ * That's a different question and this is where it gets answered: simulate
+ * the resolution on a clone and compare classifyContentTier before/after.
+ *
+ *   - contentTier unchanged            → the resolution touches metadata a
+ *     reader doesn't gate on; always safe.
+ *   - contentTier flips AND no live score signal (SCORE_SIGNAL_FIELDS) →
+ *     the flip can't move a review in or out of a composite score either,
+ *     because nothing here was ever contributing one; safe.
+ *   - contentTier flips AND a score signal is present → resolving this one
+ *     requires knowing which side (the flag or its own clear) is actually
+ *     correct, which this detector cannot determine from state alone. NOT
+ *     safe to auto-apply; leave it flagged for adjudication.
+ *
+ * Pure — clones before mutating, never touches the caller's `file`.
+ *
+ * @param {object} file - parsed review-text JSON (read-only)
+ * @param {object} contradiction - one detectAllSelfContradictoryClears() entry
+ * @returns {boolean}
+ */
+function isZeroScoreImpactFix(file, contradiction) {
+  if (!file || !contradiction) return false;
+  const before = classifyContentTier(file);
+  const clone = JSON.parse(JSON.stringify(file));
+  const applied = contradiction.resolution === 'demote-flag'
+    ? demoteStaleWrongShowPromotion(clone, contradiction)
+    : retractStaleClearBreadcrumb(clone, contradiction).length > 0;
+  if (!applied) return false; // resolver declined (e.g. demote-flag's strict predicate) — nothing to safely apply
+  const after = classifyContentTier(clone);
+  if (before.contentTier === after.contentTier) return true;
+  return !hasLiveScoreSignal(file);
+}
+
 module.exports = {
   detectFlagContradiction,
   detectCvFlagContradiction,
@@ -538,6 +598,9 @@ module.exports = {
   isHumanDecided,
   flagTimestamp,
   cvIsNewerThanFlag,
+  hasLiveScoreSignal,
+  isZeroScoreImpactFix,
+  SCORE_SIGNAL_FIELDS,
   SELF_CLEAR_PAIRS,
   CONTRADICTION_REALERT_DAYS,
 };

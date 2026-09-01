@@ -34,6 +34,7 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   demoteStaleWrongShowPromotion,
+  isZeroScoreImpactFix,
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
@@ -54,6 +55,11 @@ Usage:
                     NOT a safe bulk drain — it flips 563 records to
                     contentTier 'invalid' and drops 438 scored reviews out of
                     live scores. Use --show=ID for adjudicated single fixes.
+  --fix-safe        resolve ONLY the contradictions where doing so provably
+                    moves no scored review in or out of the corpus (BRO-185) —
+                    see isZeroScoreImpactFix() in lib/flag-contradiction.js.
+                    Safe to run unattended and in bulk; leaves every
+                    score-impacting contradiction untouched for adjudication.
   --show=ID         scope the sweep to one show directory
   --json            machine-readable output
 `;
@@ -92,6 +98,16 @@ const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradicto
 // A committed baseline + tolerance keeps drift visible (every run prints the
 // delta) while a single bot write no longer reddens main. A genuine new source
 // of contradictions still fails the moment it exceeds the band.
+//
+// BRO-185 (2026-09-01) drained the part of the backlog that WASN'T structural
+// in this sense: --fix-safe (see isZeroScoreImpactFix() in
+// lib/flag-contradiction.js) resolved the 267 contradictions where the fix
+// provably moves no scored review in or out of the corpus, dropping the
+// baseline 776 -> 451. The remaining 451 are exactly the ones this comment
+// describes — every one carries a live score signal, so which side (the flag
+// or its own clear) is correct is a per-record judgement call, not a state a
+// detector can settle. --fix-safe is safe to re-run any time new zero-impact
+// contradictions accumulate; it is not a path to draining the other 451.
 const BASELINE_TOLERANCE = 25;
 
 // Tombstone directories only. `_pending/` is deliberately NOT here: it holds
@@ -111,6 +127,7 @@ function parseArgs(argv) {
     gate: false,
     max: parseMaxArgOrExit(argv, { scriptName: 'audit-self-contradictory-clears' }),
     fix: false,
+    fixSafe: false,
     show: null,
     json: false,
     baseline: null,
@@ -119,6 +136,7 @@ function parseArgs(argv) {
   for (const a of argv) {
     if (a === '--gate') args.gate = true;
     else if (a === '--fix') args.fix = true;
+    else if (a === '--fix-safe') args.fixSafe = true;
     else if (a === '--json') args.json = true;
     else if (a === '--record-baseline') args.recordBaseline = true;
     else if (a === '--baseline') args.baseline = DEFAULT_BASELINE_PATH;
@@ -193,9 +211,14 @@ function main() {
       if (!contradictions.length) continue;
       for (const c of contradictions) hits.push({ showId, file, ...c });
 
-      if (args.fix) {
+      if (args.fix || args.fixSafe) {
         let removedAny = false;
         for (const c of contradictions) {
+          // --fix-safe: skip anything that would move a scored review in or
+          // out of the corpus (BRO-185) — see isZeroScoreImpactFix()'s
+          // docstring and memory/feedback_audit_fix_remediation_untrusted.md
+          // for why blind resolution is not that same thing as a safe one.
+          if (args.fixSafe && !isZeroScoreImpactFix(data, c)) continue;
           // Dispatch per pair: demote-flag (currently only #1022, wrongShow +
           // contentVerificationPromoted) clears the stale FLAG instead of the
           // breadcrumb — see demoteStaleWrongShowPromotion's docstring for why
@@ -236,6 +259,7 @@ function main() {
       if (list.length > 5) console.log(`         … and ${list.length - 5} more`);
     }
     if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
+    if (args.fixSafe) console.log(`\nResolved zero-score-impact contradictions on ${fixed} file(s). Re-run without --fix-safe to see what's left for adjudication.`);
   }
 
   // FAIL LOUD on an empty corpus. review-texts is a private-repo checkout; when

@@ -1,6 +1,6 @@
 {
-  "count": 776,
+  "count": 451,
   "tolerance": 25,
-  "recordedAt": "2026-08-14",
-  "note": "Structural backlog — see the BASELINE_TOLERANCE comment in scripts/audit-self-contradictory-clears.js. --fix is NOT a safe drain (it excludes 438 scored reviews)."
+  "recordedAt": "2026-09-01",
+  "note": "BRO-185: the 267 zero-score-impact contradictions were drained via --fix-safe on 2026-09-01. This 451 is the residual that all carries a live score signal and needs per-record adjudication (which side — flag or its own clear — is actually correct) before it can be resolved; --fix is still NOT a safe bulk drain for it. See the BASELINE_TOLERANCE comment in scripts/audit-self-contradictory-clears.js and memory/feedback_audit_fix_remediation_untrusted.md."
 }

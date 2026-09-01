@@ -2051,6 +2051,13 @@ on:
       # auditor or its unit test triggers CI.
       - 'scripts/audit-self-contradictory-clears.js'
       - 'tests/unit/self-contradictory-clear.test.mjs'
+      # BRO-185 drain acceptance test — root-level scripts/*.test.mjs is NOT
+      # globbed, and it's registered in tests/unit-test-manifest.txt, so it
+      # RUNS in CI but needs its own path entry or a solo edit gets ZERO CI.
+      # Baseline JSON needs the same treatment as its cv-flag-contradiction
+      # sibling above — a solo baseline edit must still trigger the gate.
+      - 'scripts/audit-self-contradictory-clear-drained.test.mjs'
+      - 'data/audit/self-contradictory-clears-baseline.json'
       # Vacuous-gate class fix (#1063) — shared corpus-scan guard used by all 4
       # audits above plus these two, which aren't covered by any other
       # path-listed entry or the scripts/lib/** glob (there isn't one) or

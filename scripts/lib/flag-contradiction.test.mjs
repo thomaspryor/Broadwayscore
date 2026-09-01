@@ -14,6 +14,8 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   demoteStaleWrongShowPromotion,
+  hasLiveScoreSignal,
+  isZeroScoreImpactFix,
 } = require('./flag-contradiction.js');
 const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
 
@@ -516,4 +518,70 @@ test('demoteStaleWrongShowPromotion is a no-op on null/mismatched contradiction'
   assert.equal(demoteStaleWrongShowPromotion(null, {}), false);
   assert.equal(demoteStaleWrongShowPromotion({}, null), false);
   assert.equal(demoteStaleWrongShowPromotion({ wrongShow: true }, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared' }), false);
+});
+
+// BRO-185: isZeroScoreImpactFix / hasLiveScoreSignal — the safety check
+// --fix-safe uses to decide which contradictions are safe to bulk-resolve.
+
+test('hasLiveScoreSignal recognizes every field the audit script itself counts as a scored review', () => {
+  assert.equal(hasLiveScoreSignal({ assignedScore: 75 }), true);
+  assert.equal(hasLiveScoreSignal({ aggregatorStars: '4/5' }), true);
+  assert.equal(hasLiveScoreSignal({ showScoreExcerpt: 'text' }), true);
+  assert.equal(hasLiveScoreSignal({ llmScore: { score: 80 } }), true);
+  assert.equal(hasLiveScoreSignal({ dtliExcerpt: 'x' }), true);
+  assert.equal(hasLiveScoreSignal({ bwwExcerpt: 'x' }), true);
+  assert.equal(hasLiveScoreSignal({ nycTheatreExcerpt: 'x' }), true);
+  assert.equal(hasLiveScoreSignal({ lboRoundupExcerpt: 'x' }), true);
+  assert.equal(hasLiveScoreSignal({ fullText: 'a review with no scored fields at all' }), false);
+  assert.equal(hasLiveScoreSignal({}), false);
+});
+
+test('isZeroScoreImpactFix: true when the contentTier does not change (no score signal either way)', () => {
+  const f = { wrongProduction: true, wrongProductionAutoCleared: true, allowEarlyDate: true };
+  const [c] = detectAllSelfContradictoryClears(f);
+  // allowEarlyDate already bypasses the wrongProduction invalid classification,
+  // so retracting the breadcrumb changes nothing about contentTier.
+  assert.equal(isZeroScoreImpactFix(f, c), true);
+});
+
+test('isZeroScoreImpactFix: true when contentTier flips but nothing was ever scored', () => {
+  const f = { wrongProduction: true, wrongProductionAutoCleared: true, fullText: 'no score fields here' };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(isZeroScoreImpactFix(f, c), true);
+});
+
+test('isZeroScoreImpactFix: false when contentTier flips AND a live score signal is present — the exact 2026-08-14 incident shape', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: true,
+    fullText: 'a full review of the correct production',
+    assignedScore: 83,
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix never mutates the file it is checking', () => {
+  const f = { wrongProduction: true, wrongProductionAutoCleared: true, assignedScore: 83, fullText: 'x' };
+  const before = JSON.stringify(f);
+  isZeroScoreImpactFix(f, detectAllSelfContradictoryClears(f)[0]);
+  assert.equal(JSON.stringify(f), before);
+});
+
+test('isZeroScoreImpactFix defers to demoteStaleWrongShowPromotion\'s strict predicate for the demote-flag pair', () => {
+  // Weak/medium-confidence CV promotion: the strict predicate declines, so the
+  // resolver is a no-op and isZeroScoreImpactFix must say "not safe" rather
+  // than crediting a fix that never actually applied.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(c.resolution, 'demote-flag');
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix returns false for null/undefined inputs', () => {
+  assert.equal(isZeroScoreImpactFix(null, {}), false);
+  assert.equal(isZeroScoreImpactFix({}, null), false);
 });
