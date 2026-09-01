@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-01T21:36:06.151Z",
-  "processed": 56,
-  "failed": 723,
-  "successRate": "7.2%",
+  "updatedAt": "2026-09-01T21:37:26.227Z",
+  "processed": 58,
+  "failed": 731,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 36,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 2,
-    "scrapingbee": 11,
+    "scrapingbee": 12,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -113,6 +113,17 @@
       "event": "bb-session",
       "session": "cd862afe",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-09-01T21:36:40.841Z",
+      "event": "bb-session",
+      "session": "efc199a0",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-01T21:36:41.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -55,7 +55,9 @@
     "pre-existing-condition-off-broadway-2026/talkinbroadway--unknown.json",
     "just-in-time-2025/newyorker--conde-nast.json",
     "electra-persona-west-end-2026/whatsonstage--unknown.json",
-    "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json",
+    "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -780,7 +782,15 @@
     "operation-mincemeat-2025/musical-theatre-review--unknown.json",
     "operation-mincemeat-2025/thereviewshub--mike-wells.json",
     "operation-mincemeat-2025/thereviewshub--unknown.json",
-    "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json"
+    "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json",
+    "operation-mincemeat-2025/british-theatre--unknown.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "operation-mincemeat-2025/standard--nick-curtis.json",
+    "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -819,14 +829,16 @@
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
-      "electra-persona-west-end-2026/whatsonstage--unknown.json"
+      "electra-persona-west-end-2026/whatsonstage--unknown.json",
+      "my-neighbour-totoro-west-end-2025/timeout--tom-wicker.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -843,7 +855,8 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "the-real-ivanov-off-broadway-2026/theater-life--unknown.json",
-      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json"
+      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json",
+      "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
@@ -864,7 +877,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -964,6 +977,17 @@
       "event": "bb-session",
       "session": "cd862afe",
       "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
+    },
+    {
+      "t": "2026-09-01T21:36:40.841Z",
+      "event": "bb-session",
+      "session": "efc199a0",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-01T21:36:41.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
