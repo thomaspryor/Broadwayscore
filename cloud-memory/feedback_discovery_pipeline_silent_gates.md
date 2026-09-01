@@ -269,3 +269,19 @@ The staybook incident above is the *junk-content* face of this gate. The worse f
 **Detection recipe:** when `fetchPage()` reports "All scraping methods failed", `curl -A '<browser UA>'` the URL before believing it. A 200 from curl means the gate is ours. Also check *which* providers actually printed — a lone "last resort" line means the chain never ran.
 
 **Fix (carded, not yet landed):** `domcontentloaded` + explicit selector wait for blog/WP domains; let the provider chain continue past a Playwright timeout instead of declaring total failure; find out why BD/SB were skipped for this domain. `scripts/lib/scraper.js` is shared infra — worktree + rule-18 review gate + refactor-parity on non-blog domains before merge.
+
+## Gate: unregistered outlet domain → invisible to BOTH discovery and coverage telemetry (2026-09-01, BRO-2731)
+
+A review whose domain has no `data/outlet-registry.json` entry is not merely un-fetched — it emits **zero** events into `data/audit/stage-latency.jsonl`. Since stage-latency measures firstSeen→live only for URLs the pipeline already saw, this gap class is structurally unmeasurable by existing coverage metrics: it reads as "nothing missing," not as a gap.
+
+Two instances on ONE show in ONE night (electra-persona-west-end-2026):
+- `maryamphilpottblog.wordpress.com` (Cultural Capital), pub 2026-08-24, found monitor attempt 2.
+- `boycottingtrends.blogspot.com` (Boycotting Trends / Alex Ramon), pub 2026-08-31, found monitor attempt 8 — six passes after publication. At 19:24Z: `grep -c boycottingtrends data/outlet-registry.json` = 0, same grep on stage-latency.jsonl = 0.
+
+Both surfaced only via the monitor's independent WebSearch census. **This is why the census step is load-bearing and must not be skipped as a "cheap pass" optimization** — attempt 8 caught a new URL after five consecutive unchanged passes.
+
+Detection: for any census URL, grep the domain against outlet-registry.json AND stage-latency.jsonl. Zero in both = missed-discovery, not a gather-gate rejection — don't go hunting in `data/audit/` exclusion logs for it.
+Fix: add the registry entry, then `scripts/ingest-review-from-url.js`, then let CI rebuild→score→rebuild.
+Trap: `data/outlet-registry.json` is **gitignored in the web repo**. The authoritative copy is `/Users/tompryor/broadway-scorecard-data/outlet-registry.json` — edit and commit there too, or the fix is local-only and evaporates.
+
+Related: BRO-2729's `networkidle` Playwright hang is **wordpress.com-specific** — the same ingest command succeeded on blogspot.com (exit 0, 6295 chars). Don't widen that card to blogs generally.
