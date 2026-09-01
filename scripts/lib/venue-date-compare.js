@@ -218,12 +218,74 @@ function deferredHighPriorityShows(deferredShows, previousResultById) {
  * provisional as of THIS run's shows.json (a show that got promoted/fixed
  * and is no longer provisional is dropped, not carried forward forever).
  */
-function mergeCarriedForwardResults(freshResults, previousResultsById, currentProvisionalIds) {
+function mergeCarriedForwardResults(freshResults, previousResultsById, currentProvisionalIds, isStillValid) {
   const freshIds = new Set(freshResults.map((r) => r.id));
+  const stillValid = typeof isStillValid === 'function' ? isStillValid : () => true;
   const carriedForward = Object.values(previousResultsById || {}).filter(
-    (row) => currentProvisionalIds.has(row.id) && !freshIds.has(row.id),
+    (row) => currentProvisionalIds.has(row.id) && !freshIds.has(row.id) && stillValid(row),
   );
   return [...freshResults, ...carriedForward];
+}
+
+/**
+ * The shows.json fields compareShow() actually validates against Playbill. A
+ * carried-forward row is only evidence about the values it was computed from,
+ * so this is what decides whether that evidence is still about today's entry.
+ */
+function showFingerprint(show) {
+  if (!show) return undefined;
+  return [show.venue || '', show.openingDate || '', show.closingDate || ''].join('|');
+}
+
+/**
+ * Assemble the rows to WRITE to the shared audit report — for EVERY mode.
+ *
+ * BRO-2696: this used to be a ternary in validate-show-venue.js that only
+ * merged in --all-provisional mode; a `--show=<id>` run wrote exactly the one
+ * row it checked, truncating the shared, TRACKED report to a single entry.
+ * CI then loaded that one-row file as its `previousResultById`, so 64 of 65
+ * provisional shows tiered as "new", the budget-deferred tail was therefore
+ * also "new", and deferredHighPriorityShows() correctly refused to certify a
+ * clean pass — main red, with zero actual mismatches in the data. CLAUDE.md
+ * rule 3 tells operators to run the per-show command, so the foot-gun fires
+ * from the documented workflow.
+ *
+ * The report's contract is "last-known state per still-provisional show", not
+ * "what this invocation happened to look at". `currentProvisionalIds` is
+ * therefore REQUIRED and a missing one throws rather than silently reverting
+ * to the truncating behaviour — the failure mode was invisible precisely
+ * because writing fewer rows looks like a successful write.
+ */
+function buildAuditResults({ freshResults, previousResultsById, currentProvisionalIds, showsById }) {
+  if (!currentProvisionalIds || typeof currentProvisionalIds.has !== 'function') {
+    throw new Error(
+      'buildAuditResults: currentProvisionalIds (a Set) is required — a filtered '
+      + '--show/--candidates-file run must still carry prior rows forward, or it '
+      + 'truncates the shared audit report and breaks CI tiering (BRO-2696)',
+    );
+  }
+  const byId = showsById || {};
+  // The ledger's domain is exactly "shows that are provisional right now".
+  // --candidates-file synthesises ids for shows with no shows.json entry at all
+  // (discover-ob-historical.js pre-promotion); those must not land in a tracked
+  // file that CI reads as its provisional coverage state.
+  const fresh = (freshResults || [])
+    .filter((r) => currentProvisionalIds.has(r.id))
+    .map((r) => {
+      const fingerprint = showFingerprint(byId[r.id]);
+      return fingerprint === undefined ? r : { ...r, fingerprint };
+    });
+  // A carried-forward row asserts "this show was clean last time we looked".
+  // If the entry has been edited since, that assertion is about values that no
+  // longer exist, and letting it stay tier-2 would let CI certify a clean pass
+  // over a venue/date nobody ever checked. Rows written before fingerprints
+  // existed have none — carry those (a stale-but-real ledger still beats
+  // treating every show as new, which is the BRO-2696 red itself).
+  return mergeCarriedForwardResults(fresh, previousResultsById, currentProvisionalIds, (row) => {
+    const now = showFingerprint(byId[row.id]);
+    if (row.fingerprint === undefined || now === undefined) return true;
+    return row.fingerprint === now;
+  });
 }
 
 module.exports = {
@@ -236,4 +298,6 @@ module.exports = {
   provisionalPriorityTier,
   deferredHighPriorityShows,
   mergeCarriedForwardResults,
+  buildAuditResults,
+  showFingerprint,
 };
