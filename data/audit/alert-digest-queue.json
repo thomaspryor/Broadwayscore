@@ -161,31 +161,6 @@
     "queuedAt": "2026-08-31T18:37:22.097Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33461241676",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33461241676)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33460755666)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "6"
-      }
-    ],
-    "queuedAt": "2026-09-01T02:32:35.289Z"
-  },
-  {
     "conditionKey": "dispatch-flow-dead",
     "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
     "description": "Only 7 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 205). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
@@ -196,5 +171,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-01T04:49:27.996Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33476358123",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33476358123)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/31037393070)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "27"
+      }
+    ],
+    "queuedAt": "2026-09-01T06:34:40.774Z"
   }
 ]
