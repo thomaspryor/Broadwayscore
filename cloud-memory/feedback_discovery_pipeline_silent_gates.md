@@ -253,3 +253,19 @@ The staybook incident above is the *junk-content* face of this gate. The worse f
 **Code fix:** BRO-2495. Extend `hasIndependentExcerptScore()` to accept thumb-derived scores; and make the ensemble scoreability check SKIP files whose `contentTierReason` matches a known bot-stub/truncation signal instead of classifying them non-reviews.
 
 **Related trap:** the same file was earlier nulled by a Weekly refresh (benign — thumb survived), which looked like a one-off. The narrow trigger ("score fields nulled") was the wrong thing to watch; the durable signal is *any* write to a thumb-scored paywalled T1.
+
+---
+
+## Gate: `fetchPage()` sends blog domains straight to Playwright, whose `networkidle` never settles on WordPress (2026-09-01, BRO-2729)
+
+**Symptom:** a review URL that plain `curl` fetches in 0.62s (HTTP 200, 137KB) is completely uningestable. `scripts/ingest-review-from-url.js` prints `Trying Playwright (last resort)... page.goto: Timeout 30000ms exceeded ... waiting until networkidle` then `Fetch failed: All scraping methods failed`. Deterministic, reproduced 2x.
+
+**Two distinct bugs stacked:**
+1. `waitUntil:'networkidle'` never settles on WordPress.com-hosted blogs (persistent stats/analytics beacons), so every WP-hosted review blog times out.
+2. The *only* provider line printed was "Trying Playwright (last resort)" — Bright Data and ScrapingBee were never attempted for this domain, despite both keys being present in `.env`. So Playwright is a single point of failure with no fallback for whatever domain class routes there.
+
+**Why it's silent:** the failure reads as "the site is down / all scrapers blocked", not "our fetch strategy is wrong for this domain class". Nothing distinguishes an unreachable page from a mis-waited one. Repro case: `maryamphilpottblog.wordpress.com` (Cultural Capital), Electra/Persona 2026-08-24.
+
+**Detection recipe:** when `fetchPage()` reports "All scraping methods failed", `curl -A '<browser UA>'` the URL before believing it. A 200 from curl means the gate is ours. Also check *which* providers actually printed — a lone "last resort" line means the chain never ran.
+
+**Fix (carded, not yet landed):** `domcontentloaded` + explicit selector wait for blog/WP domains; let the provider chain continue past a Playwright timeout instead of declaring total failure; find out why BD/SB were skipped for this domain. `scripts/lib/scraper.js` is shared infra — worktree + rule-18 review gate + refactor-parity on non-blog domains before merge.
