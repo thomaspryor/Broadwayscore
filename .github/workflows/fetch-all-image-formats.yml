@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       show_id:
-        description: 'Specific show ID (leave empty for all)'
+        description: 'Show ID, or comma-separated list of show IDs (leave empty for all)'
         required: false
         default: ''
       only_missing:
