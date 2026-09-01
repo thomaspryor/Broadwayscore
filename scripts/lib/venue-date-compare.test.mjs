@@ -15,7 +15,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
-  orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
+  orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults, buildPriorTierMap,
+  missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
+  resolveLastDefinitive, blocksOnDeferral,
   buildAuditResults, showFingerprint,
 } = require('./venue-date-compare.js');
 
@@ -156,11 +158,86 @@ test('orderProvisionalTargets: new (absent from prior report) shows sort before 
   assert.deepEqual(ordered, ['new-stub', 'another-new-stub', 'still-broken', 'clean-old']);
 });
 
-test('orderProvisionalTargets: any non-match prior result counts as still-broken (not just mismatch)', () => {
+test('orderProvisionalTargets: a TRANSIENT prior error outranks previously-clean (a retry may yet yield evidence)', () => {
   const shows = [{ id: 'was-clean' }, { id: 'was-fetch-error' }];
   const prev = { 'was-clean': 'match', 'was-fetch-error': 'fetch-error' };
   const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
   assert.deepEqual(ordered, ['was-fetch-error', 'was-clean']);
+});
+
+// BRO-2701 — 'no-playbill-url' means the show has no Playbill production page
+// at all, so a recheck can never produce evidence in either direction, and it
+// is the MOST expensive target in the set (~24s burning the full SERP fallback
+// chain looking for a page that is not there, vs ~11s for a findable one).
+// It must therefore sort behind previously-clean, not ahead of it.
+test('orderProvisionalTargets: previously no-playbill-url sorts LAST, behind previously-clean (BRO-2701)', () => {
+  const shows = [{ id: 'no-page' }, { id: 'was-clean' }, { id: 'was-mismatch' }, { id: 'brand-new' }];
+  const prev = { 'no-page': 'no-playbill-url', 'was-clean': 'match', 'was-mismatch': 'mismatch' };
+  const ordered = orderProvisionalTargets(shows, prev).map((s) => s.id);
+  assert.deepEqual(ordered, ['brand-new', 'was-mismatch', 'was-clean', 'no-page']);
+});
+
+test('deferredHighPriorityShows: a deferred no-playbill-url show does NOT block certification (BRO-2701)', () => {
+  // validate-show-venue.js --fail-on-mismatch gates on `mismatches` only and
+  // explicitly excludes no-playbill-url when the show IS checked (BRO-2560).
+  // An outcome that cannot fail the build when seen must not fail it when unseen.
+  // 'no-playbill-url' is a DEFINITIVE answer (we reached the providers; the show
+  // has no Playbill page), so nothing about it is left open.
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'no-page' }], { 'no-page': 'no-playbill-url' }), []);
+});
+
+test('deferredHighPriorityShows: a show known ONLY through a transient failure DOES block (BRO-2701 review 4)', () => {
+  // It has never once been definitively looked at, so deferring it leaves the
+  // question wide open — this is the brand-new-stub-during-an-outage case.
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'was-transient' }], { 'was-transient': 'fetch-error' }).map((x) => x.id),
+    ['was-transient'],
+  );
+  // But a show we HAVE looked at before does not block on a later transient
+  // failure: we still know what we knew, so an outage cannot redden the corpus.
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'known' }], { known: { result: 'fetch-error', lastDefinitiveResult: 'match' } }),
+    [],
+  );
+});
+
+test('deferredHighPriorityShows: an unrecognised prior result still blocks (fail safe, BRO-2701)', () => {
+  const prev = { weird: 'some-future-result-value' };
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'weird' }], prev).map((s) => s.id),
+    ['weird'],
+  );
+});
+
+// The exact production shape that made main permanently red: the tracked
+// ledger held 32 'match' + 33 'no-playbill-url' (run 33458412904). Under the
+// old `!== 2` rule all 33 no-playbill-url shows tiered as "still broken", sorted
+// ahead of the 32 clean ones, and at ~24s each could not fit a 9-minute budget
+// (~13.2 min) — so the deferred tail ALWAYS held a blocking show and the step
+// ALWAYS exited 1, with zero mismatches in the data, on every push forever.
+test('the 32-match/33-no-playbill ledger can certify a clean pass under a partial budget (BRO-2701)', () => {
+  const shows = [];
+  const prev = {};
+  for (let i = 0; i < 32; i += 1) { shows.push({ id: `clean-${i}` }); prev[`clean-${i}`] = 'match'; }
+  for (let i = 0; i < 33; i += 1) { shows.push({ id: `nopage-${i}` }); prev[`nopage-${i}`] = 'no-playbill-url'; }
+
+  const ordered = orderProvisionalTargets(shows, prev);
+  // Evidence-bearing targets run first, so a budget cut costs only no-evidence ones.
+  assert.deepEqual(ordered.slice(0, 32).map((s) => s.id), shows.slice(0, 32).map((s) => s.id));
+
+  // Budget reaches 40 of 65; the 25 deferred are all no-playbill-url.
+  const deferred = ordered.slice(40);
+  assert.equal(deferred.length, 25);
+  assert.deepEqual(deferredHighPriorityShows(deferred, prev), [], 'must not block a clean pass');
+
+  // And the guarantee BRO-2627 added is intact: add one genuinely new stub and
+  // deferring it still fails closed.
+  const withStub = orderProvisionalTargets([...shows, { id: 'bad-new-stub' }], prev);
+  assert.equal(withStub[0].id, 'bad-new-stub', 'a new stub is always checked first');
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'bad-new-stub' }], prev).map((s) => s.id),
+    ['bad-new-stub'],
+  );
 });
 
 test('orderProvisionalTargets: no prior report (undefined map) treats every show as new — stable, original order preserved', () => {
@@ -339,4 +416,358 @@ test('buildAuditResults: fresh rows are stamped with a fingerprint so the NEXT r
     showsById: { a: show },
   });
   assert.equal(row.fingerprint, showFingerprint(show));
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 adversarial review — three regressions the first cut introduced.
+// ---------------------------------------------------------------------------
+
+// FINDING 1. findPlaybillUrl() returns the same "no url" shape whether we
+// looked and found no Playbill page, or every SERP query threw and we never
+// looked at all. Collapsing both into 'no-playbill-url' would put a brand-new
+// stub that happened to be checked during a provider outage into the
+// permanently-deferred, never-blocking tier. 'serp-error' keeps it retry-worthy.
+test("a SERP outage ('serp-error') is a transient tier, NOT the no-Playbill-page tier (BRO-2701 review)", () => {
+  const shows = [{ id: 'no-page' }, { id: 'outage' }, { id: 'was-clean' }];
+  const prev = { 'no-page': 'no-playbill-url', outage: 'serp-error', 'was-clean': 'match' };
+  assert.deepEqual(
+    orderProvisionalTargets(shows, prev).map((s) => s.id),
+    ['outage', 'was-clean', 'no-page'],
+    'a failed lookup must be rechecked before a clean show, and long before a genuine no-page show',
+  );
+});
+
+// FINDING 2. Tier alone is not enough: a checked no-playbill-url show is
+// re-stamped with the same result, so its tier never changes. With a stable
+// index tiebreak the budget reached the same head every run and the rest of the
+// tail — the shows never once validated — were deferred forever, which also
+// left the "Persist rotation state" CI step with no rotation to persist.
+test('within a tier, the least-recently-checked show goes first (BRO-2701 review)', () => {
+  const shows = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+  const prev = {
+    a: { result: 'no-playbill-url', checkedAt: '2026-09-01T00:00:00.000Z' },
+    b: { result: 'no-playbill-url', checkedAt: '2026-08-01T00:00:00.000Z' },
+    c: { result: 'no-playbill-url' }, // never checked since checkedAt existed
+  };
+  assert.deepEqual(orderProvisionalTargets(shows, prev).map((s) => s.id), ['c', 'b', 'a']);
+});
+
+test('rotation actually drains a starved tail instead of re-checking the same head (BRO-2701 review)', () => {
+  // 6 no-playbill shows, a budget that reaches 2 per run. Every show must be
+  // covered within 3 runs; the pre-fix stable-index order covered the same 2
+  // on all three.
+  const ids = ['s1', 's2', 's3', 's4', 's5', 's6'];
+  const shows = ids.map((id) => ({ id }));
+  const prev = Object.fromEntries(ids.map((id) => [id, { result: 'no-playbill-url' }]));
+  const seen = new Set();
+  for (let run = 0; run < 3; run += 1) {
+    const checked = orderProvisionalTargets(shows, prev).slice(0, 2);
+    for (const s of checked) {
+      seen.add(s.id);
+      // A run re-stamps what it checked, exactly as buildAuditResults does.
+      prev[s.id] = { result: 'no-playbill-url', checkedAt: new Date(Date.UTC(2026, 8, 1 + run)).toISOString() };
+    }
+  }
+  assert.deepEqual([...seen].sort(), ids, 'every show must be reached within 3 runs');
+});
+
+// FINDING 3. The tiering map must apply the same fingerprint-staleness rule
+// buildAuditResults applies at write time. Otherwise a show whose venue was
+// just rewritten keeps its old non-blocking tier, is deferred, does not block
+// the gate, and is caught only on the NEXT run.
+test('buildPriorTierMap drops a fingerprint-stale row so an edited show tiers as new (BRO-2701 review)', () => {
+  const showsById = {
+    edited: { id: 'edited', venue: 'New Venue', openingDate: '2026-03-01', closingDate: null },
+    untouched: { id: 'untouched', venue: 'Old Venue', openingDate: '2026-03-01', closingDate: null },
+  };
+  const previousResultsById = {
+    // Compute the "unchanged" fingerprint from the real helper so this test
+    // tracks the fingerprint FORMAT rather than hard-coding one (the format
+    // gained isRevival in BRO-2701 review 3, finding 4).
+    edited: { id: 'edited', result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01||false' },
+    untouched: { id: 'untouched', result: 'no-playbill-url', fingerprint: showFingerprint(showsById.untouched) },
+  };
+  const tierMap = buildPriorTierMap({ previousResultsById, showsById });
+  assert.equal(tierMap.edited, undefined, 'the edited show has no valid prior evidence');
+  assert.equal(tierMap.untouched.result, 'no-playbill-url');
+
+  // The consequence the gate cares about: deferring the edited show now blocks.
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'edited' }, { id: 'untouched' }], tierMap).map((s) => s.id),
+    ['edited'],
+  );
+  // ...and it sorts first, so a budget-capped run checks it rather than deferring it.
+  assert.equal(
+    orderProvisionalTargets([{ id: 'untouched' }, { id: 'edited' }], tierMap)[0].id,
+    'edited',
+  );
+});
+
+test('buildPriorTierMap carries rows that predate fingerprints (BRO-2701 review)', () => {
+  const showsById = { legacy: { id: 'legacy', venue: 'V', openingDate: '2026-01-01', closingDate: null } };
+  const previousResultsById = { legacy: { id: 'legacy', result: 'match' } };
+  assert.equal(buildPriorTierMap({ previousResultsById, showsById }).legacy.result, 'match');
+});
+
+test('buildAuditResults stamps checkedAt on fresh rows so the NEXT run can rotate (BRO-2701 review)', () => {
+  const out = buildAuditResults({
+    freshResults: [{ id: 'a', result: 'no-playbill-url' }],
+    previousResultsById: {},
+    currentProvisionalIds: new Set(['a']),
+    showsById: { a: { id: 'a', venue: 'V', openingDate: '2026-01-01', closingDate: null } },
+  });
+  assert.ok(out[0].checkedAt, 'fresh row must carry a checkedAt timestamp');
+  assert.ok(!Number.isNaN(Date.parse(out[0].checkedAt)));
+});
+
+test('missingUrlOutcome: an unreached lookup is serp-error, a completed one is no-playbill-url (BRO-2701 review)', () => {
+  assert.deepEqual(missingUrlOutcome({ anyQueryCompleted: false }), { source: 'serp-error', result: 'serp-error' });
+  assert.deepEqual(missingUrlOutcome({ anyQueryCompleted: true }), { source: 'none', result: 'no-playbill-url' });
+});
+
+test("missingUrlOutcome's failure result is in the transient set, so it never lands in the starved tail (BRO-2701 review)", () => {
+  const failed = missingUrlOutcome({ anyQueryCompleted: false }).result;
+  assert.ok(TRANSIENT_PRIOR_RESULTS.has(failed), 'a failed lookup must be retry-worthy');
+  const looked = missingUrlOutcome({ anyQueryCompleted: true }).result;
+  assert.ok(!TRANSIENT_PRIOR_RESULTS.has(looked));
+  // And the tiers that follow from that: retry-worthy outranks previously-clean.
+  assert.deepEqual(
+    orderProvisionalTargets([{ id: 'clean' }, { id: 'failed' }], { clean: 'match', failed }).map((x) => x.id),
+    ['failed', 'clean'],
+  );
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 second adversarial review.
+// ---------------------------------------------------------------------------
+
+// FINDING 1 — the one that mattered. The first cut of the serp-error fix set
+// anyQueryCompleted on any iteration that did not THROW, but serpQuery() does
+// not throw on an outage: it returns null when there are no SERP keys, and
+// _serpWithChain returns {results: null} when every provider fails (each
+// provider helper catches its own error and returns null). null vs [] is a
+// deliberate distinction in that chain. Guarding only against throws made the
+// entire serp-error path unreachable.
+test('serpQueryCompleted: null is a provider outage, [] is a real empty answer (BRO-2701 review 2)', () => {
+  assert.equal(serpQueryCompleted(null), false, 'null = no provider answered');
+  assert.equal(serpQueryCompleted(undefined), false);
+  assert.equal(serpQueryCompleted([]), true, 'an empty array IS an answer: we looked, there was nothing');
+  assert.equal(serpQueryCompleted([{ url: 'https://playbill.com/production/x' }]), true);
+});
+
+test('a SERP outage cannot demote a show into the never-blocking tail (BRO-2701 review 2)', () => {
+  // The full chain the bug ran through: every query returns null (not throws),
+  // so the show must end up transient/tier-2, never 'no-playbill-url'/tier-4.
+  const anyQueryCompleted = [null, null, null].some(serpQueryCompleted);
+  assert.equal(anyQueryCompleted, false);
+  const outcome = missingUrlOutcome({ anyQueryCompleted });
+  assert.equal(outcome.result, 'serp-error');
+  assert.ok(TRANSIENT_PRIOR_RESULTS.has(outcome.result));
+  // Tier 1, not 4: it has never had a definitive verdict, so it both blocks the
+  // gate and is checked first — the invariant below ties those two together.
+  assert.equal(provisionalPriorityTier('s', { s: outcome.result }), 1, 'rechecked first, not parked');
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 's' }], { s: outcome.result }).map((x) => x.id), ['s'],
+    'and with no definitive verdict on record, deferring it still fails closed',
+  );
+
+  // And the contrast: a provider that answered with nothing is a real no-page.
+  const looked = missingUrlOutcome({ anyQueryCompleted: [null, [], null].some(serpQueryCompleted) });
+  assert.equal(looked.result, 'no-playbill-url');
+  assert.equal(provisionalPriorityTier('s', { s: looked.result }), 4);
+});
+
+// FINDING 3 — buildPriorTierMap iterates by MAP KEY, so a row body missing its
+// own `id` must not silently bypass the staleness check via byId[undefined].
+test('buildPriorTierMap uses the map key, not row.id, for the staleness check (BRO-2701 review 2)', () => {
+  const showsById = { edited: { id: 'edited', venue: 'New Venue', openingDate: '2026-03-01', closingDate: null } };
+  const previousResultsById = {
+    edited: { result: 'no-playbill-url', fingerprint: 'Old Venue|2026-03-01|' }, // NOTE: no `id` field
+  };
+  assert.equal(
+    buildPriorTierMap({ previousResultsById, showsById }).edited, undefined,
+    'a fingerprint-stale row must be dropped even when the row body has no id',
+  );
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 third adversarial review.
+// ---------------------------------------------------------------------------
+
+// FINDING 1 — the serious one. Transient outcomes tier as 2, which the deferral
+// gate does not block on, and a fresh row overwrites the prior one. So a run
+// that merely FAILED TO REACH a show could erase a known mismatch's blocking
+// status and let main go green over an unfixed venue error.
+test('a transient outcome cannot erase a known mismatch (BRO-2701 review 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = {
+    x: { id: 'x', result: 'mismatch', fingerprint: showFingerprint(showsById.x), mismatches: [{ field: 'venue' }] },
+  };
+  // Run 2: the fetch times out.
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'fetch-error', mismatches: [] }],
+    previousResultsById,
+    currentProvisionalIds: new Set(['x']),
+    showsById,
+  });
+  const row = out.find((r) => r.id === 'x');
+  assert.equal(row.result, 'fetch-error', 'the row honestly records what this run actually got');
+  assert.equal(row.lastDefinitiveResult, 'mismatch', 'but the last thing we KNEW survives it');
+  assert.ok(row.checkedAt, 'and checkedAt still advances, so rotation is unaffected');
+
+  // Run 3: the budget defers x. It must STILL block.
+  const tierMap = buildPriorTierMap({ previousResultsById: Object.fromEntries(out.map((r) => [r.id, r])), showsById });
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'x' }], tierMap).map((r) => r.id), ['x']);
+});
+
+test('a DEFINITIVE fresh verdict still wins, so a landed fix clears the gate (BRO-2701 review 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = { x: { id: 'x', result: 'mismatch', fingerprint: showFingerprint(showsById.x) } };
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'match', mismatches: [] }],
+    previousResultsById,
+    currentProvisionalIds: new Set(['x']),
+    showsById,
+  });
+  assert.equal(out.find((r) => r.id === 'x').result, 'match', 'a fixed show must be able to go clean');
+  assert.equal(out.find((r) => r.id === 'x').lastDefinitiveResult, 'match');
+  assert.deepEqual(deferredHighPriorityShows([{ id: 'x' }], { x: { result: 'match', lastDefinitiveResult: 'match' } }), []);
+});
+
+test('resolveLastDefinitive: a transient outcome neither creates nor destroys certainty (BRO-2701 review 4)', () => {
+  assert.equal(resolveLastDefinitive('fetch-error', undefined), undefined, 'cannot manufacture certainty');
+  assert.equal(resolveLastDefinitive('serp-error', { lastDefinitiveResult: 'mismatch' }), 'mismatch', 'cannot destroy it');
+  assert.equal(resolveLastDefinitive('serp-error', { lastDefinitiveResult: 'match' }), 'match');
+});
+
+test('resolveLastDefinitive: losing the Playbill page cannot clear a mismatch (BRO-2701 review 4)', () => {
+  // Google's top-10 shifting, or a title slug drifting, must not be able to
+  // retire a recorded venue/date defect into the never-blocking tier.
+  assert.equal(resolveLastDefinitive('no-playbill-url', { lastDefinitiveResult: 'mismatch' }), 'mismatch');
+  assert.deepEqual(
+    deferredHighPriorityShows([{ id: 'x' }], { x: { result: 'no-playbill-url', lastDefinitiveResult: 'mismatch' } }).map((r) => r.id),
+    ['x'],
+  );
+  // Only an actual look at an actual page may supersede it.
+  assert.equal(resolveLastDefinitive('match', { lastDefinitiveResult: 'mismatch' }), 'match');
+  assert.equal(resolveLastDefinitive('mismatch', { lastDefinitiveResult: 'match' }), 'mismatch');
+  // And with no prior mismatch, no-playbill-url is simply the answer.
+  assert.equal(resolveLastDefinitive('no-playbill-url', { lastDefinitiveResult: 'match' }), 'no-playbill-url');
+});
+
+test('blocksOnDeferral: a legacy row with no lastDefinitiveResult derives one from result (BRO-2701 review 4)', () => {
+  // The committed ledger has 65 rows and none of them carry the new field, so
+  // the migration has to work with no backfill step.
+  assert.equal(blocksOnDeferral('a', { a: { result: 'match' } }), false);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'no-playbill-url' } }), false);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'mismatch' } }), true);
+  assert.equal(blocksOnDeferral('a', { a: { result: 'fetch-error' } }), true);
+  assert.equal(blocksOnDeferral('a', {}), true, 'never seen at all');
+});
+
+test('a stale mismatch is NOT resurrected onto a corrected show (BRO-2701 review 4, finding 3)', () => {
+  const showsById = { x: { id: 'x', venue: 'New Venue', openingDate: '2026-01-01', closingDate: null, isRevival: false } };
+  const previousResultsById = {
+    x: {
+      id: 'x', result: 'mismatch', lastDefinitiveResult: 'mismatch',
+      fingerprint: 'Wrong Venue|2026-01-01||false',
+      mismatches: [{ field: 'venue', shows: 'Wrong Venue' }],
+    },
+  };
+  const out = buildAuditResults({
+    freshResults: [{ id: 'x', result: 'fetch-error', mismatches: [] }],
+    previousResultsById, currentProvisionalIds: new Set(['x']), showsById,
+  });
+  const row = out.find((r) => r.id === 'x');
+  assert.equal(row.lastDefinitiveResult, undefined,
+    'evidence about a venue the owner has since corrected must not carry forward');
+  assert.equal(blocksOnDeferral('x', { x: row }), true,
+    'and the show is treated as never-validated, so it still fails closed');
+});
+
+// FINDING 4 — isRevival is validated by compareShow, so it must be part of the
+// evidence fingerprint, or flipping it leaves a stale 'match' looking valid.
+test('showFingerprint covers isRevival, which compareShow validates (BRO-2701 review 3)', () => {
+  const base = { venue: 'V', openingDate: '2026-01-01', closingDate: null };
+  assert.notEqual(
+    showFingerprint({ ...base, isRevival: false }),
+    showFingerprint({ ...base, isRevival: true }),
+    'flipping isRevival must invalidate prior evidence',
+  );
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2701 fifth adversarial review.
+// ---------------------------------------------------------------------------
+
+// FINDING 1, and the reason it happened. Ordering reads `result`; blocking
+// reads `lastDefinitiveResult`; those two deliberately diverge. Nothing forced
+// them to stay coherent, so a show whose last real verdict was 'mismatch' but
+// whose latest run returned 'no-playbill-url' sorted DEAD LAST while still
+// failing the build — unreachable within the budget, and therefore unclearable,
+// because only a fresh look may supersede a mismatch. That is this card's
+// original permanent-red failure mode rebuilt out of the fix for it.
+//
+// This is the invariant, asserted over the whole cross-product rather than the
+// one case that was reported, so the next divergence fails here instead of on
+// main.
+test('INVARIANT: anything that blocks is checked first (BRO-2701 review 5)', () => {
+  const RESULTS = [
+    undefined, 'match', 'mismatch', 'no-playbill-url', 'serp-error', 'fetch-error',
+    'short-response', 'infra-unavailable', 'some-future-value',
+  ];
+  let blocking = 0;
+  for (const result of RESULTS) {
+    for (const lastDefinitiveResult of RESULTS) {
+      const map = { s: { result, lastDefinitiveResult } };
+      const blocks = blocksOnDeferral('s', map);
+      const tier = provisionalPriorityTier('s', map);
+      // Only this direction is required. "Blocking implies checked first" is
+      // the safety property: a show that fails the build must be reachable
+      // within the budget, or it fails forever with no way to clear it. The
+      // converse is deliberately NOT asserted — checking something early that
+      // does not block is merely a little wasteful, never unsafe, and demanding
+      // it would forbid harmless states like a row carrying a definitive
+      // history but no current `result`.
+      if (blocks) {
+        blocking += 1;
+        assert.ok(tier <= 1,
+          `blocking row {result:${result}, lastDefinitive:${lastDefinitiveResult}} must sort in tier 0/1, got ${tier}`);
+      }
+    }
+  }
+  assert.ok(blocking > 0, 'the sweep must actually exercise the blocking branch');
+  // The reported case specifically.
+  const reported = { s: { result: 'no-playbill-url', lastDefinitiveResult: 'mismatch' } };
+  assert.equal(blocksOnDeferral('s', reported), true);
+  assert.equal(provisionalPriorityTier('s', reported), 1, 'an unresolved mismatch is never sorted last');
+});
+
+test('an unresolved mismatch sorts ahead of clean shows even when its latest run found no page (BRO-2701 review 5)', () => {
+  const prev = {
+    clean1: { result: 'match', lastDefinitiveResult: 'match' },
+    bad: { result: 'no-playbill-url', lastDefinitiveResult: 'mismatch' },
+    clean2: { result: 'match', lastDefinitiveResult: 'match' },
+  };
+  assert.equal(
+    orderProvisionalTargets([{ id: 'clean1' }, { id: 'bad' }, { id: 'clean2' }], prev)[0].id,
+    'bad',
+  );
+});
+
+// FINDING 2 — the fingerprint must cover every field that can change the verdict.
+test('showFingerprint covers title and priorRuns, which both change the verdict (BRO-2701 review 5)', () => {
+  const base = { venue: 'V', openingDate: '2026-01-01', closingDate: null, isRevival: false, title: 'A Show' };
+  assert.notEqual(showFingerprint(base), showFingerprint({ ...base, title: 'A Shwo' }),
+    'title decides WHICH Playbill page the verdict was about');
+  assert.notEqual(
+    showFingerprint(base),
+    showFingerprint({ ...base, priorRuns: [{ venue: 'Old', openingDate: '2024-01-01' }] }),
+    'priorRuns SUPPRESS mismatches, so editing them changes the verdict');
+  assert.notEqual(
+    showFingerprint({ ...base, priorRuns: [{ venue: 'Old', openingDate: '2024-01-01' }] }),
+    showFingerprint({ ...base, priorRuns: [{ venue: 'Other', openingDate: '2024-01-01' }] }),
+  );
+  assert.notEqual(showFingerprint({ ...base, category: 'off-broadway' }), showFingerprint({ ...base, category: 'west-end' }),
+    'scorePlaybillUrl hard-rejects on category, so it selects a different page');
 });
