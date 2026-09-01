@@ -60,7 +60,7 @@ const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
   DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
-  orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
+  orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -77,7 +77,13 @@ const args = process.argv.slice(2);
 const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
 const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
-const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+// VENUE_AUDIT_PATH redirects the shared report for tests only — the report is
+// a repo-wide ledger, so an automated test of the write path must not be able
+// to touch the real one (that is the BRO-2696 failure itself). Production and
+// CI never set it.
+const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
+  ? path.resolve(process.env.VENUE_AUDIT_PATH)
+  : path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
 
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const allProvisional = args.includes('--all-provisional');
@@ -365,9 +371,19 @@ async function main() {
   // clean when the deferred tail included a new/still-broken show (BRO-2627
   // adversarial review — a --fail-on-mismatch gate that silently drops
   // coverage of the exact class it exists to catch is not actually strict).
-  let previousResultsById = {};
-  let previousResultOnlyById = {};
-  let currentProvisionalIds = null;
+  // Computed ONCE, above the mode branches, so no mode can run without it
+  // (BRO-2696). These used to be populated only inside the --all-provisional
+  // branch, which meant a `--show=<id>` run wrote a one-row audit report over
+  // the shared, tracked one and destroyed CI's prioritization state. Hoisting
+  // makes "a filtered run truncates the report" structurally impossible rather
+  // than a branch someone has to remember to keep in sync.
+  const allShows = loadShows();
+  const provisionalShows = allShows.filter(isProvisional);
+  const currentProvisionalIds = new Set(provisionalShows.map(s => s.id));
+  const previousResultsById = loadPreviousResultById();
+  const previousResultOnlyById = Object.fromEntries(
+    Object.entries(previousResultsById).map(([id, row]) => [id, row.result]),
+  );
   if (candidatesFile) {
     // Validate candidates from an external JSON file (no shows.json entry
     // required). Used by discover-ob-historical.js to surface authoritative
@@ -383,20 +399,12 @@ async function main() {
       closingDate: c.closingDate || c.lastDateSeen || null,
     }));
   } else if (showFilter) {
-    const shows = loadShows();
-    targets = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    targets = allShows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (!targets.length) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(2);
     }
   } else if (allProvisional) {
-    const shows = loadShows();
-    const provisionalShows = shows.filter(isProvisional);
-    currentProvisionalIds = new Set(provisionalShows.map(s => s.id));
-    previousResultsById = loadPreviousResultById();
-    previousResultOnlyById = Object.fromEntries(
-      Object.entries(previousResultsById).map(([id, row]) => [id, row.result]),
-    );
     targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
   } else {
     console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
@@ -472,11 +480,14 @@ async function main() {
   // outside a --limit slice) — otherwise a deferred show's last-known state
   // vanishes from the file entirely and every future run sees it as "new"
   // again instead of retaining its real priority tier (BRO-2627 adversarial
-  // review). Only applies in --all-provisional mode; --show/--candidates-file
-  // runs write exactly what they checked, as before.
-  const outputResults = currentProvisionalIds
-    ? mergeCarriedForwardResults(results, previousResultsById, currentProvisionalIds)
-    : results;
+  // review). Applies to EVERY mode: a --show/--candidates-file run used to
+  // write exactly what it checked, which truncated the shared report to one
+  // row and put main red with zero real mismatches (BRO-2696).
+  const outputResults = buildAuditResults({
+    freshResults: results,
+    previousResultsById,
+    currentProvisionalIds,
+  });
   const carriedForwardCount = outputResults.length - results.length;
 
   if (!dryRun) {

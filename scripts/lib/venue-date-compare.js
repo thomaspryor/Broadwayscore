@@ -226,6 +226,36 @@ function mergeCarriedForwardResults(freshResults, previousResultsById, currentPr
   return [...freshResults, ...carriedForward];
 }
 
+/**
+ * Assemble the rows to WRITE to the shared audit report — for EVERY mode.
+ *
+ * BRO-2696: this used to be a ternary in validate-show-venue.js that only
+ * merged in --all-provisional mode; a `--show=<id>` run wrote exactly the one
+ * row it checked, truncating the shared, TRACKED report to a single entry.
+ * CI then loaded that one-row file as its `previousResultById`, so 64 of 65
+ * provisional shows tiered as "new", the budget-deferred tail was therefore
+ * also "new", and deferredHighPriorityShows() correctly refused to certify a
+ * clean pass — main red, with zero actual mismatches in the data. CLAUDE.md
+ * rule 3 tells operators to run the per-show command, so the foot-gun fires
+ * from the documented workflow.
+ *
+ * The report's contract is "last-known state per still-provisional show", not
+ * "what this invocation happened to look at". `currentProvisionalIds` is
+ * therefore REQUIRED and a missing one throws rather than silently reverting
+ * to the truncating behaviour — the failure mode was invisible precisely
+ * because writing fewer rows looks like a successful write.
+ */
+function buildAuditResults({ freshResults, previousResultsById, currentProvisionalIds }) {
+  if (!currentProvisionalIds || typeof currentProvisionalIds.has !== 'function') {
+    throw new Error(
+      'buildAuditResults: currentProvisionalIds (a Set) is required — a filtered '
+      + '--show/--candidates-file run must still carry prior rows forward, or it '
+      + 'truncates the shared audit report and breaks CI tiering (BRO-2696)',
+    );
+  }
+  return mergeCarriedForwardResults(freshResults || [], previousResultsById, currentProvisionalIds);
+}
+
 module.exports = {
   DATE_DELTA_DAYS,
   daysBetween,
@@ -236,4 +266,5 @@ module.exports = {
   provisionalPriorityTier,
   deferredHighPriorityShows,
   mergeCarriedForwardResults,
+  buildAuditResults,
 };

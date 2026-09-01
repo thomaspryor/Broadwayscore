@@ -16,6 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
+  buildAuditResults,
 } = require('./venue-date-compare.js');
 
 const DEAD_1904_SHOW = {
@@ -201,4 +202,75 @@ test('mergeCarriedForwardResults: fresh results win; untouched-but-still-provisi
 test('mergeCarriedForwardResults: no prior report is a no-op (returns fresh results unchanged)', () => {
   const fresh = [{ id: 'a', result: 'match' }];
   assert.deepEqual(mergeCarriedForwardResults(fresh, {}, new Set(['a'])), fresh);
+});
+
+// BRO-2696 — a `--show=<id>` run used to write ONLY the row it checked over the
+// shared, tracked data/audit/venue-date-mismatches.json. CI loads that file as
+// its `previousResultById`, so a one-row report made 64 of 65 provisional shows
+// tier as "new"; the budget-deferred tail was then also "new" and
+// deferredHighPriorityShows() correctly refused to certify — main red on
+// run 33454567745 with `0 mismatch` in the data. Observed twice in one day,
+// both times from the per-show command CLAUDE.md rule 3 tells operators to run.
+//
+// These exercise the REAL buildAuditResults() that validate-show-venue.js calls
+// on every write path (CLAUDE.md §15) — the point is that no mode can write a
+// truncated report, so a single-show run's output must still contain the other
+// still-provisional shows' last-known rows.
+
+test('buildAuditResults: a single-show run does NOT truncate the shared report (BRO-2696)', () => {
+  // Shape of the real incident: 3 provisional shows, an operator checks one.
+  const previousResultsById = {
+    'show-a': { id: 'show-a', result: 'match' },
+    'show-b': { id: 'show-b', result: 'match' },
+    'show-c': { id: 'show-c', result: 'mismatch' },
+  };
+  const currentProvisionalIds = new Set(['show-a', 'show-b', 'show-c']);
+  const out = buildAuditResults({
+    freshResults: [{ id: 'show-c', result: 'match' }], // the one show re-checked
+    previousResultsById,
+    currentProvisionalIds,
+  });
+  assert.equal(out.length, 3, 'filtered run must not shrink the report to its own row');
+  const byId = Object.fromEntries(out.map((r) => [r.id, r.result]));
+  assert.equal(byId['show-c'], 'match', "this run's fresh result must win");
+  assert.equal(byId['show-a'], 'match', 'untouched show keeps its last-known tier');
+  assert.equal(byId['show-b'], 'match', 'untouched show keeps its last-known tier');
+});
+
+test('buildAuditResults: the carried-forward rows keep every show OUT of tier 0 next run (BRO-2696)', () => {
+  // The consequence the gate actually cares about: after a single-show run, a
+  // deferred show must still tier as previously-clean (2), not new (0) — tier 0
+  // in a budget-deferred tail is what makes deferredHighPriorityShows() fail CI.
+  const previousResultsById = {
+    'deferred-clean': { id: 'deferred-clean', result: 'match' },
+  };
+  const out = buildAuditResults({
+    freshResults: [{ id: 'checked', result: 'match' }],
+    previousResultsById,
+    currentProvisionalIds: new Set(['deferred-clean', 'checked']),
+  });
+  const nextRunResultById = Object.fromEntries(out.map((r) => [r.id, r.result]));
+  const deferred = [{ id: 'deferred-clean' }];
+  assert.deepEqual(
+    deferredHighPriorityShows(deferred, nextRunResultById),
+    [],
+    'a previously-clean deferred show must not escalate after a filtered run',
+  );
+});
+
+test('buildAuditResults: a missing currentProvisionalIds THROWS rather than silently truncating (BRO-2696)', () => {
+  // The pre-fix caller passed null here and fell through to "write exactly what
+  // this run checked". Writing fewer rows looks like a successful write, so the
+  // regression has to be loud.
+  for (const bad of [null, undefined, ['show-a']]) {
+    assert.throws(
+      () => buildAuditResults({
+        freshResults: [{ id: 'checked', result: 'match' }],
+        previousResultsById: { 'show-a': { id: 'show-a', result: 'match' } },
+        currentProvisionalIds: bad,
+      }),
+      /currentProvisionalIds/,
+      `expected a throw for ${JSON.stringify(bad)}`,
+    );
+  }
 });
