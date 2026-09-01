@@ -30,6 +30,12 @@ const TICKET_DOMAINS = new Set([
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
+  // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the
+  // only reason it was missing is that nothing had ingested it before. It had
+  // been parked in data/audit/outlet-registry-baseline.json as a "known
+  // missing outlet", i.e. masked rather than excluded; blocking the domain is
+  // the same remedy BRO-2712 applied to the venue/PR-firm hosts.
+  'ticketline.co.uk',
   // 2026-08-16 (task #766 re-triage): skiddle.com is a UK gigs/events ticketing
   // and listings platform, not a review outlet — it was the majority host in
   // click-liverpool's own review-texts archive (2 of the outlet's real domain's
@@ -107,6 +113,22 @@ const PR_FIRM_DOMAINS = new Set([
   'spincyclenyc.com',
 ]);
 
+// User-generated publishing platforms — anyone can post, there is no editorial
+// desk and no critic of record, so a post here is not criticism even when it is
+// long, well-formed and topically a review. Structural heuristics cannot catch
+// them for the same reason PR-firm copy slips through (BRO-2712): the prose is
+// fine, the source is not.
+//
+// vocal.media (2026-09-01, this made main red): vocal.media/critique/bathroom-attendant
+// was ingested for the-bathroom-attendant-off-broadway-2026 at contentTier=complete
+// with no byline and no publishDate, and turned up as a NEW unregistered outlet in
+// `audit-outlet-registry.js --strict`. Note the same show also produced the
+// spincyclenyc.com press release — one under-covered off-Broadway title pulls in
+// whatever the SERP will give it, so this set should be expected to grow.
+const UGC_PLATFORM_DOMAINS = new Set([
+  'vocal.media',
+]);
+
 /**
  * Check if a hostname matches any domain in a set (exact or subdomain match).
  * e.g., "m.facebook.com" matches "facebook.com"
@@ -143,7 +165,8 @@ function isBlockedReviewUrl(url) {
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
       || matchesDomainSet(hostname, REFERENCE_DOMAINS)
       || matchesDomainSet(hostname, VENUE_DOMAINS)
-      || matchesDomainSet(hostname, PR_FIRM_DOMAINS)) return true;
+      || matchesDomainSet(hostname, PR_FIRM_DOMAINS)
+      || matchesDomainSet(hostname, UGC_PLATFORM_DOMAINS)) return true;
     // Path-based blocking for sites that publish BOTH reviews and listings
     const lowerPath = parsed.pathname.toLowerCase();
     // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
@@ -174,7 +197,7 @@ function isBlockedDomain(domain) {
   const d = domain.replace(/^www\./, '').toLowerCase();
   return SOCIAL_DOMAINS.has(d) || TICKET_DOMAINS.has(d)
     || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d)
-    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d);
+    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d) || UGC_PLATFORM_DOMAINS.has(d);
 }
 
 module.exports = {
@@ -184,6 +207,7 @@ module.exports = {
   REFERENCE_DOMAINS,
   VENUE_DOMAINS,
   PR_FIRM_DOMAINS,
+  UGC_PLATFORM_DOMAINS,
   isSocialMediaUrl,
   isBlockedReviewUrl,
   isBlockedDomain,
