@@ -87,6 +87,14 @@ const REFERENCE_DOMAINS = new Set([
 // ingested via /submit-review and scored as a "truncated" review).
 const VENUE_DOMAINS = new Set([
   'southbank.london',
+  // Same venue family, different domain — southbankcentre.co.uk's own
+  // /whats-on/ listing pages are the identical "Toggle caption ... Dates &
+  // tickets ... Access ... Ticket Office" box-office copy (BRO-2712
+  // adversarial-review finding: dog-man-the-musical-west-end-2026's
+  // southbankcentre--unknown.json was ingested via the same /submit-review
+  // path and only excluded by luck — the LLM ensemble check happened to catch
+  // it, the same check that MISSED southbank.london's Electra/Persona page).
+  'southbankcentre.co.uk',
 ]);
 
 // Theatre PR firms — press releases, not criticism, but they read as

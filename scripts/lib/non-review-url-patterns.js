@@ -221,6 +221,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // shows they were mistakenly ingested for.
   { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
   { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
+  // Same venue family as southbank.london, different domain — see the
+  // matching comment in domain-filters.js's VENUE_DOMAINS.
+  { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
 ];
 
 /**
