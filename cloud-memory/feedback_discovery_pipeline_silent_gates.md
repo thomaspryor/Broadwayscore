@@ -285,3 +285,20 @@ Fix: add the registry entry, then `scripts/ingest-review-from-url.js`, then let 
 Trap: `data/outlet-registry.json` is **gitignored in the web repo**. The authoritative copy is `/Users/tompryor/broadway-scorecard-data/outlet-registry.json` — edit and commit there too, or the fix is local-only and evaporates.
 
 Related: BRO-2729's `networkidle` Playwright hang is **wordpress.com-specific** — the same ingest command succeeded on blogspot.com (exit 0, 6295 chars). Don't widen that card to blogs generally.
+
+## Gate: the rebuild SUCCEEDS but its push is discarded — reviews.json never persists (2026-09-01, BRO-2732)
+
+Found on the electra-persona-west-end-2026 opening night, monitor attempt 9. The most expensive gate found so far, because it sits *downstream of everything else*: discovery, ingest, flag-clearing and recovery can all be perfect and the review still never reaches prod.
+
+**Shape.** `rebuild-reviews.yml` rebuilds `reviews.json` fine, then its "Commit and push changes" step fails on every attempt and throws the rebuild output away. Run history 2026-09-01: 15:20Z fail, 15:37Z fail, 15:50Z skipped, 19:14Z fail, no self-heal. Log signature (run 33548344164): `Push failed (attempt N/25)` → fetch → `Rebase could not be completed, aborting` → merge fallback **succeeds** → push fails again, ~90s per attempt → `overall deadline 900s exceeded after 6 attempt(s)` → `discarding before API-fallback diff` / `HEAD is now at <sha>` → `skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json` → `All push attempts failed after 25 attempts`.
+
+**Why it hid.** Three separate masks:
+1. `rebuild-fast` keeps pushing core-data green (it landed 19:51:51Z), so the workflow list does not look broken. But rebuild-fast does not pick up new review-texts files. **A green rebuild-fast is not evidence that rebuild-reviews.yml is healthy.**
+2. The failure is one workflow deep — the monitor's own chain check ("is the review in reviews.json?") reports a *symptom* that reads like a discovery miss.
+3. The retry wrapper **swallows the git stderr**. Grepping the FULL run log (not `--log-failed`) for `remote:`, `fatal:`, `error: failed to push`, `rejected`, `denied` returns nothing. The real cause is not in the logs at all.
+
+**Diagnostic recipe for next time.** When a recovered review sits in review-texts with `contentTier=complete` and zero blocking flags but never appears in `reviews.json`: stop looking at discovery and check `gh run list --workflow=rebuild-reviews.yml --limit 4` FIRST. A rebuild that "succeeded" at rebuilding and failed at pushing is invisible from the data side.
+
+**Ruled out on the night:** write contention (core-data took 2 commits in the surrounding 90 min, the web repo 12 — nowhere near enough for 25 consecutive failures, and ~90s per attempt is a hang signature, not a rejection). Suspects: push timeout on the 16.8MB `reviews.json` (it lives at the core-data repo **root**, `/reviews.json`, not under `data/`); protected-branch/pre-receive rejection; stale credential. The log names `PUSH_RECONCILE_MERGED_JSON=1` as the intended path for MANAGED files.
+
+**Fix order:** un-swallow the stderr first — everything else is guesswork without the real error. Shared push infra, so CLAUDE.md rule 18 (review gate before first edit) applies.
