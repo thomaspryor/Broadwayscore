@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-01T02:09:49.573Z",
+  "updatedAt": "2026-09-01T02:10:36.599Z",
   "processed": 55,
-  "failed": 876,
-  "successRate": "5.9%",
+  "failed": 886,
+  "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
@@ -13,8 +13,20 @@
     "archiveToday": 1,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-09-01T00:01:11.845Z",
+      "event": "bb-session",
+      "session": "50b0f9c3",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-01T00:01:20.273Z",
+      "event": "bb-session",
+      "session": "50481b4b",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
     {
       "t": "2026-09-01T00:02:34.995Z",
       "event": "bb-session",
@@ -117,18 +129,6 @@
       "t": "2026-09-01T01:18:10.471Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-01T02:07:35.489Z",
-      "event": "bb-session",
-      "session": "7838c992",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-01T02:07:54.817Z",
-      "event": "bb-session",
-      "session": "0936cf9b",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     }
   ]
 }
