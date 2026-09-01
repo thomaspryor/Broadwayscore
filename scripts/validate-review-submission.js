@@ -18,6 +18,7 @@ import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { isBlockedReviewUrl } from './lib/domain-filters.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -221,6 +222,23 @@ async function validateSubmission(issueBody) {
       isValid: false,
       error: 'No review URL found in submission',
       recommendation: 'reject'
+    };
+  }
+
+  // Deterministic pre-filter for known non-review domains (ticket/listing/
+  // social/reference/venue/PR-firm — domain-filters.js's isBlockedReviewUrl,
+  // the same predicate rebuild-all-reviews.js uses to exclude these from
+  // scoring). BRO-2712: the Claude classifier below approved BOTH a venue
+  // "what's on" page (southbank.london) and a PR firm's press release
+  // (spincyclenyc.com) as legitimate reviews — 2/2 on this exact class. A
+  // deterministic host check ahead of the LLM call closes that reliability
+  // gap for every domain we already know about, and skips the API call.
+  if (isBlockedReviewUrl(submissionData.reviewUrl)) {
+    return {
+      isValid: false,
+      error: 'This URL is on a known non-review domain (ticket/listing/social/reference/venue/PR-firm site), not a theater review outlet.',
+      recommendation: 'reject',
+      submissionData,
     };
   }
 
