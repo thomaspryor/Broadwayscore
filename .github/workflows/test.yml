@@ -1525,6 +1525,15 @@ on:
       # not behavioral coverage. Still path-listed so a solo edit to the test
       # doesn't run ZERO CI.
       - 'scripts/tests/hook-guard-restore.test.mjs'
+      # BRO-2510 — commit/stop gate accept a claimed/reported Linear issue
+      # (linear-issue-verify.sh's sentinels) as equivalent to a Notion card.
+      # Both guarded scripts (notion-card-required-commit.sh,
+      # notion-card-required-stop.sh) live only in the separate ~/.claude
+      # claude-config repo, same as hook-syntax-guard.sh above — every test
+      # in this file skips in CI, registration here is a parse/import
+      # tripwire only. Still path-listed so a solo edit to the test doesn't
+      # run ZERO CI.
+      - 'scripts/tests/notion-card-linear-sentinel.test.mjs'
       # Infra-review gate digest (card #1095) — turns the gitignored
       # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
       # ledgers into a health-check.js row. health-check.js is already
