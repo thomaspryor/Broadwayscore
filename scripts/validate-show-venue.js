@@ -84,6 +84,11 @@ const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
 const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
   ? path.resolve(process.env.VENUE_AUDIT_PATH)
   : path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+if (process.env.VENUE_AUDIT_PATH) {
+  // Never silent: if this were ever set in CI, the gate would read and update a
+  // ledger nobody is looking at while every run still reported success.
+  console.log(`::warning::validate-show-venue: VENUE_AUDIT_PATH is set — reading and writing ${AUDIT_PATH} instead of the repo ledger. This override exists for tests only.`);
+}
 
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const allProvisional = args.includes('--all-provisional');
@@ -379,8 +384,23 @@ async function main() {
   // than a branch someone has to remember to keep in sync.
   const allShows = loadShows();
   const provisionalShows = allShows.filter(isProvisional);
-  const currentProvisionalIds = new Set(provisionalShows.map(s => s.id));
   const previousResultsById = loadPreviousResultById();
+  // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
+  // still resolves to the real repo (documented above), so the two describe
+  // different universes. Retiring rows on that basis would let a candidate
+  // branch delete real coverage, so in that combination the write set is the
+  // union — nothing already in the ledger is dropped — and fingerprint
+  // staleness is not evaluated against a shows.json the ledger is not about.
+  // VENUE_AUDIT_PATH means the ledger was redirected alongside shows.json, so
+  // the two DO describe the same universe and normal semantics apply.
+  const mismatchedUniverse = Boolean(dataDirOverride) && !process.env.VENUE_AUDIT_PATH;
+  const currentProvisionalIds = new Set([
+    ...provisionalShows.map(s => s.id),
+    ...(mismatchedUniverse ? Object.keys(previousResultsById) : []),
+  ]);
+  const showsById = mismatchedUniverse
+    ? null
+    : Object.fromEntries(provisionalShows.map(s => [s.id, s]));
   const previousResultOnlyById = Object.fromEntries(
     Object.entries(previousResultsById).map(([id, row]) => [id, row.result]),
   );
@@ -487,14 +507,19 @@ async function main() {
     freshResults: results,
     previousResultsById,
     currentProvisionalIds,
+    showsById,
   });
   const carriedForwardCount = outputResults.length - results.length;
 
   if (!dryRun) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    let filterMeta;
+    if (showFilter) filterMeta = { show: showFilter };
+    else if (candidatesFile) filterMeta = { candidatesFile, limit: limit || null };
+    else filterMeta = { allProvisional: true, limit: limit || null };
     const out = {
       generatedAt: new Date().toISOString(),
-      filter: showFilter ? { show: showFilter } : { allProvisional: true, limit: limit || null },
+      filter: filterMeta,
       timeBudgetMin: timeBudget.enabled ? timeBudget.minutes : null,
       // `counts` describes what THIS run checked; `total` in the output
       // file (outputResults.length) can exceed it when prior rows were
@@ -502,7 +527,11 @@ async function main() {
       counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length, deferred, carriedForward: carriedForwardCount },
       results: outputResults,
     };
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify(out, null, 2));
+    // Atomic: CI and several local sessions rewrite this tracked ledger, and a
+    // half-written file reads as a truncated one — the exact BRO-2696 failure.
+    const tmpPath = `${AUDIT_PATH}.${process.pid}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(out, null, 2));
+    fs.renameSync(tmpPath, AUDIT_PATH);
     console.log(`Wrote audit: ${AUDIT_PATH}`);
   }
 

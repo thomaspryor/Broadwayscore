@@ -92,6 +92,13 @@ test('a filtered validate-show-venue run does not truncate the shared audit repo
 
 test('a filtered run drops rows for shows that are no longer provisional (BRO-2696)', () => {
   const after = runFiltered();
+  // Asserted first so this case also fails on a revert to the truncating
+  // behaviour — "nothing forbidden is present" is trivially true of an empty
+  // report, which would let the old bug pass this test (pre-ship review).
+  assert.ok(
+    after.results.some((r) => r.id === 'alpha-off-broadway-2026'),
+    'the still-provisional rows must actually be there for the exclusions to mean anything',
+  );
   assert.ok(
     !after.results.some((r) => r.id === 'retired-off-broadway-2025'),
     'carry-forward must not resurrect a show that left the provisional set',

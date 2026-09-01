@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   compareShow, findCorroboratingPriorRun, daysBetween, urlYear,
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults,
-  buildAuditResults,
+  buildAuditResults, showFingerprint,
 } = require('./venue-date-compare.js');
 
 const DEAD_1904_SHOW = {
@@ -273,4 +273,70 @@ test('buildAuditResults: a missing currentProvisionalIds THROWS rather than sile
       `expected a throw for ${JSON.stringify(bad)}`,
     );
   }
+});
+
+// Hardening from the BRO-2696 pre-ship review (adversarial pass): carry-forward
+// makes the ledger long-lived, so it also has to be honest about WHAT it holds
+// and about how old its evidence is.
+
+test('buildAuditResults: rows for ids that are not currently provisional never enter the ledger (BRO-2696)', () => {
+  // --candidates-file synthesises ids ("<slug>-off-broadway-pending") for shows
+  // with no shows.json entry at all. The ledger is what CI reads as its
+  // provisional coverage state, so a discovery-only id in it is a lie.
+  const out = buildAuditResults({
+    freshResults: [
+      { id: 'real-provisional', result: 'match' },
+      { id: 'made-up-off-broadway-pending', result: 'match' },
+    ],
+    previousResultsById: {},
+    currentProvisionalIds: new Set(['real-provisional']),
+  });
+  assert.deepEqual(out.map((r) => r.id), ['real-provisional']);
+});
+
+test('buildAuditResults: a carried row is DROPPED once its show has been edited (BRO-2696 review)', () => {
+  // The row asserts "clean when we last looked". After a venue/date edit that
+  // assertion is about values that no longer exist — keeping it tier-2 would
+  // let a budget-deferred CI run certify a venue nobody ever checked.
+  const show = { id: 'edited', venue: 'Old Venue', openingDate: '2026-01-01', closingDate: null };
+  const priorRow = { id: 'edited', result: 'match', fingerprint: showFingerprint(show) };
+  const edited = { ...show, venue: 'New Venue' };
+  const out = buildAuditResults({
+    freshResults: [],
+    previousResultsById: { edited: priorRow },
+    currentProvisionalIds: new Set(['edited']),
+    showsById: { edited },
+  });
+  assert.deepEqual(out, [], 'an edited show must go back to needing a check');
+
+  const untouched = buildAuditResults({
+    freshResults: [],
+    previousResultsById: { edited: priorRow },
+    currentProvisionalIds: new Set(['edited']),
+    showsById: { edited: show },
+  });
+  assert.equal(untouched.length, 1, 'an unedited show keeps its evidence');
+});
+
+test('buildAuditResults: rows written before fingerprints existed are still carried (BRO-2696 review)', () => {
+  // Dropping them would re-create the original red on the first run after this
+  // ships, since no committed row has a fingerprint yet.
+  const out = buildAuditResults({
+    freshResults: [],
+    previousResultsById: { legacy: { id: 'legacy', result: 'match' } }, // no fingerprint
+    currentProvisionalIds: new Set(['legacy']),
+    showsById: { legacy: { id: 'legacy', venue: 'V', openingDate: '2026-01-01' } },
+  });
+  assert.deepEqual(out.map((r) => r.id), ['legacy']);
+});
+
+test('buildAuditResults: fresh rows are stamped with a fingerprint so the NEXT run can tell (BRO-2696 review)', () => {
+  const show = { id: 'a', venue: 'V', openingDate: '2026-01-01', closingDate: '2026-03-01' };
+  const [row] = buildAuditResults({
+    freshResults: [{ id: 'a', result: 'match' }],
+    previousResultsById: {},
+    currentProvisionalIds: new Set(['a']),
+    showsById: { a: show },
+  });
+  assert.equal(row.fingerprint, showFingerprint(show));
 });
