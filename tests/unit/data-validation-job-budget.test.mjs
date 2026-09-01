@@ -106,15 +106,42 @@ function findStepStarts(jobLines) {
   return starts;
 }
 
-function findStepBlock(jobLines, nameSubstring) {
+// A line MENTIONING push-with-retry.sh in prose (YAML or shell comments both
+// use `#`) is not a step invoking it — e.g. the Checkout step's fetch-depth
+// rationale and the "Validate review-text files" step both discuss
+// push-with-retry.sh in comments without calling it. Require a non-comment
+// line so those aren't misidentified as push-bound steps.
+function invokesPushWithRetry(lines) {
+  return lines.some((l) => !/^\s*#/.test(l) && l.includes('push-with-retry.sh'));
+}
+
+// Steps that were ALREADY invoking push-with-retry.sh (inline, i.e. visible as
+// a `run:` line in this job's own YAML) when MEASURED_FIXED_COST_SEC was
+// measured on run 33410708893 — their typical cost is already folded into
+// that baseline, so they're excluded here to avoid double-counting. Anything
+// else found invoking push-with-retry.sh is new since that baseline (code
+// review finding, BRO-2706: a name-specific test only catches the ONE step it
+// names, not the regression class) and gets modeled automatically below.
+// NOTE: "Commit scraper-spend ledger" also calls push-with-retry.sh, but from
+// inside a separate composite action (.github/actions/commit-scraper-spend-
+// ledger) — its call isn't inline text in this job's YAML, so findAllPush-
+// RetrySteps() structurally can't see it either way; it stays folded into the
+// fixed baseline like every other pre-existing step.
+const BASELINE_PUSH_STEP_NAMES = ['Record pipeline success'];
+
+function findAllPushRetrySteps(jobLines) {
   const starts = findStepStarts(jobLines);
+  const steps = [];
   for (let i = 0; i < starts.length; i++) {
-    if (jobLines[starts[i]].includes(nameSubstring)) {
-      const end = i + 1 < starts.length ? starts[i + 1] : jobLines.length;
-      return jobLines.slice(starts[i], end);
-    }
+    const end = i + 1 < starts.length ? starts[i + 1] : jobLines.length;
+    const lines = jobLines.slice(starts[i], end);
+    if (!invokesPushWithRetry(lines)) continue;
+    const nameMatch = jobLines[starts[i]].match(/^\s*- name:\s*(.+)$/);
+    const name = nameMatch ? nameMatch[1].trim() : `<unnamed step at line ${starts[i]}>`;
+    if (BASELINE_PUSH_STEP_NAMES.includes(name)) continue;
+    steps.push({ name, lines });
   }
-  return null;
+  return steps;
 }
 
 // Reads a push-with-retry.sh `VAR=${VAR:-N}` default straight from the real
@@ -134,15 +161,33 @@ function pushWithRetryDefault(varName) {
 // deadline fires can run up to one more full net-timeout past it before the
 // step actually exits (BRO-2706: observed ~311s against a 240s deadline on
 // run 33459866223).
+//
+// Deliberately does NOT add push-via-git-api.sh's fallback cost (up to
+// several more minutes past PUSH_DEADLINE_SEC — see push-with-retry.sh's own
+// task #1847 comment above its invocation). Verified (code review finding)
+// that fallback is structurally disqualified for every step this function is
+// currently applied to: each pushes a file under data/audit/ that is NOT in
+// core-data-merge-registry.js's API_FALLBACK_SAFE list, which push-with-
+// retry.sh's own MANAGED/audit disqualifier check (search
+// "_managed_check_rc" in push-with-retry.sh) sets _api_fallback_ok=false for
+// before the fallback block ever runs. If a future step this function models
+// pushes a DIFFERENT file that IS (or becomes) apiFallbackSafe, this
+// assumption breaks silently — no test here catches that combination.
 function pushStepWorstCaseSec(stepLines, stepLabel) {
   assert.ok(
-    stepLines.some((l) => l.includes('push-with-retry.sh')),
+    invokesPushWithRetry(stepLines),
     `${stepLabel} step must invoke push-with-retry.sh (or this budget model needs updating)`,
   );
   const overrideLine = stepLines.find((l) => /^\s*PUSH_DEADLINE_SEC\s*:/.test(l));
   const deadlineSec = overrideLine
     ? parseInt(overrideLine.trim().split(':')[1].trim().replace(/['"]/g, ''), 10)
     : pushWithRetryDefault('PUSH_DEADLINE_SEC');
+  assert.ok(
+    Number.isFinite(deadlineSec),
+    `${stepLabel} step: could not parse a numeric PUSH_DEADLINE_SEC override — ` +
+      `got: ${overrideLine?.trim()}. This model only understands a plain \`PUSH_DEADLINE_SEC: '<number>'\` ` +
+      'env override, not an expression or inline VAR=value form.',
+  );
   const netTimeoutSec = pushWithRetryDefault('GIT_NET_TIMEOUT_SEC');
   return deadlineSec + netTimeoutSec;
 }
@@ -178,27 +223,30 @@ test('data-validation job: fixed step cost + the budgeted step\'s own cap + the 
   assert.ok(m, 'expected --time-budget-min= on the Playbill audit step (see the sibling test)');
   const budgetSec = parseFloat(m[1]) * 60;
 
-  const persistStepLines = findStepBlock(jobLines, 'Persist venue/date audit rotation state');
+  // Sum the worst-case of EVERY inline push-with-retry.sh step not already
+  // folded into MEASURED_FIXED_COST_SEC — not just the one BRO-2695 added —
+  // so the next new step of this shape is caught the same way, automatically.
+  const newPushSteps = findAllPushRetrySteps(jobLines);
   assert.ok(
-    persistStepLines,
+    newPushSteps.some((s) => s.name.includes('Persist venue/date audit rotation state')),
     'expected the BRO-2695 "Persist venue/date audit rotation state" step in the data-validation job — ' +
-      'if it was removed, delete this line from the model too',
+      'if it was removed, this model (and its BASELINE_PUSH_STEP_NAMES exclusion list) may need revisiting',
   );
-  const persistWorstCaseSec = pushStepWorstCaseSec(
-    persistStepLines,
-    'Persist venue/date audit rotation state',
+  const newPushStepsWorstCaseSec = newPushSteps.reduce(
+    (sum, s) => sum + pushStepWorstCaseSec(s.lines, s.name),
+    0,
   );
 
-  const projectedTotalSec = MEASURED_FIXED_COST_SEC + budgetSec + persistWorstCaseSec;
+  const projectedTotalSec = MEASURED_FIXED_COST_SEC + budgetSec + newPushStepsWorstCaseSec;
   const timeoutSec = timeoutMin * 60;
   const headroomSec = timeoutSec - projectedTotalSec;
 
   assert.ok(
     headroomSec >= timeoutSec * MIN_HEADROOM_FRACTION,
     `projected job time ${projectedTotalSec}s (fixed ${MEASURED_FIXED_COST_SEC}s + Playbill budget ${budgetSec}s ` +
-      `+ persist-step worst-case ${persistWorstCaseSec}s) leaves only ${headroomSec}s headroom against a ` +
-      `${timeoutSec}s (${timeoutMin}min) budget — need >= ${(timeoutSec * MIN_HEADROOM_FRACTION).toFixed(0)}s. ` +
-      'Either the job timeout-minutes shrank, --time-budget-min grew, or a push-with-retry.sh step\'s ' +
-      'deadline grew, without matching headroom.',
+      `+ push-step(s) [${newPushSteps.map((s) => s.name).join(', ')}] worst-case ${newPushStepsWorstCaseSec}s) ` +
+      `leaves only ${headroomSec}s headroom against a ${timeoutSec}s (${timeoutMin}min) budget — need >= ` +
+      `${(timeoutSec * MIN_HEADROOM_FRACTION).toFixed(0)}s. Either the job timeout-minutes shrank, ` +
+      '--time-budget-min grew, or a push-with-retry.sh step\'s deadline grew, without matching headroom.',
   );
 });
