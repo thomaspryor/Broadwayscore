@@ -377,7 +377,7 @@ function mainLocked({ dryRun, deps }) {
     readLedgerEntriesFn, appendLedgerEntryFn,
   });
 
-  sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn });
+  sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, makeWrapperAliveProbeFn });
 }
 
 // Machine-local state (never git-tracked — same convention as
@@ -721,9 +721,19 @@ function pageZombieSweep({ corpses, revive, guarded = [], reclaimed = [] }) {
 
 // Task #578: reconcile launches whose workspace the owner CLOSED. Split out
 // of main() so the epoch/park rules are testable without a live cmux.
-function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, now = Date.now() }) {
+function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, makeWrapperAliveProbeFn = makeSeedProcessProbe, now = Date.now() }) {
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
+
+  // BRO-2649 — THIRD SIGNAL, extended to the vanished path. A cmux blackout
+  // (see deadBreadcrumbs' header, 2026-08-31) doesn't just make live
+  // workspaces read as dead — it can drop them out of the live listing
+  // entirely, which is vanishedBreadcrumbs' own trigger condition. Built once
+  // per sweep, same lazy "only pay for `ps -e` when there's ledger history to
+  // cross-check" rule the dead-path probe above already follows.
+  let isWrapperAlive = null;
+  try { isWrapperAlive = makeWrapperAliveProbeFn(); }
+  catch (e) { console.error(`[bsc-prune] WARN wrapper-process probe unavailable (${e.message}) — falling back to cmux-only liveness for the vanished sweep`); }
 
   // First run on a machine records the epoch and parks nothing: every launch
   // already in the ledger predates it. Without this the first sweep would
@@ -746,7 +756,18 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   }
 
   const liveRefs = new Set(all.map(w => w.ref));
-  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs, now });
+  const vanishedWrapperAliveSuppressed = [];
+  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, {
+    epochTs, now, isWrapperAlive,
+    onSuppressed: s => vanishedWrapperAliveSuppressed.push(s),
+  });
+  if (vanishedWrapperAliveSuppressed.length) {
+    // Never silent, same doctrine as the dead-path block above: cmux's live
+    // listing omitted this ref, but its wrapper process is demonstrably still
+    // running — direct evidence of a blackout, not an owner close.
+    console.log(`\n⚠ cmux's live listing omitted a workspace whose wrapper is ALIVE — ${vanishedWrapperAliveSuppressed.length} spared (no vanished breadcrumb, no park):`);
+    vanishedWrapperAliveSuppressed.forEach(s => console.log(`  ${s.workspaceRef}  task #${s.taskId} "${s.subject}" — wrapper ${s.marker} still running`));
+  }
   if (!candidates.length) return;
 
   // Task #883: a cmux restart renumbers every open workspace ref at once, so
@@ -849,8 +870,13 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
     let stillVanished;
     try {
       const fresh = readLedgerEntriesFn();
+      // isWrapperAlive, no onSuppressed: this call re-validates ONE already-
+      // decided candidate against a fresh read, it does not need its own
+      // suppression report — passing onSuppressed here would re-log every
+      // OTHER still-alive ref in `fresh` once per iteration of this loop
+      // (second-opinion review catch, BRO-2649).
       stillVanished = dispatchLedger
-        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs, now })
+        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs, now, isWrapperAlive })
         .some(f => f.workspaceRef === v.workspaceRef);
     } catch (e) {
       console.error(`[bsc-prune] WARN re-validate failed for ${v.workspaceRef}, skipping park: ${e.message}`);
