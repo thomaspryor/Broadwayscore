@@ -1,36 +1,30 @@
 {
-  "updatedAt": "2026-09-01T14:10:25.567Z",
-  "processed": 17,
-  "failed": 133,
-  "successRate": "11.3%",
+  "updatedAt": "2026-09-01T14:42:12.668Z",
+  "processed": 2,
+  "failed": 8,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 1,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-09-01T14:00:39.220Z",
+      "t": "2026-09-01T14:42:05.848Z",
       "event": "bb-session",
-      "session": "84a01e3c",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+      "session": "5082e499",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
     },
     {
-      "t": "2026-09-01T14:00:39.935Z",
+      "t": "2026-09-01T14:42:06.504Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-01T14:03:06.302Z",
-      "event": "bb-session",
-      "session": "a513c598",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
