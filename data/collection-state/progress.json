@@ -15,7 +15,9 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--roger-catlin.json"
+    "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -151,7 +153,15 @@
     "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
     "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
     "macbeth-off-broadway-2026/newsday--linda-winer.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json"
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "benevolent-off-broadway-2026/theatermania--unknown.json",
+    "the-house-of-the-negro-insane-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "marlise-off-broadway-2026/donyc--unknown.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -177,16 +187,19 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-      "tosca-off-broadway-2026/broadwayworld--roger-catlin.json"
+      "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+    ]
   },
   "startTime": "2026-09-01T13:16:29.034Z",
-  "lastProcessed": "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-09-01T13:18:21.102Z",
@@ -215,6 +228,29 @@
       "event": "bb-session",
       "session": "25d4af16",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-01T14:00:44.504Z",
+      "event": "bb-session",
+      "session": "a563b6e5",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-09-01T14:01:03.514Z",
+      "event": "bb-session",
+      "session": "dc661915",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-09-01T14:01:32.772Z",
+      "event": "bb-session",
+      "session": "b1f25595",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-09-01T14:01:33.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
