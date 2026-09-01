@@ -521,6 +521,68 @@ test('vanishedBreadcrumbs is idempotent: its own output terminates the next swee
   assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH, now: NOW }), []);
 });
 
+// ── BRO-2649: the same wrapper-alive guard BRO-2575 gave deadBreadcrumbs,
+// extended to the vanished path. A cmux blackout doesn't just make live
+// workspaces read as dead — it can drop them out of the live listing
+// entirely, which is vanishedBreadcrumbs' own trigger condition. Same
+// fixture shape as dispatch-guards.test.mjs's BRO-2575 tests: only the
+// process-table probe is faked, everything else drives the real function.
+const { hasSeedProcess } = require('./cmux-launch.js');
+const VANISHED_LIVE_MARKER = 'bsc-cmd-linear_BRO-2649-a1b2c3d4.sh';
+const VANISHED_PS_WITH_WRAPPER = `/bin/bash /var/folders/xy/T/${VANISHED_LIVE_MARKER}\n/usr/bin/login -pf tompryor\n`;
+const VANISHED_PS_WITHOUT_WRAPPER = '/usr/bin/login -pf tompryor\n/sbin/launchd\n';
+const vanishedProbeOver = psText => marker => hasSeedProcess(psText, marker);
+
+test('vanishedBreadcrumbs: a workspace whose wrapper is STILL RUNNING is never journaled vanished, even when cmux\'s live listing omits it', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']), // workspace:1 is NOT in the live listing
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER) });
+  assert.deepEqual(out, [], 'the wrapper is alive — cmux\'s listing is the thing that lied, not the session');
+});
+
+test('vanishedBreadcrumbs: the suppression is reported, never silent', () => {
+  const seen = [];
+  vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    {
+      epochTs: EPOCH, now: NOW,
+      isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER),
+      onSuppressed: info => seen.push(info),
+    });
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0].workspaceRef, 'workspace:1');
+  assert.equal(seen[0].taskId, '1');
+  assert.equal(seen[0].marker, VANISHED_LIVE_MARKER);
+});
+
+test('vanishedBreadcrumbs: a genuinely vanished workspace with no wrapper process IS still journaled (not a blanket amnesty)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITHOUT_WRAPPER) });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'vanished');
+  assert.equal(out[0].workspaceRef, 'workspace:1');
+});
+
+test('vanishedBreadcrumbs: a launch predating the ledger marker field keeps the pre-fix verdict (no silent breadcrumb loss)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER })], // no marker
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER) });
+  assert.equal(out.length, 1, 'with no marker there is nothing to cross-check — the vanished verdict must stand');
+});
+
+test('vanishedBreadcrumbs: callers that omit isWrapperAlive keep the exact pre-BRO-2649 behavior', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW });
+  assert.equal(out.length, 1, 'no probe passed — journals exactly as before this change');
+});
+
 test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () => {
   assert.equal(vanishEpoch([]), null);
   assert.equal(vanishEpoch([{ event: 'vanish-epoch', ts: EPOCH }]), EPOCH);

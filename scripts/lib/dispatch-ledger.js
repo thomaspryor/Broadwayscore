@@ -671,10 +671,23 @@ const HISTORICAL_EXCLUSION_GRACE_MS = 72 * 60 * 60 * 1000;
 // caller forget it and keep getting the (soon-to-be-legacy) permanent-
 // exclusion behavior with no signal, masking exactly the bug class this
 // grace window exists to fix.
-function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
+//
+// opts.isWrapperAlive / opts.onSuppressed (BRO-2649): same THIRD SIGNAL guard
+// deadBreadcrumbs already applies (see its header for the 2026-08-31
+// blackout), extended to the vanished path — a cmux blackout doesn't just
+// make live workspaces read as dead, it can drop them out of the live
+// listing entirely, which is exactly vanishedBreadcrumbs' trigger condition.
+// Reuses the SAME wrapperVouchesAlive() predicate deadBreadcrumbs uses (one
+// guard, not two hand-rolled copies — CLAUDE.md rule 15), and stays optional
+// with the identical "no opinion" default so every existing caller (only
+// bsc-prune.js today) that doesn't pass it keeps today's exact behavior.
+function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
   if (!(liveRefs instanceof Set)) {
     throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
   }
+  const { epochTs = null, now } = opts;
+  const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
+  const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   if (!Number.isFinite(now)) throw new Error('vanishedBreadcrumbs requires now (ms epoch)');
   // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
   // empty listing is indistinguishable from cmux being restarted, crashed, or
@@ -714,6 +727,18 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
     if (openElsewhere && openElsewhere.workspaceRef !== ref && liveRefs.has(openElsewhere.workspaceRef)) continue; // superseded by a newer LIVE launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
+    // Wrapper check LAST, same order as deadBreadcrumbs: only reached once
+    // ownership/supersession/reconciliation have already cleared this ref, so
+    // a suppression reported via onSuppressed always means "this ref was
+    // actually about to be journaled vanished" — never noise about a ref that
+    // was never a real candidate.
+    if (wrapperVouchesAlive(launch, isWrapperAlive)) {
+      if (onSuppressed) {
+        try { onSuppressed({ workspaceRef: ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker }); }
+        catch { /* a reporting failure must never change the sweep's verdict */ }
+      }
+      continue;
+    }
     out.push({
       event: 'vanished',
       taskId: launch.taskId,
