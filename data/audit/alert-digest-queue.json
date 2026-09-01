@@ -196,5 +196,17 @@
       }
     ],
     "queuedAt": "2026-09-01T06:34:40.774Z"
+  },
+  {
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-01",
+    "title": "Opening-night monitor pass complete: electra-persona-west-end-2026",
+    "description": "Pass 1, model opus, 5min, $1.56. Pass 1 complete, well inside the deadline. State file is gitignored by design (local-only, which is where the next launchd pass reads it) — the `git add` skipped it silently; the committed/pushed artifacts were the audit outputs.\n\n**Verdict: nothing is broken. Press night hasn't happened yet.**\n\nElectra / Persona (National Theatre Lyttelton) opens today, 2026-09-01. UK press embargoes lift ~21:00-22:00 UTC. At 16:20Z, zero press reviews had published anywhere — independently confirmed by SERP census, not by trusting the pipeline.\n\nWhat the census + diff actually found:\n\n1. **All 8 review-texts files are pre-press-night artifacts.** I corroborated each exclusion from the source rather than clearing flags. `guardian--natalie-haynes.json` is a decoy: it's a `/commentisfree/` Natalie Haynes co",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T16:20:46.657Z"
   }
 ]
