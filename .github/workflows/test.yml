@@ -4128,6 +4128,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Playwright
+        # BRO-2695: playbill.com/web.playbill.com are in PLAYWRIGHT_FIRST_DOMAINS
+        # (scripts/lib/scraper.js) -- fetchPage() deliberately tries Playwright
+        # BEFORE Bright Data for Playbill production pages (their ad/analytics
+        # XHRs never let networkidle settle for other scrapers). Without a
+        # browser installed here, every one of validate-show-venue.js's targets
+        # paid a guaranteed-fail Playwright round trip before falling through to
+        # Bright Data -- pure wasted latency inside the --time-budget-min=9
+        # budget below (observed: "Executable doesn't exist at
+        # /home/runner/.cache/ms-playwright/...chrome-headless-shell" on every
+        # show in run 33454567745).
+        uses: ./.github/actions/setup-playwright
+
       - name: Auto-close expired shows
         run: node scripts/auto-close-expired-shows.js
 
@@ -4798,6 +4811,51 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch --time-budget-min=9
+
+      - name: Persist venue/date audit rotation state (BRO-2695)
+        # validate-show-venue.js's --time-budget-min rotation (BRO-2627) only
+        # advances if THIS run's data/audit/venue-date-mismatches.json is
+        # visible to the NEXT run's loadPreviousResultById() -- and this job
+        # never committed that file back to git. The only commits ever made to
+        # it were local desktop-session runs (git log: 100% author Tom Pryor,
+        # zero CI-bot commits), so every CI run re-read the same stale
+        # human-committed snapshot, the same priority-ordered ~50/65 shows got
+        # checked every push, and the same tail was deferred every single time
+        # -- main was RED on every run with ZERO real mismatches (BRO-2695).
+        # `if: always()`, same env-gate as the step above (redeclared here --
+        # step `env:` blocks are NOT visible to a later step's `if:`) so this
+        # runs even when --fail-on-mismatch exits 1 above: a budget-cut run's
+        # partial progress is exactly the state that must survive for the next
+        # run's rotation to advance. This step must never flip the job's own
+        # pass/fail verdict -- it only ever warns on push failure (matches the
+        # existing "Record pipeline success" health-stamp pattern below: stage
+        # -> git diff --staged --quiet check -> commit -> push-with-retry.sh).
+        # Expect this to push on nearly every run: the file's own `generatedAt`
+        # timestamp changes on every invocation, so the staged diff is rarely
+        # empty. Known accepted risk (documented, not fixed here): two Data
+        # Validation jobs from concurrent pushes can both be mid-run (this
+        # job's own `concurrency:` group is per-sha, cancel-in-progress:
+        # false), and push-with-retry.sh's generic `data/audit/*` conflict
+        # rule keeps the LOCAL (pusher's) version wholesale on conflict, not a
+        # per-show merge -- a losing run's older snapshot can clobber a
+        # winner's fresher rotation progress. That degrades convergence speed,
+        # it does not reintroduce the always-red bug (worst case is the same
+        # rotation taking a few more pushes, not zero pushes forever).
+        if: always() && env.HAS_SCRAPE_SECRETS == 'true'
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/venue-date-mismatches.json
+          if git diff --staged --quiet; then
+            echo "No venue-date-mismatches.json change to persist"
+            exit 0
+          fi
+          git commit -q -m "data: venue/date audit rotation state [skip ci]"
+          if ! bash scripts/lib/push-with-retry.sh; then
+            echo "::warning::venue-date-mismatches.json push failed -- next run falls back to the last-committed snapshot (pre-BRO-2695-fix behavior for this run only)."
+          fi
 
       # `audit-regex-patterns.js --full` MOVED to check-corpus-drift.yml
       # (2026-06-21). Its per-pattern FP counts drift as the corpus grows hourly
