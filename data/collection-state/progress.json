@@ -43,7 +43,10 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -372,7 +375,14 @@
     "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
     "sabrage-off-west-end-2026/guardian--brian-logan.json",
     "sabrage-off-west-end-2026/standard--nick-curtis.json",
-    "the-lost-boys-2026/bloomberg--chris-rovzar.json"
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -408,11 +418,13 @@
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -426,7 +438,8 @@
     ],
     "brightdata": [
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json"
@@ -436,11 +449,12 @@
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-08-31T17:41:06.981Z",
-  "lastProcessed": "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+  "lastProcessed": "avenue-q-west-end-2026/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-31T17:43:36.154Z",
@@ -584,6 +598,29 @@
       "event": "bb-session",
       "session": "ed4575b9",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-01T00:01:11.845Z",
+      "event": "bb-session",
+      "session": "50b0f9c3",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-01T00:01:20.273Z",
+      "event": "bb-session",
+      "session": "50481b4b",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-01T00:02:34.995Z",
+      "event": "bb-session",
+      "session": "a59f2003",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-01T00:02:35.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
