@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-01T14:15:34.850Z",
+    "generatedAt": "2026-09-01T14:38:23.525Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -30,74 +30,74 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 84
+      "churn": 85
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 44
+      "churn": 45
     },
     {
       "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 44
+      "churn": 45
     },
     {
       "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
-      "churn": 44
+      "churn": 45
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/hadestown-west-end-2024.json",
-      "churn": 42
+      "churn": 43
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/mass-west-end-2026.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
+      "churn": 41
+    },
+    {
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
       "churn": 40
     },
     {
@@ -106,11 +106,11 @@
     },
     {
       "path": "public/data/shows/equus-west-end-2026.json",
-      "churn": 34
+      "churn": 35
     },
     {
       "path": "public/data/shows/six-the-musical-west-end-2021.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -118,28 +118,28 @@
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 31
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 851,
+      "churn": 855,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 805,
+      "churn": 808,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 366,
+      "churn": 367,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 353,
+      "churn": 356,
       "mergeAttr": "union"
     },
     {
@@ -149,12 +149,12 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 127,
+      "churn": 126,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 103,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
@@ -189,7 +189,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 34,
+      "churn": 33,
       "mergeAttr": "ours"
     }
   ]
