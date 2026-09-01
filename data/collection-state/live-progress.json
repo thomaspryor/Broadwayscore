@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-01T15:40:38.328Z",
-  "processed": 46,
-  "failed": 334,
-  "successRate": "12.1%",
+  "updatedAt": "2026-09-01T15:43:07.997Z",
+  "processed": 49,
+  "failed": 341,
+  "successRate": "12.6%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 2,
     "scrapingbee": 8,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -66,6 +66,17 @@
       "event": "bb-session",
       "session": "caaeec8c",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-01T15:41:07.248Z",
+      "event": "bb-session",
+      "session": "c7ed1cbd",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-01T15:41:07.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
