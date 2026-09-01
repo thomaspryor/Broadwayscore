@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-31T23:01:39.802Z",
+    "generatedAt": "2026-09-01T00:51:34.583Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,14 +9,14 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 2,
-    "exemptCount": 22,
+    "exemptCount": 24,
     "coveredCount": 18,
-    "highChurnTracked": 42
+    "highChurnTracked": 44
   },
   "flagged": [
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 50
+      "churn": 51
     },
     {
       "path": "data/audit/validation/collection-report-2026-08-30.json",
@@ -26,83 +26,83 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 117
+      "churn": 118
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 80
+      "churn": 81
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 38
+      "churn": 40
     },
     {
       "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 38
+      "churn": 40
     },
     {
       "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
-      "churn": 38
+      "churn": 40
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 37
+      "churn": 39
     },
     {
       "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 37
+      "churn": 39
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 37
+      "churn": 39
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 37
+      "churn": 39
     },
     {
       "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
-      "churn": 37
+      "churn": 39
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 36
+      "churn": 38
     },
     {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 36
+      "churn": 38
     },
     {
       "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 36
+      "churn": 38
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
-      "churn": 36
+      "churn": 38
     },
     {
       "path": "public/data/shows/hadestown-west-end-2024.json",
-      "churn": 36
-    },
-    {
-      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 36
+      "churn": 38
     },
     {
       "path": "public/data/shows/mass-west-end-2026.json",
-      "churn": 36
+      "churn": 38
+    },
+    {
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "churn": 37
     },
     {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
-      "churn": 35
+      "churn": 37
     },
     {
       "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 35
+      "churn": 36
     },
     {
       "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
-      "churn": 34
+      "churn": 36
     },
     {
       "path": "public/data/shows/starlight-express-west-end-2024.json",
@@ -110,98 +110,106 @@
     },
     {
       "path": "public/data/shows/equus-west-end-2026.json",
-      "churn": 30
+      "churn": 32
+    },
+    {
+      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/summerfolk-west-end-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 854,
+      "churn": 870,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 808,
+      "churn": 824,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 345,
+      "churn": 350,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 327,
+      "churn": 330,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 145,
+      "churn": 144,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 125,
+      "churn": 131,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 95,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 70,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 70,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 70,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 45,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/an-american-daughter-off-broadway-2026.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/spellbound-off-broadway-2026.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-house-of-the-negro-insane-off-broadway-2026.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
