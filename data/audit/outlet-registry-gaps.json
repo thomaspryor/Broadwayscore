@@ -1,21 +1,12 @@
 {
-  "generatedAt": "2026-09-01T12:31:23.393Z",
+  "generatedAt": "2026-09-01T12:45:43.792Z",
   "summary": {
     "totalOutletsInReviews": 699,
-    "inRegistry": 698,
-    "missing": 1,
+    "inRegistry": 699,
+    "missing": 0,
     "unused": 465
   },
-  "missingOutlets": [
-    {
-      "outletId": "theweereview",
-      "count": 1,
-      "shows": [
-        "spellbound-off-broadway-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/spellbound-off-broadway-2026/theweereview--unknown.json"
-    }
-  ],
+  "missingOutlets": [],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1878,17 +1869,7 @@
       "displayName": "Thenorthernecho"
     }
   ],
-  "suggestedAdditions": [
-    {
-      "outletId": "theweereview",
-      "displayName": "theweereview",
-      "tier": 3,
-      "aliases": [
-        "theweereview"
-      ],
-      "domain": "theweereview.com"
-    }
-  ],
+  "suggestedAdditions": [],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -8481,6 +8462,16 @@
       "canonicalId": "operationlivetheatre",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/space-dogs-off-west-end-2026/operationlivetheatre--xi-ye.json"
+      ]
+    },
+    {
+      "showId": "spellbound-off-broadway-2026",
+      "outletId": "theweereview",
+      "currentDisplayName": "theweereview",
+      "expectedDisplayName": "The Wee Review",
+      "canonicalId": "theweereview",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/spellbound-off-broadway-2026/theweereview--unknown.json"
       ]
     },
     {
