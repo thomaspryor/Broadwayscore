@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-01T09:29:54.158Z",
+    "generatedAt": "2026-09-01T11:48:16.896Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 2,
     "exemptCount": 24,
-    "coveredCount": 14,
-    "highChurnTracked": 40
+    "coveredCount": 18,
+    "highChurnTracked": 44
   },
   "flagged": [
     {
@@ -26,150 +26,150 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 128
+      "churn": 132
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 81
+      "churn": 82
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/paddington-the-musical-west-end-2025.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 39
+      "churn": 40
     },
     {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 39
+      "churn": 40
     },
     {
       "path": "public/data/shows/hadestown-west-end-2024.json",
-      "churn": 39
+      "churn": 40
     },
     {
       "path": "public/data/shows/mass-west-end-2026.json",
-      "churn": 39
+      "churn": 40
     },
     {
       "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/summerfolk-west-end-2026.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/equus-west-end-2026.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "data/audit/alert-digest-queue.json",
       "churn": 31
     },
     {
-      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "path": "public/data/shows/paranormal-activity-2026.json",
       "churn": 31
     },
     {
-      "path": "public/data/shows/paranormal-activity-2026.json",
-      "churn": 30
+      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 838,
+      "churn": 860,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 792,
+      "churn": 813,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 360,
+      "churn": 363,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 346,
+      "churn": 349,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 156,
+      "churn": 159,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 125,
+      "churn": 128,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 97,
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
@@ -189,7 +189,27 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 32,
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/an-american-daughter-off-broadway-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/spellbound-off-broadway-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-house-of-the-negro-insane-off-broadway-2026.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
