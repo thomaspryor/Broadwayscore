@@ -22,6 +22,8 @@
  *   node scripts/audit-self-contradictory-clears.js --gate --max=0
  *   node scripts/audit-self-contradictory-clears.js --fix        # retract stale breadcrumbs
  *   node scripts/audit-self-contradictory-clears.js --show=ID    # scope to one show
+ *   node scripts/audit-self-contradictory-clears.js --fix-safe            # safe bulk drain
+ *   node scripts/audit-self-contradictory-clears.js --fix-safe --dry-run  # inspect, write nothing
  *   node scripts/audit-self-contradictory-clears.js --json
  */
 
@@ -37,8 +39,7 @@ const {
   isZeroScoreImpactFix,
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
-const { parseArgs: parseArgsLib, setDefaultBaselinePath } = require('./lib/audit-self-contradictory-clears-args.js');
+const { parseArgs: parseArgsLib } = require('./lib/audit-self-contradictory-clears-args.js');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
 
@@ -61,6 +62,10 @@ Usage:
                     see isZeroScoreImpactFix() in lib/flag-contradiction.js.
                     Safe to run unattended and in bulk; leaves every
                     score-impacting contradiction untouched for adjudication.
+  --dry-run         report what --fix/--fix-safe/--record-baseline WOULD do and
+                    write nothing. The intended way to inspect --fix, which
+                    this repo treats as untrusted. Unknown flags are FATAL, so
+                    a typo here can no longer read as a safe no-op (BRO-2705).
   --show=ID         scope the sweep to one show directory
   --json            machine-readable output
 `;
@@ -147,8 +152,7 @@ function parseArgs(argv) {
   // Delegates to scripts/lib/audit-self-contradictory-clears-args.js so the
   // unit test can exercise the REAL parser. See that file for why an
   // unrecognised flag is now fatal (BRO-2705).
-  setDefaultBaselinePath(DEFAULT_BASELINE_PATH);
-  return parseArgsLib(argv);
+  return parseArgsLib(argv, { defaultBaselinePath: DEFAULT_BASELINE_PATH });
 }
 
 // Committed baseline: { count, tolerance, recordedAt, note }. A missing or
@@ -258,7 +262,10 @@ function main() {
   }
 
   if (args.json) {
-    console.log(JSON.stringify({ scanned, count: hits.length, fixed, hits }, null, 2));
+    // dryRun/wouldFix are always present: without them a `--fix-safe --dry-run
+    // --json` run is byte-indistinguishable from a real run that fixed
+    // nothing, which is the exact ambiguity this flag exists to remove.
+    console.log(JSON.stringify({ scanned, count: hits.length, fixed, dryRun: args.dryRun, wouldFix, hits }, null, 2));
   } else {
     console.log(`Self-contradictory clear sweep: ${scanned} review file(s) scanned, ${hits.length} contradiction(s).`);
     const byPair = {};
@@ -295,6 +302,15 @@ function main() {
 
   if (args.recordBaseline) {
     const target = args.baseline || DEFAULT_BASELINE_PATH;
+    // --dry-run covers EVERY write this script performs, not just the corpus
+    // one. Guarding only the fix branch left `--dry-run --record-baseline`
+    // overwriting the baseline while printing "Nothing was written" — the same
+    // inspection-is-the-mutation bug this flag exists to fix, one write site
+    // over (/code-review, 2026-09-01).
+    if (args.dryRun) {
+      console.log(`\nDRY RUN: would record baseline ${hits.length} (\u00b1${BASELINE_TOLERANCE}) \u2192 ${target}. Nothing was written.`);
+      return;
+    }
     fs.writeFileSync(target, `${JSON.stringify({
       count: hits.length,
       tolerance: BASELINE_TOLERANCE,

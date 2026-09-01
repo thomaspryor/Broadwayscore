@@ -14,12 +14,14 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { parseArgs, isKnownFlag } = require('./audit-self-contradictory-clears-args.js');
 
+const BASELINE = '/repo/data/audit/self-contradictory-clears-baseline.json';
+
 // onUnknown keeps the parser from calling process.exit() under the test runner;
 // the production caller omits it and gets the exit-2 behaviour.
 const capture = () => {
   const seen = [];
-  const onUnknown = (message, unknown) => {
-    seen.push({ message, unknown });
+  const onUnknown = (message, offenders) => {
+    seen.push({ message, offenders });
     return null;
   };
   return { seen, onUnknown };
@@ -47,8 +49,20 @@ test('an unrecognised flag is refused, not ignored (prevention for the whole cla
   const { seen, onUnknown } = capture();
   parseArgs(['--fix-safe', '--dryrun'], { onUnknown });
   assert.equal(seen.length, 1, 'a typo’d flag must be reported');
-  assert.deepEqual(seen[0].unknown, ['--dryrun']);
-  assert.match(seen[0].message, /Unrecognised flag/);
+  assert.deepEqual(seen[0].offenders, ['--dryrun']);
+  assert.match(seen[0].message, /Unrecognised argument/);
+});
+
+// The first version of this parser only rejected tokens starting with '-', so
+// `--fix-safe dry-run` — a shell that ate the dashes, or a hand-typed flag
+// missing them — was accepted silently and ran the REAL corpus write. That is
+// the identical failure the flag exists to prevent, one token shape over.
+test('a bare word is refused too: the script takes no positional arguments', () => {
+  const { seen, onUnknown } = capture();
+  parseArgs(['--fix-safe', 'dry-run'], { onUnknown });
+  assert.equal(seen.length, 1, 'a dashless flag must not sail through into a corpus write');
+  assert.deepEqual(seen[0].offenders, ['dry-run']);
+  assert.match(seen[0].message, /no positional arguments/);
 });
 
 test('the error names the known flags so the operator can self-correct', () => {
@@ -58,19 +72,16 @@ test('the error names the known flags so the operator can self-correct', () => {
   assert.match(seen[0].message, /--fix-safe/);
 });
 
-test('CI’s own invocation parses clean once the baseline path is injected', () => {
-  const { setDefaultBaselinePath } = require('./audit-self-contradictory-clears-args.js');
-  setDefaultBaselinePath('/repo/data/audit/self-contradictory-clears-baseline.json');
+test('CI’s own invocation parses clean when given the baseline path', () => {
   const { seen, onUnknown } = capture();
-  const args = parseArgs(['--gate', '--baseline'], { onUnknown });
+  const args = parseArgs(['--gate', '--baseline'], { defaultBaselinePath: BASELINE, onUnknown });
   assert.equal(seen.length, 0, 'test.yml runs --gate --baseline; it must never be rejected');
   assert.equal(args.gate, true);
-  assert.equal(args.baseline, '/repo/data/audit/self-contradictory-clears-baseline.json');
-  setDefaultBaselinePath(null);
+  assert.equal(args.baseline, BASELINE);
 });
 
-// The gate arms itself through a bare --baseline. If the path injection is ever
-// missed, the old shape returned baseline:null, which downstream reads as "no
+// The gate arms itself through a bare --baseline. If the path is ever not
+// supplied, the old shape returned baseline:null, which downstream reads as "no
 // baseline requested" — the gate silently stops gating. Same class as the
 // --dry-run bug: a missing signal that looks like the safe outcome.
 test('a bare --baseline with no configured path fails loudly, never silently ungates', () => {
@@ -80,23 +91,34 @@ test('a bare --baseline with no configured path fails loudly, never silently ung
   assert.match(seen[0].message, /no default baseline path/i);
 });
 
-test('value-bearing flags are accepted by prefix, not rejected as unknown', () => {
+// Passing the path per-call rather than through a module singleton means two
+// consumers cannot clobber each other's configuration.
+test('the baseline path is per-call, so calls cannot clobber each other', () => {
+  const a = parseArgs(['--baseline'], { defaultBaselinePath: '/a.json' });
+  const b = parseArgs(['--baseline'], { defaultBaselinePath: '/b.json' });
+  assert.equal(a.baseline, '/a.json');
+  assert.equal(b.baseline, '/b.json');
+});
+
+test('--baseline=<path> overrides without needing any injected default', () => {
   const { seen, onUnknown } = capture();
-  const args = parseArgs(['--show=the-sound-of-music-2027', '--baseline=/tmp/b.json'], { onUnknown });
+  const args = parseArgs(['--baseline=/tmp/b.json'], { onUnknown });
   assert.equal(seen.length, 0);
-  assert.equal(args.show, 'the-sound-of-music-2027');
   assert.equal(args.baseline, '/tmp/b.json');
 });
 
-test('--help is not treated as an unknown flag on its way past', () => {
+test('--show= is accepted by prefix, not rejected as unknown', () => {
   const { seen, onUnknown } = capture();
-  parseArgs(['--help'], { onUnknown });
+  const args = parseArgs(['--show=the-sound-of-music-2027'], { onUnknown });
   assert.equal(seen.length, 0);
-  assert.equal(isKnownFlag('--help'), true);
+  assert.equal(args.show, 'the-sound-of-music-2027');
 });
 
-test('a bare non-flag argument is not mistaken for a flag', () => {
+test('--help and --help=1 both pass, matching cli-help.js hasHelpFlag', () => {
   const { seen, onUnknown } = capture();
-  parseArgs(['somefile.json'], { onUnknown });
+  parseArgs(['--help'], { onUnknown });
+  parseArgs(['--help=1'], { onUnknown });
   assert.equal(seen.length, 0);
+  assert.equal(isKnownFlag('--help'), true);
+  assert.equal(isKnownFlag('--help=1'), true);
 });
