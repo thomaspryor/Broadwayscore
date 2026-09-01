@@ -201,7 +201,18 @@ function compareShow(show, parsed, playbillUrl) {
  * so a provider outage during one push could permanently demote a brand-new
  * stub to the deferred, non-blocking tail (BRO-2701 review finding 1).
  */
-const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable', 'serp-error']);
+const TRANSIENT_PRIOR_RESULTS = new Set([
+  'fetch-error', 'short-response', 'infra-unavailable', 'serp-error',
+  // Not strictly transient, but it belongs in the same bucket: it yields no
+  // verdict and a later run plausibly resolves it (BRO-2701 review 5, finding
+  // 3). SERP DID return playbill.com/production/ URLs and scorePlaybillUrl
+  // rejected every one — title-slug mismatch, cross-market reject, tour/regional
+  // reject. Lumping that in with 'no-playbill-url' meant a brand-new stub with
+  // a wrong or typo'd title, which is one of the defects this audit exists to
+  // catch, marked itself definitively "has no Playbill page" and exempted
+  // itself from the gate after a single run.
+  'playbill-url-rejected',
+]);
 
 /**
  * Results that answer the question this audit asks. Everything else — a fetch
@@ -277,10 +288,16 @@ function serpQueryCompleted(results) {
  * a provider outage would be demoted out of the gate permanently. A lookup
  * failure is transient (tier 2) and gets rechecked early instead.
  */
-function missingUrlOutcome({ anyQueryCompleted }) {
-  return anyQueryCompleted
-    ? { source: 'none', result: 'no-playbill-url' }
-    : { source: 'serp-error', result: 'serp-error' };
+function missingUrlOutcome({ anyQueryCompleted, sawRejectedCandidates }) {
+  if (!anyQueryCompleted) return { source: 'serp-error', result: 'serp-error' };
+  // Playbill pages WERE returned and every one was rejected. Not evidence the
+  // show has no page; usually evidence its title is wrong. Non-definitive, so a
+  // show that has never had a real verdict keeps blocking the gate — while a
+  // show with a prior definitive answer keeps that answer and does NOT start
+  // failing the build, which is what stops this from reintroducing a permanent
+  // red across the 33 legacy no-page rows (BRO-2701 review 5, finding 3).
+  if (sawRejectedCandidates) return { source: 'candidates-rejected', result: 'playbill-url-rejected' };
+  return { source: 'none', result: 'no-playbill-url' };
 }
 
 /**
@@ -308,10 +325,22 @@ function priorRowOf(previousResultById, showId) {
 function provisionalPriorityTier(showId, previousResultById) {
   const row = priorRowOf(previousResultById, showId);
   if (row === undefined || row.result === undefined) return 0;
+  // THE INVARIANT (BRO-2701 review 5, finding 1): anything that blocks the gate
+  // must be checked first. Ordering read `result` while blocking read
+  // `lastDefinitiveResult`, and those two deliberately diverge — so a show
+  // whose last real verdict was 'mismatch' but whose latest run returned
+  // 'no-playbill-url' sorted DEAD LAST (tier 4) while still failing the build,
+  // with no path to ever clearing it because only a fresh look can supersede a
+  // mismatch and it was never reached. That is this card's original
+  // permanent-red failure mode, rebuilt out of the fix for it.
+  // Asserted exhaustively by 'INVARIANT: anything that blocks is checked first'.
+  if (blocksOnDeferral(showId, previousResultById)) {
+    return row.lastDefinitiveResult === undefined && row.result === undefined ? 0 : 1;
+  }
   if (row.result === 'no-playbill-url') return 4;
   if (row.result === 'match') return 3;
   if (TRANSIENT_PRIOR_RESULTS.has(row.result)) return 2;
-  return 1; // 'mismatch', and any unknown or future result value — fail safe, recheck early.
+  return 1;
 }
 
 /**
@@ -429,7 +458,25 @@ function showFingerprint(show) {
   // (BRO-2701 review 3, finding 4). Rows written before this have a 3-part
   // fingerprint that no longer equals the 4-part one, so they are treated as
   // stale and re-checked once, which is the correct conservative direction.
-  return [show.venue || '', show.openingDate || '', show.closingDate || '', String(!!show.isRevival)].join('|');
+  // Every field below CHANGES THE VERDICT, which is the whole test for
+  // membership (BRO-2701 review 5, finding 2):
+  //   venue/openingDate/closingDate — compared directly by compareShow.
+  //   isRevival — compareShow checks it against Playbill's Original/Revival tag.
+  //   title — decides WHICH Playbill page the verdict was even about, via the
+  //     SERP queries and scorePlaybillUrl's title-slug hard filter. A title
+  //     correction leaves a stale row asserting a match against a different
+  //     production's page.
+  //   priorRuns — findCorroboratingPriorRun moves real venue/date mismatches
+  //     into explainedByPriorRun, SUPPRESSING them. Editing or deleting an
+  //     entry changes the verdict without touching any compared field, so a
+  //     stale 'match' would certify a suppression nobody re-verified.
+  const priorRuns = Array.isArray(show.priorRuns)
+    ? show.priorRuns.map((r) => [r.venue || '', r.openingDate || '', r.closingDate || ''].join('~')).join(';')
+    : '';
+  return [
+    show.venue || '', show.openingDate || '', show.closingDate || '',
+    String(!!show.isRevival), show.title || '', priorRuns,
+  ].join('|');
 }
 
 /**

@@ -249,6 +249,7 @@ async function findPlaybillUrl(show, log) {
   // one push could demote a brand-new stub with a wrong venue out of the gate
   // for good. Track whether any query actually completed.
   let anyQueryCompleted = false;
+  let sawRejectedCandidates = false;
   for (const q of queries) {
     let results = null;
     try { results = await serpQuery(q, { nbResults: 10 }); }
@@ -269,6 +270,11 @@ async function findPlaybillUrl(show, log) {
     if (candidates.length) {
       return { url: candidates[0].url, source: 'serp', score: candidates[0].score };
     }
+    // SERP answered with Playbill production URLs and scorePlaybillUrl rejected
+    // every one. That is NOT "this show has no Playbill page" — it is usually a
+    // wrong or typo'd title in shows.json, which is a defect this audit exists
+    // to catch (BRO-2701 review 5, finding 3).
+    if (results.some(r => r.url && r.url.includes('playbill.com/production/'))) sawRejectedCandidates = true;
     await sleep(800); // rate limit between SERP fallbacks
   }
   // Every query threw: we have no evidence about this show either way, and
@@ -279,7 +285,7 @@ async function findPlaybillUrl(show, log) {
   // any third failure source added here later would silently default to
   // 'no-playbill-url' — the permanently-parked tier this refactor exists to
   // keep shows out of.
-  return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
+  return { url: null, ...missingUrlOutcome({ anyQueryCompleted, sawRejectedCandidates }) };
 }
 
 function parseTitleVenueYear(html) {
@@ -498,7 +504,7 @@ async function main() {
 
   const mismatches = results.filter(r => r.result === 'mismatch');
   const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
-  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error'].includes(r.result));
+  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error', 'playbill-url-rejected'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
   const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
@@ -541,7 +547,17 @@ async function main() {
   // — and since tiers 2-4 no longer block on deferral, this warning is the only
   // signal a genuinely degraded run leaves behind, so a permanent false
   // positive on it would be worse than not having it.
+  const rejected = results.filter(r => r.result === 'playbill-url-rejected');
+  if (rejected.length) {
+    // Playbill pages were found and every candidate was rejected — usually a
+    // wrong or typo'd title in shows.json. Non-failing (a show with a prior
+    // definitive verdict keeps it), but it must not be silent: it is a probable
+    // data defect and nothing else reports it (BRO-2701 review 5, finding 3).
+    console.log(`::warning::validate-show-venue: ${rejected.length} show(s) had Playbill pages returned but every candidate rejected (likely a wrong title in shows.json, NOT a missing Playbill page): ${rejected.map(r => r.id).join(', ')}`);
+  }
   const definitive = matches.length + mismatches.length;
+  // Only 'no-playbill-url' is genuinely unanswerable. 'playbill-url-rejected'
+  // COULD have produced a verdict, so it counts against coverage.
   const noPage = results.filter(r => r.result === 'no-playbill-url').length;
   const answerable = results.length - noPage;
   if (answerable > 0 && definitive === 0) {
