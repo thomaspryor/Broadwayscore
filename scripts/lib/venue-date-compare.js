@@ -193,22 +193,86 @@ function compareShow(show, parsed, playbillUrl) {
  * treated as new. Stable within each bucket — does not reorder shows that
  * land in the same priority tier.
  */
-/** Prior results that produced no evidence because the environment, not the data, was at fault. */
-const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable']);
+/**
+ * Prior results that produced no evidence because the environment, not the
+ * data, was at fault. 'serp-error' is the important one: findPlaybillUrl()
+ * used to collapse "every SERP query threw" into the same 'no-playbill-url'
+ * it returns for "we looked and this show genuinely has no Playbill page",
+ * so a provider outage during one push could permanently demote a brand-new
+ * stub to the deferred, non-blocking tail (BRO-2701 review finding 1).
+ */
+const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra-unavailable', 'serp-error']);
+
+/**
+ * What a failed Playbill-URL lookup MEANS — the single decision behind both
+ * findPlaybillUrl()'s `source` and validateOne()'s `result`, so the two can
+ * never drift apart (CLAUDE.md rule 15).
+ *
+ * BRO-2701 review finding 1: "we looked and this show has no Playbill page"
+ * and "every SERP query threw, so we never looked" are completely different
+ * claims, and they used to be stamped identically as 'no-playbill-url'. That
+ * matters because 'no-playbill-url' is the lowest-priority, never-blocking
+ * tier: a brand-new stub with a wrong venue that happened to be checked during
+ * a provider outage would be demoted out of the gate permanently. A lookup
+ * failure is transient (tier 2) and gets rechecked early instead.
+ */
+function missingUrlOutcome({ anyQueryCompleted }) {
+  return anyQueryCompleted
+    ? { source: 'none', result: 'no-playbill-url' }
+    : { source: 'serp-error', result: 'serp-error' };
+}
+
+/**
+ * Read a prior ledger entry. Accepts either shape: a bare result string (the
+ * historical `id -> 'match'` map) or a `{ result, checkedAt }` row, so callers
+ * that only have result strings keep working while the ones that pass full
+ * rows also get intra-tier rotation.
+ */
+function priorRowOf(previousResultById, showId) {
+  const prev = previousResultById ? previousResultById[showId] : undefined;
+  if (prev === undefined || prev === null) return undefined;
+  if (typeof prev === 'string') return { result: prev, checkedAt: undefined };
+  return { result: prev.result, checkedAt: prev.checkedAt };
+}
 
 function provisionalPriorityTier(showId, previousResultById) {
-  const prev = previousResultById ? previousResultById[showId] : undefined;
-  if (prev === undefined) return 0;
-  if (prev === 'no-playbill-url') return 4;
-  if (prev === 'match') return 3;
-  if (TRANSIENT_PRIOR_RESULTS.has(prev)) return 2;
+  const row = priorRowOf(previousResultById, showId);
+  if (row === undefined || row.result === undefined) return 0;
+  if (row.result === 'no-playbill-url') return 4;
+  if (row.result === 'match') return 3;
+  if (TRANSIENT_PRIOR_RESULTS.has(row.result)) return 2;
   return 1; // 'mismatch', and any unknown or future result value — fail safe, recheck early.
 }
 
+/**
+ * Within a tier, check the least-recently-checked show first.
+ *
+ * BRO-2701 review finding 2: tier alone is not enough. A tier-4 show that gets
+ * checked is re-stamped with the SAME result, so its tier never changes; with a
+ * stable index tiebreak the budget reached the same first few shows on every
+ * push and the rest of the tail — precisely the shows that have never once been
+ * validated — were deferred forever, and the "Persist venue/date audit rotation
+ * state" step had no rotation to persist. Ordering by `checkedAt` makes the
+ * persisted ledger actually rotate: a checked show goes to the back of its own
+ * tier next run. Rows with no `checkedAt` (written before this existed) sort
+ * first, so the existing backlog drains before anything is re-swept.
+ */
+const NEVER_CHECKED = '';
+
 function orderProvisionalTargets(shows, previousResultById) {
   return shows
-    .map((show, index) => ({ show, index, tier: provisionalPriorityTier(show.id, previousResultById) }))
-    .sort((a, b) => (a.tier - b.tier) || (a.index - b.index))
+    .map((show, index) => {
+      const row = priorRowOf(previousResultById, show.id);
+      return {
+        show,
+        index,
+        tier: provisionalPriorityTier(show.id, previousResultById),
+        checkedAt: (row && row.checkedAt) || NEVER_CHECKED,
+      };
+    })
+    .sort((a, b) => (a.tier - b.tier)
+      || (a.checkedAt < b.checkedAt ? -1 : a.checkedAt > b.checkedAt ? 1 : 0)
+      || (a.index - b.index))
     .map((entry) => entry.show);
 }
 
@@ -298,23 +362,57 @@ function buildAuditResults({ freshResults, previousResultsById, currentProvision
   // --candidates-file synthesises ids for shows with no shows.json entry at all
   // (discover-ob-historical.js pre-promotion); those must not land in a tracked
   // file that CI reads as its provisional coverage state.
+  // `checkedAt` is what makes the persisted ledger ROTATE: orderProvisionalTargets
+  // sends a just-checked show to the back of its own tier next run, so a
+  // budget-capped run works through its tail instead of re-checking the same
+  // head forever (BRO-2701 review finding 2).
+  const checkedAt = new Date().toISOString();
   const fresh = (freshResults || [])
     .filter((r) => currentProvisionalIds.has(r.id))
     .map((r) => {
       const fingerprint = showFingerprint(byId[r.id]);
-      return fingerprint === undefined ? r : { ...r, fingerprint };
+      return fingerprint === undefined ? { ...r, checkedAt } : { ...r, fingerprint, checkedAt };
     });
-  // A carried-forward row asserts "this show was clean last time we looked".
+  // A carried-forward row asserts "this is what we found last time we looked".
   // If the entry has been edited since, that assertion is about values that no
-  // longer exist, and letting it stay tier-2 would let CI certify a clean pass
+  // longer exist, and letting it keep its non-blocking tier (3 for previously-
+  // clean, 4 for previously-no-Playbill-page) would let CI certify a clean pass
   // over a venue/date nobody ever checked. Rows written before fingerprints
   // existed have none — carry those (a stale-but-real ledger still beats
   // treating every show as new, which is the BRO-2696 red itself).
-  return mergeCarriedForwardResults(fresh, previousResultsById, currentProvisionalIds, (row) => {
-    const now = showFingerprint(byId[row.id]);
-    if (row.fingerprint === undefined || now === undefined) return true;
-    return row.fingerprint === now;
-  });
+  return mergeCarriedForwardResults(
+    fresh, previousResultsById, currentProvisionalIds, (row) => rowIsStillAboutShow(row, byId),
+  );
+}
+
+/**
+ * Build the map that drives TIERING (orderProvisionalTargets /
+ * deferredHighPriorityShows) from the same prior rows buildAuditResults writes,
+ * applying the SAME fingerprint-staleness rule.
+ *
+ * BRO-2701 review finding 3: the caller used to map every prior row to its
+ * `.result` unconditionally, while buildAuditResults dropped fingerprint-stale
+ * rows at write time. A show whose venue had just been rewritten therefore kept
+ * its old non-blocking tier for the tiering decision, got deferred, did not
+ * block the gate, and was only caught on the NEXT run — one run late, in the
+ * exact "a bad venue edit landed" case this audit exists to catch. Dropping the
+ * row here instead makes such a show tier 0 (new), so it sorts first and its
+ * deferral still fails closed.
+ */
+function buildPriorTierMap({ previousResultsById, showsById }) {
+  const byId = showsById || {};
+  const out = {};
+  for (const [id, row] of Object.entries(previousResultsById || {})) {
+    if (!rowIsStillAboutShow(row, byId)) continue;
+    out[id] = { result: row.result, checkedAt: row.checkedAt };
+  }
+  return out;
+}
+
+function rowIsStillAboutShow(row, byId) {
+  const now = showFingerprint(byId[row.id]);
+  if (row.fingerprint === undefined || now === undefined) return true;
+  return row.fingerprint === now;
 }
 
 module.exports = {
@@ -328,5 +426,8 @@ module.exports = {
   deferredHighPriorityShows,
   mergeCarriedForwardResults,
   buildAuditResults,
+  buildPriorTierMap,
+  missingUrlOutcome,
+  TRANSIENT_PRIOR_RESULTS,
   showFingerprint,
 };
