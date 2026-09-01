@@ -650,10 +650,18 @@ const _wrongArticleCleared = (d) =>
 //       pre-opening guard re-flags and DOES call invalidateWrongProductionAutoClear;
 //       the breadcrumb was gone in memory and back on disk after the call.
 // End state: wrongProduction=true alongside a live wrongProductionAutoCleared — the
-// self-contradictory clear the BRO-185 acceptance test fails on. Because the drain
-// (audit-self-contradictory-clears.js --fix-safe) is what stamps the retraction, the
-// remedy was arming its own recurrence: 707 files corpus-wide carried the stamp and
-// had the exemption permanently disabled for the fields it named.
+// self-contradictory clear the BRO-185 acceptance test fails on.
+//
+// The drain (audit-self-contradictory-clears.js --fix-safe) is what stamps the retraction,
+// which made it tempting to conclude the remedy was arming its own recurrence. It was not,
+// and that conclusion was wrong: probing a NEVER-DRAINED record through the same cycle
+// showed it breaks too, failing the FIRST conjunct instead (no stamp at all, so nothing
+// marks the delete as deliberate). Both populations produce the identical
+// preserved=[wrongProductionAutoCleared, wrongProductionAutoClearedAt]. The drain is not
+// causal; it is simply ineffective, and the red files were all drained ones only because
+// being contradictory is what got them drained. Hence the second half of this fix, the
+// self-recording retraction in invalidateWrongProductionAutoClear — liveness alone would
+// have fixed only the stamped population while looking like a complete fix.
 //
 // Adding the liveness check is strictly NARROWING. It never authorizes a loss the
 // membership test did not already authorize; it only stops the stamp speaking for a
@@ -664,6 +672,7 @@ const _wrongArticleCleared = (d) =>
 // bypass — one retraction of wrongProductionAutoCleared would thereafter authorize
 // losing crossOutletVerified to any unrelated bad write. An ordinary run that never
 // wrote the stamp still gets full data-loss protection.
+//
 // FRESHNESS (BRO-2708, second residual). Liveness alone still let a STALE stamp speak:
 // on the 707 already-stamped files, once some writer legitimately re-created
 // wrongProductionAutoCleared, a later payload that merely OMITTED the field would be read
