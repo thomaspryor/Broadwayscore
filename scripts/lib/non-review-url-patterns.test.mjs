@@ -136,6 +136,7 @@ test('NAMED_NON_REVIEW_URL_PATTERNS: every entry has a host regex and a reason s
 
 // ── task #1073: classifyReviewUrl — THE canonical candidate gate ──────────────
 const { classifyReviewUrl, hostOf, registrableHost } = require('./non-review-url-patterns.js');
+const domainFilters = require('./domain-filters.js');
 const { isRoundupUrl } = require('./review-guards.js');
 const { isProfileUrl } = require('./review-normalization.js');
 
@@ -235,4 +236,38 @@ test('hostOf/registrableHost: canonical host normalization moved intact', () => 
   assert.equal(hostOf('https://amp.theguardian.com/stage/x'), 'theguardian.com');
   assert.equal(hostOf('https://www.thestage.co.uk/x'), 'thestage.co.uk');
   assert.equal(registrableHost('somepub.substack.com'), 'somepub.substack.com');
+});
+
+// GENERALIZED DRIFT GUARD (2026-09-01). domain-filters.js gates the WRITE path;
+// classifyReviewUrl() gates the DISCOVERY path (audit-show-review-gap.js,
+// show-score-discover.js). A host blocked by one and not the other is a phantom
+// gap: the census reports it as an uncovered review while the write path throws
+// it away, and the harvester keeps re-fetching it.
+//
+// This is not hypothetical. BRO-2712 mirrored southbank.london and
+// spincyclenyc.com by hand with a comment explaining why. The very next host
+// added to that file (vocal.media) was NOT mirrored, and /code-review had to
+// catch it. A per-host convention that relies on remembering fails on the next
+// host; asserting the SETS agree fails the moment anyone forgets.
+test('parity: every write-path blocked domain is also blocked on the discovery path', () => {
+  const { VENUE_DOMAINS, PR_FIRM_DOMAINS, UGC_PLATFORM_DOMAINS } = domainFilters;
+  const sets = {
+    VENUE_DOMAINS,
+    PR_FIRM_DOMAINS,
+    UGC_PLATFORM_DOMAINS,
+  };
+  const missed = [];
+  for (const [setName, set] of Object.entries(sets)) {
+    for (const domain of set) {
+      const verdict = classifyReviewUrl(`https://${domain}/some/path`);
+      if (verdict.ok !== false) missed.push(`${setName}: ${domain}`);
+    }
+  }
+  assert.deepEqual(
+    missed,
+    [],
+    'these hosts are blocked on the write path but NOT by classifyReviewUrl, so a SERP '
+      + 'census will report them as uncovered review gaps — mirror them into '
+      + 'NAMED_NON_REVIEW_URL_PATTERNS',
+  );
 });

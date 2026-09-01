@@ -224,6 +224,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // Same venue family as southbank.london, different domain — see the
   // matching comment in domain-filters.js's VENUE_DOMAINS.
   { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
+  // UGC publishing platform — mirrored from domain-filters.js UGC_PLATFORM_DOMAINS
+  // for the SAME reason the two venue/PR hosts above are mirrored: the write-path
+  // gate alone is not enough. classifyReviewUrl() is what the discovery side reads
+  // (audit-show-review-gap.js, show-score-discover.js), so without this entry a SERP
+  // census reports vocal.media as an UNCOVERED review gap while the write path
+  // silently discards it — a phantom gap, and the harvester keeps re-fetching it.
+  // Caught by /code-review on 2026-09-01: ticketline.co.uk was safe only because
+  // classifyReviewUrl borrows TICKET_DOMAINS, and nothing borrows UGC_PLATFORM_DOMAINS.
+  { host: /(^|\.)vocal\.media$/, reason: 'ugc-platform' },
 ];
 
 /**
