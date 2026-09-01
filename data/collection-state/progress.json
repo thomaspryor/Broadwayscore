@@ -50,7 +50,8 @@
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "just-in-time-2025/newyorker--conde-nast.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -452,7 +453,16 @@
     "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
     "the-producers-west-end-2025/thestage--paul-vale.json",
     "burlesque-west-end-2026/broadwayworld--unknown.json",
-    "burlesque-west-end-2026/frontmezzjunkies--unknown.json"
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
+    "murder-she-didnt-write-west-end-2025/a-youngish-perspective--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -498,7 +508,8 @@
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -514,7 +525,8 @@
     "brightdata": [
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json"
@@ -529,7 +541,7 @@
     ]
   },
   "startTime": "2026-08-31T17:41:06.981Z",
-  "lastProcessed": "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+  "lastProcessed": "murder-she-didnt-write-west-end-2025/a-youngish-perspective--unknown.json",
   "log": [
     {
       "t": "2026-08-31T17:43:36.154Z",
@@ -708,6 +720,17 @@
       "event": "bb-session",
       "session": "1ae8006b",
       "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-09-01T00:11:27.620Z",
+      "event": "bb-session",
+      "session": "976b9fd6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-01T00:11:28.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
