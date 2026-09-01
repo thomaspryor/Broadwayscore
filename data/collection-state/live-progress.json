@@ -1,137 +1,18 @@
 {
-  "updatedAt": "2026-09-01T12:55:10.449Z",
-  "processed": 80,
-  "failed": 1390,
-  "successRate": "5.4%",
+  "updatedAt": "2026-09-01T13:18:16.525Z",
+  "processed": 3,
+  "failed": 7,
+  "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 10,
-    "directCookies": 3,
-    "scrapingbee": 11,
-    "brightdata": 7,
-    "archiveToday": 1,
-    "archive": 16
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 0
   },
   "browserbaseSessions": 0,
-  "recentActivity": [
-    {
-      "t": "2026-09-01T01:13:01.880Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-01T01:13:55.173Z",
-      "event": "bb-session",
-      "session": "73f0e082",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-09-01T01:14:16.007Z",
-      "event": "bb-session",
-      "session": "772d9781",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-01T01:18:09.445Z",
-      "event": "bb-session",
-      "session": "9b946c05",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-01T01:18:10.471Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-01T02:44:18.258Z",
-      "event": "bb-session",
-      "session": "5da7656d",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T02:44:37.538Z",
-      "event": "bb-session",
-      "session": "b3d3ffe4",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T03:57:48.183Z",
-      "event": "bb-session",
-      "session": "8ef3109e",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T03:58:06.421Z",
-      "event": "bb-session",
-      "session": "49bc876e",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T04:03:53.288Z",
-      "event": "bb-session",
-      "session": "08931589",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
-    {
-      "t": "2026-09-01T05:10:12.435Z",
-      "event": "bb-session",
-      "session": "e9cc5f61",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T05:10:32.200Z",
-      "event": "bb-session",
-      "session": "7d91d73f",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-01T05:15:21.445Z",
-      "event": "bb-session",
-      "session": "51d0dcd7",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-09-01T05:15:31.048Z",
-      "event": "bb-session",
-      "session": "1cf22ed6",
-      "url": "https://www.theatremonkey.com/show/anansi-the-spider-2/"
-    },
-    {
-      "t": "2026-09-01T10:02:03.479Z",
-      "event": "bb-session",
-      "session": "4c03d7a1",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-09-01T10:16:53.410Z",
-      "event": "bb-session",
-      "session": "fdb7b564",
-      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
-    },
-    {
-      "t": "2026-09-01T10:28:20.741Z",
-      "event": "bb-session",
-      "session": "358374bc",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-01T10:28:41.189Z",
-      "event": "bb-session",
-      "session": "75747eb4",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-01T11:37:23.430Z",
-      "event": "bb-session",
-      "session": "d932c202",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-01T11:37:44.253Z",
-      "event": "bb-session",
-      "session": "446b8c3e",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    }
-  ]
+  "recentActivity": []
 }
