@@ -762,7 +762,17 @@
     "burlesque-west-end-2026/north-west-end--greg-holstead.json",
     "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
     "burlesque-west-end-2026/people--unknown.json",
-    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -814,7 +824,8 @@
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -847,7 +858,7 @@
     ]
   },
   "startTime": "2026-08-31T17:41:06.981Z",
-  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
   "log": [
     {
       "t": "2026-08-31T17:43:36.154Z",
@@ -1095,6 +1106,17 @@
       "event": "bb-session",
       "session": "772d9781",
       "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-09-01T01:18:09.445Z",
+      "event": "bb-session",
+      "session": "9b946c05",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-01T01:18:10.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
