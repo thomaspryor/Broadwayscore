@@ -2494,3 +2494,8 @@
 [2026-09-01 04:19:00] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
 [2026-09-01 04:19:01] DIGEST[ios]: 17 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
 [2026-09-01 04:19:01] DONE  removed=0 kept=39 skipped=20 freed=0KB (dry_run=0)
+[2026-09-01 05:19:01] ALERT: disk free 13GB below floor 20GB — running emergency cleanup
+[2026-09-01 05:19:02] CLEAN  xcrun simctl delete unavailable — done
+[2026-09-01 05:19:02] DIGEST: disk-floor cleanup freed 0KB — free space 13GB -> 13GB (floor 20GB)
+[2026-09-01 05:19:04] SKIP  [web] main — detached HEAD, leaving alone
+[2026-09-01 05:19:07] SKIP  [web] 1543-watchdog-killswitch-staleness — merged but worktree dirty; not forcing

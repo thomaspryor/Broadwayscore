@@ -184,5 +184,17 @@
       }
     ],
     "queuedAt": "2026-09-01T02:32:35.289Z"
+  },
+  {
+    "conditionKey": "dispatch-flow-dead",
+    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
+    "description": "Only 7 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 205). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T04:49:27.996Z"
   }
 ]
