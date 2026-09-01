@@ -3968,7 +3968,22 @@ jobs:
     # in_progress 20-25+ min (2026-07-14). push-with-retry.sh now self-bounds every
     # network op (~4 min budget), so the normal validation pass (~15 min) has ample
     # headroom; 30 min guarantees a conclusion even if a step wedges.
-    timeout-minutes: 30
+    #
+    # 30 -> 37 (BRO-2706, 2026-09-01): the "Persist venue/date audit rotation state
+    # (BRO-2695)" step below is ALSO push-with-retry.sh-bound (240s default
+    # PUSH_DEADLINE_SEC + up to one more GIT_NET_TIMEOUT_SEC=90s in-flight-attempt
+    # overshoot, since the deadline is only checked BETWEEN retries) and did not
+    # exist when 30min was picked. Run 33466229004 (2026-09-01) actually hit the old
+    # 30min ceiling and reported CANCELLED, not FAILED -- which Test Summary reads as
+    # success, hiding a real Data Validation problem underneath it. Deliberately did
+    # NOT shrink the persist step's push budget instead (a lower PUSH_DEADLINE_SEC
+    # would cut its retry count and its Git Data API fallback threshold -- every
+    # OTHER PUSH_DEADLINE_SEC override in this repo raises the 240s default for
+    # high-churn callers, never lowers it, and task #1891 already found deadline and
+    # MAX_RETRIES have to move together, not the deadline alone). 37min keeps
+    # tests/unit/data-validation-job-budget.test.mjs's 15%-headroom ratchet green
+    # with real margin (not a hairline pass) without touching retry semantics.
+    timeout-minutes: 37
     steps:
       - name: Checkout
         uses: actions/checkout@v5
