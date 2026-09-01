@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-18T14:27:39.197Z",
+  "generatedAt": "2026-09-01T01:55:37.113Z",
   "summary": {
-    "totalOutletsInReviews": 700,
-    "inRegistry": 699,
-    "missing": 1,
-    "unused": 464
+    "totalOutletsInReviews": 719,
+    "inRegistry": 716,
+    "missing": 3,
+    "unused": 447
   },
   "missingOutlets": [
     {
@@ -14,6 +14,22 @@
         "falsettos-1992"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/falsettos-1992/the-washington-post--peter-marks.json"
+    },
+    {
+      "outletId": "ticketline",
+      "count": 1,
+      "shows": [
+        "horrible-histories-barmy-britain-the-best-bits-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json"
+    },
+    {
+      "outletId": "theweereview",
+      "count": 1,
+      "shows": [
+        "spellbound-off-broadway-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/spellbound-off-broadway-2026/theweereview--unknown.json"
     }
   ],
   "unusedInRegistry": [
@@ -130,6 +146,10 @@
       "displayName": "National Post"
     },
     {
+      "outletId": "reviews",
+      "displayName": "Reviews"
+    },
+    {
       "outletId": "almeidacouk",
       "displayName": "Almeida Theatre"
     },
@@ -220,10 +240,6 @@
     {
       "outletId": "screen-daily",
       "displayName": "Screen Daily"
-    },
-    {
-      "outletId": "nerds-of-color",
-      "displayName": "The Nerds of Color"
     },
     {
       "outletId": "geeks-of-color",
@@ -328,10 +344,6 @@
     {
       "outletId": "awards-watch",
       "displayName": "Awards Watch"
-    },
-    {
-      "outletId": "weliveentertainment",
-      "displayName": "We Live Entertainment"
     },
     {
       "outletId": "upi",
@@ -502,10 +514,6 @@
       "displayName": "Click on Detroit"
     },
     {
-      "outletId": "dallas-voice",
-      "displayName": "Dallas Voice"
-    },
-    {
       "outletId": "fort-worth-star-telegram",
       "displayName": "Fort Worth Star Telegram"
     },
@@ -558,10 +566,6 @@
       "displayName": "The Austin Chronicle"
     },
     {
-      "outletId": "the-buffalo-news",
-      "displayName": "The Buffalo News"
-    },
-    {
       "outletId": "the-daily-gazette",
       "displayName": "The Daily Gazette"
     },
@@ -584,10 +588,6 @@
     {
       "outletId": "south-pasadenan",
       "displayName": "South Pasadenan"
-    },
-    {
-      "outletId": "globe-and-mail",
-      "displayName": "Globe and Mail"
     },
     {
       "outletId": "daily-pilot",
@@ -620,14 +620,6 @@
     {
       "outletId": "tapintonet",
       "displayName": "Tapintonet"
-    },
-    {
-      "outletId": "news-herald",
-      "displayName": "News Herald"
-    },
-    {
-      "outletId": "the-only-critic",
-      "displayName": "The Only Critic"
     },
     {
       "outletId": "gmanetwork",
@@ -858,10 +850,6 @@
       "displayName": "But Rent Controlled"
     },
     {
-      "outletId": "newyorkcitytheatre",
-      "displayName": "Newyorkcitytheatre"
-    },
-    {
       "outletId": "bergen-report",
       "displayName": "Bergen Report"
     },
@@ -1018,16 +1006,8 @@
       "displayName": "The Artery"
     },
     {
-      "outletId": "inquirer",
-      "displayName": "Inquirer"
-    },
-    {
       "outletId": "stark-insider",
       "displayName": "Stark Insider"
-    },
-    {
-      "outletId": "the-examiner",
-      "displayName": "The Examiner"
     },
     {
       "outletId": "neontommy",
@@ -1142,10 +1122,6 @@
       "displayName": "Interaksyon.com"
     },
     {
-      "outletId": "the-philippine-daily-inquirer",
-      "displayName": "The Philippine Daily Inquirer"
-    },
-    {
       "outletId": "rnal",
       "displayName": "Rnal"
     },
@@ -1156,10 +1132,6 @@
     {
       "outletId": "nj-arts-maven",
       "displayName": "Nj Arts Maven"
-    },
-    {
-      "outletId": "out-in-jersey",
-      "displayName": "Out In Jersey"
     },
     {
       "outletId": "suzee-behind-the-scenes",
@@ -1180,10 +1152,6 @@
     {
       "outletId": "boca-magazine",
       "displayName": "Boca Magazine"
-    },
-    {
-      "outletId": "daily-cardinal",
-      "displayName": "Daily Cardinal"
     },
     {
       "outletId": "downtown-news",
@@ -1358,20 +1326,12 @@
       "displayName": "Rough Draft Atlanta"
     },
     {
-      "outletId": "the-hartford-courant",
-      "displayName": "The Hartford Courant"
-    },
-    {
       "outletId": "the-journal-record",
       "displayName": "The Journal Record"
     },
     {
       "outletId": "this-is-cny",
       "displayName": "This Is Cny"
-    },
-    {
-      "outletId": "trib-live",
-      "displayName": "Trib Live"
     },
     {
       "outletId": "we-are-green-bay",
@@ -1384,6 +1344,10 @@
     {
       "outletId": "the-lost-and-avatar",
       "displayName": "The Lost And Avatar"
+    },
+    {
+      "outletId": "eater",
+      "displayName": "Eater"
     },
     {
       "outletId": "san-diego-story",
@@ -1470,10 +1434,6 @@
       "displayName": "The Daily Cardinal"
     },
     {
-      "outletId": "the-jewish-news",
-      "displayName": "The Jewish News"
-    },
-    {
       "outletId": "the-tufts-daily",
       "displayName": "The Tufts Daily"
     },
@@ -1540,6 +1500,10 @@
     {
       "outletId": "liverpool-echo",
       "displayName": "Liverpool Echo"
+    },
+    {
+      "outletId": "manchester-evening-news",
+      "displayName": "Manchester Evening News"
     },
     {
       "outletId": "the-journal",
@@ -1614,24 +1578,12 @@
       "displayName": "Rex Reed"
     },
     {
-      "outletId": "interested-bystander",
-      "displayName": "Interested Bystander"
-    },
-    {
       "outletId": "lighting-sound-america",
       "displayName": "Lighting Sound America"
     },
     {
-      "outletId": "the-la-times",
-      "displayName": "The La Times"
-    },
-    {
       "outletId": "amnewyorkcom",
       "displayName": "Amnewyorkcom"
-    },
-    {
-      "outletId": "theaternewsonline",
-      "displayName": "Theaternewsonline"
     },
     {
       "outletId": "roy-berko-info",
@@ -1672,30 +1624,6 @@
     {
       "outletId": "rob-ashford",
       "displayName": "Rob Ashford"
-    },
-    {
-      "outletId": "jonathan-kalb",
-      "displayName": "Jonathan Kalb"
-    },
-    {
-      "outletId": "adrian-dim-anlig",
-      "displayName": "Adrian Dim Anlig"
-    },
-    {
-      "outletId": "frequent-business-traveler",
-      "displayName": "Frequent Business Traveler"
-    },
-    {
-      "outletId": "tim-teeman",
-      "displayName": "Tim Teeman"
-    },
-    {
-      "outletId": "ethan-kanfer",
-      "displayName": "Ethan Kanfer"
-    },
-    {
-      "outletId": "the-chicago-sun-times",
-      "displayName": "The Chicago Sun Times"
     },
     {
       "outletId": "nbc-los-angeles",
@@ -1764,10 +1692,6 @@
     {
       "outletId": "west-sussex-gazette",
       "displayName": "West Sussex Gazette"
-    },
-    {
-      "outletId": "buy-tickets-from-the-theatre-here",
-      "displayName": "Buy Tickets From The Theatre Here"
     },
     {
       "outletId": "holly-omahony",
@@ -1846,10 +1770,6 @@
       "displayName": "Boston.com"
     },
     {
-      "outletId": "east-midlands-theatre",
-      "displayName": "East Midlands Theatre"
-    },
-    {
       "outletId": "lsbo",
       "displayName": "Lsbo"
     },
@@ -1872,6 +1792,34 @@
     {
       "outletId": "the-daily-texan",
       "displayName": "The Daily Texan"
+    },
+    {
+      "outletId": "staybook",
+      "displayName": "Staybook"
+    },
+    {
+      "outletId": "48hills",
+      "displayName": "48 Hills"
+    },
+    {
+      "outletId": "piedmontexedra",
+      "displayName": "Piedmont Exedra"
+    },
+    {
+      "outletId": "thedigestonline",
+      "displayName": "The Digest (NJ)"
+    },
+    {
+      "outletId": "kqed",
+      "displayName": "KQED"
+    },
+    {
+      "outletId": "localnewsmatters",
+      "displayName": "Local News Matters"
+    },
+    {
+      "outletId": "thenorthernecho",
+      "displayName": "Thenorthernecho"
     }
   ],
   "suggestedAdditions": [
@@ -1884,6 +1832,24 @@
         "the washington post"
       ],
       "domain": "washingtonpost.com"
+    },
+    {
+      "outletId": "ticketline",
+      "displayName": "ticketline",
+      "tier": 3,
+      "aliases": [
+        "ticketline"
+      ],
+      "domain": "ticketline.co.uk"
+    },
+    {
+      "outletId": "theweereview",
+      "displayName": "theweereview",
+      "tier": 3,
+      "aliases": [
+        "theweereview"
+      ],
+      "domain": "theweereview.com"
     }
   ],
   "displayNameMismatches": [
@@ -2205,6 +2171,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/is-this-a-room-2021/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/it-shoulda-been-you-2015/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jagged-little-pill-2019/amny--matt-windman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-2012/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-2025/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-charles-iii-2015/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/amny--matt-windman.json",
@@ -2431,6 +2398,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/thewrap--thom-geier.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/misery-2015/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/miss-saigon-1991/thewrap--robert-hofler.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/miss-saigon-2017/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mother-russia-off-broadway-2026/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mothers-and-sons-2014/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mr-saturday-night-2022/thewrap--robert-hofler.json",
@@ -2663,7 +2631,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/charlie-and-the-chocolate-factory-2017/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/china-doll-2015/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/dames-at-sea-2015/nydailynews--joe-dziemianowicz.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dont-dress-for-dinner-2012/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/end-of-the-rainbow-2012/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/evita-1979/nydailynews--joe-dziemianowicz.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/evita-2012/nydailynews--joe-dziemianowicz.json",
@@ -2951,7 +2918,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-piano-lesson-2022/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-2017/hollywood-reporter--frank-scheck.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-play-that-goes-wrong-off-broadway-2019/hollywood-reporter--frank-scheck.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/hollywood-reporter--chris-jones.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-price-2017/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-real-thing-2000/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-realistic-joneses-2014/hollywood-reporter--david-rooney.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/hollywood-reporter--david-rooney.json",
@@ -3320,7 +3287,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/present-laughter-2017/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/promises-promises-2010/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/proof-2026/wsj--charles-isherwood.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-2013/wsj--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/romeo-juliet-2024/wsj--charles-isherwood.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/sexual-misconduct-of-the-middle-classes-off-broadway-2026/wsj--charles-isherwood.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/smash-2025/wsj--charles-isherwood.json",
@@ -3625,6 +3591,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-heiress-2012/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-maids-off-broadway-2026/timeout--david-cote.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-nance-2013/timeout--david-cote.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-terms-of-my-surrender-2017/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/this-is-our-youth-2014/timeout--david-cote.json"
       ]
@@ -3993,7 +3960,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/cleansed-off-west-end-2026/london-theatre--holly-omahony.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/dracula-west-end-2025/london-theatre--olivia-rook.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/grace-pervades-west-end-2026/london-theatre--julia-rank.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/kinky-boots-the-musical-west-end-2026/london-theatre--theo-bosanquet.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mass-west-end-2026/london-theatre--holly-omahony.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/london-theatre--marianka-swain.json",
@@ -4205,6 +4171,76 @@
       ]
     },
     {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "outletId": "daily-mail",
+      "currentDisplayName": "Mail On Sunday",
+      "expectedDisplayName": "Daily Mail",
+      "canonicalId": "daily-mail",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/a-view-from-the-bridge-off-broadway-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/daily-mail--holly-williams.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/broken-glass-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/burlesque-west-end-2026/daily-mail--mark-cook.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/evening-all-afternoon-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/hamlet-off-broadway-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/daily-mail--mark-cook.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/much-ado-about-nothing-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-west-end-2024/daily-mail--neil-armstrong.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-off-broadway-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/starlight-express-west-end-2024/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/daily-mail--mark-cook.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/teeth-n-smiles-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/daily-mail--mark-cook.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-holy-rosenbergs-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/daily-mail--neil-armstrong.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/waiting-for-godot-2025/daily-mail--robert-gore-langton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/daily-mail--robert-gore-langton.json"
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-off-broadway-2026",
+      "outletId": "times-uk",
+      "currentDisplayName": "The Sunday Times",
+      "expectedDisplayName": "The Times (UK)",
+      "canonicalId": "times-uk",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/a-view-from-the-bridge-off-broadway-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/dracula-west-end-2025/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/les-liaisons-dangereuses-west-end-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-west-end-2021/times-uk--quentin-letts.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/times-uk--quentin-letts.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/much-ado-about-nothing-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/times-uk--unknown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/present-laughter-2017/times-uk--quentin-letts.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/times-uk--patricia-nicol.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-phantom-of-the-opera-west-end-1986/times-uk--quentin-letts.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/times-uk--dominic-maxwell.json"
+      ]
+    },
+    {
       "showId": "abba-voyage-off-west-end-2026",
       "outletId": "financialtimes",
       "currentDisplayName": "The Financial Times",
@@ -4402,6 +4438,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-peewee-herman-show-2010/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-scottsboro-boys-2010/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/venus-in-fur-2011/amny--matt-windman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/war-horse-2011/amny--matt-windman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
       ]
     },
@@ -4435,45 +4472,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/daily-mail--patrick-marmion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/cleansed-off-west-end-2026/daily-mail--patrick-marmion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/daily-mail--patrick-marmion.json"
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "outletId": "daily-mail",
-      "currentDisplayName": "Mail On Sunday",
-      "expectedDisplayName": "Daily Mail",
-      "canonicalId": "daily-mail",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/all-my-sons-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/daily-mail--holly-williams.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/broken-glass-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/burlesque-west-end-2026/daily-mail--mark-cook.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/evening-all-afternoon-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hamlet-off-broadway-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/into-the-woods-west-end-2025/daily-mail--mark-cook.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-west-end-2024/daily-mail--neil-armstrong.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/starlight-express-west-end-2024/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/daily-mail--mark-cook.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/teeth-n-smiles-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/daily-mail--mark-cook.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-holy-rosenbergs-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/titanique-west-end-2024/daily-mail--neil-armstrong.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/waiting-for-godot-2025/daily-mail--robert-gore-langton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/daily-mail--robert-gore-langton.json"
       ]
     },
     {
@@ -4593,6 +4591,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/man-and-boy-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/man-and-boy-west-end-2026/times-uk--tim-bano.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-playboy-of-the-western-world-west-end-2025/times-uk--clive-davis.json"
@@ -5066,32 +5065,6 @@
       ]
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "outletId": "times-uk",
-      "currentDisplayName": "The Sunday Times",
-      "expectedDisplayName": "The Times (UK)",
-      "canonicalId": "times-uk",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dracula-west-end-2025/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/high-noon-west-end-2025/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/les-liaisons-dangereuses-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/les-miserables-west-end-2021/times-uk--quentin-letts.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/times-uk--quentin-letts.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/times-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/present-laughter-2017/times-uk--quentin-letts.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/sunset-boulevard-2024/times-uk--patricia-nicol.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-phantom-of-the-opera-west-end-1986/times-uk--quentin-letts.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/times-uk--dominic-maxwell.json"
-      ]
-    },
-    {
       "showId": "and-juliet-2022",
       "outletId": "dtli",
       "currentDisplayName": "did-they-like-it",
@@ -5240,43 +5213,6 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "outletId": "times-uk",
-      "currentDisplayName": "The Times",
-      "expectedDisplayName": "The Times (UK)",
-      "canonicalId": "times-uk",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/christmas-carol-goes-wrong-west-end-2026/times-uk--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/evita-west-end-2025/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/times-uk--susie-goldsbrough.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/times-uk--ann-treneman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-2012/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/marie-and-rosetta-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/matilda-the-musical-west-end-2021/times-uk--libby-purves.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/times-uk--will-pavia.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/one-man-two-guvnors-2012/times-uk--libby-purves.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/othello-2025/times-uk--susie-goldsbrough.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/times-uk--nancy-durrant.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/times-uk--jesse-green.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-tempest-globe-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/times-uk--donald-hutera.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/times-uk--clive-davis.json"
-      ]
-    },
-    {
       "showId": "avenue-q-2003",
       "outletId": "the-kalamazoo-gazette",
       "currentDisplayName": "The Kalamazoo Gazette",
@@ -5304,6 +5240,16 @@
       "canonicalId": "curtain-call-reviews",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/avenue-q-west-end-2026/curtain-call-reviews--unknown.json"
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "outletId": "reviewsgate",
+      "currentDisplayName": "Reviews",
+      "expectedDisplayName": "ReviewsGate",
+      "canonicalId": "reviewsgate",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/avenue-q-west-end-2026/reviewsgate--william-russell.json"
       ]
     },
     {
@@ -5422,6 +5368,42 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/thestage--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/man-and-boy-west-end-2026/thestage--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-rat-trap-west-end-2026/thestage--dave-fargnoli.json"
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "times-uk",
+      "currentDisplayName": "The Times",
+      "expectedDisplayName": "The Times (UK)",
+      "canonicalId": "times-uk",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-west-end-2021/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/christmas-carol-goes-wrong-west-end-2026/times-uk--unknown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/evita-west-end-2025/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/times-uk--susie-goldsbrough.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/times-uk--ann-treneman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-2012/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--dominic-maxwell.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/marie-and-rosetta-west-end-2026/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/matilda-the-musical-west-end-2021/times-uk--libby-purves.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/times-uk--will-pavia.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/one-man-two-guvnors-2012/times-uk--libby-purves.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/othello-2025/times-uk--susie-goldsbrough.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/times-uk--nancy-durrant.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/summerfolk-west-end-2026/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/times-uk--jesse-green.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-tempest-globe-west-end-2026/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-unlikely-pilgrimage-of-harold-fry-west-end-2026/times-uk--clive-davis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/times-uk--donald-hutera.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/woman-in-mind-west-end-2025/times-uk--clive-davis.json"
       ]
     },
     {
@@ -5638,8 +5620,17 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/john-proctor-is-the-villain-west-end-2026/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/little-shop-of-horrors-off-broadway-2019/timeout--adam-feldman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/now-you-see-me-live-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/timeout--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/venus-in-fur-2011/timeout--david-cote.json"
+      ]
+    },
+    {
+      "showId": "benevolent-off-broadway-2026",
+      "outletId": "lavenderafterdark",
+      "currentDisplayName": "lavenderafterdark",
+      "expectedDisplayName": "Lavenderafterdark",
+      "canonicalId": "lavenderafterdark",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/benevolent-off-broadway-2026/lavenderafterdark--unknown.json"
       ]
     },
     {
@@ -5676,6 +5667,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/catch-me-if-you-can-2011/philadelphia-inquirer--howard-shapiro.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/chaplin-2012/philadelphia-inquirer--howard-shapiro.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/choir-boy-2019/philadelphia-inquirer--toby-zinman.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/clybourne-park-2012/philadelphia-inquirer--howard-shapiro.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/death-of-a-salesman-2012/philadelphia-inquirer--howard-shapiro.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/end-of-the-rainbow-2012/philadelphia-inquirer--howard-shapiro.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/ghetto-klown-2011/philadelphia-inquirer--howard-shapiro.json",
@@ -5709,6 +5701,16 @@
       "canonicalId": "hot-pepper-theater",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/book-of-mormon-2011/hot-pepper-theater--koryna-flores.json"
+      ]
+    },
+    {
+      "showId": "boop-2025",
+      "outletId": "new-city-stage",
+      "currentDisplayName": "newcitystage",
+      "expectedDisplayName": "New City Stage",
+      "canonicalId": "new-city-stage",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/boop-2025/new-city-stage--brian-hieggelke.json"
       ]
     },
     {
@@ -6072,7 +6074,8 @@
       "expectedDisplayName": "WhatsOnStage",
       "canonicalId": "whatsonstage",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/care-west-end-2026/whatsonstage--sarah-crompton.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/care-west-end-2026/whatsonstage--sarah-crompton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/grace-pervades-west-end-2026/whatsonstage--sarah-crompton.json"
       ]
     },
     {
@@ -6157,6 +6160,20 @@
       "canonicalId": "albany-times-union",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/children-of-a-lesser-god-2018/albany-times-union--steve-barnes.json"
+      ]
+    },
+    {
+      "showId": "children-of-a-lesser-god-2018",
+      "outletId": "diandra-reviews-it-all",
+      "currentDisplayName": "diandra-reviews-it-all",
+      "expectedDisplayName": "Diandra Reviews It All",
+      "canonicalId": "diandra-reviews-it-all",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/children-of-a-lesser-god-2018/diandra-reviews-it-all--diandra-rivera.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/latin-history-for-morons-2017/diandra-reviews-it-all--diandra-rivera.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/saint-joan-2018/diandra-reviews-it-all--diandra-rivera.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-nap-2018/diandra-reviews-it-all--diandra-rivera.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-prom-2018/diandra-reviews-it-all--diandra-rivera.json"
       ]
     },
     {
@@ -6481,6 +6498,16 @@
       ]
     },
     {
+      "showId": "electra-persona-west-end-2026",
+      "outletId": "timboatswain",
+      "currentDisplayName": "timboatswain",
+      "expectedDisplayName": "Timboatswain",
+      "canonicalId": "timboatswain",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/electra-persona-west-end-2026/timboatswain--tim-boatswain.json"
+      ]
+    },
+    {
       "showId": "elephant-shoes-regional-2026",
       "outletId": "musical-theatre-report",
       "currentDisplayName": "The Musical Theatre Report",
@@ -6578,6 +6605,16 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/paddington-the-musical-west-end-2025/city-am--adam-bloodworth.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/under-the-shadow-off-west-end-2026/city-am--steve-dineen.json"
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "outletId": "curtaincallbway",
+      "currentDisplayName": "curtaincallbway",
+      "expectedDisplayName": "Curtain Call",
+      "canonicalId": "curtaincallbway",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/evita-west-end-2025/curtaincallbway--helen.json"
       ]
     },
     {
@@ -6774,16 +6811,6 @@
       ]
     },
     {
-      "showId": "fully-committed-2016",
-      "outletId": "eater",
-      "currentDisplayName": "eater",
-      "expectedDisplayName": "Eater",
-      "canonicalId": "eater",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/fully-committed-2016/eater--joshua-david-stein.json"
-      ]
-    },
-    {
       "showId": "fun-home-2015",
       "outletId": "everything-theatre",
       "currentDisplayName": "Everything Theatre  (UK)",
@@ -6931,7 +6958,8 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/broadwayworld--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/broadwayworld--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--laura-jones.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/broadwayworld--cindy-marcolina.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/broadwayworld--cindy-marcolina.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
       ]
     },
     {
@@ -7084,7 +7112,8 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/telegraph--dominic-cavendish.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-crucible-2016/telegraph--matt-wolf.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-crucible-2016/telegraph--matt-wolf.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-producers-west-end-2025/telegraph--dominic-cavendish.json"
       ]
     },
     {
@@ -7169,6 +7198,16 @@
       "canonicalId": "londontheatrehub",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/londontheatrehub--london-theatre-hub-editorial-team.json"
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "outletId": "notesfromrowh",
+      "currentDisplayName": "notesfromrowh",
+      "expectedDisplayName": "Notes From Row H",
+      "canonicalId": "notesfromrowh",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/notesfromrowh--helena6.json"
       ]
     },
     {
@@ -7265,7 +7304,7 @@
       "canonicalId": "the-sun",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/hercules-west-end-2025/the-sun--dominic-maxwell.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-producers-west-end-2025/the-sun--dominic-maxwell.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/the-sun--dominic-maxwell.json"
       ]
     },
     {
@@ -7488,6 +7527,46 @@
       ]
     },
     {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "outletId": "cineramafilm",
+      "currentDisplayName": "cineramafilm",
+      "expectedDisplayName": "Cineramafilm",
+      "canonicalId": "cineramafilm",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/jeeves-takes-charge-west-end-2026/cineramafilm--jane-jung.json"
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "outletId": "ground",
+      "currentDisplayName": "ground",
+      "expectedDisplayName": "Ground",
+      "canonicalId": "ground",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "outletId": "jackstage",
+      "currentDisplayName": "jackstage",
+      "expectedDisplayName": "Jackstage",
+      "canonicalId": "jackstage",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/jeeves-takes-charge-west-end-2026/jackstage--emma-knott.json"
+      ]
+    },
+    {
+      "showId": "jeeves-takes-charge-west-end-2026",
+      "outletId": "songsbehindthemusic",
+      "currentDisplayName": "songsbehindthemusic",
+      "expectedDisplayName": "Songsbehindthemusic",
+      "canonicalId": "songsbehindthemusic",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/jeeves-takes-charge-west-end-2026/songsbehindthemusic--unknown.json"
+      ]
+    },
+    {
       "showId": "jersey-boys-2005",
       "outletId": "ap",
       "currentDisplayName": "AP",
@@ -7661,19 +7740,6 @@
       "canonicalId": "dctheatrescene",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/latin-history-for-morons-2017/dctheatrescene--jonathan-mandell.json"
-      ]
-    },
-    {
-      "showId": "latin-history-for-morons-2017",
-      "outletId": "diandra-reviews-it-all",
-      "currentDisplayName": "diandra-reviews-it-all",
-      "expectedDisplayName": "Diandra Reviews It All",
-      "canonicalId": "diandra-reviews-it-all",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/latin-history-for-morons-2017/diandra-reviews-it-all--diandra-rivera.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/saint-joan-2018/diandra-reviews-it-all--diandra-rivera.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-nap-2018/diandra-reviews-it-all--diandra-rivera.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-prom-2018/diandra-reviews-it-all--diandra-rivera.json"
       ]
     },
     {
@@ -7958,6 +8024,16 @@
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
+      "outletId": "jewishnews",
+      "currentDisplayName": "The Jewish News",
+      "expectedDisplayName": "Jewishnews",
+      "canonicalId": "jewishnews",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-the-musical-west-end-2021/jewishnews--ronelle-grier.json"
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
       "outletId": "the-sun",
       "currentDisplayName": "The Sunday Express",
       "expectedDisplayName": "The Sun",
@@ -8056,6 +8132,16 @@
       "canonicalId": "firstnightmagazine",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/now-you-see-me-live-west-end-2026/firstnightmagazine--unknown.json"
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "outletId": "jacktheladmag",
+      "currentDisplayName": "jacktheladmag",
+      "expectedDisplayName": "Jacktheladmag",
+      "canonicalId": "jacktheladmag",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/now-you-see-me-live-west-end-2026/jacktheladmag--simon-webb.json"
       ]
     },
     {
@@ -8182,6 +8268,26 @@
       "canonicalId": "ew",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/other-desert-cities-2011/ew--thom-geier.json"
+      ]
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "outletId": "goldderby",
+      "currentDisplayName": "goldderby",
+      "expectedDisplayName": "Goldderby",
+      "canonicalId": "goldderby",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-2026/goldderby--ethan-alter.json"
+      ]
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "outletId": "thedaviddesk2",
+      "currentDisplayName": "thedaviddesk2",
+      "expectedDisplayName": "Thedaviddesk2",
+      "canonicalId": "thedaviddesk2",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/paranormal-activity-2026/thedaviddesk2--davidsheward.json"
       ]
     },
     {
@@ -8976,6 +9082,16 @@
       ]
     },
     {
+      "showId": "the-great-gatsby-2024",
+      "outletId": "trib-live",
+      "currentDisplayName": "triblive",
+      "expectedDisplayName": "TribLIVE",
+      "canonicalId": "trib-live",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/trib-live--alexis-papalia.json"
+      ]
+    },
+    {
       "showId": "the-heidi-chronicles-2015",
       "outletId": "njcom",
       "currentDisplayName": "The Star-Ledger",
@@ -9013,6 +9129,16 @@
       "canonicalId": "thesetheatrethoughts",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json"
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "outletId": "unknownkentandsussex",
+      "currentDisplayName": "unknownkentandsussex",
+      "expectedDisplayName": "Unknown Kent & Sussex",
+      "canonicalId": "unknownkentandsussex",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-importance-of-being-oscar-off-west-end-2026/unknownkentandsussex--maria-bligh.json"
       ]
     },
     {
@@ -9183,16 +9309,6 @@
       "canonicalId": "british-theatre",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/british-theatre--british-theatre-guide.json"
-      ]
-    },
-    {
-      "showId": "the-mousetrap-west-end-2021",
-      "outletId": "reviews",
-      "currentDisplayName": "reviewsgate",
-      "expectedDisplayName": "Reviews",
-      "canonicalId": "reviews",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-mousetrap-west-end-2021/reviews--william-russell.json"
       ]
     },
     {
@@ -9569,12 +9685,12 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "outletId": "observer",
+      "outletId": "theater-news-online",
       "currentDisplayName": "David Cote",
-      "expectedDisplayName": "Observer",
-      "canonicalId": "observer",
+      "expectedDisplayName": "Theater News Online",
+      "canonicalId": "theater-news-online",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/to-kill-a-mockingbird-west-end-2026/observer--david-cote.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json"
       ]
     },
     {
@@ -9790,5 +9906,25 @@
       "count": 1
     }
   ],
-  "registryNormalizationConflicts": []
+  "registryNormalizationConflicts": [],
+  "junkEntriesInRegistry": [
+    {
+      "outletId": "lets-note",
+      "matchedOn": "id"
+    },
+    {
+      "outletId": "lets-go-to-the-theater",
+      "matchedOn": "id"
+    }
+  ],
+  "skippedJunkOutlets": [
+    {
+      "outletId": "buy-tickets",
+      "count": 1
+    },
+    {
+      "outletId": "unknown",
+      "count": 1
+    }
+  ]
 }

@@ -18,6 +18,7 @@ scripts/audit-regex-patterns.test.mjs
 scripts/audit-review-contamination.test.mjs
 scripts/audit-review-texts-test-yml-coverage.test.mjs
 scripts/audit-run-budget-coverage.test.mjs
+scripts/audit-self-contradictory-clear-drained.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-standing-coverage.test.mjs
@@ -79,6 +80,7 @@ scripts/lib/dmarc-analysis.test.mjs
 scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
+scripts/lib/image-trigger-guard.test.mjs
 scripts/lib/ip-cidr.test.mjs
 scripts/lib/ledger-write-isolation.test.mjs
 scripts/lib/linear-delegation-health.test.mjs
