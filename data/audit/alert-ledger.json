@@ -1459,12 +1459,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-08-31T18:34:19.419Z",
+      "lastSeen": "2026-09-01T15:53:23.104Z",
       "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1580,12 +1580,11 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-08-31T18:34:19.416Z",
-      "lastNotifiedAt": "2026-08-25T12:35:43.960Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-01T15:53:22.219Z",
+      "lastNotifiedAt": "2026-09-01T15:53:22.219Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2303",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-2303"
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1764,12 +1763,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-08-31T18:34:19.420Z",
+      "lastSeen": "2026-09-01T15:53:23.105Z",
       "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2530",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -1784,7 +1783,7 @@
       "silentRefires": 1
     },
     "cron-health:Test Suite": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Test Suite",
@@ -1793,7 +1792,8 @@
       "lastNotifiedAt": "2026-08-29T16:01:08.770Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-01T15:53:23.186Z"
     },
     "cron-health-chronic:Weekly Video Reviews": {
       "status": "resolved",
@@ -1868,7 +1868,7 @@
       "linearIdentifier": null
     },
     "cron-health-chronic:Test Suite": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Test Suite",
       "firstSeen": "2026-08-30T15:50:24.907Z",
@@ -1877,7 +1877,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2537",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-01T15:53:23.188Z"
     },
     "backstop:benevolent-off-broadway-2026/talkinbroadway--unknown.json": {
       "status": "open",
@@ -1939,11 +1940,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Process Feedback Submissions",
       "firstSeen": "2026-08-31T18:34:19.421Z",
-      "lastSeen": "2026-08-31T18:34:19.421Z",
+      "lastSeen": "2026-09-01T15:53:23.106Z",
       "lastNotifiedAt": "2026-08-31T18:34:19.421Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2657"
+      "linearIdentifier": "BRO-2657",
+      "silentRefires": 1
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served": {
       "status": "open",
