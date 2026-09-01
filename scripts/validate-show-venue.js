@@ -34,12 +34,18 @@
  *                          whatever was completed so far (never mid-show —
  *                          checked between shows, not via a process-level
  *                          kill, so the audit file always reflects a clean
- *                          boundary). Targets are ordered new/previously-
- *                          broken-first (orderProvisionalTargets in
- *                          lib/venue-date-compare.js) so a tight budget never
+ *                          boundary). Targets are ordered by how much evidence
+ *                          checking them can produce (orderProvisionalTargets
+ *                          in lib/venue-date-compare.js): new first, then a
+ *                          known mismatch, then a transient error, then
+ *                          previously-clean, and last the shows that have no
+ *                          Playbill page at all. Only the first two can fail
+ *                          the gate when deferred, so a tight budget never
  *                          starves the incident-relevant class this audit
  *                          exists to catch, regardless of total provisional
- *                          count.
+ *                          count. Within a tier the least-recently-checked
+ *                          show goes first, so the deferred tail rotates
+ *                          instead of being starved forever (BRO-2701).
  *
  * Usage:
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
@@ -60,7 +66,8 @@ const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
   DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
-  orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults,
+  orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults, buildPriorTierMap,
+  missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -235,11 +242,22 @@ async function findPlaybillUrl(show, log) {
     `site:playbill.com/production "${show.title}" ${venueWord}`,
     `site:playbill.com production "${show.title}" ${market}`,
   ];
+  // BRO-2701 review finding 1: this loop used to fall through to the same
+  // `source: 'none'` whether we LOOKED and found no Playbill page, or never
+  // managed to look at all. Both were then stamped 'no-playbill-url', which is
+  // a permanently-deferred, never-blocking tier — so a provider outage during
+  // one push could demote a brand-new stub with a wrong venue out of the gate
+  // for good. Track whether any query actually completed.
+  let anyQueryCompleted = false;
   for (const q of queries) {
     let results = null;
     try { results = await serpQuery(q, { nbResults: 10 }); }
     catch (e) { log(`    serp error: ${e.message}`); continue; }
-    if (!results || !results.length) continue;
+    // null (not []) is how serpQuery reports "no provider answered" — a thrown
+    // error is NOT the outage path. See serpQueryCompleted's docblock.
+    if (!serpQueryCompleted(results)) { log(`    serp unavailable (no provider answered)`); continue; }
+    anyQueryCompleted = true;
+    if (!results.length) continue;
     const candidates = results
       .filter(r => r.url && r.url.includes('playbill.com/production/'))
       .map(r => {
@@ -253,7 +271,15 @@ async function findPlaybillUrl(show, log) {
     }
     await sleep(800); // rate limit between SERP fallbacks
   }
-  return { url: null, source: 'none' };
+  // Every query threw: we have no evidence about this show either way, and
+  // saying so is what keeps it in the retry-worthy tier instead of the
+  // "this show has no Playbill page" one.
+  // Return the WHOLE outcome, not just `.source` (BRO-2701 review 3, finding 3).
+  // validateOne used to rebuild the decision with `source !== 'serp-error'`, so
+  // any third failure source added here later would silently default to
+  // 'no-playbill-url' — the permanently-parked tier this refactor exists to
+  // keep shows out of.
+  return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
 }
 
 function parseTitleVenueYear(html) {
@@ -297,10 +323,13 @@ async function validateOne(show, log) {
   log(`\n${show.id}  "${show.title}"  (${show.venue})`);
   const urlResult = await findPlaybillUrl(show, log);
   if (!urlResult.url) {
-    log(`  ⚠ no Playbill URL found`);
+    const outcome = { source: urlResult.source, result: urlResult.result };
+    log(outcome.result === 'serp-error'
+      ? `  ⚠ Playbill lookup FAILED (every SERP query errored) — not evidence of a missing page`
+      : `  ⚠ no Playbill URL found`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'no-playbill-url', urlSource: urlResult.source,
+      result: outcome.result, urlSource: urlResult.source,
       mismatches: [], playbillUrl: null, parsed: null,
     };
   }
@@ -401,9 +430,14 @@ async function main() {
   const showsById = mismatchedUniverse
     ? null
     : Object.fromEntries(provisionalShows.map(s => [s.id, s]));
-  const previousResultOnlyById = Object.fromEntries(
-    Object.entries(previousResultsById).map(([id, row]) => [id, row.result]),
-  );
+  // BRO-2701 review finding 3: this used to map EVERY prior row to its
+  // `.result` unconditionally, while buildAuditResults drops fingerprint-stale
+  // rows at write time. A show whose venue/dates were edited since its last
+  // check therefore kept its old non-blocking tier, got deferred, did not block
+  // the gate, and was only caught a run later — in exactly the "a bad venue
+  // edit landed" case. buildPriorTierMap applies the same staleness rule, so
+  // such a show tiers as new: checked first, and blocking if deferred.
+  const previousResultOnlyById = buildPriorTierMap({ previousResultsById, showsById });
   if (candidatesFile) {
     // Validate candidates from an external JSON file (no shows.json entry
     // required). Used by discover-ob-historical.js to surface authoritative
@@ -445,11 +479,13 @@ async function main() {
   }
   const deferredShows = targets.slice(results.length);
   const deferred = deferredShows.length;
-  // orderProvisionalTargets puts new/still-broken shows first, so under
-  // normal load a budget cut only defers the lowest-priority (previously-
-  // clean) tail — but if new/broken volume itself exceeds the budget in one
-  // run, some of THOSE land in the deferred tail too. That's the exact
-  // incident class this audit exists to catch, so it must not exit clean.
+  // orderProvisionalTargets puts new shows and known mismatches first, so
+  // under normal load a budget cut only defers shows whose outcome could not
+  // fail this step anyway (previously-clean, transient errors, and shows with
+  // no Playbill page — see BRO-2701) — but if new/mismatch volume itself
+  // exceeds the budget in one run, some of THOSE land in the deferred tail
+  // too. That's the exact incident class this audit exists to catch, so it
+  // must not exit clean.
   const deferredHighPriority = deferredHighPriorityShows(deferredShows, previousResultOnlyById);
   if (deferred > 0) {
     // Loud, not silent — a partial run must not look identical to full
@@ -462,7 +498,7 @@ async function main() {
 
   const mismatches = results.filter(r => r.result === 'mismatch');
   const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
-  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url'].includes(r.result));
+  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
   const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
@@ -483,6 +519,37 @@ async function main() {
     if (infraUnavailable.length === results.length) {
       console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were infra-unavailable this run — ZERO real venue/date validation coverage, not a clean pass`);
     }
+  }
+  // Same rule, the other way a run can validate nothing (BRO-2701 second
+  // review, finding 2). Since tiers 2-4 no longer populate deferredHighPriority,
+  // a run where EVERY show came back unresolved — a SERP outage, or a local run
+  // with no SERP keys — exits 0 with nothing to say, which is indistinguishable
+  // from a clean pass and is exactly the state that then gets committed as the
+  // rotation ledger. Loud, still non-failing (unresolved is not a mismatch).
+  // Gate on what was actually LEARNED, not on one bucket filling up (BRO-2701
+  // review 3, finding 2). The first cut required errors.length === results.length,
+  // but infra-unavailable rows are deliberately excluded from `errors`, so a run
+  // of 30 serp-error + 35 infra-unavailable tripped neither guard despite
+  // validating nothing — and 60 serp-error + 5 match was silent too. Since
+  // tiers 2-4 no longer block on deferral, this is the ONLY signal a degraded
+  // run leaves behind, so it must fire on degradation, not just on totality.
+  // The denominator is only the shows that COULD produce a verdict (BRO-2701
+  // review 4, finding 4). A 'no-playbill-url' show has no Playbill page, so it
+  // can never yield one by design, and roughly half the committed ledger is
+  // exactly that (32 match / 33 no-playbill-url today). Counting them made a
+  // perfectly healthy full sweep report 32/65 and warn "DEGRADED" on every run
+  // — and since tiers 2-4 no longer block on deferral, this warning is the only
+  // signal a genuinely degraded run leaves behind, so a permanent false
+  // positive on it would be worse than not having it.
+  const definitive = matches.length + mismatches.length;
+  // 'no-playbill-url' shows are genuinely unanswerable, so they are the only
+  // ones excluded from the denominator.
+  const noPage = results.filter(r => r.result === 'no-playbill-url').length;
+  const answerable = results.length - noPage;
+  if (answerable > 0 && definitive === 0) {
+    console.log(`::warning::validate-show-venue: NONE of the ${answerable} answerable target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);
+  } else if (answerable > 0 && definitive < answerable / 2) {
+    console.log(`::warning::validate-show-venue: only ${definitive}/${answerable} answerable target(s) produced a venue/date verdict this run — DEGRADED coverage, treat a green result with suspicion`);
   }
   if (mismatches.length) {
     console.log('Mismatches:');
