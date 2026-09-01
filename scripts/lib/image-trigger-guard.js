@@ -17,27 +17,40 @@
 const DEFAULT_THRESHOLD_HOURS = 24;
 
 /**
- * Normalizes a list of show ids into fetch-all-image-formats.yml
- * workflow_dispatch inputs. show_id only accepts one id per dispatch (no
- * comma-list support in fetch-show-images-auto.js's --show= filter), so
- * callers dispatch once per returned entry.
+ * Normalizes a list of show ids into a SINGLE fetch-all-image-formats.yml
+ * workflow_dispatch input, all ids joined comma-separated into one
+ * show_id (fetch-show-images-auto.js's --show= filter splits on comma).
+ *
+ * BRO-2672: this used to return one dispatch PER show id. The job's
+ * concurrency group (group: fetch-images, cancel-in-progress: false) only
+ * keeps ONE run queued at a time — GitHub Actions silently CANCELS every
+ * extra run fired into it rather than queueing them, so N per-show
+ * dispatches fired in a burst meant at most 2 of N ever ran (one running,
+ * one queued, the rest cancelled within seconds) while the dispatcher
+ * logged "success" for all N because the workflow_dispatch API call itself
+ * had been accepted. A single dispatch carrying every id can't be cancelled
+ * by its OWN siblings — this eliminates fan-out self-cancellation, which was
+ * the entire observed incident. It does NOT make the group contention-free:
+ * a concurrent dispatch from a different caller (a second promotion run, the
+ * twice-weekly cron, a manual dispatch) still shares the same single-slot
+ * group and can still cancel this batch or be cancelled by it. The job
+ * loops over the comma list internally.
  *
  * @param {Array<string>} showIds
  * @returns {Array<{workflow_id: string, inputs: {show_id: string, only_missing: string}}>}
+ *   Zero or one entry — never one per id.
  */
 function buildImageDispatchInputs(showIds) {
   const seen = new Set();
-  const dispatches = [];
   for (const raw of showIds || []) {
     const id = typeof raw === 'string' ? raw.trim() : '';
-    if (!id || seen.has(id)) continue;
-    seen.add(id);
-    dispatches.push({
-      workflow_id: 'fetch-all-image-formats.yml',
-      inputs: { show_id: id, only_missing: 'true' },
-    });
+    if (id) seen.add(id);
   }
-  return dispatches;
+  if (!seen.size) return [];
+  return [{
+    workflow_id: 'fetch-all-image-formats.yml',
+    inputs: { show_id: [...seen].join(','), only_missing: 'true' },
+  }];
 }
 
 /**

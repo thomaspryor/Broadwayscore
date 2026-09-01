@@ -14,6 +14,7 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   demoteStaleWrongShowPromotion,
+  isZeroScoreImpactFix,
 } = require('./flag-contradiction.js');
 const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
 
@@ -516,4 +517,81 @@ test('demoteStaleWrongShowPromotion is a no-op on null/mismatched contradiction'
   assert.equal(demoteStaleWrongShowPromotion(null, {}), false);
   assert.equal(demoteStaleWrongShowPromotion({}, null), false);
   assert.equal(demoteStaleWrongShowPromotion({ wrongShow: true }, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared' }), false);
+});
+
+// BRO-185: isZeroScoreImpactFix — the safety check --fix-safe uses to decide
+// which contradictions are safe to bulk-resolve. Checked against the SAME
+// canonical functions rebuild-all-reviews.js calls (isIncludableForRebuild,
+// getBestScore), not a re-derived proxy — see the function's own docstring
+// for why an earlier classifyContentTier-based draft was replaced.
+
+test('isZeroScoreImpactFix: true when the flag was never actually cleared (stale, non-fresh breadcrumb) — inclusion is unchanged either way', () => {
+  // No wrongProductionAutoClearedAt, so isFreshWrongProductionAutoClear is
+  // false: the flag was excluding this record before the retraction AND
+  // after it (retracting only removes the redundant breadcrumb).
+  const f = { wrongProduction: true, wrongProductionAutoCleared: true, fullText: 'x'.repeat(300) };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(isZeroScoreImpactFix(f, c), true);
+});
+
+test('isZeroScoreImpactFix: false when a FRESH auto-clear was the only thing keeping a scored review included — the exact 2026-08-14 incident shape', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: true,
+    wrongProductionAutoClearedAt: new Date().toISOString().split('T')[0],
+    fullText: 'a full review of the correct production',
+    assignedScore: 83,
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  // Before: the fresh clear overrides the flag, so this IS included with a score.
+  // Retracting it re-excludes the review entirely — an inclusion flip, not a no-op.
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix never mutates the file it is checking', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: true,
+    wrongProductionAutoClearedAt: new Date().toISOString().split('T')[0],
+    assignedScore: 83,
+    fullText: 'x'.repeat(300),
+  };
+  const before = JSON.stringify(f);
+  isZeroScoreImpactFix(f, detectAllSelfContradictoryClears(f)[0]);
+  assert.equal(JSON.stringify(f), before);
+});
+
+test('isZeroScoreImpactFix defers to demoteStaleWrongShowPromotion\'s strict predicate for the demote-flag pair', () => {
+  // Weak/medium-confidence CV promotion: the strict predicate declines, so the
+  // resolver is a no-op and isZeroScoreImpactFix must say "not safe" rather
+  // than crediting a fix that never actually applied.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(c.resolution, 'demote-flag');
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix: false for a demote-flag fix that would un-suppress a previously-excluded review — the BRO-168/#1022 mirror-image risk', () => {
+  // A codebase-aware review (BRO-185) flagged that the strict predicate
+  // succeeding is NOT the same thing as the fix being zero-impact: demoting
+  // wrongShow here moves a review from excluded to included, which is exactly
+  // the kind of silent scoring change this whole safety check exists to catch
+  // — regardless of whether hasLiveScoreSignal would have looked empty on the
+  // still-excluded pre-fix record (it plausibly always will, since an
+  // excluded review rarely has a score written to it yet).
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    fullText: 'a real review with substantial text about the correct show entirely'.repeat(5),
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(c.resolution, 'demote-flag');
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix returns false for null/undefined inputs', () => {
+  assert.equal(isZeroScoreImpactFix(null, {}), false);
+  assert.equal(isZeroScoreImpactFix({}, null), false);
 });
