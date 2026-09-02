@@ -225,9 +225,43 @@ describe('redaction placeholders are not submitter PII', () => {
   });
 
   test('other redaction spellings are covered', () => {
-    for (const s of ['ghp_REDACTED@github.com', 'redacted@example.com', 'token_Redacted@github.com']) {
+    for (const s of ['ghp_REDACTED@github.com', 'redacted@example.com', 'token_Redacted@github.com',
+      'github_pat_REDACTED@github.com', 'https://gho_REDACTED@github.com/owner/repo.git']) {
       assert.ok(isRedactedPlaceholder(s), `${s} should read as redacted`);
     }
+  });
+
+  test('the exemption is ANCHORED — a real address merely containing "redacted" still flags', () => {
+    // This is the bug an adversarial review found in the first version, which
+    // used an unanchored /redacted/i on the local part. Every one of these is a
+    // registerable address, and every one was silently suppressed. The failure
+    // mode is exactly what this lint exists for (#1064): an address sitting in
+    // a free-text description field, where the pii-key check cannot see it.
+    for (const s of [
+      'contact notredacted@gmail.com re: refund',
+      'unredacted@gmail.com',
+      'redacted.person@gmail.com',
+      'REDACTED-jane.doe@nytimes.com',
+      'tom.pryor.redacted@gmail.com', // dot separator: rejected on purpose
+      'redacted+tom.pryor@gmail.com',
+    ]) {
+      assert.equal(isRedactedPlaceholder(s), false, `${s} must NOT read as redacted`);
+      assert.ok(scanJsonValue({ description: s }).length > 0, `${s} must still be flagged`);
+    }
+  });
+
+  test('scanning a placeholder does not become quadratic on a long junk tail', () => {
+    // Guarding a real regression, not a hypothetical. EMAIL_RE's
+    // [A-Za-z0-9.-]+\.[A-Za-z]{2,} backtracks catastrophically on punctuation
+    // runs; the original single-match code escaped it only by short-circuiting.
+    // Scanning every match re-exposed it and this exact input measured 13,776 ms
+    // before firstRealEmail started skipping tokens with no '@'. Audit JSONL
+    // carries quoted scraper and issue text, so one row could stall the job.
+    const payload = `redacted@ex.com ${'a.-%+_'.repeat(30000)}`;
+    const started = Date.now();
+    assert.equal(scanJsonValue({ notes: payload }).length, 0, 'still suppressed');
+    const elapsed = Date.now() - started;
+    assert.ok(elapsed < 1000, `took ${elapsed}ms — catastrophic backtracking is back`);
   });
 
   test('asterisk-masked forms were never matched, so they need no carve-out', () => {

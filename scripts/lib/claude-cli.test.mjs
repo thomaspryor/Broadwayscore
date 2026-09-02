@@ -358,10 +358,20 @@ test('buildBudgetPreamble warns against run_in_background for needed results (BR
   const runner = await import('./bsc-runner.js');
   const { buildBudgetPreamble } = runner.default || runner;
   const preamble = buildBudgetPreamble(120 * 60 * 1000);
-  assert.match(preamble, /run_in_background/);
-  assert.match(
+
+  assert.match(preamble, /killed/, 'must state that background work dies at end of turn');
+  assert.match(preamble, /turn-sized batches/, 'must give the worker somewhere to go instead');
+
+  // The properties that actually matter are the two things it must NOT do, and
+  // they are what a future edit is most likely to break.
+  assert.doesNotMatch(
     preamble,
-    /work whose result you need/,
-    'must stay scoped -- an absolute ban would outlaw dev servers and fire-and-forget side effects'
+    /(do not|don't|never) use run_in_background/i,
+    'a blanket ban would push CI waits (wait-for-run.sh) into the foreground and burn the time budget'
+  );
+  assert.doesNotMatch(
+    preamble,
+    /\b\d{2,}\s+items\b/,
+    'no task-specific counts -- this text is prepended to every headless prompt regardless of task'
   );
 });
