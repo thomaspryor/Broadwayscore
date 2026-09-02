@@ -1,29 +1,12 @@
 {
-  "generatedAt": "2026-09-02T11:52:07.675Z",
+  "generatedAt": "2026-09-02T12:22:28.385Z",
   "summary": {
     "totalOutletsInReviews": 704,
-    "inRegistry": 702,
-    "missing": 2,
+    "inRegistry": 704,
+    "missing": 0,
     "unused": 465
   },
-  "missingOutlets": [
-    {
-      "outletId": "priceless",
-      "count": 1,
-      "shows": [
-        "a-month-in-the-country-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/priceless--unknown.json"
-    },
-    {
-      "outletId": "sueterryvoices",
-      "count": 1,
-      "shows": [
-        "a-month-in-the-country-west-end-2026"
-      ],
-      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
-    }
-  ],
+  "missingOutlets": [],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1886,26 +1869,7 @@
       "displayName": "Thenorthernecho"
     }
   ],
-  "suggestedAdditions": [
-    {
-      "outletId": "priceless",
-      "displayName": "priceless",
-      "tier": 3,
-      "aliases": [
-        "priceless"
-      ],
-      "domain": "priceless.com"
-    },
-    {
-      "outletId": "sueterryvoices",
-      "displayName": "sueterryvoices",
-      "tier": 3,
-      "aliases": [
-        "sueterryvoices"
-      ],
-      "domain": "sueterryvoices.com"
-    }
-  ],
+  "suggestedAdditions": [],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -3999,6 +3963,26 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--theo-bosanquet.json"
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "outletId": "priceless",
+      "currentDisplayName": "priceless",
+      "expectedDisplayName": "Priceless",
+      "canonicalId": "priceless",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/priceless--unknown.json"
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "outletId": "sueterryvoices",
+      "currentDisplayName": "sueterryvoices",
+      "expectedDisplayName": "Sueterryvoices",
+      "canonicalId": "sueterryvoices",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
       ]
     },
     {
@@ -7126,16 +7110,6 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/telegraph--diane-snyder.json"
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "outletId": "londontheatrehub",
-      "currentDisplayName": "londontheatrehub",
-      "expectedDisplayName": "Londontheatrehub",
-      "canonicalId": "londontheatrehub",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/londontheatrehub--london-theatre-hub-editorial-team.json"
       ]
     },
     {
