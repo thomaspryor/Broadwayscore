@@ -1459,12 +1459,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-01T15:53:23.104Z",
+      "lastSeen": "2026-09-02T15:46:03.244Z",
       "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1580,11 +1580,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-01T15:53:22.219Z",
+      "lastSeen": "2026-09-02T15:46:03.241Z",
       "lastNotifiedAt": "2026-09-01T15:53:22.219Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2303"
+      "linearIdentifier": "BRO-2303",
+      "silentRefires": 1
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1599,17 +1600,16 @@
       "silentRefires": 1
     },
     "cron-health:Commercial RSS Poll": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial RSS Poll",
       "firstSeen": "2026-08-26T12:37:29.919Z",
-      "lastSeen": "2026-08-26T12:37:29.919Z",
-      "lastNotifiedAt": "2026-08-26T12:37:29.919Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-02T15:46:03.165Z",
+      "lastNotifiedAt": "2026-09-02T15:46:03.165Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-08-29T16:01:13.861Z"
+      "linearIdentifier": null
     },
     "cron-health:Scrape WestEndTheatre": {
       "status": "resolved",
@@ -1763,12 +1763,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-09-01T15:53:23.105Z",
+      "lastSeen": "2026-09-02T15:46:03.246Z",
       "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2530",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -1856,7 +1856,7 @@
       "silentRefires": 1
     },
     "cron-health:Process Feedback Submissions": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Process Feedback Submissions",
@@ -1865,7 +1865,8 @@
       "lastNotifiedAt": "2026-08-30T15:50:24.790Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-02T15:46:03.319Z"
     },
     "cron-health-chronic:Test Suite": {
       "status": "resolved",
@@ -1936,7 +1937,7 @@
       "linearIdentifier": "BRO-2653"
     },
     "cron-health-chronic:Process Feedback Submissions": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Process Feedback Submissions",
       "firstSeen": "2026-08-31T18:34:19.421Z",
@@ -1945,7 +1946,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2657",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-02T15:46:03.322Z"
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served": {
       "status": "open",
@@ -2034,6 +2036,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2680"
+    },
+    "cron-health:Update Social Pulse": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Update Social Pulse",
+      "firstSeen": "2026-09-02T15:46:03.169Z",
+      "lastSeen": "2026-09-02T15:46:03.169Z",
+      "lastNotifiedAt": "2026-09-02T15:46:03.169Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
