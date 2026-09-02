@@ -248,14 +248,26 @@ if [ "${1:-}" = "--all" ]; then
   # copy below so it doesn't also land under data/review-texts/)
   if [ -d "$TEMP_DIR/review-texts/aggregator-archive" ]; then
     mkdir -p "$DATA_DIR/aggregator-archive"
-    cp -a "$TEMP_DIR/review-texts/aggregator-archive/." "$DATA_DIR/aggregator-archive/"
+    # This script runs under `set -uo pipefail` with NO -e, so an unchecked
+    # copy failure falls through to a find|wc that counts whatever was already
+    # on disk and prints a plausible "N files copied". That is the silent
+    # no-op this block is supposed to have fixed: swapping rsync for cp changed
+    # the tool, not the bug class. Check the status explicitly.
+    if ! cp -a "$TEMP_DIR/review-texts/aggregator-archive/." "$DATA_DIR/aggregator-archive/"; then
+      echo "FATAL: cp of aggregator-archive failed — refusing to report a count from stale contents." >&2
+      exit 1
+    fi
     AA_COUNT=$(find "$DATA_DIR/aggregator-archive" -type f | wc -l | tr -d ' ')
     echo "Aggregator archive: $AA_COUNT files copied to data/aggregator-archive/"
+    # Only after a VERIFIED copy — deleting the source on a failed copy loses it.
     rm -rf "$TEMP_DIR/review-texts/aggregator-archive"
   fi
 
   # Copy review text directories
-  cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"
+  if ! cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"; then
+    echo "FATAL: cp of review-texts failed — refusing to report a count from stale contents." >&2
+    exit 1
+  fi
   RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
   echo "Review texts: $RT_COUNT files copied to data/review-texts/"
 fi
