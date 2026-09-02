@@ -20,7 +20,17 @@ const ON_DISK = new Set([
   '/repo/public/images/shows/high-society-west-end-2026/poster.jpg',
   '/repo/public/images/shows/high-society-west-end-2026/thumbnail.jpg',
 ]);
-const opts = { repoRoot: ROOT, existsSync: (p) => ON_DISK.has(p) };
+// statSync is injected alongside existsSync: the predicate also requires
+// isFile(), so a fixture that stubs only existsSync would fall through to the
+// real fs and fail for the wrong reason.
+const opts = {
+  repoRoot: ROOT,
+  existsSync: (p) => ON_DISK.has(p),
+  statSync: (p) => {
+    if (!ON_DISK.has(p)) throw new Error(`ENOENT: ${p}`);
+    return { isFile: () => true };
+  },
+};
 
 test('a reference whose file is MISSING is not present (the false all-clear)', () => {
   assert.equal(
@@ -48,6 +58,47 @@ test('remote URLs are trusted on the field alone, with no filesystem hit', () =>
   for (const url of ['https://cdn.example.com/hero.webp', 'HTTP://cdn.example.com/a.jpg']) {
     assert.equal(imagePresent(url, { repoRoot: ROOT, existsSync: boom }), true);
   }
+});
+
+test('a DIRECTORY never counts as an image', () => {
+  // existsSync alone accepts a directory. That is the same false-all-clear
+  // class this predicate exists to prevent, so it is pinned separately.
+  const dir = '/repo/public/images/shows/high-society-west-end-2026';
+  const o = {
+    repoRoot: ROOT,
+    existsSync: (p) => p === dir,
+    statSync: () => ({ isFile: () => false }),
+  };
+  assert.equal(imagePresent('/images/shows/high-society-west-end-2026', o), false);
+});
+
+test('a ref cannot escape public/ via ..', () => {
+  // Containment: '..' must never let this answer "present" about a file
+  // outside public/, however real that file is.
+  const o = { repoRoot: ROOT, existsSync: () => true, statSync: () => ({ isFile: () => true }) };
+  assert.equal(imagePresent('/../package.json', o), false);
+  assert.equal(imagePresent('/images/../../etc/hosts', o), false);
+});
+
+test('query strings, fragments and a public/ prefix resolve to the real file', () => {
+  // Each of these used to false-WARN: a cache-buster or fragment was joined
+  // into the filename, and a 'public/'-prefixed ref probed public/public/...
+  const real = '/repo/public/images/shows/x/poster.jpg';
+  const o = {
+    repoRoot: ROOT,
+    existsSync: (p) => p === real,
+    statSync: () => ({ isFile: () => true }),
+  };
+  assert.equal(imagePresent('/images/shows/x/poster.jpg?mtime=123', o), true);
+  assert.equal(imagePresent('/images/shows/x/poster.jpg#anchor', o), true);
+  assert.equal(imagePresent('/public/images/shows/x/poster.jpg', o), true);
+});
+
+test('protocol-relative and data: refs are treated as remote, not as paths', () => {
+  const boom = () => { throw new Error('must not touch the filesystem'); };
+  const o = { repoRoot: ROOT, existsSync: boom, statSync: boom };
+  assert.equal(imagePresent('//cdn.example.com/hero.jpg', o), true);
+  assert.equal(imagePresent('data:image/png;base64,AAAA', o), true);
 });
 
 test('empty, missing and non-string references are not present', () => {

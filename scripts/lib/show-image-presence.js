@@ -39,9 +39,34 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 function imagePresent(ref, opts = {}) {
   if (!ref || typeof ref !== 'string') return false;
   if (/^https?:\/\//i.test(ref)) return true;
+  // Protocol-relative and data: URIs are remote-ish, not paths under public/.
+  // Joining them would probe a nonsense local path and report a false WARN.
+  if (ref.startsWith('//') || /^data:/i.test(ref)) return true;
+
   const root = opts.repoRoot || REPO_ROOT;
   const exists = opts.existsSync || fs.existsSync;
-  return exists(path.join(root, 'public', ref.replace(/^\//, '')));
+  const statFile = opts.statSync || fs.statSync;
+
+  // Strip a ?query / #fragment before touching the filesystem — a real ref can
+  // carry a cache-buster (Playbill's ?mtime=) and the file on disk does not.
+  let rel = ref.replace(/[?#].*$/, '');
+  try { rel = decodeURIComponent(rel); } catch { /* leave as-is if not valid encoding */ }
+  rel = rel.replace(/^\/+/, '');
+  // Refs are site paths, so a leading 'public/' is the caller repeating the
+  // root; joining it verbatim would probe public/public/... and false-WARN.
+  rel = rel.replace(/^public\//, '');
+
+  const publicDir = path.join(root, 'public');
+  const full = path.resolve(publicDir, rel);
+  // Containment: '..' in a ref must never let this answer "present" about a
+  // file outside public/.
+  if (full !== publicDir && !full.startsWith(publicDir + path.sep)) return false;
+
+  if (!exists(full)) return false;
+  // existsSync alone accepts a DIRECTORY, which is the same false-all-clear
+  // class this predicate exists to prevent: images.hero pointing at a folder
+  // would have read as present.
+  try { return statFile(full).isFile(); } catch { return false; }
 }
 
 module.exports = { imagePresent, REPO_ROOT };
