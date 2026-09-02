@@ -430,3 +430,17 @@ Cookie-plain path with the stored `data/cookies/thestage.json` cookies, finds th
 (paywall), and falls back to `stage-star-svg` to recover the explicit star rating
 (3/5 -> 60/100, routed to `originalScore`). Score-only stubs need NO LLM scoring run —
 they ride the next rebuild. Do not dispatch LLM Ensemble Score for them.
+
+## Gate 17 (reverse-direction): combined-roundup mis-attachment — WRONG data, not a missing review
+Discovered 2026-09-02 (opening-night monitor, a-month-in-the-country-west-end-2026).
+A review file with `isCombinedReview: true` + `combinedWith: [<other-show>]` was written into show A's
+review-texts dir carrying show B's url, dtliExcerpt and showScoreExcerpt. It passed every gate
+(well-formed, complete-looking), scored, and went LIVE on prod as a real review of show A —
+The Stage / Sam Marlowe / 72 on A Month in the Country, whose URL was actually
+`thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin` (Zeldin's *Care*, Young Vic).
+**Detection:** only a REVERSE-direction census catches it — diff prod → census ("what is live that my
+census cannot corroborate?"), not just census → prod. Cheapest tell: the url slug names a different
+show than the directory the file sits in.
+**Fix applied that night:** wrongShow + all 8 protection fields, delete humanReviewScore and
+wrongShowManualClear so no clear-side guard resurrects it. rebuild+deploy dropped prod rv 2→1.
+**Systemic fix carded:** BRO-2746.
