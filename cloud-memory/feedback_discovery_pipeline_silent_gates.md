@@ -400,3 +400,33 @@ Three gotchas, each of which cost a cycle:
 3. **Build the `scripts/lib` path by string concatenation.** The worktree-enforce Bash hook blocks commands containing that literal path, including inside heredocs.
 
 **Why it matters.** The proper fix is to stop using `waitUntil: 'networkidle'` in the Playwright path (`domcontentloaded` + a settle delay). Until that lands, this workaround unblocks every networkidle-hung outlet, and it is what recovered Time Out London on the night.
+
+## Gate: paywalled T2 outlets never enter discovery (The Stage, 2026-09-02)
+
+**Symptom:** The Stage published a full press-night review of Electra/Persona and it never
+appeared anywhere in the pipeline — no review-texts file, no `_pending/` strand, no
+`stage-latency.jsonl` event. 42 monitor passes of SERP/WebSearch census missed it entirely,
+because Google had not indexed the paywalled article.
+
+**Root cause:** discovery leans on SERP. Paywalled outlets are indexed late or not at all,
+so a SERP-only census is structurally blind to them — the same blindness that makes early
+SERP absence meaningless also makes *late* SERP absence meaningless for paywalled sites.
+
+**The tell:** the outlet's own public `/reviews` index page lists the article immediately at
+embargo lift, even when the article body is paywalled.
+
+**Fix / standing practice:** every opening-night census pass must plain-curl the outlet
+section indexes directly, not just WebSearch:
+
+    curl -sL --max-time 12 -A '<desktop UA>' https://www.thestage.co.uk/reviews | grep -oiE 'href="[^"]*<slug>[^"]*"'
+
+Same sweep works for guardian /stage/theatre, standard.co.uk/culture/theatre,
+independent.co.uk/arts-entertainment/theatre-dance/reviews, theartsdesk.com/theatre,
+timeout.com/london/theatre, broadwayworld.com/westend. A 200 with zero title mentions is a
+positive *verified-exclusion* signal (the outlet did not review it), not an unknown.
+
+**Recovery is already automatic once you have the URL:** `ingest-review-from-url.js` takes the
+Cookie-plain path with the stored `data/cookies/thestage.json` cookies, finds the body empty
+(paywall), and falls back to `stage-star-svg` to recover the explicit star rating
+(3/5 -> 60/100, routed to `originalScore`). Score-only stubs need NO LLM scoring run —
+they ride the next rebuild. Do not dispatch LLM Ensemble Score for them.
