@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const {
@@ -17,6 +18,11 @@ const {
   stagedPathsPerCall,
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
+  computeFundableAttempts,
+  backoffForAttempt,
+  GIT_NET_TIMEOUT_SEC,
+  MIN_TIMED_OUT_ATTEMPT_SEC,
+  MIN_FUNDABLE_ATTEMPTS,
 } = require('./audit-push-retry-budgets.js');
 
 // ── computeBackoffSum: N^2+4N, push-with-retry.sh's WAIT=3+i*2+jitter summed ──
@@ -590,4 +596,95 @@ jobs:
   assert.equal(bundled.mixedSafetyBundle, true);
   assert.equal(unbundled.mixedSafetyBundle, false);
   assert.equal(bundled.contentionScore, unbundled.contentionScore + 2);
+});
+
+
+// ── computeFundableAttempts / deadline-cannot-fund-retries (BRO-2373) ─────────
+// The two flags above model an attempt as costing only its backoff sleep. These
+// assert the third model: an attempt that hits GIT_NET_TIMEOUT_SEC costs
+// 2 * 90s of network cap, because ONE loop iteration can spend the cap twice
+// (loop-top git_push, then the post-resolution git_push after fetch+rebase).
+
+test('GIT_NET_TIMEOUT_SEC is READ from push-with-retry.sh, not copied', () => {
+  // Adversarial review finding: a hardcoded 90 here silently drifts the day the
+  // script's default changes. Assert both the value and that it really came
+  // from the script's own text.
+  const src = readFileSync(new URL('./push-with-retry.sh', import.meta.url), 'utf8');
+  const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+  assert.ok(m, 'push-with-retry.sh no longer declares GIT_NET_TIMEOUT_SEC in the parsed shape');
+  assert.equal(GIT_NET_TIMEOUT_SEC, parseInt(m[1], 10));
+  assert.equal(MIN_TIMED_OUT_ATTEMPT_SEC, 2 * GIT_NET_TIMEOUT_SEC);
+  assert.equal(MIN_FUNDABLE_ATTEMPTS, 3);
+});
+
+test('backoffForAttempt is the single source of truth behind computeBackoffSum', () => {
+  // Adversarial review finding: the closed form N^2+4N and the per-attempt
+  // 3+2i were two independent copies. Assert they agree for every N a workflow
+  // could plausibly configure, so neither can drift alone.
+  for (let n = 0; n <= 30; n += 1) {
+    let sum = 0;
+    for (let i = 1; i <= n; i += 1) sum += backoffForAttempt(i);
+    assert.equal(sum, computeBackoffSum(n), `backoff sum diverges at N=${n}`);
+  }
+});
+
+test('computeFundableAttempts: reproduces run 33681436855 exactly — 240s/7 funds 2 attempts', () => {
+  // fetch-guardian-reviews.yml "Commit changes" on the shared 7/240 default.
+  // CI printed "overall deadline 240s exceeded after 2 attempt(s)".
+  assert.equal(computeFundableAttempts(7, 240), 2);
+});
+
+test('computeFundableAttempts: a big MAX_RETRIES cannot buy attempts the deadline will not fund', () => {
+  // opening-night-broadcast.yml's early commit step: 14 retries, 300s deadline.
+  assert.equal(computeFundableAttempts(14, 300), 2);
+  // rebuild-reviews.yml's 900s step gets materially more, but nowhere near 25.
+  const fundable = computeFundableAttempts(25, 900);
+  assert.ok(fundable >= 4 && fundable <= 6, `expected 4-6 fundable attempts, got ${fundable}`);
+});
+
+test('computeFundableAttempts: never exceeds MAX_RETRIES however large the deadline', () => {
+  assert.equal(computeFundableAttempts(3, 86400), 3);
+  assert.equal(computeFundableAttempts(1, 86400), 1);
+});
+
+test('computeFundableAttempts: the loop-top deadline check lets a started attempt finish', () => {
+  // push-with-retry.sh checks SECONDS >= PUSH_DEADLINE_SEC at the TOP of the
+  // iteration, so a 1s deadline still funds exactly one (over-running) attempt
+  // — modelling it as 0 would under-report the step's real wall time.
+  assert.equal(computeFundableAttempts(7, 1), 1);
+});
+
+test('computeFundableAttempts: degenerate inputs fund nothing rather than throwing', () => {
+  assert.equal(computeFundableAttempts(0, 900), 0);
+  assert.equal(computeFundableAttempts(7, 0), 0);
+  assert.equal(computeFundableAttempts(-1, 900), 0);
+});
+
+test('evaluateStep: flags deadline-cannot-fund-retries on the shared 7/240 default', () => {
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 240, jobTimeoutMinutes: 30 });
+  assert.equal(r.fundableAttempts, 2);
+  assert.ok(r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: a deadline that funds 3+ attempts is NOT flagged for underfunding', () => {
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 600, jobTimeoutMinutes: 60 });
+  assert.ok(r.fundableAttempts >= MIN_FUNDABLE_ATTEMPTS);
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: a deliberately single-attempt step is small, not underfunded', () => {
+  // MAX_RETRIES=1 funds its one attempt, so min(maxRetries, 3) is 1 and the
+  // flag must stay off — otherwise every intentionally-tiny push step reds.
+  const r = evaluateStep({ maxRetries: 1, deadlineSec: 240, jobTimeoutMinutes: 30 });
+  assert.equal(r.fundableAttempts, 1);
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: the new flag is independent of retries-undersized-vs-deadline', () => {
+  // 25 retries against 900s: backoffSum (725s) is 0.81 of the deadline so flag
+  // 1 stays off, yet only ~5 attempts are fundable. The two must not collapse
+  // into each other — that is the whole point of adding a third model.
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 60 });
+  assert.ok(!r.flags.includes('retries-undersized-vs-deadline'));
+  assert.ok(r.fundableAttempts < r.maxRetries);
 });
