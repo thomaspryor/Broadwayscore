@@ -120,10 +120,17 @@ async function runChecks() {
   }
 
   // 2. Images
-  const imgDir = path.join(DATA_DIR, 'public', 'images', 'shows', SHOW_ID);
-  const hasHero = fs.existsSync(path.join(imgDir, 'hero.webp'));
-  const hasPoster = fs.existsSync(path.join(imgDir, 'poster.webp'));
-  const hasThumbnail = fs.existsSync(path.join(imgDir, 'thumbnail.webp'));
+  // Trust shows.json's images field (what the site actually renders) rather
+  // than hardcoding the .webp filename the standard pipeline produces — the
+  // SERP-fallback image path writes .jpg/.png instead, and a hardcoded-webp
+  // check flags those shows as "missing" even though the site displays them
+  // fine (found via a-month-in-the-country-west-end-2026, 2026-09-02: real
+  // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
+  // thumbnail}, reported as "Missing: hero, poster, thumbnail").
+  const images = show.images || {};
+  const hasHero = !!images.hero;
+  const hasPoster = !!images.poster;
+  const hasThumbnail = !!images.thumbnail;
   if (hasHero && hasPoster && hasThumbnail) {
     report(PASS, 'Show images', 'hero + poster + thumbnail all present');
   } else {
