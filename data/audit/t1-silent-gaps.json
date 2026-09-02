@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-08-31T14:43:56.000Z",
+  "generatedAt": "2026-09-02T22:17:47.771Z",
   "windowDays": 45,
-  "showsScanned": 62,
+  "showsScanned": 66,
   "gaps": [
-    {
-      "showId": "trainspotting-the-musical-west-end-2026",
-      "title": "Trainspotting the musical",
-      "openingDate": "2026-07-22",
-      "file": "broadwayworld--team-bww.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "url": "https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 937.5385855555555,
-      "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 31.044952777777777
-    },
     {
       "showId": "disruption-off-broadway-2026",
       "title": "Disruption",
@@ -33,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 627.9818088888888,
+      "fileAgeHours": 683.546146111111,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 296.360015
+      "nonTerminalAgeHours": 351.92439583333334
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -50,9 +33,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 69.45404972222222,
+      "fileAgeHours": 125.01840972222222,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 31.044952777777777
+      "nonTerminalAgeHours": 86.60933361111111
     }
   ],
   "contradictions": []
