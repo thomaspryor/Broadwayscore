@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T10:31:59.044Z",
+  "generatedAt": "2026-09-02T13:26:38.266Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,26 +9,26 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-09-02",
-      "status": "previews",
+      "status": "open",
       "slug": "a-month-in-the-country-west-end",
       "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 77,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 71.83,
+      "liveScore": 72,
+      "scoreDrift": 0.1700000000000017,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 4,
       "t1": 1,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 3,
+      "positive": 2,
       "mixed": 1,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:0/6"
@@ -85,15 +85,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -109,6 +101,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T13:26:38.266Z",
+          "rc": 4,
+          "s": 71.83,
+          "t1": 1,
+          "t2": 0,
+          "t3": 3,
+          "p": 2,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -122,26 +126,25 @@
       "status": "open",
       "slug": "electra-persona-west-end",
       "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
-      "siteScore": 68.07,
+      "siteScore": 67.54,
       "liveScore": 68,
-      "scoreDrift": -0.06999999999999318,
+      "scoreDrift": 0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 5,
+      "total": 15,
+      "t1": 6,
       "t2": 3,
       "t3": 6,
       "positive": 7,
-      "mixed": 6,
+      "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3",
-          "hi-conf:5/6"
+          "T1:2/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -164,10 +167,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
           "isDualMarket": true
         }
       ],
@@ -219,6 +218,18 @@
           "t3": 6,
           "p": 7,
           "m": 6,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T13:26:38.266Z",
+          "rc": 15,
+          "s": 67.54,
+          "t1": 6,
+          "t2": 3,
+          "t3": 6,
+          "p": 7,
+          "m": 7,
           "n": 1,
           "bc": "waiting"
         }
