@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-09-02T12:49:07.452Z",
-  "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "updatedAt": "2026-09-02T12:53:09.037Z",
+  "processed": 4,
+  "failed": 26,
+  "successRate": "13.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-09-02T12:52:09.128Z",
+      "event": "bb-session",
+      "session": "14842175",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-02T12:52:21.467Z",
+      "event": "bb-session",
+      "session": "c887943f",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    }
+  ]
 }
