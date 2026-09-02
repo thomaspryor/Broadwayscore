@@ -48,12 +48,6 @@ const STAGES = Object.freeze({
   PARSE: 'parse-error',
   EMPTY: 'empty-result',
   FORBIDDEN_MODEL: 'forbidden-model',
-  // BRO-2741: the child ended its turn while a run_in_background task it
-  // started was still live, so the harness killed that task at teardown. The
-  // child still emits a normal `result` envelope and exits 0, which is why
-  // this looked like success for two dispatches running. Mirrored into
-  // autonomous-run-core.js's INFRA_STAGES so classifyFailure routes it.
-  BG_KILLED: 'background-task-killed',
 });
 
 // The credential keys this primitive forwards to the child. Named constant so
@@ -326,20 +320,8 @@ function parseStreamLine(line) {
   if (!t) return null;
   let j;
   try { j = JSON.parse(t); } catch { return null; }
-  const out = { type: j.type || null, sessionId: j.session_id || null, usage: null, result: null, killedTaskId: null };
+  const out = { type: j.type || null, sessionId: j.session_id || null, usage: null, result: null };
   if (j.type === 'assistant' && j.message && j.message.usage) out.usage = j.message.usage;
-  // BRO-2741: a background task the child started being killed at teardown.
-  // Shape emitted by the harness:
-  //   {"type":"system","subtype":"task_updated","task_id":"byh99e9v5",
-  //    "patch":{"status":"killed","end_time":1788360028309}}
-  // Deliberately keyed on patch.status rather than the presence of the patch:
-  // the same subtype carries ordinary status transitions we must NOT flag.
-  if (j.type === 'system' && j.subtype === 'task_updated'
-      && j.patch && j.patch.status === 'killed') {
-    // Fall back to the uuid so a malformed row without task_id still counts
-    // once rather than being silently dropped (dedupe is by this value).
-    out.killedTaskId = j.task_id || j.uuid || 'unknown';
-  }
   if (j.type === 'result') {
     out.result = {
       resultText: typeof j.result === 'string' ? j.result : '',
@@ -502,9 +484,6 @@ function runClaudeCli(opts) {
     let sessionNotified = false;
     let usageTotal = null;
     let resultEvent = null;
-    // BRO-2741: task ids the harness killed at teardown. A Set because the
-    // harness can emit the same task_updated row more than once.
-    const killedTaskIds = new Set();
     let timedOut = false;
     let settled = false;
     let graceTimer = null;
@@ -533,7 +512,6 @@ function runClaudeCli(opts) {
       }
       if (ev.usage) usageTotal = addUsage(usageTotal, ev.usage);
       if (ev.result) resultEvent = ev.result;
-      if (ev.killedTaskId) killedTaskIds.add(ev.killedTaskId);
     };
 
     child.stdout.on('data', (d) => {
@@ -601,19 +579,6 @@ function runClaudeCli(opts) {
       if (!resultEvent.resultText.trim()) {
         // Auth-expiry / silent no-op class: valid envelope, nothing produced.
         return resolve(done({ stage: STAGES.EMPTY, pid, exitCode: code, sessionId: resultEvent.sessionId || sessionId, usage: resultEvent.usage || usageTotal, ...cost, errorDetail: 'result event parsed but result text is empty' }));
-      }
-      if (killedTaskIds.size > 0) {
-        // A valid envelope AND real output, but work the child was relying on
-        // was discarded. Reported as a failure so the ledger is honest and
-        // bsc-reconcile's resume-on-FAILED path picks it up; resultText is
-        // still carried through so the partial outcome is not lost.
-        return resolve(done({
-          stage: STAGES.BG_KILLED, pid, exitCode: code,
-          resultText: resultEvent.resultText,
-          sessionId: resultEvent.sessionId || sessionId,
-          usage: resultEvent.usage || usageTotal, ...cost,
-          errorDetail: `${killedTaskIds.size} background task(s) killed at turn end: ${[...killedTaskIds].join(', ')}`,
-        }));
       }
       resolve(done({
         ok: true, stage: null, pid, exitCode: code,

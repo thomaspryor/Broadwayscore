@@ -342,75 +342,19 @@ test('pathWithClaudeBinDir: prepends the resolved binary dir and never duplicate
   assert.equal(pathWithClaudeBinDir(out), out, 'must be idempotent');
 });
 
-// ---------------------------------------------------------------------------
-// parseStreamLine is already imported above (the file imports per section).
-import { STAGES } from './claude-cli.js';
-
-// BRO-2741: a headless job that ends its turn while a run_in_background task is
-// still live has that task killed at teardown, and used to report success
-// anyway. Two dispatches of the same Linear issue a day apart both
-// under-delivered this way; their output survived only because it was
-// hand-salvaged out of the abandoned worktree afterwards. The fixture below is
-// a VERBATIM line from the second one's log
-// (~/Library/Logs/bsc-jobs/linear:BRO-2718-mtk78sto.log) -- task_id byh99e9v5,
-// end_time 1788360028309, the same millisecond as that job's job-done ledger
-// row. Kept verbatim on purpose: a hand-written approximation of the shape is
-// exactly how this guard would rot.
-const KILLED_TASK_LINE = '{"type":"system","subtype":"task_updated","task_id":"byh99e9v5",'
-  + '"patch":{"status":"killed","end_time":1788360028309},'
-  + '"uuid":"c21e29a3-f324-47a3-91f9-d4ed7da3fcdf",'
-  + '"session_id":"b315b7c1-fe33-4ed9-98a0-9f2f632dff34"}';
-
-test('parseStreamLine: a killed background task surfaces its task id (BRO-2741)', () => {
-  const ev = parseStreamLine(KILLED_TASK_LINE);
-  assert.equal(ev.killedTaskId, 'byh99e9v5');
-  // Must not be mistaken for a result envelope -- the child still emits a real
-  // one afterwards, and that is what carries the (partial) output.
-  assert.equal(ev.result, null);
-  assert.equal(ev.sessionId, 'b315b7c1-fe33-4ed9-98a0-9f2f632dff34');
-});
-
-test('parseStreamLine: a non-killed task_updated is NOT flagged (BRO-2741)', () => {
-  // The same subtype carries ordinary transitions. Keying on the presence of
-  // `patch` rather than on patch.status would fail every healthy job that ever
-  // started a background task.
-  for (const status of ['running', 'completed', 'queued']) {
-    const line = JSON.stringify({
-      type: 'system', subtype: 'task_updated', task_id: 't1',
-      patch: { status }, session_id: 's1',
-    });
-    assert.equal(parseStreamLine(line).killedTaskId, null, `status=${status} must not flag`);
-  }
-  // A task_updated with no patch at all must not throw or flag either.
-  assert.equal(
-    parseStreamLine('{"type":"system","subtype":"task_updated","task_id":"t2"}').killedTaskId,
-    null
-  );
-});
-
-test('parseStreamLine: a killed row missing task_id still counts once (BRO-2741)', () => {
-  const line = '{"type":"system","subtype":"task_updated","patch":{"status":"killed"},"uuid":"u-9"}';
-  assert.equal(parseStreamLine(line).killedTaskId, 'u-9');
-});
-
-test('background-task-killed is classified as an infra failure, not content (BRO-2741)', async () => {
-  // The stage vocabulary is shared between claude-cli.js and
-  // autonomous-run-core.js ("do not invent new spellings"). If the two drift,
-  // classifyFailure returns undefined for this stage and the failure routes
-  // nowhere.
-  const core = await import('./autonomous-run-core.js');
-  const { INFRA_STAGES, classifyFailure } = core.default || core;
-  assert.equal(STAGES.BG_KILLED, 'background-task-killed');
-  assert.ok(INFRA_STAGES.has(STAGES.BG_KILLED), 'STAGES.BG_KILLED must be in INFRA_STAGES');
-  assert.equal(classifyFailure(STAGES.BG_KILLED), 'infra');
-});
-
 test('buildBudgetPreamble warns against run_in_background for needed results (BRO-2741)', async () => {
   // Deliberately in the runner preamble, NOT in buildLinearSeed: the preamble
   // is prepended to every headless prompt regardless of dispatcher, so this
   // covers the bsc-next path too -- and the Linear seed is also used for
   // mode:'tab', where an interactive session does not teardown-kill and the
   // warning would simply be false.
+  //
+  // This is the ONLY surviving half of the original BRO-2741 change. The
+  // mechanical detection that went with it was reverted: see the commit that
+  // removed it. Empirically, 65 of 155 real job logs contain a killed-task row
+  // and 64 of those recorded job-done, because the dominant killed command is
+  // scripts/lib/wait-for-run.sh -- this repo's own documented CI-wait idiom.
+  // Advisory guidance is safe; failing a job on that signal is not.
   const runner = await import('./bsc-runner.js');
   const { buildBudgetPreamble } = runner.default || runner;
   const preamble = buildBudgetPreamble(120 * 60 * 1000);
