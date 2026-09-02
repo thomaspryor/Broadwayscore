@@ -42,7 +42,7 @@
 //
 //   3. fundableAttempts — BRO-2373 (2026-09-02). Flags 1 and 2 both model an
 //      attempt as costing only its backoff SLEEP. Real CI logs say an attempt
-//      that hits GIT_NET_TIMEOUT_SEC costs 180s of network cap. See
+//      that hits GIT_NET_TIMEOUT_SEC costs at least 2x90s of network cap. See
 //      computeFundableAttempts below for the measurement and the two runs it
 //      was derived from. Flagged as deadline-cannot-fund-retries when
 //      PUSH_DEADLINE_SEC funds fewer than min(MAX_RETRIES, 3) attempts.
@@ -494,6 +494,21 @@ function countRawCallSites(fileText) {
   return matches ? matches.length : 0;
 }
 
+
+// Parse GIT_NET_TIMEOUT_SEC's default out of push-with-retry.sh rather than
+// copying the literal — this module's whole history (see MANAGED_FILE_INFO
+// above) is of copied constants drifting from their source. Falls back to 90,
+// the value the script has shipped since task #466, if the line moves.
+function readGitNetTimeoutDefault() {
+  try {
+    // eslint-disable-next-line global-require
+    const src = require('fs').readFileSync(require('path').join(__dirname, 'push-with-retry.sh'), 'utf8');
+    const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+    if (m) return parseInt(m[1], 10);
+  } catch { /* fall through */ }
+  return 90;
+}
+
 // N^2+4N: sum_{i=1..N} (3 + 2i), push-with-retry.sh's WAIT=3+i*2+jitter
 // backoff formula with the 0-4s random jitter term dropped (worst-case floor,
 // not ceiling — jitter only ever adds time).
@@ -523,23 +538,44 @@ function computeBackoffSum(maxRetries) {
 // the HANG/slow-push ceiling, not the ordinary race-loss path.
 //
 // Counted with the loop's real control flow: push-with-retry.sh checks
-// `SECONDS >= PUSH_DEADLINE_SEC` at the TOP of each iteration, so an attempt
-// that merely STARTS under the deadline still runs in full.
-const GIT_NET_TIMEOUT_SEC = 90; // push-with-retry.sh: GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
-const WORST_CASE_ATTEMPT_SEC = 2 * GIT_NET_TIMEOUT_SEC;
+// `SECONDS >= PUSH_DEADLINE_SEC` at the TOP of each iteration (~L1091), so an
+// attempt that merely STARTS under the deadline still runs in full.
+//
+// DIRECTION OF ERROR — read before trusting a NON-flag (adversarial review,
+// 2026-09-02). 2 caps per iteration is a FLOOR on a fully-timed-out iteration,
+// not a ceiling. An iteration can spend the cap more than twice: the primary
+// fetch (~L1334), the ancestry-widening fetch (~L1435), the one-time unshallow
+// (~L1260), and verify_content_survived's own fetches (~L1055) are each
+// separately capped, and the Git Data API fallback runs outside this loop
+// entirely (~L1961). So `fundableAttempts` is an UPPER BOUND on attempts:
+//   * the flag FIRING means the step is genuinely underfunded (no false
+//     positives from this term), which is what it is used for;
+//   * the flag STAYING SILENT does NOT prove the step is well funded.
+// The backoff term likewise drops push-with-retry.sh's 0-4s random jitter
+// (~L1769), which only ever adds time. Both omissions push the same way.
+const GIT_NET_TIMEOUT_SEC = readGitNetTimeoutDefault(); // from push-with-retry.sh, not a copy
+const MIN_TIMED_OUT_ATTEMPT_SEC = 2 * GIT_NET_TIMEOUT_SEC;
 // Below this many fundable attempts a step cannot ride out even a short burst
 // of contention on main. 3 rather than a ratio: the quantity that matters is a
 // small integer count of attempts, and a ratio would hide "2 of 25".
 const MIN_FUNDABLE_ATTEMPTS = 3;
 
-function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = WORST_CASE_ATTEMPT_SEC) {
+// push-with-retry.sh's per-attempt backoff, WAIT=3+i*2 with the 0-4s jitter
+// dropped. Single source of truth shared with computeBackoffSum's closed form
+// above — a test asserts the two agree, so the formula cannot drift in one
+// place only (adversarial review finding, 2026-09-02).
+function backoffForAttempt(i) {
+  return 3 + 2 * i;
+}
+
+function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = MIN_TIMED_OUT_ATTEMPT_SEC) {
   if (!(maxRetries > 0) || !(deadlineSec > 0)) return 0;
   let elapsed = 0;
   let attempts = 0;
   for (let i = 1; i <= maxRetries; i++) {
     if (elapsed >= deadlineSec) break; // the loop-top deadline check
     attempts += 1;
-    elapsed += attemptSec + (3 + 2 * i); // this attempt's ops, then its backoff
+    elapsed += attemptSec + backoffForAttempt(i); // this attempt's ops, then its backoff
   }
   return attempts;
 }
@@ -766,8 +802,9 @@ module.exports = {
   MARGIN_THRESHOLD,
   RETRY_DEADLINE_RATIO_THRESHOLD,
   GIT_NET_TIMEOUT_SEC,
-  WORST_CASE_ATTEMPT_SEC,
+  MIN_TIMED_OUT_ATTEMPT_SEC,
   MIN_FUNDABLE_ATTEMPTS,
+  backoffForAttempt,
   computeFundableAttempts,
   parseWorkflow,
   findPushRetryCalls,

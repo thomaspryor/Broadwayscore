@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   auditWorkflowText, countRawCallSites,
-  GIT_NET_TIMEOUT_SEC, WORST_CASE_ATTEMPT_SEC, MIN_FUNDABLE_ATTEMPTS,
+  GIT_NET_TIMEOUT_SEC, MIN_TIMED_OUT_ATTEMPT_SEC, MIN_FUNDABLE_ATTEMPTS,
 } = require('./lib/audit-push-retry-budgets.js');
 
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -90,10 +90,10 @@ function main() {
     .filter((r) => r.flags.includes('deadline-cannot-fund-retries'))
     .sort((a, b) => (a.fundableAttempts - b.fundableAttempts) || (b.maxRetries - a.maxRetries));
   if (underfunded.length > 0) {
-    console.log(`\u23f1  ${underfunded.length} call site(s) have a PUSH_DEADLINE_SEC that cannot fund even ${MIN_FUNDABLE_ATTEMPTS} attempts once every git op costs its full ${GIT_NET_TIMEOUT_SEC}s GIT_NET_TIMEOUT_SEC cap (BRO-2373 — measured on runs 33679833284 and 33681436855, where every push ran exactly 90.00s and was hard-killed):\n`);
+    console.log(`\u23f1  ${underfunded.length} call site(s) have a PUSH_DEADLINE_SEC that cannot fund even ${MIN_FUNDABLE_ATTEMPTS} attempts once a timed-out iteration costs 2x the ${GIT_NET_TIMEOUT_SEC}s GIT_NET_TIMEOUT_SEC cap (BRO-2373 — measured on runs 33679833284 and 33681436855, where every push ran exactly 90.00s and was hard-killed). An iteration can cost MORE than that (extra capped fetches, content-survival verification), so these counts are UPPER bounds: a site listed here IS underfunded, but a site absent from this list is not proven safe:\n`);
     for (const r of underfunded.slice(0, topN)) {
       console.log(`  ${r.file} :: ${r.job} / "${r.step}"`);
-      console.log(`      retries=${r.maxRetries} deadline=${r.deadlineSec}s -> only ${r.fundableAttempts} attempt(s) fundable at ${WORST_CASE_ATTEMPT_SEC}s/attempt`);
+      console.log(`      retries=${r.maxRetries} deadline=${r.deadlineSec}s -> at most ${r.fundableAttempts} attempt(s) fundable at ${MIN_TIMED_OUT_ATTEMPT_SEC}s/attempt`);
     }
     if (underfunded.length > topN) console.log(`  ... ${underfunded.length - topN} more (--top=N to widen, --json for the full list).`);
     console.log('');
@@ -112,7 +112,15 @@ function main() {
     console.log(`... ${ranked.length - topN} more flagged call sites not shown (--top=N to widen, --json for the full list).`);
   }
 
-  const retryOnlyCount = flagged.filter((r) => r.flags.length === 1 && r.flags[0] === 'retries-undersized-vs-deadline').length;
+  // BRO-2373 adversarial review: this summary means "sites whose ONLY problem
+  // is the shared-default backoff shape". deadline-cannot-fund-retries fires on
+  // 89% of sites, so counting it here would collapse this number to ~0 and
+  // silently destroy a metric card #1910 uses for scoping. Excluded from the
+  // "exactly one flag" test rather than left to rot.
+  const retryOnlyCount = flagged.filter((r) => {
+    const others = r.flags.filter((f) => f !== 'deadline-cannot-fund-retries');
+    return others.length === 1 && others[0] === 'retries-undersized-vs-deadline';
+  }).length;
   console.log(`\n${retryOnlyCount} of ${flagged.length} flagged sites are retries-undersized-vs-deadline ONLY (the shared-default 7/240s shape) — most are low contentionScore and not worth individually fixing; see card #1910's scope note on prioritizing by actual contention over blanket-raising every call site.`);
 }
 

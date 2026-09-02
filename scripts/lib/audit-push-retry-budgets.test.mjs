@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const {
@@ -18,8 +19,9 @@ const {
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
   computeFundableAttempts,
+  backoffForAttempt,
   GIT_NET_TIMEOUT_SEC,
-  WORST_CASE_ATTEMPT_SEC,
+  MIN_TIMED_OUT_ATTEMPT_SEC,
   MIN_FUNDABLE_ATTEMPTS,
 } = require('./audit-push-retry-budgets.js');
 
@@ -603,10 +605,27 @@ jobs:
 // 2 * 90s of network cap, because ONE loop iteration can spend the cap twice
 // (loop-top git_push, then the post-resolution git_push after fetch+rebase).
 
-test('computeFundableAttempts: mirrors the constants push-with-retry.sh actually uses', () => {
-  assert.equal(GIT_NET_TIMEOUT_SEC, 90);
-  assert.equal(WORST_CASE_ATTEMPT_SEC, 180);
+test('GIT_NET_TIMEOUT_SEC is READ from push-with-retry.sh, not copied', () => {
+  // Adversarial review finding: a hardcoded 90 here silently drifts the day the
+  // script's default changes. Assert both the value and that it really came
+  // from the script's own text.
+  const src = readFileSync(new URL('./push-with-retry.sh', import.meta.url), 'utf8');
+  const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+  assert.ok(m, 'push-with-retry.sh no longer declares GIT_NET_TIMEOUT_SEC in the parsed shape');
+  assert.equal(GIT_NET_TIMEOUT_SEC, parseInt(m[1], 10));
+  assert.equal(MIN_TIMED_OUT_ATTEMPT_SEC, 2 * GIT_NET_TIMEOUT_SEC);
   assert.equal(MIN_FUNDABLE_ATTEMPTS, 3);
+});
+
+test('backoffForAttempt is the single source of truth behind computeBackoffSum', () => {
+  // Adversarial review finding: the closed form N^2+4N and the per-attempt
+  // 3+2i were two independent copies. Assert they agree for every N a workflow
+  // could plausibly configure, so neither can drift alone.
+  for (let n = 0; n <= 30; n += 1) {
+    let sum = 0;
+    for (let i = 1; i <= n; i += 1) sum += backoffForAttempt(i);
+    assert.equal(sum, computeBackoffSum(n), `backoff sum diverges at N=${n}`);
+  }
 });
 
 test('computeFundableAttempts: reproduces run 33681436855 exactly — 240s/7 funds 2 attempts', () => {
