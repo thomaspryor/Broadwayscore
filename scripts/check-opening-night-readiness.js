@@ -129,11 +129,11 @@ async function runChecks() {
   // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
   // thumbnail}, reported as "Missing: hero, poster, thumbnail").
   const images = show.images || {};
-  // A field being SET is not the same as the file EXISTING. The previous
-  // version checked truthiness only, which fixed a false "missing" (the old
-  // code hardcoded a .webp extension) by introducing a false ALL-CLEAR, which
-  // on an opening-night gate is the worse direction. Real case at the time of
-  // writing: high-society-west-end-2026 has images.hero pointing at
+  // A field being SET is not the same as the file EXISTING. An earlier pass
+  // here checked truthiness only, which fixed a false "missing" (the code
+  // used to hardcode a .webp extension) by introducing a false ALL-CLEAR,
+  // which on an opening-night gate is the worse direction. Real case at the
+  // time of writing: high-society-west-end-2026 has images.hero pointing at
   // hero.webp, only poster.jpg and thumbnail.jpg are on disk, and the check
   // printed "✅ Show images". Repo-wide there were 334 images.* refs pointing
   // at files absent from public/.
