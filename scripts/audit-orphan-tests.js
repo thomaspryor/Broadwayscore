@@ -222,10 +222,23 @@ function collectReferencedTests() {
   }
   // Manifest files are plain newline-separated path lists — no comments, no
   // YAML list syntax — so stripping is a deliberate no-op here, not applied.
+  //
+  // BRO-2751: a manifest entry only proves execution for a file `node --test`
+  // can actually run, because every manifest is fed straight to it. Since `sh`
+  // joined the scanned extensions, listing a *.test.sh in a manifest would
+  // otherwise satisfy this audit while guaranteeing a run-time failure for the
+  // wrong reason — an all-clear audit sitting on top of a broken invocation.
+  // Refuse the claim here so the maintainer is told "not registered" (true)
+  // instead of debugging a generic node error later.
   for (const manifestPath of MANIFEST_FILES) {
     if (!fs.existsSync(manifestPath)) continue;
     const content = fs.readFileSync(manifestPath, 'utf8');
-    for (const match of content.matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
+    for (const match of content.matchAll(REFERENCE_REGEX)) {
+      const name = match[0];
+      const ext = name.slice(name.lastIndexOf('.') + 1);
+      if (!NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) continue;
+      referenced.add(name);
+    }
   }
   return referenced;
 }
