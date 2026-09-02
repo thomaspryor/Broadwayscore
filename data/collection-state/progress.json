@@ -3294,7 +3294,17 @@
     "matilda-the-musical-west-end-2021/chicagotribune--chris-jones.json",
     "matilda-the-musical-west-end-2021/northjerseycom--robert-feldberg.json",
     "matilda-the-musical-west-end-2021/operawire--unknown.json",
-    "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json"
+    "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json",
+    "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
+    "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/nydailynews--howard-kissel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3458,7 +3468,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/nydailynews--howard-kissel.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -3913,6 +3923,28 @@
       "event": "bb-session",
       "session": "8b899975",
       "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
+    },
+    {
+      "t": "2026-09-02T12:55:42.573Z",
+      "event": "bb-session",
+      "session": "80e29049",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-02T12:55:46.752Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-02T12:56:05.032Z",
+      "event": "bb-session",
+      "session": "475c7b02",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-02T12:56:09.527Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
