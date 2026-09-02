@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-02T15:06:09.031Z",
-  "processed": 30,
-  "failed": 140,
-  "successRate": "17.6%",
+  "updatedAt": "2026-09-02T15:07:51.430Z",
+  "processed": 32,
+  "failed": 148,
+  "successRate": "17.8%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 22,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-02T14:58:45.828Z",
@@ -71,6 +71,17 @@
     },
     {
       "t": "2026-09-02T15:02:37.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-02T15:06:38.943Z",
+      "event": "bb-session",
+      "session": "0b9d1615",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-02T15:06:39.701Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
