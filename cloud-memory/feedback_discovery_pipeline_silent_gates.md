@@ -444,3 +444,32 @@ show than the directory the file sits in.
 **Fix applied that night:** wrongShow + all 8 protection fields, delete humanReviewScore and
 wrongShowManualClear so no clear-side guard resurrects it. rebuild+deploy dropped prod rv 2→1.
 **Systemic fix carded:** BRO-2746.
+
+## Gate: cross-market guard flags US trades reviewing West End (2026-09-02, Electra/Persona)
+
+`scripts/lib/cross-market-guard.js:358` flags ANY **registered** US-region outlet
+reviewing a London show as `wrongProduction`, with note
+`Cross-market: US outlet "<id>" reviewing London show`. That cascades to
+`contentTier=invalid` (`contentTierReason: "Wrong production"`) and
+`incompleteReason=wrong_content`, so the review is excluded from the rebuild AND
+skipped by ensemble scoring — a completed, green scoring run leaves
+`llmScore` undefined and looks exactly like scoring starvation. It is not.
+
+US international trades (Hollywood Reporter, Variety, Deadline) routinely review
+major West End openings. Hit: THR's complete 1352-word Demetrios Matheou review of
+Electra/Persona at the Lyttelton, published one day after opening — a 100% false
+positive. All four existing escape hatches missed it: outletRegion not in
+`UK_SIDE_REGIONS`; `isUkUrl('hollywoodreporter.com')` false; no `priorRuns` match;
+`contentVerification` absent so the CV-high-confidence override could not fire; and
+`hollywood-reporter` IS registered so the task-817 unregistered-outlet bootstrap
+exemption did not fire either.
+
+**Diagnostic tell:** an unscored review-texts file whose `contentTierReason` is
+"Wrong production" while its `fullText` is long and its own credits block names the
+London venue. Read `wrongProductionNote` FIRST — if it starts `Cross-market:`, this
+is the gate, not the scorer. Don't chase the scoring queue.
+
+**Fix tonight:** manual clear with the full protection-field set
+([[feedback_manual_review_protection_fields.md]]). **Systemic fix:** BRO-2749 — add
+an international-trade allowlist, preferably driven off an outlet-registry field
+rather than a hardcoded set.
