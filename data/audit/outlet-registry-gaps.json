@@ -1,12 +1,37 @@
 {
-  "generatedAt": "2026-09-02T14:51:40.987Z",
+  "generatedAt": "2026-09-02T15:16:52.549Z",
   "summary": {
-    "totalOutletsInReviews": 704,
-    "inRegistry": 704,
-    "missing": 0,
-    "unused": 465
+    "totalOutletsInReviews": 705,
+    "inRegistry": 702,
+    "missing": 3,
+    "unused": 467
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "thelondoner",
+      "count": 1,
+      "shows": [
+        "a-month-in-the-country-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/thelondoner--unknown.json"
+    },
+    {
+      "outletId": "vocaleyes",
+      "count": 1,
+      "shows": [
+        "electra-persona-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/electra-persona-west-end-2026/vocaleyes--unknown.json"
+    },
+    {
+      "outletId": "nyu",
+      "count": 1,
+      "shows": [
+        "masticate-off-broadway-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/masticate-off-broadway-2026/nyu--unknown.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1867,9 +1892,45 @@
     {
       "outletId": "thenorthernecho",
       "displayName": "Thenorthernecho"
+    },
+    {
+      "outletId": "priceless",
+      "displayName": "Priceless"
+    },
+    {
+      "outletId": "sueterryvoices",
+      "displayName": "Sueterryvoices"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "thelondoner",
+      "displayName": "thelondoner",
+      "tier": 3,
+      "aliases": [
+        "thelondoner"
+      ],
+      "domain": "thelondoner.com"
+    },
+    {
+      "outletId": "vocaleyes",
+      "displayName": "vocaleyes",
+      "tier": 3,
+      "aliases": [
+        "vocaleyes"
+      ],
+      "domain": "vocaleyes.co.uk"
+    },
+    {
+      "outletId": "nyu",
+      "displayName": "nyu",
+      "tier": 3,
+      "aliases": [
+        "nyu"
+      ],
+      "domain": "tisch.nyu.edu"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -3963,26 +4024,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--theo-bosanquet.json"
-      ]
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "outletId": "priceless",
-      "currentDisplayName": "priceless",
-      "expectedDisplayName": "Priceless",
-      "canonicalId": "priceless",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/priceless--unknown.json"
-      ]
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "outletId": "sueterryvoices",
-      "currentDisplayName": "sueterryvoices",
-      "expectedDisplayName": "Sueterryvoices",
-      "canonicalId": "sueterryvoices",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
       ]
     },
     {
