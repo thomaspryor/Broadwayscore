@@ -221,6 +221,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // shows they were mistakenly ingested for.
   { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
   { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
+  // Mirrors PR_FIRM_DOMAINS' nyu.edu. Required by the write-path/discovery-path
+  // parity test in non-review-url-patterns.test.mjs: without it a SERP census
+  // reports tisch.nyu.edu as an UNCOVERED review gap for
+  // masticate-off-broadway-2026, which is a phantom gap of exactly the kind
+  // that got real openings dropped from the 2026-08-03 newsletter.
+  { host: /(^|\.)nyu\.edu$/, reason: 'institutional-press-release' },
   // Same venue family as southbank.london, different domain — see the
   // matching comment in domain-filters.js's VENUE_DOMAINS.
   { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
