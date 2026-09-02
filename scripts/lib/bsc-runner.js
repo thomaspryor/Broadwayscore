@@ -228,7 +228,16 @@ function buildBudgetPreamble(timeoutMs) {
   return `[UNATTENDED TIME BUDGET] This headless session is hard-killed after ${min} minutes of wall-clock time. `
     + `Commit work-in-progress to your worktree branch after each meaningful step (never leave >15 min of work uncommitted). `
     + `By minute ${Math.max(5, min - 10)}, stop starting new work: commit everything and write a short STATE.md at the repo root `
-    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n\n`;
+    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n`
+    // BRO-2741: two dispatches of the same issue, a day apart, each launched a
+    // long batch with run_in_background, ended the turn, and had the task killed
+    // at teardown while still reporting success. Scoped to results you need on
+    // purpose -- a dev server or a genuine fire-and-forget side effect is fine.
+    + `Do NOT use run_in_background for work whose result you need: ending your turn while it is live kills it, `
+    + `and you will report success on work that was silently discarded. Run it as turn-sized batches instead, `
+    + `committing after each (a batch of ~12 items taking under a minute is a proven shape; 20 such batches `
+    + `moved 224 items with zero losses). Only wait on background work you started if you will still be `
+    + `in the same turn when it finishes.\n\n`;
 }
 
 async function runJob(opts) {

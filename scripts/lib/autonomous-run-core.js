@@ -126,7 +126,10 @@ function parseClaudeJson(stdout) {
 // content = the work itself was wrong → attempt 2 may escalate to Opus.
 // infra = environment/tooling flaked → retry on the same model, never escalate.
 const CONTENT_STAGES = new Set(['checks-failed', 'empty-diff', 'diff-refused', 'implementer-gave-up']);
-const INFRA_STAGES = new Set(['implementer-error', 'timeout', 'parse-error', 'git-error', 'branch-error', 'push-error']);
+const INFRA_STAGES = new Set(['implementer-error', 'timeout', 'parse-error', 'git-error', 'branch-error', 'push-error',
+  // BRO-2741: harness killed a background task the child started at teardown.
+  // Infra, not content: the worker's reasoning was fine, its work was discarded.
+  'background-task-killed']);
 
 function classifyFailure(stage) {
   if (CONTENT_STAGES.has(stage)) return 'content';
