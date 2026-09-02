@@ -63,7 +63,13 @@ const FS_WRITE_METHODS = [
   'symlinkSync', 'symlink', 'linkSync', 'link', 'chmodSync', 'chmod',
   'utimesSync', 'utimes', 'openSync',
 ];
-const FS_WRITE_RE = new RegExp(`(?<![\\w$])(?:${FS_WRITE_METHODS.join('|')})\\s*\\(`);
+// Bracket-notation property access is matched too: `fs['writeFileSync'](p, s)`
+// mutates identically and the identifier-shaped pattern alone never sees it
+// (second adversarial review). Same treatment for SPAWN_RE below.
+const bracketForm = (names) => `\\[\\s*['"\`](?:${names})['"\`]\\s*\\]\\s*\\(`;
+const FS_WRITE_RE = new RegExp(
+  `(?<![\\w$])(?:${FS_WRITE_METHODS.join('|')})\\s*\\(|${bracketForm(FS_WRITE_METHODS.join('|'))}`
+);
 
 // Constructs that defeat static scanning outright: code this scanner can
 // never have read. `eval` / `new Function` / `vm` / `worker_threads`, and a
@@ -98,7 +104,10 @@ const DYNAMIC_RE = /require\(\s*(?!(?:['"][^'"]*['"]|[A-Za-z_$][A-Za-z0-9_$]*)\s
 // separate RegExp lines). Requiring the call NOT be a property access keeps
 // `child_process.exec(...)` — which IS a spawn — matched via the
 // require-detection half of the alternation instead.
-const SPAWN_RE = /require\(\s*['"](?:node:)?child_process['"]\s*\)|(?<![.\w$])(?:execSync|execFileSync|spawnSync|execFile|spawn|fork)\s*\(/;
+const SPAWN_METHODS = 'execSync|execFileSync|spawnSync|execFile|spawn|fork';
+const SPAWN_RE = new RegExp(
+  `require\\(\\s*['"](?:node:)?child_process['"]\\s*\\)|(?<![.\\w$])(?:${SPAWN_METHODS})\\s*\\(|${bracketForm(SPAWN_METHODS)}`
+);
 
 // A check command is executed unattended. One that reaches the network can
 // burn metered credits (ScrapingBee/Bright Data), trip a rate limit, or POST

@@ -74,6 +74,35 @@ test('FS_WRITE_RE catches destructured fs writes, not just member calls', () => 
   assert.ok(audit.FS_WRITE_RE.test('  await fsp.rm(dir, { recursive: true });'), 'fsp.rm must trip');
 });
 
+test('FS_WRITE_RE and SPAWN_RE catch bracket-notation access', () => {
+  // `fs['writeFileSync'](p, s)` mutates identically to `fs.writeFileSync(p, s)`
+  // and the identifier-shaped pattern alone never sees it.
+  assert.ok(audit.FS_WRITE_RE.test("  fs['writeFileSync']('/tmp/x', 'data');"));
+  assert.ok(audit.FS_WRITE_RE.test('  fs["unlinkSync"](p);'));
+  assert.ok(audit.SPAWN_RE.test("  cp['execSync']('git commit -am x');"));
+  // A plain data lookup that happens to be bracketed must not trip.
+  assert.ok(!audit.FS_WRITE_RE.test("  const v = registry['outlets'];"));
+});
+
+test('nested-looking block comments fail CLOSED, not open', () => {
+  // JS block comments do not nest: `/* a /* b */` ends at the FIRST `*/`, so
+  // the trailing text is real code to the engine AND to this scanner. A review
+  // claimed this hid code; it does the opposite — the leftover line is still
+  // scanned and still flags. Pinned so a "fix" for the imagined hole cannot
+  // quietly turn it into a real one.
+  const os = require('node:os');
+  const fs = require('node:fs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'safeform-'));
+  try {
+    const f = path.join(dir, 'probe.js');
+    fs.writeFileSync(f, '/* outer /* inner */\nfs.writeFileSync(p, s);\n*/\n');
+    const res = audit.scanReadOnly(f, { transitive: false });
+    assert.equal(res.clean, false, 'the post-comment write must still be flagged');
+  } finally {
+    require('node:fs').rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('FS_WRITE_RE does not trip on stream writes that are not fs mutations', () => {
   assert.ok(!audit.FS_WRITE_RE.test('  process.stdout.write("hello");'));
   assert.ok(!audit.FS_WRITE_RE.test('  res.writeHead(200, headers);'));
