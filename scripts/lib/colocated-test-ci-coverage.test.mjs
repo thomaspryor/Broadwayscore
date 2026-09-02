@@ -40,7 +40,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { MANIFESTS } = require('./test-manifest.js');
+const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex } = require('./test-manifest.js');
 // Guarded by `if (require.main === module)`, so requiring it does not run the CLI.
 const { extractRunBlocks } = require('../audit-orphan-tests.js');
 
@@ -48,8 +48,19 @@ const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(LIB_DIR, '..', '..');
 const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 
-// A colocated test file, by any of the extensions `node --test` can run.
-const TEST_FILE_RE = /\.test\.(mjs|js|cjs|ts)$/;
+// A colocated test file, by any extension this repo writes tests in.
+//
+// BRO-2751: this list used to be `mjs|js|cjs|ts` — "the extensions `node --test`
+// can run" — which quietly re-opened the exact seam this file exists to close,
+// one extension over. scripts/lib holds 17 *.test.sh files; two of them
+// (disk-floor-check.test.sh, merge-worktree-to-main.post-merge-test-gate.test.sh)
+// ran in ZERO CI jobs, and this guard could not see them. A bash test IS a real
+// CI-executed test here — it just runs through a literal `run: bash <path>` step
+// (test.yml:3670+) rather than the node --test glob, which is precisely the
+// `runText.includes(relPath)` branch below. The list is now shared with
+// scripts/audit-orphan-tests.js via scripts/lib/test-manifest.js so the two
+// guards cannot drift apart again.
+const TEST_FILE_RE = testFileRegex();
 
 /**
  * Strip SHELL comments from a run: body.
@@ -183,13 +194,66 @@ test('every scripts/lib/*.test.* file is executed by CI (glob, consumed manifest
     uncovered.push(relPath);
   }
 
+  // The remedy differs by extension and the message has to say which, or it
+  // hands the reader impossible advice. A *.test.sh can NEVER be fixed by
+  // widening the node --test glob or by a manifest entry (both feed
+  // `node --test`, which cannot execute a shell script) — its only route to
+  // coverage is a literal `run: bash <path>` step. Telling a bash test's author
+  // to "add the extension to the glob" would send them to make CI red.
+  const shellUncovered = uncovered.filter((p) => !NODE_RUNNABLE_TEST_EXTENSIONS.includes(p.slice(p.lastIndexOf('.') + 1)));
+  const nodeUncovered = uncovered.filter((p) => !shellUncovered.includes(p));
+  const remedies = [];
+  if (nodeUncovered.length) {
+    remedies.push(
+      "  node tests — either add the extension to test.yml's scripts/lib glob, or list the " +
+        'file in tests/unit-test-manifest.txt (the glob is ONE level deep, so ' +
+        'scripts/lib/<subdir>/ tests always need an explicit entry):\n    ' +
+        nodeUncovered.join('\n    ')
+    );
+  }
+  if (shellUncovered.length) {
+    remedies.push(
+      '  bash tests — add a literal `run: bash <path>` step to the unit-tests job in ' +
+        'test.yml, next to the existing bash integration steps. A manifest entry and the ' +
+        'node --test glob BOTH feed `node --test` and cannot run a shell script:\n    ' +
+        shellUncovered.join('\n    ')
+    );
+  }
   assert.deepEqual(
     uncovered,
     [],
     'these scripts/lib tests run in NO CI job — the executed glob covers only ' +
       `${[...globExts].sort().join('/')}, no consumed manifest lists them, and no run: ` +
-      "body names them. Either add the extension to test.yml's scripts/lib glob, or " +
-      'list the file in tests/unit-test-manifest.txt (note the glob is ONE level deep, so scripts/lib/<subdir>/ tests always need an explicit entry):\n  ' +
-      uncovered.join('\n  ')
+      'body names them.\n' +
+      remedies.join('\n')
   );
+});
+
+// BRO-2751 regression pin. The check above is only as wide as TEST_FILE_RE, and
+// the whole class of bug this file exists to catch is an extension quietly
+// falling OUT of that pattern — which is exactly how 2 bash tests ran in zero
+// CI jobs while this guard reported all-clear. A narrowed regex makes the check
+// above pass with fewer files examined, i.e. the failure is silent and looks
+// like success. Pin the two properties that matter explicitly.
+test('the policed extension set covers bash tests, and node-runnable excludes them', () => {
+  assert.ok(
+    TEST_FILE_RE.test('x.test.sh'),
+    'TEST_FILE_RE no longer matches *.test.sh — colocated bash tests just became ' +
+      'invisible to the check above, which will keep passing while they run nowhere. ' +
+      'Restore `sh` in TEST_FILE_EXTENSIONS (scripts/lib/test-manifest.js).'
+  );
+  for (const ext of ['mjs', 'js', 'cjs', 'ts']) {
+    assert.ok(TEST_FILE_RE.test(`x.test.${ext}`), `TEST_FILE_RE stopped matching .test.${ext}`);
+  }
+  assert.ok(!TEST_FILE_RE.test('x.test.txt'), 'TEST_FILE_RE became too broad');
+
+  // The remedy-branching in the assertion above, and audit-orphan-tests.js's
+  // --list-exempt guard, both depend on `sh` being absent here. If `sh` ever
+  // joins this list, a bash test would be told to add itself to a manifest —
+  // advice that sends the reader to make CI red.
+  assert.ok(
+    !NODE_RUNNABLE_TEST_EXTENSIONS.includes('sh'),
+    '`sh` must never be node-runnable: node --test cannot execute a shell script'
+  );
+  assert.ok(NODE_RUNNABLE_TEST_EXTENSIONS.includes('mjs'), 'mjs must stay node-runnable');
 });
