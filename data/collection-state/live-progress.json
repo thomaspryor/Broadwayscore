@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-02T14:02:53.213Z",
-  "processed": 9,
-  "failed": 41,
-  "successRate": "18.0%",
+  "updatedAt": "2026-09-02T14:18:42.709Z",
+  "processed": 12,
+  "failed": 185,
+  "successRate": "6.1%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-02T13:54:50.754Z",
@@ -26,6 +26,40 @@
       "event": "bb-session",
       "session": "e81f6d7f",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-02T14:16:50.805Z",
+      "event": "bb-session",
+      "session": "4a504e53",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-02T14:16:51.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-02T14:17:09.059Z",
+      "event": "bb-session",
+      "session": "d17495fd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-02T14:17:10.027Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-02T14:18:01.052Z",
+      "event": "bb-session",
+      "session": "c62b6427",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-09-02T14:18:24.862Z",
+      "event": "bb-session",
+      "session": "29d95f53",
+      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
     }
   ]
 }
