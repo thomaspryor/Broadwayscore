@@ -322,6 +322,18 @@ describe('redaction placeholders are not submitter PII', () => {
     }
   });
 
+  test('a long domain is never truncated out of detection', () => {
+    // Fuzzing 220,026 cases against the pre-exemption implementation found this:
+    // a bounded-window-only scan cut the domain at 255 chars, so
+    // 'jane@' + 'a'.repeat(253) + '.com' stopped being flagged while the old
+    // code flagged it. A silent miss in a PII gate. 252 still flagged, which is
+    // exactly the shape of bug no hand-written case would have found.
+    for (const n of [63, 64, 65, 252, 253, 254, 260, 1000]) {
+      const s = `jane@${'a'.repeat(n)}.com`;
+      assert.ok(scanJsonValue({ x: s }).length > 0, `domain filler ${n} must still flag`);
+    }
+  });
+
   test('a rejected placeholder never yields a sub-match of itself', () => {
     // The mirror-image risk of the previous test. Resuming one character into
     // a rejected match finds 'EDACTED@github.com' inside 'gho_REDACTED@github

@@ -270,7 +270,7 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
   };
   // Pre-existing unmirrored hosts, frozen 2026-09-02 when this test was widened
   // from three sets to all seven. Every one predates the widening. They are
-  // BASELINED rather than mirrored because adding 19 hosts to the discovery
+  // BASELINED rather than mirrored because adding these 18 hosts to the discovery
   // path is a real behaviour change to SERP census coverage, not a cleanup —
   // some may be deliberately census-visible — and that needs its own analysis
   // per host. Tracked for draining; the point of the baseline is that a NEW
