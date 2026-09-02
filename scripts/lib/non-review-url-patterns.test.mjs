@@ -250,17 +250,60 @@ test('hostOf/registrableHost: canonical host normalization moved intact', () => 
 // catch it. A per-host convention that relies on remembering fails on the next
 // host; asserting the SETS agree fails the moment anyone forgets.
 test('parity: every write-path blocked domain is also blocked on the discovery path', () => {
-  const { VENUE_DOMAINS, PR_FIRM_DOMAINS, UGC_PLATFORM_DOMAINS } = domainFilters;
+  // ALL SEVEN sets isBlockedReviewUrl ORs together, not just three. Covering
+  // only VENUE/PR_FIRM/UGC is how vocaleyes.co.uk was added to a blocklist on
+  // 2026-09-02 with no discovery-path mirror and no test failure: it went into
+  // AGGREGATOR, which nothing here enumerated. A blocklist this test does not
+  // walk is a blocklist that can silently manufacture phantom SERP gaps.
+  const {
+    SOCIAL_DOMAINS, TICKET_DOMAINS, AGGREGATOR_DOMAINS, REFERENCE_DOMAINS,
+    VENUE_DOMAINS, PR_FIRM_DOMAINS, UGC_PLATFORM_DOMAINS,
+  } = domainFilters;
   const sets = {
+    SOCIAL_DOMAINS,
+    TICKET_DOMAINS,
+    AGGREGATOR_DOMAINS,
+    REFERENCE_DOMAINS,
     VENUE_DOMAINS,
     PR_FIRM_DOMAINS,
     UGC_PLATFORM_DOMAINS,
   };
+  // Pre-existing unmirrored hosts, frozen 2026-09-02 when this test was widened
+  // from three sets to all seven. Every one predates the widening. They are
+  // BASELINED rather than mirrored because adding these 18 hosts to the discovery
+  // path is a real behaviour change to SERP census coverage, not a cleanup —
+  // some may be deliberately census-visible — and that needs its own analysis
+  // per host. Tracked for draining; the point of the baseline is that a NEW
+  // blocklist entry with no mirror still fails, which is the bug this test
+  // exists to catch. Only ever shrink this list.
+  const KNOWN_UNMIRRORED = new Set([
+    'SOCIAL_DOMAINS: youtu.be',
+    'SOCIAL_DOMAINS: tumblr.com',
+    'SOCIAL_DOMAINS: vimeo.com',
+    'SOCIAL_DOMAINS: spotify.com',
+    'SOCIAL_DOMAINS: music.amazon.com',
+    'SOCIAL_DOMAINS: apple.com',
+    'AGGREGATOR_DOMAINS: show-score.com',
+    'AGGREGATOR_DOMAINS: showscore.com',
+    'AGGREGATOR_DOMAINS: ibdb.com',
+    'AGGREGATOR_DOMAINS: lovelondonloveculture.com',
+    'AGGREGATOR_DOMAINS: westendtheatre.com',
+    'AGGREGATOR_DOMAINS: broadwayacrossamerica.com',
+    'AGGREGATOR_DOMAINS: broadway.org.uk',
+    'AGGREGATOR_DOMAINS: londonsbroadwaybuzz.ca',
+    'AGGREGATOR_DOMAINS: stagedoor.com',
+    'AGGREGATOR_DOMAINS: theatreandartreviews.com',
+    'REFERENCE_DOMAINS: amazon.com',
+    'REFERENCE_DOMAINS: iloveny.com',
+  ]);
+
   const missed = [];
   for (const [setName, set] of Object.entries(sets)) {
     for (const domain of set) {
+      const key = `${setName}: ${domain}`;
+      if (KNOWN_UNMIRRORED.has(key)) continue;
       const verdict = classifyReviewUrl(`https://${domain}/some/path`);
-      if (verdict.ok !== false) missed.push(`${setName}: ${domain}`);
+      if (verdict.ok !== false) missed.push(key);
     }
   }
   assert.deepEqual(

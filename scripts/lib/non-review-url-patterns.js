@@ -227,6 +227,11 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // masticate-off-broadway-2026, which is a phantom gap of exactly the kind
   // that got real openings dropped from the 2026-08-03 newsletter.
   { host: /(^|\.)nyu\.edu$/, reason: 'institutional-press-release' },
+  // Mirrors AGGREGATOR_DOMAINS' vocaleyes.co.uk, for the same phantom-gap
+  // reason. This one was missed on the first pass because the parity test only
+  // enumerated VENUE/PR_FIRM/UGC — see the test, which now covers all seven
+  // sets so an AGGREGATOR/REFERENCE/SOCIAL entry can never slip through again.
+  { host: /(^|\.)vocaleyes\.co\.uk$/, reason: 'access-listings-page' },
   // Same venue family as southbank.london, different domain — see the
   // matching comment in domain-filters.js's VENUE_DOMAINS.
   { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
