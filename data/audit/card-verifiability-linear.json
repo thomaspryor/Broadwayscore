@@ -1,15 +1,151 @@
 {
-  "generatedAt": "2026-09-01T11:39:46.521Z",
+  "generatedAt": "2026-09-02T14:06:58.954Z",
   "total": 300,
   "armedCount": 47,
   "refusedCount": 253,
   "byKind": {
-    "basename": 5,
-    "no-command": 118,
-    "no-section": 93,
-    "shape": 37
+    "no-section": 95,
+    "no-command": 110,
+    "shape": 41,
+    "basename": 7
   },
   "refused": [
+    {
+      "id": "BRO-2739",
+      "name": "P1: opening-night monitor reports never page — conditionKey missing from page-worthy allowlist",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2739/p1-opening-night-monitor-reports-never-page-conditionkey-missing-from",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-2736",
+      "name": "BSC Daily: Workflow repeat-failure: Gather Review Data — electra-persona-west-end-2026",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2736/bsc-daily-workflow-repeat-failure-gather-review-data-electra-persona",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2735",
+      "name": "P1: _pending zero-text stubs silently swallow T1/T2 reviews — drain rejects them and census cannot see them",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2735/p1-pending-zero-text-stubs-silently-swallow-t1t2-reviews-drain-rejects",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/replay-pending-bylines.js --show=electra-persona-west-end-2026 --dry-run)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2734",
+      "name": "P1: opening-night poller reports FAILURE on backlog collect attrition, masking real in-window collect failures",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2734/p1-opening-night-poller-reports-failure-on-backlog-collect-attrition",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh run list --workflow=opening-night-poller.yml --limit 5 --json databaseId,conclusion)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2733",
+      "name": "P1: newly-ingested review-text passes all exclusion checks but is silently skipped by scoring, so rebuild never emits it",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2733/p1-newly-ingested-review-text-passes-all-exclusion-checks-but-is",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/verify-review-recovery.js --show=electra-persona-west-end-2026 --production)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2732",
+      "name": "P0: rebuild-reviews.yml push step fails every run - rebuilt reviews.json is DISCARDED, no new review can reach prod",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2732/p0-rebuild-reviewsyml-push-step-fails-every-run-rebuilt-reviewsjson-is",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-2731",
+      "name": "P1: unregistered outlet domains are invisible to coverage telemetry — 2 missed T3 reviews on electra-persona in one night",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2731/p1-unregistered-outlet-domains-are-invisible-to-coverage-telemetry-2",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/outlet-registry-census-reconciler.js --show=electra-persona-west-end-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2730",
+      "name": "P1: West End press nights have NO scheduled review discovery between ~19:00Z and ~06:30Z next day",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2730/p1-west-end-press-nights-have-no-scheduled-review-discovery-between",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const y=require('fs').readFileSync('.github/workflows/opening-night-orchestrator.yml','utf8'); const hours=[...)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2729",
+      "name": "P1: fetchPage() Playwright path uses waitUntil:networkidle, which never settles on WordPress blogs -> total fetch failure",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2729/p1-fetchpage-playwright-path-uses-waituntilnetworkidle-which-never",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/ingest-review-from-url.js --show=electra-persona-west-end-2026 --url=[https://maryamphilpottblog.wordpress.)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2728",
+      "name": "rebuild-all-reviews.js intermittently emits TWO reviews.json entries for the same review (same show/outlet/critic/URL) with different assignedScore",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2728/rebuild-all-reviewsjs-intermittently-emits-two-reviewsjson-entries-for",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2727",
+      "name": "audit-critic-outlets.js keys off stale filename outletId, not the JSON outletId field — 3 legit timeout-london reviews misfiled as 'timeout' redden the gate",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2727/audit-critic-outletsjs-keys-off-stale-filename-outletid-not-the-json",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2726",
+      "name": "theatre.reviews scraper truncates leading char(s) of outlet/critic name and excerpt, producing corrupted outletIds (time-ou, he-standard)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2726/theatrereviews-scraper-truncates-leading-chars-of-outletcritic-name",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2725",
+      "name": "audit-unknown-outlets.js ignores isBlockedReviewUrl, so corpus-drift keeps counting already-excluded hosts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2725/audit-unknown-outletsjs-ignores-isblockedreviewurl-so-corpus-drift",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-unknown-outlets.js)",
+      "kind": "basename"
+    },
+    {
+      "id": "BRO-2722",
+      "name": "BSC Daily: Workflow repeat-failure: LLM Ensemble Score Reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2722/bsc-daily-workflow-repeat-failure-llm-ensemble-score-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2721",
+      "name": "BSC Daily: Credits: ScrapingBee",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2721/bsc-daily-credits-scrapingbee",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2720",
+      "name": "audit-card-verifiability.js measures only the retired Notion board - Linear dispatchability is unmeasured, and three Linear cards were refused this session",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2720/audit-card-verifiabilityjs-measures-only-the-retired-notion-board",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-card-verifiability.js)",
+      "kind": "basename"
+    },
+    {
+      "id": "BRO-2719",
+      "name": "Tracked high-frequency audit logs block git pull on the shared main checkout (5 stalls in one session)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2719/tracked-high-frequency-audit-logs-block-git-pull-on-the-shared-main",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: git status --porcelain data/audit/ | wc -l)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-2717",
       "name": "Outlet-registry --strict gate is a recurring treadmill: every new outlet gather-reviews finds turns main red",
@@ -1897,142 +2033,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2316/generalize-audit-regex-patternsjss-title-exclusion-audit-into-a-shared",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
-    },
-    {
-      "id": "BRO-2313",
-      "name": "reconcile-dead-completions proposes reopening tasks whose fix is already on origin/main (3/3 false positives)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2313/reconcile-dead-completions-proposes-reopening-tasks-whose-fix-is",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/reconcile-dead-completions.js --dry-run)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2312",
-      "name": "pre-push-visual-gate test suite: 4 of 8 tests permanently skipped on a missing fixture worktree",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2312/pre-push-visual-gate-test-suite-4-of-8-tests-permanently-skipped-on-a",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2311",
-      "name": "infra-plan-review-gate is bypassed by any script that writes a gated file",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2311/infra-plan-review-gate-is-bypassed-by-any-script-that-writes-a-gated",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2310",
-      "name": "infra review gate: a fail verdict does not actually require an owner-override to overturn",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2310/infra-review-gate-a-fail-verdict-does-not-actually-require-an-owner",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2304",
-      "name": "origin/claude/ios-session-behavior-review-zadpk1 lost a CI-pushed commit (unknown workflow)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2304/originclaudeios-session-behavior-review-zadpk1-lost-a-ci-pushed-commit",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2303",
-      "name": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2303/cron-stale-3-consecutive-days-commercial-friday-refresh",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2300",
-      "name": "T1/T2 silent gap on near-opening show: As You Like It - Globe — thestage",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2300/t1t2-silent-gap-on-near-opening-show-as-you-like-it-globe-thestage",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2297",
-      "name": "BSC Daily: Quality: coverageExpectation drift",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2297/bsc-daily-quality-coverageexpectation-drift",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2296",
-      "name": "BSC Daily: Coverage: SERP census recall",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2296/bsc-daily-coverage-serp-census-recall",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2295",
-      "name": "BSC Daily: Quality: outlet invalid-content rate",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2295/bsc-daily-quality-outlet-invalid-content-rate",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2292",
-      "name": "BSC Daily: Workflow repeat-failure: Audit Imageless Scored Shows",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2292/bsc-daily-workflow-repeat-failure-audit-imageless-scored-shows",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2289",
-      "name": "BSC Daily: Workflow repeat-failure: Collect WE/OB Review Texts",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2289/bsc-daily-workflow-repeat-failure-collect-weob-review-texts",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2286",
-      "name": "BSC Daily: Revenue: affiliate health",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2286/bsc-daily-revenue-affiliate-health",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2285",
-      "name": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2285/cron-stale-3-consecutive-days-commercial-weekly-orchestrator",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2284",
-      "name": "Extend BRO-591 ground-truth manifest to abigails-party-west-end-2026 for a live Day-N replay (real opening-window test)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2284/extend-bro-591-ground-truth-manifest-to-abigails-party-west-end-2026",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2283",
-      "name": "audit-self-contradictory-clears.js reports 0 files scanned even on a show with a confirmed contradiction (417-file corpus-wide undercount)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2283/audit-self-contradictory-clearsjs-reports-0-files-scanned-even-on-a",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-self-contradictory-clears.js --show=john-proctor-is-the-villain-west-end-2026)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2282",
-      "name": "WE reviews: 285 files across 71 shows have real scores blocked by needsReview (already-scored articleType misclassification)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2282/we-reviews-285-files-across-71-shows-have-real-scores-blocked-by",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/simulate-we-opening-night-coverage.js --show=john-proctor-is-the-villain-west-end-2026)",
-      "kind": "shape"
     }
   ]
 }
