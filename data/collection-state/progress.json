@@ -1414,7 +1414,17 @@
     "burlesque-west-end-2026/broadwayworld--unknown.json",
     "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
     "burlesque-west-end-2026/north-west-end--greg-holstead.json",
-    "burlesque-west-end-2026/north-west-end--leanne-rushton.json"
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1477,7 +1487,8 @@
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -1533,7 +1544,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -1755,6 +1766,17 @@
       "event": "bb-session",
       "session": "7d8516d4",
       "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-09-02T03:06:32.601Z",
+      "event": "bb-session",
+      "session": "0852c48c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-02T03:06:33.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

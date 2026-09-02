@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-02T03:05:31.716Z",
+  "updatedAt": "2026-09-02T03:06:53.895Z",
   "processed": 81,
-  "failed": 1332,
+  "failed": 1342,
   "successRate": "5.7%",
   "tierBreakdown": {
     "playwright": 44,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 13,
     "directCookies": 2,
     "scrapingbee": 19,
     "brightdata": 6,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-09-01T21:36:41.530Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-01T21:43:04.432Z",
-      "event": "bb-session",
-      "session": "c733fe15",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
     {
       "t": "2026-09-01T21:47:26.313Z",
       "event": "bb-session",
@@ -130,6 +119,17 @@
       "event": "bb-session",
       "session": "7d8516d4",
       "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-09-02T03:06:32.601Z",
+      "event": "bb-session",
+      "session": "0852c48c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-02T03:06:33.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
