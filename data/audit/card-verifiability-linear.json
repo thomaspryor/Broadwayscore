@@ -1,15 +1,151 @@
 {
-  "generatedAt": "2026-09-01T11:39:46.521Z",
+  "generatedAt": "2026-09-02T14:23:41.779Z",
   "total": 300,
-  "armedCount": 47,
-  "refusedCount": 253,
+  "armedCount": 113,
+  "refusedCount": 187,
   "byKind": {
-    "basename": 5,
-    "no-command": 118,
-    "no-section": 93,
-    "shape": 37
+    "no-section": 32,
+    "no-command": 107,
+    "shape": 41,
+    "basename": 7
   },
   "refused": [
+    {
+      "id": "BRO-2739",
+      "name": "P1: opening-night monitor reports never page — conditionKey missing from page-worthy allowlist",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2739/p1-opening-night-monitor-reports-never-page-conditionkey-missing-from",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-2736",
+      "name": "BSC Daily: Workflow repeat-failure: Gather Review Data — electra-persona-west-end-2026",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2736/bsc-daily-workflow-repeat-failure-gather-review-data-electra-persona",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2735",
+      "name": "P1: _pending zero-text stubs silently swallow T1/T2 reviews — drain rejects them and census cannot see them",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2735/p1-pending-zero-text-stubs-silently-swallow-t1t2-reviews-drain-rejects",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/replay-pending-bylines.js --show=electra-persona-west-end-2026 --dry-run)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2734",
+      "name": "P1: opening-night poller reports FAILURE on backlog collect attrition, masking real in-window collect failures",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2734/p1-opening-night-poller-reports-failure-on-backlog-collect-attrition",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh run list --workflow=opening-night-poller.yml --limit 5 --json databaseId,conclusion)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2733",
+      "name": "P1: newly-ingested review-text passes all exclusion checks but is silently skipped by scoring, so rebuild never emits it",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2733/p1-newly-ingested-review-text-passes-all-exclusion-checks-but-is",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/verify-review-recovery.js --show=electra-persona-west-end-2026 --production)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2732",
+      "name": "P0: rebuild-reviews.yml push step fails every run - rebuilt reviews.json is DISCARDED, no new review can reach prod",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2732/p0-rebuild-reviewsyml-push-step-fails-every-run-rebuilt-reviewsjson-is",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-2731",
+      "name": "P1: unregistered outlet domains are invisible to coverage telemetry — 2 missed T3 reviews on electra-persona in one night",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2731/p1-unregistered-outlet-domains-are-invisible-to-coverage-telemetry-2",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/outlet-registry-census-reconciler.js --show=electra-persona-west-end-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2730",
+      "name": "P1: West End press nights have NO scheduled review discovery between ~19:00Z and ~06:30Z next day",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2730/p1-west-end-press-nights-have-no-scheduled-review-discovery-between",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const y=require('fs').readFileSync('.github/workflows/opening-night-orchestrator.yml','utf8'); const hours=[...)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2729",
+      "name": "P1: fetchPage() Playwright path uses waitUntil:networkidle, which never settles on WordPress blogs -> total fetch failure",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2729/p1-fetchpage-playwright-path-uses-waituntilnetworkidle-which-never",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/ingest-review-from-url.js --show=electra-persona-west-end-2026 --url=[https://maryamphilpottblog.wordpress.)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-2728",
+      "name": "rebuild-all-reviews.js intermittently emits TWO reviews.json entries for the same review (same show/outlet/critic/URL) with different assignedScore",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2728/rebuild-all-reviewsjs-intermittently-emits-two-reviewsjson-entries-for",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2727",
+      "name": "audit-critic-outlets.js keys off stale filename outletId, not the JSON outletId field — 3 legit timeout-london reviews misfiled as 'timeout' redden the gate",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2727/audit-critic-outletsjs-keys-off-stale-filename-outletid-not-the-json",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2726",
+      "name": "theatre.reviews scraper truncates leading char(s) of outlet/critic name and excerpt, producing corrupted outletIds (time-ou, he-standard)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2726/theatrereviews-scraper-truncates-leading-chars-of-outletcritic-name",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2725",
+      "name": "audit-unknown-outlets.js ignores isBlockedReviewUrl, so corpus-drift keeps counting already-excluded hosts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2725/audit-unknown-outletsjs-ignores-isblockedreviewurl-so-corpus-drift",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-unknown-outlets.js)",
+      "kind": "basename"
+    },
+    {
+      "id": "BRO-2722",
+      "name": "BSC Daily: Workflow repeat-failure: LLM Ensemble Score Reviews",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2722/bsc-daily-workflow-repeat-failure-llm-ensemble-score-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2721",
+      "name": "BSC Daily: Credits: ScrapingBee",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2721/bsc-daily-credits-scrapingbee",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2720",
+      "name": "audit-card-verifiability.js measures only the retired Notion board - Linear dispatchability is unmeasured, and three Linear cards were refused this session",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2720/audit-card-verifiabilityjs-measures-only-the-retired-notion-board",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-card-verifiability.js)",
+      "kind": "basename"
+    },
+    {
+      "id": "BRO-2719",
+      "name": "Tracked high-frequency audit logs block git pull on the shared main checkout (5 stalls in one session)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2719/tracked-high-frequency-audit-logs-block-git-pull-on-the-shared-main",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: git status --porcelain data/audit/ | wc -l)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-2717",
       "name": "Outlet-registry --strict gate is a recurring treadmill: every new outlet gather-reviews finds turns main red",
@@ -1363,676 +1499,12 @@
       "kind": "no-section"
     },
     {
-      "id": "BRO-2407",
-      "name": "Reviews with fullText added or wrongProduction false-positive cleared don't auto-flag needsRescore — scores go stale silently",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2407/reviews-with-fulltext-added-or-wrongproduction-false-positive-cleared",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2406",
-      "name": "P1: Cross-outlet syndication duplicates re-enter reviews.json (3rd incident — Chicago Tribune/Chris Jones recurred after delete)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2406/p1-cross-outlet-syndication-duplicates-re-enter-reviewsjson-3rd",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2405",
-      "name": "CI red: 2 new flag-vs-CV contradictions (paranormal-activity-2026)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2405/ci-red-2-new-flag-vs-cv-contradictions-paranormal-activity-2026",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2404",
-      "name": "P1: sync-memory-to-repo.sh pull --rebase wedges shared main checkout (#1893)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2404/p1-sync-memory-to-reposh-pull-rebase-wedges-shared-main-checkout-1893",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
       "id": "BRO-2403",
       "name": "P1: critic personal-repost sites ingested as independent outlets (double-counts one critic)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2403/p1-critic-personal-repost-sites-ingested-as-independent-outlets-double",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-2402",
-      "name": "Opening Night Express fires too early for evening openings, never retries when it finds 0 real reviews",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2402/opening-night-express-fires-too-early-for-evening-openings-never",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2401",
-      "name": "Reddit post: Paranormal Activity opening + pre-Broadway reveal",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2401/reddit-post-paranormal-activity-opening-pre-broadway-reveal",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2398",
-      "name": "Aggregator-archive cache poisoning: 3 new bad BWW archives blocking Data Validation CI",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2398/aggregator-archive-cache-poisoning-3-new-bad-bww-archives-blocking",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2397",
-      "name": "P1: Mac-local checkout dirty-outside-audit blocking launchd sync — stalls digest/predispatch-queue-audit/backlog-drain",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2397/p1-mac-local-checkout-dirty-outside-audit-blocking-launchd-sync-stalls",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2396",
-      "name": "P1: audit-aggregator-gap.yml regressed after task #1791 fix + check-show-freshness.yml failing 2 days straight",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2396/p1-audit-aggregator-gapyml-regressed-after-task-1791-fix-check-show",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2395",
-      "name": "Audit ~29 stale wrongProductionManualClear review-text files for genuinely-wrong content",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2395/audit-29-stale-wrongproductionmanualclear-review-text-files-for",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2394",
-      "name": "Visual-QA, ship-check, and skill-redaction push gates are Bash-only — bypassed by MCP-based pushes in cloud",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2394/visual-qa-ship-check-and-skill-redaction-push-gates-are-bash-only",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2393",
-      "name": "All ticket clicks routing through TodayTix only — no diversification",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2393/all-ticket-clicks-routing-through-todaytix-only-no-diversification",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2392",
-      "name": "Low ticket click volume relative to pageview traffic",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2392/low-ticket-click-volume-relative-to-pageview-traffic",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2391",
-      "name": "Investigate BRO-318 stale-backpointer recurrence: dedupe-same-url-bylines.js gate vs fix-canonical-duplicate-backpointer.js gap",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2391/investigate-bro-318-stale-backpointer-recurrence-dedupe-same-url",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2390",
-      "name": "main is red: duplicate review URL blocking validate-data.js (Loves Labours Lost Globe WE 2026)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2390/main-is-red-duplicate-review-url-blocking-validate-datajs-loves",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2389",
-      "name": "push-via-git-api.sh fallback failing with 'non-race reason' even when disqualifier eligibility is correct",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2389/push-via-git-apish-fallback-failing-with-non-race-reason-even-when",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2388",
-      "name": "Fetch-depth:1 exposure — 20 more workflows share task #466's push-race risk",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2388/fetch-depth1-exposure-20-more-workflows-share-task-466s-push-race-risk",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2387",
-      "name": "BRO-580: Connect feedback/review forms to Notion",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2387/bro-580-connect-feedbackreview-forms-to-notion",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2386",
-      "name": "Cousin bug: hand-rolled findMatching/findMatchingParen in audit-help-flag-safety.js and audit-same-job-breadcrumb-coverage.js desync on regex literals",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2386/cousin-bug-hand-rolled-findmatchingfindmatchingparen-in-audit-help",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2385",
-      "name": "CI red: 2 new flag-vs-CV contradictions (a-christmas-carol-west-end-2026, the-imaginary-invalid-2026)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2385/ci-red-2-new-flag-vs-cv-contradictions-a-christmas-carol-west-end-2026",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2384",
-      "name": "Investigate: Notion card reverted Done→Not started after Auto-closed, resurfaced as duplicate Linear card BRO-111",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2384/investigate-notion-card-reverted-donenot-started-after-auto-closed",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2383",
-      "name": "Systemic fetch()/https.get() timeout audit across scripts/ (BRO-108 follow-up, repo-wide)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2383/systemic-fetchhttpsget-timeout-audit-across-scripts-bro-108-follow-up",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2381",
-      "name": "Fix confirmed REVIEW_TEXTS_TOKEN gap: collect-review-texts.js checkpoint pushes silently no-op",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2381/fix-confirmed-review-texts-token-gap-collect-review-textsjs-checkpoint",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2380",
-      "name": "Extend infra-review-scope.js push-path gate to cover .github/actions/push-*/action.yml",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2380/extend-infra-review-scopejs-push-path-gate-to-cover-githubactionspush",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2379",
-      "name": "Generalize sticky-flag repeat-vs-new categorization into daily digest exclusion trend",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2379/generalize-sticky-flag-repeat-vs-new-categorization-into-daily-digest",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2378",
-      "name": "Audit tool: catch workflows silently missing secrets their scripts require",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2378/audit-tool-catch-workflows-silently-missing-secrets-their-scripts",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2377",
-      "name": "send-opening-night-broadcast.js: sync tracker to origin on draft creation (not just preview)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2377/send-opening-night-broadcastjs-sync-tracker-to-origin-on-draft",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2376",
-      "name": "reconcile-broadcast-state.js writes opening-night-sent.json locally with no origin sync (manual/CLI runs invisible to CI, same class as BRO-60)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2376/reconcile-broadcast-statejs-writes-opening-night-sentjson-locally-with",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2375",
-      "name": "Column-count brittleness cousins: 4 scrapers still read cells[N] by fixed position after assertTableSchema",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2375/column-count-brittleness-cousins-4-scrapers-still-read-cellsn-by-fixed",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2374",
-      "name": "Triage 28 late-add-flagged shows with no priorRuns/transferOf link",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2374/triage-28-late-add-flagged-shows-with-no-priorrunstransferof-link",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2373",
-      "name": "P0: push-with-retry.sh shallow-fetch fails identically on every retry under heavy churn (rc=128, discovered via task #1842)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2373/p0-push-with-retrysh-shallow-fetch-fails-identically-on-every-retry",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2372",
-      "name": "P1: morning-digest's real (non-refused) auto-fix dispatch is unguarded by any checkout-freshness OR complete kill-switch coverage — LINEAR_NEXT_DISABLED never set",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2372/p1-morning-digests-real-non-refused-auto-fix-dispatch-is-unguarded-by",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2371",
-      "name": "Extend outlet-alias-collision detector to hyphen/concatenated near-duplicates",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2371/extend-outlet-alias-collision-detector-to-hyphenconcatenated-near",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2370",
-      "name": "P0: data-health-check.yml push-with-retry deadline exhaustion — same class as task #1791, never applied here",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2370/p0-data-health-checkyml-push-with-retry-deadline-exhaustion-same-class",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2368",
-      "name": "CI health #1581: verify+lock in test.yml concurrency fix with regression test",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2368/ci-health-1581-verifylock-in-testyml-concurrency-fix-with-regression",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2367",
-      "name": "Duplicate Vulture URL across 2 bylines on queen-versailles-2025 blocks main CI (Sara Holdren / David Fox)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2367/duplicate-vulture-url-across-2-bylines-on-queen-versailles-2025-blocks",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2365",
-      "name": "Silent overwrite: 2nd review by same critic+outlet for same show clobbers 1st",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2365/silent-overwrite-2nd-review-by-same-criticoutlet-for-same-show",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2364",
-      "name": "P1: sync-audit-checkout reset path cannot clear a NEWLY-ADDED staged data/audit snapshot, wedging every launchd job",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2364/p1-sync-audit-checkout-reset-path-cannot-clear-a-newly-added-staged",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2363",
-      "name": "P1: 22 worktrees hold 36 unpushed commits (31GB) — no audit surfaces them, and closing their tabs orphans the work",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2363/p1-22-worktrees-hold-36-unpushed-commits-31gb-no-audit-surfaces-them",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2362",
-      "name": "Feedback auto-fix scopes multi-show reports to a single showId — second show silently dropped (issue #515)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2362/feedback-auto-fix-scopes-multi-show-reports-to-a-single-showid-second",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2361",
-      "name": "Time-boxed: can the real-browser login method beat newspapers.com's viewer? (access ends 2026-08-27)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2361/time-boxed-can-the-real-browser-login-method-beat-newspaperscoms",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2360",
-      "name": "P1: WSJ URL re-discovery + refetch for 33 recent wrong_content files (finish owner mandate: all WSJ full texts)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2360/p1-wsj-url-re-discovery-refetch-for-33-recent-wrong-content-files",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2359",
-      "name": "RECHECK FAILED: context-budget guard fix (task #1344/commits 54d8702+787a898) has NOT reduced above-200K spend",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2359/recheck-failed-context-budget-guard-fix-task-1344commits",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2358",
-      "name": "P1: opening-night-poller auto runs cancel-cascade — 6 of 8 cancelled, 5h discovery dead zone on press night",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2358/p1-opening-night-poller-auto-runs-cancel-cascade-6-of-8-cancelled-5h",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2357",
-      "name": "P0 fix: Sound of Music dup blocks update-show-status.yml (#1786)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2357/p0-fix-sound-of-music-dup-blocks-update-show-statusyml-1786",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2356",
-      "name": "P1: main red — flag-vs-CV contradiction, the-pass-off-broadway-2026 broadwayworld--nicole-rosky.json",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2356/p1-main-red-flag-vs-cv-contradiction-the-pass-off-broadway-2026",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2355",
-      "name": "P1: CI red on main — outlet-registry.json domain collision, heraldscotland.com claimed by both herald and the-herald",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2355/p1-ci-red-on-main-outlet-registryjson-domain-collision",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2354",
-      "name": "Notion→Linear cutover Sprint 3: ledger apply, dedupe removal, idempotent importer",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2354/notionlinear-cutover-sprint-3-ledger-apply-dedupe-removal-idempotent",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2353",
-      "name": "record-push-ledger.js prints the git remote URL verbatim, leaking the embedded GitHub token into logs",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2353/record-push-ledgerjs-prints-the-git-remote-url-verbatim-leaking-the",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2352",
-      "name": "P1: prove the BWW roundup fix actually recovers reviews — yield provenance + Broadway replay + missing 4th roundup",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2352/p1-prove-the-bww-roundup-fix-actually-recovers-reviews-yield",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2351",
-      "name": "Wire headless dispatch success rate into the daily digest",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2351/wire-headless-dispatch-success-rate-into-the-daily-digest",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2349",
-      "name": "CI red: lint-resend-calls.js flags scripts/newsletter/verify-sent-vs-state.mjs (read-only GET, not a send)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2349/ci-red-lint-resend-callsjs-flags-scriptsnewsletterverify-sent-vs",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2348",
-      "name": "WE long-runner CV hardening (follow-up to wrongProduction clear)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2348/we-long-runner-cv-hardening-follow-up-to-wrongproduction-clear",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2347",
-      "name": "Tier 2: Stale wrongProduction recovery — find current review when old URL was SERP-matched",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2347/tier-2-stale-wrongproduction-recovery-find-current-review-when-old-url",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2330",
-      "name": "Commercial Scorecard: signup-gate the entire card (blur + preview for signed-out users)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2330/commercial-scorecard-signup-gate-the-entire-card-blur-preview-for",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2329",
-      "name": "Network-tier publishDate backfill: close the remaining ~2900 undated reviews",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2329/network-tier-publishdate-backfill-close-the-remaining-2900-undated",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2328",
-      "name": "Audit gate: catch workflows that write a CORE_FILES path but never call push-core-data",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2328/audit-gate-catch-workflows-that-write-a-core-files-path-but-never-call",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2327",
-      "name": "Generalize outlet stub-rate monitor to invalid-tier extraction failures",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2327/generalize-outlet-stub-rate-monitor-to-invalid-tier-extraction",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2326",
-      "name": "Infra: opening-night-sent.json sync has no timestamp-aware conflict resolution across concurrent writers",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2326/infra-opening-night-sentjson-sync-has-no-timestamp-aware-conflict",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2325",
-      "name": "Email triage: trunk RED / Data Validation failing, Data Health Check crash, Opening Night Express fail (paranormal-activity-2026), scraper cost + PR backlog",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2325/email-triage-trunk-red-data-validation-failing-data-health-check-crash",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2324",
-      "name": "P1: cycle-clear leaves same-URL review clusters fully unsuppressed; no placeholder-byline canonical rule",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2324/p1-cycle-clear-leaves-same-url-review-clusters-fully-unsuppressed-no",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2323",
-      "name": "clear-stale-roundup-flags.js has no schedule — 6-review backlog silently dropped from scoring",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2323/clear-stale-roundup-flagsjs-has-no-schedule-6-review-backlog-silently",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2322",
-      "name": "Audit push-with-retry.sh callers for the same job-timeout/retry-budget undersizing class as #1842 and #1891",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2322/audit-push-with-retrysh-callers-for-the-same-job-timeoutretry-budget",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2321",
-      "name": "Wire exclusion-rule-census.js into check-corpus-drift.js's daily digest",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2321/wire-exclusion-rule-censusjs-into-check-corpus-driftjss-daily-digest",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2320",
-      "name": "Cross-check explainExclusion() mirror vs rebuild-all-reviews.js's real exclusion log for drift",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2320/cross-check-explainexclusion-mirror-vs-rebuild-all-reviewsjss-real",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2316",
-      "name": "Generalize audit-regex-patterns.js's title-exclusion audit into a shared registry (not one require() per script)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2316/generalize-audit-regex-patternsjss-title-exclusion-audit-into-a-shared",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2313",
-      "name": "reconcile-dead-completions proposes reopening tasks whose fix is already on origin/main (3/3 false positives)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2313/reconcile-dead-completions-proposes-reopening-tasks-whose-fix-is",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/reconcile-dead-completions.js --dry-run)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2312",
-      "name": "pre-push-visual-gate test suite: 4 of 8 tests permanently skipped on a missing fixture worktree",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2312/pre-push-visual-gate-test-suite-4-of-8-tests-permanently-skipped-on-a",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2311",
-      "name": "infra-plan-review-gate is bypassed by any script that writes a gated file",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2311/infra-plan-review-gate-is-bypassed-by-any-script-that-writes-a-gated",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2310",
-      "name": "infra review gate: a fail verdict does not actually require an owner-override to overturn",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2310/infra-review-gate-a-fail-verdict-does-not-actually-require-an-owner",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2304",
-      "name": "origin/claude/ios-session-behavior-review-zadpk1 lost a CI-pushed commit (unknown workflow)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2304/originclaudeios-session-behavior-review-zadpk1-lost-a-ci-pushed-commit",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2303",
-      "name": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2303/cron-stale-3-consecutive-days-commercial-friday-refresh",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2300",
-      "name": "T1/T2 silent gap on near-opening show: As You Like It - Globe — thestage",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2300/t1t2-silent-gap-on-near-opening-show-as-you-like-it-globe-thestage",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2297",
-      "name": "BSC Daily: Quality: coverageExpectation drift",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2297/bsc-daily-quality-coverageexpectation-drift",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2296",
-      "name": "BSC Daily: Coverage: SERP census recall",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2296/bsc-daily-coverage-serp-census-recall",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2295",
-      "name": "BSC Daily: Quality: outlet invalid-content rate",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2295/bsc-daily-quality-outlet-invalid-content-rate",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2292",
-      "name": "BSC Daily: Workflow repeat-failure: Audit Imageless Scored Shows",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2292/bsc-daily-workflow-repeat-failure-audit-imageless-scored-shows",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2289",
-      "name": "BSC Daily: Workflow repeat-failure: Collect WE/OB Review Texts",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2289/bsc-daily-workflow-repeat-failure-collect-weob-review-texts",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2286",
-      "name": "BSC Daily: Revenue: affiliate health",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2286/bsc-daily-revenue-affiliate-health",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2285",
-      "name": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2285/cron-stale-3-consecutive-days-commercial-weekly-orchestrator",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2284",
-      "name": "Extend BRO-591 ground-truth manifest to abigails-party-west-end-2026 for a live Day-N replay (real opening-window test)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2284/extend-bro-591-ground-truth-manifest-to-abigails-party-west-end-2026",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2283",
-      "name": "audit-self-contradictory-clears.js reports 0 files scanned even on a show with a confirmed contradiction (417-file corpus-wide undercount)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2283/audit-self-contradictory-clearsjs-reports-0-files-scanned-even-on-a",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-self-contradictory-clears.js --show=john-proctor-is-the-villain-west-end-2026)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2282",
-      "name": "WE reviews: 285 files across 71 shows have real scores blocked by needsReview (already-scored articleType misclassification)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2282/we-reviews-285-files-across-71-shows-have-real-scores-blocked-by",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/simulate-we-opening-night-coverage.js --show=john-proctor-is-the-villain-west-end-2026)",
-      "kind": "shape"
     }
   ]
 }
