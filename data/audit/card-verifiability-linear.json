@@ -1,15 +1,23 @@
 {
-  "generatedAt": "2026-09-02T17:22:11.716Z",
+  "generatedAt": "2026-09-02T20:47:23.464Z",
   "total": 300,
-  "armedCount": 145,
-  "refusedCount": 155,
+  "armedCount": 144,
+  "refusedCount": 156,
   "byKind": {
+    "basename": 6,
     "no-command": 89,
     "no-section": 24,
-    "shape": 37,
-    "basename": 5
+    "shape": 37
   },
   "refused": [
+    {
+      "id": "BRO-2747",
+      "name": "P2: audit-outlet-registry.js writes machine-absolute paths into a git-tracked file on every run, including --strict",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2747/p2-audit-outlet-registryjs-writes-machine-absolute-paths-into-a-git",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-outlet-registry.js --strict)",
+      "kind": "basename"
+    },
     {
       "id": "BRO-2743",
       "name": "BSC Daily: Workflow repeat-failure: Update Theatr Data",
