@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-02T08:45:26.909Z",
+    "generatedAt": "2026-09-02T10:05:22.902Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,25 +10,25 @@
     "minChurn": 30,
     "flaggedCount": 4,
     "exemptCount": 23,
-    "coveredCount": 14,
-    "highChurnTracked": 41
+    "coveredCount": 17,
+    "highChurnTracked": 44
   },
   "flagged": [
     {
       "path": "data/audit/outlet-registry-gaps.json",
-      "churn": 50
+      "churn": 53
     },
     {
       "path": "data/audit/worktree-gc.log",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 42
+      "churn": 43
     },
     {
       "path": "data/audit/worktree-gc.launchd.log",
-      "churn": 40
+      "churn": 41
     }
   ],
   "exempt": [
@@ -38,7 +38,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 72
+      "churn": 71
     },
     {
       "path": "public/data/shows/oh-mary-west-end-2025.json",
@@ -128,13 +128,18 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 858,
+      "churn": 890,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 816,
+      "churn": 847,
       "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 371,
+      "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
@@ -142,18 +147,13 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 366,
-      "mergeAttr": "union"
-    },
-    {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 151,
+      "churn": 153,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 124,
+      "churn": 127,
       "mergeAttr": "ours"
     },
     {
@@ -183,17 +183,32 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 38,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
       "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/spellbound-off-broadway-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-house-of-the-negro-insane-off-broadway-2026.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
