@@ -2834,7 +2834,17 @@
     "beetlejuice-west-end-2026/visit-london--carole-rocton.json",
     "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
     "beetlejuice-west-end-2026/thewrap--robert-hofler.json",
-    "beetlejuice-west-end-2026/independent--benjamin-salmon.json"
+    "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+    "sabrage-off-west-end-2026/guardian--brian-logan.json",
+    "sabrage-off-west-end-2026/standard--nick-curtis.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2923,7 +2933,8 @@
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
@@ -2992,7 +3003,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+  "lastProcessed": "schmigadoon-2026/variety--clayton-davis.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -3383,6 +3394,29 @@
       "event": "bb-session",
       "session": "5ecad1a7",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-02T12:37:29.725Z",
+      "event": "bb-session",
+      "session": "21820769",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-02T12:37:38.211Z",
+      "event": "bb-session",
+      "session": "203f17e1",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-02T12:38:55.224Z",
+      "event": "bb-session",
+      "session": "d93b3345",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-02T12:38:55.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
