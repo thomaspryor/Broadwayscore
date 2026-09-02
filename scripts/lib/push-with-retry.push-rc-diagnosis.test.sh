@@ -32,7 +32,11 @@ trap cleanup EXIT
 
 # --- fixture: a real bare remote, a clone, and a divergent remote commit so the
 # script is forced through fetch + conflict resolution + a post-resolution push.
-git init -q --bare "$WORK/origin.git"
+# -b main: `git init --bare` pins the bare repo's HEAD to init.defaultBranch
+# (git's built-in default is `master`) and never re-points it on first push, so
+# without this the second clone lands on an unborn branch and the fixture fails
+# on any box that has not set init.defaultBranch. Caught by ship-check.
+git init -q --bare -b main "$WORK/origin.git"
 git clone -q "$WORK/origin.git" "$WORK/repo" 2>/dev/null
 (
   cd "$WORK/repo" || exit 1
@@ -48,22 +52,46 @@ git clone -q "$WORK/origin.git" "$WORK/other" 2>/dev/null
 
 # Push goes to a non-routable address so the push HANGS and is killed by
 # _timeout; fetch keeps using the working local remote.
+# The hang assertions need a real timeout binary: _timeout fails open when none
+# exists (push-with-retry.sh:115), so git would run UNWRAPPED and never return
+# rc=124/137. Same guard as push-with-retry.deadline.test.sh:69.
+if ! command -v timeout >/dev/null 2>&1 && ! command -v gtimeout >/dev/null 2>&1; then
+  echo "SKIP[1,2]: no timeout/gtimeout binary — _timeout fails open, so a push cannot be killed mid-transport here"
+  skip_hang=1
+else
+  skip_hang=0
+fi
+
 LOG="$WORK/run.log"
 (
   cd "$WORK/repo" || exit 1
   git config user.email t@t.t && git config user.name t
   echo local > h.txt && git add h.txt && git commit -qm local
+  # Push goes to a non-routable RFC1918 address so the push HANGS and _timeout
+  # kills it; fetch keeps using the working local bare remote via the fetch URL.
+  # NOTE (ship-check): the hermetic `ext::sh -c 'sleep 120'` idiom that
+  # deadline.test.sh:73 uses was tried here and rejected outright (rc=128 in 0s)
+  # rather than hanging, because that transport is set as a PUSH-only URL
+  # alongside a file:// fetch URL. If this assertion ever flakes on a runner
+  # where 10.255.255.1 answers fast instead of blackholing, switch BOTH urls to
+  # the ext:: form rather than reintroducing a push-only ext:: url.
   git remote set-url --push origin https://10.255.255.1/blackhole.git
   MAX_RETRIES=2 GIT_NET_TIMEOUT_SEC=3 PUSH_API_FALLBACK_DISABLE=1 \
     bash "$TARGET" 2 main
 ) > "$LOG" 2>&1
 
+if [ "$skip_hang" = "0" ]; then
 # 1. The pre-resolution push (the FIRST and most common push of every attempt)
 #    must name the timeout. Before BRO-2732 this site had no else branch at all:
 #    it fell through to a generic "Push failed (attempt N/M)" naming neither the
 #    exit code nor the elapsed time.
-if grep -q "Pre-resolution push (attempt 1) FAILED in .*rc=124" "$LOG" \
-   && grep -q "Pre-resolution push (attempt 1) FAILED in .*transport HANG, not a rejection" "$LOG"; then
+# Attempt-agnostic on purpose: WHICH attempt hangs is fixture timing (a first
+# attempt can fail fast with rc=128 before the transport ever stalls), but the
+# behaviour under test is "a failed push names its exit code", so requiring
+# attempt 1 specifically made this flaky without testing anything extra. Still
+# requires a real rc=124 line — a plain "FAILED" cannot satisfy it.
+if grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in .*rc=124" "$LOG" \
+   && grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in .*transport HANG, not a rejection" "$LOG"; then
   pass 1 "pre-resolution push timeout is reported as rc=124 + transport HANG"
 else
   fail 1 "pre-resolution push timeout not classified"
@@ -72,8 +100,8 @@ fi
 
 # 2. The post-resolution push — the exact line BRO-2732 names — must classify its
 #    exit code too. Any non-timeout code must NOT be described as a hang.
-if grep -q "Post-resolution push (attempt 1) FAILED in .*rc=" "$LOG"; then
-  post_line="$(grep -m1 "Post-resolution push (attempt 1) FAILED" "$LOG")"
+if grep -qE "Post-resolution push \(attempt [0-9]+\) FAILED in .*rc=" "$LOG"; then
+  post_line="$(grep -m1 -E "Post-resolution push \(attempt [0-9]+\) FAILED" "$LOG")"
   if grep -q "rc=124\|rc=137" <<< "$post_line"; then
     grep -q "transport HANG" <<< "$post_line" \
       && pass 2 "post-resolution push timeout classified as a hang" \
@@ -87,6 +115,8 @@ else
   fail 2 "post-resolution push failure printed no exit code"
   grep -n "Post-resolution" "$LOG" | head -3
 fi
+
+fi  # end skip_hang guard
 
 # 3. Structural: no `local` outside a function body anywhere in the target.
 #    Tracks brace depth of `name() {` ... `}` blocks. A `local` at depth 0 is the
