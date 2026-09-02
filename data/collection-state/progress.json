@@ -87,7 +87,9 @@
     "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json",
     "beetlejuice-west-end-2026/readaboutstuff--unknown.json",
     "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
-    "matilda-the-musical-west-end-2021/daily-mail--quentin-letts.json"
+    "matilda-the-musical-west-end-2021/daily-mail--quentin-letts.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/village-voice--michael-musto.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1804,7 +1806,15 @@
     "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
     "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
     "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
-    "book-of-mormon-2011/deadline--unknown.json"
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/nydailynews--howard-kissel.json",
+    "wicked-west-end-2021/timeout--david-cote.json",
+    "wicked-west-end-2021/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1856,7 +1866,8 @@
       "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
       "electra-persona-west-end-2026/theatreboard--unknown.json",
       "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json",
-      "beetlejuice-west-end-2026/readaboutstuff--unknown.json"
+      "beetlejuice-west-end-2026/readaboutstuff--unknown.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1927,11 +1938,12 @@
       "hadestown-2019/theater-life--isa-goldberg.json",
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json"
+      "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
+      "book-of-mormon-2011/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "book-of-mormon-2011/deadline--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/timeout--unknown.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -2176,6 +2188,28 @@
       "event": "bb-session",
       "session": "52efcb5c",
       "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+    },
+    {
+      "t": "2026-09-02T09:20:06.092Z",
+      "event": "bb-session",
+      "session": "07faa55c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-02T09:20:10.698Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-02T09:20:28.875Z",
+      "event": "bb-session",
+      "session": "ccb76fec",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-02T09:20:33.391Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
