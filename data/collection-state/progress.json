@@ -1,7 +1,9 @@
 {
   "processed": [
     "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -159,13 +161,22 @@
     "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
-    "electra-persona-west-end-2026/theatreboard--unknown.json"
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/buy-tickets-directly-from-shakespearesglobecom--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
-      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -173,9 +184,24 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ]
   },
   "startTime": "2026-09-02T13:49:42.848Z",
-  "lastProcessed": "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-  "log": []
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+  "log": [
+    {
+      "t": "2026-09-02T13:54:50.754Z",
+      "event": "bb-session",
+      "session": "a0a97909",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-02T13:55:03.618Z",
+      "event": "bb-session",
+      "session": "e81f6d7f",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    }
+  ]
 }
