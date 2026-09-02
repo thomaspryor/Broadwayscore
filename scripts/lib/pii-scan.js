@@ -31,6 +31,71 @@
 'use strict';
 
 const EMAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+
+// A local part that SAYS it has been redacted is not a submitter's address.
+// The case that forced this (BRO-2741 sweep, 2026-09-02): an audit row quoted
+// a Linear issue whose body contained the credential-in-URL form
+// `https://gho_REDACTED@github.com/owner/repo.git`. EMAIL_RE matches
+// `gho_REDACTED@github.com`, so a card ABOUT not leaking a token was itself
+// flagged as leaking an email, and it took the public repo's CI red.
+//
+// ANCHORED, and the anchoring is the whole safety argument. An unanchored
+// /redacted/i substring test suppressed `notredacted@gmail.com`,
+// `unredacted@gmail.com` and `REDACTED-jane.doe@nytimes.com` — all registerable
+// real addresses — in exactly the free-text shape this lint was built for
+// (#1064: an address baked into a `description` field). Caught in review; do
+// not loosen this back to a substring test.
+//
+// The local part must BE "redacted" or end in "_redacted": gho_REDACTED,
+// ghp_REDACTED, token_Redacted, redacted. Underscore only, deliberately —
+// allowing `.` or `-` as the separator still suppressed
+// `tom.pryor.redacted@gmail.com`, which is a perfectly registerable address.
+// GitHub's token prefixes (gho_, ghp_, github_pat_) all use underscore, so
+// nothing real is lost by refusing the other two separators.
+//
+// Masked forms like `****@example.com` deliberately have NO rule here: the
+// local part of EMAIL_RE is [A-Za-z0-9._%+-]+, which excludes `*`, so those
+// never matched and never needed excusing. A carve-out for them would have
+// been dead code that read as protection.
+const REDACTED_LOCAL_RE = /(?:^|_)redacted$/i;
+const EMAIL_RE_G = new RegExp(EMAIL_RE.source, 'g');
+
+/**
+ * The first REAL (non-placeholder) address in `value`, or null when every
+ * EMAIL_RE hit is a redaction placeholder.
+ *
+ * Scans EVERY match, not just the first. An earlier single-match version was
+ * caught by its own test: "ref gho_REDACTED@github.com and contact
+ * entrant@gmail.com" looked redacted because the placeholder happened to come
+ * first, which would have suppressed a genuine address sitting right after it.
+ *
+ * Tokenised on whitespace rather than run over the whole string, for cost.
+ * EMAIL_RE's `[A-Za-z0-9.-]+\.[A-Za-z]{2,}` backtracks catastrophically on
+ * long punctuation runs, and the old code only escaped it by short-circuiting
+ * on the first match. Scanning to the end of the string re-exposed it:
+ * `"redacted@ex.com " + "a.-%+_".repeat(30000)` measured 13,776 ms here (0 ms
+ * before). Audit JSONL carries quoted scraper and issue text, so one row could
+ * stall the whole Lint Workflows job. Skipping tokens with no `@` costs one
+ * indexOf and removes the junk from the regex's reach entirely.
+ */
+function firstRealEmail(value) {
+  const s = String(value || '');
+  if (s.indexOf('@') === -1) return null;
+  for (const token of s.split(/\s+/)) {
+    if (token.indexOf('@') === -1) continue;
+    EMAIL_RE_G.lastIndex = 0;
+    let m;
+    while ((m = EMAIL_RE_G.exec(token)) !== null) {
+      if (!REDACTED_LOCAL_RE.test(m[0].split('@')[0])) return m[0];
+    }
+  }
+  return null;
+}
+
+/** True when `value` contains at least one EMAIL_RE hit and none are real. */
+function isRedactedPlaceholder(value) {
+  return EMAIL_RE.test(String(value || '')) && firstRealEmail(value) === null;
+}
 const PII_COMPOUND_KEY_RE = /^(submitter|requester|reporter|contributor|user)[_-]?(name|email)$/i;
 const PII_PARENT_KEY_RE = /^(submitter|requester|reporter|contributor)s?$/i;
 const NESTED_PII_KEYS = new Set(['name', 'email']);
@@ -55,8 +120,12 @@ function formatPath(pathSegs) {
 function walk(value, pathSegs, onFinding) {
   if (value == null) return;
   if (typeof value === 'string') {
-    if (EMAIL_RE.test(value)) {
-      onFinding({ type: 'email-shaped-string', path: pathSegs, snippet: maskEmail(value) });
+    const realEmail = firstRealEmail(value);
+    if (realEmail) {
+      // Mask the REAL hit, not whatever EMAIL_RE matched first — otherwise a
+      // string carrying a placeholder ahead of a genuine address would report
+      // the placeholder and read as harmless.
+      onFinding({ type: 'email-shaped-string', path: pathSegs, snippet: maskEmail(realEmail) });
     }
     const leafKey = pathSegs[pathSegs.length - 1];
     const grandparentKey = pathSegs[pathSegs.length - 2];
@@ -121,4 +190,4 @@ function scanJsonlValue(text) {
   return findings;
 }
 
-module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue, scanJsonlValue };
+module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };
