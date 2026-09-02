@@ -207,3 +207,52 @@ describe('ALLOWLIST', () => {
     );
   });
 });
+
+describe('redaction placeholders are not submitter PII', () => {
+  const { isRedactedPlaceholder } = require('../../scripts/lib/pii-scan.js');
+
+  // The exact string that took Lint Workflows red on 2026-09-02: an audit row
+  // quoted a Linear issue about NOT leaking a GitHub token, and the issue body
+  // contained the already-redacted credential-in-URL form. EMAIL_RE matches the
+  // `gho_REDACTED@github.com` substring.
+  const REAL_CASE =
+    'record-push-ledger.js prints https://gho_REDACTED@github.com/thomaspryor/Broadwayscore.git verbatim';
+
+  test('the real BRO-2353 credential-in-URL string is not flagged', () => {
+    assert.ok(EMAIL_RE.test(REAL_CASE), 'precondition: EMAIL_RE still matches it');
+    assert.ok(isRedactedPlaceholder(REAL_CASE));
+    assert.equal(scanJsonValue({ notes: REAL_CASE }).length, 0);
+  });
+
+  test('other redaction spellings are covered', () => {
+    for (const s of ['ghp_REDACTED@github.com', 'redacted@example.com', 'token_Redacted@github.com']) {
+      assert.ok(isRedactedPlaceholder(s), `${s} should read as redacted`);
+    }
+  });
+
+  test('asterisk-masked forms were never matched, so they need no carve-out', () => {
+    // EMAIL_RE's local part is [A-Za-z0-9._%+-]+ and excludes `*`. Asserted so
+    // nobody "helpfully" adds a masking-character branch to REDACTED_LOCAL_RE
+    // that looks like protection but can never fire.
+    assert.equal(EMAIL_RE.test('****@example.com'), false);
+    assert.equal(scanJsonValue({ notes: '****@example.com' }).length, 0);
+    assert.equal(isRedactedPlaceholder('****@example.com'), false, 'no EMAIL_RE hit means nothing to excuse');
+  });
+
+  test('a REAL address is still flagged, including on the same domains', () => {
+    // This is the whole risk of the carve-out. Allowlisting the github.com
+    // domain would have hidden the first of these; keying on the local part
+    // does not.
+    for (const s of ['someone@github.com', 'j.green@nystagereview.com', 'entrant+tag@gmail.com']) {
+      assert.equal(isRedactedPlaceholder(s), false, `${s} must NOT read as redacted`);
+      assert.ok(scanJsonValue({ notes: s }).length > 0, `${s} must still be flagged`);
+    }
+  });
+
+  test('a redacted-looking local part does not suppress a real address elsewhere in the same string', () => {
+    // maskEmail/EMAIL_RE only look at the FIRST match, so a string carrying
+    // both must stay flagged rather than being waved through on the first hit.
+    const mixed = 'ref gho_REDACTED@github.com and contact entrant@gmail.com';
+    assert.ok(scanJsonValue({ notes: mixed }).length > 0, 'a real address after a placeholder must still flag');
+  });
+});
