@@ -360,3 +360,16 @@ file (`showTitle`, `venue`, `category`, `type`, `fetchMethod`, `textFetchedAt`) 
 is **expected latency**, not a defect (confirmed 3x: Boycotting Trends attempt 11, Daily Mail and
 BroadwayWorld attempts 21–23). Rebuild only emits scored reviews, so prod `rv` lags by that hour.
 Do not open a card for it and do not hand-write `assignedScore`.
+
+## Gate: outlet section index never sampled, SERP blind (The Times, 2026-09-02)
+The Times published a T1 review (Clive Davis) on 2026-09-01 that 36 monitor passes missed.
+WebSearch returned zero Times hits even hours after publication and said so explicitly.
+A plain desktop-UA `curl` of `thetimes.com/culture/theatre-dance` returned the full 802KB
+index with the article href in under a second. Prior passes had recorded thetimes.com as
+"curl-hostile / unsampled" — it is neither.
+**Rule:** curl-sweep outlet SECTION INDEXES first; treat SERP as a supplement, never as the
+census. Working plain-curl indexes: thetimes.com/culture/theatre-dance,
+theguardian.com/stage/theatre, independent.co.uk/arts-entertainment/theatre-dance/reviews,
+timeout.com/london/theatre, standard.co.uk/culture/theatre, londontheatre.co.uk/reviews,
+thestage.co.uk/reviews, whatsonstage.com/reviews/. An index that returns <10KB is a JS
+shell = NOT SAMPLED, not a negative.
