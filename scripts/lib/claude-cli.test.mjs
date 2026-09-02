@@ -359,7 +359,14 @@ test('buildBudgetPreamble warns against run_in_background for needed results (BR
   const { buildBudgetPreamble } = runner.default || runner;
   const preamble = buildBudgetPreamble(120 * 60 * 1000);
 
-  assert.match(preamble, /killed/, 'must state that background work dies at end of turn');
+  // NOT /killed/ — the pre-existing "hard-killed after N minutes" sentence
+  // already satisfies that, so it passed even with this whole guidance deleted
+  // (adversarial review). Assert the specific clause instead.
+  assert.match(
+    preamble,
+    /does not survive the end of your turn/,
+    'must state that background work dies at end of turn'
+  );
   assert.match(preamble, /turn-sized batches/, 'must give the worker somewhere to go instead');
 
   // The properties that actually matter are the two things it must NOT do, and

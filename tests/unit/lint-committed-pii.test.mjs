@@ -257,11 +257,21 @@ describe('redaction placeholders are not submitter PII', () => {
     // Scanning every match re-exposed it and this exact input measured 13,776 ms
     // before firstRealEmail started skipping tokens with no '@'. Audit JSONL
     // carries quoted scraper and issue text, so one row could stall the job.
-    const payload = `redacted@ex.com ${'a.-%+_'.repeat(30000)}`;
-    const started = Date.now();
-    assert.equal(scanJsonValue({ notes: payload }).length, 0, 'still suppressed');
-    const elapsed = Date.now() - started;
-    assert.ok(elapsed < 1000, `took ${elapsed}ms — catastrophic backtracking is back`);
+    // NOTE the missing space before the junk. The first version of this test
+    // had one, which made it useless: whitespace tokenising already handled the
+    // separated case at 0ms, so it passed while the CONCATENATED case still
+    // took 14,715ms on the merged code. Adversarial review caught that. Both
+    // shapes are pinned now, and the no-space one is the load-bearing case.
+    for (const [label, payload] of [
+      ['concatenated', `redacted@ex.com${'a.-%+_'.repeat(30000)}`],
+      ['whitespace-separated', `redacted@ex.com ${'a.-%+_'.repeat(30000)}`],
+      ['many @ characters', '@'.repeat(50000)],
+    ]) {
+      const started = Date.now();
+      assert.equal(scanJsonValue({ notes: payload }).length, 0, `${label}: still suppressed`);
+      const elapsed = Date.now() - started;
+      assert.ok(elapsed < 1000, `${label}: took ${elapsed}ms — catastrophic backtracking is back`);
+    }
   });
 
   test('asterisk-masked forms were never matched, so they need no carve-out', () => {
@@ -284,9 +294,53 @@ describe('redaction placeholders are not submitter PII', () => {
   });
 
   test('a redacted-looking local part does not suppress a real address elsewhere in the same string', () => {
-    // maskEmail/EMAIL_RE only look at the FIRST match, so a string carrying
-    // both must stay flagged rather than being waved through on the first hit.
+    // Asserting only `length > 0` did NOT guard this: the pre-fix code also
+    // flagged, it just reported the PLACEHOLDER's masked snippet. The payload
+    // of the fix is that the reported snippet is the REAL address, so that is
+    // what this now asserts. (Adversarial review: the old assertion passed with
+    // the fix fully reverted.)
     const mixed = 'ref gho_REDACTED@github.com and contact entrant@gmail.com';
-    assert.ok(scanJsonValue({ notes: mixed }).length > 0, 'a real address after a placeholder must still flag');
+    const findings = scanJsonValue({ notes: mixed });
+    assert.ok(findings.length > 0, 'a real address after a placeholder must still flag');
+    assert.match(
+      findings[0].snippet,
+      /gmail\.com/,
+      'must report the REAL address, not the placeholder that preceded it'
+    );
+  });
+
+  test('a placeholder does not swallow a real address that begins inside its span', () => {
+    // No delimiter between the two. Advancing past a rejected match skipped the
+    // address starting inside it: this returned NO findings while the code
+    // before the exemption flagged it. Found by adversarial review.
+    for (const s of [
+      'x_redacted@github.com.jane@gmail.com',
+      'gho_REDACTED@github.com.evil@nytimes.com',
+      'x_redacted@a.com y@gmail.com',
+    ]) {
+      assert.ok(scanJsonValue({ description: s }).length > 0, `${s} must be flagged`);
+    }
+  });
+
+  test('a long domain is never truncated out of detection', () => {
+    // Fuzzing 220,026 cases against the pre-exemption implementation found this:
+    // a bounded-window-only scan cut the domain at 255 chars, so
+    // 'jane@' + 'a'.repeat(253) + '.com' stopped being flagged while the old
+    // code flagged it. A silent miss in a PII gate. 252 still flagged, which is
+    // exactly the shape of bug no hand-written case would have found.
+    for (const n of [63, 64, 65, 252, 253, 254, 260, 1000]) {
+      const s = `jane@${'a'.repeat(n)}.com`;
+      assert.ok(scanJsonValue({ x: s }).length > 0, `domain filler ${n} must still flag`);
+    }
+  });
+
+  test('a rejected placeholder never yields a sub-match of itself', () => {
+    // The mirror-image risk of the previous test. Resuming one character into
+    // a rejected match finds 'EDACTED@github.com' inside 'gho_REDACTED@github
+    // .com', whose local part is NOT a placeholder — so a naive resume turns
+    // the exemption into a false POSITIVE. Judging each '@' once prevents it.
+    for (const s of ['gho_REDACTED@github.com', 'github_pat_REDACTED@github.com']) {
+      assert.equal(scanJsonValue({ description: s }).length, 0, `${s} must stay suppressed`);
+    }
   });
 });
