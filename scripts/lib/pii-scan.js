@@ -69,25 +69,82 @@ const EMAIL_RE_G = new RegExp(EMAIL_RE.source, 'g');
  * entrant@gmail.com" looked redacted because the placeholder happened to come
  * first, which would have suppressed a genuine address sitting right after it.
  *
- * Tokenised on whitespace rather than run over the whole string, for cost.
- * EMAIL_RE's `[A-Za-z0-9.-]+\.[A-Za-z]{2,}` backtracks catastrophically on
- * long punctuation runs, and the old code only escaped it by short-circuiting
- * on the first match. Scanning to the end of the string re-exposed it:
- * `"redacted@ex.com " + "a.-%+_".repeat(30000)` measured 13,776 ms here (0 ms
- * before). Audit JSONL carries quoted scraper and issue text, so one row could
- * stall the whole Lint Workflows job. Skipping tokens with no `@` costs one
- * indexOf and removes the junk from the regex's reach entirely.
+ * Walks the '@' characters and judges each one inside a BOUNDED window, rather
+ * than running the regex over the whole string. Two defects forced this shape,
+ * both found by adversarial review of the previous versions:
+ *
+ * 1. ReDoS. EMAIL_RE's `[A-Za-z0-9.-]+\.[A-Za-z]{2,}` backtracks
+ *    catastrophically on long punctuation runs. The original code escaped it
+ *    only by short-circuiting on the first match; scanning every match
+ *    re-exposed it. A whitespace-tokenising attempt looked fixed but only
+ *    helped when the junk was whitespace-SEPARATED — concatenated into the
+ *    same token, `'redacted@ex.com' + 'a.-%+_'.repeat(30000)` still measured
+ *    14,715 ms (0 ms before the change), and the test written to guard it used
+ *    a space, so it passed at 0 ms and could not catch it. Capping each window
+ *    at RFC lengths (64-char local, 255-char domain) bounds the regex's reach
+ *    structurally, whatever the input looks like.
+ *
+ * 2. A placeholder could swallow a real address behind it. Advancing past a
+ *    rejected match skipped any address beginning inside its span:
+ *    `x_redacted@github.com.jane@gmail.com` returned NO findings while the
+ *    pre-change code flagged it. Judging each '@' on its own, and resuming at
+ *    `m.index + 1` while still short of the target '@', finds the later
+ *    address. Resuming that way only INSIDE the window is what keeps it cheap.
+ *
+ * A match is only judged when its '@' is the one being examined, so a
+ * sub-match of a rejected placeholder (`EDACTED@github.com` inside
+ * `gho_REDACTED@github.com`) can never be mistaken for a real address.
  */
+const MAX_LOCAL_PART = 64;   // RFC 5321 §4.5.3.1.1
+const MAX_DOMAIN_PART = 255; // RFC 1035 §2.3.4
+
+/**
+ * Judge the single '@' at absolute index `at`, looking `domainSpan` chars past
+ * it. Returns the real address, the string 'placeholder', or null (no match).
+ */
+function judgeAt(s, at, domainSpan) {
+  const start = Math.max(0, at - MAX_LOCAL_PART);
+  const win = s.slice(start, Math.min(s.length, at + 1 + domainSpan));
+  const atInWin = at - start;
+  EMAIL_RE_G.lastIndex = 0;
+  let m;
+  while ((m = EMAIL_RE_G.exec(win)) !== null) {
+    const atPos = m.index + m[0].indexOf('@');
+    if (atPos > atInWin) break;            // this '@' is not part of any match
+    if (atPos === atInWin) {
+      return REDACTED_LOCAL_RE.test(m[0].split('@')[0]) ? 'placeholder' : m[0];
+    }
+    EMAIL_RE_G.lastIndex = m.index + 1;    // overlapping candidate may follow
+  }
+  return null;
+}
+
 function firstRealEmail(value) {
   const s = String(value || '');
-  if (s.indexOf('@') === -1) return null;
-  for (const token of s.split(/\s+/)) {
-    if (token.indexOf('@') === -1) continue;
-    EMAIL_RE_G.lastIndex = 0;
-    let m;
-    while ((m = EMAIL_RE_G.exec(token)) !== null) {
-      if (!REDACTED_LOCAL_RE.test(m[0].split('@')[0])) return m[0];
-    }
+
+  // FAST PATH, and it is the whole cost story. This single exec is exactly the
+  // work the pre-exemption code did (it called EMAIL_RE.test), so for every
+  // input without a placeholder — which is all of them but the rare quoted
+  // credential — this module is no slower and no less sensitive than before the
+  // exemption existed. In particular it cannot truncate a long domain, which is
+  // how a bounded-window-only version silently stopped flagging
+  // 'jane@' + 'a'.repeat(253) + '.com' (found by fuzzing 220,026 cases).
+  const first = EMAIL_RE.exec(s);
+  if (!first) return null;
+  if (!REDACTED_LOCAL_RE.test(first[0].split('@')[0])) return first[0];
+
+  // SLOW PATH, reached only when the FIRST match is a redaction placeholder.
+  // Now we must keep looking for a real address behind it, and that is the scan
+  // that made a whole-string version quadratic. Bounded per-'@' windows keep it
+  // cheap. The residual is narrow and deliberate: in this branch alone, a real
+  // address whose domain runs past MAX_DOMAIN_PART could be missed. It requires
+  // a placeholder first AND a 255-char domain in the same value; the longest
+  // domain run after any '@' in the entire 925-file corpus is 24.
+  let at = s.indexOf('@');
+  while (at !== -1) {
+    const verdict = judgeAt(s, at, MAX_DOMAIN_PART);
+    if (verdict !== null && verdict !== 'placeholder') return verdict;
+    at = s.indexOf('@', at + 1);
   }
   return null;
 }

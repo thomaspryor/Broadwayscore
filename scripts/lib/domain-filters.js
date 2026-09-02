@@ -50,12 +50,6 @@ const TICKET_DOMAINS = new Set([
   // the domain-hint heuristic run unblocked. Verified zero hits across every
   // scored review URL in reviews.json before adding.
   'skiddle.com',
-  // vocaleyes.co.uk — audio-description access LISTINGS ("Audio-described
-  // performance, Touch tour, Date: Saturday 12 September 2026"), not criticism.
-  // Excellent cause, wrong corpus. Here rather than TICKET_DOMAINS: it sells
-  // nothing, it lists. Verified zero hits across every scored review URL before
-  // adding, per the convention this set already documents above.
-  'vocaleyes.co.uk',
   // 2026-08-09: both were counted as MISSING REVIEWS for
   // disruption-off-broadway-2026 by the SERP census. Two of the three openings
   // the newsletter gate deleted from the 2026-08-03 issue were dropped over
@@ -69,6 +63,15 @@ const TICKET_DOMAINS = new Set([
 // Aggregator/listing sites — not direct review sources
 const AGGREGATOR_DOMAINS = new Set([
   'show-score.com', 'showscore.com',
+  // vocaleyes.co.uk — audio-description access LISTINGS ("Audio-described
+  // performance, Touch tour, Date: Saturday 12 September 2026"), not criticism.
+  // Excellent cause, wrong corpus. It sells nothing, it lists, so it belongs
+  // here and not in TICKET_DOMAINS — where a previous commit's comment claimed
+  // it had been moved while the entry itself never left. Mirrored into
+  // NAMED_NON_REVIEW_URL_PATTERNS so the discovery path agrees; without that
+  // mirror the write path blocks it while a SERP census still counts it as an
+  // uncovered gap.
+  'vocaleyes.co.uk',
   // NOTE: playbill.com removed from blanket block — Playbill publishes original articles (/article/ paths).
   // Listing pages (/production/, /show/) are caught by the path-based check below.
   // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
