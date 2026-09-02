@@ -28,6 +28,61 @@
 
 const PROVENANCE_VALUES = new Set(['url', 'date', 'content', 'manual']);
 
+// BRO-2740: the breadcrumb fields that describe WHY a wrongProduction flag was
+// set. They are meaningless — and actively harmful — without the flag itself:
+// a file carrying `wrongProductionDetectedBy` / `Detail` / `DetectedAt` with
+// no `wrongProduction` reads to every downstream auditor as "this WAS flagged
+// wrong-production", which is what reddened three Data Validation gates on
+// 2026-09-02 (cross-market leak, sibling misroute, url-downgrade) for two
+// files whose flag had legitimately been cleared.
+//
+// Corpus evidence for the dominant failure mode (measured 2026-09-02 over
+// 42,520 review files, 204 orphans): 138 of the 156 `ingest-anticipatory-gate`
+// orphans have the `wrongProduction` KEY ABSENT, no `wrongProductionReason`
+// and NO `wrongProductionAutoCleared` breadcrumb. Every rebuild-all-reviews
+// auto-clear path stamps that breadcrumb, so those 138 were not cleared by the
+// rebuild — they were cleared by the URL-change path, which deleted exactly
+// `wrongProduction` / `Reason` / `Note` and left everything below behind.
+//
+// This is the single source of truth for that set. Both URL-change clear lists
+// (REPLACE_CLEAR_FIELDS in wrongprod-replacement-preserve.js, WP_FIELDS in
+// url-change-invariant.js) spread it in, so a NEW provenance field added by a
+// future detector is cleared by both paths the moment it is listed here — the
+// drift that produced this bug class was two hand-maintained triples.
+//
+// NOT included, deliberately: `wrongProductionManualClear`,
+// `humanReviewedWrongProduction`, `wrongProductionOverride` and the rest of
+// the human-decision family. A human's clear stays valid across a URL change
+// (see HUMAN_DECISION_FIELDS) — those fields describe a DECISION, not the
+// basis of a flag. Also not included: `wrongProductionAutoCleared` /
+// `AutoClearedAt`, which url-change-invariant.js already clears by name.
+const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
+  // Canonical field (task #1109) — the whole point of adding it was that a
+  // flag's provenance be explicit rather than inferred, so it must die with
+  // the flag or the inference it replaced comes back wrong.
+  'wrongProductionProvenance',
+  // Modern detector stamps: apply-cross-production-llm-flags.js,
+  // auto-triage-cross-production.js, collect-review-texts.js's anticipatory
+  // gate (153 of the 156 orphans).
+  'wrongProductionDetail',
+  'wrongProductionDetectedAt',
+  'wrongProductionDetectedBy',
+  // Anticipatory-gate inputs. Written in the same block as the flag by
+  // collect-review-texts.js:4402 and deleted in the same block by both
+  // rebuild-all-reviews.js clear paths, so they belong to this family even
+  // though they are not `wrongProduction*`-prefixed.
+  'anticipatoryGateOutletCategory',
+  'anticipatoryGateDaysBeforeOpening',
+  // Legacy `_`-prefixed forms (cleanup-dedup-comprehensive.js, 49 orphans).
+  // isUrlProvenanceWrongProduction() still READS `_wrongProductionDetectedBy`
+  // via LEGACY_URL_DETECTORS, which is precisely why a stranded one is
+  // dangerous: it makes a re-flagged file look URL-provenanced to the
+  // mergeReviews self-heal on the strength of a PREVIOUS url's verdict.
+  '_wrongProductionDetectedBy',
+  '_wrongProductionDetectedAt',
+  '_wrongProductionDetail',
+];
+
 function isValidProvenance(value) {
   return typeof value === 'string' && PROVENANCE_VALUES.has(value);
 }
@@ -187,6 +242,7 @@ function scanFileForViolations(content, relPath) {
 
 module.exports = {
   PROVENANCE_VALUES,
+  WRONG_PRODUCTION_PROVENANCE_FIELDS,
   LEGACY_URL_DETECTORS,
   isValidProvenance,
   isUrlProvenanceWrongProduction,

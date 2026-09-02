@@ -238,3 +238,94 @@ test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins url
 
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
+
+// ── BRO-2740: provenance must not outlive the flag ────────────────────────
+//
+// Corpus signature (measured 2026-09-02 over 42,520 review files): 204 files
+// carry wrongProduction provenance with no `wrongProduction: true`. 138 of
+// them have the flag KEY ABSENT, no `wrongProductionReason`, and NO
+// `wrongProductionAutoCleared` breadcrumb — a shape no rebuild-all-reviews
+// auto-clear path can produce (all of them stamp that breadcrumb), but exactly
+// what the URL-change clear produced when its field list was the hand-written
+// triple `wrongProduction` / `Reason` / `Note`.
+
+test('BRO-2740: URL change clears wrongProduction provenance with the flag', () => {
+  const existing = {
+    url: 'https://www.telegraph.co.uk/theatre/old-production-review/',
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongProductionDetail: 'Published 9 days before opening night',
+    wrongProductionDetectedAt: '2026-07-14T02:11:03.000Z',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+    anticipatoryGateOutletCategory: 'broadsheet',
+    anticipatoryGateDaysBeforeOpening: 9,
+    wrongProductionProvenance: 'date',
+    _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive',
+  };
+  // A replacement-style write carries the old record forward and swaps the url,
+  // which is the shape maybeUpgradeUrl / mergeReviews hand to the invariant.
+  const merged = { ...existing, url: 'https://www.telegraph.co.uk/theatre/the-real-review/' };
+
+  const { changed, cleared } = applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro2740' });
+
+  assert.equal(changed, true);
+  assert.equal(merged.wrongProduction, undefined, 'flag must clear (pre-existing behaviour)');
+  for (const f of [
+    'wrongProductionReason', 'wrongProductionDetail', 'wrongProductionDetectedAt',
+    'wrongProductionDetectedBy', 'anticipatoryGateOutletCategory',
+    'anticipatoryGateDaysBeforeOpening', 'wrongProductionProvenance',
+    '_wrongProductionDetectedBy',
+  ]) {
+    assert.equal(merged[f], undefined, `${f} must not outlive the flag it explains`);
+    assert.ok(cleared.includes(f), `${f} must be recorded in the _urlChangedClear breadcrumb`);
+  }
+});
+
+test('BRO-2740: a preserved Tour-transfer flag keeps its provenance', () => {
+  // Mirror-image orphan: when the carve-out preserves the FLAG, deleting the
+  // reason it was set would strand a flag no auditor can explain.
+  const existing = {
+    url: 'https://www.example.com/tour-leg-review/',
+    publishDate: '2025-11-02',
+    wrongProduction: true,
+    wrongProductionNote: 'Tour transfer — reviewed on the pre-Broadway leg',
+    wrongProductionDetail: 'Cleveland tryout, not the Broadway run',
+    wrongProductionDetectedBy: 'auto-triage-cross-production',
+    wrongProductionProvenance: 'manual',
+  };
+  const merged = { ...existing, url: 'https://www.example.com/tour-leg-review-amp/', publishDate: '2025-11-02' };
+
+  applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro2740-tour', force: true });
+
+  assert.equal(merged.wrongProduction, true, 'Tour transfer flag survives (pre-existing behaviour)');
+  assert.equal(merged.wrongProductionNote, existing.wrongProductionNote);
+  assert.equal(merged.wrongProductionDetail, existing.wrongProductionDetail,
+    'provenance must survive alongside a preserved flag');
+  assert.equal(merged.wrongProductionDetectedBy, existing.wrongProductionDetectedBy);
+  assert.equal(merged.wrongProductionProvenance, 'manual');
+});
+
+test('BRO-2740: human-decision fields are NOT treated as provenance', () => {
+  // A human's clear stays valid across a URL change. Regression guard against
+  // widening WRONG_PRODUCTION_PROVENANCE_FIELDS into the decision family.
+  const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance.js');
+  for (const f of [
+    'wrongProductionManualClear', 'humanReviewedWrongProduction',
+    'wrongProductionOverride', 'wrongProductionAutoCleared',
+    'wrongProductionAutoClearedAt',
+  ]) {
+    assert.ok(!WRONG_PRODUCTION_PROVENANCE_FIELDS.includes(f),
+      `${f} is a decision/outcome field, not flag provenance`);
+  }
+});
+
+test('BRO-2740: both clear paths source the same provenance list', () => {
+  // The drift that produced this bug class was two hand-maintained triples.
+  const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance.js');
+  const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve.js');
+  const { URL_DERIVED_FIELDS } = require('./url-change-invariant.js');
+  for (const f of WRONG_PRODUCTION_PROVENANCE_FIELDS) {
+    assert.ok(REPLACE_CLEAR_FIELDS.has(f), `${f} missing from REPLACE_CLEAR_FIELDS`);
+    assert.ok(URL_DERIVED_FIELDS.includes(f), `${f} missing from URL_DERIVED_FIELDS`);
+  }
+});

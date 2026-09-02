@@ -45,6 +45,7 @@
 
 const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
 
 // Everything derived from (or fetched via) the file's URL. REPLACE_CLEAR_FIELDS
 // carries the wrong-flag / content-state / fetch-state families; the rest are
@@ -90,7 +91,25 @@ const AUTO_DATE_WP_PREFIXES = ['Pre-opening guard', 'Date guard', 'Dateless show
 // Kept for external references/tests: prefixes that can survive a URL change.
 const DATE_BASED_WP_PREFIXES = [...MANUAL_WP_PREFIXES, ...AUTO_DATE_WP_PREFIXES];
 
-const WP_FIELDS = new Set(['wrongProduction', 'wrongProductionNote', 'wrongProductionReason']);
+// The wrongProduction family that the date-guard/Tour-transfer carve-out
+// preserves AS A UNIT. BRO-2740: the provenance breadcrumbs belong here, not
+// just the flag triple. Two failure modes, one list:
+//   - carve-out NOT taken (the common case): the loop below deletes the flag,
+//     and without these names it left `wrongProductionDetectedBy` / `Detail` /
+//     `DetectedAt` on the record — 138 of the 156 orphaned files measured on
+//     2026-09-02 have exactly that shape (flag key absent, no
+//     `wrongProductionAutoCleared` breadcrumb, provenance intact).
+//   - carve-out TAKEN (a preserved 'Tour transfer' / in-date-basis guard): the
+//     flag survives, so its provenance must survive with it. Preserving the
+//     flag while deleting the reason it was set would strand the mirror-image
+//     orphan — a flag no auditor can explain.
+// Sourced from wrongproduction-provenance.js so a new detector field is
+// covered by both paths at once. These names also reach URL_DERIVED_FIELDS via
+// REPLACE_CLEAR_FIELDS above, which is what makes the deletion happen at all.
+const WP_FIELDS = new Set([
+  'wrongProduction', 'wrongProductionNote', 'wrongProductionReason',
+  ...WRONG_PRODUCTION_PROVENANCE_FIELDS,
+]);
 
 function _noteStartsWith(existing, prefixes) {
   const note = existing && existing.wrongProductionNote;
