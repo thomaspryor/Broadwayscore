@@ -67,24 +67,36 @@ the same class as v28's "42% of headless jobs flipped to FAILED" lesson.
 
 ## EXACT NEXT COMMAND
 
-The pre-MERGE gate blocks this branch: **205 gated lines > the 150 drift budget**,
-and its `push-allowed` query was citing a STALE `ship-check` verdict from another
-branch (@19:40:41Z) — precisely the cross-worktree false-positive v28 warned about.
-A `second-opinion` verdict only covers ≤100 gated lines, so it is not enough here.
+**The review gate is now GREEN and the branch is pushed to origin.** ship-check ran,
+found one real blocker (below), it was fixed and re-verified, and the verdict is
+recorded bound to THIS branch's exact head + diffHash
+(`allowed:true, via:"exact-hash", head 951a195f32f, gatedLines 235`) — not the
+stale cross-worktree verdict the gate was citing earlier (@19:40:41Z), which is
+exactly the false-positive v28 warned about.
 
-1. Run `/ship-check` on this branch's diff (`git diff origin/main...HEAD`), fix
-   whatever it finds.
-2. `node scripts/lib/review-gate.mjs --query=record --reviewer=ship-check --result=pass`
-3. `scripts/merge-worktree-to-main.sh job/crown-BRO-343-v28-headless-mtkkeeoe`
+**So the ONLY remaining step is the merge itself.** I did not start it because the
+session's hard time ceiling was reached, and a merge killed mid-flight would leave
+a merge commit sitting locally on the shared main checkout — the one thing the
+rules say never to do.
+
+1. `scripts/merge-worktree-to-main.sh job/crown-BRO-343-v28-headless-mtkkeeoe`
    (`run_in_background: true`, NEVER a `timeout` prefix)
-4. Confirm the resulting `test.yml` run is green job-by-job, specifically the new
+2. Confirm the resulting `test.yml` run is green job-by-job, specifically the new
    step "Run push-with-retry push-rc diagnosis test (bash integration)".
-5. Then comment the outcome on BRO-2732 and leave it OPEN — step 1 of its stated
+3. Then comment the outcome on BRO-2732 and leave it OPEN — step 1 of its stated
    3-step approach is done; steps 2 and 3 (re-run rebuild-reviews.yml, read the
    now-visible rejection, fix the real cause) still need a live failing run.
 
 ## VERIFICATION EVIDENCE (all run in this session, after the edits)
 
+- ship-check BLOCKER found and fixed: the fixture hard-failed on any machine
+  without `init.defaultBranch` set (`git init --bare` pins the bare repo's HEAD to
+  `master` and never re-points it on first push, so the second clone landed on an
+  unborn branch). Fixed with `git init --bare -b main`, then re-verified by running
+  the suite under a scratch `GIT_CONFIG_GLOBAL` — 4/4 PASS there too.
+- The reviewer's `ext::sh -c 'sleep 120'` transport suggestion was TRIED AND
+  REVERTED: as a push-only URL alongside a file:// fetch URL it is rejected
+  outright (rc=128 in 0s) instead of hanging. Do not retry it in that form.
 - `bash scripts/lib/push-with-retry.push-rc-diagnosis.test.sh` — 4/4 PASS, exit 0.
   Exercises both branches against a REAL git remote (local bare repo for fetch,
   non-routable `10.255.255.1` push URL to force the hang), not a mock.
