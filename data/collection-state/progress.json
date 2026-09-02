@@ -1,7 +1,6 @@
 {
   "processed": [
     "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
-    "electra-persona-west-end-2026/thereviewshub--unknown.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
     "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
@@ -35,7 +34,9 @@
     "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -52,10 +53,9 @@
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
-    "the-children-off-west-end-2026/times-uk--unknown.json",
-    "electra-persona-west-end-2026/londontheatre1--unknown.json",
     "electra-persona-west-end-2026/theatreboard--unknown.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
@@ -66,6 +66,7 @@
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
     "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
     "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
     "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
@@ -202,16 +203,24 @@
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
     "shifters-off-broadway-2026/times-uk--donald-hutera.json",
     "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/musical-theatre-review--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/musical-theatre-review--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json",
+    "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
+    "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/frontmezzjunkies--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
-      "electra-persona-west-end-2026/thereviewshub--unknown.json",
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
       "cats-west-end-2026/north-west-end--michelle-knight.json",
@@ -231,11 +240,17 @@
       "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
+    "browserbase": [
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+    ],
+    "directCookies": [
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+    ],
     "scrapingbee": [
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -256,18 +271,18 @@
     ]
   },
   "startTime": "2026-09-02T13:49:42.848Z",
-  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/musical-theatre-review--unknown.json",
+  "lastProcessed": "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
-      "t": "2026-09-02T14:58:45.828Z",
+      "t": "2026-09-02T13:54:50.754Z",
       "event": "bb-session",
-      "session": "88829480",
+      "session": "a0a97909",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     },
     {
-      "t": "2026-09-02T14:59:01.736Z",
+      "t": "2026-09-02T13:55:03.618Z",
       "event": "bb-session",
-      "session": "edf214b3",
+      "session": "e81f6d7f",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     },
     {
@@ -327,6 +342,12 @@
       "t": "2026-09-02T15:06:39.701Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-02T15:12:06.607Z",
+      "event": "bb-session",
+      "session": "e1bf1b01",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     }
   ]
 }

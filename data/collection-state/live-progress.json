@@ -1,30 +1,30 @@
 {
-  "updatedAt": "2026-09-02T15:11:06.108Z",
-  "processed": 35,
-  "failed": 165,
-  "successRate": "17.5%",
+  "updatedAt": "2026-09-02T15:13:01.303Z",
+  "processed": 37,
+  "failed": 173,
+  "successRate": "17.6%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-02T14:58:45.828Z",
+      "t": "2026-09-02T13:54:50.754Z",
       "event": "bb-session",
-      "session": "88829480",
+      "session": "a0a97909",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     },
     {
-      "t": "2026-09-02T14:59:01.736Z",
+      "t": "2026-09-02T13:55:03.618Z",
       "event": "bb-session",
-      "session": "edf214b3",
+      "session": "e81f6d7f",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     },
     {
@@ -84,6 +84,12 @@
       "t": "2026-09-02T15:06:39.701Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-02T15:12:06.607Z",
+      "event": "bb-session",
+      "session": "e1bf1b01",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     }
   ]
 }
