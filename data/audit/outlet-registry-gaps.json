@@ -1,12 +1,20 @@
 {
-  "generatedAt": "2026-09-02T05:51:09.575Z",
+  "generatedAt": "2026-09-02T06:22:18.392Z",
   "summary": {
-    "totalOutletsInReviews": 702,
+    "totalOutletsInReviews": 703,
     "inRegistry": 701,
-    "missing": 1,
+    "missing": 2,
     "unused": 466
   },
   "missingOutlets": [
+    {
+      "outletId": "donmarwarehouse",
+      "count": 1,
+      "shows": [
+        "a-month-in-the-country-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/donmarwarehouse--unknown.json"
+    },
     {
       "outletId": "sueterryvoices",
       "count": 1,
@@ -1883,6 +1891,15 @@
     }
   ],
   "suggestedAdditions": [
+    {
+      "outletId": "donmarwarehouse",
+      "displayName": "donmarwarehouse",
+      "tier": 3,
+      "aliases": [
+        "donmarwarehouse"
+      ],
+      "domain": "donmarwarehouse.com"
+    },
     {
       "outletId": "sueterryvoices",
       "displayName": "sueterryvoices",
@@ -7113,6 +7130,16 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/telegraph--diane-snyder.json"
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "outletId": "londontheatrehub",
+      "currentDisplayName": "londontheatrehub",
+      "expectedDisplayName": "Londontheatrehub",
+      "canonicalId": "londontheatrehub",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/londontheatrehub--london-theatre-hub-editorial-team.json"
       ]
     },
     {
