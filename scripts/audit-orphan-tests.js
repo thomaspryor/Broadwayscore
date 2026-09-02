@@ -39,7 +39,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
-const { MANIFESTS } = require('./lib/test-manifest.js');
+const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
@@ -146,16 +146,17 @@ const EXEMPT_KNOWN_BROKEN = {
 };
 
 // .mjs is the canonical extension but .test.ts and .test.js exist too — must
-// audit all three or the gate has the same hole it was built to close. Claude
+// audit all of them or the gate has the same hole it was built to close. Claude
 // caught this during ship-check: 6 .ts/.js orphans were silently uncovered.
-const TEST_FILE_REGEX = /\.test\.(mjs|ts|js)$/;
-// Dots allowed in the prefix class (not just alnum/dash/underscore): filenames
-// like review-normalization.maybeUpgradeUrl.test.mjs embed a dot before the
-// .test.mjs suffix. A dot-less class truncated the match to just
-// "maybeUpgradeUrl.test.mjs", which never equals the full basename
-// listTestFiles() reports — every dotted test filename read as an orphan
-// even when correctly registered in a manifest (BRO-111).
-const REFERENCE_REGEX = /[a-zA-Z0-9_.-]+\.test\.(mjs|ts|js)/g;
+//
+// BRO-2751: the extension list now lives in scripts/lib/test-manifest.js and is
+// SHARED with scripts/lib/colocated-test-ci-coverage.test.mjs. The two guards
+// kept independent hand-maintained lists and both were missing `sh`, so bash
+// tests could run in zero CI jobs with both reporting all-clear. Fresh RegExp
+// objects per call, never one shared instance — REFERENCE_REGEX is /g/-flagged
+// and would otherwise leak lastIndex across consumers.
+const TEST_FILE_REGEX = testFileRegex();
+const REFERENCE_REGEX = testReferenceRegex();
 
 // Returns { name, rel } for each test file: name is the bare filename (used for
 // the reference/exempt lookups, matching how they're cited in YAML), rel is the
@@ -221,10 +222,23 @@ function collectReferencedTests() {
   }
   // Manifest files are plain newline-separated path lists — no comments, no
   // YAML list syntax — so stripping is a deliberate no-op here, not applied.
+  //
+  // BRO-2751: a manifest entry only proves execution for a file `node --test`
+  // can actually run, because every manifest is fed straight to it. Since `sh`
+  // joined the scanned extensions, listing a *.test.sh in a manifest would
+  // otherwise satisfy this audit while guaranteeing a run-time failure for the
+  // wrong reason — an all-clear audit sitting on top of a broken invocation.
+  // Refuse the claim here so the maintainer is told "not registered" (true)
+  // instead of debugging a generic node error later.
   for (const manifestPath of MANIFEST_FILES) {
     if (!fs.existsSync(manifestPath)) continue;
     const content = fs.readFileSync(manifestPath, 'utf8');
-    for (const match of content.matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
+    for (const match of content.matchAll(REFERENCE_REGEX)) {
+      const name = match[0];
+      const ext = name.slice(name.lastIndexOf('.') + 1);
+      if (!NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) continue;
+      referenced.add(name);
+    }
   }
   return referenced;
 }
@@ -249,6 +263,21 @@ function main() {
       // rather than silently emitting a path that can't run.
       if (!rel) {
         console.error(`::warning::EXEMPT_KNOWN_BROKEN lists ${name} but no such test file exists — stale entry`);
+        continue;
+      }
+      // BRO-2751: this list is consumed by a CI loop that runs each path
+      // through `node --test`. Since `sh` joined TEST_FILE_EXTENSIONS, a
+      // *.test.sh can now reach EXEMPT_KNOWN_BROKEN, and node cannot execute
+      // one — it would fail for the wrong reason and read as "still broken"
+      // forever, which is the decay check's own false-all-clear direction.
+      // Refuse loudly instead of emitting an unrunnable path.
+      const ext = name.slice(name.lastIndexOf('.') + 1);
+      if (!NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) {
+        console.error(
+          `::warning::EXEMPT_KNOWN_BROKEN lists ${name}, which node --test cannot run — ` +
+            'bash tests are executed by a literal `run: bash <path>` step, so they cannot ' +
+            'be decay-checked this way. Remove the exemption or fix the test.'
+        );
         continue;
       }
       console.log(rel);
