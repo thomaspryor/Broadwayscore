@@ -67,6 +67,15 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   'wrongProductionDetail',
   'wrongProductionDetectedAt',
   'wrongProductionDetectedBy',
+  // The timestamp ON `wrongProductionReason` (review-write-guard.js:195), which
+  // the flag triple already clears. Unlike everything else here it IS in
+  // PROTECTED_FIELDS, so leaving it out stranded a protected date for a reason
+  // that no longer exists — and being protected, nothing downstream would ever
+  // clear it. Listing it here also subtracts it from SCORED_PRESERVE_FIELDS,
+  // which is right: it must not be carried into a replacement whose reason was
+  // dropped. The _urlChangedClear breadcrumb is what stops the push-restore
+  // resurrecting it (code-review finding).
+  'wrongProductionReasonAt',
   // Anticipatory-gate inputs. Written in the same block as the flag by
   // collect-review-texts.js:4402 and deleted in the same block by both
   // rebuild-all-reviews.js clear paths, so they belong to this family even
@@ -81,6 +90,11 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   '_wrongProductionDetectedBy',
   '_wrongProductionDetectedAt',
   '_wrongProductionDetail',
+  // Written in the SAME statement as _wrongProductionDetectedBy
+  // (cleanup-dedup-comprehensive.js:300) and read as "this was flagged" by
+  // one-off/audit-wp-cv-valid.js:154. Omitting it split a two-field write
+  // across the clear boundary, stranding half of it (code-review finding).
+  '_wrongProductionReason',
 ];
 
 function isValidProvenance(value) {
