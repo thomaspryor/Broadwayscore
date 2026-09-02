@@ -28,6 +28,13 @@ const TICKET_DOMAINS = new Set([
   // original editorial reviews at /reviews/our/<show> (adversarial review
   // 2026-08-02); its listing pages are caught by the path-based checks.
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
+  // thelondoner.com — /exclusive-offers/<show> is a ticket-offer page carrying
+  // the producer's own show blurb. Its A Month in the Country page was ingested
+  // via submit-review-form, criticName Unknown, and landed at
+  // contentTier:'complete' (3790 chars of well-formed prose), so it was a live
+  // scoring candidate held back only by having no score yet. Same shape as the
+  // BRO-2712 southbankcentre finding.
+  'thelondoner.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
   // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the
@@ -43,6 +50,12 @@ const TICKET_DOMAINS = new Set([
   // the domain-hint heuristic run unblocked. Verified zero hits across every
   // scored review URL in reviews.json before adding.
   'skiddle.com',
+  // vocaleyes.co.uk — audio-description access LISTINGS ("Audio-described
+  // performance, Touch tour, Date: Saturday 12 September 2026"), not criticism.
+  // Excellent cause, wrong corpus. Here rather than TICKET_DOMAINS: it sells
+  // nothing, it lists. Verified zero hits across every scored review URL before
+  // adding, per the convention this set already documents above.
+  'vocaleyes.co.uk',
   // 2026-08-09: both were counted as MISSING REVIEWS for
   // disruption-off-broadway-2026 by the SERP census. Two of the three openings
   // the newsletter gate deleted from the 2026-08-03 issue were dropped over
@@ -103,14 +116,26 @@ const VENUE_DOMAINS = new Set([
   'southbankcentre.co.uk',
 ]);
 
-// Theatre PR firms — press releases, not criticism, but they read as
-// well-formed prose (byline, dateline, plot summary) so structural
-// heuristics like isJunkOutlet() never catch them (BRO-2712: spincyclenyc.com
-// filed a 4300-char SparkPlug Productions press release for The Bathroom
-// Attendant with a "critic" name of "Ron" and contentTier=complete — a live
-// candidate for scoring as a critic review before this was caught).
+// Theatre PR firms AND institutional press offices — announcements, not
+// criticism, but they read as well-formed prose (byline, dateline, plot
+// summary) so structural heuristics like isJunkOutlet() never catch them
+// (BRO-2712: spincyclenyc.com filed a 4300-char SparkPlug Productions press
+// release for The Bathroom Attendant with a "critic" name of "Ron" and
+// contentTier=complete — a live candidate for scoring as a critic review
+// before this was caught).
 const PR_FIRM_DOMAINS = new Set([
   'spincyclenyc.com',
+  // University department news pages. tisch.nyu.edu announced an alum's
+  // production ("Lukas T. Woodyard (PS MA '20) along with their collective ...
+  // is producing the new work") and was ingested via submit-review-form as a
+  // masticate-off-broadway-2026 review. A previous crown cycle baselined this
+  // outletId and recorded "do NOT register these as real outlets if they
+  // recur". It recurred. Blocking the host is what ends it — a baseline
+  // silences one outletId, and the next alum announcement arrives under a new
+  // one. Whole-domain, so *.nyu.edu is covered; the department subdomain is
+  // incidental. NOTE this is a wildcard: a student paper hosted on an nyu.edu
+  // subdomain would be blocked silently. Zero such hits in the corpus today.
+  'nyu.edu',
 ]);
 
 // User-generated publishing platforms — anyone can post, there is no editorial
