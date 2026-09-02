@@ -329,3 +329,76 @@ test('BRO-2740: both clear paths source the same provenance list', () => {
     assert.ok(URL_DERIVED_FIELDS.includes(f), `${f} missing from URL_DERIVED_FIELDS`);
   }
 });
+
+test('BRO-2740: re-stamped provenance is cleared with the flag, not kept as a "fresh" value', () => {
+  // The hole the first cut of this fix left, found by review. The loop only
+  // deletes a field whose post-merge value is IDENTICAL to the on-disk one, and
+  // collect-review-texts.js:4401 re-stamps wrongProductionDetectedAt with
+  // new Date().toISOString() on every pass — so its value ALWAYS differs and it
+  // always survived, while wrongProduction (true on both sides) was deleted.
+  const existing = {
+    url: 'https://www.example.com/old-article/',
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongProductionDetail: 'Published 9 days before opening night',
+    wrongProductionDetectedAt: '2026-07-14T02:11:03.000Z',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+    anticipatoryGateDaysBeforeOpening: 9,
+  };
+  const merged = {
+    ...existing,
+    url: 'https://www.example.com/the-real-review/',
+    // Same detector, re-run: different timestamp, different day count.
+    wrongProductionDetectedAt: '2026-09-02T18:00:00.000Z',
+    anticipatoryGateDaysBeforeOpening: 4,
+  };
+
+  const { cleared } = applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro2740-restamp' });
+
+  const survivors = Object.keys(merged).filter((k) => /^_?wrongProduction|^anticipatoryGate/.test(k));
+  assert.deepEqual(survivors, [], `no provenance may outlive the flag, got: ${survivors.join(',')}`);
+  assert.ok(cleared.includes('wrongProductionDetectedAt'));
+  assert.ok(cleared.includes('anticipatoryGateDaysBeforeOpening'));
+});
+
+test('BRO-2740: a genuinely NEW flag raised by the incoming write keeps its provenance', () => {
+  // Guard against the second pass over-clearing: the record was not previously
+  // flagged, so the flag standing after the loop describes the NEW url.
+  const existing = { url: 'https://www.example.com/old-article/', fullText: 'old body' };
+  const merged = {
+    url: 'https://www.example.com/new-article/',
+    fullText: 'new body',
+    wrongProduction: true,
+    wrongProductionDetail: 'Published 6 days before opening night',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+  };
+
+  applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro2740-newflag' });
+
+  assert.equal(merged.wrongProduction, true);
+  assert.equal(merged.wrongProductionDetail, 'Published 6 days before opening night');
+  assert.equal(merged.wrongProductionDetectedBy, 'ingest-anticipatory-gate');
+});
+
+test('BRO-2740: date-guard carve-out with a surviving publishDate keeps provenance too', () => {
+  // The AUTO_DATE_WP_PREFIXES half of the carve-out (the Tour-transfer test
+  // above covers MANUAL_WP_PREFIXES). A genuinely new publishDate arrives, so
+  // the guard's basis survives and the rebuild re-evaluates it — provenance
+  // must still be there when it does.
+  const existing = {
+    url: 'https://www.example.com/old-article/',
+    publishDate: '2026-05-01',
+    wrongProduction: true,
+    wrongProductionNote: 'Pre-opening guard: published before opening night',
+    wrongProductionDetail: 'Published 12 days before opening night',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+  };
+  const merged = { ...existing, url: 'https://www.example.com/new-article/', publishDate: '2026-06-20' };
+
+  applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro2740-dateguard' });
+
+  assert.equal(merged.publishDate, '2026-06-20', 'a fresh date survives');
+  assert.equal(merged.wrongProduction, true, 'guard survives while its date basis survives');
+  assert.equal(merged.wrongProductionDetail, 'Published 12 days before opening night');
+  assert.equal(merged.wrongProductionDetectedBy, 'ingest-anticipatory-gate');
+});

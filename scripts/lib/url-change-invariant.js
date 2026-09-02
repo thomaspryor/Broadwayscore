@@ -281,6 +281,33 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     cleared.push(field);
   }
 
+  // BRO-2740, second pass: provenance is cleared AS A UNIT with the flag, not
+  // value-by-value. The loop above only deletes a field whose post-merge value
+  // is IDENTICAL to the on-disk one — a deliberate rule, because a fresh value
+  // supplied by the incoming write must survive. Provenance breaks that rule:
+  // collect-review-texts.js:4401 re-stamps `wrongProductionDetectedAt` with
+  // `new Date().toISOString()` on every pass, so its value ALWAYS differs and
+  // it always survived, while `wrongProduction` (true both sides) was deleted.
+  // Measured on the first cut of this fix: url A→B with a re-stamped detector
+  // block cleared wrongProduction/Reason/Detail/DetectedBy and stranded
+  // DetectedAt + anticipatoryGateDaysBeforeOpening — a fresh orphan produced
+  // by the very code meant to stop them (found by review, not by the tests).
+  //
+  // A "fresh" provenance value is not independent evidence: it describes a
+  // flag that is now gone, so it must go too. Conversely, when the flag is
+  // still standing after the loop — the carve-out preserved it, or the
+  // incoming write raised a genuinely new one on a record that was not
+  // previously flagged — provenance is kept, which is the mirror-image orphan
+  // this same commit guards against.
+  if (!merged.wrongProduction) {
+    for (const field of WRONG_PRODUCTION_PROVENANCE_FIELDS) {
+      if (preserveFields && preserveFields.has(field)) continue;
+      if (merged[field] === undefined) continue;
+      delete merged[field];
+      if (!cleared.includes(field)) cleared.push(field);
+    }
+  }
+
   // Chain-carry a prior breadcrumb: across A→B→C hops, hop 2's own clear list
   // may be empty (everything already cleared at hop 1) — but the era gate in
   // isIntentionalClear keys on breadcrumb.to, so a stale {to: B} breadcrumb
