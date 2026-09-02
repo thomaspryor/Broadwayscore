@@ -14,7 +14,7 @@
 //     "Extract pull quotes" step's own explicit timeout-minutes: 12, the new
 //     900s push budget left only 180s (10%) of headroom in the 30min job.
 //
-// Two independent flags come out of this module:
+// Three independent flags come out of this module:
 //
 //   1. retryDeadlineRatio — push-with-retry.sh's backoff loop sleeps
 //      WAIT=3+i*2+jitter seconds before each retry (scripts/lib/push-with-
@@ -39,6 +39,13 @@
 //      steps aren't counted — there's no static bound to sum). Flagged when
 //      the job timeout leaves under MARGIN_THRESHOLD (15%) of headroom past
 //      stepBudgetSec + those other steps' budgets.
+//
+//   3. fundableAttempts — BRO-2373 (2026-09-02). Flags 1 and 2 both model an
+//      attempt as costing only its backoff SLEEP. Real CI logs say an attempt
+//      that hits GIT_NET_TIMEOUT_SEC costs 180s of network cap. See
+//      computeFundableAttempts below for the measurement and the two runs it
+//      was derived from. Flagged as deadline-cannot-fund-retries when
+//      PUSH_DEADLINE_SEC funds fewer than min(MAX_RETRIES, 3) attempts.
 //
 // No YAML library (none of the CI jobs that would run this npm-install first;
 // same constraint scripts/lib/ci-cancellation-guard.js documents). Parsed
@@ -494,6 +501,49 @@ function computeBackoffSum(maxRetries) {
   return maxRetries * maxRetries + 4 * maxRetries;
 }
 
+// How many of MAX_RETRIES attempts PUSH_DEADLINE_SEC can actually fund when
+// every network op costs its full hard cap (BRO-2373 measurement, 2026-09-02).
+//
+// The two flags above model an attempt as costing only its backoff SLEEP, so a
+// 240s deadline with MAX_RETRIES=7 reads "ratio 0.32, deadline is generous".
+// Measured against real CI logs that is wrong by an order of magnitude: on
+// 2026-09-02 five workflows went red at their push step and in EVERY one each
+// `git push` ran for exactly 90.00s — GIT_NET_TIMEOUT_SEC — and was hard-killed
+// by push-with-retry.sh's own `_timeout` wrapper. Evidence, two independent
+// workflows:
+//   run 33679833284 (rebuild-reviews.yml, deadline 900s, MAX_RETRIES=25):
+//     "overall deadline 900s exceeded after 6 attempt(s)"  — 6 of 25.
+//   run 33681436855 (fetch-guardian-reviews.yml, deadline 240s, retries 7):
+//     "overall deadline 240s exceeded after 2 attempt(s)"  — 2 of 7.
+// Both match `2 * GIT_NET_TIMEOUT_SEC + backoff` per attempt, because ONE loop
+// iteration can spend the cap TWICE: the loop-top `git_push` and, after the
+// fetch+rebase, the post-resolution `git_push` (push-with-retry.sh's
+// "Post-resolution push failed (attempt N)" branch). A rejected push, by
+// contrast, returns in ~1s (measured against this repo's origin), so this is
+// the HANG/slow-push ceiling, not the ordinary race-loss path.
+//
+// Counted with the loop's real control flow: push-with-retry.sh checks
+// `SECONDS >= PUSH_DEADLINE_SEC` at the TOP of each iteration, so an attempt
+// that merely STARTS under the deadline still runs in full.
+const GIT_NET_TIMEOUT_SEC = 90; // push-with-retry.sh: GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
+const WORST_CASE_ATTEMPT_SEC = 2 * GIT_NET_TIMEOUT_SEC;
+// Below this many fundable attempts a step cannot ride out even a short burst
+// of contention on main. 3 rather than a ratio: the quantity that matters is a
+// small integer count of attempts, and a ratio would hide "2 of 25".
+const MIN_FUNDABLE_ATTEMPTS = 3;
+
+function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = WORST_CASE_ATTEMPT_SEC) {
+  if (!(maxRetries > 0) || !(deadlineSec > 0)) return 0;
+  let elapsed = 0;
+  let attempts = 0;
+  for (let i = 1; i <= maxRetries; i++) {
+    if (elapsed >= deadlineSec) break; // the loop-top deadline check
+    attempts += 1;
+    elapsed += attemptSec + (3 + 2 * i); // this attempt's ops, then its backoff
+  }
+  return attempts;
+}
+
 // { touches, apiFallbackSafe } — apiFallbackSafe is true only when EVERY
 // MANAGED file this run text touches has a working Git Data API rescue path
 // (core-data-merge-registry.js's apiFallbackSafe: true). SECOND-OPINION
@@ -584,6 +634,8 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   const marginSec = jobTimeoutSec - (stepBudgetSec + otherStepsBudgetSec);
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
 
+  const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
+
   const flags = [];
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
     flags.push('retries-undersized-vs-deadline');
@@ -591,10 +643,17 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   if (marginRatio < MARGIN_THRESHOLD) {
     flags.push('job-timeout-margin-undersized');
   }
+  // BRO-2373: only a real undersizing when the deadline funds fewer attempts
+  // than BOTH the configured retry count and the 3-attempt floor — a step that
+  // deliberately configures MAX_RETRIES=1 is not undersized, it is small.
+  if (fundableAttempts < Math.min(maxRetries, MIN_FUNDABLE_ATTEMPTS)) {
+    flags.push('deadline-cannot-fund-retries');
+  }
 
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
+    fundableAttempts,
     flags,
   };
 }
@@ -706,6 +765,10 @@ module.exports = {
   DEFAULT_JOB_TIMEOUT_MIN,
   MARGIN_THRESHOLD,
   RETRY_DEADLINE_RATIO_THRESHOLD,
+  GIT_NET_TIMEOUT_SEC,
+  WORST_CASE_ATTEMPT_SEC,
+  MIN_FUNDABLE_ATTEMPTS,
+  computeFundableAttempts,
   parseWorkflow,
   findPushRetryCalls,
   countRawCallSites,
