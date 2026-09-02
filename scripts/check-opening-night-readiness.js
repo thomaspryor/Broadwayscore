@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { imagePresent } = require('./lib/show-image-presence');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -128,9 +129,20 @@ async function runChecks() {
   // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
   // thumbnail}, reported as "Missing: hero, poster, thumbnail").
   const images = show.images || {};
-  const hasHero = !!images.hero;
-  const hasPoster = !!images.poster;
-  const hasThumbnail = !!images.thumbnail;
+  // A field being SET is not the same as the file EXISTING. The previous
+  // version checked truthiness only, which fixed a false "missing" (the old
+  // code hardcoded a .webp extension) by introducing a false ALL-CLEAR, which
+  // on an opening-night gate is the worse direction. Real case at the time of
+  // writing: high-society-west-end-2026 has images.hero pointing at
+  // hero.webp, only poster.jpg and thumbnail.jpg are on disk, and the check
+  // printed "✅ Show images". Repo-wide there were 334 images.* refs pointing
+  // at files absent from public/.
+  //
+  // Predicate lives in scripts/lib/show-image-presence.js so the test exercises
+  // the real function instead of a copy (CLAUDE.md rule 15).
+  const hasHero = imagePresent(images.hero);
+  const hasPoster = imagePresent(images.poster);
+  const hasThumbnail = imagePresent(images.thumbnail);
   if (hasHero && hasPoster && hasThumbnail) {
     report(PASS, 'Show images', 'hero + poster + thumbnail all present');
   } else {
