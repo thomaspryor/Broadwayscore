@@ -106,3 +106,38 @@ test('empty, missing and non-string references are not present', () => {
     assert.equal(imagePresent(bad, opts), false, `${JSON.stringify(bad)} must not read as present`);
   }
 });
+
+test('a public/-PREFIXED SIBLING directory is outside containment (BRO-2748)', () => {
+  // The '..' tests above are satisfied by a containment check written as
+  // `full.startsWith(publicDir)` with no path.sep — every path they probe
+  // ('/repo/package.json', '/etc/hosts') fails that weaker check too, so
+  // dropping the separator survived the whole suite.
+  //
+  // It is a false-ALL-CLEAR hole, the direction this predicate exists to
+  // close: any sibling whose name merely STARTS WITH 'public' — public-old/,
+  // public_backup/, publicity/ — resolves inside the weakened check while
+  // living outside public/. No such sibling exists in the repo today, which
+  // is exactly why only an injected filesystem can pin it.
+  const o = {
+    repoRoot: ROOT,
+    // Every probed path "exists" and is a real file, so the ONLY thing that
+    // can return false here is the containment check itself.
+    existsSync: () => true,
+    statSync: () => ({ isFile: () => true }),
+  };
+  for (const escape of [
+    '/../public-old/images/shows/x/hero.webp',
+    '/../public_backup/images/shows/x/hero.webp',
+    '/../publicity/hero.webp',
+    '/../publicimages/hero.webp',
+  ]) {
+    assert.equal(
+      imagePresent(escape, o),
+      false,
+      `${escape} resolves OUTSIDE public/ — a separator-less startsWith would call it present`
+    );
+  }
+  // The other direction stays true: public/ itself, and paths under it, are
+  // still contained. A containment fix that over-rejects would be its own bug.
+  assert.equal(imagePresent('/images/shows/x/hero.webp', o), true);
+});
