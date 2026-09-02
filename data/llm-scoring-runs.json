@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-28T19:06:43.542Z",
-    "completedAt": "2026-08-28T19:06:52.280Z",
-    "totalReviews": 42337,
-    "processed": 0,
-    "skipped": 42335,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8114,
-      "output": 335,
-      "total": 23302
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-28T20:37:38.472Z",
     "completedAt": "2026-08-28T20:37:42.580Z",
     "totalReviews": 45,
@@ -791916,6 +791902,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-02T13:26:51.943Z",
+    "completedAt": "2026-09-02T13:26:53.551Z",
+    "totalReviews": 8,
+    "processed": 0,
+    "skipped": 7,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "romeo-and-juliet-west-end-2026",
+        "outletId": "guardian",
+        "error": "resume_input_hash_mismatch"
       }
     ]
   }
