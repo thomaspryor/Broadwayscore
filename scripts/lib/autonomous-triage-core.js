@@ -56,12 +56,89 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 //     `git ls-files` / `ls`); shape-only admission, same as every other form
 //     — isSafeCheckCommand never checks existence, resolveCheckPaths does
 //     that downstream for pathsGroup forms.
-// A future script of this shape needs the same per-script write-grep before
-// being added here — nothing here detects a new violator automatically.
+// BRO-2718: "nothing here detects a new violator automatically" is no longer
+// true, and that is what makes the list below safe to grow from 3 names to 39.
+// scripts/audit-safe-form-allowlist.js re-derives the read-only property of
+// every basename here on every CI run (unit test:
+// scripts/lib/safe-form-allowlist.test.mjs), by scanning for fs mutation APIs,
+// child_process spawns, network clients and unreadable dynamic requires — in
+// the script's own file (hard gate, never baselined) AND across its transitive
+// local require graph (hard gate, with a shrink-only baseline holding exactly
+// one grandfathered entry). Add a write to any script named here and CI goes
+// red naming it. Every name below was admitted by that scanner, not by hand.
+//
+// WHY IT HAD TO GROW. With three names, the generic form refused essentially
+// every real read-only script a card author could name — including three of
+// the crown loop's own cycle gates. Measured on the same 300-card Linear
+// sweep (data/audit/card-verifiability-linear.json), `basename` refusals were
+// 7 of 187, but the shape they refused was the CORRECT one: a card that
+// correctly named `node scripts/audit-push-retry-budgets.js` was told its
+// command was unsafe, so the author's only route to an armed card was to
+// invent a different command. A gate that refuses the right answer teaches
+// people to write wrong ones.
+//
+// WHAT IS DELIBERATELY STILL ABSENT, and why the scanner is not being widened
+// to admit it:
+//   - audit-outlet-registry.js  — `saveAuditResults()` runs UNCONDITIONALLY at
+//     scripts/audit-outlet-registry.js:948, outside every flag guard, writing
+//     data/audit/outlet-registry-gaps.json, which is git-TRACKED. `--strict`
+//     is not a read-only mode of this script. (This is why BRO-2717's stated
+//     acceptance command cannot simply be allowlisted.)
+//   - audit-critic-outlets.js   — same shape: writes data/critic-registry.json
+//     and data/audit/critic-outlet-affinity.json on every run.
+//   - audit-card-verifiability.js — writes its report, and shells out to
+//     notion-brain.js via execFileSync.
+//   - audit-sibling-title-misroute.js — keeps its own narrower bare-only entry
+//     below; under --fix it MOVES AND DELETES review-text files.
+// Give one of those a genuinely read-only mode and the scanner will admit it
+// on its own; do not hand-add a name the scanner rejects.
 const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
+  // Grandfathered from task #1827. Direct-clean; its 64-module require graph
+  // reaches scripts/lib/scraper.js and review-write-guard.js, so it is
+  // carried in audit-safe-form-allowlist.js's TRANSITIVE_SCAN_BASELINE.
+  // Discharge that by severing the graph, never by baselining a second name.
   'audit-review-contamination.js',
-  'lint-resend-calls.js',
+  // Does not exist on disk (still true) — shape-only admission, unchanged.
   'audit-worktree-unpushed.js',
+  // Everything below: zero fs writes, zero spawns, zero network, no computed
+  // require, in the file AND its whole local require graph.
+  'audit-audience-buzz-contamination.js',
+  'audit-cast-contamination.js',
+  'audit-contradicted-flag-basis.js',
+  'audit-creative-team-vs-synopsis.js',
+  'audit-critic-consensus-contamination.js',
+  'audit-cron-health-coverage.js',
+  'audit-duplicate-of-floor.js',
+  'audit-errexit-unguarded-substitution.js',
+  'audit-false-balance.js',
+  'audit-gate-corpus-guard-coverage.js',
+  'audit-launchd-stale-sync-guard.js',
+  'audit-linear-issuecreate-chokepoint.js',
+  'audit-nft-excluded-runtime-reads.js',
+  'audit-placeholder-venues.js',
+  'audit-playwright-count-assertions.js',
+  'audit-playwright-evaluate-click.js',
+  'audit-push-core-data-audit-gap.js',
+  'audit-push-retry-budgets.js',
+  'audit-reconcile-coverage.js',
+  'audit-review-texts-test-yml-coverage.js',
+  'audit-run-budget-coverage.js',
+  'audit-show-director-consensus.js',
+  'audit-stale-flag-after-url-correction.js',
+  'audit-stale-flag-producers.js',
+  'audit-test-yml-lib-deps.js',
+  'audit-test-yml-manifest-paths.js',
+  'audit-tests-vs-derived-data.js',
+  'audit-text-quality.js',
+  'audit-tony-attribution.js',
+  'audit-tony-eligibility.js',
+  'audit-unbounded-fetch.js',
+  'audit-verifier-wiring.js',
+  'audit-workflow-concurrency.js',
+  'audit-workflow-secret-gaps.js',
+  'lint-design-tokens.js',
+  'lint-resend-calls.js',
+  'lint-wrongproduction-provenance.js',
 ]);
 
 const SAFE_CHECK_FORMS = [
@@ -764,6 +841,12 @@ function orderQueue(entries) {
 module.exports = {
   SCHEMA_PATH,
   SAFE_CHECK_FORMS,
+  // Exported so scripts/audit-safe-form-allowlist.js can gate the real
+  // constant rather than probe the gate and guess which SAFE_CHECK_FORMS entry
+  // admitted a basename (the narrow per-script entries above hold scripts that
+  // DO write under other flags, and auditing those against a zero-write
+  // standard they were never held to would produce permanent false failures).
+  AUDIT_LINT_GENERIC_FORM_ALLOWED,
   isSafeCheckCommand,
   explainUnsafeCheckCommand,
   extractCheckPaths,

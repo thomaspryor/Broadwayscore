@@ -54,6 +54,14 @@ on:
       # scripts/check-orphan-commits.js above.
       - 'scripts/ingest-dmarc-reports.js'
       - 'scripts/ingest-dmarc-reports.test.mjs'
+      # scripts/audit-safe-form-allowlist.js (BRO-2718): required by
+      # scripts/lib/safe-form-allowlist.test.mjs (globbed above) but living at
+      # the top level of scripts/, so a solo edit to it would trigger zero CI —
+      # the same gap shape scripts/audit-test-yml-lib-deps.js exists to catch,
+      # and it did catch this one. That test is the ONLY thing keeping the
+      # safe-form injection gate's read-only allowlist honest, so it must run
+      # whenever the scanner behind it changes.
+      - 'scripts/audit-safe-form-allowlist.js'
       # Push-path coverage self-audit (task #1745): catches the remaining gap
       # shape scripts/lib/** doesn't cover — a scripts/lib test requiring a
       # file outside scripts/lib/. Advisory step wired into lint-workflows.
