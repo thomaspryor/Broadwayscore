@@ -1,136 +1,31 @@
 {
-  "updatedAt": "2026-09-02T11:45:13.359Z",
-  "processed": 116,
-  "failed": 2527,
-  "successRate": "4.4%",
+  "updatedAt": "2026-09-02T12:59:00.923Z",
+  "processed": 118,
+  "failed": 3275,
+  "successRate": "3.5%",
   "tierBreakdown": {
-    "playwright": 66,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 15,
-    "directCookies": 3,
-    "scrapingbee": 26,
-    "brightdata": 6,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 21
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-02T04:46:54.730Z",
+      "t": "2026-09-02T12:52:09.128Z",
       "event": "bb-session",
-      "session": "eb92629c",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
+      "session": "14842175",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     },
     {
-      "t": "2026-09-02T04:47:13.594Z",
+      "t": "2026-09-02T12:52:21.467Z",
       "event": "bb-session",
-      "session": "52efcb5c",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-02T09:20:06.092Z",
-      "event": "bb-session",
-      "session": "07faa55c",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-02T09:20:10.698Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-02T09:20:28.875Z",
-      "event": "bb-session",
-      "session": "ccb76fec",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-02T09:20:33.391Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-02T09:27:27.179Z",
-      "event": "bb-session",
-      "session": "f8641c44",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
-    {
-      "t": "2026-09-02T09:27:36.203Z",
-      "event": "bb-session",
-      "session": "d9036262",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
-    {
-      "t": "2026-09-02T09:37:11.463Z",
-      "event": "bb-session",
-      "session": "b08e8ff0",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
-    },
-    {
-      "t": "2026-09-02T10:20:19.410Z",
-      "event": "bb-session",
-      "session": "7ee2b847",
-      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
-    },
-    {
-      "t": "2026-09-02T10:20:27.736Z",
-      "event": "bb-session",
-      "session": "0f3cafd7",
-      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
-    },
-    {
-      "t": "2026-09-02T10:30:02.980Z",
-      "event": "bb-session",
-      "session": "ecab15b8",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-09-02T10:30:03.709Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-02T10:31:44.644Z",
-      "event": "bb-session",
-      "session": "d70a7453",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-02T10:31:52.638Z",
-      "event": "bb-session",
-      "session": "29cdcd09",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-02T10:35:15.263Z",
-      "event": "bb-session",
-      "session": "3b54d54d",
-      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
-    },
-    {
-      "t": "2026-09-02T10:35:38.996Z",
-      "event": "bb-session",
-      "session": "b459bd29",
-      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
-    },
-    {
-      "t": "2026-09-02T10:40:22.036Z",
-      "event": "bb-session",
-      "session": "66b19ca8",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-09-02T10:42:01.769Z",
-      "event": "bb-session",
-      "session": "82cf0fd3",
-      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
-    },
-    {
-      "t": "2026-09-02T10:42:10.200Z",
-      "event": "bb-session",
-      "session": "d9caff81",
-      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+      "session": "c887943f",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
