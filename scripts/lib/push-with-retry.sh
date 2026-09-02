@@ -134,6 +134,39 @@ git_push() {
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
 }
+# BRO-2732: classify a FAILED git_push's exit status for the log. git_push runs
+# git under `_timeout ... -k 10` above, and when timeout kills git mid-transport
+# git prints NOTHING of its own — so a fast REJECTION (git's own stderr visible,
+# ~1s) and a full-$GIT_NET_TIMEOUT_SEC transport HANG (silent) were
+# INDISTINGUISHABLE in CI logs. That is BRO-2732's defect #2 ("the retry wrapper
+# swallows the underlying git stderr... arguably the more expensive bug"): the
+# rebuild-reviews.yml push failures could not be diagnosed from a run log at all.
+# Task #1810 already fixed the fully-silent case at the post-resolution site by
+# adding a message, but without the rc the two causes still read the same.
+#
+# GNU timeout exits 124 when the TERM it sends suffices and 137 (128+9) when it
+# has to escalate to the `-k 10` KILL; BOTH are reachable here. When
+# $_TIMEOUT_BIN is absent (the fail-open branch of _timeout — e.g. macOS without
+# coreutils) git runs UNWRAPPED, so neither code can originate from a timeout and
+# the plain rc is reported instead. Kept as one helper next to the `-k 10` that
+# produces those codes rather than duplicated inline per call site, so the two
+# sites cannot drift apart.
+#
+# Pure string formatting: no side effects, no git stderr, no ledger write —
+# nothing here can carry a credential (contrast redact_git_stderr() below, which
+# exists for the paths that DO capture git's stderr). Deliberately does NOT call
+# record_push_failure(): that function's durable telemetry write is gated to the
+# FIRST call per invocation, so recording a merely TRANSIENT post-resolution
+# timeout — one a later attempt often recovers from — would write a durable
+# "push failed" row for a run that ultimately SUCCEEDED, and
+# scripts/lib/push-retry-deadman.js would surface healthy runs as failures.
+describe_push_rc() {
+  case "$1" in
+    124) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=124, SIGTERM), so git printed no error of its own — a transport HANG, not a rejection" ;;
+    137) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=137, SIGKILL after -k 10), so git printed no error of its own — a transport HANG, not a rejection" ;;
+    *)   echo "rc=$1 — git's own stderr above carries the rejection reason" ;;
+  esac
+}
 
 # Strips credential-shaped text out of captured git stderr before it's echoed
 # to CI logs (ship-check adversarial finding, task #1849). Two passes:
@@ -1097,6 +1130,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # resolution might have left in the now-outgoing commits.
   assert_no_conflict_markers
   assert_no_orphan_commit
+  # BRO-2732: bare assignment, NOT `local` — this is the top-level retry loop
+  # (`for i in $(seq 1 "$MAX_RETRIES")`), not a function, and `local` outside a
+  # function aborts under this script's `set -euo pipefail` at line 29, which
+  # would turn a transient push failure into a hard exit that skips every
+  # remaining retry AND the Git Data API fallback. Same reason the fetch path's
+  # explicit_fetch_rc/fetch_start (line ~1333) are bare too.
+  push_start=$SECONDS
   if git_push origin "$BRANCH"; then
     if verify_content_survived; then
       echo "Push succeeded on attempt $i"
@@ -1125,6 +1165,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         HEAD_TRUSTED_CLEAN=true
       fi
     fi
+  else
+    # BRO-2732: $? here is git_push's own status (an `if` condition's status is
+    # not clobbered on entry to its `else`). This branch is reached ONLY when the
+    # push itself failed — the push-succeeded-but-content-lost path above stays
+    # inside the `then` arm and falls through untouched. Previously this was the
+    # FIRST and most common push of every attempt and it reported nothing at all:
+    # control fell straight to the generic "Push failed (attempt N/M)" line below,
+    # which names neither the exit code nor the elapsed time, so a 1s rejection
+    # and a 90s hang produced identical log text.
+    pre_push_rc=$?
+    echo "  Pre-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$pre_push_rc")"
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
@@ -1707,6 +1758,8 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
   # just falls through to the normal backoff + next attempt.
   if [ "$history_changed" = "true" ]; then
+    # BRO-2732: see the identical bare-assignment note at the pre-resolution push.
+    push_start=$SECONDS
     if git_push origin "$BRANCH"; then
       if verify_content_survived; then
         echo "Push succeeded after conflict resolution (attempt $i)"
@@ -1739,7 +1792,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # no else) — a 90s GIT_NET_TIMEOUT_SEC hang here printed NOTHING,
       # which is why update-show-status.yml's identical hang on this exact
       # push call went undiagnosed in CI logs for 4+ days.
-      echo "  Post-resolution push failed (attempt $i) — will retry after backoff"
+      # BRO-2732: the message alone was still not diagnosable. In run
+      # 33674821020's sibling 33678227543 ("Rebuild Reviews (Fast)"), attempt 3
+      # fetched origin/main at 20:25:17Z and printed this line at 20:26:48Z —
+      # 91s, i.e. exactly GIT_NET_TIMEOUT_SEC — while origin/main took ZERO
+      # commits in that window (20:25:12Z, then 20:28:04Z). So it was a
+      # transport hang, not the lost write race it looked like. The rc makes
+      # that readable directly off the log instead of by timestamp archaeology.
+      post_push_rc=$?
+      echo "  Post-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$post_push_rc") — will retry after backoff"
     fi
   fi
 

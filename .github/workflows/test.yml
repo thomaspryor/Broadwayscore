@@ -524,6 +524,12 @@ on:
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
+      # BRO-2732: asserts a failed git push names its exit code, so a fast
+      # rejection and a GIT_NET_TIMEOUT_SEC transport hang stop looking identical
+      # in CI logs, plus a structural guard against `local` outside a function
+      # (aborts the whole script under set -euo pipefail, skipping every
+      # remaining retry AND the Git Data API fallback).
+      - 'scripts/lib/push-with-retry.push-rc-diagnosis.test.sh'
       # BRO-142: stale-MERGE_HEAD detection shared by push-with-retry.sh,
       # merge-worktree-to-main.sh, and the session-start.sh hook (advisory,
       # untested in CI — no dedicated harness for hook scripts in this repo).
@@ -3684,6 +3690,17 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run push-with-retry push-rc diagnosis test (bash integration)
+        # BRO-2732: rebuild-reviews.yml's push step failed every run and the log
+        # could not say why — git_push runs git under `_timeout -k 10`, and a
+        # timeout kills git before it prints anything, so a 1s rejection and a
+        # 90s transport hang produced identical text. Exercises BOTH git_push
+        # call sites against a real remote (non-routable push URL forces the
+        # hang) and statically guards the `local`-outside-a-function hard-abort
+        # class an independent review caught in this change's first draft.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.push-rc-diagnosis.test.sh
 
       - name: Run detect-stale-merge-head test (bash integration)
         # BRO-142 (recurrence of #916/#1279/#1445): pure classifier shared by
