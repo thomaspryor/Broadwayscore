@@ -1,15 +1,31 @@
 {
-  "generatedAt": "2026-09-02T14:23:41.779Z",
+  "generatedAt": "2026-09-02T17:22:11.716Z",
   "total": 300,
-  "armedCount": 113,
-  "refusedCount": 187,
+  "armedCount": 145,
+  "refusedCount": 155,
   "byKind": {
-    "no-section": 32,
-    "no-command": 107,
-    "shape": 41,
-    "basename": 7
+    "no-command": 89,
+    "no-section": 24,
+    "shape": 37,
+    "basename": 5
   },
   "refused": [
+    {
+      "id": "BRO-2743",
+      "name": "BSC Daily: Workflow repeat-failure: Update Theatr Data",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2743/bsc-daily-workflow-repeat-failure-update-theatr-data",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-2742",
+      "name": "BSC Daily: Workflow repeat-failure: Opening Night Broadcast",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2742/bsc-daily-workflow-repeat-failure-opening-night-broadcast",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
     {
       "id": "BRO-2739",
       "name": "P1: opening-night monitor reports never page — conditionKey missing from page-worthy allowlist",
@@ -273,14 +289,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2684/backfill-reviewsimages-for-bro-155-off-off-broadway-stubs",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('/Users/tompryor/broadway-scorecard-data/reviews.json'); console.log(r.filter(x=>['matchbook-fe)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-2683",
-      "name": "P1: audit-imageless-scored-shows.yml bundles apiFallbackSafe file with multi-writer alert-ledger.json, defeating the Git Data API fallback",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2683/p1-audit-imageless-scored-showsyml-bundles-apifallbacksafe-file-with",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-push-retry-budgets.js --json)",
-      "kind": "basename"
     },
     {
       "id": "BRO-2682",
@@ -1241,270 +1249,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2455/opening-night-broadcastyml-commit-data-step-still-bundles-orphan",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-push-retry-budgets.js --json | node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8'));proc)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-2454",
-      "name": "P2: audit routeAlert() call sites repo-wide for write-before-notify ordering",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2454/p2-audit-routealert-call-sites-repo-wide-for-write-before-notify",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2452",
-      "name": "Wire codex-agent-status.js into check-linear-delegations.js / morning digest",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2452/wire-codex-agent-statusjs-into-check-linear-delegationsjs-morning",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2451",
-      "name": "validate-data.js's rebuild-all-reviews.js skip-logic mirror is stale (dated 2026-04-11, ~40 checks added since)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2451/validate-datajss-rebuild-all-reviewsjs-skip-logic-mirror-is-stale",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js (or the isolated validateUnscoredReviewTexts check) run)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2448",
-      "name": "P2: alert-digest-queue.json has no concurrency-safe merge across 9+ multi-writer workflows",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2448/p2-alert-digest-queuejson-has-no-concurrency-safe-merge-across-9-multi",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2445",
-      "name": "Investigate Codex CLI reliability in ship-check/code-review sessions",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2445/investigate-codex-cli-reliability-in-ship-checkcode-review-sessions",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2444",
-      "name": "Dedupe freshness-gate closures in review-write-guard.js",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2444/dedupe-freshness-gate-closures-in-review-write-guardjs",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2443",
-      "name": "Register data/audit/guard-escalation-state.json for key-level merge reconciliation",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2443/register-dataauditguard-escalation-statejson-for-key-level-merge",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: GUARD_ID)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2437",
-      "name": "P2: detect-show-changes.js critic-consensus lookup lacks slug fallback",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2437/p2-detect-show-changesjs-critic-consensus-lookup-lacks-slug-fallback",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2435",
-      "name": "P1: opening-night-broadcast.yml fails every run at Commit orphan-rescore-requeue state, skipping draft creation — breaks the scheduled auto-draft path",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2435/p1-opening-night-broadcastyml-fails-every-run-at-commit-orphan-rescore",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-push-retry-budgets.js)",
-      "kind": "basename"
-    },
-    {
-      "id": "BRO-2433",
-      "name": "P1: submit-review-form outlet attribution is never validated against the URL host — any domain can be ingested as a T1",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2433/p1-submit-review-form-outlet-attribution-is-never-validated-against",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2432",
-      "name": "clear-stale-wrong-show-flags.js has the same fail-open-on-LLM-outage bug just fixed in its wrongProduction sibling",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2432/clear-stale-wrong-show-flagsjs-has-the-same-fail-open-on-llm-outage",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2431",
-      "name": "P1: add CI guard against future sanitizeVenueForWrite cousins",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2431/p1-add-ci-guard-against-future-sanitizevenueforwrite-cousins",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2430",
-      "name": "Carried over: 33 open fleet/dispatch backlog items that die when the Notion poller is retired (fleet_selfref + bsc_daily)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2430/carried-over-33-open-fleetdispatch-backlog-items-that-die-when-the",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2429",
-      "name": "P1: successful rescores never clear needsRescore — push-review-texts resurrects the flag, queue grew 139->212 while draining nightly",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2429/p1-successful-rescores-never-clear-needsrescore-push-review-texts",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const g=glob=>0\" # placeholder, replace with the real check)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2428",
-      "name": "Same unclamped now-t<window freshness idiom in 4 in-memory caches (brightdata-caps, scrapingdog-caps, browserbase-session x2)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2428/same-unclamped-now-twindow-freshness-idiom-in-4-in-memory-caches",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: ts <= now)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-2427",
-      "name": "P2: uncleared setTimeout inside Promise.race timeout-wrappers — same bug class in 4+ scripts (BRO-420 follow-up)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2427/p2-uncleared-settimeout-inside-promiserace-timeout-wrappers-same-bug",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2426",
-      "name": "P2: needs-you-snapshot.js (\"Needs your decision\" digest section) has the same no-staleness gap BRO-420 just fixed for awaiting-owner",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2426/p2-needs-you-snapshotjs-needs-your-decision-digest-section-has-the",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2425",
-      "name": "P1: stale awaiting-owner approvals do not escalate the digest subject line (BRO-420 follow-up)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2425/p1-stale-awaiting-owner-approvals-do-not-escalate-the-digest-subject",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2423",
-      "name": "Port guard-escalation.js auto-recovery to llm-ensemble-score.yml + check-review-count-drift.yml",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2423/port-guard-escalationjs-auto-recovery-to-llm-ensemble-scoreyml-check",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2422",
-      "name": "Bright Data account has 12 idle unblocker zones from auto-recovery zone sprawl (2026-03-31 to 04-13)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2422/bright-data-account-has-12-idle-unblocker-zones-from-auto-recovery",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2421",
-      "name": "New/grown direct alert sender bypassing owner-alert-router (3 total)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2421/newgrown-direct-alert-sender-bypassing-owner-alert-router-3-total",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2420",
-      "name": "Add CI audit for data/audit/*.json files written but never git-added in their triggering workflow",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2420/add-ci-audit-for-dataauditjson-files-written-but-never-git-added-in",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2419",
-      "name": "Build promote-owe-venue-candidates.js — promote staged Off-West-End venue candidates to shows.json",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2419/build-promote-owe-venue-candidatesjs-promote-staged-off-west-end-venue",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2418",
-      "name": "Surface board-gate fail-open counts in the daily digest — the log alone is write-only",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2418/surface-board-gate-fail-open-counts-in-the-daily-digest-the-log-alone",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2417",
-      "name": "finish-line-bypass.log has grown to ~39MB with no trim",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2417/finish-line-bypasslog-has-grown-to-39mb-with-no-trim",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2416",
-      "name": "notion-card-required-stop.sh leaks the shell's SIGALRM noise on every probe timeout",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2416/notion-card-required-stopsh-leaks-the-shells-sigalrm-noise-on-every",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2414",
-      "name": "acquireLease() treats a pid:null holder as dead — double-dispatch can steal an in-flight lease",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2414/acquirelease-treats-a-pidnull-holder-as-dead-double-dispatch-can-steal",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2413",
-      "name": "Extend push-via-git-api.sh fallback to cover shows.json/reviews.json — high-concurrency push races failing 4+ workflows daily",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2413/extend-push-via-git-apish-fallback-to-cover-showsjsonreviewsjson-high",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-2412",
-      "name": "P1: dispatch-watchdog --health only checks heartbeat age, not whether dispatches are actually flowing",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2412/p1-dispatch-watchdog-health-only-checks-heartbeat-age-not-whether",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2410",
-      "name": "blog-reviews-for-scoring.json generator has been silently producing 0 entries — content frontmatter uses show:, generator requires showSlug:",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2410/blog-reviews-for-scoringjson-generator-has-been-silently-producing-0",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2409",
-      "name": "P1: cycle-clear leaves same-URL review clusters fully unsuppressed; no placeholder-byline canonical rule (31 double-counting groups)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2409/p1-cycle-clear-leaves-same-url-review-clusters-fully-unsuppressed-no",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2408",
-      "name": "generate-related-shows.js computes scores from reviews.json alone, same drift class as BRO-339",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2408/generate-related-showsjs-computes-scores-from-reviewsjson-alone-same",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-2403",
-      "name": "P1: critic personal-repost sites ingested as independent outlets (double-counts one critic)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2403/p1-critic-personal-repost-sites-ingested-as-independent-outlets-double",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
     }
   ]
 }
