@@ -324,3 +324,39 @@ the `rebuild-reviews.yml` push defect ([[BRO-2732]]) and filed a P0 against the 
 ALWAYS run `node scripts/verify-review-recovery.js --show=<id> --production` BEFORE theorising
 about the rebuild/push layer — it names the failing stage directly. A green rebuild-fast run
 masks this gate completely.
+
+---
+
+## Gate: `_pending/` zero-text stub swallows a T1/T2 the census cannot see
+*(Electra/Persona, National Theatre, press night 2026-09-01 — monitor attempt 21)*
+
+Daily Mail (Patrick Marmion) published ~00:30Z. The pipeline DID discover it, but parked it in
+`data/review-texts/_pending/electra-persona-west-end-2026/` as a **zero-length-body stub with no
+byline**. Consequences, both silent:
+- `replay-pending-bylines.js` **rejects** it — there is no text to attribute, so the drain has
+  nothing to work with and exits clean. A green drain run is NOT evidence `_pending` is empty.
+- The independent census could not see it either: at that hour Google had not indexed the URL
+  (SERP blind for 2.9–11h) and dailymail section-page curl did not surface it.
+
+**Therefore: `ls data/review-texts/_pending/<show-id>/` is the FIRST census step, not a fallback.**
+On this night it beat both curl and SERP. Recovery = re-fetch the URL yourself and write a real
+review-texts file; do not try to repair the stub in place.
+
+## Gate: BroadwayWorld **West End** article path is outside roundup discovery (class 3d)
+*(same show — monitor attempt 22)*
+
+`broadwayworld.com/westend/article/Review-...` (Clementine Scott, pub 2026-09-02T00:58Z) existed on
+the BWW West End section index with **zero** `data/audit/stage-latency.jsonl` events and no
+registry hit — the pipeline never saw the URL at all. BWW discovery is oriented at Broadway
+Review Roundups; the WE per-article path is not covered.
+**Extraction gotcha:** BWW `<p>` extraction pulls nav chrome — filter paragraphs containing
+`googletag`, `EXPLORE REGIONS`, `Sign-up` before writing, or `contentTier` inflates on garbage.
+
+## Non-gate (do not re-diagnose): manual-recovery files are simply scoring-cron-lagged
+A hand-written review-texts file with `contentTier: complete` and no blocking flags passes
+`isIncludableForRebuild` AND `isScoreable`; the fields it lacks vs an `ingest-review-from-url.js`
+file (`showTitle`, `venue`, `category`, `type`, `fetchMethod`, `textFetchedAt`) are all optional —
+`input-builder.ts` guards them with `if (review.showTitle)`. Unscored for the first ~1h after push
+is **expected latency**, not a defect (confirmed 3x: Boycotting Trends attempt 11, Daily Mail and
+BroadwayWorld attempts 21–23). Rebuild only emits scored reviews, so prod `rv` lags by that hour.
+Do not open a card for it and do not hand-write `assignedScore`.
