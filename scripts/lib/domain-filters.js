@@ -28,6 +28,17 @@ const TICKET_DOMAINS = new Set([
   // original editorial reviews at /reviews/our/<show> (adversarial review
   // 2026-08-02); its listing pages are caught by the path-based checks.
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
+  // thelondoner.com — /exclusive-offers/<show> is a ticket-offer page carrying
+  // the producer's own show blurb. Its A Month in the Country page was ingested
+  // via submit-review-form, criticName Unknown, and landed at
+  // contentTier:'complete' (3790 chars of well-formed prose), so it was a live
+  // scoring candidate held back only by having no score yet. Same shape as the
+  // BRO-2712 southbankcentre finding.
+  'thelondoner.com',
+  // vocaleyes.co.uk — audio-description access LISTINGS ("Audio-described
+  // performance, Touch tour, Date, Time"), not criticism. Excellent cause,
+  // wrong corpus.
+  'vocaleyes.co.uk',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
   // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the
@@ -85,6 +96,16 @@ const REFERENCE_DOMAINS = new Set([
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'iloveny.com',
+  // University department news/press pages. tisch.nyu.edu announced an alum's
+  // production ("Lukas T. Woodyard (PS MA '20) along with their collective ...
+  // is producing the new work") and was ingested via submit-review-form as a
+  // masticate-off-broadway-2026 review. A previous crown cycle baselined this
+  // outletId and recorded "do NOT register these as real outlets if they
+  // recur". It recurred. Blocking the host is what actually ends it — the
+  // baseline only silences one outletId, and the next alum announcement from
+  // any university arrives under a new one. Whole-domain so *.nyu.edu is
+  // covered, since the department subdomain is incidental.
+  'nyu.edu',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never
