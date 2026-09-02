@@ -1194,7 +1194,17 @@
     "cats-west-end-2026/times-uk--carol-midgley.json",
     "cats-west-end-2026/times-uk--donald-hutera.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1307,7 +1317,7 @@
     ]
   },
   "startTime": "2026-09-01T13:58:04.238Z",
-  "lastProcessed": "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-09-01T14:00:39.220Z",
@@ -1471,6 +1481,17 @@
       "t": "2026-09-02T02:41:11.537Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-02T02:45:37.126Z",
+      "event": "bb-session",
+      "session": "435ec14b",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-02T02:45:38.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
