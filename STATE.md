@@ -52,27 +52,28 @@ rather than trusted:
 - **BRO-2432 — deliberately left alone.** Its own park reason says a live parallel session
   owns `scripts/clear-stale-wrong-show-flags.js`; dispatching would race it.
 
-## THE ONE THING STILL OPEN
+## THE ONE THING STILL OPEN — now CLOSED
 
-`gh workflow run test.yml --ref main` -> run **33698960075**, dispatched 00:19 UTC to
-confirm Data Validation is green on the healed main. It was dispatched, not push-triggered,
-because `data/cast-changes.json` is NOT in test.yml's push `paths:` — so the heal commit
-alone cannot re-run the job that was red.
+`gh workflow run test.yml --ref main` -> run **33698960075** on `37e3244d6ee`:
+**`success`, 10/10 jobs, ZERO skipped.**
 
-Exact next command:
+    Data Validation  success        Unit Tests            success
+    Lint Workflows   success        TypeScript Check      success
+    E2E Tests        success        Design Token Drift    success
+    Dependency Audit success        Visual Regression     success
+    Awards Data Fr.  success        Test Summary          success
 
-    bash scripts/lib/wait-for-run.sh 33698960075 18
-    gh run view 33698960075 --json jobs --jq '.jobs[] | "\(.conclusion)\t\(.name)"'
+Dispatched rather than push-triggered because `data/cast-changes.json` is NOT in test.yml's
+push `paths:`, so the heal commit alone could not re-run the job that was red. A side
+benefit: on `workflow_dispatch` the three normally-skipped jobs (Dependency Audit, Visual
+Regression, Awards Data Freshness) DO run, and all three are green too — so this run
+covers strictly more than a push-triggered one.
 
-Expect Data Validation `success`. NOTE: on a `workflow_dispatch` the three normally-skipped
-jobs (Dependency Audit, Visual Regression, Awards Data Freshness) DO run and have not run on
-a push in a long time — if one of them is red, that is not a push-CI regression and not
-caused by anything in this session; judge main's health on the other seven jobs.
+Corroborated independently before the run finished: `git show origin/main:data/cast-changes.json`
+is byte-identical to the local file, and `node scripts/audit-cast-changes.js --gate` exits
+**0** against it ("0 cross-show conflicts, 0 issue(s) <= floor 15"). AUTO-FLAGGED 315 -> 290.
 
-Already proven independently, so the run is confirmation rather than the only evidence:
-`git show origin/main:data/cast-changes.json` is byte-identical to the local file, and
-`node scripts/audit-cast-changes.js --gate` exits **0** against it
-("0 cross-show conflicts, 0 issue(s) <= floor 15"). AUTO-FLAGGED count 315 -> 290.
+Nothing is in flight. There is no next command to run.
 
 ## BRO-2752 — the real finding, filed and parked
 
