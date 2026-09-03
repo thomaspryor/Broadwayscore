@@ -505,55 +505,6 @@ jobs:
       # rebuild-fast.yml's equivalent step for the full rationale
       # (data/audit/scraper-spend-ledger.jsonl is a registered MANAGED
       # union-merge file this step also stages via `git add -u data/audit/`).
-      # BRO-2373: a SHALLOW checkout makes `git push` pack the ENTIRE tree, no
-      # matter how small the diff. The checkout at :65-69 sets no fetch-depth, so
-      # this job's repo is depth 1. Measured off-runner in exactly this shape
-      # (depth-1 clone, origin/main present and advanced, HEAD one commit ahead):
-      #
-      #     SHALLOW      114.64s   30,901 objects   445.05 MiB   (ONE-LINE file)
-      #     NON-SHALLOW   25.04s    2,797 objects     0.93 MiB   (same commit)
-      #
-      # In the same shallow state `git rev-list --objects HEAD --not
-      # refs/remotes/origin/main` returns 5 objects in 0.26s, so the revision walk
-      # is fine and the blowup is inside pack-objects' shallow handling. That is
-      # why payload never correlated: a 10-line audit JSON and a full rebuild both
-      # send ~30,900 objects. Corroborated by task #1810's GIT_TRACE_CURL dispatch
-      # (run 32212462925): 90s of ZERO curl activity, the pack POST never opens.
-      #
-      # Why not fetch-depth: 0 on the checkout, which is what update-show-status.yml
-      # took for the same bug — it fetches ALL ~650 heads and its own comment
-      # (:88-95) measures that at 17-25 min. `--unshallow origin main` deepens ONE
-      # branch. The deepened pack is ~2.0 GiB (`git count-objects -vH` →
-      # size-pack: 2.03 GiB; a bigger number on disk is interrupted-fetch
-      # tmp_pack_* garbage, not real).
-      #
-      # Net time is NEGATIVE, not positive: the failing "Commit and push changes"
-      # step currently burns its full 900s PUSH_DEADLINE_SEC (measured 16m15s on
-      # run 33774840882) against a 40-min job budget, while a non-shallow push
-      # takes ~25s.
-      #
-      # Bounded and fail-open by construction: `timeout 720` caps a cold fetch
-      # (raw `git fetch` does NOT honour GIT_NET_TIMEOUT_SEC), and on any failure
-      # we clean up the partial pack and leave the repo shallow, i.e. exactly
-      # today's behaviour. Carries the same has_changes guard as the push step so
-      # no-op rebuilds pay nothing.
-      - name: Deepen main before push (BRO-2373)
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        run: |
-          if [ "$(git rev-parse --is-shallow-repository)" != "true" ]; then
-            echo "repo is already complete — nothing to deepen"
-            exit 0
-          fi
-          echo "disk before: $(df -h / | tail -1)"
-          if timeout 720 git fetch --unshallow origin '+refs/heads/main:refs/remotes/origin/main'; then
-            echo "deepened OK"
-          else
-            echo "::warning::unshallow failed or exceeded 720s — leaving repo shallow; push falls back to today's behaviour"
-            rm -f .git/objects/pack/tmp_pack_* 2>/dev/null || true
-          fi
-          echo "disk after: $(df -h / | tail -1)"
-          echo "is-shallow now: $(git rev-parse --is-shallow-repository)"
-
       - name: Commit and push changes
         if: always() && steps.changes.outputs.has_changes == 'true'
         env:
