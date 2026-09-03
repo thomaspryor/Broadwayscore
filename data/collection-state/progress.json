@@ -155,7 +155,17 @@
     "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
     "the-story-west-end-2026/nytimes--jesse-green.json",
     "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
-    "the-story-west-end-2026/observer--david-cote.json"
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/british-theatre--anna-ambelez.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/londontheatre1--chris-omaweng.json",
+    "the-story-west-end-2026/monstagigz--unknown.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-story-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -171,7 +181,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/the-story-west-end-2026/times-uk--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -190,7 +201,7 @@
     ]
   },
   "startTime": "2026-09-03T13:28:40.017Z",
-  "lastProcessed": "the-story-west-end-2026/observer--david-cote.json",
+  "lastProcessed": "the-story-west-end-2026/times-uk--unknown.json",
   "log": [
     {
       "t": "2026-09-03T14:15:22.563Z",
@@ -220,6 +231,17 @@
       "event": "bb-session",
       "session": "a3f72bfd",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-03T14:31:39.601Z",
+      "event": "bb-session",
+      "session": "b2ab9faf",
+      "url": "https://www.thetimes.com/uk/article/theatre-review-avalanche-a-love-story-dog-wi"
+    },
+    {
+      "t": "2026-09-03T14:31:40.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

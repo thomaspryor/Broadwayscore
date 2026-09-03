@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-03T14:30:27.749Z",
+  "updatedAt": "2026-09-03T14:31:51.415Z",
   "processed": 16,
-  "failed": 144,
-  "successRate": "10.0%",
+  "failed": 154,
+  "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-09-03T14:15:22.563Z",
@@ -43,6 +43,17 @@
       "event": "bb-session",
       "session": "a3f72bfd",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-03T14:31:39.601Z",
+      "event": "bb-session",
+      "session": "b2ab9faf",
+      "url": "https://www.thetimes.com/uk/article/theatre-review-avalanche-a-love-story-dog-wi"
+    },
+    {
+      "t": "2026-09-03T14:31:40.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
