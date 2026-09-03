@@ -266,10 +266,23 @@ describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
     assert.deepStrictEqual(r.blockers, []);
   });
 
-  test('the exported regex is the one the classifier uses', () => {
-    // Same contract as OWNER_DECISION_RES: assert the SHARED object so the
-    // pattern cannot drift away from what this test believes it checks.
+  test('the exported regex and the classifier agree, and keep the /m flag', () => {
     assert.ok(PARKED_SENTINEL_RE.multiline, 'the /m flag is load-bearing — 40 live cards depend on it');
     assert.ok(PARKED_SENTINEL_RE.ignoreCase, 'sentinel matching must be case-insensitive');
+    // Assert AGREEMENT, not just the flags: a divergence between the exported
+    // regex and whatever the classifier actually tests would otherwise pass.
+    for (const notes of [
+      'PARKED: at string start',
+      'header line\nsecond header\nPARKED: after Notion mirror headers',
+      '  parked: indented and lowercase',
+      'We parked this last week. VERIFY: node scripts/x.js',
+      'Fix the parked-cars page. VERIFY: node scripts/x.js',
+    ]) {
+      assert.strictEqual(
+        codes(parked(notes)).includes(BLOCKERS.PARKED_SENTINEL),
+        PARKED_SENTINEL_RE.test(notes),
+        `classifier and exported regex disagree on: ${JSON.stringify(notes)}`,
+      );
+    }
   });
 });

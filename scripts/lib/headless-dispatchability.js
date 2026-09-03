@@ -54,7 +54,7 @@ const BLOCKERS = Object.freeze({
   NO_VERIFY_CMD: 'NO_VERIFY_CMD',
 });
 
-// The repo's own do-not-dispatch sentinel. `linear-issue-create.js:141` writes
+// The repo's own do-not-dispatch sentinel. `scripts/lib/linear-issue-create.js:141` writes
 // it verbatim on every `--park`:
 //     `PARKED: ${disposition.reason}\n\n${description || ''}`
 // so this is an exact match on a generated marker, not a heuristic on prose.
@@ -289,9 +289,11 @@ module.exports = {
   // Exported so a test can assert this array holds the SHARED owner-judgment
   // regex object rather than a fourth handwritten copy (task #1154).
   OWNER_DECISION_RES,
-  // Exported for the same reason as OWNER_DECISION_RES above: the test asserts
-  // against the SHARED regex object, so a future edit to the pattern cannot
-  // silently diverge from what the test believes it is checking.
+  // Exported for the same reason as OWNER_DECISION_RES above, so the test can
+  // assert the /m flag on the SHARED object rather than on a copy. Note the
+  // test asserts the flags and, separately, that the regex and the classifier
+  // AGREE on a table of inputs — it does not assert object identity, which the
+  // classifier's use of a module-scope const already guarantees.
   PARKED_SENTINEL_RE,
   classifyHeadlessDispatchability,
   looksLikeUiPath,
