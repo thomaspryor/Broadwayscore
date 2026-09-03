@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-03T11:25:02.260Z",
+    "generatedAt": "2026-09-03T14:10:04.134Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,29 +16,29 @@
   "flagged": [
     {
       "path": "data/audit/outlet-registry-gaps.json",
-      "churn": 142
+      "churn": 150
     },
     {
       "path": "data/audit/worktree-gc.log",
-      "churn": 68
+      "churn": 70
     },
     {
       "path": "data/audit/worktree-gc.launchd.log",
-      "churn": 63
+      "churn": 65
     },
     {
       "path": "data/audit/verify-merge-landed.log",
-      "churn": 35
+      "churn": 38
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 92
+      "churn": 83
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 55
+      "churn": 57
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
@@ -69,10 +69,6 @@
       "churn": 44
     },
     {
-      "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 43
-    },
-    {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
       "churn": 42
     },
@@ -93,6 +89,10 @@
       "churn": 41
     },
     {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 41
+    },
+    {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
       "churn": 41
     },
@@ -101,11 +101,11 @@
       "churn": 41
     },
     {
-      "path": "public/data/shows/summerfolk-west-end-2026.json",
-      "churn": 40
+      "path": "public/data/shows/equus-west-end-2026.json",
+      "churn": 38
     },
     {
-      "path": "public/data/shows/equus-west-end-2026.json",
+      "path": "public/data/shows/summerfolk-west-end-2026.json",
       "churn": 38
     },
     {
@@ -114,78 +114,78 @@
     },
     {
       "path": "public/data/shows/six-the-musical-west-end-2021.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1012,
+      "churn": 982,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 984,
+      "churn": 954,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 409,
+      "churn": 407,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 397,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 157,
+      "churn": 394,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 156,
+      "churn": 158,
       "mergeAttr": "union"
     },
     {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 152,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 106,
+      "churn": 109,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 78,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 78,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 78,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 37,
+      "churn": 34,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
-      "churn": 32,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/spellbound-off-broadway-2026.json",
-      "churn": 32,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-house-of-the-negro-insane-off-broadway-2026.json",
-      "churn": 32,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
