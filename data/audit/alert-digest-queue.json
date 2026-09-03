@@ -256,5 +256,53 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-03T19:13:13.611Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-a-month-in-the-country-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on A Month in the Country",
+    "description": "broadwayworld/Cindy Marcolina (broadwayworld--cindy-marcolina.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses 'A Month in the Country' but doe — https://www.broadwayworld.com/westend/article/Review-A-MONTH-IN-THE-COUNTRY-Donmar-Warehouse-20260903\nsunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production that is set to open — https://www.telegraph.co.uk/theatre/what-to-see/a-month-in-the-country-donmar-warehouse-review/\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production at the Donmar Wareh — https://www.thetimes.com/culture/theatre-dance/article/a-month-in-the-country-review-a-potent-brew-of-sex-and-narcissism-5ghlnc530",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T22:45:38.585Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:a-month-in-the-country-west-end-2026",
+    "title": "Content mismatch on A Month in the Country",
+    "description": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'A Month in the Country' (3181 chars): https://www.theguardian.com/stage/2026/sep/03/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-turgenev\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo\n⚠️  whatsonstage/Alex Wood (whatsonstage--alex-wood.json) also too short to assess (0 chars): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T22:45:38.967Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:a-month-in-the-country-west-end-2026",
+    "title": "Pre-opening publishDate on A Month in the Country",
+    "description": "monstagigz/Neil SHIPPED with publishDate 2026-08-25 (8d before openingDate 2026-09-02): https://monstagigz.com/2026/08/25/theatre-review-a-month-in-the-country-starring-sophie-okonedo-at-donmar-warehouse/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T22:45:38.970Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-a-month-in-the-country-west-end-2026",
+    "title": "Unverified revival on A Month in the Country",
+    "description": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T22:45:38.971Z"
   }
 ]
