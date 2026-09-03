@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-03T14:33:44.023Z",
-  "processed": 20,
-  "failed": 160,
-  "successRate": "11.1%",
+  "updatedAt": "2026-09-03T14:38:31.700Z",
+  "processed": 23,
+  "failed": 167,
+  "successRate": "12.1%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 14,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 4,
+    "scrapingbee": 2,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-03T14:15:22.563Z",
@@ -65,6 +65,18 @@
       "t": "2026-09-03T14:33:26.029Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-03T14:35:56.726Z",
+      "event": "bb-session",
+      "session": "876c4184",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-03T14:36:13.072Z",
+      "event": "bb-session",
+      "session": "b7e66644",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
