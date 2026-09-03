@@ -738,9 +738,12 @@ const CLEAR_BREADCRUMBS = {
   // heal-duplicate-of-direction.js, and safeWriteReview's own self-heal a few
   // hundred lines below) stamps it specifically when clearing EITHER pointer
   // field. audit-duplicate-of-url-mismatch.js --fix deletes duplicateTextOf
-  // (not null — validate-data.js flags a null duplicateTextOf as "should be
-  // string", so null-assignment isn't an option here, unlike the
-  // rejectionReason-family fields fixed elsewhere in this task) right after
+  // (rather than nulling it, because a deleted key is what every consumer's
+  // truthiness check already expects. The reason ORIGINALLY given here was
+  // "validate-data.js flags a null duplicateTextOf as should-be-string"; that
+  // is no longer true. It was a false positive from `typeof null === 'object'`
+  // and was fixed 2026-09-03, so null-assignment is no longer rejected — it is
+  // simply still not the idiom here) right after
   // stamping duplicateClearReason, then calls safeWriteReview with default
   // options — without this entry, the merge-mode restore pass silently
   // resurrected the stale pointer on every run, making --fix a permanent
@@ -1487,7 +1490,10 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (newData.duplicateTextOf && newData.duplicateTextOf === path.basename(filePath)) {
     console.warn(`[review-write-guard] clearing self-referential duplicateTextOf in ${path.basename(filePath)}`);
     newData.duplicateClearReason = `auto-cleared at write: self-referential duplicateTextOf (pointed at own filename)`;
-    // Delete rather than null — validate-data flags null as "should be string".
+    // Delete rather than null, to match what every consumer's truthiness check
+    // expects. (The old reason given here — "validate-data flags null as should
+    // be string" — was a false positive from `typeof null === 'object'`, fixed
+    // 2026-09-03. Nulling is no longer rejected, just not the idiom.)
     delete newData.duplicateTextOf;
   }
   if (newData.duplicateTextOf && typeof newData.duplicateTextOf === 'string' && newData.duplicateTextOf.endsWith('.json')) {
