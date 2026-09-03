@@ -28,7 +28,9 @@
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
     "cats-west-end-2026/north-west-end--michelle-knight.json",
     "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
-    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--sheila-elizabeth.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -231,7 +233,15 @@
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
     "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
     "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
-    "im-every-woman-off-west-end-2026/theupcoming--unknown.json"
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -254,7 +264,9 @@
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
       "cats-west-end-2026/north-west-end--michelle-knight.json",
       "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
-      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--sheila-elizabeth.json"
     ],
     "amp": [],
     "browserbase": [
@@ -282,7 +294,7 @@
     ]
   },
   "startTime": "2026-09-03T13:28:40.017Z",
-  "lastProcessed": "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-09-03T13:30:21.162Z",
@@ -357,6 +369,17 @@
       "event": "bb-session",
       "session": "b7e66644",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-03T14:49:02.096Z",
+      "event": "bb-session",
+      "session": "2d130492",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-03T14:49:03.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
