@@ -1964,7 +1964,17 @@ function validateReviewsJson() {
             if (fileData.misattributedFullText === true && !fileData.extractedByline) {
               warn(`${showDir}/${file}: misattributedFullText=true but missing extractedByline`);
             }
-            if (fileData.duplicateTextOf !== undefined && typeof fileData.duplicateTextOf !== 'string') {
+            // `!= null` (loose), NOT `!== undefined`: an explicit `duplicateTextOf: null`
+            // means "not a duplicate" and is as absent as a missing key, but
+            // `typeof null === 'object'` so the strict-undefined form reported all 31
+            // of them as `should be string, got object` (62 lines in the run — warn()
+            // prints immediately AND the end-of-run summary re-prints every warning).
+            // Corpus-wide on 2026-09-03 the field is 1305 strings + 31 nulls and
+            // nothing else, so this silences only false positives — and it restores
+            // the check's actual purpose, which is to make a genuine non-string
+            // pointer (array, object, number) visible instead of burying it in a wall
+            // of identical noise.
+            if (fileData.duplicateTextOf != null && typeof fileData.duplicateTextOf !== 'string') {
               warn(`${showDir}/${file}: duplicateTextOf should be string, got ${typeof fileData.duplicateTextOf}`);
             }
             // Validate that duplicateTextOf points to an existing file in the same dir.
