@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-03T22:43:51.401Z",
+  "updatedAt": "2026-09-03T22:48:20.456Z",
   "processed": 96,
-  "failed": 1046,
-  "successRate": "8.4%",
+  "failed": 1056,
+  "successRate": "8.3%",
   "tierBreakdown": {
     "playwright": 51,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-03T14:33:26.029Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-03T14:35:56.726Z",
-      "event": "bb-session",
-      "session": "876c4184",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
     {
       "t": "2026-09-03T14:36:13.072Z",
       "event": "bb-session",
@@ -129,6 +118,17 @@
       "t": "2026-09-03T22:35:55.629Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-03T22:46:51.939Z",
+      "event": "bb-session",
+      "session": "baf380cd",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-03T22:46:52.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
