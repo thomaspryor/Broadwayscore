@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-09-03T21:39:35.792Z",
-  "processed": 73,
-  "failed": 719,
+  "updatedAt": "2026-09-03T21:40:22.580Z",
+  "processed": 74,
+  "failed": 728,
   "successRate": "9.2%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 2,
     "scrapingbee": 2,
     "brightdata": 16,
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-03T13:37:10.508Z",
-      "event": "bb-session",
-      "session": "c3ff30a9",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-09-03T13:41:43.569Z",
-      "event": "bb-session",
-      "session": "221c072b",
-      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
-    },
     {
       "t": "2026-09-03T13:42:00.604Z",
       "event": "bb-session",
@@ -130,6 +118,17 @@
       "t": "2026-09-03T21:38:11.117Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-03T21:40:04.287Z",
+      "event": "bb-session",
+      "session": "20c88ea1",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-03T21:40:05.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
