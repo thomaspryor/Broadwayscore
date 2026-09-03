@@ -12,18 +12,6 @@
     "queuedAt": "2026-08-31T14:28:35.954Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 20.0% of shows changed coverage state",
-    "description": "review-gap blast radius 20.0% (6/30 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: disruption-off-broadway-2026, henry-vi-a-trilogy-in-two-parts-off-broadway-2026, midnight-at-the-never-get-west-end-2026, the-real-ivanov-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026, white-rabbit-red-rabbit-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-08-30T13:37:31.398Z"
-  },
-  {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
     "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4016/1750 reqs)",
     "description": "Zone web_unlocker2 billed 4016 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\nNo show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).\nTop attributed BD callers today: validate-show-venue.js (443), gather-reviews.js (400), fetch-show-images-auto.js (329).",
@@ -157,30 +145,6 @@
     "queuedAt": "2026-09-02T15:33:04.376Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.7% (373/486)\noff-broadway: 45.8% (148/323)\nwest-end: 72.7% (391/538)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (468h)\nA Midsummer Night's Dream — observer (468h)\nA Midsummer Night's Dream — standard (468h)\nA Midsummer Night's Dream — times-uk (468h)\nA Woman Among Women — nyt-theater (468h)\n… 185 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (468h)\nBuena Vista Social Club — broadwaynews (468h)\nBuena Vista Social Club — nydailynews (468h)\nHadestown — nydailynews (468h)\nJust in Time — broadwaynews (468h)\n… 15 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-02T22:17:55.217Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/137 show(s) differ between internal state and what prod serves.\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-02T22:17:57.638Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "86 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
@@ -256,5 +220,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-03T03:16:28.675Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 18.4% of shows changed coverage state",
+    "description": "review-gap blast radius 18.4% (9/49 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T19:12:52.916Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.7% (373/486)\noff-broadway: 43.9% (136/310)\nwest-end: 73.2% (394/538)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (489h)\nA Midsummer Night's Dream — observer (489h)\nA Midsummer Night's Dream — standard (489h)\nA Midsummer Night's Dream — times-uk (489h)\nABBA Voyage — independent (489h)\n… 196 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (489h)\nHeathers The Musical — dailybeast (489h)\nOthello — dailybeast (489h)\nOthello — usatoday (489h)\nThe 25th Annual Putnam County Spelling Bee — dailybeast (489h)\n… 1 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T19:13:10.527Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "9/137 show(s) differ between internal state and what prod serves.\nscore-drift: 8\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable\nA Month in the Country: score-drift\nElectra / Persona: score-drift\nCyrano de Bergerac: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T19:13:13.611Z"
   }
 ]
