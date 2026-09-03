@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-08-29T07:03:30.909Z",
-    "completedAt": "2026-08-29T07:03:33.957Z",
-    "totalReviews": 42346,
-    "processed": 0,
-    "skipped": 42345,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 109,
-      "total": 10944
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-08-29T07:34:52.580Z",
-    "completedAt": "2026-08-29T07:35:03.082Z",
-    "totalReviews": 42346,
-    "processed": 0,
-    "skipped": 42344,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8114,
-      "output": 364,
-      "total": 23330
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-29T08:48:07.096Z",
     "completedAt": "2026-08-29T08:48:15.102Z",
     "totalReviews": 42346,
@@ -792160,5 +792132,25 @@
       "total": 26581
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-03T19:25:39.395Z",
+    "completedAt": "2026-09-03T19:25:39.619Z",
+    "totalReviews": 23,
+    "processed": 0,
+    "skipped": 22,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "a-month-in-the-country-west-end-2026",
+        "outletId": "ents24",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
