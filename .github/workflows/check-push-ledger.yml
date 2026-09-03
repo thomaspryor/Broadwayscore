@@ -142,8 +142,21 @@ jobs:
 
       - name: Measure read path and write path
         run: |
-          # Deliberately NO `set -e`: a timed-out first measurement must not
-          # abort the step before the later ones run.
+          # `set +e` is REQUIRED, not stylistic. GitHub runs a `run:` block as
+          # `bash -e {0}` by DEFAULT, so omitting `set -e` does not get you
+          # errexit-off — it gets you errexit-on. Observed in run 33754219678:
+          # the step died `##[error]Process completed with exit code 1` the
+          # instant a dry-run returned rc=1 (an ordinary non-fast-forward
+          # rejection, because main moved between replicates), losing the
+          # remaining measurements AND the closing note.
+          #
+          # That failure mode is backwards for this job specifically: a SLOW
+          # REJECTION is the single most valuable sample it can take — run
+          # 33743302929's 49s rejection is the whole reason this probe exists —
+          # and errexit was throwing exactly those away while keeping the fast
+          # rc=0 ones. The surviving output looked clean, which is how it nearly
+          # passed unnoticed.
+          set +e
 
           # Self-expiry. "TEMPORARY" in a comment is not enforcement, and this
           # runs 72x/day. Past the date the job no-ops until someone renews it
