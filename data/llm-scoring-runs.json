@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-08-28T23:08:08.670Z",
-    "completedAt": "2026-08-28T23:08:11.966Z",
-    "totalReviews": 42343,
-    "processed": 0,
-    "skipped": 42342,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 105,
-      "total": 10926
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-08-28T23:43:27.638Z",
-    "completedAt": "2026-08-28T23:43:33.202Z",
-    "totalReviews": 42343,
-    "processed": 0,
-    "skipped": 42341,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 7882,
-      "output": 236,
-      "total": 22980
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-29T00:15:56.137Z",
     "completedAt": "2026-08-29T00:16:06.519Z",
     "totalReviews": 42344,
@@ -814678,5 +814650,39 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-09-03T09:29:39.949Z",
+    "completedAt": "2026-09-03T09:38:00.665Z",
+    "totalReviews": 42553,
+    "processed": 6,
+    "skipped": 42539,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 64048,
+      "output": 3029,
+      "total": 170334
+    },
+    "errorDetails": [
+      {
+        "showId": "pride-west-end-2026",
+        "outletId": "whatsonstage",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-03T09:38:13.661Z",
+    "completedAt": "2026-09-03T09:42:45.384Z",
+    "totalReviews": 42553,
+    "processed": 33,
+    "skipped": 42331,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 283764,
+      "output": 12234,
+      "total": 711127
+    },
+    "errorDetails": []
   }
 ]
