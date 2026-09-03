@@ -1,12 +1,21 @@
 {
-  "generatedAt": "2026-09-03T18:47:28.145Z",
+  "generatedAt": "2026-09-03T19:17:57.115Z",
   "summary": {
-    "totalOutletsInReviews": 702,
+    "totalOutletsInReviews": 703,
     "inRegistry": 702,
-    "missing": 0,
+    "missing": 1,
     "unused": 467
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "ents24",
+      "count": 1,
+      "shows": [
+        "a-month-in-the-country-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/ents24--unknown.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1877,7 +1886,17 @@
       "displayName": "Sueterryvoices"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "ents24",
+      "displayName": "ents24",
+      "tier": 3,
+      "aliases": [
+        "ents24"
+      ],
+      "domain": "ents24.com"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -7098,16 +7117,6 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/telegraph--diane-snyder.json"
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "outletId": "londontheatrehub",
-      "currentDisplayName": "londontheatrehub",
-      "expectedDisplayName": "Londontheatrehub",
-      "canonicalId": "londontheatrehub",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/londontheatrehub--london-theatre-hub-editorial-team.json"
       ]
     },
     {
