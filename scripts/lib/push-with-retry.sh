@@ -131,8 +131,30 @@ git_fetch() {
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
 }
 git_push() {
+  # --progress (BRO-2373): git suppresses progress on a non-TTY stderr unless it
+  # is asked for, so until now a push that burned the full GIT_NET_TIMEOUT_SEC
+  # logged NOTHING — its duration could only be inferred from the gap between the
+  # surrounding echoes. Measured on run 33733248666 (Rebuild Reviews Data,
+  # 2026-09-03): three consecutive attempts at 90.005s / 90.005s / 90.036s, i.e.
+  # every attempt is rc=124 off the `timeout` wrapper, while the same run's
+  # fetches finished in 0-1s. 384 retries-exhausted rows in 3 days across 36
+  # workflows (origin/push-retry-failures:failures.jsonl) hang off this wall.
+  #
+  # The fix for that wall depends on WHERE the 90s goes, and the two candidates
+  # imply opposite changes: local pack generation (Enumerating/Counting/
+  # Compressing) is CPU and argues for bounding what the deepened shallow clone
+  # has to enumerate, while transfer (Writing objects, which prints byte count
+  # AND throughput) is network and argues for the timeout/payload. This flag is
+  # the only thing that separates them, and it prints on EVERY attempt rather
+  # than only on the ones we thought to instrument. Three prior "ROOT-CAUSE FIX"
+  # passes over this file (tasks #394, #464) inferred the cause from log gaps and
+  # were wrong; the one that held (#466) measured first.
+  #
+  # Cost measured locally, non-TTY, 12-object push: 1536 bytes / 8 lines vs 147
+  # bytes without. Progress goes to stderr, so it cannot corrupt a caller reading
+  # stdout, and both call sites (1100, 1710) use the bare `if git_push ...` form.
   _timeout "$GIT_NET_TIMEOUT_SEC" \
-    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push "$@"
+    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
 }
 
 # Strips credential-shaped text out of captured git stderr before it's echoed
