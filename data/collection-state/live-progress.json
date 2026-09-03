@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-09-03T22:34:47.597Z",
+  "updatedAt": "2026-09-03T22:36:05.023Z",
   "processed": 95,
-  "failed": 997,
-  "successRate": "8.7%",
+  "failed": 1007,
+  "successRate": "8.6%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 2,
     "brightdata": 20,
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-09-03T14:33:26.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-03T14:35:56.726Z",
+      "event": "bb-session",
+      "session": "876c4184",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
     {
       "t": "2026-09-03T14:36:13.072Z",
       "event": "bb-session",
@@ -109,27 +120,15 @@
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     },
     {
-      "t": "2026-09-03T22:01:22.837Z",
+      "t": "2026-09-03T22:35:54.845Z",
       "event": "bb-session",
-      "session": "fa4a05d8",
-      "url": "https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-natio"
+      "session": "92683ebf",
+      "url": "https://www.thetimes.com/uk/article/theatre-review-avalanche-a-love-story-dog-wi"
     },
     {
-      "t": "2026-09-03T22:01:23.779Z",
+      "t": "2026-09-03T22:35:55.629Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-03T22:03:03.069Z",
-      "event": "bb-session",
-      "session": "ffa86832",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
-    },
-    {
-      "t": "2026-09-03T22:03:22.348Z",
-      "event": "bb-session",
-      "session": "06dce99c",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "domain": "thetimes.com"
     }
   ]
 }
