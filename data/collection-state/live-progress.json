@@ -1,67 +1,20 @@
 {
-  "updatedAt": "2026-09-03T22:07:25.590Z",
-  "processed": 88,
-  "failed": 976,
-  "successRate": "8.3%",
+  "updatedAt": "2026-09-03T23:07:05.265Z",
+  "processed": 98,
+  "failed": 1284,
+  "successRate": "7.1%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 2,
     "scrapingbee": 2,
     "brightdata": 20,
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-09-03T14:36:13.072Z",
-      "event": "bb-session",
-      "session": "b7e66644",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
-    {
-      "t": "2026-09-03T14:49:02.096Z",
-      "event": "bb-session",
-      "session": "2d130492",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-09-03T14:49:03.446Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-03T14:53:34.069Z",
-      "event": "bb-session",
-      "session": "9a90d8cf",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-03T14:53:42.683Z",
-      "event": "bb-session",
-      "session": "f5b05dab",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-03T14:54:53.361Z",
-      "event": "bb-session",
-      "session": "b15557be",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-09-03T14:55:13.485Z",
-      "event": "bb-session",
-      "session": "2309bc31",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-09-03T15:10:54.601Z",
-      "event": "bb-session",
-      "session": "e69d7a66",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
     {
       "t": "2026-09-03T20:50:13.932Z",
       "event": "bb-session",
@@ -109,27 +62,74 @@
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     },
     {
-      "t": "2026-09-03T22:01:22.837Z",
+      "t": "2026-09-03T22:35:54.845Z",
       "event": "bb-session",
-      "session": "fa4a05d8",
-      "url": "https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-natio"
+      "session": "92683ebf",
+      "url": "https://www.thetimes.com/uk/article/theatre-review-avalanche-a-love-story-dog-wi"
     },
     {
-      "t": "2026-09-03T22:01:23.779Z",
+      "t": "2026-09-03T22:35:55.629Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-03T22:03:03.069Z",
+      "t": "2026-09-03T22:46:51.939Z",
       "event": "bb-session",
-      "session": "ffa86832",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "baf380cd",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-09-03T22:03:22.348Z",
+      "t": "2026-09-03T22:46:52.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-03T22:49:20.394Z",
       "event": "bb-session",
-      "session": "06dce99c",
-      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+      "session": "55e9f482",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-09-03T22:49:27.720Z",
+      "event": "bb-session",
+      "session": "cd07e320",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-09-03T22:50:45.031Z",
+      "event": "bb-session",
+      "session": "d6242ee5",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-03T22:51:04.524Z",
+      "event": "bb-session",
+      "session": "7de78949",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-03T22:53:35.926Z",
+      "event": "bb-session",
+      "session": "b54a988f",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-03T22:53:54.478Z",
+      "event": "bb-session",
+      "session": "c3085ccc",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-03T22:58:47.305Z",
+      "event": "bb-session",
+      "session": "dda746ca",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-03T23:00:59.410Z",
+      "event": "bb-session",
+      "session": "0cb98436",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
     }
   ]
 }
