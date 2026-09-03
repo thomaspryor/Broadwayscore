@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-03T08:55:28.803Z",
+    "generatedAt": "2026-09-03T11:25:02.260Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,29 +16,29 @@
   "flagged": [
     {
       "path": "data/audit/outlet-registry-gaps.json",
-      "churn": 131
+      "churn": 142
     },
     {
       "path": "data/audit/worktree-gc.log",
-      "churn": 66
+      "churn": 68
     },
     {
       "path": "data/audit/worktree-gc.launchd.log",
-      "churn": 61
+      "churn": 63
     },
     {
       "path": "data/audit/verify-merge-landed.log",
-      "churn": 34
+      "churn": 35
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 93
+      "churn": 92
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 54
+      "churn": 55
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
@@ -110,7 +110,7 @@
     },
     {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 38
+      "churn": 37
     },
     {
       "path": "public/data/shows/six-the-musical-west-end-2021.json",
@@ -120,52 +120,52 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 980,
+      "churn": 1012,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 953,
+      "churn": 984,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 403,
+      "churn": 409,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 393,
+      "churn": 397,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 153,
+      "churn": 157,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 152,
+      "churn": 156,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 99,
+      "churn": 106,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
@@ -175,17 +175,17 @@
     },
     {
       "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
-      "churn": 30,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/spellbound-off-broadway-2026.json",
-      "churn": 30,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-house-of-the-negro-insane-off-broadway-2026.json",
-      "churn": 30,
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
