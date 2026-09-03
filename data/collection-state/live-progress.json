@@ -1,135 +1,47 @@
 {
-  "updatedAt": "2026-09-03T11:19:58.720Z",
-  "processed": 88,
-  "failed": 1467,
-  "successRate": "5.7%",
+  "updatedAt": "2026-09-03T13:00:57.801Z",
+  "processed": 19,
+  "failed": 131,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 1,
     "directCookies": 1,
-    "scrapingbee": 17,
-    "brightdata": 7,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-02T20:30:29.403Z",
+      "t": "2026-09-03T12:46:02.405Z",
       "event": "bb-session",
-      "session": "a43590ea",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+      "session": "a208a789",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
     },
     {
-      "t": "2026-09-02T20:33:51.557Z",
-      "event": "bb-session",
-      "session": "f937cf95",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-02T20:33:52.446Z",
+      "t": "2026-09-03T12:46:03.565Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-09-02T20:48:49.647Z",
+      "t": "2026-09-03T12:47:41.726Z",
       "event": "bb-session",
-      "session": "26976723",
-      "url": "https://www.broadwayworld.com/shows/A-Month-in-the-Country-336215.html"
+      "session": "3f51a5a6",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-09-03T00:16:11.374Z",
-      "event": "bb-session",
-      "session": "0a95f192",
-      "url": "https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-natio"
-    },
-    {
-      "t": "2026-09-03T00:16:12.872Z",
+      "t": "2026-09-03T12:47:42.865Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-09-03T01:41:22.443Z",
+      "t": "2026-09-03T12:52:53.473Z",
       "event": "bb-session",
-      "session": "80c899c9",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T01:41:42.532Z",
-      "event": "bb-session",
-      "session": "d5ebfe9e",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T02:44:23.470Z",
-      "event": "bb-session",
-      "session": "6caefc35",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T02:44:44.378Z",
-      "event": "bb-session",
-      "session": "f3f19486",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T03:56:16.262Z",
-      "event": "bb-session",
-      "session": "964926c0",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T03:56:36.867Z",
-      "event": "bb-session",
-      "session": "1960ec94",
-      "url": "https://donyc.com/events/2026/8/6/marlise-tickets"
-    },
-    {
-      "t": "2026-09-03T05:24:19.489Z",
-      "event": "bb-session",
-      "session": "1c8284b6",
-      "url": "https://www.broadwayworld.com/shows/A-Month-in-the-Country-336215.html"
-    },
-    {
-      "t": "2026-09-03T09:28:08.170Z",
-      "event": "bb-session",
-      "session": "1d4ec440",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-09-03T09:36:14.768Z",
-      "event": "bb-session",
-      "session": "0b390eb8",
-      "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
-    },
-    {
-      "t": "2026-09-03T09:39:50.912Z",
-      "event": "bb-session",
-      "session": "75416f9f",
-      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
-    },
-    {
-      "t": "2026-09-03T09:49:49.999Z",
-      "event": "bb-session",
-      "session": "d1174580",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-03T09:49:54.675Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-03T09:50:15.836Z",
-      "event": "bb-session",
-      "session": "264d8593",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-03T09:50:20.582Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
+      "session": "68d58d4c",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
