@@ -203,7 +203,7 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   if (PARKED_SENTINEL_RE.test(notes)) {
     blockers.push({
       code: BLOCKERS.PARKED_SENTINEL,
-      detail: 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; use --allow-human-gated to override',
+      detail: 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated',
     });
   }
 
