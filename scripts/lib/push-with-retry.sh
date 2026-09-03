@@ -150,9 +150,15 @@ git_push() {
   # passes over this file (tasks #394, #464) inferred the cause from log gaps and
   # were wrong; the one that held (#466) measured first.
   #
-  # Cost measured locally, non-TTY, 12-object push: 1536 bytes / 8 lines vs 147
-  # bytes without. Progress goes to stderr, so it cannot corrupt a caller reading
-  # stdout, and both call sites (1100, 1710) use the bare `if git_push ...` form.
+  # Cost, measured non-TTY: 147 -> 1536 bytes on a 12-object push, 22 -> 11173
+  # bytes on a 4003-object one. Ticks are percentage-bounded (~100 per phase),
+  # not time-bounded, so a 90s stall does not grow the output; worst case is
+  # ~11KB x MAX_RETRIES x 2 call sites, well under GHA's per-job limit. Progress
+  # goes to stderr, and no code path on the push side captures or parses it
+  # (_fetch_with_captured_stderr is fetch-only); both call sites use the bare
+  # `if git_push ...` form. Under `timeout -k 10` the flag also flushes partial
+  # progress before the kill where the old code emitted zero bytes, which is
+  # precisely the rc=124 case this exists to diagnose.
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
 }
