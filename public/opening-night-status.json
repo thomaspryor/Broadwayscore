@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-09-02T14:57:50.729Z",
+  "generatedAt": "2026-09-03T19:22:35.678Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
+      "id": "the-story-west-end-2026",
+      "title": "The Story",
       "market": "west-end",
-      "category": "off-west-end",
+      "category": "west-end",
       "type": "play",
-      "openingDate": "2026-09-02",
+      "openingDate": "2026-09-03",
       "status": "open",
-      "slug": "a-month-in-the-country-west-end",
-      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 71.83,
-      "liveScore": 72,
-      "scoreDrift": 0.1700000000000017,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
+      "slug": "the-story-west-end",
+      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
       "siteFileExists": true,
-      "total": 4,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
-      "t3": 3,
-      "positive": 2,
-      "mixed": 1,
-      "negative": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "0/8 total",
           "T1:0/3",
-          "T2:1/2",
+          "T2:0/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -63,11 +63,93 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
+          "name": "The Independent",
           "isDualMarket": true
         },
         {
-          "name": "The Independent",
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-02",
+      "status": "open",
+      "slug": "a-month-in-the-country-west-end",
+      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
+      "siteScore": 83.18,
+      "liveScore": 83,
+      "scoreDrift": -0.18000000000000682,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 8,
+      "t1": 2,
+      "t2": 3,
+      "t3": 3,
+      "positive": 7,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "T1:0/3",
+          "hi-conf:4/6"
+        ],
+        "highConfidence": 4,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
           "isDualMarket": true
         },
         {
@@ -113,6 +195,18 @@
           "m": 1,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-03T19:22:35.678Z",
+          "rc": 8,
+          "s": 83.18,
+          "t1": 2,
+          "t2": 3,
+          "t3": 3,
+          "p": 7,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -126,25 +220,23 @@
       "status": "open",
       "slug": "electra-persona-west-end",
       "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
-      "siteScore": 68.36,
+      "siteScore": 67.72,
       "liveScore": 68,
-      "scoreDrift": -0.35999999999999943,
+      "scoreDrift": 0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
-      "t1": 6,
-      "t2": 4,
-      "t3": 6,
-      "positive": 8,
-      "mixed": 7,
-      "negative": 1,
+      "total": 26,
+      "t1": 9,
+      "t2": 6,
+      "t3": 11,
+      "positive": 12,
+      "mixed": 10,
+      "negative": 4,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 6,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -154,15 +246,11 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -171,10 +259,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -244,36 +328,23 @@
           "m": 7,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-03T19:22:35.678Z",
+          "rc": 26,
+          "s": 67.72,
+          "t1": 9,
+          "t2": 6,
+          "t3": 11,
+          "p": 12,
+          "m": 10,
+          "n": 4,
+          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
-    {
-      "id": "the-story-west-end-2026",
-      "title": "The Story",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-09-03",
-      "status": "previews",
-      "slug": "the-story-west-end",
-      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "school-girls-or-the-african-mean-girls-play-2026",
       "title": "School Girls; Or, The African Mean Girls Play",
@@ -284,7 +355,7 @@
       "status": "upcoming",
       "slug": "school-girls-or-the-african-mean-girls-play",
       "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -323,7 +394,7 @@
       "status": "previews",
       "slug": "jane-eyre-off-west-end",
       "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -348,7 +419,7 @@
       "status": "previews",
       "slug": "kimberly-akimbo-off-west-end",
       "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -360,6 +431,84 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "lean-to-off-broadway-2026",
+      "title": "Lean-To",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-10",
+      "status": "previews",
+      "slug": "lean-to-off-broadway",
+      "thumbnail": "/images/shows/lean-to-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "day-of-the-hog-off-broadway-2026",
+      "title": "Day of the Hog",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-10",
+      "status": "previews",
+      "slug": "day-of-the-hog-off-broadway",
+      "thumbnail": "/images/shows/day-of-the-hog-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }

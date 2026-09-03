@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "a-month-in-the-country-west-end-2026",
   "openingDate": "2026-09-02",
-  "detectedAt": "2026-09-03T19:04:36.868Z",
+  "detectedAt": "2026-09-03T19:22:18.215Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -18,10 +18,24 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "ents24--unknown.json",
+      "outletId": "ents24",
+      "criticName": "Unknown",
+      "url": "https://www.ents24.com/london-events/donmar-warehouse/a-month-in-the-country/7458547",
+      "fullTextLen": 1547,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-03T19:04:36.868Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }

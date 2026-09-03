@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-02T14:57:44.087Z",
+  "timestamp": "2026-09-03T19:22:29.079Z",
   "stats": {
-    "totalReviews": 42223,
-    "alreadyFlagged": 17647,
-    "dateGuardCatches": 243,
+    "totalReviews": 42253,
+    "alreadyFlagged": 17614,
+    "dateGuardCatches": 242,
     "directorMismatch": 1035,
-    "tvFilmSignals": 1247,
-    "londonSignals": 966,
+    "tvFilmSignals": 1248,
+    "londonSignals": 980,
     "offBroadwaySignals": 497,
     "yearMismatch": 91,
-    "noPublishDate": 3649
+    "noPublishDate": 3693
   },
   "findings": [
     {
@@ -1066,7 +1066,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -2374,7 +2374,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "afridiziak-theatre-news--althyr-pivatto.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-05-30",
       "url": "https://www.afridiziak.com/reviews/beetlejuice-the-musical/",
       "findings": [
@@ -2566,7 +2566,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "readaboutstuff--unknown.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2026-06-12",
       "url": "https://readaboutstuff.com/2026/06/12/review-beetlejuice-the-musical-prince-edward-theatre-london/",
       "findings": [
@@ -5175,7 +5175,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "theatermania--zachary-stewart.json",
-      "score": 81,
+      "score": 92,
       "publishDate": "June 20th, 2024",
       "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
       "findings": [
@@ -5756,17 +5756,6 @@
     {
       "showId": "cinderella-west-end-2026",
       "file": "london-box-office--josephine-balfour-oatts.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2518d before show (2020-01-13 vs 2026-12-05)"
-        }
-      ]
-    },
-    {
-      "showId": "cinderella-west-end-2026",
-      "file": "london-box-office--marian-pashley.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -6373,7 +6362,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8072,6 +8061,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "hollywood-reporter--demetrios-matheou.json",
+      "score": 94,
+      "publishDate": "2026-09-02",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/electra-persona-theater-review-cate-blanchett-nina-hoss-1236688187/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -14435,7 +14443,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 81,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -14561,7 +14569,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -15462,7 +15470,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -15556,7 +15564,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -20773,6 +20781,20 @@
     },
     {
       "showId": "paranormal-activity-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 62,
       "publishDate": "2026-08-26",
@@ -22989,6 +23011,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 59,
       "publishDate": "2026-04-01",
       "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
@@ -24940,7 +24963,7 @@
     {
       "showId": "starlight-express-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 39,
+      "score": 38,
       "publishDate": "2024-06-30",
       "url": "https://inews.co.uk/culture/arts/starlight-express-review-naff-3138148",
       "findings": [
@@ -33664,19 +33687,6 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "guardian--unknown.json",
-      "publishDate": "2026-08-31",
-      "url": "https://www.theguardian.com/stage/2026/aug/31/katie-norris-mother-succubus-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 57,
       "publishDate": "October 30, 2003",
@@ -34252,10 +34262,51 @@
     },
     {
       "showId": "a-month-in-the-country-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/A-Month-in-the-Country-336215.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "file": "ents24--unknown.json",
+      "publishDate": null,
+      "url": "https://www.ents24.com/london-events/donmar-warehouse/a-month-in-the-country/7458547",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
       "file": "sueterryvoices--unknown.json",
       "score": 50,
       "publishDate": null,
       "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 82,
+      "publishDate": "2026-09-02",
+      "url": "https://theatreweekly.com/review-a-month-in-the-country-at-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -34274,6 +34325,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "file": "thelondoner--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thelondoner.com/exclusive-offers/a-month-in-the-country",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -34640,7 +34704,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2025-11-22",
       "url": "https://www.broadwayworld.com/westend/article/Review-ALL-MY-SONS-starring-Bryan-Cranston-and-Marianne-Jean-Baptiste-20251122",
       "findings": [
@@ -34654,7 +34718,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "everything-theatre--dave-b.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2025-11-23",
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
       "findings": [
@@ -34668,7 +34732,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "2025-11-22",
       "url": "https://www.theguardian.com/stage/2025/nov/22/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-wyndhams-theatre-london",
       "findings": [
@@ -34682,7 +34746,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2025-11-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
       "findings": [
@@ -34710,7 +34774,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2025-11-22",
       "url": "https://www.londontheatre.co.uk/reviews/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-ivo-van-hove",
       "findings": [
@@ -35418,7 +35482,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -35516,7 +35580,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -37292,7 +37356,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 63,
+      "score": 55,
       "publishDate": "2026-07-30",
       "url": "https://www.broadwayworld.com/westend/article/Review-CLEANSED-Almeida-20260730",
       "findings": [
@@ -37306,7 +37370,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 53,
+      "score": 93,
       "publishDate": null,
       "url": "https://www.dailymail.com/tvshowbiz/article-16018123/Patrick-Marmion-star-rating-veto-sex-depravity-cleansed.html",
       "findings": [
@@ -37334,7 +37398,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 65,
+      "score": 64,
       "publishDate": "2026-07-30",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cleansed-almeida-review-sarah-kane-leo-bill-b3024438.html",
       "findings": [
@@ -38046,7 +38110,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 80,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -38505,7 +38569,7 @@
     {
       "showId": "electra-persona-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 86,
+      "score": 85,
       "publishDate": "2026-09-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-electra-persona-lyttelton-theatre",
       "findings": [
@@ -38518,7 +38582,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "all-that-dazzles-uk--unknown.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "publishDate": "2026-09-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-electra-persona-lyttelton-theatre",
       "findings": [
@@ -38526,6 +38590,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "bestoftheatre--alan-ingram.json",
+      "publishDate": "2026-09-02",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-electra-persona-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -38559,6 +38636,19 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
+      "file": "daily-mail--daily-mail.json",
+      "publishDate": "2026-09-02",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16097559/PATRICK-MARMIONs-night-review-Electra-Persona-meant-haunted-Cate-Blanchetts-new-drama-sadly-wasnt.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 49,
       "publishDate": "2026-09-02",
@@ -38574,7 +38664,7 @@
     {
       "showId": "electra-persona-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 76,
+      "score": 64,
       "publishDate": "2026-09-01",
       "url": "https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-blanchett-and-hoss-face-off-in-lopsided-sophocles-bergman-double-bill",
       "findings": [
@@ -38588,6 +38678,7 @@
     {
       "showId": "electra-persona-west-end-2026",
       "file": "london-box-office--london-box-office.json",
+      "score": 77,
       "publishDate": "2026-09-02",
       "url": "https://www.londonboxoffice.co.uk/news/post/electra-persona-national-theatre-review",
       "findings": [
@@ -38600,10 +38691,24 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--anya-ryan.json",
       "score": 62,
       "publishDate": "2026-09-02",
       "url": "https://www.londontheatre.co.uk/reviews/electra-persona-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "londontheatre1--unknown.json",
+      "score": 60,
+      "publishDate": "2026-09-02",
+      "url": "https://www.londontheatre1.com/reviews/electra-persona-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -38618,6 +38723,48 @@
       "score": 77,
       "publishDate": "2026-08-23",
       "url": "https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": 66,
+      "publishDate": "2026-09-02",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/electra-persona-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "score": 39,
+      "publishDate": "2026-09-02",
+      "url": "https://southlondon.co.uk/area/southwark/review-electra-persona-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 54,
+      "publishDate": "2026-09-02",
+      "url": "https://www.standard.co.uk/culture/theatre/electra-persona-national-theatre-review-b1295534.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -38654,6 +38801,20 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": 77,
+      "publishDate": "2026-09-02",
+      "url": "https://www.theupcoming.co.uk/2026/09/02/electra-persona-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
       "file": "timboatswain--tim-boatswain.json",
       "score": 95,
       "publishDate": "2026-08-23",
@@ -38669,7 +38830,7 @@
     {
       "showId": "electra-persona-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-09-02",
       "url": "https://www.timeout.com/london/news/persona-starring-cate-blanchett-at-the-national-theatre-090226",
       "findings": [
@@ -38682,7 +38843,21 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
+      "file": "vocaleyes--unknown.json",
+      "publishDate": null,
+      "url": "https://vocaleyes.co.uk/events/electra-persona-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
+      "score": 42,
       "publishDate": "2026-09-02",
       "url": "https://westendwilma.com/review-electra-persona-national-theatre/",
       "findings": [
@@ -39988,7 +40163,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
+      "score": 76,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -40791,7 +40966,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 70,
+      "score": 57,
       "publishDate": "2026-06-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-HIGH-SOCIETY-Barbican-Theatre-20260603",
       "findings": [
@@ -40805,7 +40980,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "everything-theatre--unknown.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2026-06-05",
       "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
       "findings": [
@@ -40875,7 +41050,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 62,
+      "score": 63,
       "publishDate": "2026-06-04",
       "url": "https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html",
       "findings": [
@@ -41848,7 +42023,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "the-scotsman--david-kettle.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2025-08-07",
       "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/fringe-theatre-reviews-jeezus-picking-up-stones-an-american-jew-wakes-to-a-nightmare-more-5261974",
       "findings": [
@@ -41876,7 +42051,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 90,
+      "score": 95,
       "publishDate": "2025-08-06",
       "url": "https://www.thestage.co.uk/reviews/jeezus-a-queer-latinx-musical-review",
       "findings": [
@@ -43382,7 +43557,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -43801,7 +43976,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -47165,7 +47340,7 @@
     {
       "showId": "sting-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-06-24",
       "url": "https://theatreweekly.com/review-sting-at-young-vic/",
       "findings": [
@@ -47506,7 +47681,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -47617,7 +47792,7 @@
     {
       "showId": "summerfolk-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-03-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-SUMMERFOLK-starring-Sophie-Rundle-National-Theatre-20260318",
       "findings": [
@@ -51570,6 +51745,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/the-story/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
         }
       ]
     },
