@@ -1407,7 +1407,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (!args['allow-human-gated']) {
       const gateText = (card && card.notes) || task.description || '';
       const hg = classifyHeadlessDispatchability({ subject: task.subject, notes: gateText }, { verifyCmd: verifyGate.cmd });
-      if (!hg.dispatchable && hg.blockers.some(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+      // PARKED_SENTINEL honours --force here for the same reason it does at
+      // linear-next.js:750. The classifier is shared, so this gate inherited the
+      // new blocker automatically; without the exemption an owner who un-parks a
+      // card and re-runs would be refused by a gate naming a THIRD flag
+      // (--allow-human-gated) after predispatchGuard already told them to use
+      // --allow-reopen-suspect. Caught in re-review of BRO-2753.
+      const blocking = hg.blockers.filter(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
+        && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+      if (!hg.dispatchable && blocking.length) {
         console.error(`[bsc-next] REFUSING headless dispatch of #${task.id}: an unattended session cannot finish this card.`);
         for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
         console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);

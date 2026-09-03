@@ -17,6 +17,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const {
   BLOCKERS,
   UI_PATH_RE,
+  PARKED_SENTINEL_RE,
   classifyHeadlessDispatchability,
   looksLikeUiPath,
   uiPathsIn,
@@ -200,5 +201,88 @@ describe('UI path matcher stays in lockstep with the hook that actually blocks t
 
   test('uiPathsIn strips markdown backticks and trailing punctuation', () => {
     assert.deepStrictEqual(uiPathsIn('see `src/components/Bar.tsx`, then stop.'), ['src/components/Bar.tsx']);
+  });
+});
+
+// BRO-2753. Measured 2026-09-03 against all 432 live open P0/P1 issues: 160
+// carried the sentinel at string start, but 200 carried it at a LINE start, and
+// 158 of those 200 were classified dispatchable. The funnel had no knowledge of
+// the sentinel at all (`grep -ic PARKED` returned 0), so 127-158 explicitly
+// parked cards were being offered to headless workers.
+describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
+  const parked = (notes) => classifyHeadlessDispatchability({ subject: 'Some card', notes });
+
+  test('refuses the exact shape linear-issue-create.js writes on --park', () => {
+    // `PARKED: ${reason}\n\n${description}` — linear-issue-create.js:141
+    const r = parked('PARKED: needs an owner call\n\nrest of the description');
+    assert.ok(!r.dispatchable, 'a parked card must not be dispatchable');
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL), `expected PARKED_SENTINEL, got ${codes(r)}`);
+  });
+
+  test('refuses a phrasing OWNER_DECISION_GATE does not catch', () => {
+    // This exact wording slips past the phrase-brittle owner-judgment regex,
+    // which is half of why the sentinel check has to exist independently.
+    const r = parked('PARKED: Needs an owner-level choice between three fixes');
+    assert.ok(!r.dispatchable);
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('refuses when Notion mirror headers precede the sentinel (the /m case)', () => {
+    // Real shape, from BRO-2432 and 39 siblings: two generated header lines
+    // before the marker. A string-anchored regex misses all of them.
+    const r = parked([
+      '[notion:3c8637c5-416f-8100-9535-e040f459a83c] P1 Next · Not started · Bug',
+      '[https://app.notion.com/p/whatever](<https://app.notion.com/p/whatever>)',
+      'PARKED: card owns this file and is In Progress in a live parallel session',
+    ].join('\n'));
+    assert.ok(!r.dispatchable, 'a Notion-mirrored parked card must not be dispatchable');
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('is case- and indent-insensitive', () => {
+    assert.ok(codes(parked('  parked:  lowercase and indented')).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('does NOT fire on incidental prose mentioning parking', () => {
+    // These are the 11 the anchor deliberately excludes. If any of them starts
+    // failing, the regex has been loosened past line-start and is refusing
+    // cards nobody parked.
+    for (const notes of [
+      'We parked this last week, then unparked it. VERIFY: node scripts/x.js',
+      'Fix the parked-cars page. VERIFY: node scripts/x.js',
+      'Auto-parked earlier by bsc-reconcile; now live again. VERIFY: node scripts/x.js',
+      'See linear-drain-parked.js for context. VERIFY: node scripts/x.js',
+    ]) {
+      assert.ok(
+        !codes(parked(notes)).includes(BLOCKERS.PARKED_SENTINEL),
+        `should NOT read as parked: ${notes}`,
+      );
+    }
+  });
+
+  test('the gate is not constant-true — an ordinary card still dispatches', () => {
+    const r = parked('Straightforward backend fix.\n\nVERIFY: node scripts/validate-data.js');
+    assert.ok(r.dispatchable, `expected dispatchable, blocked by ${codes(r)}`);
+    assert.deepStrictEqual(r.blockers, []);
+  });
+
+  test('the exported regex and the classifier agree, and keep the /m flag', () => {
+    assert.ok(PARKED_SENTINEL_RE.multiline, 'the /m flag is load-bearing — 40 live cards depend on it');
+    assert.ok(PARKED_SENTINEL_RE.ignoreCase, 'sentinel matching must be case-insensitive');
+    // Assert AGREEMENT, not just the flags: a divergence between the exported
+    // regex and whatever the classifier actually tests would otherwise pass.
+    for (const notes of [
+      'PARKED: at string start',
+      'header line\nsecond header\nPARKED: after Notion mirror headers',
+      '  parked: indented and lowercase',
+      'We parked this last week. VERIFY: node scripts/x.js',
+      'Fix the parked-cars page. VERIFY: node scripts/x.js',
+    ]) {
+      assert.strictEqual(
+        codes(parked(notes)).includes(BLOCKERS.PARKED_SENTINEL),
+        PARKED_SENTINEL_RE.test(notes),
+        `classifier and exported regex disagree on: ${JSON.stringify(notes)}`,
+      );
+    }
   });
 });

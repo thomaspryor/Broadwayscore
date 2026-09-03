@@ -748,7 +748,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // cmux tab where the owner is present.
   if (routing.mode === 'headless' && !args['allow-human-gated']) {
     const hg = classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description }, { verifyCmd: gate.cmd });
-    if (!hg.dispatchable && hg.blockers.some((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+    // PARKED_SENTINEL must honour --force, like the ledger-based parkedGuard at
+    // :673 whose comment is literally "--force is the unpark". Nothing ever
+    // strips the `PARKED: <reason>` prefix linear-issue-create.js:141 writes
+    // into the description — unparking is a LEDGER event — so without this the
+    // sentinel is sticky and an unparked issue would be permanently
+    // undispatchable headlessly, with only the differently-named
+    // --allow-human-gated to escape. Caught in review of BRO-2753.
+    const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
+      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+    if (!hg.dispatchable && blocking.length) {
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
       for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
       console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
