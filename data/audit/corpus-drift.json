@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-03T14:10:29.149Z",
+    "generatedAt": "2026-09-03T14:36:39.751Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -36,7 +36,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "audit-pull-quotes: 20221 reviews across 2943 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
+      "detail": "audit-pull-quotes: 20224 reviews across 2943 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
     },
     {
       "name": "regex-fp",
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 21 exempt, 14 covered\n  ⚠️   150  data/audit/outlet-registry-gaps.json  — no merge driver; needs a decision\n  ⚠️    70  data/audit/worktree-gc.log  — no merge driver; needs a decision\n  ⚠️    65  data/audit/worktree-gc.launchd.log  — no merge driver; needs a decision\n  ⚠️    38  data/audit/verify-merge-landed.log  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 22 exempt, 14 covered\n  ⚠️   151  data/audit/outlet-registry-gaps.json  — no merge driver; needs a decision\n  ⚠️    71  data/audit/worktree-gc.log  — no merge driver; needs a decision\n  ⚠️    66  data/audit/worktree-gc.launchd.log  — no merge driver; needs a decision\n  ⚠️    38  data/audit/verify-merge-landed.log  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -117,7 +117,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36130 scored reviews\nAlready rejected: 584\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36134 scored reviews\nAlready rejected: 584\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
