@@ -5431,3 +5431,18 @@
 [2026-09-03 03:15:40] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
 [2026-09-03 03:15:40] DIGEST[ios]: 17 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
 [2026-09-03 03:15:40] DONE  removed=0 kept=42 skipped=19 freed=0KB (dry_run=0)
+[2026-09-03 04:23:56] ALERT: disk free 17GB below floor 20GB — running emergency cleanup
+[2026-09-03 04:23:57] CLEAN  xcrun simctl delete unavailable — done
+[2026-09-03 04:23:57] DIGEST: disk-floor cleanup freed 0KB — free space 17GB -> 17GB (floor 20GB)
+[2026-09-03 04:23:58] SKIP  [web] merge-gate-hook-test-probe-wt-bI9q5Q — detached HEAD, leaving alone
+[2026-09-03 04:23:58] SKIP  [web] main — detached HEAD, leaving alone
+[2026-09-03 04:24:00] KEEP  [web] agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-09-03 04:24:01] SKIP  [web] BRO-155-nyt-roundup — worktree-BRO-155-nyt-roundup merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:01] SKIP  [web] bro-2560-infra-venue-validation — worktree-bro-2560-infra-venue-validation merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:02] SKIP  [web] bro-2569-dispatch-path-check — worktree-bro-2569-dispatch-path-check merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:02] KEEP  [web] bro-2588-partA-ci-fix — 1 unmerged commit(s) on bro-2588-partA-ci-fix
+[2026-09-03 04:24:03] SKIP  [web] bro-2607-gc-dryrun-parity — worktree-bro-2607-gc-dryrun-parity merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:03] SKIP  [web] bro-2708-retraction-era — worktree-bro-2708-retraction-era merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:03] SKIP  [web] bro-525-dmarc-ingest — worktree-bro-525-dmarc-ingest merged but a live process has this worktree as its cwd
+[2026-09-03 04:24:04] KEEP  [web] bro-80-prior-run-triage — 5 unmerged commit(s) on worktree-bro-80-prior-run-triage
+[2026-09-03 04:24:05] KEEP  [web] car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
