@@ -1,5 +1,33 @@
 [
   {
+    "startedAt": "2026-08-28T23:43:27.638Z",
+    "completedAt": "2026-08-28T23:43:33.202Z",
+    "totalReviews": 42343,
+    "processed": 0,
+    "skipped": 42341,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 7882,
+      "output": 236,
+      "total": 22980
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-29T00:15:56.137Z",
+    "completedAt": "2026-08-29T00:16:06.519Z",
+    "totalReviews": 42344,
+    "processed": 1,
+    "skipped": 42341,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 12030,
+      "output": 572,
+      "total": 34950
+    },
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-08-29T03:24:56.160Z",
     "completedAt": "2026-08-29T03:25:02.348Z",
     "totalReviews": 46,
@@ -814638,50 +814666,16 @@
     ]
   },
   {
-    "startedAt": "2026-09-03T09:29:39.949Z",
-    "completedAt": "2026-09-03T09:38:00.665Z",
-    "totalReviews": 42553,
-    "processed": 6,
-    "skipped": 42539,
-    "errors": 1,
+    "startedAt": "2026-09-03T10:33:22.537Z",
+    "completedAt": "2026-09-03T10:33:34.799Z",
+    "totalReviews": 10,
+    "processed": 1,
+    "skipped": 9,
+    "errors": 6,
     "tokensUsed": {
-      "input": 64048,
-      "output": 3029,
-      "total": 170334
-    },
-    "errorDetails": [
-      {
-        "showId": "pride-west-end-2026",
-        "outletId": "whatsonstage",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-03T09:38:13.661Z",
-    "completedAt": "2026-09-03T09:42:45.384Z",
-    "totalReviews": 42553,
-    "processed": 33,
-    "skipped": 42331,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 283764,
-      "output": 12234,
-      "total": 711127
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-03T10:15:01.244Z",
-    "completedAt": "2026-09-03T10:15:14.479Z",
-    "totalReviews": 42556,
-    "processed": 0,
-    "skipped": 42553,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 11879,
-      "output": 466,
-      "total": 34554
+      "input": 34469,
+      "output": 1458,
+      "total": 96945
     },
     "errorDetails": []
   }
