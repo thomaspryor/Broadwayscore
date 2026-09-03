@@ -1,12 +1,21 @@
 {
-  "generatedAt": "2026-09-03T14:47:19.148Z",
+  "generatedAt": "2026-09-03T15:18:13.660Z",
   "summary": {
-    "totalOutletsInReviews": 702,
+    "totalOutletsInReviews": 703,
     "inRegistry": 702,
-    "missing": 0,
+    "missing": 1,
     "unused": 467
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "studioseaview",
+      "count": 1,
+      "shows": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/well-ill-let-you-go-off-broadway-2026/studioseaview--unknown.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1877,7 +1886,17 @@
       "displayName": "Sueterryvoices"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "studioseaview",
+      "displayName": "studioseaview",
+      "tier": 3,
+      "aliases": [
+        "studioseaview"
+      ],
+      "domain": "studioseaview.com"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
