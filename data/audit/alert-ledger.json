@@ -1188,9 +1188,9 @@
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Refresh Show Score (opening-night)",
       "firstSeen": "2026-08-17T12:29:31.553Z",
-      "lastSeen": "2026-08-17T12:29:31.553Z",
-      "lastNotifiedAt": "2026-08-17T12:29:31.553Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-03T15:35:38.274Z",
+      "lastNotifiedAt": "2026-09-03T15:35:38.274Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -1316,17 +1316,16 @@
       "silentRefires": 6
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-08-27T21:33:20.831Z",
-      "lastNotifiedAt": "2026-08-27T21:33:20.831Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-03T15:35:38.271Z",
+      "lastNotifiedAt": "2026-09-03T15:35:38.271Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-08-30T15:50:29.694Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Refresh Show Score (opening-night)": {
       "status": "open",
@@ -1461,12 +1460,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-02T15:46:03.244Z",
+      "lastSeen": "2026-09-03T15:35:38.914Z",
       "lastNotifiedAt": "2026-08-28T21:38:45.033Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1582,12 +1581,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-02T15:46:03.241Z",
+      "lastSeen": "2026-09-03T15:35:38.343Z",
       "lastNotifiedAt": "2026-09-01T15:53:22.219Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1709,17 +1708,15 @@
       "linearIdentifier": "BRO-2421"
     },
     "cron-health-chronic:Commercial RSS Poll": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
       "firstSeen": "2026-08-27T21:33:20.912Z",
-      "lastSeen": "2026-08-28T21:38:45.032Z",
-      "lastNotifiedAt": "2026-08-27T21:33:20.912Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-03T15:35:38.346Z",
+      "lastNotifiedAt": "2026-09-03T15:35:38.346Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2524",
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-29T16:01:13.862Z"
+      "linearIdentifier": "BRO-2524"
     },
     "cron-health:Opening Night Express Retry Check": {
       "status": "resolved",
@@ -1765,12 +1762,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-09-02T15:46:03.246Z",
+      "lastSeen": "2026-09-03T15:35:38.915Z",
       "lastNotifiedAt": "2026-08-28T21:38:50.527Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2530",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -2050,6 +2047,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "cron-health-chronic:Update Social Pulse": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Update Social Pulse",
+      "firstSeen": "2026-09-03T15:35:38.916Z",
+      "lastSeen": "2026-09-03T15:35:38.916Z",
+      "lastNotifiedAt": "2026-09-03T15:35:38.916Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2756"
     }
   }
 }
