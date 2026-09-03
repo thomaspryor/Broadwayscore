@@ -6,7 +6,8 @@
     "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "masticate-off-broadway-2026/nyu--unknown.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -21,13 +22,23 @@
     "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/new-york-city-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "masticate-off-broadway-2026/nyu--unknown.json"
+      "masticate-off-broadway-2026/nyu--unknown.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -46,7 +57,7 @@
     ]
   },
   "startTime": "2026-09-03T12:44:33.188Z",
-  "lastProcessed": "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+  "lastProcessed": "cat-cohen-broad-strokes-off-broadway-2026/new-york-city-theatre--unknown.json",
   "log": [
     {
       "t": "2026-09-03T12:46:02.405Z",
@@ -56,6 +67,17 @@
     },
     {
       "t": "2026-09-03T12:46:03.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-03T12:47:41.726Z",
+      "event": "bb-session",
+      "session": "3f51a5a6",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-03T12:47:42.865Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
