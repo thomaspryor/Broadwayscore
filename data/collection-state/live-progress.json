@@ -1,54 +1,20 @@
 {
-  "updatedAt": "2026-09-03T09:30:15.114Z",
-  "processed": 72,
-  "failed": 1222,
-  "successRate": "5.6%",
+  "updatedAt": "2026-09-03T09:51:28.201Z",
+  "processed": 88,
+  "failed": 1456,
+  "successRate": "5.7%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 13,
     "directCookies": 1,
-    "scrapingbee": 14,
-    "brightdata": 5,
+    "scrapingbee": 17,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 19
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-09-02T20:09:54.981Z",
-      "event": "bb-session",
-      "session": "b9b1b4a7",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
-    {
-      "t": "2026-09-02T20:09:55.919Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-02T20:14:37.868Z",
-      "event": "bb-session",
-      "session": "595381da",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-09-02T20:14:38.884Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-02T20:17:04.117Z",
-      "event": "bb-session",
-      "session": "87177ac0",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-02T20:17:11.693Z",
-      "event": "bb-session",
-      "session": "53ad452e",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
     {
       "t": "2026-09-02T20:30:29.403Z",
       "event": "bb-session",
@@ -130,6 +96,40 @@
       "event": "bb-session",
       "session": "1d4ec440",
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-09-03T09:36:14.768Z",
+      "event": "bb-session",
+      "session": "0b390eb8",
+      "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
+    },
+    {
+      "t": "2026-09-03T09:39:50.912Z",
+      "event": "bb-session",
+      "session": "75416f9f",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
+    },
+    {
+      "t": "2026-09-03T09:49:49.999Z",
+      "event": "bb-session",
+      "session": "d1174580",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-03T09:49:54.675Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-03T09:50:15.836Z",
+      "event": "bb-session",
+      "session": "264d8593",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-03T09:50:20.582Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
