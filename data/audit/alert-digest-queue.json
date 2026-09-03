@@ -316,5 +316,58 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-03T23:14:59.202Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-electra-persona-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Electra / Persona",
+    "description": "independent/Alice Saville (independent--alice-saville.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review discusses a production at the National The — https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/electra-persona-review-cate-blanchett-b3043382.html\nsouth-london/Michael Holland (south-london--michael-holland.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] This is a genuine review (critic Katie Kelly evaluate — https://southlondon.co.uk/area/southwark/review-electra-persona-at-the-national-theatre/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T23:38:49.811Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:electra-persona-west-end-2026",
+    "title": "Shipped review too short to verify on Electra / Persona",
+    "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T23:38:49.813Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-electra-persona-west-end-2026",
+    "title": "Review URL cross-show mismatch on Electra / Persona",
+    "description": "Review URL for boycotting-trends/Alex Ramon does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): http://boycottingtrends.blogspot.com/2026/08/theatre-review-electrapersona-lyttelton.html\nReview URL for broadwayworld/Clementine Scott does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.broadwayworld.com/westend/article/Review-ELECTRAPERSONA-National-Theatre-20260901\nReview URL for financialtimes/Sarah Hemming does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.ft.com/content/f0e97e40-d9e7-4054-8ae3-0957083f8cb5?syn-25a6b1a6=1\nReview URL for guardian/Arifa Akbar does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-blanchett-and-hoss-face-off-in-lopsided-sophocles-bergman-double-bill\nReview URL for thestage/Holly O'Mahony does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london\nReview URL for times-uk/Clive Davis, Chief Theatre Critic does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thetimes.com/culture/theatre-dance/article/electrapersona-review-cate-blanchett-is-captivating-despite-the-script-q35z7fpn5",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T23:38:49.815Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:electra-persona-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "electra-persona-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-09-03T23:38:49.936Z"
   }
 ]
