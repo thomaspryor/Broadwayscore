@@ -24,6 +24,14 @@
  * "September L. Davis: The Apology Tour", and 'classic penguins' matched a
  * since-legitimized tracked show — all fixed in discover-new-shows.js.
  *
+ * BRO-2315 extends the same audit to scripts/discover-opera-shows.js's
+ * NON_OPERA_TITLE_PATTERNS (isNonOpera(), same title.includes(p) gate,
+ * scoped to Met Opera season-page titles). Scanned against the corpus of
+ * real tracked opera titles (public/data/mobile-shows.json entries with
+ * ty === 'opera') rather than the full theatre-wide title list —
+ * isNonOpera() only ever evaluates titles scraped from Met's own season
+ * pages, so the general corpus would be noise for this family.
+ *
  * Usage:
  *   node scripts/audit-regex-patterns.js              # sample 400 recent shows, threshold 5
  *   node scripts/audit-regex-patterns.js --full       # scan all ~36k reviews
@@ -154,11 +162,11 @@ const PATTERN_ALLOWLIST = {
   // detectHorrorFilmContent's 3+-theater-keyword guard absorbs 100% — zero pass
   // through to rejection. Allowlist to current full-corpus baseline + 30%.
   'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
-  'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
+  'HORROR_FILM_PATTERNS::1': 205, // /horror\s*(film|movie|sequel)/ — raw 158, 2026-08-31 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::3': 100, // /haunted\s+(family|house|lambert)/ — raw 76, 2026-08-26 recal (see PATTERN_CALIBRATION)
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
-  'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
+  'HORROR_FILM_PATTERNS::6': 110, // /horror\s+film/ — raw 82, 2026-08-31 recal (duplicate of ::1, see PATTERN_CALIBRATION)
 };
 
 // Per-pattern calibration provenance. Optional companion to PATTERN_ALLOWLIST.
@@ -318,6 +326,36 @@ const PATTERN_CALIBRATION = {
         + "FilmContent's 3+-theater-keyword guard absorbs these at runtime — "
         + 'zero pass through to rejection. Sized to raw + 30%.',
   },
+  'HORROR_FILM_PATTERNS::1': {
+    commit: 'pending',
+    date: '2026-08-31',
+    rawHits: 158,
+    headroom: 1.3,
+    note: 'BRO-2662 triage (surfaced while confirming --full exits 0 after the '
+        + 'circus title-exclude fix): /horror\\s*(film|movie|sequel)/i corpus '
+        + 'growth from raw 107 (prior baseline) to 158 — theater-metaphor '
+        + 'bleed ("worthy of a Blumhouse horror film", "reminiscent of a '
+        + 'horror movie", genre-comparison prose in Appropriate, American '
+        + 'Son, Variety/LSA/TWiNY reviews), diffuse across outlets, not a '
+        + 'scraper regression. Verified directly: scanning the full corpus '
+        + "with detectHorrorFilmContent() (not the bare regex) finds only 2 "
+        + 'texts where the 3+-theater-keyword guard fails to absorb the '
+        + 'match (My Neighbour Totoro / Paranormal Activity West End '
+        + "reviews), and both already carry contentTier: 'invalid' — outside "
+        + "this audit's own tier filter and already excluded by other gates, "
+        + 'not caused by this pattern. Sized to raw + 30%.',
+  },
+  'HORROR_FILM_PATTERNS::6': {
+    commit: 'pending',
+    date: '2026-08-31',
+    rawHits: 82,
+    headroom: 1.34,
+    note: 'BRO-2662 triage, same corpus-growth event as HORROR_FILM_PATTERNS::1 '
+        + '(this pattern is a subset/duplicate of ::1 — /horror\\s+film/i vs '
+        + '/horror\\s*(film|movie|sequel)/i). Raw 43 (prior baseline) to 82. '
+        + 'See ::1 above for the verification that detectHorrorFilmContent\'s '
+        + 'guard absorbs these. Sized to raw + 30%.',
+  },
 };
 
 const DEFAULT_MAX_HITS = 5;
@@ -342,6 +380,15 @@ const TITLE_EXCLUDE_DEFAULT_MAX_HITS = 0;
 // Add an entry ONLY if a pattern is confirmed intentional against a specific
 // title (document why in a comment here, same as PATTERN_CALIBRATION above).
 const TITLE_EXCLUDE_ALLOWLIST = {};
+
+// Opera-specific title-exclude family (scripts/discover-opera-shows.js).
+// Same substring-gate shape and 0-hit-default rationale as
+// TITLE_EXCLUDE_FAMILIES above, but scanned against a narrower, opera-only
+// corpus (see loadOperaTitleCorpus) since isNonOpera() only ever sees
+// Met-season-page titles, not general theatre titles.
+const OPERA_TITLE_EXCLUDE_FAMILIES = ['NON_OPERA_TITLE_PATTERNS'];
+const OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS = 0;
+const OPERA_TITLE_EXCLUDE_ALLOWLIST = {};
 
 function parseArgs(argv) {
   const args = { full: false, maxHits: DEFAULT_MAX_HITS, json: false };
@@ -392,7 +439,7 @@ function loadTitleExcludeFamilies() {
   return families;
 }
 
-function loadTitleCorpus() {
+function loadMobileShows() {
   const p = path.resolve(__dirname, '..', 'public', 'data', 'mobile-shows.json');
   let raw;
   try {
@@ -405,7 +452,52 @@ function loadTitleCorpus() {
     console.error(`FATAL: ${p} has no shows array`);
     process.exit(2);
   }
-  return raw.shows.map(s => s.t).filter(Boolean);
+  return raw.shows;
+}
+
+function loadTitleCorpus() {
+  return loadMobileShows().map(s => s.t).filter(Boolean);
+}
+
+function loadOperaTitleExcludeFamilies() {
+  let discovery;
+  try {
+    discovery = require('./discover-opera-shows.js');
+  } catch (e) {
+    console.error(`FATAL: failed to require discover-opera-shows.js: ${e.message}`);
+    process.exit(2);
+  }
+  const families = {};
+  for (const name of OPERA_TITLE_EXCLUDE_FAMILIES) {
+    const arr = discovery[name];
+    if (!Array.isArray(arr)) {
+      console.error(`FATAL: ${name} not exported from discover-opera-shows.js (got ${typeof arr})`);
+      process.exit(2);
+    }
+    families[name] = arr;
+  }
+  return families;
+}
+
+// Opera-only corpus: real tracked opera productions (mobile-shows.json
+// entries with ty === 'opera'), not the full theatre-wide title list. See
+// the file-header BRO-2315 note for why the narrower corpus is correct here.
+// Floor is well below the 35-title baseline observed at calibration
+// (2026-08-31) — catches a corrupted/partial mobile-shows.json (e.g. most
+// opera entries silently losing their `ty` field) that a bare `> 0` check
+// would miss, without being brittle to normal corpus growth.
+const OPERA_TITLE_CORPUS_MIN_SIZE = 15;
+function loadOperaTitleCorpus() {
+  const titles = loadMobileShows().filter(s => s.ty === 'opera').map(s => s.t).filter(Boolean);
+  if (titles.length < OPERA_TITLE_CORPUS_MIN_SIZE) {
+    console.error(`FATAL: only ${titles.length} ty==="opera" entries found in ` +
+      `public/data/mobile-shows.json (expected >= ${OPERA_TITLE_CORPUS_MIN_SIZE}) — ` +
+      'either the corpus genuinely shrank (update OPERA_TITLE_CORPUS_MIN_SIZE) or ' +
+      'mobile-shows.json is corrupted/partial and the opera title-exclude audit ' +
+      'would be running against too little evidence to be meaningful.');
+    process.exit(2);
+  }
+  return titles;
 }
 
 // Substring (not regex) scan: real discovery call sites use
@@ -425,11 +517,11 @@ function scanTitleFamilies({ families, titles }) {
   return counts;
 }
 
-function evaluateTitleFamilies({ counts }) {
+function evaluateTitleFamilies({ counts, allowlist = TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits = TITLE_EXCLUDE_DEFAULT_MAX_HITS }) {
   const violations = [];
   for (const [familyName, arr] of Object.entries(counts)) {
     arr.forEach((entry, i) => {
-      const allow = TITLE_EXCLUDE_ALLOWLIST[`${familyName}::${i}`] ?? TITLE_EXCLUDE_DEFAULT_MAX_HITS;
+      const allow = allowlist[`${familyName}::${i}`] ?? defaultMaxHits;
       if (entry.hits > allow) {
         violations.push({ family: familyName, index: i, hits: entry.hits, allow, examples: entry.examples });
       }
@@ -438,17 +530,21 @@ function evaluateTitleFamilies({ counts }) {
   return violations;
 }
 
-function reportTitleFamilies({ titleCount, counts, violations, families }) {
+function reportTitleFamilies({
+  titleCount, counts, violations, families,
+  corpusLabel = 'tracked show titles (public/data/mobile-shows.json)',
+  allowlist = TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits = TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+}) {
   const lines = [];
   lines.push('');
-  lines.push(`[audit-regex-patterns] Discovery exclude-substring audit: ${titleCount} tracked show titles ` +
-    '(public/data/mobile-shows.json), threshold 0 hits per pattern.');
+  lines.push(`[audit-regex-patterns] Discovery exclude-substring audit: ${titleCount} ${corpusLabel}, ` +
+    `threshold ${defaultMaxHits} hits per pattern.`);
   lines.push('');
   lines.push('Pattern family              Patterns  Max hits  Over threshold');
   lines.push('--------------------------  --------  --------  --------------');
   for (const [familyName, arr] of Object.entries(counts)) {
     const max = Math.max(0, ...arr.map(e => e.hits));
-    const over = arr.filter((e, i) => e.hits > (TITLE_EXCLUDE_ALLOWLIST[`${familyName}::${i}`] ?? TITLE_EXCLUDE_DEFAULT_MAX_HITS)).length;
+    const over = arr.filter((e, i) => e.hits > (allowlist[`${familyName}::${i}`] ?? defaultMaxHits)).length;
     lines.push(`${familyName.padEnd(26)}  ${String(arr.length).padStart(8)}  ${String(max).padStart(8)}  ${String(over).padStart(14)}`);
   }
   lines.push('');
@@ -607,17 +703,30 @@ function main() {
   const titleCounts = scanTitleFamilies({ families: titleFamilies, titles });
   const titleViolations = evaluateTitleFamilies({ counts: titleCounts });
 
-  const allViolations = violations.length + titleViolations.length;
+  const operaTitleFamilies = loadOperaTitleExcludeFamilies();
+  const operaTitles = loadOperaTitleCorpus();
+  const operaTitleCounts = scanTitleFamilies({ families: operaTitleFamilies, titles: operaTitles });
+  const operaTitleViolations = evaluateTitleFamilies({
+    counts: operaTitleCounts, allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  });
+
+  const allViolations = violations.length + titleViolations.length + operaTitleViolations.length;
 
   if (args.json) {
     const out = {
       scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST, calibration: PATTERN_CALIBRATION,
       titleCorpusSize: titles.length, titleViolations, titleAllowlist: TITLE_EXCLUDE_ALLOWLIST,
+      operaTitleCorpusSize: operaTitles.length, operaTitleViolations, operaTitleAllowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST,
     };
     console.log(JSON.stringify(out, null, 2));
   } else {
     console.log(reportText({ scanned, counts, violations, args, families }));
     console.log(reportTitleFamilies({ titleCount: titles.length, counts: titleCounts, violations: titleViolations, families: titleFamilies }));
+    console.log(reportTitleFamilies({
+      titleCount: operaTitles.length, counts: operaTitleCounts, violations: operaTitleViolations, families: operaTitleFamilies,
+      corpusLabel: 'tracked opera titles (public/data/mobile-shows.json, ty==="opera")',
+      allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+    }));
   }
 
   process.exit(allViolations > 0 ? 1 : 0);
@@ -637,4 +746,9 @@ module.exports = {
   loadTitleCorpus,
   scanTitleFamilies,
   evaluateTitleFamilies,
+  OPERA_TITLE_EXCLUDE_FAMILIES,
+  OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
+  OPERA_TITLE_EXCLUDE_ALLOWLIST,
+  loadOperaTitleExcludeFamilies,
+  loadOperaTitleCorpus,
 };

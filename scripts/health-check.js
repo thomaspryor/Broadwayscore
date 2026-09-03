@@ -44,6 +44,15 @@ const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
+// BRO-2603: makes the BRO-385 ledger freeze (data/audit/BRO-385-ledger-freeze.json,
+// 2026-08-26 -> 2026-09-25) actually suppress card filing for the checks below
+// that are sourced from a frozen ledger, instead of the record just sitting
+// unread. See AUTO_FIX_PLAYBOOK entries with a `ledger` field.
+const { FROZEN_LEDGERS, isLedgerFrozenNow, freezeSkipMessage } = require('./freeze-ledgers.js');
+// Reused (never re-typed) by the two AUTO_FIX_PLAYBOOK entries below — a
+// literal string here that drifted from FROZEN_LEDGERS would silently defeat
+// suppression (code-review finding, BRO-2603).
+const DISPATCH_LEDGER_NAME = FROZEN_LEDGERS.find((l) => l.endsWith('dispatch-ledger.jsonl'));
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -85,14 +94,21 @@ const AUTO_FIX_PLAYBOOK = [
   // defect the card exists to close (caught by the ship-check reviewer).
   // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
   // dead rate is expensive and worth chasing but never data loss.
-  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+  // `ledger`: BRO-2603 — this check is sourced from dispatch-ledger.jsonl, one
+  // of the 7 ledgers BRO-385 froze. The actionable-dispatch loop below skips
+  // filing a card for it while that ledger is frozen (falls back to the same
+  // "no card, show the raw instruction" path already used when
+  // MAX_CARD_DISPATCHES_PER_RUN caps out).
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Card #1714, same #1199 trap: an unregistered check name defaults to
   // urgency 'low' and never files a card even on 'error'. 'this-week' to
   // match its sibling dead-launch row — a low headless success rate is
   // expensive (burned launches, stuck tasks) but the retry/reconcile layer
   // means nothing is silently lost.
-  { match: /^Headless dispatch: success rate$/, urgency: 'this-week',
+  // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
+  // sourced from dispatch-ledger.jsonl.
+  { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     humanAction: 'Headless (job-lane) dispatches are failing more often than the 80% success floor. Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then open Claude Code and say: "Investigate the headless dispatch success rate (card #1714) — judge any fix by this rate over the window, never by one clean dispatch."' },
   // Task #1648, same #1199 trap: without an explicit entry this row defaults
   // to urgency 'low' and renders as an anonymous count instead of a named
@@ -1375,6 +1391,52 @@ function checkQuality() {
       }
       return { name, status: 'pass', message: `No new violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
     })),
+
+    // Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
+    // shows.js now runs in this same job's "Stale announced shows audit
+    // (shadow mode)" step — see that step's own comment for why nothing ran
+    // it before this. A warn, not an error, mirrors every other shadow-mode
+    // check in this file: a real flag is a data-quality issue (a show
+    // showing the wrong status and no score on the live site), not this
+    // job's own health failing. silencedByContaminationCount always rides in
+    // the message, flagged or not — BRO-2611 added that discount specifically
+    // so a too-aggressive contamination filter stays visible instead of
+    // silently zeroing out flaggedCount; a digest row that only ever reports
+    // flaggedCount would defeat that.
+    //
+    // Warns on flaggedCount TOTAL, not a newSinceLastRun delta (unlike the
+    // cv-wrongproduction/4-sweep checks above) — deliberately: this audit has
+    // a per-show --ack mechanism (evaluateAnnouncedShow excludes acked shows
+    // from `flagged` entirely), so a real flag stays actionable rather than
+    // becoming permanent background noise the way an untriaged lifetime-sweep
+    // total would. Triage via --ack and flaggedCount drops back to 0.
+    //
+    // reviewTextsAvailable: false (ship-check/Codex adversarial finding) is
+    // its own distinct warn, mirroring the cross-outlet-attribution-drift
+    // check's `allSkipped` handling above — without it, a failed/skipped
+    // review-texts checkout in this job silently downgrades the audit to
+    // date-only signal and can report "no stale shows" while never having
+    // scanned the review-driven cases at all.
+    runCheck('Data quality: stale announced shows', () => {
+      const name = 'Data quality: stale announced shows';
+      const snapPath = path.join(AUDIT_DIR, 'stale-announced-shows.json');
+      if (!fs.existsSync(snapPath)) {
+        return { name, status: 'warn', message: 'No stale-announced-shows snapshot yet (cron not yet run)', hint: 'node scripts/audit-stale-announced-shows.js' };
+      }
+      const snap = readJSON(snapPath);
+      const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Stale-announced-shows snapshot is ${formatAge(age)} old (>48h) — the daily audit itself has stopped running`, hint: 'Check the "Stale announced shows audit" step in data-health-check.yml' };
+      }
+      if (snap.reviewTextsAvailable === false) {
+        return { name, status: 'warn', message: `data/review-texts was not checked out in that run (${formatAge(age)} ago) — only date-based signals fired, review-driven stale flags may be missed`, hint: 'Check the "Checkout review-texts (private repo)" step in data-health-check.yml' };
+      }
+      const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
+      if (snap.flaggedCount > 0) {
+        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) still 'announced' after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+      }
+      return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${formatAge(age)} ago)` };
+    }),
 
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
     // once, after four owner spot-checks in a row found published reviews the
@@ -3406,6 +3468,23 @@ function reverseDiscoveryFreshnessResults(report, nowMs) {
   }];
 }
 
+// Freshness guard for data/audit/worktree-gc.log (BRO-2608) — see
+// scripts/lib/worktree-gc-freshness.js for the incident this closes. This is
+// the only automated brake on disk growth from abandoned worktrees; a
+// silently-stopped log previously went five days unnoticed while disk fell
+// from 88Gi to 26Gi free.
+function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
+  const { checkWorktreeGcFreshness } = require('./lib/worktree-gc-freshness');
+  const stale = checkWorktreeGcFreshness(lastLineTimestamp, nowMs);
+  if (!stale) return [];
+  return [{
+    name: 'Infra: worktree GC log stale',
+    status: stale.severity,
+    message: `worktree-gc.log has no line in the last ${stale.hoursStale.toFixed(1)}h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing.`,
+    hint: 'launchctl print gui/501/com.broadwayscore.worktree-gc — check "last exit code" and whether runs have advanced; run scripts/gc-merged-worktrees.sh manually if stuck. BRO-2608.',
+  }];
+}
+
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
 // uncollected-live-reviews.json, written hourly by
 // audit-uncollected-live-reviews.js — card #1408). That script's own --alert
@@ -3467,10 +3546,23 @@ function cardVerifiabilityBacklogResults(report, drainMetric) {
   if (report && Array.isArray(report.refused) && report.refused.length > 0) {
     const refused = report.refused;
     const first = refused[0];
+    // BRO-2570: turns "N refused" into "N cards, mostly one directory away
+    // from armed" — actionable instead of opaque. Always derived from
+    // refused[].kind (never report.byKind) so this can't silently diverge
+    // from the canonical per-card rows on a stale/partial/malformed
+    // aggregate (ship-check finding) — an older report with no per-entry
+    // kind just degrades cleanly to a single 'unknown' bucket.
+    const byKind = refused.reduce((acc, c) => {
+      const k = c.kind || 'unknown';
+      acc[k] = (acc[k] || 0) + 1;
+      return acc;
+    }, {});
+    const kindEntries = Object.entries(byKind).sort((a, b) => b[1] - a[1]);
+    const kindSummary = kindEntries.length ? ` Refusal causes: ${kindEntries.map(([k, n]) => `${k}=${n}`).join(', ')}.` : '';
     results.push({
       name: 'Data: undispatchable backlog cards',
       status: 'warn',
-      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}`,
+      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}${kindSummary}`,
       hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
     });
   }
@@ -3966,6 +4058,14 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       for (const r of actionable) {
         const entry = getPlaybookEntry(r.name);
         if (!entry || entry.workflow || !entry.humanAction) continue;
+        // BRO-2603: entry.ledger names the frozen ledger this check is
+        // sourced from (see AUTO_FIX_PLAYBOOK above). Skip filing — falls
+        // back to the same "no card, raw instruction only" render as the
+        // MAX_CARD_DISPATCHES_PER_RUN cap just below.
+        if (entry.ledger && isLedgerFrozenNow(entry.ledger)) {
+          console.log(`[Alert Router] ${freezeSkipMessage(entry.ledger)} — skipping "${r.name}"`);
+          continue;
+        }
         if (dispatchBudget <= 0) { dispatchCapped = true; continue; }
         dispatchBudget--;
         try {
@@ -4544,6 +4644,12 @@ async function main() {
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
     try {
+      const { lastTimestampFromLog } = require('./lib/worktree-gc-freshness');
+      const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
+      allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
+    } catch { /* log absent — nothing to surface */ }
+
+    try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
       allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
@@ -4678,4 +4784,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };

@@ -1,63 +1,65 @@
 {
   "consecutiveBelowCaptureFloor": 0,
-  "lastRunAt": "2026-08-24T13:56:02.281Z",
+  "lastRunAt": "2026-09-01T15:54:00.527Z",
   "lastSummary": {
     "recent": {
       "days": 7,
       "flagHealthy": true,
       "arms": {
         "control": {
-          "exposed": 51,
-          "shown": 1,
-          "dismissed": 2,
-          "captured": 0
+          "exposed": 1237,
+          "shown": 226,
+          "dismissed": 137,
+          "captured": 2
         },
         "cold-start": {
-          "exposed": 48,
-          "shown": 1,
-          "dismissed": 2,
-          "captured": 0
+          "exposed": 1240,
+          "shown": 86,
+          "dismissed": 61,
+          "captured": 1
         },
         "unexposed": {
-          "exposed": 94,
-          "shown": 64,
-          "dismissed": 29,
-          "captured": 1
+          "exposed": 32,
+          "shown": 31,
+          "dismissed": 19,
+          "captured": 0
         }
       },
       "flagHealthProblem": null,
       "effectiveDays": 7,
       "experimentStart": "2026-07-21",
-      "totalCapturesPerWeek": 0
+      "totalCapturesPerWeek": 3
     },
     "cumulative": {
       "days": 180,
       "flagHealthy": true,
       "arms": {
         "control": {
-          "exposed": 51,
-          "shown": 0,
-          "dismissed": 1,
-          "captured": 0
+          "exposed": 8356,
+          "shown": 2201,
+          "dismissed": 1332,
+          "captured": 12
         },
         "cold-start": {
-          "exposed": 49,
-          "shown": 0,
-          "dismissed": 0,
-          "captured": 0
+          "exposed": 8371,
+          "shown": 888,
+          "dismissed": 683,
+          "captured": 10
         },
         "unexposed": {
-          "exposed": 99,
-          "shown": 55,
-          "dismissed": 43,
-          "captured": 1
+          "exposed": 40,
+          "shown": 39,
+          "dismissed": 22,
+          "captured": 0
         }
       },
       "flagHealthProblem": null,
-      "effectiveDays": 34.58,
+      "effectiveDays": 42.66,
       "experimentStart": "2026-07-21",
-      "totalCapturesPerWeek": 0
+      "totalCapturesPerWeek": 3.61
     }
   },
-  "primaryReadyAlertedAt": 1787579762280
+  "primaryReadyAlertedAt": 1787579762280,
+  "everReachedTrafficFloor": true,
+  "lastSplitAlertAt": 1788204524871
 }

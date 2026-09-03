@@ -79,21 +79,23 @@ const actualMetaPath = path.join(outDir, `A-${weekStart}.regression-actual.meta.
 const metaPath = path.join(scratchDir, `A-${weekStart}.meta.json`);
 
 // NEWSLETTER_OUT_DIR does not redirect everything generate.mjs writes: it also
-// UPSERTs data/newsletter-state.json (its STATE_PATH is repo-relative and
-// unconditional). This throwaway re-run has no NEWSLETTER_EXCLUDE_SHOWS, so it
-// would overwrite this week's de-dup row with the UNSWAPPED featured/mover ids
-// — and newsletter-draft.yml commits that file two steps later, so next week's
-// suppression would reflect an issue that was never sent. Snapshot and restore
-// it around the spawn (code-review MEDIUM, 2026-08-09).
+// UPSERTs the cross-issue de-dup state. This throwaway re-run has no
+// NEWSLETTER_EXCLUDE_SHOWS, so letting it touch data/newsletter-state.json
+// would overwrite this week's row with the UNSWAPPED featured/mover ids — and
+// newsletter-draft.yml commits that file two steps later, so next week's
+// suppression would reflect an issue that was never sent (code-review MEDIUM,
+// 2026-08-09).
+//
+// Point the re-run at a scratch copy inside scratchDir instead (BRO-2606). This
+// replaces a snapshot-and-restore of the real file, which fixed the overwrite
+// but introduced a worse one: the restore wrote the pre-spawn bytes back
+// unconditionally, so a legitimate concurrent write — another session, a
+// parallel workflow — landing during the re-run was silently erased. Not
+// writing the file at all has no such window. Seeded from the real state so the
+// comparison run reads the same suppression history the draft run did.
 const statePath = path.join(repoRoot, 'data/newsletter-state.json');
-let stateBefore = null;
-try { stateBefore = fs.readFileSync(statePath); } catch { /* absent — restore by deleting */ }
-const restoreState = () => {
-  try {
-    if (stateBefore !== null) fs.writeFileSync(statePath, stateBefore);
-    else fs.rmSync(statePath, { force: true });
-  } catch { /* no-op */ }
-};
+const scratchStatePath = path.join(scratchDir, 'newsletter-state.json');
+try { fs.copyFileSync(statePath, scratchStatePath); } catch { /* absent — the re-run starts with no memory, same as the draft run would */ }
 
 const cleanup = () => { try { fs.rmSync(scratchDir, { recursive: true, force: true }); } catch { /* no-op */ } };
 
@@ -101,12 +103,11 @@ let current;
 try {
   execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
     cwd: repoRoot,
-    env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir },
+    env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir, NEWSLETTER_STATE_PATH: scratchStatePath },
     stdio: ['ignore', 'pipe', 'inherit'],
   });
   if (!fs.existsSync(metaPath)) {
     console.error(`Generator did not produce ${metaPath}`);
-    restoreState();
     cleanup();
     process.exit(2);
   }
@@ -122,15 +123,13 @@ try {
   // (exit 1) — the workflow's `|| echo "no fixture yet"` would otherwise
   // report a crash to the owner as a routine first-run skip.
   console.error(`Generator failed: ${err && err.message}`);
-  restoreState();
   cleanup();
   process.exit(2);
 } finally {
-  // Restore + delete inline, as soon as the meta is in memory. An exit-event
-  // handler would not run on SIGINT/SIGTERM — the way a cancelled Saturday
-  // workflow actually dies — and would leave /tmp/newsletter-regression-*
-  // behind and the de-dup state clobbered.
-  restoreState();
+  // Delete inline, as soon as the meta is in memory. An exit-event handler
+  // would not run on SIGINT/SIGTERM — the way a cancelled Saturday workflow
+  // actually dies — and would leave /tmp/newsletter-regression-* behind. The
+  // scratch state file lives inside scratchDir, so this removes it too.
   cleanup();
 }
 

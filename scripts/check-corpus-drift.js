@@ -247,6 +247,21 @@ const AUDITS = [
     args: ['--gate', '--max=25'],
     crashCodes: [2],           // 0/under / 1 = fixable grew above baseline / 2 = corpus missing
   },
+  {
+    name: 'false-balance-framing',
+    label: 'critic-consensus text overstating the critical split (hedge/"divided" language vs a dominant bucketBreakdown majority)',
+    // BRO-164: generate-critic-consensus.js's Layer 5b sentiment guards only
+    // fire at the extremes (100% positive, or >=50% negative+mixed) — a show
+    // with e.g. 90% positive / 10% mixed can still get hedge phrasing that
+    // reads as a real split. A systemic generator gap, not a rare corruption
+    // bug (~291/1092 records flagged as of 2026-08-26) — belongs in the
+    // digest like the other flappy whole-corpus audits above, not the
+    // per-push gate. No --gate flag exists on this script by design (see its
+    // own docstring); this is the full report.
+    script: 'audit-false-balance.js',
+    args: [],
+    crashCodes: [],            // 0 clean / 1 = flagged records found (drift). Corpus-missing throws → non-zero exit, shown as drift, same as aggregator-truth.
+  },
 ];
 
 function runAudit(audit) {

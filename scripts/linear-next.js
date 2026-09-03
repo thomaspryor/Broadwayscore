@@ -93,7 +93,7 @@ const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
-  workBranchCollisionGuard,
+  workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
@@ -106,12 +106,31 @@ const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 // DISPATCH_CLAIM_DIR below).
 const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 
-// Hardcoded, not __dirname-relative: this script is routinely run from
+// Resolved, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
 // resolve into that worktree's own tree instead of the canonical checkout —
 // the same fix dispatch-ledger.js and bsc-next.js already apply to their own
 // REPO constants, for the same reason (their header comments explain why).
-const REPO = '/Users/tompryor/Broadwayscore';
+//
+// BRO-2668: routed through resolveCanonicalRepoRoot() (dispatch-guards.js) —
+// BRO-2647 fixed only the two resolvePathCheck call sites that used to read
+// this literal directly; every other REPO use (DISPATCH_CLAIM_DIR, subprocess
+// cwd, listWorkBranchStatusesFn's repoDir, ...) was still resolving the raw
+// hardcoded path, reproducing BRO-2647's same CI-only failure mode for any of
+// THEM. resolveCanonicalRepoRoot() is a no-op on the dev machine (returns
+// this literal unchanged whenever it exists on disk, which it always does
+// there, worktree or not) — byte-identical here, so cross-session dispatch-
+// claim coordination is unaffected. Aliased import (not the
+// `resolveCanonicalRepoRoot` name used by the guard destructure below) to
+// avoid a duplicate top-level binding for the same identifier.
+// Called eagerly here, unlike resolveCanonicalRepoRoot()'s own header
+// ("call this lazily... so --force/--dry-run/--print-prompt still skip the
+// fs I/O") — that convention is about the ternary at its own call site
+// skipping I/O whose result would be discarded; REPO itself is needed
+// unconditionally by DISPATCH_CLAIM_DIR/subprocess cwd regardless of any
+// flag, so deferring its own single fs.existsSync() stat buys nothing.
+const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 
 const CLI_NAME = 'scripts/linear-next.js';
 
@@ -145,21 +164,39 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
 `;
 
-// NOTE `--flag=value` is NOT supported here: it produces a key literally named
-// "flag=value", so `--model=opus` silently dispatches on the default model.
-// Every automated caller passes separated argv, and BRO-2543 deliberately did
-// NOT "fix" this in passing: naively splitting on `=` makes `--force=0` parse
-// as the truthy string "0" and bypass every guard it gates, where today it
-// bypasses none. Tracked separately; use the space form.
+// Every downstream read of a boolean-switch flag (--force, --headless,
+// --dry-run, ...) is a truthiness check (`!args.force`, `args.force || ...`),
+// so a `--flag=<value>` form has to decide what "off" looks like BEFORE
+// splitting on `=` — otherwise `--force=0` parses as the truthy string "0"
+// and silently bypasses every guard --force gates (terminal-state, parked,
+// idempotency, started-state), the opposite of what typing `=0` means.
+// BRO-2543 shipped the naive `raw.slice(eq + 1)` split in passing and the
+// pre-ship review caught exactly this; reverted there, tracked here as
+// BRO-2576. `''`, `'0'`, `'false'` all mean "off" (case-insensitively — an
+// operator typing `--force=FALSE` means the same thing as `--force=false`,
+// and matching only the lowercase form would leave that variant as a truthy
+// string, reopening the exact BRO-2543 hazard under different casing);
+// anything else is passed through as the string value (so `--model=opus`
+// still resolves to 'opus').
+function coerceFlagValue(v) {
+  if (v === '' || v.toLowerCase() === '0' || v.toLowerCase() === 'false') return false;
+  return v;
+}
+
 function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
-      const k = t.slice(2);
+      const raw = t.slice(2);
+      const eq = raw.indexOf('=');
+      if (eq !== -1) {
+        a[raw.slice(0, eq)] = coerceFlagValue(raw.slice(eq + 1));
+        continue;
+      }
       const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[k] = true;
-      else { a[k] = n; i++; }
+      if (n === undefined || n.startsWith('--')) a[raw] = true;
+      else { a[raw] = n; i++; }
     } else a._.push(t);
   }
   return a;
@@ -593,6 +630,27 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Phantom-path guard (BRO-2569): a well-formed, safe-shaped gate.cmd can
+  // still name a file/directory that will never exist — see
+  // dispatch-guards.js's pathVerifiabilityGuard header for the full
+  // rationale (BRO-2546 closed this for LLM-drafted acceptance criteria
+  // only; every other route a Linear issue's description arrives by never
+  // got the check until now). Skips the fs I/O entirely under force/dry-run/
+  // print-prompt, same convention as workBranchCollisionGuard's call site
+  // below (ship-check finding, BRO-2569: doing the I/O and then discarding
+  // it for a preview is the exact inconsistency that guard's own comment
+  // warns against).
+  const skipPathCheck = args.force || args['dry-run'] || args['print-prompt'];
+  // BRO-2647: REPO is hardcoded to this dev machine's checkout and doesn't
+  // exist on a CI runner, which made this check refuse every real
+  // acceptance path as phantom there. See resolveCanonicalRepoRoot()'s own
+  // header (dispatch-guards.js) for the full trace of how that produced
+  // main's red Unit Tests job. Called lazily inside the ternary so
+  // force/dry-run/print-prompt still skip the fs I/O entirely.
+  const pathCheck = skipPathCheck ? null : resolvePathCheck(gate, resolveCanonicalRepoRoot(REPO, __dirname));
+  const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
+  if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
+
   // Idempotency (task #1303 plan review item 4) — two independent "this
   // already looks dispatched" signals, checked before any launch attempt.
   // See linear-dispatch.js's findUnresolvedDispatchComment/hasLiveLedgerEntry
@@ -690,7 +748,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // cmux tab where the owner is present.
   if (routing.mode === 'headless' && !args['allow-human-gated']) {
     const hg = classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description }, { verifyCmd: gate.cmd });
-    if (!hg.dispatchable && hg.blockers.some((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+    // PARKED_SENTINEL must honour --force, like the ledger-based parkedGuard at
+    // :673 whose comment is literally "--force is the unpark". Nothing ever
+    // strips the `PARKED: <reason>` prefix linear-issue-create.js:141 writes
+    // into the description — unparking is a LEDGER event — so without this the
+    // sentinel is sticky and an unparked issue would be permanently
+    // undispatchable headlessly, with only the differently-named
+    // --allow-human-gated to escape. Caught in review of BRO-2753.
+    const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
+      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+    if (!hg.dispatchable && blocking.length) {
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
       for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
       console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
@@ -718,6 +785,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+        // BRO-2569: journals a phantom-path override the same way — the
+        // guard's own refusal message promises this is "recorded in the
+        // ledger" (ship-check finding: it wasn't, until this field existed).
+        allowPhantomPath: args['allow-phantom-path'] || null,
         // BRO-2499: the autofix-pipeline bypass is journaled the same way
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
@@ -830,6 +901,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
+      // BRO-2569 — see the headless launch entry above for why this is journaled.
+      allowPhantomPath: args['allow-phantom-path'] || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,

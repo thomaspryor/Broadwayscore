@@ -216,6 +216,49 @@ const WRITE_COMMANDS = {
   rsync: 'last',
 };
 
+// Wrapper commands whose first "real" argument is another command to run —
+// `timeout 30 sed -i … file`, `nice -n 10 cp … file`, `env FOO=1 tee file`.
+// Canonical home for BOTH callers: review-gate.mjs's merge-ingress parser
+// introduced this list first (BRO-2436, after `timeout 900 bash <merge
+// wrapper>` bypassed the merge gate); bashWriteTargets() below had the exact
+// same "unrecognised prefix reads as harmless" gap (BRO-2450) and shares this
+// definition rather than hand-maintaining a second copy that can drift out of
+// sync — the same class of bug BRO-2436 exists to fix, one file over.
+// review-gate.mjs imports these the same guarded way it already imports
+// shellSegments/tokenize below (see the "one tokenizer, two callers" export
+// note) and falls back to an embedded literal copy on version skew.
+//
+// Frozen (Codex adversarial review, BRO-2450): these are the one shared
+// definition both gates read every call. An un-frozen exported Set/object is
+// mutable by any same-process consumer — a bug in either caller silently
+// altering it would silently alter the OTHER gate too, with no error at the
+// mutation site.
+const WRAPPER_COMMANDS = Object.freeze(new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time', 'timeout', 'nice', 'stdbuf', 'command']));
+
+// Flags on the wrappers above that consume a SEPARATE following value token
+// (as opposed to a `--flag=value` single token, which needs no extra skip).
+// Without this, `nice -n 10 sed -i … file` misreads "10" as the wrapped
+// command name and the unwrap stops one token too early.
+//
+// KNOWN, ACCEPTED incompleteness (Codex adversarial review, BRO-2450,
+// inherited unchanged from BRO-2436's original list): value-taking flags on
+// wrappers NOT listed here at all — `env -u NAME`/`env -C DIR`, `time -f
+// FORMAT` — are not recognised, so e.g. `env -u FOO sed -i … file` misreads
+// "FOO" as the wrapped command name and the real write is missed. Same trade
+// as the rest of this file's KNOWN_GAPS: closing every wrapper's full flag
+// grammar is unbounded scope for a best-effort pre-implementation nudge that
+// is backstopped by infra-post-write-audit.sh regardless.
+const WRAPPER_VALUE_FLAGS = Object.freeze({
+  timeout: Object.freeze(new Set(['-s', '--signal', '-k', '--kill-after'])),
+  nice: Object.freeze(new Set(['-n', '--adjustment'])),
+  stdbuf: Object.freeze(new Set(['-i', '--input', '-o', '--output', '-e', '--error'])),
+});
+
+// Wrappers with a MANDATORY bare positional before the wrapped command
+// (`timeout DURATION cmd…`), distinct from any flag — consumed once the
+// flag-skip loop is done so the unwrap can continue to the real command.
+const WRAPPER_LEADING_ARG = Object.freeze(new Set(['timeout']));
+
 // `git apply X` / `patch < X` are the one write route whose targets are NOT on
 // the command line — they are named inside the patch. Treating the patch file
 // as the write target (the first cut did) flags a throwaway /tmp path that
@@ -322,6 +365,17 @@ const KNOWN_GAPS = [
   'python -c / node -e inline writes with computed paths',
   'a subagent spawned with its own session id (its verdicts are its own)',
   'any write performed inside a CI job rather than a session',
+  // BRO-2450: unwrapCommandPrefix() only unwraps WRAPPER_COMMANDS (bash/sh/
+  // zsh/env/nohup/time/timeout/nice/stdbuf/command). `sudo sed -i … file` (or
+  // any other unrecognised prefix) still reads as an unknown head and returns
+  // no targets — deliberately not chased with a scan-anywhere-in-tokens
+  // catch-all here (unlike the merge gate's looksLikeUnparsedMergeIngress),
+  // because that shape risks false positives on unquoted prose containing a
+  // write-command word (`echo run sed -i to fix`) that a head-anchored parse
+  // never flags. Backstopped the same way as every other gap in this list:
+  // infra-post-write-audit.sh reads the real post-Bash git diff every call
+  // (not just at merge/push), independent of which shell command produced it.
+  'an unrecognised command prefix (sudo, strace, a future coreutil) ahead of a write command',
 ];
 
 // ── path normalisation ───────────────────────────────────────────────────────
@@ -406,6 +460,80 @@ function classifyChange(paths, opts = {}) {
   return { inScope: matched.length > 0, tier, matched };
 }
 
+// Strip `FOO=bar` env-assignment tokens and interpreter/wrapper prefixes
+// (`timeout 30`, `nice -n 10`, `env FOO=1 nohup`, and stacked combinations of
+// the above) so bashWriteTargets can resolve the REAL command head instead of
+// reading `timeout` itself as an unknown command and returning no targets —
+// `timeout 30 sed -i 's/x/y/' scripts/lib/foo.js` was invisible to the gate
+// before this (BRO-2450).
+//
+// Flag/wrapper-name detection keys off token VALUE only, never `quoted` —
+// `nice '-n' 10 cmd` is identical to `nice -n 10 cmd` to the real shell, and a
+// quoted flag is still a flag. Only the operand-vs-file distinction inside
+// bashWriteTargets itself (below) cares whether a token was quoted.
+//
+// Returns the tokens for the real (unwrapped) command, or [] when there is
+// none to find — a bare wrapper with nothing after it, or a `bash -c`-style
+// opaque payload this shallow tokenizer cannot parse further (mirrors
+// review-gate.mjs's classifySegment `-c` bail: guessing would be worse than
+// skipping). The `-c` bail is scoped to bash/sh/zsh only — no other wrapper
+// here takes a same-shape opaque-script flag.
+//
+// KNOWN, ACCEPTED trade-off (Codex adversarial review, BRO-2450): `bash`/`sh`/
+// `zsh`'s real next argument is a SCRIPT PATH to interpret, not a command name
+// — `sh tee scripts/lib/foo.js` really means "run the file named `tee` as a
+// shell script with `scripts/lib/foo.js` as $1", not "invoke the tee utility"
+// — but this function treats it the same as `timeout`/`env`/`nohup` (whose
+// next argument genuinely IS the real command). The failure direction this
+// produces is over-flagging (a coincidental WRITE_COMMANDS-named script
+// filename triggers an unnecessary review nudge), never under-flagging —
+// the safe direction for a gate whose job is "ask for review", not "grant
+// permission". Not special-cased: doing so correctly would need to tell a
+// script PATH apart from a command NAME, which this tokenizer has no basis
+// for.
+//
+// This function's traversal is intentionally NOT the literal same code as
+// review-gate.mjs's classifySegment() unwrap loop (only the WRAPPER_* DATA
+// above is shared) — second-opinion review considered unifying them and
+// rejected it: classifySegment operates on plain post-quote-stripped strings
+// while this operates on bashWriteTargets' {value,quoted} token objects
+// (quoting matters here for the operand/file distinction downstream), and
+// rewriting the already-hardened, BRO-2436-tested merge gate to share this
+// shape was judged higher risk than the duplication it would remove.
+function unwrapCommandPrefix(tokens) {
+  const dropEnvPrefix = (ts) => {
+    let i = 0;
+    while (i < ts.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(ts[i].value)) i++;
+    return ts.slice(i);
+  };
+  let toks = dropEnvPrefix(tokens);
+  while (toks.length > 0) {
+    const wrapperName = toks[0].value.replace(/^.*\//, '');
+    if (!WRAPPER_COMMANDS.has(wrapperName)) break;
+    toks = dropEnvPrefix(toks.slice(1));
+    if (toks.length === 0) return [];
+    const valueFlags = WRAPPER_VALUE_FLAGS[wrapperName];
+    while (toks.length > 0 && toks[0].value.startsWith('-')) {
+      const flag = toks[0].value;
+      if ((wrapperName === 'bash' || wrapperName === 'sh' || wrapperName === 'zsh')
+        && (flag === '-c' || (/^-[a-zA-Z]+$/.test(flag) && flag.includes('c')))) return [];
+      toks = toks.slice(1);
+      if (valueFlags && valueFlags.has(flag)) {
+        if (toks.length === 0) return [];
+        toks = toks.slice(1);
+      }
+    }
+    if (toks.length === 0) return [];
+    if (WRAPPER_LEADING_ARG.has(wrapperName)) {
+      toks = toks.slice(1);
+      if (toks.length === 0) return [];
+    }
+    toks = dropEnvPrefix(toks);
+    if (toks.length === 0) return [];
+  }
+  return toks;
+}
+
 /**
  * Best-effort extraction of files a shell command would WRITE. Used so the hook
  * can also watch Bash, not just the edit tools. Returns [] for read-only
@@ -429,8 +557,10 @@ function bashWriteTargets(command) {
 
     const tokens = tokenize(segment);
     if (!tokens.length) continue;
-    const head = tokens[0].value.replace(/^.*\//, '');
-    const rest = tokens.slice(1);
+    const resolved = unwrapCommandPrefix(tokens);
+    if (!resolved.length) continue;
+    const head = resolved[0].value.replace(/^.*\//, '');
+    const rest = resolved.slice(1);
     const mode = WRITE_COMMANDS[head];
     if (!mode) continue;
 
@@ -621,6 +751,14 @@ module.exports = {
   shellSegments,
   tokenize,
   stripHeredocBodies,
+  // Same sharing rationale, same two callers (BRO-2450): review-gate.mjs's
+  // merge gate had this exact wrapper list first (BRO-2436); bashWriteTargets
+  // needed it too, so this is the one definition both read instead of two
+  // hand-maintained copies that can drift out of sync with each other.
+  WRAPPER_COMMANDS,
+  WRAPPER_VALUE_FLAGS,
+  WRAPPER_LEADING_ARG,
+  unwrapCommandPrefix,
   toRepoRelative,
   classifyPath,
   classifyChange,

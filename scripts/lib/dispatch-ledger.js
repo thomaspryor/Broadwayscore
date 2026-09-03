@@ -167,14 +167,42 @@ function deadAttemptsForTask(taskId, entries) {
 // matched to any folded attempt at all (e.g. a rotated/truncated ledger),
 // this fails CLOSED to SUBSTANTIVE — never silently drops a death, and never
 // risks misreading an unclassifiable one as a free infra retry.
-function classifyDeadAttemptsForTask(taskId, entries) {
+//
+// ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
+// opts.contradictedDeadKeys is a Set of `${workspaceRef}|${ts}` strings for
+// 'dead' rows PROVEN false by an independent source outside this ledger: the
+// buried worker's own later Linear session-report comment landing on the same
+// issue with no re-dispatch in between (audit-false-dead-ledger-rows.js, added
+// by BRO-2575, is what derives this set — a worker cannot report back after
+// dying before it reported). A matching row is dropped from BOTH buckets
+// entirely, never reclassified as 'infra' — this is the one deliberate
+// exception to this function's own fail-closed doctrine two paragraphs up.
+// That doctrine exists for UNCERTAIN rows ("can't tell, so assume the worse
+// case"); a contradicted row isn't uncertain, it's disproven, so counting it
+// toward EITHER limit (including INFRA_DEAD_ATTEMPT_LIMIT) would still be
+// penalizing a task for a journal entry that never should have existed.
+// Filtering happens on the DERIVED workspaceDeaths list below, never by
+// stripping `entries` itself before foldAttempts(entries) runs a few lines
+// down — foldAttempts must see the ledger's true, unmodified shape (including
+// the contradicted row) or a sibling dead row sharing the same recycled
+// workspaceRef would silently see a different `matches.length` and flip to
+// fail-closed-substantive for the wrong reason (plan review catch).
+// Default empty Set: every existing caller (bsc-prune.js, bsc-reconcile.js,
+// dispatch-guards.js's deadDispatchGuard, dispatch-watchdog-core.js,
+// dispatch-attempts.js) keeps calling this with 2 args and gets identical
+// behavior to before this change.
+function classifyDeadAttemptsForTask(taskId, entries, opts = {}) {
+  const contradictedDeadKeys = opts.contradictedDeadKeys || null;
   const all = deadAttemptsForTask(taskId, entries);
   if (!all.length) return { substantive: [], infra: [] };
   // job-*-class deaths (job-failed/job-orphaned) have no workspaceRef and
   // only ever fire after job-spawned already ran — the wrapper unambiguously
   // executed, so these are always substantive.
   const jobDeaths = all.filter(e => e.event !== 'dead');
-  const workspaceDeaths = all.filter(e => e.event === 'dead');
+  let workspaceDeaths = all.filter(e => e.event === 'dead');
+  if (contradictedDeadKeys && contradictedDeadKeys.size) {
+    workspaceDeaths = workspaceDeaths.filter(e => !contradictedDeadKeys.has(`${e.workspaceRef}|${e.ts}`));
+  }
   if (!workspaceDeaths.length) return { substantive: jobDeaths, infra: [] };
 
   const { attempts } = foldAttempts(entries);
@@ -228,8 +256,8 @@ const INFRA_DEAD_ATTEMPT_LIMIT = 10;
 // infra ceiling) can't drift between bsc-next.js, bsc-prune.js,
 // bsc-reconcile.js and dispatch-watchdog-core.js. Callers own their own
 // message wording; this owns only the counts and the blocked/reason verdict.
-function dispatchCapDecision(taskId, entries) {
-  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries);
+function dispatchCapDecision(taskId, entries, opts = {}) {
+  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries, opts);
   if (substantive.length >= DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'substantive', substantive, infra };
   if (infra.length >= INFRA_DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'infra', substantive, infra };
   return { blocked: false, reason: null, substantive, infra };
@@ -643,10 +671,23 @@ const HISTORICAL_EXCLUSION_GRACE_MS = 72 * 60 * 60 * 1000;
 // caller forget it and keep getting the (soon-to-be-legacy) permanent-
 // exclusion behavior with no signal, masking exactly the bug class this
 // grace window exists to fix.
-function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
+//
+// opts.isWrapperAlive / opts.onSuppressed (BRO-2649): same THIRD SIGNAL guard
+// deadBreadcrumbs already applies (see its header for the 2026-08-31
+// blackout), extended to the vanished path — a cmux blackout doesn't just
+// make live workspaces read as dead, it can drop them out of the live
+// listing entirely, which is exactly vanishedBreadcrumbs' trigger condition.
+// Reuses the SAME wrapperVouchesAlive() predicate deadBreadcrumbs uses (one
+// guard, not two hand-rolled copies — CLAUDE.md rule 15), and stays optional
+// with the identical "no opinion" default so every existing caller (only
+// bsc-prune.js today) that doesn't pass it keeps today's exact behavior.
+function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
   if (!(liveRefs instanceof Set)) {
     throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
   }
+  const { epochTs = null, now } = opts;
+  const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
+  const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   if (!Number.isFinite(now)) throw new Error('vanishedBreadcrumbs requires now (ms epoch)');
   // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
   // empty listing is indistinguishable from cmux being restarted, crashed, or
@@ -686,6 +727,18 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
     if (openElsewhere && openElsewhere.workspaceRef !== ref && liveRefs.has(openElsewhere.workspaceRef)) continue; // superseded by a newer LIVE launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
+    // Wrapper check LAST, same order as deadBreadcrumbs: only reached once
+    // ownership/supersession/reconciliation have already cleared this ref, so
+    // a suppression reported via onSuppressed always means "this ref was
+    // actually about to be journaled vanished" — never noise about a ref that
+    // was never a real candidate.
+    if (wrapperVouchesAlive(launch, isWrapperAlive)) {
+      if (onSuppressed) {
+        try { onSuppressed({ workspaceRef: ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker }); }
+        catch { /* a reporting failure must never change the sweep's verdict */ }
+      }
+      continue;
+    }
     out.push({
       event: 'vanished',
       taskId: launch.taskId,

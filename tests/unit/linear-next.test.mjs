@@ -5,7 +5,31 @@
 // require() the real modules rather than re-deriving their logic here, so a
 // production change to either file fails this test instead of drifting
 // silently past it.
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
+import { guardProcessExit } from '../helpers/process-exit-guard.mjs';
+
+// These tests drive main() down its REFUSAL paths, and the code under test
+// signals refusal with `process.exitCode = 1` (scripts/linear-next.js:774,783,793;
+// scripts/bsc-next.js:1416,1425,1439,1441) rather than by calling process.exit.
+// The per-test `finally` blocks below restore process.exit and console.error but
+// cannot restore that, because it is set on the TEST RUNNER's own process.
+//
+// node --test then reports the whole FILE as failed with exitCode 1 while every
+// subtest passes — a file-level `not ok` with failureType 'testCodeFailure' and
+// no named failing subtest. That is precisely the signature that made main's
+// Unit Tests job red while the same files passed locally: locally the refusal
+// path that sets it does not always run.
+//
+// Reset after every test. Proven: a single passing test that leaks
+// process.exitCode = 1 makes `node --test` exit 1 on the file; with this hook it
+// exits 0.
+afterEach(() => {
+  process.exitCode = 0;
+});
+
+// BRO-2647: turn any unstubbed process.exit into a NAMED failing subtest
+// instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
+guardProcessExit();
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -624,28 +648,51 @@ test('reportedOutcomeGuard wiring: --allow-reported-work "<reason>" lets a genui
   assert.match(res.stderr, /LINEAR_NEXT_DISABLED/, 'should reach the later kill-switch gate, proving it got past this guard');
 });
 
-test('parseArgs: --flag=value is NOT split, and --force=0 therefore cannot bypass anything (BRO-2543)', () => {
+test('parseArgs: --flag=value form is honoured, and --force=0/false/"" cannot bypass anything (BRO-2576)', () => {
   // BRO-2543 first "fixed" the `--k=v` form in passing and the pre-ship
-  // adversarial review caught that it made things WORSE: splitting on `=`
-  // turns `--force=0` into the truthy string "0", so a flag an operator wrote
-  // expressly to DISABLE forcing would instead bypass every guard --force
-  // gates. Reverted. Pinned here so the next person who notices `--model=opus`
-  // silently doesn't work reaches for the same trap and this test explains why.
+  // adversarial review caught that it made things WORSE: naively splitting on
+  // `=` turns `--force=0` into the truthy string "0", so a flag an operator
+  // wrote expressly to DISABLE forcing would instead bypass every guard
+  // --force gates. Reverted there. BRO-2576 fixes it properly by deciding the
+  // `=0`/`=false`/`=` "off" semantics up front (coerceFlagValue) before ever
+  // splitting on `=`, so `--model=opus` works AND `--force=0` stays inert.
   const a = parseArgs(['--force=0']);
-  assert.equal(a.force, undefined, '--force=0 must not set force at all');
-  assert.equal(a['force=0'], true);
+  assert.equal(a.force, false, '--force=0 must coerce to false, not the truthy string "0"');
+  assert.equal(a['force=0'], undefined);
 
-  // The space form is the supported one, and is what the guard's own refusal
-  // message tells operators to type.
+  const a2 = parseArgs(['--force=false']);
+  assert.equal(a2.force, false);
+
+  const a3 = parseArgs(['--force=']);
+  assert.equal(a3.force, false, 'a bare trailing = is also "off", not the truthy empty string');
+
+  // Every guard in linear-next.js reads args.force via truthiness
+  // (`!args.force`, `args.force || ...`), so `false` behaves exactly like
+  // "flag never passed" — no guard needs to know about the `=` form.
+  assert.ok(!a.force && !a2.force && !a3.force);
+
+  // The space form still works, unchanged.
   const b = parseArgs(['--id', 'BRO-1', '--force', '--allow-reported-work', 'checked main, not there']);
   assert.equal(b.id, 'BRO-1');
   assert.equal(b.force, true);
   assert.equal(b['allow-reported-work'], 'checked main, not there');
 
-  // And the `=` form fails CLOSED for the bypass — the key lands elsewhere, so
-  // the guard sees no reason and its refusal stands.
-  const c = parseArgs(['--allow-reported-work=some reason here']);
-  assert.equal(c['allow-reported-work'], undefined);
+  // And the `=` form now genuinely carries a value-flag's payload.
+  const c = parseArgs(['--allow-reported-work=some reason here', '--id=BRO-1', '--model=opus']);
+  assert.equal(c['allow-reported-work'], 'some reason here');
+  assert.equal(c.id, 'BRO-1');
+  assert.equal(c.model, 'opus');
+
+  // Only the first `=` splits the key from the value.
+  assert.equal(parseArgs(['--note=a=b']).note, 'a=b');
+
+  // Case-insensitive: an operator typing --force=FALSE means the same thing
+  // as --force=false. A pre-ship review of this exact commit caught that
+  // matching only the lowercase literal would leave --force=FALSE (or
+  // =False, =0 has no case) as the truthy string "FALSE" — reopening the
+  // BRO-2543 hazard under different casing.
+  assert.equal(parseArgs(['--force=FALSE']).force, false);
+  assert.equal(parseArgs(['--force=False']).force, false);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's

@@ -8,11 +8,15 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { buildImageDispatchInputs, findImagelessScoredShows } = require('../../scripts/lib/image-trigger-guard.js');
 
-test('buildImageDispatchInputs sets show_id per id, dedupes, trims, drops empties', () => {
+// BRO-2672: this used to assert one dispatch entry PER id — that shape is
+// exactly what caused N per-show workflow_dispatch calls to fan into
+// fetch-all-image-formats.yml's single-slot concurrency group
+// (cancel-in-progress: false) and get silently cancelled down to ~1 survivor.
+// The fix batches every id into ONE dispatch's comma-joined show_id.
+test('buildImageDispatchInputs batches all ids into ONE dispatch, dedupes, trims, drops empties', () => {
   const dispatches = buildImageDispatchInputs(['show-a', ' show-b ', 'show-a', '', null, undefined]);
   assert.deepEqual(dispatches, [
-    { workflow_id: 'fetch-all-image-formats.yml', inputs: { show_id: 'show-a', only_missing: 'true' } },
-    { workflow_id: 'fetch-all-image-formats.yml', inputs: { show_id: 'show-b', only_missing: 'true' } },
+    { workflow_id: 'fetch-all-image-formats.yml', inputs: { show_id: 'show-a,show-b', only_missing: 'true' } },
   ]);
 });
 

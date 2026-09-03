@@ -17,6 +17,12 @@
  *   4. the critic appears at this outlet at most once in reviews.json
  *      (legit syndication/freelancing shows repeat appearances)
  *
+ * BOTH scans share ONE exclusion predicate, scripts/lib/cross-outlet-triage.js.
+ * They used to inline their own lists and drifted: the bleed scan skipped
+ * wrongShow/wrongProduction and the default-critic-of scan did not, so a file
+ * already excluded from scoring was reported forever as an unreviewed suspect
+ * that no triage could clear. Add exclusions there, never inline here.
+ *
  * Files annotated with `crossOutletVerified: true` (set after a human/agent
  * checked the page byline) are skipped — that is how triaged legit rows are
  * cleared. Files annotated with `wrongAttribution: true` (unverifiable —
@@ -74,6 +80,8 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { isTriagedOut } = require('./lib/cross-outlet-triage');
+const { explainExclusion } = require('./lib/review-guards');
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -133,6 +141,9 @@ if (hasHelpFlag(process.argv)) {
       'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext] [--playbill-bleed]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
       'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
+      'Rows already flagged wrongShow, wrongProduction or wrongAttribution are\n' +
+      'skipped by both scans and need no triage\n' +
+      'here — see scripts/lib/cross-outlet-triage.js.\n' +
       'Clear an unverifiable row by setting wrongAttribution: true in the file.\n' +
       '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).\n' +
       '--playbill-bleed groups by (showId, criticName) for playbill-verdict sources and flags 3+ outlet spans (task #1008).'
@@ -198,9 +209,7 @@ if (PLAYBILL_BLEED) {
       scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
-      if (d.crossOutletVerified === true) continue;
-      if (d.wrongAttribution === true) continue;
-      if (d.wrongProduction === true || d.wrongShow === true) continue;
+      if (isTriagedOut(d, explainExclusion)) continue;
       if (!String(d.source || '').includes('playbill-verdict')) continue;
       const key = `${showId}||${criticName}`;
       if (!groups.has(key)) groups.set(key, { showId, criticName, entries: [] });
@@ -253,8 +262,7 @@ if (PLAYBILL_BLEED) {
       scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
-      if (d.crossOutletVerified === true) continue;
-      if (d.wrongAttribution === true) continue;
+      if (isTriagedOut(d, explainExclusion)) continue;
       const homes = defaultOf.get(criticName) || [];
       if (!homes.length || homes.includes(outletId)) continue;
       if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;

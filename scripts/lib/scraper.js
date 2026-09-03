@@ -328,7 +328,32 @@ const _scraperStats = {
   sdBudgetExceeded: false,
   pwAttempts: 0,
   pwSuccess: 0,
+  // Incremented every time a Playwright launch fails because no browser is
+  // installed in this environment (missing `npx playwright install`), as
+  // opposed to a real navigation/scrape failure. A COUNTER, not a sticky
+  // boolean: a caller that wants to know whether THIS SPECIFIC fetch hit a
+  // missing-browser error (vs. an earlier, unrelated show in the same
+  // process) must snapshot this before its own fetchPage() call and compare
+  // after — a boolean that never resets would misattribute every later
+  // total-fetch-failure (a real 404, a real block, exhausted paid providers)
+  // to "missing browser" just because it happened once earlier in the run
+  // (BRO-2560 review finding, both the Claude and Codex ship-check
+  // reviewers). See getScraperStats().
+  pwBrowserMissingCount: 0,
 };
+
+// Matches ONLY the two known "no usable Playwright browser in this
+// environment" shapes: the missing-executable launch error, and the
+// module-not-installed error thrown above (whose message tells the operator
+// to run `npx playwright install`). Deliberately NOT a bare
+// `browserType\.launch` match — that alternative also matches unrelated
+// launch failures (timeout, OOM, sandbox/EPERM) that have nothing to do with
+// a missing browser and would send an operator to run an install that won't
+// fix anything (ship-check review finding).
+const PLAYWRIGHT_MISSING_BROWSER_RE = /Executable doesn't exist|playwright install/i;
+function isPlaywrightMissingBrowserError(message) {
+  return PLAYWRIGHT_MISSING_BROWSER_RE.test(message || '');
+}
 
 function getScraperStats() {
   const bd = getBrightDataRunStats();
@@ -814,6 +839,9 @@ async function fetchWithPlaywright(url, options = {}) {
     };
   } catch (error) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
+    if (isPlaywrightMissingBrowserError(error.message)) {
+      _scraperStats.pwBrowserMissingCount++;
+    }
     if (context) {
       try { await context.close(); } catch (_) {}
     }
@@ -1491,6 +1519,7 @@ module.exports = {
   checkScrapingBeeCredits,
   checkScrapingdogQuotaOnce: _checkScrapingdogQuotaOnce,
   getScraperStats,
+  isPlaywrightMissingBrowserError,
   verifyFetchedUrl,
   recordUrlMismatch,
   unwrapRedirectUrl,

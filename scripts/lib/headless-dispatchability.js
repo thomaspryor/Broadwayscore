@@ -47,11 +47,37 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 
 const BLOCKERS = Object.freeze({
+  PARKED_SENTINEL: 'PARKED_SENTINEL',
   VISUAL_QA_GATE: 'VISUAL_QA_GATE',
   ASYNC_WAIT_GATE: 'ASYNC_WAIT_GATE',
   OWNER_DECISION_GATE: 'OWNER_DECISION_GATE',
   NO_VERIFY_CMD: 'NO_VERIFY_CMD',
 });
+
+// The repo's own do-not-dispatch sentinel. `scripts/lib/linear-issue-create.js:141` writes
+// it verbatim on every `--park`:
+//     `PARKED: ${disposition.reason}\n\n${description || ''}`
+// so this is an exact match on a generated marker, not a heuristic on prose.
+//
+// MULTILINE (/m) is load-bearing, not tidiness. Notion-mirrored issues carry two
+// generated header lines — `[notion:<uuid>] …` and a bare URL — BEFORE the
+// sentinel, so a string-anchored /^\s*PARKED\s*:/i misses them. Measured against
+// all 432 live open P0/P1 issues on 2026-09-03:
+//
+//     contains PARKED anywhere :  211 total / 163 dispatchable
+//     /^\s*PARKED\s*:/i        :  160 total / 127 dispatchable
+//     /^\s*PARKED\s*:/im       :  200 total / 158 dispatchable   <- this
+//     gained by /m             :   40 total /  31 dispatchable
+//
+// The 11 that even /m misses are correctly missed: they are prose mentions
+// ("Auto-parked by bsc-reconcile", "linear-drain-parked.js", a `## Parked
+// 2026-08-08` heading). Dropping the anchor entirely would catch those too and
+// refuse cards nobody parked, so line-start is the right stopping point.
+//
+// Note `\s*` spans newlines, so a card that QUOTES `PARKED:` at a line start
+// blocks itself — the same self-exclusion hazard owner-judgment-marker.js:38-44
+// documents. For a default-deny gate that is the safe direction to fail.
+const PARKED_SENTINEL_RE = /^\s*PARKED\s*:/im;
 
 // Byte-identical to UI_PATTERN in .claude/hooks/pre-push-visual-gate.sh (the
 // hook that actually blocks the push), modulo the shell-vs-JS escaping of the
@@ -170,6 +196,17 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const text = `${subject}\n${notes}`;
   const blockers = [];
 
+  // Checked against `notes`, NOT `text`. `text` is `subject + "\n" + notes`, and
+  // the sentinel is only ever written into the DESCRIPTION — matching against
+  // `text` would still work under /m but would also let a subject line that
+  // merely starts "PARKED:" refuse a card nobody parked.
+  if (PARKED_SENTINEL_RE.test(notes)) {
+    blockers.push({
+      code: BLOCKERS.PARKED_SENTINEL,
+      detail: 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated',
+    });
+  }
+
   const uiPaths = uiPathsIn(text);
   if (uiPaths.length) {
     blockers.push({
@@ -252,6 +289,12 @@ module.exports = {
   // Exported so a test can assert this array holds the SHARED owner-judgment
   // regex object rather than a fourth handwritten copy (task #1154).
   OWNER_DECISION_RES,
+  // Exported for the same reason as OWNER_DECISION_RES above, so the test can
+  // assert the /m flag on the SHARED object rather than on a copy. Note the
+  // test asserts the flags and, separately, that the regex and the classifier
+  // AGREE on a table of inputs — it does not assert object identity, which the
+  // classifier's use of a module-scope const already guarantees.
+  PARKED_SENTINEL_RE,
   classifyHeadlessDispatchability,
   looksLikeUiPath,
   extractPathTokens,

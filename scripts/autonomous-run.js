@@ -52,7 +52,8 @@ const {
   isIncrementalSize, classifyLCardOutcome, nightNumberFor, buildResumeNote, buildFirstNightNote, buildCheckpointNote,
 } = require('./lib/autonomous-checkpoint.js');
 const {
-  buildDataWorkdir, removeDataWorkdir, pushDataBranch, showIdsFromReviewTextsDiff, primaryWorktree,
+  buildDataWorkdir, removeDataWorkdir, pushDataBranch, showIdsFromReviewTextsDiff,
+  showIdsFromShowsJsonDiff, primaryWorktree,
   scorecardDataRoot, reviewTextsRoot,
 } = require('./lib/autonomous-data-workdir.js');
 const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
@@ -878,7 +879,8 @@ function attemptDataCard(item, budget, cfg, runId) {
           const gate = isDataRepoDiffAllowed(repoKey, files);
           if (!gate.allowed) { stage = 'diff-refused'; detail = `ineligible paths in ${repoKey}: ${gate.refused.join(', ')}`; }
           else {
-            const showIds = repoKey === 'review-texts' ? showIdsFromReviewTextsDiff(files) : [];
+            const showIds = repoKey === 'review-texts' ? showIdsFromReviewTextsDiff(files)
+              : cls === 'missing-show' ? showIdsFromShowsJsonDiff(wt.path) : [];
             const verifiers = verifierArgvFor(cls, { dataDir: wd.dataDir, showIds });
             if (!verifiers.length) { stage = 'no-verifier'; detail = `class "${cls}" has no verifier command for this diff (showIds: ${showIds.join(', ') || 'none'})`; }
             else {

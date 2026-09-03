@@ -228,7 +228,23 @@ function buildBudgetPreamble(timeoutMs) {
   return `[UNATTENDED TIME BUDGET] This headless session is hard-killed after ${min} minutes of wall-clock time. `
     + `Commit work-in-progress to your worktree branch after each meaningful step (never leave >15 min of work uncommitted). `
     + `By minute ${Math.max(5, min - 10)}, stop starting new work: commit everything and write a short STATE.md at the repo root `
-    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n\n`;
+    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n`
+    // BRO-2741: two dispatches of the same issue, a day apart, each launched a
+    // long batch with run_in_background, ended the turn intending to resume it,
+    // and had the task killed at teardown while still reporting success.
+    //
+    // The failure is ENDING THE TURN on it, not backgrounding as such. An
+    // earlier draft said "do not use run_in_background for work whose result
+    // you need", which a review pointed out would push workers to run
+    // scripts/lib/wait-for-run.sh in the FOREGROUND -- CLAUDE.md's mandated CI
+    // wait, and the single most common backgrounded command in the job corpus
+    // (59 of the 65 logs carrying a killed-task row). Blocking the whole
+    // session on a CI wall-clock wait would burn the budget this preamble
+    // exists to protect. Kept short and free of task-specific numbers: it is
+    // prepended to EVERY headless prompt, whatever the task.
+    + `Background work does not survive the end of your turn: anything still running when you stop is killed, `
+    + `so never finish a turn planning to "pick it back up when it completes". Either stay in the turn until it `
+    + `finishes, or split it into turn-sized batches and commit after each.\n\n`;
 }
 
 async function runJob(opts) {

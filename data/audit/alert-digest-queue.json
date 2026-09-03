@@ -24,117 +24,237 @@
     "queuedAt": "2026-08-30T13:37:31.398Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "7/140 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nDeath Note: The Musical: score-drift\nBeetlejuice: score-drift\nOh, Mary!: score-drift\nPaddington The Musical: score-drift\nHadestown: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-08-30T13:37:41.484Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "91 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Operation Mincemeat — independent (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Operation Mincemeat — whatsonstage (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — deadline (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — ew (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — guardian (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — hollywood-reporter (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — nypost (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — nytg (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — nytimes (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — theatermania (398h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-08-31T00:09:53.149Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 28 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33345516789",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33345516789)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33345409586)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "28"
-      }
-    ],
-    "queuedAt": "2026-08-31T01:06:41.655Z"
-  },
-  {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 27167/24000 credits",
-    "description": "Scrapingdog billed 27167 credits today against a ceiling of 24000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\nNo show is in an active opening window.\nTop attributed SD callers today: collect-review-texts.js (128), audit-show-review-gap.js (100), opening-night-poller.js (65).",
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4016/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 4016 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\nNo show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).\nTop attributed BD callers today: validate-show-venue.js (443), gather-reviews.js (400), fetch-show-images-auto.js (329).",
     "severity": "warn",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-08-31T02:52:09.998Z"
+    "queuedAt": "2026-08-31T16:35:32.170Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.8% (374/487)\noff-broadway: 45.1% (144/319)\nwest-end: 73.4% (401/546)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (413h)\nA Midsummer Night's Dream — observer (413h)\nA Midsummer Night's Dream — standard (413h)\nA Midsummer Night's Dream — times-uk (413h)\nA Woman Among Women — nyt-theater (413h)\n… 194 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (413h)\nBuena Vista Social Club — broadwaynews (413h)\nHeathers The Musical — dailybeast (413h)\nJust in Time — broadwaynews (413h)\nOthello — broadwaynews (413h)\n… 5 more circuit-open cell(s)",
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
+    "title": "Zombie-tab sweep closed workspace:87",
+    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2654 P1: main Unit Tests red — bsc-next.test.m\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-08-31T14:44:06.426Z"
+    "queuedAt": "2026-08-31T18:32:36.150Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:89:linear:BRO-2647",
+    "title": "Zombie-tab sweep closed workspace:89",
+    "description": "closed corpse workspace:89 \"🤖⚡ Data·BRO-2647 P1: main's Unit Tests still red on two di\" (live-duplicate)",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-08-31T18:37:22.097Z"
+  },
+  {
+    "conditionKey": "dispatch-flow-dead",
+    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
+    "description": "Only 7 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 205). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T04:49:27.996Z"
+  },
+  {
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-01",
+    "title": "Opening-night monitor pass complete: electra-persona-west-end-2026",
+    "description": "Pass 1, model opus, 5min, $1.56. Pass 1 complete, well inside the deadline. State file is gitignored by design (local-only, which is where the next launchd pass reads it) — the `git add` skipped it silently; the committed/pushed artifacts were the audit outputs.\n\n**Verdict: nothing is broken. Press night hasn't happened yet.**\n\nElectra / Persona (National Theatre Lyttelton) opens today, 2026-09-01. UK press embargoes lift ~21:00-22:00 UTC. At 16:20Z, zero press reviews had published anywhere — independently confirmed by SERP census, not by trusting the pipeline.\n\nWhat the census + diff actually found:\n\n1. **All 8 review-texts files are pre-press-night artifacts.** I corroborated each exclusion from the source rather than clearing flags. `guardian--natalie-haynes.json` is a decoy: it's a `/commentisfree/` Natalie Haynes co",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T16:20:46.657Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (1876/1750 reqs)",
+    "description": "Zone serp_api1 billed 1876 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n4 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (307), gather-reviews.js (112), enrich-stubhub-prices.js (8).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T23:38:08.743Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 43664/24000 credits",
+    "description": "Scrapingdog billed 43664 credits today against a ceiling of 24000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (2090), opening-night-poller.js (425), collect-review-texts.js (383).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-01T23:38:09.168Z"
+  },
+  {
+    "conditionKey": "on-monitor-report-on-monitor-2026-09-01",
+    "title": "Opening night report: Electra/Persona — 6 reviews live, composite 68",
+    "description": "ELECTRA / PERSONA — National Theatre (Lyttelton), West End. Press night 2026-09-01.\nPARITY REACHED 2026-09-02T02:28Z.\n\nFINAL COUNT: 6 reviews live on prod. Composite score 68.01 (visible). Breakdown 4 positive / 1 mixed / 1 negative.\n  The Guardian — Arifa Akbar — 60 (T1, 2026-09-01)\n  BroadwayWorld — Clementine Scott — 79 (2026-09-02)\n  Daily Mail — Patrick Marmion — 49 (2026-09-02)\n  Timboatswain — Tim Boatswain — 95 (T3, 2026-08-23)\n  Boycotting Trends — Alex Ramon — 79 (T3, 2026-08-31)\n  Monstagigz — 77 (T3, 2026-08-23)\n\nPARITY: census union == data/reviews.json (6) == prod shows JSON (6). No orphans in either direction.\n\nTIMELINE (25 monitor passes, 2026-09-01 16:45Z to 2026-09-02 02:38Z):\n  16:45Z  baseline: 2 T3 blogs live, no press reviews. Embargo not lifted.\n  19:24Z  first census change in 7 passes: Boycotting Trends found.\n  19:28Z  ingested; 20:23Z scored; 21:12Z live on prod. firstSeen->live = 108 min.\n  ~00:30Z Guardian (Akbar) — first T1 — plus Daily Mail and BroadwayWorld enter the pipeline.\n  02:05Z  reviews.json 6, prod 4 — deploy lag on Daily Mail + BroadwayWorld, composite still null.\n  02:28Z  deploy landed: prod 6, composite 68.01 appears. PARITY.\n\nFIXES APPLIED THIS NIGHT (with failure-mode class):\n  1. Boycotting Trends (blogspot) — class 3d, missed discovery: domain had zero entries in outlet-registry.json and zero events in stage-latency.jsonl, so discovery never saw it. Fixed by adding the registry entry to BOTH the web repo and the core-data repo (75fb0f4d1) and direct-URL ingesting the review (9f12ab18e0c). Live on prod.\n  2. Includable-but-unscored stall — the recovered review sat out of reviews.json for ~90 min because rebuild only emits SCORED reviews and the scorer had not yet run. Diagnosed via verify-review-recovery.js. Resolved by the pipeline itself once ensemble scoring ran; no intervention needed. Worth knowing: this looks exactly like a broken rebuild and is not one.\n  3. Cultural Capital (maryamphilpottblog.wordpress.com) — same missed-discovery class, registry entry added, but ingest fails deterministically at fetchPage(): the Playwright path waits for networkidle, which never settles on wordpress.com. Carded BRO-2729, parked (shared scraper infra, not safe to edit during an opening-night window). This is the ONE published review not live. T3 blog, cosmetic against a 6-review corpus.\n  4. _pending no-byline strand drained (empty and holding since 20:55Z). Carded BRO-2735.\n\nSTILL OUTSTANDING (not gaps — nothing published to miss):\n  The main UK press pack has not filed at 03:33 BST, ~6.5h past a normal embargo lift: Times, Telegraph, Evening Standard, Independent, FT, Observer, WhatsOnStage, The Stage, TimeOut. Verified this pass by direct section-page fetch on all six reachable sources plus WebSearch, not by SERP alone. Likely holding for weekend editions. The monitor keeps running to 2026-09-02T22:59Z and will ingest them when they land.\n\nWORKFLOWS DISPATCHED: none. Zero force-dispatches across all 25 passes — the automated orchestrator/poller chain fired on its own every time. Zero gh waits started.\n\nBROADCAST GATE: NOT MET (6 scored, needs 8+). Verified and logged only. Nothing sent.\n\nNEW FAILURE MODES CARDED: BRO-2729 (fetchPage Playwright networkidle hang on wordpress.com), BRO-2732 (rebuild-reviews.yml push failure — real but NOT the blocker here), BRO-2735 (_pending strand).\n\nSPEND: ~$1.20 across 25 passes.\nSTATE FILE: data/opening-night-monitor/session-state-on-monitor-2026-09-01.json",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-02T02:30:50.969Z"
+  },
+  {
+    "conditionKey": "on-monitor-report-on-monitor-2026-09-01-parity",
+    "title": "Opening night report: Electra / Persona - 15 reviews live, CS 67.54",
+    "description": "OPENING NIGHT REPORT - Electra / Persona (National Theatre, Lyttelton), West End. PARITY REACHED.\n\nFINAL STATE (verified on prod 2026-09-02T12:21:05.279Z): 15 reviews live, Critic Score 67.54, status open, all 15 scored.\n\nPER-OUTLET (outlet / critic / score): Time Out London Andrzej Lukowski 80 | The Independent Unknown 62 | The Guardian Arifa Akbar 60 | The Times (UK) Clive Davis, Chief Theatre Critic 60 | The Stage Holly O'Mahony 56 | Daily Mail Patrick Marmion 49 | BroadwayWorld Clementine Scott 79 | WhatsOnStage Alex Wood 78 | London Theatre Unknown 62 | Timboatswain Tim Boatswain 95 | All That Dazzles  (UK) All That Dazzles 86 | Boycotting Trends Alex Ramon 79 | Monstagigz Unknown 77 | Sunday Telegraph Claire Allfree 69 | Cultural Capital Unknown 64.\n\nVERIFIED EXCLUSIONS (sampled, confirmed non-reviewers): Evening Standard, Financial Times, Variety, The Arts Desk, The Reviews Hub, Everything Theatre, iNews, LondonTheatre1, Musical Theatre Review. Broadway Baby appeared to hit but resolved to a different Edinburgh Fringe show also titled 'Persona' (zero Lyttelton/Blanchett references). Decoys correctly excluded from the score: WhatsOnStage casting news, Variety cast interview, TimeOut/Southbank/TheatreMonkey/TheatreWorkout listings, London Box Office (aggregator), TheatreBoard forum thread, a Natalie Haynes Guardian opinion column published 3 days before previews. One true blind spot across all 49 passes: telegraph.co.uk/theatre returns a 1030-byte JS shell to every fetch path tried, so the daily Telegraph was never sampled; Sunday Telegraph (Claire Allfree) is live at 69, so the risk is low.\n\nTIMELINE. First review seen 2026-08-23 (two pre-opening T3 blogs; rebuilt to count 1 on 08-29 05:47Z). Press night 2026-09-01, but the UK embargo did NOT lift that evening - 12 consecutive census sweeps through 22:15 BST found zero press reviews, correctly diagnosed as an empty press corpus rather than a pipeline failure. Embargo lifted overnight: count 2 -> 6 by 02:19Z, -> 14 by 10:31Z on 09-02, first parity 11:04Z after the 10:48Z deploy. The Independent then published LATE (06:52 EDT 09-02, after the census had been declared exhausted); found by curl sweep at 11:33Z, ingested, scored 62, rebuilt into reviews.json at 12:10:57Z and live on prod shortly after. Roughly 2 hours from the bulk of the press drop to full live coverage - inside the mission bar.\n\nFIXES BY FAILURE-MODE CLASS. (1) Missed discovery (3d) - Boycotting Trends (blogspot) and Cultural Capital (wordpress.com) were absent from outlet-registry.json so discovery never saw them; registry entries added and pushed to both repos, Boycotting Trends direct-URL ingested. Both live (79, 64). (2) Content-fetch failure - All That Dazzles landed as a zero-char stub; re-ingested and live. The pipeline deduped its own second copy correctly. (3) Includable-but-unscored, a genuinely new mode - a recovered review passed every exclusion check but had no llmScore, and since the rebuild only emits scored reviews the count stayed flat and looked like a push failure. A stuck review count does not imply a broken rebuild. (4) Self-resolved - The Stage briefly displayed critic 'Unknown' while a byline'd copy sat on disk; a later rebuild preferred the byline'd file on its own. (5) LATE missed discovery (3d, new tonight) - The Independent / Alice Saville published the MORNING AFTER press night, hours after the census looked settled at 14 and after 'census exhausted' had been recorded. Found only because a later pass re-swept the T1 section pages anyway. Lesson for the monitor: never stop sweeping while the window is open.\n\nOPERATIONAL NOTE. rebuild-fast.yml flapped all morning (10:55 failure, 11:06 success, 11:08 cancelled, 11:50 failure) yet the data still landed via a later run. A rebuild-fast 'failure' conclusion is not proof the data did not land - check the core-data repo's git log for reviews.json instead.\n\nWORKFLOWS DISPATCHED: none forced. The automated chain carried the entire press drop unaided; every intervention was data-layer only.\n\nCARDED (all parked, none blocking): BRO-2729 fetchPage Playwright path waits for networkidle, which never settles on wordpress.com, timeout.com and Wix sites. BRO-2732 rebuild-reviews.yml push failure (separate from, and not the cause of, the stuck count above). BRO-2735 _pending zero-text stubs can silently swallow reviews.\n\nCOVERAGE GAP SIGNAL: All That Dazzles and the Guardian review both reached prod with no review-first-seen event in stage-latency.jsonl, so their discovery-to-live latency is unmeasurable. The other outlets are fully instrumented.\n\nBROADCAST GATE: MET (15 scored, threshold 8). Verified and logged only. Nothing sent.\n\nSPEND: roughly $5 per pass across 49 launchd passes; this final pass about $0.20 (a dozen curl fetches, no scraper credits).\n\nState file: data/opening-night-monitor/session-state-on-monitor-2026-09-01.json",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-02T12:21:05.282Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33647045099",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33647045099)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/31037393070)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "27"
+      }
+    ],
+    "queuedAt": "2026-09-02T15:33:04.376Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.7% (373/486)\noff-broadway: 45.8% (148/323)\nwest-end: 72.7% (391/538)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (468h)\nA Midsummer Night's Dream — observer (468h)\nA Midsummer Night's Dream — standard (468h)\nA Midsummer Night's Dream — times-uk (468h)\nA Woman Among Women — nyt-theater (468h)\n… 185 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (468h)\nBuena Vista Social Club — broadwaynews (468h)\nBuena Vista Social Club — nydailynews (468h)\nHadestown — nydailynews (468h)\nJust in Time — broadwaynews (468h)\n… 15 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-02T22:17:55.217Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/137 show(s) differ between internal state and what prod serves.\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-02T22:17:57.638Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "86 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Just in Time — timeout (56h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — dailybeast (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — theatrely (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — thewrap (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — timeout (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — usatoday (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — variety (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — vulture (468h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Paranormal Activity — nyt-theater (210h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Paranormal Activity — thewrap (210h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-02T22:17:57.739Z"
+  },
+  {
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-02",
+    "title": "Opening-night monitor pass complete: a-month-in-the-country-west-end-2026",
+    "description": "Pass 76, model opus, 2min, $0.90. Attempt 76 complete — no gaps, no fixes needed, exiting inside budget (7 min to spare).\n\n**Census (23:22–23:23Z / 00:23 BST, ~3.3h post-curtain): embargo still unbroken.** Eight outlet index pages re-measured clean at full body size — Guardian 463KB, LondonTheatre 491KB, Standard 290KB, TimeOut 231KB, BWW 187KB, ReviewsHub 50KB, The Stage 138KB all zero hits; WhatsOnStage 251KB has 3 hits that all dedupe to the known non-review trailer URL already in the corpus. Times and Telegraph returned bot-walled 1.3KB/1.0KB bodies (unmeasurable by curl, not worth provider spend — settled in a prior pass). Nothing has published yet, so there is no discovery gap to chase.\n\n**AMITC parity holds at exact 1/1** — prod returns Monstagigz/Neil 84. No `cs` key, which is correct for a lone T3 below the compos",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-02T23:23:02.593Z"
+  },
+  {
+    "conditionKey": "cmux-launch:auth-preflight-failed",
+    "title": "cmux launch refused — claude auth preflight failed",
+    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T03:16:28.675Z"
   }
 ]

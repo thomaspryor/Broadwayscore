@@ -124,7 +124,20 @@ const NON_THEATER_PATTERNS = [
   'lottery', 'accessible lottery',
   'meet the music', 'lyrics & lyricists',
   'uptown showdown', 'amateur night',
-  'flamenco festival', 'circus',
+  'flamenco festival',
+  // NOT bare 'circus' alone (BRO-2662: matched "The Secret Circus Musical",
+  // a live tracked Off-Broadway musical currently in previews). No safe
+  // multi-word replacement exists either — unlike 'gala'/'tour', "circus" as
+  // a genre has no noise-vs-signal split by title shape: real tracked shows
+  // are titled "Cirque du Soleil Paramour" (Broadway musical),
+  // "Cirque Berserk", "Scrooge: Cirque Extravaganza", "Cirque Alice" (West
+  // End/Off-West End plays) — any "cirque"/"circus"-branded multi-word
+  // pattern collides with one of these. Genuine non-theatrical circus
+  // listings from TodayTix are already routed correctly downstream via
+  // show.todayTixCategory === 'Circus and Magic' (see type-detection below),
+  // so no title-substring gate is needed for that source. No historical log
+  // of the noise titles this bare token was originally added to catch
+  // exists, so it's removed rather than replaced with a guessed list.
   'in concert', 'concert performance',
   'company xiv', // burlesque/cabaret company
   'rakugo', // Japanese storytelling

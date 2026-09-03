@@ -183,6 +183,12 @@ data/audit/bww-roundup-miss-ledger.jsonl merge=union
 data/audit/linear-archive-done.jsonl merge=union
 data/audit/ob-promotion-log.jsonl merge=union
 data/audit/we-promotion-log.jsonl merge=union
+# card-enrichment-log.jsonl (scripts/enrich-card-acceptance.js's
+# logEnrichmentWrite): write-only before/after audit trail, one entry per
+# enrichment write, appendFileSync only — confirmed no other script reads it
+# (grep for ENRICHMENT_LOG_PATH/card-enrichment-log returns only the writer).
+# Neither disqualifying condition applies.
+data/audit/card-enrichment-log.jsonl merge=union
 # dmarc-report-ledger.jsonl (scripts/lib/dmarc-*.js, landed with BRO-525's
 # DMARC ingest): append-only, one JSON object per report, and every reader
 # keys off each entry's own fields rather than array position — the same

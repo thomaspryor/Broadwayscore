@@ -314,10 +314,17 @@ async function callLLM(prompt, opts = {}) {
 // itself safe-form out of command position, by swapping its backticks for
 // single quotes. candidatesFrom() matches ONLY backticked spans
 // (/`([^`\n]+)`/g in scripts/lib/autonomous-verify-cmd.js), so a demoted span
-// is structurally no longer a command candidate — which is what makes the
-// guardrail-3 recheck a proof rather than a hope. Prose is preserved, so the
-// "what does passing mean" context that a human reads at dispatch time
-// (bsc-next.js, autonomous-acceptance-recheck.js) survives.
+// is no longer picked up as a candidate BY THAT ROUTE. Since BRO-2585,
+// extractVerifyCmd also surfaces a VERIFY: line's raw, un-backticked
+// remainder as a second candidate source — so a demoted span sitting inside a
+// VERIFY: block *is* re-examined, just as plain text. It still cannot arm
+// anything: SAFE_CHECK_FORMS is a narrow, exactly-anchored allowlist (see
+// autonomous-triage-core.js), not a denylist, so demoted prose (quotes,
+// surrounding words) can never match it. The guardrail-3 recheck below is a
+// proof because of that allowlist anchoring, not because demotion makes the
+// span structurally unreachable. Prose is preserved, so the "what does
+// passing mean" context that a human reads at dispatch time (bsc-next.js,
+// autonomous-acceptance-recheck.js) survives.
 //
 // Deliberately does NOT touch spans that pass isSafeCheckCommand: guardrail 3
 // always permitted additional SAFE commands, and demoting those would be a
@@ -772,11 +779,14 @@ function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
   // So: instead of discarding the draft, DEMOTE every offending span out of
   // command position — rewrite `foo` to 'foo' — and then re-run the exact
   // same detector on the rewritten section, accepting only if it now comes
-  // back clean. Because candidatesFrom() only ever matches backticked spans,
-  // a demoted span is provably no longer a candidate, so the invariant
-  // ("never write a card whose own notes document an unsanctioned command")
-  // holds by construction rather than by inspection. Spans that are the
-  // validated command, or are themselves safe-form, keep their backticks.
+  // back clean. candidatesFrom() only ever matches backticked spans, so a
+  // demoted span stops being picked up by that route; the invariant ("never
+  // write a card whose own notes document an unsanctioned command") holds
+  // because SAFE_CHECK_FORMS is a narrow, exactly-anchored allowlist that a
+  // demoted span's plain-prose form can never match (see finalGate below and
+  // the BRO-2585 note above `MD_CODE_SPAN_RE`) — not because demotion makes
+  // the text unreachable to every extractor. Spans that are the validated
+  // command, or are themselves safe-form, keep their backticks.
   //
   // This is NOT the reverted #1713 change wearing a hat: #1713 narrowed what
   // COUNTS as unsafe, so `make` slipped through into a card verbatim and

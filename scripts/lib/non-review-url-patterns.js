@@ -212,6 +212,38 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)charingcrosstheatre\.co\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)londontopia\.net$/, path: /^\/london-events\//, reason: 'event-listing' },
   { host: /(^|\.)hoteldirect\.co\.uk$/, reason: 'ticketing-reseller' },
+  // BRO-2712 (main-red audit-outlet-registry incident): both ingested via the
+  // public /submit-review form after validate-review-submission.js's LLM gate
+  // wrongly approved them. domain-filters.js's isBlockedReviewUrl (the
+  // write-path/scoring gate) already blocks these two hosts; mirrored here so
+  // this module's discovery-time gate agrees — without this, a future SERP
+  // census could still report either host as a "missing review" gap for the
+  // shows they were mistakenly ingested for.
+  { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
+  { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
+  // Mirrors PR_FIRM_DOMAINS' nyu.edu. Required by the write-path/discovery-path
+  // parity test in non-review-url-patterns.test.mjs: without it a SERP census
+  // reports tisch.nyu.edu as an UNCOVERED review gap for
+  // masticate-off-broadway-2026, which is a phantom gap of exactly the kind
+  // that got real openings dropped from the 2026-08-03 newsletter.
+  { host: /(^|\.)nyu\.edu$/, reason: 'institutional-press-release' },
+  // Mirrors AGGREGATOR_DOMAINS' vocaleyes.co.uk, for the same phantom-gap
+  // reason. This one was missed on the first pass because the parity test only
+  // enumerated VENUE/PR_FIRM/UGC — see the test, which now covers all seven
+  // sets so an AGGREGATOR/REFERENCE/SOCIAL entry can never slip through again.
+  { host: /(^|\.)vocaleyes\.co\.uk$/, reason: 'access-listings-page' },
+  // Same venue family as southbank.london, different domain — see the
+  // matching comment in domain-filters.js's VENUE_DOMAINS.
+  { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
+  // UGC publishing platform — mirrored from domain-filters.js UGC_PLATFORM_DOMAINS
+  // for the SAME reason the two venue/PR hosts above are mirrored: the write-path
+  // gate alone is not enough. classifyReviewUrl() is what the discovery side reads
+  // (audit-show-review-gap.js, show-score-discover.js), so without this entry a SERP
+  // census reports vocal.media as an UNCOVERED review gap while the write path
+  // silently discards it — a phantom gap, and the harvester keeps re-fetching it.
+  // Caught by /code-review on 2026-09-01: ticketline.co.uk was safe only because
+  // classifyReviewUrl borrows TICKET_DOMAINS, and nothing borrows UGC_PLATFORM_DOMAINS.
+  { host: /(^|\.)vocal\.media$/, reason: 'ugc-platform' },
 ];
 
 /**

@@ -235,6 +235,39 @@ test('sweepVanished: a closed tab parks the ledger AND the Notion card', () => {
   assert.deepEqual(parked.map(p => p.notionId), ['nid']);
 });
 
+// ── BRO-2649: the wrapper cross-check inside sweepVanished ─────────────────
+// dispatch-ledger.test.mjs covers vanishedBreadcrumbs' predicate directly;
+// these cover the SWEEP wiring — that makeWrapperAliveProbeFn is actually
+// threaded from sweepVanished into BOTH vanishedBreadcrumbs() calls (the
+// candidate scan and the re-validate-before-append), mirroring BRO-2575's
+// own dead-path wiring test above.
+const MARKED_LAUNCHED = { ...LAUNCHED, marker: 'bsc-cmd-linear_BRO-2649-c3d4e5f6.sh' };
+
+test('sweepVanished: BRO-2649 — a workspace whose wrapper is STILL RUNNING is never parked, even though cmux\'s live listing omits it', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => marker => marker === MARKED_LAUNCHED.marker;
+  sweepVanished({ all: [ws(9)], ...deps }); // workspace:1 (the launch's ref) is NOT in `all`
+  assert.deepEqual(appended, [], 'wrapper alive — cmux\'s listing lied, nothing gets journaled');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: BRO-2649 — a genuinely closed tab with no wrapper process still parks normally (not a blanket amnesty)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => () => false;
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanished');
+  assert.deepEqual(parked.map(p => p.notionId), ['nid']);
+});
+
+test('sweepVanished: BRO-2649 — a probe that throws on construction falls back to the pre-fix (cmux-only) verdict', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => { throw new Error('ps unavailable'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.equal(appended[0].event, 'vanished', 'no probe — falls back to the existing cmux-listing verdict, same as before this change');
+  assert.equal(parked.length, 1);
+});
+
 test('sweepVanished: the ledger park holds even when Notion is unreachable', () => {
   const { appended, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
   deps.parkCardFn = () => { throw new Error('notion 503'); };

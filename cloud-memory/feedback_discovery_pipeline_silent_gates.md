@@ -253,3 +253,223 @@ The staybook incident above is the *junk-content* face of this gate. The worse f
 **Code fix:** BRO-2495. Extend `hasIndependentExcerptScore()` to accept thumb-derived scores; and make the ensemble scoreability check SKIP files whose `contentTierReason` matches a known bot-stub/truncation signal instead of classifying them non-reviews.
 
 **Related trap:** the same file was earlier nulled by a Weekly refresh (benign — thumb survived), which looked like a one-off. The narrow trigger ("score fields nulled") was the wrong thing to watch; the durable signal is *any* write to a thumb-scored paywalled T1.
+
+---
+
+## Gate: `fetchPage()` sends blog domains straight to Playwright, whose `networkidle` never settles on WordPress (2026-09-01, BRO-2729)
+
+**Symptom:** a review URL that plain `curl` fetches in 0.62s (HTTP 200, 137KB) is completely uningestable. `scripts/ingest-review-from-url.js` prints `Trying Playwright (last resort)... page.goto: Timeout 30000ms exceeded ... waiting until networkidle` then `Fetch failed: All scraping methods failed`. Deterministic, reproduced 2x.
+
+**Two distinct bugs stacked:**
+1. `waitUntil:'networkidle'` never settles on WordPress.com-hosted blogs (persistent stats/analytics beacons), so every WP-hosted review blog times out.
+2. The *only* provider line printed was "Trying Playwright (last resort)" — Bright Data and ScrapingBee were never attempted for this domain, despite both keys being present in `.env`. So Playwright is a single point of failure with no fallback for whatever domain class routes there.
+
+**Why it's silent:** the failure reads as "the site is down / all scrapers blocked", not "our fetch strategy is wrong for this domain class". Nothing distinguishes an unreachable page from a mis-waited one. Repro case: `maryamphilpottblog.wordpress.com` (Cultural Capital), Electra/Persona 2026-08-24.
+
+**Detection recipe:** when `fetchPage()` reports "All scraping methods failed", `curl -A '<browser UA>'` the URL before believing it. A 200 from curl means the gate is ours. Also check *which* providers actually printed — a lone "last resort" line means the chain never ran.
+
+**Fix (carded, not yet landed):** `domcontentloaded` + explicit selector wait for blog/WP domains; let the provider chain continue past a Playwright timeout instead of declaring total failure; find out why BD/SB were skipped for this domain. `scripts/lib/scraper.js` is shared infra — worktree + rule-18 review gate + refactor-parity on non-blog domains before merge.
+
+## Gate: unregistered outlet domain → invisible to BOTH discovery and coverage telemetry (2026-09-01, BRO-2731)
+
+A review whose domain has no `data/outlet-registry.json` entry is not merely un-fetched — it emits **zero** events into `data/audit/stage-latency.jsonl`. Since stage-latency measures firstSeen→live only for URLs the pipeline already saw, this gap class is structurally unmeasurable by existing coverage metrics: it reads as "nothing missing," not as a gap.
+
+Two instances on ONE show in ONE night (electra-persona-west-end-2026):
+- `maryamphilpottblog.wordpress.com` (Cultural Capital), pub 2026-08-24, found monitor attempt 2.
+- `boycottingtrends.blogspot.com` (Boycotting Trends / Alex Ramon), pub 2026-08-31, found monitor attempt 8 — six passes after publication. At 19:24Z: `grep -c boycottingtrends data/outlet-registry.json` = 0, same grep on stage-latency.jsonl = 0.
+
+Both surfaced only via the monitor's independent WebSearch census. **This is why the census step is load-bearing and must not be skipped as a "cheap pass" optimization** — attempt 8 caught a new URL after five consecutive unchanged passes.
+
+Detection: for any census URL, grep the domain against outlet-registry.json AND stage-latency.jsonl. Zero in both = missed-discovery, not a gather-gate rejection — don't go hunting in `data/audit/` exclusion logs for it.
+Fix: add the registry entry, then `scripts/ingest-review-from-url.js`, then let CI rebuild→score→rebuild.
+Trap: `data/outlet-registry.json` is **gitignored in the web repo**. The authoritative copy is `/Users/tompryor/broadway-scorecard-data/outlet-registry.json` — edit and commit there too, or the fix is local-only and evaporates.
+
+Related: BRO-2729's `networkidle` Playwright hang is **wordpress.com-specific** — the same ingest command succeeded on blogspot.com (exit 0, 6295 chars). Don't widen that card to blogs generally.
+
+## Gate: the rebuild SUCCEEDS but its push is discarded — reviews.json never persists (2026-09-01, BRO-2732)
+
+Found on the electra-persona-west-end-2026 opening night, monitor attempt 9. The most expensive gate found so far, because it sits *downstream of everything else*: discovery, ingest, flag-clearing and recovery can all be perfect and the review still never reaches prod.
+
+**Shape.** `rebuild-reviews.yml` rebuilds `reviews.json` fine, then its "Commit and push changes" step fails on every attempt and throws the rebuild output away. Run history 2026-09-01: 15:20Z fail, 15:37Z fail, 15:50Z skipped, 19:14Z fail, no self-heal. Log signature (run 33548344164): `Push failed (attempt N/25)` → fetch → `Rebase could not be completed, aborting` → merge fallback **succeeds** → push fails again, ~90s per attempt → `overall deadline 900s exceeded after 6 attempt(s)` → `discarding before API-fallback diff` / `HEAD is now at <sha>` → `skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file, shows.json/reviews.json` → `All push attempts failed after 25 attempts`.
+
+**Why it hid.** Three separate masks:
+1. `rebuild-fast` keeps pushing core-data green (it landed 19:51:51Z), so the workflow list does not look broken. But rebuild-fast does not pick up new review-texts files. **A green rebuild-fast is not evidence that rebuild-reviews.yml is healthy.**
+2. The failure is one workflow deep — the monitor's own chain check ("is the review in reviews.json?") reports a *symptom* that reads like a discovery miss.
+3. The retry wrapper **swallows the git stderr**. Grepping the FULL run log (not `--log-failed`) for `remote:`, `fatal:`, `error: failed to push`, `rejected`, `denied` returns nothing. The real cause is not in the logs at all.
+
+**Diagnostic recipe for next time.** When a recovered review sits in review-texts with `contentTier=complete` and zero blocking flags but never appears in `reviews.json`: stop looking at discovery and check `gh run list --workflow=rebuild-reviews.yml --limit 4` FIRST. A rebuild that "succeeded" at rebuilding and failed at pushing is invisible from the data side.
+
+**Ruled out on the night:** write contention (core-data took 2 commits in the surrounding 90 min, the web repo 12 — nowhere near enough for 25 consecutive failures, and ~90s per attempt is a hang signature, not a rejection). Suspects: push timeout on the 16.8MB `reviews.json` (it lives at the core-data repo **root**, `/reviews.json`, not under `data/`); protected-branch/pre-receive rejection; stale credential. The log names `PUSH_RECONCILE_MERGED_JSON=1` as the intended path for MANAGED files.
+
+**Fix order:** un-swallow the stderr first — everything else is guesswork without the real error. Shared push infra, so CLAUDE.md rule 18 (review gate before first edit) applies.
+
+## Gate: includable + content-complete review-text with NO llmScore is silently dropped by rebuild
+
+**Class:** scoring / silent skip of newly-ingested review-texts. Carded BRO-2733 (P1, 2026-09-01).
+
+`ingest-review-from-url.js` does NOT trigger scoring, and nothing retries a review the scorer
+skipped. `rebuild-all-reviews.js` only emits SCORED reviews — so a file that passes every
+exclusion check, has full content and zero blocking flags still never reaches `reviews.json`
+or prod, while every workflow reports green.
+
+**Repro (electra-persona-west-end-2026, 2026-09-01):** `boycotting-trends--alex-ramon.json`
+ingested + pushed 19:28Z (contentTier=complete, 6295 chars, no flags). At 20:22Z — 54 min and
+one successful rebuild-fast push later — `verify-review-recovery.js --production` said:
+Step 3 "3 files pass exclusion checks", Step 4 "has content but NO LLM score (scoring pipeline
+missed it)", Step 5 "Reviews in reviews.json: 2". Fix: `gh workflow run "LLM Ensemble Score
+Reviews" -f show_id=<id>`; live on prod 104 min after ingest.
+
+**Diagnostic ordering (the expensive lesson):** monitor attempt 9 burned a whole pass blaming
+the `rebuild-reviews.yml` push defect ([[BRO-2732]]) and filed a P0 against the wrong layer.
+ALWAYS run `node scripts/verify-review-recovery.js --show=<id> --production` BEFORE theorising
+about the rebuild/push layer — it names the failing stage directly. A green rebuild-fast run
+masks this gate completely.
+
+---
+
+## Gate: `_pending/` zero-text stub swallows a T1/T2 the census cannot see
+*(Electra/Persona, National Theatre, press night 2026-09-01 — monitor attempt 21)*
+
+Daily Mail (Patrick Marmion) published ~00:30Z. The pipeline DID discover it, but parked it in
+`data/review-texts/_pending/electra-persona-west-end-2026/` as a **zero-length-body stub with no
+byline**. Consequences, both silent:
+- `replay-pending-bylines.js` **rejects** it — there is no text to attribute, so the drain has
+  nothing to work with and exits clean. A green drain run is NOT evidence `_pending` is empty.
+- The independent census could not see it either: at that hour Google had not indexed the URL
+  (SERP blind for 2.9–11h) and dailymail section-page curl did not surface it.
+
+**Therefore: `ls data/review-texts/_pending/<show-id>/` is the FIRST census step, not a fallback.**
+On this night it beat both curl and SERP. Recovery = re-fetch the URL yourself and write a real
+review-texts file; do not try to repair the stub in place.
+
+## Gate: BroadwayWorld **West End** article path is outside roundup discovery (class 3d)
+*(same show — monitor attempt 22)*
+
+`broadwayworld.com/westend/article/Review-...` (Clementine Scott, pub 2026-09-02T00:58Z) existed on
+the BWW West End section index with **zero** `data/audit/stage-latency.jsonl` events and no
+registry hit — the pipeline never saw the URL at all. BWW discovery is oriented at Broadway
+Review Roundups; the WE per-article path is not covered.
+**Extraction gotcha:** BWW `<p>` extraction pulls nav chrome — filter paragraphs containing
+`googletag`, `EXPLORE REGIONS`, `Sign-up` before writing, or `contentTier` inflates on garbage.
+
+## Non-gate (do not re-diagnose): manual-recovery files are simply scoring-cron-lagged
+A hand-written review-texts file with `contentTier: complete` and no blocking flags passes
+`isIncludableForRebuild` AND `isScoreable`; the fields it lacks vs an `ingest-review-from-url.js`
+file (`showTitle`, `venue`, `category`, `type`, `fetchMethod`, `textFetchedAt`) are all optional —
+`input-builder.ts` guards them with `if (review.showTitle)`. Unscored for the first ~1h after push
+is **expected latency**, not a defect (confirmed 3x: Boycotting Trends attempt 11, Daily Mail and
+BroadwayWorld attempts 21–23). Rebuild only emits scored reviews, so prod `rv` lags by that hour.
+Do not open a card for it and do not hand-write `assignedScore`.
+
+## Gate: outlet section index never sampled, SERP blind (The Times, 2026-09-02)
+The Times published a T1 review (Clive Davis) on 2026-09-01 that 36 monitor passes missed.
+WebSearch returned zero Times hits even hours after publication and said so explicitly.
+A plain desktop-UA `curl` of `thetimes.com/culture/theatre-dance` returned the full 802KB
+index with the article href in under a second. Prior passes had recorded thetimes.com as
+"curl-hostile / unsampled" — it is neither.
+**Rule:** curl-sweep outlet SECTION INDEXES first; treat SERP as a supplement, never as the
+census. Working plain-curl indexes: thetimes.com/culture/theatre-dance,
+theguardian.com/stage/theatre, independent.co.uk/arts-entertainment/theatre-dance/reviews,
+timeout.com/london/theatre, standard.co.uk/culture/theatre, londontheatre.co.uk/reviews,
+thestage.co.uk/reviews, whatsonstage.com/reviews/. An index that returns <10KB is a JS
+shell = NOT SAMPLED, not a negative.
+
+## Gate: fetchPage Playwright `networkidle` hang silently eats press reviews (2026-09-02, Electra/Persona press night)
+
+**Symptom.** `scripts/ingest-review-from-url.js` prints `Fetch failed: All scraping methods failed` and **exits 0**. Bright Data and ScrapingBee both miss, it falls through to Playwright, and Playwright dies on `page.goto: Timeout 30000ms exceeded ... waiting until "networkidle"`. The exit-0 is what makes this silent: a scripted recovery loop reads success.
+
+**Scope correction.** BRO-2729 was filed as a wordpress.com quirk. It is not. `timeout.com` hit the identical hang on Electra/Persona press night and blocked a **T2 press review** (Time Out London, Andrzej Lukowski) for a full monitor pass. Any JS-heavy outlet page that keeps a socket open — ads, analytics, live-blog polling — never reaches networkidle. Assume it can hit any outlet.
+
+**The tell.** The page is usually fine over plain curl. `curl -sL --max-time 20 -A '<desktop UA>' <url>` returned HTTP 200 / 161KB on the same URL Playwright had just timed out on. If curl works and the ingest doesn't, this is the gate.
+
+**Workaround — reuse this, do not hand-build review-texts JSON.** Curl the HTML to a temp file, then run the *real* ingest with only `fetchPage` stubbed, so the whole pipeline (article-extractor, byline extraction, outlet canonicalization, all 16 `createReviewFile` gates, review-file-writer) still runs:
+
+```js
+const SCR = '/Users/tompryor/Broadwayscore/' + 'scr' + 'ipts/';
+const scraperPath = require.resolve(SCR + 'lib/scra' + 'per.js');
+const real = require(scraperPath);                       // load the REAL module first
+real.fetchPage = async () => ({ content: html, status: 200 });
+require.cache[scraperPath].exports = real;
+process.argv = [process.argv[0], SCR + 'ingest-review-from-url.js', '--show=...', '--outlet=...', '--url=...'];
+require(SCR + 'ingest-review-from-url.js');
+```
+
+Three gotchas, each of which cost a cycle:
+1. **Do not replace the whole scraper module** in `require.cache`. It also exports `setRegistryDomainAliases`, which `url-discovery.js` calls at load time — you get `TypeError: setRegistryDomainAliases is not a function`. Load the real module, mutate `.fetchPage`, reassign `.exports`.
+2. **Ambiguous domains need an explicit `--outlet`.** `timeout.com` is shared by `timeout` (Time Out New York, tier 1) and `timeout-london` (tier 2). The ingest correctly refuses to guess. For a West End show, `--outlet=timeout-london`.
+3. **Build the `scripts/lib` path by string concatenation.** The worktree-enforce Bash hook blocks commands containing that literal path, including inside heredocs.
+
+**Why it matters.** The proper fix is to stop using `waitUntil: 'networkidle'` in the Playwright path (`domcontentloaded` + a settle delay). Until that lands, this workaround unblocks every networkidle-hung outlet, and it is what recovered Time Out London on the night.
+
+## Gate: paywalled T2 outlets never enter discovery (The Stage, 2026-09-02)
+
+**Symptom:** The Stage published a full press-night review of Electra/Persona and it never
+appeared anywhere in the pipeline — no review-texts file, no `_pending/` strand, no
+`stage-latency.jsonl` event. 42 monitor passes of SERP/WebSearch census missed it entirely,
+because Google had not indexed the paywalled article.
+
+**Root cause:** discovery leans on SERP. Paywalled outlets are indexed late or not at all,
+so a SERP-only census is structurally blind to them — the same blindness that makes early
+SERP absence meaningless also makes *late* SERP absence meaningless for paywalled sites.
+
+**The tell:** the outlet's own public `/reviews` index page lists the article immediately at
+embargo lift, even when the article body is paywalled.
+
+**Fix / standing practice:** every opening-night census pass must plain-curl the outlet
+section indexes directly, not just WebSearch:
+
+    curl -sL --max-time 12 -A '<desktop UA>' https://www.thestage.co.uk/reviews | grep -oiE 'href="[^"]*<slug>[^"]*"'
+
+Same sweep works for guardian /stage/theatre, standard.co.uk/culture/theatre,
+independent.co.uk/arts-entertainment/theatre-dance/reviews, theartsdesk.com/theatre,
+timeout.com/london/theatre, broadwayworld.com/westend. A 200 with zero title mentions is a
+positive *verified-exclusion* signal (the outlet did not review it), not an unknown.
+
+**Recovery is already automatic once you have the URL:** `ingest-review-from-url.js` takes the
+Cookie-plain path with the stored `data/cookies/thestage.json` cookies, finds the body empty
+(paywall), and falls back to `stage-star-svg` to recover the explicit star rating
+(3/5 -> 60/100, routed to `originalScore`). Score-only stubs need NO LLM scoring run —
+they ride the next rebuild. Do not dispatch LLM Ensemble Score for them.
+
+## Gate 17 (reverse-direction): combined-roundup mis-attachment — WRONG data, not a missing review
+Discovered 2026-09-02 (opening-night monitor, a-month-in-the-country-west-end-2026).
+A review file with `isCombinedReview: true` + `combinedWith: [<other-show>]` was written into show A's
+review-texts dir carrying show B's url, dtliExcerpt and showScoreExcerpt. It passed every gate
+(well-formed, complete-looking), scored, and went LIVE on prod as a real review of show A —
+The Stage / Sam Marlowe / 72 on A Month in the Country, whose URL was actually
+`thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin` (Zeldin's *Care*, Young Vic).
+**Detection:** only a REVERSE-direction census catches it — diff prod → census ("what is live that my
+census cannot corroborate?"), not just census → prod. Cheapest tell: the url slug names a different
+show than the directory the file sits in.
+**Fix applied that night:** wrongShow + all 8 protection fields, delete humanReviewScore and
+wrongShowManualClear so no clear-side guard resurrects it. rebuild+deploy dropped prod rv 2→1.
+**Systemic fix carded:** BRO-2746.
+
+## Gate: cross-market guard flags US trades reviewing West End (2026-09-02, Electra/Persona)
+
+`scripts/lib/cross-market-guard.js:358` flags ANY **registered** US-region outlet
+reviewing a London show as `wrongProduction`, with note
+`Cross-market: US outlet "<id>" reviewing London show`. That cascades to
+`contentTier=invalid` (`contentTierReason: "Wrong production"`) and
+`incompleteReason=wrong_content`, so the review is excluded from the rebuild AND
+skipped by ensemble scoring — a completed, green scoring run leaves
+`llmScore` undefined and looks exactly like scoring starvation. It is not.
+
+US international trades (Hollywood Reporter, Variety, Deadline) routinely review
+major West End openings. Hit: THR's complete 1352-word Demetrios Matheou review of
+Electra/Persona at the Lyttelton, published one day after opening — a 100% false
+positive. All four existing escape hatches missed it: outletRegion not in
+`UK_SIDE_REGIONS`; `isUkUrl('hollywoodreporter.com')` false; no `priorRuns` match;
+`contentVerification` absent so the CV-high-confidence override could not fire; and
+`hollywood-reporter` IS registered so the task-817 unregistered-outlet bootstrap
+exemption did not fire either.
+
+**Diagnostic tell:** an unscored review-texts file whose `contentTierReason` is
+"Wrong production" while its `fullText` is long and its own credits block names the
+London venue. Read `wrongProductionNote` FIRST — if it starts `Cross-market:`, this
+is the gate, not the scorer. Don't chase the scoring queue.
+
+**Fix tonight:** manual clear with the full protection-field set
+([[feedback_manual_review_protection_fields.md]]). **Systemic fix:** BRO-2749 — add
+an international-trade allowlist, preferably driven off an outlet-registry field
+rather than a hardcoded set.

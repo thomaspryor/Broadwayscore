@@ -43,6 +43,7 @@ const path = require('path');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+const REVIEWS_JSON_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 
 // Parse args
 const args = process.argv.slice(2);
@@ -87,7 +88,7 @@ function detectMarket(id) {
 }
 
 const { parseDate } = require('./lib/date-utils');
-const { normalizeOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl, normalizeCritic } = require('./lib/review-normalization');
 const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
@@ -97,6 +98,58 @@ const {
 } = require('./lib/cross-market-contamination');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
+const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
+
+// BRO-74: ground truth for "is this URL actually double-counted by the
+// scoring engine right now" — read directly from the rebuild's own output
+// instead of guessing from duplicateOf/duplicateTextOf. Necessary because
+// rebuild-all-reviews.js's duplicateTextOf exclusion is CONDITIONAL (recovered
+// when the referenced sibling is stale/missing/circular/itself-excluded —
+// review-guards.js's explainExclusion deliberately does NOT treat bare
+// duplicateTextOf as exclusion for exactly this reason), so a static field
+// check can't reliably tell "excluded" from "recovered". reviews.json is the
+// actual scored output — the only thing that can answer the question directly.
+// Decision logic (unnamed-critic filtering, outlet/critic canonicalization,
+// per-pair membership check) lives in c2-live-scored-check.js so it can be
+// unit-tested with synthetic fixtures.
+//
+// REJECTED ALTERNATIVE (/code-review, BRO-74): use the codebase's existing
+// canonical predicate isIncludableForRebuild() instead of reading
+// reviews.json. Verified empirically this does NOT work — explainExclusion
+// (review-guards.js) deliberately does not check duplicateTextOf at all (see
+// its own docstring), so isIncludableForRebuild returns true for BOTH files
+// in an already-deduped pair, which is exactly the false positive this fix
+// exists to eliminate. Confirmed against cats-west-end-2026's
+// guardian--richard-lawson.json (duplicateTextOf set, genuinely excluded from
+// reviews.json): isIncludableForRebuild returns true anyway.
+//
+// NOTE on freshness: this compares against whatever reviews.json currently
+// contains, which can lag the corpus by up to one rebuild cycle — a
+// just-introduced collision may not yet show as 2 critics (false negative for
+// one cycle), and a just-resolved one may briefly still show as 2 (false
+// positive for one cycle). C2 is report-only (not in STRICT_CLASSES), so a
+// one-cycle lag here is far cheaper than the alternative this replaced: a
+// false positive that never self-corrects. Missing/unreadable/wrong-shape
+// reviews.json degrades to an empty map — warned below either way so a
+// suppressed C2 pass is never silent.
+//
+// Gated behind shouldRunClass('C2') — building the ~20k-entry index is
+// wasted I/O and O(n) work on every invocation that excludes C2 via
+// --classes, unlike every other detector class (all already gated the same way).
+let liveScoredUrls = new Map();
+if (shouldRunClass('C2')) {
+  try {
+    const reviewsData = require(REVIEWS_JSON_PATH);
+    const reviews = reviewsData && reviewsData.reviews ? Object.values(reviewsData.reviews) : null;
+    if (!reviews) {
+      console.warn(`[audit-review-contamination] ${REVIEWS_JSON_PATH} has no "reviews" key (unexpected shape) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+    } else {
+      liveScoredUrls = buildLiveScoredIndex(reviews, { normalizeOutlet, normalizeUrl, normalizeCritic });
+    }
+  } catch (e) {
+    console.warn(`[audit-review-contamination] could not read ${REVIEWS_JSON_PATH} (${e.message}) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+  }
+}
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
 const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
@@ -245,11 +298,21 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 // guard), not a trunk blocker. Genuine false positives are still fixed at the
 // data layer (manual-clear protocol) — they just don't block ship.
 // C2 and D are intentionally report-only:
-//   - C2: multi-critic-at-same-URL cases. Reduced from 161 (2026-04-14) → ~7
-//     after the cross-show URL cleanup. Remaining cases are ambiguous (same
-//     outlet, different bylines, identical text length) where the correct
-//     critic isn't recoverable from available signal. Promote to strict only
-//     when we have a resolvable signal (e.g., scraped byline metadata).
+//   - C2: multi-critic-at-same-URL cases. Reduced from 161 (2026-04-14) → 0
+//     (2026-08-31, BRO-74) after fixing a false-positive: the detector used to
+//     report a URL-collision pair whenever NEITHER file carried `duplicateOf`
+//     — but rebuild-all-reviews.js's `duplicateTextOf` exclusion (the field
+//     dedupe-same-url-bylines.js writes onto the loser of a same-URL pair) is
+//     CONDITIONAL, not a reliable static signal (see the `alreadyFlagged`
+//     comment above), so a static field check can't tell "excluded" from
+//     "recovered". Fixed by checking ground truth instead: a pair is only
+//     reported when data/reviews.json's live rebuild output actually carries
+//     2+ distinct critics for that exact show+outlet+URL right now (see
+//     loadLiveScoredUrls). All 11 cases flagged pre-fix were already resolved
+//     to a single scored entry — the audit script was the only thing still
+//     complaining. A genuinely new byline-collision pair that IS still
+//     double-counted in reviews.json still surfaces here — report-only until
+//     it has a resolvable signal for which byline is correct.
 //   - D: pre-opening feature heuristic. ~100+ hits are a mix of pre-opening
 //     interviews/profiles AND legitimate embargoed preview reviews
 //     (Broadway critics regularly publish 5-20 days before "official" opening).
@@ -324,7 +387,16 @@ for (const showId of showDirs) {
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
       || d.isNonReview || d.nonReviewFlag || d.nonReviewContent
-      || d.duplicateOf; // duplicates are excluded from scoring pipeline
+      || d.duplicateOf; // duplicates are excluded from scoring pipeline. NOTE:
+      // deliberately NOT d.duplicateTextOf — review-guards.js's explainExclusion
+      // documents why: rebuild-all-reviews.js treats duplicateTextOf as a
+      // CONDITIONAL exclusion (recovered when the reference is stale, missing,
+      // circular, or itself excluded — see rebuild-all-reviews.js ~2506-2594),
+      // and collect-review-texts.js sets it from a bare content-fingerprint
+      // match with no URL/production/attribution check. Treating it as an
+      // unconditional exclusion here could silently hide a real class-A/B/D
+      // contamination hit. C2 below instead gates on the live reviews.json
+      // ground truth (loadLiveScoredUrls) rather than this field at all.
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
@@ -482,7 +554,7 @@ for (const showId of showDirs) {
     const rejectedForOtherReason = d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
       || d.isNonReview || d.nonReviewFlag || d.nonReviewContent
-      || d.duplicateOf;
+      || d.duplicateOf; // NOT duplicateTextOf — see the alreadyFlagged comment above
     if (shouldRunClass('B') && d.wrongProduction === true
         && d.contentVerification?.wrongProduction === false
         && !rejectedForOtherReason
@@ -530,7 +602,7 @@ for (const showId of showDirs) {
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8')); } catch { continue; }
       if (!d.url || !d.url.startsWith('http')) continue;
-      if (d.wrongAttribution || d.duplicateOf) continue; // already flagged
+      if (d.wrongAttribution || d.duplicateOf) continue; // unconditionally excluded from scoring
       const critic = d.criticName || f.split('--')[1]?.replace('.json', '') || 'unknown';
       const outletId = d.outletId || f.split('--')[0];
       const textLen = (d.fullText || '').length;
@@ -547,6 +619,16 @@ for (const showId of showDirs) {
           if (a.outletId !== b.outletId) continue;
           if (a.criticName === b.criticName) continue;
           if (a.textLen !== b.textLen || a.textLen < 50) continue;
+          // BRO-74 ground-truth gate: only a REAL double-count if the live
+          // rebuild output (reviews.json) actually carries BOTH of these two
+          // specific critics as live, distinct entries for this exact
+          // show+outlet+URL right now. A pair that's already resolved via
+          // duplicateTextOf (or any of the rebuild's other conditional
+          // recovery paths) fails this — that's not a live bug, don't report
+          // it. Checking the specific pair (not just "2+ critics exist
+          // somewhere for this URL") matters when 3+ corpus files share a
+          // URL — see c2-live-scored-check.js's docstring.
+          if (!isGenuineDoubleCount(liveScoredUrls, { showId, outletId: a.outletId, url, critic1: a.criticName, critic2: b.criticName }, { normalizeOutlet, normalizeUrl, normalizeCritic })) continue;
           hits.C2_url_multi_critic.push({
             showId, url: url.substring(0, 80),
             file1: a.file, critic1: a.criticName,

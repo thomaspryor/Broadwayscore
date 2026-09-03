@@ -14,7 +14,7 @@
 'use strict';
 
 const { extractVerifyCmd, candidatesFrom } = require('./autonomous-verify-cmd.js');
-const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
 // Leaf module, deliberately: autonomous-eligibility.js needs the same marker
 // and cannot require THIS file without closing a cycle (task #1154 — see the
 // header of owner-judgment-marker.js). Still re-exported below so existing
@@ -23,20 +23,24 @@ const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 
 /**
  * @param {string} notes - the card's full notes/body (untrusted content)
- * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean}}
+ * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean, kind: string|null}}
  *   armed=true means bsc-next.js would dispatch this card without
  *   --allow-unverifiable. cmd is the extracted safe-form command, populated
  *   whenever one is present even alongside an ownerJudgment marker (ship-check
  *   finding: an earlier version short-circuited on the marker and always
  *   returned cmd:null for such cards, silently dropping a real command the
- *   dispatch ledger used to record). reason is null whenever armed.
+ *   dispatch ledger used to record). reason is null whenever armed. kind is
+ *   the machine-readable refusal cause (BRO-2570): 'no-section' | 'no-command'
+ *   | 'shape' | 'path-prefix' | 'traversal' | 'mutating-script' | 'basename',
+ *   also null whenever armed — see autonomous-triage-core.js's
+ *   explainUnsafeCheckCommand for what each SAFE_CHECK_FORMS kind means.
  */
 function evaluateVerifiability(notes) {
   const text = String(notes || '');
-  const { cmd, reason } = extractVerifyCmd(text, isSafeCheckCommand);
+  const { cmd, reason, kind } = extractVerifyCmd(text, isSafeCheckCommand, explainUnsafeCheckCommand);
   const ownerJudgment = OWNER_JUDGMENT_RE.test(text);
   const armed = !!cmd || ownerJudgment;
-  return { armed, cmd, reason: armed ? null : reason, ownerJudgment };
+  return { armed, cmd, reason: armed ? null : reason, ownerJudgment, kind: armed ? null : (kind || null) };
 }
 
-module.exports = { evaluateVerifiability, isSafeCheckCommand, extractVerifyCmd, candidatesFrom, OWNER_JUDGMENT_RE };
+module.exports = { evaluateVerifiability, isSafeCheckCommand, explainUnsafeCheckCommand, extractVerifyCmd, candidatesFrom, OWNER_JUDGMENT_RE };

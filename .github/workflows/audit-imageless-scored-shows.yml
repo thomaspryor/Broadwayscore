@@ -79,13 +79,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # This script calls routeAlert({ disposition: 'auto' }), which files a
-          # Linear issue so a session gets dispatched to fix the finding. Without
-          # the key the router FAILS OPEN — the owner still gets the email, but no
-          # card is filed and nothing is ever dispatched. That is silent: on
-          # 2026-08-31 all 7 auto-dispatch attempts in
-          # data/audit/alert-router-attempts.jsonl failed with "LINEAR_API_KEY not
-          # set", every one of them from this workflow.
+          # This script calls routeAlert(disposition:'auto') on self-heal dispatch
+          # failure/escalation (owner-alert-router.js -> linear-issue-create.js),
+          # which needs this to file the Linear issue. Missing here (unlike every
+          # sibling routeAlert('auto') workflow) caused every auto-dispatch from
+          # this workflow to fail with "LINEAR_API_KEY not set in .env or
+          # environment" — surfaced by health-check.js's alert-router deadman
+          # check after 7 days of silent failures.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then

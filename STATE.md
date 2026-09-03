@@ -1,50 +1,119 @@
-# STATE — BRO-2275 crown session (headless, 2026-08-27)
+# STATE — headless crown successor (BRO-343 v28), 2026-09-02
 
-## Done and verified
-- **Acceptance PASS**: `node --test tests/unit/dispatch-stall-detection.test.mjs` → 19/19.
-- **Fixed main-red**: `test.yml` had failed 4 consecutive push runs on main. Two real test
-  failures fixed, one self-healed. Merge commit `f984da52ca7` on `origin/main`, verified by
-  content (`git show 'origin/main:<file>'`), 0 unpushed, 0 conflicts.
-  - `tests/unit/audit-same-job-breadcrumb-coverage.test.mjs` — exact-count 11 → floor `>= 11`.
-    All 12 real sites enumerated, all fields allowlisted, no cross-attribution.
-  - `tests/unit/email-capture-integrity.test.mjs` — added `src/app/api/feedback/route.ts` to
-    KNOWN_FALLBACKS, then (post `/code-review`) tightened the exemption to require the
-    violating LINE be a `process.env.X || ...` fallback. Negative control proved it catches a
-    bare literal at `route.ts:146`.
-  - `no [AUTO-FLAGGED] entries older than 30 days` — self-healed on main at 01:44:09Z.
-- **Outcome comment posted on BRO-2275.**
+Branch: `job/crown-BRO-343-v28-headless-mtkprngr`. Everything below is MERGED to main
+and confirmed on origin (`git merge-base --is-ancestor <sha> origin/main` for each).
 
-## Open at hand-off
-- **CI run `33032085979`** (on merge commit `f984da52c`) was still `in_progress` at session end.
-  Confirm it went green:
-  `gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'`
-  It should clear the `Unit Tests` job. The `Data Validation` job was ALSO failing before my
-  change, on two steps I did NOT touch: `Audit outlet-registry gaps` and
-  `Validate provisional show venue+dates against Playbill`. **Those are still open.**
-- **BRO-714 is complete and live on prod but its card sits in "In Progress" with no completion
-  comment.** Verified: prod serves 7 reviews incl. NYT @50 for
-  `monte-cristo-the-york-theatre-company-off-broadway-2026`. Just needs closing.
-- BRO-679, BRO-504 have unmerged remote branches. 31 unmerged job branches total.
+## DONE
 
-## The finding to act on next
-**Zero of the 13 open P1s are dispatchable** — 8 refused `NO_VERIFY_CMD`, 5 `ASYNC_WAIT_GATE`.
-The funnel's 119 "ready" cards are 116 P2s, mostly auto-filed `BSC Daily:` health cards.
-Fix by rewriting each P1's acceptance to put a safe-form command in **inline single backticks,
-first in the body**. Several already NAME real commands that the extractor cannot see because
-they are bare text, not backticked. Verified directly:
-- `node scripts/audit-help-flag-safety.js` → exit 0
-- `node scripts/audit-sibling-title-misroute.js --strict` → exit 0
-- `node scripts/audit-stale-flag-after-url-correction.js --gate` → **exit 1, 120 files** — the
-  #483 cluster (BRO-2050/2090/2093) is genuinely open. Remedy is a refetch, NEVER a flag-clear.
+### Priority (a) — CI on main, job-by-job
+- Run 33697401511 on my merge commit `931f050f2cd` came back **failure**. Job-by-job:
+  TypeScript Check / Lint Workflows / E2E Tests / **Unit Tests** / Design Token Drift Guard
+  all `success`; Dependency Audit, Visual Regression, Awards Data Freshness `skipped`
+  (gated on `event_name == 'schedule' || 'workflow_dispatch'` — by design on a push);
+  **Data Validation `failure`**, Test Summary `failure` (it just mirrors).
+- Data Validation's failing step was "Audit cast-changes.json":
+  `GATE: 0 cross-show conflict(s) (zero-tolerance) + 25 total issue(s) vs floor 15`.
+  Not a code regression — see BRO-2752 below. Fixed and merged (`37e3244d6ee`).
+- **Unit Tests passing on that run is the acceptance signal for the BRO-2751 work below**
+  (the two newly-registered bash tests run in that job).
 
-## Exact next command
-```
-gh run view 33032085979 --json status,conclusion --jq '"\(.status) \(.conclusion)"'
-```
-Then, if green, re-run the funnel: `node /tmp/funnel2.js` (recreate from BRO-2275 transcript if
-gone) and start rewriting P1 acceptance blocks.
+### Priority (b) — safe-form allowlist / BRO-2718
+Already landed before I picked up (commit `602a1f0d5a6`, 3 -> 39 entries). Re-derived
+rather than trusted:
+- `node scripts/audit-safe-form-allowlist.js` exit 0; `node --test scripts/lib/safe-form-allowlist.test.mjs` 14/14.
+- `data/audit/card-verifiability-linear.json`: total 300, armed 145, refused 155 (51.7%),
+  byKind `{no-command: 89, no-section: 24, shape: 37, basename: 5}`.
+- **The allowlist is no longer the blocker.** `basename` is 5 of 155. The dominant refusal
+  is `no-command` (89) — cards whose acceptance criteria are prose only. Further widening
+  buys almost nothing; the remaining work on BRO-2718 is card CONTENT (enrichment), not
+  the allowlist. `audit-outlet-registry.js --strict` staying refused is still correct
+  (it calls `saveAuditResults()` unconditionally at line 948, writing a git-tracked file).
 
-## Do not re-litigate
-BRO-268 FAIL verdict — do not merge. BRO-2439 deliberately held. BRO-113/140/580 stale
-ship-check verdicts. cmux still cannot attach a terminal — no tab successor crowned; needs an
-owner-side cmux restart. Forbes call with Marc Hershberg still unscheduled (Nov 1 publish).
+### Priority (c) — P1s drained
+- **BRO-2751 — CLOSED (Done).** The card was parked as "needs an interactive session".
+  It did not: rule 18 needs a recorded PLAN verdict, and a headless session can run
+  /second-opinion and record it itself. Recorded `second-opinion / pass / restructure-flag: adopted`.
+  Shipped in `9dc90907c39` + `9300070bd39`. Full outcome is on the Linear issue.
+  The card's "pure gain, no red-CI risk" claim was WRONG and review caught it:
+  `disk-floor-check.test.sh` FAILS under a runner's ambient `GITHUB_ACTIONS=true`
+  (`ensure_disk_floor` returns 0 immediately, disk-floor-check.sh:17) — cases 1 and 4
+  failed, 2 and 5 passed vacuously. Registering it as-is would have reddened main.
+- **BRO-2748 — verified already Done, no work needed.** Mutated the containment check to
+  `startsWith(publicDir)` without `path.sep` on a scratch copy: a test named
+  "a public/-PREFIXED SIBLING directory is outside containment (BRO-2748)" catches it.
+  Restored; suite 10/10; tree clean.
+- **BRO-2322 — evidence attached, not fixed.** Diagnosed the recurring
+  "Rebuild Reviews (Fast)" red (4 of last 8 runs): `PUSH_DEADLINE_SEC=600` funds ~5
+  attempts at ~100s/cycle under contention, while the caller advertises `MAX_RETRIES=20`
+  — a 4x disagreement — and the Git Data API fallback is disqualified by construction on
+  this workflow because its whole output IS reviews.json. Left for that audit card
+  because it is shared push infra (rule 18) and needs per-caller resizing, not a bump.
+- **BRO-2752 — FILED (parked).** See below.
+- **BRO-2432 — deliberately left alone.** Its own park reason says a live parallel session
+  owns `scripts/clear-stale-wrong-show-flags.js`; dispatching would race it.
+
+## THE ONE THING STILL OPEN — now CLOSED
+
+`gh workflow run test.yml --ref main` -> run **33698960075** on `37e3244d6ee`:
+**`success`, 10/10 jobs, ZERO skipped.**
+
+    Data Validation  success        Unit Tests            success
+    Lint Workflows   success        TypeScript Check      success
+    E2E Tests        success        Design Token Drift    success
+    Dependency Audit success        Visual Regression     success
+    Awards Data Fr.  success        Test Summary          success
+
+Dispatched rather than push-triggered because `data/cast-changes.json` is NOT in test.yml's
+push `paths:`, so the heal commit alone could not re-run the job that was red. A side
+benefit: on `workflow_dispatch` the three normally-skipped jobs (Dependency Audit, Visual
+Regression, Awards Data Freshness) DO run, and all three are green too — so this run
+covers strictly more than a push-triggered one.
+
+Corroborated independently before the run finished: `git show origin/main:data/cast-changes.json`
+is byte-identical to the local file, and `node scripts/audit-cast-changes.js --gate` exits
+**0** against it ("0 cross-show conflicts, 0 issue(s) <= floor 15"). AUTO-FLAGGED 315 -> 290.
+
+Nothing is in flight. There is no next command to run.
+
+## BRO-2752 — the real finding, filed and parked
+
+`audit-cast-changes.js:180` drops `[AUTO-FLAGGED]` entries older than 30 days. All 25 that
+reddened main shared `addedDate: "2026-08-04"`, so they crossed that threshold in the same
+instant, at UTC midnight. `check-corpus-drift.yml:73-91` runs the correct remedy but only
+daily — it ran at 19:45 UTC and correctly changed nothing (they were 29 days old then;
+verified: commit `2aad9d9f8d8` moved the AUTO-FLAGGED count 315 -> 315). The gate runs on
+every push. So the gate and the healer disagree about what time it is, and the gate runs
+~50x more often. This is a step function, not the "routine churn" test.yml:4345-4359
+describes as tolerable: any single day's batch larger than the floor of 15 guarantees a red
+trunk until the next heal. Recommendation on the card is option A — `--gate` should not
+count issues its own `--write` would auto-fix — plus a test asserting N auto-healable-only
+issues never fail `--gate` for any N.
+
+## Cycle state at handoff
+
+`behind 0 / unpushed 0` at last check. 36 worktrees (31 at v28 handoff).
+Disk **13Gi** free on `/System/Volumes/Data` (16-17Gi at v28 handoff) — watch the trend.
+Dispatch ledger 11,588 rows, `runaway:0 future:0`.
+
+Crown gates: `merge-reviews-json` keyOf tripwire 28/28 pass.
+`audit-outlet-registry.js --strict` and `audit-critic-outlets.js --strict` could NOT run
+here — this fresh worktree has an EMPTY `data/review-texts`, and both gates correctly
+refuse to pass vacuously ("scanned 0 review files"). Environmental, not a failure; they
+run for real in CI.
+
+## Owner decisions — still open, untouched (a headless session cannot decide them)
+
+1. iOS overnight worktrees (`~/BroadwayScorecard-app`, Aug 31 + Sep 1 `feedback-overnight`):
+   review+merge vs confirmed discard. Each holds ONE real unmerged commit of TestFlight
+   beta-feedback fixes. Standing recommendation: review+merge.
+2. Forbes / Marc Hershberg walkthrough date. Standing recommendation: mid-to-late October,
+   ahead of a Nov 1 publish rather than depending on it.
+
+Not a decision, already made, execution blocked on the owner: Cyrus Team Cloud $120/mo
+cancellation needs a hand on an external dashboard; no CLI/API path exists on this machine.
+
+## Deliberately NOT done
+
+No CronCreate. The v28 brief's crown loop assumes an interactive session that outlives its
+cron; this one is hard-killed at 120 minutes, so a `13,43 * * * *` cron would only have
+fired inside my own turn and duplicated work in flight.

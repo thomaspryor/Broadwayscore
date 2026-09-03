@@ -23,6 +23,9 @@ const GENERIC_TOKENS = new Set([
   'theater', 'theatre', 'theatres', 'stages', 'stage', 'company', 'center',
   'centre', 'at', 'the', 'for', 'of', 'and', 'a', 'new', 'york', 'city',
   'hall', 'house', 'space', 'club', 'studio', 'room',
+  // BRO-155: "Loft Story" (an unrelated Brooklyn venue) false-positived
+  // against "The Players Theatre Loft" sub-venue on this token alone.
+  'loft',
 ]);
 
 function coreTokens(str) {

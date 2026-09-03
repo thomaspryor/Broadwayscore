@@ -449,8 +449,53 @@ const AUTO_CLEAR_FRESH_DAYS = 7;
  */
 function invalidateWrongProductionAutoClear(d) {
   if (!d) return;
+  const retracted = [];
+  if (!_isEmptyValue(d.wrongProductionAutoCleared)) retracted.push('wrongProductionAutoCleared');
+  if (!_isEmptyValue(d.wrongProductionAutoClearedAt)) retracted.push('wrongProductionAutoClearedAt');
   delete d.wrongProductionAutoCleared;
   delete d.wrongProductionAutoClearedAt;
+  // BRO-2708: deleting the fields is not enough. Both are PROTECTED, so a NON-force
+  // safeWriteReview reads the absence as data loss and restores them unless the incoming
+  // payload carries the registered clear breadcrumb. rebuild-all-reviews.js:1593 is exactly
+  // that shape — re-flag, invalidate, write without force — and the breadcrumb came straight
+  // back, leaving wrongProduction=true beside a live wrongProductionAutoCleared. Measured on
+  // a real rebuild: that write returned preserved:[wrongProductionAutoCleared,
+  // wrongProductionAutoClearedAt]. It hits EVERY record that reaches this path, not only the
+  // ones a previous drain had stamped.
+  //
+  // Recording the retraction here is what makes the delete legible to the guard. It is safe
+  // to mint because _clearBreadcrumbRetracted is LIVE-SCOPED (see there): the stamp goes
+  // inert the moment the field it names is non-empty again, so it cannot linger as a standing
+  // permission to lose that field later. It is also the behaviour the re-flag callers already
+  // depend on — see the contract spelled out at audit-wrongshow-autoclear-conflicts.js:142-151,
+  // where failing to invalidate lets the push-time restore re-clear a freshly re-asserted flag
+  // ("the inverted-ping-pong bug the helper was written to prevent").
+  _recordClearBreadcrumbRetraction(
+    d,
+    retracted,
+    'retracted wrongProductionAutoCleared: re-flagged wrongProduction (BRO-2708)'
+  );
+}
+
+/**
+ * Stamp (or extend) the field-scoped retraction breadcrumb that makes deleting a PROTECTED
+ * clear-breadcrumb field legible to safeWriteReview as intent rather than data loss.
+ *
+ * Field-scoped on purpose: the stamp names exactly which fields it covers and
+ * _clearBreadcrumbRetracted checks membership, so retracting one field never authorizes
+ * losing an unrelated one. Union rather than replace, so a record that legitimately
+ * retracted two different families keeps both covered.
+ *
+ * @param {object} d - record being written (mutated in place, like the rest of this path)
+ * @param {string[]} fields - field names this retraction covers
+ * @param {string} reason - human-readable retraction reason
+ */
+function _recordClearBreadcrumbRetraction(d, fields, reason) {
+  if (!d || !Array.isArray(fields) || fields.length === 0) return;
+  const prior = Array.isArray(d.clearBreadcrumbRetractedFields) ? d.clearBreadcrumbRetractedFields : [];
+  d.clearBreadcrumbRetracted = reason;
+  d.clearBreadcrumbRetractedAt = new Date().toISOString().split('T')[0];
+  d.clearBreadcrumbRetractedFields = Array.from(new Set([...prior, ...fields]));
 }
 
 const _freshWrongProductionAutoClear = (d) => {
@@ -579,10 +624,93 @@ const _wrongArticleCleared = (d) =>
 // bypass — one retraction of wrongProductionAutoCleared would thereafter
 // authorize losing crossOutletVerified to any unrelated bad write. An ordinary
 // run that never wrote the stamp still gets full data-loss protection.
+// LIVE-SCOPED (BRO-2708): the retraction describes a DELETION, so it only speaks for
+// a record while the field it names is actually gone from that record. Membership
+// alone made it a permanent tombstone, and that broke clearHonored()'s second
+// conjunct in safeWriteReview:
+//
+//     isIntentionalClear(field, incomingSnapshot, existing)
+//     && !isIntentionalClear(field, existing, existing)
+//
+// which reads "existing already satisfies this breadcrumb, so the flag on disk was
+// re-set deliberately over a prior clear — preserving wins". True for the manual-clear
+// breadcrumbs (wrongProductionManualClear etc.), where the breadcrumb and a live value
+// really do mean a deliberate re-set. False for a retraction, which outlives the
+// deletion it describes: the stamp stayed on disk forever, so `existing` satisfied it
+// even after a writer had legitimately RE-CREATED the field, the conjunct was
+// permanently false, and every later non-force write that deleted the field had the
+// delete silently reverted.
+//
+// Measured, by instrumenting safeWriteReview through one real rebuild of
+// the-sound-of-music-2027/the-daily--ana-taveira.json:
+//   w1  rebuild-all-reviews.js:1407  force:true  -> preserved: []
+//       dateless-revival auto-clear RE-STAMPS wrongProductionAutoCleared.
+//   w2  rebuild-all-reviews.js:1593  no force    -> preserved:
+//       [wrongProductionAutoCleared, wrongProductionAutoClearedAt]
+//       pre-opening guard re-flags and DOES call invalidateWrongProductionAutoClear;
+//       the breadcrumb was gone in memory and back on disk after the call.
+// End state: wrongProduction=true alongside a live wrongProductionAutoCleared — the
+// self-contradictory clear the BRO-185 acceptance test fails on.
+//
+// The drain (audit-self-contradictory-clears.js --fix-safe) is what stamps the retraction,
+// which made it tempting to conclude the remedy was arming its own recurrence. It was not,
+// and that conclusion was wrong: probing a NEVER-DRAINED record through the same cycle
+// showed it breaks too, failing the FIRST conjunct instead (no stamp at all, so nothing
+// marks the delete as deliberate). Both populations produce the identical
+// preserved=[wrongProductionAutoCleared, wrongProductionAutoClearedAt]. The drain is not
+// causal; it is simply ineffective, and the red files were all drained ones only because
+// being contradictory is what got them drained. Hence the second half of this fix, the
+// self-recording retraction in invalidateWrongProductionAutoClear — liveness alone would
+// have fixed only the stamped population while looking like a complete fix.
+//
+// Adding the liveness check is strictly NARROWING. It never authorizes a loss the
+// membership test did not already authorize; it only stops the stamp speaking for a
+// record whose value is present, where there is nothing to restore anyway.
+//
+// FIELD-SCOPED, unchanged: the stamp lists exactly which fields the retraction covers,
+// and this checks membership. A bare "stamp is non-empty" test would be a standing
+// bypass — one retraction of wrongProductionAutoCleared would thereafter authorize
+// losing crossOutletVerified to any unrelated bad write. An ordinary run that never
+// wrote the stamp still gets full data-loss protection.
+//
+// FRESHNESS (BRO-2708, second residual). Liveness alone still let a STALE stamp speak:
+// on the 707 already-stamped files, once some writer legitimately re-created
+// wrongProductionAutoCleared, a later payload that merely OMITTED the field would be read
+// as a deliberate clear and the value dropped — the mirror image of the tombstone bug.
+// The retraction only ever needs to bridge the delete and the write that follows it (and
+// the same job's push-time restore), so bounding it the way this file bounds its other
+// breadcrumbs (_freshWrongProductionAutoClear, the staleScoredBeforeOpening family) closes
+// that window without weakening the path it exists for: every re-flag re-stamps a fresh
+// retraction through invalidateWrongProductionAutoClear, so the live path is never stale.
+// A stamp with no parseable date keeps speaking (see the predicate) — expiring it would
+// widen, not narrow. All four writers of this breadcrumb do set the date
+// (flag-contradiction.js:446, fix-cross-outlet-attributions.js:223,
+// fix-cross-outlet-attributions-fulltext.js:332, fix-playbill-bleed-attributions.js:129).
+const CLEAR_RETRACTION_FRESH_DAYS = 7;
+
 const _clearBreadcrumbRetracted = (field) => (d) => {
   if (_isEmptyValue(d.clearBreadcrumbRetracted)) return false;
   const fields = d.clearBreadcrumbRetractedFields;
-  return Array.isArray(fields) && fields.includes(field);
+  if (!Array.isArray(fields) || !fields.includes(field)) return false;
+  // Live-scoped: the retraction describes a deletion, so it stops speaking the moment the
+  // field it names is present again. NOTE: crossOutletVerifiedNote is registered against
+  // the key 'crossOutletVerified' (see CLEAR_BREADCRUMBS below), so the note's exemption is
+  // keyed to the FLAG's liveness. That is correct for every caller today — the three
+  // fix-cross-outlet-attributions* scripts always delete flag and note together — but a
+  // future writer that deletes only the note while the flag stays live would find the note
+  // restored.
+  if (!_isEmptyValue(d[field])) return false;
+  // An UNDATED stamp still speaks. Refusing it would be a WIDENING, not a narrowing: it
+  // makes a previously-honored clear un-honored, so the guard resurrects the field the
+  // sweep deliberately removed — the exact "--fix is a permanent no-op" failure this
+  // breadcrumb exists to prevent. tests/unit/review-write-guard.test.mjs:1164 pins that
+  // shape (a crossOutletVerified retraction carrying no date), and it caught this when the
+  // first version of the freshness gate rejected undated stamps.
+  const raw = d.clearBreadcrumbRetractedAt;
+  if (_isEmptyValue(raw)) return true;
+  const at = Date.parse(String(raw));
+  if (Number.isNaN(at)) return true;
+  return (Date.now() - at) <= CLEAR_RETRACTION_FRESH_DAYS * 86400000;
 };
 
 // Intentional-unset of the manual "not a review" exclusion. Two shapes count:
@@ -610,9 +738,12 @@ const CLEAR_BREADCRUMBS = {
   // heal-duplicate-of-direction.js, and safeWriteReview's own self-heal a few
   // hundred lines below) stamps it specifically when clearing EITHER pointer
   // field. audit-duplicate-of-url-mismatch.js --fix deletes duplicateTextOf
-  // (not null — validate-data.js flags a null duplicateTextOf as "should be
-  // string", so null-assignment isn't an option here, unlike the
-  // rejectionReason-family fields fixed elsewhere in this task) right after
+  // (rather than nulling it, because a deleted key is what every consumer's
+  // truthiness check already expects. The reason ORIGINALLY given here was
+  // "validate-data.js flags a null duplicateTextOf as should-be-string"; that
+  // is no longer true. It was a false positive from `typeof null === 'object'`
+  // and was fixed 2026-09-03, so null-assignment is no longer rejected — it is
+  // simply still not the idiom here) right after
   // stamping duplicateClearReason, then calls safeWriteReview with default
   // options — without this entry, the merge-mode restore pass silently
   // resurrected the stale pointer on every run, making --fix a permanent
@@ -1359,7 +1490,10 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (newData.duplicateTextOf && newData.duplicateTextOf === path.basename(filePath)) {
     console.warn(`[review-write-guard] clearing self-referential duplicateTextOf in ${path.basename(filePath)}`);
     newData.duplicateClearReason = `auto-cleared at write: self-referential duplicateTextOf (pointed at own filename)`;
-    // Delete rather than null — validate-data flags null as "should be string".
+    // Delete rather than null, to match what every consumer's truthiness check
+    // expects. (The old reason given here — "validate-data flags null as should
+    // be string" — was a false positive from `typeof null === 'object'`, fixed
+    // 2026-09-03. Nulling is no longer rejected, just not the idiom.)
     delete newData.duplicateTextOf;
   }
   if (newData.duplicateTextOf && typeof newData.duplicateTextOf === 'string' && newData.duplicateTextOf.endsWith('.json')) {

@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { imagePresent } = require('./lib/show-image-presence');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -120,10 +121,28 @@ async function runChecks() {
   }
 
   // 2. Images
-  const imgDir = path.join(DATA_DIR, 'public', 'images', 'shows', SHOW_ID);
-  const hasHero = fs.existsSync(path.join(imgDir, 'hero.webp'));
-  const hasPoster = fs.existsSync(path.join(imgDir, 'poster.webp'));
-  const hasThumbnail = fs.existsSync(path.join(imgDir, 'thumbnail.webp'));
+  // Trust shows.json's images field (what the site actually renders) rather
+  // than hardcoding the .webp filename the standard pipeline produces — the
+  // SERP-fallback image path writes .jpg/.png instead, and a hardcoded-webp
+  // check flags those shows as "missing" even though the site displays them
+  // fine (found via a-month-in-the-country-west-end-2026, 2026-09-02: real
+  // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
+  // thumbnail}, reported as "Missing: hero, poster, thumbnail").
+  const images = show.images || {};
+  // A field being SET is not the same as the file EXISTING. An earlier pass
+  // here checked truthiness only, which fixed a false "missing" (the code
+  // used to hardcode a .webp extension) by introducing a false ALL-CLEAR,
+  // which on an opening-night gate is the worse direction. Real case at the
+  // time of writing: high-society-west-end-2026 has images.hero pointing at
+  // hero.webp, only poster.jpg and thumbnail.jpg are on disk, and the check
+  // printed "✅ Show images". Repo-wide there were 334 images.* refs pointing
+  // at files absent from public/.
+  //
+  // Predicate lives in scripts/lib/show-image-presence.js so the test exercises
+  // the real function instead of a copy (CLAUDE.md rule 15).
+  const hasHero = imagePresent(images.hero);
+  const hasPoster = imagePresent(images.poster);
+  const hasThumbnail = imagePresent(images.thumbnail);
   if (hasHero && hasPoster && hasThumbnail) {
     report(PASS, 'Show images', 'hero + poster + thumbnail all present');
   } else {

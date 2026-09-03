@@ -7,12 +7,12 @@
 //
 //   freeze                — writes ONE dated note declaring the fleet's own
 //                            self-audit ledgers frozen for 30 days. Additive
-//                            only: it does not touch the ledgers themselves
-//                            or the scripts that write to them (rewiring
-//                            health-check.js/dispatch-ledger.js to actually
-//                            suppress new card creation is shared dispatch
-//                            infra — CLAUDE.md rule 18 — and out of scope
-//                            here; this just records the decision + window).
+//                            only: it does not touch the ledgers themselves.
+//                            Making producers actually RESPECT this record
+//                            (rewiring health-check.js/dispatch-watchdog.js
+//                            call sites to check it before filing a card) is
+//                            BRO-2603 — see isFrozen()/isLedgerFrozenNow()
+//                            below, the predicate those call sites use.
 //   close-safe-duplicates — closes ONLY exact-title duplicates among the
 //                            self-referential cards, and only the older
 //                            copy of a pair where a newer, untouched copy of
@@ -96,6 +96,59 @@ function addDaysIso(isoDate, days) {
   const d = new Date(`${isoDate}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
+}
+
+// --- Freeze-window predicate (BRO-2603) ---
+//
+// isFrozen is pure — no I/O, no Date.now() — so it's deterministically unit
+// testable. `nowMs` is a REQUIRED epoch-ms number, never a Date, matching
+// scripts/lib/dispatch-health.js's computeDeadRate convention: `frozenAt`/
+// `thawAt` in the freeze record are plain "YYYY-MM-DD" strings, and comparing
+// a Date object against those strings directly is a silent trap — JS's
+// relational abstract-comparison converts the Date via valueOf() (a number)
+// but converts the string via ToNumber("2026-09-25") -> NaN, and every
+// comparison against NaN is false. That would make the freeze look
+// permanently inert with no error, exactly the bug this predicate exists to
+// avoid (plan-review finding, BRO-2603). Parsing both bounds to epoch ms once
+// here, and requiring the caller's `now` to already be a number, closes it.
+function isFrozen(ledgerName, nowMs, freezeRecord) {
+  if (!freezeRecord || !Array.isArray(freezeRecord.ledgers)) return false;
+  if (!freezeRecord.ledgers.includes(ledgerName)) return false;
+  const frozenAtMs = Date.parse(`${freezeRecord.frozenAt}T00:00:00Z`);
+  const thawAtMs = Date.parse(`${freezeRecord.thawAt}T00:00:00Z`);
+  if (Number.isNaN(frozenAtMs) || Number.isNaN(thawAtMs)) return false;
+  // Thaw boundary is EXCLUSIVE — the thaw date itself is no longer frozen,
+  // matching the freeze record's own English ("thaw 2026-09-25").
+  return nowMs >= frozenAtMs && nowMs < thawAtMs;
+}
+
+// I/O: reads + parses the freeze record. Returns null on missing/unparseable
+// rather than throwing — fail-open, since the ABSENCE of a freeze record must
+// never be mistaken for "everything is frozen" by a caller that forgets to
+// null-check.
+function readFreezeRecord(freezeRecordPath = FREEZE_RECORD_PATH) {
+  try {
+    return JSON.parse(fs.readFileSync(freezeRecordPath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+// Convenience wrapper for real call sites: current time, current record, one
+// ledger name. Re-reads the record on every call (a few-hundred-byte JSON
+// file) instead of caching, so an owner edit mid-window (extend/shorten/
+// cancel the freeze) takes effect on a producer's very next run without a
+// process restart.
+function isLedgerFrozenNow(ledgerName, freezeRecordPath = FREEZE_RECORD_PATH) {
+  return isFrozen(ledgerName, Date.now(), readFreezeRecord(freezeRecordPath));
+}
+
+// Shared skip-log line so every gated call site prints the same shape instead
+// of a bespoke string each (this predicate already has 3 call sites as of
+// BRO-2603).
+function freezeSkipMessage(ledgerName, freezeRecordPath = FREEZE_RECORD_PATH) {
+  const record = readFreezeRecord(freezeRecordPath);
+  return `BRO-385 freeze active until ${record && record.thawAt ? record.thawAt : '?'} (${ledgerName})`;
 }
 
 function runFreeze() {
@@ -295,4 +348,9 @@ module.exports = {
   addDaysIso,
   isUntouched,
   SUBSTANTIAL_OUTCOME_CHARS,
+  FREEZE_RECORD_PATH,
+  isFrozen,
+  readFreezeRecord,
+  isLedgerFrozenNow,
+  freezeSkipMessage,
 };

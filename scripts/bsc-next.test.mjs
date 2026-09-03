@@ -1,4 +1,28 @@
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
+import { guardProcessExit } from '../tests/helpers/process-exit-guard.mjs';
+
+// These tests drive main() down its REFUSAL paths, and the code under test
+// signals refusal with `process.exitCode = 1` (scripts/linear-next.js:774,783,793;
+// scripts/bsc-next.js:1416,1425,1439,1441) rather than by calling process.exit.
+// The per-test `finally` blocks below restore process.exit and console.error but
+// cannot restore that, because it is set on the TEST RUNNER's own process.
+//
+// node --test then reports the whole FILE as failed with exitCode 1 while every
+// subtest passes — a file-level `not ok` with failureType 'testCodeFailure' and
+// no named failing subtest. That is precisely the signature that made main's
+// Unit Tests job red while the same files passed locally: locally the refusal
+// path that sets it does not always run.
+//
+// Reset after every test. Proven: a single passing test that leaks
+// process.exitCode = 1 makes `node --test` exit 1 on the file; with this hook it
+// exits 0.
+afterEach(() => {
+  process.exitCode = 0;
+});
+
+// BRO-2647: turn any unstubbed process.exit into a NAMED failing subtest
+// instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
+guardProcessExit();
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';

@@ -86,6 +86,101 @@ function evaluateAnnouncedShow(show, opts) {
   return reasons;
 }
 
+
+// Reviews already triaged as belonging to a DIFFERENT show, or to a different
+// production of it, are not evidence that THIS show has opened - they are
+// contamination a rebuild already drops. Counting them produced 19 of 43
+// stale-announced flags on shows whose every review file was flagged out
+// (measured 2026-08-31; e.g. private-lives-2025 had 23 files, all 23 flagged).
+//
+// Every OTHER exclusion reason still counts as evidence. A truncated,
+// paywalled or otherwise unscoreable review is still a real critic writing
+// about this production, which is exactly the signal this audit wants.
+//
+// Rule names come from review-guards.explainExclusion, the single
+// implementation of the includability decision. Never re-test the raw
+// wrongShow/wrongProduction flags here
+// (memory/feedback_includability_predicates_must_be_canonical.md).
+const NOT_EVIDENCE_OF_OPENING = new Set(['wrongShow', 'wrongProduction']);
+
+/**
+ * True when a parsed review-text record is evidence that its show has opened.
+ *
+ * @param {object} data parsed review-text JSON
+ * @param {(d: object) => (string|null)} explainExclusion review-guards'
+ *   canonical exclusion explainer, injected so this stays a pure function and
+ *   this lib keeps no heavy require.
+ * @returns {boolean}
+ */
+function isEvidenceOfOpening(data, explainExclusion, show) {
+  if (!data || typeof data !== 'object') return true;
+  // `show` is forwarded because explainExclusion's wrongShow/wrongProduction
+  // rules consult show metadata for their stale-flag recovery paths. Calling it
+  // with data alone would discount a review whose flag the guard itself would
+  // have cleared.
+  return !NOT_EVIDENCE_OF_OPENING.has(explainExclusion(data, show));
+}
+
+/**
+ * The review-texts signal: does this show have at least one collected review
+ * that is evidence it opened?
+ *
+ * This lives here, not in the audit script, because scripts/audit-stale-announced-shows.test.mjs
+ * used to inline its own copy of the rule (`readdirSync(dir).some(f => f.endsWith('.json'))`).
+ * That copy is why fixing the script alone left the acceptance test asserting
+ * the OLD behaviour and CI still red — the exact failure CLAUDE.md §15 exists
+ * to prevent. Script and test now both call this.
+ *
+ * @param {string} reviewTextsDir absolute path to data/review-texts
+ * @param {string} showId
+ * @param {(d: object, show?: object) => (string|null)} explainExclusion
+ * @param {object} [show] the show record, forwarded to explainExclusion
+ * @returns {boolean}
+ */
+function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
+  return describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show).hasEvidence;
+}
+
+/**
+ * Same decision as hasEvidenceOfOpening, plus the counts behind it.
+ *
+ * A show whose review files ALL got discounted looks identical, from the
+ * flag list alone, to a show with no review files at all — and those are very
+ * different situations. The second is normal; the first means the only signal
+ * this show ever had was thrown away, and if those flags are false positives
+ * (the LLM wrongProduction FP rate is material) the show sits 'announced'
+ * forever with nothing pointing at it. Reporting the counts is what keeps the
+ * discount from being a silent hole.
+ *
+ * @returns {{hasEvidence: boolean, reviewFiles: number, excludedFiles: number}}
+ */
+function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show) {
+  const dir = path.join(reviewTextsDir, showId);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+  } catch {
+    return { hasEvidence: false, reviewFiles: 0, excludedFiles: 0 };
+  }
+  let excluded = 0;
+  let hasEvidence = false;
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    } catch {
+      // Unreadable file: something collected it, so treat it as evidence
+      // rather than silently weakening the signal. This audit's safe
+      // direction is to over-flag, never to go quiet.
+      hasEvidence = true;
+      continue;
+    }
+    if (isEvidenceOfOpening(data, explainExclusion, show)) hasEvidence = true;
+    else excluded++;
+  }
+  return { hasEvidence, reviewFiles: files.length, excludedFiles: excluded };
+}
+
 module.exports = {
   ACK_PATH,
   loadAcks,
@@ -94,4 +189,8 @@ module.exports = {
   saveAcks,
   daysSince,
   evaluateAnnouncedShow,
+  isEvidenceOfOpening,
+  hasEvidenceOfOpening,
+  describeOpeningEvidence,
+  NOT_EVIDENCE_OF_OPENING,
 };

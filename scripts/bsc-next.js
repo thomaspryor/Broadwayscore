@@ -24,7 +24,7 @@ const path = require('path');
 const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 
-// Hardcoded to the main checkout, not __dirname-relative — deliberate, same
+// Resolved to the main checkout, not __dirname-relative — deliberate, same
 // reasoning as QUEUE_PATH below: a dispatch (and everything it shells out to,
 // including `node scripts/notion-brain.js get <id>` inside fetchCardOnce)
 // must always run vetted/merged code, never an in-progress worktree's edits.
@@ -34,7 +34,26 @@ const { execFileSync, spawnSync } = require('child_process');
 // fix that only exists in the worktree will NOT take effect for such a call.
 // Merge to main first, or stick to --dry-run/--print-prompt for worktree-side
 // testing of anything this constant reaches.
-const REPO = '/Users/tompryor/Broadwayscore';
+//
+// BRO-2668: routed through resolveCanonicalRepoRoot() (dispatch-guards.js) —
+// BRO-2647 fixed only the two resolvePathCheck call sites that used to read
+// this literal directly; every other REPO use (DISPATCH_CLAIM_DIR,
+// SUCCESSION_LOCK_DIR, QUEUE_PATH, subprocess cwd, ...) was still resolving
+// the raw hardcoded path, reproducing BRO-2647's same CI-only failure mode
+// for any of THEM. resolveCanonicalRepoRoot() is a no-op on the dev machine
+// (returns this literal unchanged whenever it exists on disk, which it
+// always does there, worktree or not) — byte-identical here, so cross-session
+// dispatch-claim/succession-lock coordination is unaffected. Aliased import
+// (not the `resolveCanonicalRepoRoot` name used by the guard destructure
+// below) to avoid a duplicate top-level binding for the same identifier.
+// Called eagerly here, unlike resolveCanonicalRepoRoot()'s own header
+// ("call this lazily... so --force/--dry-run/--print-prompt still skip the
+// fs I/O") — that convention is about the ternary below skipping I/O whose
+// result would be discarded; REPO itself is needed unconditionally by
+// DISPATCH_CLAIM_DIR/SUCCESSION_LOCK_DIR/QUEUE_PATH/subprocess cwd regardless
+// of any flag, so deferring its own single fs.existsSync() stat buys nothing.
+const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
@@ -179,7 +198,7 @@ const {
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
-  dispatchClaimGuard,
+  dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
 // Shared atomic per-key claim primitive (task #1896) — also backs
 // acquireSuccessionLock/releaseSuccessionLock below. See its own header for
@@ -1306,6 +1325,30 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[bsc-next] WARN dispatching #${task.id} unarmed: full card unavailable (${pid ? 'Notion fetch failed' : 'native task, no card'}) — gate not enforceable on the truncated mirror.`);
   }
 
+  // Phantom-path guard (BRO-2569): a well-formed, safe-shaped verifyGate.cmd
+  // can still name a file/directory that will never exist — see
+  // dispatch-guards.js's pathVerifiabilityGuard header for the full
+  // rationale. Gated on fullCardInHand for the same reason the shape-check
+  // refusal above is: a truncated Notion-mirror description can produce a
+  // cmd extracted from garbled/incomplete text, and refusing dispatch on
+  // that would be a false positive layered onto an already-known-degraded
+  // data path. --force only (not dry-run/print-prompt — both already
+  // returned earlier in main(), so args['dry-run']/args['print-prompt'] can
+  // never be true by this point); skips the fs I/O entirely under --force,
+  // matching the "don't do work whose result gets discarded" convention.
+  // BRO-2647: REPO is hardcoded to this dev machine's checkout (see its own
+  // header comment above) and doesn't exist on a CI runner, which made this
+  // check refuse EVERY real acceptance path as phantom there. See
+  // resolveCanonicalRepoRoot()'s own header (dispatch-guards.js) for the
+  // full trace of how that produced main's red Unit Tests job. Called
+  // lazily inside the ternary, not hoisted above it, so --force still skips
+  // the fs I/O entirely per this guard's own convention (comment above).
+  const pathCheck = (fullCardInHand && !args.force)
+    ? resolvePathCheck(verifyGate, resolveCanonicalRepoRoot(REPO, __dirname))
+    : null;
+  const pathErr = pathVerifiabilityGuard(task, pathCheck, args);
+  if (pathErr) { console.error(`[bsc-next] ${pathErr}`); process.exit(1); }
+
   // CI-red claim auto-invocation (task #598): record a claim so another
   // in_progress task's pre-push-review-gate.sh check (task #584) sees it —
   // closes the gap where nothing ever called claim-ci-red.js automatically.
@@ -1364,7 +1407,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (!args['allow-human-gated']) {
       const gateText = (card && card.notes) || task.description || '';
       const hg = classifyHeadlessDispatchability({ subject: task.subject, notes: gateText }, { verifyCmd: verifyGate.cmd });
-      if (!hg.dispatchable && hg.blockers.some(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+      // PARKED_SENTINEL honours --force here for the same reason it does at
+      // linear-next.js:750. The classifier is shared, so this gate inherited the
+      // new blocker automatically; without the exemption an owner who un-parks a
+      // card and re-runs would be refused by a gate naming a THIRD flag
+      // (--allow-human-gated) after predispatchGuard already told them to use
+      // --allow-reopen-suspect. Caught in re-review of BRO-2753.
+      const blocking = hg.blockers.filter(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
+        && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+      if (!hg.dispatchable && blocking.length) {
         console.error(`[bsc-next] REFUSING headless dispatch of #${task.id}: an unattended session cannot finish this card.`);
         for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
         console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
@@ -1392,7 +1443,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1508,7 +1559,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
       // Task #1904: the live cmux terminal-runtime count at create time. Until
       // now the ceiling correlation could only be established by live
       // experiment on the machine — recording it makes every future dispatch a

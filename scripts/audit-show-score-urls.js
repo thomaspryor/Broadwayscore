@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const { venuesMatch } = require('./lib/deduplication');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -70,16 +71,6 @@ function extractReviewDates(html) {
     }
     return dates.sort((a, b) => a - b);
   } catch { return []; }
-}
-
-function venuesMatch(a, b) {
-  if (!a || !b) return false;
-  const norm = s => s.toLowerCase()
-    .replace(/\bthe\b/g, '').replace(/\btheatre\b/g, 'theater')
-    .replace(/[''""'":,.!?–—-]/g, '').replace(/\s+/g, ' ').trim();
-  const na = norm(a);
-  const nb = norm(b);
-  return na === nb || na.includes(nb) || nb.includes(na);
 }
 
 // Build multi-production map

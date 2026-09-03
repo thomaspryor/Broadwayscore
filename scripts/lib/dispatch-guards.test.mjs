@@ -8,6 +8,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { closedCardGuard, dispatchClaimGuard } = require('./dispatch-guards.js');
@@ -363,4 +366,43 @@ test('BRO-2575: wrapperVouchesAlive says "no evidence" for every degraded input,
   assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, null), false, 'no probe supplied');
   assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, () => { throw new Error('ps died'); }), false, 'throwing probe');
   assert.equal(ledger.wrapperVouchesAlive({ marker: 'm' }, () => 'truthy-but-not-true'), false, 'strict true only');
+});
+
+// ── BRO-2647: resolveCanonicalRepoRoot ──────────────────────────────────────
+// REPO in bsc-next.js/linear-next.js is hardcoded to the dev machine's
+// checkout and doesn't exist on a CI runner. Feeding it straight into
+// resolvePathCheck() as repoRoot made every acceptance-path check refuse as
+// phantom in CI, tripping a real, un-mocked process.exit(1) mid test-file
+// run (a real process.exit() truncates buffered TAP output before it can
+// flush) — the exact "zero subtests, exitCode 1" signature that made main's
+// Unit Tests job red. This locks the fix's behavior AND that both known
+// dispatcher call sites actually use it, so a third dispatcher (or a
+// reverted call site) can't silently recreate the same failure.
+const { resolveCanonicalRepoRoot } = require('./dispatch-guards.js');
+
+test('resolveCanonicalRepoRoot: an existing hardcoded path wins over the fallback (the dev-machine case)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2647-repo-root-'));
+  try {
+    assert.equal(resolveCanonicalRepoRoot(tmp, '/some/unrelated/module/dir'), tmp);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('resolveCanonicalRepoRoot: falls back to moduleDir/.. when the hardcoded path is absent (the CI case)', () => {
+  const bogus = path.join(os.tmpdir(), 'bro-2647-definitely-absent-' + Date.now());
+  const moduleDir = '/home/runner/work/Broadwayscore/Broadwayscore/scripts';
+  assert.equal(resolveCanonicalRepoRoot(bogus, moduleDir), path.resolve(moduleDir, '..'));
+});
+
+test('every resolvePathCheck() call in bsc-next.js and linear-next.js routes repoRoot through resolveCanonicalRepoRoot', () => {
+  for (const file of ['../bsc-next.js', '../linear-next.js']) {
+    const src = fs.readFileSync(new URL(file, import.meta.url), 'utf8');
+    const calls = src.match(/resolvePathCheck\([^)]*\)/gs) || [];
+    assert.ok(calls.length > 0, `${file}: expected at least one resolvePathCheck() call`);
+    for (const call of calls) {
+      assert.match(call, /resolveCanonicalRepoRoot\(/,
+        `${file}: "${call}" must route its repoRoot through resolveCanonicalRepoRoot(), not REPO directly (BRO-2647)`);
+    }
+  }
 });

@@ -51,7 +51,10 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PRIMARY_REPO="/Users/tompryor/Broadwayscore"
-LOG="$PRIMARY_REPO/data/audit/worktree-gc.log"
+# WORKTREE_GC_LOG is a test seam only (BRO-2607): the parity test drives this
+# real script against fixture worktrees and must not append fixture lines to
+# the committed audit log. Production never sets it.
+LOG="${WORKTREE_GC_LOG:-$PRIMARY_REPO/data/audit/worktree-gc.log}"
 DRY_RUN=0
 [ "${1:-}" = "--dry-run" ] && DRY_RUN=1
 
@@ -80,7 +83,54 @@ mkdir -p "$(dirname "$LOG")"
 # dropping only the newly added repos while the primary repo's run
 # proceeds. Per-repo locking would let a slow web-repo run silently starve
 # the iOS repo of GC forever with no log line naming that gap.
-GC_LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
+# WORKTREE_GC_LOCK_DIR: same test-seam reasoning as WORKTREE_GC_LOG above, but
+# validated, because this path becomes an `rm -rf` target twice below (the
+# stale-pid reclaim and the EXIT trap). Only a temp-dir path is accepted; any
+# other value falls back to the production lock rather than pointing a delete
+# at, say, a home directory. Same posture as worktree-gc-repos.js, whose
+# override for this script is validated by isValidRepoEntry().
+GC_LOCK_DIR_DEFAULT="/tmp/broadwayscore-disk-floor-gc.lock"
+GC_LOCK_DIR="$GC_LOCK_DIR_DEFAULT"
+# A temp-root prefix ALONE is not enough: session scratchpads and other real
+# working directories live under /private/tmp, and an accepted value is an
+# `rm -rf` target. Verified 2026-08-31 — an earlier, prefix-only version of
+# this guard accepted a scratchpad path and deleted it. So also require the
+# LAST path component to be lock-shaped, which no working directory is.
+if [ -n "${WORKTREE_GC_LOCK_DIR:-}" ]; then
+  gc_lock_override_ok=0
+  case "$WORKTREE_GC_LOCK_DIR" in
+    *..*) ;;                                       # reject traversal outright
+    /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
+      case "${WORKTREE_GC_LOCK_DIR##*/}" in
+        lock|*.lock|*-lock) GC_LOCK_DIR="$WORKTREE_GC_LOCK_DIR"; gc_lock_override_ok=1 ;;
+      esac
+      ;;
+  esac
+  # Track acceptance explicitly. Inferring it from
+  # [ "$GC_LOCK_DIR" = "$GC_LOCK_DIR_DEFAULT" ] mislabels the case where the
+  # caller passes the production path itself — that path ends in .lock and IS
+  # accepted, but the equality test called it "rejected" straight into the
+  # committed audit log people read during a disk incident.
+  if [ "$gc_lock_override_ok" != "1" ]; then
+    # UTC (BRO-2608): this writes to the same $LOG the freshness guard reads
+    # on a UTC runner — a local-time stamp here would misreport hoursStale
+    # exactly like the bug that fix closed, if this line ever became newest.
+    echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] WARN  WORKTREE_GC_LOCK_DIR rejected (must be a temp-dir path whose last component is lock/*.lock/*-lock) — using the production lock" | tee -a "$LOG"
+  fi
+fi
+# Validate-only mode: exit after the lock-path decision, before acquiring any
+# lock. Lets the lock suite assert the rejection branch WITHOUT the run going on
+# to take the PRODUCTION lock and delete it in its EXIT trap, which on this Mac
+# forces a concurrent launchd GC to SKIP-RUN. Production never sets it.
+if [ -n "${WORKTREE_GC_VALIDATE_ONLY:-}" ]; then
+  echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] VALIDATE-ONLY  lock dir resolved to $GC_LOCK_DIR" | tee -a "$LOG"
+  exit 0
+fi
+# -p on the PARENT (not the lock dir itself — the lock's atomicity depends on
+# mkdir failing when it already exists). Without this a valid but parentless
+# override fails ENOENT, the stale-pid branch finds no pid file, and the script
+# reports "another invocation already in progress" forever when nothing is.
+mkdir -p "$(dirname "$GC_LOCK_DIR")" 2>/dev/null || true
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
@@ -92,13 +142,18 @@ else
   fi
 fi
 if [ "$gc_lock_acquired" != "1" ]; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress (covers all repos)" | tee -a "$LOG"
+  # UTC (BRO-2608): health-check.js's freshness guard reads this log from a
+  # UTC GitHub Actions runner, not this (local-TZ) machine — a local-time
+  # stamp here would misreport hoursStale by the host's UTC offset.
+  echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress (covers all repos)" | tee -a "$LOG"
   exit 0
 fi
 echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
 trap 'rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
 
-ts() { date '+%Y-%m-%d %H:%M:%S'; }
+# UTC (BRO-2608): see SKIP-RUN comment above — this log is read for
+# freshness from a UTC runner, so its timestamps must be TZ-independent.
+ts() { date -u '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "[$(ts)] $*" | tee -a "$LOG"; }
 
 # Free space on the filesystem holding $1 (default PRIMARY_REPO), in whole GB.
@@ -137,6 +192,36 @@ is_stale() {
 # merged into origin/main, so nothing here risks losing committed work — only
 # whether it's safe to discard whatever LOCAL uncommitted noise is blocking
 # `git worktree remove`. Note: this only sees paths `git status --porcelain`
+# BRO-2607. The real removal path below calls `git worktree remove` with NO
+# --force, and git refuses that on ANY dirty tree. The dry-run branch must
+# model the same refusal, or a worktree holding uncommitted SOURCE gets
+# reported as "fully merged / WOULD-REMOVE" and counted in removed=. Measured
+# 2026-08-31 on one machine two minutes apart: dry-run removed=15 skipped=2,
+# real run removed=2 skipped=16. 13 of the 15 were iOS worktrees carrying real
+# edits (e.g. `M app/(tabs)/watched.tsx`). The GC refusing them was correct;
+# the dry-run calling them "fully merged" was the defect. Keep the dry-run's
+# three-way split in lockstep with the real path's three outcomes.
+#
+# BRO-2624: this function is status-only by design — it does NOT need to
+# check lock state. `git worktree lock` refuses `git worktree remove`
+# unconditionally, even on a clean tree, so that case is handled earlier and
+# in common code for both DRY_RUN and the real path (the `is_locked`
+# short-circuit above this function's callers), not folded in here. Widening
+# this function to also mean "and not locked" would just recreate two
+# separate lock predictions to keep in parity — the exact defect this card
+# fixed.
+is_worktree_clean() {
+  local st
+  # `|| return 1` is load-bearing: a worktree whose directory was deleted
+  # externally is still listed by `git worktree list --porcelain` (the prune
+  # runs after this loop), so flush() reaches it and `git status` FAILS with
+  # empty output. Treating that as clean would log "fully merged /
+  # WOULD-REMOVE" while the real `git worktree remove` errors and logs SKIP —
+  # exactly the divergence this whole change exists to remove.
+  st=$(git -C "$1" status --porcelain 2>/dev/null) || return 1
+  [ -z "$st" ]
+}
+
 # reports, i.e. tracked-or-untracked-and-not-ignored files — gitignored
 # content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
 # it either way and is deleted by ANY worktree removal, force or plain; that
@@ -311,10 +396,10 @@ CURRENT_REPO_NAME=""
 CURRENT_BUILD_ARTIFACT_DIRS=()
 stale_unmerged=()
 
-# Parse `git worktree list --porcelain` into (path, branch) pairs. Reads
-# $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS, which
-# gc_one_repo() sets before invoking this per repo.
-path="" branch=""
+# Parse `git worktree list --porcelain` into (path, branch, lock-state)
+# triples. Reads $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS,
+# which gc_one_repo() sets before invoking this per repo.
+path="" branch="" is_locked=0 locked_reason=""
 flush() {
   [ -z "$path" ] && return
   # Skip the main checkout.
@@ -476,28 +561,63 @@ flush() {
   else
     log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
+  # Lock guard (BRO-2624): `git worktree lock` is an explicit human "leave this
+  # alone" — `git worktree remove` (with or without --force) refuses on a
+  # locked worktree regardless of cleanliness, so this must be checked BEFORE
+  # the dry-run/real split below, not folded into the dirty-tree else-branch
+  # each side reaches independently. Sharing one check point for both DRY_RUN
+  # and the real path is what keeps them in parity here: there is no separate
+  # "is it locked" prediction to drift out of sync with the real refusal, the
+  # way is_worktree_clean()'s status-only view did (see its header comment).
+  if [ "$is_locked" = "1" ]; then
+    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but worktree is LOCKED (${locked_reason:-no reason given}); not forcing"
+    skipped=$((skipped+1))
+    path="" branch=""; is_locked=0; locked_reason=""; return
+  fi
   if [ "$DRY_RUN" = "1" ]; then
-    if is_safe_dirty "$path"; then
-      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
-    else
+    # Three-way, mirroring the real path's three outcomes exactly (BRO-2607):
+    # clean -> plain remove succeeds; safe-dirty -> --force path; anything else
+    # -> git refuses and the run logs SKIP. A dirty-source worktree must NOT be
+    # counted in removed=, or the dry-run overstates reclaimable headroom.
+    if is_worktree_clean "$path"; then
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
+      removed=$((removed+1))
+    elif is_safe_dirty "$path"; then
+      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      removed=$((removed+1))
+    else
+      log "WOULD-SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
+      skipped=$((skipped+1))
+      # Mirror the real SKIP arm's stale-artifact strip so freed= predicts the
+      # real run here too (strip_build_artifacts logs WOULD-STRIP and does not
+      # delete when DRY_RUN=1).
+      if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+        strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+        strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
+      fi
     fi
-    removed=$((removed+1)); path="" branch=""; return
+    path="" branch=""; return
   fi
   # Measured before removal so the DONE summary's freed= reflects what
   # actually left disk, not just the floor/strip/orphan side-cleanups (task
   # #1682: a run that reclaimed 26GB across dozens of worktree removals
   # logged "freed=797.9MB" because this size was never captured — accurate
   # for the wrong reason next time someone reads this log to judge impact).
-  local removal_sz
+  local removal_sz remove_err force_err diag_err
   removal_sz=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
-  if git worktree remove "$path" 2>/dev/null; then
+  # Stderr is captured (not discarded) so the else-branch below can tell a
+  # real refusal reason apart from a bare assumption of dirtiness. LC_ALL=C
+  # pins git's fatal: message to English regardless of the operator's locale
+  # — the case match below is a substring match on that wording, and a
+  # localized message would silently fall through to "not removable" instead
+  # of correctly identifying dirty/locked.
+  if remove_err=$(LC_ALL=C git worktree remove "$path" 2>&1); then
     log "REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, worktree removed (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
-  elif is_safe_dirty "$path" && git worktree remove --force "$path" 2>/dev/null; then
+  elif is_safe_dirty "$path" && force_err=$(LC_ALL=C git worktree remove --force "$path" 2>&1); then
     # Only reached when the branch is already fully merged AND every dirty
     # path is generated data/ churn (is_safe_dirty) — this is what makes
     # --force safe here despite the file header's "never uses --force" claim
@@ -509,7 +629,25 @@ flush() {
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
   else
-    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
+    # BRO-2624: `git worktree remove` fails for more reasons than a dirty tree
+    # (the LOCKED case is already preempted above, but a lock race between
+    # that check and this remove call — or a submodule/permissions error —
+    # can still land here). Read the actual git error instead of assuming
+    # dirtiness, so the committed audit log names the real cause. Diagnose
+    # off the LAST attempt that actually ran: when is_safe_dirty took the
+    # --force branch and force_err came back non-empty, that failure (not the
+    # first plain-remove's "dirty" refusal) is why the worktree survives —
+    # e.g. it got locked in the gap between the two `git worktree remove`
+    # calls, which would otherwise still be misreported as plain dirtiness.
+    diag_err="${force_err:-$remove_err}"
+    case "$diag_err" in
+      *"is locked"*|*"cannot remove a locked working tree"*)
+        log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but worktree is LOCKED (locked between dry-run check and removal); not forcing" ;;
+      *"contains modified or untracked files"*)
+        log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing" ;;
+      *)
+        log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but not removable (${diag_err:-unknown error}); not forcing" ;;
+    esac
     skipped=$((skipped+1))
     # Merged-but-dirty worktrees can sit indefinitely (git won't remove them
     # while dirty) — same staleness treatment as unmerged ones.
@@ -551,12 +689,13 @@ gc_one_repo() {
     git fetch origin main -q 2>/dev/null || log "WARN: [$repo_name] git fetch failed (offline?) — using cached origin/main"
   fi
 
-  path="" branch=""
+  path="" branch="" is_locked=0 locked_reason=""
   while IFS= read -r line; do
     case "$line" in
-      "worktree "*) flush; path="${line#worktree }" ;;
+      "worktree "*) flush; path="${line#worktree }"; branch=""; is_locked=0; locked_reason="" ;;
       "branch refs/heads/"*) branch="${line#branch refs/heads/}" ;;
       "detached") branch="" ;;
+      "locked"*) is_locked=1; locked_reason="${line#locked}"; locked_reason="${locked_reason# }" ;;
     esac
   done < <(git worktree list --porcelain)
   flush

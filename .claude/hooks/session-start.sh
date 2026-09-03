@@ -338,6 +338,39 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; }; the
   fi
 fi
 
+# CODE-REPO staleness (BRO-2663, added 2026-08-31). The two blocks above watch
+# derived data checkouts (review-texts, core-data clone); nothing warned when
+# the CODE checkout itself was behind origin/main. Same hazard, same shape: a
+# stale checkout does not fail loudly, it produces a WRONG CONCLUSION. On
+# 2026-08-31 a crown session read scripts/audit-regex-patterns.test.mjs from a
+# checkout 18 commits behind, found a landed commit's 5 new tests apparently
+# missing, and nearly reopened a card against a correct worker. The crown
+# loop's own "am I ahead" check (`git rev-list --count origin/main..HEAD`)
+# answers a different question and reads 0 in both the current AND the
+# arbitrarily-behind case — it cannot catch this; the missing direction is
+# `HEAD..origin/main`, which is what scripts/lib/code-checkout-staleness.js
+# runs. Scoped to the shared MAIN checkout only (`$PWD` not under
+# .claude/worktrees/) — a worktree branch is ahead of origin/main by
+# definition (its own commits), so this same behind/ahead shape there is
+# normal, not the incident's hazard (second-opinion review, BRO-2663 plan
+# review). Extracted to a lib (not inlined like the CORE-DATA block above) so
+# it's unit-tested — see scripts/tests/session-start-staleness.test.mjs.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
+   && [ -n "$REPO_ROOT" ] && [[ "$PWD" != *"/.claude/worktrees/"* ]] \
+   && [ -f "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" ] \
+   && command -v node >/dev/null 2>&1; then
+  CODE_STALE_MSG=$(node -e '
+    const { runCodeCheckoutStalenessCheck } = require(process.argv[1]);
+    const r = runCodeCheckoutStalenessCheck({ repoDir: process.argv[2] });
+    if (r.message) console.log(r.message);
+  ' "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" "$REPO_ROOT" 2>/dev/null || true)
+  if [ -n "$CODE_STALE_MSG" ]; then
+    echo ""
+    echo "$CODE_STALE_MSG"
+    echo ""
+  fi
+fi
+
 
 # Scoring-delta session baseline (added 2026-06-04). data/review-texts is a single
 # clone SHARED by all concurrent CMUX sessions, so `scoring-delta.js`'s `git diff

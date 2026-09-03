@@ -1964,14 +1964,39 @@ function validateReviewsJson() {
             if (fileData.misattributedFullText === true && !fileData.extractedByline) {
               warn(`${showDir}/${file}: misattributedFullText=true but missing extractedByline`);
             }
-            if (fileData.duplicateTextOf !== undefined && typeof fileData.duplicateTextOf !== 'string') {
+            // `!= null` (loose), NOT `!== undefined`: an explicit `duplicateTextOf: null`
+            // means "not a duplicate" and is as absent as a missing key, but
+            // `typeof null === 'object'` so the strict-undefined form reported all 31
+            // of them as `should be string, got object` (62 lines in the run — warn()
+            // prints immediately AND the end-of-run summary re-prints every warning).
+            // Corpus-wide on 2026-09-03 the field is 1305 strings + 31 nulls and
+            // nothing else, so this silences only false positives — and it restores
+            // the check's actual purpose, which is to make a genuine non-string
+            // pointer (array, object, number) visible instead of burying it in a wall
+            // of identical noise.
+            if (fileData.duplicateTextOf != null && typeof fileData.duplicateTextOf !== 'string') {
               warn(`${showDir}/${file}: duplicateTextOf should be string, got ${typeof fileData.duplicateTextOf}`);
             }
             // Validate that duplicateTextOf points to an existing file in the same dir.
             // Broken refs cause silent dedup failures (the duplicate slips through and
             // double-counts the same review under a misattributed critic).
             if (typeof fileData.duplicateTextOf === 'string') {
-              const refPath = path.join(showDir, fileData.duplicateTextOf);
+              // dirPath, NOT showDir. showDir is the bare directory NAME from the
+              // readdir above; dirPath (line 1948) is the resolved
+              // <DATA_DIR>/review-texts/<show> the loop's own reader uses. Joining
+              // against showDir produced "<show-id>/<target>.json" relative to
+              // process.cwd(), which never exists, so this warned on 100% of
+              // pointers — 1305 of 1305 measured on 2026-09-03, zero of them
+              // genuinely dangling. A grep over the run's output counts 2610
+              // because warn() prints each line immediately AND the end-of-run
+              // summary re-prints every warning; one root, printed twice, not
+              // two roots. Either way it dominated the report, and it meant a
+              // REAL broken ref would have arrived as one more indistinguishable
+              // line in a wall of identical false ones.
+              // All 1305 pointer values are bare basenames (none contains "/",
+              // "\", ".." or a leading "/"), matching this check's own
+              // same-directory contract, so nothing legitimate is lost.
+              const refPath = path.join(dirPath, fileData.duplicateTextOf);
               if (!fs.existsSync(refPath)) {
                 warn(`${showDir}/${file}: duplicateTextOf points to non-existent file "${fileData.duplicateTextOf}"`);
               }

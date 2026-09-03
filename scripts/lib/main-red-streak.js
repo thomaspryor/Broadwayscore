@@ -66,10 +66,47 @@ function isInfraOnlyFailure(run) {
 // task #80 described when this carve-out was first written, so defaulting to
 // red on missing evidence is the conservative — and now also the accurate —
 // choice.
+// A job that hits its `timeout-minutes` is reported by GitHub with
+// conclusion 'cancelled', identically to one cancelled by supersession — but
+// its STEPS still carry the failures it accumulated before the runner pulled
+// the plug. Looking only at job conclusions therefore cannot tell "superseded,
+// nothing ran" from "ran, failed, then timed out", and scores the second as
+// benign. Observed on main 2026-09-01, three consecutive runs (33466229004,
+// 33469747007, 33471909555): Data Validation ran ~35m against
+// timeout-minutes: 30, conclusion 'cancelled', with
+// "Validate provisional show venue+dates against Playbill" conclusion
+// 'failure' inside it — and assessMainRedStreak() returned alarm:null,
+// redRunCount:0 while main was failing on every push.
+// Only failures that happened BEFORE the runner started cancelling count. When
+// a job is cancelled mid-flight, GitHub stamps every remaining `if: always()`
+// step 'failure' with zero duration even though it never ran (observed on run
+// 33416106078: Data Validation cancelled during Checkout at step 2, then steps
+// 13-53 all 'failure' at an identical timestamp). Counting those would alarm on
+// runs where nothing actually failed and no test ever executed — the exact
+// false positive isSetupJobOnlyFailure exists to prevent. A genuine pre-cancel
+// failure precedes the first cancelled step; a phantom one follows it.
+// Duration is NOT a usable discriminator here: legitimately fast steps are also
+// 0s.
+function hasFailingStep(job) {
+  const steps = job?.steps || [];
+  const ordered = steps.every((s) => Number.isFinite(s?.number))
+    ? [...steps].sort((a, b) => a.number - b.number)
+    : steps;
+  for (const s of ordered) {
+    if (s?.conclusion === 'cancelled') return false; // everything after this is phantom
+    if (s?.conclusion === 'failure') return true;
+  }
+  return false;
+}
+
 function isBenignCancellation(run) {
   if (run.conclusion !== 'cancelled') return false;
   const jobs = run.jobs || [];
   if (!jobs.length) return false; // no evidence — do not manufacture a pass
+  // An explicit step-level failure is positive evidence that something DID
+  // fail, which is exactly what this function requires the absence of. A
+  // superseded run has no failing steps; a timed-out one does.
+  if (jobs.some(hasFailingStep)) return false;
   // Every job must have an EXPLICIT non-failure conclusion — a job with no
   // conclusion yet (or a conclusion outside this list) is not evidence of
   // "nothing failed", so it does not qualify as benign.

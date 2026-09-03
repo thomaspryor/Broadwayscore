@@ -1,8 +1,121 @@
 {
-  "generatedAt": "2026-08-31T13:50:11.621Z",
+  "generatedAt": "2026-09-02T14:57:50.729Z",
   "lookbackDays": 3,
-  "shows": [],
-  "upcoming": [
+  "shows": [
+    {
+      "id": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-02",
+      "status": "open",
+      "slug": "a-month-in-the-country-west-end",
+      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
+      "siteScore": 71.83,
+      "liveScore": 72,
+      "scoreDrift": 0.1700000000000017,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 4,
+      "t1": 1,
+      "t2": 0,
+      "t3": 3,
+      "positive": 2,
+      "mixed": 1,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "4/8 total",
+          "T1:0/3",
+          "T2:1/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-02T10:31:59.044Z",
+          "rc": 2,
+          "s": 77,
+          "t1": 1,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T13:26:38.266Z",
+          "rc": 4,
+          "s": 71.83,
+          "t1": 1,
+          "t2": 0,
+          "t3": 3,
+          "p": 2,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "electra-persona-west-end-2026",
       "title": "Electra / Persona",
@@ -10,9 +123,142 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-09-01",
-      "status": "previews",
+      "status": "open",
       "slug": "electra-persona-west-end",
       "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
+      "siteScore": 68.36,
+      "liveScore": 68,
+      "scoreDrift": -0.35999999999999943,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 16,
+      "t1": 6,
+      "t2": 4,
+      "t3": 6,
+      "positive": 8,
+      "mixed": 7,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "T1:2/3"
+        ],
+        "highConfidence": 6,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-01T00:23:41.812Z",
+          "rc": 1,
+          "s": 77,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-01T01:27:52.379Z",
+          "rc": 2,
+          "s": 86,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T10:31:59.044Z",
+          "rc": 14,
+          "s": 68.07,
+          "t1": 5,
+          "t2": 3,
+          "t3": 6,
+          "p": 7,
+          "m": 6,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T13:26:38.266Z",
+          "rc": 15,
+          "s": 67.54,
+          "t1": 6,
+          "t2": 3,
+          "t3": 6,
+          "p": 7,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-02T14:57:50.729Z",
+          "rc": 16,
+          "s": 68.36,
+          "t1": 6,
+          "t2": 4,
+          "t3": 6,
+          "p": 8,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "the-story-west-end-2026",
+      "title": "The Story",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-09-03",
+      "status": "previews",
+      "slug": "the-story-west-end",
+      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
       "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
@@ -29,16 +275,55 @@
       "preflight": false
     },
     {
-      "id": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
+      "id": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-09-08",
+      "status": "upcoming",
+      "slug": "school-girls-or-the-african-mean-girls-play",
+      "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
       "market": "west-end",
       "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-09-02",
+      "type": "musical",
+      "openingDate": "2026-09-08",
       "status": "previews",
-      "slug": "a-month-in-the-country-west-end",
-      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "slug": "jane-eyre-off-west-end",
+      "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -54,16 +339,16 @@
       "preflight": false
     },
     {
-      "id": "the-story-west-end-2026",
-      "title": "The Story",
+      "id": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
       "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-09-03",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-09-09",
       "status": "previews",
-      "slug": "the-story-west-end",
-      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "slug": "kimberly-akimbo-off-west-end",
+      "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,

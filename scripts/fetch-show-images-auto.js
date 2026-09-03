@@ -2489,6 +2489,14 @@ async function main() {
   // #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+  // BRO-2672: --show= now accepts a comma-separated list (the batched
+  // fetch-all-image-formats.yml dispatch forwards inputs.show_id verbatim
+  // as --show=id1,id2,...). showFilter itself stays the raw string/undefined
+  // so every existing `!showFilter`/truthy check below is unaffected —
+  // showFilterIds is a separate Set used only for id/slug membership.
+  const showFilterIds = showFilter
+    ? new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean))
+    : null;
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
@@ -2566,8 +2574,8 @@ async function main() {
     const errors = [];
     let scanned = 0;
 
-    const showsToAudit = showFilter
-      ? showsData.shows.filter(s => s.id === showFilter || s.slug === showFilter)
+    const showsToAudit = showFilterIds
+      ? showsData.shows.filter(s => showFilterIds.has(s.id) || showFilterIds.has(s.slug))
       : showsData.shows.filter(s => s.images?.thumbnail);
 
     console.log(`Scanning ${showsToAudit.length} shows with thumbnails...\n`);
@@ -2646,9 +2654,19 @@ async function main() {
     shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
   }
 
-  if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
-    console.log(`Filtering to show: ${showFilter}`);
+  if (showFilterIds) {
+    shows = shows.filter(s => showFilterIds.has(s.id) || showFilterIds.has(s.slug));
+    console.log(`Filtering to ${showFilterIds.size} show(s): ${showFilter}`);
+    // BRO-2672: a batched --show= carries ids straight from a dispatch input
+    // (no upstream validation that each id still exists in shows.json). A
+    // stale/misspelled id silently disappearing from the batch would mean
+    // that show's images never get fetched with no signal anywhere — call
+    // it out so it doesn't read as "the whole batch is being handled".
+    const matched = new Set([...shows.map(s => s.id), ...shows.map(s => s.slug)]);
+    const unmatched = [...showFilterIds].filter(id => !matched.has(id));
+    if (unmatched.length) {
+      console.warn(`⚠ ${unmatched.length} requested id(s) matched no show and will be SKIPPED: ${unmatched.join(',')}`);
+    }
   }
 
   // FILL-HEROES MODE: Find shows with poster/thumbnail but no hero, fill from Theatr/TodayTix

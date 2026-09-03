@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-31T14:44:11.342Z",
+  "generatedAt": "2026-09-02T22:17:57.625Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 133,
-  "clean": 133,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "checked": 137,
+  "clean": 136,
+  "defective": 1,
+  "byType": {
+    "unreachable": 1
+  },
+  "shows": [
+    {
+      "showId": "michael-r-jackson-wake-up-call-off-broadway-2026",
+      "title": "Michael R. Jackson: Wake Up Call",
+      "openingDate": "2026-08-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    }
+  ]
 }

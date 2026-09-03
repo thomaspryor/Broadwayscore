@@ -52,17 +52,24 @@ let oldestMtime = Date.now();
 
 // mtime lies for files that are symlinked into (or cp-skipped as identical to)
 // the private data repo: their mtime is the last content change, not the last
-// sync. For those, freshness = when the clone was last synced with origin.
+// sync. For those, freshness = when the clone's checked-out commit was made.
+//
+// Deliberately HEAD commit time ONLY — do not fold in FETCH_HEAD's mtime.
+// `git fetch` touches FETCH_HEAD on every run, including ones that update
+// origin/<branch> without fast-forwarding local HEAD (fetch never merges).
+// A prior version took max(FETCH_HEAD mtime, HEAD commit time), so a bare
+// fetch made a clone that was days behind report as "synced just now" —
+// this silently hid a 3-day-stale reviews.json (missing a live opening-night
+// show's reviews entirely) behind "Data healthy: Updated: 0m ago" (2026-09-02
+// incident). HEAD commit time only changes on checkout/pull/commit, i.e. on
+// an actual sync, so it can't be fooled the same way.
 function privateRepoSyncMs() {
-  let t = 0;
-  try { t = fs.statSync(path.join(PRIVATE_REPO, '.git', 'FETCH_HEAD')).mtimeMs; } catch { /* never fetched */ }
   try {
     const head = parseInt(execSync('git log -1 --format=%ct', {
       cwd: PRIVATE_REPO, stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000,
     }).toString().trim(), 10) * 1000;
-    if (head > t) t = head;
-  } catch { /* not a clone */ }
-  return t || null;
+    return head || null;
+  } catch { return null; /* not a clone */ }
 }
 const repoSyncMs = privateRepoSyncMs();
 

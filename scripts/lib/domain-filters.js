@@ -28,8 +28,21 @@ const TICKET_DOMAINS = new Set([
   // original editorial reviews at /reviews/our/<show> (adversarial review
   // 2026-08-02); its listing pages are caught by the path-based checks.
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
+  // thelondoner.com — /exclusive-offers/<show> is a ticket-offer page carrying
+  // the producer's own show blurb. Its A Month in the Country page was ingested
+  // via submit-review-form, criticName Unknown, and landed at
+  // contentTier:'complete' (3790 chars of well-formed prose), so it was a live
+  // scoring candidate held back only by having no score yet. Same shape as the
+  // BRO-2712 southbankcentre finding.
+  'thelondoner.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
+  // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the
+  // only reason it was missing is that nothing had ingested it before. It had
+  // been parked in data/audit/outlet-registry-baseline.json as a "known
+  // missing outlet", i.e. masked rather than excluded; blocking the domain is
+  // the same remedy BRO-2712 applied to the venue/PR-firm hosts.
+  'ticketline.co.uk',
   // 2026-08-16 (task #766 re-triage): skiddle.com is a UK gigs/events ticketing
   // and listings platform, not a review outlet — it was the majority host in
   // click-liverpool's own review-texts archive (2 of the outlet's real domain's
@@ -50,6 +63,15 @@ const TICKET_DOMAINS = new Set([
 // Aggregator/listing sites — not direct review sources
 const AGGREGATOR_DOMAINS = new Set([
   'show-score.com', 'showscore.com',
+  // vocaleyes.co.uk — audio-description access LISTINGS ("Audio-described
+  // performance, Touch tour, Date: Saturday 12 September 2026"), not criticism.
+  // Excellent cause, wrong corpus. It sells nothing, it lists, so it belongs
+  // here and not in TICKET_DOMAINS — where a previous commit's comment claimed
+  // it had been moved while the entry itself never left. Mirrored into
+  // NAMED_NON_REVIEW_URL_PATTERNS so the discovery path agrees; without that
+  // mirror the write path blocks it while a SERP census still counts it as an
+  // uncovered gap.
+  'vocaleyes.co.uk',
   // NOTE: playbill.com removed from blanket block — Playbill publishes original articles (/article/ paths).
   // Listing pages (/production/, /show/) are caught by the path-based check below.
   // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
@@ -79,6 +101,60 @@ const REFERENCE_DOMAINS = new Set([
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'iloveny.com',
+]);
+
+// Venue/producer own-site listing pages — box-office "what's on" copy, never
+// criticism (BRO-2712: southbank.london's Electra/Persona page was "Home
+// What's On ... Save this Dates ... Ticket Information ... Location Info",
+// ingested via /submit-review and scored as a "truncated" review).
+const VENUE_DOMAINS = new Set([
+  'southbank.london',
+  // Same venue family, different domain — southbankcentre.co.uk's own
+  // /whats-on/ listing pages are the identical "Toggle caption ... Dates &
+  // tickets ... Access ... Ticket Office" box-office copy (BRO-2712
+  // adversarial-review finding: dog-man-the-musical-west-end-2026's
+  // southbankcentre--unknown.json was ingested via the same /submit-review
+  // path and only excluded by luck — the LLM ensemble check happened to catch
+  // it, the same check that MISSED southbank.london's Electra/Persona page).
+  'southbankcentre.co.uk',
+]);
+
+// Theatre PR firms AND institutional press offices — announcements, not
+// criticism, but they read as well-formed prose (byline, dateline, plot
+// summary) so structural heuristics like isJunkOutlet() never catch them
+// (BRO-2712: spincyclenyc.com filed a 4300-char SparkPlug Productions press
+// release for The Bathroom Attendant with a "critic" name of "Ron" and
+// contentTier=complete — a live candidate for scoring as a critic review
+// before this was caught).
+const PR_FIRM_DOMAINS = new Set([
+  'spincyclenyc.com',
+  // University department news pages. tisch.nyu.edu announced an alum's
+  // production ("Lukas T. Woodyard (PS MA '20) along with their collective ...
+  // is producing the new work") and was ingested via submit-review-form as a
+  // masticate-off-broadway-2026 review. A previous crown cycle baselined this
+  // outletId and recorded "do NOT register these as real outlets if they
+  // recur". It recurred. Blocking the host is what ends it — a baseline
+  // silences one outletId, and the next alum announcement arrives under a new
+  // one. Whole-domain, so *.nyu.edu is covered; the department subdomain is
+  // incidental. NOTE this is a wildcard: a student paper hosted on an nyu.edu
+  // subdomain would be blocked silently. Zero such hits in the corpus today.
+  'nyu.edu',
+]);
+
+// User-generated publishing platforms — anyone can post, there is no editorial
+// desk and no critic of record, so a post here is not criticism even when it is
+// long, well-formed and topically a review. Structural heuristics cannot catch
+// them for the same reason PR-firm copy slips through (BRO-2712): the prose is
+// fine, the source is not.
+//
+// vocal.media (2026-09-01, this made main red): vocal.media/critique/bathroom-attendant
+// was ingested for the-bathroom-attendant-off-broadway-2026 at contentTier=complete
+// with no byline and no publishDate, and turned up as a NEW unregistered outlet in
+// `audit-outlet-registry.js --strict`. Note the same show also produced the
+// spincyclenyc.com press release — one under-covered off-Broadway title pulls in
+// whatever the SERP will give it, so this set should be expected to grow.
+const UGC_PLATFORM_DOMAINS = new Set([
+  'vocal.media',
 ]);
 
 /**
@@ -115,7 +191,10 @@ function isBlockedReviewUrl(url) {
     if (matchesDomainSet(hostname, SOCIAL_DOMAINS)
       || matchesDomainSet(hostname, TICKET_DOMAINS)
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
-      || matchesDomainSet(hostname, REFERENCE_DOMAINS)) return true;
+      || matchesDomainSet(hostname, REFERENCE_DOMAINS)
+      || matchesDomainSet(hostname, VENUE_DOMAINS)
+      || matchesDomainSet(hostname, PR_FIRM_DOMAINS)
+      || matchesDomainSet(hostname, UGC_PLATFORM_DOMAINS)) return true;
     // Path-based blocking for sites that publish BOTH reviews and listings
     const lowerPath = parsed.pathname.toLowerCase();
     // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
@@ -145,7 +224,8 @@ function isBlockedReviewUrl(url) {
 function isBlockedDomain(domain) {
   const d = domain.replace(/^www\./, '').toLowerCase();
   return SOCIAL_DOMAINS.has(d) || TICKET_DOMAINS.has(d)
-    || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d);
+    || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d)
+    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d) || UGC_PLATFORM_DOMAINS.has(d);
 }
 
 module.exports = {
@@ -153,6 +233,9 @@ module.exports = {
   TICKET_DOMAINS,
   AGGREGATOR_DOMAINS,
   REFERENCE_DOMAINS,
+  VENUE_DOMAINS,
+  PR_FIRM_DOMAINS,
+  UGC_PLATFORM_DOMAINS,
   isSocialMediaUrl,
   isBlockedReviewUrl,
   isBlockedDomain,

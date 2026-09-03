@@ -9,8 +9,13 @@
  * This is a LIVE-DATA PROBE, not a unit test (same shape as
  * scripts/verify-main-green-streak.test.mjs): it reads the real shared task
  * mirror (~/.claude/tasks/<list>/) and the real `cmux list-workspaces`
- * output, neither of which exist in CI. It is EXEMPT_NEVER_CI in
- * scripts/audit-orphan-tests.js for that reason.
+ * output, neither of which exist in CI. It is NOT in EXEMPT_NEVER_CI
+ * (verified BRO-2611, 2026-08-31) — it doesn't need to be: findOrphans()'s
+ * loadLiveTasks() degrades to [] when ~/.claude/tasks/<list>/ is absent (as
+ * on every CI runner), so this test vacuously passes (0 orphans, 0
+ * unexplained) rather than failing or erroring there. It only surfaces real
+ * findings on a machine with a live task mirror + cmux — i.e. Tom's own
+ * dev machine, which is exactly where the triage list below needs updating.
  *
  * "The survivors named ... so they cannot grow silently" (card #1705's own
  * acceptance wording) is enforced literally: every in_progress task with no

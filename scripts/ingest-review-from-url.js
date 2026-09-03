@@ -40,6 +40,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName } = require('./lib/review-normalization');
@@ -134,6 +135,21 @@ function extractByline(html) {
 
 (async () => {
   console.log(`Ingesting single review: ${showId} ${url}`);
+
+  // Refuse known non-review domains (ticket/listing/social/reference/venue/
+  // PR-firm — domain-filters.js's isBlockedReviewUrl) BEFORE fetching. This is
+  // the /submit-review path's only line of defense against a classification
+  // miss by validate-review-submission.js's LLM gate — BRO-2712: a venue
+  // "what's on" page (southbank.london) and a PR firm's press release
+  // (spincyclenyc.com) both got an "approve" verdict from that LLM and landed
+  // here with no other guard in the way. Excluding them later at scoring time
+  // (isBlockedReviewUrl is also the rebuild's canonical exclusion check) still
+  // leaves a written-but-unscored review file and an approval email sent to
+  // the submitter; refusing at ingest is the cheaper, earlier stop.
+  if (isBlockedReviewUrl(url)) {
+    console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
+    process.exit(1);
+  }
 
   let html;
   try {

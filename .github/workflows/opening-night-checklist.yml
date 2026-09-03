@@ -25,33 +25,58 @@ permissions:
   # recover-explicit-ratings.yml already uses to dispatch rebuild-reviews.yml.
   actions: write
 
+# BRO-2670: moved from a job-level per-run-id group (`opening-night-checklist-
+# ${{ github.run_id }}`) to a fixed, WORKFLOW-level group. The old group was a
+# documented, deliberate no-op — "does NOT serialize" — so overlapping
+# invocations (hourly cron vs. workflow_dispatch, or a stuck run) could race
+# each other into the "Commit opening night state" step below. A real
+# serializing group is a hard prerequisite for that step's apiFallbackSafe
+# registry entries (scripts/lib/core-data-merge-registry.js's header comment:
+# the ONE workflow that writes an apiFallbackSafe file must declare "a
+# concurrency group that serializes overlapping runs of ITSELF" — without it,
+# push-with-retry.sh's fail-closed "ours wins outright" compare-and-swap could
+# let a stale concurrent run of this SAME workflow clobber a fresher one with
+# no error). Same shape as data-health-check.yml (group: data-health-check)
+# and opening-night-broadcast.yml (group: broadcast-send); also required
+# because scripts/lib/api-fallback-writer-drift.js's extractConcurrencyGroup()
+# — the tool that independently re-verifies apiFallbackSafe claims — only
+# recognizes a WORKFLOW-level `^concurrency:` block, not a job-level one.
+#
+# TRADEOFF, accepted deliberately (same as those two precedents): with
+# cancel-in-progress:false, TWO overlapping invocations queue safely, but a
+# THIRD (e.g. workflow_dispatch firing while a cron run is in-progress and
+# another is already queued) gets its queued predecessor CANCELLED at
+# GitHub's queue-depth-1 limit — a full missed hourly check, worse than
+# today's per-push data loss for that one cycle. Given this job's 10-minute
+# timeout and hourly cadence, 3-deep overlap should be rare.
+#
+# BONUS (not the primary motivation): this also closes the SCOPE CORRECTION
+# gap task #389 previously left open on purpose — an overlapping cron +
+# workflow_dispatch run racing into data/audit/remediation-log.jsonl's
+# cooldown ledger and double-dispatching the same remediation. Real
+# serialization (queue, not cancel) removes that race as a side effect.
+#
+# ROLLBACK IS COUPLED (Codex adversarial review, BRO-2670): this group and
+# the 2 apiFallbackSafe entries it licenses in scripts/lib/core-data-merge-
+# registry.js (audit/opening-night-history.json, audit/opening-night-sla-
+# state.json) must be rolled back TOGETHER, not independently. Reverting
+# only this concurrency change while leaving those registry entries active
+# would let overlapping runs race into the Git Data API fallback's
+# fail-closed "ours wins outright" compare-and-swap with no serialization —
+# the exact hazard concurrencyGroup exists to prevent. Reverting only the
+# registry entries while leaving this group in place is safe on its own
+# (just reintroduces the slow local push path for those 2 files) but
+# forfeits the fix. tests/unit/opening-night-checklist-push.test.mjs
+# cross-checks the group here against both entries' concurrencyGroup value,
+# so a rollback that touches only one side fails that test loudly.
+concurrency:
+  group: opening-night-checklist
+  cancel-in-progress: false
+
 jobs:
   checklist:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    concurrency:
-      # per-run group intended: adjacent hourly cron invocations don't cancel
-      # each other at GitHub's queue-depth-1 limit. This does NOT serialize —
-      # duplicate-alert protection lives at the application layer instead
-      # (opening-night-sla-state.json + owner-alert-router cooldown/dedup in
-      # scripts/lib/opening-night-sla.js), so an overlapping run can't double-page
-      # (task #922 audit, 2026-08-03).
-      #
-      # SCOPE CORRECTION (task #389): that application-layer protection covers
-      # the ALERT path, not the new workflow-dispatch remediation path. Its
-      # cooldown state is data/audit/remediation-log.jsonl, which is committed
-      # in the LAST step of the job — so a cron run overlapping a manual
-      # workflow_dispatch reads the same pre-commit ledger and can dispatch the
-      # same remediation twice. Consequences are bounded and were accepted
-      # rather than serialized: the target workflows
-      # (update-critic-consensus.yml, recover-explicit-ratings.yml) each have
-      # their own named concurrency group with cancel-in-progress: false, so a
-      # duplicate queues instead of racing; the real cost is that it burns one
-      # of the 2-attempts-per-24h budget and can escalate to the owner's digest
-      # a cycle early. Serializing this job instead would reintroduce the
-      # queue-depth-1 cancellation this per-run group exists to avoid.
-      group: opening-night-checklist-${{ github.run_id }}
-      cancel-in-progress: false
 
     steps:
       - name: Checkout
@@ -177,7 +202,49 @@ jobs:
         run: |
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json "$LATENCY_OUT"
 
-      - name: Commit audit data
+      # BRO-2670: split from a single 7-file "Commit audit data" step. That
+      # bundled commit mixed data/audit/opening-night-history.json (single
+      # writer: this workflow) with data/audit/alert-digest-queue.json (8+
+      # writers, no merge function registered — see core-data-merge-
+      # registry.js's "NOT added, deliberately" note) and other multi-writer
+      # files. push-with-retry.sh's Git Data API fallback disqualifies a
+      # WHOLE commit if ANY changed data/audit/ path is neither MANAGED nor
+      # apiFallbackSafe — so this workflow's actual single-writer state (the
+      # ledger causing "resets hourly, re-dispatches forever" when lost) never
+      # got a shot at the fallback, and was stuck on the slow local
+      # fetch+rebase+push race, which is what was failing 6 of 8 runs (run
+      # 33434353698 et al). Isolating it into its own commit, FIRST, lets
+      # push-with-retry.sh's fallback engage for THIS commit even when the
+      # bulk telemetry commit below is still contending.
+      - name: Commit opening night state (apiFallbackSafe)
+        # W2.1 (task #1073): must run even when an earlier step now fails hard
+        # — see the sibling step's comment below for the full if:always()
+        # rationale (unchanged from the original single-step version).
+        if: always()
+        run: |
+          # opening-night-history.json is the attempt-history ledger this
+          # incident is actually about: if it is not committed, every hourly
+          # run starts with an empty history and re-dispatches the same
+          # workflow forever (see scripts/opening-night-checklist.js's
+          # appendToHistory() comment). opening-night-sla-state.json is
+          # routeAlert()'s per-condition cooldown state — without it the SLA
+          # alert router re-opens + re-emails every run. BOTH are registered
+          # apiFallbackSafe:true in scripts/lib/core-data-merge-registry.js
+          # (concurrencyGroup: opening-night-checklist — see this workflow's
+          # own concurrency: block above), verified sole writer via grep
+          # across every .github/workflows/*.yml for the literal filename
+          # (opening-night-orchestrator.yml also invokes the same underlying
+          # scripts but never stages/commits/pushes either path).
+          git add data/audit/opening-night-history.json 2>/dev/null || true
+          git add data/audit/opening-night-sla-state.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No opening night state changes to commit"
+          else
+            git commit -m "audit: opening-night checklist state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Commit shared audit telemetry
         # W2.1 (task #1073): must run even when an earlier step now fails hard
         # (checklist crash, or SLA dispatch no longer has continue-on-error) —
         # otherwise a mid-run failure strands whatever ledger/history state was
@@ -187,25 +254,33 @@ jobs:
         # ./.github/actions/setup-node step above (configure-git: true).
         if: always()
         run: |
-          # alert-ledger + sla-state + digest-queue MUST be committed here or the
-          # SLA alert router incident state never persists across the hourly runs
+          # alert-ledger + digest-queue MUST be committed here or the SLA
+          # alert router incident state never persists across the hourly runs
           # — routeAlert would re-open + re-email every run, reintroducing the
           # storm this migration fixes (#406).
           # remediation-log.jsonl is the cooldown store for self-declared
-          # remediations (task #389) — decideRequeueAction reads prior attempts
-          # out of it. If it is not committed, every hourly run starts with an
-          # empty attempt history and re-dispatches the same workflow forever.
-          git add data/audit/opening-night-history.json \
-                  data/audit/opening-night-latency-*.json \
-                  data/audit/stage-latency.jsonl \
-                  data/audit/alert-ledger.json \
-                  data/audit/alert-digest-queue.json \
-                  data/audit/remediation-log.jsonl \
-                  data/audit/opening-night-sla-state.json 2>/dev/null || true
+          # remediations (task #389) — decideRequeueAction reads prior
+          # attempts out of it.
+          # opening-night-latency-*.json is dated (opening-night-latency-
+          # YYYY-MM-DD.json) — NOT apiFallbackSafe (the registry's matcher is
+          # exact-suffix only, no glob support) so it stays here rather than
+          # in the isolated commit above; it's best-effort telemetry (the
+          # "Run latency report" step above is continue-on-error), not gating
+          # state, so riding the slower path with the other multi-writer
+          # files here is an accepted, deliberate choice (BRO-2670).
+          # All files here are genuinely multi-writer (alert-ledger.json,
+          # alert-digest-queue.json) or not yet registered
+          # (remediation-log.jsonl) — no apiFallbackSafe path available, same
+          # as before this split.
+          git add data/audit/opening-night-latency-*.json 2>/dev/null || true
+          git add data/audit/stage-latency.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/remediation-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No audit data changes to commit"
+            echo "No shared audit telemetry changes to commit"
           else
-            git commit -m "audit: opening-night checklist + latency [skip ci]"
+            git commit -m "audit: opening-night checklist telemetry [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main
           fi
 

@@ -20,6 +20,10 @@ on:
         description: 'Max reviews to process (leave empty for no limit)'
         required: false
         default: ''
+      max_cost:
+        description: 'Max cumulative token cost in USD before aborting (circuit breaker, --ensemble only; leave empty for unlimited)'
+        required: false
+        default: ''
       run_calibration:
         description: 'Run calibration after scoring (weekly Sunday auto-run only)'
         required: false
@@ -316,6 +320,22 @@ jobs:
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
           elif [ "${{ github.event_name }}" == "schedule" ]; then
             ARGS="$ARGS --limit=400"
+          fi
+
+          # Budget cap — circuit breaker for large manual dispatches (BRO-78).
+          # index.ts requires --ensemble to track per-model token deltas, which
+          # every ARGS build above already sets unconditionally.
+          # Validate the input is a positive number: index.ts's own parsing
+          # (parseFloat || 0) silently treats NaN/negative as "unlimited" —
+          # exactly backwards for a cost-safety feature — so a typo here must
+          # fail loud rather than pass through and silently disable the cap.
+          MAX_COST="${{ github.event.inputs.max_cost }}"
+          if [ -n "$MAX_COST" ]; then
+            if ! [[ "$MAX_COST" =~ ^[0-9]+(\.[0-9]+)?$ ]] || ! awk -v v="$MAX_COST" 'BEGIN { exit !(v > 0) }'; then
+              echo "::error::max_cost must be a positive number (got '$MAX_COST')"
+              exit 1
+            fi
+            ARGS="$ARGS --max-cost=$MAX_COST"
           fi
 
           # Calibration — weekly only (Sunday scheduled) or manual override
@@ -745,6 +765,11 @@ jobs:
           # Pass through outdated flag so rescore chains continue rescoring
           if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
+          fi
+          # Pass through max_cost so a budget cap applies across the whole chain,
+          # not just the first batch
+          if [ -n "${{ github.event.inputs.max_cost }}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f max_cost=${{ github.event.inputs.max_cost }}"
           fi
           # Pass through needs_rescore flag so rescore chains continue
           # Also pass through when scheduled run detected needsRescore backlog

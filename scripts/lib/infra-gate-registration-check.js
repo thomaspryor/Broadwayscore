@@ -531,7 +531,14 @@ function extractHookCommandPaths(settings) {
       const hookCmds = Array.isArray(entry.hooks) ? entry.hooks : [];
       for (const h of hookCmds) {
         const command = typeof h.command === 'string' ? h.command : '';
-        const m = command.match(/[~./][^\s'"]*\.sh\b/);
+        // Negative lookbehind excludes a match starting right after a shell
+        // variable reference (e.g. the `/` in `$R/.claude/hooks/x.sh`, BRO-2439's
+        // CLAUDE_PROJECT_DIR-anchored resolver) so extraction lands on the
+        // stable `.claude/hooks/x.sh` suffix instead of misreading the `/` as
+        // an absolute-path prefix. `~/.claude/hooks/x.sh` (global settings,
+        // preceded by a quote/space) and `.claude/hooks/x.sh` (repo-relative)
+        // still match exactly as before.
+        const m = command.match(/(?<![\w}])[~./][^\s'"]*\.sh\b/);
         if (m) {
           matched.push({ event, matcher, command, rawPath: m[0] });
         } else {

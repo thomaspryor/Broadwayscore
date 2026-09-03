@@ -111,7 +111,24 @@ function evaluateCard(card) {
     armed: gate.armed,
     ownerJudgment: gate.ownerJudgment,
     reason: gate.reason,
+    kind: gate.kind,
   };
+}
+
+// BRO-2570: refused cards used to carry only gate.reason — one opaque
+// sentence collapsing "wrong directory", "wrong shape", a traversal attempt,
+// and a phantom path into the same unreadable bucket. gate.kind (threaded
+// from explainUnsafeCheckCommand via evaluateVerifiability) is the same
+// machine-readable cause enrich-card-acceptance.js already branches on
+// (BRO-2546) — byKind turns "N cards refused" into "N cards are one
+// directory away from armed" board-wide.
+function tallyByKind(refused) {
+  const byKind = {};
+  for (const c of refused) {
+    const k = c.kind || 'unknown';
+    byKind[k] = (byKind[k] || 0) + 1;
+  }
+  return byKind;
 }
 
 function buildReport(evaluated, now = new Date()) {
@@ -121,8 +138,9 @@ function buildReport(evaluated, now = new Date()) {
     total: evaluated.length,
     armedCount: evaluated.length - refused.length,
     refusedCount: refused.length,
+    byKind: tallyByKind(refused),
     refused: refused.map(c => ({
-      id: c.id, name: c.name, priority: c.priority, url: c.url, reason: c.reason,
+      id: c.id, name: c.name, priority: c.priority, url: c.url, reason: c.reason, kind: c.kind || 'unknown',
     })),
   };
 }
@@ -154,6 +172,7 @@ function evaluateLinearIssue(issue) {
     armed: gate.armed,
     ownerJudgment: gate.ownerJudgment,
     reason: gate.reason,
+    kind: gate.kind,
   };
 }
 
@@ -191,9 +210,14 @@ function printReport(label, report, reportPath) {
   console.log(`${label} total checked: ${report.total}`);
   console.log(`${label} armed (dispatchable):    ${report.armedCount}`);
   console.log(`${label} refused (undispatchable): ${report.refusedCount}`);
+  const kindEntries = Object.entries(report.byKind || {}).sort((a, b) => b[1] - a[1]);
+  if (kindEntries.length) {
+    console.log(`\n${label} refused by kind:`);
+    kindEntries.forEach(([kind, count]) => console.log(`  ${kind}: ${count}`));
+  }
   if (report.refused.length) {
     console.log(`\nFirst 15 ${label.toLowerCase()} refused:`);
-    report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] ${c.name} — ${c.reason}`));
+    report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] [${c.kind || 'unknown'}] ${c.name} — ${c.reason}`));
   }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
 }
@@ -218,6 +242,7 @@ async function main() {
   printReport(source === 'linear' ? 'Linear' : 'Notion', report, reportPath);
 
   if (process.env.GITHUB_STEP_SUMMARY) {
+    const kindEntries = Object.entries(report.byKind || {}).sort((a, b) => b[1] - a[1]);
     const summary = [
       `## Card Verifiability Audit (${source})`,
       '',
@@ -227,6 +252,14 @@ async function main() {
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
       '',
+      ...(kindEntries.length ? [
+        '### Refused by kind',
+        '',
+        `| Kind | Count |`,
+        `|------|-------|`,
+        ...kindEntries.map(([kind, count]) => `| ${kind} | ${count} |`),
+        '',
+      ] : []),
     ].join('\n');
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
   }

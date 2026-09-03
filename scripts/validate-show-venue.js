@@ -29,6 +29,23 @@
  *   --data-dir=PATH        validate PATH/shows.json instead of the live
  *                          checkout's data/shows.json (autonomous loop
  *                          Tier-2 verification against a candidate branch)
+ *   --time-budget-min=N    (--all-provisional only, BRO-2627) stop starting
+ *                          new shows once N minutes have elapsed; writes
+ *                          whatever was completed so far (never mid-show —
+ *                          checked between shows, not via a process-level
+ *                          kill, so the audit file always reflects a clean
+ *                          boundary). Targets are ordered by how much evidence
+ *                          checking them can produce (orderProvisionalTargets
+ *                          in lib/venue-date-compare.js): new first, then a
+ *                          known mismatch, then a transient error, then
+ *                          previously-clean, and last the shows that have no
+ *                          Playbill page at all. Only the first two can fail
+ *                          the gate when deferred, so a tight budget never
+ *                          starves the incident-relevant class this audit
+ *                          exists to catch, regardless of total provisional
+ *                          count. Within a tier the least-recently-checked
+ *                          show goes first, so the deferred tail rotates
+ *                          instead of being starved forever (BRO-2701).
  *
  * Usage:
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
@@ -41,7 +58,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
@@ -49,7 +66,10 @@ const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
   DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
+  orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults, buildPriorTierMap,
+  missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -64,7 +84,18 @@ const args = process.argv.slice(2);
 const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
 const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
-const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+// VENUE_AUDIT_PATH redirects the shared report for tests only — the report is
+// a repo-wide ledger, so an automated test of the write path must not be able
+// to touch the real one (that is the BRO-2696 failure itself). Production and
+// CI never set it.
+const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
+  ? path.resolve(process.env.VENUE_AUDIT_PATH)
+  : path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+if (process.env.VENUE_AUDIT_PATH) {
+  // Never silent: if this were ever set in CI, the gate would read and update a
+  // ledger nobody is looking at while every run still reported success.
+  console.log(`::warning::validate-show-venue: VENUE_AUDIT_PATH is set — reading and writing ${AUDIT_PATH} instead of the repo ledger. This override exists for tests only.`);
+}
 
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const allProvisional = args.includes('--all-provisional');
@@ -73,6 +104,7 @@ const failOnMismatch = args.includes('--fail-on-mismatch');
 const dryRun = args.includes('--dry-run');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
 const verbose = args.includes('--verbose');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const MONTH_MAP = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
                     jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
@@ -87,6 +119,24 @@ function loadShows() {
 function loadPlaybillUrlCache() {
   try { return JSON.parse(fs.readFileSync(PLAYBILL_URLS_PATH, 'utf8')); }
   catch { return { shows: {} }; }
+}
+
+// BRO-2627: id -> full last-known result row, read from the audit file THIS
+// run is about to overwrite. Missing/unparsable is treated as "no prior
+// data" (every show sorts as new) rather than an error. Used two ways: (1)
+// just the `.result` field feeds orderProvisionalTargets' prioritization,
+// (2) a budget-cut run merges these rows forward for any show it didn't
+// reach this time, so a deferred show's last-known state survives instead
+// of silently vanishing from the file and looking "new" again next run
+// (adversarial review finding, BRO-2627) — a best-effort prioritization
+// hint either way, never a correctness dependency for the checks themselves.
+function loadPreviousResultById() {
+  try {
+    const prev = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+    const out = {};
+    for (const r of prev.results || []) out[r.id] = r;
+    return out;
+  } catch { return {}; }
 }
 
 function isProvisional(show) {
@@ -192,11 +242,22 @@ async function findPlaybillUrl(show, log) {
     `site:playbill.com/production "${show.title}" ${venueWord}`,
     `site:playbill.com production "${show.title}" ${market}`,
   ];
+  // BRO-2701 review finding 1: this loop used to fall through to the same
+  // `source: 'none'` whether we LOOKED and found no Playbill page, or never
+  // managed to look at all. Both were then stamped 'no-playbill-url', which is
+  // a permanently-deferred, never-blocking tier — so a provider outage during
+  // one push could demote a brand-new stub with a wrong venue out of the gate
+  // for good. Track whether any query actually completed.
+  let anyQueryCompleted = false;
   for (const q of queries) {
     let results = null;
     try { results = await serpQuery(q, { nbResults: 10 }); }
     catch (e) { log(`    serp error: ${e.message}`); continue; }
-    if (!results || !results.length) continue;
+    // null (not []) is how serpQuery reports "no provider answered" — a thrown
+    // error is NOT the outage path. See serpQueryCompleted's docblock.
+    if (!serpQueryCompleted(results)) { log(`    serp unavailable (no provider answered)`); continue; }
+    anyQueryCompleted = true;
+    if (!results.length) continue;
     const candidates = results
       .filter(r => r.url && r.url.includes('playbill.com/production/'))
       .map(r => {
@@ -210,7 +271,15 @@ async function findPlaybillUrl(show, log) {
     }
     await sleep(800); // rate limit between SERP fallbacks
   }
-  return { url: null, source: 'none' };
+  // Every query threw: we have no evidence about this show either way, and
+  // saying so is what keeps it in the retry-worthy tier instead of the
+  // "this show has no Playbill page" one.
+  // Return the WHOLE outcome, not just `.source` (BRO-2701 review 3, finding 3).
+  // validateOne used to rebuild the decision with `source !== 'serp-error'`, so
+  // any third failure source added here later would silently default to
+  // 'no-playbill-url' — the permanently-parked tier this refactor exists to
+  // keep shows out of.
+  return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
 }
 
 function parseTitleVenueYear(html) {
@@ -254,24 +323,42 @@ async function validateOne(show, log) {
   log(`\n${show.id}  "${show.title}"  (${show.venue})`);
   const urlResult = await findPlaybillUrl(show, log);
   if (!urlResult.url) {
-    log(`  ⚠ no Playbill URL found`);
+    const outcome = { source: urlResult.source, result: urlResult.result };
+    log(outcome.result === 'serp-error'
+      ? `  ⚠ Playbill lookup FAILED (every SERP query errored) — not evidence of a missing page`
+      : `  ⚠ no Playbill URL found`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'no-playbill-url', urlSource: urlResult.source,
+      result: outcome.result, urlSource: urlResult.source,
       mismatches: [], playbillUrl: null, parsed: null,
     };
   }
   log(`  url (${urlResult.source}): ${urlResult.url}`);
 
   let html = '';
+  const pwMissingBefore = getScraperStats().pwBrowserMissingCount;
   try {
     const r = await fetchPage(urlResult.url, { timeout: 30000 });
     html = r.html || r.content || '';
   } catch (e) {
-    log(`  ⚠ fetch error: ${e.message}`);
+    // fetchPage() only throws once EVERY transport it tried has failed. If
+    // Playwright was one of those transports for THIS fetch and it failed
+    // because no browser is installed in this environment (not because the
+    // page itself rejected the request), this show could not actually be
+    // checked — it is an infrastructure gap, not evidence of a venue/date
+    // mismatch. Reporting it as a generic 'fetch-error' let a missing-browser
+    // CI job read exactly like a pile of real scrape failures (BRO-2560).
+    //
+    // Compares the counter before/after THIS call rather than reading a
+    // sticky "ever happened" flag — a global flag would misattribute a
+    // LATER, unrelated total-fetch-failure (a real 404, a real block, both
+    // paid providers exhausted) to "missing browser" just because some
+    // earlier show in the same process happened to hit that error.
+    const infra = getScraperStats().pwBrowserMissingCount > pwMissingBefore;
+    log(`  ⚠ ${infra ? 'infra-unavailable (Playwright browser missing)' : 'fetch error'}: ${e.message}`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'fetch-error', error: e.message,
+      result: infra ? 'infra-unavailable' : 'fetch-error', error: e.message,
       mismatches: [], playbillUrl: urlResult.url, parsed: null,
     };
   }
@@ -312,6 +399,45 @@ async function validateOne(show, log) {
 
 async function main() {
   let targets;
+  // Populated only in the --all-provisional branch; used after the loop to
+  // (a) merge a budget-deferred show's last-known state forward into this
+  // run's output instead of losing it, and (b) escalate rather than exit
+  // clean when the deferred tail included a new/still-broken show (BRO-2627
+  // adversarial review — a --fail-on-mismatch gate that silently drops
+  // coverage of the exact class it exists to catch is not actually strict).
+  // Computed ONCE, above the mode branches, so no mode can run without it
+  // (BRO-2696). These used to be populated only inside the --all-provisional
+  // branch, which meant a `--show=<id>` run wrote a one-row audit report over
+  // the shared, tracked one and destroyed CI's prioritization state. Hoisting
+  // makes "a filtered run truncates the report" structurally impossible rather
+  // than a branch someone has to remember to keep in sync.
+  const allShows = loadShows();
+  const provisionalShows = allShows.filter(isProvisional);
+  const previousResultsById = loadPreviousResultById();
+  // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
+  // still resolves to the real repo (documented above), so the two describe
+  // different universes. Retiring rows on that basis would let a candidate
+  // branch delete real coverage, so in that combination the write set is the
+  // union — nothing already in the ledger is dropped — and fingerprint
+  // staleness is not evaluated against a shows.json the ledger is not about.
+  // VENUE_AUDIT_PATH means the ledger was redirected alongside shows.json, so
+  // the two DO describe the same universe and normal semantics apply.
+  const mismatchedUniverse = Boolean(dataDirOverride) && !process.env.VENUE_AUDIT_PATH;
+  const currentProvisionalIds = new Set([
+    ...provisionalShows.map(s => s.id),
+    ...(mismatchedUniverse ? Object.keys(previousResultsById) : []),
+  ]);
+  const showsById = mismatchedUniverse
+    ? null
+    : Object.fromEntries(provisionalShows.map(s => [s.id, s]));
+  // BRO-2701 review finding 3: this used to map EVERY prior row to its
+  // `.result` unconditionally, while buildAuditResults drops fingerprint-stale
+  // rows at write time. A show whose venue/dates were edited since its last
+  // check therefore kept its old non-blocking tier, got deferred, did not block
+  // the gate, and was only caught a run later — in exactly the "a bad venue
+  // edit landed" case. buildPriorTierMap applies the same staleness rule, so
+  // such a show tiers as new: checked first, and blocking if deferred.
+  const previousResultOnlyById = buildPriorTierMap({ previousResultsById, showsById });
   if (candidatesFile) {
     // Validate candidates from an external JSON file (no shows.json entry
     // required). Used by discover-ob-historical.js to surface authoritative
@@ -327,15 +453,13 @@ async function main() {
       closingDate: c.closingDate || c.lastDateSeen || null,
     }));
   } else if (showFilter) {
-    const shows = loadShows();
-    targets = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    targets = allShows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (!targets.length) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(2);
     }
   } else if (allProvisional) {
-    const shows = loadShows();
-    targets = shows.filter(isProvisional);
+    targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
   } else {
     console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
     process.exit(2);
@@ -348,18 +472,85 @@ async function main() {
   const log = verbose || targets.length <= 5 ? console.log : () => {};
   const results = [];
   for (const show of targets) {
+    if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
     results.push(r);
     await sleep(400);
   }
+  const deferredShows = targets.slice(results.length);
+  const deferred = deferredShows.length;
+  // orderProvisionalTargets puts new shows and known mismatches first, so
+  // under normal load a budget cut only defers shows whose outcome could not
+  // fail this step anyway (previously-clean, transient errors, and shows with
+  // no Playbill page — see BRO-2701) — but if new/mismatch volume itself
+  // exceeds the budget in one run, some of THOSE land in the deferred tail
+  // too. That's the exact incident class this audit exists to catch, so it
+  // must not exit clean.
+  const deferredHighPriority = deferredHighPriorityShows(deferredShows, previousResultOnlyById);
+  if (deferred > 0) {
+    // Loud, not silent — a partial run must not look identical to full
+    // coverage (same rationale as the infra-unavailable warning below).
+    console.log(`::warning::validate-show-venue: time budget (${timeBudget.minutes} min) reached — ${deferred} show(s) deferred to the next run, ${results.length}/${targets.length} checked this run.`);
+    if (deferredHighPriority.length) {
+      console.log(`::warning::validate-show-venue: ${deferredHighPriority.length} of the deferred show(s) are new or previously-broken — NOT a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
+    }
+  }
 
   const mismatches = results.filter(r => r.result === 'mismatch');
-  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url'].includes(r.result));
+  const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
+  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
   const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
   console.log('');
-  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved / ${infraUnavailable.length} infra-unavailable${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  if (infraUnavailable.length) {
+    // A distinct, non-failing category: these shows were NOT checked at all,
+    // so their absence from `mismatches` is not a clean bill of health — it
+    // means the environment couldn't reach Playbill for them (e.g. `npx
+    // playwright install` was never run in this job). Surfaced as a
+    // ::warning:: (not ::error::) so it shows up in the CI annotations
+    // without failing the step on an infra basis alone (BRO-2560).
+    console.log(`::warning::validate-show-venue: ${infraUnavailable.length} show(s) could not be checked — Playwright browser missing in this environment (infra gap, NOT a venue/date mismatch): ${infraUnavailable.map(r => r.id).join(', ')}`);
+    // Not failing the step is correct (BRO-2560 acceptance criteria), but a
+    // run that validated NOTHING must not look identical to a clean pass —
+    // that silently hides any real mismatch among the unchecked shows. Loud,
+    // still non-failing.
+    if (infraUnavailable.length === results.length) {
+      console.log(`::warning::validate-show-venue: ALL ${results.length} target(s) were infra-unavailable this run — ZERO real venue/date validation coverage, not a clean pass`);
+    }
+  }
+  // Same rule, the other way a run can validate nothing (BRO-2701 second
+  // review, finding 2). Since tiers 2-4 no longer populate deferredHighPriority,
+  // a run where EVERY show came back unresolved — a SERP outage, or a local run
+  // with no SERP keys — exits 0 with nothing to say, which is indistinguishable
+  // from a clean pass and is exactly the state that then gets committed as the
+  // rotation ledger. Loud, still non-failing (unresolved is not a mismatch).
+  // Gate on what was actually LEARNED, not on one bucket filling up (BRO-2701
+  // review 3, finding 2). The first cut required errors.length === results.length,
+  // but infra-unavailable rows are deliberately excluded from `errors`, so a run
+  // of 30 serp-error + 35 infra-unavailable tripped neither guard despite
+  // validating nothing — and 60 serp-error + 5 match was silent too. Since
+  // tiers 2-4 no longer block on deferral, this is the ONLY signal a degraded
+  // run leaves behind, so it must fire on degradation, not just on totality.
+  // The denominator is only the shows that COULD produce a verdict (BRO-2701
+  // review 4, finding 4). A 'no-playbill-url' show has no Playbill page, so it
+  // can never yield one by design, and roughly half the committed ledger is
+  // exactly that (32 match / 33 no-playbill-url today). Counting them made a
+  // perfectly healthy full sweep report 32/65 and warn "DEGRADED" on every run
+  // — and since tiers 2-4 no longer block on deferral, this warning is the only
+  // signal a genuinely degraded run leaves behind, so a permanent false
+  // positive on it would be worse than not having it.
+  const definitive = matches.length + mismatches.length;
+  // 'no-playbill-url' shows are genuinely unanswerable, so they are the only
+  // ones excluded from the denominator.
+  const noPage = results.filter(r => r.result === 'no-playbill-url').length;
+  const answerable = results.length - noPage;
+  if (answerable > 0 && definitive === 0) {
+    console.log(`::warning::validate-show-venue: NONE of the ${answerable} answerable target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);
+  } else if (answerable > 0 && definitive < answerable / 2) {
+    console.log(`::warning::validate-show-venue: only ${definitive}/${answerable} answerable target(s) produced a venue/date verdict this run — DEGRADED coverage, treat a green result with suspicion`);
+  }
   if (mismatches.length) {
     console.log('Mismatches:');
     for (const r of mismatches) {
@@ -371,30 +562,95 @@ async function main() {
     }
   }
 
+  // Merge this run's fresh results over the prior report's rows for any
+  // currently-provisional show this run didn't reach (deferred, or simply
+  // outside a --limit slice) — otherwise a deferred show's last-known state
+  // vanishes from the file entirely and every future run sees it as "new"
+  // again instead of retaining its real priority tier (BRO-2627 adversarial
+  // review). Applies to EVERY mode: a --show/--candidates-file run used to
+  // write exactly what it checked, which truncated the shared report to one
+  // row and put main red with zero real mismatches (BRO-2696).
+  const outputResults = buildAuditResults({
+    freshResults: results,
+    previousResultsById,
+    currentProvisionalIds,
+    showsById,
+  });
+  const carriedForwardCount = outputResults.length - results.length;
+
   if (!dryRun) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    let filterMeta;
+    if (showFilter) filterMeta = { show: showFilter };
+    else if (candidatesFile) filterMeta = { candidatesFile, limit: limit || null };
+    else filterMeta = { allProvisional: true, limit: limit || null };
     const out = {
       generatedAt: new Date().toISOString(),
-      filter: showFilter ? { show: showFilter } : { allProvisional: true, limit: limit || null },
-      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length },
-      results,
+      filter: filterMeta,
+      timeBudgetMin: timeBudget.enabled ? timeBudget.minutes : null,
+      // `counts` describes what THIS run checked; `total` in the output
+      // file (outputResults.length) can exceed it when prior rows were
+      // carried forward — see carriedForward above.
+      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length, deferred, carriedForward: carriedForwardCount },
+      results: outputResults,
     };
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify(out, null, 2));
+    // Atomic: CI and several local sessions rewrite this tracked ledger, and a
+    // half-written file reads as a truncated one — the exact BRO-2696 failure.
+    const tmpPath = `${AUDIT_PATH}.${process.pid}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(out, null, 2));
+    fs.renameSync(tmpPath, AUDIT_PATH);
     console.log(`Wrote audit: ${AUDIT_PATH}`);
   }
 
-  if (failOnMismatch && mismatches.length) {
+  // Gated on `mismatches` only — infra-unavailable and other unresolved
+  // shows never fail this step on their own (BRO-2560: a CI job with no
+  // Playwright browser installed must not read as a wall of venue/date
+  // mismatches). deferredHighPriority is a second, independent gate: the
+  // budget cut off before reaching a new-or-still-broken show, so this run
+  // cannot claim clean coverage of the exact class the STRICT gate exists
+  // to catch (BRO-2627).
+  if (failOnMismatch && (mismatches.length || deferredHighPriority.length)) {
     for (const r of mismatches) {
       for (const m of r.mismatches) {
         console.log(`::error::${r.id}: ${m.field} shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}`);
       }
     }
+    if (deferredHighPriority.length) {
+      console.log(`::error::validate-show-venue: time budget exhausted before checking ${deferredHighPriority.length} new/previously-broken show(s) — cannot certify a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
+    }
+    await cleanup();
     process.exit(1);
   }
+  // BRO-2701: this script never released the scraper, and until now it never
+  // had to — every CI run ended at the process.exit(1) above, which force-exits
+  // regardless of open handles. Making the gate PASSABLE made the success path
+  // reachable for the first time, and it hung: run 33471909555 wrote its audit
+  // at 05:20:28 and was still alive at 05:35:03 when the job's cancellation
+  // SIGTERMed it (exit 143), turning a clean pass into a red step ~15 minutes
+  // later. Playwright's Chromium keeps its stdio pipes open, so node's event
+  // loop never drains on its own — the identical shape as task #438, which
+  // cleanup() in lib/scraper.js was written to solve (10s close race, then
+  // SIGKILL the subprocess). discover-new-shows.js already calls it; this
+  // script simply never did.
+  //
+  // Wrapped, exactly like the catch path below (second-opinion warning): an
+  // unwrapped throw here would reject main(), fall into the catch, and exit 2 —
+  // converting a PASSING run into a red step, which is the precise failure this
+  // commit exists to remove. cleanup() swallows its own errors internally so
+  // this should never fire, but the asymmetry was indefensible.
+  try { await cleanup(); } catch (_) { /* best-effort */ }
 }
 
 if (require.main === module) {
-  main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+  main()
+    .then(() => process.exit(0))
+    .catch(async (e) => {
+      console.error('Fatal:', e.stack || e.message);
+      // Release the browser on the error path too, or a thrown error leaves the
+      // same hung Chromium behind that the success path just learned about.
+      try { await cleanup(); } catch (_) { /* best-effort */ }
+      process.exit(2);
+    });
 }
 
 module.exports = {
