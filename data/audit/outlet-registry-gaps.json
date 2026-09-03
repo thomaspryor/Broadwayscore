@@ -1,12 +1,21 @@
 {
-  "generatedAt": "2026-09-03T01:15:25.190Z",
+  "generatedAt": "2026-09-03T01:22:41.569Z",
   "summary": {
-    "totalOutletsInReviews": 702,
+    "totalOutletsInReviews": 703,
     "inRegistry": 702,
-    "missing": 0,
+    "missing": 1,
     "unused": 467
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "blackhistorymonth",
+      "count": 1,
+      "shows": [
+        "the-story-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/the-story-west-end-2026/blackhistorymonth--unknown.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -1877,7 +1886,17 @@
       "displayName": "Sueterryvoices"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "blackhistorymonth",
+      "displayName": "blackhistorymonth",
+      "tier": 3,
+      "aliases": [
+        "blackhistorymonth"
+      ],
+      "domain": "blackhistorymonth.org.uk"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -7098,6 +7117,16 @@
       "canonicalId": "telegraph",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/telegraph--diane-snyder.json"
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "outletId": "londontheatrehub",
+      "currentDisplayName": "londontheatrehub",
+      "expectedDisplayName": "Londontheatrehub",
+      "canonicalId": "londontheatrehub",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/heathers-the-musical-off-west-end-2026/londontheatrehub--london-theatre-hub-editorial-team.json"
       ]
     },
     {
