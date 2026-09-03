@@ -5,6 +5,14 @@
  * or log-only for everything else. BSC Daily email digest covers non-critical.
  *
  * Env vars: RESEND_API_KEY, OWNER_EMAIL (required for email alerts)
+ *
+ * audit-secret-scan-always-trace: required by 25+ scripts (well over
+ * workflow-secret-scan.js's SHARED_MODULE_THRESHOLD), but RESEND_API_KEY/
+ * OWNER_EMAIL above are hard, no-fallback dependencies for the email path —
+ * not an optional provider in a degrade-gracefully chain. Without this
+ * marker, scripts/audit-workflow-secret-gaps.js silently never traces these
+ * for any caller (see linear-client.js's identical marker for the sibling
+ * incident this was found alongside).
  */
 
 const https = require('https');
