@@ -3890,6 +3890,39 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
+      - name: Run disk-floor pre-flight test (bash integration)
+        # BRO-2751: this test existed since task #968 and ran in ZERO CI jobs —
+        # `grep -rn "disk-floor-check" .github/workflows/` returned 0 hits. It
+        # covers ensure_disk_floor(), which push-with-retry.sh and
+        # merge-worktree-to-main.sh both source and call before their first
+        # network git op, so a regression here silently removes the low-disk
+        # self-heal from every push and merge in the repo.
+        #
+        # It was invisible because scripts/lib/colocated-test-ci-coverage.test.mjs
+        # only policed the extensions `node --test` can run; `sh` is now in the
+        # shared list (scripts/lib/test-manifest.js) and this step is what that
+        # guard requires — a manifest entry would NOT work, the manifests feed
+        # `node --test`.
+        #
+        # NOTE the test needed a fix before it could run here at all: a runner
+        # exports GITHUB_ACTIONS=true, which ensure_disk_floor() treats as
+        # "skip entirely" (disk-floor-check.sh:17), so 2 of its 5 cases failed
+        # outright on CI and 2 more passed vacuously. Each case now clears the
+        # variable itself. Verified with
+        # `GITHUB_ACTIONS=true bash scripts/lib/disk-floor-check.test.sh`.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/disk-floor-check.test.sh
+
+      - name: Run merge-worktree-to-main post-merge test gate test (bash integration)
+        # BRO-2751: the only reference to this file anywhere in .github/ was a
+        # `paths:` TRIGGER entry (test.yml:630), which fires the workflow but
+        # never runs the test — so it too executed in ZERO CI jobs. It covers
+        # the gate that runs the merged branch's tests against main BEFORE the
+        # merge is treated as landed, plus that gate's kill switch; both are
+        # load-bearing for every worktree merge this fleet performs.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh
+
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
         # to capture outbound calls without making real requests. When run

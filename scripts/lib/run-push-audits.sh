@@ -85,7 +85,21 @@ if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/
 fi
 
 # Orphan/unregistered test detection.
-if echo "$CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
+#
+# BRO-2751: this pattern was a THIRD hand-maintained copy of the test-file
+# extension list, and it had already drifted — `(mjs|ts|js)` while
+# audit-orphan-tests.js scans `(mjs|ts|js|cjs|sh)` — and was scoped to
+# ^tests/unit/ while that audit also scans scripts/ top level. A push adding
+# scripts/foo.test.sh or tests/unit/foo.test.cjs therefore skipped this local
+# gate entirely: exactly the drift that let two bash tests run in zero CI jobs.
+# CI still runs the audit unconditionally (test.yml, "Audit — no orphan unit
+# tests"), so this was a local-gate hole, not a coverage hole — but the local
+# gate exists to catch it BEFORE the push. Extensions and both scanned roots
+# now match audit-orphan-tests.js. The canonical list lives in
+# scripts/lib/test-manifest.js (TEST_FILE_EXTENSIONS); this file is shell, so
+# it cannot require() it — scripts/lib/colocated-test-ci-coverage.test.mjs
+# asserts the two stay in sync.
+if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
   # --scope-stdin (card #1488): only orphans among THIS push's changed files
   # are blocking; pre-existing orphans elsewhere print informational and

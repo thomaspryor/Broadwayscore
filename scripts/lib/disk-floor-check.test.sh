@@ -8,6 +8,16 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fail=0
 
+# BRO-2751: every case below except case 3 must exercise the NON-CI path.
+# ensure_disk_floor() returns 0 immediately when GITHUB_ACTIONS is set
+# (disk-floor-check.sh:17), and a GitHub runner exports GITHUB_ACTIONS=true
+# ambiently — so on CI, cases 1 and 4 FAILED outright and cases 2 and 5 passed
+# vacuously (the early return, never the logic they claim to cover). That is why
+# this file could not simply be registered in test.yml as-is. Each subshell now
+# clears the variable itself rather than the workflow step doing it, so the test
+# is portable to any environment, not just one hand-patched CI step.
+# Reproduce the old failure with: GITHUB_ACTIONS=true bash "$0"
+
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
@@ -40,7 +50,7 @@ EOF
 # Case 1: below floor (3GB free < 5GB default floor) → GC runs.
 BINDIR=$(fake_bin $((3 * 1024 * 1024)))
 rm -f "$GC_MARKER"
-( PATH="$BINDIR:$PATH"; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
+( PATH="$BINDIR:$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
 if [ -f "$GC_MARKER" ]; then
   echo "PASS[1]: below-floor free space triggers emergency GC"
 else
@@ -50,7 +60,7 @@ fi
 # Case 2: above floor (50GB free) → GC does not run.
 BINDIR=$(fake_bin $((50 * 1024 * 1024)))
 rm -f "$GC_MARKER"
-( PATH="$BINDIR:$PATH"; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
+( PATH="$BINDIR:$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
 if [ -f "$GC_MARKER" ]; then
   echo "FAIL[2]: above-floor free space incorrectly triggered GC"; fail=1
 else
@@ -70,7 +80,7 @@ fi
 # Case 4: custom floor via DISK_PREFLIGHT_FLOOR_GB.
 BINDIR=$(fake_bin $((8 * 1024 * 1024)))
 rm -f "$GC_MARKER"
-( PATH="$BINDIR:$PATH"; cd "$FAKE_REPO"; export DISK_PREFLIGHT_FLOOR_GB=10; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
+( PATH="$BINDIR:$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"; export DISK_PREFLIGHT_FLOOR_GB=10; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
 if [ -f "$GC_MARKER" ]; then
   echo "PASS[4]: custom DISK_PREFLIGHT_FLOOR_GB=10 triggers GC at 8GB free"
 else
@@ -98,6 +108,7 @@ chmod +x "$BROKEN_DF_DIR/df"
 rm -f "$GC_MARKER"
 OUT=$( PATH="$BROKEN_DF_DIR:$PATH" bash -c '
   set -euo pipefail
+  unset GITHUB_ACTIONS
   cd "'"$FAKE_REPO"'"
   source "scripts/lib/disk-floor-check.sh"
   ensure_disk_floor
