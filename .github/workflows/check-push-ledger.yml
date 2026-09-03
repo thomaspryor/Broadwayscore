@@ -86,3 +86,147 @@ jobs:
         with:
           title: 'Check Push Ledger Failed'
           severity: 'warning'
+
+  # ── Diag — push latency (BRO-2373) ──────────────────────────────────────────
+  # TEMPORARY. Delete this job once BRO-2373 is closed; it answers one question
+  # and then has no reason to exist.
+  #
+  # WHAT IT IS FOR. ~150 pushes/day exhaust their retries across 36 workflows.
+  # Every failing attempt burns exactly GIT_NET_TIMEOUT_SEC=90 and, now that
+  # git_push passes --progress, emits ZERO progress output — while a SUCCEEDING
+  # push in the same environment prints all four phases. So the 90s is spent
+  # BEFORE git's first progress line: not pack CPU, not pack transfer. In run
+  # 33743302929 even a non-fast-forward REJECTION, which the client decides from
+  # the ref advertisement without sending an object, took 49s.
+  #
+  # Off-runner that same work is fast. Measured 2026-09-03 from a depth-1 clone
+  # of this repo against this remote (1030 refs), packet-traced:
+  #     git push --dry-run   1s   1315 inbound packets, 3 sent, no "git> shallow"
+  #     real push            2s   1321 inbound packets, 7 sent, sends "git> shallow"
+  # The dry run receives 1315 of the real push's 1321 inbound packets, so it
+  # exercises the full advertisement; it skips only 4 client packets afterwards,
+  # and the real push measured above covers those. Ref count, advertisement size
+  # and shallow negotiation are therefore all exonerated OFF-RUNNER. This job
+  # exists to find out whether they are also fast ON a runner.
+  #
+  # WHY IT IS NOT IN push-with-retry.sh. If the pre-pack phase is the slow thing,
+  # an unguarded probe there burns the same 45-90s out of PUSH_DEADLINE_SEC.
+  # Several callers run the undersized 240s/7-retry default (run 33743302929 gave
+  # up after 2 attempts), so that would turn a diagnostic into an outage.
+  #
+  # SAFETY. This job never writes. `git push --dry-run` was packet-traced this
+  # session: it sends no ref-update commands and no pack, and the remote ref was
+  # byte-identical before and after. continue-on-error keeps a probe hiccup from
+  # reddening the ledger job above.
+  push-latency-probe:
+    runs-on: ubuntu-latest
+    # Worst case is 5 network ops x the 120s cap = 600s. At 6 minutes the job was
+    # killed mid-loop and the later replicates never printed, which is the silent
+    # half of a measurement job.
+    timeout-minutes: 15
+    continue-on-error: true
+    # Explicit, even though it matches the workflow default, because the value is
+    # load-bearing and not obvious: git push --dry-run contacts git-receive-pack,
+    # and GitHub 403s that endpoint for a read-only token. `contents: read` would
+    # not make this probe safer, it would make it silently measure an auth
+    # rejection instead of the write path. Safety comes from --dry-run sending no
+    # ref-update and no pack (packet-traced), not from withholding the permission.
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout (shallow, matching the failing workflows)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Measure read path and write path
+        run: |
+          # Deliberately NO `set -e`: a timed-out first measurement must not
+          # abort the step before the later ones run.
+
+          # Self-expiry. "TEMPORARY" in a comment is not enforcement, and this
+          # runs 72x/day. Past the date the job no-ops until someone renews it
+          # deliberately, so a forgotten probe cannot run forever.
+          if [ "$(date -u +%Y%m%d)" -gt "20261101" ]; then
+            echo "PROBE|expired — delete this job, or bump the date if BRO-2373 is still open"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "PROBE|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)"
+
+          # One local commit so the write-path probe has something to offer.
+          # Never pushed for real — see SAFETY above.
+          date -u +%FT%TZ > .push-latency-probe.txt
+          git add -f .push-latency-probe.txt
+          git commit -q -m "probe (never pushed)"
+
+          # Classify rather than print a bare rc. An expired or read-only token
+          # makes GitHub 403 the receive-pack advertisement in well under a
+          # second, which without this reads as "the write path is fast on-runner"
+          # — the exact wrong conclusion for BRO-2373. rc=1 is an ordinary
+          # non-fast-forward rejection and IS a valid measurement; rc=128 is a
+          # transport/auth error and is NOT. When in doubt the stderr is printed.
+          classify() {
+            _rc="$1"; _ms="$2"; _op="$3"; _tag="$4"; _log="$5"
+            if [ "$_rc" = "124" ] || [ "$_rc" = "137" ] || [ "$_ms" -ge 120000 ]; then
+              echo "PROBE|op=$_op|$_tag|CENSORED|rc=$_rc|ms=$_ms"
+              return
+            fi
+            case "$_rc" in
+              0) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=0|verdict=ok" ;;
+              1) if grep -qiE 'denied|forbidden|403|authenticat|not authorized' "$_log" 2>/dev/null; then
+                   echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=AUTH-NOT-A-MEASUREMENT"
+                   sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12
+                 else
+                   echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=rejected-valid-measurement"
+                 fi ;;
+              *) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=$_rc|verdict=ERROR-NOT-A-MEASUREMENT"
+                 sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12 ;;
+            esac
+          }
+
+          # COLD sample first, before any other network op touches github.com.
+          # The hypothesis is that the 90s sits in handshake/advertisement, which
+          # is exactly what a warmed DNS/TLS path hides — so the very first
+          # measurement of the run is the most informative one in it.
+          s=$(date +%s%3N)
+          # hygiene-push-ok: --dry-run contacts git-receive-pack to time the
+          # write-path advertisement and sends nothing. Packet-traced: zero
+          # ref-update commands, zero pack. Routing a measurement through
+          # push-with-retry.sh would measure push-with-retry.sh, not the wall.
+          # NOTE: this annotation is FILE-WIDE, so rule (c) is now silenced for
+          # the whole workflow. Any future `git push` added to the check job above
+          # will NOT be caught by the hygiene guard — route it through
+          # push-with-retry.sh by hand.
+          timeout -k 10 120 git push --dry-run --progress origin HEAD:main >/tmp/dry.cold 2>&1
+          rc=$?; e=$(date +%s%3N)
+          classify "$rc" "$((e - s))" push-dry-run "sample=COLD" /tmp/dry.cold
+
+          # Then warm replicates. n=1 is uninterpretable against a baseline
+          # censored at 90s. These are NOT independent of the cold sample or of
+          # each other — same runner, warmed path — so read them as a warm-state
+          # distribution, not as three draws.
+          for i in 1 2; do
+            s=$(date +%s%3N)
+            timeout -k 10 120 git ls-remote origin >/tmp/lsr.$i 2>/tmp/lsr.err.$i
+            rc=$?; e=$(date +%s%3N)
+            classify "$rc" "$((e - s))" ls-remote "sample=warm$i|refs=$(wc -l < /tmp/lsr.$i)" /tmp/lsr.err.$i
+
+            s=$(date +%s%3N)
+            timeout -k 10 120 git push --dry-run --progress origin HEAD:main >/tmp/dry.$i 2>&1
+            rc=$?; e=$(date +%s%3N)
+            classify "$rc" "$((e - s))" push-dry-run "sample=warm$i" /tmp/dry.$i
+          done
+
+          # KNOWN GAP, stated rather than left for a reader to trip over: the dry
+          # run does not send the "git> shallow" line a real push sends. Measured
+          # off-runner, dry-run received 1315 inbound packets and sent 3, while a
+          # real push received 1321 and sent 7 — so the dry run covers the whole
+          # advertisement and skips 4 SENT packets. Both were fast off-runner, but
+          # if the cost lives in server-side shallow-graft handling this probe
+          # reads fast and exonerates the write path wrongly.
+          echo "PROBE|note=dry-run omits the git> shallow line (4 sent packets; inbound 1315 vs 1321)"
+          exit 0
