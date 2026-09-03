@@ -384,6 +384,10 @@ tmp/
 # and appends to that path nightly via a `git fetch && merge --ff-only`
 # update step; sharing the path would make that merge start failing silently
 # the first time CI and the Mac diverged on it (ship-check finding).
+# bsc-prune's runtime lock — mkdir'd/rm'd by live processes, same trap as the
+# opening-night monitor.lock/ above (2026-09-03 crown cycle: `git add data/audit/`
+# silently staged and pushed it to origin/main; this entry prevents recurrence).
+/data/audit/bsc-prune.lock/
 # bsc-next/bsc-prune dispatch-attempt journal (task #334) — Mac-local
 /data/audit/dispatch-ledger.jsonl
 # Append-only local telemetry for the intake storm breaker. Tracked would mean
