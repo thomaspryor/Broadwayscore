@@ -14,7 +14,11 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "aida-off-broadway-2027/times-uk--kevin-ng.json"
+    "aida-off-broadway-2027/times-uk--kevin-ng.json",
+    "a-month-in-the-country-west-end-2026/independent--unknown.json",
+    "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -165,7 +169,13 @@
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
-    "the-story-west-end-2026/times-uk--unknown.json"
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "a-month-in-the-country-west-end-2026/broadwayworld--team-bww.json",
+    "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -177,12 +187,18 @@
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "a-month-in-the-country-west-end-2026/independent--unknown.json",
+      "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/the-story-west-end-2026/times-uk--unknown.json"
+      "data/review-texts/the-story-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -201,7 +217,7 @@
     ]
   },
   "startTime": "2026-09-03T13:28:40.017Z",
-  "lastProcessed": "the-story-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-09-03T14:15:22.563Z",
@@ -242,6 +258,17 @@
       "t": "2026-09-03T14:31:40.855Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-03T14:33:24.811Z",
+      "event": "bb-session",
+      "session": "48a1472e",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-03T14:33:26.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
