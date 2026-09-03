@@ -304,5 +304,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-03T22:45:38.971Z"
+  },
+  {
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-03",
+    "title": "Opening-night monitor pass complete: the-story-west-end-2026",
+    "description": "Pass 1, model opus, 3min, $1.19. **Pass 1 verdict: pre-review state — no gaps, nothing to fix.** No report email sent (correct: parity not reached, window open until 2026-09-04T22:59Z).\n\nFindings:\n\n1. **Press night is tonight (3 Sept), confirmed independently.** This disproved my initial hypothesis that `openingDate` (theatremonkey source) was wrong. It's correct.\n2. **The ~14 `anticipatory_pre_opening_post` wrongProduction flags are correct rejections**, not the usual 44% false-positive pattern — all are 26–31 Aug preview coverage predating press night. I cleared nothing. Clearing them would have injected non-reviews into a live show.\n3. **Three outlet-bound files are genuinely misbound**, flags correct: `telegraph--unknown.json` → a Paul Mason book review; `guardian--unknown.json` → an Edinburgh comedy review; `artsdesk",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-03T23:14:59.202Z"
   }
 ]
