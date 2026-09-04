@@ -517,11 +517,22 @@ jobs:
           # Exclude null conclusions (in-progress), skipped, and cancelled runs —
           # those are workflow_run triggers for failed rebuilds and don't represent
           # real deploy attempts.
-          STREAK=$(gh run list \
-            --workflow="vercel-deploy.yml" \
-            --limit=20 \
-            --json conclusion \
-            --jq '[.[] | select(.conclusion != null and .conclusion != "skipped" and .conclusion != "cancelled")] |
+          #
+          # BRO-2771: this is a LEADING-consecutive-failure scan, so it is the most
+          # order-sensitive run query in the repo — a stale or mis-ordered page does not
+          # just shift a number, it reports a streak that never happened (or hides a real
+          # one). `gh run list --limit=N` returns arbitrary, sometimes months-stale result
+          # SETS on this repo (BRO-2767), so this reads the Actions REST endpoint and sorts
+          # newest-first explicitly rather than trusting the transport.
+          #
+          # This is the bash body of scripts/lib/gh-runs-query.sh, inlined: the
+          # `check-streak` job has no actions/checkout step, so it cannot source the helper.
+          # Keep the two in sync.
+          STREAK=$(gh api \
+            "repos/$GITHUB_REPOSITORY/actions/workflows/vercel-deploy.yml/runs?per_page=20" \
+            --jq '[.workflow_runs[] | {conclusion: .conclusion, createdAt: .created_at}] |
+                  sort_by(.createdAt) | reverse |
+                  [.[] | select(.conclusion != null and .conclusion != "skipped" and .conclusion != "cancelled")] |
                   reduce .[] as $r (
                     {"streak": 0, "done": false};
                     if .done then .
