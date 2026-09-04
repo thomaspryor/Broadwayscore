@@ -1,31 +1,52 @@
 {
-  "updatedAt": "2026-09-04T09:25:12.311Z",
-  "processed": 6,
-  "failed": 26,
-  "successRate": "18.8%",
+  "updatedAt": "2026-09-04T09:28:09.015Z",
+  "processed": 9,
+  "failed": 33,
+  "successRate": "21.4%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-04T08:56:12.938Z",
+      "t": "2026-09-04T09:25:36.260Z",
       "event": "bb-session",
-      "session": "bbbb594c",
-      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+      "session": "26014725",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-09-04T08:56:21.949Z",
+      "t": "2026-09-04T09:25:37.534Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T09:25:56.616Z",
       "event": "bb-session",
-      "session": "e39b637a",
-      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+      "session": "a1620951",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T09:25:57.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-04T09:26:17.829Z",
+      "event": "bb-session",
+      "session": "5b33be2d",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T09:26:19.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

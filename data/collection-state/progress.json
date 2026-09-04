@@ -5,7 +5,10 @@
     "a-month-in-the-country-west-end-2026/independent--unknown.json",
     "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-    "the-story-west-end-2026/times-uk--clive-davis.json"
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "paranormal-activity-2026/wsj--charles-isherwood.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [
     "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
@@ -33,7 +36,14 @@
     "the-story-west-end-2026/north-west-end--greg-holstead.json",
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
-    "the-story-west-end-2026/talkinbroadway--unknown.json"
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,19 +54,58 @@
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json"
     ],
     "scrapingbee": [],
     "brightdata": [
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
-      "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
+      "paranormal-activity-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ]
   },
   "startTime": "2026-09-04T08:47:26.505Z",
-  "lastProcessed": "the-story-west-end-2026/times-uk--clive-davis.json",
-  "log": []
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+  "log": [
+    {
+      "t": "2026-09-04T09:25:36.260Z",
+      "event": "bb-session",
+      "session": "26014725",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-04T09:25:37.534Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T09:25:56.616Z",
+      "event": "bb-session",
+      "session": "a1620951",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T09:25:57.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-04T09:26:17.829Z",
+      "event": "bb-session",
+      "session": "5b33be2d",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T09:26:19.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
