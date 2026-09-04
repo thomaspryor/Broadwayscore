@@ -18,7 +18,13 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt } = require('../../scripts/health-check.js');
+const {
+  ghRunsQuery,
+  sortRunsNewestFirst,
+  firstRunCreatedAt,
+  runCacheKey,
+  RUN_CACHE_VERSION,
+} = require('../../scripts/health-check.js');
 
 test('ghRunsQuery targets the REST endpoint, never `gh run list`', () => {
   const q = ghRunsQuery('test.yml', { limit: 30, branch: 'main' });
@@ -27,6 +33,46 @@ test('ghRunsQuery targets the REST endpoint, never `gh run list`', () => {
   assert.ok(q.includes('/actions/workflows/test.yml/runs'), 'must hit the workflow runs endpoint');
   assert.ok(q.includes('per_page=30'), 'limit must map to per_page');
   assert.ok(q.includes('branch=main'), 'branch must be passed through');
+});
+
+test('ghRunsQuery resolves the repo from the checkout, not an ambient env var', () => {
+  // A hardcoded slug (or bare GITHUB_REPOSITORY) would happily report plausible
+  // green/red health for the WRONG repository inside a fork, a reusable
+  // workflow, or a leaked CI env. gh expands {owner}/{repo} from the checkout,
+  // which is how the replaced `gh run list` calls resolved their repo.
+  const q = ghRunsQuery('test.yml', { limit: 5 });
+  assert.ok(q.includes('repos/{owner}/{repo}/'), `must use the gh placeholder, got: ${q}`);
+  assert.ok(!q.includes('thomaspryor/'), 'must not hardcode a repo slug');
+});
+
+test('ghRunsQuery refuses a limit the REST endpoint would silently truncate', () => {
+  // gh's --limit paginated past 100; per_page caps at 100 and returns a shorter
+  // window than asked for, which a streak scan reads as "the streak ended here".
+  assert.throws(() => ghRunsQuery('test.yml', { limit: 200 }), /limit must be an integer 1-100/);
+  assert.throws(() => ghRunsQuery('test.yml', { limit: 0 }), /limit must be an integer 1-100/);
+  assert.throws(() => ghRunsQuery('test.yml', { limit: 1.5 }), /limit must be an integer 1-100/);
+  assert.ok(ghRunsQuery('test.yml', { limit: 100 }).includes('per_page=100'), '100 is allowed');
+});
+
+test('run-history cache keys are version-scoped', () => {
+  // cachedShell() keys purely on the string handed to it and stores results in
+  // an OS-temp file shared by every concurrent process on this Mac, including
+  // sessions running an older health-check.js. Reshaping a payload without
+  // bumping the version lets old-shape and new-shape values be served to each
+  // other's parsers for a TTL at a time — in both directions, which is what
+  // makes a rollback unsafe too.
+  assert.ok(RUN_CACHE_VERSION, 'a version constant must exist');
+  for (const suffix of [
+    'main-red-streak:test.yml',
+    'cron:test.yml',
+    'cron:check-secrets-health.yml',
+    'push-verify:test.yml',
+    'push-verify:opening-night-checklist.yml',
+  ]) {
+    const key = runCacheKey(suffix);
+    assert.ok(key.includes(RUN_CACHE_VERSION), `${key} must carry the cache version`);
+    assert.notEqual(key, suffix, 'the versioned key must differ from the bare suffix');
+  }
 });
 
 test('ghRunsQuery passes a status filter and omits absent params', () => {

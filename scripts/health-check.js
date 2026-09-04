@@ -54,7 +54,31 @@ const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 // workflow path in use. Every consumer here assumes newest-first, so a stale
 // page silently produces a wrong verdict (see checkMainRedStreak's firstRedSha).
 // The REST endpoint the CLI wraps is stable and correctly ordered.
-const GH_REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+// gh expands the literal {owner}/{repo} placeholder from the current checkout,
+// which is how the `gh run list` calls this replaced resolved their repository.
+// Deliberately NOT process.env.GITHUB_REPOSITORY with a hardcoded fallback: in a
+// fork, a reusable workflow, or a leaked CI env that silently queries the wrong
+// repository and reports plausible green/red health for it (codex review).
+const GH_REPO_PLACEHOLDER = '{owner}/{repo}';
+
+// Bump when the SHAPE of a cached run-history payload changes. cachedShell()
+// (scripts/lib/gh-api-cache.js) keys purely on the string it is handed and
+// stores results in an OS-temp file SHARED by every concurrent process on this
+// Mac — including sessions still running an older health-check.js. Without a
+// version in the key, this change (bare timestamp -> JSON array for
+// push-verify, gh-run-list-derived -> REST-derived rows for the others) would
+// let old-shape and new-shape values be served to each other's parsers for a
+// TTL at a time, in both directions, which is also what makes rollback unsafe.
+const RUN_CACHE_VERSION = 'v2';
+
+/**
+ * Version-scoped cache key for a run-history read.
+ * @param {string} suffix - stable per-call-site suffix, e.g. 'cron:test.yml'
+ * @returns {string} cache key carrying RUN_CACHE_VERSION
+ */
+function runCacheKey(suffix) {
+  return `${suffix}:${RUN_CACHE_VERSION}`;
+}
 
 /**
  * Build the gh invocation that lists runs for one workflow, newest-first.
@@ -70,11 +94,17 @@ const GH_REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
  */
 function ghRunsQuery(workflowFile, opts = {}) {
   const { limit = 1, branch, status } = opts;
+  // `gh run list --limit` paginated past 100; the REST endpoint silently caps
+  // per_page at 100 and returns a SHORTER window than asked for, which for a
+  // streak scan reads as "the streak ended here". Fail loudly instead.
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+    throw new Error(`ghRunsQuery: limit must be an integer 1-100 (per_page cap), got ${limit}`);
+  }
   const params = [`per_page=${limit}`];
   if (branch) params.push(`branch=${branch}`);
   if (status) params.push(`status=${status}`);
   const jq = '[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, conclusion: .conclusion}]';
-  return `gh api "repos/${GH_REPO}/actions/workflows/${workflowFile}/runs?${params.join('&')}" --jq '${jq}'`;
+  return `gh api "repos/${GH_REPO_PLACEHOLDER}/actions/workflows/${workflowFile}/runs?${params.join('&')}" --jq '${jq}'`;
 }
 
 /**
@@ -476,7 +506,7 @@ function checkPushVerification() {
         // across every concurrently-dispatched session on this Mac — see
         // scripts/lib/gh-api-cache.js header for why.
         const result = firstRunCreatedAt(cachedShell(
-          `push-verify:${workflow}`,
+          runCacheKey(`push-verify:${workflow}`),
           ghRunsQuery(workflow, { limit: 1, status: 'success' })
         ));
         if (!result) {
@@ -539,7 +569,7 @@ function checkOpeningNightHistoryFreshness() {
       // Get last successful workflow run time (same gh invocation shape and
       // shared cache as checkPushVerification() above).
       const result = firstRunCreatedAt(cachedShell(
-        'push-verify:opening-night-checklist.yml',
+        runCacheKey('push-verify:opening-night-checklist.yml'),
         ghRunsQuery('opening-night-checklist.yml', { limit: 1, status: 'success' })
       ));
       if (!result) {
@@ -2069,7 +2099,7 @@ function checkCronHealth() {
         // 15 gh calls PER health-check.js run, and this runs on every
         // /ship-check + /wrap-up across ~dozens of dispatches/day.
         const result = cachedShell(
-          `cron:${workflow}`,
+          runCacheKey(`cron:${workflow}`),
           ghRunsQuery(workflow, { limit: 5 })
         );
         const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
@@ -2079,7 +2109,7 @@ function checkCronHealth() {
         const run = runs[0];
         const age = hoursAgo(run.createdAt);
         if (age > maxHours) {
-          return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
+          return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion || 'still running'}`, hint: 'Check Actions tab — workflow may be disabled' };
         }
         if (run.conclusion === 'success') {
           return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, success` };
@@ -2135,7 +2165,7 @@ function checkSecretsHealth() {
         // failure. #367 noted the two checks share this logic and must move
         // together — they drifted again, so keep them in step.
         const result = cachedShell(
-          'cron:check-secrets-health.yml',
+          runCacheKey('cron:check-secrets-health.yml'),
           ghRunsQuery('check-secrets-health.yml', { limit: 5 })
         );
         const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
@@ -2293,7 +2323,7 @@ async function checkMainRedStreak(isCI) {
 
   try {
     const listResult = cachedShell(
-      'main-red-streak:test.yml',
+      runCacheKey('main-red-streak:test.yml'),
       ghRunsQuery('test.yml', { limit: RUN_LIMIT, branch: 'main' })
     );
     const rawRuns = sortRunsNewestFirst(listResult ? JSON.parse(listResult) : []);
@@ -2325,7 +2355,12 @@ async function checkMainRedStreak(isCI) {
       // less individually; their raw conclusion already proves the streak
       // exists even without job detail.
       for (let idx = candidateCount - 1; idx >= 0 && fetched < MAX_JOB_DETAIL_CALLS; idx--) {
-        if (!rawRuns[idx].conclusion) continue; // still running (gh reports '', not null) — no job evidence to fetch yet
+        // Still running — no job evidence to fetch yet. The falsy test is load-
+        // bearing and must stay falsy: the REST endpoint (BRO-2767) reports
+        // null here where `gh run list --json conclusion` reported ''. Both are
+        // falsy, so this is correct for either source — but narrowing it to
+        // `=== ''` or `=== null` would break one of them.
+        if (!rawRuns[idx].conclusion) continue;
         fetched++;
         try {
           const jobsResult = cachedShell(
@@ -4852,4 +4887,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
