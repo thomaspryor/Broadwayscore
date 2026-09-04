@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-04T22:28:39.658Z",
+  "updatedAt": "2026-09-04T22:29:47.144Z",
   "processed": 81,
-  "failed": 693,
-  "successRate": "10.5%",
+  "failed": 703,
+  "successRate": "10.3%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -107,6 +107,17 @@
       "event": "bb-session",
       "session": "79bd1dd5",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-04T22:29:12.876Z",
+      "event": "bb-session",
+      "session": "c67429ff",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-04T22:29:13.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
