@@ -507,3 +507,16 @@ the BODY before trusting the url/date. If the body is on-show, correct
 url + publishDate FIRST, drop any aggregatorStars/originalScore that came from
 the old page, then clear the flags with all 8 protection fields
 ([[feedback_manual_review_protection_fields]]).
+
+## Gate: outlet-slug squatting by a correctly-flagged wrong-show file (2026-09-04, the-story-west-end-2026)
+`ingest-review-from-url.js` printed **`Skipped: no-changes` and exited 0** for a confirmed T1 Telegraph review. Cause: `telegraph--unknown.json` already existed at that outlet slug, correctly flagged `wrongShow` (bound to a Paul Mason *Reds* book review). Ingest resolved the same slug, found a file, wanted to change nothing, reported no-changes. The real review never got a file.
+- **Proof by controlled A/B:** identical command → `Skipped: no-changes` before, `✅ Created` after a `git mv telegraph--unknown.json → telegraph--wrong-show-reds-book.json`. Nothing else changed.
+- **Tonight's fix (repeatable):** `git mv <outlet>--unknown.json <outlet>--wrong-show-<slug>.json`, add `wrongShowReason`, leave `wrongShow: true` untouched, re-run ingest.
+- **Why it is a class:** any generic-title show ("The Story") accumulates `<outlet>--unknown.json` files bound to unrelated URLs; each permanently blocks that outlet's real review, and the blocked outlet reads as "not published yet" to every monitor check. Card: BRO-2784.
+
+## Gate: fully-scored review stranded by rebuild-fast push starvation (2026-09-04)
+A review can be **ingested AND scored** (`llmScore` present, `scoreSource: llm-v6`) and still never reach `reviews.json` or prod. Four consecutive `rebuild-fast.yml` failures; `push-with-retry` blew its 600s deadline on 20 rebase attempts against a hot `reviews.json`, and the Git Data API fallback was **skipped by design** ("touches a union-merge-MANAGED file"). Self-resolved ~50 min later when a run won the race.
+- **Monitor implication:** poller green + unflagged file + `llmScore` present does NOT mean in-pipeline. Diff review-texts against `reviews.json` by URL, and when a scored file is absent, check `gh run list --workflow=rebuild-fast.yml` for a failure streak before assuming it is still in flight. Card: BRO-2783.
+
+## Census rule: WebSearch absence is worthless for paywalled broadsheets
+Three consecutive "clean" censuses (attempts 33-35) missed BOTH the Telegraph and the FT because they relied on WebSearch. A **direct `fetchPage()` of the outlet's own section page** (`telegraph.co.uk/theatre`, `ft.com/arts`) found both immediately. For T1 broadsheets, never record a verified exclusion from search absence — fetch the section index.

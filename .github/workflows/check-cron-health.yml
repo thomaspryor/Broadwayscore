@@ -621,7 +621,7 @@ jobs:
                   conditionKey: `cron-health-chronic:${name}`,
                   title: `Cron stale 3+ consecutive days: ${name}`,
                   description: `${name} has been stale on three or more consecutive daily cron-health checks. The one-shot self-heal redispatch has already run and did not fix it, so this needs a real diagnosis rather than another notification.`,
-                  hint: `Check whether its runs are CANCELLED rather than failed (a timeout cap — notify-failure never sees those, and \`if: always()\` does not fire on cancellation), or failing at severity:low/email:false. Start with: gh api "repos/{owner}/{repo}/actions/workflows/<file>/runs?per_page=30" and read .workflow_runs[] .created_at / .conclusion / .event. Use that REST form, NOT the gh CLI run-listing shorthand, which returns months-stale result sets on this repo (BRO-2767/BRO-2771).`,
+                  hint: `Check whether its runs are CANCELLED rather than failed (a timeout cap — notify-failure never sees those, and \`if: always()\` does not fire on cancellation), or failing at severity:low/email:false. Start with: gh api "repos/{owner}/{repo}/actions/workflows/<file>/runs?per_page=30" reading .workflow_runs[] .created_at/.conclusion/.event — NOT the gh CLI run-listing shorthand, which is months-stale here (BRO-2771).`,
                   severity: "error",
                   disposition: "auto",
                   cooldownHours: 168,
