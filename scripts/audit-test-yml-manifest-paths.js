@@ -45,7 +45,13 @@
 'use strict';
 
 const path = require('path');
-const { findManifestPathGaps, MANIFEST_FILES } = require('./lib/test-yml-manifest-paths.js');
+const {
+  findManifestPathGaps,
+  findUnregisteredTests,
+  MANIFEST_FILES,
+  SCANNED_TEST_DIRS,
+  WORKFLOW_REL,
+} = require('./lib/test-yml-manifest-paths.js');
 
 const ROOT = path.resolve(__dirname, '..');
 
@@ -54,8 +60,10 @@ function main() {
   const rootArg = process.argv.find((a) => a.startsWith('--root='));
   const root = rootArg ? path.resolve(rootArg.slice('--root='.length)) : ROOT;
   let gaps;
+  let unregistered;
   try {
     gaps = findManifestPathGaps(root);
+    unregistered = findUnregisteredTests(root);
   } catch (e) {
     // Fail CLOSED: this gate is exact, so an unreadable input is a real problem
     // (a renamed manifest, a restructured test.yml) and must not pass silently.
@@ -65,7 +73,7 @@ function main() {
   }
 
   if (asJson) {
-    console.log(JSON.stringify({ gaps }, null, 2));
+    console.log(JSON.stringify({ gaps, unregistered }, null, 2));
   } else if (gaps.length === 0) {
     console.log(
       `audit-test-yml-manifest-paths: no gaps — every test in ${MANIFEST_FILES.join(' + ')} is reachable by test.yml's on.push.paths.`
@@ -78,7 +86,52 @@ function main() {
     for (const g of gaps) console.error(`  ${g.test}   (registered in ${g.manifest})`);
     console.error("\nFix: add each path to on.push.paths in .github/workflows/test.yml, e.g.\n  - '" + gaps[0].test + "'");
   }
-  process.exit(gaps.length === 0 ? 0 : 1);
+
+  // The mirror-image check: a test file no manifest registers never runs in CI
+  // at all. Reported even in --json mode's absence so the human form carries it
+  // too; the exit code below folds both findings together.
+  if (!asJson) {
+    for (const q of unregistered.quarantined) {
+      console.log(`audit-test-yml-manifest-paths: quarantined (knowingly unregistered) — ${q.test}\n    ${q.reason}`);
+    }
+    for (const t of unregistered.staleQuarantine) {
+      console.log(
+        `audit-test-yml-manifest-paths: stale quarantine entry — ${t} is now registered or gone; drop it from UNREGISTERED_TEST_QUARANTINE.`
+      );
+    }
+    for (const t of unregistered.brokenExemptions) {
+      console.error(
+        `::error::audit-test-yml-manifest-paths: ${t} is exempted on the grounds that it runs at its own ` +
+          `${WORKFLOW_REL} step, but no step in that file mentions it any more. It is now registered nowhere ` +
+          'and runs NOWHERE. Restore the step, or register it in a manifest, or replace the quarantine reason.'
+      );
+    }
+    if (unregistered.orphans.length === 0 && unregistered.brokenExemptions.length === 0) {
+      // Never claim "every test file is registered" while a quarantine exists —
+      // that sentence is literally false and is what makes a log skimmable past
+      // the exemptions (Codex adversarial review, 2026-09-04).
+      const q = unregistered.quarantined.length;
+      console.log(
+        `audit-test-yml-manifest-paths: no orphans — every test file under ${SCANNED_TEST_DIRS.join(', ')} is ` +
+          `registered in a manifest${q ? `, or is one of the ${q} explicitly quarantined above` : ''}.`
+      );
+    } else if (unregistered.orphans.length > 0) {
+      console.error(
+        `::error::audit-test-yml-manifest-paths: ${unregistered.orphans.length} test file(s) under ${SCANNED_TEST_DIRS.join(', ')} are in NO manifest, so ` +
+          'test.yml:3575 never runs them — in any run, on any push:'
+      );
+      for (const t of unregistered.orphans) console.error(`  ${t}`);
+      console.error(
+        `\nFix: add each to ${MANIFEST_FILES[0]} (or the tsx/e2e manifest if that is where it belongs). ` +
+          'If it genuinely must not run in CI, add it to UNREGISTERED_TEST_QUARANTINE in ' +
+          'scripts/lib/test-yml-manifest-paths.js with the issue that will end the exemption.'
+      );
+    }
+  }
+
+  process.exit(
+    gaps.length === 0 && unregistered.orphans.length === 0 && unregistered.brokenExemptions.length === 0 ? 0 : 1
+  );
 }
 
 if (require.main === module) main();
