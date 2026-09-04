@@ -32,6 +32,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { createSortToggle } = require('../../src/lib/sort-toggle');
+const { compareScore } = require('../../src/lib/browse-sort');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SRC_PATH = join(ROOT, 'src/components/BrowseListClient.tsx');
@@ -143,5 +144,63 @@ describe('SORT click simulation on /browse/best-recent-shows (Critics/A-Z only, 
     const next = getNextSort('alpha', 'score_asc');
     assert.equal(next, 'alpha');
     assert.equal(getSortArrow('alpha', next), '↓');
+  });
+});
+
+// Regression for a real bug caught by adversarial review AFTER the toggle
+// above shipped: BrowseListClient represents "TBD / not enough reviews" as a
+// null score that must sort last in EVERY direction. A naive `a - b` flip for
+// the new ascending (score_asc) branch instead put those shows FIRST once
+// Critics became reversible — invisible until you actually reverse the sort.
+describe('compareScore (TBD/null scores always sort last, in both directions)', () => {
+  test('descending: a real score beats a null (TBD) score', () => {
+    assert.ok(compareScore(80, null, false) < 0, 'real score sorts before TBD');
+    assert.ok(compareScore(null, 80, false) > 0, 'TBD sorts after a real score');
+  });
+
+  test('ascending: TBD must still sort LAST, not first', () => {
+    // This is the exact regression: naive `a - b` on a null sentinel would
+    // put the TBD show first when ascending, not last.
+    assert.ok(compareScore(80, null, true) < 0, 'real score still sorts before TBD when ascending');
+    assert.ok(compareScore(null, 80, true) > 0, 'TBD still sorts after a real score when ascending — never promoted to first');
+  });
+
+  test('two TBD shows are equal in either direction', () => {
+    assert.equal(compareScore(null, null, false), 0);
+    assert.equal(compareScore(null, null, true), 0);
+  });
+
+  test('two real scores reverse correctly between directions', () => {
+    assert.ok(compareScore(90, 70, false) < 0, 'descending: higher score first');
+    assert.ok(compareScore(90, 70, true) > 0, 'ascending: lower score first');
+  });
+});
+
+// Regression for a second issue caught by the same adversarial review: with
+// rank badges (#1, #2, ...) visible on ranked browse pages, reversing Critics
+// to score_asc would label the LOWEST-scored (or TBD) show "#1" — misleading
+// on a page whose whole premise is "ranked by critic score" (best-recent-shows'
+// own intro/config promises this). Ranks must be suppressed in that one state.
+describe('rank numbers are suppressed in score_asc so "#1" never means "worst" (task #75 follow-up)', () => {
+  function browseListClientSrc() {
+    return readFileSync(SRC_PATH, 'utf8');
+  }
+
+  test('showRankNumbers excludes score_asc, not just showRanks alone', () => {
+    const src = browseListClientSrc();
+    assert.match(
+      src,
+      /const showRankNumbers = showRanks && sort !== 'score_asc';/,
+      'rank badges must be hidden whenever the reversed Critics sort is active — otherwise the lowest-scored show renders as "#1"',
+    );
+  });
+
+  test('the rank prop passed to ShowListCard reads from showRankNumbers, not showRanks directly', () => {
+    const src = browseListClientSrc();
+    assert.match(
+      src,
+      /rank=\{showRankNumbers \? index \+ 1 : undefined\}/,
+      'ShowListCard must receive the score_asc-aware flag, not the raw showRanks prop, or the misleading "#1 = worst" bug reappears',
+    );
   });
 });
