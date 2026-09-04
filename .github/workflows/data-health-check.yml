@@ -533,10 +533,28 @@ jobs:
       # job-level timeout-minutes comment above for the full incident and
       # sizing rationale). Inherits the job ceiling instead, same treatment
       # "Commit health check + triage data" already got from #1791/#1842.
+      # BRO-2370 DEFECT B: MAX_RETRIES=25 makes push-with-retry.sh's own
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS default to (25+1)/2=13 — but the
+      # script's deadline check runs at the TOP of the loop, before an
+      # attempt starts, and real measured attempt cost under contention is
+      # ~190-200s (live run 33869398248: gaps of 194s/190s/190s/193s/196s),
+      # so only ~5 attempts ever execute before PUSH_DEADLINE_SEC=900 fires
+      # and the loop self-aborts — attempt 13 is structurally unreachable and
+      # the Git Data API fallback never engages. Explicitly overriding
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 here (3*~193s≈579s, well under
+      # 900s) makes the fallback trigger reachable while leaving MAX_RETRIES
+      # at 25 — that value stays as-is because aa51b22c558 (task #1842) chose
+      # it specifically to give this step many cheap retries under the
+      # common low-contention case, which lowering MAX_RETRIES would regress.
+      # This file is single-writer + apiFallbackSafe (see the step's own
+      # comment above), so the fallback is actually usable here — unlike
+      # "Commit health check + triage data" below, which deliberately does
+      # NOT get this override (see its own comment).
       - name: Commit digest snapshot
         if: always()
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -576,10 +594,15 @@ jobs:
       # same live-evidence fix as "Commit digest snapshot" above; see the
       # job-level timeout-minutes comment for the incident and sizing
       # rationale). Inherits the job ceiling instead.
+      # BRO-2370 DEFECT B: same PUSH_API_FALLBACK_AFTER_ATTEMPTS-unreachable
+      # issue as "Commit digest snapshot" above (see that step's comment for
+      # the full analysis) — all 15 files here are apiFallbackSafe, so the
+      # override is safe and makes the fallback actually reachable.
       - name: Commit health check audit snapshots (apiFallbackSafe)
         if: always()
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -689,12 +712,18 @@ jobs:
       # identical push-with-retry.sh against the identical heavy
       # data/audit/* write contention every other commit step in this job
       # faces, so it gets the same generous budget as those.
+      # BRO-2370 DEFECT B: same PUSH_API_FALLBACK_AFTER_ATTEMPTS-unreachable
+      # issue as "Commit digest snapshot" above (see that step's comment for
+      # the full analysis) — autonomous-recheck-ledger.jsonl is single-writer
+      # + apiFallbackSafe, so the override is safe and makes the fallback
+      # actually reachable.
       - name: Commit acceptance recheck ledger
         if: always()
         continue-on-error: true
         timeout-minutes: 17
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -757,6 +786,21 @@ jobs:
       # below, which is raised specifically to give this LAST step real
       # headroom past its new 900s internal deadline even after every step
       # ahead of it in this job.
+      #
+      # BRO-2370 DEFECT B (deliberately NOT applying the fix here):
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the 3 apiFallbackSafe
+      # steps above to make their Git Data API fallback reachable (see
+      # "Commit digest snapshot"'s comment). Do NOT "helpfully" add it here
+      # too — the 4 files this step stages (triage/, alert-ledger.json,
+      # alert-digest-queue.json, alert-router-attempts.jsonl) are verified
+      # genuinely multi-writer with no apiFallbackSafe registration, so the
+      # fallback is disqualified on its own merits regardless (see the
+      # comment a few lines below). Cutting this step's attempt budget from
+      # MAX_RETRIES=25 to an early break at attempt 3 would only reintroduce
+      # the exact regression aa51b22c558/task #1842 fixed (7 retries wasn't
+      # enough attempts for this step's real contention) — reachable-fallback
+      # steps get the early-break override, disqualified-fallback steps keep
+      # their full retry budget instead. (second-opinion review, 2026-09-04)
       - name: Commit health check + triage data
         if: always()
         env:
