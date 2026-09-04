@@ -86,7 +86,45 @@ jobs:
     # failure including a job-level timeout kill, so cheap margin here is
     # worth more than a tight number, and even 135 is nowhere near GitHub
     # Actions' 360-min hard job ceiling.
-    timeout-minutes: 135
+    #
+    # Raised 135->180 (BRO-2370, live incidents 2026-09-01→09-04: runs
+    # 33505505323, 33626125042, 33650672952, 33751235270, 33869398248).
+    # "Commit digest snapshot" and "Commit health check audit snapshots
+    # (apiFallbackSafe)" were each still hard-capped at their own
+    # timeout-minutes: 17 despite carrying the same PUSH_DEADLINE_SEC=900
+    # sizing as their siblings — the ONE thing the earlier fix passes above
+    # deliberately did NOT do to them (compare "Commit health check + triage
+    # data"'s own comment: left uncapped on purpose "mirroring #1791's own
+    # fix"). Field evidence (run 33869398248) shows why that gap matters:
+    # push-with-retry.sh's `$SECONDS -ge $PUSH_DEADLINE_SEC` check only runs
+    # at the TOP of each retry iteration, and under this run's contention a
+    # single iteration cost ~190-200s (two of its internal git-push calls
+    # each burned the full GIT_NET_TIMEOUT_SEC=90s hang, a known/logged
+    # behavior per task #1810's else-branch, not a new bug) — so the loop
+    # can already be committed to an iteration when the 900s mark passes,
+    # and GitHub's OWN external timeout-minutes SIGKILLs the step first
+    # ("has timed out after 17 minutes", ~1033s wall-clock) BEFORE
+    # push-with-retry.sh's internal deadline-exceeded break, and before its
+    # Git Data API fallback (task #1847) — the mechanism specifically built
+    # to rescue exactly this contention pattern — ever gets a chance to run.
+    # An external SIGKILL mid-git-operation is strictly worse than letting
+    # the script's own bounded internal logic (900s local budget + a
+    # capped-retry API fallback pass) finish and degrade gracefully.
+    # Un-capped both steps below (removed timeout-minutes: 17) so they
+    # inherit this job ceiling instead, same treatment as the bulk step.
+    # Re-sized the ceiling for 3 uncapped-but-900s-governed steps instead of
+    # 1: worst case per step is no longer assumed to fit in ~17min (that
+    # assumption is exactly what just failed live) — budgeted generously at
+    # ~30min each (900s local deadline + one in-flight iteration's overshoot
+    # + a capped API-fallback pass) = 90min, replacing the two removed
+    # 17min caps (-34min) in the running sum. New theoretical ceiling: 43min
+    # (remaining 12 capped non-commit steps) + 17min ("Commit acceptance
+    # recheck ledger", still capped/continue-on-error, unaffected by this
+    # incident) + 90min (3 uncapped 900s-governed commit steps) + ~10min
+    # uncapped setup/scan steps ≈ 160min. 180 keeps the same real-margin-
+    # above-the-sum convention as every prior raise, still nowhere near
+    # GitHub Actions' 360-min hard job ceiling.
+    timeout-minutes: 180
     permissions:
       contents: write
       issues: write
@@ -486,9 +524,17 @@ jobs:
       # No continue-on-error: unlike the shadow-mode steps above, a failure
       # to persist the digest snapshot is exactly the page-worthy failure
       # this workflow exists to catch.
+      #
+      # No explicit timeout-minutes (BRO-2370, removed the prior 17min cap —
+      # live incidents 2026-09-01→09-04 showed 17min isn't enough headroom
+      # above this step's own PUSH_DEADLINE_SEC=900 for push-with-retry.sh's
+      # internal deadline check + Git Data API fallback to run to completion
+      # before GitHub's external timeout SIGKILLs it mid-iteration; see the
+      # job-level timeout-minutes comment above for the full incident and
+      # sizing rationale). Inherits the job ceiling instead, same treatment
+      # "Commit health check + triage data" already got from #1791/#1842.
       - name: Commit digest snapshot
         if: always()
-        timeout-minutes: 17
         env:
           PUSH_DEADLINE_SEC: '900'
         run: |
@@ -525,9 +571,13 @@ jobs:
       # alert-ledger.json, alert-digest-queue.json, alert-router-
       # attempts.jsonl — are genuinely multi-writer (verified same way) and
       # stay in the bulk step below, unprotected.
+      #
+      # No explicit timeout-minutes (BRO-2370, removed the prior 17min cap —
+      # same live-evidence fix as "Commit digest snapshot" above; see the
+      # job-level timeout-minutes comment for the incident and sizing
+      # rationale). Inherits the job ceiling instead.
       - name: Commit health check audit snapshots (apiFallbackSafe)
         if: always()
-        timeout-minutes: 17
         env:
           PUSH_DEADLINE_SEC: '900'
         run: |

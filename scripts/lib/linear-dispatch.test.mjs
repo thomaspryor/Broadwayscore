@@ -16,6 +16,7 @@ import {
   startedStateGuard,
   reportedOutcomeGuard,
   newestDispatchComment,
+  sortedCommentBodies,
   dispatchCommentMode,
   dispatchFloor,
   isCompletePrEvidence,
@@ -519,6 +520,43 @@ test('newestDispatchComment: with no timestamps at all, last-in-array still wins
 test('newestDispatchComment: null for an empty/absent list', () => {
   assert.equal(newestDispatchComment([]), null);
   assert.equal(newestDispatchComment(null), null);
+});
+
+// -- sortedCommentBodies (BRO-2796: evaluateVerifiability's "newest wins" ---
+// -- contract needs a guaranteed oldest-first body array) -------------------
+
+test('sortedCommentBodies: sorts newest-first API order into oldest-first bodies', () => {
+  const issue = { comments: { nodes: [
+    { body: 'newest', createdAt: 't2' },
+    { body: 'oldest', createdAt: 't0' },
+    { body: 'middle', createdAt: 't1' },
+  ] } };
+  assert.deepEqual(sortedCommentBodies(issue), ['oldest', 'middle', 'newest']);
+});
+
+test('sortedCommentBodies: already oldest-first input stays oldest-first', () => {
+  const issue = { comments: { nodes: [
+    { body: 'oldest', createdAt: 't0' },
+    { body: 'middle', createdAt: 't1' },
+    { body: 'newest', createdAt: 't2' },
+  ] } };
+  assert.deepEqual(sortedCommentBodies(issue), ['oldest', 'middle', 'newest']);
+});
+
+test('sortedCommentBodies: drops empty/missing bodies, tolerates missing createdAt', () => {
+  const issue = { comments: { nodes: [
+    { body: 'has body', createdAt: 't1' },
+    { body: '', createdAt: 't2' },
+    { createdAt: 't3' },
+    null,
+  ] } };
+  assert.deepEqual(sortedCommentBodies(issue), ['has body']);
+});
+
+test('sortedCommentBodies: no comments/no issue never throws', () => {
+  assert.deepEqual(sortedCommentBodies({}), []);
+  assert.deepEqual(sortedCommentBodies({ comments: { nodes: [] } }), []);
+  assert.deepEqual(sortedCommentBodies(null), []);
 });
 
 test('REPORTED_WORK_BYPASS_MIN_REASON is long enough that a reflex answer will not clear it', () => {

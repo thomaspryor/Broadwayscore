@@ -75,7 +75,34 @@ const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
   { file: 'commercial.json', surface: 'public-repo', status: 'active', merge: mergeCommercialJson, format: 'json', newline: true },
-  { file: 'commercial-pending-review.json', surface: 'public-repo', status: 'active', merge: mergePendingReview, format: 'json', newline: true },
+  {
+    file: 'commercial-pending-review.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergePendingReview,
+    format: 'json',
+    newline: true,
+    // BRO-2795 follow-up: this entry was already MANAGED/'active' with a
+    // real per-slug union merge (mergePendingReview, used today by the LOCAL
+    // rebase-conflict path — resolve_conflicts()), but had no apiFallbackMerge
+    // flag, so push-with-retry.sh's Git Data API fallback disqualifier
+    // (`isManaged(f) && !isApiFallbackMergeable(f)`) trips on it EVERY time it
+    // changes — independently of the two circuit-breaker files this card
+    // otherwise fixes. commercial-rss-poll.yml's own PUSH_RECONCILE_MERGED_JSON=1
+    // does NOT cover this: that flag only wires the LOCAL post-rebase
+    // reconcile pass, a completely different code path from the Git Data API
+    // fallback (confirmed by reading push-with-retry.sh directly — an
+    // assumption the original incident writeup got wrong). Genuinely
+    // multi-writer across 5 workflows sharing the commercial-data-write
+    // concurrency group (batch-commercial-research.yml, commercial-friday.yml,
+    // commercial-rss-poll.yml, commercial-weekly.yml, deep-research-
+    // commercial.yml — grepped 2026-09-04), same bar already accepted for
+    // audit/alert-ledger.json (12 writers) and audit/alert-digest-queue.json
+    // (8 writers) below. mergePendingReview has its own colocated test
+    // coverage (tests/unit/merge-commercial-data.test.mjs) and already
+    // defends against the resurrection bug that class of merge is prone to.
+    apiFallbackMerge: true,
+  },
   { file: 'commercial-research-queue.json', surface: 'public-repo', status: 'active', merge: mergeResearchQueue, format: 'json', newline: true },
   { file: 'diary-shows.json', surface: 'public-repo', status: 'active', merge: mergeDiaryShows, format: 'json', newline: false },
   { file: 'social-post-history.json', surface: 'public-repo', status: 'active', merge: mergeSocialPostHistory, format: 'json', newline: true },
@@ -393,6 +420,48 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'opening-night-checklist',
     verifiedBy: '2026-08-31: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist. Written by scripts/lib/opening-night-sla.js:saveSlaState(), also invoked (locally, not committed) by opening-night-orchestrator.yml.',
+  },
+  // BRO-2795 (commercial-rss-poll.yml hourly hard-failure, incident run
+  // 33906734626): the "Commit data changes" step's git-add-existing.sh call
+  // only names commercial-pending-review.json/commercial-rss-state.json, but
+  // its stage-data-changes.sh call (no args) sweeps ALL of data/ minus the
+  // fixed private-path exclusions — so these two provider circuit-breaker
+  // state files, written by the two continue-on-error steps just before it,
+  // ride along uninvited every time either breaker's numbers change. Both
+  // being unaudited data/audit/ paths (not in this list) was enough on its
+  // own to disqualify push-with-retry.sh's Git Data API fallback for the
+  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch).
+  // (PUSH_RECONCILE_MERGED_JSON=1 does NOT make the two files the step DOES
+  // name fallback-safe by itself — that flag only wires the LOCAL post-rebase
+  // reconcile pass, a different code path from the Git Data API fallback's
+  // disqualifier; commercial-pending-review.json needed its own
+  // apiFallbackMerge fix, see that entry above.) The
+  // local fetch+rebase+push flow then lost its own race against main's
+  // commit churn 3 times running (push-with-retry.sh's own working-as-
+  // designed budget exit), with no fallback left to catch it, and the job
+  // hard-failed hourly from 2026-09-04 11:47Z. Excluding the breaker files
+  // from the commit instead (the other option this card considered) was
+  // rejected: both breakers exist specifically so their state PERSISTS to
+  // main within the hour (see their own step comments in
+  // commercial-rss-poll.yml) — every other chokepoint that reads
+  // scrapingdog-caps.js / brightdata-caps.js needs the committed file, not a
+  // value that resets every run. Registering them apiFallbackSafe keeps that
+  // persistence AND restores the fallback.
+  {
+    file: 'audit/bd-circuit-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "bd-circuit-breaker"/"check-bd-breaker.js" — sole writer is scripts/check-bd-breaker.js, invoked only by commercial-rss-poll.yml\'s "Bright Data daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so overlapping runs (its own cron racing a workflow_dispatch) queue rather than race.',
+  },
+  {
+    file: 'audit/sd-circuit-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow.',
   },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe

@@ -1,29 +1,8 @@
 {
-  "generatedAt": "2026-09-03T19:13:03.400Z",
+  "generatedAt": "2026-09-04T21:21:18.284Z",
   "windowDays": 45,
   "showsScanned": 66,
   "gaps": [
-    {
-      "showId": "disruption-off-broadway-2026",
-      "title": "Disruption",
-      "openingDate": "2026-08-02",
-      "file": "thestage--dave-fargnoli.json",
-      "outletId": "thestage",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about-travel-disruption-after-fire",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about-travel-disruption-after-fire --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-09-03T19:13:03.400Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "disruption-off-broadway-2026",
       "title": "Disruption",
@@ -37,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 704.4671563888888,
+      "fileAgeHours": 730.604625,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 372.8454038888889
+      "nonTerminalAgeHours": 398.9828713888889
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -54,9 +33,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 145.93941777777778,
+      "fileAgeHours": 172.07688555555555,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 107.53034166666667
+      "nonTerminalAgeHours": 133.66780916666667
     }
   ],
   "contradictions": []

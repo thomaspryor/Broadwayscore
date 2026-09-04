@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-04T20:38:32.826Z",
-  "processed": 68,
-  "failed": 409,
-  "successRate": "14.3%",
+  "updatedAt": "2026-09-04T21:37:35.460Z",
+  "processed": 78,
+  "failed": 599,
+  "successRate": "11.5%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 4,
     "scrapingbee": 0,
-    "brightdata": 13,
+    "brightdata": 15,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 13
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -49,6 +49,40 @@
       "event": "bb-session",
       "session": "5df00000",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-04T21:21:19.708Z",
+      "event": "bb-session",
+      "session": "e7f17e24",
+      "url": "/article/Review-BURLESQUE-THE-MUSICAL-Savoy-Theatre-20250722"
+    },
+    {
+      "t": "2026-09-04T21:23:05.480Z",
+      "event": "bb-session",
+      "session": "602ae7e8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-04T21:23:06.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-04T21:25:10.276Z",
+      "event": "bb-session",
+      "session": "d571d1a2",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-04T21:25:11.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T21:33:30.052Z",
+      "event": "bb-session",
+      "session": "7b88d11f",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }

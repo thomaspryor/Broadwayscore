@@ -287,6 +287,27 @@ function generateCorrelationId() {
 // that callers reading a payload with no timestamps see no behaviour change,
 // and reportedOutcomeGuard refuses to act on such a payload at all rather
 // than trusting it.
+// Oldest-first comment bodies for evaluateVerifiability's "newest correction
+// wins" contract (verify-gate.js, BRO-2796) — sorted explicitly by
+// createdAt rather than trusted as returned, for the same reason
+// newestDispatchComment above does its own sort: this connection's default
+// order is not createdAt-ascending. Plain string comparison, NOT
+// localeCompare — ISO-8601 timestamps sort correctly by codepoint order and
+// localeCompare's result depends on locale/ICU collation, which has no
+// business deciding which correction is newest.
+function sortedCommentBodies(issue) {
+  const nodes = (issue && issue.comments && issue.comments.nodes) || [];
+  return nodes
+    .slice()
+    .sort((a, b) => {
+      const ca = String((a && a.createdAt) || '');
+      const cb = String((b && b.createdAt) || '');
+      return ca < cb ? -1 : ca > cb ? 1 : 0;
+    })
+    .map((c) => c && c.body)
+    .filter(Boolean);
+}
+
 function newestDispatchComment(comments) {
   const list = Array.isArray(comments) ? comments : [];
   let best = null;
@@ -847,6 +868,7 @@ module.exports = {
   buildOpenIssuesWithDescriptionsQuery,
   findOpenIssueForTerm,
   buildCommentMutation,
+  sortedCommentBodies,
   priorityRank,
   priorityLabel,
   sortIssuesByPriority,
