@@ -50,7 +50,8 @@
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json"
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
@@ -273,7 +274,16 @@
     "titanique-2026/new-york-city-theatre--unknown.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/frontmezzjunkies--unknown.json",
-    "titanique-2026/playbill--unknown.json"
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -308,14 +318,17 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json"
+      "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -347,7 +360,7 @@
     ]
   },
   "startTime": "2026-09-04T08:47:26.505Z",
-  "lastProcessed": "titanique-2026/playbill--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/ew--christian-holub.json",
   "log": [
     {
       "t": "2026-09-04T09:25:36.260Z",
@@ -456,6 +469,18 @@
       "t": "2026-09-04T10:11:28.419Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-04T10:14:19.474Z",
+      "event": "bb-session",
+      "session": "fc6eb939",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-04T10:14:55.564Z",
+      "event": "bb-session",
+      "session": "f4077f7f",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
