@@ -28,13 +28,14 @@
 #
 # PART A reproduces this end-to-end against the real, unmodified
 # push-with-retry.sh — it documents a real, BY-DESIGN property of the script
-# (not a bug to fix there). Its stranding fixture uses
-# data/audit/alert-ledger.json: a genuinely multi-writer (12 writers), NOT-
-# apiFallbackSafe path that data-health-check.yml really does stage in its
-# bulk commit step. It deliberately no longer uses data/audit/autonomous-
-# recheck-ledger.jsonl — BRO-2588 registered that file apiFallbackSafe, so it
-# stopped disqualifying anything and would have silently turned PART A into a
-# no-op assertion. PART A is expected to PASS regardless of the workflow's
+# (not a bug to fix there). Its stranding fixture has now been moved TWICE by
+# exactly this decay: BRO-2588 registered data/audit/autonomous-recheck-
+# ledger.jsonl apiFallbackSafe, and BRO-2413 registered data/audit/alert-
+# ledger.json apiFallbackMerge. In both cases the disqualifier correctly stopped
+# firing and PART A silently became a no-op assertion. The fixture is therefore
+# now a DATE-STAMPED path, which cannot be registered at all under the
+# `.endsWith()` matching both consumers use, and the premise probe checks BOTH
+# exemption lists rather than only apiFallbackSafe. PART A is expected to PASS regardless of the workflow's
 # step order — it is not the regression guard.
 #
 # PART B is the actual regression guard, and it is REGISTRY-DRIVEN rather than
@@ -80,7 +81,19 @@ echo "=== PART A: reproduce the stranded-commit cascade against the real script 
 # disqualifier this part exists to observe would (correctly) never fire —
 # leaving PART A silently asserting nothing, which is exactly how the previous
 # fixture (autonomous-recheck-ledger.jsonl) would have decayed under BRO-2588.
-STRANDED_PATH="data/audit/alert-ledger.json"
+# BRO-2413 (2026-09-04) registered audit/alert-ledger.json with apiFallbackMerge:
+# true, which made the disqualifier CORRECTLY decline to fire on the old fixture and
+# reddened main for four consecutive runs. The production behaviour is right — real
+# reconciliation for that file is the whole point of BRO-2413 — so the fixture moves
+# instead.
+#
+# This path is structurally un-registerable, not merely unregistered today: the
+# filename is date-stamped, and BOTH places that check membership (push-with-retry.sh's
+# inline disqualifier and audit-push-retry-budgets.js's classifyPushFallbackSafety) do
+# exact-suffix `.endsWith()` matching with no glob support. See the "NOT added,
+# deliberately" note in scripts/lib/core-data-merge-registry.js. So no future registry
+# entry can silently pull this fixture out from under PART A the way BRO-2413 did.
+STRANDED_PATH="data/audit/opening-night-latency-2026-01-01.json"
 # The probe must not fail OPEN. Running it bare inside `if ... 2>/dev/null`
 # collapsed two very different outcomes into the same "exit non-zero" branch:
 # the intended PASS (path genuinely not registered, exit 1) and the probe
@@ -90,10 +103,23 @@ STRANDED_PATH="data/audit/alert-ledger.json"
 # block exists to prevent. So: capture the exit code, and treat anything that
 # is not a clean 0 or 1 — or ANY stderr output at all — as a hard FAIL.
 PREMISE_ERR="$TMP/a-premise.stderr"
+# Probes BOTH exemption lists. Checking only API_FALLBACK_SAFE is what let BRO-2413
+# decay this test silently: it registered the old fixture on the SECOND list
+# (apiFallbackMerge), the probe saw nothing on the first list, printed
+# PASS[A-premise], and PART A then asserted against a disqualifier that could no
+# longer fire. Matching uses the same suffix rule as the real consumers rather than
+# `===`, since registry entries are stored without the leading `data/`.
 node -e '
-    const { API_FALLBACK_SAFE } = require(process.argv[1]);
+    const mod = require(process.argv[1]);
+    const { API_FALLBACK_SAFE, API_FALLBACK_MERGE } = mod;
     if (!Array.isArray(API_FALLBACK_SAFE)) throw new Error("API_FALLBACK_SAFE is not an array");
-    process.exit(API_FALLBACK_SAFE.some((e) => e.file === process.argv[2]) ? 0 : 1);
+    if (!Array.isArray(API_FALLBACK_MERGE)) throw new Error("API_FALLBACK_MERGE is not an array");
+    const target = process.argv[2];
+    const hit = (list) => list.some((e) => {
+      const suffix = String(e.file).replace(/^data\//, "");
+      return target === e.file || target.endsWith(suffix);
+    });
+    process.exit(hit(API_FALLBACK_SAFE) || hit(API_FALLBACK_MERGE) ? 0 : 1);
   ' "$REGISTRY_PROBE_MODULE" "$STRANDED_PATH" 2>"$PREMISE_ERR"
 premise_code=$?
 premise_err="$(cat "$PREMISE_ERR" 2>/dev/null)"
@@ -105,11 +131,14 @@ if [ "$premise_code" -gt 1 ] || [ -n "$premise_err" ]; then
   echo "${premise_err:-(none)}" | sed 's/^/           /'
   fail=1
 elif [ "$premise_code" -eq 0 ]; then
-  echo "FAIL[A-premise]: $STRANDED_PATH IS registered apiFallbackSafe — this fixture needs a"
-  echo "         genuinely unregistered data/audit/ path to strand, or PART A asserts nothing."
+  echo "FAIL[A-premise]: $STRANDED_PATH IS registered exempt (apiFallbackSafe OR apiFallbackMerge)"
+  echo "         — the disqualifier will correctly decline to fire on it, so PART A would assert"
+  echo "         nothing. Repoint STRANDED_PATH at a genuinely unregistered data/audit/ path;"
+  echo "         prefer a date-stamped filename, which cannot be registered under the .endsWith()"
+  echo "         matching both consumers use."
   fail=1
 else
-  echo "PASS[A-premise]: $STRANDED_PATH is not apiFallbackSafe — a valid stranding fixture"
+  echo "PASS[A-premise]: $STRANDED_PATH is on neither exemption list (apiFallbackSafe, apiFallbackMerge) — a valid stranding fixture"
 fi
 
 mkdir -p "$TMP/fakebin"

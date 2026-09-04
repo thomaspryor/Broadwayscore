@@ -292,8 +292,22 @@ jobs:
           if [ -f "$STATE_FILE" ]; then
             PREV_STALE=$(jq -r '.stale[]?' "$STATE_FILE" 2>/dev/null | sort -u)
           fi
-          NEWLY_STALE=$(comm -23 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
-          RECOVERED=$(comm -13 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
+          # Crons whose run-history query failed are ABSENT from CURRENT_STALE, because
+          # we could not determine their state. Absence is otherwise indistinguishable
+          # from health, so without this they would be reported RECOVERED: their
+          # cron-health and cron-health-chronic conditions would resolve, and
+          # update-cron-health-state.js would reset their consecutive-stale streak to
+          # 0. An API failure every other day would then keep the 3-consecutive-day
+          # chronic escalation permanently out of reach for a cron that is still dead.
+          # Sort so comm's input-order requirement holds.
+          # The set arithmetic lives in scripts/lib/cron-health-sets.sh so it can be
+          # tested against the real code rather than a copy (CLAUDE.md rule 15).
+          . scripts/lib/cron-health-sets.sh
+          UNKNOWN_NAMES=$(normalize_names "${QUERY_FAILED%, }")
+          SETS=$(compute_cron_health_sets "$CURRENT_STALE" "$PREV_STALE" "$UNKNOWN_NAMES")
+          NEWLY_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==0')
+          RECOVERED=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==1')
+          PERSIST_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==2')
           NEWLY_COUNT=$(printf '%s' "$NEWLY_STALE" | grep -c . || true)
           CHRONIC_COUNT=$(printf '%s' "$CURRENT_STALE" | grep -c . || true)
           CHRONIC_COUNT=$(( CHRONIC_COUNT - NEWLY_COUNT ))
@@ -347,7 +361,7 @@ jobs:
           # Decision logic lives in scripts/lib/cron-stale-streak.js so the
           # escalation boundary is unit-tested against the real function
           # (CLAUDE.md rule 15), not re-implemented in shell.
-          CURRENT_STALE="$CURRENT_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
+          CURRENT_STALE="$PERSIST_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
             STATE_FILE="$STATE_FILE" node scripts/update-cron-health-state.js
 
           # Emit step outputs the notify-failure step reads to toggle severity/email.
@@ -385,6 +399,16 @@ jobs:
             if [ -n "$WARNINGS" ]; then
               echo "=== WARNINGS ==="
               echo -e "$WARNINGS"
+              # Export them here too, not only on the all-healthy path below. The
+              # realistic cause of a run-history query failure (expired token, rate
+              # limit, API incident) is ALSO a likely cause of concurrent stale
+              # entries, so the branch that drops warnings is exactly the branch the
+              # UNKNOWN-health warning is most likely to arrive on.
+              {
+                echo "warnings<<EOF"
+                echo -e "$WARNINGS"
+                echo "EOF"
+              } >> "$GITHUB_OUTPUT"
             fi
             echo ""
             echo "Fix: Go to Actions tab, find the stale workflow, click 'Enable workflow' or trigger manually."
