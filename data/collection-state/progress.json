@@ -628,7 +628,17 @@
     "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
     "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
     "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
-    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json"
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json",
+    "stranger-things-the-first-shadow-west-end-2023/amny--matt-windman.json",
+    "stranger-things-the-first-shadow-west-end-2023/chicagotribune--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/dailybeast--tim-teeman.json",
+    "stranger-things-the-first-shadow-west-end-2023/latimes--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/nysr--bob-verini.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,7 +694,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -726,7 +737,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/nysr--bob-verini.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -790,6 +801,12 @@
       "t": "2026-09-04T21:25:11.240Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T21:33:30.052Z",
+      "event": "bb-session",
+      "session": "7b88d11f",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
