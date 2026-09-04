@@ -322,7 +322,17 @@ assert_no_conflict_markers() {
 
   [ ${#existing[@]} -eq 0 ] && return 0
 
-  if ! node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
+  # BRO-2370 follow-up (second-opinion review finding): this and
+  # assert_no_orphan_commit's node call below were the only two operations in
+  # the retry loop with NO per-call timeout, unlike git_fetch/git_push's
+  # GIT_NET_TIMEOUT_SEC wrapping. Both are local (file reads / git-log, no
+  # network), so a hang here was always low-probability — but data-health-
+  # check.yml's two commit steps just had their external timeout-minutes cap
+  # removed (900s deadline governs them instead), which widened the ceiling on
+  # ANY unbounded operation in this script from ~17min to the job's 180min. 30s
+  # is generous for a local file scan; _timeout fails open (runs uncapped) if
+  # no timeout binary exists, matching this file's other _timeout call sites.
+  if ! _timeout 30 node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
     echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
     restore_head_if_moved "conflict-markers" 1  # force: the descendant IS the corruption (task #769 exception)
     exit 1
@@ -348,7 +358,8 @@ assert_no_orphan_commit() {
   [ -f "$SCRIPT_DIR/../check-orphan-commits.js" ] || return 0
   git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1 || return 0
 
-  if ! node "$SCRIPT_DIR/../check-orphan-commits.js" --range="origin/$PULL_BRANCH..HEAD"; then
+  # BRO-2370 follow-up — see assert_no_conflict_markers' identical comment above.
+  if ! _timeout 30 node "$SCRIPT_DIR/../check-orphan-commits.js" --range="origin/$PULL_BRANCH..HEAD"; then
     echo "::error::Refusing to push: an outgoing commit has NO parent (a second repo root). See task #209 — a shallow checkout feeding a rebase/merge/reset path produced a rootless full-tree commit. Do NOT push this; investigate how HEAD became unborn."
     restore_head_if_moved "orphan-commit" 1  # force: the descendant IS the corruption (task #769 exception)
     exit 1
