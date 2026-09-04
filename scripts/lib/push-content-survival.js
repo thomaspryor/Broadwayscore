@@ -330,30 +330,33 @@ function anyReverted(classified) {
 const CONTENT_SURVIVAL_EXEMPT_LEDGERS = [
   {
     file: 'data/audit/alert-ledger.json',
-    mode: 'full',
+    mode: 'deep-only',
     reason:
-      '2026-08-26 (BRO-2500): 12 independent writers, deliberately excluded from ' +
-      "core-data-merge-registry.js's active/merge-fn coverage (see its \"NOT added, " +
-      'deliberately\" comment) because divergence here is expected and benign, not an ' +
-      'error to reconcile away. Live incident: merging origin/job/linear-BRO-45-mtapwjad ' +
-      'reported REVERTED — 18 lines only on the branch, 23 lines only on main, both grown ' +
-      'independently, nothing clobbered. \'full\' mode (not just \'deep-only\') is deliberate, ' +
-      'not merely convenient: owner-alert-router.js\'s own module header (lines 54-62) already ' +
-      'documents that a losing writer\'s commit here "gets overwritten by push-with-retry.sh\'s ' +
-      'last-writer-wins conflict resolution", calling the outcome "a duplicate card/email, not ' +
-      'a crash or lost alert — acceptable for a single-owner project". The exact class of loss ' +
-      'this guard would otherwise flag as REVERTED for this file is a class the project has ' +
-      'ALREADY, independently, explicitly decided is not worth alarming on.',
+      '2026-08-26 (BRO-2500), downgraded from \'full\' 2026-09-04 (BRO-2413): 12 independent ' +
+      'writers. Was fully exempt because divergence was expected and benign under the OLD ' +
+      'local-flow "last-writer-wins" behavior (owner-alert-router.js\'s own module header calls ' +
+      'that outcome "a duplicate card/email, not a crash or lost alert — acceptable for a ' +
+      'single-owner project") — still true, and still why the deep line-level ' +
+      'addedLinesSurvived check stays skipped here (that heuristic is what produced the false ' +
+      'REVERTED report in the origin/job/linear-BRO-45-mtapwjad incident this exemption ' +
+      'predates). What changed: core-data-merge-registry.js now has a real merge fn for this ' +
+      'path (scripts/lib/merge-alert-ledger.js), consumed by push-via-git-api.sh\'s ' +
+      'apiFallbackMerge path specifically to STOP that class of loss on the fast push path — so ' +
+      'a genuine full revert to pre-edit base (the cheap blob check \'deep-only\' still runs) is ' +
+      'no longer an accepted outcome to stay silent on; it would mean the new reconciliation ' +
+      'failed to run. The local flow\'s own behavior is deliberately UNCHANGED by BRO-2413 ' +
+      '(the registry entry sets optInReconcile: false) — this is not a claim that local-flow ' +
+      'divergence is now alarm-worthy, only that a FULL revert is.',
   },
   {
     file: 'data/audit/alert-digest-queue.json',
-    mode: 'full',
-    reason: "2026-08-26 (BRO-2500): same shape, same registry comment, and same owner-alert-router.js accepted-loss reasoning as alert-ledger.json above — 8 independent writers, routed through the same routeAlert() ledger machinery.",
+    mode: 'deep-only',
+    reason: "2026-08-26 (BRO-2500), downgraded from 'full' 2026-09-04 (BRO-2413): same shape, same registry comment, and same downgrade reasoning as alert-ledger.json above — 8 independent writers, routed through the same routeAlert() ledger machinery.",
   },
   {
     file: 'data/audit/alert-router-attempts.jsonl',
-    mode: 'full',
-    reason: "2026-08-26 (BRO-2500): same shape, same registry comment, and same owner-alert-router.js accepted-loss reasoning as alert-ledger.json above — 3 independent writers.",
+    mode: 'deep-only',
+    reason: "2026-08-26 (BRO-2500), downgraded from 'full' 2026-09-04 (BRO-2413): same shape, same registry comment, and same downgrade reasoning as alert-ledger.json above — 3 independent writers.",
   },
   {
     file: 'data/audit/deploy-watermark.json',

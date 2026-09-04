@@ -25,9 +25,15 @@ const workflowPath = path.join(repoRoot, '.github', 'workflows', 'opening-night-
 const workflowText = fs.readFileSync(workflowPath, 'utf8');
 
 const SINGLE_WRITER_FILES = ['data/audit/opening-night-history.json', 'data/audit/opening-night-sla-state.json'];
+// alert-ledger.json/alert-digest-queue.json/alert-router-attempts.jsonl are
+// deliberately NOT in this list as of BRO-2413: they're still genuinely
+// multi-writer (MANAGED), but now also apiFallbackMerge-registered — a real
+// merge fn makes them fast-path-safe without being apiFallbackSafe (see
+// core-data-merge-registry.js's apiFallbackMergeEntriesFor() header). This
+// test's OWN point (this workflow's step must not bundle a still-
+// disqualifying file with the single-writer state above) still holds for
+// the two genuinely unaudited files kept below.
 const MULTI_WRITER_OR_UNAUDITED_FILES = [
-  'data/audit/alert-ledger.json',
-  'data/audit/alert-digest-queue.json',
   'data/audit/remediation-log.jsonl',
   'data/audit/opening-night-latency-2026-08-31.json',
 ];

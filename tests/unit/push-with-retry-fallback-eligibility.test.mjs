@@ -190,6 +190,30 @@ test('task #1847: a MANAGED-file diff (e.g. data/commercial.json) still disquali
   }
 });
 
+test('BRO-2413: a diff touching an apiFallbackMerge file (data/audit/alert-router-attempts.jsonl) does NOT disqualify the fallback, even though it is also MANAGED', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-elig-apifallbackmerge-'));
+  try {
+    const { runnerDir } = setupRunner(tmp, ['data/audit/alert-router-attempts.jsonl',
+      '{"ts":"2026-09-01T00:00:00.000Z","conditionKey":"base","title":"base","ok":true,"error":null}\n']);
+    fs.appendFileSync(
+      path.join(runnerDir, 'data', 'audit', 'alert-router-attempts.jsonl'),
+      '{"ts":"2026-09-01T00:00:01.000Z","conditionKey":"ours","title":"ours","ok":true,"error":null}\n',
+    );
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "alert attempt"', runnerDir);
+
+    const fakeGitDir = makeAlwaysFailPushGitDir(tmp);
+    const { stdout } = runFixture(runnerDir, fakeGitDir, {}, tmp);
+
+    assert.doesNotMatch(stdout, /skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file/,
+      `expected an apiFallbackMerge-registered path to NOT disqualify the fallback. Output:\n${stdout}`);
+    assert.match(stdout, /trying the Git Data API fallback/,
+      `expected the fallback to actually be attempted for this path. Output:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('task #1847: missing reconcile-merged-json.js FAILS CLOSED (disqualifies) instead of silently allowing the fallback', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-elig-failclosed-'));
   const fixtureLibDir = path.join(tmp, 'fixture-scripts', 'lib');

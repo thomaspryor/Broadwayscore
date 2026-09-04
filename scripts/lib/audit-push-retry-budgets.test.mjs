@@ -381,6 +381,18 @@ test('classifyPushFallbackSafety: a file outside data/audit/ and not registered 
   assert.equal(r.disqualifiesFallback, false);
 });
 
+// BRO-2413 (Codex adversarial ship-check P1 finding): the 3 alert-* ledgers
+// are BOTH MANAGED (status:'active', so they'd disqualify under the OLD
+// isManaged-alone check) AND apiFallbackMerge-registered (so push-with-
+// retry.sh's REAL disqualifier no longer blocks them) — this module's own
+// classifier must reflect that, not just the isManaged half.
+test('classifyPushFallbackSafety: an apiFallbackMerge-registered file does NOT disqualify, even though it is also MANAGED', () => {
+  const r = classifyPushFallbackSafety('data/audit/alert-ledger.json');
+  assert.equal(r.isApiFallbackMerge, true);
+  assert.equal(r.isApiFallbackSafe, false, 'apiFallbackSafe and apiFallbackMerge are distinct claims — this file needs real merging, not "no merge needed"');
+  assert.equal(r.disqualifiesFallback, false);
+});
+
 test('extractStagedPaths: git-add-existing.sh with multiple files', () => {
   const paths = extractStagedPaths('bash scripts/lib/git-add-existing.sh --force data/audit/a.json data/audit/b.json\n');
   assert.deepEqual(paths.sort(), ['data/audit/a.json', 'data/audit/b.json']);

@@ -258,6 +258,113 @@ test('push-via-git-api.sh does not shallow-graft the caller\'s local repo when t
   }
 });
 
+test('BRO-2413: apiFallbackMerge reconciles a genuinely multi-writer file (data/audit/alert-router-attempts.jsonl) instead of one writer clobbering the other', () => {
+  // This is the acceptance test for BRO-2413: alert-router-attempts.jsonl
+  // has 3 real independent writers and used to unconditionally disqualify
+  // this whole script (push-with-retry.sh's NEVER_FALLBACK-adjacent
+  // data/audit/ check) because plain "ours wins outright" would silently
+  // drop whichever writer's push lost the race. It's now registered
+  // apiFallbackMerge (core-data-merge-registry.js) with a real merge
+  // function (scripts/lib/merge-alert-router-attempts.js) that
+  // push-via-git-api.sh runs against the live remote tip on every retry —
+  // this proves BOTH concurrent writers' lines survive, not just one.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-apifallbackmerge-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, {
+      'data/audit/alert-router-attempts.jsonl':
+        '{"ts":"2026-09-01T00:00:00.000Z","conditionKey":"base","title":"base","ok":true,"error":null}\n',
+    });
+
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+
+    // A concurrent writer lands FIRST, appending its OWN line — this is the
+    // scenario the old whole-file overlay would have silently discarded.
+    const concurrentDir = path.join(tmp, 'concurrent');
+    cloneRepo(originDir, concurrentDir);
+    fs.appendFileSync(
+      path.join(concurrentDir, 'data', 'audit', 'alert-router-attempts.jsonl'),
+      '{"ts":"2026-09-01T00:00:01.000Z","conditionKey":"concurrent-writer","title":"concurrent","ok":true,"error":null}\n',
+    );
+    sh('git add -A', concurrentDir);
+    sh('git commit -q -m "concurrent alert"', concurrentDir);
+    sh('git push -q origin main', concurrentDir);
+
+    // Our own append, built on the now-stale base.
+    fs.appendFileSync(
+      path.join(runnerDir, 'data', 'audit', 'alert-router-attempts.jsonl'),
+      '{"ts":"2026-09-01T00:00:02.000Z","conditionKey":"our-writer","title":"ours","ok":true,"error":null}\n',
+    );
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our alert"', runnerDir);
+
+    const newSha = runScript(['main', baseSha, '5'], runnerDir);
+    assert.match(newSha, /^[0-9a-f]{40}$/);
+
+    const verifyDir = path.join(tmp, 'verify');
+    cloneRepo(originDir, verifyDir);
+    const finalLines = fs.readFileSync(path.join(verifyDir, 'data', 'audit', 'alert-router-attempts.jsonl'), 'utf8')
+      .split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    const keys = finalLines.map((l) => l.conditionKey).sort();
+    assert.deepEqual(
+      keys,
+      ['base', 'concurrent-writer', 'our-writer'],
+      'both writers\' lines AND the base line must survive — a plain "ours wins" overlay would have dropped concurrent-writer\'s line entirely',
+    );
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('BRO-2413 round-2 (Codex adversarial ship-check P0): a deliberate local delete of an apiFallbackMerge entry is NOT resurrected by a stale remote copy', () => {
+  // clearDigestQueue()-style scenario: base and the concurrent writer both
+  // have an entry; OUR commit deliberately removes it (already delivered).
+  // A naive 2-way union would restore it from the concurrent writer's stale
+  // pre-delete copy — this is exactly what the 3-way base-aware merge
+  // (push-via-git-api.sh now fetches BASE_SHA's copy of the path too) exists
+  // to prevent.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-delete-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, {
+      'data/audit/alert-digest-queue.json':
+        '[{"conditionKey":"stale-alert","title":"t","description":"d","severity":"warning","url":null,"decision":false,"decisionPrompt":null,"model":null,"fields":[],"queuedAt":"2026-09-01T00:00:00.000Z"}]\n',
+    });
+
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+
+    // A concurrent writer touches an UNRELATED file, never sees our delete —
+    // its copy of alert-digest-queue.json (via git show at push time) is
+    // still the base's, still containing "stale-alert".
+    const concurrentDir = path.join(tmp, 'concurrent');
+    cloneRepo(originDir, concurrentDir);
+    fs.writeFileSync(path.join(concurrentDir, 'data', 'unrelated.json'), '{"b":2}\n');
+    sh('git add -A', concurrentDir);
+    sh('git commit -q -m "unrelated concurrent change"', concurrentDir);
+    sh('git push -q origin main', concurrentDir);
+
+    // Our own commit: the queue is now EMPTY — we drained it (delivered).
+    fs.writeFileSync(path.join(runnerDir, 'data', 'audit', 'alert-digest-queue.json'), '[]\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "drain digest queue"', runnerDir);
+
+    const newSha = runScript(['main', baseSha, '5'], runnerDir);
+    assert.match(newSha, /^[0-9a-f]{40}$/);
+
+    const verifyDir = path.join(tmp, 'verify');
+    cloneRepo(originDir, verifyDir);
+    const finalQueue = JSON.parse(fs.readFileSync(path.join(verifyDir, 'data', 'audit', 'alert-digest-queue.json'), 'utf8'));
+    assert.deepEqual(finalQueue, [], 'the drained (delivered) alert must stay drained, not get resurrected by the concurrent writer\'s stale pre-delete copy');
+    // The unrelated file must still have survived the merge (proves this
+    // wasn't a whole-file "ours wins" that happened to also drop the queue).
+    assert.equal(fs.readFileSync(path.join(verifyDir, 'data', 'unrelated.json'), 'utf8'), '{"b":2}\n');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('push-via-git-api.sh fails loudly (exit 1) with no push attempted when base_sha is invalid', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
   try {

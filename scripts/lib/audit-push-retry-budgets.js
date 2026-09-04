@@ -93,9 +93,18 @@ let MANAGED_FILE_INFO = new Map();
 // disqualifying a public-repo push it never touches.
 let PUBLIC_REPO_MANAGED_FILES = [];
 let PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
+// BRO-2413 (Codex adversarial ship-check P1 finding): classifyPushFallbackSafety
+// below must mirror push-with-retry.sh's actual disqualifier EXACTLY, which
+// now also exempts apiFallbackMerge-registered files (core-data-merge-
+// registry.js's apiFallbackMergeEntriesFor()) even though they ARE 'active'
+// (MANAGED) — a MANAGED file only still disqualifies when it lacks
+// apiFallbackMerge coverage. Without this, this audit tool would report the
+// 3 alert-* ledgers as still disqualifying the fallback when they no longer
+// do, giving stale advice.
+let PUBLIC_REPO_API_FALLBACK_MERGE_FILES = [];
 try {
   // eslint-disable-next-line global-require
-  const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor } = require('./core-data-merge-registry.js');
+  const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry.js');
   for (const entry of CORE_DATA_MERGE_REGISTRY) {
     const base = entry.file.split('/').pop();
     const prev = MANAGED_FILE_INFO.get(base);
@@ -104,10 +113,12 @@ try {
   }
   PUBLIC_REPO_MANAGED_FILES = activeEntriesFor('public-repo').map((e) => e.file);
   PUBLIC_REPO_API_FALLBACK_SAFE_FILES = apiFallbackSafeEntriesFor('public-repo').map((e) => e.file);
+  PUBLIC_REPO_API_FALLBACK_MERGE_FILES = apiFallbackMergeEntriesFor('public-repo').map((e) => e.file);
 } catch {
   MANAGED_FILE_INFO = new Map();
   PUBLIC_REPO_MANAGED_FILES = [];
   PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
+  PUBLIC_REPO_API_FALLBACK_MERGE_FILES = [];
 }
 
 // data/shows.json / data/reviews.json — push-with-retry.sh's NEVER_FALLBACK
@@ -118,16 +129,23 @@ const NEVER_FALLBACK_FILES = ['data/shows.json', 'data/reviews.json'];
  * Classify one staged repo-relative file path exactly the way push-with-
  * retry.sh's disqualifier does: `isApiFallbackSafe` mirrors its
  * isApiFallbackSafe(f); `disqualifiesFallback` mirrors the `hit` predicate
- * (isManaged || isNeverFallback || unaudited-data/audit/-path). The two are
+ * ((isManaged && !isApiFallbackMergeable) || isNeverFallback ||
+ * unaudited-data/audit/-path). isApiFallbackSafe and isApiFallbackMerge are
  * mutually exclusive by registry construction (an apiFallbackSafe: true
- * entry is never also `status: 'active'` on the same surface).
+ * entry is never also `status: 'active'` on the same surface, and
+ * apiFallbackMerge entries ARE 'active' — see core-data-merge-registry.js's
+ * apiFallbackMergeEntriesFor() header) — but isApiFallbackMerge and isManaged
+ * are NOT mutually exclusive; every apiFallbackMerge entry today is also
+ * MANAGED (status:'active'), which is exactly why disqualifiesFallback needs
+ * the extra `!isApiFallbackMergeable` carve-out on the isManaged clause.
  */
 function classifyPushFallbackSafety(filePath) {
   const isManaged = PUBLIC_REPO_MANAGED_FILES.some((f) => filePath.endsWith(f));
   const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => filePath.endsWith(f));
+  const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => filePath.endsWith(f));
   const isNeverFallback = NEVER_FALLBACK_FILES.some((p) => filePath === p || filePath.endsWith('/' + p));
-  const disqualifiesFallback = isManaged || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe);
-  return { isApiFallbackSafe, disqualifiesFallback };
+  const disqualifiesFallback = (isManaged && !isApiFallbackMerge) || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe && !isApiFallbackMerge);
+  return { isApiFallbackSafe, isApiFallbackMerge, disqualifiesFallback };
 }
 
 // Shared token filter for both extraction passes below: keeps only literal
