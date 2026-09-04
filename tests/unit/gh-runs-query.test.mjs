@@ -31,6 +31,7 @@ const FIXTURE = {
     { id: 111, head_sha: 'aaaaaaaaaaa', created_at: '2026-09-01T10:00:00Z', updated_at: '2026-09-01T10:12:00Z', conclusion: 'failure', status: 'completed' },
     { id: 333, head_sha: 'ccccccccccc', created_at: '2026-09-03T10:00:00Z', updated_at: '2026-09-03T10:09:00Z', conclusion: 'success', status: 'completed' },
     { id: 222, head_sha: 'bbbbbbbbbbb', created_at: '2026-09-02T10:00:00Z', updated_at: '2026-09-02T10:11:00Z', conclusion: null, status: 'in_progress' },
+    { id: 444, head_sha: 'ddddddddddd', created_at: null, updated_at: null, conclusion: 'success', status: 'completed' },
   ],
 };
 
@@ -39,7 +40,7 @@ const FIXTURE = {
  * @param {string[]} args - arguments after the function name
  * @returns {{stdout: string, status: number, ghArgs: string[]}}
  */
-function runHelper(args) {
+function runHelper(args, opts = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gh-runs-query-test-'));
   try {
     const argsFile = path.join(dir, 'gh-args.txt');
@@ -48,15 +49,29 @@ function runHelper(args) {
 
     // Stub gh: record argv, then apply the --jq program to the fixture with real jq,
     // exactly as `gh api --jq` would.
+    //
+    // failLikeGhApi reproduces the real `gh api` non-2xx behaviour: the HTTP error
+    // BODY goes to STDOUT raw (--jq bypassed) and the exit status is non-zero. This
+    // is the single most dangerous difference from `gh run list`, which printed
+    // nothing on failure.
     const stub = path.join(dir, 'gh');
-    fs.writeFileSync(stub, [
+    const body = [
       '#!/usr/bin/env bash',
       `printf '%s\\n' "$@" > "${argsFile}"`,
-      'prog="."',
-      'if [ "$3" = "--jq" ]; then prog="$4"; fi',
-      `jq "$prog" < "${fixtureFile}"`,
+      ...(opts.failLikeGhApi
+        ? [
+          'echo \'{"message":"Not Found","documentation_url":"https://docs.github.com/rest","status":"404"}\'',
+          'echo "gh: Not Found (HTTP 404)" >&2',
+          'exit 1',
+        ]
+        : [
+          'prog="."',
+          'if [ "$3" = "--jq" ]; then prog="$4"; fi',
+          `jq "$prog" < "${fixtureFile}"`,
+        ]),
       '',
-    ].join('\n'));
+    ];
+    fs.writeFileSync(stub, body.join('\n'));
     fs.chmodSync(stub, 0o755);
 
     const driver = path.join(dir, 'driver.sh');
@@ -103,9 +118,11 @@ test('gh_runs_query takes the repo as an explicit argument rather than resolving
   assert.match(ghArgs[1], /^repos\/someowner\/somerepo\//);
 
   const helperSrc = fs.readFileSync(HELPER, 'utf8');
-  const body = helperSrc.split('gh_runs_query() {')[1] || '';
+  const parts = helperSrc.split('gh_runs_query() {');
+  // Without this the assertion below passes vacuously if the function is ever renamed.
+  assert.equal(parts.length, 2, 'could not locate the gh_runs_query function body');
   assert.ok(
-    !/GITHUB_REPOSITORY/.test(body),
+    !/GITHUB_REPOSITORY/.test(parts[1]),
     'the helper body must not read GITHUB_REPOSITORY — callers pass the repo explicitly',
   );
 });
@@ -125,7 +142,8 @@ test('output is a JSON ARRAY, not the raw REST object', () => {
   const { stdout } = runHelper(['{owner}/{repo}', 'vercel-deploy.yml', '5']);
   const parsed = JSON.parse(stdout);
   assert.ok(Array.isArray(parsed), 'result must be an array');
-  assert.equal(parsed.length, 3, 'length must be the run count, not the object key count');
+  assert.equal(parsed.length, FIXTURE.workflow_runs.length, 'length must be the run count, not the object key count');
+  assert.notEqual(parsed.length, 2, 'length 2 is the REST object key count — the array wrapper is missing');
 });
 
 test('projection keeps gh-run-list field names so downstream jq needs no edits', () => {
@@ -139,10 +157,26 @@ test('projection keeps gh-run-list field names so downstream jq needs no edits',
   }
 });
 
-test('runs come back newest-first regardless of the order the endpoint returned them in', () => {
+test('runs come back newest-first, with a null created_at sorted LAST not first', () => {
+  // Run 444 has created_at: null. Under a bare `sort_by(.createdAt) | reverse`, jq
+  // orders null BEFORE strings, so reversing puts it at the HEAD — it would become
+  // the "most recent run" and drive every recency verdict. scripts/health-check.js's
+  // sortRunsNewestFirst() sends unparseable dates to the end; this must match.
   const { stdout } = runHelper(['{owner}/{repo}', 'test.yml', '5']);
   const ids = JSON.parse(stdout).map((r) => r.databaseId);
-  assert.deepEqual(ids, [333, 222, 111], 'must be sorted by createdAt descending');
+  assert.deepEqual(ids, [333, 222, 111, 444], 'newest-first, undated last');
+});
+
+test('a failed gh api emits NOTHING on stdout, despite gh printing the error body there', () => {
+  // `gh api` writes the HTTP error body to STDOUT on a non-2xx, raw, with --jq
+  // bypassed — `gh run list` wrote nothing. A caller doing `gh_runs_query ... ||
+  // echo '[]'` would otherwise get `{"message":"Not Found",...}[]`, and `jq 'length'`
+  // on that yields a multi-line string that makes `[ "$COUNT" -eq 0 ]` error out and
+  // be skipped under set -e, turning a 403 into a printed "durations healthy".
+  const { stdout, status } = runHelper(['{owner}/{repo}', 'test.yml', '5'], { failLikeGhApi: true });
+  assert.notEqual(status, 0, 'a failed query must exit non-zero');
+  assert.equal(stdout.trim(), '', 'a failed query must print nothing on stdout');
+  assert.ok(!stdout.includes('Not Found'), 'the HTTP error body must not reach stdout');
 });
 
 test('per-page outside 1-100 fails loudly instead of silently truncating', () => {
@@ -192,14 +226,39 @@ test('the converted call sites carry no live `gh run list`', () => {
   }
 });
 
-test('check-cron-health sources the helper in every step that queries runs', () => {
+test('every check-cron-health STEP that calls the helper also sources it', () => {
+  // Each `run:` block is its own shell, so counting sources and calls file-globally
+  // proves nothing: adding a 4th call in a NEW un-sourcing step keeps both totals
+  // "valid" while production dies at 12:00 UTC with `gh_runs_query: command not
+  // found`. Pair them per step instead.
   const src = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
-  // Each `run:` block is its own shell, so one source at the top of the file is not
-  // enough — a missing source is a "command not found" only at 12:00 UTC in prod.
-  const sources = (src.match(/\.\s+scripts\/lib\/gh-runs-query\.sh/g) || []).length;
-  const calls = (src.match(/gh_runs_query\s+"\$GITHUB_REPOSITORY"/g) || []).length;
-  assert.ok(calls >= 3, `expected at least 3 gh_runs_query calls, found ${calls}`);
-  assert.equal(sources, 2, `expected the helper sourced once per run-querying step, found ${sources}`);
+  const steps = src.split(/^ {6}- name: /m).slice(1);
+  assert.ok(steps.length > 1, 'failed to split the workflow into steps — the split pattern drifted');
+
+  // Must match `$(gh_runs_query ...)` as well as a bare call — the recency checks
+  // use command substitution, so a leading-whitespace-only pattern silently sees
+  // ONE caller instead of two and the whole assertion goes soft.
+  const callers = steps.filter((s) => /[\s(]gh_runs_query\s/.test(s));
+  assert.ok(callers.length >= 2, `expected at least 2 steps calling the helper, found ${callers.length}`);
+
+  for (const step of callers) {
+    const stepName = step.split('\n')[0].trim();
+    assert.match(
+      step,
+      /^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m,
+      `step "${stepName}" calls gh_runs_query but never sources scripts/lib/gh-runs-query.sh`,
+    );
+  }
+});
+
+test('the helper is sourced only after the repo is checked out', () => {
+  // A relative source path resolves against $GITHUB_WORKSPACE, which is empty until
+  // actions/checkout has run.
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
+  const checkoutAt = src.indexOf('actions/checkout');
+  const firstSourceAt = src.search(/^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m);
+  assert.ok(checkoutAt > -1, 'workflow no longer checks out the repo');
+  assert.ok(firstSourceAt > checkoutAt, 'the helper is sourced before actions/checkout runs');
 });
 
 test("vercel-deploy's inlined copy stays equivalent to the helper", () => {

@@ -166,6 +166,11 @@ jobs:
 
           FAILURES=""
           WARNINGS=""
+          # Crons whose run-history query itself failed. Deliberately a THIRD bucket:
+          # their health is UNKNOWN, which is neither "stale" (would auto-redispatch
+          # and page) nor "healthy" (would hide a real outage). Reported once, in
+          # aggregate, so an API-wide outage produces one line rather than 45.
+          QUERY_FAILED=""
           NOW=$(date +%s)
 
           # Fetch state for every workflow in the repo (two pages cover ~200 workflows).
@@ -208,7 +213,19 @@ jobs:
             # Filtering to successes matters because cancelled runs otherwise read as
             # "recent," which is how a disabled workflow's still-firing schedule events
             # hide a real outage.
-            LAST_RUN=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=success 2>/dev/null | jq -r '.[0] // {}' 2>/dev/null || echo '{}')
+            # A FAILED QUERY IS NOT AN EMPTY RESULT. The pre-BRO-2771 form piped
+            # straight into jq with `|| echo '{}'`, so an auth error, a rate limit, a
+            # network blip or a malformed response all collapsed into the same empty
+            # value as "this cron has genuinely never succeeded" — and that value
+            # feeds FAILURES, which feeds NEWLY_STALE, which AUTO-REDISPATCHES the
+            # workflow and pages the owner. One expired token would therefore have
+            # redispatched every critical cron at once and paged about all of them.
+            # Capture the query's exit status BEFORE the pipeline hides it.
+            if ! LAST_RUN_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=success 2>/dev/null); then
+              QUERY_FAILED="${QUERY_FAILED}${name}, "
+              continue
+            fi
+            LAST_RUN=$(printf '%s' "$LAST_RUN_RAW" | jq -r '.[0] // {}' 2>/dev/null || echo '{}')
             LAST_DATE=$(echo "$LAST_RUN" | jq -r '.createdAt // empty' 2>/dev/null)
 
             if [ -z "$LAST_DATE" ]; then
@@ -232,7 +249,15 @@ jobs:
             # Reading the latest COMPLETED run's real conclusion avoids that and
             # keeps the warning branch below reachable, which is the entire reason
             # this second query exists.
-            LATEST_ANY=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=completed 2>/dev/null | jq -r '.[0].conclusion // "missing"' 2>/dev/null || echo "missing")
+            # "unknown" (not "missing") when THIS query fails, so a transport error is
+            # never rendered as a factual statement about the cron's latest run. The
+            # recency verdict above already succeeded, so this one failing is not
+            # worth abandoning the entry over.
+            if LATEST_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=completed 2>/dev/null); then
+              LATEST_ANY=$(printf '%s' "$LATEST_RAW" | jq -r '.[0].conclusion // "missing"' 2>/dev/null || echo "unknown")
+            else
+              LATEST_ANY="unknown"
+            fi
 
             # Calculate hours since last successful run
             LAST_TS=$(date -d "$LAST_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_DATE" +%s 2>/dev/null || echo "0")
@@ -246,6 +271,15 @@ jobs:
               WARNINGS="${WARNINGS}⚠️ ${name}: Latest run failed (last success ${HOURS_AGO}h ago)\n"
             fi
           done
+
+          # Surface UNKNOWN-health crons as a warning, deliberately NOT as a failure:
+          # a failure here would page and, via NEWLY_STALE, auto-redispatch workflows
+          # whose health we could not actually determine. One aggregate line, because
+          # the realistic cause (expired token, rate limit, GitHub API incident) hits
+          # every entry at once.
+          if [ -n "$QUERY_FAILED" ]; then
+            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: ${QUERY_FAILED%, } — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
+          fi
 
           # State-diff: only escalate to email+critical for NEWLY-stale workflows.
           # Chronic stale entries (already stale yesterday) keep firing in the digest
@@ -388,7 +422,13 @@ jobs:
           # gh_runs_query returns a JSON ARRAY (raw REST returns an object, whose
           # `jq length` is 2 — the key count — not the run count). See
           # scripts/lib/gh-runs-query.sh.
-          RUNS=$(gh_runs_query "$GITHUB_REPOSITORY" vercel-deploy.yml 5 status=success 2>/dev/null || echo '[]')
+          # A failed query used to collapse to '[]', print "no recent successful
+          # deploys" and exit 0 — i.e. an API error was reported as a clean bill of
+          # health for the deploy pipeline. Separate the two.
+          if ! RUNS=$(gh_runs_query "$GITHUB_REPOSITORY" vercel-deploy.yml 5 status=success 2>/dev/null); then
+            echo "::warning::deploy-duration check SKIPPED — run-history query failed (auth/rate-limit/network). This is NOT a statement that deploy durations are healthy."
+            exit 0
+          fi
           COUNT=$(echo "$RUNS" | jq 'length')
 
           if [ "$COUNT" -eq 0 ]; then

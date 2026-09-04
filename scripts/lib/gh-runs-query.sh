@@ -28,7 +28,11 @@
 #      check-cron-health's deploy-duration step would have errored and exited 1 on every daily run.
 #   2. Newest-first is asserted here rather than inherited from the transport, matching
 #      sortRunsNewestFirst() in scripts/health-check.js.
-GH_RUNS_JQ='[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, conclusion: .conclusion, status: .status}] | sort_by(.createdAt) | reverse'
+#   3. A run with a missing or unparseable created_at sorts LAST rather than
+#      wherever lexical comparison happens to put it, matching sortRunsNewestFirst()
+#      in scripts/health-check.js. Without this a null date sorts ahead of real ones
+#      under `sort_by | reverse` and becomes the "newest" run.
+GH_RUNS_JQ='[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, conclusion: .conclusion, status: .status}] | sort_by(if (.createdAt | type) == "string" and (.createdAt | test("^[0-9]{4}-")) then .createdAt else "" end) | reverse'
 
 # gh_runs_query <repo> <workflow-file> <per-page> [key=value ...]
 #
@@ -71,5 +75,16 @@ gh_runs_query() {
     [ -n "$pair" ] && query="${query}&${pair}"
   done
 
-  gh api "repos/${repo}/actions/workflows/${workflow}/runs?${query}" --jq "$GH_RUNS_JQ"
+  # `gh api` prints the HTTP ERROR BODY to STDOUT on a non-2xx (raw, with --jq
+  # bypassed) — `gh run list` printed nothing. So a caller writing
+  # `gh_runs_query ... || echo '[]'` would get `{"message":"Not Found",...}[]`, and
+  # `jq 'length'` on that yields a two-line string that makes `[ "$COUNT" -eq 0 ]`
+  # error out and be SKIPPED under `set -e`, turning a 403 into a printed
+  # "durations healthy". Buffer the output and emit it only on success, so a failed
+  # query produces a non-zero status and NOTHING on stdout.
+  local out
+  if ! out=$(gh api "repos/${repo}/actions/workflows/${workflow}/runs?${query}" --jq "$GH_RUNS_JQ"); then
+    return 1
+  fi
+  printf '%s\n' "$out"
 }
