@@ -25,6 +25,11 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
         run: |
+          # BRO-2780: never `gh run list --limit=N` for run history on this repo — it returns
+          # arbitrary, sometimes months-stale result SETS (BRO-2767/BRO-2771). The two
+          # latest-run lookups below read the Actions REST endpoint through this helper instead.
+          . scripts/lib/gh-runs-query.sh
+
           SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
           PERIOD_START=$(date -d '7 days ago' '+%b %d' 2>/dev/null || date -v-7d '+%b %d')
           PERIOD_END=$(date '+%b %d')
@@ -168,7 +173,10 @@ jobs:
           fi
 
           # --- SB credit status ---
-          HEALTH_RUN=$(gh run list --workflow=check-secrets-health.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+          HEALTH_RUN=""
+          if HEALTH_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "check-secrets-health.yml" 1); then
+            HEALTH_RUN=$(echo "$HEALTH_RUNS_JSON" | jq -r '.[0].databaseId // empty')
+          fi
           SB_STATUS="Unknown"
           SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
@@ -187,7 +195,10 @@ jobs:
 
           # --- SB page/SERP split ---
           SB_PAGE="-"; SB_SERP="-"
-          LATEST_COLLECT=$(gh run list --workflow=collect-review-texts.yml --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
+          LATEST_COLLECT=""
+          if COLLECT_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "collect-review-texts.yml" 5 "status=completed"); then
+            LATEST_COLLECT=$(echo "$COLLECT_RUNS_JSON" | jq -r '.[].databaseId')
+          fi
           for run_id in $LATEST_COLLECT; do
             SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
             if [ -n "$SB_LINES" ]; then
