@@ -381,5 +381,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-04T06:05:32.017Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-fear-of-13-2026",
+    "title": "Unhandled CV.wrongProduction on The Fear of 13",
+    "description": "guardian/Adrian Horton (guardian--adrian-horton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review is valid in terms of being a critique of ' — https://www.theguardian.com/stage/2026/apr/15/the-fear-of-13-review-adrien-brody-tessa-thompson\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review describes a production that was performed  — https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-04T15:34:28.893Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-fear-of-13-2026",
+    "title": "Shipped review missing publishDate on The Fear of 13",
+    "description": "lighting-and-sound-america/David Barbour SHIPPED with no publishDate — cannot confirm post-opening: http://www.lightingandsoundamerica.com/news/story.asp?ID=KKEMOF\ntheater-scene/Marc Miller SHIPPED with no publishDate — cannot confirm post-opening: https://theaterscene.com/reviews/the-fear-of-13/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-04T15:34:28.895Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-the-fear-of-13-2026",
+    "title": "Review URL cross-show mismatch on The Fear of 13",
+    "description": "Review URL for lighting-and-sound-america/David Barbour does not mention show slug (checked: the-fear-of-13, fear-of-13, fear): http://www.lightingandsoundamerica.com/news/story.asp?ID=KKEMOF\nReview URL for talkinbroadway/Howard Miller does not mention show slug (checked: the-fear-of-13, fear-of-13, fear): https://www.talkinbroadway.com/page/world/TheFearof13.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-04T15:34:28.895Z"
   }
 ]
