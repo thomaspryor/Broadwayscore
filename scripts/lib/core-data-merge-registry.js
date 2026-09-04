@@ -75,7 +75,34 @@ const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
   { file: 'commercial.json', surface: 'public-repo', status: 'active', merge: mergeCommercialJson, format: 'json', newline: true },
-  { file: 'commercial-pending-review.json', surface: 'public-repo', status: 'active', merge: mergePendingReview, format: 'json', newline: true },
+  {
+    file: 'commercial-pending-review.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergePendingReview,
+    format: 'json',
+    newline: true,
+    // BRO-2795 follow-up: this entry was already MANAGED/'active' with a
+    // real per-slug union merge (mergePendingReview, used today by the LOCAL
+    // rebase-conflict path — resolve_conflicts()), but had no apiFallbackMerge
+    // flag, so push-with-retry.sh's Git Data API fallback disqualifier
+    // (`isManaged(f) && !isApiFallbackMergeable(f)`) trips on it EVERY time it
+    // changes — independently of the two circuit-breaker files this card
+    // otherwise fixes. commercial-rss-poll.yml's own PUSH_RECONCILE_MERGED_JSON=1
+    // does NOT cover this: that flag only wires the LOCAL post-rebase
+    // reconcile pass, a completely different code path from the Git Data API
+    // fallback (confirmed by reading push-with-retry.sh directly — an
+    // assumption the original incident writeup got wrong). Genuinely
+    // multi-writer across 5 workflows sharing the commercial-data-write
+    // concurrency group (batch-commercial-research.yml, commercial-friday.yml,
+    // commercial-rss-poll.yml, commercial-weekly.yml, deep-research-
+    // commercial.yml — grepped 2026-09-04), same bar already accepted for
+    // audit/alert-ledger.json (12 writers) and audit/alert-digest-queue.json
+    // (8 writers) below. mergePendingReview has its own colocated test
+    // coverage (tests/unit/merge-commercial-data.test.mjs) and already
+    // defends against the resurrection bug that class of merge is prone to.
+    apiFallbackMerge: true,
+  },
   { file: 'commercial-research-queue.json', surface: 'public-repo', status: 'active', merge: mergeResearchQueue, format: 'json', newline: true },
   { file: 'diary-shows.json', surface: 'public-repo', status: 'active', merge: mergeDiaryShows, format: 'json', newline: false },
   { file: 'social-post-history.json', surface: 'public-repo', status: 'active', merge: mergeSocialPostHistory, format: 'json', newline: true },
@@ -403,9 +430,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // ride along uninvited every time either breaker's numbers change. Both
   // being unaudited data/audit/ paths (not in this list) was enough on its
   // own to disqualify push-with-retry.sh's Git Data API fallback for the
-  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch),
-  // even though the step already opts the two files it DOES name into the
-  // MANAGED/apiFallbackMerge-safe path via PUSH_RECONCILE_MERGED_JSON=1. The
+  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch).
+  // (PUSH_RECONCILE_MERGED_JSON=1 does NOT make the two files the step DOES
+  // name fallback-safe by itself — that flag only wires the LOCAL post-rebase
+  // reconcile pass, a different code path from the Git Data API fallback's
+  // disqualifier; commercial-pending-review.json needed its own
+  // apiFallbackMerge fix, see that entry above.) The
   // local fetch+rebase+push flow then lost its own race against main's
   // commit churn 3 times running (push-with-retry.sh's own working-as-
   // designed budget exit), with no fallback left to catch it, and the job
