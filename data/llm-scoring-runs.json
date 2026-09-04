@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-29T22:43:21.989Z",
-    "completedAt": "2026-08-29T22:43:28.265Z",
-    "totalReviews": 17,
-    "processed": 0,
-    "skipped": 16,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-29T23:21:35.231Z",
     "completedAt": "2026-08-29T23:21:36.796Z",
     "totalReviews": 47,
@@ -814888,6 +814874,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-04T01:26:23.931Z",
+    "completedAt": "2026-09-04T01:26:24.131Z",
+    "totalReviews": 25,
+    "processed": 0,
+    "skipped": 24,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "a-month-in-the-country-west-end-2026",
+        "outletId": "anthearepresents",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
