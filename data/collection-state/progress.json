@@ -30,7 +30,10 @@
     "pride-west-end-2026/whatsonstage--editorial-staff.json",
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "paranormal-activity-2026/wsj--charles-isherwood.json",
-    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--jo-york.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -180,7 +183,14 @@
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
-    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -203,7 +213,8 @@
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
+      "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--jo-york.json"
     ],
     "amp": [],
     "browserbase": [
@@ -220,7 +231,9 @@
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "pride-west-end-2026/whatsonstage--editorial-staff.json",
-      "paranormal-activity-2026/wsj--charles-isherwood.json"
+      "paranormal-activity-2026/wsj--charles-isherwood.json",
+      "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -231,7 +244,7 @@
     ]
   },
   "startTime": "2026-09-04T12:45:34.479Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+  "lastProcessed": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-09-04T14:12:09.759Z",
@@ -266,6 +279,18 @@
       "t": "2026-09-04T14:24:21.502Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-04T14:26:25.625Z",
+      "event": "bb-session",
+      "session": "1b00bc47",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-04T14:26:43.332Z",
+      "event": "bb-session",
+      "session": "ac034bf1",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
     }
   ]
 }
