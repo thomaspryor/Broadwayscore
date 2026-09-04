@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-03T19:22:35.678Z",
+  "generatedAt": "2026-09-04T08:27:37.984Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,23 +13,23 @@
       "slug": "the-story-west-end",
       "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 47,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 3,
+      "t1": 1,
+      "t2": 2,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 1,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
+          "3/8 total",
+          "T1:1/3",
           "T2:0/2",
           "hi-conf:0/6"
         ],
@@ -85,16 +85,26 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-04T08:27:37.984Z",
+          "rc": 3,
+          "s": 47,
+          "t1": 1,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -108,26 +118,25 @@
       "status": "open",
       "slug": "a-month-in-the-country-west-end",
       "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 83.18,
-      "liveScore": 83,
-      "scoreDrift": -0.18000000000000682,
+      "siteScore": 82.32,
+      "liveScore": 82,
+      "scoreDrift": -0.3199999999999932,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 2,
-      "t2": 3,
+      "total": 12,
+      "t1": 5,
+      "t2": 4,
       "t3": 3,
-      "positive": 7,
+      "positive": 11,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -207,6 +216,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-04T08:27:37.984Z",
+          "rc": 12,
+          "s": 82.32,
+          "t1": 5,
+          "t2": 4,
+          "t3": 3,
+          "p": 11,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -220,23 +241,23 @@
       "status": "open",
       "slug": "electra-persona-west-end",
       "thumbnail": "/images/shows/electra-persona-west-end-2026/thumbnail.webp",
-      "siteScore": 67.72,
-      "liveScore": 68,
-      "scoreDrift": 0.28000000000000114,
+      "siteScore": 68.77,
+      "liveScore": 69,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 27,
       "t1": 9,
       "t2": 6,
-      "t3": 11,
-      "positive": 12,
-      "mixed": 10,
+      "t3": 12,
+      "positive": 14,
+      "mixed": 9,
       "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -259,6 +280,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -340,6 +365,18 @@
           "m": 10,
           "n": 4,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-04T08:27:37.984Z",
+          "rc": 27,
+          "s": 68.77,
+          "t1": 9,
+          "t2": 6,
+          "t3": 12,
+          "p": 14,
+          "m": 9,
+          "n": 4,
+          "bc": "waiting"
         }
       ]
     }
@@ -355,7 +392,7 @@
       "status": "upcoming",
       "slug": "school-girls-or-the-african-mean-girls-play",
       "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -394,7 +431,7 @@
       "status": "previews",
       "slug": "jane-eyre-off-west-end",
       "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -419,7 +456,7 @@
       "status": "previews",
       "slug": "kimberly-akimbo-off-west-end",
       "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -444,7 +481,7 @@
       "status": "previews",
       "slug": "lean-to-off-broadway",
       "thumbnail": "/images/shows/lean-to-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -483,6 +520,70 @@
       "status": "previews",
       "slug": "day-of-the-hog-off-broadway",
       "thumbnail": "/images/shows/day-of-the-hog-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-09-11",
+      "status": "upcoming",
+      "slug": "man-to-man-west-end",
+      "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "america-who-hurt-you-off-broadway-2026",
+      "title": "AMERICA, WHO HURT YOU?",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-11",
+      "status": "upcoming",
+      "slug": "america-who-hurt-you-off-broadway",
+      "thumbnail": "/images/shows/america-who-hurt-you-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
