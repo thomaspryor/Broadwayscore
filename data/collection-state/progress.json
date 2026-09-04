@@ -22,7 +22,11 @@
     "cats-west-end-2026/north-west-end--michelle-knight.json",
     "masticate-off-broadway-2026/nyu--unknown.json",
     "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
-    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--ellie-sawyers.json",
+    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
   ],
   "failed": [
     "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
@@ -93,7 +97,13 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
     "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
-    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json"
+    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -110,7 +120,10 @@
       "cats-west-end-2026/north-west-end--michelle-knight.json",
       "masticate-off-broadway-2026/nyu--unknown.json",
       "the-comedy-about-spies-west-end-2026/jonathan-baz--unknown.json",
-      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--ellie-sawyers.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -126,7 +139,8 @@
       "paranormal-activity-2026/wsj--charles-isherwood.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -136,7 +150,7 @@
     ]
   },
   "startTime": "2026-09-04T08:47:26.505Z",
-  "lastProcessed": "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+  "lastProcessed": "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
   "log": [
     {
       "t": "2026-09-04T09:25:36.260Z",
@@ -168,6 +182,28 @@
     },
     {
       "t": "2026-09-04T09:26:19.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-04T09:43:26.212Z",
+      "event": "bb-session",
+      "session": "2f801f09",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-04T09:43:27.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-04T09:43:45.645Z",
+      "event": "bb-session",
+      "session": "ed8536ca",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-04T09:43:46.830Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
