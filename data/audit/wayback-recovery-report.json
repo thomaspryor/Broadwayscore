@@ -1,20 +1,32 @@
 {
-  "totalCandidates": 17,
-  "cdxFound": 3,
-  "cdxNotFound": 2,
-  "recovered": 0,
+  "totalCandidates": 33,
+  "cdxFound": 13,
+  "cdxNotFound": 3,
+  "recovered": 11,
   "recoveredByTier": {
     "1": 0,
-    "2": 0,
-    "3": 0
+    "2": 2,
+    "3": 9
   },
-  "recoveredByDomain": {},
-  "tooShort": 0,
+  "recoveredByDomain": {
+    "huffpost.com": 1,
+    "backstage.com": 1,
+    "standard.co.uk": 1,
+    "forward.com": 1,
+    "londontheatre.co.uk": 1,
+    "metrmag.com": 1,
+    "forum.broadwayworld.com": 1,
+    "newyorktheatreguide.com": 1,
+    "whatsonstage.com": 1,
+    "playbill.com": 1,
+    "theatermania.com": 1
+  },
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 12,
-  "notInArchive": 2,
+  "errors": 17,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
