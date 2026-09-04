@@ -5,7 +5,13 @@
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
     "a-month-in-the-country-west-end-2026/ents24--unknown.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
+    "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -31,7 +37,11 @@
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-    "abigails-party-west-end-2026/london-box-office--stuart-king.json"
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,7 +49,11 @@
       "the-story-west-end-2026/independent--unknown.json",
       "the-story-west-end-2026/london-box-office--stuart-king.json",
       "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
-      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
+      "jeeves-takes-charge-west-end-2026/londontheatredirect--jamila-stephenson.json",
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -48,12 +62,28 @@
     ],
     "scrapingbee": [],
     "brightdata": [
-      "a-month-in-the-country-west-end-2026/ents24--unknown.json"
+      "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
+    ]
   },
   "startTime": "2026-09-04T12:45:34.479Z",
-  "lastProcessed": "abigails-party-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+  "log": [
+    {
+      "t": "2026-09-04T12:52:20.368Z",
+      "event": "bb-session",
+      "session": "0bc4c14f",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-04T12:52:37.357Z",
+      "event": "bb-session",
+      "session": "a85904c7",
+      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    }
+  ]
 }
