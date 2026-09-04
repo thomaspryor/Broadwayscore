@@ -58,22 +58,29 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const USAGE = `clear-contradicted-flag-basis-bro2772.js — hand-adjudicated clear for BRO-2772's single record
 
 Usage:
-  node scripts/clear-contradicted-flag-basis-bro2772.js               # dry-run
-  node scripts/clear-contradicted-flag-basis-bro2772.js --apply       # write to disk
-  node scripts/clear-contradicted-flag-basis-bro2772.js --data-dir=P  # alt data/ root
+  node scripts/clear-contradicted-flag-basis-bro2772.js                    # dry-run
+  node scripts/clear-contradicted-flag-basis-bro2772.js --apply            # write to disk
+  node scripts/clear-contradicted-flag-basis-bro2772.js --review-texts-dir=P --shows-path=P
 `;
 
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const APPLY = process.argv.includes('--apply');
-// --data-dir mirrors clear-stale-wrong-production-flags.js's --dir: core data is
-// gitignored and absent from a fresh worktree, so without an override this
-// script cannot be run — and therefore cannot be verified — before it is
-// merged. Defaults to the repo's own data/ exactly as the precedent does.
-const dataDirArg = process.argv.find((a) => a.startsWith('--data-dir='));
-const DATA_DIR = dataDirArg ? dataDirArg.slice('--data-dir='.length) : path.join(__dirname, '..', 'data');
-const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
-const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+// Corpus-path overrides exist because core data is gitignored and absent from a
+// fresh worktree — without them this script cannot be run, and therefore cannot
+// be verified, before it is merged. Flag NAMES deliberately match
+// audit-contradicted-flag-basis.js (--review-texts-dir / --shows-path), the gate
+// this exists to unblock and the closest relative. NOT the --dir/--shows pair
+// from clear-stale-wrong-production-flags.js: its --dir is the review-texts
+// directory rather than a data root, so reusing that name here would mean two
+// different things by the same flag.
+const argOf = (name, fallback) => {
+  const hit = process.argv.find((a) => a.startsWith(`${name}=`));
+  const value = hit ? hit.slice(name.length + 1) : '';
+  return value || fallback;
+};
+const REVIEW_TEXTS_DIR = argOf('--review-texts-dir', path.join(__dirname, '..', 'data', 'review-texts'));
+const SHOWS_PATH = argOf('--shows-path', path.join(__dirname, '..', 'data', 'shows.json'));
 
 const TARGETS = [
   'la-bete-2010/vulture--scott-brown.json',
