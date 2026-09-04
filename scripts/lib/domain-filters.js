@@ -28,6 +28,23 @@ const TICKET_DOMAINS = new Set([
   // original editorial reviews at /reviews/our/<show> (adversarial review
   // 2026-08-02); its listing pages are caught by the path-based checks.
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
+  // BRO-2774: ticket resellers and event-listing platforms that reached the
+  // outlet-registry gate as "missing outlets". Both were read at the file
+  // level before being blocked, not pattern-matched:
+  //   ents24.com  — /london-events/donmar-warehouse/a-month-in-the-country/
+  //     is a listing page ("View tickets ... Official ticket link provided by
+  //     the event organiser or venue ... About the show"), producer blurb only.
+  //   tickpick.com — /buy-the-family-album-tickets-.../ is reseller copy
+  //     ("Get your tickets for this spectacular show and enjoy world-class
+  //     entertainment"), and it landed at contentTier:'complete', so nothing
+  //     structural was holding it back from scoring.
+  // Domain exclusion rather than an outlet-registry baseline entry: that
+  // baseline is a SNAPSHOT of currently-missing outletIds and
+  // --update-baseline rewrites it wholesale from present state, so an entry
+  // silently drops the moment its file is removed or renamed and reds the
+  // gate again when a file from the same domain returns. tickpick was
+  // baselined by an earlier cycle and had already vanished from the list.
+  'ents24.com', 'tickpick.com',
   // thelondoner.com — /exclusive-offers/<show> is a ticket-offer page carrying
   // the producer's own show blurb. Its A Month in the Country page was ingested
   // via submit-review-form, criticName Unknown, and landed at
@@ -117,6 +134,12 @@ const VENUE_DOMAINS = new Set([
   // path and only excluded by luck — the LLM ensemble check happened to catch
   // it, the same check that MISSED southbank.london's Electra/Persona page).
   'southbankcentre.co.uk',
+  // BRO-2774: the venue's own show page. studioseaview.com/show/well-ill-let-you-go/
+  // is award-laurel and pull-quote marketing copy ("5 Drama Desk Award
+  // Nominations ... Winner - 2 Obie Awards"), i.e. quotations OF other
+  // outlets' reviews rather than criticism of its own — the shape most likely
+  // to be misread as a favourable review by a score extractor.
+  'studioseaview.com',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not
@@ -128,6 +151,12 @@ const VENUE_DOMAINS = new Set([
 // before this was caught).
 const PR_FIRM_DOMAINS = new Set([
   'spincyclenyc.com',
+  // BRO-2774: talent-agency credit pages. anthearepresents.com/credit/<show>
+  // is a client's CV entry — it summarises the production ("Sophie Okonedo
+  // played the lead, Natalya Petrovna") in neutral prose with no critical
+  // assessment, which is exactly the shape isJunkOutlet()'s structural
+  // heuristics do not catch.
+  'anthearepresents.com',
   // University department news pages. tisch.nyu.edu announced an alum's
   // production ("Lukas T. Woodyard (PS MA '20) along with their collective ...
   // is producing the new work") and was ingested via submit-review-form as a
