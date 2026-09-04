@@ -4,6 +4,7 @@ import { useState, useMemo, startTransition } from 'react';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { createSortToggle } from '@/lib/sort-toggle';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -29,6 +30,19 @@ export interface BrowseShow {
 
 type ScoreMode = 'critics' | 'audience';
 type SortOption = 'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom';
+// Internal-only states for a second click on a toggleable sort button (task
+// #75): reversing Critics/A-Z direction instead of no-op-ing on an
+// already-active click. Never appears in `availableSorts` (server-supplied
+// button list) — only as a value of the `sort` state itself.
+type SortState = SortOption | 'score_asc' | 'alpha_desc';
+
+// Clicking CRITICS or A-Z while already active used to do nothing — same
+// no-op-click rage-click bug fixed on /west-end, /off-broadway, /opera,
+// /off-west-end via src/lib/sort-toggle.js (task #592), but this shared
+// BrowseListClient (every /browse/[slug] page, including best-recent-shows)
+// wasn't covered. Own pairs (not the shared TOGGLE_PAIRS) because this
+// component's SortOption values don't match that module's naming.
+const sortToggle = createSortToggle({ score: 'score_asc', alpha: 'alpha_desc' });
 
 interface BrowseListClientProps {
   shows: BrowseShow[];
@@ -84,7 +98,7 @@ export default function BrowseListClient({
     ? { ...SORT_LABELS, oldest: 'Soonest', newest: 'Latest' }
     : SORT_LABELS;
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
-  const [sort, setSort] = useState<SortOption>(
+  const [sort, setSort] = useState<SortState>(
     defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
     defaultSort === 'closing-date' ? 'closing' :
@@ -123,8 +137,15 @@ export default function BrowseListClient({
             return (b.audienceCombinedScore ?? -1) - (a.audienceCombinedScore ?? -1);
           }
           return getEffectiveScore(b) - getEffectiveScore(a);
+        case 'score_asc':
+          if (scoreMode === 'audience') {
+            return (a.audienceCombinedScore ?? -1) - (b.audienceCombinedScore ?? -1);
+          }
+          return getEffectiveScore(a) - getEffectiveScore(b);
         case 'alpha':
           return a.title.localeCompare(b.title);
+        case 'alpha_desc':
+          return b.title.localeCompare(a.title);
         case 'newest':
           // Shows without openingDate sort to the end
           if (!a.openingDate && !b.openingDate) return 0;
@@ -178,9 +199,17 @@ export default function BrowseListClient({
             {availableSorts.length > 1 ? (
               <ToggleBar
                 label="Sort:"
-                options={availableSorts.map(s => ({ value: s, label: sortLabels[s] }))}
-                value={sort}
-                onChange={setSort}
+                options={availableSorts.map(s => ({
+                  value: s,
+                  label: sortToggle.isToggleable(s)
+                    ? `${sortLabels[s]} ${sortToggle.getSortArrow(s, sort)}`.trim()
+                    : sortLabels[s],
+                  title: sortToggle.isToggleable(s)
+                    ? (sortToggle.normalizeSort(sort) === s ? `Click to reverse ${sortLabels[s]} order` : `Click to sort by ${sortLabels[s]}`)
+                    : undefined,
+                }))}
+                value={sortToggle.normalizeSort(sort) as SortOption}
+                onChange={(s) => setSort(sortToggle.getNextSort(s, sort) as SortState)}
                 ariaLabel="Sort shows"
               />
             ) : subtitle ? (
