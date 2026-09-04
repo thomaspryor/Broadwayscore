@@ -162,7 +162,14 @@ jobs:
           # real buffer against the job timeout.
           PUSH_DEADLINE_SEC: '420'
         run: |
-          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
+          # BRO-2795: bd-circuit-breaker.json/sd-circuit-breaker.json are also
+          # written by this job (steps above) and were already getting swept
+          # into this commit by stage-data-changes.sh's blanket data/ add —
+          # naming them here just makes that explicit so the Git Data API
+          # fallback's static writer-scan (findWritingWorkflows()) can see
+          # them; see core-data-merge-registry.js's apiFallbackSafe entries
+          # for both paths.
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"
