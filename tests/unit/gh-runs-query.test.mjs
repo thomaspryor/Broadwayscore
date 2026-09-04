@@ -22,6 +22,21 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HELPER = path.join(REPO_ROOT, 'scripts', 'lib', 'gh-runs-query.sh');
 
+// Every workflow that SOURCES the helper and calls it from a `run:` block. The two
+// per-step structural tests below loop over this rather than naming one file, because
+// hardcoding check-cron-health.yml is how BRO-2780 shipped a new caller with zero
+// regression coverage: `node --test` passed 13/13 both before and after that diff, so
+// the acceptance VERIFY proved nothing about the file it was written for. Adding a
+// caller here is the one step that arms the guards for it.
+//
+// vercel-deploy.yml is deliberately ABSENT: its check-streak job has no checkout, so it
+// carries an inlined copy of the query instead of sourcing. That copy has its own
+// equivalence test at the bottom of this file.
+const SOURCING_CALLERS = [
+  '.github/workflows/check-cron-health.yml',
+  '.github/workflows/scraper-cost-report.yml',
+];
+
 // Deliberately NOT in newest-first order, and deliberately including a run whose
 // created_at is missing — the helper must impose the ordering itself rather than
 // inherit whatever the transport hands it.
@@ -226,39 +241,92 @@ test('the converted call sites carry no live `gh run list`', () => {
   }
 });
 
-test('every check-cron-health STEP that calls the helper also sources it', () => {
+test('every STEP that calls the helper also sources it', () => {
   // Each `run:` block is its own shell, so counting sources and calls file-globally
   // proves nothing: adding a 4th call in a NEW un-sourcing step keeps both totals
   // "valid" while production dies at 12:00 UTC with `gh_runs_query: command not
   // found`. Pair them per step instead.
-  const src = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
-  const steps = src.split(/^ {6}- name: /m).slice(1);
-  assert.ok(steps.length > 1, 'failed to split the workflow into steps — the split pattern drifted');
+  let totalCallerSteps = 0;
+  for (const rel of SOURCING_CALLERS) {
+    const src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+    const steps = src.split(/^ {6}- name: /m).slice(1);
+    assert.ok(steps.length > 0, `failed to split ${rel} into steps — the split pattern drifted`);
 
-  // Must match `$(gh_runs_query ...)` as well as a bare call — the recency checks
-  // use command substitution, so a leading-whitespace-only pattern silently sees
-  // ONE caller instead of two and the whole assertion goes soft.
-  const callers = steps.filter((s) => /[\s(]gh_runs_query\s/.test(s));
-  assert.ok(callers.length >= 2, `expected at least 2 steps calling the helper, found ${callers.length}`);
-
-  for (const step of callers) {
-    const stepName = step.split('\n')[0].trim();
-    assert.match(
-      step,
-      /^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m,
-      `step "${stepName}" calls gh_runs_query but never sources scripts/lib/gh-runs-query.sh`,
+    // Must match `$(gh_runs_query ...)` as well as a bare call — the recency checks
+    // use command substitution, so a leading-whitespace-only pattern silently sees
+    // ONE caller instead of two and the whole assertion goes soft.
+    const callers = steps.filter((s) => /[\s(]gh_runs_query\s/.test(s));
+    assert.ok(
+      callers.length >= 1,
+      `${rel} is registered in SOURCING_CALLERS but no step calls gh_runs_query — either it was converted back to gh run list, or the step-split pattern drifted`,
     );
+    totalCallerSteps += callers.length;
+
+    for (const step of callers) {
+      const stepName = step.split('\n')[0].trim();
+      assert.match(
+        step,
+        /^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m,
+        `${rel} step "${stepName}" calls gh_runs_query but never sources scripts/lib/gh-runs-query.sh`,
+      );
+    }
   }
+  assert.ok(totalCallerSteps >= 3, `expected at least 3 calling steps across all registered callers, found ${totalCallerSteps}`);
 });
 
 test('the helper is sourced only after the repo is checked out', () => {
   // A relative source path resolves against $GITHUB_WORKSPACE, which is empty until
   // actions/checkout has run.
-  const src = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
-  const checkoutAt = src.indexOf('actions/checkout');
-  const firstSourceAt = src.search(/^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m);
-  assert.ok(checkoutAt > -1, 'workflow no longer checks out the repo');
-  assert.ok(firstSourceAt > checkoutAt, 'the helper is sourced before actions/checkout runs');
+  for (const rel of SOURCING_CALLERS) {
+    const src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+    const checkoutAt = src.indexOf('actions/checkout');
+    const firstSourceAt = src.search(/^\s*\.\s+scripts\/lib\/gh-runs-query\.sh\s*$/m);
+    assert.ok(checkoutAt > -1, `${rel} no longer checks out the repo`);
+    assert.ok(firstSourceAt > -1, `${rel} never sources the helper`);
+    assert.ok(firstSourceAt > checkoutAt, `${rel} sources the helper before actions/checkout runs`);
+  }
+});
+
+test('scraper-cost-report has no `gh run list --limit` latest-run lookup left (BRO-2780)', () => {
+  // Narrower than the blanket "no live gh run list" assertion above, because this file
+  // KEEPS three `gh run list --workflow="<display name>" --created=">$SINCE"` count
+  // queries on purpose: the REST endpoint keys runs by file name, not by the display
+  // `name:`, so converting them needs a name-to-filename map that is not in this card's
+  // scope. What must never come back is the ORDER-SENSITIVE form — `--limit=N` used to
+  // pick "the latest run" — which is the one the stale-result-set bug silently corrupts.
+  const rel = '.github/workflows/scraper-cost-report.yml';
+
+  // The three survivors are all the DISPLAY-NAME form (`--workflow="$wf"` where $wf is a
+  // workflow's `name:`, not its file name). The helper cannot serve them: the REST path is
+  // /actions/workflows/{id_or_FILENAME}/runs. Converting them needs a name-to-filename map,
+  // tracked separately. Freeze the count so the exception cannot quietly grow, and require
+  // every survivor to be that form — a NEW file-name-form `--limit` lookup, the shape this
+  // card removed, fails here.
+  const KNOWN_DISPLAY_NAME_SURVIVORS = 3;
+  const listCalls = liveLines(rel).filter((l) => l.includes('gh run list'));
+  const displayNameForm = listCalls.filter((l) => /--workflow="\$wf"/.test(l));
+  const unexpected = listCalls.filter((l) => !/--workflow="\$wf"/.test(l));
+
+  assert.deepEqual(
+    unexpected,
+    [],
+    `${rel} has a gh run list that is NOT the known display-name form — the order-sensitive file-name lookups were converted to gh_runs_query and must stay converted: ${unexpected.join(' | ')}`,
+  );
+  assert.equal(
+    displayNameForm.length,
+    KNOWN_DISPLAY_NAME_SURVIVORS,
+    `${rel} display-name gh run list count changed (${displayNameForm.length} vs ${KNOWN_DISPLAY_NAME_SURVIVORS}). If one was converted, lower this number; if one was ADDED, convert it instead — these read a truncated, arbitrarily-ordered result set.`,
+  );
+
+  // And the two lookups it replaced must actually be going through the helper.
+  const src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+  for (const wf of ['check-secrets-health.yml', 'collect-review-texts.yml']) {
+    assert.match(
+      src,
+      new RegExp(`gh_runs_query\\s+"\\$GITHUB_REPOSITORY"\\s+"${wf.replace('.', '\\.')}"`),
+      `${rel} no longer reads ${wf} through gh_runs_query`,
+    );
+  }
 });
 
 test("vercel-deploy's inlined copy stays equivalent to the helper", () => {

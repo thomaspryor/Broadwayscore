@@ -48,6 +48,20 @@ GH_RUNS_JQ='[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt:
 # Extra key=value pairs are appended to the query string verbatim: status=success,
 # status=completed, branch=main, event=push.
 #
+# VALUES ARE NOT URL-ENCODED (BRO-2780). They are concatenated into the query string exactly as
+# given, so any character with a reserved meaning in a URL query must already be encoded by the
+# caller. The one that comes up in practice is the `>` in a date filter: `gh run list`'s
+# `--created=">$SINCE"` becomes `created=%3E$SINCE` here, NOT `created=>$SINCE`. Encoding is left
+# to the caller rather than done here because every current caller passes plain alphanumeric
+# values, and silently percent-encoding them would corrupt any value that is already encoded.
+# The same is true of the two PATH components: <repo> and <workflow-file> are interpolated into
+# the request path as given. Both are call-site literals today, not user input, so this is a
+# documentation point rather than an injection surface.
+#
+# Also note the REST endpoint keys runs by workflow FILE NAME (or numeric id), not by the
+# workflow's display `name:`. `gh run list --workflow="Collect Review Texts"` accepts the display
+# name; this helper does not. Convert such call sites to the file name first.
+#
 # Prints a JSON array on stdout. Exits 2 on a bad per-page.
 gh_runs_query() {
   local repo="$1" workflow="$2" per_page="$3"
