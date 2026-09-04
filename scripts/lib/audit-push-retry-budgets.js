@@ -743,13 +743,30 @@ function auditWorkflowText(text, filePath) {
 
     for (const pc of pushCalls) {
       const { step, call, deadlineSec, stagedPaths } = pc;
-      const explicitOtherSec = explicitTimeoutSteps
-        .filter((s) => s !== step)
-        .reduce((sum, s) => sum + s.timeoutMinutes * 60, 0);
-      const siblingPushOtherSec = pushCalls
-        .filter((other) => other !== pc)
-        .reduce((sum, other) => sum + other.stepBudgetSec, 0);
-      const otherStepsBudgetSec = explicitOtherSec + siblingPushOtherSec;
+      // BRO-2370 second-opinion finding: a sibling step that BOTH declares its
+      // own explicit timeout-minutes AND calls push-with-retry.sh used to be
+      // counted TWICE — once via explicitTimeoutSteps (its declared cap) and
+      // again via pushCalls (its own computed stepBudgetSec) — inflating
+      // otherStepsBudgetSec and producing false job-timeout-margin-undersized
+      // flags. A step's real worst-case contribution is bounded by whichever
+      // ceiling GitHub actually enforces: its own explicit timeout-minutes if
+      // it declares one (that hard external kill fires regardless of what
+      // push-with-retry.sh's internal deadline is doing), or its push-call
+      // stepBudgetSec only when it has no explicit cap. Key each OTHER step
+      // ONCE, by identity, so a capped+push-calling sibling is counted only
+      // via its cap.
+      const otherStepInfo = new Map(); // step -> { capped, sec }
+      for (const s of explicitTimeoutSteps) {
+        if (s === step) continue;
+        otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
+      }
+      for (const other of pushCalls) {
+        if (other === pc || other.step === step) continue;
+        const info = otherStepInfo.get(other.step);
+        if (info && info.capped) continue; // explicit cap already fully bounds this step
+        otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other.stepBudgetSec });
+      }
+      const otherStepsBudgetSec = [...otherStepInfo.values()].reduce((sum, v) => sum + v.sec, 0);
 
       const evaluation = evaluateStep({
         maxRetries: call.maxRetries,
