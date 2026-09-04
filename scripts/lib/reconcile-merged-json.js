@@ -79,7 +79,7 @@ function repoRoot() {
   }
 }
 
-const { activeEntriesFor, apiFallbackSafeEntriesFor } = require('./core-data-merge-registry');
+const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -113,9 +113,28 @@ const MANAGED = activeEntriesFor('public-repo').map((e) => ({
 // nothing (plan-review finding).
 const API_FALLBACK_SAFE = apiFallbackSafeEntriesFor('public-repo').map((e) => ({ file: `data/${e.file}` }));
 
+// BRO-2413: files that ARE in MANAGED (genuinely need a merge) but ALSO
+// carry a real merge function push-via-git-api.sh knows how to run — see
+// core-data-merge-registry.js's apiFallbackMergeEntriesFor() header comment.
+// Used by push-with-retry.sh's disqualifier to distinguish "MANAGED, slow
+// path only" from "MANAGED, but also fast-path-safe because the fallback
+// itself now reconciles it" — and by push-via-git-api.sh to find the same
+// merge function these three already use on the slow path, so a no-op vs.
+// merged edit is byte-identical regardless of which path won the race.
+const API_FALLBACK_MERGE = apiFallbackMergeEntriesFor('public-repo').map((e) => ({
+  file: `data/${e.file}`,
+  merge: e.merge,
+  ...(e.format === 'jsonl' ? { format: 'jsonl' } : { newline: e.newline }),
+}));
+
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
 function mergerFor(file) {
   return MANAGED.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
+}
+
+/** Pure: pick the apiFallbackMerge-eligible merger for a path, or null. */
+function apiFallbackMergerFor(file) {
+  return API_FALLBACK_MERGE.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
 }
 
 /** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
@@ -192,6 +211,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { MANAGED, mergerFor, API_FALLBACK_SAFE };
+module.exports = { MANAGED, mergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
 
 if (require.main === module) main();

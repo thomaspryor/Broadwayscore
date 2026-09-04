@@ -68,6 +68,9 @@ const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 const { mergeObVenueCandidates } = require('./merge-ob-venue-candidates');
+const { mergeAlertLedger } = require('./merge-alert-ledger');
+const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
+const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -399,13 +402,72 @@ const CORE_DATA_MERGE_REGISTRY = [
   // shared, duplicated matching logic for one non-gating, continue-on-error
   // telemetry file isn't worth the blast radius — it stays on the slow path,
   // unchanged from before this fix.
-  // NOT added, deliberately: data/audit/triage/ (also written by
-  // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
-  // data/audit/alert-digest-queue.json (8 writers — the exact file the
-  // comment above this block warns about), data/audit/alert-router-
-  // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
-  // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
-  // path available for them.
+  // BRO-2413: alert-ledger.json/alert-digest-queue.json/alert-router-
+  // attempts.jsonl are genuinely multi-writer (12/8/3 writers respectively —
+  // see the comment above this block) so `apiFallbackSafe` (which claims "no
+  // merge needed") is still wrong for them. But unlike a MANAGED entry
+  // without `apiFallbackMerge`, these three now carry a real merge function
+  // AND opt into push-via-git-api.sh's fast path via `apiFallbackMerge:
+  // true` — a distinct, narrower claim than `apiFallbackSafe`: "this file
+  // has real reconciliation logic, safe to run inside the Git Data API
+  // fallback's per-retry loop" rather than "no reconciliation needed at
+  // all." push-with-retry.sh's disqualifier (the `isManaged(f) &&
+  // !isApiFallbackMergeable(f)` check) and push-via-git-api.sh (which looks
+  // these three up via findEntry() and runs their merge fn against the live
+  // remote tip on every retry) both read this same flag — see
+  // apiFallbackMergeEntriesFor() below. Loss here was already explicitly
+  // accepted at a coarser grain (see scripts/lib/push-content-survival.js's
+  // CONTENT_SURVIVAL_EXEMPT_LEDGERS and owner-alert-router.js's module
+  // header) — a real per-key merge is a strict improvement on that existing
+  // baseline, not a new correctness bar.
+  //
+  // data/audit/triage/ remains NOT added: it is a DIRECTORY of per-item
+  // files (also written by rebuild-reviews.yml), a different shape from the
+  // generic {ours,remote}->{merged,stats} single-file contract this registry
+  // and push-via-git-api.sh's blob-overlay both assume — needs its own
+  // design, out of scope here.
+  {
+    file: 'audit/alert-ledger.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertLedger,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    // Excluded from the LOCAL flow's opt-in reconcile-merged-json.js pass
+    // (and therefore from reconcile-coverage.js's ~20-workflow "did this
+    // step opt into PUSH_RECONCILE_MERGED_JSON=1" gate) — same reasoning as
+    // audit/feedback-request-ledger.json and audit/express-retry-queue.json
+    // above: this merge fn's ONLY consumer is push-via-git-api.sh's
+    // apiFallbackMerge path. The local flow's pre-existing behavior for this
+    // file (last-writer-wins on conflict) is UNCHANGED by this entry — that
+    // was already an explicitly accepted loss (push-content-survival.js's
+    // CONTENT_SURVIVAL_EXEMPT_LEDGERS), not a new gap this task needs to
+    // close on the slow path too.
+    optInReconcile: false,
+    verifiedBy: '2026-09-04 (BRO-2413): 12 independent writers via routeAlert() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher lastSeen on collision) replaces the old whole-file "ours wins outright" gap. See scripts/lib/merge-alert-ledger.js for the full design note.',
+  },
+  {
+    file: 'audit/alert-digest-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertDigestQueue,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-04 (BRO-2413): 8 independent writers via queueDigestLine() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher queuedAt on collision). See scripts/lib/merge-alert-digest-queue.js.',
+  },
+  {
+    file: 'audit/alert-router-attempts.jsonl',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertRouterAttempts,
+    format: 'jsonl',
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-04 (BRO-2413): 3 independent writers — append-only log, union deduped by (ts, conditionKey). See scripts/lib/merge-alert-router-attempts.js.',
+  },
   {
     file: 'audit/ob-venue-candidates.json',
     surface: 'public-repo',
@@ -566,4 +628,16 @@ function apiFallbackSafeEntriesFor(surface) {
   return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackSafe === true);
 }
 
-module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor };
+/** Entries explicitly marked `apiFallbackMerge: true` for one surface — a
+ * narrower, DISTINCT claim from `apiFallbackSafe`: "this file is genuinely
+ * multi-writer AND carries a real merge function safe to run inside
+ * push-via-git-api.sh's per-retry loop", vs apiFallbackSafe's "no merge
+ * needed at all" (BRO-2413). Every entry here also has `status: 'active'`
+ * (so activeEntriesFor()/MANAGED still reconciles it on the slow local
+ * flow as a backstop) — the two lists overlap by design, they are not
+ * alternatives. */
+function apiFallbackMergeEntriesFor(surface) {
+  return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackMerge === true);
+}
+
+module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor };
