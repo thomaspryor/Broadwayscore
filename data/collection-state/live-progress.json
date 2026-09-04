@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-04T14:23:46.124Z",
-  "processed": 28,
-  "failed": 142,
-  "successRate": "16.5%",
+  "updatedAt": "2026-09-04T14:26:03.831Z",
+  "processed": 31,
+  "failed": 149,
+  "successRate": "17.2%",
   "tierBreakdown": {
     "playwright": 19,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-04T14:12:09.759Z",
@@ -26,6 +26,28 @@
       "event": "bb-session",
       "session": "a7801272",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-04T14:24:00.978Z",
+      "event": "bb-session",
+      "session": "83270b1e",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-04T14:24:02.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T14:24:20.165Z",
+      "event": "bb-session",
+      "session": "b319401a",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T14:24:21.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

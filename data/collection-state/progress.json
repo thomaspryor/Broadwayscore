@@ -27,7 +27,10 @@
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-    "pride-west-end-2026/whatsonstage--editorial-staff.json"
+    "pride-west-end-2026/whatsonstage--editorial-staff.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "paranormal-activity-2026/wsj--charles-isherwood.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -170,7 +173,14 @@
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
-    "the-children-off-west-end-2026/london-box-office--phil-willmott.json"
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -196,7 +206,10 @@
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -205,18 +218,20 @@
     "brightdata": [
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "pride-west-end-2026/whatsonstage--editorial-staff.json"
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+      "pride-west-end-2026/whatsonstage--editorial-staff.json",
+      "paranormal-activity-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
-      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-09-04T12:45:34.479Z",
-  "lastProcessed": "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-09-04T14:12:09.759Z",
@@ -229,6 +244,28 @@
       "event": "bb-session",
       "session": "a7801272",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-04T14:24:00.978Z",
+      "event": "bb-session",
+      "session": "83270b1e",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-04T14:24:02.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-04T14:24:20.165Z",
+      "event": "bb-session",
+      "session": "b319401a",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-04T14:24:21.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
