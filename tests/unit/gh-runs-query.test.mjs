@@ -268,6 +268,23 @@ test("vercel-deploy's inlined copy stays equivalent to the helper", () => {
   const step = src.split('check-streak:')[1] || '';
   assert.ok(step.includes('/actions/workflows/vercel-deploy.yml/runs?per_page=20'), 'must use the REST runs endpoint');
   assert.ok(step.includes('.workflow_runs[]'), 'must read .workflow_runs');
-  assert.ok(/sort_by\(\.createdAt\)\s*\|\s*reverse/.test(step), 'must sort newest-first rather than trusting transport order');
   assert.ok(step.includes('gh-runs-query.sh'), 'must point at the helper it is duplicating');
+
+  // Assert the SAME sort the helper uses, not merely "some sort_by". The earlier
+  // form of this assertion matched a bare `sort_by(.createdAt) | reverse`, which is
+  // precisely the shape the helper's invariant #3 exists to prevent — so it locked
+  // the divergence in rather than catching it. jq orders null before strings, so a
+  // run with created_at: null lands at the HEAD after reverse; the streak `reduce`
+  // then sets done:true on that first non-failure element and returns 0, silently
+  // suppressing the escalation during a real outage.
+  const helperSort = fs.readFileSync(HELPER, 'utf8').match(/sort_by\((if[\s\S]*?)\)\s*\|\s*reverse/);
+  assert.ok(helperSort, 'could not find the guarded sort in the helper — it may have regressed to a bare sort_by');
+  assert.ok(
+    step.includes(helperSort[1]),
+    'the inline copy must use the helper\'s null-safe sort expression verbatim, not a bare sort_by(.createdAt)',
+  );
+  assert.ok(
+    !/sort_by\(\.createdAt\)\s*\|\s*reverse/.test(step),
+    'the inline copy still contains a bare sort_by(.createdAt) | reverse',
+  );
 });

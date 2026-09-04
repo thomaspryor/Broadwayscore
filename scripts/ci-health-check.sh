@@ -20,7 +20,12 @@
 # its own timeout mid-checkout) is NOT mid-setup-cancelled — it validated.
 #
 # Usage: scripts/ci-health-check.sh [run_count] [threshold_pct]
-#   run_count      how many recent main push runs of test.yml to sample (default 20)
+#   run_count      how many recent main push runs of test.yml to sample (default 20,
+#                  max 100 — the Actions REST per_page cap. Values above 100 now exit
+#                  2 rather than silently sampling a shorter window than asked for.
+#                  The pre-BRO-2771 `gh run list --limit` form paginated past 100, so
+#                  a habit of e.g. `ci-health-check.sh 200` from shell history will
+#                  now be rejected instead of quietly measuring the wrong thing.)
 #   threshold_pct  max acceptable mid-setup-cancel rate, whole percent (default 30)
 #
 # Exit codes:

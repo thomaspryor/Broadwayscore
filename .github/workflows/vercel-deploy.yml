@@ -534,7 +534,7 @@ jobs:
           if ! STREAK=$(gh api \
             "repos/$GITHUB_REPOSITORY/actions/workflows/vercel-deploy.yml/runs?per_page=20" \
             --jq '[.workflow_runs[] | {conclusion: .conclusion, createdAt: .created_at}] |
-                  sort_by(.createdAt) | reverse |
+                  sort_by(if (.createdAt | type) == "string" and (.createdAt | test("^[0-9]{4}-")) then .createdAt else "" end) | reverse |
                   [.[] | select(.conclusion != null and .conclusion != "skipped" and .conclusion != "cancelled")] |
                   reduce .[] as $r (
                     {"streak": 0, "done": false};

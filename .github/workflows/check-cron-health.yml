@@ -222,7 +222,12 @@ jobs:
             # redispatched every critical cron at once and paged about all of them.
             # Capture the query's exit status BEFORE the pipeline hides it.
             if ! LAST_RUN_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=success 2>/dev/null); then
-              QUERY_FAILED="${QUERY_FAILED}${name}, "
+              # Newline-joined, NOT comma-joined: normalize_names splits on both, and a
+              # friendly name containing a comma would split into two bogus tokens, making
+              # the prev-stale intersection miss and reporting that cron RECOVERED again —
+              # the exact bug this bucket exists to prevent. No current name contains a
+              # comma; this makes that not matter.
+              QUERY_FAILED="${QUERY_FAILED}${name}\n"
               continue
             fi
             LAST_RUN=$(printf '%s' "$LAST_RUN_RAW" | jq -r '.[0] // {}' 2>/dev/null || echo '{}')
@@ -278,7 +283,7 @@ jobs:
           # the realistic cause (expired token, rate limit, GitHub API incident) hits
           # every entry at once.
           if [ -n "$QUERY_FAILED" ]; then
-            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: ${QUERY_FAILED%, } — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
+            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: $(join_names "$(printf '%b' "${QUERY_FAILED}")") — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
           fi
 
           # State-diff: only escalate to email+critical for NEWLY-stale workflows.
@@ -292,8 +297,22 @@ jobs:
           if [ -f "$STATE_FILE" ]; then
             PREV_STALE=$(jq -r '.stale[]?' "$STATE_FILE" 2>/dev/null | sort -u)
           fi
-          NEWLY_STALE=$(comm -23 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
-          RECOVERED=$(comm -13 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
+          # Crons whose run-history query failed are ABSENT from CURRENT_STALE, because
+          # we could not determine their state. Absence is otherwise indistinguishable
+          # from health, so without this they would be reported RECOVERED: their
+          # cron-health and cron-health-chronic conditions would resolve, and
+          # update-cron-health-state.js would reset their consecutive-stale streak to
+          # 0. An API failure every other day would then keep the 3-consecutive-day
+          # chronic escalation permanently out of reach for a cron that is still dead.
+          # Sort so comm's input-order requirement holds.
+          # The set arithmetic lives in scripts/lib/cron-health-sets.sh so it can be
+          # tested against the real code rather than a copy (CLAUDE.md rule 15).
+          . scripts/lib/cron-health-sets.sh
+          UNKNOWN_NAMES=$(normalize_names "$(printf '%b' "${QUERY_FAILED}")")
+          SETS=$(compute_cron_health_sets "$CURRENT_STALE" "$PREV_STALE" "$UNKNOWN_NAMES")
+          NEWLY_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==0')
+          RECOVERED=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==1')
+          PERSIST_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==2')
           NEWLY_COUNT=$(printf '%s' "$NEWLY_STALE" | grep -c . || true)
           CHRONIC_COUNT=$(printf '%s' "$CURRENT_STALE" | grep -c . || true)
           CHRONIC_COUNT=$(( CHRONIC_COUNT - NEWLY_COUNT ))
@@ -347,7 +366,7 @@ jobs:
           # Decision logic lives in scripts/lib/cron-stale-streak.js so the
           # escalation boundary is unit-tested against the real function
           # (CLAUDE.md rule 15), not re-implemented in shell.
-          CURRENT_STALE="$CURRENT_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
+          CURRENT_STALE="$PERSIST_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
             STATE_FILE="$STATE_FILE" node scripts/update-cron-health-state.js
 
           # Emit step outputs the notify-failure step reads to toggle severity/email.
@@ -385,6 +404,16 @@ jobs:
             if [ -n "$WARNINGS" ]; then
               echo "=== WARNINGS ==="
               echo -e "$WARNINGS"
+              # Export them here too, not only on the all-healthy path below. The
+              # realistic cause of a run-history query failure (expired token, rate
+              # limit, API incident) is ALSO a likely cause of concurrent stale
+              # entries, so the branch that drops warnings is exactly the branch the
+              # UNKNOWN-health warning is most likely to arrive on.
+              {
+                echo "warnings<<EOF"
+                echo -e "$WARNINGS"
+                echo "EOF"
+              } >> "$GITHUB_OUTPUT"
             fi
             echo ""
             echo "Fix: Go to Actions tab, find the stale workflow, click 'Enable workflow' or trigger manually."
@@ -478,7 +507,12 @@ jobs:
       # top of the noon UTC cron), suppress the second alert.
       - name: Cooldown check for warning alert
         id: warn_cooldown
-        if: success() && steps.check.outputs.warnings != ''
+        # always(), not success(): the check step exits 1 whenever any cron is stale,
+        # and the UNKNOWN-health warning (a failed run-history query) is MOST likely to
+        # arrive on exactly that branch, since an expired token or rate limit tends to
+        # produce stale-looking entries at the same time. Gating on success() made the
+        # warning export on the failure branch unreachable.
+        if: always() && steps.check.outputs.warnings != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -509,7 +543,7 @@ jobs:
             }
 
       - name: Send warning Discord alert
-        if: success() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
+        if: always() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           WARNINGS: ${{ steps.check.outputs.warnings }}
