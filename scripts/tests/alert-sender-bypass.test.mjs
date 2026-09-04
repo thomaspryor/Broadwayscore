@@ -73,6 +73,41 @@ test('the two historical BRO-1699 bypass sites are migrated onto routeAlert()', 
   );
 });
 
+test('the overdue-broadcast alert step is reachable when an earlier gate step fails', () => {
+  // BRO-2815: the "Alert if broadcast overdue" step used to have no always()
+  // guard, so GitHub Actions skipped it whenever an earlier gate step
+  // (Checklist/Drift/Orphan-unscored) failed and blocked the send — the
+  // single most likely reason a broadcast goes overdue in the first place.
+  // The routeAlert()-reaches-the-allowlist test above only proves the alert
+  // is well-formed, not that GHA will ever evaluate the step that sends it.
+  const broadcastYml = fs.readFileSync(
+    path.join(REPO, '.github/workflows/opening-night-broadcast.yml'),
+    'utf8'
+  );
+  const lines = broadcastYml.split('\n');
+  const stepStart = lines.findIndex((l) => l.includes('name: Alert if broadcast overdue'));
+  assert.ok(stepStart !== -1, '"Alert if broadcast overdue" step not found in opening-night-broadcast.yml');
+  const stepIndent = lines[stepStart].match(/^(\s*)/)[1].length;
+  // A step block ends at the next line at the same-or-shallower indent that
+  // starts a new `- name:` entry (or a blank line followed by one) — find
+  // the next sibling step and slice up to it.
+  let stepEnd = lines.length;
+  for (let i = stepStart + 1; i < lines.length; i++) {
+    const indent = lines[i].match(/^(\s*)/)[1].length;
+    if (lines[i].trim() !== '' && indent <= stepIndent) { stepEnd = i; break; }
+  }
+  const stepBlock = lines.slice(stepStart, stepEnd).join('\n');
+  const ifLine = stepBlock.split('\n').find((l) => /^\s*if:/.test(l));
+  assert.ok(ifLine, '"Alert if broadcast overdue" step has no if: condition');
+  assert.match(
+    ifLine,
+    /always\(\)/,
+    '"Alert if broadcast overdue" step\'s if: condition must include always() — ' +
+      'otherwise a Checklist/Drift/Orphan-unscored gate failure earlier in the job ' +
+      'skips this step and the overdue pager never fires (BRO-2815).'
+  );
+});
+
 test('both migrated conditionKeys stay on the page-worthy allowlist (no silent digest downgrade)', () => {
   // Ship-check finding (BRO-1699): leaving a migrated conditionKey off this
   // allowlist silently downgrades disposition:'human' to the digest, which

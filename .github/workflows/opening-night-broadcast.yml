@@ -791,7 +791,19 @@ jobs:
           fi
 
       - name: Alert if broadcast overdue (max once per show per day)
-        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        # always() (BRO-2815): this must run even when an earlier gate step
+        # (Checklist/Drift/Orphan-unscored) fails and blocks the send — a
+        # blocked gate is the single most likely reason a broadcast goes
+        # overdue, and GHA skips this step by default once any prior step in
+        # the job fails. steps.check.outputs.pending_shows still gates out
+        # unrelated failures upstream of the pending-shows computation (if
+        # "Check already broadcast" itself never ran, pending_shows is empty
+        # and this step still no-ops); steps.broadcast.outputs.broadcast_sent
+        # stays empty when "Create broadcast draft" is skipped by a gate
+        # failure, same as today. The step's own script only actually pages
+        # when it computes a real overdue show — always() only makes the
+        # step reachable, it doesn't change when it decides to alert.
+        if: always() && steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
