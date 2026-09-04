@@ -53,21 +53,21 @@ function computeSets({ failures = '', queryFailed = '', prevStale = '' }) {
 test('a query-failed cron that was already stale is NOT reported recovered', () => {
   // This is the regression. Reporting it recovered resolves its alert conditions
   // and resets its chronic-stale streak, for a cron that is still dead.
-  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews, ', prevStale: 'Rebuild Reviews' });
+  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews\n', prevStale: 'Rebuild Reviews' });
   assert.deepEqual(r.recovered, [], 'an unknown-health cron must never be reported recovered');
 });
 
 test('a query-failed cron that was already stale KEEPS its persisted staleness', () => {
   // Preserving it in the state file is what keeps the consecutive-stale streak
   // alive across an API blip, so the 3-day chronic escalation stays reachable.
-  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews, ', prevStale: 'Rebuild Reviews' });
+  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews\n', prevStale: 'Rebuild Reviews' });
   assert.deepEqual(r.persistStale, ['Rebuild Reviews']);
 });
 
 test('a query-failed cron is never redispatched on a guess', () => {
   // NEWLY_STALE drives the one-shot self-heal redispatch. An unknown cron must not
   // appear there — we did not establish that it is stale.
-  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews, ', prevStale: 'Rebuild Reviews' });
+  const r = computeSets({ failures: '', queryFailed: 'Rebuild Reviews\n', prevStale: 'Rebuild Reviews' });
   assert.deepEqual(r.newlyStale, []);
 });
 
@@ -96,7 +96,7 @@ test('a newly stale cron is detected so the one-shot redispatch still fires', ()
 test('a query-failed cron with no prior staleness is not INVENTED as stale', () => {
   // Unknown means unknown in both directions: we must not manufacture staleness
   // for a cron that was healthy last cycle.
-  const r = computeSets({ queryFailed: 'Social Pulse, ' });
+  const r = computeSets({ queryFailed: 'Social Pulse\n' });
   assert.deepEqual(r.persistStale, []);
   assert.deepEqual(r.newlyStale, []);
   assert.deepEqual(r.recovered, []);
@@ -105,12 +105,53 @@ test('a query-failed cron with no prior staleness is not INVENTED as stale', () 
 test('recovered, unknown-but-previously-stale and still-stale stay separate', () => {
   const r = computeSets({
     failures: '❌ Rebuild Reviews: Last SUCCESS 99h ago (max 36h)',
-    queryFailed: 'Social Pulse, ',
-    prevStale: 'Rebuild Reviews,Social Pulse,Tony Awards',
+    queryFailed: 'Social Pulse\n',
+    prevStale: 'Rebuild Reviews\nSocial Pulse\nTony Awards',
   });
   assert.deepEqual(r.recovered, ['Tony Awards']);
   assert.deepEqual(r.persistStale, ['Rebuild Reviews', 'Social Pulse']);
   assert.deepEqual(r.newlyStale, []);
+});
+
+/**
+ * Call one exported shell function directly.
+ * @param {string} fn
+ * @param {string} arg
+ * @returns {string}
+ */
+function callFn(fn, arg) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cron-health-fn-'));
+  try {
+    const driver = path.join(dir, 'd.sh');
+    fs.writeFileSync(driver, `#!/usr/bin/env bash\n. "${HELPER}"\n${fn} "$1"\n`);
+    return execFileSync('bash', [driver, arg], { encoding: 'utf8' });
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+test('normalize_names does NOT split a name containing a comma', () => {
+  // It used to `tr ',' '\n'`. A friendly name with a comma then became two bogus
+  // tokens, the prev-stale intersection missed, and that cron was reported
+  // RECOVERED — reintroducing the exact bug this file prevents.
+  const out = callFn('normalize_names', 'Weekly Grosses, Cumulative\n').split('\n').filter(Boolean);
+  assert.deepEqual(out, ['Weekly Grosses, Cumulative'], 'a comma inside a name must not split it');
+});
+
+test('normalize_names still splits on newlines, trims, dedupes and sorts', () => {
+  const out = callFn('normalize_names', '  b  \na\n\nb\n').split('\n').filter(Boolean);
+  assert.deepEqual(out, ['a', 'b']);
+});
+
+test('join_names renders "a, b, c" and not paste\'s rotating-delimiter output', () => {
+  // `paste -sd ', '` treats the delimiter as a LIST used in ROTATION, emitting
+  // "a,b c". Caught live on real cron names before this shipped.
+  const out = callFn('join_names', 'Rebuild Reviews\nUpdate Lottery/Rush\nCheck Arm Yield (dead-arm detector)').trim();
+  assert.equal(out, 'Rebuild Reviews, Update Lottery/Rush, Check Arm Yield (dead-arm detector)');
+});
+
+test('join_names on empty input produces nothing', () => {
+  assert.equal(callFn('join_names', '').trim(), '');
 });
 
 test('the workflow sources the helper rather than inlining the set arithmetic', () => {

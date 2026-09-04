@@ -222,7 +222,12 @@ jobs:
             # redispatched every critical cron at once and paged about all of them.
             # Capture the query's exit status BEFORE the pipeline hides it.
             if ! LAST_RUN_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=success 2>/dev/null); then
-              QUERY_FAILED="${QUERY_FAILED}${name}, "
+              # Newline-joined, NOT comma-joined: normalize_names splits on both, and a
+              # friendly name containing a comma would split into two bogus tokens, making
+              # the prev-stale intersection miss and reporting that cron RECOVERED again —
+              # the exact bug this bucket exists to prevent. No current name contains a
+              # comma; this makes that not matter.
+              QUERY_FAILED="${QUERY_FAILED}${name}\n"
               continue
             fi
             LAST_RUN=$(printf '%s' "$LAST_RUN_RAW" | jq -r '.[0] // {}' 2>/dev/null || echo '{}')
@@ -278,7 +283,7 @@ jobs:
           # the realistic cause (expired token, rate limit, GitHub API incident) hits
           # every entry at once.
           if [ -n "$QUERY_FAILED" ]; then
-            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: ${QUERY_FAILED%, } — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
+            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: $(join_names "$(printf '%b' "${QUERY_FAILED}")") — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
           fi
 
           # State-diff: only escalate to email+critical for NEWLY-stale workflows.
@@ -303,7 +308,7 @@ jobs:
           # The set arithmetic lives in scripts/lib/cron-health-sets.sh so it can be
           # tested against the real code rather than a copy (CLAUDE.md rule 15).
           . scripts/lib/cron-health-sets.sh
-          UNKNOWN_NAMES=$(normalize_names "${QUERY_FAILED%, }")
+          UNKNOWN_NAMES=$(normalize_names "$(printf '%b' "${QUERY_FAILED}")")
           SETS=$(compute_cron_health_sets "$CURRENT_STALE" "$PREV_STALE" "$UNKNOWN_NAMES")
           NEWLY_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==0')
           RECOVERED=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==1')
@@ -502,7 +507,12 @@ jobs:
       # top of the noon UTC cron), suppress the second alert.
       - name: Cooldown check for warning alert
         id: warn_cooldown
-        if: success() && steps.check.outputs.warnings != ''
+        # always(), not success(): the check step exits 1 whenever any cron is stale,
+        # and the UNKNOWN-health warning (a failed run-history query) is MOST likely to
+        # arrive on exactly that branch, since an expired token or rate limit tends to
+        # produce stale-looking entries at the same time. Gating on success() made the
+        # warning export on the failure branch unreachable.
+        if: always() && steps.check.outputs.warnings != ''
         uses: actions/github-script@v7
         with:
           script: |
@@ -533,7 +543,7 @@ jobs:
             }
 
       - name: Send warning Discord alert
-        if: success() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
+        if: always() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           WARNINGS: ${{ steps.check.outputs.warnings }}

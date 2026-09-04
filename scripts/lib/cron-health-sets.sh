@@ -20,11 +20,26 @@
 #               never counted as recovered, but its prior staleness is PRESERVED.
 #   recovered — was stale, is no longer stale, AND we could actually check it.
 
-# normalize_names <comma-or-newline-separated>
+# normalize_names <newline-separated>
 # Trims, drops blanks, de-duplicates and SORTS. Sorting matters: comm(1) silently
 # produces wrong answers on unsorted input rather than failing.
+#
+# NEWLINE-separated only. It deliberately does NOT split on commas: friendly cron
+# names are free text, and a name containing a comma would split into two bogus
+# tokens, so the prev-stale intersection would miss and that cron would be reported
+# RECOVERED — the exact bug this file exists to prevent. No CRITICAL_CRONS name
+# contains a comma today; this makes that not matter. A name cannot contain a
+# newline, because each is a single shell word in the CRITICAL_CRONS array.
 normalize_names() {
-  printf '%s' "${1-}" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | sed '/^$/d' | sort -u
+  printf '%s' "${1-}" | sed 's/^ *//;s/ *$//' | sed '/^$/d' | sort -u
+}
+
+# join_names <newline-separated>
+# Renders a name list for humans as "a, b, c". Deliberately not `paste -sd ', '`:
+# paste treats the delimiter as a LIST used in ROTATION, so that emits "a,b c"
+# rather than "a, b, c".
+join_names() {
+  printf '%s' "${1-}" | sed '/^$/d' | awk 'NR>1{printf ", "} {printf "%s", $0} END{if (NR) print ""}'
 }
 
 # stale_names_from_failures <FAILURES block>
