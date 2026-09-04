@@ -4,7 +4,10 @@
     "a-month-in-the-country-west-end-2026/ents24--unknown.json",
     "a-month-in-the-country-west-end-2026/independent--unknown.json",
     "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
   ],
   "failed": [
     "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
@@ -23,7 +26,14 @@
     "the-story-west-end-2026/london-box-office--phil-willmott.json",
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/monstagigz--unknown.json",
-    "the-story-west-end-2026/north-west-end--greg-holstead.json"
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+    "electra-persona-west-end-2026/southbank--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,15 +45,32 @@
     ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-story-west-end-2026/times-uk--clive-davis.json",
+      "the-story-west-end-2026/times-uk--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "a-month-in-the-country-west-end-2026/ents24--unknown.json"
+      "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+      "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-09-04T08:47:26.505Z",
-  "lastProcessed": "the-story-west-end-2026/north-west-end--greg-holstead.json",
-  "log": []
+  "lastProcessed": "electra-persona-west-end-2026/southbank--unknown.json",
+  "log": [
+    {
+      "t": "2026-09-04T08:56:12.938Z",
+      "event": "bb-session",
+      "session": "bbbb594c",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-04T08:56:21.949Z",
+      "event": "bb-session",
+      "session": "e39b637a",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    }
+  ]
 }

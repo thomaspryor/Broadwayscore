@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-09-04T08:53:39.461Z",
-  "processed": 5,
-  "failed": 17,
-  "successRate": "22.7%",
+  "updatedAt": "2026-09-04T08:58:12.327Z",
+  "processed": 8,
+  "failed": 24,
+  "successRate": "25.0%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 2,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-09-04T08:56:12.938Z",
+      "event": "bb-session",
+      "session": "bbbb594c",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-04T08:56:21.949Z",
+      "event": "bb-session",
+      "session": "e39b637a",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    }
+  ]
 }
