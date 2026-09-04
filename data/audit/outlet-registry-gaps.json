@@ -1,12 +1,20 @@
 {
-  "generatedAt": "2026-09-04T00:47:32.580Z",
+  "generatedAt": "2026-09-04T01:18:42.183Z",
   "summary": {
-    "totalOutletsInReviews": 702,
+    "totalOutletsInReviews": 703,
     "inRegistry": 701,
-    "missing": 1,
+    "missing": 2,
     "unused": 467
   },
   "missingOutlets": [
+    {
+      "outletId": "anthearepresents",
+      "count": 1,
+      "shows": [
+        "a-month-in-the-country-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+    },
     {
       "outletId": "ents24",
       "count": 1,
@@ -1887,6 +1895,15 @@
     }
   ],
   "suggestedAdditions": [
+    {
+      "outletId": "anthearepresents",
+      "displayName": "anthearepresents",
+      "tier": 3,
+      "aliases": [
+        "anthearepresents"
+      ],
+      "domain": "anthearepresents.com"
+    },
     {
       "outletId": "ents24",
       "displayName": "ents24",
