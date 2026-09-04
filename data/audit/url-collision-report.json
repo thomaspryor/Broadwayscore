@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-04T20:04:34.988Z",
+  "generatedAt": "2026-09-04T21:49:14.346Z",
   "summary": {
-    "total": 8,
+    "total": 7,
     "high": 2,
-    "medium": 5,
+    "medium": 4,
     "low": 1
   },
   "collisions": [
@@ -194,33 +194,6 @@
       ],
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.startribune.com/entertainment/celebrities/186401511.html?refer=y",
-      "normalizedUrl": "https://startribune.com/entertainment/celebrities/186401511.html",
-      "candidates": [
-        {
-          "showId": "the-other-place-2013",
-          "file": "ap--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2013-01-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ap"
-        },
-        {
-          "showId": "the-other-place-2026",
-          "file": "minneapolis-star-tribune--mark-kennedy.json",
-          "publishDate": "January 10, 2013",
-          "openingDate": null,
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "minneapolis-star-tribune"
-        }
-      ],
-      "suggestedWinner": "the-other-place-2013",
-      "reason": "Only one candidate has score/fullText",
       "confidence": "medium"
     }
   ]
