@@ -44,6 +44,74 @@ const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
+
+// BRO-2767: run history is read through the Actions REST endpoint, NEVER through
+// `gh run list --limit=N`. On this repo (6,600+ test.yml runs on main) the gh
+// CLI's paginated run listing returns arbitrary, sometimes months-stale result
+// SETS, not merely a mis-ordered page: three identical invocations about a
+// minute apart on 2026-09-04 returned Sep 3-4 runs, then Aug 26-29 runs, then
+// Aug 5 runs, with core rate limit at 5000/5000 and the documented full
+// workflow path in use. Every consumer here assumes newest-first, so a stale
+// page silently produces a wrong verdict (see checkMainRedStreak's firstRedSha).
+// The REST endpoint the CLI wraps is stable and correctly ordered.
+const GH_REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+
+/**
+ * Build the gh invocation that lists runs for one workflow, newest-first.
+ * Deliberately `gh api`, not `gh run list` — see the BRO-2767 note above.
+ *
+ * @param {string} workflowFile - workflow filename, e.g. 'test.yml'
+ * @param {object} [opts]
+ * @param {number} [opts.limit=1] - per_page
+ * @param {string} [opts.branch] - restrict to a branch
+ * @param {string} [opts.status] - restrict to a run status, e.g. 'success'
+ * @returns {string} shell command emitting a JSON array of
+ *   {databaseId, headSha, createdAt, conclusion}
+ */
+function ghRunsQuery(workflowFile, opts = {}) {
+  const { limit = 1, branch, status } = opts;
+  const params = [`per_page=${limit}`];
+  if (branch) params.push(`branch=${branch}`);
+  if (status) params.push(`status=${status}`);
+  const jq = '[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, conclusion: .conclusion}]';
+  return `gh api "repos/${GH_REPO}/actions/workflows/${workflowFile}/runs?${params.join('&')}" --jq '${jq}'`;
+}
+
+/**
+ * createdAt of the newest run in a ghRunsQuery() payload, or '' when there are
+ * none. Replaces the old `-q '.[0].createdAt'`, which trusted the transport's
+ * first row; this sorts before taking the head.
+ *
+ * @param {string} raw - stdout of a ghRunsQuery() invocation
+ * @returns {string} ISO timestamp, or '' when no run matched
+ */
+function firstRunCreatedAt(raw) {
+  if (!raw) return '';
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { return ''; }
+  const sorted = sortRunsNewestFirst(parsed);
+  return (sorted[0] && sorted[0].createdAt) || '';
+}
+
+/**
+ * Newest-first by createdAt. Called at every parse site rather than trusting
+ * the transport's ordering, so the assumption lives where it is depended on.
+ * Unparseable/missing createdAt sorts last instead of throwing.
+ *
+ * @param {Array<object>} runs
+ * @returns {Array<object>} new array, newest first
+ */
+function sortRunsNewestFirst(runs) {
+  if (!Array.isArray(runs)) return [];
+  return runs.slice().sort((a, b) => {
+    const ta = Date.parse(a && a.createdAt);
+    const tb = Date.parse(b && b.createdAt);
+    if (Number.isNaN(ta) && Number.isNaN(tb)) return 0;
+    if (Number.isNaN(ta)) return 1;
+    if (Number.isNaN(tb)) return -1;
+    return tb - ta;
+  });
+}
 // BRO-2603: makes the BRO-385 ledger freeze (data/audit/BRO-385-ledger-freeze.json,
 // 2026-08-26 -> 2026-09-25) actually suppress card filing for the checks below
 // that are sourced from a frozen ledger, instead of the record just sitting
@@ -407,10 +475,10 @@ function checkPushVerification() {
         // entries + this check all share ONE shared PAT/rate-limit budget
         // across every concurrently-dispatched session on this Mac — see
         // scripts/lib/gh-api-cache.js header for why.
-        const result = cachedShell(
+        const result = firstRunCreatedAt(cachedShell(
           `push-verify:${workflow}`,
-          `gh run list --workflow="${workflow}" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
-        );
+          ghRunsQuery(workflow, { limit: 1, status: 'success' })
+        ));
         if (!result) {
           return { name: `Push verify: ${file}`, status: 'warn', message: `No successful ${name} runs found` };
         }
@@ -470,10 +538,10 @@ function checkOpeningNightHistoryFreshness() {
     try {
       // Get last successful workflow run time (same gh invocation shape and
       // shared cache as checkPushVerification() above).
-      const result = cachedShell(
+      const result = firstRunCreatedAt(cachedShell(
         'push-verify:opening-night-checklist.yml',
-        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`
-      );
+        ghRunsQuery('opening-night-checklist.yml', { limit: 1, status: 'success' })
+      ));
       if (!result) {
         return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No successful Opening Night Checklist runs found' };
       }
@@ -2002,9 +2070,9 @@ function checkCronHealth() {
         // /ship-check + /wrap-up across ~dozens of dispatches/day.
         const result = cachedShell(
           `cron:${workflow}`,
-          `gh run list --workflow="${workflow}" --limit=5 --json createdAt,conclusion`
+          ghRunsQuery(workflow, { limit: 5 })
         );
-        const runs = result ? JSON.parse(result) : [];
+        const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
         if (!runs.length) {
           return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
         }
@@ -2068,9 +2136,9 @@ function checkSecretsHealth() {
         // together — they drifted again, so keep them in step.
         const result = cachedShell(
           'cron:check-secrets-health.yml',
-          `gh run list --workflow="check-secrets-health.yml" --limit=5 --json createdAt,conclusion`
+          ghRunsQuery('check-secrets-health.yml', { limit: 5 })
         );
-        const runs = result ? JSON.parse(result) : [];
+        const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
         if (!runs.length) {
           return { name: 'Secrets: health', status: 'warn', message: 'No secrets check runs found' };
         }
@@ -2226,9 +2294,9 @@ async function checkMainRedStreak(isCI) {
   try {
     const listResult = cachedShell(
       'main-red-streak:test.yml',
-      `gh run list --workflow="test.yml" --branch=main --limit=${RUN_LIMIT} --json databaseId,headSha,createdAt,conclusion`
+      ghRunsQuery('test.yml', { limit: RUN_LIMIT, branch: 'main' })
     );
-    const rawRuns = listResult ? JSON.parse(listResult) : [];
+    const rawRuns = sortRunsNewestFirst(listResult ? JSON.parse(listResult) : []);
     if (!rawRuns.length) {
       return [{ name: NAME, status: 'warn', message: 'No Test Suite runs found on main' }];
     }
@@ -4784,4 +4852,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
