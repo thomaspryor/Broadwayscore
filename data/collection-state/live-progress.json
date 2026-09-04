@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-04T14:52:45.818Z",
-  "processed": 6,
-  "failed": 14,
-  "successRate": "30.0%",
+  "updatedAt": "2026-09-04T14:53:39.532Z",
+  "processed": 8,
+  "failed": 22,
+  "successRate": "26.7%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
@@ -14,5 +14,17 @@
     "archive": 0
   },
   "browserbaseSessions": 1,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-09-04T14:52:47.102Z",
+      "event": "bb-session",
+      "session": "4ec6c32f",
+      "url": "https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehous"
+    },
+    {
+      "t": "2026-09-04T14:52:47.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

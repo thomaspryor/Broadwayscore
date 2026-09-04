@@ -5,7 +5,9 @@
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "a-month-in-the-country-west-end-2026/thereviewshub--unknown.json",
     "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
-    "a-month-in-the-country-west-end-2026/ents24--unknown.json"
+    "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "holy-fool-off-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -21,7 +23,15 @@
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
-    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json"
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "electra-persona-west-end-2026/liamodell--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "holy-fool-off-west-end-2026/thereviewshub--unknown.json",
+    "holy-fool-off-west-end-2026/readaboutstuff--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,7 +39,9 @@
       "the-story-west-end-2026/london-box-office--stuart-king.json",
       "the-story-west-end-2026/theatrecat--unknown.json",
       "a-month-in-the-country-west-end-2026/thereviewshub--unknown.json",
-      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "holy-fool-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -44,6 +56,18 @@
     "archive": []
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
-  "log": []
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+  "log": [
+    {
+      "t": "2026-09-04T14:52:47.102Z",
+      "event": "bb-session",
+      "session": "4ec6c32f",
+      "url": "https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehous"
+    },
+    {
+      "t": "2026-09-04T14:52:47.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
