@@ -84,6 +84,31 @@ if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
 fi
 
+# Workflow-subject guards (BRO-2785). tests/unit/workflow-line-length.test.mjs
+# (500-char cap on .github/workflows/*.yml lines) and
+# scripts/audit-workflow-concurrency.js (cancel-in-progress guard) both assert
+# properties of workflow file CONTENT but were never wired into a push-time
+# gate — only CI (test.yml) ran them, and Lint Workflows' actionlint doesn't
+# cover either check. Reproduced live 2026-09-04 landing BRO-2771: a workflow
+# edit pushed a hint string to 504 chars, this script's caller (merge-worktree-
+# to-main.sh) reported success, and the 500-char cap failed in CI on main
+# minutes later. Both call sites of THIS file (scripts/hooks/pre-push and
+# scripts/merge-worktree-to-main.sh) get the fix for free with zero changes to
+# either caller — that's the whole point of this shared runner (see header).
+# actionlint itself runs via the run-actionlint-if-present.js wrapper (skips
+# rather than blocks when the binary isn't on PATH — CI installs it fresh
+# every run; a local checkout may not have it).
+#
+# scripts/audit-workflow-concurrency.js already also runs from pre-push's own
+# separate inline "Node workflow audits" block — the small (<1s) duplicate run
+# on a plain `git push` is accepted rather than touching that unrelated block
+# in this shared-infra change (CLAUDE.md rule 18 scope discipline).
+if echo "$CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^tests/unit/workflow-line-length\.test\.mjs$|^scripts/lib/workflow-line-length\.js$|^scripts/audit-workflow-concurrency\.js$|^scripts/lib/ci-cancellation-guard\.js$|^scripts/lib/run-actionlint-if-present\.js$"; then
+  run_audit "workflow-line-length" "tests/unit/workflow-line-length.test.mjs" || FAIL=1
+  run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js" || FAIL=1
+  run_audit "workflow-actionlint" "scripts/lib/run-actionlint-if-present.js" || FAIL=1
+fi
+
 # Orphan/unregistered test detection.
 #
 # BRO-2751: this pattern was a THIRD hand-maintained copy of the test-file
