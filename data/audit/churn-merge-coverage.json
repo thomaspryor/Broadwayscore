@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-04T14:03:00.458Z",
+    "generatedAt": "2026-09-04T16:05:31.613Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/outlet-registry-gaps.json",
-      "churn": 192
+      "churn": 195
     },
     {
       "path": "data/audit/worktree-gc.log",
@@ -30,7 +30,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 51
+      "churn": 54
     },
     {
       "path": "public/data/shows/beetlejuice-west-end-2026.json",
@@ -89,31 +89,31 @@
       "churn": 44
     },
     {
-      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
       "churn": 43
     },
     {
-      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 42
+      "path": "public/data/shows/summerfolk-west-end-2026.json",
+      "churn": 43
     },
     {
-      "path": "public/data/shows/summerfolk-west-end-2026.json",
+      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
       "churn": 42
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 41
+      "churn": 40
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
-      "churn": 30
+      "churn": 32
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 31
     },
     {
       "path": "public/data/shows/electra-persona-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/six-the-musical-west-end-2021.json",
       "churn": 30
     }
   ],
@@ -130,27 +130,27 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 414,
+      "churn": 420,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 396,
+      "churn": 397,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 156,
+      "churn": 161,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 136,
+      "churn": 141,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 129,
+      "churn": 130,
       "mergeAttr": "ours"
     },
     {
