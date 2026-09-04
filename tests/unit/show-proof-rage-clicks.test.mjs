@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural key-uniqueness invariant over all of
+// data/reviews.json (no hardcoded scores/dates asserted as ground truth); the one
+// proof-2026/nysr fact is a precondition guard for the regression case, not a
+// claim about source data, and no-ops safely (via assert.ok) if it stops holding.
 // Task #64 — rage clicks on /show/proof.
 // Root cause: ReviewsList.tsx keyed review cards by `${outletId}-${publishDate}`,
 // which collides whenever an outlet runs multiple bylined critics on the same
