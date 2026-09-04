@@ -473,3 +473,37 @@ is the gate, not the scorer. Don't chase the scoring queue.
 ([[feedback_manual_review_protection_fields.md]]). **Systemic fix:** BRO-2749 — add
 an international-trade allowlist, preferably driven off an outlet-registry field
 rather than a hardcoded set.
+
+## Gate: stale-metadata-with-replaced-body (found 2026-09-04, the-story-west-end-2026 opening night)
+
+A review-texts file's `fullText` was replaced in place with the CORRECT review,
+while `url`, `publishDate`, `wrongProduction*`, `aggregatorStars` and
+`scoreSource` all stayed pointing at a completely different, years-old article.
+
+Concrete: `london-box-office--stuart-king.json` carried Stuart King's 4 Sept 2026
+review of THE STORY at the Olivier (body names the venue + Antonia Bernath +
+"4 September, 2026, 08:36"), but url was
+`/news/post/a-ghost-story-apollo-review`, publishDate `2023-05-31`, and the
+anticipatory gate had stamped `wrongProduction: true` ("1191d before
+openingDate"). A real, published, on-show review was therefore invisible to
+reviews.json and prod. The file was also sitting UNSTAGED in the review-texts
+working tree, so nothing downstream had even seen it.
+
+This is the INVERSE of [[feedback_inplace_url_update_preserves_stale_state]]:
+there the URL was updated and the stale flags survived; here the BODY was
+updated and the stale url/date/flags/stars survived.
+
+Extra hazard: the stale `aggregatorStars: "4/5"` → `originalScoreNormalized: 80`
+belonged to the OLD article. The real LBO post carries no star rating. Blindly
+"unflagging" the file would have published a fabricated 80.
+
+**Detection rule:** a file whose `fullText` states a publication date that
+disagrees with its `publishDate` field is this bug. Worth a CI gate — parse the
+byline/date line out of the body and assert it is within a few days of
+`publishDate`; mismatch = stale metadata, not a wrong-production review.
+
+**How to apply:** when a file is flagged wrongProduction on opening night, read
+the BODY before trusting the url/date. If the body is on-show, correct
+url + publishDate FIRST, drop any aggregatorStars/originalScore that came from
+the old page, then clear the flags with all 8 protection fields
+([[feedback_manual_review_protection_fields]]).
