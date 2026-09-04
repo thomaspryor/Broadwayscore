@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-04T16:05:31.613Z",
+    "generatedAt": "2026-09-04T16:28:58.567Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,11 +20,11 @@
     },
     {
       "path": "data/audit/worktree-gc.log",
-      "churn": 74
+      "churn": 73
     },
     {
       "path": "data/audit/worktree-gc.launchd.log",
-      "churn": 72
+      "churn": 71
     }
   ],
   "exempt": [
@@ -120,12 +120,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 887,
+      "churn": 882,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 858,
+      "churn": 853,
       "mergeAttr": "ours"
     },
     {
@@ -140,12 +140,12 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 161,
+      "churn": 162,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 141,
+      "churn": 142,
       "mergeAttr": "ours"
     },
     {
