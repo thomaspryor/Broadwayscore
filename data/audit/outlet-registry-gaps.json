@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-04T10:17:29.551Z",
+  "generatedAt": "2026-09-04T10:48:07.149Z",
   "summary": {
-    "totalOutletsInReviews": 703,
+    "totalOutletsInReviews": 704,
     "inRegistry": 702,
-    "missing": 1,
+    "missing": 2,
     "unused": 466
   },
   "missingOutlets": [
@@ -14,6 +14,14 @@
         "a-month-in-the-country-west-end-2026"
       ],
       "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/ents24--unknown.json"
+    },
+    {
+      "outletId": "tickpick",
+      "count": 1,
+      "shows": [
+        "a-month-in-the-country-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/a-month-in-the-country-west-end-2026/tickpick--tickpick.json"
     }
   ],
   "unusedInRegistry": [
@@ -1891,6 +1899,15 @@
         "ents24"
       ],
       "domain": "ents24.com"
+    },
+    {
+      "outletId": "tickpick",
+      "displayName": "tickpick",
+      "tier": 3,
+      "aliases": [
+        "tickpick"
+      ],
+      "domain": "tickpick.com"
     }
   ],
   "displayNameMismatches": [
