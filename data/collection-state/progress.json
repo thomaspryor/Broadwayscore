@@ -44,7 +44,11 @@
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/reviewsgate--william-russell.json"
   ],
   "failed": [
     "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
@@ -253,7 +257,13 @@
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
-    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json"
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -283,13 +293,17 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/reviewsgate--william-russell.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -306,7 +320,8 @@
       "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-      "pride-west-end-2026/whatsonstage--editorial-staff.json"
+      "pride-west-end-2026/whatsonstage--editorial-staff.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -320,7 +335,7 @@
     ]
   },
   "startTime": "2026-09-04T08:47:26.505Z",
-  "lastProcessed": "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+  "lastProcessed": "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
   "log": [
     {
       "t": "2026-09-04T09:25:36.260Z",
@@ -418,6 +433,17 @@
       "event": "bb-session",
       "session": "7d43d1a3",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-04T10:11:27.252Z",
+      "event": "bb-session",
+      "session": "11aefdfb",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-04T10:11:28.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
