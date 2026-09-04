@@ -619,7 +619,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // degraded path here — linear.getIssue() always returns the FULL
   // description, so an unarmed card always refuses outright rather than
   // warning.
-  const gate = evaluateVerifiability(issue.description || '');
+  //
+  // BRO-2796: linear-brain.js's `update` command has no path to edit an
+  // issue's description (--state/--comment only), so a correction to a
+  // broken/wrong VERIFY command can only ever be posted as a comment. The
+  // gate now sees those comments too (oldest-first, matching evaluateVerifiability's
+  // "newest wins" contract) instead of reading the description alone — a
+  // correction posted after dispatch used to be entirely inert here.
+  // getIssue()'s query already fetches comments(first: 50, orderBy:
+  // createdAt); sorted explicitly by createdAt rather than trusted as-is —
+  // BRO-2543 found Linear's comments connection returns updatedAt DESCENDING
+  // by default when no orderBy is requested, so an explicit sort here is the
+  // only way to be sure "newest wins" actually means newest.
+  const issueComments = ((issue.comments && issue.comments.nodes) || [])
+    .slice()
+    .sort((a, b) => String((a && a.createdAt) || '').localeCompare(String((b && b.createdAt) || '')))
+    .map((c) => c && c.body)
+    .filter(Boolean);
+  const gate = evaluateVerifiability(issue.description || '', issueComments);
   if (!gate.cmd && !gate.ownerJudgment && !args['allow-unverifiable']) {
     console.error(`[linear-next] REFUSING to dispatch ${identifier}: no runnable verify command (${gate.reason}).`);
     console.error(`  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.`);
