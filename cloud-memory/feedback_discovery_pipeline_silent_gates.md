@@ -520,3 +520,13 @@ A review can be **ingested AND scored** (`llmScore` present, `scoreSource: llm-v
 
 ## Census rule: WebSearch absence is worthless for paywalled broadsheets
 Three consecutive "clean" censuses (attempts 33-35) missed BOTH the Telegraph and the FT because they relied on WebSearch. A **direct `fetchPage()` of the outlet's own section page** (`telegraph.co.uk/theatre`, `ft.com/arts`) found both immediately. For T1 broadsheets, never record a verified exclusion from search absence — fetch the section index.
+
+## Gate: body quarantined into `wrongFullText` reads as wordCount 0 (found 2026-09-04, the-story-west-end-2026)
+When the collector LLM stamps `wrongProduction`/`wrongShow`, the scraped body is moved to a
+`wrongFullText` key and `wordCount`/`textWordCount` are zeroed. An audit that greps wordCount
+concludes "never scraped" and plans a re-fetch/re-ingest — wasted scraper spend, and it can trip
+the BRO-2784 slug-squat `Skipped: no-changes` path instead of writing anything.
+**Rule: when a flagged review file shows wordCount 0, ALWAYS check for `wrongFullText` before
+re-fetching.** The fix is a key rename (`wrongFullText` → `fullText`, restore word counts) plus the
+8 manual-clear protection fields — not an ingest. Instance: theatrecat--unknown.json, 682-word body
+on disk the whole time (review-texts commit b636d6ab5b2). Systemic fix carded: BRO-2788.
