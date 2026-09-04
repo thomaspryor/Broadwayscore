@@ -244,6 +244,17 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // Caught by /code-review on 2026-09-01: ticketline.co.uk was safe only because
   // classifyReviewUrl borrows TICKET_DOMAINS, and nothing borrows UGC_PLATFORM_DOMAINS.
   { host: /(^|\.)vocal\.media$/, reason: 'ugc-platform' },
+  // BRO-2774. Mirrors the two entries added to domain-filters.js that
+  // classifyReviewUrl does NOT get for free: it borrows TICKET_DOMAINS only
+  // (see the matchesDomainSet call below), so BRO-2774's ents24.com and
+  // tickpick.com are already covered, while a VENUE_DOMAINS or
+  // PR_FIRM_DOMAINS entry needs a hand-written mirror here. Without these two
+  // a SERP census reports each host as an UNCOVERED review gap for the show it
+  // was wrongly ingested for, while the write path silently discards it —
+  // the phantom-gap shape the parity test in non-review-url-patterns.test.mjs
+  // exists to catch, and which it did catch on this change.
+  { host: /(^|\.)studioseaview\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)anthearepresents\.com$/, reason: 'talent-agency-credit-page' },
 ];
 
 /**
