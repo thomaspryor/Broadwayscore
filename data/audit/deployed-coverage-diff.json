@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-03T19:13:13.599Z",
+  "generatedAt": "2026-09-04T21:21:29.075Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 137,
+  "checked": 136,
   "clean": 128,
-  "defective": 9,
+  "defective": 8,
   "byType": {
-    "score-drift": 8,
+    "score-drift": 7,
     "unreachable": 1
   },
   "shows": [
@@ -27,34 +27,19 @@
       "deployedCount": null
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 83.18 vs local 82.25 (Δ0.93)"
+          "detail": "deployed cs 72.71 vs local 72.44 (Δ0.27)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8
-    },
-    {
-      "showId": "electra-persona-west-end-2026",
-      "title": "Electra / Persona",
-      "openingDate": "2026-09-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 68.15 vs local 68.74 (Δ0.59)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 34,
+      "deployedCount": 34
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
@@ -64,7 +49,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 90.05 vs local 89.99 (Δ0.06)"
+          "detail": "deployed cs 89.91 vs local 89.8 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
@@ -72,49 +57,34 @@
       "deployedCount": 30
     },
     {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.67 vs local 78.45 (Δ0.22)"
+          "detail": "deployed cs 75.8 vs local 75.65 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
-      "showId": "beetlejuice-west-end-2026",
-      "title": "Beetlejuice",
-      "openingDate": "2026-05-28",
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 66.41 vs local 66.67 (Δ0.26)"
+          "detail": "deployed cs 74.03 vs local 73.96 (Δ0.07)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 36,
-      "deployedCount": 36
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.03 vs local 80.93 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -139,12 +109,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 69.39 vs local 69.61 (Δ0.22)"
+          "detail": "deployed cs 69.54 vs local 69.67 (Δ0.13)"
         }
       ],
       "missingFromProd": [],
       "localCount": 20,
       "deployedCount": 20
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.25 vs local 81.13 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14
     }
   ]
 }
