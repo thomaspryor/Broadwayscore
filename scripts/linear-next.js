@@ -627,16 +627,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // "newest wins" contract) instead of reading the description alone — a
   // correction posted after dispatch used to be entirely inert here.
   // getIssue()'s query already fetches comments(first: 50, orderBy:
-  // createdAt); sorted explicitly by createdAt rather than trusted as-is —
-  // BRO-2543 found Linear's comments connection returns updatedAt DESCENDING
-  // by default when no orderBy is requested, so an explicit sort here is the
-  // only way to be sure "newest wins" actually means newest.
-  const issueComments = ((issue.comments && issue.comments.nodes) || [])
-    .slice()
-    .sort((a, b) => String((a && a.createdAt) || '').localeCompare(String((b && b.createdAt) || '')))
-    .map((c) => c && c.body)
-    .filter(Boolean);
-  const gate = evaluateVerifiability(issue.description || '', issueComments);
+  // createdAt); ld.sortedCommentBodies re-sorts explicitly rather than
+  // trusting that as-is — BRO-2543 found Linear's comments connection
+  // returns updatedAt DESCENDING by default when no orderBy is requested,
+  // so an explicit sort here is the only way to be sure "newest wins"
+  // actually means newest.
+  const gate = evaluateVerifiability(issue.description || '', ld.sortedCommentBodies(issue));
   if (!gate.cmd && !gate.ownerJudgment && !args['allow-unverifiable']) {
     console.error(`[linear-next] REFUSING to dispatch ${identifier}: no runnable verify command (${gate.reason}).`);
     console.error(`  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.`);
