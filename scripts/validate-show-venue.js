@@ -62,7 +62,9 @@
  *      second arm of that gate). For a --show run a mismatch exits 1 with or
  *      without the flag, since bare --show is the command CLAUDE.md rule 3
  *      documents and it used to exit 0 here
- *   2  fatal — main() threw (see the catch at the bottom of this file)
+ *   2  the run could not START or could not FINISH: no such show, no mode flag
+ *      given, or main() threw (see the catch at the bottom of this file).
+ *      Never a statement about the show's data — 0, 1 and 3 are the verdicts
  *   3  --show only: the question was NOT answered. No Playbill page was found,
  *      or the lookup/fetch failed, or the environment could not reach Playbill,
  *      or the run ended before reaching the show. Deliberately distinct from 1:
