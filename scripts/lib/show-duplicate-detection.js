@@ -126,16 +126,23 @@ function findTitleFragmentDupes(shows) {
  * inference over titles, venues and dates, which is exactly why it survives
  * where title/venue/date heuristics fail.
  *
- * PRECISION, measured on the live catalog 2026-09-05: 633 shows carry a
- * TodayTix identity and exactly ONE key is shared by two entries — the AMAZE
- * pair. Zero false positives, one true positive.
+ * PRECISION, measured on the live catalog 2026-09-05: 633 shows across the WHOLE
+ * catalog carry a TodayTix identity and exactly ONE key is shared by two entries
+ * — the AMAZE pair. Note the cohort gap: audit-duplicate-shows.js filters to
+ * status !== 'closed' before calling any pass, so this only ever SEES the 316
+ * non-closed shows carrying an identity, not all 633. A duplicate whose older
+ * half is already marked closed is therefore invisible to it, the same blind
+ * spot the two older passes have and not one this pass introduces.
  *
- * FALSE-POSITIVE GUARD. A transfer pair (tryout -> commercial run, declared
- * with transferOf/transferredTo) is a deliberate TWO-entry relationship and
- * could legitimately reuse one ticketing listing, so explicitly cross-linked
- * pairs are excluded. No live pair needs this today — the 7 transferOf entries
- * share no ticket id — but the exclusion has to exist before one does, because
- * the alternative is an audit that fails on correct data.
+ * FALSE-POSITIVE GUARDS, both required:
+ *   1. Declared transfers. A tryout -> commercial run pair cross-linked with
+ *      transferOf/transferredTo is a deliberate TWO-entry relationship that
+ *      could legitimately reuse one listing. No live pair needs this today —
+ *      all 7 transferOf counterparts are status 'closed', so the guard is not
+ *      exercised on current data — but it has to exist before one is, because
+ *      the alternative is an audit that fails on correct data.
+ *   2. Title agreement. TodayTix RECYCLES numeric ids; see titlesAgree below.
+ *      This one is not theoretical — two other consumers already guard it.
  */
 
 // Accepts both the numeric `todaytixId` field and an id embedded in any
@@ -168,6 +175,34 @@ function isDeclaredTransferPair(a, b) {
     || a.transferredTo === b.id || b.transferredTo === a.id;
 }
 
+// TODAYTIX RECYCLES NUMERIC IDS. A shared listing id is therefore NOT proof of
+// one production on its own, and this codebase already knows it in two places:
+// update-show-status.js:241 refuses to reopen a closed row on a recycled id
+// ("MEMORY.md: TodayTix recycles numeric IDs"), and enrich-todaytix-data.js:226
+// refuses to write a start date without the same check, added by an adversarial
+// review on 2026-08-12 precisely because a recycled id would hand the status
+// pipeline another show's date. A detector that trusted the id alone would turn
+// main RED with no code change the first time TodayTix hands a retired id to an
+// unrelated show — and the catalog already holds abandoned ids ready to be
+// recycled (slam-frank-off-broadway-2026 and the-holes-off-broadway-2026 each
+// carry two different TodayTix keys, so one of each pair is already free).
+//
+// Same prefix-containment test as enrich-todaytix-data.js:226-227, not equality,
+// and for the same reason: our titles carry disambiguation the seller's do not
+// ("The Cherry Orchard (Park Avenue Armory)"), and a duplicate pair is often a
+// short title against a longer one — "AMAZE" vs "AMAZE Magic" agrees here, while
+// a genuinely recycled id gives two titles sharing no prefix at all.
+function slugifyTitle(t) {
+  return String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function titlesAgree(a, b) {
+  const ta = slugifyTitle(a.title);
+  const tb = slugifyTitle(b.title);
+  if (!ta || !tb) return false; // a title-less entry cannot corroborate an id
+  return ta.startsWith(tb) || tb.startsWith(ta);
+}
+
 /**
  * @param {Array<object>} shows - shows.json entries.
  * @returns {Array<{a:string, b:string, key:string, reason:string}>}
@@ -196,6 +231,7 @@ function findSharedTicketIdentityDupes(shows) {
         const b = members[j];
         if (a.id === b.id) continue;
         if (isDeclaredTransferPair(a, b)) continue;
+        if (!titlesAgree(a, b)) continue; // recycled listing id, not one production
         const pairKey = [a.id, b.id].sort().join(' ');
         if (seen.has(pairKey)) continue;
         seen.add(pairKey);

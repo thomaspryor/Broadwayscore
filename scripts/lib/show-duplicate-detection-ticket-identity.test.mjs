@@ -63,16 +63,29 @@ test('reads the id out of a ticketLinks URL when todaytixId is absent on BOTH si
   assert.equal(dupes.length, 1, 'URL-only identity must still pair the two entries');
 });
 
-test('matches a numeric todaytixId against a URL-embedded id across entries', () => {
-  const a = { id: 'x-2025', todaytixId: 44453 };
-  const b = { id: 'x-2026', ticketLinks: [{ url: 'https://www.todaytix.com/london/shows/44453-whatever' }] };
+test('the city segment of a TodayTix URL is not fixed to nyc', () => {
+  // Both sides carry the id ONLY in a URL, and the cities differ — so the
+  // [^/]+ segment is the deciding path. An earlier fixture put a numeric
+  // todaytixId on one side, which meant a regex hardcoded to /nyc/ still
+  // passed; caught by mutating [^/]+ to nyc and watching this NOT fail.
+  const a = { id: 'x-2025', title: 'Cabaret', ticketLinks: [{ url: 'https://www.todaytix.com/london/shows/44453-cabaret' }] };
+  const b = { id: 'x-2026', title: 'Cabaret', ticketLinks: [{ url: 'https://www.todaytix.com/sf/shows/44453-cabaret' }] };
   assert.equal(findSharedTicketIdentityDupes([a, b]).length, 1);
 });
 
-test('string and number forms of the same id are one identity', () => {
-  const a = { id: 'a-1', todaytixId: 44453 };
-  const b = { id: 'b-1', todaytixId: '44453' };
-  assert.equal(findSharedTicketIdentityDupes([a, b]).length, 1);
+test('string and number forms of the same id are one identity, and ids are trimmed', () => {
+  const a = { id: 'a-1', title: 'Gypsy', todaytixId: 44453 };
+  const b = { id: 'b-1', title: 'Gypsy', todaytixId: '  44453  ' };
+  assert.equal(findSharedTicketIdentityDupes([a, b]).length, 1, 'whitespace must not split one id into two identities');
+});
+
+test('a show is never paired with ITSELF when it appears twice in the array', () => {
+  // Defends the a.id === b.id guard. An input array can legitimately carry the
+  // same object twice (concatenated cohorts), and self-pairing would report a
+  // show as its own duplicate and write that pair into the baseline.
+  const s = { id: 'solo-2026', title: 'Solo', todaytixId: 7 };
+  assert.deepEqual(findSharedTicketIdentityDupes([s, s]), []);
+  assert.deepEqual(findSharedTicketIdentityDupes([s, { ...s }]), []);
 });
 
 test('different ticket ids are NOT a duplicate even at one venue with one title', () => {
@@ -81,14 +94,41 @@ test('different ticket ids are NOT a duplicate even at one venue with one title'
   assert.deepEqual(findSharedTicketIdentityDupes([a, b]), []);
 });
 
-test('a declared transfer pair sharing one listing is NOT reported, in either direction', () => {
-  const tryout = { id: 'show-regional-2024', todaytixId: 999, transferredTo: 'show-bway-2025' };
-  const bway = { id: 'show-bway-2025', todaytixId: 999, transferOf: 'show-regional-2024' };
-  assert.deepEqual(findSharedTicketIdentityDupes([tryout, bway]), [], 'both directions declared');
+test('a declared transfer pair sharing one listing is NOT reported, via EITHER field alone', () => {
+  // Each case declares exactly ONE field in ONE direction, so deleting either
+  // half of isDeclaredTransferPair fails a case. An earlier fixture set BOTH
+  // transferOf and transferredTo on the pair, so dropping the transferredTo
+  // half still passed — caught by mutation testing.
+  const t = { id: 'show-regional-2024', title: 'Kimberly Akimbo', todaytixId: 999 };
+  const b = { id: 'show-bway-2025', title: 'Kimberly Akimbo', todaytixId: 999 };
 
-  // Declared from ONE side only — still a deliberate relationship.
-  const oneSided = [{ id: 'p-2024', todaytixId: 998 }, { id: 'q-2025', todaytixId: 998, transferOf: 'p-2024' }];
-  assert.deepEqual(findSharedTicketIdentityDupes(oneSided), [], 'one-sided transferOf');
+  assert.deepEqual(findSharedTicketIdentityDupes([{ ...t }, { ...b, transferOf: t.id }]), [], 'transferOf on b only');
+  assert.deepEqual(findSharedTicketIdentityDupes([{ ...t, transferOf: b.id }, { ...b }]), [], 'transferOf on a only');
+  assert.deepEqual(findSharedTicketIdentityDupes([{ ...t, transferredTo: b.id }, { ...b }]), [], 'transferredTo on a only');
+  assert.deepEqual(findSharedTicketIdentityDupes([{ ...t }, { ...b, transferredTo: t.id }]), [], 'transferredTo on b only');
+});
+
+test('a RECYCLED TodayTix id does not pair two unrelated productions', () => {
+  // TodayTix reuses retired numeric ids. Without a title check this is exactly
+  // how the audit turns main red with no code change. See titlesAgree.
+  const a = { id: 'hamilton-2015', title: 'Hamilton', todaytixId: 44453 };
+  const b = { id: 'six-2026', title: 'Six the Musical', todaytixId: 44453 };
+  assert.deepEqual(findSharedTicketIdentityDupes([a, b]), []);
+});
+
+test('title agreement is prefix containment, so a short title still matches a longer one', () => {
+  // The AMAZE pair itself depends on this: "AMAZE" vs "AMAZE Magic". Equality
+  // would reject the one true positive the pass exists to catch.
+  assert.equal(findSharedTicketIdentityDupes([AMAZE_2025, AMAZE_2026]).length, 1);
+  const suffixed = { id: 'co-2026', title: 'The Cherry Orchard (Park Avenue Armory)', todaytixId: 5 };
+  const plain = { id: 'co-2025', title: 'The Cherry Orchard', todaytixId: 5 };
+  assert.equal(findSharedTicketIdentityDupes([suffixed, plain]).length, 1);
+});
+
+test('an entry with no title cannot corroborate a shared id', () => {
+  const a = { id: 'a-1', title: 'Wicked', todaytixId: 9 };
+  const b = { id: 'b-1', todaytixId: 9 };
+  assert.deepEqual(findSharedTicketIdentityDupes([a, b]), [], 'a missing title is not agreement');
 });
 
 test('a pair sharing TWO different ticket ids is reported ONCE, not twice', () => {
@@ -102,26 +142,36 @@ test('a pair sharing TWO different ticket ids is reported ONCE, not twice', () =
   // PASSED with the dedupe deleted, because ticketIdentityKeys returns a Set,
   // so one listing is one key and the pair could only ever be emitted once.
   // Caught by reverting the dedupe and watching this test NOT fail.
-  const a = { id: 'a-1', todaytixId: 7, ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/8-a' }] };
-  const b = { id: 'b-1', todaytixId: 7, ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/8-b' }] };
+  const a = { id: 'a-1', title: 'Hadestown', todaytixId: 7, ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/8-a' }] };
+  const b = { id: 'b-1', title: 'Hadestown', todaytixId: 7, ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/8-b' }] };
   assert.equal(ticketIdentityKeys(a).size, 2, 'fixture must produce two keys or the dedupe is never exercised');
   assert.equal(findSharedTicketIdentityDupes([a, b]).length, 1);
 });
 
 test('missing, empty and malformed ticket fields never pair anything', () => {
+  // Every group below shares a TITLE, so title agreement can never be the
+  // reason a pair is absent — only the identity extraction can be. An earlier
+  // version paired '' against null, so neither side produced a key and the
+  // empty-string check was never the deciding path; caught by mutation testing.
   const shows = [
-    { id: 'none-1' },
-    { id: 'none-2' },
-    { id: 'empty-1', todaytixId: '', ticketLinks: [] },
-    { id: 'empty-2', todaytixId: null, ticketLinks: [{ url: null }, null] },
-    { id: 'other-1', ticketLinks: [{ url: 'https://www.telecharge.com/whatever' }] },
-    { id: 'other-2', ticketLinks: [{ url: 'https://www.telecharge.com/whatever' }] },
+    { id: 'none-1', title: 'Company' },
+    { id: 'none-2', title: 'Company' },
+    { id: 'blank-1', title: 'Chicago', todaytixId: '' },
+    { id: 'blank-2', title: 'Chicago', todaytixId: '' },
+    { id: 'ws-1', title: 'Rent', todaytixId: '   ' },
+    { id: 'ws-2', title: 'Rent', todaytixId: '   ' },
+    { id: 'null-1', title: 'Cats', todaytixId: null, ticketLinks: [{ url: null }, null] },
+    { id: 'null-2', title: 'Cats', todaytixId: null, ticketLinks: [{ url: null }, null] },
+    { id: 'other-1', title: 'Wicked', ticketLinks: [{ url: 'https://www.telecharge.com/whatever' }] },
+    { id: 'other-2', title: 'Wicked', ticketLinks: [{ url: 'https://www.telecharge.com/whatever' }] },
+    { id: 'nodigits-1', title: 'Hair', ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/hair' }] },
+    { id: 'nodigits-2', title: 'Hair', ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/hair' }] },
   ];
   assert.deepEqual(findSharedTicketIdentityDupes(shows), [], 'absent/blank/non-TodayTix identity is not identity');
 });
 
 test('three entries on one listing yield all three pairs, each once', () => {
-  const shows = [{ id: 'a' }, { id: 'b' }, { id: 'c' }].map((s) => ({ ...s, todaytixId: 5 }));
+  const shows = [{ id: 'a' }, { id: 'b' }, { id: 'c' }].map((s) => ({ ...s, title: 'Oklahoma', todaytixId: 5 }));
   assert.deepEqual(pairIds(findSharedTicketIdentityDupes(shows)), ['a|b', 'a|c', 'b|c']);
 });
 
