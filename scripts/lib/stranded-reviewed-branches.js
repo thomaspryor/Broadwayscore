@@ -210,6 +210,22 @@ function sweepIsTrustworthy(sweep) {
   return { trustworthy: true, reason: 'all candidate worktrees classified against a fresh origin/main' };
 }
 
+// What counts as CODE when deciding whether a stranded branch still carries real
+// work. Deliberately narrow: a branch whose live diff touches none of these is a
+// handoff doc or an audit snapshot left behind after its code landed. Lives HERE
+// rather than in the CLI so the test can import the one true copy instead of
+// re-declaring it, which would let the two drift apart silently (rule 15).
+//
+// NO `g` FLAG, deliberately. A /g regex carries lastIndex across .test() calls, so
+// this single shared instance would couple the CLI's per-file loop to the test and
+// make both order-dependent. Keep it non-global.
+//
+// Kept ABOVE the JSDoc block below, not between it and the function. A JSDoc block
+// binds to the NEXT declaration, so sitting in that gap silently reassigned the
+// whole numstat contract — @param, @returns and all — to this RegExp, leaving
+// normalizeNumstatPath undocumented. Caught by review; the fix is purely ordering.
+const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+
 /**
  * Resolve a `git diff --numstat` path column to the file's CURRENT path.
  *
@@ -244,13 +260,6 @@ function sweepIsTrustworthy(sweep) {
  * @returns {string} the current path for CLASSIFICATION: rename notation resolved and
  *   surrounding quotes stripped, but C-escapes left encoded. Not fs-safe.
  */
-// What counts as CODE when deciding whether a stranded branch still carries real
-// work. Deliberately narrow: a branch whose live diff touches none of these is a
-// handoff doc or an audit snapshot left behind after its code landed. Lives HERE
-// rather than in the CLI so the test can import the one true copy instead of
-// re-declaring it, which would let the two drift apart silently (rule 15).
-const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
-
 function normalizeNumstatPath(raw) {
   if (typeof raw !== 'string') return '';
   let p = raw.trim();
