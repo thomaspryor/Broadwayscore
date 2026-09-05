@@ -63,9 +63,13 @@ const { foldDiacritics } = require('./title-match');
 // Shakespeare Center" skipped the generic "Theatre" and returned "for", which
 // is strictly WORSE than the first token the old code used. Anything that can
 // be the second word of a venue name without naming it belongs here.
+// Non-English articles belong here too. Once diacritics fold correctly,
+// "Théâtre du Châtelet" reaches its second token and would otherwise answer
+// "du". West End and European venues make these reachable in practice.
 const STOPWORDS = new Set([
   'a', 'an', 'the', 'at', 'of', 'on', 'in', 'and', 'new',
   'for', 'with', 'from', 'by', 'to', 'its',
+  'du', 'de', 'des', 'la', 'le', 'les', 'el', 'il', 'al', 'am',
   'st', 'st.', 'ste', 'ste.', 'mt', 'mt.',
 ]);
 
@@ -75,6 +79,8 @@ const GENERIC = new Set([
   'theatre', 'theater', 'theatres', 'theaters',
   'stage', 'stages', 'center', 'centre', 'hall', 'house', 'playhouse',
   'studio', 'space', 'room', 'club', 'arts', 'complex', 'auditorium',
+  // folded forms of venue-type words that arrive accented
+  'cafe', 'salle', 'teatro', 'opera',
 ]);
 
 // Fold BEFORE the non-ASCII strip, never after. Stripping first deletes the
