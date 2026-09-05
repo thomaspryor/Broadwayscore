@@ -578,5 +578,30 @@
       }
     ],
     "queuedAt": "2026-09-04T22:04:02.873Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-09-04T22:47:26.062859+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hi Tom — I came across your recent scraper cost report and noticed the combination of high paid scraping usage and failed workflows.\r\nI have a concrete idea for reducing that cost: first reproduce a few failed opening-night workflows, identify where paid browser/SERP calls are being consumed, then test a Playwright-first + caching path with paid services only as fallback.\r\nI’d be happy to start with a small scoped diagnostic rather than proposing a full rebuild. If that’s useful, I can send you \"",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33932869717",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-09-05T00:26:50.528Z"
   }
 ]
