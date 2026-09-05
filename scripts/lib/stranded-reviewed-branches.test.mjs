@@ -9,7 +9,72 @@ const {
   findStrandedReviewedBranches,
   hasUsableVerdicts,
   sweepIsTrustworthy,
+  normalizeNumstatPath,
+  IS_CODE_FILE,
 } = require('./stranded-reviewed-branches.js');
+
+/**
+ * numstat path shapes. A renamed CODE file arrives as `dir/{old.js => new.js}`,
+ * which ends in `}` and so failed the anchored extension test: it was counted as
+ * non-code, which left liveCodeFiles at 0, flipped the branch to DOCS ONLY and
+ * DROPPED it from the outstanding-work total. A pure refactor branch would have
+ * disappeared from the report. Verified against real git before writing these:
+ * `git diff --numstat` on a renamed-and-edited file prints
+ * `2\taa/bb/{old.js => new.js}` (0 in the delete column), and a binary prints `-\t-`.
+ */
+test('BRO-2878: normalizeNumstatPath resolves every numstat path shape to the current file', () => {
+  // Plain paths are untouched.
+  assert.equal(normalizeNumstatPath('scripts/lib/thing.js'), 'scripts/lib/thing.js');
+  // Common-prefix rename: only the braced segment is rewritten.
+  assert.equal(normalizeNumstatPath('aa/bb/{old.js => new.js}'), 'aa/bb/new.js');
+  // Directory rename: the braced segment is a DIRECTORY, the filename follows it.
+  assert.equal(normalizeNumstatPath('a/{b => c}/d.js'), 'a/c/d.js');
+  // No common prefix: everything after the arrow is the destination.
+  assert.equal(normalizeNumstatPath('old.js => new.js'), 'new.js');
+  // The three below are VERBATIM `git diff --numstat` output from a scratch repo,
+  // replacing two fixtures an earlier version of this test INVENTED. Git does not
+  // quote a path merely for a space, and it does not emit `a/{b => }/d.js` for a
+  // root-ward move. Ship-check caught both; do not reintroduce them from memory.
+  // A space does NOT trigger quoting; the plain rename form carries it.
+  assert.equal(normalizeNumstatPath('plain space.js => renamed with space.js'), 'renamed with space.js');
+  // A root-ward move uses the plain form, not an emptied brace segment.
+  assert.equal(normalizeNumstatPath('a/b/d.js => d.js'), 'd.js');
+  // Non-ASCII IS quoted, per side, and C-escaped. The escape is deliberately left
+  // encoded: this return value is for classification, not filesystem access.
+  assert.equal(
+    normalizeNumstatPath('"caf\\303\\251.js" => "caf\\303\\2512.js"'),
+    'caf\\303\\2512.js',
+  );
+  // Junk in, empty string out, never a throw.
+  assert.equal(normalizeNumstatPath(null), '');
+  assert.equal(normalizeNumstatPath(undefined), '');
+});
+
+test('BRO-2878: a renamed CODE file is still recognised as code, not demoted to docs', () => {
+  // This is the whole point: before the fix the rename token failed the extension
+  // test, so a renamed .js counted as non-code and its branch was excluded.
+  // Import the ONE definition; re-declaring it here let the copies drift (rule 15).
+  const RE = IS_CODE_FILE;
+  assert.equal(RE.test('aa/bb/{old.js => new.js}'), false, 'the raw token does NOT match — that was the bug');
+  assert.equal(RE.test(normalizeNumstatPath('aa/bb/{old.js => new.js}')), true, 'normalised, it does');
+});
+
+test('BRO-2878: a branch with changed FILES but no countable lines is not called already-landed', () => {
+  // Binary rows print '-' for both columns and a pure rename or mode change prints
+  // 0/0, so a branch that genuinely changes files can total zero lines. Claiming it
+  // already landed is the same false all-clear in a new costume.
+  const branches = [{
+    branch: 'binary-only', ahead: 1, dirty: 0,
+    liveDiffLines: 0, liveOtherLines: 0, liveCodeFiles: 0, liveFiles: 2,
+    lastCommitDate: '2026-09-01',
+  }];
+  const verdicts = [
+    { branch: 'binary-only', result: 'pass', ts: '2026-09-01T00:00:00Z', reviewer: 'ship-check', gatedLines: 40 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+  assert.equal(out.reviewed[0].probablyAlreadyLanded, false,
+    'two changed files with zero countable lines is NOT an empty diff');
+});
 
 test('a branch with a passing verdict and unreachable commits is reported as stranded-reviewed', () => {
   const branches = [{ branch: 'job/linear-BRO-2424', ahead: 9, dirty: 0, lastCommitDate: '2026-08-26' }];
@@ -124,7 +189,66 @@ test('verdict entries with no branch field are ignored rather than throwing', ()
 
 test('empty inputs produce an empty report rather than throwing', () => {
   const out = findStrandedReviewedBranches([], []);
-  assert.deepEqual(out, { reviewed: [], unreviewed: [], landed: 0, totalGatedLines: 0 });
+  assert.deepEqual(out, {
+    reviewed: [], unreviewed: [], landed: 0, totalGatedLines: 0, totalLiveDiffLines: 0,
+  });
+});
+
+// BRO-2878: totalGatedLines is the review-TIME snapshot and drifts badly once a
+// branch's code lands, because the branch keeps its old verdict. On 2026-09-05 two of
+// twelve stranded branches were billed 652 and 726 gated lines while their entire
+// remaining diff was a STATE.md handoff doc, overstating the reported exposure by
+// about 30%. These tests pin the live-diff figure that replaced it in the headline.
+test('BRO-2878: a branch whose code has landed is excluded from the live total but keeps its verdict figure', () => {
+  // Fixtures use the REAL producer shape: the CLI counts code lines and non-code
+  // lines separately, so a docs-only branch is liveDiffLines 0 with liveOtherLines
+  // above zero. An earlier version of this test used liveDiffLines:58 with
+  // liveCodeFiles:0, which the CLI can never emit, making it vacuous against the
+  // real pipeline (caught by ship-check).
+  const branches = [
+    { branch: 'docs-only', ahead: 1, liveDiffLines: 0, liveOtherLines: 58, liveCodeFiles: 0, liveFiles: 1, dirty: 0, lastCommitDate: '2026-08-26' },
+    { branch: 'real-code', ahead: 2, liveDiffLines: 120, liveOtherLines: 0, liveCodeFiles: 3, liveFiles: 3, dirty: 0, lastCommitDate: '2026-08-27' },
+  ];
+  const verdicts = [
+    { branch: 'docs-only', result: 'pass', ts: '2026-08-26T00:00:00Z', reviewer: 'ship-check', gatedLines: 652 },
+    { branch: 'real-code', result: 'pass', ts: '2026-08-27T00:00:00Z', reviewer: 'ship-check', gatedLines: 120 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+
+  assert.equal(out.totalGatedLines, 772, 'the review-time snapshot still sums both branches');
+  assert.equal(out.totalLiveDiffLines, 120,
+    'the docs-only branch contributes NOTHING to real exposure, so 652 must not be counted');
+  const docs = out.reviewed.find((r) => r.branch === 'docs-only');
+  assert.equal(docs.docsOnly, true, 'a live diff touching no code file must be flagged docs-only');
+  assert.equal(docs.gatedLines, 652, 'the verdict figure is kept for context, not discarded');
+});
+
+test('BRO-2878: an UNMEASURED branch falls back to its verdict figure rather than reading as empty', () => {
+  // The absence-of-a-signal trap: if a git failure left liveDiffLines null and null
+  // were treated as zero, a measurement failure would silently SHRINK the reported
+  // exposure, which is the exact false all-clear this whole check exists to prevent.
+  // LITERAL null, which is what the CLI actually emits on a git failure. The first
+  // version of this test OMITTED the keys instead, so undefined took a different
+  // code path and the test passed while literal null was silently coerced to 0 by a
+  // Number()-based guard — an unmeasured branch read as "probably already landed"
+  // and contributed nothing. Ship-check caught it. Never weaken this to undefined.
+  const branches = [{
+    branch: 'unmeasurable',
+    ahead: 4,
+    liveDiffLines: null,
+    liveOtherLines: null,
+    liveCodeFiles: null,
+    dirty: 0,
+    lastCommitDate: '2026-08-20',
+  }];
+  const verdicts = [
+    { branch: 'unmeasurable', result: 'pass', ts: '2026-08-20T00:00:00Z', reviewer: 'ship-check', gatedLines: 300 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+
+  assert.equal(out.reviewed[0].liveDiffLines, null, 'an unmeasured branch reports null, not 0');
+  assert.equal(out.reviewed[0].probablyAlreadyLanded, false, 'null must never be read as "already landed"');
+  assert.equal(out.totalLiveDiffLines, 300, 'it falls back to the verdict figure instead of vanishing');
 });
 
 test('hasUsableVerdicts is false for a missing, empty or branchless ledger (fail-closed input)', () => {

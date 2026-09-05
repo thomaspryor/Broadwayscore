@@ -62,7 +62,7 @@ function bestVerdictByBranch(verdicts) {
  * @param {Array<{branch: string, ahead: number, dirty?: number, lastCommitDate?: string}>} branches
  * @param {Array<object>} verdicts - raw verdict ledger entries
  * @param {{ignoreBranches?: string[]}} [opts] - branches to exclude (e.g. the caller's own live branch)
- * @returns {{reviewed: object[], unreviewed: object[], landed: number, totalGatedLines: number}}
+ * @returns {{reviewed: object[], unreviewed: object[], landed: number, totalGatedLines: number, totalLiveDiffLines: number}}
  */
 function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   const ignore = new Set(opts.ignoreBranches || []);
@@ -71,6 +71,7 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   const unreviewed = [];
   let landed = 0;
   let totalGatedLines = 0;
+  let totalLiveDiffLines = 0;
 
   for (const b of branches || []) {
     if (!b || typeof b.branch !== 'string' || b.branch === '') continue;
@@ -86,11 +87,56 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
       dirty: Number(b.dirty) || 0,
       lastCommitDate: b.lastCommitDate || null,
     };
+    // BRO-2878: liveDiffLines is the branch's CURRENT diff against origin/main.
+    // gatedLines is a SNAPSHOT taken when the branch was reviewed and can be wildly
+    // larger, because a branch whose code has since landed still carries its old
+    // verdict. Reporting the snapshot as "work at risk" overstated the real figure by
+    // about 30% on 2026-09-05: two of twelve branches were billed 652 and 726 gated
+    // lines while their entire remaining diff was a STATE.md handoff doc. That pushes
+    // a reader toward merging branches whose code already landed, which is how a stale
+    // branch reintroduces reverted work. Null means the caller could not measure it;
+    // it is NOT treated as zero, because an unmeasured branch is not a safe branch.
+    // MUST be a typeof check, not Number(). Number(null) is 0 and Number.isFinite(0)
+    // is true, so a Number()-based guard SILENTLY ACCEPTS the CLI's own failure
+    // sentinel: an unmeasured branch then reported 0 live lines, was labelled
+    // "probably already landed", and contributed nothing to the total, while the
+    // null fallback below was unreachable. Caught by ship-check before this shipped.
+    // It is the precise false-all-clear this whole script exists to prevent.
+    const num = (x) => (typeof x === 'number' && Number.isFinite(x) && x >= 0 ? x : null);
+    const liveDiffLines = num(b.liveDiffLines);   // lines in CODE files only
+    const liveOtherLines = num(b.liveOtherLines); // lines in everything else
+    row.liveDiffLines = liveDiffLines;
+    row.liveOtherLines = liveOtherLines;
+    row.liveCodeFiles = num(b.liveCodeFiles);
+    // Only claim "already landed" when we MEASURED an empty diff, code and non-code
+    // alike, and the worktree is clean. Uncommitted work is exactly what a concurrent
+    // `reset --hard origin/main` destroys, so a dirty worktree is never "landed".
+    // "Already landed" means we measured an EMPTY diff, not merely a diff with no
+    // countable lines. Binary files print '-' for both columns and a pure rename or
+    // mode change prints 0/0, so a branch that genuinely changes files could total
+    // zero lines and be dismissed as landed. liveFiles is the file count, so the
+    // claim now rests on there being nothing there at all. Ship-check found this
+    // after the previous fix merged.
+    const liveFiles = num(b.liveFiles);
+    row.liveFiles = liveFiles;
+    row.probablyAlreadyLanded = liveFiles === 0
+      && liveDiffLines === 0 && liveOtherLines === 0 && row.dirty === 0;
+    // A branch carrying non-code lines and no code file is a handoff doc or an audit
+    // snapshot left behind after its code landed. Needs liveOtherLines to be knowable
+    // at all: lines are counted per-category, so without it this could never fire.
+    // Flagged, never auto-acted on; land-or-discard still needs a human.
+    row.docsOnly = row.liveCodeFiles === 0 && liveOtherLines !== null && liveOtherLines > 0;
+
     if (v && v.result === 'pass') {
       row.reviewer = v.reviewer || 'unknown';
       row.gatedLines = Number(v.gatedLines) || 0;
       row.verdictDate = String(v.ts || '').slice(0, 10) || null;
       totalGatedLines += row.gatedLines;
+      // Only branches that still carry code count toward the headline exposure. An
+      // unmeasured branch (null) falls back to its verdict figure rather than being
+      // silently dropped, so a measurement failure cannot shrink the number.
+      if (liveDiffLines === null) totalLiveDiffLines += row.gatedLines;
+      else if (row.liveCodeFiles !== 0) totalLiveDiffLines += liveDiffLines;
       reviewed.push(row);
     } else {
       unreviewed.push(row);
@@ -103,7 +149,7 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   reviewed.sort(byDate);
   unreviewed.sort(byDate);
 
-  return { reviewed, unreviewed, landed, totalGatedLines };
+  return { reviewed, unreviewed, landed, totalGatedLines, totalLiveDiffLines };
 }
 
 /**
@@ -164,9 +210,78 @@ function sweepIsTrustworthy(sweep) {
   return { trustworthy: true, reason: 'all candidate worktrees classified against a fresh origin/main' };
 }
 
+// What counts as CODE when deciding whether a stranded branch still carries real
+// work. Deliberately narrow: a branch whose live diff touches none of these is a
+// handoff doc or an audit snapshot left behind after its code landed. Lives HERE
+// rather than in the CLI so the test can import the one true copy instead of
+// re-declaring it, which would let the two drift apart silently (rule 15).
+//
+// NO `g` FLAG, deliberately. A /g regex carries lastIndex across .test() calls, so
+// this single shared instance would couple the CLI's per-file loop to the test and
+// make both order-dependent. Keep it non-global.
+//
+// Kept ABOVE the JSDoc block below, not between it and the function. A JSDoc block
+// binds to the NEXT declaration, so sitting in that gap silently reassigned the
+// whole numstat contract — @param, @returns and all — to this RegExp, leaving
+// normalizeNumstatPath undocumented. Caught by review; the fix is purely ordering.
+const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+
+/**
+ * Resolve a `git diff --numstat` path column to the file's CURRENT path.
+ *
+ * numstat does not always print a plain path. Shapes below are COPIED FROM REAL
+ * `git diff --numstat` OUTPUT in a scratch repo, not from memory:
+ *   aa/bb/{old.js => new.js}                    common-prefix rename
+ *   plain space.js => renamed with space.js     no common prefix; NOT quoted
+ *   a/b/d.js => d.js                            root-ward move; plain form, no braces
+ *   "caf\303\251.js" => "caf\303\2512.js"       non-ASCII: quoted AND C-escaped
+ *
+ * Two corrections to what an earlier version of this comment claimed, both of which
+ * were wrong and are recorded here so nobody re-derives them: git does NOT quote a
+ * path merely for containing a SPACE, only for non-ASCII or control bytes; and when
+ * it does quote, it abandons the brace form and quotes each side separately.
+ *
+ * C-escaping is deliberately NOT decoded. `"caf\303\251.js"` comes back as the
+ * literal `caf\303\251.js`, which is fine for the only current use, an extension
+ * test, and it is why this returns a CLASSIFIABLE path rather than a path you may
+ * hand to the filesystem. Decode before any fs use.
+ *
+ * A renamed code file therefore arrives as a string ending in `}` or `"`, so an
+ * extension test anchored with $ fails and the file is classified as NON-code. That
+ * is not cosmetic: the caller then counts its lines as non-code, leaves liveCodeFiles
+ * at zero, labels the branch DOCS ONLY and DROPS IT from the outstanding-work total.
+ * A pure refactor branch would vanish from the report — the same false all-clear this
+ * module exists to prevent, one layer down. Found by ship-check after the previous
+ * fix merged; latent at the time, with zero rename rows across 40 worktrees that day.
+ *
+ * Pure and exported so it is tested directly rather than through the CLI (rule 15).
+ *
+ * @param {string} raw - the third tab-separated column of a numstat line
+ * @returns {string} the current path for CLASSIFICATION: rename notation resolved and
+ *   surrounding quotes stripped, but C-escapes left encoded. Not fs-safe.
+ */
+function normalizeNumstatPath(raw) {
+  if (typeof raw !== 'string') return '';
+  let p = raw.trim();
+  // Brace form first: only the braced SEGMENT is rewritten, the prefix and any
+  // suffix stay. `a/{b => c}/d.js` is a directory rename, so the file is d.js.
+  p = p.replace(/\{[^{}]*?\s+=>\s+([^{}]*?)\}/g, '$1');
+  // Plain form: everything after the last arrow is the destination.
+  const arrow = p.lastIndexOf(' => ');
+  if (arrow !== -1) p = p.slice(arrow + 4);
+  p = p.trim();
+  // Strip the surrounding quotes numstat adds for spaces and non-ASCII. Done LAST,
+  // because in the brace form the quotes wrap the whole token, not the new path.
+  if (p.length >= 2 && p.startsWith('"') && p.endsWith('"')) p = p.slice(1, -1);
+  // A directory rename can leave a doubled separator, e.g. `a//d.js`.
+  return p.replace(/\/{2,}/g, '/');
+}
+
 module.exports = {
   bestVerdictByBranch,
   findStrandedReviewedBranches,
   hasUsableVerdicts,
   sweepIsTrustworthy,
+  normalizeNumstatPath,
+  IS_CODE_FILE,
 };
