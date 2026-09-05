@@ -277,6 +277,13 @@ const LEGACY_RE =
  * so this module never reads data/shows.json itself. With no set supplied the
  * branch refuses rather than falling back to a bare prefix test.
  */
+// venue-write-guard-ok: legacyDecomposes is a pure URL-slug matcher, not a
+// venue write. The `venue: rest` it returns is a slug fragment that the line
+// above has just confirmed is ALREADY in knownVenueSlugs (a Set the caller
+// builds from catalogued venue names), so it is a lookup result rather than
+// free text reaching shows.json — there is nothing for sanitizeVenueForWrite
+// to clean. Annotated while unblocking PR #793, which the unbaselined finding
+// failed alongside main.
 function legacyDecomposes(body, forms, knownVenueSlugs) {
   if (!knownVenueSlugs || !knownVenueSlugs.size) return null;
   const bodies = body.startsWith('the-') ? [body, body.slice(4)] : [body];
