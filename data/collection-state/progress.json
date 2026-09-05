@@ -185,7 +185,12 @@
     "black-swan-regional-2026/theater-mirror--mike-hoban.json",
     "high-society-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-    "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
+    "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/theatermania--kenji-fujishima.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -3547,7 +3552,12 @@
     "war-horse-west-end-2026/chicagotribune--unknown.json",
     "war-horse-west-end-2026/plays-international--franco-milazzo.json",
     "war-horse-west-end-2026/time--richard-zoglin.json",
-    "war-horse-west-end-2026/village-voice--michael-feingold.json"
+    "war-horse-west-end-2026/village-voice--michael-feingold.json",
+    "jerome-off-broadway-2025/nytimes--unknown.json",
+    "small-off-broadway-2026/hollywood-reporter--angie-han.json",
+    "small-off-broadway-2026/deadline--pete-hammond.json",
+    "small-off-broadway-2026/wsj--charles-isherwood.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theatrecat--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3662,7 +3672,12 @@
       "black-swan-regional-2026/theater-mirror--mike-hoban.json",
       "high-society-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
+      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/theatermania--kenji-fujishima.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -3780,7 +3795,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
+  "lastProcessed": "david-copperfield-59e59-theaters-off-broadway-2026/theatrecat--unknown.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -4349,6 +4364,17 @@
       "t": "2026-09-05T14:29:53.123Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:38:37.217Z",
+      "event": "bb-session",
+      "session": "d15139f4",
+      "url": "https://www.wsj.com/arts-culture/television/normal-review-bob-odenkirks-small-sc"
+    },
+    {
+      "t": "2026-09-05T14:38:38.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

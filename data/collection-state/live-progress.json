@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-05T14:37:41.199Z",
-  "processed": 186,
-  "failed": 3360,
-  "successRate": "5.2%",
+  "updatedAt": "2026-09-05T14:40:09.296Z",
+  "processed": 191,
+  "failed": 3365,
+  "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 111,
+    "playwright": 116,
     "amp": 0,
     "browserbase": 31,
     "directCookies": 5,
@@ -13,20 +13,8 @@
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-09-05T12:16:40.631Z",
-      "event": "bb-session",
-      "session": "0431137a",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
-    {
-      "t": "2026-09-05T12:25:22.231Z",
-      "event": "bb-session",
-      "session": "dfb1b98d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
-    },
     {
       "t": "2026-09-05T12:37:07.684Z",
       "event": "bb-session",
@@ -128,6 +116,17 @@
       "t": "2026-09-05T14:29:53.123Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:38:37.217Z",
+      "event": "bb-session",
+      "session": "d15139f4",
+      "url": "https://www.wsj.com/arts-culture/television/normal-review-bob-odenkirks-small-sc"
+    },
+    {
+      "t": "2026-09-05T14:38:38.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
