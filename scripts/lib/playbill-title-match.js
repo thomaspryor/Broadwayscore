@@ -75,6 +75,14 @@ const { normalizeTitle } = require('./title-match');
 /** Words that carry no venue identity on their own. */
 const VENUE_NOUNS = new Set(['theatre', 'theater', 'the', 'at', 'and', 'of']);
 
+/**
+ * Presenters whose name prefixes a work's title and which Playbill drops from
+ * the URL slug. Allowlist, not a pattern — see the note in titleForms(): the
+ * structural rule this replaces produced 12 wrong forms out of 13 matches
+ * against the live corpus. Add an entry only with a real URL that needs it.
+ */
+const SERIES_BRANDS = new Set(['encores']);
+
 /** Normalize a slug or a title to the canonical hyphenated comparison form. */
 function normSlug(s) {
   return normalizeTitle(String(s || '').replace(/-/g, ' ')).replace(/\s+/g, '-');
@@ -144,13 +152,35 @@ function titleForms(rawTitle) {
     if (dropped) lossy.add(dropped);
   }
 
-  // Leading series brand ending in "!" — "Encores! La Cage Aux Folles". The
-  // "!" must follow the FIRST word and be followed by more words, so a title
-  // that simply ends in an exclamation ("Oklahoma!", "Moulin Rouge! The
-  // Musical") produces no lossy form.
-  const brand = title.match(/^\s*[A-Za-z][A-Za-z'’.]*!\s+(\S.*)$/);
-  if (brand) {
-    const dropped = normSlug(brand[1]);
+  // Leading series brand — "Encores! La Cage Aux Folles", where "Encores!" is
+  // a PRESENTER and "La Cage Aux Folles" is the work.
+  //
+  // This was a general rule ("first word ends in !, drop it") and the general
+  // rule is WRONG. Measured against the 2,942-show corpus it fires on 13 titles
+  // and exactly ONE of them is a series brand. The other 12 throw away the
+  // show's actual name and keep a generic remainder:
+  //   Boop! The Musical              -> "musical"
+  //   Gutenberg! The Musical!        -> "musical"
+  //   COPPERFIELD! THE NEW MUSICAL   -> "new"
+  //   Oh! Calcutta!                  -> "calcutta"
+  //   Children! Children!            -> "children"   (another corpus show)
+  //   Pirates! The Penzance Musical  -> "penzance"
+  // "Boop! The Musical" then matched /production/the-musical-broadway-<its own
+  // house>-2026, because the only gate on a lossy form is a venue hit in the
+  // tail and a page at the same house clears that trivially.
+  //
+  // The old docblock justified the rule by saying a title that merely ENDS in an
+  // exclamation is safe, citing "Moulin Rouge! The Musical". That was true only
+  // by accident: "Moulin Rouge" is two words, so the "!" does not follow the
+  // FIRST one. "Boop! The Musical" is the identical shape and was treated the
+  // opposite way. A justification that holds only for the example it cites is
+  // not a justification.
+  //
+  // No structural rule separates a presenter from a one-word title, so this is
+  // an explicit allowlist. It is short because the evidence is: 1 of 13.
+  const brand = title.match(/^\s*([A-Za-z][A-Za-z'’.]*)!\s+(\S.*)$/);
+  if (brand && SERIES_BRANDS.has(brand[1].toLowerCase())) {
+    const dropped = normSlug(brand[2]);
     if (dropped) lossy.add(dropped);
   }
 
@@ -180,22 +210,13 @@ function titleForms(rawTitle) {
   return { exact, lossless: [...lossless], lossy: [...lossy], legacyPrefixes };
 }
 
-/**
- * Does the URL independently name this show's venue or year? Venue is the
- * strong signal and is what gates the lossy branch; the year is reported
- * separately so callers can see which fired.
- */
-function urlCorroboratesShow(url, show) {
-  const u = String(url || '').toLowerCase();
-  const toks = venueTokens(show && show.venue);
-  const venueHit = toks.some((t) => u.includes(t));
-  const years = collectYears(show);
-  return {
-    venueHit,
-    yearHit: [...years].some((y) => u.includes(y)),
-    venueTokens: toks,
-  };
-}
+// DELETED: urlCorroboratesShow(url, show). It scanned the WHOLE url for a venue
+// token, which is circular for a lossy match — the title segment is part of the
+// url, so a shortened title could supply its own "independent" evidence. Commit
+// 81d5c8c1329 replaced it with tailCorroboratesShow() but left it exported with
+// a docblock that read like a live API. An unused export of the buggy version,
+// sitting next to the fixed one under the more obvious name, is a trap for the
+// next caller. Removed rather than kept "just in case".
 
 function collectYears(show) {
   const years = new Set();
@@ -210,8 +231,8 @@ function collectYears(show) {
  * Corroboration for the LOSSY branch, searched only in the part of the URL that
  * FOLLOWS the title segment.
  *
- * urlCorroboratesShow() scans the whole URL, and for a lossy match that is
- * circular: the title's own text can supply the "venue" evidence that is
+ * The deleted urlCorroboratesShow() scanned the whole URL, and for a lossy match
+ * that is circular: the title's own text can supply the "venue" evidence that is
  * supposed to be independent of it. Found in adversarial review. Concretely,
  * the show "Music: A New Story" at the Music Box Theatre has exactly one venue
  * identity token, "music" — so it accepted
@@ -230,8 +251,6 @@ function tailCorroboratesShow(tail, show) {
   return { venueHit, yearHit, venueTokens: toks, searchedTail: t };
 }
 
-const MARKET_SEGMENT_RE =
-  /\/production\/([a-z0-9-]+?)-(?:off-)?(?:broadway|regional|tour|west-end|london)-/;
 const MARKET_KEYWORD_RE =
   /-(?:off-)?(?:broadway|regional|tour|west-end|london)-/g;
 
@@ -239,7 +258,9 @@ const MARKET_KEYWORD_RE =
  * Every title segment the URL could be read as — one per market keyword in the
  * path, shortest first.
  *
- * MARKET_SEGMENT_RE is lazy, so it stops at the FIRST market keyword, and a
+ * The ORIGINAL single lazy regex in scorePlaybillUrl (removed with this module's
+ * arrival; it read `/production/([a-z0-9-]+?)-(?:off-)?(?:broadway|…)-`) stopped
+ * at the FIRST market keyword, so a
  * market word inside a TITLE is therefore read as the delimiter: a show called
  * "1536" matched a URL for one called "1536 West End", because the lazy group
  * took "1536" and treated the title's own "-west-end-" as the market segment.
@@ -329,7 +350,13 @@ function legacyDecomposes(body, forms, knownVenueSlugs) {
 function playbillUrlTitleMatch(url, show, opts = {}) {
   const u = String(url || '')
     .toLowerCase()
-    .replace(/[?#].*$/, '');
+    .replace(/[?#].*$/, '')
+    // LEGACY_RE is $-anchored, so a trailing slash silently killed every legacy
+    // recovery — the exact URL shape this module exists to recover. Measured:
+    // the Aladdin vault URL scored 10, and the same URL with one trailing "/"
+    // scored null. The market branch never noticed because it matches mid-path.
+    // SERP results are not guaranteed slash-free, so strip before matching.
+    .replace(/\/+$/, '');
   const forms = titleForms(show && show.title);
   const miss = { match: false, branch: null, form: null, corroboration: null };
   if (!forms.exact) return miss;
@@ -375,11 +402,11 @@ module.exports = {
   venueSlug,
   venueTokens,
   titleForms,
-  urlCorroboratesShow,
   tailCorroboratesShow,
   legacyDecomposes,
   playbillUrlTitleMatch,
-  MARKET_SEGMENT_RE,
+  MARKET_KEYWORD_RE,
   LEGACY_RE,
   VENUE_NOUNS,
+  SERIES_BRANDS,
 };
