@@ -43,7 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
-const { findTitleFragmentDupes } = require('./lib/show-duplicate-detection');
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./lib/show-duplicate-detection');
 const { baselineKeySet, computeNewViolators } = require('./lib/duplicate-shows-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
@@ -203,6 +203,27 @@ function main() {
         a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
         b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
         reason: 'title-fragment',
+      }],
+    });
+  }
+
+  // Ticketing-identity pass: both passes above infer identity from titles,
+  // venues and dates, and a dateless duplicate stub defeats all of them — the
+  // grouping loop skips any show whose showYear() is null (191 of 528
+  // non-closed shows), and findTitleFragmentDupes needs a run date on both
+  // sides. This pass keys on the ticket seller's OWN show id instead, so it
+  // sees pairs the heuristics structurally cannot. See
+  // scripts/lib/show-duplicate-detection.js for the AMAZE case that motivated
+  // it and the transfer-pair false-positive guard.
+  for (const f of findSharedTicketIdentityDupes(shows)) {
+    const a = shows.find((s) => s.id === f.a);
+    const b = shows.find((s) => s.id === f.b);
+    clusters.push({
+      key: `ticket-identity@${f.key}`,
+      pairs: [{
+        a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
+        b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
+        reason: 'shared-ticket-identity',
       }],
     });
   }
