@@ -16,6 +16,12 @@
 // new script gains a hard cloud-relevant env dependency.
 const TIER_1 = [
   'NOTION_API_KEY',
+  // CLAUDE.md §6: Linear is the board. linear-brain.js needs this at BOTH
+  // session start (file the issue) and session end (comment the Outcome +
+  // set state). Absent in a cloud sandbox it fails closed with no board
+  // entry at all, which is exactly the silent gap this checker exists to
+  // catch — it was missing from this list until 2026-09-05.
+  'LINEAR_API_KEY',
   'ANTHROPIC_API_KEY',
   'GH_TOKEN',
   'BRIGHTDATA_TOKEN',
