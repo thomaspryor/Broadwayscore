@@ -91,10 +91,21 @@ function runValidate(fixturePath) {
     execFileSync('node', [VALIDATE], {
       stdio: 'pipe',
       env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath },
+      // Same ceiling, same reason, as validate-data-venue-complex-wiring.test.mjs:
+      // the 1 MiB default killed that sibling with ENOBUFS on main and turned
+      // Unit Tests red (run 33989118480). This fixture is a full-corpus copy so
+      // its output is smaller, but the corpus only grows.
+      maxBuffer: 64 * 1024 * 1024,
     });
     return 0;
   } catch (e) {
-    return e.status ?? 1;
+    // `e.status ?? 1` on its own turns EVERY spawn failure into "exited 1",
+    // including an ENOBUFS kill — and this suite's assertions read a non-zero
+    // code as "validate-data.js refused the push", so a buffer overflow would
+    // have been reported as the very contract being tested. A spawn that never
+    // produced an exit code carries no verdict; re-raise instead of inventing one.
+    if (typeof e.status !== 'number') throw e;
+    return e.status;
   }
 }
 
