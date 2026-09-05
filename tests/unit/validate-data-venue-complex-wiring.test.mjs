@@ -139,8 +139,19 @@ describe('validate-data.js — venue-complex orphan advisory is wired into the r
         // every corpus-wide validator reports failures and the combined
         // stdout+stderr is far larger than a normal run's. It crossed 1 MiB on
         // main and the child was killed with ENOBUFS, which surfaces here as
-        // `res.error` and turned Unit Tests red (run 33989118480). Raising the
-        // ceiling is the fix, not trimming the child's output: the assertions
+        // `res.error` and turned Unit Tests red (run 33989118480).
+        //
+        // CORRECTION to the commit that added this (11fd5d8900c): that message
+        // blamed edbd431ff52 for pushing the output over the line, because it
+        // made validate-data.js warn on each tracked-artifact write it now
+        // refuses under this override. That is at most a contributing factor,
+        // not the cause. Run 33989585370 on c0df0702708, nine minutes after the
+        // failure, carries edbd431ff52 as an ancestor too and passed. The output
+        // simply sits close enough to 1 MiB to cross it non-deterministically,
+        // so this was an intermittent failure waiting on any small growth — the
+        // corpus would have got there on its own.
+        //
+        // Raising the ceiling is the fix, not trimming the child's output: the assertions
         // below scan that text for the advisory, so a truncated stream would
         // fail them for a reason that has nothing to do with the wiring this
         // test guards.
