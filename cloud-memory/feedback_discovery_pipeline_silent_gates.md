@@ -560,3 +560,26 @@ this gets falsely marked resolved.
 **Systemic fix (carded):** make the ingest script write to / hard-verify the data repo and fail loudly otherwise, and
 add a data-repo-presence assertion to `verify-review-recovery.js` so `--production` cannot pass while the show dir is
 absent from `origin/main`. Related: [[feedback_dual_repo_data_files]], [[feedback_review_recovery_pipeline_gaps]].
+
+## Gate: stale `incompleteReason` survives a successful direct-URL re-ingest (2026-09-05, Holy Fool)
+
+**Symptom:** review-texts file has clean 3001-char fullText, no wrongShow/wrongProduction/isNonReview,
+`isIncludableForRebuild()` returns TRUE and `explainExclusion()` returns null — yet the review never
+appears in reviews.json and is never scored.
+
+**Cause:** `incompleteReason='scraper_garbage'` stamped at discovery-time extraction (sidebar/related-links
+noise counted as "Multiple shows mentioned (10)"). `ingest-review-from-url.js` re-fetched clean text but
+never cleared the flag. `clearFailureFlags()` in scripts/lib/clear-failure-flags.js cannot clear it either:
+for a generic reason the predicate is `contentComplete || (textGood && (aggSignal || hasLlmScore))`.
+A **truncated + unscored** review satisfies neither branch → **chicken-and-egg: flagged so it cannot be
+scored, unscored so the flag cannot clear.**
+
+**Tonight-fix:** hand-null `incompleteReason`/`incompleteDetail` in the DATA repo (neither is in
+PROTECTED_FIELDS), set manualClear*/manualVerified* fields, commit, push, let CI rebuild→score→rebuild.
+
+**Systemic fix (BRO-2858 class):** `textGood` alone should clear a stale *extraction-garbage* reason —
+the flag describes the OLD fetch, and `textFetchedAt` newer than the flag proves it is stale. Compare
+timestamps rather than requiring a score.
+
+**Detection rule:** when a review-text file is present but absent from reviews.json and every guard says
+includable, `grep incompleteReason` FIRST — the rebuild is not always the blocker.
