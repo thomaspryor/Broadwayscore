@@ -94,5 +94,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T15:24:59.114Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:holy-fool-off-west-end-2026",
+    "title": "Shipped review too short to verify on Holy Fool",
+    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.664Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:holy-fool-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Holy Fool",
+    "description": "thestage/Holly O'Mahony SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.666Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-holy-fool-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Holy Fool",
+    "description": "holy-fool-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=holy-fool-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.668Z"
   }
 ]
