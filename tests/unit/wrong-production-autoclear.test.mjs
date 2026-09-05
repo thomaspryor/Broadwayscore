@@ -1383,6 +1383,86 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must
     );
   });
 
+  it('the clear site never keeps incompleteReason alive alongside a preserved flag', () => {
+    // Codex adversarial review, BRO-2828. A first pass at this fix also kept
+    // incompleteReason='wrong_content' when preserving, reasoning that clearing
+    // it would strand the file. It does the opposite: the targeted
+    // INCOMPLETE_REASON_FILTER=wrong_content drain selects on exactly that
+    // value, so the file would be re-selected and re-fetched on every drain,
+    // forever, at real scraper cost — and no re-fetch can change a
+    // publishDate-vs-openingDate verdict. Being unreachable by collect IS what
+    // correctly-excluded looks like; the clear path is the rebuild's
+    // anticipatory auto-clear, which re-derives from shows.json.
+    const src = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'collect-review-texts.js'),
+      'utf8',
+    );
+    const start = src.indexOf('const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);');
+    assert.ok(start > -1, 'expected the URL-recovery cleanup to consult the preserve predicate');
+    const block = src.slice(start, src.indexOf('wrong_content recovered', start));
+    const deleteIdx = block.indexOf('delete postData.incompleteReason;');
+    assert.ok(deleteIdx > -1, 'expected the cleanup to delete incompleteReason');
+    // The delete must not sit inside a `if (preserve.wrongProduction)` /
+    // `if (!preserve.wrongProduction)` branch — it is unconditional.
+    const before = block.slice(0, deleteIdx);
+    const lastGuard = before.lastIndexOf('preserve.wrongProduction');
+    const lastBrace = before.lastIndexOf('}');
+    assert.ok(
+      lastGuard === -1 || lastBrace > lastGuard,
+      'delete postData.incompleteReason must be unconditional — gating it on the preserve '
+        + 'decision puts the file into a permanent targeted-drain re-fetch loop (BRO-2828).',
+    );
+  });
+
+  it('the URL-change invariant grants date-only reasons the same carve-out as date-guard notes', () => {
+    // BRO-2828, ship-check P0. applyUrlChangeInvariant's preserve carve-out
+    // matched only on wrongProductionNote prefixes, and the anticipatory gate
+    // writes wrongProductionReason and never a Note — so the flag was wiped by
+    // every canonical URL change BEFORE the recovery cleanup could preserve it,
+    // silently defeating the fix. Policy is identical to the note-based legs:
+    // preserved only while the publishDate basis survives.
+    const { applyUrlChangeInvariant } = require('../../scripts/lib/url-change-invariant.js');
+    const NEW_URL = 'https://monstagigz.test/2026/08/29/the-story/';
+    const existingFor = (reason) => ({
+      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      wrongProduction: true,
+      wrongProductionReason: reason,
+      publishDate: '2026-08-29',
+    });
+    const run = (reason, mergedDate) => {
+      const existing = existingFor(reason);
+      const merged = { ...existing, url: NEW_URL, publishDate: mergedDate };
+      const res = applyUrlChangeInvariant(existing, merged, NEW_URL);
+      return ((res && res.merged) || merged).wrongProduction;
+    };
+
+    // A genuinely NEW publishDate arrived → flag survives for the rebuild to
+    // re-evaluate against that date.
+    assert.strictEqual(run('anticipatory_pre_opening_post', '2026-09-04'), true);
+    // The date basis did NOT survive → the flag clears with it, no orphan.
+    assert.strictEqual(run('anticipatory_pre_opening_post', '2026-08-29'), undefined);
+    // Control: a content-derived reason gets no carve-out even with a new date.
+    // This is exactly how anticipatory flags behaved before the fix.
+    assert.strictEqual(run('Collector LLM: wrong production (high)', '2026-09-04'), undefined);
+
+    // A record with NO publishDate at all must still clear, preserving the
+    // BRO-2740 contract. !publishDateWillClear is true for a never-dated
+    // record, so without the explicit presence check the carve-out would fire
+    // here and strand a flag the rebuild's auto-clear cannot even reach (it
+    // requires reviewDate to enter). Two BRO-2740 tests caught exactly this.
+    const dateless = {
+      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      wrongProduction: true,
+      wrongProductionReason: 'anticipatory_pre_opening_post',
+    };
+    const datelessMerged = { ...dateless, url: NEW_URL };
+    applyUrlChangeInvariant(dateless, datelessMerged, NEW_URL);
+    assert.strictEqual(
+      datelessMerged.wrongProduction, undefined,
+      'a dateless anticipatory flag has no surviving basis and must clear with its URL',
+    );
+  });
+
   it('every DATE_ONLY_AUTO_REASONS member is preserved, so adding one cannot silently regress', () => {
     for (const reason of DATE_ONLY_AUTO_REASONS) {
       const d = liveCase();

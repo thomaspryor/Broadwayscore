@@ -6552,19 +6552,25 @@ async function processReview(review) {
         delete postData.wrongShowReason;
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
-        // Only stand the file back up for future collects when nothing is
-        // still excluding it. Clearing incompleteReason while wrongProduction
-        // stands would make the file unreachable by BOTH collect passes: the
-        // default pass skips it via the isWrongContent guard above, and the
-        // targeted INCOMPLETE_REASON_FILTER=wrong_content drain selects on the
-        // incompleteReason that would no longer be there.
-        if (!preserve.wrongProduction) {
-          delete postData.incompleteReason;
-          delete postData.incompleteDetail;
-          if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
-            delete postData.contentTier;
-          }
-        } else {
+        // incompleteReason/incompleteDetail/contentTier are cleared even when
+        // the flag is preserved, and that is deliberate. Keeping
+        // incompleteReason='wrong_content' would re-select this file on EVERY
+        // targeted INCOMPLETE_REASON_FILTER=wrong_content drain (the filter
+        // above matches on exactly that value), re-fetching it forever at real
+        // scraper cost with no possible progress: a publishDate-vs-openingDate
+        // verdict cannot be changed by fetching the page again. Clearing them
+        // leaves the file skipped by the default pass via the isWrongContent
+        // guard above — which is what "correctly excluded" is supposed to look
+        // like, not a stranding. The clear path for a preserved flag is the
+        // rebuild's anticipatory auto-clear, which re-derives from shows.json
+        // and needs no re-fetch at all. (Codex adversarial review caught this;
+        // an earlier reviewer had argued the opposite and was wrong.)
+        delete postData.incompleteReason;
+        delete postData.incompleteDetail;
+        if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
+          delete postData.contentTier;
+        }
+        if (preserve.wrongProduction) {
           postData.wrongProductionPreservedOnUrlRecoveryAt = new Date().toISOString();
         }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');

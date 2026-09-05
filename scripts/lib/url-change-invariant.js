@@ -46,6 +46,14 @@
 const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
+// BRO-2828. The date-guard carve-out below matches on wrongProductionNote
+// prefixes, but the anticipatory pre-opening gate writes wrongProductionReason
+// and never a Note — so a pure publishDate-vs-openingDate verdict could never
+// take the carve-out and was wiped by every canonical URL change, even when a
+// genuinely new publishDate arrived to re-evaluate it against. Same registry
+// the preserve-on-URL-recovery predicate uses, so the two agree by construction.
+// (No require cycle: wrong-production-autoclear.js imports only date-utils.)
+const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
 
 // Everything derived from (or fetched via) the file's URL. REPLACE_CLEAR_FIELDS
 // carries the wrong-flag / content-state / fetch-state families; the rest are
@@ -114,6 +122,17 @@ const WP_FIELDS = new Set([
 function _noteStartsWith(existing, prefixes) {
   const note = existing && existing.wrongProductionNote;
   return typeof note === 'string' && prefixes.some((p) => note.startsWith(p));
+}
+
+// The reason-keyed sibling of _noteStartsWith(AUTO_DATE_WP_PREFIXES): a
+// wrongProduction verdict derived purely from publishDate, carried in
+// wrongProductionReason rather than a Note. Granted the identical carve-out —
+// preserved only when the publishDate basis SURVIVES the URL change, so the
+// rebuild can re-evaluate it against the new date and auto-clear if in-window.
+// A stale date still clears the flag with it (BRO-2828).
+function _reasonIsDateOnly(existing) {
+  const reason = existing && existing.wrongProductionReason;
+  return typeof reason === 'string' && DATE_ONLY_AUTO_REASONS.has(reason);
 }
 
 function _valuesEqual(a, b) {
@@ -249,8 +268,17 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   // date arrived) — the rebuild re-evaluates the guard against that date and
   // auto-clears it if in-window. Clearing the flag while a date remains would
   // red the validate-data [wrong-production-by-date] gate until the rebuild.
+  // The reason-keyed leg additionally requires a real publishDate on the
+  // incoming record. !publishDateWillClear is TRUE for a record that never had
+  // a date at all, and a dateless record gives a publishDate-derived verdict
+  // nothing to stand on — preserving it there would strand an unclearable flag
+  // (the rebuild's anticipatory auto-clear needs reviewDate to even enter) and
+  // would break the BRO-2740 contract that a dateless anticipatory flag clears
+  // with its URL. The note-keyed legs are left exactly as they were.
+  const mergedHasPublishDate = !_emptyDate(merged.publishDate);
   const preserveDateBasedWp = _noteStartsWith(existing, MANUAL_WP_PREFIXES)
-    || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear);
+    || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear)
+    || (_reasonIsDateOnly(existing) && !publishDateWillClear && mergedHasPublishDate);
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;

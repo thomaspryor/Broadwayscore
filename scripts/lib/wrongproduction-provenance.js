@@ -67,6 +67,11 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   'wrongProductionDetail',
   'wrongProductionDetectedAt',
   'wrongProductionDetectedBy',
+  // Breadcrumb written by collect-review-texts.js's URL-recovery cleanup when
+  // it declines to delete a date-only flag (BRO-2828). Same rule as the stamps
+  // above: it describes a wrongProduction verdict, so it must die with the
+  // flag rather than outlive it as an orphan.
+  'wrongProductionPreservedOnUrlRecoveryAt',
   // The timestamp ON `wrongProductionReason` (review-write-guard.js:195), which
   // the flag triple already clears. Unlike everything else here it IS in
   // PROTECTED_FIELDS, so leaving it out stranded a protected date for a reason

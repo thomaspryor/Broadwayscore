@@ -709,6 +709,16 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
  * already IS the repo's registry of content-independent wrongProduction
  * reasons, and flag-contradiction.js joins on it for the same reason.
  *
+ * CAVEAT if you add a member to that Set: it now has two consumers with
+ * different questions. flag-contradiction.js asks "can a content-only CV pass
+ * evaluate this reason?"; this predicate asks "can re-fetching the article
+ * from a corrected URL disprove this reason?". Those coincide for
+ * anticipatory_pre_opening_post and for any other pure date verdict, but a
+ * future reason that CV cannot judge yet a NEW URL genuinely does invalidate
+ * would be preserved here incorrectly, and would also be exempt from
+ * contradiction triage — so it would stay excluded silently. If you add such a
+ * reason, split the Set rather than widening this one (Codex review, BRO-2828).
+ *
  * shouldSkipWrongProductionAudit() is deliberately NOT consulted: it gates
  * whether the ingest gate stamps the flag at all (collect-review-texts.js),
  * so a file carrying a DATE_ONLY_AUTO_REASONS reason already passed it — and
