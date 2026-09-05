@@ -29,7 +29,17 @@ const UK_SIDE_REGIONS = new Set(['london', 'uk', 'dual']);
  * deliberately excluded — a dual-market outlet's wrongProduction flag can be
  * a genuine same-title other-market review.
  */
-const UK_SELF_HEAL_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+const UK_MARKET_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+
+/**
+ * Alias kept for the auto-clear call site, which reads this set as "regions whose
+ * wrongProduction flag may self-heal". Same set, two intents: a UK-market outlet
+ * is one whose flag can clear on a London show (auto-clear) AND one that should be
+ * flagged when it turns up on a Broadway show (reverse guard). Defining it once
+ * is the point — three separate hardcoded `=== 'london'` tests is how BRO-591's
+ * fix ended up covering only one of them.
+ */
+const UK_SELF_HEAL_REGIONS = UK_MARKET_REGIONS;
 
 /**
  * Does this outlet sit in a UK-side region that may SELF-HEAL a wrongProduction
@@ -46,6 +56,17 @@ const UK_SELF_HEAL_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'd
  * @param {string} rawOutlet
  * @returns {boolean}
  */
+/**
+ * Reverse-guard-facing name for the same computation: is this outlet UK-market?
+ * The reverse guard previously re-derived `map[canonical] || map[raw]` inline,
+ * which lets a truthy non-UK value on the canonical key MASK a UK value on the
+ * raw key — the defect the helper below was extracted to remove. Sharing it means
+ * both directions get the fix, and the call sites stay one-liners over a tested
+ * function (CLAUDE.md rule 15).
+ */
+const outletIsUkMarketRegion = (map, canonical, raw) =>
+  outletIsUkSideSelfHealRegion(map, canonical, raw);
+
 function outletIsUkSideSelfHealRegion(outletRegionMap, canonicalOutlet, rawOutlet) {
   if (!outletRegionMap) return false;
   return UK_SELF_HEAL_REGIONS.has(outletRegionMap[canonicalOutlet])
@@ -93,8 +114,13 @@ function classifyReverseCrossMarket({ region, isDualMarket, isTier12, isBroadway
   if (isDualMarket) {
     return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
   }
-  if (region !== 'london') {
-    return { level: 'skip', reason: 'not a London outlet' };
+  // UK_MARKET_REGIONS, not `!== 'london'`: validate-data.js reports on this
+  // classifier while rebuild-all-reviews.js applies the actual reverse guard. When
+  // the guard widened to the UK-market bucket and this did not, the rebuild flagged
+  // region:'uk' outlets on Broadway shows while CI stayed silent about them — a
+  // Tier 1/2 'uk' paper could never reach the `error` tier. The two must move together.
+  if (!UK_MARKET_REGIONS.has(region)) {
+    return { level: 'skip', reason: 'not a UK-market outlet' };
   }
   if (!isBroadway) {
     return {
@@ -522,7 +548,9 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
 module.exports = {
   UK_SIDE_REGIONS,
   UK_SELF_HEAL_REGIONS,
+  UK_MARKET_REGIONS,
   outletIsUkSideSelfHealRegion,
+  outletIsUkMarketRegion,
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
   classifyUsOnWeCrossMarket,
