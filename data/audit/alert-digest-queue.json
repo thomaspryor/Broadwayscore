@@ -36,18 +36,6 @@
     "queuedAt": "2026-09-05T04:17:49.477Z"
   },
   {
-    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:timeout-london",
-    "title": "Auto-remediation gave up on the-story-west-end-2026",
-    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T05:28:33.396Z"
-  },
-  {
     "conditionKey": "cmux-launch:auth-preflight-failed",
     "title": "cmux launch refused — claude auth preflight failed",
     "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
@@ -82,5 +70,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T14:19:28.044Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-the-story-west-end-2026",
+    "title": "Review URL cross-show mismatch on The Story",
+    "description": "Review URL for financialtimes/Sarah Hemming does not mention show slug (checked: the-story-west-end, the-story, story): https://www.ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244?syn-25a6b1a6=1",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T15:24:59.110Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on the-story-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T15:24:59.114Z"
   }
 ]
