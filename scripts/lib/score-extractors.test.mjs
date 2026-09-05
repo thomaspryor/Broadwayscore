@@ -104,3 +104,16 @@ test('reviews hub: the SAME rating repeated is not ambiguous and still resolves'
   assert.ok(result, 'a repeated identical rating is the same rating, not a conflict');
   assert.equal(result.normalizedScore, 40);
 });
+
+// The outlet's real heading carries a colon ("The Reviews Hub Star Rating:").
+// A second reviewer caught that the first regex missed it; measured on the
+// corpus, 1 of the 15 bodies carrying the label uses the colon form
+// (midnight-at-the-never-get-west-end-2026), and its published 60% was being
+// left unasserted against an LLM value of 56.
+test('reviews hub: colon form of the heading is read', () => {
+  const text = RH_BODY + ' The Reviews Hub Star Rating: 60 % 60% Insubstantial';
+  const result = extractScore('', text, 'thereviewshub', 'Midnight at the Never Get');
+  assert.ok(result, 'the published colon-form rating must not be missed');
+  assert.equal(result.normalizedScore, 60);
+  assert.equal(result.source, 'reviewshub-percentage');
+});
