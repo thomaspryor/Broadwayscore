@@ -377,7 +377,24 @@ function runSameTitleAndVenueFixtures() {
 try {
   const temporalOk = main();
   const sameTitleOk = runSameTitleAndVenueFixtures();
-  process.exit(temporalOk && sameTitleOk ? 0 : 1);
+  const allOk = temporalOk && sameTitleOk;
+
+  // BRO-2835: the two suites each print their own banner, and the SECOND one
+  // printed "PASS" unconditionally on its own success. When suite 1 failed, the
+  // last line of output was still a PASS while the process exited 1 — so anyone
+  // reading the tail, or any wrapper grepping for PASS instead of checking $?,
+  // recorded a green. That is how this stayed red from 2026-08-26 to 09-05.
+  // The final line must always agree with the exit code.
+  if (allOk) {
+    console.log('\n✅ OVERALL PASS — both suites green (exit 0).');
+  } else {
+    const failed = [
+      !temporalOk && 'temporal-override',
+      !sameTitleOk && 'same-title/venue fixtures',
+    ].filter(Boolean).join(' + ');
+    console.error(`\n❌ OVERALL FAIL — ${failed} (exit 1). Ignore any PASS banner above it.`);
+  }
+  process.exit(allOk ? 0 : 1);
 } catch (e) {
   console.error(`[temporal-regression] fatal: ${e.message}`);
   console.error(e.stack);

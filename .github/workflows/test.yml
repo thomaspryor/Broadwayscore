@@ -3592,6 +3592,20 @@ jobs:
             exit 1
           fi
 
+      - name: Temporal override regression (BRO-2835)
+        # CLAUDE.md rule 12.7 calls this MANDATORY for every scoring-logic edit,
+        # but nothing ran it: it was absent from this workflow AND from
+        # tests/unit-test-manifest.txt. It sat RED on main from 2026-08-26 to
+        # 2026-09-05 with main green the whole time, because a bare new Date()
+        # in applyTemporalOverrides silently skipped the opening-week safety net
+        # for 4718 of 35167 dated reviews. A rule nobody executes is not a gate.
+        #
+        # Needs core data (data/shows.json + data/review-texts), which the step
+        # above already checked out. Deliberately NOT continue-on-error: this is
+        # a correctness gate, and making it advisory would recreate the same
+        # "green while broken" state it exists to prevent.
+        run: node scripts/test-temporal-override-regression.js
+
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
         # takes ~75s for 3 tests. Kept out of the main runner to avoid blowing
