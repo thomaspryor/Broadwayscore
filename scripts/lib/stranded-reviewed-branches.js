@@ -62,7 +62,7 @@ function bestVerdictByBranch(verdicts) {
  * @param {Array<{branch: string, ahead: number, dirty?: number, lastCommitDate?: string}>} branches
  * @param {Array<object>} verdicts - raw verdict ledger entries
  * @param {{ignoreBranches?: string[]}} [opts] - branches to exclude (e.g. the caller's own live branch)
- * @returns {{reviewed: object[], unreviewed: object[], landed: number, totalGatedLines: number}}
+ * @returns {{reviewed: object[], unreviewed: object[], landed: number, totalGatedLines: number, totalLiveDiffLines: number}}
  */
 function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   const ignore = new Set(opts.ignoreBranches || []);
@@ -71,6 +71,7 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   const unreviewed = [];
   let landed = 0;
   let totalGatedLines = 0;
+  let totalLiveDiffLines = 0;
 
   for (const b of branches || []) {
     if (!b || typeof b.branch !== 'string' || b.branch === '') continue;
@@ -86,11 +87,38 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
       dirty: Number(b.dirty) || 0,
       lastCommitDate: b.lastCommitDate || null,
     };
+    // BRO-2878: liveDiffLines is the branch's CURRENT diff against origin/main.
+    // gatedLines is a SNAPSHOT taken when the branch was reviewed and can be wildly
+    // larger, because a branch whose code has since landed still carries its old
+    // verdict. Reporting the snapshot as "work at risk" overstated the real figure by
+    // about 30% on 2026-09-05: two of twelve branches were billed 652 and 726 gated
+    // lines while their entire remaining diff was a STATE.md handoff doc. That pushes
+    // a reader toward merging branches whose code already landed, which is how a stale
+    // branch reintroduces reverted work. Null means the caller could not measure it;
+    // it is NOT treated as zero, because an unmeasured branch is not a safe branch.
+    const liveDiffLines = Number.isFinite(Number(b.liveDiffLines)) && Number(b.liveDiffLines) >= 0
+      ? Number(b.liveDiffLines)
+      : null;
+    row.liveDiffLines = liveDiffLines;
+    // A branch whose live diff touches no code file is almost always a handoff doc or
+    // an audit snapshot left behind after its code landed. Flagged, never auto-acted
+    // on: land-or-discard still needs a human.
+    row.liveCodeFiles = Number.isFinite(Number(b.liveCodeFiles)) && Number(b.liveCodeFiles) >= 0
+      ? Number(b.liveCodeFiles)
+      : null;
+    row.probablyAlreadyLanded = liveDiffLines === 0;
+    row.docsOnly = row.liveCodeFiles === 0 && liveDiffLines !== null && liveDiffLines > 0;
+
     if (v && v.result === 'pass') {
       row.reviewer = v.reviewer || 'unknown';
       row.gatedLines = Number(v.gatedLines) || 0;
       row.verdictDate = String(v.ts || '').slice(0, 10) || null;
       totalGatedLines += row.gatedLines;
+      // Only branches that still carry code count toward the headline exposure. An
+      // unmeasured branch (null) falls back to its verdict figure rather than being
+      // silently dropped, so a measurement failure cannot shrink the number.
+      if (liveDiffLines === null) totalLiveDiffLines += row.gatedLines;
+      else if (row.liveCodeFiles !== 0) totalLiveDiffLines += liveDiffLines;
       reviewed.push(row);
     } else {
       unreviewed.push(row);
@@ -103,7 +131,7 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
   reviewed.sort(byDate);
   unreviewed.sort(byDate);
 
-  return { reviewed, unreviewed, landed, totalGatedLines };
+  return { reviewed, unreviewed, landed, totalGatedLines, totalLiveDiffLines };
 }
 
 /**
