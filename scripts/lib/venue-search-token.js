@@ -52,6 +52,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 // Leading articles, prepositions and abbreviations that carry no search signal.
 // 'new' earns its place on frequency alone: "New Amsterdam Theatre", "New World
 // Stages" and "New York Theatre Workshop" all collapse onto it.
@@ -61,9 +63,13 @@
 // Shakespeare Center" skipped the generic "Theatre" and returned "for", which
 // is strictly WORSE than the first token the old code used. Anything that can
 // be the second word of a venue name without naming it belongs here.
+// Non-English articles belong here too. Once diacritics fold correctly,
+// "Théâtre du Châtelet" reaches its second token and would otherwise answer
+// "du". West End and European venues make these reachable in practice.
 const STOPWORDS = new Set([
   'a', 'an', 'the', 'at', 'of', 'on', 'in', 'and', 'new',
   'for', 'with', 'from', 'by', 'to', 'its',
+  'du', 'de', 'des', 'la', 'le', 'les', 'el', 'il', 'al', 'am',
   'st', 'st.', 'ste', 'ste.', 'mt', 'mt.',
 ]);
 
@@ -73,10 +79,25 @@ const GENERIC = new Set([
   'theatre', 'theater', 'theatres', 'theaters',
   'stage', 'stages', 'center', 'centre', 'hall', 'house', 'playhouse',
   'studio', 'space', 'room', 'club', 'arts', 'complex', 'auditorium',
+  // folded forms of venue-type words that arrive accented
+  'cafe', 'salle', 'teatro', 'opera',
 ]);
 
+// Diacritics are FOLDED, not shredded. The first version did a bare
+// .replace(/[^a-z0-9.]/g, '') after lowercasing, which deletes accented
+// characters outright: "Théâtre" became "thtre", matched nothing in GENERIC,
+// and was therefore treated as a distinctive token. "Théâtre du Châtelet"
+// returned "Théâtre" instead of "Châtelet" — the exact failure this helper
+// exists to prevent, reintroduced for every accented venue.
+//
+// tests/unit/sibling-matchers-diacritics.test.mjs caught this as a structural
+// guard: a scripts/lib matcher carrying the shred signature with no fold. The
+// corpus sweep did NOT catch it, because no venue in the corpus currently
+// carries an accent — a reminder that a sweep over today's data cannot prove a
+// matcher correct. Reuses title-match.js's foldDiacritics rather than adding a
+// fourth normalizer.
 function normalize(token) {
-  return String(token).toLowerCase().replace(/[^a-z0-9.]/g, '');
+  return foldDiacritics(String(token)).toLowerCase().replace(/[^a-z0-9.]/g, '');
 }
 
 function isStopword(token) {

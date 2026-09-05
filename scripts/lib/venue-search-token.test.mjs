@@ -38,6 +38,21 @@ test('a generic noun is NEVER returned — an empty token beats a word on every 
   assert.equal(venueSearchToken('Playhouse Theatre'), '');
 });
 
+test('REGRESSION: diacritics are FOLDED, not shredded, when testing membership', () => {
+  // The first version lowercased then stripped everything outside [a-z0-9.],
+  // which deletes accented characters instead of folding them: "Théâtre"
+  // became "thtre", matched nothing in GENERIC, and was returned as though it
+  // were distinctive. Caught by tests/unit/sibling-matchers-diacritics.test.mjs
+  // as a structural guard, NOT by the live-corpus sweep — no venue in the
+  // corpus currently carries an accent, so the sweep was blind to the whole
+  // class. That is the lesson: a sweep over today's data cannot prove a
+  // matcher correct.
+  assert.equal(venueSearchToken('Théâtre du Châtelet'), 'Châtelet');
+  assert.equal(venueSearchToken('Théâtre Marigny'), 'Marigny');
+  assert.equal(venueSearchToken('Café Carlyle'), 'Carlyle');
+  assert.equal(venueSearchToken('Teatro Real'), 'Real');
+});
+
 test('a two-character identity is kept, not discarded by the length floor', () => {
   // The regression that a 3-character floor introduced: 'WP Theater' (5 shows)
   // dropped 'WP' and fell through to the generic 'Theater'.
