@@ -50,6 +50,14 @@
  * compared against the raw URL body and normalization does not apply.
  */
 
+// venue-write-guard-ok: this module is READ-ONLY with respect to venues. It never
+// writes shows.json, reviews.json or any other data file — it only reads a venue
+// slug back out of a URL path in order to DECIDE whether that URL names a given
+// show. The `venue:` key the guard flags (legacyDecomposes' return) is a
+// diagnostic describing which corpus venue slug the URL body decomposed into, so
+// callers and tests can assert WHY a legacy match fired; it is returned up to
+// scorePlaybillUrl, which turns it into a number, and it reaches no writer.
+// sanitizeVenueForWrite() would be meaningless here — there is no write to guard.
 const { normalizeTitle } = require('./title-match');
 
 /** Words that carry no venue identity on their own. */
