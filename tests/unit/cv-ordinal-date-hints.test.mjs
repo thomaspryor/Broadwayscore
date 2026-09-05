@@ -97,6 +97,62 @@ describe('ordinal publishDate reaches the opening-week temporal hint', () => {
   });
 });
 
+describe('historical-fallback hazards (found by an independent Codex review)', () => {
+  // These three were defects in the FIX, not in the original code. A Claude
+  // pass and the six tests above all missed them; the review caught them and
+  // each was reproduced directly before being fixed.
+
+  test('an ISO-shaped pre-1970 date is not shifted a day earlier', () => {
+    // `new Date("1969-12-31")` is UTC midnight, but `new Date("September 23,
+    // 1964")` is LOCAL midnight. The first version of this fix re-anchored
+    // BOTH from local components, moving the ISO one a day earlier west of UTC.
+    //
+    // The dates here are deliberately ASYMMETRIC. An earlier version of this
+    // test used the same ISO date for both opening and publish, so both shifted
+    // together, the gap stayed 0, and the test passed against the very bug it
+    // was meant to pin — it survived reverting the fix. Only openingDate is
+    // below parseDate()'s 1970 floor, so only it takes the historical leg.
+    //
+    // 1969-12-31 -> 1970-01-30 is exactly 30 days, right on the boundary: a
+    // one-day shift pushes it to 31 and silently drops the hint.
+    const { prompt } = buildVerificationPrompt({
+      ...base,
+      showTitle: 'Fiddler on the Roof',
+      openingDate: '1969-12-31',
+      publishDate: '1970-01-30',
+    });
+    assert.ok(
+      prompt.includes('Reviews published near opening night'),
+      'a 30-day gap must survive the pre-1970 historical parse without shifting to 31'
+    );
+  });
+
+  test('an impossible calendar date does not roll forward into a hint', () => {
+    // parseDate() rejects Feb 30 via validateCalendarDate. `new Date()` rolls
+    // it to March 2, which would fire an opening-week hint off a date that
+    // does not exist.
+    const { prompt } = buildVerificationPrompt({
+      ...base,
+      openingDate: '2022-03-02',
+      publishDate: 'February 30th, 2022',
+    });
+    assert.ok(
+      !prompt.includes('Reviews published near opening night'),
+      'February 30th must not roll into March 2nd and match the opening date'
+    );
+  });
+
+  test('a real prose date adjacent to the rollover guard still parses', () => {
+    // The rollover guard must not become a blanket rejection of prose dates.
+    const { prompt } = buildVerificationPrompt({
+      ...base,
+      openingDate: '2022-02-28',
+      publishDate: 'February 28th, 2022',
+    });
+    assert.ok(prompt.includes('published on opening night'));
+  });
+});
+
 describe('ordinal publishDate reaches the URL-year conflict hint', () => {
   test('a real 12-year URL-vs-publishDate gap is surfaced for an ordinal date', () => {
     const { prompt, urlYearConflict } = buildVerificationPrompt({

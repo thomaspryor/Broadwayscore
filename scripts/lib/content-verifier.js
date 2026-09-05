@@ -67,23 +67,54 @@ function resolveCvMarket(show) {
  *
  * The parseHistoricalDate fallback is load-bearing, not defensive:
  * parseDate() enforces normalizeDate()'s 1970-2030 calendar-year floor, so a
- * genuine pre-1970 review (Phantom WE 1986's Guardian notice, and older) would
- * come back null and NEWLY lose a hint it gets today. Same pairing as
- * daysFromOpening() below and as review-guards' own parse.
+ * genuine pre-1970 review would come back null and NEWLY lose a hint it gets
+ * today. Same pairing as daysFromOpening() below and as review-guards' own
+ * parse. The fallback's two hazards — a shape-dependent UTC/local anchor, and
+ * silent rollover of impossible dates — are handled inline below.
  *
  * @param {string|null|undefined} dateStr
  * @returns {Date|null}
  */
 function _cvParseDate(dateStr) {
-  const { parseDate, parseHistoricalDate } = require('./date-utils');
+  const { parseDate, parseHistoricalDate, stripOrdinals } = require('./date-utils');
   const viaNormalized = parseDate(dateStr);
   if (viaNormalized) return viaNormalized;            // already UTC midnight
+  if (!dateStr || typeof dateStr !== 'string') return null;
+
+  const cleaned = stripOrdinals(dateStr.trim());
+
+  // parseHistoricalDate is `new Date(string)`, whose anchor depends on the
+  // string's SHAPE: an ISO date-only string ("1964-09-22") is parsed as UTC
+  // midnight, a prose date ("September 23, 1964") as LOCAL midnight. Assuming
+  // one basis for both silently shifts the other by a day — re-anchoring an
+  // ISO-shaped historical date moves it a day EARLIER west of UTC, which is
+  // exactly the kind of off-by-one this whole function exists to remove.
+  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) {
+    const y = Number(iso[1]);
+    const m = Number(iso[2]);
+    const d = Number(iso[3]);
+    const utc = new Date(Date.UTC(y, m - 1, d));
+    const real = utc.getUTCFullYear() === y && utc.getUTCMonth() === m - 1 && utc.getUTCDate() === d;
+    return real ? utc : null;   // already UTC-anchored; do NOT re-anchor
+  }
+
   const viaHistorical = parseHistoricalDate(dateStr);
   if (!viaHistorical) return null;
-  // parseHistoricalDate builds a LOCAL-midnight Date while parseDate builds a
-  // UTC-midnight one. Re-anchor so both legs share one basis: otherwise
-  // getUTCFullYear() and the day-difference below are timezone-dependent, and
-  // a Jan-1 historical date would report the previous year east of UTC.
+
+  // `new Date()` rolls an impossible calendar date silently forward
+  // ("February 30, 2022" -> March 2). parseDate() rejects those through
+  // validateCalendarDate, so without this the historical leg would smuggle
+  // them back in and could fire an opening-week hint off a date that does not
+  // exist. Scoped to month-NAME forms: numeric formats are parseDate's job and
+  // a day-token check would misread the month field in "2022/10/06".
+  if (/[a-z]{3,}/i.test(cleaned)) {
+    const dayToken = cleaned.match(/(?:^|[^\d])(\d{1,2})(?:[^\d]|$)/);
+    if (dayToken && Number(dayToken[1]) !== viaHistorical.getDate()) return null;
+  }
+
+  // Prose form only: re-anchor local midnight onto UTC so the day-difference
+  // and getUTCFullYear() below stop being timezone-dependent.
   return new Date(Date.UTC(
     viaHistorical.getFullYear(),
     viaHistorical.getMonth(),
