@@ -2,37 +2,9 @@
   "version": 1,
   "showId": "the-story-west-end-2026",
   "openingDate": "2026-09-03",
-  "detectedAt": "2026-09-05T11:27:30.806Z",
+  "detectedAt": "2026-09-05T11:46:34.029Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "guardian--brian-logan.json",
-      "outletId": "guardian",
-      "criticName": "Brian Logan",
-      "url": "https://www.theguardian.com/stage/2026/aug/10/amanda-knox-in-cartwheel-review-rookie-standup-acquitted-of-tells-her-story",
-      "fullTextLen": 2621,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "monstagigz--unknown.json",
-      "outletId": "monstagigz",
-      "criticName": "Unknown",
-      "url": "https://monstagigz.com/2026/08/29/theatre-review-the-story-starring-letitia-wright-lorraine-toussaint-at-national-theatre/",
-      "fullTextLen": 4063,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "thestage--dave-fargnoli.json",
       "outletId": "thestage",
@@ -48,8 +20,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
+  "orphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-05T11:27:30.806Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
