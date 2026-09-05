@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-09-04T21:21:18.284Z",
+  "generatedAt": "2026-09-05T14:19:35.050Z",
   "windowDays": 45,
-  "showsScanned": 66,
+  "showsScanned": 65,
   "gaps": [
+    {
+      "showId": "paranormal-activity-2026",
+      "title": "Paranormal Activity",
+      "openingDate": "2026-08-25",
+      "file": "wsj--charles-isherwood.json",
+      "outletId": "wsj",
+      "tier": 1,
+      "type": "unscored",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks-on-broadway-c88dcb91",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=paranormal-activity-2026",
+      "firstSeen": "2026-09-03T14:50:17.916Z",
+      "fileAgeHours": 47.487407777777776,
+      "gapSeenAt": "2026-09-05T14:19:35.050Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "disruption-off-broadway-2026",
       "title": "Disruption",
@@ -16,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 730.604625,
+      "fileAgeHours": 747.5755013888889,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 398.9828713888889
+      "nonTerminalAgeHours": 415.95419555555554
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -33,9 +50,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 172.07688555555555,
+      "fileAgeHours": 189.04820944444444,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 133.66780916666667
+      "nonTerminalAgeHours": 150.63913333333332
     }
   ],
   "contradictions": []

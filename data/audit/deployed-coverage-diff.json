@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-04T21:21:29.075Z",
+  "generatedAt": "2026-09-05T14:19:45.577Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 136,
-  "clean": 128,
-  "defective": 8,
+  "checked": 137,
+  "clean": 131,
+  "defective": 6,
   "byType": {
-    "score-drift": 7,
+    "score-drift": 5,
     "unreachable": 1
   },
   "shows": [
@@ -27,6 +27,21 @@
       "deployedCount": null
     },
     {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 58.44 vs local 58.88 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 19
+    },
+    {
       "showId": "death-note-the-musical-west-end-2026",
       "title": "Death Note: The Musical",
       "openingDate": "2026-08-11",
@@ -34,7 +49,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.71 vs local 72.44 (Δ0.27)"
+          "detail": "deployed cs 72.42 vs local 72.75 (Δ0.33)"
         }
       ],
       "missingFromProd": [],
@@ -42,49 +57,19 @@
       "deployedCount": 34
     },
     {
-      "showId": "cyrano-de-bergerac-west-end-2026",
-      "title": "Cyrano de Bergerac",
-      "openingDate": "2026-06-25",
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 89.91 vs local 89.8 (Δ0.11)"
+          "detail": "deployed cs 78.59 vs local 78.5 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.8 vs local 75.65 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.03 vs local 73.96 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "localCount": 23,
+      "deployedCount": 23
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -94,27 +79,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 88.02 vs local 88.08 (Δ0.06)"
+          "detail": "deployed cs 88.08 vs local 88.02 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
       "localCount": 23,
       "deployedCount": 23
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.54 vs local 69.67 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -124,7 +94,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.25 vs local 81.13 (Δ0.12)"
+          "detail": "deployed cs 81.01 vs local 81.13 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
