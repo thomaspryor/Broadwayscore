@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-09-05T21:04:08.128Z",
-  "processed": 64,
-  "failed": 386,
-  "successRate": "14.2%",
+  "updatedAt": "2026-09-05T21:35:13.752Z",
+  "processed": 31,
+  "failed": 158,
+  "successRate": "16.4%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 8,
-    "brightdata": 4,
+    "browserbase": 3,
+    "directCookies": 2,
+    "scrapingbee": 4,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 9
+    "archive": 4
   },
   "browserbaseSessions": 0,
   "recentActivity": [
@@ -43,6 +43,40 @@
       "event": "bb-session",
       "session": "1fe8306c",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-05T20:29:43.067Z",
+      "event": "bb-session",
+      "session": "9368482a",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-05T20:29:52.438Z",
+      "event": "bb-session",
+      "session": "41b2a4dc",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-05T21:34:33.488Z",
+      "event": "bb-session",
+      "session": "79b38734",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-05T21:34:34.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T21:34:53.233Z",
+      "event": "bb-session",
+      "session": "dac8619d",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-05T21:34:54.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
