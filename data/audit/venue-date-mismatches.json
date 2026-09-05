@@ -1,17 +1,18 @@
 {
-  "generatedAt": "2026-09-05T16:21:10.189Z",
+  "generatedAt": "2026-09-05T18:18:19.958Z",
   "filter": {
-    "show": "amaze-off-broadway-2026"
+    "allProvisional": true,
+    "limit": null
   },
   "timeBudgetMin": null,
   "counts": {
-    "total": 1,
+    "total": 0,
     "match": 0,
     "mismatch": 0,
-    "unresolved": 1,
+    "unresolved": 0,
     "infraUnavailable": 0,
     "deferred": 0,
-    "carriedForward": 64
+    "carriedForward": 65
   },
   "results": [
     {
@@ -1171,7 +1172,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Joe's Pub|2026-08-16|2026-08-16|false|Michael R. Jackson: Wake Up Call||off-broadway",
-      "checkedAt": "2026-09-05T16:23:40.895Z",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1587,19 +1588,6 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "124 Bank Street Theater|2026-08-19|2026-08-30|false|The Bathroom Attendant||off-broadway",
-      "checkedAt": "2026-09-05T13:15:20.546Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "michael-r-jackson-wake-up-call-off-broadway-2026",
-      "title": "Michael R. Jackson: Wake Up Call",
-      "venue": "Joe's Pub",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Joe's Pub|2026-08-16|2026-08-16|false|Michael R. Jackson: Wake Up Call||off-broadway",
       "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     }
