@@ -31,6 +31,7 @@
  */
 
 const { JSDOM } = require('jsdom');
+const { stripPvHead } = require('./show-matching');
 const { slugify, levenshteinDistance, venuesMatch } = require('./deduplication');
 const { normalizeTitle } = require('./title-match');
 const { normalizeOutlet, isRegisteredOutlet, resolveOutletFromUrl } = require('./review-normalization');
@@ -159,11 +160,42 @@ function parseBwwSlugTitle(rawSlug) {
   return { title, placeholder };
 }
 
+/**
+ * Flatten one parsed JSON-LD payload into the list of schema.org nodes it
+ * carries. Handles the three shapes publishers actually ship:
+ *   1. a bare node            -> [node]
+ *   2. a top-level array      -> the array
+ *   3. a schema.org @graph    -> the graph's nodes (Playbill, Yoast-powered
+ *                               sites) plus a @graph nested inside an array
+ *                               element, which some CMSes emit.
+ *
+ * Missing @graph support is what made a real 159KB Playbill Verdict article
+ * (Rhinoceros at A.R.T., 2026-08-24) fail isBotShell()'s date signal and get
+ * rejected as reason='bot-shell': Playbill hangs datePublished off the
+ * NewsArticle inside @graph, so the top-level object looked date-less.
+ * Mirrors dom-article-extractor.js's long-standing @graph handling.
+ */
+function jsonLdItems(parsed) {
+  const out = [];
+  const top = Array.isArray(parsed) ? parsed : [parsed];
+  for (const node of top) {
+    if (!node || typeof node !== 'object') continue;
+    out.push(node);
+    const graph = node['@graph'];
+    if (Array.isArray(graph)) {
+      for (const g of graph) {
+        if (g && typeof g === 'object') out.push(g);
+      }
+    }
+  }
+  return out;
+}
+
 function extractDateFromJsonLd(doc) {
   for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
     let parsed;
     try { parsed = JSON.parse(script.textContent); } catch { continue; }
-    const items = Array.isArray(parsed) ? parsed : [parsed];
+    const items = jsonLdItems(parsed);
     const dates = [];
     for (const item of items) {
       if (!item || typeof item !== 'object') continue;
@@ -189,7 +221,7 @@ function extractHeadline(doc) {
   for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
     let parsed;
     try { parsed = JSON.parse(script.textContent); } catch { continue; }
-    const items = Array.isArray(parsed) ? parsed : [parsed];
+    const items = jsonLdItems(parsed);
     for (const item of items) {
       if (item && typeof item.headline === 'string' && item.headline.trim()) {
         return item.headline.trim();
@@ -200,6 +232,46 @@ function extractHeadline(doc) {
   if (h1 && h1.textContent.trim()) return h1.textContent.trim();
   const title = doc.querySelector('title');
   return title ? title.textContent.trim() : '';
+}
+
+/**
+ * Strip Playbill's interrogative Verdict lead-in from a BODY headline, using
+ * the SAME pattern list cleanSlugTitle() applies to the slug
+ * (show-matching.js PV_HEAD_PATTERNS).
+ *
+ * Why this must mirror: for a Playbill Verdict article the slug IS the
+ * slugified headline, so the reference title (slug-derived) and the body
+ * title can never legitimately diverge. They diverged only because the slug
+ * side stripped "Reviews: What Did Critics Think of ..." and this side did
+ * not, which tripped classifyTitleDelta's mismatch guard on a real, correctly
+ * parsed show (Rhinoceros at A.R.T., 2026-08-24).
+ *
+ * The headline is tokenised into the exact tokens the slug is built from, so
+ * the surviving slug suffix maps back to a precise character offset in the
+ * original headline - no word-count guessing, and original casing and
+ * punctuation are preserved.
+ */
+function stripPvHeadFromHeadline(headline) {
+  const raw = String(headline || '');
+  const tokens = [];
+  const re = /[a-z0-9]+/g;
+  const lower = raw.toLowerCase();
+  let m;
+  while ((m = re.exec(lower)) !== null) tokens.push({ text: m[0], start: m.index });
+  if (!tokens.length) return raw;
+
+  const slug = tokens.map(t => t.text).join('-');
+  const stripped = stripPvHead(slug);
+  // No pattern fired, or stripping consumed the whole title - keep the
+  // original. A title we cannot shorten safely is recoverable; a mangled one
+  // is not (same principle as cleanCandidateTitle's isAllEditorial guard).
+  if (stripped === slug || !stripped) return raw;
+  if (!slug.endsWith(stripped)) return raw;
+
+  const removed = slug.slice(0, slug.length - stripped.length);
+  const removedTokens = removed.split('-').filter(Boolean).length;
+  if (removedTokens >= tokens.length) return raw;
+  return raw.slice(tokens[removedTokens].start).trim();
 }
 
 /**
@@ -223,6 +295,10 @@ function extractArticleFields(html) {
     /^\s*(?:the\s+)?critics\s+(?:sound\s+off\s+on|react\s+to|weigh\s+in\s+on|are\s+talking\s+about|rave\s+about)\s+/i,
     ''
   ).replace(/^\s*the\s+reviews\s+are\s+in\s+for\s+/i, '');
+  // Playbill's own house style is an interrogative lead-in ("What Did
+  // Critics Think of X?"). Mirrors cleanSlugTitle's slug-side strip -
+  // see stripPvHeadFromHeadline.
+  headline = stripPvHeadFromHeadline(headline).replace(/\?\s*$/, '').trim();
 
   const date = extractMetaDate(doc) || extractDateFromJsonLd(doc);
 
@@ -399,7 +475,7 @@ function countDistinctReviewOutlets(html, source) {
     } catch {
       try { parsed = JSON.parse(sanitizeBwwJsonLd(script.textContent)); } catch { continue; }
     }
-    const items = Array.isArray(parsed) ? parsed : [parsed];
+    const items = jsonLdItems(parsed);
     for (const item of items) {
       if (!item || typeof item !== 'object') continue;
       const postings = [];
@@ -605,9 +681,18 @@ function stripTrailingVenueClause(s) {
  * Deliberately a CLOSED list of known phrases, not a general "strip trailing
  * words" rule: an open-ended trim would eat real subtitles. Applied only to the
  * loosened comparison, which demands exact equality and a substantial stem.
+ *
+ * The trailing "starring/featuring ..." alternation is the same class of
+ * furniture: Playbill's Verdict headlines append the cast WITHOUT a comma
+ * ("Rhinoceros Starring Paul Giamatti and John Turturro"), so
+ * TITLE_BOUNDARY_RE - which anchors on ", starring" - never cuts it. Left in,
+ * the credit becomes the public show title and the id derived from it, the
+ * same way "THE OUTSIDERS World Premiere" reached the catalog on 2026-08-05.
+ * cleanCandidateTitle's keep-the-original guard still covers the degenerate
+ * case where stripping would leave nothing ("Starring" stays "Starring").
  */
 const EDITORIAL_SUFFIX_RE =
-  /\s+(?:(?:world|us|u\.s\.|american|west\s+coast|east\s+coast|broadway|off-broadway|london|regional|national)\s+)?(?:premiere|revival|transfer|tour)\b|\s+(?:opens?|opening|begins?|starts?|launches?|celebrates?|kicks?\s+off)(?:\s+(?:tonight|today|night|performances|previews|its\s+run))?\b|\s+opening\s+night\b/gi;
+  /\s+(?:(?:world|us|u\.s\.|american|west\s+coast|east\s+coast|broadway|off-broadway|london|regional|national)\s+)?(?:premiere|revival|transfer|tour)\b|\s+(?:opens?|opening|begins?|starts?|launches?|celebrates?|kicks?\s+off)(?:\s+(?:tonight|today|night|performances|previews|its\s+run))?\b|\s+opening\s+night\b|\s+(?:starring|featuring)\s+\S.*$/gi;
 
 function stripEditorialSuffix(s) {
   let out = String(s || '');
@@ -663,6 +748,31 @@ function cleanCandidateTitle(raw) {
   // titleCaseShout only capitalises after whitespace, so "(CARRY" would become
   // "(carry". Capitalise after an opening bracket or quote too.
   return titleCaseShout(base).replace(/([([{"'\u2018\u201c])([a-z])/g, (_, p, c) => p + c.toUpperCase());
+}
+
+/**
+ * True when an extracted title is still an aggregator's QUESTION about a
+ * show rather than the show's name ("Were Reviewers 'Diggin' On' the TLC
+ * Musical CrazySexyCool").
+ *
+ * Playbill writes freeform interrogative Verdict headlines that no closed
+ * lead-in list will ever fully cover. When both the slug and the body carry
+ * the SAME unparsed question, classifyTitleDelta sees two identical strings
+ * and returns 'match' — the symmetry check cannot save us, and the question
+ * becomes the public show title and the id derived from it.
+ *
+ * Deliberately narrow: an interrogative opener ALONE is not enough, because
+ * real shows are named "How to Succeed in Business...", "What the
+ * Constitution Means to Me" and "Is God Is". The title must ALSO name the
+ * reviewers within a short window, which no real show title does. Erring
+ * toward rejection is right here — a refused add costs a manual entry, a
+ * false accept corrupts the catalog.
+ */
+const UNPARSED_QUESTION_RE =
+  /^(?:was|were|is|are|did|do|does|has|have|how|what|why|when)\b[\s\S]{0,40}?\b(?:reviewers?|critics?|reviews?)\b/i;
+
+function isUnparsedQuestionTitle(title) {
+  return UNPARSED_QUESTION_RE.test(String(title || '').trim());
 }
 
 function classifyTitleDelta(refTitle, bodyTitle) {
@@ -1034,6 +1144,12 @@ function classifyCandidate({ source, record, html, shows }) {
   if (!fields.title) {
     return { status: 'reject', reason: 'no-title' };
   }
+  // A headline whose question survived every lead-in stripper is not a show
+  // name. Surface it for a human to extend PV_HEAD_PATTERNS rather than
+  // minting a show called "Were Reviewers Diggin On ...".
+  if (isUnparsedQuestionTitle(fields.title)) {
+    return { status: 'reject', reason: 'unparsed-headline', detail: `title="${fields.title}"` };
+  }
 
   // Typo check BEFORE venue check so a typo'd slug (CELEBRITY-AUTOPBIOGRAPHY)
   // surfaces as 'typo-detected' for a human to fix the scraper, rather than
@@ -1123,6 +1239,8 @@ module.exports = {
   classifyVenueMarket,
   isInfrastructureSlug,
   isBotShell,
+  jsonLdItems,
+  isUnparsedQuestionTitle,
   parseBwwSlugTitle,
   extractArticleFields,
   classifyTitleDelta,
