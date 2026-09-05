@@ -104,12 +104,14 @@ function main() {
   };
 
   let tier1Missing = 0;
+  const tier1FromDisk = [];
 
   console.log('=== Tier 1 (REQUIRED) ===');
   for (const name of TIER_1) {
     const s = statusFor(name);
     if (s.set) {
       const via = s.source === '.env' ? ' via .env' : '';
+      if (s.source === '.env') tier1FromDisk.push(name);
       console.log(`  ✓ ${name.padEnd(28)} SET (${s.len} chars, "${s.prefix}…"${via})`);
     } else {
       console.log(`  ✗ ${name.padEnd(28)} MISSING`);
@@ -133,7 +135,21 @@ function main() {
     console.log('  Full guide: `.claude/CLOUD.md` step 1 (in this repo).');
     return 1;
   }
-  console.log('✓ All Tier 1 secrets present. Cloud session is ready.');
+  // Never claim "cloud session is ready" off a disk-sourced pass. A .env hit
+  // proves the SCRIPTS will find the key; it proves nothing about the cloud
+  // sandbox's own environment, which is what this script is named for. Saying
+  // "ready" here would let someone conclude "it passed locally, so the cloud
+  // env must be fine" — the inverse of the false-MISSING problem the .env
+  // fallback was added to fix, and just as misleading.
+  if (tier1FromDisk.length > 0) {
+    console.log('✓ All Tier 1 secrets resolvable — but ' +
+      `${tier1FromDisk.length} came from .env on disk, not the environment:`);
+    console.log(`    ${tier1FromDisk.join(', ')}`);
+    console.log('  Scripts will work here. This does NOT verify a cloud sandbox:');
+    console.log('  a real claude.ai/code session has no .env, so it would report these MISSING.');
+    return 0;
+  }
+  console.log('✓ All Tier 1 secrets present in the environment. Cloud session is ready.');
   return 0;
 }
 
