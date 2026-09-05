@@ -1038,7 +1038,19 @@ async function main() {
       // Collect every reason first, then exit ONCE — exiting on cvStyle before
       // printing the missing-outlet/junk diagnostics would hide problems the
       // operator could have fixed in the same pass (code-review 2026-09-05).
+      // armedCvStyles === 0 is now a HARD failure, as the comment above always
+      // said it should become "in the same change that restores them". The keys
+      // are restored (BRO-2776: nytimes, vulture, newyorker, washpost, nysr,
+      // new-york-sun, recovered verbatim from cbf7e97c5c), so the advisory has
+      // nothing left to be lenient about.
+      //
+      // This is the only check that can catch the failure that actually
+      // happened. cvStyle was populated once and a CLEAN 3-way merge dropped
+      // every key; vanished keys read as "absent", and absent is never
+      // "invalid", so findInvalidCvStyles() stays silent through the exact
+      // regression it looks like it guards. Only a positive count sees it.
       const strictFail = badCvStyles.length > 0
+        || armedCvStyles === 0
         || newViolators.length > 0
         || newJunkViolators.length > 0;
       if (newViolators.length > 0 || newJunkViolators.length > 0) {
