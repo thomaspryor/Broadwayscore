@@ -134,7 +134,21 @@ describe('validate-data.js — venue-complex orphan advisory is wired into the r
       const res = spawnSync('node', [VALIDATE], {
         encoding: 'utf8',
         env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: dir },
+        // spawnSync's default maxBuffer is 1 MiB, and this child deliberately
+        // runs the WHOLE validator against a ONE-SHOW fixture, so essentially
+        // every corpus-wide validator reports failures and the combined
+        // stdout+stderr is far larger than a normal run's. It crossed 1 MiB on
+        // main and the child was killed with ENOBUFS, which surfaces here as
+        // `res.error` and turned Unit Tests red (run 33989118480). Raising the
+        // ceiling is the fix, not trimming the child's output: the assertions
+        // below scan that text for the advisory, so a truncated stream would
+        // fail them for a reason that has nothing to do with the wiring this
+        // test guards.
+        maxBuffer: 64 * 1024 * 1024,
       });
+      // ENOBUFS also truncates whatever was captured, so re-raising here rather
+      // than asserting on a partial stream is deliberate — a buffer overflow
+      // must never be reported as "the advisory did not fire".
       if (res.error) throw res.error;
       // A one-show fixture trips plenty of unrelated validators; that is fine
       // and expected. We assert on the advisory TEXT, never on the exit code.
