@@ -29,7 +29,11 @@
     "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "paranormal-activity-2026/wsj--charles-isherwood.json"
+    "paranormal-activity-2026/wsj--charles-isherwood.json",
+    "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+    "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -188,7 +192,13 @@
     "the-children-off-west-end-2026/times-uk--unknown.json",
     "electra-persona-west-end-2026/theatreboard--unknown.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
-    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json"
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -211,24 +221,24 @@
       "the-story-west-end-2026/theatrecat--unknown.json",
       "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
       "a-month-in-the-country-west-end-2026/independent--unknown.json",
-      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
+      "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "holy-fool-off-west-end-2026/timeout-london--unknown.json",
       "the-story-west-end-2026/ground--unknown.json",
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json",
-      "pride-west-end-2026/whatsonstage--editorial-staff.json",
-      "beetlejuice-west-end-2026/independent--benjamin-salmon.json"
+      "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
     ],
     "brightdata": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -241,11 +251,12 @@
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
-      "paranormal-activity-2026/wsj--charles-isherwood.json"
+      "paranormal-activity-2026/wsj--charles-isherwood.json",
+      "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -309,6 +320,17 @@
       "t": "2026-09-05T21:34:54.546Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-05T21:36:33.964Z",
+      "event": "bb-session",
+      "session": "d38249d4",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-05T21:36:35.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
