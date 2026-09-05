@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -3248,11 +3248,13 @@ showDirs.forEach(showId => {
         // Broadway/off-Broadway shows unflagged. Measured before widening — exactly
         // one review was affected, and it is a true positive: The Wee Review's
         // Suhani Shah "Spellbound 2.0" piece, whose own text reads "Note: This review
-        // is from the 2024 Fringe" and names Underbelly Bristo Square, was scoring
-        // into spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19, no
-        // declared priorRuns). 'dual' stays out of the set; the DUAL_MARKET_OUTLETS
-        // check above is what exempts outlets allowed to cross markets.
-        if (UK_MARKET_REGIONS.has(outletRegion) || urlIsUK) {
+        // is from the 2024 Fringe" and names Underbelly Bristo Square, was
+        // filed under spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19,
+        // no declared priorRuns). It was NOT scoring — ensemble-scoreability-check had
+        // already rejected it, so this guard is a second, earlier line of defence
+        // rather than a live score correction. 'dual' stays out of the set; the
+        // DUAL_MARKET_OUTLETS check above is what exempts outlets allowed to cross.
+        if (outletIsUkMarketRegion(outletRegionMap, canonicalOutlet, rawOutlet) || urlIsUK) {
           // Production-continuity exemption (BRO-222): a review whose
           // publishDate falls inside a declared priorRuns window is coverage
           // of THAT run, not this one — its market must be judged against the
@@ -4825,7 +4827,13 @@ if (fs.existsSync(reviewsJsonPath)) {
                     if (!region && d.url) {
                       try { const h = new URL(d.url).hostname; urlIsUK = h.endsWith('.co.uk') || h.endsWith('.org.uk'); } catch {}
                     }
-                    if (region === 'london' || urlIsUK) wouldBeExcluded = true;
+                    // MUST track the real reverse guard above (search UK_MARKET_REGIONS).
+                    // This block predicts exclusions the guard applies without persisting a
+                    // flag; if it stays narrower than the guard it UNDER-predicts drops, and
+                    // the comment below spells out the consequence — a hard abort on the
+                    // first rebuild after a tightening. Widening the guard to the UK-market
+                    // bucket without widening this mirror would have caused exactly that.
+                    if (UK_MARKET_REGIONS.has(region) || urlIsUK) wouldBeExcluded = true;
                   }
                 }
                 // 2. Pre-opening date: review published well before show opened

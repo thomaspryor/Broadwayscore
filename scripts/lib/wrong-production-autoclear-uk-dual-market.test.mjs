@@ -16,7 +16,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear');
-const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion } = require('./cross-market-guard');
+const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion, outletIsUkMarketRegion, classifyReverseCrossMarket } = require('./cross-market-guard');
 
 const baseCtx = {
   isLondonMarketShow: true,
@@ -303,5 +303,60 @@ describe('UK_MARKET_REGIONS (reverse cross-market guard set)', () => {
       [...UK_MARKET_REGIONS].sort(),
       [...UK_SIDE_REGIONS].filter((r) => r !== 'dual').sort()
     );
+  });
+});
+
+/**
+ * The reverse guard (rebuild-all-reviews.js) and classifyReverseCrossMarket
+ * (read by validate-data.js) describe the SAME direction: a UK outlet turning up
+ * on a Broadway show. If only the rebuild widens, it flags region:'uk' outlets
+ * while CI stays silent about them, and a Tier 1/2 'uk' paper can never reach the
+ * `error` tier. These pin them together.
+ */
+describe('classifyReverseCrossMarket covers the UK market bucket', () => {
+  const base = { isDualMarket: false, isTier12: true, isBroadway: true };
+
+  it("escalates a region:'uk' Tier 1/2 outlet on Broadway instead of skipping it", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'uk' });
+    assert.strictEqual(r.level, 'error');
+  });
+
+  it("still escalates region:'london' the same way (unchanged)", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'london' });
+    assert.strictEqual(r.level, 'error');
+  });
+
+  it('still skips a US outlet', () => {
+    assert.strictEqual(classifyReverseCrossMarket({ ...base, region: 'us' }).level, 'skip');
+  });
+
+  it('still skips a dual-market outlet before looking at region', () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'london', isDualMarket: true });
+    assert.strictEqual(r.level, 'skip');
+  });
+
+  it("region:'uk' on a non-Broadway NYC show warns rather than errors", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'uk', isBroadway: false });
+    assert.strictEqual(r.level, 'warning');
+  });
+});
+
+describe('outletIsUkMarketRegion (the reverse guard call site)', () => {
+  it('is the same computation the clearing side uses', () => {
+    const map = { 'new-statesman': 'uk' };
+    assert.strictEqual(
+      outletIsUkMarketRegion(map, 'new-statesman', 'new-statesman'),
+      outletIsUkSideSelfHealRegion(map, 'new-statesman', 'new-statesman')
+    );
+  });
+
+  it('does not let a non-UK canonical region mask a UK raw region', () => {
+    // This is what the inline `map[canonical] || map[raw]` form in the reverse
+    // guard could not express: it resolved to 'us' and then tested membership.
+    assert.strictEqual(outletIsUkMarketRegion({ canon: 'us', 'raw alias': 'uk' }, 'canon', 'raw alias'), true);
+  });
+
+  it('rejects US-only outlets', () => {
+    assert.strictEqual(outletIsUkMarketRegion({ variety: 'us' }, 'variety', 'variety'), false);
   });
 });
