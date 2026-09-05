@@ -170,7 +170,10 @@
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
     "relics-west-end-2026/rhombus-rota--unknown.json",
-    "the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json"
+    "the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json",
+    "the-loved-ones-off-broadway-2026/theatermania--david-gordon.json",
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -3427,7 +3430,14 @@
     "the-misanthrope-west-end-2026/nytimes--jason-zinoman.json",
     "sting-west-end-2026/deadline--unknown.json",
     "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--linda-winer.json"
+    "sting-west-end-2026/newsday--linda-winer.json",
+    "sting-west-end-2026/wsj--unknown.json",
+    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
+    "onegin-off-broadway-2026/telegraph--unknown.json",
+    "sting-west-end-2026/herald--unknown.json",
+    "sting-west-end-2026/times-uk--stephen-dalton.json",
+    "the-loved-ones-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3533,7 +3543,8 @@
       "springwood-west-end-2026/london-box-office--stuart-king.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "relics-west-end-2026/rhombus-rota--unknown.json",
+      "the-loved-ones-off-broadway-2026/theatermania--david-gordon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -3614,7 +3625,8 @@
       "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
       "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -3639,11 +3651,12 @@
       "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
       "a-christmas-carol-west-end-2026/telegraph--claire-allfree.json",
       "cleansed-off-west-end-2026/broadwayworld--alexander-cohen.json",
-      "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json"
+      "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
+      "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "sting-west-end-2026/newsday--linda-winer.json",
+  "lastProcessed": "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -4178,6 +4191,18 @@
       "t": "2026-09-05T14:16:31.993Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:18:02.535Z",
+      "event": "bb-session",
+      "session": "a719efc5",
+      "url": "https://www.facebook.com/LastShipMusical/posts/sting-takes-the-stage-in-the-last"
+    },
+    {
+      "t": "2026-09-05T14:18:22.801Z",
+      "event": "bb-session",
+      "session": "e1240dca",
+      "url": "https://www.facebook.com/LastShipMusical/posts/sting-takes-the-stage-in-the-last"
     }
   ]
 }
