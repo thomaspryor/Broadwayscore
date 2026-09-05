@@ -83,3 +83,24 @@ test('reviews hub: out-of-range labelled percentage is rejected', () => {
   const result = extractScore('', text, 'thereviewshub', 'Some Show');
   assert.equal(result, null, 'below the 10-100 band the markup path already enforces');
 });
+
+// Adversarial review (Codex, 2026-09-05) raised the roundup/sidebar case: the
+// outlet extractors never receive showTitle, so a body carrying two different
+// labelled ratings has no way to pick the right one. Abstain, matching the
+// COMBINED_ROUNDUP idiom above.
+test('reviews hub: two DIFFERENT labelled ratings in one body -> abstains', () => {
+  const text = RH_BODY +
+    ' The Reviews Hub Star Rating 40 % 40% Struggles to hit the right notes' +
+    ' Related review The Reviews Hub Star Rating 90 % 90% A triumph';
+  const result = extractScore('', text, 'thereviewshub', 'Holy Fool');
+  assert.equal(result, null, 'ambiguous multi-rating body must not take the first match');
+});
+
+test('reviews hub: the SAME rating repeated is not ambiguous and still resolves', () => {
+  const text = RH_BODY +
+    ' The Reviews Hub Star Rating 40 % 40% Struggles' +
+    ' ... The Reviews Hub Star Rating 40 % again in the footer';
+  const result = extractScore('', text, 'thereviewshub', 'Holy Fool');
+  assert.ok(result, 'a repeated identical rating is the same rating, not a conflict');
+  assert.equal(result.normalizedScore, 40);
+});
