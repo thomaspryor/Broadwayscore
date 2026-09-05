@@ -29,7 +29,17 @@ const UK_SIDE_REGIONS = new Set(['london', 'uk', 'dual']);
  * deliberately excluded — a dual-market outlet's wrongProduction flag can be
  * a genuine same-title other-market review.
  */
-const UK_SELF_HEAL_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+const UK_MARKET_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+
+/**
+ * Alias kept for the auto-clear call site, which reads this set as "regions whose
+ * wrongProduction flag may self-heal". Same set, two intents: a UK-market outlet
+ * is one whose flag can clear on a London show (auto-clear) AND one that should be
+ * flagged when it turns up on a Broadway show (reverse guard). Defining it once
+ * is the point — three separate hardcoded `=== 'london'` tests is how BRO-591's
+ * fix ended up covering only one of them.
+ */
+const UK_SELF_HEAL_REGIONS = UK_MARKET_REGIONS;
 
 /**
  * Does this outlet sit in a UK-side region that may SELF-HEAL a wrongProduction
@@ -522,6 +532,7 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
 module.exports = {
   UK_SIDE_REGIONS,
   UK_SELF_HEAL_REGIONS,
+  UK_MARKET_REGIONS,
   outletIsUkSideSelfHealRegion,
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,

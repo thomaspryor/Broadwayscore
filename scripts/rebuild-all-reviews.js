@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -3243,7 +3243,16 @@ showDirs.forEach(showId => {
             urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk');
           } catch (e) { /* ignore malformed URLs */ }
         }
-        if (outletRegion === 'london' || urlIsUK) {
+        // UK_MARKET_REGIONS, not `=== 'london'`: the registry's UK-market bucket is
+        // {london, uk}, and testing only 'london' let every region:'uk' outlet score
+        // Broadway/off-Broadway shows unflagged. Measured before widening — exactly
+        // one review was affected, and it is a true positive: The Wee Review's
+        // Suhani Shah "Spellbound 2.0" piece, whose own text reads "Note: This review
+        // is from the 2024 Fringe" and names Underbelly Bristo Square, was scoring
+        // into spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19, no
+        // declared priorRuns). 'dual' stays out of the set; the DUAL_MARKET_OUTLETS
+        // check above is what exempts outlets allowed to cross markets.
+        if (UK_MARKET_REGIONS.has(outletRegion) || urlIsUK) {
           // Production-continuity exemption (BRO-222): a review whose
           // publishDate falls inside a declared priorRuns window is coverage
           // of THAT run, not this one — its market must be judged against the

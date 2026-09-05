@@ -16,7 +16,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear');
-const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, outletIsUkSideSelfHealRegion } = require('./cross-market-guard');
+const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion } = require('./cross-market-guard');
 
 const baseCtx = {
   isLondonMarketShow: true,
@@ -269,5 +269,39 @@ describe('outletIsUkSideSelfHealRegion (the wiring BRO-591 left behind)', () => 
   it('is safe on an unregistered outlet and a missing map', () => {
     assert.strictEqual(outletIsUkSideSelfHealRegion({}, 'nobody', 'nobody'), false);
     assert.strictEqual(outletIsUkSideSelfHealRegion(null, 'nobody', 'nobody'), false);
+  });
+});
+
+/**
+ * The REVERSE cross-market guard (rebuild-all-reviews.js) flags a UK outlet that
+ * turns up on a Broadway/off-Broadway show. It tested `region === 'london'` only,
+ * so every region:'uk' outlet crossed unflagged. Measured before widening: exactly
+ * one review was affected and it is a true positive — theweereview's Suhani Shah
+ * "Spellbound 2.0" piece, whose own text reads "Note: This review is from the 2024
+ * Fringe" and names Underbelly Bristo Square, was scoring into
+ * spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19, no priorRuns).
+ */
+describe('UK_MARKET_REGIONS (reverse cross-market guard set)', () => {
+  it("covers the whole UK market bucket, not just 'london'", () => {
+    assert.ok(UK_MARKET_REGIONS.has('london'));
+    assert.ok(UK_MARKET_REGIONS.has('uk'), "region:'uk' outlets crossed unflagged before this");
+  });
+
+  it("excludes 'dual' — dual-market outlets are allowed to cross", () => {
+    assert.strictEqual(UK_MARKET_REGIONS.has('dual'), false);
+  });
+
+  it('does not cover US regions', () => {
+    for (const r of ['us', 'new-york', 'chicago', 'boston']) {
+      assert.strictEqual(UK_MARKET_REGIONS.has(r), false, `${r} must not be UK-market`);
+    }
+  });
+
+  it('is the same set the auto-clear side uses — one definition, two intents', () => {
+    assert.deepStrictEqual([...UK_MARKET_REGIONS].sort(), [...UK_SELF_HEAL_REGIONS].sort());
+    assert.deepStrictEqual(
+      [...UK_MARKET_REGIONS].sort(),
+      [...UK_SIDE_REGIONS].filter((r) => r !== 'dual').sort()
+    );
   });
 });
