@@ -60,18 +60,6 @@
     "queuedAt": "2026-09-05T12:31:04.933Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 16.7% of shows changed coverage state",
-    "description": "review-gap blast radius 16.7% (7/42 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, bigfoot-off-broadway-2026, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T14:19:28.044Z"
-  },
-  {
     "conditionKey": "opening-night-slug-mismatch-the-story-west-end-2026",
     "title": "Review URL cross-show mismatch on The Story",
     "description": "Review URL for financialtimes/Sarah Hemming does not mention show slug (checked: the-story-west-end, the-story, story): https://www.ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244?syn-25a6b1a6=1",
@@ -154,5 +142,94 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T18:39:14.402Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 69.7% of shows changed coverage state",
+    "description": "review-gap blast radius 69.7% (62/89 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, a-walk-on-the-moon-off-broadway-2026, all-my-sons-west-end-2025, all-nighter-off-broadway-2025, an-ark-off-broadway-2026, bigfoot-off-broadway-2026, buena-vista-social-club-off-broadway-2023, bughouse-off-broadway-2026, burlesque-west-end-2026, carmen-off-broadway-2025, caroline-off-broadway-2026, cats-the-jellicle-ball-off-broadway-2024, celebrity-autobiography-2026, chess-2025, data-off-broadway-2026, disruption-off-broadway-2026, dog-day-afternoon-2026, dracula-west-end-2025, electra-persona-west-end-2026, end-of-the-rainbow-west-end-2026, equus-west-end-2026, evita-west-end-2025, giant-royal-court-off-west-end-2024, giant-west-end-2025, grangeville-off-broadway-2026, holy-fool-off-west-end-2026, into-the-woods-west-end-2025, jajas-african-hair-braiding-west-end-2026, john-proctor-is-the-villain-west-end-2026, kinky-boots-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:26.318Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.7% (373/486)\noff-broadway: 43.4% (131/302)\nwest-end: 73.5% (400/544)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (540h)\nA Midsummer Night's Dream — observer (540h)\nA Midsummer Night's Dream — standard (540h)\nA Midsummer Night's Dream — times-uk (540h)\nABBA Voyage — independent (540h)\n… 176 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (540h)\nThe Book of Mormon — usatoday (540h)\nBuena Vista Social Club — broadwaynews (540h)\nBuena Vista Social Club — nydailynews (540h)\nHadestown — nydailynews (540h)\n… 21 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:35.705Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "6/132 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable\nA Month in the Country: score-drift\nCyrano de Bergerac: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:38.658Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "67 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Jesus Christ Superstar — telegraph (25h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — i-paper (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — independent (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — times-uk (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — whatsonstage (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spamalot — chicago-sun-times (448h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spamalot-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spamalot — chicagotribune (448h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spamalot-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — standard (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — times-uk (72h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The 25th Annual Putnam County Spelling Bee — amny (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-05T21:59:38.763Z"
   }
 ]
