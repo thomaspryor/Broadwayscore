@@ -32,7 +32,11 @@ node -e "try{const r=require('./data/reviews.json');console.log('reviews.json:',
 
 echo ""
 echo "--- secrets present in this environment ---"
-for k in NOTION_API_KEY OPENAI_API_KEY GEMINI_API_KEY REVIEW_TEXTS_TOKEN; do
+# LINEAR_API_KEY added 2026-09-05: CLAUDE.md §6 makes Linear the board, so a
+# session missing it leaves no board entry at all. This list drifts independently
+# of check-cloud-secrets.js's TIER_1/TIER_2 — collapsing the two is S5-T6 in
+# sprint-plan-notion-linear-cutover.md.
+for k in NOTION_API_KEY LINEAR_API_KEY OPENAI_API_KEY GEMINI_API_KEY REVIEW_TEXTS_TOKEN; do
   if [ -n "$(eval "printf '%s' \"\${$k:-}\"")" ]; then echo "$k: set"; else echo "$k: MISSING"; fi
 done
 
