@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T17:16:14.968Z",
+  "generatedAt": "2026-09-05T21:59:28.529Z",
   "windowDays": 45,
   "showsScanned": 65,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 750.5203833333334,
+      "fileAgeHours": 755.2408033333334,
       "gapSeenAt": "2026-08-19T06:22:19.946Z",
-      "nonTerminalAgeHours": 418.8986169444444
+      "nonTerminalAgeHours": 423.61905083333335
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 191.99263277777777,
+      "fileAgeHours": 196.7130647222222,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 153.58355472222223
+      "nonTerminalAgeHours": 158.30398861111112
     }
   ],
   "contradictions": []
