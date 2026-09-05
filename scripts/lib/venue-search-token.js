@@ -83,21 +83,15 @@ const GENERIC = new Set([
   'cafe', 'salle', 'teatro', 'opera',
 ]);
 
-// Diacritics are FOLDED, not shredded. The first version did a bare
-// .replace(/[^a-z0-9.]/g, '') after lowercasing, which deletes accented
-// characters outright: "Théâtre" became "thtre", matched nothing in GENERIC,
-// and was therefore treated as a distinctive token. "Théâtre du Châtelet"
-// returned "Théâtre" instead of "Châtelet" — the exact failure this helper
-// exists to prevent, reintroduced for every accented venue.
-//
-// tests/unit/sibling-matchers-diacritics.test.mjs caught this as a structural
-// guard: a scripts/lib matcher carrying the shred signature with no fold. The
-// corpus sweep did NOT catch it, because no venue in the corpus currently
-// carries an accent — a reminder that a sweep over today's data cannot prove a
-// matcher correct. Reuses title-match.js's foldDiacritics rather than adding a
-// fourth normalizer.
+// Fold BEFORE the non-ASCII strip, never after. Stripping first deletes the
+// accented letter outright ("Théâtre" -> "thtre"), which silently changes which
+// token this function calls distinctive and sends a misspelled venue to the
+// Playbill lookup. Folding first preserves the letter ("theatre"), so an
+// accented venue name normalizes onto the same token as its unaccented spelling.
+// Same ordering as article-extractor.js:393. Guarded by the structural test in
+// tests/unit/sibling-matchers-diacritics.test.mjs (task #648).
 function normalize(token) {
-  return foldDiacritics(String(token)).toLowerCase().replace(/[^a-z0-9.]/g, '');
+  return foldDiacritics(String(token).toLowerCase()).replace(/[^a-z0-9.]/g, '');
 }
 
 function isStopword(token) {
