@@ -2926,7 +2926,17 @@
     "matilda-the-musical-west-end-2021/backstage--erik-haagensen.json",
     "matilda-the-musical-west-end-2021/bloomberg--jeremy-gerard.json",
     "matilda-the-musical-west-end-2021/chicagotribune--chris-jones.json",
-    "matilda-the-musical-west-end-2021/northjerseycom--robert-feldberg.json"
+    "matilda-the-musical-west-end-2021/northjerseycom--robert-feldberg.json",
+    "matilda-the-musical-west-end-2021/operawire--unknown.json",
+    "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json",
+    "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
+    "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3074,7 +3084,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "wicked-west-end-2021/newyorker--unknown.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -3501,6 +3511,28 @@
       "event": "bb-session",
       "session": "031b7e0e",
       "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
+    },
+    {
+      "t": "2026-09-05T12:12:45.814Z",
+      "event": "bb-session",
+      "session": "c8d348e5",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-05T12:12:50.191Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-05T12:13:07.592Z",
+      "event": "bb-session",
+      "session": "139e87f9",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-05T12:13:12.105Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
