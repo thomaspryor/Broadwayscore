@@ -388,13 +388,56 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   NEW_TREE="$(GIT_INDEX_FILE="$TMP_INDEX" git write-tree)"
   rm -f "$TMP_INDEX"
 
+  # A prior attempt's push can land server-side and still be reported as a
+  # failure here, because the timeout wrapper SIGTERMs the client before it
+  # reads the response (see the rc=124 branch below). When that happens the
+  # next attempt re-reads CURRENT_TIP as OUR OWN landed commit and replays the
+  # same snapshotted CHANGED_STATUS/HEAD_SHA overlay onto it, so NEW_TREE comes
+  # out identical to the tip's tree and commit-tree would mint an EMPTY commit
+  # — pushing it fires every push-driven workflow for no content change. No
+  # data loss either way, but the no-op push is pure noise, so detect it and
+  # report the already-landed commit instead. verify_content_survived in
+  # push-with-retry.sh still passes on this sha, because the content it checks
+  # for is exactly what a prior attempt put there.
+  if [ "$NEW_TREE" = "$(git rev-parse "${CURRENT_TIP}^{tree}")" ]; then
+    echo "  push-via-git-api: our content is ALREADY on ${BRANCH} at $CURRENT_TIP (attempt $i) — a prior attempt landed and was mis-reported as failed; skipping the no-op commit" >&2
+    echo "$CURRENT_TIP"
+    exit 0
+  fi
+
   NEW_COMMIT="$(git commit-tree "$NEW_TREE" -p "$CURRENT_TIP" -m "$COMMIT_MSG")"
 
   PUSH_ERR="$(mktemp)"
+  push_start=$SECONDS
+  # `$?` is NOT usable after a bare `if ... ; then ... fi` with no else: a false
+  # condition with no else branch leaves the compound statement's own status at
+  # 0, so the rc of the push is gone by `fi`. Capture it in the else branch,
+  # matching push-with-retry.sh:1373-1381's shape for the same problem.
   if _git_net push "$REMOTE" "${NEW_COMMIT}:refs/heads/${BRANCH}" >/dev/null 2>"$PUSH_ERR"; then
     rm -f "$PUSH_ERR"
     echo "$NEW_COMMIT"
     exit 0
+  else
+    push_rc=$?
+  fi
+
+  # TIMEOUT IS NOT A FATAL ERROR. _git_net wraps every network op in
+  # `timeout -k 10 $GIT_NET_TIMEOUT_SEC`, so a push that burns the full cap is
+  # SIGTERMed (rc=124), or SIGKILLed 10s later if it ignores that (rc=137).
+  # git dies without writing to stderr in both cases, so PUSH_ERR is EMPTY, the
+  # race-text grep below cannot match, and control used to fall through to the
+  # fatal branch — printing "push failed for a non-race reason" with NOTHING
+  # after the colon and exiting, abandoning every remaining budgeted attempt.
+  # Measured in two workflows, both with an empty reason: data-health-check run
+  # 33922438634 at 90.66s and commercial-rss-poll run 33929580504 at 90.1s.
+  # A timeout means "still too slow", not "will never work", so retry it like a
+  # lost race. Bounded by MAX_RETRIES, which push-with-retry.sh already scales
+  # to 2/4/6 by remaining PUSH_DEADLINE_SEC.
+  if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
+    echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — retrying rather than treating a timeout as fatal" >&2
+    rm -f "$PUSH_ERR"
+    sleep $((1 + RANDOM % 3))
+    continue
   fi
 
   # Race-rejection text varies by transport: smart HTTP/SSH (GitHub) says
@@ -409,8 +452,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     continue
   fi
 
-  echo "::error::push-via-git-api: push failed for a non-race reason (attempt $i):" >&2
-  cat "$PUSH_ERR" >&2
+  # Always name the rc. An empty PUSH_ERR used to make this message
+  # indistinguishable from a timeout, which is how the real cause stayed
+  # unread across two workflows for days.
+  echo "::error::push-via-git-api: push failed for a non-race reason (attempt $i, rc=$push_rc):" >&2
+  if [ -s "$PUSH_ERR" ]; then
+    cat "$PUSH_ERR" >&2
+  else
+    echo "  (git wrote nothing to stderr — rc=$push_rc)" >&2
+  fi
   rm -f "$PUSH_ERR"
   exit 1
 done
