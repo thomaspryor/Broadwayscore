@@ -420,10 +420,19 @@ test('BRO-2740: date-guard carve-out with a surviving publishDate keeps provenan
  * applyUrlChangeInvariant(existingReview, replacement) with `replacement` built FRESH
  * from the newly-discovered URL and so able to carry a genuinely new publishDate.
  *
- * Both directions are pinned so leg 281 cannot be deleted as dead: killing it fails the
- * first test, and dropping only its `!publishDateWillClear` conjunct fails the second,
- * which nothing pre-existing catches. Deleting it would silently re-clear
- * wrongProduction on records whose date basis is still live.
+ * All THREE of leg 281's conjuncts are pinned, one test each, so it cannot be deleted
+ * as dead nor weakened a conjunct at a time. Measured, per mutation:
+ *   kill the whole leg              -> only the NEW-date test below fails
+ *   drop only !publishDateWillClear -> only the CARRIED-date test below fails
+ *   drop only mergedHasPublishDate  -> the DATELESS test below fails, AND two
+ *                                      pre-existing BRO-2740 tests fail with it
+ * So the middle conjunct is the one nothing else covers. The third is partly covered
+ * already; the test below is still worth its lines because it is the only one that
+ * states the dateless contract directly rather than catching it as a side effect,
+ * and because the other two would not tell a reader WHICH conjunct they tripped.
+ * Deleting the leg would silently re-clear wrongProduction on records whose date basis
+ * is still live; weakening it would strand an unclearable flag on a dateless record,
+ * the case the comment at lines 270-277 argues at length.
  *
  * These fixtures are hand-built, like every other test in this file. They mirror the
  * gather-reviews call in the field that matters (a fresh publishDate on a fresh URL);
@@ -476,4 +485,27 @@ test('BRO-2877: a CARRIED-OVER publishDate still clears the date-based wrongProd
     `expected wrongProduction cleared, got ${JSON.stringify(res.cleared)}`);
   assert.ok(res.cleared.includes('publishDate'),
     `expected publishDate cleared, got ${JSON.stringify(res.cleared)}`);
+});
+
+test('BRO-2877: a DATELESS record clears the date-based wrongProduction flag (leg 281 mergedHasPublishDate conjunct)', () => {
+  // Both records dateless. !publishDateWillClear is TRUE here (nothing clears, because
+  // there was never a date), so without the mergedHasPublishDate conjunct the leg would
+  // PRESERVE the flag — stranding a wrongProduction the rebuild's anticipatory
+  // auto-clear can never lift, since that path needs a reviewDate to even enter. That
+  // is the BRO-2740 contract the third conjunct exists to hold, and no other fixture in
+  // this file pairs a date-only reason with an absent publishDate.
+  const dateless = {
+    url: 'https://old.example.com/review-a',
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+  };
+  const existing = { ...dateless };
+  const merged = { ...dateless, url: 'https://new.example.com/review-b' };
+
+  const res = quiet(() => applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro-2877.json' }));
+
+  assert.equal(merged.wrongProduction, undefined,
+    'a dateless record gives the date-derived verdict nothing to stand on, so the flag must clear with its URL');
+  assert.ok(res.cleared.includes('wrongProduction'),
+    `expected wrongProduction cleared on a dateless record, got ${JSON.stringify(res.cleared)}`);
 });
