@@ -124,7 +124,66 @@ test('verdict entries with no branch field are ignored rather than throwing', ()
 
 test('empty inputs produce an empty report rather than throwing', () => {
   const out = findStrandedReviewedBranches([], []);
-  assert.deepEqual(out, { reviewed: [], unreviewed: [], landed: 0, totalGatedLines: 0 });
+  assert.deepEqual(out, {
+    reviewed: [], unreviewed: [], landed: 0, totalGatedLines: 0, totalLiveDiffLines: 0,
+  });
+});
+
+// BRO-2878: totalGatedLines is the review-TIME snapshot and drifts badly once a
+// branch's code lands, because the branch keeps its old verdict. On 2026-09-05 two of
+// twelve stranded branches were billed 652 and 726 gated lines while their entire
+// remaining diff was a STATE.md handoff doc, overstating the reported exposure by
+// about 30%. These tests pin the live-diff figure that replaced it in the headline.
+test('BRO-2878: a branch whose code has landed is excluded from the live total but keeps its verdict figure', () => {
+  // Fixtures use the REAL producer shape: the CLI counts code lines and non-code
+  // lines separately, so a docs-only branch is liveDiffLines 0 with liveOtherLines
+  // above zero. An earlier version of this test used liveDiffLines:58 with
+  // liveCodeFiles:0, which the CLI can never emit, making it vacuous against the
+  // real pipeline (caught by ship-check).
+  const branches = [
+    { branch: 'docs-only', ahead: 1, liveDiffLines: 0, liveOtherLines: 58, liveCodeFiles: 0, dirty: 0, lastCommitDate: '2026-08-26' },
+    { branch: 'real-code', ahead: 2, liveDiffLines: 120, liveOtherLines: 0, liveCodeFiles: 3, dirty: 0, lastCommitDate: '2026-08-27' },
+  ];
+  const verdicts = [
+    { branch: 'docs-only', result: 'pass', ts: '2026-08-26T00:00:00Z', reviewer: 'ship-check', gatedLines: 652 },
+    { branch: 'real-code', result: 'pass', ts: '2026-08-27T00:00:00Z', reviewer: 'ship-check', gatedLines: 120 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+
+  assert.equal(out.totalGatedLines, 772, 'the review-time snapshot still sums both branches');
+  assert.equal(out.totalLiveDiffLines, 120,
+    'the docs-only branch contributes NOTHING to real exposure, so 652 must not be counted');
+  const docs = out.reviewed.find((r) => r.branch === 'docs-only');
+  assert.equal(docs.docsOnly, true, 'a live diff touching no code file must be flagged docs-only');
+  assert.equal(docs.gatedLines, 652, 'the verdict figure is kept for context, not discarded');
+});
+
+test('BRO-2878: an UNMEASURED branch falls back to its verdict figure rather than reading as empty', () => {
+  // The absence-of-a-signal trap: if a git failure left liveDiffLines null and null
+  // were treated as zero, a measurement failure would silently SHRINK the reported
+  // exposure, which is the exact false all-clear this whole check exists to prevent.
+  // LITERAL null, which is what the CLI actually emits on a git failure. The first
+  // version of this test OMITTED the keys instead, so undefined took a different
+  // code path and the test passed while literal null was silently coerced to 0 by a
+  // Number()-based guard — an unmeasured branch read as "probably already landed"
+  // and contributed nothing. Ship-check caught it. Never weaken this to undefined.
+  const branches = [{
+    branch: 'unmeasurable',
+    ahead: 4,
+    liveDiffLines: null,
+    liveOtherLines: null,
+    liveCodeFiles: null,
+    dirty: 0,
+    lastCommitDate: '2026-08-20',
+  }];
+  const verdicts = [
+    { branch: 'unmeasurable', result: 'pass', ts: '2026-08-20T00:00:00Z', reviewer: 'ship-check', gatedLines: 300 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+
+  assert.equal(out.reviewed[0].liveDiffLines, null, 'an unmeasured branch reports null, not 0');
+  assert.equal(out.reviewed[0].probablyAlreadyLanded, false, 'null must never be read as "already landed"');
+  assert.equal(out.totalLiveDiffLines, 300, 'it falls back to the verdict figure instead of vanishing');
 });
 
 test('hasUsableVerdicts is false for a missing, empty or branchless ledger (fail-closed input)', () => {

@@ -30,6 +30,12 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const REPO = path.resolve(__dirname, '..');
 const argv = process.argv.slice(2);
 
+// BRO-2878: what counts as CODE for the docs-only signal. Deliberately narrow — a
+// branch whose live diff touches none of these is a handoff doc or an audit snapshot
+// left behind after its code landed, which is what STATE.md-only branches turned out
+// to be. Only ever used to LABEL a row; nothing is auto-landed or auto-deleted.
+const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+
 // Print usage BEFORE any real work. This script fetches from origin and shells
 // out once per worktree, so --help must not trigger a network round trip or a
 // 40-worktree sweep (task #498 convention).
@@ -157,7 +163,50 @@ for (const wt of worktreePaths) {
   const status = gitQuiet(['status', '--porcelain'], wt);
   const dirty = status === null ? 0 : status.split('\n').filter((l) => l && !l.startsWith('??')).length;
   const lastCommitDate = gitQuiet(['log', '-1', '--format=%ad', '--date=short'], wt);
-  branches.push({ branch, ahead, dirty, lastCommitDate });
+
+  // BRO-2878: measure what is ACTUALLY still outstanding, not what the verdict said
+  // when it was written. A branch whose code has since landed keeps its old verdict,
+  // so reporting gatedLines as "work at risk" overstates the exposure. --numstat over
+  // the three-dot range gives added+deleted per file against the merge base.
+  // Left null on any failure: an unmeasured branch must not read as an empty one.
+  let liveDiffLines = null;
+  let liveOtherLines = null;
+  let liveCodeFiles = null;
+  if (ahead > 0) {
+    const numstat = gitQuiet(['diff', '--numstat', 'origin/main...HEAD'], wt);
+    if (numstat !== null) {
+      liveDiffLines = 0;
+      liveOtherLines = 0;
+      liveCodeFiles = 0;
+      for (const line of numstat.split('\n')) {
+        if (!line) continue;
+        const [addRaw, delRaw, file] = line.split('\t');
+        if (!file) continue;
+        if (!IS_CODE_FILE.test(file)) {
+          // Counted separately, never folded into the code total. Without this the
+          // docs-only signal was unreachable: lines only accrued for code files, so
+          // liveCodeFiles===0 forced liveDiffLines===0 and the branch that motivated
+          // this change (job/1853-mta72xcr, live diff = one STATE.md) was mislabelled
+          // "probably already landed" — the label meant for landed CODE.
+          const a = Number(addRaw); const d = Number(delRaw);
+          if (Number.isFinite(a)) liveOtherLines += a;
+          if (Number.isFinite(d)) liveOtherLines += d;
+          continue;
+        }
+        // Count lines from CODE files ONLY. Counting every file made this figure
+        // meaningless the first time it ran for real: job/linear-BRO-257-mtag4t59
+        // reported 53,189 "lines of code still outstanding" when almost all of it was
+        // regenerated data and fixture JSON, against a 260-line review verdict. A
+        // headline dominated by data churn is worse than the stale number it replaced.
+        // '-' marks a binary file: it counts as a changed file, never as lines.
+        const add = Number(addRaw); const del = Number(delRaw);
+        if (Number.isFinite(add)) liveDiffLines += add;
+        if (Number.isFinite(del)) liveDiffLines += del;
+        liveCodeFiles++;
+      }
+    }
+  }
+  branches.push({ branch, ahead, dirty, lastCommitDate, liveDiffLines, liveOtherLines, liveCodeFiles });
 }
 
 // The verdict ledger lives in the MAIN checkout's .claude/, not in a worktree's.
@@ -239,13 +288,24 @@ if (JSON_OUT) {
   console.log('Stranded-reviewed-branch sweep: ' + branches.length + ' worktree branch(es) scanned, '
     + out.landed + ' fully landed.');
   console.log('');
+  // BRO-2878: the headline is the LIVE diff still outstanding. gatedLines is kept
+  // beside it, explicitly labelled as the review-time snapshot, because the two
+  // diverge badly once a branch's code lands and only a handoff doc trails behind.
+  const noCode = out.reviewed.filter((r) => r.probablyAlreadyLanded || r.docsOnly).length;
   console.log('REVIEW-PASSED but NOT on origin/main (' + out.reviewed.length + ', '
-    + out.totalGatedLines + ' gated lines total) — finished work at risk:');
+    + out.totalLiveDiffLines + ' lines of code still outstanding) — finished work at risk:');
+  if (noCode > 0) {
+    console.log('  (' + noCode + ' of them carry NO code in their live diff — docs or an '
+      + 'audit snapshot left behind. Excluded from the total above; likely discard, but confirm.)');
+  }
   if (!out.reviewed.length) console.log('  none');
   for (const r of out.reviewed) {
+    const live = r.liveDiffLines === null ? 'unmeasured' : r.liveDiffLines + ' live';
+    const tag = r.probablyAlreadyLanded ? '  [NO LIVE DIFF — probably already landed]'
+      : r.docsOnly ? '  [DOCS ONLY — no code files]' : '';
     console.log('  ' + r.branch.padEnd(46) + ' ahead=' + String(r.ahead).padEnd(4)
       + ' dirty=' + String(r.dirty).padEnd(3) + ' last=' + r.lastCommitDate
-      + '  <- ' + r.reviewer + ' pass, ' + r.gatedLines + ' gated lines');
+      + '  <- ' + r.reviewer + ' pass, ' + live + ' (verdict said ' + r.gatedLines + ')' + tag);
   }
   console.log('');
   console.log('Stranded with no passing verdict (' + out.unreviewed.length + ') — likely work-in-progress:');
