@@ -254,8 +254,12 @@ describe('outletIsUkSideSelfHealRegion (the wiring BRO-591 left behind)', () => 
   });
 
   it('finds a UK region on the RAW id when the canonical id maps elsewhere', () => {
-    // The regression the plain `a || b` form would reintroduce: a truthy non-UK
-    // value on the canonical key must not mask a UK value on the raw key.
+    // Pins behaviour the pre-fix code already had: it tested both keys with two
+    // separate `=== 'london'` comparisons, so neither key masked the other. The
+    // helper must preserve that rather than collapsing to `map[a] || map[b]`,
+    // which WOULD let a truthy non-UK value on the canonical key hide a UK value
+    // on the raw key. Not a regression this diff introduced — a property it
+    // inherited and must not lose.
     assert.strictEqual(
       outletIsUkSideSelfHealRegion({ canon: 'us', 'raw alias': 'uk' }, 'canon', 'raw alias'),
       true

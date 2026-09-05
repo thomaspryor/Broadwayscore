@@ -2912,9 +2912,15 @@ showDirs.forEach(showId => {
             })) {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
+              // Name the region actually matched. Hardcoding 'london' here stamped a
+              // false reason onto every region:'uk' outlet the clearing side now
+              // covers, and this string is the only durable record of WHY a flag was
+              // removed — the note itself is deleted just above.
+              const clearedRegion = outletRegionMap[earlyCanonicalOutlet]
+                || outletRegionMap[earlyRawOutlet] || 'unknown';
               data.wrongProductionAutoCleared = isUkUrl
                 ? `rebuild: UK URL on London show (${hostname})`
-                : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
+                : `rebuild: registry region '${clearedRegion}' outlet on London show (${earlyCanonicalOutlet})`;
               // At-stamp required: the push-time restore only honors FRESH
               // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
               data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
