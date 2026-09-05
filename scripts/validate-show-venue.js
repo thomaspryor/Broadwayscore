@@ -71,6 +71,7 @@ const {
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { venueSearchToken } = require('./lib/venue-search-token');
+const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -232,7 +233,22 @@ function scorePlaybillUrl(url, show) {
 async function findPlaybillUrl(show, log) {
   const cache = loadPlaybillUrlCache();
   if (cache.shows && cache.shows[show.id]) {
-    return { url: cache.shows[show.id], source: 'cache' };
+    const cached = cache.shows[show.id];
+    // SELF-HEAL. This cache is durable and keyed by show id, and it is read
+    // BEFORE any query is built — so a wrong URL written once is returned
+    // forever, and no later fix to the query, the venue token or the scorer can
+    // dislodge it. 6 of 113 live entries were a London show pointing at a New
+    // York production; scorePlaybillUrl's cross-market reject (card #590)
+    // already refuses that shape, but those entries predate it and the cache
+    // short-circuits ahead of the scorer, so they were never re-judged. Treat a
+    // cross-market hit as a MISS and fall through to a fresh resolve.
+    // Deliberately narrow — see the docblock in scripts/lib/playbill-url-market.js
+    // for why "anything the scorer dislikes" would evict 15 CORRECT entries.
+    if (isCrossMarketPlaybillUrl(cached, show)) {
+      log(`    ⚠ ignoring cross-market cached Playbill URL (${cached}) — re-resolving`);
+    } else {
+      return { url: cached, source: 'cache' };
+    }
   }
   const market = show.category === 'off-broadway' ? 'Off-Broadway'
     : (show.category === 'west-end' || show.category === 'off-west-end') ? 'London'

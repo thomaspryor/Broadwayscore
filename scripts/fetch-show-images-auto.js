@@ -27,6 +27,7 @@ const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
@@ -1356,8 +1357,13 @@ async function fetchFromPlaybill(show) {
 
       if (imageUrl) {
         console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
-        playbillUrlCache.shows[show.id] = playbillUrl;
-        savePlaybillUrls(playbillUrlCache);
+        // Only cache the URL if it is in this show's market — see the guard at
+        // the Google-search branch below for why this script is the one that
+        // poisoned the cache.
+        if (!isCrossMarketPlaybillUrl(playbillUrl, show)) {
+          playbillUrlCache.shows[show.id] = playbillUrl;
+          savePlaybillUrls(playbillUrlCache);
+        }
         // Playbill OG images are always landscape (1200x630) — only suitable as hero
         return { hero: imageUrl, thumbnail: null, poster: null };
       }
@@ -1389,8 +1395,26 @@ async function fetchFromPlaybill(show) {
 
       if (imageUrl) {
         console.log(`   ✓ Found image: ${imageUrl.substring(0, 60)}...`);
-        playbillUrlCache.shows[show.id] = discoveredUrl;
-        savePlaybillUrls(playbillUrlCache);
+        // THIS is where the poison entered data/playbill-urls.json. The regex
+        // above scrapes a Google RESULTS page for the first
+        // playbill.com/production/...-broadway... URL anywhere in the HTML —
+        // and it REQUIRES "-broadway", as does the search query — so for a
+        // London show it can only ever produce a cross-market URL. If that page
+        // happens to yield an OG image, the URL was written into the durable
+        // cache as this show's Playbill page. Six live entries got there this
+        // way ("Ish" at the Kiln -> circle-jerk-off-broadway-...,
+        // "Amplify" at New Diorama -> paranormal-activity-broadway-...).
+        //
+        // The URL write is a SIDE EFFECT here — this script exists to fetch
+        // images — so it poisoned a cache that validate-show-venue.js reads
+        // before building any query, where a wrong entry is permanent. The
+        // image is still fine to use; only the URL write is suppressed.
+        if (!isCrossMarketPlaybillUrl(discoveredUrl, show)) {
+          playbillUrlCache.shows[show.id] = discoveredUrl;
+          savePlaybillUrls(playbillUrlCache);
+        } else {
+          console.log(`   ⚠ not caching cross-market Playbill URL for ${show.id}: ${discoveredUrl}`);
+        }
         // Playbill OG images are always landscape (1200x630) — only suitable as hero
         return { hero: imageUrl, thumbnail: null, poster: null };
       }

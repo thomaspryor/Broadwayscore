@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
@@ -201,6 +202,20 @@ async function main() {
       await sleep(1000); // Rate limit SERP
     }
 
+    // Market guard on the write. Neither step above checks that the production
+    // it found is in this show's MARKET: generateUrlVariants hardcodes
+    // "-broadway-" into every constructed URL, and serpFallback queries
+    // "...broadway production" and returns a top result. Today this script only
+    // targets shows with NO category (see the targetShows filter), so it cannot
+    // reach a London show and is NOT what poisoned the six live entries — that
+    // was fetch-show-images-auto.js. But "the filter happens to exclude the
+    // shows this would break" is not a guarantee, and a durable cache that
+    // validate-show-venue.js reads before it builds any query is the wrong
+    // place to rely on one. Refuse the write instead.
+    if (foundUrl && isCrossMarketPlaybillUrl(foundUrl, show)) {
+      console.log(`  ✗ REJECTED cross-market URL for ${show.title} (${show.id}): ${foundUrl}`);
+      foundUrl = null;
+    }
     if (foundUrl) {
       existing.shows[show.id] = foundUrl;
       found++;
