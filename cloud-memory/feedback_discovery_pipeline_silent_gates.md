@@ -530,3 +530,33 @@ the BRO-2784 slug-squat `Skipped: no-changes` path instead of writing anything.
 re-fetching.** The fix is a key rename (`wrongFullText` → `fullText`, restore word counts) plus the
 8 manual-clear protection fields — not an ingest. Instance: theatrecat--unknown.json, 682-word body
 on disk the whole time (review-texts commit b636d6ab5b2). Systemic fix carded: BRO-2788.
+
+## Gate: recovery written to web repo, never persisted to the data repo (2026-09-05, Holy Fool)
+
+**Symptom:** 8 review-texts files sitting in `~/Broadwayscore/data/review-texts/<show-id>/` with correct `outletId`,
+`contentTier: complete`, publishDate, and ZERO blocking flags — yet `reviews.json` on the data repo contained only 3
+entries, and prod showed 3. Every flag-based diagnosis (a/b/c in the monitor playbook) comes back clean, so the
+obvious next move is to hunt a rebuild bug that does not exist.
+
+**Cause:** `scripts/ingest-review-from-url.js` writes into the WEB repo working tree, where `data/review-texts/` is
+gitignored. The authoritative copy CI rebuilds from is `~/broadway-scorecard-data/data/review-texts/`. A recovery pass
+that does not explicitly copy + commit + push into the data repo produces files that look perfect locally and are
+invisible to every downstream stage — permanently. The prior pass even reported `Committed + pushed c9b34111134`;
+that hash existed in neither repo. A "pushed" claim in a state file is not evidence.
+
+**Detection (run this BEFORE diagnosing flags or rebuild logic):**
+```
+git -C ~/broadway-scorecard-data ls-tree --name-only origin/main data/review-texts/<show-id>/
+```
+Empty output while the local web-repo dir is populated == this gate. Confirm counts match on both sides.
+
+**Fix:** copy the show dir into the data repo, `git pull --rebase`, commit, push, then re-verify with the same
+`ls-tree` against `origin/main` (not against local HEAD — an unpushed local commit reproduces the same illusion).
+
+**Ordering note:** the rebuild that is already `in_progress` when you push does NOT contain your files. Only a rebuild
+whose `createdAt` is later than the push counts. Judging the fix by the next run that happens to be running is how
+this gets falsely marked resolved.
+
+**Systemic fix (carded):** make the ingest script write to / hard-verify the data repo and fail loudly otherwise, and
+add a data-repo-presence assertion to `verify-review-recovery.js` so `--production` cannot pass while the show dir is
+absent from `origin/main`. Related: [[feedback_dual_repo_data_files]], [[feedback_review_recovery_pipeline_gaps]].
