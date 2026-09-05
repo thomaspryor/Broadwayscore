@@ -1,134 +1,47 @@
 {
-  "updatedAt": "2026-09-05T12:06:14.324Z",
-  "processed": 15,
-  "failed": 85,
-  "successRate": "15.0%",
+  "updatedAt": "2026-09-05T12:08:10.921Z",
+  "processed": 16,
+  "failed": 94,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 21,
-    "directCookies": 5,
+    "browserbase": 1,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 21,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-05T10:06:41.083Z",
+      "t": "2026-09-05T11:53:03.937Z",
       "event": "bb-session",
-      "session": "7875b73f",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "cc2f3fc4",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
     },
     {
-      "t": "2026-09-05T10:07:02.283Z",
-      "event": "bb-session",
-      "session": "6173ac55",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-05T10:10:52.574Z",
-      "event": "bb-session",
-      "session": "6eb43fec",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-05T10:10:53.619Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-05T11:38:12.963Z",
-      "event": "bb-session",
-      "session": "fcbd8459",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-09-05T11:38:13.808Z",
+      "t": "2026-09-05T11:53:05.208Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-05T11:41:13.011Z",
+      "t": "2026-09-05T11:55:18.498Z",
       "event": "bb-session",
-      "session": "40b137e5",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "de75897e",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-09-05T11:41:20.464Z",
-      "event": "bb-session",
-      "session": "ef25fb4a",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-09-05T11:42:21.578Z",
-      "event": "bb-session",
-      "session": "ca93ca00",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-09-05T11:42:40.118Z",
-      "event": "bb-session",
-      "session": "4ed07c92",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-09-05T11:50:12.179Z",
-      "event": "bb-session",
-      "session": "76f6a64f",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-09-05T11:53:41.514Z",
-      "event": "bb-session",
-      "session": "64b76924",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-05T11:53:42.365Z",
+      "t": "2026-09-05T11:55:19.788Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-09-05T11:54:49.276Z",
+      "t": "2026-09-05T12:01:04.338Z",
       "event": "bb-session",
-      "session": "b3ffb9a8",
+      "session": "721d6a5c",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-09-05T11:55:11.067Z",
-      "event": "bb-session",
-      "session": "892d6c19",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-05T11:58:57.367Z",
-      "event": "bb-session",
-      "session": "711b911f",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-05T11:58:58.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-05T12:00:39.074Z",
-      "event": "bb-session",
-      "session": "d8fbd688",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-05T12:00:39.969Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-05T12:06:05.571Z",
-      "event": "bb-session",
-      "session": "6c6dc5c2",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
