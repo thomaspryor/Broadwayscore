@@ -597,3 +597,23 @@ Related: the `broadway-review-texts` local clone is frequently left dirty by oth
 `scripts/llm-scoring/is-scoreable.ts` hard-rejects any review-text whose `incompleteReason === 'scraper_garbage'`. Such a file can sit with genuine full review prose, no `wrongProduction`/`isNonReview`/duplicate flag, and `isIncludableForRebuild()` returning TRUE — it will still never get an `llmScore`, so it never reaches the site. `llmScore === null` while every live sibling has one is the signature.
 The flag is set by a multiple-shows-mentioned heuristic that FPs hard: `incompleteDetail: "Multiple shows mentioned (10): macbeth, macbeth, macbeth, ..."` on pages whose actual `macbeth` token count is 1. Two Holy Fool reviews (The Reviews Hub, Theatre Vibe) were held out of a live show this way.
 Compounding trap: `clear-failure-flags.js` cannot clear it either — its generic predicate is `contentComplete || (textGood && (aggSignal || hasLlmScore))`, and a truncated+unscored file satisfies neither branch. Chicken-and-egg by construction; only a manual clear breaks it.
+
+## incompleteReason recompute-on-write erases manual clears (2026-09-05, Holy Fool)
+`scripts/lib/incomplete-reason.js` recomputes `incompleteReason` on EVERY review-texts write and
+overwrites a prior manual clear — it does not consult `manuallyVerified` / `manualVerifiedAt`.
+Observed three distinct values on the same two files with no manual action between them:
+`scraper_garbage` (attempts 1-8) -> hand-cleared to `null` (attempts 5, 9) -> back to
+`scraper_garbage` (attempt 10, textFetchedAt UNCHANGED, so not a refetch) -> `partial_text`
+(attempt 11). Ruled out: whole-file clobber (`manuallyVerified` survived) and the
+push-review-texts restore path (`review-write-guard.js` PROTECTED_FIELDS excludes
+incompleteReason/incompleteDetail).
+
+Why it is load-bearing: `scripts/llm-scoring/is-scoreable.ts` HARD-REJECTS
+`incompleteReason === 'scraper_garbage'`, so a truncated-but-genuine review pinned at that value
+can never be scored, and no manual clear survives long enough to unpin it. Three monitor passes
+were burned re-applying a clear that was structurally never durable.
+
+Diagnostic rule: if a hand-cleared flag reverts with `textFetchedAt` UNCHANGED and the other
+manual fields intact, stop looking at the restore/guard layer — it is a targeted recompute.
+Fix tracked as BRO-2890. Distinct from BRO-2858 (clear-failure-flags.js can never clear it in the
+first place); this one is that the clear cannot STAY cleared.
