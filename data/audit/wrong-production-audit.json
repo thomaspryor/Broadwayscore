@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-05T15:36:06.796Z",
+  "timestamp": "2026-09-05T20:03:19.106Z",
   "stats": {
-    "totalReviews": 42394,
-    "alreadyFlagged": 17652,
+    "totalReviews": 42396,
+    "alreadyFlagged": 17649,
     "dateGuardCatches": 237,
-    "directorMismatch": 1039,
-    "tvFilmSignals": 1251,
-    "londonSignals": 1008,
+    "directorMismatch": 1043,
+    "tvFilmSignals": 1252,
+    "londonSignals": 1018,
     "offBroadwaySignals": 497,
     "yearMismatch": 91,
-    "noPublishDate": 3721
+    "noPublishDate": 3707
   },
   "findings": [
     {
@@ -1058,7 +1058,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -2379,7 +2379,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "afridiziak-theatre-news--althyr-pivatto.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-05-30",
       "url": "https://www.afridiziak.com/reviews/beetlejuice-the-musical/",
       "findings": [
@@ -2585,7 +2585,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 85,
+      "score": 86,
       "publishDate": "2026-05-29",
       "url": "https://standard.co.uk/culture/theatre/beetlejuice-the-musical-review-prince-edward-b1284074.html",
       "findings": [
@@ -6328,7 +6328,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6342,7 +6342,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 79,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6356,7 +6356,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8205,6 +8205,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "file": "jacktheladmag--unknown.json",
+      "score": null,
+      "publishDate": "2026-05-22",
+      "url": "https://www.jacktheladmag.com/theatre-reviews/end-of-the-rainbow",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -14467,7 +14486,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 81,
+      "score": 79,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -14550,6 +14569,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "east-midlands-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-20",
+      "url": "https://eastmidlandstheatre.com/2026/03/20/review-into-the-woods-adc-theatre-cambridge/comment-page-1/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 95,
       "publishDate": null,
@@ -14593,7 +14626,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -14648,6 +14681,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "londontheatredirect--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-12",
+      "url": "https://www.londontheatredirect.com/news/into-the-woods-review-roundup?srsltid=AfmBOoo3uCjbC4OrUceIBEpI4yJImH6VMVZahCJr43Z5Iequ3hBdGgv7",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -15508,7 +15555,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -15530,6 +15577,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "liamodell--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-28",
+      "url": "https://liamodell.com/2026/03/28/john-proctor-is-the-villain-review-kimberly-belflower-royal-court-theatre-london-holly-howden-gilchrist-sadie-soverall-the-crucible-run-time-wyndhams-theatre-west-end/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -15620,7 +15686,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -18550,6 +18616,19 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": "2024-03-27",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MJ-THE-MUSICAL-Prince-Edward-Theatre-20240327",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "file": "express-uk--neil-norman.json",
       "score": 79,
       "publishDate": "2024-03-28",
@@ -19060,7 +19139,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -19106,7 +19185,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -34936,6 +35015,34 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "jonathan-baz--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.jonathanbaz.com/2025/11/all-my-sons-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "liamodell--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-11",
+      "url": "https://liamodell.com/2025/12/11/all-my-sons-review-wyndhams-theatre-arthur-miller-ivo-van-hove-bryan-cranst-marianne-jean-baptiste-paapa-essiedu-tom-glynn-carney-hayley-squires/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
       "score": 94,
       "publishDate": "2025-11-22",
@@ -34950,10 +35057,38 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "londontheatredirect--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-24",
+      "url": "https://www.londontheatredirect.com/news/all-my-sons-bryan-cranston-review?srsltid=AfmBOoqL1WDsrHSKxGVDcqrskr310xKpmHAPvvRZI0VlX-xa4QhSLSQN",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "loureviews--louise-penn.json",
       "score": 95,
       "publishDate": "2025-11-22",
       "url": "https://loureviews.blog/2025/11/22/theatre-review-all-my-sons-wyndhams/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-16",
+      "url": "https://monstagigz.com/2025/11/16/theatre-review-all-my-sons-starring-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-at-the-wyndhams-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -35645,7 +35780,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36093,7 +36228,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 76,
+      "score": 82,
       "publishDate": "2026-05-28",
       "url": "https://theatreweekly.com/review-beetlejuice-the-musical-at-prince-edward-theatre/",
       "findings": [
@@ -38273,7 +38408,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 79,
+      "score": 80,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -40383,7 +40518,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -42594,6 +42729,34 @@
       ]
     },
     {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": "https://firstnightmagazine.com/2026/04/07/review-of-john-proctor-is-the-villain-revisionist-play-is-a-crucible-of-ideas-but-the-narrative-is-a-witchs-brew/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-11",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/john-proctor-is-the-villain/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "junk-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
@@ -43791,7 +43954,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -43805,7 +43968,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -46260,6 +46423,20 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "thenerve--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-02",
+      "url": "https://www.thenerve.news/p/review-romeo-and-juliet-les-liaisons-dangereuses-dorian-lynskey-harold-pinter-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "romeo-juliet-2024",
       "file": "thestage--nicole-serratore.json",
       "score": 79,
@@ -47890,7 +48067,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 79,
+      "score": 76,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -52175,6 +52352,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "score": 80,
+      "publishDate": "2026-09-05",
+      "url": "https://westendwilma.com/review-the-story-national-theatre-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
