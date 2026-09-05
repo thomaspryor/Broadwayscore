@@ -81,6 +81,9 @@ const { validateOne: validatePlaybillProduction } = require('./validate-show-ven
 const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
 
@@ -827,11 +830,10 @@ async function fetchShowsFromOfficialLondonTheatre() {
 
   for (const script of ldScripts) {
     try {
-      const data = JSON.parse(script.textContent);
-      // Only accept objects where @type is exactly "TheaterEvent" (string, not array)
-      if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
-      // Skip any with subEvent nesting (season containers)
-      if (data.subEvent) continue;
+      for (const data of parseJsonLd(script.textContent)) {
+        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
+        // Skip any with subEvent nesting (season containers)
+        if (data.subEvent) continue;
 
       const title = (data.name || '').trim()
         .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")  // Curly quotes → straight
@@ -870,6 +872,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
         category: applyGenreCategoryOverride('west-end', genre),
         description,
       });
+      }
     } catch (e) {
       // Skip malformed JSON-LD blocks
     }
@@ -942,12 +945,10 @@ async function fetchShowsFromLondonTheatre() {
 
   for (const script of ldScripts) {
     try {
-      const parsed = JSON.parse(script.textContent);
-      // Handle both single objects and arrays of TheaterEvent (LT uses an array)
-      const items = Array.isArray(parsed) ? parsed : [parsed];
+      const items = parseJsonLd(script.textContent);
 
       for (const data of items) {
-        if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
+        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
         if (data.subEvent) continue;
 
         const title = (data.name || '').trim()
