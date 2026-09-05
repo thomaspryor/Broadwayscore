@@ -141,6 +141,26 @@ function callTemporalOverride({ wpFlag, filmTvFlag, publishDate }) {
   return { ...r, willNullFullText };
 }
 
+// BRO-2835: DATE-FORMAT cases. The guard parsed with bare new Date(), which is
+// Invalid Date for an ordinal publishDate, so the !isNaN guard short-circuited
+// and the override silently never fired for 4718 of 35167 dated reviews. Every
+// existing case below uses an ISO date, so none of them could catch it — only
+// the corpus fixture did, and corpus fixtures drift. That is exactly how
+// BRO-1930 shipped this regression unnoticed. These two pin the parser.
+{
+  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: 'March 24th, 2026' });
+  assert(r.wpConfidence === 'low', 'BRO-2835: ordinal publishDate ("March 24th, 2026") still parses — bare new Date() gives Invalid Date');
+}
+
+{
+  // parseDate alone enforces a 1970-2030 window and returns null for this, which
+  // would newly EXCLUDE reviews that currently get the override. The guard falls
+  // back to parseHistoricalDate; this pins that fallback.
+  const r = applyTemporalOverrides(true, true, 'high', '1952-11-25', 'November 25th, 1952');
+  assert(r.wpConfidence === 'low', 'BRO-2835: pre-1970 opening (mousetrap 1952-11-25) still gets the override — parseDate alone returns null');
+  assert(r.filmTvFlag === false, 'BRO-2835: the pre-1970 isFilmTv clear survives too');
+}
+
 // Day 0 (opening night): should override
 {
   const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-03-23' });
