@@ -50,6 +50,26 @@
  * compared against the raw URL body and normalization does not apply.
  */
 
+// venue-write-guard-ok: this module is READ-ONLY with respect to venues. It never
+// writes shows.json, reviews.json or any other data file — it only reads a venue
+// slug back out of a URL path in order to DECIDE whether that URL names a given
+// show. The `venue:` key the guard flags (legacyDecomposes' return) is a
+// diagnostic describing which corpus venue slug the URL body decomposed into, so
+// callers and tests can assert WHY a legacy match fired.
+//
+// Traced in review: legacyDecomposes returns `{ venue: rest }`,
+// playbillUrlTitleMatch renames it to `corroboration.venueSlugInUrl`, and
+// scorePlaybillUrl reads only `match` and `branch` — the slug itself is DISCARDED
+// there, not transformed. The audit ledger records the selected URL and the venue
+// parsed from Playbill's own page, never this value. sanitizeVenueForWrite() would
+// be meaningless: there is no write to guard, and sanitizing a comparison
+// diagnostic would corrupt the thing it exists to explain.
+//
+// COST OF THIS MARKER, stated so the next reader does not have to discover it:
+// the guard scopes exemptions per FILE, not per line, so any genuine venue write
+// added to this module in future passes unnoticed. A line-scoped exemption would
+// be preferable and the guard does not support one. Keep this module free of
+// venue writes; if one ever belongs here, delete this marker first.
 const { normalizeTitle } = require('./title-match');
 
 /** Words that carry no venue identity on their own. */
