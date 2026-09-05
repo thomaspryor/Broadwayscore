@@ -74,11 +74,18 @@ function findManifestPathGaps(repoRoot) {
 // quarantine below). The other two really did run nowhere, and one had rotted
 // unnoticed: should-defer-cv-wrong-show.test.mjs was failing 2 of its 9
 // assertions because the guard it covers had gone completely inert (BRO-2776 —
-// no outlet in outlet-registry.json carries a cvStyle, so
-// shouldDeferCvWrongShow() can never return true and 8 call sites in
-// rebuild-all-reviews.js are dead branches). A test that never runs cannot tell
+// no outlet in outlet-registry.json carried a cvStyle, so
+// shouldDeferCvWrongShow() could never return true and 8 call sites in
+// rebuild-all-reviews.js were dead branches). A test that never runs cannot tell
 // you its subject died, which is the same "absence of a signal looks like the
 // safe outcome" shape the gates in this repo exist to break.
+//
+// RESOLVED 2026-09-05. The 6 cvStyle keys were restored (nytimes, vulture,
+// newyorker, washpost, nysr, new-york-sun), the test now passes 8/8, and it is
+// registered in tests/unit-test-manifest.txt so it runs. The standing guard
+// against a silent repeat is audit-outlet-registry.js, which now FAILS
+// --strict when zero outlets carry 'long-biographical' — the original 2026-05-16
+// loss was a clean 3-way merge silently dropping every key.
 //
 // KNOWN SCOPE LIMIT: this scans tests/unit only. 8 of the ~96 scripts/*.test.mjs
 // files are in no manifest, and the colocated step globs scripts/lib/*.test.mjs
@@ -118,10 +125,6 @@ const TEST_FILE_RE = /\.test\.(c?js|mjs|tsx?)$/;
  */
 const RUNS_AT_OWN_STEP = 'DOES run';
 const UNREGISTERED_TEST_QUARANTINE = new Map([
-  [
-    'tests/unit/should-defer-cv-wrong-show.test.mjs',
-    'BRO-2776 — runs nowhere today AND fails 2/9: no outlet carries cvStyle, so shouldDeferCvWrongShow() is inert. Register once the guard is armed.',
-  ],
   [
     'tests/unit/opening-night-checklist-cli.test.mjs',
     'BRO-2777 — runs nowhere today and cannot pass as written: it parses --json off stdout, which carries progress logs before the JSON, and it spends a live Scrapingdog credit per run.',

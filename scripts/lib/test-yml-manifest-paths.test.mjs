@@ -283,16 +283,29 @@ test('it fails CLOSED when the test layout MOVES, rather than declaring everythi
   assert.throws(() => findUnregisteredTests(dir), /the test layout moved/);
 });
 
-test('quarantined tests are reported separately and do NOT count as orphans', () => {
+// These two fixtures used to hardcode tests/unit/should-defer-cv-wrong-show.test.mjs.
+// That coupled this guard's own tests to one card's transient state: when BRO-2776
+// was resolved on 2026-09-05 and that entry left the quarantine, both tests failed
+// even though the guard was working perfectly. Read a live entry instead, so
+// retiring ANY quarantine is a normal event rather than a red build.
+const [QUARANTINE_FIXTURE_PATH, QUARANTINE_FIXTURE_REASON] =
+  [...UNREGISTERED_TEST_QUARANTINE][0] || [];
+
+test('quarantined tests are reported separately and do NOT count as orphans', (t) => {
+  if (!QUARANTINE_FIXTURE_PATH) {
+    t.skip('quarantine map is empty — nothing to exercise, which is the goal state');
+    return;
+  }
   const dir = fixture({
     pushPaths: ['tests/**'],
     manifestEntries: [],
-    onDisk: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
+    onDisk: [QUARANTINE_FIXTURE_PATH],
   });
   const { orphans, quarantined } = findUnregisteredTests(dir);
   assert.deepEqual(orphans, []);
   assert.equal(quarantined.length, 1);
-  assert.match(quarantined[0].reason, /BRO-2776/);
+  assert.equal(quarantined[0].reason, QUARANTINE_FIXTURE_REASON);
+  assert.match(quarantined[0].reason, /BRO-\d+/);
 });
 
 test('every quarantine entry names an issue, so no exemption can be permanent-by-vagueness', () => {
@@ -301,15 +314,19 @@ test('every quarantine entry names an issue, so no exemption can be permanent-by
   }
 });
 
-test('a quarantine entry for an already-registered test is reported as stale', () => {
+test('a quarantine entry for an already-registered test is reported as stale', (t) => {
+  if (!QUARANTINE_FIXTURE_PATH) {
+    t.skip('quarantine map is empty — nothing to exercise, which is the goal state');
+    return;
+  }
   const dir = fixture({
     pushPaths: ['tests/**'],
-    manifestEntries: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
-    onDisk: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
+    manifestEntries: [QUARANTINE_FIXTURE_PATH],
+    onDisk: [QUARANTINE_FIXTURE_PATH],
   });
   const { orphans, staleQuarantine } = findUnregisteredTests(dir);
   assert.deepEqual(orphans, []);
-  assert.ok(staleQuarantine.includes('tests/unit/should-defer-cv-wrong-show.test.mjs'));
+  assert.ok(staleQuarantine.includes(QUARANTINE_FIXTURE_PATH));
 });
 
 test('the real binary exits 1 on an orphan and 0 without one', () => {
