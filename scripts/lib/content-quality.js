@@ -516,8 +516,11 @@ function loadBroadwayShows() {
     // Fall through to hardcoded
   }
 
-  // Hardcoded fallback
-  _cachedBroadwayShows = [
+  // Hardcoded fallback. Deduped like the shows.json branch above — this list
+  // has its own duplicates ('the notebook', 'the outsiders'), and every
+  // consumer counts DISTINCT titles, so the invariant has to hold on both
+  // branches rather than only when core data happens to be readable.
+  _cachedBroadwayShows = [...new Set([
     'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
     'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
     'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
@@ -532,7 +535,7 @@ function loadBroadwayShows() {
     'a beautiful noise', 'some like it hot', 'kimberly akimbo', 'parade',
     'shucked', 'new york new york', 'camelot', 'lempicka', 'the notebook',
     'days of wine and roses', 'pictures from home', 'the outsiders',
-  ];
+  ])];
   return _cachedBroadwayShows;
 }
 
