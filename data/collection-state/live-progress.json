@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-05T14:26:12.315Z",
-  "processed": 176,
-  "failed": 3320,
-  "successRate": "5.0%",
+  "updatedAt": "2026-09-05T14:30:29.250Z",
+  "processed": 179,
+  "failed": 3327,
+  "successRate": "5.1%",
   "tierBreakdown": {
-    "playwright": 104,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 29,
+    "browserbase": 31,
     "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 42,
+    "brightdata": 43,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-05T12:13:12.105Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-05T12:16:32.953Z",
-      "event": "bb-session",
-      "session": "9f9fc6be",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
     {
       "t": "2026-09-05T12:16:40.631Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
     },
     {
       "t": "2026-09-05T14:24:44.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:29:51.847Z",
+      "event": "bb-session",
+      "session": "14337234",
+      "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-oper"
+    },
+    {
+      "t": "2026-09-05T14:29:53.123Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

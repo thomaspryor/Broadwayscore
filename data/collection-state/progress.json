@@ -175,7 +175,10 @@
     "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
     "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
     "camping-off-broadway-2026/talkinbroadway--unknown.json",
-    "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json"
+    "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
+    "this-is-rambert-west-end-2026/british-theatre--rachel-nouchi.json",
+    "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json",
+    "the-last-ship-off-broadway-2026/nytimes--alan-light.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -3497,7 +3500,14 @@
     "romeo-and-juliet-off-broadway-2026/frontmezzjunkies--unknown.json",
     "romeo-and-juliet-off-broadway-2026/huffpost--unknown.json",
     "romeo-and-juliet-off-broadway-2026/nbcny--unknown.json",
-    "romeo-and-juliet-off-broadway-2026/ny1--unknown.json"
+    "romeo-and-juliet-off-broadway-2026/ny1--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/evening-chronicle--unknown.json",
+    "soldiers-of-tomorrow-off-west-end-2026/thestage--unknown.json",
+    "under-the-shadow-off-west-end-2026/guardian--unknown.json",
+    "driftwood-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/whatsonstage--emily-cole.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3605,7 +3615,8 @@
       "birthright-off-broadway-2026/the-recs--unknown.json",
       "relics-west-end-2026/rhombus-rota--unknown.json",
       "the-loved-ones-off-broadway-2026/theatermania--david-gordon.json",
-      "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json"
+      "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
+      "this-is-rambert-west-end-2026/british-theatre--rachel-nouchi.json"
     ],
     "amp": [],
     "browserbase": [
@@ -3637,7 +3648,9 @@
       "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
       "data/review-texts/the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json",
       "the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json",
-      "data/review-texts/romeo-and-juliet-off-broadway-2026/nytimes--charles-isherwood.json"
+      "data/review-texts/romeo-and-juliet-off-broadway-2026/nytimes--charles-isherwood.json",
+      "data/review-texts/the-last-ship-off-broadway-2026/nytimes--alan-light.json",
+      "the-last-ship-off-broadway-2026/nytimes--alan-light.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -3689,7 +3702,8 @@
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -3719,7 +3733,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
+  "lastProcessed": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -4275,6 +4289,17 @@
     },
     {
       "t": "2026-09-05T14:24:44.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:29:51.847Z",
+      "event": "bb-session",
+      "session": "14337234",
+      "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-oper"
+    },
+    {
+      "t": "2026-09-05T14:29:53.123Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
