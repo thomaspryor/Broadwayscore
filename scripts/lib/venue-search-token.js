@@ -22,17 +22,28 @@
  * shows was getting a degraded validation query. AMAZE was simply the one
  * somebody looked at.
  *
- * WHAT IT PICKS, in order:
+ * WHAT IT PICKS:
  *   1. the first token that is neither a stopword nor a generic venue noun
- *      ("New Amsterdam Theatre" -> "Amsterdam", "St. James Theatre" -> "James")
- *   2. failing that, the first non-stopword token, even if generic
- *      ("The Theater Center" -> "Theater" — weak, but strictly better than "The")
- *   3. failing that, the original first token, so this can never return empty
- *      and can never make a query WORSE than the one it replaces
+ *      ("New Amsterdam Theatre" -> "Amsterdam", "St. James Theatre" -> "James",
+ *       "WP Theater" -> "WP", "Studio 54" -> "54")
+ *   2. otherwise the EMPTY STRING, meaning "omit the venue term entirely"
  *
- * Rule 3 is the important one: this function is a strict improvement or a
- * no-op, never a regression, which is what makes it safe to drop into a path
- * that already ships.
+ * There is deliberately no generic-word fallback. A generic word is worse than
+ * no word: "Theater" appears on every playbill.com/production page, so it looks
+ * like it is scoping the query while matching everything. Returning '' leaves a
+ * clean title+market query instead. Only 2 of the corpus's 355 distinct venues
+ * hit that branch ("The Theater Center", "Playhouse Theatre").
+ *
+ * RELATIONSHIP TO scripts/lib/serp-review-census.js:75 venueQueryToken(). That
+ * function solves the same shape for the review census and reaches the same
+ * "return null rather than a generic word" conclusion independently. The two
+ * deliberately differ: census lowercases and folds diacritics because its
+ * queries are normalized, and its stopword list is broader (it also drops
+ * royal/world/city/street/east/west) because a census query that over-matches
+ * costs a wasted SERP call, whereas here an over-broad token costs a WRONG
+ * Playbill URL written into the durable cache. Consolidating the two
+ * vocabularies is tracked separately rather than done here, because changing
+ * census's list would move the census's own results.
  *
  * Pure and separate from validate-show-venue.js per CLAUDE.md rule 15 — the
  * interesting behaviour is the token CHOICE, and that is only testable without
@@ -44,8 +55,15 @@
 // Leading articles, prepositions and abbreviations that carry no search signal.
 // 'new' earns its place on frequency alone: "New Amsterdam Theatre", "New World
 // Stages" and "New York Theatre Workshop" all collapse onto it.
+// The function words matter as much as the articles. Adversarial review
+// (Codex, 2026-09-05) found the one live-corpus venue where omitting them
+// broke this function's own contract: "Theatre for a New Audience/Polonsky
+// Shakespeare Center" skipped the generic "Theatre" and returned "for", which
+// is strictly WORSE than the first token the old code used. Anything that can
+// be the second word of a venue name without naming it belongs here.
 const STOPWORDS = new Set([
   'a', 'an', 'the', 'at', 'of', 'on', 'in', 'and', 'new',
+  'for', 'with', 'from', 'by', 'to', 'its',
   'st', 'st.', 'ste', 'ste.', 'mt', 'mt.',
 ]);
 
@@ -76,11 +94,29 @@ function venueSearchToken(venue) {
     .filter(Boolean);
   if (!tokens.length) return '';
 
-  // A 1-2 character fragment ("5", "at") is never a useful search term.
-  const usable = tokens.filter((t) => normalize(t).length >= 3 && !isStopword(t));
-
-  const distinctive = usable.find((t) => !GENERIC.has(normalize(t)));
-  return distinctive || usable[0] || tokens[0];
+  // A GENERIC word is never an acceptable answer, not even as a last resort.
+  // Two independent adversarial reviews (Codex and a codebase-aware reviewer,
+  // both 2026-09-05) landed on the same defect from different directions: the
+  // first version fell back to `usable[0]` when every candidate was generic,
+  // which turned "WP Theater" (5 shows) into "Theater" — a word that appears on
+  // EVERY playbill.com/production page, so the venue term stopped scoping the
+  // query at all. That is strictly worse than the "WP" the old code produced.
+  //
+  // So: return the first token that is neither a stopword nor generic, and
+  // otherwise return NOTHING. An empty token means "omit the venue term", which
+  // leaves a clean title+market query. A generic token is worse than no token,
+  // because it looks like scoping while matching everything. Only 2 of the 355
+  // distinct venues in the corpus ("The Theater Center", "Playhouse Theatre",
+  // 5 shows between them) have no distinctive word at all.
+  //
+  // The length floor is 2, not 3: "WP Theater" and "59E59 Theaters" carry their
+  // identity in a two-character token, and "Studio 54" / "Stage 42" carry it in
+  // the number that a 3-character floor discarded.
+  const distinctive = tokens.find((t) => {
+    const n = normalize(t);
+    return n.length >= 2 && !isStopword(t) && !GENERIC.has(n);
+  });
+  return distinctive || '';
 }
 
 module.exports = { venueSearchToken, STOPWORDS, GENERIC };
