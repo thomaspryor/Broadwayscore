@@ -3519,21 +3519,44 @@ function neverRunWorkflowResults(report) {
 // committed weekly by detect-ob-closings.yml). The detector is alert-only by
 // design; without a digest line its report is a JSON file nobody reads — the
 // same silent-channel failure as the needs-manual-review backlog above.
-function obClosingBacklogResults(report) {
+//
+// Named-first-in-array is not named-most-urgent: this used to always report
+// candidates[0] (reviewTextSweep entries first, then todaytixStaleness),
+// so a todaytixStaleness candidate sitting many weeks deep in the combined
+// list never got named — only the generic count did. "Are You Now or Have
+// You Ever Been" (closed 2026-08-02, announced early) sat in this backlog
+// for 5 consecutive weekly runs (2026-08-03 -> 2026-08-31) behind
+// candidates[0]='my-joy-is-heavy-off-broadway-2025' the entire time, and the
+// digest message never changed enough to prompt someone to open the raw
+// JSON. Fix: rank by age (todaytixStaleness carries firstMissingDate;
+// reviewTextSweep entries have no age signal, so they sort last) and name
+// the OLDEST candidate, escalating to 'error' once it's stale enough that a
+// single weekly warn line has clearly already failed to get it actioned.
+const OB_CLOSING_AGED_DAYS_ERROR = 21; // ~3 missed weekly runs
+function obClosingBacklogResults(report, now = new Date()) {
   if (!report || !report.reviewTextSweep) return [];
   const candidates = [
     ...(report.reviewTextSweep.candidates || []),
     ...((report.todaytixStaleness && report.todaytixStaleness.candidates) || []),
   ];
   if (candidates.length === 0) return [];
-  const first = candidates[0];
-  const label = first.proposedClosingDate
-    ? `${first.showId} → ${first.proposedClosingDate} [${first.confidence}]`
-    : `${first.showId}`;
+
+  const withAge = candidates.map(c => ({
+    ...c,
+    ageDays: c.firstMissingDate ? Math.floor((now - new Date(c.firstMissingDate)) / 86400000) : null,
+  }));
+  // Oldest (by age, when known) first; entries with no age signal (reviewTextSweep)
+  // sort after every aged entry but otherwise keep their original relative order.
+  const oldest = withAge.reduce((best, c) => (c.ageDays != null && (best.ageDays == null || c.ageDays > best.ageDays) ? c : best));
+  const label = oldest.proposedClosingDate
+    ? `${oldest.showId} → ${oldest.proposedClosingDate} [${oldest.confidence}]`
+    : `${oldest.showId}${oldest.ageDays != null ? ` (missing ${oldest.ageDays}d)` : ''}`;
+
+  const status = oldest.ageDays != null && oldest.ageDays >= OB_CLOSING_AGED_DAYS_ERROR ? 'error' : 'warn';
   return [{
     name: 'Data: OB closing candidates awaiting review',
-    status: 'warn',
-    message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. First: ${label}`,
+    status,
+    message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. Oldest: ${label}`,
     hint: 'Review data/audit/ob-closing-candidates.json; confirm evidence quotes, then set closingDate/status in shows.json (data repo).',
   }];
 }
