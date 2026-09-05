@@ -32,6 +32,9 @@
 
 const { JSDOM } = require('jsdom');
 const { stripPvHead } = require('./show-matching');
+// Shared JSON-LD reader: handles @graph, which every hand-rolled
+// `Array.isArray(x) ? x : [x]` in this repo used to miss (see jsonld.js).
+const { jsonLdItems } = require('./jsonld');
 const { slugify, levenshteinDistance, venuesMatch } = require('./deduplication');
 const { normalizeTitle } = require('./title-match');
 const { normalizeOutlet, isRegisteredOutlet, resolveOutletFromUrl } = require('./review-normalization');
@@ -158,37 +161,6 @@ function parseBwwSlugTitle(rawSlug) {
   if (lastAt >= 0) s = s.slice(0, lastAt);
   const title = titleCaseShout(s.replace(/-/g, ' '));
   return { title, placeholder };
-}
-
-/**
- * Flatten one parsed JSON-LD payload into the list of schema.org nodes it
- * carries. Handles the three shapes publishers actually ship:
- *   1. a bare node            -> [node]
- *   2. a top-level array      -> the array
- *   3. a schema.org @graph    -> the graph's nodes (Playbill, Yoast-powered
- *                               sites) plus a @graph nested inside an array
- *                               element, which some CMSes emit.
- *
- * Missing @graph support is what made a real 159KB Playbill Verdict article
- * (Rhinoceros at A.R.T., 2026-08-24) fail isBotShell()'s date signal and get
- * rejected as reason='bot-shell': Playbill hangs datePublished off the
- * NewsArticle inside @graph, so the top-level object looked date-less.
- * Mirrors dom-article-extractor.js's long-standing @graph handling.
- */
-function jsonLdItems(parsed) {
-  const out = [];
-  const top = Array.isArray(parsed) ? parsed : [parsed];
-  for (const node of top) {
-    if (!node || typeof node !== 'object') continue;
-    out.push(node);
-    const graph = node['@graph'];
-    if (Array.isArray(graph)) {
-      for (const g of graph) {
-        if (g && typeof g === 'object') out.push(g);
-      }
-    }
-  }
-  return out;
 }
 
 function extractDateFromJsonLd(doc) {
