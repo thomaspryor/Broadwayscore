@@ -77,8 +77,15 @@ const STOPWORDS = new Set([
 // venue it is. Skipped only when something more distinctive exists.
 const GENERIC = new Set([
   'theatre', 'theater', 'theatres', 'theaters',
-  'stage', 'stages', 'center', 'centre', 'hall', 'house', 'playhouse',
+  'stage', 'stages', 'center', 'centre', 'hall', 'house',
   'studio', 'space', 'room', 'club', 'arts', 'complex', 'auditorium',
+  // 'playhouse' is deliberately NOT here. It was, and that was a strict
+  // regression on the West End's "Playhouse Theatre", where Playhouse is the
+  // NAME, not the type: the token went to '' where the old first-token code
+  // correctly said "Playhouse". It had been added for "La Jolla Playhouse",
+  // which does not need it — that venue resolves on "Jolla" long before the
+  // word is reached. Removing it changes exactly ONE venue in the corpus, the
+  // one it was breaking.
   // folded forms of venue-type words that arrive accented
   'cafe', 'salle', 'teatro', 'opera',
 ]);
