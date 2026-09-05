@@ -133,7 +133,11 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const {
+  isWithinPriorRun,
+  isWithinTourLeg,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+} = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
@@ -6532,19 +6536,47 @@ async function processReview(review) {
     if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
       try {
         const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        delete postData.wrongProduction;
+        // BRO-2828: this recovery answers ONE question — did re-fetching from
+        // the corrected URL produce the right article? A flag set from data
+        // that is not the article body and not the URL is not answered by it,
+        // and deleting such a flag here silently un-excludes the review. The
+        // live case was the anticipatory pre-opening gate, stamped moments
+        // earlier in this same pass from publishDate vs openingDate, wiped by
+        // a cosmetic /comment-page-1/ suffix strip on the same article.
+        const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);
+        if (!preserve.wrongProduction) {
+          delete postData.wrongProduction;
+          delete postData.wrongProductionReason;
+        }
         delete postData.wrongShow;
-        delete postData.wrongProductionReason;
         delete postData.wrongShowReason;
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
+        // incompleteReason/incompleteDetail/contentTier are cleared even when
+        // the flag is preserved, and that is deliberate. Keeping
+        // incompleteReason='wrong_content' would re-select this file on EVERY
+        // targeted INCOMPLETE_REASON_FILTER=wrong_content drain (the filter
+        // above matches on exactly that value), re-fetching it forever at real
+        // scraper cost with no possible progress: a publishDate-vs-openingDate
+        // verdict cannot be changed by fetching the page again. Clearing them
+        // leaves the file skipped by the default pass via the isWrongContent
+        // guard above — which is what "correctly excluded" is supposed to look
+        // like, not a stranding. The clear path for a preserved flag is the
+        // rebuild's anticipatory auto-clear, which re-derives from shows.json
+        // and needs no re-fetch at all. (Codex adversarial review caught this;
+        // an earlier reviewer had argued the opposite and was wrong.)
         delete postData.incompleteReason;
         delete postData.incompleteDetail;
         if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
           delete postData.contentTier;
         }
+        if (preserve.wrongProduction) {
+          postData.wrongProductionPreservedOnUrlRecoveryAt = new Date().toISOString();
+        }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
-        console.log(`    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
+        console.log(preserve.wrongProduction
+          ? `    ✓ wrong_content recovered — wrongProduction (${postData.wrongProductionReason}) PRESERVED: not a content verdict, re-fetch is no evidence against it`
+          : `    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
       } catch (e) {
         // Recovery cleanup failed — preserve original state. Log so we know why next-cycle still skips.
         console.log(`    ⚠ wrong_content recovery cleanup failed (${e.message}) — file state preserved`);

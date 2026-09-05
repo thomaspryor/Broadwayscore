@@ -686,6 +686,76 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
 }
 
 /**
+ * Decide whether collect-review-texts.js's "wrong_content recovered" cleanup
+ * must LEAVE an exclusion flag in place instead of deleting it.
+ *
+ * Background (BRO-2828, live incident 2026-09-05): that cleanup runs after a
+ * review is re-fetched from a corrected URL and blanket-deletes
+ * wrongProduction/wrongProductionReason regardless of what SET them. The
+ * anticipatory pre-opening gate in the SAME ingest pass sets
+ * wrongProduction=true / wrongProductionReason='anticipatory_pre_opening_post'
+ * from publishDate vs the show's openingDate alone — a verdict that has
+ * nothing to do with the URL or the article body, so re-fetching from a
+ * corrected URL is no evidence against it. On
+ * the-story-west-end-2026/monstagigz--unknown.json the URL change was a
+ * cosmetic /comment-page-1/ suffix strip on the SAME article; the flag was
+ * wiped, the review shipped with assignedScore 44, and the opening-night
+ * broadcast checklist gate blocked on it for days. The gate's own
+ * wrongProductionDetail / wrongProductionDetectedBy / anticipatoryGate*
+ * breadcrumbs survived the delete, which is how the cause was traced.
+ *
+ * Keyed off DATE_ONLY_AUTO_REASONS rather than the literal string so this
+ * does not become a third independent copy of the same policy — that Set
+ * already IS the repo's registry of content-independent wrongProduction
+ * reasons, and flag-contradiction.js joins on it for the same reason.
+ *
+ * CAVEAT if you add a member to that Set: it now has two consumers with
+ * different questions. flag-contradiction.js asks "can a content-only CV pass
+ * evaluate this reason?"; this predicate asks "can re-fetching the article
+ * from a corrected URL disprove this reason?". Those coincide for
+ * anticipatory_pre_opening_post and for any other pure date verdict, but a
+ * future reason that CV cannot judge yet a NEW URL genuinely does invalidate
+ * would be preserved here incorrectly, and would also be exempt from
+ * contradiction triage — so it would stay excluded silently. If you add such a
+ * reason, split the Set rather than widening this one (Codex review, BRO-2828).
+ *
+ * shouldSkipWrongProductionAudit() is deliberately NOT consulted: it gates
+ * whether the ingest gate stamps the flag at all (collect-review-texts.js),
+ * so a file carrying a DATE_ONLY_AUTO_REASONS reason already passed it — and
+ * importing review-guards.js here would close a require cycle (review-guards
+ * pulls isWithinPriorRun back out of this module).
+ *
+ * humanReviewedEarlyPublish IS consulted. It is the documented operator
+ * opt-out for the anticipatory gate (content-filters.js
+ * isAnticipatoryPreviewPost), and this cleanup was its only remaining exit:
+ * collect-review-texts.js never re-runs the gate on an already-flagged file,
+ * and the collect-side re-skip guard honors only humanReviewedWrongProduction
+ * === false / humanReviewScore. Ignoring it here would leave an operator with
+ * no way to clear the flag at all. The rebuild's re-derivation now passes the
+ * same opt through to isAnticipatoryPreviewPost so both exits agree.
+ *
+ * Only the wrongProduction half is answered here. The same block also deletes
+ * wrongShow/wrongShowReason and that side has the same shape of bug (e.g. the
+ * one-shot "Cross-show URL collision (manual resolution)" and "Orphaned
+ * generic directory" reasons are equally content-independent), but there is
+ * no wrongShow equivalent of DATE_ONLY_AUTO_REASONS today and preserving on
+ * ANY wrongShowReason would defeat the cleanup's purpose — content-mismatch
+ * flags carry reason strings too. Tracked separately rather than guessed at.
+ *
+ * @param {object} data - the review JSON object, read back after the re-fetch
+ * @returns {{ wrongProduction: boolean }}
+ */
+function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
+  const d = data || {};
+  const reason = d.wrongProductionReason;
+  const wrongProduction = d.wrongProduction === true
+    && typeof reason === 'string'
+    && DATE_ONLY_AUTO_REASONS.has(reason)
+    && d.humanReviewedEarlyPublish !== true;
+  return { wrongProduction };
+}
+
+/**
  * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
  * strip wrongProduction from a London-market show reviewed by a UK or
  * dual-market outlet.
@@ -774,5 +844,6 @@ module.exports = {
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
   shouldAutoClearAnticipatoryGrace,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
   shouldAutoClearWrongProductionUkDualMarket,
 };

@@ -126,6 +126,13 @@ const PROTECTED_FIELDS = [
   'humanReviewNote',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // Operator opt-out for the anticipatory pre-opening gate (content-filters.js
+  // isAnticipatoryPreviewPost). Same family as the two above and it was simply
+  // missing (BRO-2828). It became load-bearing once collect-review-texts.js
+  // stopped blanket-deleting the anticipatory flag on URL recovery: this field
+  // is now the operator's clear path, so losing it to a CI rebase would leave
+  // an intentionally-cleared review silently re-excluded with no way to say so.
+  'humanReviewedEarlyPublish',
   'wrongProductionManualClear',
   'wrongArticleManualClear',
   'wrongShowManualClear',
