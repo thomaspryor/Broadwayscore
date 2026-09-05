@@ -781,7 +781,9 @@ test('NEGATIVE CONTROL: with a retry budget of 1 the same lost CAS is fatal, and
     // not blame timeouts. Without this the race counter could read zero
     // forever and only the timeout test would notice.
     assert.match(result.stderr, /1 lost the ref race/, 'a genuine lost CAS must be counted as a race');
-    assert.match(result.stderr, /0 timed out/, 'nothing timed out in this fixture');
+    // Word-anchored: an unanchored /0 timed out/ also matches "10 timed out",
+    // so it would keep passing on a run where timeouts actually fired.
+    assert.match(result.stderr, /\b0 timed out/, 'nothing timed out in this fixture');
     assert.equal(result.code, 1, 'race-dominated exhaustion keeps exit 1; only timeout-dominated exits 3');
 
     // The half a bare "it failed" assertion cannot see: this test passes

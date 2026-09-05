@@ -510,7 +510,14 @@ echo "::error::push-via-git-api: exhausted $MAX_RETRIES attempts: $EXHAUSTION_BR
 # fallback died instead of filing every exhaustion as a generic retry cap.
 # push-with-retry.sh only tests this for zero/non-zero, so a new non-zero code
 # is safe there.
-if [ "$FAIL_TIMEOUT" -gt "$FAIL_RACE" ] && [ "$FAIL_TIMEOUT" -gt "$FAIL_OTHER" ]; then
+# Ties go TO the timeout signal, deliberately. A strict -gt would file a
+# 1-timeout/1-race exhaustion as "(race-or-other)" and drop the timeout from
+# the durable ledger — discarding exactly the signal this change exists to
+# preserve. The printed breakdown above still reports both counts either way;
+# this only decides which reason the caller records.
+if [ "$FAIL_TIMEOUT" -gt 0 ] \
+  && [ "$FAIL_TIMEOUT" -ge "$FAIL_RACE" ] \
+  && [ "$FAIL_TIMEOUT" -ge "$FAIL_OTHER" ]; then
   exit 3
 fi
 exit 1
