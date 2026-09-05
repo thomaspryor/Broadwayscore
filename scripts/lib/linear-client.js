@@ -413,6 +413,38 @@ async function createComment(issueId, body) {
   });
 }
 
+// Mark `issueId` a duplicate of `relatedIssueId`. Linear will not accept a
+// move into a duplicate-type workflow state until this relation exists — the
+// mutation fails with "missing duplicate relation" — so linear-brain.js's
+// `update --state Duplicate --duplicate-of BRO-N` calls this FIRST, before
+// the comment and the state write (linear-duplicate-gate.js's header has the
+// full incident). Direction is not symmetric: the relation is stored as an
+// OUTGOING relation on the issue being retired, so `issueId` must be the
+// duplicate and `relatedIssueId` the canonical twin, never the reverse.
+// Both arguments are UUIDs, not BRO-N identifiers — issueRelationCreate does
+// not resolve human-readable identifiers the way `issue(id:)` does.
+// withArchivedIssueRetry, exactly like createComment/updateIssue: this is the
+// FIRST write of a duplicate close, so without it an archived issue fails at
+// step 1 where the pre-existing comment/state path would have self-healed
+// (codebase review, 2026-09-05).
+async function createIssueRelation(issueId, relatedIssueId, type = 'duplicate') {
+  return withArchivedIssueRetry(issueId, async () => {
+    const data = await graphql(
+      `mutation($issueId: String!, $relatedIssueId: String!, $type: IssueRelationType!) {
+        issueRelationCreate(input: { issueId: $issueId, relatedIssueId: $relatedIssueId, type: $type }) {
+          success
+          issueRelation { id type }
+        }
+      }`,
+      { issueId, relatedIssueId, type }
+    );
+    if (!data.issueRelationCreate || !data.issueRelationCreate.success) {
+      throw new Error(`issueRelationCreate(${type}) failed for issue ${issueId} -> ${relatedIssueId}`);
+    }
+    return data.issueRelationCreate.issueRelation;
+  });
+}
+
 // Archive a Done/Canceled issue so it stops counting against the free-tier
 // 250-unarchived-issue cap (BRO-285). Archiving is reversible in Linear's UI
 // (unarchive), unlike delete, so this carries a lower bar than updateIssue's
@@ -655,6 +687,7 @@ module.exports = {
   listOpenIssuesWithDescriptions,
   searchIssues,
   createComment,
+  createIssueRelation,
   updateIssue,
   archiveIssue,
   issueUnarchive,

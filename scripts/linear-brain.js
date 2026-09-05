@@ -33,7 +33,7 @@ Usage:
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
-    [--force "<reason ≥10 chars>"]
+    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -55,6 +55,16 @@ Usage:
           "## Acceptance criteria" section / "VERIFY: <cmd>" line. Bypass
           with --force "<reason ≥10 chars>", or LINEAR_DONE_GATE_DISABLED=1
           for automation that must not block (BRO-457).
+          Moving into a DUPLICATE-type state is REFUSED (exit 6) unless the
+          issue already owns an outgoing duplicate relation, because Linear
+          rejects that mutation with "missing duplicate relation" AFTER any
+          --comment has already been posted. Pass --duplicate-of <BRO-N> to
+          create the relation and move the state in one call; the success
+          JSON then carries duplicateOf. Exit 6 also covers a --duplicate-of
+          that DISAGREES with the twin already on the issue. Exit 1 if
+          --duplicate-of is passed without a duplicate-type --state, rather
+          than ignoring it. Kill switch: LINEAR_DUPLICATE_GATE_DISABLED=1
+          (BRO-343).
 `;
 
 function parseArgs(argv) {
@@ -157,6 +167,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     getTeam: getTeamFn = linearClient.getTeam,
     updateIssue: updateIssueFn = linearClient.updateIssue,
     createComment: createCommentFn = linearClient.createComment,
+    createIssueRelation: createIssueRelationFn = linearClient.createIssueRelation,
   } = deps;
 
   if (hasHelpFlag(argv)) {
@@ -213,7 +224,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // The caller names a real Linear state; an unknown one lists the real set.
     const identifier = args._positional[1];
     if (!identifier) {
-      console.error('Usage: linear-brain update <BRO-N> [--state "<name>"] [--comment "<text>"]');
+      console.error('Usage: linear-brain update <BRO-N> [--state "<name>"] [--comment "<text>"] [--duplicate-of <BRO-N>]');
       process.exit(1);
     }
     if (args.state === undefined && args.comment === undefined) {
@@ -233,6 +244,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
 
     const { resolveState, formatStateError } = require('./lib/linear-state-resolve');
+    const {
+      DUPLICATE_STATE_TYPE,
+      checkLinearDuplicateTransition,
+    } = require('./lib/linear-duplicate-gate');
     try {
       const issue = await getIssueFn(identifier);
       if (!issue) {
@@ -251,6 +266,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           process.exit(1);
         }
         target = resolved.state;
+      }
+
+      // --duplicate-of only means anything on a move into a duplicate-type
+      // state. Silently ignoring it elsewhere let `update BRO-1 --comment x
+      // --duplicate-of BRO-2` exit 0 having created no relation, while the
+      // operator reasonably believed the advertised option had been applied
+      // (adversarial-review finding). Refuse before any write instead.
+      if (args['duplicate-of'] !== undefined && (!target || target.type !== DUPLICATE_STATE_TYPE)) {
+        console.error(
+          `❌ --duplicate-of only applies to a move into a duplicate-type state.\n` +
+            (target
+              ? `   --state "${target.name}" is a ${target.type}-type state, so the flag would do nothing.`
+              : `   No --state was given, so the flag would do nothing.`) +
+            `\n   Drop --duplicate-of, or pass the team's duplicate state via --state.`
+        );
+        process.exit(1);
       }
 
       // BRO-457: refuse a move into a completed-type state unless the issue
@@ -292,6 +323,84 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         }
       }
 
+      // Crown BRO-343 2026-09-05: refuse a move into a duplicate-type state
+      // that Linear itself will refuse. `--state Duplicate` is advertised as
+      // valid (the unknown-state error lists it), but the mutation fails with
+      // "missing duplicate relation" unless the issue owns an outgoing
+      // duplicate relation — and it fails AFTER the --comment below has
+      // landed, so the operator reads the non-zero exit as "nothing
+      // happened", re-runs, and double-posts onto a still-open card. Resolved
+      // here, before the first write, from the `relations` the same getIssue()
+      // read already fetched. `--duplicate-of BRO-N` creates the relation
+      // instead of refusing.
+      let duplicateRelation = null;
+      // The canonical twin this call ends up naming — either one already on
+      // the issue or one --duplicate-of creates. Reported in the success JSON.
+      let duplicateTwin = null;
+      // `target && ...` alone treated a re-run on an issue ALREADY in the
+      // duplicate state as a fresh transition and refused it, suppressing the
+      // --comment on a card whose state was already correct (adversarial-review
+      // finding). No state change is being requested, so there is nothing for
+      // Linear to validate and nothing for this gate to guard.
+      const isRealTransition = Boolean(target && issue.state && issue.state.id !== target.id);
+      if (isRealTransition && target.type === DUPLICATE_STATE_TYPE) {
+        const dupGate = checkLinearDuplicateTransition({
+          targetStateType: target.type,
+          relations: issue.relations,
+          duplicateOf: args['duplicate-of'],
+        });
+        // The kill switch suppresses the REFUSAL, never the relation work
+        // below. Wiring it around the whole block made
+        // `LINEAR_DUPLICATE_GATE_DISABLED=1 ... --duplicate-of BRO-N` silently
+        // drop the flag, so the one escape hatch also removed the one way to
+        // satisfy the rule it was escaping (codebase review, 2026-09-05).
+        const gateDisabled = process.env.LINEAR_DUPLICATE_GATE_DISABLED === '1';
+        if (!dupGate.allowed && gateDisabled) {
+          console.error(
+            `⚠️  LINEAR_DUPLICATE_GATE_DISABLED=1 — proceeding past ${dupGate.verdict}.\n` +
+              `   If Linear still enforces the rule, the state write below will fail AFTER any\n` +
+              `   --comment has posted; that partial write is exactly what this gate prevents.`
+          );
+        }
+        if (!dupGate.allowed && !gateDisabled) {
+          console.error(`\n❌ REFUSED (${dupGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
+          console.error(dupGate.reason);
+          // Only print the fill-in-the-blank command for the MISSING-relation
+          // case. On a target mismatch the operator already passed a
+          // --duplicate-of, and echoing a `<BRO-N>` placeholder there reads as
+          // if the flag were absent.
+          if (dupGate.verdict === 'no-duplicate-relation') {
+            console.error(
+              `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
+                `--state ${target.name} --duplicate-of <BRO-N>\n`
+            );
+          } else {
+            console.error('');
+          }
+          process.exit(6);
+        }
+        if (dupGate.needsRelation) {
+          // Resolve the canonical twin to a UUID up front: issueRelationCreate
+          // takes UUIDs, not BRO-N identifiers, and a typo'd identifier must
+          // fail HERE (nothing written) rather than mid-way through the write
+          // block with a comment already posted.
+          const canonicalRef = String(args['duplicate-of']).trim();
+          const canonical = await getIssueFn(canonicalRef);
+          if (!canonical) {
+            console.error(`❌ --duplicate-of: no such issue: ${canonicalRef}`);
+            process.exit(2);
+          }
+          if (canonical.id === issue.id) {
+            console.error(`❌ --duplicate-of: ${issue.identifier} cannot be a duplicate of itself`);
+            process.exit(1);
+          }
+          duplicateRelation = { id: canonical.id, identifier: canonical.identifier || canonicalRef };
+          duplicateTwin = duplicateRelation.identifier;
+        } else {
+          duplicateTwin = dupGate.existingTarget;
+        }
+      }
+
       // ORDER MATTERS, and the first version had it backwards. It moved the
       // state first, so a failing createComment exited 2 having ALREADY moved
       // the issue — the operator reads a non-zero exit as "nothing happened"
@@ -300,12 +409,37 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       let commented = false;
       const landed = [];
       try {
+        // The relation goes FIRST because it is the precondition for the
+        // state move — creating it after the comment would reproduce the
+        // partial-write the gate above exists to prevent, and a stray
+        // relation (like a stray comment) is visible and reversible in
+        // Linear's UI, unlike a silent state move.
+        if (duplicateRelation) {
+          await createIssueRelationFn(issue.id, duplicateRelation.id, DUPLICATE_STATE_TYPE);
+          landed.push(`marked duplicate of ${duplicateRelation.identifier}`);
+        }
         if (args.comment !== undefined) {
           await createCommentFn(issue.id, args.comment);
           commented = true;
           landed.push('comment posted');
         }
-        if (target) {
+        if (target && !isRealTransition && target.type === DUPLICATE_STATE_TYPE) {
+          // Already in the requested duplicate state. The gate deliberately
+          // skips a non-transition, so sending the write anyway would hand
+          // Linear a duplicate-state mutation the gate never validated —
+          // reopening the BRO-2711 partial write on the exact case the skip
+          // exists for (codebase review, 2026-09-05).
+          //
+          // Scoped to duplicate-type targets ON PURPOSE. Suppressing every
+          // no-op state write looked like a free win and was not: it broke
+          // tests/unit/linear-brain-done-gate.test.mjs's "not gated: moving to
+          // a non-completed state" case, whose fixture moves an In-Progress
+          // issue to In Progress and asserts the write fires. Only the
+          // duplicate mutation carries a server-side precondition, so only it
+          // is dangerous to send unvalidated; changing the other state types'
+          // long-standing behaviour is not this change's business.
+          landed.push(`state already ${target.name} — no write needed`);
+        } else if (target) {
           await updateIssueFn(issue.id, { stateId: target.id });
           landed.push(`state → ${target.name}`);
         }
@@ -321,6 +455,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         url: issue.url,
         state: target ? target.name : (issue.state && issue.state.name) || null,
         commented,
+        // Name the canonical twin whenever this was a duplicate move. Without
+        // it the operator could not tell from the output whether the relation
+        // — the part that makes the state move legal at all — actually
+        // happened, or which issue it pointed at (fresh-eyes review finding).
+        ...(duplicateTwin ? { duplicateOf: duplicateTwin } : {}),
       }, null, 2));
       // NOT __BOARD_CARD_ID__. That marker is the gate hooks' proof that a card
       // was FILED (notion-brain.js:669, consumed by notion-create-verify.sh),

@@ -37,6 +37,9 @@ const { isAutofixFiledIssue, hasAutofixFiledMarker } = require('./autofix-filed-
 const { parseSessionReportStatus } = require('./linear-session-reporting.js');
 const { extractPrRef } = require('./linear-pr-evidence.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
+// RELATIONS_PAGE_SIZE is interpolated into buildIssueQuery below so the gate's
+// truncation check and the query's page cap cannot drift apart.
+const { RELATIONS_PAGE_SIZE } = require('./linear-duplicate-gate.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -60,6 +63,15 @@ const MAC_ONLY_LABEL = 'mac-only';
 // ids — matching that convention here means a project rename is fixed by
 // updating one string in one place (marketingProjectGuard's
 // MARKETING_PROJECT_NAMES) rather than also re-deriving a UUID.
+// relations(first: 20) is read by scripts/lib/linear-duplicate-gate.js so
+// linear-brain.js's "update --state Duplicate" can refuse BEFORE any write
+// when the issue owns no duplicate relation. Linear rejects that mutation
+// server-side with "missing duplicate relation", and it does so AFTER the
+// --comment has been posted. Fetched here rather than in a second round trip
+// because this query is already the update path's single issue read.
+// Keep this a JS comment: a GraphQL "#" comment inside the template literal
+// below cannot contain a backtick, and the first attempt at one silently
+// terminated the literal (caught by tests/unit/linear-brain-duplicate-gate.test.mjs).
 function buildIssueQuery() {
   return `query($id: String!) {
     issue(id: $id) {
@@ -73,6 +85,7 @@ function buildIssueQuery() {
       project { name }
       labels(first: 20) { nodes { id name } }
       comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
+      relations(first: ${RELATIONS_PAGE_SIZE}) { nodes { type relatedIssue { id identifier } } }
     }
   }`;
 }
