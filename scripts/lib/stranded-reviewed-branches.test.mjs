@@ -9,7 +9,62 @@ const {
   findStrandedReviewedBranches,
   hasUsableVerdicts,
   sweepIsTrustworthy,
+  normalizeNumstatPath,
 } = require('./stranded-reviewed-branches.js');
+
+/**
+ * numstat path shapes. A renamed CODE file arrives as `dir/{old.js => new.js}`,
+ * which ends in `}` and so failed the anchored extension test: it was counted as
+ * non-code, which left liveCodeFiles at 0, flipped the branch to DOCS ONLY and
+ * DROPPED it from the outstanding-work total. A pure refactor branch would have
+ * disappeared from the report. Verified against real git before writing these:
+ * `git diff --numstat` on a renamed-and-edited file prints
+ * `2\taa/bb/{old.js => new.js}` (0 in the delete column), and a binary prints `-\t-`.
+ */
+test('BRO-2878: normalizeNumstatPath resolves every numstat path shape to the current file', () => {
+  // Plain paths are untouched.
+  assert.equal(normalizeNumstatPath('scripts/lib/thing.js'), 'scripts/lib/thing.js');
+  // Common-prefix rename: only the braced segment is rewritten.
+  assert.equal(normalizeNumstatPath('aa/bb/{old.js => new.js}'), 'aa/bb/new.js');
+  // Directory rename: the braced segment is a DIRECTORY, the filename follows it.
+  assert.equal(normalizeNumstatPath('a/{b => c}/d.js'), 'a/c/d.js');
+  // No common prefix: everything after the arrow is the destination.
+  assert.equal(normalizeNumstatPath('old.js => new.js'), 'new.js');
+  // Quoted, which numstat does for spaces and non-ASCII.
+  assert.equal(normalizeNumstatPath('"dir/with space.js"'), 'dir/with space.js');
+  // A rename INTO a quoted path.
+  assert.equal(normalizeNumstatPath('"{old.js => new name.js}"'), 'new name.js');
+  // A rename that empties the braced segment leaves no doubled separator.
+  assert.equal(normalizeNumstatPath('a/{b => }/d.js'), 'a/d.js');
+  // Junk in, empty string out, never a throw.
+  assert.equal(normalizeNumstatPath(null), '');
+  assert.equal(normalizeNumstatPath(undefined), '');
+});
+
+test('BRO-2878: a renamed CODE file is still recognised as code, not demoted to docs', () => {
+  // This is the whole point: before the fix the rename token failed the extension
+  // test, so a renamed .js counted as non-code and its branch was excluded.
+  const RE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+  assert.equal(RE.test('aa/bb/{old.js => new.js}'), false, 'the raw token does NOT match — that was the bug');
+  assert.equal(RE.test(normalizeNumstatPath('aa/bb/{old.js => new.js}')), true, 'normalised, it does');
+});
+
+test('BRO-2878: a branch with changed FILES but no countable lines is not called already-landed', () => {
+  // Binary rows print '-' for both columns and a pure rename or mode change prints
+  // 0/0, so a branch that genuinely changes files can total zero lines. Claiming it
+  // already landed is the same false all-clear in a new costume.
+  const branches = [{
+    branch: 'binary-only', ahead: 1, dirty: 0,
+    liveDiffLines: 0, liveOtherLines: 0, liveCodeFiles: 0, liveFiles: 2,
+    lastCommitDate: '2026-09-01',
+  }];
+  const verdicts = [
+    { branch: 'binary-only', result: 'pass', ts: '2026-09-01T00:00:00Z', reviewer: 'ship-check', gatedLines: 40 },
+  ];
+  const out = findStrandedReviewedBranches(branches, verdicts);
+  assert.equal(out.reviewed[0].probablyAlreadyLanded, false,
+    'two changed files with zero countable lines is NOT an empty diff');
+});
 
 test('a branch with a passing verdict and unreachable commits is reported as stranded-reviewed', () => {
   const branches = [{ branch: 'job/linear-BRO-2424', ahead: 9, dirty: 0, lastCommitDate: '2026-08-26' }];

@@ -23,6 +23,7 @@ const {
   findStrandedReviewedBranches,
   hasUsableVerdicts,
   sweepIsTrustworthy,
+  normalizeNumstatPath,
 } = require('./lib/stranded-reviewed-branches');
 
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -172,16 +173,26 @@ for (const wt of worktreePaths) {
   let liveDiffLines = null;
   let liveOtherLines = null;
   let liveCodeFiles = null;
+  let liveFiles = null;
   if (ahead > 0) {
     const numstat = gitQuiet(['diff', '--numstat', 'origin/main...HEAD'], wt);
     if (numstat !== null) {
       liveDiffLines = 0;
       liveOtherLines = 0;
       liveCodeFiles = 0;
+      liveFiles = 0;
       for (const line of numstat.split('\n')) {
         if (!line) continue;
-        const [addRaw, delRaw, file] = line.split('\t');
+        const [addRaw, delRaw, rawFile] = line.split('\t');
+        if (!rawFile) continue;
+        // Resolve rename notation and quoting BEFORE the extension test. numstat
+        // prints `dir/{old.js => new.js}` for a rename, which ends in `}` and so
+        // fails an anchored extension match — a renamed code file was being counted
+        // as non-code, which flipped its branch to DOCS ONLY and dropped it from the
+        // outstanding total entirely.
+        const file = normalizeNumstatPath(rawFile);
         if (!file) continue;
+        liveFiles++;
         if (!IS_CODE_FILE.test(file)) {
           // Counted separately, never folded into the code total. Without this the
           // docs-only signal was unreachable: lines only accrued for code files, so
@@ -206,7 +217,7 @@ for (const wt of worktreePaths) {
       }
     }
   }
-  branches.push({ branch, ahead, dirty, lastCommitDate, liveDiffLines, liveOtherLines, liveCodeFiles });
+  branches.push({ branch, ahead, dirty, lastCommitDate, liveDiffLines, liveOtherLines, liveCodeFiles, liveFiles });
 }
 
 // The verdict ledger lives in the MAIN checkout's .claude/, not in a worktree's.

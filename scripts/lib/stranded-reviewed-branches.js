@@ -111,7 +111,16 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
     // Only claim "already landed" when we MEASURED an empty diff, code and non-code
     // alike, and the worktree is clean. Uncommitted work is exactly what a concurrent
     // `reset --hard origin/main` destroys, so a dirty worktree is never "landed".
-    row.probablyAlreadyLanded = liveDiffLines === 0 && liveOtherLines === 0 && row.dirty === 0;
+    // "Already landed" means we measured an EMPTY diff, not merely a diff with no
+    // countable lines. Binary files print '-' for both columns and a pure rename or
+    // mode change prints 0/0, so a branch that genuinely changes files could total
+    // zero lines and be dismissed as landed. liveFiles is the file count, so the
+    // claim now rests on there being nothing there at all. Ship-check found this
+    // after the previous fix merged.
+    const liveFiles = num(b.liveFiles);
+    row.liveFiles = liveFiles;
+    row.probablyAlreadyLanded = liveFiles === 0
+      && liveDiffLines === 0 && liveOtherLines === 0 && row.dirty === 0;
     // A branch carrying non-code lines and no code file is a handoff doc or an audit
     // snapshot left behind after its code landed. Needs liveOtherLines to be knowable
     // at all: lines are counted per-category, so without it this could never fire.
@@ -201,9 +210,48 @@ function sweepIsTrustworthy(sweep) {
   return { trustworthy: true, reason: 'all candidate worktrees classified against a fresh origin/main' };
 }
 
+/**
+ * Resolve a `git diff --numstat` path column to the file's CURRENT path.
+ *
+ * numstat does not always print a plain path. It renders renames in two shapes and
+ * quotes any path with a space or a non-ASCII byte:
+ *   dir/{old.js => new.js}   common-prefix rename
+ *   old.js => new.js         no common prefix
+ *   "dir/with space.js"      quoted
+ * A renamed code file therefore arrives as a string ending in `}` or `"`, so an
+ * extension test anchored with $ fails and the file is classified as NON-code. That
+ * is not cosmetic: the caller then counts its lines as non-code, leaves liveCodeFiles
+ * at zero, labels the branch DOCS ONLY and DROPS IT from the outstanding-work total.
+ * A pure refactor branch would vanish from the report — the same false all-clear this
+ * module exists to prevent, one layer down. Found by ship-check after the previous
+ * fix merged; latent at the time, with zero rename rows across 40 worktrees that day.
+ *
+ * Pure and exported so it is tested directly rather than through the CLI (rule 15).
+ *
+ * @param {string} raw - the third tab-separated column of a numstat line
+ * @returns {string} the current path, unquoted, rename notation resolved
+ */
+function normalizeNumstatPath(raw) {
+  if (typeof raw !== 'string') return '';
+  let p = raw.trim();
+  // Brace form first: only the braced SEGMENT is rewritten, the prefix and any
+  // suffix stay. `a/{b => c}/d.js` is a directory rename, so the file is d.js.
+  p = p.replace(/\{[^{}]*?\s+=>\s+([^{}]*?)\}/g, '$1');
+  // Plain form: everything after the last arrow is the destination.
+  const arrow = p.lastIndexOf(' => ');
+  if (arrow !== -1) p = p.slice(arrow + 4);
+  p = p.trim();
+  // Strip the surrounding quotes numstat adds for spaces and non-ASCII. Done LAST,
+  // because in the brace form the quotes wrap the whole token, not the new path.
+  if (p.length >= 2 && p.startsWith('"') && p.endsWith('"')) p = p.slice(1, -1);
+  // A directory rename can leave a doubled separator, e.g. `a//d.js`.
+  return p.replace(/\/{2,}/g, '/');
+}
+
 module.exports = {
   bestVerdictByBranch,
   findStrandedReviewedBranches,
   hasUsableVerdicts,
   sweepIsTrustworthy,
+  normalizeNumstatPath,
 };
