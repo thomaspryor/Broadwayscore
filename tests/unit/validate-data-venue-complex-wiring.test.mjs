@@ -43,16 +43,16 @@
  *    VALIDATE_DATA_SHOWS_JSON is set. Before that, this test recomputed
  *    data/audit/london-only-nyc-accumulation.json FROM THE FIXTURE and cut it
  *    from 3,357 lines to 161 in the shared checkout.
- *  - stdout AND stderr are captured on BOTH paths. warn() writes via
- *    console.warn, i.e. stderr, and execFileSync returns stdout only on success,
- *    which is why this uses spawnSync — it hands back both streams on every
- *    so asserting on advisory text without merging stderr passes only while the
- *    fixture happens to make the run exit non-zero.
+ *  - Both streams are REDIRECTED TO A FILE rather than buffered. warn() writes
+ *    via console.warn, i.e. stderr, so the advisory text this test looks for is
+ *    not on stdout; and any buffered capture (execFileSync or spawnSync alike)
+ *    is capped at maxBuffer, which validate-data.js blows past on CI. See the
+ *    long comment at the spawn site for the two defects that produced this shape.
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { writeFileSync, existsSync, mkdtempSync, rmSync, readFileSync } from 'node:fs';
+import { writeFileSync, existsSync, mkdtempSync, rmSync, readFileSync, openSync, closeSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -124,23 +124,40 @@ describe('validate-data.js — venue-complex orphan advisory is wired into the r
     let out = '';
     let status = 0;
     let sentinelLandedInSandbox = false;
+    const outPath = join(dir, 'validate-data.out');
+    let fd;
     try {
-      // spawnSync, not execFileSync: execFileSync RETURNS stdout only and exposes
-      // stderr just on the throw path, so a version of this test that asserted on
-      // its return value passed only while the fixture happened to make the run
-      // exit non-zero. warn() writes to stderr, so the advisory text this test
-      // exists to find lives there. spawnSync hands back both streams on every
-      // exit code, which removes that dependency entirely.
+      // REDIRECT TO A FILE, DO NOT BUFFER. Two separate defects led here and both
+      // are worth stating, because the obvious fix for the first caused the second.
+      //
+      // execFileSync RETURNS stdout only and exposes stderr just on the throw
+      // path, so an earlier version of this test asserted on stdout alone and
+      // passed only while the fixture happened to make the run exit non-zero —
+      // warn() writes to stderr, which is where the advisory text lives.
+      //
+      // Switching to buffered spawnSync fixed that and introduced `spawnSync node
+      // ENOBUFS`, which turned main RED: both execFileSync and spawnSync cap
+      // captured output at maxBuffer, 1MB by default, and validate-data.js prints
+      // well past that on CI (it exceeded 1,700 warning lines) even though the
+      // same run stayed under the cap locally. Bumping maxBuffer would only move
+      // the cliff, so both streams go to a file inside the sandbox directory and
+      // are read back. No ceiling, and it matches how the rest of this repo runs
+      // long-output commands.
+      fd = openSync(outPath, 'w');
       const res = spawnSync('node', [VALIDATE], {
-        encoding: 'utf8',
+        stdio: ['ignore', fd, fd],
         env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: dir },
       });
       if (res.error) throw res.error;
       // A one-show fixture trips plenty of unrelated validators; that is fine
       // and expected. We assert on the advisory TEXT, never on the exit code.
       status = res.status ?? 0;
-      out = `${res.stdout || ''}${res.stderr || ''}`;
+      closeSync(fd);
+      fd = undefined;
+      out = readFileSync(outPath, 'utf8');
+      assert.ok(out.length > 0, 'validate-data.js produced no output at all — the redirect or the spawn is broken');
     } finally {
+      if (fd !== undefined) { try { closeSync(fd); } catch { /* already closed */ } }
       // Positive isolation check, done BEFORE cleanup. A non-zero exit means
       // validate-data.js wrote a refusal sentinel; if RUNNER_TEMP took effect it
       // is inside `dir` and dies with it. Asserting on the SHARED /tmp path
