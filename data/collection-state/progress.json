@@ -241,7 +241,17 @@
     "beetlejuice-west-end-2026/variety--owen-gleiberman.json",
     "beetlejuice-west-end-2026/vulture--sara-holdren.json",
     "beetlejuice-west-end-2026/deadline--greg-evans.json",
-    "beetlejuice-west-end-2026/ew--nick-romano.json"
+    "beetlejuice-west-end-2026/ew--nick-romano.json",
+    "beetlejuice-west-end-2026/newsday--barbara-schuler.json",
+    "beetlejuice-west-end-2026/nydailynews--chris-jones.json",
+    "beetlejuice-west-end-2026/wsj--edward-rothstein.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "beetlejuice-west-end-2026/click-liverpool--unknown.json",
+    "beetlejuice-west-end-2026/independent--benjamin-salmon.json",
+    "beetlejuice-west-end-2026/times-square-chronicles--unknown.json",
+    "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+    "beetlejuice-west-end-2026/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -317,7 +327,7 @@
     ]
   },
   "startTime": "2026-09-05T15:09:47.023Z",
-  "lastProcessed": "beetlejuice-west-end-2026/ew--nick-romano.json",
+  "lastProcessed": "beetlejuice-west-end-2026/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-09-05T15:21:24.950Z",
@@ -381,6 +391,28 @@
       "event": "bb-session",
       "session": "ea759f07",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-05T16:02:52.714Z",
+      "event": "bb-session",
+      "session": "06f0491e",
+      "url": "https://www.independent.co.uk/bulletin/culture/beetlejuice-musical-closing-west-"
+    },
+    {
+      "t": "2026-09-05T16:02:53.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "independent.co.uk"
+    },
+    {
+      "t": "2026-09-05T16:03:03.566Z",
+      "event": "bb-session",
+      "session": "ef322814",
+      "url": "https://www.independent.co.uk/bulletin/culture/beetlejuice-musical-closing-west-"
+    },
+    {
+      "t": "2026-09-05T16:03:04.527Z",
+      "event": "bb-cookie-inject",
+      "domain": "independent.co.uk"
     }
   ]
 }
