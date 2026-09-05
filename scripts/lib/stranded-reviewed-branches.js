@@ -213,11 +213,23 @@ function sweepIsTrustworthy(sweep) {
 /**
  * Resolve a `git diff --numstat` path column to the file's CURRENT path.
  *
- * numstat does not always print a plain path. It renders renames in two shapes and
- * quotes any path with a space or a non-ASCII byte:
- *   dir/{old.js => new.js}   common-prefix rename
- *   old.js => new.js         no common prefix
- *   "dir/with space.js"      quoted
+ * numstat does not always print a plain path. Shapes below are COPIED FROM REAL
+ * `git diff --numstat` OUTPUT in a scratch repo, not from memory:
+ *   aa/bb/{old.js => new.js}                    common-prefix rename
+ *   plain space.js => renamed with space.js     no common prefix; NOT quoted
+ *   a/b/d.js => d.js                            root-ward move; plain form, no braces
+ *   "caf\303\251.js" => "caf\303\2512.js"       non-ASCII: quoted AND C-escaped
+ *
+ * Two corrections to what an earlier version of this comment claimed, both of which
+ * were wrong and are recorded here so nobody re-derives them: git does NOT quote a
+ * path merely for containing a SPACE, only for non-ASCII or control bytes; and when
+ * it does quote, it abandons the brace form and quotes each side separately.
+ *
+ * C-escaping is deliberately NOT decoded. `"caf\303\251.js"` comes back as the
+ * literal `caf\303\251.js`, which is fine for the only current use, an extension
+ * test, and it is why this returns a CLASSIFIABLE path rather than a path you may
+ * hand to the filesystem. Decode before any fs use.
+ *
  * A renamed code file therefore arrives as a string ending in `}` or `"`, so an
  * extension test anchored with $ fails and the file is classified as NON-code. That
  * is not cosmetic: the caller then counts its lines as non-code, leaves liveCodeFiles
@@ -229,8 +241,16 @@ function sweepIsTrustworthy(sweep) {
  * Pure and exported so it is tested directly rather than through the CLI (rule 15).
  *
  * @param {string} raw - the third tab-separated column of a numstat line
- * @returns {string} the current path, unquoted, rename notation resolved
+ * @returns {string} the current path for CLASSIFICATION: rename notation resolved and
+ *   surrounding quotes stripped, but C-escapes left encoded. Not fs-safe.
  */
+// What counts as CODE when deciding whether a stranded branch still carries real
+// work. Deliberately narrow: a branch whose live diff touches none of these is a
+// handoff doc or an audit snapshot left behind after its code landed. Lives HERE
+// rather than in the CLI so the test can import the one true copy instead of
+// re-declaring it, which would let the two drift apart silently (rule 15).
+const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+
 function normalizeNumstatPath(raw) {
   if (typeof raw !== 'string') return '';
   let p = raw.trim();
@@ -254,4 +274,5 @@ module.exports = {
   hasUsableVerdicts,
   sweepIsTrustworthy,
   normalizeNumstatPath,
+  IS_CODE_FILE,
 };

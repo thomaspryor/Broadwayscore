@@ -10,6 +10,7 @@ const {
   hasUsableVerdicts,
   sweepIsTrustworthy,
   normalizeNumstatPath,
+  IS_CODE_FILE,
 } = require('./stranded-reviewed-branches.js');
 
 /**
@@ -30,12 +31,20 @@ test('BRO-2878: normalizeNumstatPath resolves every numstat path shape to the cu
   assert.equal(normalizeNumstatPath('a/{b => c}/d.js'), 'a/c/d.js');
   // No common prefix: everything after the arrow is the destination.
   assert.equal(normalizeNumstatPath('old.js => new.js'), 'new.js');
-  // Quoted, which numstat does for spaces and non-ASCII.
-  assert.equal(normalizeNumstatPath('"dir/with space.js"'), 'dir/with space.js');
-  // A rename INTO a quoted path.
-  assert.equal(normalizeNumstatPath('"{old.js => new name.js}"'), 'new name.js');
-  // A rename that empties the braced segment leaves no doubled separator.
-  assert.equal(normalizeNumstatPath('a/{b => }/d.js'), 'a/d.js');
+  // The three below are VERBATIM `git diff --numstat` output from a scratch repo,
+  // replacing two fixtures an earlier version of this test INVENTED. Git does not
+  // quote a path merely for a space, and it does not emit `a/{b => }/d.js` for a
+  // root-ward move. Ship-check caught both; do not reintroduce them from memory.
+  // A space does NOT trigger quoting; the plain rename form carries it.
+  assert.equal(normalizeNumstatPath('plain space.js => renamed with space.js'), 'renamed with space.js');
+  // A root-ward move uses the plain form, not an emptied brace segment.
+  assert.equal(normalizeNumstatPath('a/b/d.js => d.js'), 'd.js');
+  // Non-ASCII IS quoted, per side, and C-escaped. The escape is deliberately left
+  // encoded: this return value is for classification, not filesystem access.
+  assert.equal(
+    normalizeNumstatPath('"caf\\303\\251.js" => "caf\\303\\2512.js"'),
+    'caf\\303\\2512.js',
+  );
   // Junk in, empty string out, never a throw.
   assert.equal(normalizeNumstatPath(null), '');
   assert.equal(normalizeNumstatPath(undefined), '');
@@ -44,7 +53,8 @@ test('BRO-2878: normalizeNumstatPath resolves every numstat path shape to the cu
 test('BRO-2878: a renamed CODE file is still recognised as code, not demoted to docs', () => {
   // This is the whole point: before the fix the rename token failed the extension
   // test, so a renamed .js counted as non-code and its branch was excluded.
-  const RE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+  // Import the ONE definition; re-declaring it here let the copies drift (rule 15).
+  const RE = IS_CODE_FILE;
   assert.equal(RE.test('aa/bb/{old.js => new.js}'), false, 'the raw token does NOT match — that was the bug');
   assert.equal(RE.test(normalizeNumstatPath('aa/bb/{old.js => new.js}')), true, 'normalised, it does');
 });
@@ -196,8 +206,8 @@ test('BRO-2878: a branch whose code has landed is excluded from the live total b
   // liveCodeFiles:0, which the CLI can never emit, making it vacuous against the
   // real pipeline (caught by ship-check).
   const branches = [
-    { branch: 'docs-only', ahead: 1, liveDiffLines: 0, liveOtherLines: 58, liveCodeFiles: 0, dirty: 0, lastCommitDate: '2026-08-26' },
-    { branch: 'real-code', ahead: 2, liveDiffLines: 120, liveOtherLines: 0, liveCodeFiles: 3, dirty: 0, lastCommitDate: '2026-08-27' },
+    { branch: 'docs-only', ahead: 1, liveDiffLines: 0, liveOtherLines: 58, liveCodeFiles: 0, liveFiles: 1, dirty: 0, lastCommitDate: '2026-08-26' },
+    { branch: 'real-code', ahead: 2, liveDiffLines: 120, liveOtherLines: 0, liveCodeFiles: 3, liveFiles: 3, dirty: 0, lastCommitDate: '2026-08-27' },
   ];
   const verdicts = [
     { branch: 'docs-only', result: 'pass', ts: '2026-08-26T00:00:00Z', reviewer: 'ship-check', gatedLines: 652 },
