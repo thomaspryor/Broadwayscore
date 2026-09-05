@@ -427,9 +427,14 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       // read "[OVERRIDE: review within NaNd of opening ...]". Same parser as the
       // guard itself, including the pre-1970 fallback.
       const daysFromOpening = () => {
-        const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
-        const o = pd(openingDate) || phd(openingDate);
-        const p2 = pd(publishDate) || phd(publishDate);
+        // BRO-2840: was the raw parseDate||parseHistoricalDate pairing, which
+        // carries the two fallback hazards _cvParseDate exists to absorb — a
+        // shape-dependent UTC/local anchor, and silent rollover of impossible
+        // calendar dates. Leaving it raw meant the PERSISTED annotation could
+        // report a day-count derived from a date the PROMPT had just refused to
+        // hint on, from the same two inputs. One parser for both.
+        const o = _cvParseDate(openingDate);
+        const p2 = _cvParseDate(publishDate);
         if (!o || !p2) return null;
         return Math.round(Math.abs((p2.getTime() - o.getTime()) / 86400000));
       };
