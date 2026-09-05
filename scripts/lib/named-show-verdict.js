@@ -160,7 +160,12 @@ function classifyNamedShowRun({ showFilter, results, targetCount }) {
   const ids = unanswered.length
     ? unanswered.map(r => (r && r.id) || showFilter).join(', ')
     : showFilter;
-  const tail = notReached && !unanswered.length
+  // Report never-reached targets whenever there ARE any, not only when they
+  // are the sole finding. A named run has one target today, so a run with both
+  // an unusable row AND an unreached target is latent rather than reachable —
+  // but suppressing half the reason is exactly how a partial answer starts
+  // reading as a whole one (adversarial review, Codex).
+  const tail = notReached
     ? ` ${notReached} named target(s) were never reached by this run.`
     : '';
   return {

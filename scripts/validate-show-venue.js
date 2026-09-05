@@ -56,9 +56,12 @@
  * held to a stricter contract than a sweep, because a sweep averages rows and
  * a named run has exactly one question to answer:
  *   0  nothing to report — for a --show run, that means it MATCHED Playbill
- *   1  a mismatch. Under --fail-on-mismatch this fires for any mode; for a
- *      --show run it fires with or without the flag, since bare --show is the
- *      command CLAUDE.md rule 3 documents and it used to exit 0 here
+ *   1  a mismatch — or, under --fail-on-mismatch, a strict sweep that could
+ *      not certify clean coverage because the time budget cut off before
+ *      reaching a new-or-previously-broken show (deferredHighPriority, the
+ *      second arm of that gate). For a --show run a mismatch exits 1 with or
+ *      without the flag, since bare --show is the command CLAUDE.md rule 3
+ *      documents and it used to exit 0 here
  *   2  fatal — main() threw (see the catch at the bottom of this file)
  *   3  --show only: the question was NOT answered. No Playbill page was found,
  *      or the lookup/fetch failed, or the environment could not reach Playbill,
@@ -767,6 +770,11 @@ async function main() {
     // mismatches Playbill" into "the script crashed". cleanup() swallows its
     // own errors internally so this should never fire; the asymmetry with
     // every other exit path was the defect.
+    // NOT behaviour-pinned by a test, and deliberately so: cleanup() lives in
+    // lib/scraper.js and swallows its own errors, so forcing it to throw would
+    // mean adding an injection seam to shared scraping infrastructure to guard
+    // a one-line wrapper. Reverting this try/catch leaves every test green —
+    // known, recorded here rather than left for the next reader to discover.
     try { await cleanup(); } catch (_) { /* best-effort */ }
     process.exit(1);
   }
