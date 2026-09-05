@@ -1,72 +1,28 @@
 {
-  "generatedAt": "2026-09-05T02:22:11.377Z",
-  "subject": "BSC URGENT (day 25): 17 unresolved errors",
-  "bannerText": "17 errors, 31 warnings",
-  "consecutiveErrorDays": 25,
+  "generatedAt": "2026-09-05T10:58:16.224Z",
+  "subject": "BSC URGENT (day 26): 6 unresolved errors",
+  "bannerText": "6 errors, 38 warnings",
+  "consecutiveErrorDays": 26,
   "errors": [
-    {
-      "name": "Data quality: cross-outlet attribution drift",
-      "message": "Drift-check snapshot is 4d old (>48h) — the daily check itself has stopped running"
-    },
-    {
-      "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
-    },
-    {
-      "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
-    },
-    {
-      "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
-    },
-    {
-      "name": "Data quality: roundup-url-mismatch lifetime sweep",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
-    },
-    {
-      "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
-    },
     {
       "name": "Credits: ScrapingBee",
       "message": "0k credits left (0%) · EXHAUSTED · renews Sep 5"
     },
     {
       "name": "Push-retry deadman",
-      "message": "1114 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x215, Rebuild Reviews (Fast) x128, Rebuild Reviews Data x114, Gather Review Data x110, Fetch Show Images x67, Fetch Guardian Reviews via API x44, Commercial RSS Poll x39, Process Feedback Submissions x39, Opening Night Checklist x34, Scrape New Aggregators x33, Audit Aggregator Review Gap x32, Update Show Score Data x29, Audit Imageless Scored Shows x29, Check Opening Night Drift x20, Reverse Discovery Audit x19, Check Corpus Drift x16, Opening Night Broadcast x15, Opening Night Completeness Check x14, unknown x10, Check Review-Count Drift x7, Monitor Scheduled Email Count x7, Audit Opening Dates x7, Opening Night Express x6, Daily Data Health Check x6, Promote West End Aggregator Candidates x6, Auto-Maintain Show Data x5, Refresh Review Data x5, Reddit Engagement Digest x4, Outlet Registry Baseline Maintenance x4, Backfill Cast Data (Web Search) x4, Refresh Show Score (opening-night window) x4, Reconcile Newsletter Dedup State x4, Fix Platform Ticket Links x4, Commercial Weekly Orchestrator x3, Update Lottery/Rush Data x3, Newsletter Draft Refresh (Sunday) x3, Opening Night Express Retry Check x2, Weekly Video Reviews x2, Weekly Newsletter Draft x2, Enrich Off-Broadway Dates x2, Scrape BWW Reviews x2, Scrape WestEndTheatre Roundups x2, Weekly Broadway Grosses x2, Backfill Cast Data x2, Weekly Data Integrity Check x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Audit Census Recall x1, Coverage Adversarial Probe x1, Weekly Affiliate Report x1, Audit Review Quality x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1]. Most recent reason: retries-exhausted."
+      "message": "1139 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x227, Rebuild Reviews (Fast) x137, Gather Review Data x116, Rebuild Reviews Data x111, Fetch Show Images x68, Fetch Guardian Reviews via API x46, Process Feedback Submissions x39, Commercial RSS Poll x39, Opening Night Checklist x34, Scrape New Aggregators x33, Audit Aggregator Review Gap x31, Update Show Score Data x29, Audit Imageless Scored Shows x29, Check Opening Night Drift x20, Reverse Discovery Audit x19, Check Corpus Drift x16, Opening Night Broadcast x15, Opening Night Completeness Check x14, unknown x10, Check Review-Count Drift x8, Monitor Scheduled Email Count x7, Audit Opening Dates x7, Auto-Maintain Show Data x6, Daily Data Health Check x6, Promote West End Aggregator Candidates x6, Reddit Engagement Digest x5, Refresh Review Data x5, Outlet Registry Baseline Maintenance x4, Backfill Cast Data (Web Search) x4, Refresh Show Score (opening-night window) x4, Reconcile Newsletter Dedup State x4, Fix Platform Ticket Links x4, Opening Night Express x4, Commercial Weekly Orchestrator x3, Update Lottery/Rush Data x3, Newsletter Draft Refresh (Sunday) x3, Weekly Video Reviews x2, Weekly Newsletter Draft x2, Enrich Off-Broadway Dates x2, Scrape BWW Reviews x2, Scrape WestEndTheatre Roundups x2, Weekly Broadway Grosses x2, Backfill Cast Data x2, Weekly Data Integrity Check x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Audit Census Recall x1, Coverage Adversarial Probe x1, Weekly Affiliate Report x1, Audit Review Quality x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1]. Most recent reason: retries-exhausted."
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
       "message": "Autofix throughput DEAD: 0 dispatches on each of the last 7 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
-      "message": "Fetch Guardian Reviews via API failed 7 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "message": "Rebuild Reviews (Fast) failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 8 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "message": "Rebuild Reviews Data failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Show Images",
-      "message": "Fetch Show Images failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
-      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Update Show Score Data",
-      "message": "Update Show Score Data failed 3 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "message": "Fetch Guardian Reviews via API failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -76,11 +32,11 @@
   "warns": [
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 20183 vs baseline 20265"
+      "message": "Reviews dropped: 20187 vs baseline 20268"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: follies-2011 Time Out New York 1/5→20 vs LLM 88, gap 68); 1 star-won-hiding"
+      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: follies-2011 Time Out New York 1/5→20 vs LLM 88, gap 68)"
     },
     {
       "name": "Quality: corpus drift",
@@ -92,11 +48,27 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "message": "Unknown-outlet census is 2d old (>48h)"
+      "message": "Unknown-outlet census is 3d old (>48h)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "message": "1 outlet(s) show a broken-extractor signature (worst: plays-to-see — 4/7 recent invalid, 57% vs 8% baseline)"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "message": "12 NEW unhandled CV.wrongProduction review(s) since last run (873 total across 408 show(s), 9h ago)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "message": "8 NEW unmatched review(s) since last run (624 total across 321 show(s), 9h ago)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "message": "13 NEW cross-show URL mismatch(es) since last run (2173 total across 838 show(s), 9h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "message": "2 NEW unverified revival flag(s) since last run (41 total across 41 show(s), 9h ago)"
     },
     {
       "name": "Coverage: SERP census recall",
@@ -116,19 +88,19 @@
     },
     {
       "name": "Cron failed: Update Show Score",
-      "message": "Last run inconclusive: failure (1h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (2h ago), no success in 192h"
     },
     {
       "name": "Cron failed: Update Social Pulse",
-      "message": "Last run inconclusive: failure (5h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (9h ago), no success in 192h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "44 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (21d, stamp overdue 21d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (21d, stamp overdue 20d); P0: main red — drain→rebuild→re-flag loop between date guard (20d) (2 awaiting recheck, earliest due 2026-09-09 — not counted) [11 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "44 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (22d, stamp overdue 21d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (21d, stamp overdue 20d); P0: main red — drain→rebuild→re-flag loop between date guard (20d) (2 awaiting recheck, earliest due 2026-09-09 — not counted) [11 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (43d); P1: headless-claude fallback for the opening-night monitor l (42d); P1: register review-census carriers (audit-aggregator-gap +  (42d) [35 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (43d); P1: headless-claude fallback for the opening-night monitor l (43d); P1: register review-census carriers (audit-aggregator-gap +  (43d) [35 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",
@@ -159,12 +131,20 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Audit Imageless Scored Shows",
-      "message": "Audit Imageless Scored Shows failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Gather Review Data — a-month-in-the-country-west-end-2026,the-story-west-end-2026",
+      "message": "Gather Review Data — a-month-in-the-country-west-end-2026,the-story-west-end-2026 failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Opening Night Checklist",
-      "message": "Opening Night Checklist failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Process Feedback Submissions",
+      "message": "Process Feedback Submissions failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "message": "Rebuild Reviews Data failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Fetch Show Images",
+      "message": "Fetch Show Images failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -190,98 +170,29 @@
   "queued": [
     {
       "title": "Scraping spend over budget",
-      "description": "Day 2026-08-30. Over budget: browserbase $6.2 > $4 (62 sessions); brightdata $2.9 > $2.5 (1069 serp + 867 unlocker reqs); scrapingbee 42484 credits > 35000. 2026-08-30 · Browserbase: $6.2 (62 sessions) · 2026-08-30 · Bright Data: $2.9 (1069 serp / 867 unlocker) · ScrapingBee: 42484 credits (892041 this cycle) · ScrapingDog: 24663 credits (2350069 this cycle) · Browserbase attribution: 3% attributed — top: collect-review-texts.js 2 · Bright Data attribution: 65% attributed — top: validate-show-venue.js 680, opening-night-poller.js 330, collect-review-texts.js 159, recollect-for-scores.js 37, audit-show-review-gap.js 30 · ScrapingBee attribution: 1% attributed — top: validate-show-venue.js 205, collect-review-texts.js 63, recollect-for-scores.js 36, opening-night-poller.js 35, audit-show-review-gap.js 18 · ScrapingDog attribution: 11% attributed — top: collect-review-texts.js 1440, opening-night-poller.js 446, audit-show-review-gap.js 356, recover-explicit-ratings.js 250, recollect-for-scores.js 77. Verification streak reset to 0.",
+      "description": "Day 2026-09-04. Over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). 2026-09-04 · Browserbase: $6.3 (63 sessions) · 2026-09-04 · Bright Data: $4.94 (2386 serp / 906 unlocker) · ScrapingBee: baseline day (cycle 1000010) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 126737) — day figure starts tomorrow · Browserbase attribution: 92% attributed — top: test-caller 56, collect-review-texts.js 2 · Bright Data attribution: 16% attributed — top: opening-night-poller.js 302, validate-show-venue.js 107, gather-reviews.js 58, unknown 24, extract-theatre-record.js 15. Verification streak reset to 0.",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (4016/1750 reqs)",
-      "description": "Zone web_unlocker2 billed 4016 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\nNo show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).\nTop attributed BD callers today: validate-show-venue.js (443), gather-reviews.js (400), fetch-show-images-auto.js (329).",
-      "severity": "warn",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Zombie-tab sweep closed workspace:87",
-      "description": "closed workspace:87 \"🤖⚡ Data·BRO-2654 P1: main Unit Tests red — bsc-next.test.m\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
+      "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
+      "description": "Scope: 2 opening window(s): the-story-west-end-2026 (2026-09-03), a-month-in-the-country-west-end-2026 (2026-09-02)\nEvaluated 6 review(s), p90 245m.\nSlowest:\n• the-story-west-end-2026 / standard — 245m\n• the-story-west-end-2026 / london-theatre — 221m\n• the-story-west-end-2026 / broadwayworld — 144m\n• the-story-west-end-2026 / whatsonstage — 106m\n• the-story-west-end-2026 / telegraph — 44.3m\n• the-story-west-end-2026 / guardian — 27.5m",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Zombie-tab sweep closed workspace:89",
-      "description": "closed corpse workspace:89 \"🤖⚡ Data·BRO-2647 P1: main's Unit Tests still red on two di\" (live-duplicate)",
-      "severity": "info",
-      "url": null,
-      "fields": []
-    },
-    {
       "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
-      "description": "Only 7 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 205). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+      "description": "Only 9 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 195). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Opening-night monitor pass complete: electra-persona-west-end-2026",
-      "description": "Pass 1, model opus, 5min, $1.56. Pass 1 complete, well inside the deadline. State file is gitignored by design (local-only, which is where the next launchd pass reads it) — the `git add` skipped it silently; the committed/pushed artifacts were the audit outputs.\n\n**Verdict: nothing is broken. Press night hasn't happened yet.**\n\nElectra / Persona (National Theatre Lyttelton) opens today, 2026-09-01. UK press embargoes lift ~21:00-22:00 UTC. At 16:20Z, zero press reviews had published anywhere — independently confirmed by SERP census, not by trusting the pipeline.\n\nWhat the census + diff actually found:\n\n1. **All 8 review-texts files are pre-press-night artifacts.** I corroborated each exclusion from the source rather than clearing flags. `guardian--natalie-haynes.json` is a decoy: it's a `/commentisfree/` Natalie Haynes co",
-      "severity": "info",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (1876/1750 reqs)",
-      "description": "Zone serp_api1 billed 1876 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n4 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (307), gather-reviews.js (112), enrich-stubhub-prices.js (8).",
-      "severity": "critical",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Scrapingdog daily breaker TRIPPED: 43664/24000 credits",
-      "description": "Scrapingdog billed 43664 credits today against a ceiling of 24000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n4 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (2090), opening-night-poller.js (425), collect-review-texts.js (383).",
-      "severity": "critical",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening night report: Electra/Persona — 6 reviews live, composite 68",
-      "description": "ELECTRA / PERSONA — National Theatre (Lyttelton), West End. Press night 2026-09-01.\nPARITY REACHED 2026-09-02T02:28Z.\n\nFINAL COUNT: 6 reviews live on prod. Composite score 68.01 (visible). Breakdown 4 positive / 1 mixed / 1 negative.\n  The Guardian — Arifa Akbar — 60 (T1, 2026-09-01)\n  BroadwayWorld — Clementine Scott — 79 (2026-09-02)\n  Daily Mail — Patrick Marmion — 49 (2026-09-02)\n  Timboatswain — Tim Boatswain — 95 (T3, 2026-08-23)\n  Boycotting Trends — Alex Ramon — 79 (T3, 2026-08-31)\n  Monstagigz — 77 (T3, 2026-08-23)\n\nPARITY: census union == data/reviews.json (6) == prod shows JSON (6). No orphans in either direction.\n\nTIMELINE (25 monitor passes, 2026-09-01 16:45Z to 2026-09-02 02:38Z):\n  16:45Z  baseline: 2 T3 blogs live, no press reviews. Embargo not lifted.\n  19:24Z  first census change in 7 passes: Boycotting Trends found.\n  19:28Z  ingested; 20:23Z scored; 21:12Z live on prod. firstSeen->live = 108 min.\n  ~00:30Z Guardian (Akbar) — first T1 — plus Daily Mail and BroadwayWorld enter the pipeline.\n  02:05Z  reviews.json 6, prod 4 — deploy lag on Daily Mail + BroadwayWorld, composite still null.\n  02:28Z  deploy landed: prod 6, composite 68.01 appears. PARITY.\n\nFIXES APPLIED THIS NIGHT (with failure-mode class):\n  1. Boycotting Trends (blogspot) — class 3d, missed discovery: domain had zero entries in outlet-registry.json and zero events in stage-latency.jsonl, so discovery never saw it. Fixed by adding the registry entry to BOTH the web repo and the core-data repo (75fb0f4d1) and direct-URL ingesting the review (9f12ab18e0c). Live on prod.\n  2. Includable-but-unscored stall — the recovered review sat out of reviews.json for ~90 min because rebuild only emits SCORED reviews and the scorer had not yet run. Diagnosed via verify-review-recovery.js. Resolved by the pipeline itself once ensemble scoring ran; no intervention needed. Worth knowing: this looks exactly like a broken rebuild and is not one.\n  3. Cultural Capital (maryamphilpottblog.wordpress.com) — same missed-discovery class, registry entry added, but ingest fails deterministically at fetchPage(): the Playwright path waits for networkidle, which never settles on wordpress.com. Carded BRO-2729, parked (shared scraper infra, not safe to edit during an opening-night window). This is the ONE published review not live. T3 blog, cosmetic against a 6-review corpus.\n  4. _pending no-byline strand drained (empty and holding since 20:55Z). Carded BRO-2735.\n\nSTILL OUTSTANDING (not gaps — nothing published to miss):\n  The main UK press pack has not filed at 03:33 BST, ~6.5h past a normal embargo lift: Times, Telegraph, Evening Standard, Independent, FT, Observer, WhatsOnStage, The Stage, TimeOut. Verified this pass by direct section-page fetch on all six reachable sources plus WebSearch, not by SERP alone. Likely holding for weekend editions. The monitor keeps running to 2026-09-02T22:59Z and will ingest them when they land.\n\nWORKFLOWS DISPATCHED: none. Zero force-dispatches across all 25 passes — the automated orchestrator/poller chain fired on its own every time. Zero gh waits started.\n\nBROADCAST GATE: NOT MET (6 scored, needs 8+). Verified and logged only. Nothing sent.\n\nNEW FAILURE MODES CARDED: BRO-2729 (fetchPage Playwright networkidle hang on wordpress.com), BRO-2732 (rebuild-reviews.yml push failure — real but NOT the blocker here), BRO-2735 (_pending strand).\n\nSPEND: ~$1.20 across 25 passes.\nSTATE FILE: data/opening-night-monitor/session-state-on-monitor-2026-09-01.json",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening night report: Electra / Persona - 15 reviews live, CS 67.54",
-      "description": "OPENING NIGHT REPORT - Electra / Persona (National Theatre, Lyttelton), West End. PARITY REACHED.\n\nFINAL STATE (verified on prod 2026-09-02T12:21:05.279Z): 15 reviews live, Critic Score 67.54, status open, all 15 scored.\n\nPER-OUTLET (outlet / critic / score): Time Out London Andrzej Lukowski 80 | The Independent Unknown 62 | The Guardian Arifa Akbar 60 | The Times (UK) Clive Davis, Chief Theatre Critic 60 | The Stage Holly O'Mahony 56 | Daily Mail Patrick Marmion 49 | BroadwayWorld Clementine Scott 79 | WhatsOnStage Alex Wood 78 | London Theatre Unknown 62 | Timboatswain Tim Boatswain 95 | All That Dazzles  (UK) All That Dazzles 86 | Boycotting Trends Alex Ramon 79 | Monstagigz Unknown 77 | Sunday Telegraph Claire Allfree 69 | Cultural Capital Unknown 64.\n\nVERIFIED EXCLUSIONS (sampled, confirmed non-reviewers): Evening Standard, Financial Times, Variety, The Arts Desk, The Reviews Hub, Everything Theatre, iNews, LondonTheatre1, Musical Theatre Review. Broadway Baby appeared to hit but resolved to a different Edinburgh Fringe show also titled 'Persona' (zero Lyttelton/Blanchett references). Decoys correctly excluded from the score: WhatsOnStage casting news, Variety cast interview, TimeOut/Southbank/TheatreMonkey/TheatreWorkout listings, London Box Office (aggregator), TheatreBoard forum thread, a Natalie Haynes Guardian opinion column published 3 days before previews. One true blind spot across all 49 passes: telegraph.co.uk/theatre returns a 1030-byte JS shell to every fetch path tried, so the daily Telegraph was never sampled; Sunday Telegraph (Claire Allfree) is live at 69, so the risk is low.\n\nTIMELINE. First review seen 2026-08-23 (two pre-opening T3 blogs; rebuilt to count 1 on 08-29 05:47Z). Press night 2026-09-01, but the UK embargo did NOT lift that evening - 12 consecutive census sweeps through 22:15 BST found zero press reviews, correctly diagnosed as an empty press corpus rather than a pipeline failure. Embargo lifted overnight: count 2 -> 6 by 02:19Z, -> 14 by 10:31Z on 09-02, first parity 11:04Z after the 10:48Z deploy. The Independent then published LATE (06:52 EDT 09-02, after the census had been declared exhausted); found by curl sweep at 11:33Z, ingested, scored 62, rebuilt into reviews.json at 12:10:57Z and live on prod shortly after. Roughly 2 hours from the bulk of the press drop to full live coverage - inside the mission bar.\n\nFIXES BY FAILURE-MODE CLASS. (1) Missed discovery (3d) - Boycotting Trends (blogspot) and Cultural Capital (wordpress.com) were absent from outlet-registry.json so discovery never saw them; registry entries added and pushed to both repos, Boycotting Trends direct-URL ingested. Both live (79, 64). (2) Content-fetch failure - All That Dazzles landed as a zero-char stub; re-ingested and live. The pipeline deduped its own second copy correctly. (3) Includable-but-unscored, a genuinely new mode - a recovered review passed every exclusion check but had no llmScore, and since the rebuild only emits scored reviews the count stayed flat and looked like a push failure. A stuck review count does not imply a broken rebuild. (4) Self-resolved - The Stage briefly displayed critic 'Unknown' while a byline'd copy sat on disk; a later rebuild preferred the byline'd file on its own. (5) LATE missed discovery (3d, new tonight) - The Independent / Alice Saville published the MORNING AFTER press night, hours after the census looked settled at 14 and after 'census exhausted' had been recorded. Found only because a later pass re-swept the T1 section pages anyway. Lesson for the monitor: never stop sweeping while the window is open.\n\nOPERATIONAL NOTE. rebuild-fast.yml flapped all morning (10:55 failure, 11:06 success, 11:08 cancelled, 11:50 failure) yet the data still landed via a later run. A rebuild-fast 'failure' conclusion is not proof the data did not land - check the core-data repo's git log for reviews.json instead.\n\nWORKFLOWS DISPATCHED: none forced. The automated chain carried the entire press drop unaided; every intervention was data-layer only.\n\nCARDED (all parked, none blocking): BRO-2729 fetchPage Playwright path waits for networkidle, which never settles on wordpress.com, timeout.com and Wix sites. BRO-2732 rebuild-reviews.yml push failure (separate from, and not the cause of, the stuck count above). BRO-2735 _pending zero-text stubs can silently swallow reviews.\n\nCOVERAGE GAP SIGNAL: All That Dazzles and the Guardian review both reached prod with no review-first-seen event in stage-latency.jsonl, so their discovery-to-live latency is unmeasurable. The other outlets are fully instrumented.\n\nBROADCAST GATE: MET (15 scored, threshold 8). Verified and logged only. Nothing sent.\n\nSPEND: roughly $5 per pass across 49 launchd passes; this final pass about $0.20 (a dozen curl fetches, no scraper credits).\n\nState file: data/opening-night-monitor/session-state-on-monitor-2026-09-01.json",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33647045099",
-      "fields": [
-        {
-          "name": "This failed run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33647045099)"
-        },
-        {
-          "name": "Previous failed run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/31037393070)"
-        },
-        {
-          "name": "Consecutive failures",
-          "value": "27"
-        }
-      ]
-    },
-    {
-      "title": "Opening-night monitor pass complete: a-month-in-the-country-west-end-2026",
-      "description": "Pass 76, model opus, 2min, $0.90. Attempt 76 complete — no gaps, no fixes needed, exiting inside budget (7 min to spare).\n\n**Census (23:22–23:23Z / 00:23 BST, ~3.3h post-curtain): embargo still unbroken.** Eight outlet index pages re-measured clean at full body size — Guardian 463KB, LondonTheatre 491KB, Standard 290KB, TimeOut 231KB, BWW 187KB, ReviewsHub 50KB, The Stage 138KB all zero hits; WhatsOnStage 251KB has 3 hits that all dedupe to the known non-review trailer URL already in the corpus. Times and Telegraph returned bot-walled 1.3KB/1.0KB bodies (unmeasurable by curl, not worth provider spend — settled in a prior pass). Nothing has published yet, so there is no discovery gap to chase.\n\n**AMITC parity holds at exact 1/1** — prod returns Monstagigz/Neil 84. No `cs` key, which is correct for a lone T3 below the compos",
-      "severity": "info",
+      "title": "Auto-remediation gave up on the-story-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
       "url": null,
       "fields": []
     },
@@ -291,290 +202,9 @@
       "severity": "error",
       "url": null,
       "fields": []
-    },
-    {
-      "title": "Unhandled CV.wrongProduction on A Month in the Country",
-      "description": "broadwayworld/Cindy Marcolina (broadwayworld--cindy-marcolina.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses 'A Month in the Country' but doe — https://www.broadwayworld.com/westend/article/Review-A-MONTH-IN-THE-COUNTRY-Donmar-Warehouse-20260903\nsunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production that is set to open — https://www.telegraph.co.uk/theatre/what-to-see/a-month-in-the-country-donmar-warehouse-review/\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production at the Donmar Wareh — https://www.thetimes.com/culture/theatre-dance/article/a-month-in-the-country-review-a-potent-brew-of-sex-and-narcissism-5ghlnc530",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Content mismatch on A Month in the Country",
-      "description": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'A Month in the Country' (3181 chars): https://www.theguardian.com/stage/2026/sep/03/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-turgenev\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo\n⚠️  whatsonstage/Alex Wood (whatsonstage--alex-wood.json) also too short to assess (0 chars): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Pre-opening publishDate on A Month in the Country",
-      "description": "monstagigz/Neil SHIPPED with publishDate 2026-08-25 (8d before openingDate 2026-09-02): https://monstagigz.com/2026/08/25/theatre-review-a-month-in-the-country-starring-sophie-okonedo-at-donmar-warehouse/",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Unverified revival on A Month in the Country",
-      "description": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening-night monitor pass complete: the-story-west-end-2026",
-      "description": "Pass 1, model opus, 3min, $1.19. **Pass 1 verdict: pre-review state — no gaps, nothing to fix.** No report email sent (correct: parity not reached, window open until 2026-09-04T22:59Z).\n\nFindings:\n\n1. **Press night is tonight (3 Sept), confirmed independently.** This disproved my initial hypothesis that `openingDate` (theatremonkey source) was wrong. It's correct.\n2. **The ~14 `anticipatory_pre_opening_post` wrongProduction flags are correct rejections**, not the usual 44% false-positive pattern — all are 26–31 Aug preview coverage predating press night. I cleared nothing. Clearing them would have injected non-reviews into a live show.\n3. **Three outlet-bound files are genuinely misbound**, flags correct: `telegraph--unknown.json` → a Paul Mason book review; `guardian--unknown.json` → an Edinburgh comedy review; `artsdesk",
-      "severity": "info",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Unhandled CV.wrongProduction on Electra / Persona",
-      "description": "independent/Alice Saville (independent--alice-saville.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review discusses a production at the National The — https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/electra-persona-review-cate-blanchett-b3043382.html\nsouth-london/Michael Holland (south-london--michael-holland.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] This is a genuine review (critic Katie Kelly evaluate — https://southlondon.co.uk/area/southwark/review-electra-persona-at-the-national-theatre/",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review too short to verify on Electra / Persona",
-      "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review URL cross-show mismatch on Electra / Persona",
-      "description": "Review URL for boycotting-trends/Alex Ramon does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): http://boycottingtrends.blogspot.com/2026/08/theatre-review-electrapersona-lyttelton.html\nReview URL for broadwayworld/Clementine Scott does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.broadwayworld.com/westend/article/Review-ELECTRAPERSONA-National-Theatre-20260901\nReview URL for financialtimes/Sarah Hemming does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.ft.com/content/f0e97e40-d9e7-4054-8ae3-0957083f8cb5?syn-25a6b1a6=1\nReview URL for guardian/Arifa Akbar does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-blanchett-and-hoss-face-off-in-lopsided-sophocles-bergman-double-bill\nReview URL for thestage/Holly O'Mahony does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london\nReview URL for times-uk/Clive Davis, Chief Theatre Critic does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thetimes.com/culture/theatre-dance/article/electrapersona-review-cate-blanchett-is-captivating-despite-the-script-q35z7fpn5",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening Night Broadcast Blocked — Checklist Errors",
-      "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
-      "severity": "error",
-      "url": null,
-      "fields": [
-        {
-          "name": "Shows",
-          "value": "electra-persona-west-end-2026"
-        }
-      ]
-    },
-    {
-      "title": "Unverified revival on The Story",
-      "description": "the-story-west-end-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Unhandled CV.wrongProduction on The Fear of 13",
-      "description": "guardian/Adrian Horton (guardian--adrian-horton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review is valid in terms of being a critique of ' — https://www.theguardian.com/stage/2026/apr/15/the-fear-of-13-review-adrien-brody-tessa-thompson\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review describes a production that was performed  — https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review missing publishDate on The Fear of 13",
-      "description": "lighting-and-sound-america/David Barbour SHIPPED with no publishDate — cannot confirm post-opening: http://www.lightingandsoundamerica.com/news/story.asp?ID=KKEMOF\ntheater-scene/Marc Miller SHIPPED with no publishDate — cannot confirm post-opening: https://theaterscene.com/reviews/the-fear-of-13/",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review URL cross-show mismatch on The Fear of 13",
-      "description": "Review URL for lighting-and-sound-america/David Barbour does not mention show slug (checked: the-fear-of-13, fear-of-13, fear): http://www.lightingandsoundamerica.com/news/story.asp?ID=KKEMOF\nReview URL for talkinbroadway/Howard Miller does not mention show slug (checked: the-fear-of-13, fear-of-13, fear): https://www.talkinbroadway.com/page/world/TheFearof13.html",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "The Story Olivier @ national — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/the-story-olivier-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/pride-theatre-dorfman-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/why-i-stuck-a-flare-up-my-arse-for-england-garrick-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-review2-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Krapps Last Tape @ royal court — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Dracula @ noel coward — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/dracula-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "John Proctor @ royal court — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Jajas African Hair Braiding Hammersmith @ lyric — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-roundup-jajas-african-hair-braiding-lyric-hammersmith). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/jajas-african-hair-braiding-hammersmith-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/to-maury-with-love-concert-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Opening night report: The Story (National Theatre) — 16 reviews live, CS 63.98",
-      "description": "OPENING NIGHT PARITY REACHED — The Story (National Theatre Olivier, West End), press night 3 Sept 2026.\n\nFINAL STATE ON PROD (verified 2026-09-04T19:34Z by direct curl of https://broadwayscorecard.com/data/shows/the-story-west-end-2026.json)\n- 16 reviews live, Critic Score 63.98, breakdown 3 positive / 11 mixed / 2 negative\n- Audience 73.39 (\"Shrugging\"), status = open, category = west-end\n- Outlets live: Evening Standard/Nick Curtis 80, Guardian/Arifa Akbar 80, Time Out London/Andrzej Lukowski 71, WhatsOnStage 71, Telegraph/Dominic Cavendish 63, London Theatre/Aliya Al-Hassan 63, The Stage/Dave Fargnoli 60, The Reviews Hub 60, Independent/Alice Saville 59, LondonTheatre1/Chris Omaweng 58, All That Dazzles 58, London Box Office/Stuart King 69, London Unattached/Lucy Foxell 76, Theatrecat 74, BroadwayWorld/Clementine Scott 45, Times UK/Clive Davis 39\n- Broadcast gate: MET (16 scored, threshold 8). The monitor sent NOTHING to Resend; the Opening Night Broadcast workflow owns that send.\n\nTIMELINE\n- Press night 2026-09-03 ~19:00 BST. First review seen: The Times (Clive Davis) — URL corrected 2026-09-03T23:08Z, live on prod ~30 min later.\n- Bulk of the T1 field (Guardian, Standard, Telegraph, Independent, Stage, Time Out) published across 2026-09-04 morning and landed through the day.\n- Last gap closed: Theatrecat scored 74 and rebuilt into core data 2026-09-04T19:11Z; live on prod by 19:34Z.\n- Parity time: ~24.5h after press night, ~9h after the main morning publication wave.\n\nONE NAMED EXCLUSION\n- Financial Times: review published, hard paywall. Hard 403 plus Playwright timeout on repeated attempts. Needs an owner ft.com cookie refresh; no monitor-side path exists. This is the only census outlet not live.\n\nFIXES APPLIED (with failure-mode class)\n1. BroadwayWorld / Clementine Scott — discovery miss; direct-URL ingest (attempt 4).\n2. West End orchestrator stalled — force-dispatched opening-night-orchestrator.yml market=west-end, run 33846592812 (attempt 15).\n3. London Theatre / Aliya Al-Hassan — discovery miss; direct-URL ingest (attempt 20).\n4. London Box Office / Stuart King — wrongProduction false positive; flag cleared after independent venue/cast corroboration (attempt 26).\n5. Guardian / Arifa Akbar — wrong-show squatter file (a Kemah Bob Edinburgh review) occupying the Guardian slot; squatter removed, real review ingested (attempt 30).\n6. Telegraph — slug-squatting blocked re-ingest; unblocked (attempt 37).\n7. Theatrecat — wrongProduction false positive AND body quarantined into a wrongFullText key with wordCount forced to 0. Flag cleared with all 8 protection fields, 682-word body promoted, ensemble-scored 74 (attempts 41-43).\n\nWORKFLOWS DISPATCHED: opening-night-orchestrator.yml x1 (west-end), rebuild-fast.yml x4, rebuild-reviews.yml x1, LLM Ensemble Score Reviews x3. No broadcast API touched at any point.\n\nNEW FAILURE MODES CARDED\n- BRO-2788 (parked): wrongProduction quarantines a scraped body into wrongFullText and zeroes wordCount, so a monitor pass reads \"never scraped\" and plans a needless re-fetch. Memory appended: memory/feedback_discovery_pipeline_silent_gates.md.\n- BRO-2757 (parked): data/audit/stage-latency.jsonl recorded ZERO events for this show all night despite reviews demonstrably travelling discovery to prod. The monitor's own coverage metric was blind for this opening.\n- Not yet carded: the launchd monitor env does not load ~/Broadwayscore/.env, so SCRAPINGBEE_API_KEY and VERCEL_TOKEN are absent in headless passes (check-prod-deploy.js unusable; public JSON curl used instead). Harness ergonomics, P3.\n\nOBSERVATION FOR FOLLOW-UP (not a review gap): the prod show JSON still carries a stale coverage block, cov.state=incomplete with liveCount 0, computedAt 2026-09-02T22:17Z, i.e. from before press night. The editorial consensus block (cn.rc) is also stamped at 15 reviews, one behind the current 16.\n\nSPEND: ~$33.75 estimated across 44 monitor passes (2026-09-03T23:12Z to 2026-09-04T19:48Z).\nSTATE FILE: data/opening-night-monitor/session-state-on-monitor-2026-09-03.json",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review-gap audit refused to write — 21.7% of shows changed coverage state",
-      "description": "review-gap blast radius 21.7% (10/46 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 77% (374/486)\noff-broadway: 43.9% (136/310)\nwest-end: 73.3% (399/544)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (515h)\nA Midsummer Night's Dream — observer (515h)\nA Midsummer Night's Dream — standard (515h)\nA Midsummer Night's Dream — times-uk (515h)\nABBA Voyage — independent (515h)\n… 177 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (515h)\nThe Book of Mormon — usatoday (515h)\nBuena Vista Social Club — broadwaynews (515h)\nBuena Vista Social Club — nydailynews (515h)\nHadestown — nydailynews (515h)\n… 21 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "8/136 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable\nDeath Note: The Musical: score-drift\nCyrano de Bergerac: score-drift\nOh, Mary!: score-drift\nHadestown: score-drift",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "76 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-      "severity": "error",
-      "url": null,
-      "fields": [
-        {
-          "name": "Electra / Persona — telegraph (47h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"electra-persona-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Paranormal Activity — financialtimes (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Paranormal Activity — whatsonstage (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Sabrage — guardian (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"sabrage-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Sabrage — standard (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"sabrage-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Schmigadoon! — times-uk (293h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"schmigadoon-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "SIX — observer (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"six-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "SIX — vulture (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"six-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "SIX the Musical — daily-mail (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "SIX the Musical — guardian (515h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        }
-      ]
-    },
-    {
-      "title": "Auto-remediation gave up on the-story-west-end-2026",
-      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening Night Broadcast Blocked — Checklist Errors",
-      "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
-      "severity": "error",
-      "url": null,
-      "fields": [
-        {
-          "name": "Shows",
-          "value": "the-story-west-end-2026"
-        }
-      ]
-    },
-    {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hi Tom — I came across your recent scraper cost report and noticed the combination of high paid scraping usage and failed workflows.\r\nI have a concrete idea for reducing that cost: first reproduce a few failed opening-night workflows, identify where paid browser/SERP calls are being consumed, then test a Playwright-first + caching path with paid services only as fallback.\r\nI’d be happy to start with a small scoped diagnostic rather than proposing a full rebuild. If that’s useful, I can send you \"",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33932869717",
-      "fields": [
-        {
-          "name": "Submissions",
-          "value": "1"
-        },
-        {
-          "name": "Need you",
-          "value": "0"
-        },
-        {
-          "name": "Pipeline status",
-          "value": "success"
-        }
-      ]
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 54,
-  "totalCount": 107
+  "autoFixedCount": 2,
+  "passedCount": 55,
+  "totalCount": 104
 }
