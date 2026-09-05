@@ -2067,7 +2067,11 @@ if [ "$_api_fallback_ok" = "true" ]; then
     # advancing") stand as the accepted diagnosis across several days.
     # rc=3 is push-via-git-api.sh's timeout-dominated exhaustion.
     if [ "$_api_rc" = "3" ]; then
-      echo "::warning::push-with-retry: Git Data API fallback also failed — TIMEOUTS dominated (rc=3), NOT a lost ref race"
+      # "at least as many timeouts as races", not "dominated": rc=3 is also
+      # returned on a tie, where both did fire. Overclaiming here would repeat
+      # in miniature the exact defect this change exists to remove. The exact
+      # counts are in push-via-git-api.sh's breakdown line above.
+      echo "::warning::push-with-retry: Git Data API fallback also failed — at least as many TIMEOUTS as lost races (rc=3); see the exhaustion breakdown above for exact counts"
       record_push_failure "api-fallback-exhausted(timeout)" "$MAX_RETRIES"
     else
       echo "::warning::push-with-retry: Git Data API fallback also failed (rc=$_api_rc)"
