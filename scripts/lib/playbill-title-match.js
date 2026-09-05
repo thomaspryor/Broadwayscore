@@ -70,7 +70,7 @@
 // added to this module in future passes unnoticed. A line-scoped exemption would
 // be preferable and the guard does not support one. Keep this module free of
 // venue writes; if one ever belongs here, delete this marker first.
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, foldDiacritics } = require('./title-match');
 
 /** Words that carry no venue identity on their own. */
 const VENUE_NOUNS = new Set(['theatre', 'theater', 'the', 'at', 'and', 'of']);
@@ -80,10 +80,19 @@ function normSlug(s) {
   return normalizeTitle(String(s || '').replace(/-/g, ' ')).replace(/\s+/g, '-');
 }
 
-/** Slugify a raw venue name without any aliasing. */
+/**
+ * Slugify a raw venue name without any aliasing.
+ *
+ * foldDiacritics BEFORE the [^a-z0-9] replace, never after (task #648): that
+ * class does not match an accented letter, so without folding every accent
+ * becomes a SEPARATOR and shreds the slug rather than merely dropping a
+ * character. Measured on the unfixed version:
+ *   "Théâtre du Châtelet" -> "th-tre-du-ch-telet"   (not "theatre-du-chatelet")
+ *   "Café Carlyle"        -> "caf-carlyle"          (not "cafe-carlyle")
+ * Folding first turns those into plain ASCII letters, so the run stays whole.
+ */
 function venueSlug(v) {
-  return String(v || '')
-    .toLowerCase()
+  return foldDiacritics(String(v || '').toLowerCase())
     .replace(/[''""‘’“”]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
