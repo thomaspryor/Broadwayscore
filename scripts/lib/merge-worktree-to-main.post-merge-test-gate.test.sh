@@ -76,6 +76,12 @@ setup() {
   # (card #1433's baseline-diff TAP parsing), not optional like
   # acceptance-check-core.js — must be present in any real deployment.
   cp "$REPO_ROOT/scripts/lib/tap-failure-parser.js" "$d/main/scripts/lib/"
+  # The gate requires this for describeExit()'s spawn-error text (BRO-2874).
+  # Load-bearing: with this cp removed, the gate dies with MODULE_NOT_FOUND in
+  # the scratch repo and this harness drops to 6 passed / 2 failed (measured, not
+  # assumed — a review predicted it would still score GREEN and that was wrong).
+  # Any future sibling require() of the gate needs its own cp line here.
+  cp "$REPO_ROOT/scripts/lib/exec-error-detail.js" "$d/main/scripts/lib/"
   cp "$REPO_ROOT/scripts/lib/push-mutex.sh" "$d/main/scripts/lib/"
   # Stub the unrelated range-scoped push-audit gate (own coverage elsewhere;
   # a real run here would abort before reaching the check this test targets).
