@@ -1,39 +1,208 @@
 {
-  "generatedAt": "2026-08-31T14:30:08.011Z",
-  "scope": "2 opening window(s): paranormal-activity-2026 (2026-08-25), the-real-ivanov-off-broadway-2026 (2026-08-25)",
+  "generatedAt": "2026-09-05T02:23:03.897Z",
+  "scope": "2 opening window(s): the-story-west-end-2026 (2026-09-03), a-month-in-the-country-west-end-2026 (2026-09-02)",
   "degraded": null,
   "windows": [
     {
-      "showId": "paranormal-activity-2026",
-      "openingDate": "2026-08-25",
-      "from": "2026-08-24T00:00:00.000Z",
-      "to": "2026-08-29T23:59:59.999Z"
+      "showId": "the-story-west-end-2026",
+      "openingDate": "2026-09-03",
+      "from": "2026-09-02T00:00:00.000Z",
+      "to": "2026-09-07T23:59:59.999Z"
     },
     {
-      "showId": "the-real-ivanov-off-broadway-2026",
-      "openingDate": "2026-08-25",
-      "from": "2026-08-24T00:00:00.000Z",
-      "to": "2026-08-29T23:59:59.999Z"
+      "showId": "a-month-in-the-country-west-end-2026",
+      "openingDate": "2026-09-02",
+      "from": "2026-09-01T00:00:00.000Z",
+      "to": "2026-09-06T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 163617,
+  "logEntryCount": 179071,
   "logOldestEntryAt": "2026-08-08T07:07:43.000Z",
-  "publishTimesLoaded": 26,
+  "publishTimesLoaded": 0,
   "verdict": {
-    "verdict": "insufficient-data",
+    "verdict": "fail",
     "pass": false,
-    "evaluated": 0,
+    "evaluated": 6,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": null,
-    "p50Ms": null,
-    "p90Ms": null,
+    "compliancePct": 0,
+    "p50Ms": 6356869,
+    "p90Ms": 14704440,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [],
-    "byBasis": {}
+    "breaches": [
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "standard:nick-curtis:https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+        "outletId": "standard",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T08:39:21.560Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T12:25:44.240Z",
+        "liveAt": "2026-09-04T12:34:26.000Z",
+        "pipelineMs": 14104440,
+        "publishedToLiveMs": 14704440,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "london-theatre:aliya-al-hassan:https://www.londontheatre.co.uk/reviews/the-story-review-national-theatre",
+        "outletId": "london-theatre",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T09:03:39.433Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T12:25:44.240Z",
+        "liveAt": "2026-09-04T12:34:26.000Z",
+        "pipelineMs": 12646567,
+        "publishedToLiveMs": 13246567,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "broadwayworld:clementine-scott:https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+        "outletId": "broadwayworld",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T01:16:25.360Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T03:20:41.959Z",
+        "liveAt": "2026-09-04T03:30:51.000Z",
+        "pipelineMs": 8065640,
+        "publishedToLiveMs": 8665640,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "whatsonstage:unknown:https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+        "outletId": "whatsonstage",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T10:58:29.131Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T12:25:44.240Z",
+        "liveAt": "2026-09-04T12:34:26.000Z",
+        "pipelineMs": 5756869,
+        "publishedToLiveMs": 6356869,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "telegraph:dominic-cavendish:https://www.telegraph.co.uk/theatre/what-to-see/the-story-review-national-theatre/",
+        "outletId": "telegraph",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T16:30:31.314Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T17:00:59.749Z",
+        "liveAt": "2026-09-04T17:04:48.000Z",
+        "pipelineMs": 2056686,
+        "publishedToLiveMs": 2656686,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-story-west-end-2026",
+        "reviewKey": "guardian:arifa-akbar:https://www.theguardian.com/stage/2026/sep/04/the-story-review-letitia-wright-national-theatre-london",
+        "outletId": "guardian",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-04T13:32:11.263Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-04T13:37:24.654Z",
+        "liveAt": "2026-09-04T13:49:43.000Z",
+        "pipelineMs": 1051737,
+        "publishedToLiveMs": 1651737,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      }
+    ],
+    "byBasis": {
+      "poller-bounded": {
+        "evaluated": 6,
+        "compliant": 0
+      }
+    }
   },
-  "records": []
+  "records": [
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "broadwayworld",
+      "reviewKey": "broadwayworld:clementine-scott:https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T01:16:25.360Z",
+      "liveAt": "2026-09-04T03:30:51.000Z",
+      "pipelineMinutes": 134.4,
+      "publishedToLiveMinutes": 144.4,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "standard",
+      "reviewKey": "standard:nick-curtis:https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T08:39:21.560Z",
+      "liveAt": "2026-09-04T12:34:26.000Z",
+      "pipelineMinutes": 235.1,
+      "publishedToLiveMinutes": 245.1,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "london-theatre",
+      "reviewKey": "london-theatre:aliya-al-hassan:https://www.londontheatre.co.uk/reviews/the-story-review-national-theatre",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T09:03:39.433Z",
+      "liveAt": "2026-09-04T12:34:26.000Z",
+      "pipelineMinutes": 210.8,
+      "publishedToLiveMinutes": 220.8,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "whatsonstage",
+      "reviewKey": "whatsonstage:unknown:https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T10:58:29.131Z",
+      "liveAt": "2026-09-04T12:34:26.000Z",
+      "pipelineMinutes": 95.9,
+      "publishedToLiveMinutes": 105.9,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "guardian",
+      "reviewKey": "guardian:arifa-akbar:https://www.theguardian.com/stage/2026/sep/04/the-story-review-letitia-wright-national-theatre-london",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T13:32:11.263Z",
+      "liveAt": "2026-09-04T13:49:43.000Z",
+      "pipelineMinutes": 17.5,
+      "publishedToLiveMinutes": 27.5,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "telegraph",
+      "reviewKey": "telegraph:dominic-cavendish:https://www.telegraph.co.uk/theatre/what-to-see/the-story-review-national-theatre/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-04T16:30:31.314Z",
+      "liveAt": "2026-09-04T17:04:48.000Z",
+      "pipelineMinutes": 34.3,
+      "publishedToLiveMinutes": 44.3,
+      "stuckAtStage": null
+    }
+  ]
 }

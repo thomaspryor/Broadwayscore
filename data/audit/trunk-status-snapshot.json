@@ -1,42 +1,22 @@
 {
-  "generatedAt": "2026-08-31T14:30:01.033Z",
+  "generatedAt": "2026-09-05T02:23:01.438Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "afad543aeb18b1a563eee03965d1f0fa5d29de20",
-  "state": "RED",
-  "consecutiveFailures": 91,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "0aaf6618e5ecd25bff8f7e3643b0c963b4517417",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 13,
+  "greenSince": "2026-09-04T18:12:54Z",
+  "greenForHours": 8.168732777777779,
   "greenDurationIsFloor": false,
-  "redSince": "2026-08-26T19:52:26Z",
-  "redForHours": 114.62639805555555,
-  "redDurationIsFloor": true,
-  "lastSuccessAt": null,
-  "latestFailedRunId": "33396107553",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33396107553",
-  "decidedRuns": 91,
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run push-with-retry stranded-commit-cascade test (bash integration)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/lib/merge-worktree-to-main.content-drop.test.sh",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "redSince": null,
+  "redForHours": null,
+  "redDurationIsFloor": false,
+  "lastSuccessAt": "2026-09-05T01:55:48Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 96,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
