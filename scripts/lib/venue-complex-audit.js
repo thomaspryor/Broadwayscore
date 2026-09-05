@@ -77,7 +77,14 @@ function findCandidateGaps(shows, complexDefs, categoryFilter) {
   const result = {};
 
   for (const [complexSlug, def] of Object.entries(complexDefs)) {
-    const covered = new Set([complexSlug, ...def.subVenueSlugs]);
+    // Same Array.isArray guard as findOrphanSubVenueSlugs. A spread of a
+    // missing/non-iterable subVenueSlugs throws "is not iterable" here on
+    // exactly the malformed def findMalformedComplexDefs exists to REPORT.
+    // Today this is only reached from the .mjs audit test, where a throw is
+    // contained, but the moment a caller in validate-data.js reaches it the
+    // uncaughtException handler turns it back into a push-refusal sentinel —
+    // the failure the hardening was supposed to remove. Harden both, not one.
+    const covered = new Set([complexSlug, ...(Array.isArray(def && def.subVenueSlugs) ? def.subVenueSlugs : [])]);
     const coreTokenSets = [];
     const addTokens = (str) => {
       const tokens = coreTokens(str);

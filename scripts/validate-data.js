@@ -149,6 +149,37 @@ if (process.env.VALIDATE_DATA_SHOWS_JSON) {
 }
 const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 
+// FIXTURE RUNS MUST NOT WRITE TRACKED AUDIT ARTIFACTS.
+//
+// VALIDATE_DATA_SHOWS_JSON redirects shows.json only; every other path still
+// resolved under the real DATA_DIR, so a fixture run recomputed the corpus-wide
+// audit artifacts FROM THE FIXTURE and overwrote the real ones in place. On
+// 2026-09-05 a single fixture run cut data/audit/london-only-nyc-accumulation.json
+// from 3,357 lines to 161 — 3,286 deletions of real telemetry — in the shared
+// checkout that ~20 parallel sessions and several auto-committing CI jobs share.
+// It was caught before anything committed the degraded file, but only because a
+// reviewer md5'd it; nothing in the pipeline would have objected.
+//
+// The three artifacts below are all pure derivations of the corpus, so under the
+// override the honest value is "don't write" rather than "write something
+// wrong". Reads are untouched — a fixture run still compares against the real
+// baseline, which is what the sentinel and wiring tests actually assert on.
+//
+// This closes the hazard for every fixture-based test, not just the one that
+// tripped it: tests/unit/validate-data-push-refusal-sentinel.test.mjs has spawned
+// validate-data.js under the same override since long before this.
+const FIXTURE_MODE = !!process.env.VALIDATE_DATA_SHOWS_JSON;
+function writeAuditArtifact(file, contents, label) {
+  if (FIXTURE_MODE) {
+    info(`Skipping ${label} write — VALIDATE_DATA_SHOWS_JSON override active, so this run's corpus is a fixture and would corrupt the tracked file.`);
+    return false;
+  }
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(file, contents);
+  return true;
+}
+
 const strictMode = process.argv.includes('--strict');
 
 // Hardcoded fallback thresholds (used only if baseline file doesn't exist)
@@ -939,12 +970,25 @@ function validateOrphanSubVenueSlugs(shows) {
 
   let orphanCount = 0;
   let malformedCount = 0;
-  let advisoriesPrinted = 0;
-  const ADVISORY_PRINT_CAP = 5; // matches the cross-market validator's cap at validate-data.js:4757
+  let orphanLinesPrinted = 0;
+  let orphanLinesSuppressed = 0;
+  // Cap matches the cross-market validator's at validate-data.js:4757, but it
+  // applies to ORPHAN lines only. A malformed def is the one finding here that
+  // actually breaks the Next build (data-core.ts:885 calls .map() on it
+  // unguarded), and markets are iterated off-Broadway first — so a shared cap
+  // let five cosmetic off-Broadway orphan lines silently swallow a West End
+  // malformed-def line. Never suppress the build-breaking kind to make room for
+  // the cosmetic one.
+  const ORPHAN_PRINT_CAP = 5;
 
-  const advisory = (msg) => {
-    if (advisoriesPrinted >= ADVISORY_PRINT_CAP) return;
-    advisoriesPrinted++;
+  const blocking = (msg) => warn(`Venue-complex ADVISORY: ${msg}`);
+  // Counts SUPPRESSED MESSAGES, not findings. orphanCount counts individual
+  // slugs while one line lists every missing slug for a complex, so counting
+  // findings made the summary claim "(2 not listed above)" when one complex with
+  // three orphaned slugs had printed its single line and nothing was withheld.
+  const orphanAdvisory = (msg) => {
+    if (orphanLinesPrinted >= ORPHAN_PRINT_CAP) { orphanLinesSuppressed++; return; }
+    orphanLinesPrinted++;
     warn(`Venue-complex ADVISORY: ${msg}`);
   };
 
@@ -970,7 +1014,7 @@ function validateOrphanSubVenueSlugs(shows) {
       parsed = require(path.join(__dirname, '..', market.defsFile));
     } catch (e) {
       malformedCount++;
-      advisory(`${market.defsFile} could not be read or parsed (${e.message}). src/lib/data-core.ts imports this file directly, so the site build fails on the same problem — fix it there.`);
+      blocking(`${market.defsFile} could not be read or parsed (${e.message}). src/lib/data-core.ts imports this file directly, so the site build fails on the same problem — fix it there.`);
       continue;
     }
 
@@ -987,18 +1031,18 @@ function validateOrphanSubVenueSlugs(shows) {
     if (!defs || typeof defs !== 'object' || Array.isArray(defs)) {
       malformedCount++;
       const found = Array.isArray(defs) ? 'an array' : defs === undefined ? 'missing' : `of type ${defs === null ? 'null' : typeof defs}`;
-      advisory(`${market.defsFile} has no usable top-level "complexes" object (it is ${found}). src/lib/data-core.ts reads .complexes from this file, so the site build breaks on the same problem — fix it there.`);
+      blocking(`${market.defsFile} has no usable top-level "complexes" object (it is ${found}). src/lib/data-core.ts reads .complexes from this file, so the site build breaks on the same problem — fix it there.`);
       continue;
     }
 
     for (const [complexSlug, found] of Object.entries(findMalformedComplexDefs(defs))) {
       malformedCount++;
-      advisory(`${market.defsFile} complex "${complexSlug}" has subVenueSlugs of type ${found}, expected an array. src/lib/data-core.ts:885 calls .map() on it with no guard, so this throws during the Next build.`);
+      blocking(`${market.defsFile} complex "${complexSlug}" has subVenueSlugs of type ${found}, expected an array. src/lib/data-core.ts:885 calls .map() on it with no guard, so this throws during the Next build.`);
     }
 
     for (const [complexSlug, missing] of Object.entries(findOrphanSubVenueSlugs(shows, defs, market.matches))) {
       orphanCount += missing.length;
-      advisory(
+      orphanAdvisory(
         `${market.defsFile} complex "${complexSlug}" lists sub-venue slug(s) ` +
           `${missing.map(s => `"${s}"`).join(', ')} that no ${market.label} show's venue resolves to. ` +
           `Usually a show that used that venue string was removed or renamed (drop the slug); ` +
@@ -1016,7 +1060,7 @@ function validateOrphanSubVenueSlugs(shows) {
     warn(
       `Venue-complex ADVISORY SUMMARY: ${orphanCount} orphaned sub-venue slug(s), ` +
         `${malformedCount} malformed definition(s)` +
-        (findings > advisoriesPrinted ? ` (${findings - advisoriesPrinted} not listed above)` : '') +
+        (orphanLinesSuppressed > 0 ? ` (${orphanLinesSuppressed} further orphan line(s) not listed above)` : '') +
         `. Advisory here — the blocking gate is scripts/audit-venue-complex-slugs.test.mjs in CI.`
     );
   }
@@ -4573,10 +4617,9 @@ function validateTonyData(shows) {
         allGaps.push({ showId: id, expected, actual, reason: actual === 0 ? 'no-data' : 'partial' });
       }
     }
-    const auditDir = path.dirname(gapsFile);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-    fs.writeFileSync(gapsFile, JSON.stringify(allGaps, null, 2) + '\n');
-    ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    if (writeAuditArtifact(gapsFile, JSON.stringify(allGaps, null, 2) + '\n', 'Tony coverage gaps audit')) {
+      ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    }
   } catch (e) {
     warn(`Failed to write Tony coverage gaps: ${e.message}`);
   }
@@ -4913,7 +4956,7 @@ function validateCrossMarketContamination() {
         }))
         .sort((a, b) => (b.broadwayCount - a.broadwayCount) || (b.offBroadwayCount - a.offBroadwayCount) || a.outletId.localeCompare(b.outletId)),
     };
-    fs.writeFileSync(accumFile, JSON.stringify(payload, null, 2) + '\n');
+    writeAuditArtifact(accumFile, JSON.stringify(payload, null, 2) + '\n', 'London-only NYC accumulation audit');
   } catch (e) {
     warn(`Failed to write London-only NYC accumulation audit: ${e.message}`);
   }
@@ -5168,12 +5211,9 @@ function runValidation() {
     updatedAt: new Date().toISOString(),
   };
   try {
-    const auditDir = path.dirname(BASELINE_FILE);
-    if (!fs.existsSync(auditDir)) {
-      fs.mkdirSync(auditDir, { recursive: true });
+    if (writeAuditArtifact(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n', 'validation baseline')) {
+      ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
     }
-    fs.writeFileSync(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n');
-    ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
   } catch (e) {
     warn(`Failed to write baseline file: ${e.message}`);
   }

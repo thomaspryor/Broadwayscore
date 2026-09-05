@@ -25,20 +25,40 @@
  * off-Broadway subVenueSlug by construction — the same condition the live
  * incident produced by deleting one show.
  *
- * The fixture is deliberately tiny, so this run costs seconds rather than the
- * minutes a full-corpus validate-data.js run takes.
+ * COST, measured rather than assumed: about 190s. An earlier version of this
+ * comment claimed "seconds", which was wrong — the fixture replaces shows.json
+ * only, so reviews.json and every other validator still run against the full
+ * corpus. It is one of the slower entries in the unit suite. That is accepted
+ * because the property it pins has no cheaper proof: the pure functions are
+ * already covered in scripts/audit-venue-complex-slugs.test.mjs, and every one
+ * of those tests passes with the runner call deleted.
+ *
+ * ISOLATION, and why each piece is needed:
+ *  - RUNNER_TEMP is pointed at a per-test directory. validate-data.js resolves
+ *    its push-refusal sentinel under RUNNER_TEMP (validate-data.js:60), so
+ *    without this the child writes /tmp/.skip-push-core-data on a machine where
+ *    ~20 sessions share it — silently blocking another session's push-core-data
+ *    on a fake refusal, or (if the run exited 0) deleting a real one.
+ *  - validate-data.js now refuses to write its tracked audit artifacts whenever
+ *    VALIDATE_DATA_SHOWS_JSON is set. Before that, this test recomputed
+ *    data/audit/london-only-nyc-accumulation.json FROM THE FIXTURE and cut it
+ *    from 3,357 lines to 161 in the shared checkout.
+ *  - stdout AND stderr are captured on BOTH paths. warn() writes via
+ *    console.warn, i.e. stderr, and execFileSync returns stdout only on success,
+ *    which is why this uses spawnSync — it hands back both streams on every
+ *    so asserting on advisory text without merging stderr passes only while the
+ *    fixture happens to make the run exit non-zero.
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-import { writeFileSync, unlinkSync, existsSync, mkdtempSync, rmSync, readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { writeFileSync, existsSync, mkdtempSync, rmSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const VALIDATE = join(ROOT, 'scripts', 'validate-data.js');
 const COMPLEXES = join(ROOT, 'data', 'venue-complexes.json');
-const SENTINEL = join(process.env.RUNNER_TEMP || '/tmp', '.skip-push-core-data');
 
 // A single non-off-Broadway show. Every off-Broadway venue-complex subVenueSlug
 // is therefore unresolvable, which is precisely the orphan condition.
@@ -98,24 +118,41 @@ describe('validate-data.js — venue-complex orphan advisory is wired into the r
     const dir = mkdtempSync(join(tmpdir(), 'vcw-'));
     const fixturePath = join(dir, 'shows.json');
     writeFileSync(fixturePath, JSON.stringify(FIXTURE_SHOWS, null, 2));
-    const hadSentinel = existsSync(SENTINEL);
+    // Sandbox the sentinel: the child resolves it under RUNNER_TEMP, so it can
+    // only ever touch a file inside this test's own throwaway directory.
+    const sandboxSentinel = join(dir, '.skip-push-core-data');
     let out = '';
     let status = 0;
+    let sentinelLandedInSandbox = false;
     try {
-      out = execFileSync('node', [VALIDATE], {
-        stdio: 'pipe',
+      // spawnSync, not execFileSync: execFileSync RETURNS stdout only and exposes
+      // stderr just on the throw path, so a version of this test that asserted on
+      // its return value passed only while the fixture happened to make the run
+      // exit non-zero. warn() writes to stderr, so the advisory text this test
+      // exists to find lives there. spawnSync hands back both streams on every
+      // exit code, which removes that dependency entirely.
+      const res = spawnSync('node', [VALIDATE], {
         encoding: 'utf8',
-        env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath },
+        env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: dir },
       });
-    } catch (e) {
+      if (res.error) throw res.error;
       // A one-show fixture trips plenty of unrelated validators; that is fine
       // and expected. We assert on the advisory TEXT, never on the exit code.
-      status = e.status ?? 1;
-      out = `${e.stdout || ''}${e.stderr || ''}`;
+      status = res.status ?? 0;
+      out = `${res.stdout || ''}${res.stderr || ''}`;
     } finally {
+      // Positive isolation check, done BEFORE cleanup. A non-zero exit means
+      // validate-data.js wrote a refusal sentinel; if RUNNER_TEMP took effect it
+      // is inside `dir` and dies with it. Asserting on the SHARED /tmp path
+      // instead would be flaky, since another session may legitimately have one
+      // there — so assert the sandbox copy exists rather than that the shared
+      // one does not.
+      sentinelLandedInSandbox = existsSync(sandboxSentinel);
       rmSync(dir, { recursive: true, force: true });
-      // Never leave a refusal sentinel behind for a real push to trip over.
-      if (!hadSentinel && existsSync(SENTINEL)) unlinkSync(SENTINEL);
+    }
+    if (status !== 0) {
+      assert.ok(sentinelLandedInSandbox,
+        'validate-data.js exited non-zero but wrote no sentinel inside the sandboxed RUNNER_TEMP — isolation regressed, and a real push elsewhere could be blocked by this test');
     }
 
     assert.match(
