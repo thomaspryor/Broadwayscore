@@ -176,13 +176,22 @@ test('two concurrent push-via-git-api.sh invocations racing the SAME origin: one
 
     assert.equal(resultA.code, 0, `runner A must succeed (stderr: ${resultA.stderr})`);
     assert.equal(resultB.code, 0, `runner B must succeed (stderr: ${resultB.stderr})`);
-    // At least one side must have observed and recovered from a lost
-    // compare-and-swap — otherwise this test isn't actually exercising the
-    // race/retry path it exists to cover.
-    assert.ok(
-      /ref moved during attempt/.test(resultA.stderr) || /ref moved during attempt/.test(resultB.stderr),
-      'expected at least one runner to hit and retry past a lost compare-and-swap',
-    );
+    // This test asserts the SAFETY property of a real race (both writers'
+    // content survives), NOT that a compare-and-swap was actually lost.
+    //
+    // It used to assert /ref moved during attempt/ on one of the two stderrs.
+    // That is timing-dependent and it flaked main red: the script re-reads the
+    // remote tip fresh at the top of every attempt, so the losing window is
+    // only between that read and the ref update. When the runner serializes
+    // the two invocations — B starts after A has fully landed — B reads the
+    // ALREADY-advanced tip, its CAS succeeds first try, and no "ref moved"
+    // line is ever emitted even though nothing is broken. Observed on
+    // Broadwayscore test.yml run 33960170292, where the assertion failed on
+    // both the initial attempt and the automatic retry.
+    //
+    // The retry path still gets a hard assertion — see the deterministic
+    // pre-receive test below, which forces the lost CAS instead of hoping for
+    // it. Do not reinstate a timing-dependent assertion here.
 
     const verifyDir = path.join(tmp, 'verify');
     cloneRepo(originDir, verifyDir);
@@ -509,6 +518,113 @@ exec "$@"
     // And the reported sha is the one that actually landed.
     const originTip = sh('git rev-parse main', originDir).trim();
     assert.equal(res.stdout, originTip, 'script reported a sha that is not the origin tip');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// Installs a pre-receive hook on the bare origin that rejects the FIRST push
+// it sees and, before rejecting, advances refs/heads/main by one unrelated
+// commit. Every later push is accepted. This makes the lost-compare-and-swap
+// path deterministic instead of timing-dependent: the pusher is guaranteed to
+// lose its CAS exactly once, then must re-read the moved tip and replay.
+function installRejectFirstPushHook(originDir) {
+  const hookPath = path.join(originDir, 'hooks', 'pre-receive');
+  fs.mkdirSync(path.dirname(hookPath), { recursive: true });
+  fs.writeFileSync(hookPath, [
+    '#!/bin/sh',
+    'set -e',
+    'GD=$(git rev-parse --absolute-git-dir)',
+    'MARK="$GD/first-push-rejected"',
+    'if [ -f "$MARK" ]; then exit 0; fi',
+    ': > "$MARK"',
+    // git >= 2.11 runs pre-receive with the pushed objects in a QUARANTINE
+    // directory (GIT_QUARANTINE_PATH / GIT_OBJECT_DIRECTORY), which is
+    // discarded wholesale when the hook rejects. Objects this hook writes
+    // land there too, so without unsetting these the interloper commit is
+    // garbage-collected the instant we exit 1 and refs/heads/main silently
+    // stays put — the fixture then looks like the script clobbered the moved
+    // tip when in fact the tip never moved. Measured both ways before this
+    // line was added: quarantined => tipMoved=false, unset => tipMoved=true.
+    'unset GIT_QUARANTINE_PATH GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES',
+    'GIT_AUTHOR_NAME=t; GIT_AUTHOR_EMAIL=t@t.t',
+    'GIT_COMMITTER_NAME=t; GIT_COMMITTER_EMAIL=t@t.t',
+    'export GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL',
+    'CUR=$(git rev-parse refs/heads/main)',
+    'BLOB=$(printf %s interloper | git hash-object -w --stdin)',
+    'GIT_INDEX_FILE="$GD/tmp-interloper-index"; export GIT_INDEX_FILE',
+    'rm -f "$GIT_INDEX_FILE"',
+    'git read-tree "$CUR"',
+    'git update-index --add --cacheinfo 100644,"$BLOB",data/interloper.json',
+    'TREE=$(git write-tree)',
+    'NEW=$(git commit-tree "$TREE" -p "$CUR" -m "interloper advances the tip")',
+    'git update-ref refs/heads/main "$NEW" "$CUR"',
+    'rm -f "$GIT_INDEX_FILE"',
+    'echo "pre-receive: rejecting first push after advancing the tip" >&2',
+    'exit 1',
+    '',
+  ].join('\n'));
+  fs.chmodSync(hookPath, 0o755);
+}
+
+test('push-via-git-api.sh recovers from a DETERMINISTICALLY lost compare-and-swap: rejected once, replays onto the moved tip, lands', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-cas-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    installRejectFirstPushHook(originDir);
+
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'mine.json'), '{"x":"mine"}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "runner change"', runnerDir);
+
+    const result = await spawnScript(['main', baseSha, '4'], runnerDir);
+
+    assert.equal(result.code, 0, `push must survive one lost CAS (stderr: ${result.stderr})`);
+    assert.match(
+      result.stderr,
+      /ref moved during attempt 1\/4/,
+      'the first attempt must be classified as a lost race, not a fatal non-race error',
+    );
+
+    // The interloper commit the hook injected must still be present, and our
+    // own file must sit on top of it. If the script clobbered the moved tip
+    // instead of replaying onto it, interloper.json would be gone.
+    const verifyDir = path.join(tmp, 'verify');
+    cloneRepo(originDir, verifyDir);
+    assert.deepEqual(
+      fs.readdirSync(path.join(verifyDir, 'data')).sort(),
+      ['base.json', 'interloper.json', 'mine.json'],
+      'our content must be replayed ON TOP of the tip that moved, not over it',
+    );
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('NEGATIVE CONTROL: with a retry budget of 1 the same lost CAS is fatal, proving the assertion above has teeth', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-cas-neg-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    installRejectFirstPushHook(originDir);
+
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'mine.json'), '{"x":"mine"}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "runner change"', runnerDir);
+
+    // MAX_RETRIES=1 gives the script exactly one attempt, which the hook
+    // rejects. Without the retry the push MUST fail — if this ever passes,
+    // the fixture has stopped producing a lost CAS and the positive test
+    // above has become vacuous.
+    const result = await spawnScript(['main', baseSha, '1'], runnerDir);
+
+    assert.notEqual(result.code, 0, 'one attempt against a guaranteed rejection must not succeed');
+    assert.match(result.stderr, /exhausted 1 attempts/, 'must exhaust its budget rather than fail for a non-race reason');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
