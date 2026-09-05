@@ -628,8 +628,24 @@ function extractAfridiziak(html, text) {
   return null;
 }
 
+// The Reviews Hub prints its own rating as a labelled percentage
+// ("The Reviews Hub Star Rating 40 % 40%"). The markup form is the
+// `number rating` element; the plain-text form is what survives a
+// url-ingest fetch, where only fullText is stored and `html` is empty.
+// Anchored on the outlet's own rating LABEL, so a bare percentage in
+// prose cannot match. Both forms emit source 'reviewshub-percentage':
+// it is the same outlet-published rating, and that value is already in
+// OUTLET_VERIFIED_SOURCES here and in backfill-extractor-rescore.js — a
+// new source name would have to be synced to both or the rebuild would
+// silently discard the score (memory/feedback_verified_sources_gate).
+const REVIEWSHUB_TEXT_RATING_RE = /Reviews\s+Hub\s+Star\s+Rating\s*(\d{1,3})\s*%/i;
+
 function extractReviewsHubScore(html, text) {
-  const pctMatch = html.match(/class="[^"]*number\s+rating[^"]*"[^>]*>[\s\S]*?(\d{2,3})\s*(?:<[^>]*>)*\s*%/i);
+  const pctMatch = (html || '').match(/class="[^"]*number\s+rating[^"]*"[^>]*>[\s\S]*?(\d{2,3})\s*(?:<[^>]*>)*\s*%/i)
+    // Text fallback: check `text` first, then `html`, because url-ingested
+    // reviews carry the article body in whichever argument the caller had.
+    || (text || '').match(REVIEWSHUB_TEXT_RATING_RE)
+    || (html || '').match(REVIEWSHUB_TEXT_RATING_RE);
   if (pctMatch) {
     const pct = parseInt(pctMatch[1]);
     if (pct >= 10 && pct <= 100) {
