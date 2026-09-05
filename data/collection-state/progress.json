@@ -51,7 +51,8 @@
     "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
-    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -280,7 +281,16 @@
     "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
     "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
     "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json"
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "cyrano-de-bergerac-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -315,7 +325,8 @@
       "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -323,7 +334,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-      "data/review-texts/cats-west-end-2026/times-uk--donald-hutera.json"
+      "data/review-texts/cats-west-end-2026/times-uk--donald-hutera.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -356,7 +368,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+  "lastProcessed": "pride-west-end-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -478,6 +490,17 @@
       "event": "bb-session",
       "session": "e3c09062",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-05T22:01:06.536Z",
+      "event": "bb-session",
+      "session": "ef107ef6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/aaron-sorkin-supercharges"
+    },
+    {
+      "t": "2026-09-05T22:01:07.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

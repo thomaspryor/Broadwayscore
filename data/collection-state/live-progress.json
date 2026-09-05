@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-05T21:59:21.926Z",
-  "processed": 52,
-  "failed": 227,
-  "successRate": "18.6%",
+  "updatedAt": "2026-09-05T22:01:21.343Z",
+  "processed": 53,
+  "failed": 236,
+  "successRate": "18.3%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 3,
     "scrapingbee": 5,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-09-05T15:58:27.673Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-05T16:03:10.092Z",
-      "event": "bb-session",
-      "session": "f90d302f",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
     {
       "t": "2026-09-05T16:08:49.605Z",
       "event": "bb-session",
@@ -129,6 +118,17 @@
       "event": "bb-session",
       "session": "e3c09062",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-05T22:01:06.536Z",
+      "event": "bb-session",
+      "session": "ef107ef6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/aaron-sorkin-supercharges"
+    },
+    {
+      "t": "2026-09-05T22:01:07.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
