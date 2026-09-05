@@ -95,8 +95,162 @@ function findTitleFragmentDupes(shows) {
   return dupes;
 }
 
+/**
+ * TICKETING-IDENTITY duplicate detection — the gap left by BOTH passes above.
+ *
+ * WHY THIS EXISTS. `amaze-off-broadway-2026` ("AMAZE") and
+ * `amaze-magic-off-broadway-2025` ("AMAZE Magic") are the same Jamie Allan
+ * production: same New World Stages venue, same closingDate 2027-01-31, same
+ * 2h runtime, and the SAME TodayTix listing
+ * (https://www.todaytix.com/nyc/shows/44453-amaze-magic). The duplicate split
+ * the production's reviews across two pages — 7 of the 8 review-text files the
+ * wrongProduction guard flagged under the 2026 entry are the same
+ * critic+outlet pairs already sitting correctly under the 2025 entry.
+ *
+ * Every existing guard missed it, each for its own reason:
+ *   - audit-duplicate-shows.js groups by `normalizeTitle|year`, and the 2026
+ *     entry has NEITHER openingDate NOR previewsStartDate, so showYear() is
+ *     null and the show is skipped before grouping. 191 of 528 non-closed
+ *     shows (36%) are invisible to that audit for the same reason, and a
+ *     dateless stub is precisely the shape most likely to BE a duplicate.
+ *   - Even had it been grouped, normalizeTitle("AMAZE") is "amaze" and
+ *     normalizeTitle("AMAZE Magic") is "amaze magic" — different keys.
+ *   - findTitleFragmentDupes needs identical canonical venues ("new world
+ *     stages" vs "new world stages – stage 5"), overlapping run dates (the
+ *     2026 entry has no runStart at all) and >=2 raw title tokens on both
+ *     sides ("AMAZE" has one). All three independently reject the pair.
+ *
+ * So this pass keys on something none of them use: the TICKETING PROVIDER'S
+ * OWN SHOW ID. Two catalog entries pointing at one TodayTix listing are one
+ * production — that identity comes from the ticket seller, not from our
+ * inference over titles, venues and dates, which is exactly why it survives
+ * where title/venue/date heuristics fail.
+ *
+ * PRECISION, measured on the live catalog 2026-09-05: 633 shows across the WHOLE
+ * catalog carry a TodayTix identity and exactly ONE key is shared by two entries
+ * — the AMAZE pair. Note the cohort gap: audit-duplicate-shows.js filters to
+ * status !== 'closed' before calling any pass, so this only ever SEES the 316
+ * non-closed shows carrying an identity, not all 633. A duplicate whose older
+ * half is already marked closed is therefore invisible to it, the same blind
+ * spot the two older passes have and not one this pass introduces.
+ *
+ * FALSE-POSITIVE GUARDS, both required:
+ *   1. Declared transfers. A tryout -> commercial run pair cross-linked with
+ *      transferOf/transferredTo is a deliberate TWO-entry relationship that
+ *      could legitimately reuse one listing. No live pair needs this today —
+ *      all 7 transferOf counterparts are status 'closed', so the guard is not
+ *      exercised on current data — but it has to exist before one is, because
+ *      the alternative is an audit that fails on correct data.
+ *   2. Title agreement. TodayTix RECYCLES numeric ids; see titlesAgree below.
+ *      This one is not theoretical — two other consumers already guard it.
+ */
+
+// Accepts both the numeric `todaytixId` field and an id embedded in any
+// ticketLinks[].url / todaytixUrl, because the two are populated by different
+// enrichment paths and a duplicate stub often carries only the URL: the AMAZE
+// 2026 entry has NO todaytixId at all, only the ticketLinks URL. Reading one
+// field alone would have missed the very pair this exists to catch.
+const TODAYTIX_URL_ID = /todaytix\.com\/[^/]+\/shows\/(\d+)/i;
+
+function ticketIdentityKeys(show) {
+  const keys = new Set();
+  if (!show || typeof show !== 'object') return keys;
+  const id = show.todaytixId;
+  if (id !== undefined && id !== null && String(id).trim() !== '') {
+    keys.add(`todaytix:${String(id).trim()}`);
+  }
+  const urls = [show.todaytixUrl, ...(Array.isArray(show.ticketLinks) ? show.ticketLinks.map((t) => t && t.url) : [])];
+  for (const u of urls) {
+    if (!u) continue;
+    const m = String(u).match(TODAYTIX_URL_ID);
+    if (m) keys.add(`todaytix:${m[1]}`);
+  }
+  return keys;
+}
+
+// A declared transfer is a deliberate two-entry relationship, in either
+// direction and from either side.
+function isDeclaredTransferPair(a, b) {
+  return a.transferOf === b.id || b.transferOf === a.id
+    || a.transferredTo === b.id || b.transferredTo === a.id;
+}
+
+// TODAYTIX RECYCLES NUMERIC IDS. A shared listing id is therefore NOT proof of
+// one production on its own, and this codebase already knows it in two places:
+// update-show-status.js:241 refuses to reopen a closed row on a recycled id
+// ("MEMORY.md: TodayTix recycles numeric IDs"), and enrich-todaytix-data.js:226
+// refuses to write a start date without the same check, added by an adversarial
+// review on 2026-08-12 precisely because a recycled id would hand the status
+// pipeline another show's date. A detector that trusted the id alone would turn
+// main RED with no code change the first time TodayTix hands a retired id to an
+// unrelated show — and the catalog already holds abandoned ids ready to be
+// recycled (slam-frank-off-broadway-2026 and the-holes-off-broadway-2026 each
+// carry two different TodayTix keys, so one of each pair is already free).
+//
+// Same prefix-containment test as enrich-todaytix-data.js:226-227, not equality,
+// and for the same reason: our titles carry disambiguation the seller's do not
+// ("The Cherry Orchard (Park Avenue Armory)"), and a duplicate pair is often a
+// short title against a longer one — "AMAZE" vs "AMAZE Magic" agrees here, while
+// a genuinely recycled id gives two titles sharing no prefix at all.
+function slugifyTitle(t) {
+  return String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function titlesAgree(a, b) {
+  const ta = slugifyTitle(a.title);
+  const tb = slugifyTitle(b.title);
+  if (!ta || !tb) return false; // a title-less entry cannot corroborate an id
+  return ta.startsWith(tb) || tb.startsWith(ta);
+}
+
+/**
+ * @param {Array<object>} shows - shows.json entries.
+ * @returns {Array<{a:string, b:string, key:string, reason:string}>}
+ */
+function findSharedTicketIdentityDupes(shows) {
+  const dupes = [];
+  if (!Array.isArray(shows)) return dupes;
+  const byKey = new Map();
+  for (const s of shows) {
+    if (!s || !s.id) continue;
+    for (const k of ticketIdentityKeys(s)) {
+      if (!byKey.has(k)) byKey.set(k, []);
+      byKey.get(k).push(s);
+    }
+  }
+  // One pair per (unordered show pair), even when two entries share more than
+  // one key — a duplicate that carries BOTH todaytixId and the same URL would
+  // otherwise be reported twice, and the audit's baseline is keyed on the
+  // unordered id pair, so a double report would also double-count as "new".
+  const seen = new Set();
+  for (const [key, members] of byKey) {
+    if (members.length < 2) continue;
+    for (let i = 0; i < members.length; i++) {
+      for (let j = i + 1; j < members.length; j++) {
+        const a = members[i];
+        const b = members[j];
+        if (a.id === b.id) continue;
+        if (isDeclaredTransferPair(a, b)) continue;
+        if (!titlesAgree(a, b)) continue; // recycled listing id, not one production
+        const pairKey = [a.id, b.id].sort().join(' ');
+        if (seen.has(pairKey)) continue;
+        seen.add(pairKey);
+        dupes.push({
+          a: a.id,
+          b: b.id,
+          key,
+          reason: `"${a.id}" and "${b.id}" resolve to the same ticketing listing (${key})`,
+        });
+      }
+    }
+  }
+  return dupes;
+}
+
 module.exports = {
   findTitleFragmentDupes,
+  findSharedTicketIdentityDupes,
+  ticketIdentityKeys,
   canonicalVenue,
   isStrictTitleSubset,
   datesOverlap,

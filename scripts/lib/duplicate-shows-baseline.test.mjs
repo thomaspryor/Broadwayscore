@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pairKey, baselineKeySet, computeNewViolators } = require('./duplicate-shows-baseline.js');
+const { pairKey, baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./duplicate-shows-baseline.js');
 
 test('pairKey is order-independent', () => {
   assert.equal(pairKey('a-show', 'b-show'), pairKey('b-show', 'a-show'));
@@ -88,4 +88,63 @@ test('computeNewViolators: empty baseline flags every pair', () => {
 test('computeNewViolators: tolerates an empty clusters array', () => {
   assert.deepEqual(computeNewViolators([], baselineKeySet([{ a: 'x', b: 'y' }])), []);
   assert.deepEqual(computeNewViolators(undefined, baselineKeySet([{ a: 'x', b: 'y' }])), []);
+});
+
+// dedupeClustersByPair — the invariant this module's Set-not-multiset choice
+// rests on ("a given pair appears at most once per scan") stopped being free
+// once audit-duplicate-shows.js gained a third detection pass that can reach
+// the same pair as the title+year pass.
+
+test('dedupeClustersByPair: one pair reached by two passes is kept ONCE, in the first pass', () => {
+  const clusters = [
+    { key: 'amaze|2025', pairs: [{ a: { id: 's-2025' }, b: { id: 's-2026' }, reason: 'shared-venue-token:globe' }] },
+    { key: 'ticket-identity@todaytix:44453', pairs: [{ a: { id: 's-2026' }, b: { id: 's-2025' }, reason: 'shared-ticket-identity' }] },
+  ];
+  const out = dedupeClustersByPair(clusters);
+  assert.equal(out.length, 1, 'the second cluster must be dropped entirely, not emptied');
+  assert.equal(out[0].key, 'amaze|2025', 'the FIRST pass wins, preserving existing output');
+  assert.equal(out[0].pairs[0].reason, 'shared-venue-token:globe');
+});
+
+test('dedupeClustersByPair: reversed id order is the same pair', () => {
+  const clusters = [
+    { key: 'k1', pairs: [{ a: { id: 'b' }, b: { id: 'a' }, reason: 'r1' }] },
+    { key: 'k2', pairs: [{ a: { id: 'a' }, b: { id: 'b' }, reason: 'r2' }] },
+  ];
+  assert.equal(dedupeClustersByPair(clusters).length, 1);
+});
+
+test('dedupeClustersByPair: distinct pairs all survive, and a cluster keeps only its new pairs', () => {
+  const clusters = [
+    { key: 'k1', pairs: [{ a: { id: 'a' }, b: { id: 'b' }, reason: 'r' }] },
+    {
+      key: 'k2',
+      pairs: [
+        { a: { id: 'a' }, b: { id: 'b' }, reason: 'dup' },
+        { a: { id: 'c' }, b: { id: 'd' }, reason: 'new' },
+      ],
+    },
+  ];
+  const out = dedupeClustersByPair(clusters);
+  assert.equal(out.length, 2);
+  assert.equal(out[1].pairs.length, 1, 'the already-seen pair is dropped, the new one stays');
+  assert.equal(out[1].pairs[0].reason, 'new');
+});
+
+test('dedupeClustersByPair: a baseline built from deduped clusters has no repeated pair', () => {
+  // The concrete harm: --update-baseline flatMaps clusters into the baseline
+  // JSON, so a doubly-reported pair would be written twice.
+  const clusters = [
+    { key: 'k1', pairs: [{ a: { id: 'x' }, b: { id: 'y' }, reason: 'r1' }] },
+    { key: 'k2', pairs: [{ a: { id: 'x' }, b: { id: 'y' }, reason: 'r2' }] },
+  ];
+  const flat = dedupeClustersByPair(clusters).flatMap((c) => c.pairs.map((p) => ({ a: p.a.id, b: p.b.id })));
+  assert.equal(flat.length, 1);
+  assert.equal(baselineKeySet(flat).size, 1);
+});
+
+test('dedupeClustersByPair: tolerates empty/undefined input and pairless clusters', () => {
+  assert.deepEqual(dedupeClustersByPair([]), []);
+  assert.deepEqual(dedupeClustersByPair(undefined), []);
+  assert.deepEqual(dedupeClustersByPair([{ key: 'k', pairs: [] }]), []);
 });
