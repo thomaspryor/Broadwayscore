@@ -43,8 +43,8 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
-const { findTitleFragmentDupes } = require('./lib/show-duplicate-detection');
-const { baselineKeySet, computeNewViolators } = require('./lib/duplicate-shows-baseline');
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./lib/show-duplicate-detection');
+const { baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -153,7 +153,7 @@ function main() {
     groups.get(key).push(s);
   }
 
-  const clusters = [];
+  const rawClusters = [];
   for (const [key, members] of groups) {
     if (members.length < 2) continue;
     // Pairwise classify within the same-title+year group.
@@ -186,7 +186,7 @@ function main() {
         }
       }
     }
-    if (dupPairs.length) clusters.push({ key, pairs: dupPairs });
+    if (dupPairs.length) rawClusters.push({ key, pairs: dupPairs });
   }
 
   // Title-fragment pass: the title+year grouping above can only compare shows
@@ -197,7 +197,7 @@ function main() {
   for (const f of findTitleFragmentDupes(shows)) {
     const a = shows.find((s) => s.id === f.a);
     const b = shows.find((s) => s.id === f.b);
-    clusters.push({
+    rawClusters.push({
       key: `title-fragment@${f.venue}`,
       pairs: [{
         a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
@@ -206,6 +206,33 @@ function main() {
       }],
     });
   }
+
+  // Ticketing-identity pass: both passes above infer identity from titles,
+  // venues and dates, and a dateless duplicate stub defeats all of them — the
+  // grouping loop skips any show whose showYear() is null (191 of 528
+  // non-closed shows), and findTitleFragmentDupes needs a run date on both
+  // sides. This pass keys on the ticket seller's OWN show id instead, so it
+  // sees pairs the heuristics structurally cannot. See
+  // scripts/lib/show-duplicate-detection.js for the AMAZE case that motivated
+  // it and the transfer-pair false-positive guard.
+  for (const f of findSharedTicketIdentityDupes(shows)) {
+    const a = shows.find((s) => s.id === f.a);
+    const b = shows.find((s) => s.id === f.b);
+    rawClusters.push({
+      key: `ticket-identity@${f.key}`,
+      pairs: [{
+        a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
+        b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
+        reason: 'shared-ticket-identity',
+      }],
+    });
+  }
+
+  // One pair, one report, across all three passes — see dedupeClustersByPair's
+  // docblock. Must run BEFORE both the --update-baseline write and the baseline
+  // diff below, or a pair reachable by two passes gets written to the baseline
+  // JSON twice and double-counted in the printed totals.
+  const clusters = dedupeClustersByPair(rawClusters);
 
   // FAIL LOUD on an empty corpus (task #1675, same pattern as
   // audit-outlet-registry.js task #1666) BEFORE writing anything — a missing/

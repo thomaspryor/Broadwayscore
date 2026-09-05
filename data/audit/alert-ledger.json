@@ -226,36 +226,36 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-09-05T14:19:45.691Z",
+      "lastSeen": "2026-09-05T17:16:31.474Z",
       "lastNotifiedAt": "2026-09-04T21:21:29.200Z",
       "notifyCount": 31,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-09-05T14:19:45.779Z",
+      "lastSeen": "2026-09-05T17:16:31.557Z",
       "lastNotifiedAt": "2026-09-04T21:21:25.893Z",
       "notifyCount": 37,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-09-05T14:19:45.589Z",
+      "lastSeen": "2026-09-05T17:16:31.382Z",
       "lastNotifiedAt": "2026-09-04T21:21:29.087Z",
       "notifyCount": 28,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -515,9 +515,9 @@
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Disruption — wsj",
       "firstSeen": "2026-08-06T11:25:10.363Z",
-      "lastSeen": "2026-08-29T15:02:46.121Z",
-      "lastNotifiedAt": "2026-08-29T15:02:46.121Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-09-05T17:16:14.970Z",
+      "lastNotifiedAt": "2026-09-05T17:16:14.970Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-327"
     },
@@ -746,11 +746,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Scrapingdog daily breaker TRIPPED: 43664/24000 credits",
+      "title": "Scrapingdog daily breaker TRIPPED: 106533/24000 credits",
       "firstSeen": "2026-08-12T14:11:05.654Z",
-      "lastSeen": "2026-09-01T23:38:09.168Z",
-      "lastNotifiedAt": "2026-09-01T23:38:09.168Z",
-      "notifyCount": 16,
+      "lastSeen": "2026-09-05T18:39:14.402Z",
+      "lastNotifiedAt": "2026-09-05T18:39:14.402Z",
+      "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -769,25 +769,25 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (1876/1750 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (3252/1750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-09-01T23:38:08.742Z",
-      "lastNotifiedAt": "2026-09-01T23:38:08.742Z",
-      "notifyCount": 14,
+      "lastSeen": "2026-09-05T18:39:13.886Z",
+      "lastNotifiedAt": "2026-09-05T18:39:13.886Z",
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-05T14:55:11.478Z",
-      "lastNotifiedAt": "2026-09-05T14:55:11.478Z",
-      "notifyCount": 37,
+      "lastSeen": "2026-09-05T18:45:47.616Z",
+      "lastNotifiedAt": "2026-09-05T18:14:15.346Z",
+      "notifyCount": 38,
       "cardId": null,
       "linearIdentifier": "BRO-2867",
-      "resolvedAt": "2026-09-05T16:15:13.372Z"
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -915,12 +915,11 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-09-05T14:19:38.842Z",
-      "lastNotifiedAt": "2026-08-29T15:02:49.382Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-05T17:16:20.195Z",
+      "lastNotifiedAt": "2026-09-05T17:16:20.195Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-328",
-      "silentRefires": 8
+      "linearIdentifier": "BRO-328"
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1081,77 +1080,84 @@
       "disposition": "digest",
       "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.853Z",
-      "lastSeen": "2026-09-04T17:47:23.372Z",
+      "lastSeen": "2026-09-05T17:02:27.829Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.372Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.854Z",
-      "lastSeen": "2026-09-04T17:47:23.374Z",
+      "lastSeen": "2026-09-05T17:02:27.830Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.374Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:an-ideal-husband-hammersmith-review2-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.855Z",
-      "lastSeen": "2026-09-04T17:47:23.375Z",
+      "lastSeen": "2026-09-05T17:02:27.831Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.375Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:krapps-last-tape-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Krapps Last Tape @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.856Z",
-      "lastSeen": "2026-09-04T17:47:23.377Z",
+      "lastSeen": "2026-09-05T17:02:27.833Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.377Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.856Z",
-      "lastSeen": "2026-09-04T17:47:23.379Z",
+      "lastSeen": "2026-09-05T17:02:27.834Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.379Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:dracula-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Dracula @ noel coward — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.857Z",
-      "lastSeen": "2026-09-04T17:47:23.380Z",
+      "lastSeen": "2026-09-05T17:02:27.835Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.380Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:john-proctor-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "John Proctor @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.858Z",
-      "lastSeen": "2026-09-04T17:47:23.382Z",
+      "lastSeen": "2026-09-05T17:02:27.836Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.382Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:pride-the-musical-west-end-2026": {
       "status": "open",
@@ -1892,24 +1898,24 @@
       "disposition": "auto",
       "title": "Let's Love still has no image after 6 self-heal attempts",
       "firstSeen": "2026-08-31T18:22:40.542Z",
-      "lastSeen": "2026-09-04T18:40:59.766Z",
+      "lastSeen": "2026-09-05T17:48:01.202Z",
       "lastNotifiedAt": "2026-09-03T18:59:10.028Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2650",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "imageless-scored-show:still-imageless:eurydice-off-broadway-2026": {
       "status": "open",
       "disposition": "auto",
       "title": "EURYDICE still has no image after 6 self-heal attempts",
       "firstSeen": "2026-08-31T18:22:45.438Z",
-      "lastSeen": "2026-09-04T18:41:01.015Z",
+      "lastSeen": "2026-09-05T17:48:02.196Z",
       "lastNotifiedAt": "2026-09-03T18:59:12.654Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2651",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "imageless-scored-show:still-imageless:bad-krey-l-off-broadway-2026": {
       "status": "open",
@@ -2164,44 +2170,48 @@
       "disposition": "digest",
       "title": "The Story Olivier @ national — West End show live and scoring",
       "firstSeen": "2026-09-04T17:47:23.370Z",
-      "lastSeen": "2026-09-04T17:47:23.370Z",
+      "lastSeen": "2026-09-05T17:02:27.827Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.370Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:jajas-african-hair-braiding-hammersmith-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Jajas African Hair Braiding Hammersmith @ lyric — West End show live and scoring",
       "firstSeen": "2026-09-04T17:47:23.384Z",
-      "lastSeen": "2026-09-04T17:47:23.384Z",
+      "lastSeen": "2026-09-05T17:02:27.838Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.384Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "we-aggregator-go-live:to-maury-with-love-concert-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
       "firstSeen": "2026-09-04T17:47:23.385Z",
-      "lastSeen": "2026-09-04T17:47:23.385Z",
+      "lastSeen": "2026-09-05T17:02:27.839Z",
       "lastNotifiedAt": "2026-09-04T17:47:23.385Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "imageless-scored-show:still-imageless:the-lonely-few-off-broadway-2024": {
       "status": "open",
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 3 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
-      "lastSeen": "2026-09-04T18:41:02.359Z",
+      "lastSeen": "2026-09-05T17:48:03.181Z",
       "lastNotifiedAt": "2026-09-04T18:41:02.359Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2765"
+      "linearIdentifier": "BRO-2765",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",
@@ -2306,6 +2316,50 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "opening-night-fulltext-mentions-show:short:holy-fool-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review too short to verify on Holy Fool",
+      "firstSeen": "2026-09-05T16:52:24.663Z",
+      "lastSeen": "2026-09-05T16:52:24.663Z",
+      "lastNotifiedAt": "2026-09-05T16:52:24.663Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:holy-fool-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on Holy Fool",
+      "firstSeen": "2026-09-05T16:52:24.666Z",
+      "lastSeen": "2026-09-05T16:52:24.666Z",
+      "lastNotifiedAt": "2026-09-05T16:52:24.666Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-holy-fool-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Holy Fool",
+      "firstSeen": "2026-09-05T16:52:24.668Z",
+      "lastSeen": "2026-09-05T16:52:24.668Z",
+      "lastNotifiedAt": "2026-09-05T16:52:24.668Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "imageless-scored-show:still-imageless:orlando-off-broadway-2026": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Orlando still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-09-05T17:48:04.136Z",
+      "lastSeen": "2026-09-05T17:48:04.136Z",
+      "lastNotifiedAt": "2026-09-05T17:48:04.136Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2837"
     }
   }
 }

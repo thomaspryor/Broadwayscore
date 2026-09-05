@@ -4,6 +4,8 @@ import { useState, useMemo, startTransition } from 'react';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { createSortToggle } from '@/lib/sort-toggle';
+import { compareScore } from '@/lib/browse-sort';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -29,6 +31,27 @@ export interface BrowseShow {
 
 type ScoreMode = 'critics' | 'audience';
 type SortOption = 'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom';
+// Internal-only states for a second click on a toggleable sort button (task
+// #75): reversing Critics/A-Z direction instead of no-op-ing on an
+// already-active click. Never appears in `availableSorts` (server-supplied
+// button list) — only as a value of the `sort` state itself.
+type SortState = SortOption | 'score_asc' | 'alpha_desc';
+
+// Clicking CRITICS or A-Z while already active used to do nothing — same
+// no-op-click rage-click bug fixed on /west-end, /off-broadway, /opera,
+// /off-west-end via src/lib/sort-toggle.js (task #592), but this shared
+// BrowseListClient (every /browse/[slug] page, including best-recent-shows)
+// wasn't covered. Own pairs (not the shared TOGGLE_PAIRS) because this
+// component's SortOption values don't match that module's naming.
+const sortToggle = createSortToggle({ score: 'score_asc', alpha: 'alpha_desc' });
+
+// Direction wording per toggleable base value, for the ToggleBar tooltip —
+// mirrors WestEndPageClient's "highest first"/"lowest first" pattern so a
+// user relying on the tooltip (not just the arrow) can tell what's active.
+const SORT_DIRECTION_LABEL: Partial<Record<SortOption, { base: string; toggled: string }>> = {
+  score: { base: 'highest first', toggled: 'lowest first' },
+  alpha: { base: 'A to Z', toggled: 'Z to A' },
+};
 
 interface BrowseListClientProps {
   shows: BrowseShow[];
@@ -84,7 +107,7 @@ export default function BrowseListClient({
     ? { ...SORT_LABELS, oldest: 'Soonest', newest: 'Latest' }
     : SORT_LABELS;
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
-  const [sort, setSort] = useState<SortOption>(
+  const [sort, setSort] = useState<SortState>(
     defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
     defaultSort === 'closing-date' ? 'closing' :
@@ -107,12 +130,13 @@ export default function BrowseListClient({
       result = result.filter(s => s.type === typeFilter);
     }
 
-    // Helper: effective score for sorting (TBD shows sort to bottom)
-    const getEffectiveScore = (s: BrowseShow) => {
+    // Helper: effective score for sorting (null = TBD, sorts to bottom
+    // regardless of direction — see compareScore below)
+    const getEffectiveScore = (s: BrowseShow): number | null => {
       const reviewCount = s.criticScore?.reviewCount ?? 0;
       const t1t2 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
-      if (!hasEnoughReviews(reviewCount, s.category, t1t2, CURATED_HISTORICAL_SHOWS.has(s.id))) return -1;
-      return s.criticScore?.score ?? -1;
+      if (!hasEnoughReviews(reviewCount, s.category, t1t2, CURATED_HISTORICAL_SHOWS.has(s.id))) return null;
+      return s.criticScore?.score ?? null;
     };
 
     // Sort
@@ -120,11 +144,18 @@ export default function BrowseListClient({
       switch (sort) {
         case 'score':
           if (scoreMode === 'audience') {
-            return (b.audienceCombinedScore ?? -1) - (a.audienceCombinedScore ?? -1);
+            return compareScore(a.audienceCombinedScore, b.audienceCombinedScore, false);
           }
-          return getEffectiveScore(b) - getEffectiveScore(a);
+          return compareScore(getEffectiveScore(a), getEffectiveScore(b), false);
+        case 'score_asc':
+          if (scoreMode === 'audience') {
+            return compareScore(a.audienceCombinedScore, b.audienceCombinedScore, true);
+          }
+          return compareScore(getEffectiveScore(a), getEffectiveScore(b), true);
         case 'alpha':
           return a.title.localeCompare(b.title);
+        case 'alpha_desc':
+          return b.title.localeCompare(a.title);
         case 'newest':
           // Shows without openingDate sort to the end
           if (!a.openingDate && !b.openingDate) return 0;
@@ -143,7 +174,7 @@ export default function BrowseListClient({
           }
           if (a.closingDate) return -1;
           if (b.closingDate) return 1;
-          return getEffectiveScore(b) - getEffectiveScore(a);
+          return compareScore(getEffectiveScore(a), getEffectiveScore(b), false);
         case 'performances':
           return (b.performances ?? 0) - (a.performances ?? 0);
         default:
@@ -155,6 +186,9 @@ export default function BrowseListClient({
   }, [initialShows, typeFilter, sort, scoreMode]);
 
   const showControls = availableSorts.length > 1 || showTypeFilter || (showScoreToggle && hasAnyAudienceData);
+  // score_asc (reversed Critics) would otherwise label the lowest-scored show
+  // "#1" — misleading on a page that advertises itself as ranked by critic score.
+  const showRankNumbers = showRanks && sort !== 'score_asc';
 
   return (
     <>
@@ -178,9 +212,19 @@ export default function BrowseListClient({
             {availableSorts.length > 1 ? (
               <ToggleBar
                 label="Sort:"
-                options={availableSorts.map(s => ({ value: s, label: sortLabels[s] }))}
-                value={sort}
-                onChange={setSort}
+                options={availableSorts.map(s => ({
+                  value: s,
+                  label: sortToggle.isToggleable(s)
+                    ? `${sortLabels[s]} ${sortToggle.getSortArrow(s, sort)}`.trim()
+                    : sortLabels[s],
+                  title: sortToggle.isToggleable(s)
+                    ? (sortToggle.normalizeSort(sort) !== s
+                        ? `Click to sort by ${sortLabels[s]}`
+                        : `Sorted ${sort === s ? SORT_DIRECTION_LABEL[s]!.base : SORT_DIRECTION_LABEL[s]!.toggled}, click to reverse`)
+                    : undefined,
+                }))}
+                value={sortToggle.normalizeSort(sort) as SortOption}
+                onChange={(s) => setSort(sortToggle.getNextSort(s, sort) as SortState)}
                 ariaLabel="Sort shows"
               />
             ) : subtitle ? (
@@ -223,7 +267,7 @@ export default function BrowseListClient({
                   show={show}
                   index={index}
                   variant="compact"
-                  rank={showRanks ? index + 1 : undefined}
+                  rank={showRankNumbers ? index + 1 : undefined}
                   showFormatPill={isMixedType && typeFilter === 'all'}
                   isMixedStatus={isMixedStatus}
                   scoreMode={scoreMode}
