@@ -189,3 +189,127 @@ test('buildIssueQuery actually fetches relations — the gate is inert without i
   assert.match(query, /relations\(first: \d+\)/, 'buildIssueQuery must fetch relations');
   assert.match(query, /relatedIssue\s*\{[^}]*identifier/, 'relations must include relatedIssue.identifier');
 });
+
+// ── adversarial + fresh-eyes review findings, 2026-09-05 ───────────────────
+
+test('refused (exit 6): --duplicate-of disagrees with the duplicate relation already on the issue', () => {
+  // Before the fix this exited 0: the gate saw an existing relation, returned
+  // allowed, and BRO-9823 was never created or even mentioned. The card kept
+  // BRO-9010 and the operator had no way to tell from the output.
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9823', '--comment', 'x'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'uuid-9010', identifier: 'BRO-9010' } }] },
+    writesExpected: false,
+  });
+  assert.equal(res.status, 6, `expected exit 6, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REFUSED \(duplicate-target-mismatch\)/);
+  assert.match(res.stderr, /BRO-9010/);
+  assert.match(res.stderr, /BRO-9823/);
+  assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/);
+  // The fill-in-the-blank command is for the MISSING-relation case only;
+  // echoing a <BRO-N> placeholder here reads as if the flag were absent.
+  assert.doesNotMatch(res.stderr, /--duplicate-of <BRO-N>/);
+});
+
+test('refused (exit 1): --duplicate-of on a NON-duplicate state move, instead of being silently ignored', () => {
+  // `update BRO-1 --comment x --duplicate-of BRO-2` used to exit 0 having
+  // posted only the comment, while the operator believed the flag applied.
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'In Progress', '--duplicate-of', 'BRO-9823'],
+    relations: { nodes: [] },
+    writesExpected: false,
+  });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /--duplicate-of only applies to a move into a duplicate-type state/);
+  assert.match(res.stderr, /started-type state/);
+  assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/);
+});
+
+test('refused (exit 1): --duplicate-of with a comment but NO --state at all', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--comment', 'x', '--duplicate-of', 'BRO-9823'],
+    relations: { nodes: [] },
+    writesExpected: false,
+  });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /No --state was given/);
+  assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/);
+});
+
+test('an issue ALREADY in the duplicate state is not a transition — the comment still posts', () => {
+  // The gate used to fire on any `--state Duplicate`, so re-commenting on a
+  // card already sitting in Duplicate (legacy or externally-created data) was
+  // refused and the comment suppressed. No state change is requested, so
+  // there is nothing for Linear to validate.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify({ ...makeIssue({ nodes: [] }), state: { id: 'state-dup', name: 'Duplicate', type: 'duplicate' } })};
+    main(['update','BRO-9711','--state','Duplicate','--comment','still a dupe'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => { console.error('RELATION_CREATED'); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /CREATE_COMMENT_CALLED/);
+  assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('LINEAR_DUPLICATE_GATE_DISABLED=1 restores the pre-gate behaviour', () => {
+  // The gate encodes a server rule we OBSERVED, not one Linear documents. If
+  // that rule ever relaxes, this kill switch (matching LINEAR_DONE_GATE_DISABLED)
+  // is the rollback path that does not need a code change.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    main(['update','BRO-9711','--state','Duplicate'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => { console.error('RELATION_CREATED'); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    timeout: 15000,
+    env: { ...process.env, LINEAR_DUPLICATE_GATE_DISABLED: '1' },
+  });
+  assert.equal(res.status, 0, `expected exit 0 with the gate disabled, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('the success JSON names the canonical twin, both when created and when pre-existing', () => {
+  // Without this the operator cannot tell from the output whether the relation
+  // — the part that makes the state move legal at all — actually happened.
+  const created = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9823'],
+    relations: { nodes: [] },
+    writesExpected: true,
+  });
+  assert.equal(created.status, 0, created.stderr);
+  assert.equal(JSON.parse(created.stdout).duplicateOf, 'BRO-9823');
+
+  const preexisting = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'uuid-9823', identifier: 'BRO-9823' } }] },
+    writesExpected: true,
+  });
+  assert.equal(preexisting.status, 0, preexisting.stderr);
+  assert.equal(JSON.parse(preexisting.stdout).duplicateOf, 'BRO-9823');
+});
+
+test('a non-duplicate update does NOT carry a duplicateOf key at all', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'In Progress'],
+    relations: { nodes: [] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, res.stderr);
+  assert.ok(!('duplicateOf' in JSON.parse(res.stdout)), 'duplicateOf must be absent, not null');
+});

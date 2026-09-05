@@ -9,8 +9,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   DUPLICATE_STATE_TYPE,
+  RELATIONS_PAGE_SIZE,
   relationNodes,
   existingDuplicateTarget,
+  relationsPageMaybeTruncated,
   checkLinearDuplicateTransition,
 } = require('./linear-duplicate-gate.js');
 
@@ -113,4 +115,70 @@ test('existingDuplicateTarget falls back to the uuid, then a placeholder, when i
   );
   assert.equal(existingDuplicateTarget([{ type: 'duplicate' }]), 'an unnamed issue');
   assert.equal(existingDuplicateTarget([]), null);
+});
+
+// ── adversarial + fresh-eyes review findings, 2026-09-05 ───────────────────
+
+test('refused: --duplicate-of names a DIFFERENT twin than the relation already on the issue', () => {
+  // The original ordering returned "relation-already-present" before it looked
+  // at duplicateOf at all, so BRO-20 was silently discarded and the card kept
+  // BRO-10 with exit 0. Two answers to "which issue is this a duplicate of"
+  // must stop the operator, not be resolved by argument order.
+  const v = checkLinearDuplicateTransition({
+    targetStateType: DUPLICATE_STATE_TYPE,
+    relations: dupRelation('BRO-10'),
+    duplicateOf: 'BRO-20',
+  });
+  assert.equal(v.allowed, false);
+  assert.equal(v.verdict, 'duplicate-target-mismatch');
+  assert.equal(v.existingTarget, 'BRO-10');
+  assert.match(v.reason, /BRO-10/);
+  assert.match(v.reason, /BRO-20/);
+});
+
+test('allowed: --duplicate-of naming the SAME twin already on the issue is a no-op, not a mismatch', () => {
+  const v = checkLinearDuplicateTransition({
+    targetStateType: DUPLICATE_STATE_TYPE,
+    relations: dupRelation('BRO-2823'),
+    duplicateOf: '  BRO-2823  ',
+  });
+  assert.equal(v.allowed, true);
+  assert.equal(v.verdict, 'relation-already-present');
+  assert.equal(v.needsRelation, false, 'the relation exists — do not create a second one');
+});
+
+test('the refusal leads with the ACTION, not the explanation', () => {
+  const v = checkLinearDuplicateTransition({
+    targetStateType: DUPLICATE_STATE_TYPE,
+    relations: { nodes: [] },
+  });
+  assert.match(v.reason.split('\n')[0], /^Pass --duplicate-of <BRO-N>/);
+});
+
+test('a FULL relations page says the read may be truncated instead of asserting absence', () => {
+  // relations(first: N) is unpaginated, so N nodes back cannot PROVE the
+  // duplicate relation is absent — it could be node N+1. The verdict stays
+  // "refuse" (guessing is how a silent wrong write happens) but the message
+  // must not claim a fact it never established.
+  const full = {
+    nodes: Array.from({ length: RELATIONS_PAGE_SIZE }, () => ({
+      type: 'blocks',
+      relatedIssue: { identifier: 'BRO-1' },
+    })),
+  };
+  const v = checkLinearDuplicateTransition({ targetStateType: DUPLICATE_STATE_TYPE, relations: full });
+  assert.equal(v.allowed, false, 'a truncated read must still refuse, not pass');
+  assert.match(v.reason, /truncated read/);
+  assert.equal(relationsPageMaybeTruncated(full), true);
+  assert.equal(relationsPageMaybeTruncated({ nodes: full.nodes.slice(0, RELATIONS_PAGE_SIZE - 1) }), false);
+});
+
+test('RELATIONS_PAGE_SIZE is the same number buildIssueQuery actually asks for', () => {
+  // Two constants that must agree: widen the query without widening this and
+  // the truncation warning stops firing exactly when it starts being needed.
+  const query = require('./linear-dispatch.js').buildIssueQuery();
+  assert.ok(
+    query.includes(`relations(first: ${RELATIONS_PAGE_SIZE})`),
+    `query must ask for relations(first: ${RELATIONS_PAGE_SIZE}); got:\n${query}`
+  );
 });

@@ -37,6 +37,9 @@ const { isAutofixFiledIssue, hasAutofixFiledMarker } = require('./autofix-filed-
 const { parseSessionReportStatus } = require('./linear-session-reporting.js');
 const { extractPrRef } = require('./linear-pr-evidence.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
+// RELATIONS_PAGE_SIZE is interpolated into buildIssueQuery below so the gate's
+// truncation check and the query's page cap cannot drift apart.
+const { RELATIONS_PAGE_SIZE } = require('./linear-duplicate-gate.js');
 
 // v1 machine-bound routing (see decideRouting below): an issue carrying this
 // label always forces a local cmux tab, whatever --headless/--tab flag was
@@ -82,7 +85,7 @@ function buildIssueQuery() {
       project { name }
       labels(first: 20) { nodes { id name } }
       comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
-      relations(first: 20) { nodes { type relatedIssue { id identifier } } }
+      relations(first: ${RELATIONS_PAGE_SIZE}) { nodes { type relatedIssue { id identifier } } }
     }
   }`;
 }

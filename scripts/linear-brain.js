@@ -59,7 +59,12 @@ Usage:
           issue already owns an outgoing duplicate relation, because Linear
           rejects that mutation with "missing duplicate relation" AFTER any
           --comment has already been posted. Pass --duplicate-of <BRO-N> to
-          create the relation and move the state in one call (BRO-343).
+          create the relation and move the state in one call; the success
+          JSON then carries duplicateOf. Exit 6 also covers a --duplicate-of
+          that DISAGREES with the twin already on the issue. Exit 1 if
+          --duplicate-of is passed without a duplicate-type --state, rather
+          than ignoring it. Kill switch: LINEAR_DUPLICATE_GATE_DISABLED=1
+          (BRO-343).
 `;
 
 function parseArgs(argv) {
@@ -263,6 +268,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         target = resolved.state;
       }
 
+      // --duplicate-of only means anything on a move into a duplicate-type
+      // state. Silently ignoring it elsewhere let `update BRO-1 --comment x
+      // --duplicate-of BRO-2` exit 0 having created no relation, while the
+      // operator reasonably believed the advertised option had been applied
+      // (adversarial-review finding). Refuse before any write instead.
+      if (args['duplicate-of'] !== undefined && (!target || target.type !== DUPLICATE_STATE_TYPE)) {
+        console.error(
+          `❌ --duplicate-of only applies to a move into a duplicate-type state.\n` +
+            (target
+              ? `   --state "${target.name}" is a ${target.type}-type state, so the flag would do nothing.`
+              : `   No --state was given, so the flag would do nothing.`) +
+            `\n   Drop --duplicate-of, or pass the team's duplicate state via --state.`
+        );
+        process.exit(1);
+      }
+
       // BRO-457: refuse a move into a completed-type state unless the issue
       // carries one of done-semantics-gate.js's two accepted evidence shapes.
       // Resolved (not written) so far — same "costs nothing on refusal" shape
@@ -313,7 +334,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // read already fetched. `--duplicate-of BRO-N` creates the relation
       // instead of refusing.
       let duplicateRelation = null;
-      if (target && target.type === DUPLICATE_STATE_TYPE) {
+      // The canonical twin this call ends up naming — either one already on
+      // the issue or one --duplicate-of creates. Reported in the success JSON.
+      let duplicateTwin = null;
+      // `target && ...` alone treated a re-run on an issue ALREADY in the
+      // duplicate state as a fresh transition and refused it, suppressing the
+      // --comment on a card whose state was already correct (adversarial-review
+      // finding). No state change is being requested, so there is nothing for
+      // Linear to validate and nothing for this gate to guard.
+      const isRealTransition = Boolean(target && issue.state && issue.state.id !== target.id);
+      if (isRealTransition && target.type === DUPLICATE_STATE_TYPE
+          && process.env.LINEAR_DUPLICATE_GATE_DISABLED !== '1') {
         const dupGate = checkLinearDuplicateTransition({
           targetStateType: target.type,
           relations: issue.relations,
@@ -322,10 +353,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         if (!dupGate.allowed) {
           console.error(`\n❌ REFUSED (${dupGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
           console.error(dupGate.reason);
-          console.error(
-            `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
-              `--state ${target.name} --duplicate-of <BRO-N>\n`
-          );
+          // Only print the fill-in-the-blank command for the MISSING-relation
+          // case. On a target mismatch the operator already passed a
+          // --duplicate-of, and echoing a `<BRO-N>` placeholder there reads as
+          // if the flag were absent.
+          if (dupGate.verdict === 'no-duplicate-relation') {
+            console.error(
+              `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
+                `--state ${target.name} --duplicate-of <BRO-N>\n`
+            );
+          } else {
+            console.error('');
+          }
           process.exit(6);
         }
         if (dupGate.needsRelation) {
@@ -344,6 +383,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             process.exit(1);
           }
           duplicateRelation = { id: canonical.id, identifier: canonical.identifier || canonicalRef };
+          duplicateTwin = duplicateRelation.identifier;
+        } else {
+          duplicateTwin = dupGate.existingTarget;
         }
       }
 
@@ -385,6 +427,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         url: issue.url,
         state: target ? target.name : (issue.state && issue.state.name) || null,
         commented,
+        // Name the canonical twin whenever this was a duplicate move. Without
+        // it the operator could not tell from the output whether the relation
+        // — the part that makes the state move legal at all — actually
+        // happened, or which issue it pointed at (fresh-eyes review finding).
+        ...(duplicateTwin ? { duplicateOf: duplicateTwin } : {}),
       }, null, 2));
       // NOT __BOARD_CARD_ID__. That marker is the gate hooks' proof that a card
       // was FILED (notion-brain.js:669, consumed by notion-create-verify.sh),
