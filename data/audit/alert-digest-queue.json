@@ -34,5 +34,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T04:17:49.477Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on the-story-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T05:28:33.396Z"
   }
 ]
