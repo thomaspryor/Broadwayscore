@@ -8486,3 +8486,30 @@
 [2026-09-05 08:01:43] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
 [2026-09-05 08:01:43] DIGEST[ios]: 19 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/feedback-overnight-2026-08-31T06-15-03 ios/feedback-overnight-2026-09-01T06-15-07 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
 [2026-09-05 08:01:43] DONE  removed=0 kept=44 skipped=22 freed=0KB (dry_run=0)
+[2026-09-05 09:01:45] SKIP  [web] merge-gate-hook-test-probe-wt-bI9q5Q — detached HEAD, leaving alone
+[2026-09-05 09:01:45] SKIP  [web] merge-gate-hook-test-probe-wt-chUJHl — detached HEAD, leaving alone
+[2026-09-05 09:01:53] KEEP  [web] agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-09-05 09:01:56] SKIP  [web] BRO-155-nyt-roundup — worktree-BRO-155-nyt-roundup merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:07] SKIP  [web] bro-2560-infra-venue-validation — worktree-bro-2560-infra-venue-validation merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:22] SKIP  [web] bro-2569-dispatch-path-check — worktree-bro-2569-dispatch-path-check merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:39] KEEP  [web] bro-2588-partA-ci-fix — 1 unmerged commit(s) on bro-2588-partA-ci-fix
+[2026-09-05 09:02:42] SKIP  [web] bro-2607-gc-dryrun-parity — worktree-bro-2607-gc-dryrun-parity merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:43] SKIP  [web] bro-2708-retraction-era — worktree-bro-2708-retraction-era merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:45] SKIP  [web] bro-2776-cvstyle-restore — worktree-bro-2776-cvstyle-restore merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:46] SKIP  [web] bro-2799-weekly-integrity-push-timeout — worktree-bro-2799-weekly-integrity-push-timeout merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:47] SKIP  [web] bro-525-dmarc-ingest — worktree-bro-525-dmarc-ingest merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:48] SKIP  [web] bro-78-rageclick-labels — worktree-bro-78-rageclick-labels merged but a live process has this worktree as its cwd
+[2026-09-05 09:02:53] KEEP  [web] bro-80-prior-run-triage — 5 unmerged commit(s) on worktree-bro-80-prior-run-triage
+[2026-09-05 09:02:59] KEEP  [web] car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-09-05 09:03:16] WARN  [web] claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-09-05 09:03:21] KEEP  [web] claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-09-05 09:03:34] SKIP  [web] diary-phase0c — worktree-diary-phase0c merged but worktree is LOCKED (active session: diary calendar Phase 0 picker work); not forcing
+[2026-09-05 09:03:41] KEEP  [web] job-1850-mt1uvnig — 3 unmerged commit(s) on job/1850-mt1uvnig
+[2026-09-05 09:03:59] KEEP  [web] job-1853-mta72xcr — 1 unmerged commit(s) on job/1853-mta72xcr
+[2026-09-05 09:04:01] KEEP  [web] job-1866-mta86nip — 1 unmerged commit(s) on job/1866-mta86nip
+[2026-09-05 09:04:03] KEEP  [web] job-crown-BRO-343-v28-headless-mtkaurvs — 2 unmerged commit(s) on job/crown-BRO-343-v28-headless-mtkaurvs
+[2026-09-05 09:04:03] KEEP  [web] job-crown-BRO-343-v28-headless-mtkkeeoe — 5 unmerged commit(s) on job/crown-BRO-343-v28-headless-mtkkeeoe
+[2026-09-05 09:04:06] KEEP  [web] job-linear-BRO-172-mta9x9bb — 2 unmerged commit(s) on job/linear-BRO-172-mta9x9bb
+[2026-09-05 09:04:31] KEEP  [web] job-linear-BRO-2318-mta79vcn — 1 unmerged commit(s) on job/linear-BRO-2318-mta79vcn
+[2026-09-05 09:04:36] KEEP  [web] job-linear-BRO-2423-mtabatp9 — 2 unmerged commit(s) on job/linear-BRO-2423-mtabatp9
+[2026-09-05 09:04:47] KEEP  [web] job-linear-BRO-2424-mtadgyrf — 8 unmerged commit(s) on job/linear-BRO-2424-mtadgyrf

@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-09-05T08:52:16.122Z",
-  "processed": 83,
-  "failed": 1402,
-  "successRate": "5.6%",
+  "updatedAt": "2026-09-05T09:14:18.801Z",
+  "processed": 104,
+  "failed": 1631,
+  "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 60,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 15,
+    "brightdata": 21,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-04T22:41:27.427Z",
-      "event": "bb-session",
-      "session": "0d652fbc",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-09-04T22:45:02.570Z",
-      "event": "bb-session",
-      "session": "34b484d9",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-04T22:45:03.411Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-04T22:45:58.270Z",
-      "event": "bb-session",
-      "session": "af39536e",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
     {
       "t": "2026-09-04T22:46:18.994Z",
       "event": "bb-session",
@@ -129,6 +106,28 @@
       "event": "bb-session",
       "session": "7dfa479f",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-09-05T09:05:36.378Z",
+      "event": "bb-session",
+      "session": "5bf089c9",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-05T09:05:40.821Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-05T09:05:59.385Z",
+      "event": "bb-session",
+      "session": "1707abb8",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-05T09:06:03.863Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
