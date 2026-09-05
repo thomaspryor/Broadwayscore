@@ -70,6 +70,7 @@ const {
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { venueSearchToken } = require('./lib/venue-search-token');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -236,12 +237,23 @@ async function findPlaybillUrl(show, log) {
   const market = show.category === 'off-broadway' ? 'Off-Broadway'
     : (show.category === 'west-end' || show.category === 'off-west-end') ? 'London'
     : 'Broadway';
-  const venueWord = (show.venue || '').split(/[\s\-,—\/]/)[0];
-  const queries = [
-    `site:playbill.com/production "${show.title}" ${market} ${venueWord}`,
-    `site:playbill.com/production "${show.title}" ${venueWord}`,
-    `site:playbill.com production "${show.title}" ${market}`,
-  ];
+  // BRO-2821: this used to be the venue's FIRST whitespace token, which is a
+  // stopword for 202 of the 2,943 shows carrying a venue (6.9%) — "New World
+  // Stages" -> "New", "St. James Theatre" -> "St.", "The Theater Center" ->
+  // "The" — so the query carried no venue signal at all. venueSearchToken picks
+  // the first distinctive token instead, and returns '' when a venue has none.
+  const venueWord = venueSearchToken(show.venue);
+  // An empty venueWord must not leave a dangling separator: `"Title" Broadway `
+  // and `"Title" ` are the same queries as their trimmed forms to a search
+  // engine, but serp-cache.js keys on the query STRING, so the untrimmed
+  // variants would cut a second, permanently-missing cache entry for the 5
+  // shows whose venue has no distinctive word. Trim, then drop duplicates —
+  // without a venue term the first two variants collapse into one.
+  const queries = [...new Set([
+    `site:playbill.com/production "${show.title}" ${market} ${venueWord}`.trim(),
+    `site:playbill.com/production "${show.title}" ${venueWord}`.trim(),
+    `site:playbill.com production "${show.title}" ${market}`.trim(),
+  ])];
   // BRO-2701 review finding 1: this loop used to fall through to the same
   // `source: 'none'` whether we LOOKED and found no Playbill page, or never
   // managed to look at all. Both were then stamped 'no-playbill-url', which is
