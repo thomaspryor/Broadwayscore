@@ -42,6 +42,7 @@ const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-b
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { VALID_CV_STYLES, findInvalidCvStyles } = require('./lib/outlet-canonicalize');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -981,7 +982,33 @@ async function main() {
       console.log(`  A NEW entry must be deleted from data/outlet-registry.json — do not rename or merge.`);
     }
 
+    // BRO-2776: reject an unrecognised cvStyle at WRITE time.
+    //
+    // getCvStyle() falls back to 'standard' for any value outside
+    // VALID_CV_STYLES, which means a typo (or the 'biographical-lead' spelling
+    // review-guards.js used to document) leaves shouldDeferCvWrongShow()
+    // permanently disarmed while looking configured. A read-time warning during
+    // a 19k-review rebuild is too weak a signal to catch that, so the registry
+    // itself is validated here — this audit already runs with --strict in
+    // test.yml and in every crown cycle.
+    //
+    // Unlike the missing-outlet checks above there is deliberately NO baseline:
+    // zero of the 1127 outlets carry a cvStyle key today, so the valid set is
+    // empty and can never be grandfathered into accepting a bad value.
+    const badCvStyles = findInvalidCvStyles(loadRegistry());
+    if (badCvStyles.length > 0 && !JSON_OUTPUT) {
+      console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
+      for (const b of badCvStyles) {
+        console.log(`  "${b.outletId}" has cvStyle ${JSON.stringify(b.cvStyle)}`);
+      }
+      console.log(
+        `  Valid values: ${[...VALID_CV_STYLES].join(', ')}. ` +
+          `An invalid value leaves shouldDeferCvWrongShow() disarmed for that outlet (BRO-2776).`
+      );
+    }
+
     if (STRICT) {
+      if (badCvStyles.length > 0) process.exit(1);
       if (newViolators.length > 0 || newJunkViolators.length > 0) {
         if (!JSON_OUTPUT) {
           if (newViolators.length > 0) {

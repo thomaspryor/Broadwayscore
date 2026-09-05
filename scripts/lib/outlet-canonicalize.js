@@ -202,18 +202,97 @@ function resolveCanonicalOutletId({ outletArg, url }) {
 
 const VALID_CV_STYLES = new Set(['standard', 'long-biographical']);
 
+// BRO-2776: 'long-biographical' is the ONE canonical value. review-guards.js's
+// S3-T6 comment used to document 'biographical-lead', which this Set rejected,
+// so getCvStyle() fell back to 'standard' silently and shouldDeferCvWrongShow()
+// stayed disarmed with no error anywhere.
+//
+// The first fix here added 'biographical-lead' as an accepted alias. Review
+// (2026-09-05) rejected that: it buys backward compatibility with nothing —
+// zero of 1127 outlets carry a cvStyle key at all — at the price of two
+// permanent spellings in shared code. The comment was corrected at its source
+// instead, and a wrong value is now caught at WRITE time by
+// scripts/audit-outlet-registry.js rather than whispered at read time.
+
+// Warn at most once per (outlet, value) so a bulk rebuild over 19k reviews does
+// not print the same line thousands of times, while a genuinely new typo is
+// still surfaced on its first occurrence. This is the read-time backstop; the
+// write-time gate in audit-outlet-registry.js is the primary defence.
+const warnedCvStyles = new Set();
+
 /**
  * getCvStyle(outletId)
  * Returns the cvStyle for the given outlet, defaulting to 'standard'.
  * Calls normalizeOutlet first so aliases (e.g. 'nysun') resolve to their
  * canonical ID ('new-york-sun') before the registry lookup.
+ *
+ * An unrecognised cvStyle is LOUD (BRO-2776). It still falls back to 'standard'
+ * so a bad registry value cannot break a rebuild, but it no longer does so
+ * silently — a silent fallback is what let this guard sit dead.
  */
 function getCvStyle(outletId) {
   const canonical = normalizeOutlet(outletId || '');
   const registry = loadRegistry();
   const entry = registry.outlets && registry.outlets[canonical];
-  const style = entry && entry.cvStyle;
-  return VALID_CV_STYLES.has(style) ? style : 'standard';
+  return resolveCvStyle(entry && entry.cvStyle, canonical);
+}
+
+/**
+ * resolveCvStyle(rawStyle, canonicalOutletId)
+ * The registry-free decision behind getCvStyle, extracted so it is testable
+ * without data/outlet-registry.json — that file is gitignored private core
+ * data, so it is absent from every worktree and a registry-reading test cannot
+ * run there.
+ *
+ * NOT pure: it reads and mutates the module-level warn-once memo and calls
+ * console.warn. Its RETURN value is a pure function of rawStyle; only the
+ * warning is stateful. Use _resetCvStyleWarnings() to clear that state in tests.
+ *
+ * @param {string|undefined|null} rawStyle  the registry's cvStyle value, if any
+ * @param {string} canonicalOutletId        used only for the warning message
+ * @returns {'standard'|'long-biographical'}
+ */
+function resolveCvStyle(rawStyle, canonicalOutletId = '') {
+  if (rawStyle === undefined || rawStyle === null) return 'standard';
+  if (VALID_CV_STYLES.has(rawStyle)) return rawStyle;
+  const key = `${canonicalOutletId}::${rawStyle}`;
+  if (!warnedCvStyles.has(key)) {
+    warnedCvStyles.add(key);
+    console.warn(
+      `[outlet-canonicalize] outlet "${canonicalOutletId}" has unrecognised ` +
+        `cvStyle "${rawStyle}" — falling back to "standard", so any ` +
+        `cvStyle-gated guard (e.g. shouldDeferCvWrongShow) will NOT fire for ` +
+        `it. Valid values: ${[...VALID_CV_STYLES].join(', ')}.`
+    );
+  }
+  return 'standard';
+}
+
+/**
+ * findInvalidCvStyles(registry)
+ * Every outlet whose cvStyle is present but outside VALID_CV_STYLES.
+ * Extracted (CLAUDE.md rule 15) so audit-outlet-registry.js's write-time gate
+ * is unit-testable without data/outlet-registry.json, which is gitignored and
+ * therefore absent from every worktree.
+ *
+ * An ABSENT cvStyle is not a finding — that is all 1127 outlets today.
+ *
+ * @param {{outlets?: Object}} registry
+ * @returns {Array<{outletId: string, cvStyle: *}>}
+ */
+function findInvalidCvStyles(registry) {
+  const out = [];
+  for (const [outletId, entry] of Object.entries((registry && registry.outlets) || {})) {
+    if (!entry || entry.cvStyle === undefined || entry.cvStyle === null) continue;
+    if (!VALID_CV_STYLES.has(entry.cvStyle)) out.push({ outletId, cvStyle: entry.cvStyle });
+  }
+  return out;
+}
+
+// Exposed for tests only: the warn-once memo is module state, so a test that
+// asserts the warning fires must be able to clear it between cases.
+function _resetCvStyleWarnings() {
+  warnedCvStyles.clear();
 }
 
 /**
@@ -365,9 +444,16 @@ function sameOutletUrlVariant({ candidateUrl, heldUrls, domainToOutlet, ambiguou
 module.exports = {
   resolveCanonicalOutletId,
   getCvStyle,
+  resolveCvStyle,
+  findInvalidCvStyles,
+  // The ONE canonical cvStyle vocabulary. Exported so audit-outlet-registry.js
+  // validates against this Set rather than keeping a second copy that could
+  // drift — the drifted-vocabulary bug is exactly what BRO-2776 was.
+  VALID_CV_STYLES,
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
   // exposed for tests
   _buildDomainMap: buildDomainMap,
   _parseDomain: parseDomain,
+  _resetCvStyleWarnings,
 };
