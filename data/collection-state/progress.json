@@ -63,7 +63,8 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/reviewsgate--william-russell.json"
+    "avenue-q-west-end-2026/reviewsgate--william-russell.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -380,7 +381,16 @@
     "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
     "avenue-q-west-end-2026/backstage--david-sheward.json",
     "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
-    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json"
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/talkinbroadway--unknown.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "titanique-2026/new-york-city-theatre--unknown.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/frontmezzjunkies--unknown.json",
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -425,7 +435,8 @@
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-      "avenue-q-west-end-2026/reviewsgate--william-russell.json"
+      "avenue-q-west-end-2026/reviewsgate--william-russell.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ],
     "amp": [],
     "browserbase": [
@@ -436,7 +447,8 @@
       "data/review-texts/cats-west-end-2026/times-uk--donald-hutera.json",
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -471,7 +483,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "oh-mary-west-end-2025/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -633,6 +645,12 @@
       "t": "2026-09-05T22:08:37.881Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-05T22:11:24.114Z",
+      "event": "bb-session",
+      "session": "ae1d1210",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
