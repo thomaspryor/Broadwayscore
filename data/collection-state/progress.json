@@ -66,7 +66,8 @@
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -440,7 +441,16 @@
     "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
     "the-producers-west-end-2025/deadline--unknown.json",
     "the-producers-west-end-2025/people--unknown.json",
-    "the-producers-west-end-2025/the-sun--dominic-maxwell.json"
+    "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "amaze-magic-off-broadway-2025/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/broadwayworld--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -486,7 +496,8 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -498,7 +509,8 @@
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -535,7 +547,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
+  "lastProcessed": "burlesque-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -703,6 +715,17 @@
       "event": "bb-session",
       "session": "ae1d1210",
       "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-09-05T22:14:36.538Z",
+      "event": "bb-session",
+      "session": "7747f799",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-05T22:14:37.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
