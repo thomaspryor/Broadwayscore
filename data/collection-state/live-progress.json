@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-05T14:15:10.395Z",
-  "processed": 167,
-  "failed": 3249,
-  "successRate": "4.9%",
+  "updatedAt": "2026-09-05T14:16:56.010Z",
+  "processed": 171,
+  "failed": 3255,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 102,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 40,
     "archiveToday": 0,
     "archive": 22
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-05T12:00:39.969Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-05T12:06:05.571Z",
-      "event": "bb-session",
-      "session": "6c6dc5c2",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
     {
       "t": "2026-09-05T12:10:00.989Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
     },
     {
       "t": "2026-09-05T14:14:14.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:16:30.745Z",
+      "event": "bb-session",
+      "session": "c34dacc0",
+      "url": "https://www.nytimes.com/2026/06/25/theater/the-loved-ones-review-maryann-plunket"
+    },
+    {
+      "t": "2026-09-05T14:16:31.993Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

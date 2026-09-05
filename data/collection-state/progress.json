@@ -166,7 +166,11 @@
     "springwood-west-end-2026/london-box-office--stuart-king.json",
     "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
     "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "birthright-off-broadway-2026/the-recs--unknown.json",
+    "relics-west-end-2026/rhombus-rota--unknown.json",
+    "the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -3417,7 +3421,13 @@
     "archduke-west-end-2026/tribune--unknown.json",
     "archduke-west-end-2026/nytg--amelia-merrill.json",
     "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
-    "relics-west-end-2026/nytimes--unknown.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "sting-west-end-2026/variety--unknown.json",
+    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
+    "the-misanthrope-west-end-2026/nytimes--jason-zinoman.json",
+    "sting-west-end-2026/deadline--unknown.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3520,7 +3530,10 @@
       "allegra-west-end-2026/slippedisc--norman-lebrecht.json",
       "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
       "a-midsummer-nights-dream-west-end-2026/whatsonstage--miriam-sallon.json",
-      "springwood-west-end-2026/london-box-office--stuart-king.json"
+      "springwood-west-end-2026/london-box-office--stuart-king.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "birthright-off-broadway-2026/the-recs--unknown.json",
+      "relics-west-end-2026/rhombus-rota--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -3549,7 +3562,9 @@
       "data/review-texts/the-gin-game-2026/nytimes--laura-collins-hughes.json",
       "the-gin-game-2026/nytimes--laura-collins-hughes.json",
       "data/review-texts/archduke-west-end-2026/nytimes--juan-a-ramirez.json",
-      "archduke-west-end-2026/nytimes--juan-a-ramirez.json"
+      "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+      "data/review-texts/the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json",
+      "the-loved-ones-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -3628,7 +3643,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+  "lastProcessed": "sting-west-end-2026/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -4150,6 +4165,17 @@
     },
     {
       "t": "2026-09-05T14:14:14.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:16:30.745Z",
+      "event": "bb-session",
+      "session": "c34dacc0",
+      "url": "https://www.nytimes.com/2026/06/25/theater/the-loved-ones-review-maryann-plunket"
+    },
+    {
+      "t": "2026-09-05T14:16:31.993Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
