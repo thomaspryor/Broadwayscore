@@ -110,6 +110,45 @@ function urlMentionsAnySlug(urlSlug, acceptSlugs) {
   return false;
 }
 
+// Path segments that are structure, not title words. A URL whose only word-like
+// tokens come from this set carries no editorial slug at all.
+const STRUCTURAL_PATH_WORDS = new Set([
+  'content', 'article', 'articles', 'story', 'stories', 'news', 'item',
+  'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
+]);
+
+/**
+ * True when a review URL structurally CANNOT express a show slug, because its
+ * path is an opaque identifier rather than an editorial slug.
+ *
+ * Some outlets never put the headline in the path. The Financial Times is the
+ * standing example: every review lives at /content/<uuid>, e.g.
+ * ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244. There is no slug to
+ * match, so the mismatch check fired a hard error on a perfectly good FT review
+ * of the right show and blocked the opening-night broadcast checklist gate
+ * (found live on the-story-west-end-2026, 2026-09-05).
+ *
+ * This does NOT weaken the contamination signal the check exists for. That
+ * signal is "this URL names a DIFFERENT show" — an opaque URL names no show
+ * either way, so there was never anything to detect on these; the check was
+ * only producing noise. A URL carrying ANY real word token is still checked in
+ * full, so a slugged URL for the wrong show still errors.
+ *
+ * @param {string} urlSlug - output of urlSearchSlug()
+ * @returns {boolean}
+ */
+function isOpaqueUrlSlug(urlSlug) {
+  if (!urlSlug) return true;
+  const tokens = urlSlug.split(/[^a-z0-9]+/).filter(Boolean);
+  for (const t of tokens) {
+    if (t.length < 3) continue;          // 'p', 'id', short noise
+    if (/\d/.test(t)) continue;          // hex/uuid chunks and numeric ids
+    if (STRUCTURAL_PATH_WORDS.has(t)) continue;
+    return false;                        // a real word — this URL has a slug
+  }
+  return true;
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -122,10 +161,17 @@ function run(show, context) {
   }
 
   const mismatches = [];
+  const opaqueSkipped = [];
   for (const review of reviews) {
     if (!review.url) continue;
     const urlSlug = urlSearchSlug(review.url);
     if (urlMentionsAnySlug(urlSlug, acceptSlugs)) continue;
+    // An opaque-id URL (FT /content/<uuid>) has no slug to mismatch — skip it
+    // rather than reporting a hard error the operator can never resolve.
+    if (isOpaqueUrlSlug(urlSlug)) {
+      opaqueSkipped.push({ outletId: review.outletId, url: review.url });
+      continue;
+    }
     mismatches.push({
       outletId: review.outletId,
       criticName: review.criticName,
@@ -138,7 +184,11 @@ function run(show, context) {
     return {
       ok: true,
       severity: 'ok',
-      message: `All ${reviews.length} review URL(s) mention show slug`,
+      message: opaqueSkipped.length
+        ? `All ${reviews.length - opaqueSkipped.length} slugged review URL(s) mention show slug `
+          + `(${opaqueSkipped.length} opaque-id URL(s) skipped: `
+          + `${opaqueSkipped.map(o => o.outletId).join(', ')})`
+        : `All ${reviews.length} review URL(s) mention show slug`,
     };
   }
 
@@ -170,4 +220,7 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug };
+module.exports = {
+  name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
+  isOpaqueUrlSlug,
+};
