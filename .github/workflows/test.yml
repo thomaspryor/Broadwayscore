@@ -326,10 +326,15 @@ on:
       # Task #752: Browserbase chokepoint + cross-provider ledger. bd-telemetry.js
       # was generalized into provider-telemetry.js (still re-exported for its 2
       # existing consumers); browserbase-session.js is the new createBbSession()
-      # every caller migrated to. Colocated *.test.mjs run in the tests/unit/**
-      # and scripts/lib/** globs already; .js source needs explicit listing
-      # (no scripts/lib/** broad glob) — path-listed so a solo edit triggers CI
+      # every caller migrated to. These are top-level scripts/ files, which the
+      # scripts/lib/** glob at the top of this list does NOT cover, so each
+      # needs its own entry or a solo edit gets ZERO CI
       # (feedback_test_yml_push_path_allowlist).
+      # NOTE (corrected 2026-09-05): this comment used to end "(no
+      # scripts/lib/** broad glob)". That glob HAS existed since task #1745 on
+      # 2026-08-17 — it is line 22 above. Anything under scripts/lib/ is
+      # already covered and must NOT be hand-listed here; that stale sentence
+      # sent one session off to add two redundant entries.
       - 'scripts/newspapers-com-extract.js'
       - 'scripts/scrape-stagedoor-critics.js'
       - 'scripts/test-paywalled-access.js'
@@ -923,9 +928,12 @@ on:
       - 'scripts/validate-show-venue.js'
       # theatr-coverage.json flag builder (BRO-303, 2026-08-13): excludes
       # London-market shows from the candidate pool since Theatr's catalog is
-      # Broadway/Off-Broadway only. Colocated test runs in tests/unit glob
-      # (already listed above) but the lib source + the scraper that wires it
-      # in need explicit listing (no scripts/lib/** broad glob).
+      # Broadway/Off-Broadway only. Only the top-level scraper needs an entry:
+      # its lib source and colocated test both live under scripts/lib/, which
+      # the glob at line 22 already covers.
+      # NOTE (corrected 2026-09-05): this comment used to claim there was "no
+      # scripts/lib/** broad glob". There is — line 22, added by task #1745 on
+      # 2026-08-17, four days after this comment was written.
       - 'scripts/scrape-theatr-audience.js'
       # Write-routing lint shared by CI (Lint Workflows job) + local pre-push
       # hook. Without these paths an edit to the lint or its allowlists pushes

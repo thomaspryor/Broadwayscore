@@ -51,6 +51,23 @@
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
  *   node scripts/validate-show-venue.js --all-provisional
  *   node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
+ *
+ * Exit codes (BRO-2821). A run that explicitly names ONE show with --show is
+ * held to a stricter contract than a sweep, because a sweep averages rows and
+ * a named run has exactly one question to answer:
+ *   0  nothing to report — for a --show run, that means it MATCHED Playbill
+ *   1  a mismatch — or, under --fail-on-mismatch, a strict sweep that could
+ *      not certify clean coverage because the time budget cut off before
+ *      reaching a new-or-previously-broken show (deferredHighPriority, the
+ *      second arm of that gate). For a --show run a mismatch exits 1 with or
+ *      without the flag, since bare --show is the command CLAUDE.md rule 3
+ *      documents and it used to exit 0 here
+ *   2  fatal — main() threw (see the catch at the bottom of this file)
+ *   3  --show only: the question was NOT answered. No Playbill page was found,
+ *      or the lookup/fetch failed, or the environment could not reach Playbill,
+ *      or the run ended before reaching the show. Deliberately distinct from 1:
+ *      "I could not check your show" is not "your show is wrong". A sweep never
+ *      exits 3 — its equivalent is the ::warning:: degraded-coverage lines.
  */
 
 'use strict';
@@ -75,6 +92,7 @@ const {
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
+const { classifyNamedShowRun } = require('./lib/named-show-verdict');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -746,9 +764,51 @@ async function main() {
     if (deferredHighPriority.length) {
       console.log(`::error::validate-show-venue: time budget exhausted before checking ${deferredHighPriority.length} new/previously-broken show(s) — cannot certify a clean pass: ${deferredHighPriority.map(s => s.id).join(', ')}`);
     }
-    await cleanup();
+    // Wrapped for the same reason the success path below is (adversarial
+    // review, Codex): an unwrapped throw here would reject main(), fall into
+    // the catch, and exit 2 — silently converting an intended "this entry
+    // mismatches Playbill" into "the script crashed". cleanup() swallows its
+    // own errors internally so this should never fire; the asymmetry with
+    // every other exit path was the defect.
+    // NOT behaviour-pinned by a test, and deliberately so: cleanup() lives in
+    // lib/scraper.js and swallows its own errors, so forcing it to throw would
+    // mean adding an injection seam to shared scraping infrastructure to guard
+    // a one-line wrapper. Reverting this try/catch leaves every test green —
+    // known, recorded here rather than left for the next reader to discover.
+    try { await cleanup(); } catch (_) { /* best-effort */ }
     process.exit(1);
   }
+
+  // BRO-2821 suggestion 1: for a caller that named ONE show, neither an
+  // UNRESOLVED result nor a confirmed MISMATCH is benign. Runs AFTER the audit
+  // ledger is written above (this run did happen and its row must be recorded)
+  // and AFTER the --fail-on-mismatch gate, which already exited 1 with its
+  // ::error:: lines whenever that flag was passed. Unconditional — NOT gated
+  // on --fail-on-mismatch — because the command CLAUDE.md rule 3 tells an
+  // operator to run before committing a stub is the BARE `--show=<id>` form,
+  // which is exactly where the silence was: it printed "Mismatches:" and then
+  // exited 0. `targets.length` is passed so a run that ended before reaching
+  // the named show (the time-budget `break` in the loop above is not gated on
+  // --all-provisional) fails closed instead of reading as a clean pass. The
+  // decision itself lives in scripts/lib/named-show-verdict.js so it is
+  // testable without a network run; see that module's docblock for why the
+  // aggregate degraded-coverage warnings above do not cover this case.
+  const named = classifyNamedShowRun({ showFilter, results, targetCount: targets.length });
+  if (!named.validated) {
+    console.log(`::error::${named.message}`);
+    // Also on stderr, deliberately duplicating the line above. The autonomous
+    // Tier-2 verifier (scripts/autonomous-merge.js) turns a non-zero exit into
+    // a human-readable block reason via
+    // `String(err.stderr || err.stdout || err.message).slice(0, 400)` — the
+    // FIRST 400 characters. This script's stdout by then holds a full run log,
+    // so an stdout-only reason would be reported as the log's opening lines and
+    // the actual cause would never appear on the card. On stderr it is the
+    // whole reason string.
+    console.error(named.message);
+    try { await cleanup(); } catch (_) { /* best-effort */ }
+    process.exit(named.exitCode);
+  }
+
   // BRO-2701: this script never released the scraper, and until now it never
   // had to — every CI run ended at the process.exit(1) above, which force-exits
   // regardless of open handles. Making the gate PASSABLE made the success path

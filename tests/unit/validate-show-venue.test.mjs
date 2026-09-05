@@ -8,6 +8,13 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
 const {
   isProvisional, shortTitleSlug, scorePlaybillUrl,
@@ -216,4 +223,154 @@ test('scorePlaybillUrl ranks an exact-title candidate above a relaxed one (BRO-2
   assert.ok(relaxed !== null && relaxed > 0, 'the relaxed URL must still be accepted');
   assert.ok(exact > relaxed,
     `exact (${exact}) must outrank relaxed (${relaxed}) at the same venue and year`);
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2821 suggestion 1 — the WIRING, not just the decision.
+//
+// scripts/lib/named-show-verdict.test.mjs pins the decision function. This
+// spawns the real script end to end, because deleting the call site in
+// validate-show-venue.js while leaving the require in place would not fail a
+// single one of those tests — the exact shape of v38's defect 11 (a guard that
+// detected an IMPORT rather than a call and stayed green at 23/23 with the fix
+// removed). Reverting the `if (!named.validated)` block turns this test red.
+//
+// No network: serpQuery() returns null before touching any provider when
+// neither SCRAPINGBEE_API_KEY nor BRIGHTDATA_TOKEN is set, which lands the show
+// on 'serp-error' — an unresolved class. The fixture id is deliberately absent
+// from data/playbill-urls.json (read from the real repo regardless of
+// --data-dir, by design) so the cache cannot short-circuit ahead of that.
+test('validate-show-venue exits non-zero when an explicitly named --show cannot be validated (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-named-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      // v38: the sibling venue-complex wiring test went red on
+      // `spawnSync node ENOBUFS` because a whole-validator spawn crossed the
+      // 1 MiB default. Set it explicitly rather than inherit that boundary.
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        // Never let a test read or write the repo-wide ledger (BRO-2696).
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    // Re-raise rather than collapsing to a number: an ENOBUFS or ETIMEDOUT
+    // kill surfaces on res.error with res.status null, and reading that as a
+    // failing exit code would make this test "pass" for the wrong reason.
+    if (res.error) throw res.error;
+    const out = `${res.stdout || ''}${res.stderr || ''}`;
+    assert.notEqual(res.status, 0,
+      `a named --show that produced no verdict must not exit 0. Output:\n${out}`);
+    assert.equal(res.status, 3,
+      `expected the not-validated exit code 3 (1 = real mismatch, 2 = fatal). Output:\n${out}`);
+    assert.match(out, /was NOT validated/);
+    assert.match(out, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// The autonomous Tier-2 verifier (scripts/autonomous-merge.js) reports a block
+// reason as the FIRST 400 characters of `err.stderr || err.stdout ||
+// err.message`, stderr preferred. This script's stdout holds a full run log by
+// that point, so a stdout-only reason would surface on the card as the log's
+// opening lines and the real cause would never be read. Pin the reason to
+// stderr, and pin that it survives that exact 400-char slice.
+test('the not-validated reason reaches stderr, so the autonomous block reason is the cause and not the log header (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-named-stderr-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    if (res.error) throw res.error;
+    const harnessVisible = res.stderr ? res.stderr : (res.stdout || '');
+    const firstChunk = String(harnessVisible).slice(0, 400);
+    assert.match(firstChunk, /was NOT validated/,
+      `the first 400 chars of the harness-visible output must carry the cause, got:\n${firstChunk}`);
+    assert.match(firstChunk, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// Third wiring test: the run that never REACHED the named show. The
+// time-budget `break` in validate-show-venue.js's loop is not gated on
+// --all-provisional, so `--show=<id> --time-budget-min=<tiny>` produces zero
+// result rows. Before the targetCount check that read as a clean exit 0.
+// Deterministic and offline: the budget is exhausted before the first
+// iteration, so no SERP or Playbill call is made at all.
+test('validate-show-venue exits non-zero when the run never reached the named --show (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-notreached-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      // A tiny POSITIVE value: parseTimeBudgetMin treats <=0 as "disabled"
+      // (scripts/lib/run-budget.js:30), so 0 would silently turn the budget
+      // off and this test would exercise the wrong path.
+      '--time-budget-min=0.000001',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    if (res.error) throw res.error;
+    const out = `${res.stdout || ''}${res.stderr || ''}`;
+    assert.notEqual(res.status, 0,
+      `a named --show the run never reached must not exit 0. Output:\n${out}`);
+    assert.match(out, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
