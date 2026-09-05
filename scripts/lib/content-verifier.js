@@ -89,7 +89,13 @@ function _cvParseDate(dateStr) {
   // one basis for both silently shifts the other by a day — re-anchoring an
   // ISO-shaped historical date moves it a day EARLIER west of UTC, which is
   // exactly the kind of off-by-one this whole function exists to remove.
-  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  // The optional time portion matters: an ISO string that carries one
+  // ("1964-09-22T00:00:00Z") would otherwise fall through to the prose branch
+  // and be re-anchored from LOCAL components, landing a day earlier west of
+  // UTC. Post-1970 timestamps never reach here (parseDate handles them), so
+  // this only bites historical ones — no corpus instance today, but the corpus
+  // gains pre-1970 entries whenever an archival show is backfilled.
+  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/);
   if (iso) {
     const y = Number(iso[1]);
     const m = Number(iso[2]);

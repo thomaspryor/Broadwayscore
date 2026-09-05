@@ -127,6 +127,24 @@ describe('historical-fallback hazards (found by an independent Codex review)', (
     );
   });
 
+  test('a pre-1970 ISO date CARRYING A TIME is not shifted a day earlier', () => {
+    // "1964-09-22T00:00:00Z" does not match a date-only ISO pattern, so it fell
+    // through to the prose branch and was re-anchored from LOCAL components,
+    // landing on 1964-09-21 west of UTC. Post-1970 timestamps never reach the
+    // fallback (parseDate handles them), so only historical entries are hit —
+    // zero in the corpus today, but backfilling an archival show adds them.
+    const { prompt } = buildVerificationPrompt({
+      ...base,
+      showTitle: 'Fiddler on the Roof',
+      openingDate: '1969-12-31T00:00:00Z',
+      publishDate: '1970-01-30',
+    });
+    assert.ok(
+      prompt.includes('Reviews published near opening night'),
+      'an ISO timestamp must resolve to its own calendar date, not the day before'
+    );
+  });
+
   test('an impossible calendar date does not roll forward into a hint', () => {
     // parseDate() rejects Feb 30 via validateCalendarDate. `new Date()` rolls
     // it to March 2, which would fire an opening-week hint off a date that
