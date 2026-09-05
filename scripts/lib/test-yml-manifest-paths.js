@@ -72,13 +72,20 @@ function findManifestPathGaps(repoRoot) {
 // itself mean a test never runs — two of the four have their own dedicated
 // test.yml steps and are deliberately kept OUT of the manifest batch (see the
 // quarantine below). The other two really did run nowhere, and one had rotted
-// unnoticed: should-defer-cv-wrong-show.test.mjs was failing 2 of its 9
+// unnoticed: should-defer-cv-wrong-show.test.mjs was failing 2 of its
 // assertions because the guard it covers had gone completely inert (BRO-2776 —
-// no outlet in outlet-registry.json carries a cvStyle, so
-// shouldDeferCvWrongShow() can never return true and 8 call sites in
-// rebuild-all-reviews.js are dead branches). A test that never runs cannot tell
+// no outlet in outlet-registry.json carried a cvStyle, so
+// shouldDeferCvWrongShow() could never return true and 8 call sites in
+// rebuild-all-reviews.js were dead branches). A test that never runs cannot tell
 // you its subject died, which is the same "absence of a signal looks like the
 // safe outcome" shape the gates in this repo exist to break.
+//
+// RESOLVED 2026-09-05. The 6 cvStyle keys were restored (nytimes, vulture,
+// newyorker, washpost, nysr, new-york-sun), the test now passes 8/8, and it is
+// registered in tests/unit-test-manifest.txt so it runs. The standing guard
+// against a silent repeat is audit-outlet-registry.js, which now FAILS
+// --strict when zero outlets carry 'long-biographical' — the original 2026-05-16
+// loss was a clean 3-way merge silently dropping every key.
 //
 // KNOWN SCOPE LIMIT: this scans tests/unit only. 8 of the ~96 scripts/*.test.mjs
 // files are in no manifest, and the colocated step globs scripts/lib/*.test.mjs
@@ -118,10 +125,6 @@ const TEST_FILE_RE = /\.test\.(c?js|mjs|tsx?)$/;
  */
 const RUNS_AT_OWN_STEP = 'DOES run';
 const UNREGISTERED_TEST_QUARANTINE = new Map([
-  [
-    'tests/unit/should-defer-cv-wrong-show.test.mjs',
-    'BRO-2776 — runs nowhere today AND fails 2/9: no outlet carries cvStyle, so shouldDeferCvWrongShow() is inert. Register once the guard is armed.',
-  ],
   [
     'tests/unit/opening-night-checklist-cli.test.mjs',
     'BRO-2777 — runs nowhere today and cannot pass as written: it parses --json off stdout, which carries progress logs before the JSON, and it spends a live Scrapingdog credit per run.',
@@ -173,7 +176,13 @@ function listTestFilesOnDisk(repoRoot) {
  * @param {string} repoRoot
  * @returns {{orphans: string[], quarantined: {test: string, reason: string}[], staleQuarantine: string[], brokenExemptions: string[]}}
  */
-function findUnregisteredTests(repoRoot) {
+// `quarantine` is injectable so this guard's OWN tests can drive it with a
+// synthetic entry instead of whichever real card happens to sit at index 0.
+// Reading a live entry made the fixtures depend on that entry's SHAPE: entries
+// whose reason contains RUNS_AT_OWN_STEP route to brokenExemptions, not
+// quarantined, so 2 of the 3 real entries produce quarantined:0 and would red
+// main the moment the first one retired (review 2026-09-05).
+function findUnregisteredTests(repoRoot, quarantine = UNREGISTERED_TEST_QUARANTINE) {
   const registered = new Set();
   for (const manifest of MANIFEST_FILES) {
     const abs = path.join(repoRoot, manifest);
@@ -204,7 +213,7 @@ function findUnregisteredTests(repoRoot) {
   const brokenExemptions = [];
   for (const rel of onDisk) {
     if (registered.has(rel)) continue;
-    const reason = UNREGISTERED_TEST_QUARANTINE.get(rel);
+    const reason = quarantine.get(rel);
     if (!reason) {
       orphans.push(rel);
       continue;
@@ -224,7 +233,7 @@ function findUnregisteredTests(repoRoot) {
   // Reported, never fatal: the exemption has simply stopped applying, and
   // failing the build for a tidy-up would punish the person who fixed it.
   const onDiskSet = new Set(onDisk);
-  const staleQuarantine = [...UNREGISTERED_TEST_QUARANTINE.keys()].filter(
+  const staleQuarantine = [...quarantine.keys()].filter(
     (t) => registered.has(t) || !onDiskSet.has(t)
   );
 

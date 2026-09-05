@@ -283,16 +283,34 @@ test('it fails CLOSED when the test layout MOVES, rather than declaring everythi
   assert.throws(() => findUnregisteredTests(dir), /the test layout moved/);
 });
 
+// These two fixtures used to hardcode tests/unit/should-defer-cv-wrong-show.test.mjs.
+// That coupled this guard's own tests to one card's transient state: when BRO-2776
+// was resolved on 2026-09-05 and that entry left the quarantine, both tests failed
+// even though the guard was working perfectly.
+//
+// Reading a live entry instead was ALSO wrong (review 2026-09-05): entries whose
+// reason contains RUNS_AT_OWN_STEP route to brokenExemptions rather than
+// quarantined, so 2 of the 3 real entries yield quarantined:0. Picking index 0
+// only worked by luck and would have reddened main on the next retirement — the
+// very failure this was meant to prevent.
+//
+// Drive the real code with a SYNTHETIC map instead. No live card can break it,
+// and it keeps exercising the code path once the real quarantine drains to empty.
+const SYNTHETIC_QUARANTINE_PATH = 'tests/unit/synthetic-quarantine-fixture.test.mjs';
+const SYNTHETIC_QUARANTINE = new Map([
+  [SYNTHETIC_QUARANTINE_PATH, 'BRO-0000 — synthetic fixture, never a real exemption'],
+]);
+
 test('quarantined tests are reported separately and do NOT count as orphans', () => {
   const dir = fixture({
     pushPaths: ['tests/**'],
     manifestEntries: [],
-    onDisk: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
+    onDisk: [SYNTHETIC_QUARANTINE_PATH],
   });
-  const { orphans, quarantined } = findUnregisteredTests(dir);
+  const { orphans, quarantined } = findUnregisteredTests(dir, SYNTHETIC_QUARANTINE);
   assert.deepEqual(orphans, []);
   assert.equal(quarantined.length, 1);
-  assert.match(quarantined[0].reason, /BRO-2776/);
+  assert.equal(quarantined[0].reason, SYNTHETIC_QUARANTINE.get(SYNTHETIC_QUARANTINE_PATH));
 });
 
 test('every quarantine entry names an issue, so no exemption can be permanent-by-vagueness', () => {
@@ -304,12 +322,12 @@ test('every quarantine entry names an issue, so no exemption can be permanent-by
 test('a quarantine entry for an already-registered test is reported as stale', () => {
   const dir = fixture({
     pushPaths: ['tests/**'],
-    manifestEntries: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
-    onDisk: ['tests/unit/should-defer-cv-wrong-show.test.mjs'],
+    manifestEntries: [SYNTHETIC_QUARANTINE_PATH],
+    onDisk: [SYNTHETIC_QUARANTINE_PATH],
   });
-  const { orphans, staleQuarantine } = findUnregisteredTests(dir);
+  const { orphans, staleQuarantine } = findUnregisteredTests(dir, SYNTHETIC_QUARANTINE);
   assert.deepEqual(orphans, []);
-  assert.ok(staleQuarantine.includes('tests/unit/should-defer-cv-wrong-show.test.mjs'));
+  assert.ok(staleQuarantine.includes(SYNTHETIC_QUARANTINE_PATH));
 });
 
 test('the real binary exits 1 on an orphan and 0 without one', () => {
