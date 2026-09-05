@@ -404,20 +404,32 @@ test('BRO-2740: date-guard carve-out with a surviving publishDate keeps provenan
 });
 
 /**
- * BRO-2877: the two publishDate-gated preserve legs (url-change-invariant.js:280-281)
- * are only ever exercised here with a hand-built `merged` object. That is a shape
- * updateFileUrlWithInvariant CANNOT produce: its `metadata` is only
- * {urlDiscoveredAt, urlDiscoveryMethod}, so merged.publishDate there ALWAYS equals
- * existing.publishDate and both legs are unreachable from that caller.
+ * BRO-2877: these two tests pin the REASON-keyed preserve leg at
+ * url-change-invariant.js:281 — `_reasonIsDateOnly(existing) && !publishDateWillClear
+ * && mergedHasPublishDate`. Scope deliberately stated precisely: the fixture below
+ * sets wrongProductionReason and NO wrongProductionNote, so `_noteStartsWith` is false
+ * and the MANUAL leg (279) and the note-keyed AUTO_DATE leg (280) never fire here.
+ * Leg 280 is covered by the "BRO-2740: date-guard carve-out" test above; killing 280
+ * alone leaves both tests below green. Verified by mutation, not assumed.
  *
- * A v33 crown handoff read that and concluded the whole fix was dead code. It is not.
- * The legs are live from the OTHER production caller: gather-reviews.js:3496 calls
- * applyUrlChangeInvariant(existingReview, replacement) where `replacement` is built
- * FRESH from the newly-discovered URL and so can carry a genuinely new publishDate.
+ * Why the leg needed pinning at all: it is unreachable from updateFileUrlWithInvariant,
+ * whose `metadata` is only {urlDiscoveredAt, urlDiscoveryMethod}, so merged.publishDate
+ * there ALWAYS equals existing.publishDate and !publishDateWillClear is never true. A
+ * v33 crown handoff read exactly that and concluded the fix was dead code. It is not.
+ * The leg is live from the OTHER production caller, gather-reviews.js:3496, which calls
+ * applyUrlChangeInvariant(existingReview, replacement) with `replacement` built FRESH
+ * from the newly-discovered URL and so able to carry a genuinely new publishDate.
  *
- * These two tests pin BOTH directions against that caller's shape, so the next person
- * to read line 280 cannot conclude it is dead and delete it. Deleting the preserve leg
- * would silently re-clear wrongProduction on records whose date basis is still live.
+ * Both directions are pinned so leg 281 cannot be deleted as dead: killing it fails the
+ * first test, and dropping only its `!publishDateWillClear` conjunct fails the second,
+ * which nothing pre-existing catches. Deleting it would silently re-clear
+ * wrongProduction on records whose date basis is still live.
+ *
+ * These fixtures are hand-built, like every other test in this file. They mirror the
+ * gather-reviews call in the field that matters (a fresh publishDate on a fresh URL);
+ * they do not import gather-reviews.js, and they omit its
+ * preserveFields: new Set(AGGREGATOR_FIELDS), which is inert here because
+ * AGGREGATOR_FIELDS holds no publishDate or wrongProduction* key.
  */
 const BRO2877_BASE = {
   url: 'https://old.example.com/review-a',
@@ -427,10 +439,10 @@ const BRO2877_BASE = {
   contentTier: 'complete',
 };
 
-test('BRO-2877: a genuinely NEW publishDate PRESERVES the date-based wrongProduction flag (gather-reviews replacement shape)', () => {
-  const existing = structuredClone(BRO2877_BASE);
+test('BRO-2877: a genuinely NEW publishDate PRESERVES the date-based wrongProduction flag (leg 281)', () => {
+  const existing = { ...BRO2877_BASE };
   const replacement = {
-    ...structuredClone(BRO2877_BASE),
+    ...BRO2877_BASE,
     url: 'https://new.example.com/review-b',
     publishDate: '2026-03-01',
   };
@@ -444,12 +456,17 @@ test('BRO-2877: a genuinely NEW publishDate PRESERVES the date-based wrongProduc
     `wrongProduction must not be cleared, got ${JSON.stringify(res.cleared)}`);
   assert.ok(!res.cleared.includes('publishDate'),
     `publishDate must not be cleared, got ${JSON.stringify(res.cleared)}`);
+  // contentTier is NOT in WP_FIELDS, so the preserve leg must not rescue it: it is
+  // ordinary old-URL-derived state and still clears. Asserted so the fixture field
+  // is load-bearing rather than decorative.
+  assert.ok(res.cleared.includes('contentTier'),
+    `contentTier is not a WP field and must still clear, got ${JSON.stringify(res.cleared)}`);
 });
 
-test('BRO-2877: a CARRIED-OVER publishDate still clears the date-based wrongProduction flag (the leg must not over-preserve)', () => {
-  const existing = structuredClone(BRO2877_BASE);
+test('BRO-2877: a CARRIED-OVER publishDate still clears the date-based wrongProduction flag (leg 281 must not over-preserve)', () => {
+  const existing = { ...BRO2877_BASE };
   // The updateFileUrlWithInvariant shape: the same date carried across, only the URL moves.
-  const merged = { ...structuredClone(BRO2877_BASE), url: 'https://new.example.com/review-b' };
+  const merged = { ...BRO2877_BASE, url: 'https://new.example.com/review-b' };
 
   const res = quiet(() => applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro-2877.json' }));
 
