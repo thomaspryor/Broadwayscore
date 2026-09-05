@@ -1,18 +1,17 @@
 {
-  "generatedAt": "2026-09-05T16:23:40.896Z",
+  "generatedAt": "2026-09-05T16:21:10.189Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "amaze-off-broadway-2026"
   },
-  "timeBudgetMin": 9,
+  "timeBudgetMin": null,
   "counts": {
-    "total": 57,
-    "match": 32,
+    "total": 1,
+    "match": 0,
     "mismatch": 0,
-    "unresolved": 25,
+    "unresolved": 1,
     "infraUnavailable": 0,
-    "deferred": 8,
-    "carriedForward": 8
+    "deferred": 0,
+    "carriedForward": 64
   },
   "results": [
     {
@@ -1549,7 +1548,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Greenwich House Theater|2026-07-22|2026-08-24|false|Matchbook Fest||off-broadway",
-      "checkedAt": "2026-09-05T15:53:19.019Z",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1562,7 +1561,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "The Space at Irondale|2026-08-07|2026-08-23|false|Brooklyn's Bridge||off-broadway",
-      "checkedAt": "2026-09-05T15:53:19.019Z",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1575,7 +1574,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Loft Story|2026-08-13|2026-08-22|false|The Whole Sky All Diamonds||off-broadway",
-      "checkedAt": "2026-09-05T15:53:19.019Z",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1588,7 +1587,20 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "124 Bank Street Theater|2026-08-19|2026-08-30|false|The Bathroom Attendant||off-broadway",
-      "checkedAt": "2026-09-05T15:53:19.019Z",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "michael-r-jackson-wake-up-call-off-broadway-2026",
+      "title": "Michael R. Jackson: Wake Up Call",
+      "venue": "Joe's Pub",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Joe's Pub|2026-08-16|2026-08-16|false|Michael R. Jackson: Wake Up Call||off-broadway",
+      "checkedAt": "2026-09-05T13:15:20.546Z",
       "lastDefinitiveResult": "no-playbill-url"
     }
   ]
