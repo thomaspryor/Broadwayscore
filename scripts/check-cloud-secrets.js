@@ -28,7 +28,7 @@
  * Companion doc: `.claude/CLOUD.md` step 1.
  */
 
-const { readEnvKeys } = require('./lib/load-env');
+const { readEnvKeys, readEnvFile } = require('./lib/load-env');
 
 // Tier 1: required for common cloud-session work. Update this list when a
 // new script gains a hard cloud-relevant env dependency.
@@ -84,35 +84,61 @@ const TIER_2 = [
   'BSKY_APP_PASSWORD',
 ];
 
+// Shortest value we will show a 3-char prefix for. A 40-char token loses
+// nothing to 3 characters; BRIGHTDATA_ZONE / BRIGHTDATA_CUSTOMER are short
+// enough that a prefix is a meaningful fraction of the secret, and this script
+// now reads values off disk that it previously never touched, so the exposure
+// is wider than it was. Below the floor we print the length only.
+const PREFIX_MIN_LEN = 12;
+
+/**
+ * Pure resolver — the actual behavior this file changed, extracted so it can be
+ * tested (CLAUDE.md §15). `main()` only formats what this returns.
+ *
+ * Precedence: a non-empty process.env value always wins; .env fills in only
+ * what the environment lacks. Empty string counts as absent on both sides,
+ * matching scripts/lib/load-env.js's documented convention (load-env.js:22).
+ *
+ * @param {string} name
+ * @param {Record<string,string>} fromDisk - readEnvKeys() output
+ */
+function statusFor(name, fromDisk = {}) {
+  const v = process.env[name] || fromDisk[name];
+  if (v === undefined || v === '') return { set: false };
+  return {
+    set: true,
+    len: v.length,
+    // Length + first-3-chars lets the user spot a stale/wrong value without
+    // revealing it — but only once the value is long enough for 3 chars not to
+    // matter. `source` makes a .env-only hit visible so nobody mistakes a
+    // working headless session for a correctly-configured cloud one.
+    prefix: v.length >= PREFIX_MIN_LEN ? v.slice(0, 3) : null,
+    source: process.env[name] ? 'env' : '.env',
+  };
+}
+
+const describe = (s) =>
+  s.prefix ? `${s.len} chars, "${s.prefix}…"` : `${s.len} chars`;
+
 function main() {
   // readEnvKeys returns ONLY keys absent from process.env, sourced from .env,
   // so process.env still wins and this stays a no-op in a real cloud sandbox.
   const fromDisk = readEnvKeys(TIER_1.concat(TIER_2));
-
-  const statusFor = (name) => {
-    const v = process.env[name] || fromDisk[name];
-    if (v === undefined || v === '') return { set: false };
-    // Reveal length + first-3 chars so the user can spot a stale/wrong value
-    // without leaking it. `source` makes a .env-only hit visible, so nobody
-    // mistakes a working headless session for a correctly-configured cloud one.
-    return {
-      set: true,
-      len: v.length,
-      prefix: v.slice(0, 3),
-      source: process.env[name] ? 'env' : '.env',
-    };
-  };
+  // Which .env answered matters: run from a worktree (which never has its own)
+  // readEnvKeys falls back to load-env.js's CANONICAL_REPO, so a 'via .env' hit
+  // can come from a different checkout than the one you are standing in.
+  const envPath = Object.keys(fromDisk).length ? readEnvFile().path : null;
 
   let tier1Missing = 0;
   const tier1FromDisk = [];
 
   console.log('=== Tier 1 (REQUIRED) ===');
   for (const name of TIER_1) {
-    const s = statusFor(name);
+    const s = statusFor(name, fromDisk);
     if (s.set) {
       const via = s.source === '.env' ? ' via .env' : '';
       if (s.source === '.env') tier1FromDisk.push(name);
-      console.log(`  ✓ ${name.padEnd(28)} SET (${s.len} chars, "${s.prefix}…"${via})`);
+      console.log(`  ✓ ${name.padEnd(28)} SET (${describe(s)}${via})`);
     } else {
       console.log(`  ✗ ${name.padEnd(28)} MISSING`);
       tier1Missing++;
@@ -122,7 +148,7 @@ function main() {
   console.log('');
   console.log('=== Tier 2 (optional, report only) ===');
   for (const name of TIER_2) {
-    const s = statusFor(name);
+    const s = statusFor(name, fromDisk);
     console.log(s.set
       ? `  ✓ ${name.padEnd(36)} SET${s.source === '.env' ? ' (via .env)' : ''}`
       : `  · ${name.padEnd(36)} not set`);
@@ -145,14 +171,19 @@ function main() {
     console.log('✓ All Tier 1 secrets resolvable — but ' +
       `${tier1FromDisk.length} came from .env on disk, not the environment:`);
     console.log(`    ${tier1FromDisk.join(', ')}`);
-    console.log('  Scripts will work here. This does NOT verify a cloud sandbox:');
-    console.log('  a real claude.ai/code session has no .env, so it would report these MISSING.');
+    console.log(`  (.env read: ${envPath || 'unknown path'})`);
+    console.log('  Only scripts that load credentials through scripts/lib/load-env.js see');
+    console.log('  these — linear-client.js and the ~24 loadEnv() callers. The ~69 scripts');
+    console.log('  reading process.env directly (gather-reviews.js, opening-night-poller.js,');
+    console.log('  collect-review-texts.js, lib/scraper.js, …) will still fail on them.');
+    console.log('  This does NOT verify a cloud sandbox: a real claude.ai/code session has');
+    console.log('  no .env, so it would report these MISSING.');
     return 0;
   }
   console.log('✓ All Tier 1 secrets present in the environment. Cloud session is ready.');
   return 0;
 }
 
-module.exports = { TIER_1, TIER_2 };
+module.exports = { TIER_1, TIER_2, statusFor, PREFIX_MIN_LEN };
 
 if (require.main === module) process.exit(main());

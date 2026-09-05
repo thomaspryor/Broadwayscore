@@ -50,3 +50,66 @@ test('every entry looks like an env var name (catches a stray comment or path)',
     assert.match(key, /^[A-Z][A-Z0-9_]*$/, `not an env var name: ${JSON.stringify(key)}`);
   }
 });
+
+// --- the resolver itself -----------------------------------------------------
+// ship-check P1: the arrays were guarded but the behavior this change actually
+// introduced — process.env-then-.env precedence, the source label, the prefix
+// floor — was not. statusFor() is the pure function main() formats, so these
+// assert the real thing rather than a copy of it (§15).
+const { statusFor, PREFIX_MIN_LEN } = require('../../scripts/check-cloud-secrets.js');
+
+const withEnv = (name, value, fn) => {
+  const had = Object.prototype.hasOwnProperty.call(process.env, name);
+  const prev = process.env[name];
+  if (value === undefined) delete process.env[name];
+  else process.env[name] = value;
+  try { return fn(); } finally {
+    if (had) process.env[name] = prev; else delete process.env[name];
+  }
+};
+
+const KEY = '__CLOUD_SECRETS_TEST_KEY__';
+const LONG = 'x'.repeat(PREFIX_MIN_LEN + 8);
+
+test('process.env wins over .env, and is labelled as such', () => {
+  const s = withEnv(KEY, LONG, () => statusFor(KEY, { [KEY]: 'disk-value-here' }));
+  assert.equal(s.set, true);
+  assert.equal(s.source, 'env', 'a non-empty process.env value must never be shadowed by .env');
+  assert.equal(s.len, LONG.length, 'length must describe the env value, not the disk one');
+});
+
+test('.env fills in only what the environment lacks, labelled ".env"', () => {
+  const s = withEnv(KEY, undefined, () => statusFor(KEY, { [KEY]: LONG }));
+  assert.equal(s.set, true);
+  assert.equal(s.source, '.env', 'a disk-sourced hit must be visibly distinct from an env one');
+});
+
+test('an EMPTY process.env value is absent, and gets filled from .env', () => {
+  // Matches scripts/lib/load-env.js:22's documented convention.
+  const s = withEnv(KEY, '', () => statusFor(KEY, { [KEY]: LONG }));
+  assert.equal(s.source, '.env');
+  const none = withEnv(KEY, '', () => statusFor(KEY, {}));
+  assert.equal(none.set, false, 'empty with no disk fallback is MISSING, as before this change');
+});
+
+test('missing everywhere is MISSING', () => {
+  assert.deepEqual(withEnv(KEY, undefined, () => statusFor(KEY, {})), { set: false });
+});
+
+test('short values print no prefix (BRIGHTDATA_ZONE class), long ones do', () => {
+  const short = withEnv(KEY, 'x'.repeat(PREFIX_MIN_LEN - 1), () => statusFor(KEY, {}));
+  assert.equal(short.prefix, null, `values under ${PREFIX_MIN_LEN} chars must not leak a prefix`);
+  const long = withEnv(KEY, LONG, () => statusFor(KEY, {}));
+  assert.equal(long.prefix, LONG.slice(0, 3));
+});
+
+test('no full secret value is ever returned', () => {
+  const secret = 'super-secret-token-value-do-not-print';
+  const s = withEnv(KEY, secret, () => statusFor(KEY, {}));
+  for (const v of Object.values(s)) {
+    if (typeof v === 'string') {
+      assert.ok(!secret.includes(v) || v.length <= 3,
+        `statusFor leaked ${v.length} chars of the value`);
+    }
+  }
+});
