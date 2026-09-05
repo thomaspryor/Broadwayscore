@@ -24,6 +24,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   titleForms,
+  venueSlug,
   venueTokens,
   playbillUrlTitleMatch,
 } = require('./playbill-title-match.js');
@@ -107,6 +108,24 @@ describe('titleForms — derived only from delimiters in the raw title', () => {
     assert.ok(!f.lossless.includes('giant-the-play'), 'Giant must not become giant-the-play');
     assert.ok(!f.lossy.includes('giant-the-play'));
     assert.ok(f.legacyPrefixes.includes('giant-the-musical'));
+  });
+});
+
+describe('venueSlug — diacritics are folded, not deleted', () => {
+  test('an accented venue transliterates instead of losing its letters', () => {
+    // Without folding first, `[^a-z0-9]+` DELETES the accented letter rather
+    // than transliterating it: "Théâtre du Châtelet" became
+    // "th-tre-du-ch-telet", which matches no Playbill slug and strips away
+    // every identity token the venue had. CI's structural guard
+    // (tests/unit/sibling-matchers-diacritics.test.mjs, task #648) caught it.
+    //
+    // Pinned here BY BEHAVIOUR on purpose: that guard detects the IMPORT of
+    // foldDiacritics, not a call to it. Verified by experiment — removing the
+    // call while leaving the import in place keeps the guard green. This
+    // assertion fails in that state; the guard does not.
+    assert.equal(venueSlug('Théâtre du Châtelet'), 'theatre-du-chatelet');
+    assert.equal(venueSlug('Café Carlyle'), 'cafe-carlyle');
+    assert.deepEqual(venueTokens('Théâtre du Châtelet'), ['chatelet']);
   });
 });
 

@@ -70,7 +70,7 @@
 // added to this module in future passes unnoticed. A line-scoped exemption would
 // be preferable and the guard does not support one. Keep this module free of
 // venue writes; if one ever belongs here, delete this marker first.
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, foldDiacritics } = require('./title-match');
 
 /** Words that carry no venue identity on their own. */
 const VENUE_NOUNS = new Set(['theatre', 'theater', 'the', 'at', 'and', 'of']);
@@ -88,10 +88,18 @@ function normSlug(s) {
   return normalizeTitle(String(s || '').replace(/-/g, ' ')).replace(/\s+/g, '-');
 }
 
-/** Slugify a raw venue name without any aliasing. */
+/**
+ * Slugify a raw venue name without any aliasing.
+ *
+ * foldDiacritics FIRST, then strip. Without the fold, `[^a-z0-9]+` deletes an
+ * accented letter outright instead of transliterating it, so "Théâtre du
+ * Châtelet" becomes "th-tre-du-ch-telet" — which matches no Playbill slug and
+ * silently drops every identity token the venue had. Caught by the structural
+ * guard in tests/unit/sibling-matchers-diacritics.test.mjs (task #648), which
+ * exists because this exact shape has been reintroduced repeatedly.
+ */
 function venueSlug(v) {
-  return String(v || '')
-    .toLowerCase()
+  return foldDiacritics(String(v || '').toLowerCase())
     .replace(/[''""‘’“”]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
