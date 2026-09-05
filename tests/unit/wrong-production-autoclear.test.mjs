@@ -33,6 +33,8 @@ const {
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
   shouldAutoClearAnticipatoryGrace,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+  DATE_ONLY_AUTO_REASONS,
   hasEnsembleConsensus,
   shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
@@ -1312,6 +1314,87 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
 // UK-dual-market predicate had the same defect class, task #1189). Tests
 // passing gave false confidence the predicate governed production behavior.
 // Structural, so an EIGHTH predicate added later cannot quietly repeat it.
+describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must not wipe date-only flags)', () => {
+  // The live incident, reduced. collect-review-texts.js re-fetched
+  // the-story-west-end-2026/monstagigz--unknown.json from a corrected URL (a
+  // cosmetic /comment-page-1/ suffix strip on the SAME article) and its
+  // wrong_content cleanup deleted a wrongProduction flag the anticipatory
+  // gate had stamped 10 seconds earlier from publishDate vs openingDate. The
+  // review shipped with assignedScore 44 and blocked the opening-night
+  // broadcast checklist gate.
+  const liveCase = () => ({
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongProductionDetail: 'published 5d before openingDate (2026-09-03); exceeds 2-day grace',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+    anticipatoryGateDaysBeforeOpening: 5,
+    publishDate: '2026-08-29',
+    outletId: 'monstagigz',
+  });
+
+  it('preserves the anticipatory flag — a re-fetch is no evidence against a date verdict', () => {
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(liveCase()), { wrongProduction: true });
+  });
+
+  it('honors humanReviewedEarlyPublish, the documented operator opt-out', () => {
+    const d = liveCase();
+    d.humanReviewedEarlyPublish = true;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve a content-derived flag — that IS what the recovery answers', () => {
+    const d = liveCase();
+    d.wrongProductionReason =
+      'Collector LLM: wrong production (high) — reviews the 2019 Broadway transfer, not this run';
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve when the reason is missing entirely', () => {
+    const d = liveCase();
+    delete d.wrongProductionReason;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve when wrongProduction is not actually set', () => {
+    const d = liveCase();
+    delete d.wrongProduction;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('is null-safe', () => {
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(null), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(undefined), { wrongProduction: false });
+  });
+
+  it('stays joined to DATE_ONLY_AUTO_REASONS rather than a private literal', () => {
+    const libSrc = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    const body = libSrc.slice(libSrc.indexOf('function shouldPreserveExclusionFlagsOnUrlRecovery'));
+    const fnBody = body.slice(0, body.indexOf('\n}\n') + 3);
+    assert.ok(
+      fnBody.includes('DATE_ONLY_AUTO_REASONS'),
+      'the predicate must key off the shared DATE_ONLY_AUTO_REASONS registry',
+    );
+    assert.ok(
+      !fnBody.includes("'anticipatory_pre_opening_post'"),
+      'a private copy of the reason string is the drift this predicate exists to avoid',
+    );
+  });
+
+  it('every DATE_ONLY_AUTO_REASONS member is preserved, so adding one cannot silently regress', () => {
+    for (const reason of DATE_ONLY_AUTO_REASONS) {
+      const d = liveCase();
+      d.wrongProductionReason = reason;
+      assert.deepEqual(
+        shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: true },
+        `reason "${reason}" is registered as content-independent but is not preserved`,
+      );
+    }
+  });
+});
+
 describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard)', () => {
   it('every exported shouldAutoClear* name has at least one call site in a documented caller script', () => {
     const libSrc = fs.readFileSync(
@@ -1323,13 +1406,17 @@ describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard
     const exportedNames = exportsMatch[1]
       .split(',')
       .map(s => s.trim())
-      .filter(s => /^shouldAutoClear\w+$/.test(s));
+      // shouldPreserve* is the mirror-image decision (keep a flag rather than
+      // strip one) and is exactly as prone to going unwired, so it is held to
+      // the same bar. Its caller is collect-review-texts.js (BRO-2828).
+      .filter(s => /^(shouldAutoClear|shouldPreserve)\w+$/.test(s));
     assert.ok(exportedNames.length > 0, 'expected at least one exported shouldAutoClear* name');
 
-    // The two production callers documented in this file's header docstring.
+    // The production callers documented in this file's header docstring.
     const callerPaths = [
       path.join(__dirnameCompat, '..', '..', 'scripts', 'rebuild-all-reviews.js'),
       path.join(__dirnameCompat, '..', '..', 'scripts', 'flag-wrong-production-by-date.js'),
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'collect-review-texts.js'),
     ];
     const callerSrc = callerPaths.map(p => fs.readFileSync(p, 'utf8')).join('\n');
 

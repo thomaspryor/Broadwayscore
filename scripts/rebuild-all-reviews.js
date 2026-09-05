@@ -1498,7 +1498,18 @@ const crossShowFingerprints = new Map();
             reviewDate.toISOString().slice(0, 10),
             showOpeningDateMap[sid].toISOString().slice(0, 10),
             d.outletId,
-            { category: showRecord && showRecord.category }
+            {
+              category: showRecord && showRecord.category,
+              // BRO-2828: humanReviewedEarlyPublish is the documented operator
+              // opt-out for the anticipatory gate, but this recheck used to
+              // drop it, so the opt-out could not clear a flag from here. The
+              // only other exit was collect-review-texts.js's wrong_content
+              // URL-recovery cleanup, which now honors the same field and
+              // therefore no longer deletes the flag indiscriminately — so
+              // without this line an operator setting the flag would have no
+              // path to clear it at all.
+              humanReviewedEarlyPublish: d.humanReviewedEarlyPublish === true,
+            }
           );
           if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected })) {
             const wasDetail = d.wrongProductionDetail || '(no detail)';

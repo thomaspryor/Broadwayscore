@@ -133,7 +133,11 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const {
+  isWithinPriorRun,
+  isWithinTourLeg,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+} = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
@@ -6532,19 +6536,41 @@ async function processReview(review) {
     if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
       try {
         const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        delete postData.wrongProduction;
+        // BRO-2828: this recovery answers ONE question — did re-fetching from
+        // the corrected URL produce the right article? A flag set from data
+        // that is not the article body and not the URL is not answered by it,
+        // and deleting such a flag here silently un-excludes the review. The
+        // live case was the anticipatory pre-opening gate, stamped moments
+        // earlier in this same pass from publishDate vs openingDate, wiped by
+        // a cosmetic /comment-page-1/ suffix strip on the same article.
+        const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);
+        if (!preserve.wrongProduction) {
+          delete postData.wrongProduction;
+          delete postData.wrongProductionReason;
+        }
         delete postData.wrongShow;
-        delete postData.wrongProductionReason;
         delete postData.wrongShowReason;
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
-        delete postData.incompleteReason;
-        delete postData.incompleteDetail;
-        if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
-          delete postData.contentTier;
+        // Only stand the file back up for future collects when nothing is
+        // still excluding it. Clearing incompleteReason while wrongProduction
+        // stands would make the file unreachable by BOTH collect passes: the
+        // default pass skips it via the isWrongContent guard above, and the
+        // targeted INCOMPLETE_REASON_FILTER=wrong_content drain selects on the
+        // incompleteReason that would no longer be there.
+        if (!preserve.wrongProduction) {
+          delete postData.incompleteReason;
+          delete postData.incompleteDetail;
+          if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
+            delete postData.contentTier;
+          }
+        } else {
+          postData.wrongProductionPreservedOnUrlRecoveryAt = new Date().toISOString();
         }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
-        console.log(`    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
+        console.log(preserve.wrongProduction
+          ? `    ✓ wrong_content recovered — wrongProduction (${postData.wrongProductionReason}) PRESERVED: not a content verdict, re-fetch is no evidence against it`
+          : `    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
       } catch (e) {
         // Recovery cleanup failed — preserve original state. Log so we know why next-cycle still skips.
         console.log(`    ⚠ wrong_content recovery cleanup failed (${e.message}) — file state preserved`);
