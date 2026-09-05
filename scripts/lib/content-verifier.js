@@ -443,12 +443,19 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       }
       if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
         const daysDiff = daysFromOpening();
-        console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
-        wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
+        // daysFromOpening() returns null when _cvParseDate rejects a date the
+        // override itself accepted — applyTemporalOverrides uses the permissive
+        // raw parser, so the two can disagree on an impossible calendar date.
+        // Interpolating that null persisted "[OVERRIDE: review within nulld of
+        // opening]", which is just the NaNd bug this file already fixed once
+        // wearing a different word. Drop the day-count clause instead.
+        const dayClause = Number.isFinite(daysDiff) ? `within ${daysDiff}d of opening` : 'near opening';
+        console.log(`    ⚠ LLM wrongProduction overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
+        wpReasoning = `[OVERRIDE: review ${dayClause}, likely correct production] ${wpReasoning}`;
       }
       if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
         const daysDiff = daysFromOpening();
-        console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        console.log(`    ⚠ LLM isFilmTv overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
         filmTvConfidence = 'low';
       }
       wpConfidence = temporalOverrides.wpConfidence;
