@@ -97,7 +97,7 @@ function assessPushRetryDeadman(entries, opts = {}) {
     name: NAME,
     status,
     message,
-    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion means the remote genuinely could not be integrated.',
+    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion does NOT by itself mean the remote could not be integrated — read the reason: api-fallback-exhausted(timeout) means every attempt was killed at the network timeout cap with no evidence the tip moved, which is a latency problem, not a contention one.',
   };
 }
 

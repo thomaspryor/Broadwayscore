@@ -2055,7 +2055,28 @@ if [ "$_api_fallback_ok" = "true" ]; then
       record_push_failure "api-fallback-content-dropped" "$MAX_RETRIES"
     fi
   else
-    echo "::warning::push-with-retry: Git Data API fallback also failed"
+    # MUST be the first statement in this branch: $? here is the fallback's
+    # exit status, and any command run before it would overwrite it.
+    _api_rc=$?
+    # Record WHY the fallback died, not just that it did. Falling through to
+    # the generic "retries-exhausted" below files a timeout-dominated death
+    # identically to a lost-race death, and _FAILURE_TELEMETRY_SENT is
+    # first-write-wins, so this must fire BEFORE that one to reach the durable
+    # push-retry-failures branch. Without this the reason lives only in a GHA
+    # log, which is the dead end that let a refuted cause ("remote tip kept
+    # advancing") stand as the accepted diagnosis across several days.
+    # rc=3 is push-via-git-api.sh's timeout-dominated exhaustion.
+    if [ "$_api_rc" = "3" ]; then
+      # "at least as many timeouts as races", not "dominated": rc=3 is also
+      # returned on a tie, where both did fire. Overclaiming here would repeat
+      # in miniature the exact defect this change exists to remove. The exact
+      # counts are in push-via-git-api.sh's breakdown line above.
+      echo "::warning::push-with-retry: Git Data API fallback also failed — at least as many TIMEOUTS as lost races (rc=3); see the exhaustion breakdown above for exact counts"
+      record_push_failure "api-fallback-exhausted(timeout)" "$MAX_RETRIES"
+    else
+      echo "::warning::push-with-retry: Git Data API fallback also failed (rc=$_api_rc)"
+      record_push_failure "api-fallback-exhausted(race-or-other)" "$MAX_RETRIES"
+    fi
   fi
 fi
 

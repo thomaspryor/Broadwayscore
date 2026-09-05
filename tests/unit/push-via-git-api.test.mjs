@@ -531,6 +531,53 @@ exec "$@"
   }
 });
 
+test('exhaustion by TIMEOUT says so, and does NOT claim the remote tip kept advancing', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-exh-t-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    // UNCONDITIONAL push timeout — every attempt burns the cap, nothing lands,
+    // and the remote tip never moves. This is the exact shape of
+    // commercial-rss-poll run 33962024987, where the old message nonetheless
+    // reported "remote tip kept advancing past every build".
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ]; then
+    exit 124
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '2'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+    });
+
+    assert.notEqual(res.code, 0, 'a run where every push times out must fail');
+    assert.equal(res.code, 3, 'timeout-dominated exhaustion must exit 3 so the caller can record the reason');
+    assert.match(res.stderr, /exhausted 2 attempts/, 'the load-bearing prefix must survive verbatim');
+    assert.match(res.stderr, /2 timed out at the \d+s cap/, 'the message must name the timeouts it actually observed');
+    assert.doesNotMatch(
+      res.stderr,
+      /tip kept advancing/,
+      'the tip never moved in this fixture — asserting that it did is the false signal this test exists to prevent',
+    );
+    // Prove the fixture really did drive the timeout path, so a future change
+    // that stops timing out cannot leave this test passing vacuously.
+    assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124/, 'the timeout path was never exercised');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 // Installs a pre-receive hook on the bare origin that, on the FIRST push only,
 // advances refs/heads/main by one unrelated commit. Every later push is a
 // no-op hook. This makes the retry path deterministic instead of
@@ -729,6 +776,15 @@ test('NEGATIVE CONTROL: with a retry budget of 1 the same lost CAS is fatal, and
 
     assert.notEqual(result.code, 0, 'one attempt against a guaranteed lost CAS must not succeed');
     assert.match(result.stderr, /exhausted 1 attempts/, 'must exhaust its budget rather than fail for a non-race reason');
+    // The race bucket's counterpart to the timeout-exhaustion test above:
+    // here the tip GENUINELY advanced, so the message must say so, and must
+    // not blame timeouts. Without this the race counter could read zero
+    // forever and only the timeout test would notice.
+    assert.match(result.stderr, /1 lost the ref race/, 'a genuine lost CAS must be counted as a race');
+    // Word-anchored: an unanchored /0 timed out/ also matches "10 timed out",
+    // so it would keep passing on a run where timeouts actually fired.
+    assert.match(result.stderr, /\b0 timed out/, 'nothing timed out in this fixture');
+    assert.equal(result.code, 1, 'race-dominated exhaustion keeps exit 1; only timeout-dominated exits 3');
 
     // The half a bare "it failed" assertion cannot see: this test passes
     // IDENTICALLY if the hook's update-ref silently did nothing and the push
