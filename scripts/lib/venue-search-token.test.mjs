@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { venueSearchToken } = require('./venue-search-token.js');
+const { venueSearchToken, STOPWORDS, GENERIC } = require('./venue-search-token.js');
 
 test('the AMAZE case that opened BRO-2821: the leading stopword is not the search term', () => {
   // Old behaviour: 'New World Stages – Stage 5'.split(/[\s\-,—\/]/)[0] === 'New'
@@ -29,13 +29,22 @@ test('a generic venue noun is skipped when something more distinctive follows', 
 });
 
 test('a generic noun is NEVER returned — an empty token beats a word on every Playbill page', () => {
-  // 'The Theater Center' and 'Playhouse Theatre' are the only 2 of the corpus's
-  // 355 distinct venues with no distinctive word. Returning 'Theater' here was
-  // the defect both adversarial reviewers caught: it matches every
-  // playbill.com/production page, so it looks like scoping while scoping
-  // nothing. '' omits the venue term and leaves a clean title+market query.
+  // 'The Theater Center' is the only venue in the corpus's 355 with no
+  // distinctive word at all. Returning 'Theater' here was the defect both
+  // adversarial reviewers caught: it matches every playbill.com/production
+  // page, so it looks like scoping while scoping nothing. '' omits the venue
+  // term and leaves a clean title+market query.
   assert.equal(venueSearchToken('The Theater Center'), '');
-  assert.equal(venueSearchToken('Playhouse Theatre'), '');
+});
+
+test('REGRESSION: a generic-sounding word that is actually the venue NAME is kept', () => {
+  // An audit (2026-09-05) found 'playhouse' in GENERIC made the West End's
+  // "Playhouse Theatre" return '' where the OLD first-token code correctly said
+  // "Playhouse" — a strict regression, the one venue where new was worse than
+  // old. It had been added for "La Jolla Playhouse", which never needed it:
+  // that venue resolves on "Jolla" long before the word is reached.
+  assert.equal(venueSearchToken('Playhouse Theatre'), 'Playhouse');
+  assert.equal(venueSearchToken('La Jolla Playhouse, La Jolla, CA'), 'Jolla');
 });
 
 test('REGRESSION: diacritics are FOLDED, not shredded, when testing membership', () => {
@@ -117,32 +126,30 @@ test('CONTRACT: the token is never a function word — the shape that broke the 
   // Shakespeare Center' returned 'for'. It skipped the generic 'Theatre' and
   // landed on a preposition, which is strictly worse than what the old code
   // produced. This is the guard for that whole class, not just that one string.
-  const FUNCTION_WORDS = new Set([
-    'for', 'and', 'with', 'from', 'by', 'to', 'a', 'an', 'the',
-    'at', 'of', 'on', 'in', 'its', 'new',
-  ]);
+  // CLAUDE.md rule 15: assert against the module's OWN exported table, never a
+  // restated copy. An audit (2026-09-05) found the copy that used to live here
+  // had already drifted — it was missing all 13 non-English and abbreviation
+  // stopwords, so deleting one from the real set would have passed.
   for (const v of REAL_VENUES) {
     const token = venueSearchToken(v);
     assert.ok(
-      !FUNCTION_WORDS.has(token.toLowerCase()),
-      `venueSearchToken(${JSON.stringify(v)}) returned the function word ${JSON.stringify(token)}`,
+      !STOPWORDS.has(token.toLowerCase()),
+      `venueSearchToken(${JSON.stringify(v)}) returned the stopword ${JSON.stringify(token)}`,
     );
   }
   assert.equal(venueSearchToken('Theatre for a New Audience/Polonsky Shakespeare Center'), 'Audience');
 });
 
 test('CONTRACT: the token is never invented and is never a generic venue noun', () => {
-  const GENERIC_WORDS = new Set([
-    'theatre', 'theater', 'theatres', 'theaters', 'stage', 'stages', 'center',
-    'centre', 'hall', 'house', 'playhouse', 'studio', 'space', 'room', 'club',
-    'arts', 'complex', 'auditorium',
-  ]);
+  // Same rule-15 point as above: use the module's exported GENERIC, not a copy.
+  // The copy that used to sit here had already gone stale, omitting
+  // cafe/salle/teatro/opera.
   for (const v of REAL_VENUES) {
     const token = venueSearchToken(v);
     // The token must actually come FROM the venue — never invented.
     assert.ok(v.toLowerCase().includes(token.toLowerCase()), `${token} is not a substring of ${v}`);
     assert.ok(
-      !GENERIC_WORDS.has(token.toLowerCase()),
+      !GENERIC.has(token.toLowerCase()),
       `venueSearchToken(${JSON.stringify(v)}) returned the generic noun ${JSON.stringify(token)}, which matches every playbill.com/production page`,
     );
   }
