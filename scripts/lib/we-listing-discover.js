@@ -43,6 +43,9 @@
  */
 
 const { WEST_END_VENUES } = require('./venue-classification');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd, hasJsonLdType } = require('./jsonld');
 
 // Slugs kept AS-IS (not "the "-stripped): WEST_END_VENUES already carries
 // both "old vic" and "the old vic" as separate entries specifically so a
@@ -191,11 +194,11 @@ async function fetchNewsArticleJsonLd(url, opts = {}) {
     let datePublished = null;
     $('script[type="application/ld+json"]').each((_, el) => {
       if (description || datePublished) return; // first NewsArticle block wins
-      let parsed;
-      try { parsed = JSON.parse($(el).html()); } catch { return; }
-      if (parsed && parsed['@type'] === 'NewsArticle') {
-        description = parsed.description || null;
-        datePublished = parsed.datePublished || null;
+      for (const node of parseJsonLd($(el).html())) {
+        if (!hasJsonLdType(node, 'NewsArticle')) continue;
+        description = node.description || null;
+        datePublished = node.datePublished || null;
+        break;
       }
     });
     return { description, datePublished };

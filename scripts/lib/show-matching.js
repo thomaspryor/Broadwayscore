@@ -1185,7 +1185,7 @@ function pageTitleConfirmsShow(pageTitle, showTitle) {
 // ---------------------------------------------------------------------------
 
 const PV_HEAD_PATTERNS = [
-  /^reviews-what-(do-the|did)-critics-think-of-/,
+  /^reviews-what-(?:do(?:-the)?|did)-critics-think-of-/,
   /^reviews-(did|do)-(the-)?critics-(feel-at-home-on|find|think)-/,
   /^reviews-are-out-for-/,
   /^reviews-sound-off-on-/,
@@ -1596,6 +1596,10 @@ module.exports = {
   pageTitleConfirmsShow,
   cleanSlugTitle,
   isVerdictReviewSlug,
+  // Exported so aggregator-candidate-extract.js can strip the SAME Playbill
+  // lead-in verbs from a body headline that cleanSlugTitle strips from the
+  // slug. Two lists would drift and re-open the title-mismatch false reject.
+  stripPvHead: _stripPvHead,
   matchSlugToShow,
   matchBwwRoundupSlugToShow,
   // Matcher internals — exported so audit/apply scripts share one source

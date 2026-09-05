@@ -11,6 +11,9 @@ const cheerio = require('cheerio');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -110,8 +113,8 @@ function extractShowData(html, showId, sourceUrl) {
   // Extract audience score from JSON-LD
   $('script[type="application/ld+json"]').each(function () {
     try {
-      const data = JSON.parse($(this).html());
-      if (data.aggregateRating) {
+      for (const data of parseJsonLd($(this).html())) {
+        if (!data.aggregateRating) continue;
         result.audienceScore = data.aggregateRating.ratingValue;
         result.audienceReviewCount = data.aggregateRating.reviewCount;
         return false; // break
