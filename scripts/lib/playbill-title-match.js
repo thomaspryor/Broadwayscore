@@ -57,7 +57,7 @@
 // diagnostic describing which corpus venue slug the URL body decomposed into, so
 // callers and tests can assert WHY a legacy match fired.
 //
-// Traced in review: legacyDecomposes returns `{ venue: rest }`,
+// Traced in review: legacyDecomposes returns `{ form: f, venue: rest }`,
 // playbillUrlTitleMatch renames it to `corroboration.venueSlugInUrl`, and
 // scorePlaybillUrl reads only `match` and `branch` — the slug itself is DISCARDED
 // there, not transformed. The audit ledger records the selected URL and the venue
