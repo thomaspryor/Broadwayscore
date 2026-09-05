@@ -149,6 +149,37 @@ if (process.env.VALIDATE_DATA_SHOWS_JSON) {
 }
 const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 
+// FIXTURE RUNS MUST NOT WRITE TRACKED AUDIT ARTIFACTS.
+//
+// VALIDATE_DATA_SHOWS_JSON redirects shows.json only; every other path still
+// resolved under the real DATA_DIR, so a fixture run recomputed the corpus-wide
+// audit artifacts FROM THE FIXTURE and overwrote the real ones in place. On
+// 2026-09-05 a single fixture run cut data/audit/london-only-nyc-accumulation.json
+// from 3,357 lines to 161 — 3,286 deletions of real telemetry — in the shared
+// checkout that ~20 parallel sessions and several auto-committing CI jobs share.
+// It was caught before anything committed the degraded file, but only because a
+// reviewer md5'd it; nothing in the pipeline would have objected.
+//
+// The three artifacts below are all pure derivations of the corpus, so under the
+// override the honest value is "don't write" rather than "write something
+// wrong". Reads are untouched — a fixture run still compares against the real
+// baseline, which is what the sentinel and wiring tests actually assert on.
+//
+// This closes the hazard for every fixture-based test, not just the one that
+// tripped it: tests/unit/validate-data-push-refusal-sentinel.test.mjs has spawned
+// validate-data.js under the same override since long before this.
+const FIXTURE_MODE = !!process.env.VALIDATE_DATA_SHOWS_JSON;
+function writeAuditArtifact(file, contents, label) {
+  if (FIXTURE_MODE) {
+    info(`Skipping ${label} write — VALIDATE_DATA_SHOWS_JSON override active, so this run's corpus is a fixture and would corrupt the tracked file.`);
+    return false;
+  }
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(file, contents);
+  return true;
+}
+
 const strictMode = process.argv.includes('--strict');
 
 // Hardcoded fallback thresholds (used only if baseline file doesn't exist)
@@ -848,6 +879,190 @@ function validateVenueCategory(shows) {
     ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
+  }
+}
+
+// ===========================================
+// VENUE-COMPLEX SUB-VENUE SLUG RESOLUTION
+// ===========================================
+
+// Why this lives in validate-data.js and not only in a unit test.
+//
+// The orphan check already existed, but ONLY inside
+// scripts/audit-venue-complex-slugs.test.mjs. That test reads shows.json,
+// which is a symlink into the PRIVATE core-data repo — so the corpus it
+// asserts against changes without any commit in THIS repo. On 2026-09-05 a
+// core-data commit (ff60cf592, "merge duplicate show amaze-off-broadway-2026
+// into amaze-magic-off-broadway-2025") deleted the only show carrying the
+// venue "New World Stages – Stage 5". That orphaned the
+// new-world-stages-stage-5 sub-venue slug at 16:40Z. Nothing failed then: the
+// data-repo session ran validate-data.js, which exits 0, and pushed. main went
+// red 4h42m later on the NEXT unrelated push to this repo (runs 33980744001
+// and 33981854174), where the failure looked like it belonged to whoever had
+// pushed — a crown session spent a cycle suspecting its own unrelated
+// ticketing-identity change before reproducing it.
+//
+// Running the same pure function here moves the signal to the moment the data
+// changes, where the session that caused it can still see why.
+//
+// SEVERITY — advisory warn(), not error(), and that distinction was reviewed.
+//
+// An orphaned sub-venue slug is cosmetic. src/lib/data-core.ts:885-887 does
+// `def.subVenueSlugs.map(slug => bySlug.get(slug)).filter(t => !!t)`, so an
+// unresolvable slug is silently dropped at render: the complex still groups
+// every show that uses its own venue string, no score moves, no build breaks.
+// An error() here would reach exitWithError -> ${RUNNER_TEMP}/.skip-push-core-data
+// (validate-data.js:64-84), which .github/actions/push-core-data/action.yml:30
+// and the workflows using it consult — wedging automated core-data pushes out of
+// the PRIVATE data repo over a cosmetic defect in a file only a human editing
+// THIS repo can fix. That impact mismatch is the same one the cross-market
+// ADVISORY at validate-data.js:4780 was written to avoid, so this follows that
+// pattern, including folding the count into the ok()/summary line so it is
+// visible above the (long) numbered warning dump.
+//
+// The hard gate is unchanged and still exists where it belongs:
+// scripts/audit-venue-complex-slugs.test.mjs fails CI on the same condition.
+// What this adds is TIMING and ATTRIBUTION, not a second blocker.
+//
+// STATE THE RESIDUAL PLAINLY, because an advisory can read as a fix and is not
+// one: this does NOT prevent the delayed red. Automation ignores a warning, so a
+// core-data push that orphans a slug still lands, and main still goes red on the
+// next unrelated push to this repo. What changes is that the session or workflow
+// that CAUSED it sees it in its own output, named, at the moment it happens,
+// instead of someone else inheriting the blame hours later. Actually closing the
+// gap needs a trigger-layer change (core-data push -> repository_dispatch running
+// the data-dependent suite), which covers all ~40 core-data-reading tests at once
+// but multiplies Test Suite runs against a ~30-minute rebuild cadence. That is a
+// CI-spend decision for the owner and is parked on BRO-2880.
+//
+// EVERY finding here is advisory, malformed definitions included. A malformed
+// def does break the Next build (data-core.ts's unguarded .map() above), but the
+// two places that can act on that already fail loudly — the unit test reddens CI
+// and the build itself throws — while error() here would only stop core-data
+// pushes out of a repo that cannot fix the file. See the comment inside the
+// function for the reproduced failure that settled this.
+//
+// Rule 15: this require()s the real audit functions and the market registry, it
+// does not restate them, so this gate and
+// scripts/audit-venue-complex-slugs.test.mjs cannot drift apart.
+//
+// Ordering note: this runs after validateVenueCategory's saveShows write-back
+// (validate-data.js:847), which only ever flips west-end <-> off-west-end. Both
+// sit inside the London market's own predicate, so the result cannot depend on
+// call position.
+//
+// Known false-negatives, all in the same direction — this audit's view of the
+// corpus is WIDER than the site's, so a slug can look alive here and still be
+// absent from the rendered complex. The site drops shows this does not:
+// HIDDEN_LONDON_IDS (data-core.ts:319), the `!show._devOnly` filter in
+// getAllShows (data-core.ts:122), and buildStubTheaterIndex's `_`-prefix /
+// STUB_THEATER_PLACEHOLDER_VENUES skip. Measured 2026-09-05: 3 _devOnly shows
+// exist and none of them props up a def slug, so all three are latent. None can
+// produce a FALSE POSITIVE, and scripts/audit-venue-complex-slugs.test.mjs uses
+// the same predicates, so the two never disagree.
+function validateOrphanSubVenueSlugs(shows) {
+  info('Checking venue-complex sub-venue slugs resolve to real venues...');
+  const {
+    findOrphanSubVenueSlugs,
+    findMalformedComplexDefs,
+    VENUE_COMPLEX_MARKETS,
+  } = require('./lib/venue-complex-audit.js');
+
+  let orphanCount = 0;
+  let malformedCount = 0;
+  let orphanLinesPrinted = 0;
+  let orphanLinesSuppressed = 0;
+  // Cap matches the cross-market validator's at validate-data.js:4757, but it
+  // applies to ORPHAN lines only. A malformed def is the one finding here that
+  // actually breaks the Next build (data-core.ts:885 calls .map() on it
+  // unguarded), and markets are iterated off-Broadway first — so a shared cap
+  // let five cosmetic off-Broadway orphan lines silently swallow a West End
+  // malformed-def line. Never suppress the build-breaking kind to make room for
+  // the cosmetic one.
+  const ORPHAN_PRINT_CAP = 5;
+
+  const blocking = (msg) => warn(`Venue-complex ADVISORY: ${msg}`);
+  // Counts SUPPRESSED MESSAGES, not findings. orphanCount counts individual
+  // slugs while one line lists every missing slug for a complex, so counting
+  // findings made the summary claim "(2 not listed above)" when one complex with
+  // three orphaned slugs had printed its single line and nothing was withheld.
+  const orphanAdvisory = (msg) => {
+    if (orphanLinesPrinted >= ORPHAN_PRINT_CAP) { orphanLinesSuppressed++; return; }
+    orphanLinesPrinted++;
+    warn(`Venue-complex ADVISORY: ${msg}`);
+  };
+
+  for (const market of VENUE_COMPLEX_MARKETS) {
+    // EVERY failure path here is advisory, including a malformed or unreadable
+    // file, and that is deliberate rather than an oversight. Both reviewers
+    // landed on the same impact mismatch: error() reaches exitWithError and
+    // writes the push-core-data refusal sentinel, so it would stop automated
+    // pushes out of the PRIVATE core-data repo because of a file that ONLY a
+    // human editing THIS repo can fix. A malformed def already fails loudly in
+    // the two places that can act on it — scripts/audit-venue-complex-slugs.test.mjs
+    // reddens CI, and src/lib/data-core.ts:885 throws during the Next build.
+    // Blocking the data pipeline as well adds no protection and removes a
+    // working one.
+    let parsed;
+    try {
+      // require(), not fs.readFileSync. These files are small, immutable for the
+      // life of the process, and require's module cache reads each exactly once
+      // at first touch. A re-read mid-validation, on a machine running ~20
+      // parallel worktree sessions, can observe a concurrently-rewritten file
+      // torn mid-write and turn a healthy run into a spurious parse error
+      // (adversarial review). src/lib/data-core.ts imports these the same way.
+      parsed = require(path.join(__dirname, '..', market.defsFile));
+    } catch (e) {
+      malformedCount++;
+      blocking(`${market.defsFile} could not be read or parsed (${e.message}). src/lib/data-core.ts imports this file directly, so the site build fails on the same problem — fix it there.`);
+      continue;
+    }
+
+    // Shape-check the TOP LEVEL before handing it to anything. A reviewer
+    // reproduced this end to end: with `complexes` renamed, absent or null,
+    // `parsed.complexes` is undefined, Object.entries(undefined) throws inside
+    // findMalformedComplexDefs, validate-data.js:87-91's uncaughtException
+    // handler writes the push-refusal sentinel, and the run dies at exit 1 with
+    // a bare stack trace — the exact "one JSON typo hard-blocks every automated
+    // core-data push" failure this validator was supposed to have removed. A
+    // top-level ARRAY parses fine and is equally wrong: its complex slugs would
+    // be "0", "1", ... and every check would pass clean.
+    const defs = parsed && parsed.complexes;
+    if (!defs || typeof defs !== 'object' || Array.isArray(defs)) {
+      malformedCount++;
+      const found = Array.isArray(defs) ? 'an array' : defs === undefined ? 'missing' : `of type ${defs === null ? 'null' : typeof defs}`;
+      blocking(`${market.defsFile} has no usable top-level "complexes" object (it is ${found}). src/lib/data-core.ts reads .complexes from this file, so the site build breaks on the same problem — fix it there.`);
+      continue;
+    }
+
+    for (const [complexSlug, found] of Object.entries(findMalformedComplexDefs(defs))) {
+      malformedCount++;
+      blocking(`${market.defsFile} complex "${complexSlug}" has subVenueSlugs of type ${found}, expected an array. src/lib/data-core.ts:885 calls .map() on it with no guard, so this throws during the Next build.`);
+    }
+
+    for (const [complexSlug, missing] of Object.entries(findOrphanSubVenueSlugs(shows, defs, market.matches))) {
+      orphanCount += missing.length;
+      orphanAdvisory(
+        `${market.defsFile} complex "${complexSlug}" lists sub-venue slug(s) ` +
+          `${missing.map(s => `"${s}"`).join(', ')} that no ${market.label} show's venue resolves to. ` +
+          `Usually a show that used that venue string was removed or renamed (drop the slug); ` +
+          `occasionally a typo. It DOES fail scripts/audit-venue-complex-slugs.test.mjs, ` +
+          `so main goes red on the next push to the web repo.`
+      );
+    }
+  }
+
+  const findings = orphanCount + malformedCount;
+  if (findings === 0) {
+    ok('All venue-complex sub-venue slugs resolve to a real venue');
+  } else {
+    // Single summary path, and never a green tick while findings exist.
+    warn(
+      `Venue-complex ADVISORY SUMMARY: ${orphanCount} orphaned sub-venue slug(s), ` +
+        `${malformedCount} malformed definition(s)` +
+        (orphanLinesSuppressed > 0 ? ` (${orphanLinesSuppressed} further orphan line(s) not listed above)` : '') +
+        `. Advisory here — the blocking gate is scripts/audit-venue-complex-slugs.test.mjs in CI.`
+    );
   }
 }
 
@@ -4402,10 +4617,9 @@ function validateTonyData(shows) {
         allGaps.push({ showId: id, expected, actual, reason: actual === 0 ? 'no-data' : 'partial' });
       }
     }
-    const auditDir = path.dirname(gapsFile);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-    fs.writeFileSync(gapsFile, JSON.stringify(allGaps, null, 2) + '\n');
-    ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    if (writeAuditArtifact(gapsFile, JSON.stringify(allGaps, null, 2) + '\n', 'Tony coverage gaps audit')) {
+      ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    }
   } catch (e) {
     warn(`Failed to write Tony coverage gaps: ${e.message}`);
   }
@@ -4742,7 +4956,7 @@ function validateCrossMarketContamination() {
         }))
         .sort((a, b) => (b.broadwayCount - a.broadwayCount) || (b.offBroadwayCount - a.offBroadwayCount) || a.outletId.localeCompare(b.outletId)),
     };
-    fs.writeFileSync(accumFile, JSON.stringify(payload, null, 2) + '\n');
+    writeAuditArtifact(accumFile, JSON.stringify(payload, null, 2) + '\n', 'London-only NYC accumulation audit');
   } catch (e) {
     warn(`Failed to write London-only NYC accumulation audit: ${e.message}`);
   }
@@ -4873,6 +5087,7 @@ function runValidation() {
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   validateTheaterAddress(shows);
+  validateOrphanSubVenueSlugs(shows);
   console.log('');
   validateSynopsisQuality(shows);
   validateCreativeTeamQuality(shows);
@@ -4996,12 +5211,9 @@ function runValidation() {
     updatedAt: new Date().toISOString(),
   };
   try {
-    const auditDir = path.dirname(BASELINE_FILE);
-    if (!fs.existsSync(auditDir)) {
-      fs.mkdirSync(auditDir, { recursive: true });
+    if (writeAuditArtifact(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n', 'validation baseline')) {
+      ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
     }
-    fs.writeFileSync(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n');
-    ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
   } catch (e) {
     warn(`Failed to write baseline file: ${e.message}`);
   }

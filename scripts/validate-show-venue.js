@@ -60,7 +60,10 @@ const path = require('path');
 
 const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
-const { canonicalVenue, normalizeTitle } = require('./lib/title-match');
+const { canonicalVenue } = require('./lib/title-match');
+// normalizeTitle is no longer imported here: the title comparison it backed
+// moved wholesale into playbill-title-match.js (BRO-2821), which calls it.
+const { playbillUrlTitleMatch, venueSlug } = require('./lib/playbill-title-match');
 const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
@@ -167,6 +170,33 @@ function isProvisional(show) {
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
 
+// The set of venue slugs the legacy (vault / "-YYYY-YYYY" season) branch
+// decomposes URL bodies against. Built once from the corpus and memoised;
+// playbill-title-match.js takes it as a parameter rather than reading
+// shows.json itself, so the module stays pure and testable. If the corpus
+// cannot be read the set is empty, and the legacy branch then REFUSES rather
+// than falling back to a bare prefix test — an unreadable corpus must not
+// silently become a more permissive matcher.
+let _knownVenueSlugs = null;
+function knownVenueSlugsForCorpus() {
+  if (_knownVenueSlugs) return _knownVenueSlugs;
+  const built = new Set();
+  try {
+    for (const s of loadShows()) {
+      const v = venueSlug(s && s.venue);
+      if (v) built.add(v);
+    }
+  } catch {
+    // Do NOT memoise a failure. Caching an empty set here would turn one
+    // transient read error into a permanently disabled legacy branch for the
+    // rest of the process, silently and with no signal — the shape rule 8
+    // warns about. Return empty for this call and retry on the next.
+    return built;
+  }
+  _knownVenueSlugs = built;
+  return _knownVenueSlugs;
+}
+
 function shortTitleSlug(title) {
   return String(title || '').toLowerCase()
     .replace(/[''""‘’“”]/g, '')
@@ -191,17 +221,33 @@ function scorePlaybillUrl(url, show) {
   // "west-end" — without this alternative the regex never matches a single
   // real West End/Off-West-End Playbill URL, so findPlaybillUrl() silently
   // fails "no-playbill-url" for the entire London market (card #590).
-  const m = u.match(/\/production\/([a-z0-9-]+?)-(?:off-)?(?:broadway|regional|tour|west-end|london)-/);
-  const titleSegment = m ? m[1] : null;
-  const showSlug = shortTitleSlug(show.title);
-  if (!titleSegment || !showSlug) return null;
-  // Compare via canonical normalizer so "Urinetown" matches Playbill's
-  // "urinetown-the-musical" (trailing " musical" / leading "the " stripped)
-  // and accent variants align ("Les Misérables" ≡ "les-miserables").
-  const norm = (s) => normalizeTitle(s.replace(/-/g, ' ')).replace(/\s+/g, '-');
-  if (norm(titleSegment) !== norm(show.title)) return null;
+  // BRO-2821. The title gate used to be a single equality: the slug between
+  // /production/ and the first market keyword had to normalize EXACTLY to the
+  // show's title. Measured against all 107 entries of data/playbill-urls.json —
+  // which findPlaybillUrl reads BEFORE this scorer, so they are correct URLs
+  // this function has never had to judge — 92 pass and 15 do not, and all 15
+  // are right. A show in one of those shapes with no cache entry is stamped
+  // 'no-playbill-url' forever, which is the permanently-deferred tier.
+  //
+  // playbillUrlTitleMatch recovers 14 of the 15 (the miss is Moulin Rouge,
+  // whose vault URL says "hirschfeld-theatre" where the corpus says "Al
+  // Hirschfeld Theatre") without relaxing to token containment, which the
+  // corpus rules out: 392 strict containment pairs across 2,416 titles, with
+  // "& Juliet" ⊂ "Romeo and Juliet" both the case the fix must recover and the
+  // one it must not collide. See that module's docblock for the branch rules.
+  // Guard on the title itself, not on shortTitleSlug's output: that helper is
+  // a DIFFERENT normalizer from the one now deciding the match, so testing its
+  // truthiness here would read as if it were still part of the decision.
+  if (!show || !show.title) return null;
+  const titleMatch = playbillUrlTitleMatch(url, show, {
+    knownVenueSlugs: knownVenueSlugsForCorpus(),
+  });
+  if (!titleMatch.match) return null;
 
-  let s = 10; // title match earned
+  // A relaxed branch is worth strictly less than an exact one, so a same-titled
+  // exact URL always outranks a subtitle- or prefix-recovered candidate when
+  // both come back in the same SERP page.
+  let s = titleMatch.branch === 'exact' ? 10 : 8; // title match earned
   const isOB = show.category === 'off-broadway';
   const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
   // Regional/tour URLs are never a fit for a NYC OB/Broadway entry — they
@@ -216,6 +262,17 @@ function scorePlaybillUrl(url, show) {
   // introduced by adding "london" as a recognized market segment above).
   const isLondonUrl = u.includes('-london-');
   if (isLondonUrl && !isLondon) return null;
+  // A legacy URL (vault page / "-YYYY-YYYY" season page) carries NO market
+  // segment at all, so neither the London check above nor the Broadway check
+  // below can see it, and isCrossMarketPlaybillUrl is a no-op on it too. On
+  // main that was harmless because such URLs scored null and never got here.
+  // Now that they can match, the card #590 cross-market hole reopens through
+  // them: all six of these were live, real accepts before this line existed —
+  // "Hadestown" (West End) took Broadway's hadestownwalter-kerr-theatre URL,
+  // and likewise MJ, SIX, The Lion King, The Book of Mormon and Cursed Child.
+  // Every legacy URL in the live cache is a NEW YORK production page, so a
+  // London-market show has no business matching one.
+  if (titleMatch.branch === 'legacy' && isLondon) return null;
   if (!isLondonUrl && isLondon && (u.includes('-broadway-') || u.includes('-off-broadway-'))) return null;
   if (u.includes('-off-broadway-')) s += isOB ? 5 : -5;
   else if (u.includes('-broadway-')) s += isOB ? -5 : 5;
