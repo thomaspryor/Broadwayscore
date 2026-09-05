@@ -1806,7 +1806,17 @@
     "disruption-off-broadway-2026/wsj--unknown.json",
     "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
     "disruption-off-broadway-2026/everything-theatre--dave-b.json",
-    "disruption-off-broadway-2026/standard--nick-curtis.json"
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/ew--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/newsday--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/amny--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1940,7 +1950,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/amny--unknown.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -2205,6 +2215,18 @@
       "t": "2026-09-05T09:49:20.472Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-05T09:52:38.171Z",
+      "event": "bb-session",
+      "session": "97edcfca",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-09-05T09:52:46.344Z",
+      "event": "bb-session",
+      "session": "fc9a63c0",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }
