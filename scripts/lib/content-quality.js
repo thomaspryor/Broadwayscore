@@ -755,8 +755,24 @@ function detectMultiShowContent(text, expectedShowId) {
   // downstream substring check matches the lowercase titles from shows.json —
   // a title-case showId like 'Hamilton' would otherwise fail to filter out the
   // 'hamilton' entry and show up as an unexpected additional mention.
+  //
+  // Strip the CATEGORY suffix as well as the year. These words are venue
+  // classification, not title, and they are generic enough to swallow real
+  // titles through the bidirectional substring test below: for
+  // 'holy-fool-off-west-end-2026' the bare year-strip yields
+  // ['holy','fool','west'], and 'west' then excludes 30 unrelated shows from
+  // the mention count ('west side story', 'true west', 'the lonesome west',
+  // and — via the substring test — 'merrily we roll along'). Excluding shows
+  // that ARE genuinely other shows makes the junk-page detector weaker on
+  // exactly the London ids that carry a suffix. Same strip order and category
+  // list as browser-recovery-helpers.js:168.
   const expectedWords = expectedShowId
-    ? expectedShowId.toLowerCase().replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
+    ? expectedShowId
+        .toLowerCase()
+        .replace(/-\d{4}$/, '')
+        .replace(/-(off-west-end|west-end|off-broadway|regional)$/, '')
+        .split('-')
+        .filter(w => w.length > 3)
     : [];
 
   // Find which shows are mentioned, excluding common-word titles.

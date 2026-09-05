@@ -252,3 +252,27 @@ test('detectMultiShowContent: a listing page naming many DIFFERENT shows is stil
     `a page naming ${titles.length} distinct shows should still be flagged; showsFound=${JSON.stringify(result.showsFound)}`
   );
 });
+
+test('detectMultiShowContent: a category suffix in the showId does not exclude unrelated titles', () => {
+  // Every West End / Off-West-End / Off-Broadway / regional id carries a
+  // category suffix. Stripping only the year left 'west' in expectedWords for
+  // 'holy-fool-off-west-end-2026', and the bidirectional substring test then
+  // excluded 30 genuinely-different shows ('west side story', 'true west',
+  // 'the lonesome west', 'merrily we roll along' via 'we') from the mention
+  // count — weakening the junk-page detector on exactly the London ids this
+  // change is about.
+  const text = 'More reviews this week: West Side Story at the Palace. True West at the Vaudeville. '
+    + 'The Lonesome West at the Arcola. Merrily We Roll Along at the Sondheim. '
+    + 'Each production is reviewed in full by our critics on the pages linked above.';
+  const suffixed = detectMultiShowContent(text, 'holy-fool-off-west-end-2026');
+  const plain = detectMultiShowContent(text, 'holy-fool-2026');
+  assert.deepEqual(
+    [...suffixed.showsFound].sort(),
+    [...plain.showsFound].sort(),
+    `a category suffix must not change which shows are counted; suffixed=${JSON.stringify(suffixed.showsFound)} plain=${JSON.stringify(plain.showsFound)}`
+  );
+  assert.ok(
+    suffixed.showsFound.includes('west side story'),
+    `'west side story' is a different show and must still be counted; got ${JSON.stringify(suffixed.showsFound)}`
+  );
+});
