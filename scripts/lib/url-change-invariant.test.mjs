@@ -402,3 +402,61 @@ test('BRO-2740: date-guard carve-out with a surviving publishDate keeps provenan
   assert.equal(merged.wrongProductionDetail, 'Published 12 days before opening night');
   assert.equal(merged.wrongProductionDetectedBy, 'ingest-anticipatory-gate');
 });
+
+/**
+ * BRO-2877: the two publishDate-gated preserve legs (url-change-invariant.js:280-281)
+ * are only ever exercised here with a hand-built `merged` object. That is a shape
+ * updateFileUrlWithInvariant CANNOT produce: its `metadata` is only
+ * {urlDiscoveredAt, urlDiscoveryMethod}, so merged.publishDate there ALWAYS equals
+ * existing.publishDate and both legs are unreachable from that caller.
+ *
+ * A v33 crown handoff read that and concluded the whole fix was dead code. It is not.
+ * The legs are live from the OTHER production caller: gather-reviews.js:3496 calls
+ * applyUrlChangeInvariant(existingReview, replacement) where `replacement` is built
+ * FRESH from the newly-discovered URL and so can carry a genuinely new publishDate.
+ *
+ * These two tests pin BOTH directions against that caller's shape, so the next person
+ * to read line 280 cannot conclude it is dead and delete it. Deleting the preserve leg
+ * would silently re-clear wrongProduction on records whose date basis is still live.
+ */
+const BRO2877_BASE = {
+  url: 'https://old.example.com/review-a',
+  publishDate: '2023-10-12',
+  wrongProduction: true,
+  wrongProductionReason: 'anticipatory_pre_opening_post',
+  contentTier: 'complete',
+};
+
+test('BRO-2877: a genuinely NEW publishDate PRESERVES the date-based wrongProduction flag (gather-reviews replacement shape)', () => {
+  const existing = structuredClone(BRO2877_BASE);
+  const replacement = {
+    ...structuredClone(BRO2877_BASE),
+    url: 'https://new.example.com/review-b',
+    publishDate: '2026-03-01',
+  };
+
+  const res = quiet(() => applyUrlChangeInvariant(existing, replacement, { fileLabel: 'bro-2877.json' }));
+
+  assert.equal(replacement.wrongProduction, true,
+    'a fresh publishDate gives the date-guard a live basis, so wrongProduction must survive the URL change');
+  assert.equal(replacement.publishDate, '2026-03-01', 'the genuinely new date must not be cleared');
+  assert.ok(!res.cleared.includes('wrongProduction'),
+    `wrongProduction must not be cleared, got ${JSON.stringify(res.cleared)}`);
+  assert.ok(!res.cleared.includes('publishDate'),
+    `publishDate must not be cleared, got ${JSON.stringify(res.cleared)}`);
+});
+
+test('BRO-2877: a CARRIED-OVER publishDate still clears the date-based wrongProduction flag (the leg must not over-preserve)', () => {
+  const existing = structuredClone(BRO2877_BASE);
+  // The updateFileUrlWithInvariant shape: the same date carried across, only the URL moves.
+  const merged = { ...structuredClone(BRO2877_BASE), url: 'https://new.example.com/review-b' };
+
+  const res = quiet(() => applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro-2877.json' }));
+
+  assert.equal(merged.wrongProduction, undefined,
+    'a date merely carried over from the old record is stale basis, so the flag clears with its URL (BRO-2740)');
+  assert.ok(res.cleared.includes('wrongProduction'),
+    `expected wrongProduction cleared, got ${JSON.stringify(res.cleared)}`);
+  assert.ok(res.cleared.includes('publishDate'),
+    `expected publishDate cleared, got ${JSON.stringify(res.cleared)}`);
+});
