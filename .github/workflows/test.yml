@@ -34,6 +34,16 @@ on:
       # check-orphan-commits.js above (BRO-2603, caught by
       # scripts/audit-test-yml-lib-deps.js).
       - 'scripts/freeze-ledgers.js'
+      # tests/unit/cloud-secrets-tiers.test.mjs requires ../../scripts/check-
+      # cloud-secrets.js — same top-level-scripts/ gap shape as the two above,
+      # found by ship-check 2026-09-05 and worth spelling out because it is
+      # self-referential: that test exists ONLY to stop LINEAR_API_KEY being
+      # dropped from TIER_1 again, and without this path a solo push deleting
+      # the entry runs zero CI. A guard nothing executes is the exact bug the
+      # guard was written for. (audit-test-yml-lib-deps.js walks only
+      # scripts/lib/ tests, and audit-test-yml-manifest-paths.js checks only
+      # the test's own path, so neither audit catches this one.)
+      - 'scripts/check-cloud-secrets.js'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
