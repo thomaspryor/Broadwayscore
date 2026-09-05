@@ -25,13 +25,61 @@ const {
   sweepIsTrustworthy,
 } = require('./lib/stranded-reviewed-branches');
 
+const { hasHelpFlag } = require('./lib/cli-help');
+
 const REPO = path.resolve(__dirname, '..');
 const argv = process.argv.slice(2);
+
+// Print usage BEFORE any real work. This script fetches from origin and shells
+// out once per worktree, so --help must not trigger a network round trip or a
+// 40-worktree sweep (task #498 convention).
+if (hasHelpFlag(argv)) {
+  console.log(`audit-stranded-reviewed-branches.js — report branches whose work PASSED review
+but never landed on origin/main, plus unpushed commits on the shared main checkout.
+
+Usage:
+  node scripts/audit-stranded-reviewed-branches.js [--gate] [--json]
+
+  (no flags)  Human-readable report. Always exits 0 when the sweep is trustworthy.
+  --gate      Exit 1 when review-passed work is stranded. For scheduled checks.
+  --json      Machine-readable output.
+  --precise   Use 'git cherry' patch-ids so REBASED and CHERRY-PICKED branches
+              stop reporting once their content has landed. Costs minutes on a
+              loaded machine, so it is off by default; the default over-reports
+              rebased work rather than risking a false all-clear.
+
+Exit codes:
+  0  sweep complete and trustworthy
+  1  --gate only: stranded review-passed work exists
+  2  the sweep could NOT be trusted (fetch failed, a worktree could not be
+     classified, no usable verdict ledger, bare repo, or git older than 2.31).
+     Exit 2 never means "clean" — it means the run proved nothing.
+
+Report only: it never lands, deletes or rewrites anything. Squash-merged branches
+keep reporting until deleted, because a squash's patch-id matches none of the
+originals; that is why --gate is opt-in rather than wired into a push path.`);
+  process.exit(0);
+}
+
 const GATE = argv.includes('--gate');
 const JSON_OUT = argv.includes('--json');
+// `git cherry` hashes patch-ids, which across ~40 worktrees on a loaded machine
+// took over two minutes — measured, not guessed. It only removes noise from
+// REBASED or CHERRY-PICKED branches (never squashed ones), so it is not worth
+// paying by default. Off: fast rev-list identity, which over-reports rebased work.
+// The error direction of the default is toward reporting too much, never toward a
+// false all-clear.
+const PRECISE = argv.includes('--precise');
+
+// Every git call is time-bounded. `git cherry` computes patch-ids, which on a
+// branch with tens of commits is far from instant, and 40 unbounded calls made the
+// whole sweep exceed two minutes. A hang must not wedge a scheduled check.
+const GIT_TIMEOUT_MS = 20000;
 
 function git(args, cwd = REPO) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 1 << 26 }).trim();
+  return execFileSync('git', args, {
+    cwd, encoding: 'utf8', maxBuffer: 1 << 26, timeout: GIT_TIMEOUT_MS,
+  }).trim();
 }
 
 function gitQuiet(args, cwd) {
@@ -50,11 +98,17 @@ try {
   console.error('ERROR: could not refresh origin/main — ' + e.message);
 }
 
+// Resolve the main checkout ONCE. Excluding only REPO would leave the shared main
+// checkout inside the sweep whenever this runs from a linked worktree, so it would
+// be counted both in the branch table and in the dedicated main report (caught in
+// review). Exclude the real main root, not merely the current directory.
+const MAIN_ROOT = mainCheckoutRoot();
+
 const worktreePaths = git(['worktree', 'list', '--porcelain'])
   .split('\n')
   .filter((l) => l.startsWith('worktree '))
   .map((l) => l.slice('worktree '.length))
-  .filter((p) => path.resolve(p) !== REPO);
+  .filter((p) => path.resolve(p) !== REPO && path.resolve(p) !== MAIN_ROOT);
 
 // Every per-worktree failure is COUNTED, not silently swallowed. A skip is an
 // unmeasured worktree, and an unmeasured worktree can hide exactly the stranded
@@ -82,9 +136,23 @@ for (const wt of worktreePaths) {
   // patch-id matches none of the originals, so a squash-merged branch still
   // reports as stranded. That residual noise is real and is why --gate is opt-in
   // rather than wired into any push path.
-  const cherry = gitQuiet(['cherry', 'origin/main', 'HEAD'], wt);
-  if (cherry === null) { skip(wt, 'could not compare against origin/main'); continue; }
-  const ahead = cherry === '' ? 0 : cherry.split('\n').filter((l) => l.startsWith('+')).length;
+  // Cheap prefilter first: rev-list is a graph walk, cherry is patch-id hashing.
+  // Most worktrees are fully landed, and for those rev-list settles it for free.
+  const revCount = gitQuiet(['rev-list', '--count', 'origin/main..HEAD'], wt);
+  if (revCount === null) { skip(wt, 'could not compare against origin/main'); continue; }
+  const revAhead = Number(revCount);
+  if (!Number.isFinite(revAhead)) { skip(wt, 'unreadable commit count'); continue; }
+
+  let ahead = revAhead;
+  if (revAhead > 0 && PRECISE) {
+    const cherry = gitQuiet(['cherry', 'origin/main', 'HEAD'], wt);
+    // On timeout or failure, fall back to the rev-list count. That over-reports
+    // rebased work rather than under-reporting stranded work, which is the safe
+    // direction for a check whose whole purpose is to avoid a false all-clear.
+    if (cherry !== null) {
+      ahead = cherry === '' ? 0 : cherry.split('\n').filter((l) => l.startsWith('+')).length;
+    }
+  }
 
   const status = gitQuiet(['status', '--porcelain'], wt);
   const dirty = status === null ? 0 : status.split('\n').filter((l) => l && !l.startsWith('??')).length;
@@ -118,7 +186,7 @@ function mainCheckoutRoot() {
 }
 
 let verdicts = [];
-const ledger = path.join(mainCheckoutRoot(), '.claude', 'review-verdicts.jsonl');
+const ledger = path.join(MAIN_ROOT, '.claude', 'review-verdicts.jsonl');
 if (fs.existsSync(ledger)) {
   verdicts = fs.readFileSync(ledger, 'utf8').split('\n')
     .map((l) => { try { return JSON.parse(l); } catch (e) { return null; } })
@@ -149,9 +217,12 @@ const out = findStrandedReviewedBranches(branches, verdicts, {
 // origin/main` destroys those. It is reported separately rather than folded into
 // the branch table, because the verdict ledger carries hundreds of entries for
 // branch "main" and matching against them would say nothing useful.
-const mainRoot = mainCheckoutRoot();
-const mainAhead = Number(gitQuiet(['rev-list', '--count', 'origin/main..HEAD'], mainRoot));
-const mainUnpushed = Number.isFinite(mainAhead) ? mainAhead : null;
+// gitQuiet returns null on failure, and Number(null) is 0 — so coercing first
+// would turn "could not measure" into "zero unpushed", a false all-clear on the
+// highest-risk location in the repo. Caught in review. Check for null FIRST.
+const mainAheadRaw = gitQuiet(['rev-list', '--count', 'origin/main..HEAD'], MAIN_ROOT);
+const mainAheadNum = mainAheadRaw === null ? NaN : Number(mainAheadRaw);
+const mainUnpushed = Number.isFinite(mainAheadNum) ? mainAheadNum : null;
 
 if (JSON_OUT) {
   console.log(JSON.stringify({ ...out, mainCheckoutUnpushed: mainUnpushed }, null, 2));
@@ -160,7 +231,7 @@ if (JSON_OUT) {
     console.log('WARNING: could not measure unpushed commits on the shared main checkout.');
   } else if (mainUnpushed > 0) {
     console.log('UNPUSHED ON THE SHARED MAIN CHECKOUT: ' + mainUnpushed + ' commit(s) at '
-      + mainRoot + ' are not on origin/main.');
+      + MAIN_ROOT + ' are not on origin/main.');
     console.log('  This is the highest-risk case: another session\'s reset --hard origin/main '
       + 'destroys them. Push with scripts/lib/push-with-retry.sh.');
     console.log('');
@@ -187,7 +258,11 @@ if (JSON_OUT) {
   console.log('Report only. Decide per branch whether to land or discard; some are superseded.');
 }
 
-// An all-clear is only meaningful if the sweep actually measured everything.
+// An all-clear is only meaningful if the sweep actually measured everything —
+// INCLUDING the shared main checkout, which is the highest-risk location. Leaving
+// it out of trust accounting would let the script exit 0 while the one place that
+// motivated it went unmeasured (caught in review).
+if (mainUnpushed === null) skippedDetail.push('the shared main checkout: could not count unpushed commits');
 const trust = sweepIsTrustworthy({ scanned: branches.length, skipped: skippedDetail.length, fetchOk });
 if (!trust.trustworthy) {
   console.error('');
