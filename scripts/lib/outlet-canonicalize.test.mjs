@@ -159,7 +159,7 @@ test('real review outlets are still accepted — the deny-list did not overreach
 // data/outlet-registry.json is gitignored private core data and is absent from
 // every worktree.
 // ---------------------------------------------------------------------------
-const { resolveCvStyle, _resetCvStyleWarnings, VALID_CV_STYLES, findInvalidCvStyles } = require_('./outlet-canonicalize.js');
+const { resolveCvStyle, _resetCvStyleWarnings, CV_STYLES, isValidCvStyle, findInvalidCvStyles, countArmedCvStyles } = require_('./outlet-canonicalize.js');
 
 test('BRO-2776: the OLD documented spelling is rejected, not silently accepted', () => {
   // review-guards.js used to document 'biographical-lead'. It is NOT canonical.
@@ -181,7 +181,10 @@ test('BRO-2776: the OLD documented spelling is rejected, not silently accepted',
 test('BRO-2776: the audit and the resolver share ONE vocabulary, not two copies', () => {
   // The whole bug was two drifted spellings. Assert the exported Set is the
   // single source of truth and still holds exactly the canonical values.
-  assert.deepEqual([...VALID_CV_STYLES].sort(), ['long-biographical', 'standard']);
+  assert.deepEqual([...CV_STYLES].sort(), ['long-biographical', 'standard']);
+  assert.ok(Object.isFrozen(CV_STYLES), 'a mutable export could be re-drifted by any caller');
+  assert.equal(isValidCvStyle('long-biographical'), true);
+  assert.equal(isValidCvStyle('biographical-lead'), false);
 });
 
 test('BRO-2776: canonical values pass through unchanged', () => {
@@ -265,4 +268,26 @@ test('BRO-2776: the write-time gate is silent on a registry with no cvStyle keys
   assert.deepEqual(findInvalidCvStyles({ outlets: { a: {}, b: { displayName: 'B' } } }), []);
   assert.deepEqual(findInvalidCvStyles({}), []);
   assert.deepEqual(findInvalidCvStyles(null), []);
+});
+
+test('BRO-2776: countArmedCvStyles is the check that catches VANISHED keys', () => {
+  // The real incident: cbf7e97c5c populated cvStyle, merge 4014d52077 silently
+  // dropped every key, and the defer-gate became a no-op on production main.
+  // findInvalidCvStyles cannot see that — absent is never invalid — so only a
+  // positive count detects it. Assert both halves of that claim.
+  const wiped = { outlets: { vulture: {}, 'new-york-sun': {}, nysr: {} } };
+  assert.deepEqual(findInvalidCvStyles(wiped), [], 'wiped keys look perfectly valid');
+  assert.equal(countArmedCvStyles(wiped), 0, 'only the positive count sees the wipe');
+
+  const armed = {
+    outlets: {
+      vulture: { cvStyle: 'long-biographical' },
+      'new-york-sun': { cvStyle: 'long-biographical' },
+      guardian: { cvStyle: 'standard' },
+      nobody: {},
+    },
+  };
+  assert.equal(countArmedCvStyles(armed), 2, "'standard' and absent must not count as armed");
+  assert.equal(countArmedCvStyles({}), 0);
+  assert.equal(countArmedCvStyles(null), 0);
 });

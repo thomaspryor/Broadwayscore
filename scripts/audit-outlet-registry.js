@@ -42,7 +42,7 @@ const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-b
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
-const { VALID_CV_STYLES, findInvalidCvStyles } = require('./lib/outlet-canonicalize');
+const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -597,6 +597,16 @@ function printReport(auditResult) {
 function generateJsonOutput(auditResult) {
   const { findings, suggestedAdditions, totalReviewFiles, totalOutletsInReviews, inRegistry } = auditResult;
 
+  // BRO-2776: --strict can exit 1 on cvStyle, so the machine-readable payload
+  // and the committed data/audit/outlet-registry-gaps.json must carry the
+  // reason. Without this a red build ships a JSON document with zero findings
+  // (code-review 2026-09-05).
+  let cvStyleReport = { invalid: [], armedCount: 0 };
+  try {
+    const reg = loadRegistry();
+    cvStyleReport = { invalid: findInvalidCvStyles(reg), armedCount: countArmedCvStyles(reg) };
+  } catch { /* registry unreadable is already fatal in loadRegistry() */ }
+
   // Transform missingFromRegistry to match spec format
   const missingOutlets = findings.missingFromRegistry.map(m => ({
     outletId: m.outletId,
@@ -612,6 +622,7 @@ function generateJsonOutput(auditResult) {
   }));
 
   return {
+    cvStyle: cvStyleReport,
     generatedAt: new Date().toISOString(),
     summary: {
       totalOutletsInReviews,
@@ -982,33 +993,54 @@ async function main() {
       console.log(`  A NEW entry must be deleted from data/outlet-registry.json — do not rename or merge.`);
     }
 
-    // BRO-2776: reject an unrecognised cvStyle at WRITE time.
+    // BRO-2776: validate cvStyle at WRITE time, in BOTH directions.
     //
-    // getCvStyle() falls back to 'standard' for any value outside
-    // VALID_CV_STYLES, which means a typo (or the 'biographical-lead' spelling
-    // review-guards.js used to document) leaves shouldDeferCvWrongShow()
-    // permanently disarmed while looking configured. A read-time warning during
-    // a 19k-review rebuild is too weak a signal to catch that, so the registry
-    // itself is validated here — this audit already runs with --strict in
-    // test.yml and in every crown cycle.
+    // Direction 1 (invalid value): getCvStyle() falls back to 'standard' for
+    // anything outside the canonical vocabulary, so a typo leaves
+    // shouldDeferCvWrongShow() disarmed while looking configured.
     //
-    // Unlike the missing-outlet checks above there is deliberately NO baseline:
-    // zero of the 1127 outlets carry a cvStyle key today, so the valid set is
-    // empty and can never be grandfathered into accepting a bad value.
-    const badCvStyles = findInvalidCvStyles(loadRegistry());
-    if (badCvStyles.length > 0 && !JSON_OUTPUT) {
-      console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
-      for (const b of badCvStyles) {
-        console.log(`  "${b.outletId}" has cvStyle ${JSON.stringify(b.cvStyle)}`);
+    // Direction 2 (vanished keys) is the one that actually bit. cvStyle was
+    // populated once (cbf7e97c5c) and a CLEAN 3-way merge (4014d52077) dropped
+    // every key, making the S3 defer-gate a silent no-op on production main —
+    // see cloud-memory/feedback_silent_merge_loss_on_reformat.md. A validity
+    // check can never catch that: vanished keys read as "absent", and absent is
+    // never invalid. Only a positive count does.
+    //
+    // The positive check is ADVISORY, not a --strict failure, because it is
+    // failing RIGHT NOW (0 outlets armed) and turning it hard would redden main
+    // for every session before the keys are restored. Restoring them changes
+    // rebuild output and needs scoring-delta, so it is tracked separately on
+    // BRO-2776. Make this a hard failure in the same change that restores them.
+    const cvRegistry = loadRegistry();
+    const badCvStyles = findInvalidCvStyles(cvRegistry);
+    const armedCvStyles = countArmedCvStyles(cvRegistry);
+    if (!JSON_OUTPUT) {
+      if (badCvStyles.length > 0) {
+        console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
+        for (const b of badCvStyles) {
+          console.log(`  "${b.outletId}" has cvStyle ${JSON.stringify(b.cvStyle)}`);
+        }
+        console.log(
+          `  Valid values: ${CV_STYLES.join(', ')}. An invalid value leaves ` +
+            `shouldDeferCvWrongShow() disarmed for that outlet (BRO-2776).`
+        );
       }
-      console.log(
-        `  Valid values: ${[...VALID_CV_STYLES].join(', ')}. ` +
-          `An invalid value leaves shouldDeferCvWrongShow() disarmed for that outlet (BRO-2776).`
-      );
+      if (armedCvStyles === 0) {
+        console.log(
+          `\n⚠️  cvStyle DISARMED: 0 outlets carry 'long-biographical', so ` +
+            `shouldDeferCvWrongShow() cannot fire for any review (BRO-2776). ` +
+            `This is how the 2026-05-16 silent merge loss presented.`
+        );
+      }
     }
 
     if (STRICT) {
-      if (badCvStyles.length > 0) process.exit(1);
+      // Collect every reason first, then exit ONCE — exiting on cvStyle before
+      // printing the missing-outlet/junk diagnostics would hide problems the
+      // operator could have fixed in the same pass (code-review 2026-09-05).
+      const strictFail = badCvStyles.length > 0
+        || newViolators.length > 0
+        || newJunkViolators.length > 0;
       if (newViolators.length > 0 || newJunkViolators.length > 0) {
         if (!JSON_OUTPUT) {
           if (newViolators.length > 0) {
@@ -1023,9 +1055,8 @@ async function main() {
             console.log(`  Delete these from data/outlet-registry.json (task #1783 class of bug) — do not rename or merge.`);
           }
         }
-        process.exit(1);
       }
-      process.exit(0);
+      process.exit(strictFail ? 1 : 0);
     }
 
     process.exit(0); // advisory-first: default mode never fails the build

@@ -280,6 +280,32 @@ function resolveCvStyle(rawStyle, canonicalOutletId = '') {
  * @param {{outlets?: Object}} registry
  * @returns {Array<{outletId: string, cvStyle: *}>}
  */
+function isValidCvStyle(style) {
+  return VALID_CV_STYLES.has(style);
+}
+
+/**
+ * countArmedCvStyles(registry)
+ * How many outlets actually carry 'long-biographical'.
+ *
+ * This is the check that would have caught the real BRO-2776 incident.
+ * cvStyle WAS populated once (cbf7e97c5c, 2026-05-16) and a clean 3-way merge
+ * (4014d52077) silently dropped every key, turning the whole S3 defer-gate into
+ * a no-op on production main. See cloud-memory/feedback_silent_merge_loss_on_
+ * reformat.md. A validity check cannot see that failure: vanished keys are
+ * "absent", which is never invalid. Only a POSITIVE assertion catches it.
+ *
+ * @param {{outlets?: Object}} registry
+ * @returns {number}
+ */
+function countArmedCvStyles(registry) {
+  let n = 0;
+  for (const entry of Object.values((registry && registry.outlets) || {})) {
+    if (entry && entry.cvStyle === 'long-biographical') n++;
+  }
+  return n;
+}
+
 function findInvalidCvStyles(registry) {
   const out = [];
   for (const [outletId, entry] of Object.entries((registry && registry.outlets) || {})) {
@@ -446,10 +472,14 @@ module.exports = {
   getCvStyle,
   resolveCvStyle,
   findInvalidCvStyles,
-  // The ONE canonical cvStyle vocabulary. Exported so audit-outlet-registry.js
-  // validates against this Set rather than keeping a second copy that could
-  // drift — the drifted-vocabulary bug is exactly what BRO-2776 was.
-  VALID_CV_STYLES,
+  countArmedCvStyles,
+  // The ONE canonical cvStyle vocabulary, exported so audit-outlet-registry.js
+  // validates against it rather than keeping a second copy that could drift —
+  // drifted vocabulary is exactly what BRO-2776 was. Frozen: exporting the live
+  // Set would let any requiring module call .add('biographical-lead') and
+  // silently re-open the drift this closes (code-review 2026-09-05).
+  CV_STYLES: Object.freeze([...VALID_CV_STYLES]),
+  isValidCvStyle,
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
   // exposed for tests
