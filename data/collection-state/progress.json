@@ -470,7 +470,17 @@
     "operation-mincemeat-2025/londontheatre1--unknown.json",
     "operation-mincemeat-2025/standard--nick-curtis.json",
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
-    "buena-vista-social-club-2025/observer--david-cote.json"
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+    "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json",
+    "my-neighbour-totoro-west-end-2025/thestage--sam-marlowe.json",
+    "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json",
+    "titanique-west-end-2024/nytimes--unknown.json",
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
+    "titanique-west-end-2024/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -530,7 +540,8 @@
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -568,7 +579,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "buena-vista-social-club-2025/observer--david-cote.json",
+  "lastProcessed": "titanique-west-end-2024/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -747,6 +758,17 @@
       "t": "2026-09-05T22:14:37.883Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-05T22:16:09.788Z",
+      "event": "bb-session",
+      "session": "dd9bb0b6",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-05T22:16:10.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
