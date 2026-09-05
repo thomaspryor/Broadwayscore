@@ -399,8 +399,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # report the already-landed commit instead. verify_content_survived in
   # push-with-retry.sh still passes on this sha, because the content it checks
   # for is exactly what a prior attempt put there.
-  if [ "$NEW_TREE" = "$(git rev-parse "${CURRENT_TIP}^{tree}")" ]; then
-    echo "  push-via-git-api: our content is ALREADY on ${BRANCH} at $CURRENT_TIP (attempt $i) — a prior attempt landed and was mis-reported as failed; skipping the no-op commit" >&2
+  # State the OBSERVED fact, not an inferred cause. A killed-but-landed push is
+  # the motivating case, but the same condition is reached when a sibling writer
+  # pushed byte-identical content, or when our diff only deletes paths already
+  # absent from the tip — and it can fire on i=1, where "a prior attempt" is
+  # impossible. Naming a cause we did not observe is the exact error this commit
+  # exists to correct.
+  CURRENT_TIP_TREE="$(git rev-parse "${CURRENT_TIP}^{tree}" 2>/dev/null || true)"
+  if [ -n "$CURRENT_TIP_TREE" ] && [ "$NEW_TREE" = "$CURRENT_TIP_TREE" ]; then
+    echo "  push-via-git-api: our overlay applied to $CURRENT_TIP yields that same tree, so our content is ALREADY on ${BRANCH} (attempt $i) — reporting the existing commit instead of minting an empty one" >&2
     echo "$CURRENT_TIP"
     exit 0
   fi
