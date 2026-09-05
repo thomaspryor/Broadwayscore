@@ -647,7 +647,36 @@ first.
   covering the dispatch layer. TIER_1 secrets require `NOTION_API_KEY` and not `LINEAR_API_KEY`.
 - **Acceptance criteria:**
   - VERIFY: `classifyPath('scripts/linear-next.js').tier === 'critical'`
-  - VERIFY: `node scripts/check-cloud-secrets.js` reports `LINEAR_API_KEY` as required
+  - VERIFY: `node --test tests/unit/cloud-secrets-tiers.test.mjs` passes
+    (was: "`node scripts/check-cloud-secrets.js` reports `LINEAR_API_KEY` as required" — that
+    command exits 1 in any environment merely missing a secret, so it can never satisfy the §6
+    Done-gate, which only accepts safe-form commands that pass. The test asserts the array
+    contents instead, which is what the criterion actually meant.)
+
+### Task S5-T6: Demote NOTION_API_KEY from cloud-secrets TIER_1 to TIER_2
+- **Filed:** 2026-09-05 (out of the S5-T5 review)
+- **Complexity:** S
+- **Depends on:** the legacy Notion readers being retired or confirmed cloud-irrelevant
+- **Parallel:** Yes
+- **Files:** `scripts/check-cloud-secrets.js` (modify), `.claude/CLOUD.md` (modify),
+  `scripts/cloud-selftest.sh` (modify)
+- **Description:** With `LINEAR_API_KEY` now in TIER_1, a cutover-era environment that pastes
+  only the Linear key still exits 1 on the retired board's key — and `.claude/CLOUD.md` step 1
+  tells the operator to stop there. The retired board hard-blocks the live one, which is
+  backwards under CLAUDE.md §6.
+  The justification previously given for keeping it required — "the notion-create hook gate" —
+  is **false**: `.claude/hooks/notion-create-block.sh` gates on a `/tmp/notion-create-failed-*`
+  breadcrumb and `jq`, and `grep -rn NOTION_API_KEY .claude/hooks/` returns nothing. The real
+  readers are legacy scripts (`notion-action-poll.js`, `health-check.js`,
+  `posthog-friction-analyzer.js`), none of which a cloud session runs. Demote once those are
+  retired, or sooner if confirmed cloud-irrelevant.
+- **Also in scope (same file, same class):** `REVIEW_TEXTS_TOKEN` appears in NEITHER tier even
+  though `.claude/CLOUD.md` step 1 calls it the guaranteed path for private-data checkout, and
+  `scripts/cloud-selftest.sh:35` keeps a second, independently-drifting secret list. Consider
+  deriving the tiers from `scripts/lib/workflow-secret-scan.js`'s tracer instead of maintaining
+  three hand-written lists.
+- **Acceptance criteria:**
+  - VERIFY: `node --test tests/unit/cloud-secrets-tiers.test.mjs` passes
 
 ---
 
