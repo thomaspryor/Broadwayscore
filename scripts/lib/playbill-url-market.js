@@ -43,6 +43,19 @@
 
 'use strict';
 
+// shows.json carries FIVE categories, measured 2026-09-05: broadway (2027),
+// off-broadway (420), west-end (132), off-west-end (335), regional (28).
+// Only the London pair is bucketed here, so `regional` falls on the non-London
+// side and a regional show cached to a Broadway URL is NOT flagged. That is
+// deliberate and matches scorePlaybillUrl, which likewise only rejects a
+// regional/tour URL for an off-broadway or category-less show and never
+// rejects a regional SHOW on a Broadway URL. There are zero such entries in
+// the live cache (all 113 resolve to -broadway-, -off-broadway-, -london- or
+// no market segment at all, and only the 6 London ones were wrong), and
+// widening the buckets means changing the scorer in the same breath — a
+// separate change, not a silent one smuggled in here. If a SIXTH category ever
+// appears it lands on the non-London side by default, which under-flags rather
+// than over-flags: it can leave a wrong URL cached, never evict a correct one.
 const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
 
 /**
