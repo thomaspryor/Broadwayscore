@@ -346,16 +346,27 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         show,
         fullText: scrapedText,
       });
+      // BRO-2835: these day-counts were `new Date(...)`, which is Invalid Date
+      // for an ordinal publishDate, so the annotation persisted onto the review
+      // read "[OVERRIDE: review within NaNd of opening ...]". Same parser as the
+      // guard itself, including the pre-1970 fallback.
+      const daysFromOpening = () => {
+        const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
+        const o = pd(openingDate) || phd(openingDate);
+        const p2 = pd(publishDate) || phd(publishDate);
+        if (!o || !p2) return null;
+        return Math.round(Math.abs((p2.getTime() - o.getTime()) / 86400000));
+      };
       if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
         console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
       }
       if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        const daysDiff = daysFromOpening();
         console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
         wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
       }
       if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
+        const daysDiff = daysFromOpening();
         console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
         filmTvConfidence = 'low';
       }
