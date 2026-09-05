@@ -717,8 +717,11 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
  * @param {object} ctx
  * @param {boolean} ctx.isLondonMarketShow - isLondonMarket(showCat)
  * @param {boolean} ctx.isUkUrl - venue-classification's isUkOutletUrl(data.url)
- * @param {boolean} ctx.outletIsDualOrUk - outlet is in DUAL_MARKET_OUTLETS or registry region 'london'
- * @param {boolean} ctx.outletIsLondonRegion - registry region 'london' specifically (subset of outletIsDualOrUk)
+ * @param {boolean} ctx.outletIsDualOrUk - outlet is in DUAL_MARKET_OUTLETS or a UK-side
+ *   registry region (cross-market-guard's UK_SELF_HEAL_REGIONS: 'london' or 'uk')
+ * @param {boolean} ctx.outletIsLondonRegion - UK-side registry region specifically, i.e.
+ *   UK_SELF_HEAL_REGIONS ('london' or 'uk'; 'dual' excluded). Subset of outletIsDualOrUk.
+ *   Name kept for call-site compatibility; it is no longer 'london'-only (BRO-591 follow-up).
  * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
  * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
  * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
