@@ -37,7 +37,8 @@
     "jeeves-takes-charge-west-end-2026/londontheatredirect--jo-york.json",
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-    "benevolent-off-broadway-2026/talkinbroadway--unknown.json"
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "cats-west-end-2026/north-west-end--michelle-knight.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -218,7 +219,16 @@
     "cats-west-end-2026/musical-theatre-review--unknown.json",
     "cats-west-end-2026/nypost--kyle-smith.json",
     "cats-west-end-2026/thewrap--robert-hofler.json",
-    "cats-west-end-2026/ap--mark-kennedy.json"
+    "cats-west-end-2026/ap--mark-kennedy.json",
+    "cats-west-end-2026/curtainup--elyse-sommer.json",
+    "cats-west-end-2026/frontmezzjunkies--steven-ross.json",
+    "cats-west-end-2026/huffpost--david-finkle.json",
+    "cats-west-end-2026/nbcny--robert-kahn.json",
+    "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
+    "cats-west-end-2026/nysr--michael-sommers.json",
+    "cats-west-end-2026/thestage--jonathan-mandell.json",
+    "cats-west-end-2026/times-uk--carol-midgley.json",
+    "cats-west-end-2026/times-uk--donald-hutera.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -245,14 +255,16 @@
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
-      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+      "cats-west-end-2026/north-west-end--michelle-knight.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/cats-west-end-2026/times-uk--donald-hutera.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -278,7 +290,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "cats-west-end-2026/ap--mark-kennedy.json",
+  "lastProcessed": "cats-west-end-2026/times-uk--donald-hutera.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -351,6 +363,17 @@
     },
     {
       "t": "2026-09-05T21:36:35.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-05T21:47:16.585Z",
+      "event": "bb-session",
+      "session": "c57daf62",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cats-review-forget-the-ex"
+    },
+    {
+      "t": "2026-09-05T21:47:17.829Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }

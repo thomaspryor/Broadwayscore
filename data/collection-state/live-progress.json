@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-05T21:44:41.915Z",
-  "processed": 39,
-  "failed": 180,
-  "successRate": "17.8%",
+  "updatedAt": "2026-09-05T21:47:28.878Z",
+  "processed": 40,
+  "failed": 189,
+  "successRate": "17.5%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 23,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 2,
     "scrapingbee": 5,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -86,6 +86,17 @@
     },
     {
       "t": "2026-09-05T21:36:35.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-05T21:47:16.585Z",
+      "event": "bb-session",
+      "session": "c57daf62",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cats-review-forget-the-ex"
+    },
+    {
+      "t": "2026-09-05T21:47:17.829Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
