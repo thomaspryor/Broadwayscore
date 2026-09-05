@@ -52,6 +52,45 @@ function resolveCvMarket(show) {
   return show?.category || 'broadway';
 }
 
+/**
+ * Parse a date string the way the temporal guard does, NOT the way bare
+ * `new Date()` does.
+ *
+ * BRO-2835 fixed this class at the guard and at the persisted annotation, but
+ * the two prompt-building sites below kept bare `new Date(...)`, which is
+ * Invalid Date for an ordinal publishDate ("October 6th, 2022"). 13.4% of the
+ * dated review corpus (4,717 of 35,167) stores dates in that form, so the
+ * NaN silently propagated: `daysDiff <= 30` is false for NaN, so the
+ * opening-week temporalHint was omitted for 2,079 reviews that were in fact
+ * within 30 days of opening, and `Number.isFinite(NaN)` is false, so
+ * urlYearConflict was nulled.
+ *
+ * The parseHistoricalDate fallback is load-bearing, not defensive:
+ * parseDate() enforces normalizeDate()'s 1970-2030 calendar-year floor, so a
+ * genuine pre-1970 review (Phantom WE 1986's Guardian notice, and older) would
+ * come back null and NEWLY lose a hint it gets today. Same pairing as
+ * daysFromOpening() below and as review-guards' own parse.
+ *
+ * @param {string|null|undefined} dateStr
+ * @returns {Date|null}
+ */
+function _cvParseDate(dateStr) {
+  const { parseDate, parseHistoricalDate } = require('./date-utils');
+  const viaNormalized = parseDate(dateStr);
+  if (viaNormalized) return viaNormalized;            // already UTC midnight
+  const viaHistorical = parseHistoricalDate(dateStr);
+  if (!viaHistorical) return null;
+  // parseHistoricalDate builds a LOCAL-midnight Date while parseDate builds a
+  // UTC-midnight one. Re-anchor so both legs share one basis: otherwise
+  // getUTCFullYear() and the day-difference below are timezone-dependent, and
+  // a Jan-1 historical date would report the previous year east of UTC.
+  return new Date(Date.UTC(
+    viaHistorical.getFullYear(),
+    viaHistorical.getMonth(),
+    viaHistorical.getDate()
+  ));
+}
+
 function _extractUrlYear(url) {
   if (!url || typeof url !== 'string') return null;
   // Try /YYYY/ path segment first (Variety, NYT, Guardian, etc.)
@@ -553,8 +592,10 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
 
   // Temporal proximity: if review published within 30 days of opening, very likely correct production
   let temporalHint = '';
-  if (openingDate && publishDate) {
-    const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
+  const _pubDate = _cvParseDate(publishDate);
+  const _openDate = _cvParseDate(openingDate);
+  if (_openDate && _pubDate) {
+    const daysDiff = Math.abs((_pubDate.getTime() - _openDate.getTime()) / 86400000);
     if (daysDiff <= 30) {
       temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist.`;
     }
@@ -582,8 +623,8 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   let urlYearHint = '';
   const urlYear = _extractUrlYear(url);
   let urlYearConflict = null;
-  if (urlYear && publishDate) {
-    const pubYear = new Date(publishDate).getFullYear();
+  if (urlYear && _pubDate) {
+    const pubYear = _pubDate.getUTCFullYear();
     if (Number.isFinite(pubYear) && Math.abs(pubYear - urlYear) >= 3) {
       const gapYears = Math.abs(pubYear - urlYear);
       urlYearConflict = { urlYear, publishYear: pubYear, gapYears };
