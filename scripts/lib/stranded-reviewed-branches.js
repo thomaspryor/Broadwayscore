@@ -96,18 +96,27 @@ function findStrandedReviewedBranches(branches, verdicts, opts = {}) {
     // a reader toward merging branches whose code already landed, which is how a stale
     // branch reintroduces reverted work. Null means the caller could not measure it;
     // it is NOT treated as zero, because an unmeasured branch is not a safe branch.
-    const liveDiffLines = Number.isFinite(Number(b.liveDiffLines)) && Number(b.liveDiffLines) >= 0
-      ? Number(b.liveDiffLines)
-      : null;
+    // MUST be a typeof check, not Number(). Number(null) is 0 and Number.isFinite(0)
+    // is true, so a Number()-based guard SILENTLY ACCEPTS the CLI's own failure
+    // sentinel: an unmeasured branch then reported 0 live lines, was labelled
+    // "probably already landed", and contributed nothing to the total, while the
+    // null fallback below was unreachable. Caught by ship-check before this shipped.
+    // It is the precise false-all-clear this whole script exists to prevent.
+    const num = (x) => (typeof x === 'number' && Number.isFinite(x) && x >= 0 ? x : null);
+    const liveDiffLines = num(b.liveDiffLines);   // lines in CODE files only
+    const liveOtherLines = num(b.liveOtherLines); // lines in everything else
     row.liveDiffLines = liveDiffLines;
-    // A branch whose live diff touches no code file is almost always a handoff doc or
-    // an audit snapshot left behind after its code landed. Flagged, never auto-acted
-    // on: land-or-discard still needs a human.
-    row.liveCodeFiles = Number.isFinite(Number(b.liveCodeFiles)) && Number(b.liveCodeFiles) >= 0
-      ? Number(b.liveCodeFiles)
-      : null;
-    row.probablyAlreadyLanded = liveDiffLines === 0;
-    row.docsOnly = row.liveCodeFiles === 0 && liveDiffLines !== null && liveDiffLines > 0;
+    row.liveOtherLines = liveOtherLines;
+    row.liveCodeFiles = num(b.liveCodeFiles);
+    // Only claim "already landed" when we MEASURED an empty diff, code and non-code
+    // alike, and the worktree is clean. Uncommitted work is exactly what a concurrent
+    // `reset --hard origin/main` destroys, so a dirty worktree is never "landed".
+    row.probablyAlreadyLanded = liveDiffLines === 0 && liveOtherLines === 0 && row.dirty === 0;
+    // A branch carrying non-code lines and no code file is a handoff doc or an audit
+    // snapshot left behind after its code landed. Needs liveOtherLines to be knowable
+    // at all: lines are counted per-category, so without it this could never fire.
+    // Flagged, never auto-acted on; land-or-discard still needs a human.
+    row.docsOnly = row.liveCodeFiles === 0 && liveOtherLines !== null && liveOtherLines > 0;
 
     if (v && v.result === 'pass') {
       row.reviewer = v.reviewer || 'unknown';

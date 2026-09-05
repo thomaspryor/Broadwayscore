@@ -34,7 +34,7 @@ const argv = process.argv.slice(2);
 // branch whose live diff touches none of these is a handoff doc or an audit snapshot
 // left behind after its code landed, which is what STATE.md-only branches turned out
 // to be. Only ever used to LABEL a row; nothing is auto-landed or auto-deleted.
-const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|sh|bash|yml|yaml|css|scss|sql)$/i;
+const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
 
 // Print usage BEFORE any real work. This script fetches from origin and shells
 // out once per worktree, so --help must not trigger a network round trip or a
@@ -170,16 +170,29 @@ for (const wt of worktreePaths) {
   // the three-dot range gives added+deleted per file against the merge base.
   // Left null on any failure: an unmeasured branch must not read as an empty one.
   let liveDiffLines = null;
+  let liveOtherLines = null;
   let liveCodeFiles = null;
   if (ahead > 0) {
     const numstat = gitQuiet(['diff', '--numstat', 'origin/main...HEAD'], wt);
     if (numstat !== null) {
       liveDiffLines = 0;
+      liveOtherLines = 0;
       liveCodeFiles = 0;
       for (const line of numstat.split('\n')) {
         if (!line) continue;
         const [addRaw, delRaw, file] = line.split('\t');
-        if (!file || !IS_CODE_FILE.test(file)) continue;
+        if (!file) continue;
+        if (!IS_CODE_FILE.test(file)) {
+          // Counted separately, never folded into the code total. Without this the
+          // docs-only signal was unreachable: lines only accrued for code files, so
+          // liveCodeFiles===0 forced liveDiffLines===0 and the branch that motivated
+          // this change (job/1853-mta72xcr, live diff = one STATE.md) was mislabelled
+          // "probably already landed" — the label meant for landed CODE.
+          const a = Number(addRaw); const d = Number(delRaw);
+          if (Number.isFinite(a)) liveOtherLines += a;
+          if (Number.isFinite(d)) liveOtherLines += d;
+          continue;
+        }
         // Count lines from CODE files ONLY. Counting every file made this figure
         // meaningless the first time it ran for real: job/linear-BRO-257-mtag4t59
         // reported 53,189 "lines of code still outstanding" when almost all of it was
@@ -193,7 +206,7 @@ for (const wt of worktreePaths) {
       }
     }
   }
-  branches.push({ branch, ahead, dirty, lastCommitDate, liveDiffLines, liveCodeFiles });
+  branches.push({ branch, ahead, dirty, lastCommitDate, liveDiffLines, liveOtherLines, liveCodeFiles });
 }
 
 // The verdict ledger lives in the MAIN checkout's .claude/, not in a worktree's.
