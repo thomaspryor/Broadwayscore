@@ -2496,7 +2496,17 @@
     "titanique-2026/new-york-city-theatre--unknown.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/frontmezzjunkies--unknown.json",
-    "titanique-2026/playbill--unknown.json"
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2582,7 +2592,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -2639,7 +2651,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "titanique-2026/playbill--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -3020,6 +3032,18 @@
       "t": "2026-09-05T11:53:42.365Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-05T11:54:49.276Z",
+      "event": "bb-session",
+      "session": "b3ffb9a8",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-05T11:55:11.067Z",
+      "event": "bb-session",
+      "session": "892d6c19",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
