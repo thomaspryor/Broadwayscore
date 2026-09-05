@@ -1351,7 +1351,34 @@
     "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "the-real-ivanov-off-broadway-2026/off-off-online--unknown.json",
-    "spellbound-off-broadway-2026/theweereview--unknown.json"
+    "spellbound-off-broadway-2026/theweereview--unknown.json",
+    "the-story-west-end-2026/nytimes--jesse-green.json",
+    "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/huffpost--ron-dicker.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/monstagigz--unknown.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-story-west-end-2026/thestage--dave-fargnoli.json",
+    "a-month-in-the-country-west-end-2026/artsdesk--unknown.json",
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+    "electra-persona-west-end-2026/southbank--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "electra-persona-west-end-2026/thestage--unknown.json",
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1417,7 +1444,8 @@
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/electra-persona-west-end-2026/vocaleyes--unknown.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1462,7 +1490,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "spellbound-off-broadway-2026/theweereview--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -1631,6 +1659,45 @@
       "event": "bb-session",
       "session": "b3d98718",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-09-05T01:34:33.970Z",
+      "event": "bb-session",
+      "session": "00dfd8b0",
+      "url": "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-the"
+    },
+    {
+      "t": "2026-09-05T01:34:34.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-05T01:36:10.602Z",
+      "event": "bb-session",
+      "session": "5e4fe062",
+      "url": "https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehous"
+    },
+    {
+      "t": "2026-09-05T01:36:11.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-05T01:38:07.324Z",
+      "event": "bb-session",
+      "session": "5f5fee56",
+      "url": "https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-natio"
+    },
+    {
+      "t": "2026-09-05T01:38:08.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-05T01:38:40.501Z",
+      "event": "bb-session",
+      "session": "abfc0a11",
+      "url": "https://vocaleyes.co.uk/events/electra-persona-2/"
     }
   ]
 }
