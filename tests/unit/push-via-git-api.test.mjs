@@ -149,7 +149,7 @@ test('push-via-git-api.sh handles delete + rename correctly (no orphaned old pat
   }
 });
 
-test('two concurrent push-via-git-api.sh invocations racing the SAME origin: one wins immediately, the other loses the CAS and retries to success', async () => {
+test('two concurrent push-via-git-api.sh invocations racing the SAME origin: both writers\' content survives and origin holds exactly one commit per writer', async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-race-'));
   try {
     const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
