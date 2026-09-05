@@ -19,6 +19,40 @@
 const UK_SIDE_REGIONS = new Set(['london', 'uk', 'dual']);
 
 /**
+ * Regions whose wrongProduction flag may SELF-HEAL via the rebuild's
+ * UK/dual-market auto-clear (rebuild-all-reviews.js).
+ *
+ * Derived from UK_SIDE_REGIONS rather than hardcoded: BRO-591 synced the
+ * FLAGGING side to UK_SIDE_REGIONS and left the CLEARING side on a bare
+ * `region === 'london'`, so a 'uk'-region outlet (New Statesman) could be
+ * flagged "US outlet reviewing London show" and then never clear. 'dual' is
+ * deliberately excluded — a dual-market outlet's wrongProduction flag can be
+ * a genuine same-title other-market review.
+ */
+const UK_SELF_HEAL_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+
+/**
+ * Does this outlet sit in a UK-side region that may SELF-HEAL a wrongProduction
+ * flag? Extracted from rebuild-all-reviews.js's inline auto-clear block so the
+ * wiring is unit-testable (CLAUDE.md rule 15) rather than only the predicate it
+ * feeds — the BRO-591 drift was in this computation, not in the predicate.
+ *
+ * Tests BOTH map keys: the canonical id and the raw id are independent entries
+ * in outletRegionMap, and a truthy non-UK value on the first would otherwise
+ * mask a UK value on the second.
+ *
+ * @param {Record<string,string>} outletRegionMap - from buildOutletRegionMap()
+ * @param {string} canonicalOutlet
+ * @param {string} rawOutlet
+ * @returns {boolean}
+ */
+function outletIsUkSideSelfHealRegion(outletRegionMap, canonicalOutlet, rawOutlet) {
+  if (!outletRegionMap) return false;
+  return UK_SELF_HEAL_REGIONS.has(outletRegionMap[canonicalOutlet])
+    || UK_SELF_HEAL_REGIONS.has(outletRegionMap[rawOutlet]);
+}
+
+/**
  * Reverse cross-market classification.
  *
  * A "reverse cross-market" review is a non-West-End (NYC: Broadway / off-Broadway)
@@ -486,6 +520,9 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
 }
 
 module.exports = {
+  UK_SIDE_REGIONS,
+  UK_SELF_HEAL_REGIONS,
+  outletIsUkSideSelfHealRegion,
   classifyReverseCrossMarket,
   classifyCrossMarketContamination,
   classifyUsOnWeCrossMarket,

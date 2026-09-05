@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -2861,18 +2861,25 @@ showDirs.forEach(showId => {
           // Compute outlet early for wrongProduction override check
           const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
-          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet)
-            || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
-          // Registry region 'london' is as strong a signal as a UK URL: the cross-market
-          // flagger only fires when region !== 'london', so a london-region outlet carrying
-          // this flag means the region was backfilled AFTER flagging (or the flag is a
-          // dangling remnant of an interrupted clear). UK blogs on .com domains
-          // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
-          // so without this the flag can never self-heal. Dual-market outlets are
-          // deliberately NOT included — their wrongProduction flags can be genuine
-          // same-title other-market reviews.
-          const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
-            || outletRegionMap[earlyRawOutlet] === 'london';
+          const earlyOutletIsUkSide = outletIsUkSideSelfHealRegion(
+            outletRegionMap, earlyCanonicalOutlet, earlyRawOutlet
+          );
+          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet) || earlyOutletIsUkSide;
+          // A UK-side registry region is as strong a signal as a UK URL: the cross-market
+          // flagger only fires when the region is outside UK_SIDE_REGIONS, so a UK-side
+          // outlet carrying this flag means the region was backfilled AFTER flagging (or
+          // the flag is a dangling remnant of an interrupted clear). UK blogs on .com
+          // domains (liamodell.com, jonathanbaz.com, timeout.com/london, newstatesman.com)
+          // never satisfy isUkUrl, so without this the flag can never self-heal.
+          //
+          // Reads UK_SELF_HEAL_REGIONS from cross-market-guard rather than testing
+          // `=== 'london'` inline: BRO-591 synced the FLAGGING side to UK_SIDE_REGIONS and
+          // left this CLEARING side hardcoded to 'london', which stranded region 'uk'
+          // outlets (New Statesman) under a false "US outlet reviewing London show" flag
+          // with no path back. Dual-market outlets stay deliberately excluded — their
+          // wrongProduction flags can be genuine same-title other-market reviews — which
+          // is why UK_SELF_HEAL_REGIONS is UK_SIDE_REGIONS minus 'dual'.
+          const outletIsLondonRegion = earlyOutletIsUkSide;
           try {
             const hostname = new URL(data.url).hostname || '';
             // Use venue-classification's isUkOutletUrl for consistency (handles US outlet exclusions)
