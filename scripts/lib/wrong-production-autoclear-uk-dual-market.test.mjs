@@ -16,7 +16,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear');
-const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, outletIsUkSideSelfHealRegion } = require('./cross-market-guard');
+const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion, outletIsUkMarketRegion, classifyReverseCrossMarket } = require('./cross-market-guard');
 
 const baseCtx = {
   isLondonMarketShow: true,
@@ -269,5 +269,94 @@ describe('outletIsUkSideSelfHealRegion (the wiring BRO-591 left behind)', () => 
   it('is safe on an unregistered outlet and a missing map', () => {
     assert.strictEqual(outletIsUkSideSelfHealRegion({}, 'nobody', 'nobody'), false);
     assert.strictEqual(outletIsUkSideSelfHealRegion(null, 'nobody', 'nobody'), false);
+  });
+});
+
+/**
+ * The REVERSE cross-market guard (rebuild-all-reviews.js) flags a UK outlet that
+ * turns up on a Broadway/off-Broadway show. It tested `region === 'london'` only,
+ * so every region:'uk' outlet crossed unflagged. Measured before widening: exactly
+ * one review was affected and it is a true positive — theweereview's Suhani Shah
+ * "Spellbound 2.0" piece, whose own text reads "Note: This review is from the 2024
+ * Fringe" and names Underbelly Bristo Square, was scoring into
+ * spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19, no priorRuns).
+ */
+describe('UK_MARKET_REGIONS (reverse cross-market guard set)', () => {
+  it("covers the whole UK market bucket, not just 'london'", () => {
+    assert.ok(UK_MARKET_REGIONS.has('london'));
+    assert.ok(UK_MARKET_REGIONS.has('uk'), "region:'uk' outlets crossed unflagged before this");
+  });
+
+  it("excludes 'dual' — dual-market outlets are allowed to cross", () => {
+    assert.strictEqual(UK_MARKET_REGIONS.has('dual'), false);
+  });
+
+  it('does not cover US regions', () => {
+    for (const r of ['us', 'new-york', 'chicago', 'boston']) {
+      assert.strictEqual(UK_MARKET_REGIONS.has(r), false, `${r} must not be UK-market`);
+    }
+  });
+
+  it('is the same set the auto-clear side uses — one definition, two intents', () => {
+    assert.deepStrictEqual([...UK_MARKET_REGIONS].sort(), [...UK_SELF_HEAL_REGIONS].sort());
+    assert.deepStrictEqual(
+      [...UK_MARKET_REGIONS].sort(),
+      [...UK_SIDE_REGIONS].filter((r) => r !== 'dual').sort()
+    );
+  });
+});
+
+/**
+ * The reverse guard (rebuild-all-reviews.js) and classifyReverseCrossMarket
+ * (read by validate-data.js) describe the SAME direction: a UK outlet turning up
+ * on a Broadway show. If only the rebuild widens, it flags region:'uk' outlets
+ * while CI stays silent about them, and a Tier 1/2 'uk' paper can never reach the
+ * `error` tier. These pin them together.
+ */
+describe('classifyReverseCrossMarket covers the UK market bucket', () => {
+  const base = { isDualMarket: false, isTier12: true, isBroadway: true };
+
+  it("escalates a region:'uk' Tier 1/2 outlet on Broadway instead of skipping it", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'uk' });
+    assert.strictEqual(r.level, 'error');
+  });
+
+  it("still escalates region:'london' the same way (unchanged)", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'london' });
+    assert.strictEqual(r.level, 'error');
+  });
+
+  it('still skips a US outlet', () => {
+    assert.strictEqual(classifyReverseCrossMarket({ ...base, region: 'us' }).level, 'skip');
+  });
+
+  it('still skips a dual-market outlet before looking at region', () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'london', isDualMarket: true });
+    assert.strictEqual(r.level, 'skip');
+  });
+
+  it("region:'uk' on a non-Broadway NYC show warns rather than errors", () => {
+    const r = classifyReverseCrossMarket({ ...base, region: 'uk', isBroadway: false });
+    assert.strictEqual(r.level, 'warning');
+  });
+});
+
+describe('outletIsUkMarketRegion (the reverse guard call site)', () => {
+  it('is the same computation the clearing side uses', () => {
+    const map = { 'new-statesman': 'uk' };
+    assert.strictEqual(
+      outletIsUkMarketRegion(map, 'new-statesman', 'new-statesman'),
+      outletIsUkSideSelfHealRegion(map, 'new-statesman', 'new-statesman')
+    );
+  });
+
+  it('does not let a non-UK canonical region mask a UK raw region', () => {
+    // This is what the inline `map[canonical] || map[raw]` form in the reverse
+    // guard could not express: it resolved to 'us' and then tested membership.
+    assert.strictEqual(outletIsUkMarketRegion({ canon: 'us', 'raw alias': 'uk' }, 'canon', 'raw alias'), true);
+  });
+
+  it('rejects US-only outlets', () => {
+    assert.strictEqual(outletIsUkMarketRegion({ variety: 'us' }, 'variety', 'variety'), false);
   });
 });
