@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T12:56:39.806Z",
+  "generatedAt": "2026-09-05T13:28:53.088Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,27 @@
       "status": "open",
       "slug": "holy-fool-off-west-end",
       "thumbnail": "/images/shows/holy-fool-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 38,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 61.76,
+      "liveScore": 62,
+      "scoreDrift": 0.240000000000002,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
-      "t2": 1,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "total": 7,
+      "t1": 1,
+      "t2": 2,
+      "t3": 4,
+      "positive": 2,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "7/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -73,10 +72,6 @@
         {
           "name": "Daily Mail",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -109,6 +104,18 @@
           "m": 0,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T13:28:53.088Z",
+          "rc": 7,
+          "s": 61.76,
+          "t1": 1,
+          "t2": 2,
+          "t3": 4,
+          "p": 2,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -122,25 +129,23 @@
       "status": "open",
       "slug": "the-story-west-end",
       "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "siteScore": 59.39,
+      "siteScore": 58.88,
       "liveScore": 59,
-      "scoreDrift": -0.39000000000000057,
+      "scoreDrift": 0.11999999999999744,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 7,
-      "t2": 7,
+      "t2": 8,
       "t3": 5,
       "positive": 4,
       "mixed": 10,
-      "negative": 5,
+      "negative": 6,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:4/6"
-        ],
-        "highConfidence": 4,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -150,7 +155,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -240,6 +245,18 @@
           "m": 10,
           "n": 5,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T13:28:53.088Z",
+          "rc": 20,
+          "s": 58.88,
+          "t1": 7,
+          "t2": 8,
+          "t3": 5,
+          "p": 4,
+          "m": 10,
+          "n": 6,
+          "bc": "waiting"
         }
       ]
     },
@@ -253,23 +270,23 @@
       "status": "open",
       "slug": "a-month-in-the-country-west-end",
       "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 81.43,
-      "liveScore": 81,
-      "scoreDrift": -0.4300000000000068,
+      "siteScore": 78.7,
+      "liveScore": 79,
+      "scoreDrift": 0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
-      "t1": 7,
-      "t2": 6,
+      "total": 20,
+      "t1": 8,
+      "t2": 7,
       "t3": 5,
-      "positive": 16,
+      "positive": 17,
       "mixed": 2,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -420,6 +437,18 @@
           "p": 16,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T13:28:53.088Z",
+          "rc": 20,
+          "s": 78.7,
+          "t1": 8,
+          "t2": 7,
+          "t3": 5,
+          "p": 17,
+          "m": 2,
+          "n": 1,
           "bc": "waiting"
         }
       ]
