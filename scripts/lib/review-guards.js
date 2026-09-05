@@ -209,9 +209,22 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
 
   if (!strongDifferent && openingDate && publishDate) {
-    const opening = new Date(openingDate);
-    const publish = new Date(publishDate);
-    if (!isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
+    // BRO-2835: these were `new Date(...)`, which returns Invalid Date for an
+    // ordinal-suffixed publishDate ("April 18th, 2019"). The !isNaN guard then
+    // short-circuited and this safety net never fired — silently, for 4718 of
+    // 35167 dated reviews (13.4%), 529 of them carrying wrongProduction:true.
+    // BRO-1930 converted 15 publishDate call sites to parseDate on 2026-08-26
+    // and missed this one, the only one inside the guard library itself, which
+    // is why test-temporal-override-regression.js went red the same day.
+    //
+    // parseDate alone is NOT sufficient: it enforces a 1970-2030 window and
+    // returns null for the-mousetrap-west-end-2021's openingDate of 1952-11-25,
+    // which would newly EXCLUDE reviews that currently get the override. Fall
+    // back to parseHistoricalDate, which is exported for exactly this case.
+    const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
+    const opening = pd(openingDate) || phd(openingDate);
+    const publish = pd(publishDate) || phd(publishDate);
+    if (opening && publish && !isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
         if (wpFlag) resultWpConfidence = 'low';
