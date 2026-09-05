@@ -1,47 +1,133 @@
 {
-  "updatedAt": "2026-09-05T14:13:19.727Z",
-  "processed": 164,
-  "failed": 3222,
-  "successRate": "4.8%",
+  "updatedAt": "2026-09-05T14:19:34.617Z",
+  "processed": 174,
+  "failed": 3262,
+  "successRate": "5.1%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 103,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 1,
+    "browserbase": 28,
+    "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 38,
+    "brightdata": 41,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 23
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-09-05T13:57:22.210Z",
-      "event": "bb-session",
-      "session": "99551aee",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+      "t": "2026-09-05T12:12:50.191Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     },
     {
-      "t": "2026-09-05T13:57:23.087Z",
+      "t": "2026-09-05T12:13:07.592Z",
+      "event": "bb-session",
+      "session": "139e87f9",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-05T12:13:12.105Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-05T12:16:32.953Z",
+      "event": "bb-session",
+      "session": "9f9fc6be",
+      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
+    },
+    {
+      "t": "2026-09-05T12:16:40.631Z",
+      "event": "bb-session",
+      "session": "0431137a",
+      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
+    },
+    {
+      "t": "2026-09-05T12:25:22.231Z",
+      "event": "bb-session",
+      "session": "dfb1b98d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-09-05T12:37:07.684Z",
+      "event": "bb-session",
+      "session": "147ae17d",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-09-05T12:37:08.542Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-05T13:59:56.278Z",
+      "t": "2026-09-05T12:38:22.563Z",
       "event": "bb-session",
-      "session": "520664ae",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+      "session": "f270049f",
+      "url": "http://www.publictheater.org/"
     },
     {
-      "t": "2026-09-05T13:59:57.129Z",
+      "t": "2026-09-05T12:38:43.750Z",
+      "event": "bb-session",
+      "session": "5ca2d25e",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-09-05T12:42:16.031Z",
+      "event": "bb-session",
+      "session": "089dd0d6",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-05T12:42:34.756Z",
+      "event": "bb-session",
+      "session": "6cf4e8c3",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-05T14:02:49.057Z",
+      "event": "bb-session",
+      "session": "0c1fe640",
+      "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.h"
+    },
+    {
+      "t": "2026-09-05T14:02:50.208Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-09-05T14:06:20.227Z",
+      "t": "2026-09-05T14:14:12.968Z",
       "event": "bb-session",
-      "session": "5aa6aa71",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "45c0dc89",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+    },
+    {
+      "t": "2026-09-05T14:14:14.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:16:30.745Z",
+      "event": "bb-session",
+      "session": "c34dacc0",
+      "url": "https://www.nytimes.com/2026/06/25/theater/the-loved-ones-review-maryann-plunket"
+    },
+    {
+      "t": "2026-09-05T14:16:31.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:18:02.535Z",
+      "event": "bb-session",
+      "session": "a719efc5",
+      "url": "https://www.facebook.com/LastShipMusical/posts/sting-takes-the-stage-in-the-last"
+    },
+    {
+      "t": "2026-09-05T14:18:22.801Z",
+      "event": "bb-session",
+      "session": "e1240dca",
+      "url": "https://www.facebook.com/LastShipMusical/posts/sting-takes-the-stage-in-the-last"
     }
   ]
 }
