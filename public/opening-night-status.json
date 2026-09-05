@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T13:28:53.088Z",
+  "generatedAt": "2026-09-05T15:36:13.489Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,25 @@
       "status": "open",
       "slug": "holy-fool-off-west-end",
       "thumbnail": "/images/shows/holy-fool-off-west-end-2026/thumbnail.webp",
-      "siteScore": 61.76,
-      "liveScore": 62,
-      "scoreDrift": 0.240000000000002,
+      "siteScore": 57.82,
+      "liveScore": 58,
+      "scoreDrift": 0.17999999999999972,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 14,
       "t1": 1,
-      "t2": 2,
-      "t3": 4,
-      "positive": 2,
-      "mixed": 4,
-      "negative": 1,
+      "t2": 3,
+      "t3": 10,
+      "positive": 3,
+      "mixed": 7,
+      "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
-          "T1:0/3",
-          "hi-conf:2/6"
+          "T1:0/3"
         ],
-        "highConfidence": 2,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -84,10 +82,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         }
@@ -116,6 +110,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T15:36:13.489Z",
+          "rc": 14,
+          "s": 57.82,
+          "t1": 1,
+          "t2": 3,
+          "t3": 10,
+          "p": 3,
+          "m": 7,
+          "n": 4,
+          "bc": "waiting"
         }
       ]
     },
@@ -129,19 +135,19 @@
       "status": "open",
       "slug": "the-story-west-end",
       "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "siteScore": 58.88,
+      "siteScore": 58.95,
       "liveScore": 59,
-      "scoreDrift": 0.11999999999999744,
+      "scoreDrift": 0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 7,
-      "t2": 8,
-      "t3": 5,
+      "total": 19,
+      "t1": 8,
+      "t2": 7,
+      "t3": 4,
       "positive": 4,
       "mixed": 10,
-      "negative": 6,
+      "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
@@ -160,10 +166,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -257,6 +259,18 @@
           "m": 10,
           "n": 6,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T15:36:13.489Z",
+          "rc": 19,
+          "s": 58.95,
+          "t1": 8,
+          "t2": 7,
+          "t3": 4,
+          "p": 4,
+          "m": 10,
+          "n": 5,
+          "bc": "waiting"
         }
       ]
     },
@@ -270,18 +284,18 @@
       "status": "open",
       "slug": "a-month-in-the-country-west-end",
       "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.7,
-      "liveScore": 79,
-      "scoreDrift": 0.29999999999999716,
+      "siteScore": 78.39,
+      "liveScore": 78,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 21,
       "t1": 8,
-      "t2": 7,
+      "t2": 8,
       "t3": 5,
       "positive": 17,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": true,
@@ -448,6 +462,18 @@
           "t3": 5,
           "p": 17,
           "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-05T15:36:13.489Z",
+          "rc": 21,
+          "s": 78.39,
+          "t1": 8,
+          "t2": 8,
+          "t3": 5,
+          "p": 17,
+          "m": 3,
           "n": 1,
           "bc": "waiting"
         }
