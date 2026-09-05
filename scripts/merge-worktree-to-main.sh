@@ -436,7 +436,18 @@ else
     log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
     if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
       restore_stash
-      die "post-merge test floor failed — the MERGED tree has a NEW-since-origin/main scripts/lib/ colocated test failure (likely a semantic collision between two branches, see task #1149/#1433). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
+      # BRO-2874, four field reproductions: this used to assert flatly that "the
+      # MERGED tree has a NEW-since-origin/main colocated test failure" for ANY
+      # non-zero exit of the gate. That is only ONE of the reasons the gate
+      # fails. It also fails when the child crashed or timed out and NO
+      # individual test failure could be parsed at all (observed as status=7,
+      # and as a spawn-layer error where status is null) — cases in which the
+      # merged tree may be perfectly clean. The gate prints its own
+      # "post-merge test floor: FAILED (<reason>)" line immediately above,
+      # naming the real cause; quote that rather than restating a cause this
+      # script cannot distinguish. Same shape as the node --check floor above,
+      # which prints the real stderr before hedging.
+      die "post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure (a semantic collision between two branches, see task #1149/#1433) from a crashed or timed-out run whose output could not be parsed at all. It may be well above this line, after the full test output. Do not assume the former without reading it. If NO such line appears at all, the gate itself failed to start (look for a node stack trace, e.g. a missing scripts/lib/ dependency) and neither diagnosis applies. Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
     fi
   fi
 fi
