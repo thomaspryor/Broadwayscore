@@ -1006,11 +1006,12 @@ async function main() {
     // check can never catch that: vanished keys read as "absent", and absent is
     // never invalid. Only a positive count does.
     //
-    // The positive check is ADVISORY, not a --strict failure, because it is
-    // failing RIGHT NOW (0 outlets armed) and turning it hard would redden main
-    // for every session before the keys are restored. Restoring them changes
-    // rebuild output and needs scoring-delta, so it is tracked separately on
-    // BRO-2776. Make this a hard failure in the same change that restores them.
+    // The positive check WAS advisory while 0 outlets were armed. The 6 keys
+    // were restored on 2026-09-05 (nytimes, vulture, newyorker, washpost, nysr,
+    // new-york-sun) and it is now a HARD --strict failure, as promised. A drop
+    // back to zero silently kills the defer-gate at 8 call sites in
+    // rebuild-all-reviews.js, which is exactly what merge 4014d52077 did on
+    // 2026-05-16 with nobody noticing.
     const cvRegistry = loadRegistry();
     const badCvStyles = findInvalidCvStyles(cvRegistry);
     const armedCvStyles = countArmedCvStyles(cvRegistry);

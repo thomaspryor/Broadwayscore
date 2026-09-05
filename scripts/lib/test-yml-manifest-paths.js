@@ -72,7 +72,7 @@ function findManifestPathGaps(repoRoot) {
 // itself mean a test never runs — two of the four have their own dedicated
 // test.yml steps and are deliberately kept OUT of the manifest batch (see the
 // quarantine below). The other two really did run nowhere, and one had rotted
-// unnoticed: should-defer-cv-wrong-show.test.mjs was failing 2 of its 9
+// unnoticed: should-defer-cv-wrong-show.test.mjs was failing 2 of its
 // assertions because the guard it covers had gone completely inert (BRO-2776 —
 // no outlet in outlet-registry.json carried a cvStyle, so
 // shouldDeferCvWrongShow() could never return true and 8 call sites in
@@ -176,7 +176,13 @@ function listTestFilesOnDisk(repoRoot) {
  * @param {string} repoRoot
  * @returns {{orphans: string[], quarantined: {test: string, reason: string}[], staleQuarantine: string[], brokenExemptions: string[]}}
  */
-function findUnregisteredTests(repoRoot) {
+// `quarantine` is injectable so this guard's OWN tests can drive it with a
+// synthetic entry instead of whichever real card happens to sit at index 0.
+// Reading a live entry made the fixtures depend on that entry's SHAPE: entries
+// whose reason contains RUNS_AT_OWN_STEP route to brokenExemptions, not
+// quarantined, so 2 of the 3 real entries produce quarantined:0 and would red
+// main the moment the first one retired (review 2026-09-05).
+function findUnregisteredTests(repoRoot, quarantine = UNREGISTERED_TEST_QUARANTINE) {
   const registered = new Set();
   for (const manifest of MANIFEST_FILES) {
     const abs = path.join(repoRoot, manifest);
@@ -207,7 +213,7 @@ function findUnregisteredTests(repoRoot) {
   const brokenExemptions = [];
   for (const rel of onDisk) {
     if (registered.has(rel)) continue;
-    const reason = UNREGISTERED_TEST_QUARANTINE.get(rel);
+    const reason = quarantine.get(rel);
     if (!reason) {
       orphans.push(rel);
       continue;
@@ -227,7 +233,7 @@ function findUnregisteredTests(repoRoot) {
   // Reported, never fatal: the exemption has simply stopped applying, and
   // failing the build for a tidy-up would punish the person who fixed it.
   const onDiskSet = new Set(onDisk);
-  const staleQuarantine = [...UNREGISTERED_TEST_QUARANTINE.keys()].filter(
+  const staleQuarantine = [...quarantine.keys()].filter(
     (t) => registered.has(t) || !onDiskSet.has(t)
   );
 
