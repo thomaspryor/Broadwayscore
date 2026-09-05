@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-09-05T13:58:18.591Z",
-  "processed": 142,
-  "failed": 3164,
-  "successRate": "4.3%",
+  "updatedAt": "2026-09-05T14:03:04.813Z",
+  "processed": 150,
+  "failed": 3166,
+  "successRate": "4.5%",
   "tierBreakdown": {
-    "playwright": 86,
+    "playwright": 90,
     "amp": 0,
-    "browserbase": 22,
+    "browserbase": 24,
     "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 30,
+    "brightdata": 33,
     "archiveToday": 0,
     "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-05T11:55:11.067Z",
-      "event": "bb-session",
-      "session": "892d6c19",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-05T11:58:57.367Z",
-      "event": "bb-session",
-      "session": "711b911f",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
     {
       "t": "2026-09-05T11:58:58.219Z",
       "event": "bb-cookie-inject",
@@ -129,6 +117,17 @@
       "event": "bb-session",
       "session": "6cf4e8c3",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-05T14:02:49.057Z",
+      "event": "bb-session",
+      "session": "0c1fe640",
+      "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.h"
+    },
+    {
+      "t": "2026-09-05T14:02:50.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

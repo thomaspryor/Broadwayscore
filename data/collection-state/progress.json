@@ -141,7 +141,15 @@
     "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-recs--unknown.json",
     "heathers-the-musical-off-broadway-2025/fairypoweredproductions--unknown.json",
-    "austentatious-an-improvised-jane-austen-novel-west-end-2025/london-theatre--unknown.json"
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/london-theatre--unknown.json",
+    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+    "the-enormous-crocodile-west-end-2026/theschooltrip--unknown.json",
+    "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+    "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+    "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+    "malory-towers-off-west-end-2026/timeout-london--isobel-lewis.json",
+    "the-gin-game-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
@@ -3307,7 +3315,9 @@
     "the-car-man-west-end-2026/independent--zoe-anderson.json",
     "the-car-man-west-end-2026/standard--lyndsey-winship.json",
     "the-car-man-west-end-2026/the-list--unknown.json",
-    "the-car-man-west-end-2026/thestage--dave-fargnoli.json"
+    "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+    "the-enormous-crocodile-west-end-2026/jadar--unknown.json",
+    "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3397,7 +3407,11 @@
       "spellbound-off-broadway-2026/theater-life--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-recs--unknown.json",
       "heathers-the-musical-off-broadway-2025/fairypoweredproductions--unknown.json",
-      "austentatious-an-improvised-jane-austen-novel-west-end-2025/london-theatre--unknown.json"
+      "austentatious-an-improvised-jane-austen-novel-west-end-2025/london-theatre--unknown.json",
+      "the-enormous-crocodile-west-end-2026/theschooltrip--unknown.json",
+      "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+      "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+      "malory-towers-off-west-end-2026/timeout-london--isobel-lewis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -3422,7 +3436,9 @@
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
-      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json"
+      "data/review-texts/cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/the-gin-game-2026/nytimes--laura-collins-hughes.json",
+      "the-gin-game-2026/nytimes--laura-collins-hughes.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -3462,7 +3478,10 @@
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
       "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
       "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
-      "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json"
+      "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json",
+      "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+      "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -3491,7 +3510,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "the-gin-game-2026/nytimes--laura-collins-hughes.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -3993,6 +4012,17 @@
       "event": "bb-session",
       "session": "6cf4e8c3",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-05T14:02:49.057Z",
+      "event": "bb-session",
+      "session": "0c1fe640",
+      "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.h"
+    },
+    {
+      "t": "2026-09-05T14:02:50.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
