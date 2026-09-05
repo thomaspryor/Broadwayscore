@@ -2556,7 +2556,17 @@
     "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
     "the-producers-west-end-2025/thestage--paul-vale.json",
     "burlesque-west-end-2026/broadwayworld--unknown.json",
-    "burlesque-west-end-2026/frontmezzjunkies--unknown.json"
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2644,7 +2654,8 @@
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -2701,7 +2712,7 @@
     ]
   },
   "startTime": "2026-09-04T14:47:50.500Z",
-  "lastProcessed": "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-09-04T14:52:47.102Z",
@@ -3094,6 +3105,17 @@
       "event": "bb-session",
       "session": "892d6c19",
       "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-09-05T11:58:57.367Z",
+      "event": "bb-session",
+      "session": "711b911f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-05T11:58:58.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
