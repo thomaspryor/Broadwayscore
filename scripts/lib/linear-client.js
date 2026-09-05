@@ -423,20 +423,26 @@ async function createComment(issueId, body) {
 // duplicate and `relatedIssueId` the canonical twin, never the reverse.
 // Both arguments are UUIDs, not BRO-N identifiers — issueRelationCreate does
 // not resolve human-readable identifiers the way `issue(id:)` does.
+// withArchivedIssueRetry, exactly like createComment/updateIssue: this is the
+// FIRST write of a duplicate close, so without it an archived issue fails at
+// step 1 where the pre-existing comment/state path would have self-healed
+// (codebase review, 2026-09-05).
 async function createIssueRelation(issueId, relatedIssueId, type = 'duplicate') {
-  const data = await graphql(
-    `mutation($issueId: String!, $relatedIssueId: String!, $type: IssueRelationType!) {
-      issueRelationCreate(input: { issueId: $issueId, relatedIssueId: $relatedIssueId, type: $type }) {
-        success
-        issueRelation { id type }
-      }
-    }`,
-    { issueId, relatedIssueId, type }
-  );
-  if (!data.issueRelationCreate || !data.issueRelationCreate.success) {
-    throw new Error(`issueRelationCreate(${type}) failed for issue ${issueId} -> ${relatedIssueId}`);
-  }
-  return data.issueRelationCreate.issueRelation;
+  return withArchivedIssueRetry(issueId, async () => {
+    const data = await graphql(
+      `mutation($issueId: String!, $relatedIssueId: String!, $type: IssueRelationType!) {
+        issueRelationCreate(input: { issueId: $issueId, relatedIssueId: $relatedIssueId, type: $type }) {
+          success
+          issueRelation { id type }
+        }
+      }`,
+      { issueId, relatedIssueId, type }
+    );
+    if (!data.issueRelationCreate || !data.issueRelationCreate.success) {
+      throw new Error(`issueRelationCreate(${type}) failed for issue ${issueId} -> ${relatedIssueId}`);
+    }
+    return data.issueRelationCreate.issueRelation;
+  });
 }
 
 // Archive a Done/Canceled issue so it stops counting against the free-tier

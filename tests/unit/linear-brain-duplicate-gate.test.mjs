@@ -236,53 +236,7 @@ test('refused (exit 1): --duplicate-of with a comment but NO --state at all', ()
   assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/);
 });
 
-test('an issue ALREADY in the duplicate state is not a transition — the comment still posts', () => {
-  // The gate used to fire on any `--state Duplicate`, so re-commenting on a
-  // card already sitting in Duplicate (legacy or externally-created data) was
-  // refused and the comment suppressed. No state change is requested, so
-  // there is nothing for Linear to validate.
-  const script = `
-    const { main } = require('./scripts/linear-brain.js');
-    const issue = ${JSON.stringify({ ...makeIssue({ nodes: [] }), state: { id: 'state-dup', name: 'Duplicate', type: 'duplicate' } })};
-    main(['update','BRO-9711','--state','Duplicate','--comment','still a dupe'], {
-      getIssue: async () => issue,
-      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
-      createIssueRelation: async () => { console.error('RELATION_CREATED'); },
-      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
-      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
-    });
-  `;
-  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
-  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
-  assert.match(res.stderr, /CREATE_COMMENT_CALLED/);
-  assert.doesNotMatch(res.stderr, /REFUSED/);
-});
 
-test('LINEAR_DUPLICATE_GATE_DISABLED=1 restores the pre-gate behaviour', () => {
-  // The gate encodes a server rule we OBSERVED, not one Linear documents. If
-  // that rule ever relaxes, this kill switch (matching LINEAR_DONE_GATE_DISABLED)
-  // is the rollback path that does not need a code change.
-  const script = `
-    const { main } = require('./scripts/linear-brain.js');
-    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
-    main(['update','BRO-9711','--state','Duplicate'], {
-      getIssue: async () => issue,
-      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
-      createIssueRelation: async () => { console.error('RELATION_CREATED'); },
-      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
-      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
-    });
-  `;
-  const res = spawnSync(process.execPath, ['-e', script], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-    timeout: 15000,
-    env: { ...process.env, LINEAR_DUPLICATE_GATE_DISABLED: '1' },
-  });
-  assert.equal(res.status, 0, `expected exit 0 with the gate disabled, got ${res.status}. stderr:\n${res.stderr}`);
-  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
-  assert.doesNotMatch(res.stderr, /REFUSED/);
-});
 
 test('the success JSON names the canonical twin, both when created and when pre-existing', () => {
   // Without this the operator cannot tell from the output whether the relation
@@ -312,4 +266,164 @@ test('a non-duplicate update does NOT carry a duplicateOf key at all', () => {
   });
   assert.equal(res.status, 0, res.stderr);
   assert.ok(!('duplicateOf' in JSON.parse(res.stdout)), 'duplicateOf must be absent, not null');
+});
+
+// ── codebase-review findings, 2026-09-05 (second review round) ─────────────
+
+test('an issue ALREADY in the duplicate state issues NO state write at all', () => {
+  // The gate is skipped for a non-transition, so leaving `if (target)` writing
+  // unconditionally handed Linear a duplicate-state mutation the gate never
+  // validated — walking straight back into the BRO-2711 partial write on the
+  // exact case the skip exists for. The earlier version of this test stubbed
+  // updateIssue to succeed and so proved only that the gate skipped.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify({ ...makeIssue({ nodes: [] }), state: { id: 'state-dup', name: 'Duplicate', type: 'duplicate' } })};
+    main(['update','BRO-9711','--state','Duplicate','--comment','still a dupe'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => { console.error('RELATION_CREATED'); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /CREATE_COMMENT_CALLED/, 'the comment must still post');
+  assert.doesNotMatch(
+    res.stderr,
+    /UPDATE_ISSUE_CALLED/,
+    'a no-op state write must not be sent — Linear would validate it and fail after the comment landed'
+  );
+  assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('LINEAR_DUPLICATE_GATE_DISABLED=1 still HONOURS --duplicate-of instead of dropping it', () => {
+  // Wiring the kill switch around the whole block made the one escape hatch
+  // also remove the one way to satisfy the rule it was escaping.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    const canonical = ${JSON.stringify(CANONICAL)};
+    main(['update','BRO-9711','--state','Duplicate','--duplicate-of','BRO-9823'], {
+      getIssue: async (ref) => (ref === 'BRO-9823' ? canonical : issue),
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async (a, b) => { console.error('RELATION_CREATED ' + a + ' -> ' + b); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    timeout: 15000,
+    env: { ...process.env, LINEAR_DUPLICATE_GATE_DISABLED: '1' },
+  });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /RELATION_CREATED issue-uuid-2711 -> issue-uuid-2823/);
+});
+
+test('LINEAR_DUPLICATE_GATE_DISABLED=1 warns that the partial-write hazard is back', () => {
+  // Proceeding silently past the gate is how the kill switch becomes a
+  // footgun: while the server rule holds, its only reachable outcome is the
+  // partial write the gate exists to prevent. Say so.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    main(['update','BRO-9711','--state','Duplicate','--comment','x'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => {},
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    timeout: 15000,
+    env: { ...process.env, LINEAR_DUPLICATE_GATE_DISABLED: '1' },
+  });
+  assert.equal(res.status, 0, res.stderr);
+  assert.match(res.stderr, /LINEAR_DUPLICATE_GATE_DISABLED=1 — proceeding past no-duplicate-relation/);
+  assert.match(res.stderr, /partial write/);
+});
+
+test('a state move that FAILS after relation + comment landed reports exactly what landed', () => {
+  // The partial-write story is the entire point of this change and nothing
+  // exercised the catch path. An operator who cannot tell which of the three
+  // writes survived will re-run and double-post.
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    const canonical = ${JSON.stringify(CANONICAL)};
+    main(['update','BRO-9711','--state','Duplicate','--duplicate-of','BRO-9823','--comment','x'], {
+      getIssue: async (ref) => (ref === 'BRO-9823' ? canonical : issue),
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => {},
+      createComment: async () => {},
+      updateIssue: async () => { throw new Error('simulated Linear outage on the state write'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.notEqual(res.status, 0, 'a failed state write must not exit 0');
+  assert.match(res.stderr, /partially applied before the error/);
+  assert.match(res.stderr, /marked duplicate of BRO-9823/, 'the relation step must be named in what landed');
+  assert.match(res.stderr, /comment posted/);
+  assert.doesNotMatch(res.stderr, /state → Duplicate/, 'the state write did NOT land and must not be claimed');
+});
+
+test('a FAILING createIssueRelation leaves the comment and state unwritten', () => {
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    const canonical = ${JSON.stringify(CANONICAL)};
+    main(['update','BRO-9711','--state','Duplicate','--duplicate-of','BRO-9823','--comment','x'], {
+      getIssue: async (ref) => (ref === 'BRO-9823' ? canonical : issue),
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async () => { throw new Error('simulated relation failure'); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.notEqual(res.status, 0);
+  assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/, 'relation is first — nothing after it may run');
+  assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/);
+});
+
+test('the existing-relation branch is really exercised, not merely un-triggered', () => {
+  // The earlier "no RELATION_CREATED" assertion used an argv with no
+  // --duplicate-of, so it held even if the branch were deleted. Pass
+  // --duplicate-of naming the SAME twin: only a live existing-relation branch
+  // suppresses the create.
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9823'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'issue-uuid-2823', identifier: 'BRO-9823' } }] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, res.stderr);
+  assert.doesNotMatch(res.stderr, /RELATION_CREATED/, 'an existing relation must suppress the create');
+  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.equal(JSON.parse(res.stdout).duplicateOf, 'BRO-9823');
+});
+
+test('--duplicate-of matching the existing twin case-insensitively is NOT a mismatch', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'bro-9823'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'issue-uuid-2823', identifier: 'BRO-9823' } }] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `case difference must not be a mismatch. stderr:\n${res.stderr}`);
+  assert.doesNotMatch(res.stderr, /duplicate-target-mismatch/);
+});
+
+test('--duplicate-of naming the twin by UUID when the relation carries both is NOT a mismatch', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'issue-uuid-2823'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'issue-uuid-2823', identifier: 'BRO-9823' } }] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `a UUID naming the same issue must not be a mismatch. stderr:\n${res.stderr}`);
+  assert.doesNotMatch(res.stderr, /duplicate-target-mismatch/);
 });

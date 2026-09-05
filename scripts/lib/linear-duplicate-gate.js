@@ -47,6 +47,11 @@
 
 const DUPLICATE_STATE_TYPE = 'duplicate';
 
+// What existingDuplicateTarget reports when the relation node carries neither
+// an identifier nor an id. It is a LABEL, never something to compare against
+// or to echo back as a --duplicate-of argument.
+const UNNAMED_TARGET = 'an unnamed issue';
+
 // Kept in step with buildIssueQuery()'s `relations(first: N)` in
 // linear-dispatch.js, which interpolates this constant so the two cannot
 // drift. The gate needs the number to know whether a full page came back —
@@ -75,9 +80,24 @@ function existingDuplicateTarget(relations) {
   for (const node of relationNodes(relations)) {
     if (!node || node.type !== DUPLICATE_STATE_TYPE) continue;
     const related = node.relatedIssue || {};
-    return related.identifier || related.id || 'an unnamed issue';
+    return related.identifier || related.id || UNNAMED_TARGET;
   }
   return null;
+}
+
+/**
+ * Every handle we know for the existing twin: its BRO-N identifier AND its
+ * UUID. `--duplicate-of` is compared against BOTH, because the relation node
+ * can come back carrying only an id, and comparing a UUID to "BRO-2823"
+ * would manufacture a mismatch out of two names for the same issue.
+ */
+function existingDuplicateHandles(relations) {
+  for (const node of relationNodes(relations)) {
+    if (!node || node.type !== DUPLICATE_STATE_TYPE) continue;
+    const related = node.relatedIssue || {};
+    return [related.identifier, related.id].filter(Boolean).map((h) => String(h).trim().toLowerCase());
+  }
+  return [];
 }
 
 /**
@@ -128,7 +148,16 @@ function checkLinearDuplicateTransition({ targetStateType, relations, duplicateO
     // mentioned BRO-20. The operator had no way to see which twin the card
     // ended up naming. Two different answers to "which issue is this a
     // duplicate of" is an operator error, so refuse and make them pick.
-    if (asked && asked !== existingTarget) {
+    // Compare against EVERY handle we know for the existing twin, lowercased.
+    // A raw case-sensitive compare against the identifier alone turned
+    // `--duplicate-of bro-2823` (and a relation node carrying only a UUID)
+    // into a false mismatch that blocked a legitimate close (codebase review,
+    // 2026-09-05). And when the node named NOTHING we can compare against,
+    // asserting disagreement is manufacturing a signal out of an absent one —
+    // in this direction the refusal is the wrong answer, so allow it through.
+    const handles = existingDuplicateHandles(relations);
+    const disagrees = asked && handles.length > 0 && !handles.includes(asked.toLowerCase());
+    if (disagrees) {
       return {
         gated: true,
         allowed: false,
@@ -191,6 +220,7 @@ module.exports = {
   RELATIONS_PAGE_SIZE,
   relationNodes,
   existingDuplicateTarget,
+  existingDuplicateHandles,
   relationsPageMaybeTruncated,
   checkLinearDuplicateTransition,
 };

@@ -343,14 +343,26 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // finding). No state change is being requested, so there is nothing for
       // Linear to validate and nothing for this gate to guard.
       const isRealTransition = Boolean(target && issue.state && issue.state.id !== target.id);
-      if (isRealTransition && target.type === DUPLICATE_STATE_TYPE
-          && process.env.LINEAR_DUPLICATE_GATE_DISABLED !== '1') {
+      if (isRealTransition && target.type === DUPLICATE_STATE_TYPE) {
         const dupGate = checkLinearDuplicateTransition({
           targetStateType: target.type,
           relations: issue.relations,
           duplicateOf: args['duplicate-of'],
         });
-        if (!dupGate.allowed) {
+        // The kill switch suppresses the REFUSAL, never the relation work
+        // below. Wiring it around the whole block made
+        // `LINEAR_DUPLICATE_GATE_DISABLED=1 ... --duplicate-of BRO-N` silently
+        // drop the flag, so the one escape hatch also removed the one way to
+        // satisfy the rule it was escaping (codebase review, 2026-09-05).
+        const gateDisabled = process.env.LINEAR_DUPLICATE_GATE_DISABLED === '1';
+        if (!dupGate.allowed && gateDisabled) {
+          console.error(
+            `⚠️  LINEAR_DUPLICATE_GATE_DISABLED=1 — proceeding past ${dupGate.verdict}.\n` +
+              `   If Linear still enforces the rule, the state write below will fail AFTER any\n` +
+              `   --comment has posted; that partial write is exactly what this gate prevents.`
+          );
+        }
+        if (!dupGate.allowed && !gateDisabled) {
           console.error(`\n❌ REFUSED (${dupGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
           console.error(dupGate.reason);
           // Only print the fill-in-the-blank command for the MISSING-relation
@@ -411,7 +423,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           commented = true;
           landed.push('comment posted');
         }
-        if (target) {
+        if (target && !isRealTransition && target.type === DUPLICATE_STATE_TYPE) {
+          // Already in the requested duplicate state. The gate deliberately
+          // skips a non-transition, so sending the write anyway would hand
+          // Linear a duplicate-state mutation the gate never validated —
+          // reopening the BRO-2711 partial write on the exact case the skip
+          // exists for (codebase review, 2026-09-05).
+          //
+          // Scoped to duplicate-type targets ON PURPOSE. Suppressing every
+          // no-op state write looked like a free win and was not: it broke
+          // tests/unit/linear-brain-done-gate.test.mjs's "not gated: moving to
+          // a non-completed state" case, whose fixture moves an In-Progress
+          // issue to In Progress and asserts the write fires. Only the
+          // duplicate mutation carries a server-side precondition, so only it
+          // is dangerous to send unvalidated; changing the other state types'
+          // long-standing behaviour is not this change's business.
+          landed.push(`state already ${target.name} — no write needed`);
+        } else if (target) {
           await updateIssueFn(issue.id, { stateId: target.id });
           landed.push(`state → ${target.name}`);
         }
