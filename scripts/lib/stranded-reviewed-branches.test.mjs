@@ -4,7 +4,12 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 // require() the REAL module, never a copy of its logic (CLAUDE.md rule 15).
-const { bestVerdictByBranch, findStrandedReviewedBranches, hasUsableVerdicts } = require('./stranded-reviewed-branches.js');
+const {
+  bestVerdictByBranch,
+  findStrandedReviewedBranches,
+  hasUsableVerdicts,
+  sweepIsTrustworthy,
+} = require('./stranded-reviewed-branches.js');
 
 test('a branch with a passing verdict and unreachable commits is reported as stranded-reviewed', () => {
   const branches = [{ branch: 'job/linear-BRO-2424', ahead: 9, dirty: 0, lastCommitDate: '2026-08-26' }];
@@ -47,10 +52,22 @@ test('a FAILING verdict does not qualify a stranded branch as reviewed', () => {
   assert.equal(out.unreviewed.length, 1);
 });
 
-test('a pass beats a later fail for the same branch (fixed-then-approved keeps the work visible)', () => {
+test('a LATER fail supersedes an earlier pass — rejected work is not reported as approved', () => {
+  // An earlier version preferred any pass over a later fail. Adversarial review
+  // showed that is backwards: pass-then-fail describes work that was approved and
+  // subsequently REJECTED, so honouring the stale pass would report rejected work
+  // as "finished work at risk" and train people to ignore the report.
   const verdicts = [
     { branch: 'b', result: 'pass', reviewer: 'ship-check', gatedLines: 10, ts: '2026-09-01T10:00:00Z' },
     { branch: 'b', result: 'fail', reviewer: 'ship-check', gatedLines: 10, ts: '2026-09-02T10:00:00Z' },
+  ];
+  assert.equal(bestVerdictByBranch(verdicts).get('b').result, 'fail');
+});
+
+test('a later pass supersedes an earlier fail — fixed-then-approved work is still reported', () => {
+  const verdicts = [
+    { branch: 'b', result: 'fail', reviewer: 'ship-check', gatedLines: 10, ts: '2026-09-01T10:00:00Z' },
+    { branch: 'b', result: 'pass', reviewer: 'ship-check', gatedLines: 10, ts: '2026-09-02T10:00:00Z' },
   ];
   assert.equal(bestVerdictByBranch(verdicts).get('b').result, 'pass');
 });
@@ -123,4 +140,36 @@ test('hasUsableVerdicts is false for a missing, empty or branchless ledger (fail
 
 test('hasUsableVerdicts is true as soon as one verdict names a branch', () => {
   assert.equal(hasUsableVerdicts([{ branch: 'b', result: 'fail' }]), true);
+});
+
+test('a sweep that classified ZERO worktrees is not trustworthy, however clean it looks', () => {
+  // The headline failure mode: every per-worktree git call fails, nothing is
+  // measured, and the report says "0 branches at risk" with exit 0.
+  const t = sweepIsTrustworthy({ scanned: 0, skipped: 40, fetchOk: true });
+  assert.equal(t.trustworthy, false);
+  assert.match(t.reason, /zero worktree branches/);
+});
+
+test('a sweep with ANY unclassified worktree is not trustworthy — stranded work may hide there', () => {
+  const t = sweepIsTrustworthy({ scanned: 39, skipped: 1, fetchOk: true });
+  assert.equal(t.trustworthy, false);
+  assert.match(t.reason, /could not be classified/);
+});
+
+test('a sweep measured against a stale origin/main is not trustworthy', () => {
+  // A failed fetch can hide stranded work outright after a remote history rewrite,
+  // so it invalidates the run rather than merely adding noise.
+  const t = sweepIsTrustworthy({ scanned: 40, skipped: 0, fetchOk: false });
+  assert.equal(t.trustworthy, false);
+  assert.match(t.reason, /origin\/main/);
+});
+
+test('a complete sweep against a fresh origin/main IS trustworthy', () => {
+  const t = sweepIsTrustworthy({ scanned: 40, skipped: 0, fetchOk: true });
+  assert.equal(t.trustworthy, true);
+});
+
+test('sweepIsTrustworthy treats missing or malformed input as untrustworthy, not as fine', () => {
+  assert.equal(sweepIsTrustworthy(undefined).trustworthy, false);
+  assert.equal(sweepIsTrustworthy({}).trustworthy, false);
 });

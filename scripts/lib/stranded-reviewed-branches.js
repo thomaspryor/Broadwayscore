@@ -16,30 +16,32 @@
 // real branch and verdict data.
 
 /**
- * Reduce a verdict ledger to the best verdict per branch.
+ * Reduce a verdict ledger to the CURRENT verdict per branch: the latest by ts.
  *
- * "Best" deliberately prefers a pass over a later fail. A branch that failed
- * review, was fixed, and passed can legitimately have both, and ordering in the
- * ledger is not guaranteed to reflect that sequence. Preferring the pass keeps a
- * genuinely-approved branch visible rather than silently dropping it; the cost of
- * a false positive here is one line of report output, while the cost of a false
- * negative is losing reviewed work.
+ * An earlier version preferred a pass over a later fail, reasoning that a branch
+ * could have failed, been fixed, and passed. Adversarial review (Codex, 2026-09-05)
+ * pointed out that this is backwards: if the pass is earlier and the fail is later,
+ * the chronology describes work that PASSED and was then REJECTED, so honouring the
+ * stale pass reports rejected work as "finished work at risk". The latest verdict is
+ * the current one, in both directions.
+ *
+ * KNOWN LIMITATION, deliberately not solved here: verdicts are keyed by branch NAME,
+ * not by reviewed commit SHA, so a pass recorded against one commit still matches
+ * after new commits are added to the same branch. This report therefore says "this
+ * branch was approved at some point and has not landed", not "every commit on it is
+ * approved". That is the right claim for a report whose purpose is to stop finished
+ * work being lost; binding verdicts to commit OIDs would be a change to the verdict
+ * ledger format, which is out of scope for a read-only audit.
  *
  * @param {Array<{branch?: string, result?: string, ts?: string, reviewer?: string, gatedLines?: number}>} verdicts
- * @returns {Map<string, object>} branch -> chosen verdict
+ * @returns {Map<string, object>} branch -> current verdict
  */
 function bestVerdictByBranch(verdicts) {
   const byBranch = new Map();
   for (const v of verdicts || []) {
     if (!v || typeof v.branch !== 'string' || v.branch === '') continue;
     const prev = byBranch.get(v.branch);
-    if (!prev) { byBranch.set(v.branch, v); continue; }
-    const prevPass = prev.result === 'pass';
-    const thisPass = v.result === 'pass';
-    if (thisPass && !prevPass) { byBranch.set(v.branch, v); continue; }
-    if (thisPass === prevPass && String(v.ts || '') > String(prev.ts || '')) {
-      byBranch.set(v.branch, v);
-    }
+    if (!prev || String(v.ts || '') > String(prev.ts || '')) byBranch.set(v.branch, v);
   }
   return byBranch;
 }
@@ -47,12 +49,15 @@ function bestVerdictByBranch(verdicts) {
 /**
  * Classify branches into stranded-reviewed vs stranded-unreviewed.
  *
- * A branch is STRANDED when it has at least one commit unreachable from
- * origin/main. `ahead` of 0 means every commit is already reachable, which is
- * exactly what a landed branch looks like regardless of how it landed (fast
- * forward, merge commit, squash onto an equivalent tree does NOT count and will
- * show as stranded — that is intentional, since a squash leaves the branch's own
- * commits genuinely unreachable and a human should confirm the content landed).
+ * A branch is STRANDED when its caller-supplied `ahead` count is above zero.
+ *
+ * The caller decides what "ahead" means. The CLI uses `git cherry`, which counts
+ * only commits whose patch is not already upstream, so rebased and cherry-picked
+ * work correctly stops being reported. Squash merges are NOT covered: a squash
+ * collapses N commits into one whose patch-id matches none of the originals, so a
+ * squash-merged branch keeps reporting until it is deleted. That residual noise is
+ * known and is why the gate mode is opt-in. An earlier comment here claimed the
+ * opposite behaviour and was wrong; it was corrected after review.
  *
  * @param {Array<{branch: string, ahead: number, dirty?: number, lastCommitDate?: string}>} branches
  * @param {Array<object>} verdicts - raw verdict ledger entries
@@ -120,4 +125,48 @@ function hasUsableVerdicts(verdicts) {
   return verdicts.some((v) => v && typeof v.branch === 'string' && v.branch !== '');
 }
 
-module.exports = { bestVerdictByBranch, findStrandedReviewedBranches, hasUsableVerdicts };
+/**
+ * Decide whether a completed sweep is trustworthy enough to report an all-clear.
+ *
+ * Added after adversarial review (Codex, 2026-09-05) found the script's own
+ * headline failure mode still open: every per-worktree git call was wrapped so a
+ * failure became a silent skip. If all ~40 worktrees failed to classify — broken
+ * git metadata, a missing origin/main, a deleted directory — the report emitted
+ * "0 branches at risk" and exit 0, which is a false all-clear produced by checking
+ * nothing. That is the precise shape this whole script exists to detect, so it
+ * must not be able to commit it itself.
+ *
+ * @param {{scanned: number, skipped: number, fetchOk: boolean}} sweep
+ * @returns {{trustworthy: boolean, reason: string}}
+ */
+function sweepIsTrustworthy(sweep) {
+  const scanned = Number(sweep && sweep.scanned) || 0;
+  const skipped = Number(sweep && sweep.skipped) || 0;
+  const fetchOk = !!(sweep && sweep.fetchOk);
+  if (!fetchOk) {
+    return {
+      trustworthy: false,
+      reason: 'could not refresh origin/main, so reachability was measured against a possibly stale ref',
+    };
+  }
+  if (scanned === 0) {
+    return {
+      trustworthy: false,
+      reason: 'zero worktree branches were successfully classified, so an empty report proves nothing',
+    };
+  }
+  if (skipped > 0) {
+    return {
+      trustworthy: false,
+      reason: skipped + ' worktree(s) could not be classified, so stranded work may be hiding in them',
+    };
+  }
+  return { trustworthy: true, reason: 'all candidate worktrees classified against a fresh origin/main' };
+}
+
+module.exports = {
+  bestVerdictByBranch,
+  findStrandedReviewedBranches,
+  hasUsableVerdicts,
+  sweepIsTrustworthy,
+};
