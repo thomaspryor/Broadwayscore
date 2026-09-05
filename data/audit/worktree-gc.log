@@ -10582,3 +10582,37 @@
 [2026-09-05 20:37:29] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
 [2026-09-05 20:37:30] DIGEST[ios]: 19 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/feedback-overnight-2026-08-31T06-15-03 ios/feedback-overnight-2026-09-01T06-15-07 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
 [2026-09-05 20:37:30] DONE  removed=2 kept=43 skipped=28 freed=1.6GB (dry_run=0)
+[2026-09-05 21:37:32] ALERT: disk free 19GB below floor 20GB — running emergency cleanup
+[2026-09-05 21:37:43] CLEAN  xcrun simctl delete unavailable — done
+[2026-09-05 21:37:43] DIGEST: disk-floor cleanup freed 0KB — free space 19GB -> 19GB (floor 20GB)
+[2026-09-05 21:37:45] SKIP  [web] merge-gate-hook-test-probe-wt-bI9q5Q — detached HEAD, leaving alone
+[2026-09-05 21:37:45] SKIP  [web] merge-gate-hook-test-probe-wt-2AEEde — detached HEAD, leaving alone
+[2026-09-05 21:37:45] SKIP  [web] merge-gate-hook-test-probe-wt-chUJHl — detached HEAD, leaving alone
+[2026-09-05 21:37:45] SKIP  [web] merge-gate-hook-test-probe-wt-hlMhZ1 — detached HEAD, leaving alone
+[2026-09-05 21:37:45] SKIP  [web] merge-gate-hook-test-probe-wt-PbH0ZR — detached HEAD, leaving alone
+[2026-09-05 21:37:46] SKIP  [web] merge-gate-hook-test-probe-wt-TLQzTG — detached HEAD, leaving alone
+[2026-09-05 21:37:46] SKIP  [web] merge-gate-hook-test-probe-wt-uIhO9V — detached HEAD, leaving alone
+[2026-09-05 21:37:46] SKIP  [web] merge-gate-hook-test-probe-wt-xrkFRp — detached HEAD, leaving alone
+[2026-09-05 21:37:48] KEEP  [web] pre-push-hook-wt-DJJgDJ — 3 unmerged commit(s) on pre-push-test-hookwt-26b5790a
+[2026-09-05 21:37:50] KEEP  [web] pre-push-hook-wt-lf7yZ0 — 1 unmerged commit(s) on pre-push-test-hookwt-6468b6d5
+[2026-09-05 21:37:51] KEEP  [web] pre-push-hook-wt-R0rHF9 — 1 unmerged commit(s) on pre-push-test-hookwt-597e397e
+[2026-09-05 21:38:10] KEEP  [web] agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-09-05 21:38:33] SKIP  [web] BRO-155-nyt-roundup — worktree-BRO-155-nyt-roundup merged but a live process has this worktree as its cwd
+[2026-09-05 21:38:54] SKIP  [web] bro-2569-dispatch-path-check — worktree-bro-2569-dispatch-path-check merged but a live process has this worktree as its cwd
+[2026-09-05 21:38:58] KEEP  [web] bro-2588-partA-ci-fix — 1 unmerged commit(s) on bro-2588-partA-ci-fix
+[2026-09-05 21:39:05] SKIP  [web] bro-2607-gc-dryrun-parity — worktree-bro-2607-gc-dryrun-parity merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:07] SKIP  [web] bro-2708-retraction-era — worktree-bro-2708-retraction-era merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:16] SKIP  [web] bro-2776-cvstyle-restore — worktree-bro-2776-cvstyle-restore merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:25] SKIP  [web] bro-2799-weekly-integrity-push-timeout — worktree-bro-2799-weekly-integrity-push-timeout merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:28] SKIP  [web] bro-525-dmarc-ingest — worktree-bro-525-dmarc-ingest merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:39] SKIP  [web] bro-78-rageclick-labels — worktree-bro-78-rageclick-labels merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:43] KEEP  [web] bro-80-prior-run-triage — 5 unmerged commit(s) on worktree-bro-80-prior-run-triage
+[2026-09-05 21:39:48] SKIP  [web] bro2849-roundup-hosts — worktree-bro2849-roundup-hosts merged but a live process has this worktree as its cwd
+[2026-09-05 21:39:52] KEEP  [web] car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-09-05 21:40:11] KEEP  [web] claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-09-05 21:40:37] REMOVE [web] crown-v37-wiring-test-enobufs — worktree-crown-v37-wiring-test-enobufs merged, worktree removed (branch kept)
+[2026-09-05 21:40:40] SKIP  [web] crown-v38-bro2821-playbill-title-match — worktree-crown-v38-bro2821-playbill-title-match merged but a live process has this worktree as its cwd
+[2026-09-05 21:40:44] SKIP  [web] crown-v39-bro2874-die-message — worktree-crown-v39-bro2874-die-message merged but a live process has this worktree as its cwd
+[2026-09-05 21:40:46] SKIP  [web] diary-phase0c — worktree-diary-phase0c merged but worktree is LOCKED (active session: diary calendar Phase 0 picker work); not forcing
+[2026-09-05 21:40:48] KEEP  [web] job-1850-mt1uvnig — 3 unmerged commit(s) on job/1850-mt1uvnig
+[2026-09-05 21:40:53] KEEP  [web] job-1853-mta72xcr — 1 unmerged commit(s) on job/1853-mta72xcr
