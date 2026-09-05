@@ -46,5 +46,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T05:28:33.396Z"
+  },
+  {
+    "conditionKey": "cmux-launch:auth-preflight-failed",
+    "title": "cmux launch refused — claude auth preflight failed",
+    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T07:00:57.550Z"
   }
 ]
