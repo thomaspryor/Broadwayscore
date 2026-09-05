@@ -52,6 +52,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 // Leading articles, prepositions and abbreviations that carry no search signal.
 // 'new' earns its place on frequency alone: "New Amsterdam Theatre", "New World
 // Stages" and "New York Theatre Workshop" all collapse onto it.
@@ -75,8 +77,15 @@ const GENERIC = new Set([
   'studio', 'space', 'room', 'club', 'arts', 'complex', 'auditorium',
 ]);
 
+// Fold BEFORE the non-ASCII strip, never after. Stripping first deletes the
+// accented letter outright ("Théâtre" -> "thtre"), which silently changes which
+// token this function calls distinctive and sends a misspelled venue to the
+// Playbill lookup. Folding first preserves the letter ("theatre"), so an
+// accented venue name normalizes onto the same token as its unaccented spelling.
+// Same ordering as article-extractor.js:393. Guarded by the structural test in
+// tests/unit/sibling-matchers-diacritics.test.mjs (task #648).
 function normalize(token) {
-  return String(token).toLowerCase().replace(/[^a-z0-9.]/g, '');
+  return foldDiacritics(String(token).toLowerCase()).replace(/[^a-z0-9.]/g, '');
 }
 
 function isStopword(token) {
