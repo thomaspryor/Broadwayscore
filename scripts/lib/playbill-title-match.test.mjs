@@ -24,6 +24,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   titleForms,
+  venueSlug,
   venueTokens,
   playbillUrlTitleMatch,
 } = require('./playbill-title-match.js');
@@ -75,6 +76,31 @@ describe('titleForms — derived only from delimiters in the raw title', () => {
 
   test('a leading series brand yields the remainder as lossy', () => {
     assert.ok(titleForms('Encores! La Cage Aux Folles').lossy.includes('la-cage-aux-folles'));
+    assert.ok(titleForms('Encores! The Wild Party').lossy.includes('wild-party'));
+  });
+
+  test('a bang-first title that is NOT a series brand yields no lossy form', () => {
+    // The rule used to be structural — "first word ends in !, drop it" — and
+    // against the 2,942-show corpus it fired on 13 titles of which ONE was a
+    // series brand. The other 12 kept a generic remainder and threw the show's
+    // real name away. "Boop! The Musical" then matched a URL slugged
+    // "the-musical" at its own house, because a venue hit in the tail is the
+    // only gate on a lossy form.
+    for (const [title, wrongForm] of [
+      ['Boop! The Musical', 'musical'],
+      ['Gutenberg! The Musical!', 'musical'],
+      ['COPPERFIELD! THE NEW MUSICAL', 'new'],
+      ['Oh! Calcutta!', 'calcutta'],
+      ['Children! Children!', 'children'],
+      ['Pirates! The Penzance Musical', 'penzance'],
+      ['Showstopper! The Improvised Musical', 'improvised'],
+    ]) {
+      assert.deepEqual(titleForms(title).lossy, [], `${title} must yield no lossy form`);
+      const r = playbillUrlTitleMatch(
+        `${P}${wrongForm}-broadway-broadhurst-theatre-2026`,
+        { id: 'x-2026', title, venue: 'Broadhurst Theatre' }, OPTS);
+      assert.equal(r.match, false, `${title} wrongly matched "${wrongForm}" via ${r.branch}`);
+    }
   });
 
   test('"-the-play" is never an accepted form, only "-the-musical" as a legacy prefix', () => {
@@ -82,6 +108,24 @@ describe('titleForms — derived only from delimiters in the raw title', () => {
     assert.ok(!f.lossless.includes('giant-the-play'), 'Giant must not become giant-the-play');
     assert.ok(!f.lossy.includes('giant-the-play'));
     assert.ok(f.legacyPrefixes.includes('giant-the-musical'));
+  });
+});
+
+describe('venueSlug — diacritics are folded, not deleted', () => {
+  test('an accented venue transliterates instead of losing its letters', () => {
+    // Without folding first, `[^a-z0-9]+` DELETES the accented letter rather
+    // than transliterating it: "Théâtre du Châtelet" became
+    // "th-tre-du-ch-telet", which matches no Playbill slug and strips away
+    // every identity token the venue had. CI's structural guard
+    // (tests/unit/sibling-matchers-diacritics.test.mjs, task #648) caught it.
+    //
+    // Pinned here BY BEHAVIOUR on purpose: that guard detects the IMPORT of
+    // foldDiacritics, not a call to it. Verified by experiment — removing the
+    // call while leaving the import in place keeps the guard green. This
+    // assertion fails in that state; the guard does not.
+    assert.equal(venueSlug('Théâtre du Châtelet'), 'theatre-du-chatelet');
+    assert.equal(venueSlug('Café Carlyle'), 'cafe-carlyle');
+    assert.deepEqual(venueTokens('Théâtre du Châtelet'), ['chatelet']);
   });
 });
 
@@ -252,6 +296,19 @@ describe('playbillUrlTitleMatch — the corroboration and enablement gates', () 
       { id: 'six-2021', title: 'SIX', venue: 'Lena Horne Theatre' }, OPTS);
     assert.equal(r.match, true);
     assert.equal(r.branch, 'legacy');
+  });
+
+  test('a trailing slash does not kill a legacy recovery', () => {
+    // LEGACY_RE is $-anchored and only ?/# were stripped, so one trailing slash
+    // silently dropped the exact URL shape this module exists to recover. The
+    // market branch never noticed because it matches mid-path.
+    const show = { id: 'aladdin-2014', title: 'Aladdin', venue: 'New Amsterdam Theatre' };
+    const bare = `${P}aladdin-new-amsterdam-theatre-vault-0000014037`;
+    for (const url of [bare, `${bare}/`, `${bare}//`, `${bare}/?utm=x`]) {
+      const r = playbillUrlTitleMatch(url, show, OPTS);
+      assert.equal(r.match, true, `failed on ${JSON.stringify(url)}`);
+      assert.equal(r.branch, 'legacy');
+    }
   });
 
   test('an empty or missing title never matches anything', () => {

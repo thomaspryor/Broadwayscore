@@ -178,23 +178,54 @@ function isProvisional(show) {
 // than falling back to a bare prefix test — an unreadable corpus must not
 // silently become a more permissive matcher.
 let _knownVenueSlugs = null;
-function knownVenueSlugsForCorpus() {
-  if (_knownVenueSlugs) return _knownVenueSlugs;
-  const built = new Set();
-  try {
-    for (const s of loadShows()) {
-      const v = venueSlug(s && s.venue);
-      if (v) built.add(v);
-    }
-  } catch {
-    // Do NOT memoise a failure. Caching an empty set here would turn one
-    // transient read error into a permanently disabled legacy branch for the
-    // rest of the process, silently and with no signal — the shape rule 8
-    // warns about. Return empty for this call and retry on the next.
-    return built;
+let _venueMarkets = null;
+function buildVenueIndex() {
+  const slugs = new Set();
+  // venue slug -> the set of markets the corpus has ever staged there. Used to
+  // stop a legacy URL crossing markets, which the segment-based guards cannot
+  // see because a legacy URL carries no market keyword at all.
+  const markets = new Map();
+  for (const s of loadShows()) {
+    const v = venueSlug(s && s.venue);
+    if (!v) continue;
+    slugs.add(v);
+    if (!markets.has(v)) markets.set(v, new Set());
+    markets.get(v).add(marketOf(s && s.category));
   }
-  _knownVenueSlugs = built;
-  return _knownVenueSlugs;
+  return { slugs, markets };
+}
+function knownVenueSlugsForCorpus() {
+  // `!== null`, not truthiness, and only memoise a NON-EMPTY result. An empty
+  // Set is truthy, so the old guard cached a successful-but-empty read (a fixture
+  // corpus, a half-written shows.json) and disabled the legacy branch for the
+  // rest of the process with no signal — the same failure the catch below goes
+  // out of its way to avoid, arriving through the success path instead.
+  if (_knownVenueSlugs !== null && _knownVenueSlugs.size > 0) return _knownVenueSlugs;
+  try {
+    const { slugs, markets } = buildVenueIndex();
+    if (slugs.size > 0) { _knownVenueSlugs = slugs; _venueMarkets = markets; }
+    return slugs;
+  } catch {
+    // Do NOT memoise a failure either. Return empty for this call and retry on
+    // the next; the legacy branch declines meanwhile rather than loosening.
+    return new Set();
+  }
+}
+
+/**
+ * The market granularity the legacy cross-market reject needs. Broadway and
+ * off-Broadway are kept DISTINCT, not folded into one "NYC" bucket: an earlier
+ * version folded them and an off-Broadway stub titled "Chicago" still scored 8
+ * against Broadway's chicago-richard-rodgers-theatre vault page, because both
+ * counted as NYC. They are different houses — the corpus has never staged
+ * off-Broadway at the Richard Rodgers — so the venue index separates them and
+ * the reject fires. A missing category means Broadway, which is this corpus's
+ * convention (see the targetShows filter in discover-playbill-urls.js).
+ */
+function marketOf(category) {
+  if (category === 'west-end' || category === 'off-west-end') return 'london';
+  if (!category) return 'broadway';
+  return String(category);
 }
 
 function shortTitleSlug(title) {
@@ -270,9 +301,21 @@ function scorePlaybillUrl(url, show) {
   // them: all six of these were live, real accepts before this line existed —
   // "Hadestown" (West End) took Broadway's hadestownwalter-kerr-theatre URL,
   // and likewise MJ, SIX, The Lion King, The Book of Mormon and Cursed Child.
-  // Every legacy URL in the live cache is a NEW YORK production page, so a
-  // London-market show has no business matching one.
-  if (titleMatch.branch === 'legacy' && isLondon) return null;
+  // An earlier version of this rejected only `legacy && isLondon`, which was
+  // one-directional and left two shapes open, both reproduced: an OFF-BROADWAY
+  // stub titled "Chicago" scored 8 against Broadway's
+  // chicago-richard-rodgers-theatre-vault-... , and a BROADWAY show scored 8
+  // against a London season page (hamiltonvictoria-palace-theatre-2017-2018),
+  // because the venue set is built from the WHOLE corpus and so contains West
+  // End and regional slugs too. Both cleared findPlaybillUrl's `score > 0`.
+  //
+  // The decomposed venue is the market signal a legacy URL does have, so use it:
+  // reject unless the corpus has ever staged this show's market at that venue.
+  if (titleMatch.branch === 'legacy') {
+    const slug = titleMatch.corroboration && titleMatch.corroboration.venueSlugInUrl;
+    const staged = slug && _venueMarkets ? _venueMarkets.get(slug) : null;
+    if (!staged || !staged.has(marketOf(show.category))) return null;
+  }
   if (!isLondonUrl && isLondon && (u.includes('-broadway-') || u.includes('-off-broadway-'))) return null;
   if (u.includes('-off-broadway-')) s += isOB ? 5 : -5;
   else if (u.includes('-broadway-')) s += isOB ? -5 : 5;
