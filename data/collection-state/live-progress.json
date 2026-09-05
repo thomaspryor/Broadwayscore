@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-05T14:22:20.397Z",
+  "updatedAt": "2026-09-05T14:24:55.171Z",
   "processed": 175,
-  "failed": 3291,
+  "failed": 3301,
   "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 103,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 29,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 42,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-09-05T12:12:50.191Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-05T12:13:07.592Z",
-      "event": "bb-session",
-      "session": "139e87f9",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
     {
       "t": "2026-09-05T12:13:12.105Z",
       "event": "bb-login-uncertain",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "e1240dca",
       "url": "https://www.facebook.com/LastShipMusical/posts/sting-takes-the-stage-in-the-last"
+    },
+    {
+      "t": "2026-09-05T14:24:43.262Z",
+      "event": "bb-session",
+      "session": "e886d61b",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-05T14:24:44.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
