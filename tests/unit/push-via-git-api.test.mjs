@@ -380,3 +380,136 @@ test('push-via-git-api.sh fails loudly (exit 1) with no push attempted when base
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// BRO-2823: a push SIGTERMed by the `timeout -k 10` wrapper (rc=124) is not a
+// fatal error, but it used to be treated as one. git dies without writing to
+// stderr, so PUSH_ERR is empty, the race-text grep cannot match, and control
+// fell through to the "non-race reason" branch which exits 1 — abandoning
+// every remaining budgeted attempt. Measured in two workflows, both printing
+// an empty reason: data-health-check run 33922438634 (90.66s) and
+// commercial-rss-poll run 33929580504 (90.1s).
+//
+// Both tests drive the real script through a PATH shim named `timeout`, which
+// is what `command -v timeout` at push-via-git-api.sh:93 resolves. The shim
+// takes `-k 10 <secs> <cmd...>`, the same shape as GNU timeout.
+
+function installTimeoutShim(tmp, body) {
+  const binDir = path.join(tmp, 'shimbin');
+  fs.mkdirSync(binDir, { recursive: true });
+  const shim = path.join(binDir, 'timeout');
+  fs.writeFileSync(shim, body);
+  fs.chmodSync(shim, 0o755);
+  return binDir;
+}
+
+function spawnScriptWithEnv(args, cwd, extraEnv) {
+  return new Promise((resolve) => {
+    const child = spawn('bash', [SCRIPT, ...args], {
+      cwd, env: { ...process.env, ...GIT_ENV, ...extraEnv },
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('close', (code) => resolve({ code, stdout: stdout.trim(), stderr }));
+  });
+}
+
+test('BRO-2823: a push killed by the timeout wrapper (rc=124, empty stderr) is RETRIED, not treated as a fatal non-race error', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    // First push: pretend the network op burned the whole cap. Do NOT run it,
+    // so the remote never moves — the retry must be what lands the commit.
+    // Every other op (ls-remote, fetch) delegates normally.
+    const marker = path.join(tmp, 'push-timed-out-once');
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2            # drop -k 10
+shift              # drop the seconds arg
+for a in "$@"; do
+  if [ "$a" = "push" ] && [ ! -f "${marker}" ]; then
+    touch "${marker}"
+    exit 124       # SIGTERMed by timeout: no stdout, no stderr
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+    });
+
+    assert.equal(res.code, 0, `expected success after retrying the timeout, got ${res.code}\n${res.stderr}`);
+    assert.ok(fs.existsSync(marker), 'the shim never intercepted a push — test did not exercise the timeout path');
+    assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124/, 'timeout was not logged as a timeout');
+    assert.doesNotMatch(res.stderr, /non-race reason/, 'a timeout was still misclassified as a fatal non-race error');
+
+    // The commit actually landed on the origin, and our content is there.
+    const originLog = sh('git log --oneline main', originDir);
+    assert.match(originLog, /our change/);
+    const landed = sh('git show main:data/ours.json', originDir);
+    assert.equal(landed.trim(), '{"c":3}');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('BRO-2823: a push that LANDS server-side but is then killed (rc=124) does not mint an empty no-op commit on the retry', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    const before = sh('git rev-list --count main', originDir).trim();
+
+    // The nasty case: the push SUCCEEDS on the remote, then the client is
+    // killed before it can read the response. The retry re-reads CURRENT_TIP as
+    // our OWN landed commit and replays the same overlay onto it, so the tree
+    // is unchanged and commit-tree would otherwise mint an empty commit.
+    const marker = path.join(tmp, 'push-landed-then-killed');
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ] && [ ! -f "${marker}" ]; then
+    touch "${marker}"
+    "$@" >/dev/null 2>&1   # it really lands
+    exit 124               # ...and we are killed before reading the response
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+    });
+
+    assert.equal(res.code, 0, `expected success, got ${res.code}\n${res.stderr}`);
+    assert.ok(fs.existsSync(marker), 'the shim never intercepted a push');
+
+    const after = sh('git rev-list --count main', originDir).trim();
+    assert.equal(
+      Number(after), Number(before) + 1,
+      `expected exactly ONE new commit on origin, got ${Number(after) - Number(before)} — the retry minted a no-op commit`,
+    );
+    assert.match(res.stderr, /ALREADY on main/, 'the already-landed case was not detected');
+
+    // And the reported sha is the one that actually landed.
+    const originTip = sh('git rev-parse main', originDir).trim();
+    assert.equal(res.stdout, originTip, 'script reported a sha that is not the origin tip');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
