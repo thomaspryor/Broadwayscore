@@ -3131,7 +3131,14 @@ function explainExclusion(data, show, filePath) {
   // LLM-CV pass would otherwise promote a long-biographical-lead review to
   // `wrongShow=true`. The defer prevents that silent rejection at outlets
   // whose house style legitimately opens with biographical framing
-  // (`cvStyle: 'biographical-lead'` in outlet-registry.json).
+  // (`cvStyle: 'long-biographical'` in outlet-registry.json).
+  //
+  // BRO-2776: this comment previously said `'biographical-lead'`, which is NOT
+  // a value outlet-canonicalize.js accepts. getCvStyle() fell back to
+  // 'standard' silently, so anyone following this comment armed nothing and
+  // was told nothing. The canonical vocabulary is VALID_CV_STYLES in
+  // scripts/lib/outlet-canonicalize.js; audit-outlet-registry.js now rejects
+  // anything else at write time.
   //
   // These reviews must continue to appear in reviews.json AND be scored
   // normally — the defer is about NOT being silently wrongShow'd, not about
