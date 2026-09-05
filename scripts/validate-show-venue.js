@@ -70,6 +70,7 @@ const {
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { venueSearchToken } = require('./lib/venue-search-token');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -236,7 +237,13 @@ async function findPlaybillUrl(show, log) {
   const market = show.category === 'off-broadway' ? 'Off-Broadway'
     : (show.category === 'west-end' || show.category === 'off-west-end') ? 'London'
     : 'Broadway';
-  const venueWord = (show.venue || '').split(/[\s\-,—\/]/)[0];
+  // BRO-2821: this used to be the venue's FIRST whitespace token, which is a
+  // stopword for 6.9% of the corpus ("New World Stages" -> "New", "St. James
+  // Theatre" -> "St.", "The Theater Center" -> "The"), degrading the query to
+  // one carrying no venue signal at all. venueSearchToken picks the first
+  // distinctive token instead and falls back to the original first token, so
+  // it can never produce a worse query than the line it replaces.
+  const venueWord = venueSearchToken(show.venue);
   const queries = [
     `site:playbill.com/production "${show.title}" ${market} ${venueWord}`,
     `site:playbill.com/production "${show.title}" ${venueWord}`,
