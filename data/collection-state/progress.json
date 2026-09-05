@@ -20,7 +20,14 @@
     "holy-fool-off-west-end-2026/timeout-london--unknown.json",
     "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
     "the-story-west-end-2026/ground--unknown.json",
-    "the-story-west-end-2026/london-box-office--stuart-king.json"
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/theatrecat--unknown.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+    "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+    "a-month-in-the-country-west-end-2026/independent--unknown.json",
+    "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -171,7 +178,9 @@
     "the-story-west-end-2026/north-west-end--greg-holstead.json",
     "the-story-west-end-2026/north-west-end--unknown.json",
     "the-story-west-end-2026/nysr--frank-scheck.json",
-    "the-story-west-end-2026/radio-times--patrick-cremona.json"
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "a-month-in-the-country-west-end-2026/artsdesk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -189,16 +198,24 @@
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
-      "the-story-west-end-2026/london-box-office--stuart-king.json"
+      "the-story-west-end-2026/london-box-office--stuart-king.json",
+      "the-story-west-end-2026/theatrecat--unknown.json",
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "a-month-in-the-country-west-end-2026/independent--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "the-story-west-end-2026/times-uk--clive-davis.json",
+      "the-story-west-end-2026/times-uk--unknown.json"
+    ],
     "scrapingbee": [
       "holy-fool-off-west-end-2026/timeout-london--unknown.json",
-      "the-story-west-end-2026/ground--unknown.json"
+      "the-story-west-end-2026/ground--unknown.json",
+      "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+      "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
     ],
     "brightdata": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -212,7 +229,7 @@
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "the-story-west-end-2026/radio-times--patrick-cremona.json",
+  "lastProcessed": "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -242,6 +259,18 @@
       "event": "bb-session",
       "session": "1fe8306c",
       "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-05T20:29:43.067Z",
+      "event": "bb-session",
+      "session": "9368482a",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-05T20:29:52.438Z",
+      "event": "bb-session",
+      "session": "41b2a4dc",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
     }
   ]
 }
