@@ -999,6 +999,27 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'BroadwayWorld Review-Roundup article (multi-outlet quote compilation)' };
   }
 
+  // bestoftheatre.co.uk /blog/post/review-roundup-{slug} — a named-byline post
+  // that summarises the other critics and prints THEIR average as its own
+  // rating. the-story-west-end-2026's was ingested with originalRating "3.1/5"
+  // (the mean of eight other outlets, stated in its own body) and scored 62
+  // onto a show whose critic score was 59.85 over 18 reviews (2026-09-05).
+  // A named byline is exactly the case the 2026-07-11 owner policy below
+  // excludes: a critic reviewing the show counts, a site's AGGREGATED score
+  // does not.
+  if (/bestoftheatre\.co\.uk\/blog\/post\/review-round[-_ ]?up-/i.test(url)) {
+    return { isRoundup: true, reason: 'BestOfTheatre review round-up post (aggregate of other critics)' };
+  }
+
+  // britishtheatre.com /posts/{slug}-review-round-up — same class, different
+  // host, found live in the same sweep. jesus-christ-superstar-west-end-2026's
+  // was bylined "Editorial Staff", opened "opened at the London Palladium to
+  // sharply divided reviews. Here is the critics' verdict", and was scored 78
+  // in reviews.json (2026-09-05).
+  if (/britishtheatre\.com\/posts\/[^/?#]*review-round[-_ ]?up/i.test(url)) {
+    return { isRoundup: true, reason: 'BritishTheatre review round-up post (aggregate of other critics)' };
+  }
+
   // NOTE: Do NOT add generic cross-domain roundup URL patterns (e.g. bare
   // /review-roundup/ on any host). Many legitimate individual critic reviews
   // are SOURCED from roundup pages — the URL points to the roundup where the
@@ -2079,6 +2100,14 @@ function shouldSkipRoundupAudit(data) {
 const ROUNDUP_HOST_OUTLETS = {
   'whatsonstage.com': ['whatsonstage', 'whats-on-stage'],
   'playbill.com': ['playbill'],
+  // Both added 2026-09-05 alongside their isRoundupUrl patterns. The map entry
+  // alone does nothing: isRoundupPageAsReview returns early on
+  // !isRoundupUrl(url).isRoundup, before it ever reads this table, so a host
+  // registered here without a URL pattern is inert. Alias spellings are
+  // defensive — the corpus uses the bare id, confirmed against
+  // data/outlet-registry.json.
+  'bestoftheatre.co.uk': ['bestoftheatre', 'best-of-theatre'],
+  'britishtheatre.com': ['british-theatre', 'britishtheatre'],
   // Policy decided 2026-07-11 (user): a NAMED CRITIC reviewing the show
   // counts; a site's AGGREGATED score does not. isRoundupUrl matches only
   // these hosts' aggregate/roundup pages — never their individual critic
