@@ -60,6 +60,15 @@ const MAC_ONLY_LABEL = 'mac-only';
 // ids — matching that convention here means a project rename is fixed by
 // updating one string in one place (marketingProjectGuard's
 // MARKETING_PROJECT_NAMES) rather than also re-deriving a UUID.
+// relations(first: 20) is read by scripts/lib/linear-duplicate-gate.js so
+// linear-brain.js's "update --state Duplicate" can refuse BEFORE any write
+// when the issue owns no duplicate relation. Linear rejects that mutation
+// server-side with "missing duplicate relation", and it does so AFTER the
+// --comment has been posted. Fetched here rather than in a second round trip
+// because this query is already the update path's single issue read.
+// Keep this a JS comment: a GraphQL "#" comment inside the template literal
+// below cannot contain a backtick, and the first attempt at one silently
+// terminated the literal (caught by tests/unit/linear-brain-duplicate-gate.test.mjs).
 function buildIssueQuery() {
   return `query($id: String!) {
     issue(id: $id) {
@@ -73,6 +82,7 @@ function buildIssueQuery() {
       project { name }
       labels(first: 20) { nodes { id name } }
       comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
+      relations(first: 20) { nodes { type relatedIssue { id identifier } } }
     }
   }`;
 }

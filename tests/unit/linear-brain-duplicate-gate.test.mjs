@@ -1,0 +1,191 @@
+// Tests scripts/linear-brain.js's `update --state <Duplicate-type>` path wired
+// to scripts/lib/linear-duplicate-gate.js (crown BRO-343, 2026-09-05).
+//
+// THE INCIDENT: `update BRO-2711 --state Duplicate --comment "<long writeup>"`
+// posted the comment, then died on Linear's `missing duplicate relation`
+// error, printing "partially applied before the error: comment posted" and
+// exiting 2. The card stayed open. An operator reading exit 2 as "nothing
+// happened" re-runs and double-posts. The gate must refuse BEFORE the first
+// write, and --duplicate-of must create the relation ahead of the comment.
+//
+// Driven end-to-end IN A REAL SUBPROCESS for the same reason
+// tests/unit/linear-brain-done-gate.test.mjs is: the refusal's process.exit(6)
+// sits inside the update body's own try/catch, so an in-process stub that
+// throws would be caught and re-exit(2), masking the real refusal code.
+// No LINEAR_API_KEY and no live call — every I/O seam is injected via main()'s
+// `deps` param.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
+const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
+
+const TEAM_STATES = [
+  { id: 'state-todo', name: 'Todo', type: 'unstarted' },
+  { id: 'state-progress', name: 'In Progress', type: 'started' },
+  { id: 'state-done', name: 'Done', type: 'completed' },
+  { id: 'state-dup', name: 'Duplicate', type: 'duplicate' },
+];
+
+function makeIssue(relations) {
+  return {
+    id: 'issue-uuid-2711',
+    identifier: 'BRO-9711',
+    title: 'Fixture issue for the duplicate gate',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-9711/fixture',
+    description: 'Some defect that turned out to be already fixed elsewhere.',
+    state: { id: 'state-todo', name: 'Todo', type: 'unstarted' },
+    comments: { nodes: [] },
+    relations,
+  };
+}
+
+const CANONICAL = {
+  id: 'issue-uuid-2823',
+  identifier: 'BRO-9823',
+  title: 'The canonical issue',
+  url: 'https://linear.app/broadway-scorecard/issue/BRO-9823/canonical',
+  description: '',
+  state: { id: 'state-done', name: 'Done', type: 'completed' },
+  comments: { nodes: [] },
+  relations: { nodes: [] },
+};
+
+// Builds a fixture that requires the real linear-brain.js and injects stub
+// I/O. Every seam announces itself on stderr so the test can assert on the
+// ORDER of the writes, not merely that they happened.
+function runUpdate({ argv, relations, canonicalFound = true, writesExpected }) {
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue(relations))};
+    const canonical = ${canonicalFound ? JSON.stringify(CANONICAL) : 'null'};
+    main(${JSON.stringify(argv)}, {
+      getIssue: async (ref) => (ref === 'BRO-9823' ? canonical : issue),
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      createIssueRelation: async (a, b, t) => {
+        ${writesExpected
+          ? "console.error('RELATION_CREATED ' + a + ' -> ' + b + ' as ' + t);"
+          : "throw new Error('createIssueRelation must not be called — the gate refused before any write');"}
+      },
+      createComment: async () => {
+        ${writesExpected
+          ? "console.error('CREATE_COMMENT_CALLED');"
+          : "throw new Error('createComment must not be called — the gate refused before any write');"}
+      },
+      updateIssue: async () => {
+        ${writesExpected
+          ? "console.error('UPDATE_ISSUE_CALLED');"
+          : "throw new Error('updateIssue must not be called — the gate refused before any write');"}
+      },
+    });
+  `;
+  return spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+}
+
+test('refused (exit 6) with NOTHING written: --state Duplicate on an issue with no duplicate relation', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--comment', 'Closing as a duplicate.'],
+    relations: { nodes: [] },
+    writesExpected: false,
+  });
+  assert.equal(res.status, 6, `expected exit 6 (duplicate-gate refusal), got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REFUSED \(no-duplicate-relation\)/);
+  assert.match(res.stderr, /missing duplicate relation/);
+  // The whole point: the comment must NOT have landed ahead of the refusal.
+  assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/, 'the comment must never post once the gate refuses');
+  assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.doesNotMatch(res.stderr, /partially applied/, 'a pre-write refusal must not report a partial write');
+  // And it must tell the operator how to succeed, not just that it failed.
+  assert.match(res.stderr, /--duplicate-of <BRO-N>/);
+});
+
+test('allowed: an issue that already owns a duplicate relation moves with no relation write', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate'],
+    relations: { nodes: [{ type: 'duplicate', relatedIssue: { id: 'issue-uuid-2823', identifier: 'BRO-9823' } }] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.doesNotMatch(res.stderr, /RELATION_CREATED/, 'an existing relation must not be duplicated');
+  assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('--duplicate-of creates the relation BEFORE the comment and the state move', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9823', '--comment', 'Dupe of BRO-9823.'],
+    relations: { nodes: [] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /RELATION_CREATED issue-uuid-2711 -> issue-uuid-2823 as duplicate/);
+  const order = ['RELATION_CREATED', 'CREATE_COMMENT_CALLED', 'UPDATE_ISSUE_CALLED'].map((m) => res.stderr.indexOf(m));
+  assert.ok(order.every((i) => i >= 0), `all three writes must run. stderr:\n${res.stderr}`);
+  assert.ok(order[0] < order[1] && order[1] < order[2], `write order must be relation -> comment -> state, got ${order}`);
+});
+
+test('--duplicate-of naming an issue that does not exist fails with nothing written', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9823', '--comment', 'x'],
+    relations: { nodes: [] },
+    canonicalFound: false,
+    writesExpected: false,
+  });
+  assert.equal(res.status, 2, `expected exit 2, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /--duplicate-of: no such issue: BRO-9823/);
+  assert.doesNotMatch(res.stderr, /CREATE_COMMENT_CALLED/);
+});
+
+test('an issue cannot be marked a duplicate of itself', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'Duplicate', '--duplicate-of', 'BRO-9711'],
+    relations: { nodes: [] },
+    writesExpected: false,
+  });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /cannot be a duplicate of itself/);
+});
+
+test('not gated: a move to a non-duplicate state never consults the gate, even with no relations', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9711', '--state', 'In Progress'],
+    relations: { nodes: [] },
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('the Duplicate gate is keyed on state TYPE, not on the name "Duplicate"', () => {
+  // A team rename must not silently stop gating — the same drift trap
+  // linear-done-gate.js's header documents for "Done".
+  const script = `
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue({ nodes: [] }))};
+    main(['update','BRO-9711','--state','Superseded'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: [{ id: 'state-sup', name: 'Superseded', type: 'duplicate' }] }),
+      createIssueRelation: async () => { throw new Error('no write expected'); },
+      createComment: async () => { throw new Error('no write expected'); },
+      updateIssue: async () => { throw new Error('no write expected'); },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 6, `a renamed duplicate-type state must still gate. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /not moved to Superseded/);
+});
+
+test('buildIssueQuery actually fetches relations — the gate is inert without it', () => {
+  // ABSENCE OF A SIGNAL LOOKS LIKE THE SAFE OUTCOME: if a future edit drops
+  // `relations` from the query, every issue reads as having none and the gate
+  // refuses every legitimate duplicate close instead of passing it. Assert the
+  // read the gate depends on is really in the query the update path runs.
+  const query = require('../../scripts/lib/linear-dispatch.js').buildIssueQuery();
+  assert.match(query, /relations\(first: \d+\)/, 'buildIssueQuery must fetch relations');
+  assert.match(query, /relatedIssue\s*\{[^}]*identifier/, 'relations must include relatedIssue.identifier');
+});

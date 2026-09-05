@@ -33,7 +33,7 @@ Usage:
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
-    [--force "<reason ≥10 chars>"]
+    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -55,6 +55,11 @@ Usage:
           "## Acceptance criteria" section / "VERIFY: <cmd>" line. Bypass
           with --force "<reason ≥10 chars>", or LINEAR_DONE_GATE_DISABLED=1
           for automation that must not block (BRO-457).
+          Moving into a DUPLICATE-type state is REFUSED (exit 6) unless the
+          issue already owns an outgoing duplicate relation, because Linear
+          rejects that mutation with "missing duplicate relation" AFTER any
+          --comment has already been posted. Pass --duplicate-of <BRO-N> to
+          create the relation and move the state in one call (BRO-343).
 `;
 
 function parseArgs(argv) {
@@ -157,6 +162,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     getTeam: getTeamFn = linearClient.getTeam,
     updateIssue: updateIssueFn = linearClient.updateIssue,
     createComment: createCommentFn = linearClient.createComment,
+    createIssueRelation: createIssueRelationFn = linearClient.createIssueRelation,
   } = deps;
 
   if (hasHelpFlag(argv)) {
@@ -213,7 +219,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // The caller names a real Linear state; an unknown one lists the real set.
     const identifier = args._positional[1];
     if (!identifier) {
-      console.error('Usage: linear-brain update <BRO-N> [--state "<name>"] [--comment "<text>"]');
+      console.error('Usage: linear-brain update <BRO-N> [--state "<name>"] [--comment "<text>"] [--duplicate-of <BRO-N>]');
       process.exit(1);
     }
     if (args.state === undefined && args.comment === undefined) {
@@ -233,6 +239,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
 
     const { resolveState, formatStateError } = require('./lib/linear-state-resolve');
+    const {
+      DUPLICATE_STATE_TYPE,
+      checkLinearDuplicateTransition,
+    } = require('./lib/linear-duplicate-gate');
     try {
       const issue = await getIssueFn(identifier);
       if (!issue) {
@@ -292,6 +302,51 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         }
       }
 
+      // Crown BRO-343 2026-09-05: refuse a move into a duplicate-type state
+      // that Linear itself will refuse. `--state Duplicate` is advertised as
+      // valid (the unknown-state error lists it), but the mutation fails with
+      // "missing duplicate relation" unless the issue owns an outgoing
+      // duplicate relation — and it fails AFTER the --comment below has
+      // landed, so the operator reads the non-zero exit as "nothing
+      // happened", re-runs, and double-posts onto a still-open card. Resolved
+      // here, before the first write, from the `relations` the same getIssue()
+      // read already fetched. `--duplicate-of BRO-N` creates the relation
+      // instead of refusing.
+      let duplicateRelation = null;
+      if (target && target.type === DUPLICATE_STATE_TYPE) {
+        const dupGate = checkLinearDuplicateTransition({
+          targetStateType: target.type,
+          relations: issue.relations,
+          duplicateOf: args['duplicate-of'],
+        });
+        if (!dupGate.allowed) {
+          console.error(`\n❌ REFUSED (${dupGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
+          console.error(dupGate.reason);
+          console.error(
+            `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
+              `--state ${target.name} --duplicate-of <BRO-N>\n`
+          );
+          process.exit(6);
+        }
+        if (dupGate.needsRelation) {
+          // Resolve the canonical twin to a UUID up front: issueRelationCreate
+          // takes UUIDs, not BRO-N identifiers, and a typo'd identifier must
+          // fail HERE (nothing written) rather than mid-way through the write
+          // block with a comment already posted.
+          const canonicalRef = String(args['duplicate-of']).trim();
+          const canonical = await getIssueFn(canonicalRef);
+          if (!canonical) {
+            console.error(`❌ --duplicate-of: no such issue: ${canonicalRef}`);
+            process.exit(2);
+          }
+          if (canonical.id === issue.id) {
+            console.error(`❌ --duplicate-of: ${issue.identifier} cannot be a duplicate of itself`);
+            process.exit(1);
+          }
+          duplicateRelation = { id: canonical.id, identifier: canonical.identifier || canonicalRef };
+        }
+      }
+
       // ORDER MATTERS, and the first version had it backwards. It moved the
       // state first, so a failing createComment exited 2 having ALREADY moved
       // the issue — the operator reads a non-zero exit as "nothing happened"
@@ -300,6 +355,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       let commented = false;
       const landed = [];
       try {
+        // The relation goes FIRST because it is the precondition for the
+        // state move — creating it after the comment would reproduce the
+        // partial-write the gate above exists to prevent, and a stray
+        // relation (like a stray comment) is visible and reversible in
+        // Linear's UI, unlike a silent state move.
+        if (duplicateRelation) {
+          await createIssueRelationFn(issue.id, duplicateRelation.id, DUPLICATE_STATE_TYPE);
+          landed.push(`marked duplicate of ${duplicateRelation.identifier}`);
+        }
         if (args.comment !== undefined) {
           await createCommentFn(issue.id, args.comment);
           commented = true;
