@@ -6220,6 +6220,45 @@ function clearFailedFetch(reviewId) {
 // PROCESS REVIEW
 // ============================================================================
 
+/**
+ * Resolve the real show title + id for a content-quality check.
+ *
+ * assessTextQuality's signature is (text, showId, showTitle). Both garbage
+ * gates below used to call it as assessTextQuality(text, slugDerivedTitle) —
+ * the slug landed in the showId slot and showTitle was left undefined. Two
+ * things went wrong as a result:
+ *
+ *   1. validateShowMentioned() was handed "holy fool off west end" (the show
+ *      ID with its CATEGORY SUFFIX still attached and hyphens flattened to
+ *      spaces). No review contains that string, so the expected show read as
+ *      "not mentioned" — which is precisely the condition that lets
+ *      detectMultiShowContent's result harden into garbage/high.
+ *   2. detectMultiShowContent's expected-show exclusion splits its showId
+ *      argument on "-", so a space-flattened slug collapsed to a single token
+ *      and the show under review was never excluded from its own mention count.
+ *
+ * Broadway ids ("hamilton-2015" -> "hamilton") survived this by accident; every
+ * West End / Off-West-End / Off-Broadway / regional id carries a category
+ * suffix, so London shows failed the mention check as a class. That is how two
+ * real Holy Fool reviews (The Reviews Hub, Theatre Vibe) were classified
+ * garbage_content on every fetch attempt and never reached the scoring corpus.
+ *
+ * Same lookup + pickShowTitleForHeuristic idiom as the show-mention guard
+ * around line 4710.
+ *
+ * @param {Object} review - review record (needs .showId)
+ * @returns {{ showId: string, showTitle: string }}
+ */
+function resolveShowIdentityForQuality(review) {
+  const showId = review.showId || '';
+  let showMeta = null;
+  try {
+    if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    showMeta = _showsJsonCache.shows.find(s => s.id === showId) || null;
+  } catch (e) { /* shows.json unavailable — fall back to the slug */ }
+  return { showId, showTitle: pickShowTitleForHeuristic(showId, showMeta) };
+}
+
 async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
@@ -6355,8 +6394,8 @@ async function processReview(review) {
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
     // Content quality check - detect garbage/invalid content before saving
-    const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-    const qualityCheck = assessTextQuality(result.text, showTitle);
+    const { showId: qualityShowId, showTitle } = resolveShowIdentityForQuality(review);
+    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
       // Don't save garbage content as fullText - log as failed fetch
@@ -6643,8 +6682,8 @@ async function processReview(review) {
           // Check for garbage content BEFORE writing URL to file
           // (prevents cost leak: if we write the URL first and content is garbage,
           // future runs would re-discover the same URL and waste SERP credits)
-          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          const { showId: qualityShowId, showTitle } = resolveShowIdentityForQuality(review);
+          const qualityCheck = assessTextQuality(retryResult.text, qualityShowId, showTitle);
           if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
             console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
             review.url = originalUrl; // restore before failing
