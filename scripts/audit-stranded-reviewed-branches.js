@@ -24,6 +24,7 @@ const {
   hasUsableVerdicts,
   sweepIsTrustworthy,
   normalizeNumstatPath,
+  IS_CODE_FILE,
 } = require('./lib/stranded-reviewed-branches');
 
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -35,7 +36,7 @@ const argv = process.argv.slice(2);
 // branch whose live diff touches none of these is a handoff doc or an audit snapshot
 // left behind after its code landed, which is what STATE.md-only branches turned out
 // to be. Only ever used to LABEL a row; nothing is auto-landed or auto-deleted.
-const IS_CODE_FILE = /\.(js|mjs|cjs|jsx|ts|tsx|mts|cts|sh|bash|py|yml|yaml|css|scss|sql|html|plist)$/i;
+// IS_CODE_FILE is imported from the lib: one definition, tested directly.
 
 // Print usage BEFORE any real work. This script fetches from origin and shells
 // out once per worktree, so --help must not trigger a network round trip or a
