@@ -230,10 +230,29 @@ read_blob_or_absent() {
   return 1
 }
 
+# Why each attempt died, so the exhaustion message can state the OBSERVED
+# distribution instead of inferring one. The old message asserted "remote tip
+# kept advancing past every build" unconditionally, including for runs where
+# every attempt died on a 90s timeout and there was no evidence the tip moved
+# at all. That false signal is not cosmetic: it is what produced the
+# "fetch before the push" cure, which the same logs refute (commercial-rss-poll
+# run 33962024987 — fetches complete in 0-2s immediately before each 90s push).
+# Same principle already applied at the ALREADY-landed branch below: state the
+# observed fact, not an inferred cause.
+#
+# MUST be assigned with T=$((T+1)), never ((T++)): under this file's
+# `set -euo pipefail` (line 66) a post-increment FROM ZERO evaluates to 0 and
+# returns status 1, which aborts the script mid-retry with no message —
+# silently regressing the timeout-retry path BRO-2823 exists to protect.
+FAIL_TIMEOUT=0    # rc=124/137, the timeout wrapper killed the push
+FAIL_RACE=0       # the race grep matched: our compare-and-swap lost
+FAIL_OTHER=0      # tip unresolved / tip fetch failed — neither of the above
+
 for i in $(seq 1 "$MAX_RETRIES"); do
   CURRENT_TIP="$(_git_net ls-remote "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}')"
   if [ -z "$CURRENT_TIP" ]; then
     echo "  push-via-git-api: could not resolve $REMOTE/$BRANCH tip (attempt $i/$MAX_RETRIES)" >&2
+    FAIL_OTHER=$((FAIL_OTHER + 1))
     sleep $((1 + i))
     continue
   fi
@@ -278,6 +297,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   fi
   if ! git cat-file -e "${CURRENT_TIP}^{commit}" 2>/dev/null; then
     echo "  push-via-git-api: failed to fetch remote tip $CURRENT_TIP (attempt $i/$MAX_RETRIES)" >&2
+    FAIL_OTHER=$((FAIL_OTHER + 1))
     sleep $((1 + i))
     continue
   fi
@@ -442,6 +462,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # to 2/4/6 by remaining PUSH_DEADLINE_SEC.
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
     echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — retrying rather than treating a timeout as fatal" >&2
+    FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
     rm -f "$PUSH_ERR"
     sleep $((1 + RANDOM % 3))
     continue
@@ -454,6 +475,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # All are the same condition: our compare-and-swap lost, remote moved.
   if grep -qiE 'non-fast-forward|fetch first|stale info|already exists|cannot lock ref|failed to update ref|remote rejected|\[rejected\]' "$PUSH_ERR"; then
     echo "  push-via-git-api: ref moved during attempt $i/$MAX_RETRIES (remote tip advanced past $CURRENT_TIP) — retrying" >&2
+    FAIL_RACE=$((FAIL_RACE + 1))
     rm -f "$PUSH_ERR"
     sleep $((1 + RANDOM % 3))
     continue
@@ -472,5 +494,23 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   exit 1
 done
 
-echo "::error::push-via-git-api: exhausted $MAX_RETRIES attempts, remote tip kept advancing past every build" >&2
+# State what actually happened. The "exhausted $MAX_RETRIES attempts" prefix is
+# load-bearing and must stay verbatim — tests/unit/push-via-git-api.test.mjs
+# asserts on it (plural even when MAX_RETRIES is 1).
+EXHAUSTION_BREAKDOWN="$FAIL_TIMEOUT timed out at the ${GIT_NET_TIMEOUT_SEC}s cap, $FAIL_RACE lost the ref race"
+if [ "$FAIL_OTHER" -gt 0 ]; then
+  # Without this bucket the message can read "0 timed out, 0 lost the ref race"
+  # on a run where every attempt died resolving or fetching the tip — a new
+  # version of the same lie the old message told.
+  EXHAUSTION_BREAKDOWN="$EXHAUSTION_BREAKDOWN, $FAIL_OTHER could not resolve or fetch the tip"
+fi
+echo "::error::push-via-git-api: exhausted $MAX_RETRIES attempts: $EXHAUSTION_BREAKDOWN" >&2
+
+# Distinct exit code when TIMEOUTS dominate, so the caller can record WHY the
+# fallback died instead of filing every exhaustion as a generic retry cap.
+# push-with-retry.sh only tests this for zero/non-zero, so a new non-zero code
+# is safe there.
+if [ "$FAIL_TIMEOUT" -gt "$FAIL_RACE" ] && [ "$FAIL_TIMEOUT" -gt "$FAIL_OTHER" ]; then
+  exit 3
+fi
 exit 1
