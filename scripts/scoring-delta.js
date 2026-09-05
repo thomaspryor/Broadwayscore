@@ -564,7 +564,7 @@ function loadBaselineGuards() {
   // that guard). Acceptable: date-guard.js has existed since 2026-05-25,
   // and BASE_REF defaults to HEAD. Baselines that HAVE date-guard.js but lack
   // evaluatePreWindowInclusion take simulateInclusion's legacy inline branch.
-  for (const dep of ['date-guard.js', 'wrong-production-autoclear.js', 'failed-fetch-policy.js']) {
+  for (const dep of ['date-guard.js', 'wrong-production-autoclear.js', 'failed-fetch-policy.js', 'cross-market-guard.js']) {
     try {
       const src = execSync(`git show ${BASE_REF}:scripts/lib/${dep}`, {
         cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
@@ -586,7 +586,18 @@ function loadBaselineGuards() {
   delete require.cache[require.resolve(dgPath)];
   const prPath = path.join(baselineLibDir, 'wrong-production-autoclear.js');
   delete require.cache[require.resolve(prPath)];
-  return { ...guards, __dateGuard: require(dgPath), __priorRunLib: require(prPath) };
+  // cross-market-guard.js carries the auto-clear ctx computation
+  // (outletIsUkSideSelfHealRegion). It has no top-level requires, so the
+  // sandbox copy loads standalone; its lazy inline requires resolve against
+  // the baseline copies already materialized alongside it.
+  const cmPath = path.join(baselineLibDir, 'cross-market-guard.js');
+  delete require.cache[require.resolve(cmPath)];
+  return {
+    ...guards,
+    __dateGuard: require(dgPath),
+    __priorRunLib: require(prPath),
+    __crossMarketLib: require(cmPath),
+  };
 }
 
 function loadWorkingTreeGuards() {
@@ -597,7 +608,14 @@ function loadWorkingTreeGuards() {
   delete require.cache[require.resolve(dgPath)];
   const prPath = path.resolve(REPO_ROOT, 'scripts/lib/wrong-production-autoclear.js');
   delete require.cache[require.resolve(prPath)];
-  return { ...guards, __dateGuard: require(dgPath), __priorRunLib: require(prPath) };
+  const cmPath = path.resolve(REPO_ROOT, 'scripts/lib/cross-market-guard.js');
+  delete require.cache[require.resolve(cmPath)];
+  return {
+    ...guards,
+    __dateGuard: require(dgPath),
+    __priorRunLib: require(prPath),
+    __crossMarketLib: require(cmPath),
+  };
 }
 
 // ─── Load two versions of rebuild-helpers (Phase B) ──────────────────────────
@@ -748,10 +766,20 @@ function decideInclusion(review, show, guards) {
         new URL(review.url);
         const rawOutlet = (review.outletId || review.outlet || '').toLowerCase();
         const canonicalOutlet = normalizeOutletCanonical(rawOutlet);
-        const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(canonicalOutlet)
-          || outletRegionMap[canonicalOutlet] === 'london' || outletRegionMap[rawOutlet] === 'london';
-        const outletIsLondonRegion = outletRegionMap[canonicalOutlet] === 'london'
-          || outletRegionMap[rawOutlet] === 'london';
+        // Compute this ctx with the SIDE'S OWN helper, not a harness-local copy.
+        // It used to be a hardcoded `=== 'london'` pair here, which meant both
+        // replay sides ran the harness's logic: a change to how the rebuild
+        // computes this ctx was structurally invisible, the delta read 0, and
+        // the gate proved nothing about the code it exists to guard. Found by
+        // ship-check's adversarial reviewer on the BRO-591 clearing-side sync.
+        // A baseline predating the helper falls back to the london-only form,
+        // which IS that baseline's real behaviour — so the delta shows up.
+        const sideHelper = guards.__crossMarketLib?.outletIsUkSideSelfHealRegion;
+        const outletIsLondonRegion = typeof sideHelper === 'function'
+          ? sideHelper(outletRegionMap, canonicalOutlet, rawOutlet)
+          : (outletRegionMap[canonicalOutlet] === 'london'
+            || outletRegionMap[rawOutlet] === 'london');
+        const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(canonicalOutlet) || outletIsLondonRegion;
         const isUkUrl = isUkOutletUrl(review.url);
         const cvBlocksClear = typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
           ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
@@ -790,7 +818,21 @@ function decideInclusion(review, show, guards) {
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
   if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
-  if (review.contentTier === 'invalid') return { included: false, reason: 'contentTier:invalid' };
+  if (review.contentTier === 'invalid') {
+    // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
+    // wrongProduction is stale once that flag clears, so production falls through
+    // and lets the text/signal check decide. The rebuild stamps
+    // wrongProductionAutoClearedAt at clear time and isFreshWrongProductionAutoClear
+    // honours it; a replay never writes that stamp, so modelling this branch flatly
+    // made EVERY auto-clear-driven inclusion flip invisible to this gate — a clear
+    // computed a few lines above could never change the verdict. wrongProductionCleared
+    // stands in for the stamp the replay cannot write.
+    const wpCleared = wrongProductionCleared
+      || review.wrongProductionManualClear === true
+      || review.wrongProductionOverride === true
+      || review.humanReviewedWrongProduction === false;
+    if (!wpCleared) return { included: false, reason: 'contentTier:invalid' };
+  }
   if (review.assignedScore == null) return { included: false, reason: 'no score' };
 
   // Pre-opening temporal gate (Benjamin Button 2026-07-21). The guard honors
@@ -1042,6 +1084,10 @@ function main() {
         // in this list even though decideInclusion now calls it, which would have
         // reopened the exact #1163 blind spot this comparison block exists to close.
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        // The ctx feeding that predicate is computed by this helper, so a change
+        // to it changes inclusion just as much as a change to the predicate.
+        && (baseline.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '') === (working.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '')
+        && String([...(baseline.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort()) === String([...(working.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort())
         && (baseline.cvBlocksUkWrongProductionAutoClear?.toString() || '') === (working.cvBlocksUkWrongProductionAutoClear?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
