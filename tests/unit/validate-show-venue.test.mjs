@@ -176,3 +176,20 @@ test('isProvisional flags manual-user-request entries like Bronco Billy for vali
   assert.equal(isProvisional({ discoverySource: 'manual-user-request', provisional: true }), true);
   assert.equal(isProvisional({ discoverySource: 'todaytix-sync', provisional: false }), false);
 });
+
+test('scorePlaybillUrl ranks an exact-title candidate above a relaxed one (BRO-2821)', () => {
+  // The title gate used to score a flat 10 for every accepted URL; it now scores
+  // exact=10 and relaxed=8, so when a SERP page returns both readings of a title
+  // the exact one wins. Nothing pinned multi-candidate ORDERING before — the only
+  // consumer filters `score > 0` and sorts — so an adversarial review noted the
+  // ranking change was only accidentally safe. Pin it.
+  const show = { id: 'doubt-2024', title: 'Doubt: A Parable', venue: 'Todd Haimes Theatre', category: null };
+  const exact = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-a-parable-broadway-todd-haimes-theatre-2024', show);
+  const relaxed = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-broadway-todd-haimes-theatre-2024', show);
+  assert.ok(exact !== null && exact > 0, 'the exact-title URL must still be accepted');
+  assert.ok(relaxed !== null && relaxed > 0, 'the relaxed URL must still be accepted');
+  assert.ok(exact > relaxed,
+    `exact (${exact}) must outrank relaxed (${relaxed}) at the same venue and year`);
+});

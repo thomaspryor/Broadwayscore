@@ -204,6 +204,27 @@ describe('playbillUrlTitleMatch — the corroboration and enablement gates', () 
     assert.equal(playbillUrlTitleMatch(url, show, { knownVenueSlugs: new Set() }).match, false);
   });
 
+  test('a lossy form cannot corroborate itself out of its own title text', () => {
+    // Found by adversarial review. The corroboration search used to scan the
+    // WHOLE url, so a show whose only venue identity token also appears in its
+    // own title supplied its own evidence. "Music: A New Story" at the Music
+    // Box Theatre has exactly one token, "music", and accepted a page at a
+    // different house. The gate read as satisfied while nothing outside the
+    // title had agreed to anything — the absence-of-a-signal shape.
+    const show = { id: 'music-a-new-story-2026', title: 'Music: A New Story', venue: 'Music Box Theatre' };
+    const venues = { knownVenueSlugs: new Set(['music-box-theatre', 'other-venue-theatre']) };
+    const wrongHouse = playbillUrlTitleMatch(
+      `${P}music-broadway-other-venue-theatre-2026`, show, venues);
+    assert.equal(wrongHouse.match, false, 'the title must not supply its own venue evidence');
+
+    const rightHouse = playbillUrlTitleMatch(
+      `${P}music-broadway-music-box-theatre-2026`, show, venues);
+    assert.equal(rightHouse.match, true, 'a genuine venue agreement must still pass');
+    assert.equal(rightHouse.branch, 'lossy');
+    assert.ok(!rightHouse.corroboration.searchedTail.startsWith('music-'),
+      'corroboration must have been searched in the tail, not the title segment');
+  });
+
   test('a LOSSY form never reaches the legacy branch', () => {
     // Found by review. The legacy branch's justification is that decomposing a
     // body into <title><known venue> is self-corroborating — true for a form

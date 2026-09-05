@@ -169,13 +169,45 @@ function urlCorroboratesShow(url, show) {
   const u = String(url || '').toLowerCase();
   const toks = venueTokens(show && show.venue);
   const venueHit = toks.some((t) => u.includes(t));
+  const years = collectYears(show);
+  return {
+    venueHit,
+    yearHit: [...years].some((y) => u.includes(y)),
+    venueTokens: toks,
+  };
+}
+
+function collectYears(show) {
   const years = new Set();
   for (const src of [show && show.id, show && show.openingDate]) {
     const y = String(src || '').match(/\b(?:19|20)\d{2}\b/);
     if (y) years.add(y[0]);
   }
-  const yearHit = [...years].some((y) => u.includes(y));
-  return { venueHit, yearHit, venueTokens: toks };
+  return years;
+}
+
+/**
+ * Corroboration for the LOSSY branch, searched only in the part of the URL that
+ * FOLLOWS the title segment.
+ *
+ * urlCorroboratesShow() scans the whole URL, and for a lossy match that is
+ * circular: the title's own text can supply the "venue" evidence that is
+ * supposed to be independent of it. Found in adversarial review. Concretely,
+ * the show "Music: A New Story" at the Music Box Theatre has exactly one venue
+ * identity token, "music" — so it accepted
+ * /production/music-broadway-other-venue-theatre-2026, a page at a different
+ * house, because its own shortened title matched the venue test. The gate read
+ * as satisfied while nothing outside the title had agreed to anything.
+ *
+ * The tail is where the venue and year actually live in a Playbill slug, so
+ * requiring the hit there is both stricter and closer to the real grammar.
+ */
+function tailCorroboratesShow(tail, show) {
+  const t = String(tail || '').toLowerCase();
+  const toks = venueTokens(show && show.venue);
+  const venueHit = toks.some((x) => t.includes(x));
+  const yearHit = [...collectYears(show)].some((y) => t.includes(y));
+  return { venueHit, yearHit, venueTokens: toks, searchedTail: t };
 }
 
 const MARKET_SEGMENT_RE =
@@ -210,7 +242,10 @@ function marketTitleSegments(u) {
   let m;
   while ((m = MARKET_KEYWORD_RE.exec(path)) !== null) {
     const head = path.slice(0, m.index);
-    if (head && /^[a-z0-9-]+$/.test(head)) segs.push(head);
+    // The tail is everything from the market keyword onward — where the venue
+    // and year live. It is carried alongside the head so the lossy branch can
+    // demand its corroboration from OUTSIDE the title it just shortened.
+    if (head && /^[a-z0-9-]+$/.test(head)) segs.push({ head, tail: path.slice(m.index) });
     // Overlapping keywords ("-off-broadway-" also contains "-broadway-") must
     // not be skipped past, so advance one character rather than to lastIndex.
     MARKET_KEYWORD_RE.lastIndex = m.index + 1;
@@ -281,22 +316,24 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
 
   const rawSegs = marketTitleSegments(u);
   if (rawSegs.length) {
-    const segs = [...new Set(rawSegs.map(normSlug).filter(Boolean))];
-    if (segs.some((s) => s === forms.exact)) {
+    const segs = rawSegs.map((s) => ({ form: normSlug(s.head), tail: s.tail })).filter((s) => s.form);
+    const exactHit = segs.find((s) => s.form === forms.exact);
+    if (exactHit) {
       return { match: true, branch: 'exact', form: forms.exact, corroboration: null };
     }
-    const losslessHit = segs.find((s) => forms.lossless.includes(s));
+    const losslessHit = segs.find((s) => forms.lossless.includes(s.form));
     if (losslessHit) {
-      return { match: true, branch: 'lossless', form: losslessHit, corroboration: null };
+      return { match: true, branch: 'lossless', form: losslessHit.form, corroboration: null };
     }
-    const lossyHit = segs.find((s) => forms.lossy.includes(s));
-    if (lossyHit) {
-      const c = urlCorroboratesShow(u, show);
+    // Try EVERY lossy reading, not just the first: a URL can offer more than one
+    // split point, and only one of them may carry the venue in its tail.
+    for (const s of segs) {
+      if (!forms.lossy.includes(s.form)) continue;
+      const c = tailCorroboratesShow(s.tail, show);
       // Venue specifically, not "venue or year": a lossy form is a SHORTENING
       // of our title, so it can land on a genuinely different production that
       // happens to open the same year. Sharing the same house is far rarer.
-      if (!c.venueHit) return miss;
-      return { match: true, branch: 'lossy', form: lossyHit, corroboration: c };
+      if (c.venueHit) return { match: true, branch: 'lossy', form: s.form, corroboration: c };
     }
     return miss;
   }
@@ -319,6 +356,7 @@ module.exports = {
   venueTokens,
   titleForms,
   urlCorroboratesShow,
+  tailCorroboratesShow,
   legacyDecomposes,
   playbillUrlTitleMatch,
   MARKET_SEGMENT_RE,
