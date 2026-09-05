@@ -57,9 +57,9 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
       "firstSeen": "2026-07-24T07:50:34.747Z",
-      "lastSeen": "2026-08-24T07:46:43.825Z",
-      "lastNotifiedAt": "2026-08-24T07:46:43.825Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-05T02:22:06.980Z",
+      "lastNotifiedAt": "2026-09-05T02:22:06.980Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-335"
     },
@@ -114,12 +114,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Audit Aggregator Review Gap",
       "firstSeen": "2026-07-25T16:22:15.649Z",
-      "lastSeen": "2026-08-24T07:46:43.825Z",
-      "lastNotifiedAt": "2026-08-19T14:07:16.475Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-05T02:22:08.585Z",
+      "lastNotifiedAt": "2026-09-05T02:22:08.585Z",
+      "notifyCount": 4,
       "cardId": "3b6637c5-416f-81a0-983a-d26538001910",
-      "linearIdentifier": "BRO-392",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-392"
     },
     "health-check:Workflow repeat-failure: Process Feedback Submissions": {
       "status": "open",
@@ -161,11 +160,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingBee",
       "firstSeen": "2026-07-27T08:00:25.454Z",
-      "lastSeen": "2026-08-05T16:22:47.778Z",
-      "lastNotifiedAt": "2026-08-04T07:42:03.121Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-05T02:22:02.287Z",
+      "lastNotifiedAt": "2026-09-05T02:22:02.287Z",
+      "notifyCount": 3,
       "cardId": "3b2637c5-416f-814a-b349-fce0da6c1ce4",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-2721"
     },
     "health-check:Credits: Bright Data": {
       "status": "open",
@@ -272,9 +271,9 @@
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-31T14:28:35.953Z",
-      "lastNotifiedAt": "2026-08-31T14:28:35.953Z",
-      "notifyCount": 19,
+      "lastSeen": "2026-09-05T02:22:20.323Z",
+      "lastNotifiedAt": "2026-09-05T02:22:20.323Z",
+      "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -306,11 +305,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
       "firstSeen": "2026-08-02T21:53:33.271Z",
-      "lastSeen": "2026-08-30T12:17:20.994Z",
+      "lastSeen": "2026-09-05T02:22:06.977Z",
       "lastNotifiedAt": "2026-08-30T12:17:20.994Z",
       "notifyCount": 3,
       "cardId": "3b0637c5-416f-8159-a5c9-d106e8586882",
-      "linearIdentifier": "BRO-346"
+      "linearIdentifier": "BRO-346",
+      "silentRefires": 1
     },
     "gap:brainiac-live-west-end-2026/theatre-weekly--unknown.json": {
       "status": "open",
@@ -564,7 +564,7 @@
       "silentRefires": 2
     },
     "time-to-publish-sla:unmeasurable": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
@@ -572,7 +572,8 @@
       "lastNotifiedAt": "2026-08-31T14:30:08.449Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-05T02:23:04.228Z"
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -1009,12 +1010,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews (Fast)",
       "firstSeen": "2026-08-15T01:34:22.971Z",
-      "lastSeen": "2026-08-19T14:07:14.418Z",
-      "lastNotifiedAt": "2026-08-15T01:34:22.971Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-05T02:22:05.431Z",
+      "lastNotifiedAt": "2026-09-05T02:22:05.431Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-334",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-334"
     },
     "opening-night-stale-upcoming-tag-as-you-like-it-globe-west-end-2026": {
       "status": "open",
@@ -1831,11 +1831,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Fetch Show Images",
       "firstSeen": "2026-08-30T12:17:22.021Z",
-      "lastSeen": "2026-08-30T12:17:22.021Z",
+      "lastSeen": "2026-09-05T02:22:06.978Z",
       "lastNotifiedAt": "2026-08-30T12:17:22.021Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2526"
+      "linearIdentifier": "BRO-2526",
+      "silentRefires": 1
     },
     "health-check:Quality: outlet-heartbeat red flags": {
       "status": "open",
@@ -2244,6 +2245,39 @@
       "firstSeen": "2026-09-05T00:26:50.525Z",
       "lastSeen": "2026-09-05T00:26:50.525Z",
       "lastNotifiedAt": "2026-09-05T00:26:50.525Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Fetch Guardian Reviews via API": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "firstSeen": "2026-09-05T02:22:02.646Z",
+      "lastSeen": "2026-09-05T02:22:02.646Z",
+      "lastNotifiedAt": "2026-09-05T02:22:02.646Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-440"
+    },
+    "health-check:Workflow repeat-failure: Update Show Score Data": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Update Show Score Data",
+      "firstSeen": "2026-09-05T02:22:10.989Z",
+      "lastSeen": "2026-09-05T02:22:10.989Z",
+      "lastNotifiedAt": "2026-09-05T02:22:10.989Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-2525"
+    },
+    "time-to-publish-sla:missed": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
+      "firstSeen": "2026-09-05T02:23:04.226Z",
+      "lastSeen": "2026-09-05T02:23:04.226Z",
+      "lastNotifiedAt": "2026-09-05T02:23:04.226Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

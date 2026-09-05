@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-04T21:47:04.277Z",
-  "subject": "BSC URGENT (day 25): 13 unresolved errors",
-  "bannerText": "13 errors, 39 warnings",
+  "generatedAt": "2026-09-05T02:22:11.377Z",
+  "subject": "BSC URGENT (day 25): 17 unresolved errors",
+  "bannerText": "17 errors, 31 warnings",
   "consecutiveErrorDays": 25,
   "errors": [
     {
@@ -33,24 +33,40 @@
       "message": "0k credits left (0%) · EXHAUSTED · renews Sep 5"
     },
     {
-      "name": "Credits: ScrapingDog",
-      "message": "2888k credits left (96%) · 112k/day burn · renews in 29d · exhausts in ~26d (BEFORE renewal)"
-    },
-    {
       "name": "Push-retry deadman",
-      "message": "1088 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x203, Rebuild Reviews (Fast) x123, Rebuild Reviews Data x112, Gather Review Data x105, Fetch Show Images x68, Fetch Guardian Reviews via API x41, Scrape New Aggregators x39, Process Feedback Submissions x38, Commercial RSS Poll x37, Opening Night Checklist x32, Audit Aggregator Review Gap x30, Update Show Score Data x29, Audit Imageless Scored Shows x28, Check Opening Night Drift x20, Reverse Discovery Audit x19, Check Corpus Drift x16, Opening Night Broadcast x15, Opening Night Completeness Check x14, unknown x10, Monitor Scheduled Email Count x8, Audit Opening Dates x8, Promote West End Aggregator Candidates x7, Check Review-Count Drift x7, Opening Night Express x6, Auto-Maintain Show Data x5, Daily Data Health Check x5, Refresh Review Data x5, Reddit Engagement Digest x4, Outlet Registry Baseline Maintenance x4, Backfill Cast Data (Web Search) x4, Refresh Show Score (opening-night window) x4, Reconcile Newsletter Dedup State x4, Fix Platform Ticket Links x4, Commercial Weekly Orchestrator x3, Update Lottery/Rush Data x3, Newsletter Draft Refresh (Sunday) x3, Opening Night Express Retry Check x2, Weekly Video Reviews x2, Weekly Newsletter Draft x2, Enrich Off-Broadway Dates x2, Scrape BWW Reviews x2, Scrape WestEndTheatre Roundups x2, Weekly Broadway Grosses x2, Backfill Cast Data x2, Weekly Data Integrity Check x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Audit Census Recall x1, Coverage Adversarial Probe x1, Weekly Affiliate Report x1, Audit Review Quality x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1]. Most recent reason: retries-exhausted."
+      "message": "1114 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x215, Rebuild Reviews (Fast) x128, Rebuild Reviews Data x114, Gather Review Data x110, Fetch Show Images x67, Fetch Guardian Reviews via API x44, Commercial RSS Poll x39, Process Feedback Submissions x39, Opening Night Checklist x34, Scrape New Aggregators x33, Audit Aggregator Review Gap x32, Update Show Score Data x29, Audit Imageless Scored Shows x29, Check Opening Night Drift x20, Reverse Discovery Audit x19, Check Corpus Drift x16, Opening Night Broadcast x15, Opening Night Completeness Check x14, unknown x10, Check Review-Count Drift x7, Monitor Scheduled Email Count x7, Audit Opening Dates x7, Opening Night Express x6, Daily Data Health Check x6, Promote West End Aggregator Candidates x6, Auto-Maintain Show Data x5, Refresh Review Data x5, Reddit Engagement Digest x4, Outlet Registry Baseline Maintenance x4, Backfill Cast Data (Web Search) x4, Refresh Show Score (opening-night window) x4, Reconcile Newsletter Dedup State x4, Fix Platform Ticket Links x4, Commercial Weekly Orchestrator x3, Update Lottery/Rush Data x3, Newsletter Draft Refresh (Sunday) x3, Opening Night Express Retry Check x2, Weekly Video Reviews x2, Weekly Newsletter Draft x2, Enrich Off-Broadway Dates x2, Scrape BWW Reviews x2, Scrape WestEndTheatre Roundups x2, Weekly Broadway Grosses x2, Backfill Cast Data x2, Weekly Data Integrity Check x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Audit Census Recall x1, Coverage Adversarial Probe x1, Weekly Affiliate Report x1, Audit Review Quality x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1]. Most recent reason: retries-exhausted."
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
       "message": "Autofix throughput DEAD: 0 dispatches on each of the last 7 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
+      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "message": "Fetch Guardian Reviews via API failed 7 times in the last 24h — likely broken, not transient."
+    },
+    {
       "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "message": "Rebuild Reviews (Fast) failed 11 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 7 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "message": "Rebuild Reviews Data failed 6 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews Data failed 4 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Fetch Show Images",
+      "message": "Fetch Show Images failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Commercial RSS Poll",
+      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "message": "Audit Aggregator Review Gap failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Update Show Score Data",
+      "message": "Update Show Score Data failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -60,7 +76,7 @@
   "warns": [
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 20179 vs baseline 20262"
+      "message": "Reviews dropped: 20183 vs baseline 20265"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -75,16 +91,20 @@
       "message": "Newest DMARC report is 6d old (reporters send daily)"
     },
     {
+      "name": "Quality: outlet domain moves",
+      "message": "Unknown-outlet census is 2d old (>48h)"
+    },
+    {
       "name": "Quality: outlet invalid-content rate",
       "message": "1 outlet(s) show a broken-extractor signature (worst: plays-to-see — 4/7 recent invalid, 57% vs 8% baseline)"
     },
     {
       "name": "Coverage: SERP census recall",
-      "message": "Recall last measured 11d ago (weekly cron, >9d)"
+      "message": "Recall last measured 12d ago (weekly cron, >9d)"
     },
     {
       "name": "Coverage: adversarial probe",
-      "message": "Probe last ran 11d ago (weekly cron, >9d)"
+      "message": "Probe last ran 12d ago (weekly cron, >9d)"
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -95,20 +115,16 @@
       "message": "Last SEO check 20d ago (>14d)"
     },
     {
-      "name": "Cron failed: Rebuild Reviews",
-      "message": "Last run inconclusive: failure (2h ago), no success in 36h"
-    },
-    {
       "name": "Cron failed: Update Show Score",
-      "message": "Last run inconclusive: failure (2h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (1h ago), no success in 192h"
     },
     {
       "name": "Cron failed: Update Social Pulse",
-      "message": "Last run inconclusive: failure (10h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (5h ago), no success in 192h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "44 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (21d, stamp overdue 20d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (20d, stamp overdue 19d); P0: main red — drain→rebuild→re-flag loop between date guard (20d) (2 awaiting recheck, earliest due 2026-09-09 — not counted) [11 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "44 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P0: #483 drain cleared 64 provably-correct exclusion flags — (21d, stamp overdue 21d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (21d, stamp overdue 20d); P0: main red — drain→rebuild→re-flag loop between date guard (20d) (2 awaiting recheck, earliest due 2026-09-09 — not counted) [11 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
@@ -143,32 +159,12 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 4 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Audit Imageless Scored Shows",
+      "message": "Audit Imageless Scored Shows failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
-      "message": "Commercial RSS Poll failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Broadcast",
-      "message": "Opening Night Broadcast failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Gather Review Data — a-month-in-the-country-west-end-2026,the-story-west-end-2026,electra-persona-west-end-2026",
-      "message": "Gather Review Data — a-month-in-the-country-west-end-2026,the-story-west-end-2026,electra-persona-west-end-2026 failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Show Images",
-      "message": "Fetch Show Images failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Opening Night Checklist",
+      "message": "Opening Night Checklist failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -537,9 +533,48 @@
           "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
         }
       ]
+    },
+    {
+      "title": "Auto-remediation gave up on the-story-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Opening Night Broadcast Blocked — Checklist Errors",
+      "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "Shows",
+          "value": "the-story-west-end-2026"
+        }
+      ]
+    },
+    {
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hi Tom — I came across your recent scraper cost report and noticed the combination of high paid scraping usage and failed workflows.\r\nI have a concrete idea for reducing that cost: first reproduce a few failed opening-night workflows, identify where paid browser/SERP calls are being consumed, then test a Playwright-first + caching path with paid services only as fallback.\r\nI’d be happy to start with a small scoped diagnostic rather than proposing a full rebuild. If that’s useful, I can send you \"",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33932869717",
+      "fields": [
+        {
+          "name": "Submissions",
+          "value": "1"
+        },
+        {
+          "name": "Need you",
+          "value": "0"
+        },
+        {
+          "name": "Pipeline status",
+          "value": "success"
+        }
+      ]
     }
   ],
-  "autoFixedCount": 2,
-  "passedCount": 50,
+  "autoFixedCount": 1,
+  "passedCount": 54,
   "totalCount": 107
 }

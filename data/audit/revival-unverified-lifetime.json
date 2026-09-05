@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-08-31T14:30:00.975Z",
-  "scanned": 2023,
-  "showsWithViolations": 42,
-  "totalViolations": 42,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-05T02:23:01.305Z",
+  "scanned": 2030,
+  "showsWithViolations": 41,
+  "totalViolations": 41,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "a-month-in-the-country-west-end-2026",
+    "the-story-west-end-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -35,10 +38,9 @@
     "loves-labours-lost-globe-west-end-2026",
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
-    "ulster-american-irish-repertory-theatre-off-broadway-2026",
     "death-note-the-musical-west-end-2026",
-    "cleansed-off-west-end-2026",
-    "the-old-ladies-off-west-end-2026",
+    "a-month-in-the-country-west-end-2026",
+    "the-story-west-end-2026",
     "the-oresteia-west-end-2026",
     "paranormal-activity-2026",
     "la-boheme-off-broadway-2026",
@@ -297,7 +299,7 @@
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "title": "Cabaret at the Kit Kat Club",
       "openingDate": "2021-12-16",
-      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 27x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 26x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -312,15 +314,6 @@
       ]
     },
     {
-      "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
-      "title": "Ulster American (Irish Repertory Theatre)",
-      "openingDate": null,
-      "message": "ulster-american-irish-repertory-theatre-off-broadway-2026 review text mentions \"revival\" 10x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
       "showId": "death-note-the-musical-west-end-2026",
       "title": "Death Note: The Musical",
       "openingDate": "2026-08-11",
@@ -330,19 +323,19 @@
       ]
     },
     {
-      "showId": "cleansed-off-west-end-2026",
-      "title": "Cleansed",
-      "openingDate": null,
-      "message": "cleansed-off-west-end-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "message": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
     },
     {
-      "showId": "the-old-ladies-off-west-end-2026",
-      "title": "The Old Ladies",
-      "openingDate": null,
-      "message": "the-old-ladies-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
+      "message": "the-story-west-end-2026 review text mentions \"revival\" 10x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

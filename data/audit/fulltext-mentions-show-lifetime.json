@@ -1,13 +1,18 @@
 {
-  "updatedAt": "2026-08-31T14:29:55.889Z",
-  "scanned": 2023,
-  "showsWithViolations": 318,
-  "totalViolations": 616,
-  "newSinceLastRun": 3,
+  "updatedAt": "2026-09-05T02:22:58.091Z",
+  "scanned": 2030,
+  "showsWithViolations": 321,
+  "totalViolations": 624,
+  "newSinceLastRun": 8,
   "newViolationKeys": [
-    "every-brilliant-thing-2026::wsj--charles-isherwood.json",
-    "as-you-like-it-globe-west-end-2026::guardian--miriam-gillinson.json",
-    "the-tempest-globe-west-end-2026::british-theatre--howard-loxton.json"
+    "company-2021::nytimes--jesse-green.json",
+    "la-bete-2010::hollywood-reporter--frank-scheck.json",
+    "la-bete-2010::nydailynews--joe-dziemianowicz.json",
+    "la-bete-2010::vulture--scott-brown.json",
+    "pride-west-end-2026::broadwayworld--jay-irwin.json",
+    "a-month-in-the-country-west-end-2026::standard--nick-curtis.json",
+    "a-month-in-the-country-west-end-2026::whatsonstage--alex-wood.json",
+    "a-month-in-the-country-west-end-2026::whatsonstage--sarah-crompton.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -119,6 +124,7 @@
     "mj-2022::vulture--jackson-mchenry.json",
     "skeleton-crew-2022::usatoday--charles-isherwood.json",
     "flying-over-sunset-2021::hollywood-reporter--david-rooney.json",
+    "company-2021::nytimes--jesse-green.json",
     "clydes-2021::amny--matt-windman.json",
     "clydes-2021::broadwaynews--charles-isherwood.json",
     "clydes-2021::cititour--brian-scott-lipton.json",
@@ -443,8 +449,11 @@
     "the-scottsboro-boys-2010::nytimes--ben-brantley.json",
     "lombardi-2010::hollywood-reporter--david-rooney.json",
     "la-bete-2010::hollywood-reporter--david-rooney.json",
+    "la-bete-2010::hollywood-reporter--frank-scheck.json",
+    "la-bete-2010::nydailynews--joe-dziemianowicz.json",
     "la-bete-2010::timeout--david-cote.json",
     "la-bete-2010::usatoday--elysa-gardner.json",
+    "la-bete-2010::vulture--scott-brown.json",
     "bloody-bloody-andrew-jackson-2010::bloomberg--john-simon.json",
     "a-life-in-the-theatre-2010::backstage--david-sheward.json",
     "a-life-in-the-theatre-2010::bloomberg--john-simon.json",
@@ -544,6 +553,7 @@
     "manic-street-creature-west-end-2026::thestage--holly-o.json",
     "manic-street-creature-west-end-2026::thestage--holly-omahony.json",
     "relics-west-end-2026::guardian--unknown.json",
+    "pride-west-end-2026::broadwayworld--jay-irwin.json",
     "consumed-west-end-2026::standard--nick-curtis.json",
     "sweetmeats-west-end-2026::guardian--anya-ryan.json",
     "sweetmeats-west-end-2026::thestage--holly-omahony.json",
@@ -589,6 +599,9 @@
     "the-authenticator-west-end-2026::thestage--tom-wicker.json",
     "mass-west-end-2026::financialtimes--unknown.json",
     "mass-west-end-2026::thestage--sam-marlowe.json",
+    "a-month-in-the-country-west-end-2026::standard--nick-curtis.json",
+    "a-month-in-the-country-west-end-2026::whatsonstage--alex-wood.json",
+    "a-month-in-the-country-west-end-2026::whatsonstage--sarah-crompton.json",
     "cats-west-end-2026::times-uk--donald-hutera.json",
     "dark-of-the-moon-west-end-2026::artsdesk--unknown.json",
     "evening-all-afternoon-west-end-2026::financialtimes--sarah-hemming.json",
@@ -1872,6 +1885,22 @@
           "outletId": "hollywood-reporter",
           "criticName": "David Rooney",
           "haystackLength": 185,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "company-2021",
+      "title": "Company",
+      "openingDate": "2021-12-09",
+      "message": "nytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Company' (303 chars): https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html",
+      "violations": [
+        {
+          "filename": "nytimes--jesse-green.json",
+          "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html",
+          "outletId": "nytimes",
+          "criticName": "Jesse Green",
+          "haystackLength": 303,
           "textIssuesFlag": false
         }
       ]
@@ -5752,7 +5781,7 @@
       "showId": "la-bete-2010",
       "title": "La Bête",
       "openingDate": "2010-10-14",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'La Bête' (3002 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/la-bete-theater-review-41098/\ntimeout/David Cote (timeout--david-cote.json) SHIPPED but fullText never mentions 'La Bête' (582 chars): https://www.timeout.com/newyork/theater/la-bete\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'La Bête' (2914 chars, textIssues flag set): https://www.usatoday.com/life/theater/reviews/2010-10-15-bloody15_ST_N.htm",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'La Bête' (3002 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/la-bete-theater-review-41098/\nhollywood-reporter/Frank Scheck (hollywood-reporter--frank-scheck.json) SHIPPED but fullText never mentions 'La Bête' (150 chars, textIssues flag set): http://www.hollywoodreporter.com/hr/film-reviews/la-bete-theater-review-1004121282.story\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'La Bête' (236 chars): http://www.nydailynews.com/entertainment/arts/2010/10/15/2010-10-15_la_bete_review_david_hyde_pierce_mark_rylance_and_joanna_lumley_offer_beauty_in_.html?r=entertainment/arts\ntimeout/David Cote (timeout--david-cote.json) SHIPPED but fullText never mentions 'La Bête' (582 chars): https://www.timeout.com/newyork/theater/la-bete\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'La Bête' (2914 chars, textIssues flag set): https://www.usatoday.com/life/theater/reviews/2010-10-15-bloody15_ST_N.htm\nvulture/Scott Brown (vulture--scott-brown.json) SHIPPED but fullText never mentions 'La Bête' (303 chars, textIssues flag set): http://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.html",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
@@ -5761,6 +5790,22 @@
           "criticName": "David Rooney",
           "haystackLength": 3002,
           "textIssuesFlag": true
+        },
+        {
+          "filename": "hollywood-reporter--frank-scheck.json",
+          "url": "http://www.hollywoodreporter.com/hr/film-reviews/la-bete-theater-review-1004121282.story",
+          "outletId": "hollywood-reporter",
+          "criticName": "Frank Scheck",
+          "haystackLength": 150,
+          "textIssuesFlag": true
+        },
+        {
+          "filename": "nydailynews--joe-dziemianowicz.json",
+          "url": "http://www.nydailynews.com/entertainment/arts/2010/10/15/2010-10-15_la_bete_review_david_hyde_pierce_mark_rylance_and_joanna_lumley_offer_beauty_in_.html?r=entertainment/arts",
+          "outletId": "nydailynews",
+          "criticName": "Joe Dziemianowicz",
+          "haystackLength": 236,
+          "textIssuesFlag": false
         },
         {
           "filename": "timeout--david-cote.json",
@@ -5776,6 +5821,14 @@
           "outletId": "usatoday",
           "criticName": "Elysa Gardner",
           "haystackLength": 2914,
+          "textIssuesFlag": true
+        },
+        {
+          "filename": "vulture--scott-brown.json",
+          "url": "http://nymag.com/daily/entertainment/2010/10/theater_review_your_comp-lit_t.html",
+          "outletId": "vulture",
+          "criticName": "Scott Brown",
+          "haystackLength": 303,
           "textIssuesFlag": true
         }
       ]
@@ -7093,6 +7146,22 @@
       ]
     },
     {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "openingDate": "2026-06-25",
+      "message": "broadwayworld/Jay Irwin (broadwayworld--jay-irwin.json) SHIPPED but fullText never mentions 'Pride' (500 chars): https://www.broadwayworld.com/westend/article/PRIDE-Musical-to-Transfer-to-The-Bridge-Theatre-20260825",
+      "violations": [
+        {
+          "filename": "broadwayworld--jay-irwin.json",
+          "url": "https://www.broadwayworld.com/westend/article/PRIDE-Musical-to-Transfer-to-The-Bridge-Theatre-20260825",
+          "outletId": "broadwayworld",
+          "criticName": "Jay Irwin",
+          "haystackLength": 500,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
       "showId": "consumed-west-end-2026",
       "title": "Consumed",
       "openingDate": "2026-03-24",
@@ -7280,7 +7349,7 @@
       "showId": "the-tempest-globe-west-end-2026",
       "title": "The Tempest",
       "openingDate": "2026-01-29",
-      "message": "british-theatre/Howard Loxton (british-theatre--howard-loxton.json) SHIPPED but fullText never mentions 'The Tempest' (2827 chars): https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272",
+      "message": "british-theatre/Howard Loxton (british-theatre--howard-loxton.json) SHIPPED but fullText never mentions 'The Tempest' (2827 chars): https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-london-sigourney-weaver-jamie-lloyd",
       "violations": [
         {
           "filename": "british-theatre--howard-loxton.json",
@@ -7629,6 +7698,38 @@
       ]
     },
     {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'A Month in the Country' (5071 chars, textIssues flag set): https://www.standard.co.uk/culture/theatre/a-month-in-the-country-review-donmar-warehouse-b1295648.html\nwhatsonstage/Alex Wood (whatsonstage--alex-wood.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\nwhatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) SHIPPED but fullText never mentions 'A Month in the Country' (4166 chars, textIssues flag set): https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/\n⚠️  thereviewshub/Unknown (thereviewshub--unknown.json) also too short to assess (0 chars): https://www.thereviewshub.com/a-month-in-the-country-donmar-warehouse-london/\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo",
+      "violations": [
+        {
+          "filename": "standard--nick-curtis.json",
+          "url": "https://www.standard.co.uk/culture/theatre/a-month-in-the-country-review-donmar-warehouse-b1295648.html",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "haystackLength": 5071,
+          "textIssuesFlag": true
+        },
+        {
+          "filename": "whatsonstage--alex-wood.json",
+          "url": "https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/",
+          "outletId": "whatsonstage",
+          "criticName": "Alex Wood",
+          "haystackLength": 4166,
+          "textIssuesFlag": true
+        },
+        {
+          "filename": "whatsonstage--sarah-crompton.json",
+          "url": "https://www.whatsonstage.com/news/a-month-in-the-country-with-sophie-okonedo-at-donmar-warehouse-review_1730790/",
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "haystackLength": 4166,
+          "textIssuesFlag": true
+        }
+      ]
+    },
+    {
       "showId": "cats-west-end-2026",
       "title": "Cats",
       "openingDate": "2026-08-06",
@@ -7711,7 +7812,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "title": "Under the Shadow",
-      "openingDate": null,
+      "openingDate": "2026-06-09",
       "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Under the Shadow' (2337 chars): https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/20b6f229-e7f1-4c28-982c-4fe2ee842947\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/under-the-shadow-review-almeida-theatre-london",
       "violations": [
         {
