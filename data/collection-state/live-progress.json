@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-05T14:13:53.756Z",
-  "processed": 164,
-  "failed": 3242,
-  "successRate": "4.8%",
+  "updatedAt": "2026-09-05T14:15:10.395Z",
+  "processed": 167,
+  "failed": 3249,
+  "successRate": "4.9%",
   "tierBreakdown": {
     "playwright": 99,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 38,
+    "brightdata": 40,
     "archiveToday": 0,
     "archive": 22
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-05T11:58:58.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-05T12:00:39.074Z",
-      "event": "bb-session",
-      "session": "d8fbd688",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
     {
       "t": "2026-09-05T12:00:39.969Z",
       "event": "bb-cookie-inject",
@@ -126,6 +115,17 @@
     },
     {
       "t": "2026-09-05T14:02:50.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-05T14:14:12.968Z",
+      "event": "bb-session",
+      "session": "45c0dc89",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+    },
+    {
+      "t": "2026-09-05T14:14:14.235Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
