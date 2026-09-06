@@ -3,7 +3,12 @@
     "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
     "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "the-story-west-end-2026/ground--unknown.json",
-    "the-story-west-end-2026/london-box-office--stuart-king.json"
+    "the-story-west-end-2026/london-box-office--stuart-king.json",
+    "the-story-west-end-2026/theatrecat--unknown.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+    "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+    "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -11,26 +16,62 @@
     "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
     "the-story-west-end-2026/observer--david-cote.json",
     "the-story-west-end-2026/huffpost--ron-dicker.json",
-    "the-story-west-end-2026/london-box-office--phil-willmott.json"
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-      "the-story-west-end-2026/london-box-office--stuart-king.json"
+      "the-story-west-end-2026/london-box-office--stuart-king.json",
+      "the-story-west-end-2026/theatrecat--unknown.json",
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-story-west-end-2026/times-uk--clive-davis.json",
+      "the-story-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "the-story-west-end-2026/ground--unknown.json"
+      "the-story-west-end-2026/ground--unknown.json",
+      "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+      "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-09-06T12:13:38.167Z",
-  "lastProcessed": "the-story-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "lastProcessed": "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+  "log": [
+    {
+      "t": "2026-09-06T12:18:40.390Z",
+      "event": "bb-session",
+      "session": "2f55475a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectorin"
+    },
+    {
+      "t": "2026-09-06T12:18:41.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-06T12:20:15.420Z",
+      "event": "bb-session",
+      "session": "405314b5",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-06T12:20:23.588Z",
+      "event": "bb-session",
+      "session": "4a0bf80b",
+      "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    }
+  ]
 }
