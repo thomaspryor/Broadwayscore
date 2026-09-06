@@ -277,8 +277,47 @@ function tailCorroboratesShow(tail, show) {
   return { venueHit, yearHit, venueTokens: toks, searchedTail: t };
 }
 
-const MARKET_KEYWORD_RE =
-  /-(?:off-)?(?:broadway|regional|tour|west-end|london)-/g;
+// ONE list, two regexes built from it. scorePlaybillUrl used to hand-copy this
+// alternation, and review showed what that costs: a keyword added here and not
+// mirrored there fails open on FOUR gates at once (regional reject,
+// cross-market reject, market bonus, and the venue bonus goes back to matching
+// the market segment itself). The vocabulary and the parse now live together.
+const MARKET_KEYWORDS = ['broadway', 'regional', 'tour', 'west-end', 'london'];
+const MARKET_ALT = `(?:off-)?(?:${MARKET_KEYWORDS.join('|')})`;
+const MARKET_KEYWORD_RE = new RegExp(`-${MARKET_ALT}-`, 'g');
+const MARKET_TAIL_RE = new RegExp(`^-(${MARKET_ALT})-`);
+
+/**
+ * Split a marketTail into the market it names and the venue/year text after it.
+ *
+ * The `off-` prefix is the trap, and it bit a shipped commit: a hand-rolled
+ * capture group returned 'off-regional' and 'off-tour', which compared equal to
+ * NEITHER 'regional' nor 'tour', so the regional reject silently stopped firing
+ * — the very guard whose absence turned CI run 34000023372 red. The old
+ * substring test had matched '-regional-' INSIDE '-off-regional-' and so never
+ * had the problem. Same for '-off-london-' and '-off-west-end-', which the old
+ * '-london-' substring test caught and an exact comparison does not.
+ *
+ * So classify on the BASE word, with off-broadway as the one genuine
+ * off- market. That is exhaustive over MARKET_KEYWORDS by construction, which a
+ * list of equality checks is not.
+ *
+ * @returns {{keyword: string, market: ?string, rest: string}} market is
+ *   'broadway' | 'off-broadway' | 'london' | 'regional', or null when the tail
+ *   names no market at all (legacy shapes, whose tail is '').
+ */
+function classifyMarketTail(tail) {
+  const text = String(tail || '');
+  const m = text.match(MARKET_TAIL_RE);
+  if (!m) return { keyword: '', market: null, rest: text };
+  const keyword = m[1];
+  const base = keyword.replace(/^off-/, '');
+  const market = keyword === 'off-broadway' ? 'off-broadway'
+    : base === 'broadway' ? 'broadway'
+      : (base === 'london' || base === 'west-end') ? 'london'
+        : 'regional';
+  return { keyword, market, rest: text.slice(m[0].length) };
+}
 
 /**
  * Every title segment the URL could be read as — one per market keyword in the
@@ -458,6 +497,8 @@ module.exports = {
   tailCorroboratesShow,
   legacyDecomposes,
   playbillUrlTitleMatch,
+  classifyMarketTail,
+  MARKET_KEYWORDS,
   MARKET_KEYWORD_RE,
   LEGACY_RE,
   VENUE_NOUNS,

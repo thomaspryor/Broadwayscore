@@ -82,7 +82,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue } = require('./lib/title-match');
 // normalizeTitle is no longer imported here: the title comparison it backed
 // moved wholesale into playbill-title-match.js (BRO-2821), which calls it.
-const { playbillUrlTitleMatch, venueSlug } = require('./lib/playbill-title-match');
+const { playbillUrlTitleMatch, venueSlug, classifyMarketTail } = require('./lib/playbill-title-match');
 const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
@@ -266,22 +266,6 @@ function shortTitleSlug(title) {
  * match "Ms. Blakk for President" no matter how high the other signals score.
  */
 
-/**
- * The part of a market tail AFTER its leading market keyword — the venue and
- * year, without the market word itself.
- *
- * playbillUrlTitleMatch's marketTail deliberately STARTS at the keyword,
- * because the market gates need to read it. Every other signal must not: the
- * keyword is not venue text and is not year text, and canonicalVenue() returns
- * a venue's first word, so "Broadway Theatre" -> "broadway" matched the market
- * segment of any Broadway or off-Broadway url regardless of the actual house.
- * Kept as a named helper rather than an inline replace so the market gates and
- * the bonuses cannot quietly drift onto different haystacks.
- */
-function afterMarketSegment(marketTail, marketWord) {
-  return marketWord ? String(marketTail).slice(marketWord.length + 2) : String(marketTail || '');
-}
-
 function scorePlaybillUrl(url, show) {
   const u = url.toLowerCase();
   // Playbill's West End production URLs use "london" as the market segment
@@ -360,8 +344,16 @@ function scorePlaybillUrl(url, show) {
   // house on West 86th. 16 -> null, caught by a corpus sweep before it shipped.
   // "Regional" and "Tour" are venue words too ("Regional Theatre", any "… Tour"
   // house), so the regional reject reads the leading segment as well.
-  const marketWord = (marketTail.match(/^-((?:off-)?(?:broadway|regional|tour|west-end|london))-/) || [null, ''])[1];
-  if ((marketWord === 'regional' || marketWord === 'tour') && show.category !== 'regional') return null;
+  //
+  // The classification lives in playbill-title-match.js because that module
+  // owns the keyword vocabulary. A hand-copied alternation here shipped once
+  // and review caught what it cost: the capture group returned 'off-regional'
+  // and 'off-tour', which equalled neither 'regional' nor 'tour', so the
+  // regional reject stopped firing — the guard whose absence turned CI run
+  // 34000023372 red. The old substring test had matched inside those. Any
+  // keyword added to the vocabulary now reaches all four gates below at once.
+  const { market: urlMarket, rest: afterMarket } = classifyMarketTail(marketTail);
+  if (urlMarket === 'regional' && show.category !== 'regional') return null;
   // Cross-market hard reject: a same-titled show can have entirely separate
   // Broadway and West End productions (different venue, cast, often
   // different score) — the +10 title-match alone must never carry a
@@ -411,7 +403,7 @@ function scorePlaybillUrl(url, show) {
   // returned null. Latent (0 of the 107 cached URLs use "-west-end-") but it is
   // the same hole card #590 closed for "-london-", left open on the other
   // spelling. Found by review, reproduced before fixing.
-  const isLondonUrl = marketWord === 'london' || marketWord === 'west-end';
+  const isLondonUrl = urlMarket === 'london';
   if (isLondonUrl && !isLondon) return null;
   // A legacy URL (vault page / "-YYYY-YYYY" season page) carries NO market
   // segment at all, so neither the London check above nor the Broadway check
@@ -436,9 +428,9 @@ function scorePlaybillUrl(url, show) {
     const staged = slug && _venueMarkets ? _venueMarkets.get(slug) : null;
     if (!staged || !staged.has(marketOf(show.category))) return null;
   }
-  if (!isLondonUrl && isLondon && (marketWord === 'broadway' || marketWord === 'off-broadway')) return null;
-  if (marketWord === 'off-broadway') s += isOB ? 5 : -5;
-  else if (marketWord === 'broadway') s += isOB ? -5 : 5;
+  if (!isLondonUrl && isLondon && (urlMarket === 'broadway' || urlMarket === 'off-broadway')) return null;
+  if (urlMarket === 'off-broadway') s += isOB ? 5 : -5;
+  else if (urlMarket === 'broadway') s += isOB ? -5 : 5;
   else if (isLondonUrl) s += 5;
   const cv = canonicalVenue(show.venue || '');
   if (cv) {
@@ -473,7 +465,7 @@ function scorePlaybillUrl(url, show) {
     // of this hunk.
     const venueHaystack = titleMatch.branch === 'legacy'
       ? `-${(titleMatch.corroboration && titleMatch.corroboration.venueSlugInUrl) || ''}-`
-      : afterMarketSegment(marketTail, marketWord);
+      : afterMarket;
     if (venueHaystack.includes(cvSlug)) s += 2;
   }
   // The year lives in the tail alongside the venue, and a title can contain a
@@ -495,11 +487,23 @@ function scorePlaybillUrl(url, show) {
   // earlier version of this comment justified the whole-url read by saying the
   // matcher leaves "no room for a stray title year" — wrong, and review caught
   // it: the TITLE is in that path, so 1984-hudson-theatre-vault-0000012345
-  // scored a year bonus off the show's own name "1984". The suffix is where a
-  // legacy url's production year actually lives.
+  // scored a year bonus off the show's own name "1984".
+  //
+  // Of the two legacy shapes only the SEASON page carries a year. A vault page
+  // ends in a Playbill record id, and testing a year against a digit blob is a
+  // coincidence generator, not a signal: hadestown-2019 scored +1 against
+  // …-vault-0000002019. So the vault arm contributes nothing, deliberately.
+  //
+  // And normalise before the $-anchored match. `u` here is only lowercased —
+  // findPlaybillUrl strips a query but never a trailing slash, and SERP results
+  // are not slash-free (playbill-title-match.js says so in its own comment,
+  // having been bitten by it). Without this, a legacy url arriving with one
+  // matched the matcher's LEGACY_RE, which does strip, and then fell out of
+  // this regex and silently lost its +1.
   const idYear = (show.id || '').match(/\d{4}/g)?.pop();
+  const legacyPath = u.replace(/[?#].*$/, '').replace(/\/+$/, '');
   const yearHaystack = titleMatch.branch === 'legacy'
-    ? (u.match(/(?:-vault-\d+|-(?:19|20)\d{2}-(?:19|20)\d{2})$/) || [''])[0]
+    ? (legacyPath.match(/-((?:19|20)\d{2}-(?:19|20)\d{2})$/) || ['', ''])[1]
     : marketTail;
   if (idYear && yearHaystack.includes(idYear)) s += 1;
   return s;

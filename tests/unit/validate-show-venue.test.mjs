@@ -654,3 +654,75 @@ test('a legacy url does not pay the year bonus out of the title (1984)', () => {
   assert.equal(score, 10,
     `expected 8 (legacy) + 2 (venue) and no year bonus; 11 means "1984" in the path was read as this show's production year, got ${score}`);
 });
+
+// ---------------------------------------------------------------------------
+// A second review of the fixes above found five more, one of them a REGRESSION
+// this session shipped. The unifying cause: a hand-copied market vocabulary
+// with an exact-equality classifier, where the old code used substring tests.
+// The vocabulary and the classification now live together in
+// playbill-title-match.js; these pin the behaviour that broke.
+
+const { classifyMarketTail, MARKET_KEYWORDS } = require('../../scripts/lib/playbill-title-match.js');
+
+// THE REGRESSION. The capture group returned 'off-regional', which equalled
+// neither 'regional' nor 'tour', so the reject stopped firing. The substring
+// test it replaced had matched '-regional-' inside '-off-regional-'. This is
+// the guard whose absence turned CI run 34000023372 red.
+test('an "-off-regional-" url is rejected for a Broadway show, like "-regional-"', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  for (const seg of ['regional', 'off-regional', 'tour', 'off-tour']) {
+    assert.equal(scorePlaybillUrl(
+      `https://playbill.com/production/hamilton-${seg}-playmakers-repertory-company-2017`, bw), null,
+    `a "-${seg}-" url must not be accepted for a Broadway show`);
+  }
+});
+
+test('both "off-" London spellings are rejected for a Broadway show', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  for (const seg of ['london', 'west-end', 'off-london', 'off-west-end']) {
+    assert.equal(scorePlaybillUrl(
+      `https://playbill.com/production/hamilton-${seg}-victoria-palace-theatre-2017`, bw), null,
+    `a "-${seg}-" url must not be accepted for a Broadway show`);
+  }
+});
+
+// The legacy year regex is $-anchored but ran against a url that had only been
+// lowercased. findPlaybillUrl strips a query and never a trailing slash, and
+// playbill-title-match.js warns in its own comment that SERP results are not
+// slash-free — the same shape that once killed every legacy recovery.
+test('a legacy season url keeps its year bonus with a trailing slash', () => {
+  const show = { id: 'hamilton-2017', title: 'Hamilton', venue: 'Victoria Palace Theatre', category: 'west-end' };
+  const bare = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018', show);
+  const slashed = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018/', show);
+  assert.equal(slashed, bare, `one trailing slash must not cost the year bonus: ${slashed} vs ${bare}`);
+});
+
+// A vault page ends in a Playbill RECORD ID, not a year. Testing a year against
+// a digit blob manufactures coincidences.
+test('a vault url does not pay a year bonus out of a record id', () => {
+  const show = { id: 'hadestown-2019', title: 'Hadestown', venue: 'Walter Kerr Theatre', category: 'broadway' };
+  const coincidence = scorePlaybillUrl(
+    'https://playbill.com/production/hadestownwalter-kerr-theatre-vault-0000002019', show);
+  const control = scorePlaybillUrl(
+    'https://playbill.com/production/hadestownwalter-kerr-theatre-vault-0000009999', show);
+  assert.equal(coincidence, control,
+    `"2019" appearing inside a record id must not read as this show's year: ${coincidence} vs ${control}`);
+});
+
+// The drift guard. The scorer no longer owns a copy of the vocabulary, but a
+// keyword added to MARKET_KEYWORDS that the classifier does not map would fail
+// open on all four gates at once, silently.
+test('every market keyword classifies to a market, in both bare and off- form', () => {
+  assert.ok(MARKET_KEYWORDS.length > 0, 'the vocabulary must not be empty');
+  for (const word of MARKET_KEYWORDS) {
+    for (const kw of [word, `off-${word}`]) {
+      const { market } = classifyMarketTail(`-${kw}-some-theatre-2026`);
+      assert.ok(market, `"${kw}" must classify to a market, got ${market}`);
+      assert.ok(['broadway', 'off-broadway', 'london', 'regional'].includes(market),
+        `"${kw}" classified to an unknown market: ${market}`);
+    }
+  }
+  assert.equal(classifyMarketTail('').market, null, 'an empty tail names no market');
+});
