@@ -4,10 +4,15 @@
  * playbill-urls-store.js — read/modify/write data/playbill-urls.json without
  * losing a concurrent writer's entries.
  *
- * THE BUG (BRO-2895). Both writers of that cache did a whole-file
- * read-modify-write with no coordination:
- *   scripts/discover-playbill-urls.js  — fs.writeFileSync(OUTPUT_PATH, ...)
- *   scripts/fetch-show-images-auto.js  — fs.writeFileSync(PLAYBILL_URLS_PATH, ...)
+ * THE BUG (BRO-2895). All THREE writers of that cache did a whole-file
+ * read-modify-write with no coordination. BRO-2895 and BRO-2893 both say "both
+ * writers"; the third was found by grepping for the write rather than trusting
+ * the cards, and it is the one reached from five workflows:
+ *   scripts/discover-playbill-urls.js     — fs.writeFileSync(OUTPUT_PATH, ...)
+ *   scripts/fetch-show-images-auto.js     — fs.writeFileSync(PLAYBILL_URLS_PATH, ...)
+ *   scripts/enrich-off-broadway-dates.js  — fs.writeFileSync(PLAYBILL_URL_CACHE_PATH, ...)
+ * If you add a fourth, route it through here; a direct write silently reopens
+ * every case below.
  * Two runs each read the file, each add their own shows, and the second write
  * discards the first's. Nothing throws and nothing is logged, so the only
  * symptom is a show that "never got a Playbill URL" and gets re-resolved at SERP
@@ -181,9 +186,12 @@ function savePlaybillUrls(filePath, current, snapshot) {
   }
   const merged = applyDelta(onDisk, delta);
   merged.lastUpdated = new Date().toISOString();
-  // allowShrink: a legitimate eviction (the cross-market self-heal) removes
-  // entries, and this file is small enough that one removal can exceed the 5%
-  // line-count floor the shrink guard applies to shows.json.
+  // allowShrink: a delete replayed from a caller's delta removes entries, and
+  // this file is small enough that one removal can exceed the 5% line-count
+  // floor the shrink guard applies to shows.json. Note the floor is not load-
+  // bearing here anyway now that a corrupt read throws instead of returning an
+  // empty cache — that reset was the path by which a shrink guard would have
+  // been the last thing standing between a bad read and a wiped file.
   atomicWriteJson(filePath, merged, { allowShrink: true });
   return {
     written: true,
@@ -212,8 +220,12 @@ function openPlaybillUrls(filePath) {
     /** @returns {{written:boolean, sets:number, deletes:number, recovered:number}} */
     save() {
       const result = savePlaybillUrls(filePath, data, baseline);
-      // Everything just written IS the on-disk state now, so the next save's
-      // delta covers only what changes from here.
+      // Re-baseline to what THIS process holds, not to what is on disk. Peer
+      // entries merged in during save() are deliberately NOT copied into `data`
+      // — they are absent from both the new baseline and `data`, so the next
+      // computeDelta sees them in neither and will not mistake them for
+      // deletions. What this line prevents is the next save replaying THIS
+      // save's sets again over a value a peer has since corrected.
       baseline = { ...data.shows };
       return result;
     },
