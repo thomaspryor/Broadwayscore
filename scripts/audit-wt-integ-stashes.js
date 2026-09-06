@@ -36,6 +36,28 @@
 
 const { execFileSync } = require('child_process');
 const { classifyStashedFile, classifyStashEntry } = require('./lib/stash-truncation');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+const USAGE = `audit-wt-integ-stashes — triage the shared git stash stack (READ ONLY).
+
+Reports which stash entries are safe churn and which would destroy a real file
+if applied. Never drops, applies or pops anything.
+
+Usage:
+  node scripts/audit-wt-integ-stashes.js            report on the live stack
+  node scripts/audit-wt-integ-stashes.js --json     machine-readable output
+  node scripts/audit-wt-integ-stashes.js --gate     exit 1 if any entry is dangerous
+  node scripts/audit-wt-integ-stashes.js --sha <s>  triage one stash commit by sha,
+                                                    including one already dropped
+
+Exit codes: 0 clean, 1 dangerous entry found (--gate), 2 bad usage,
+            3 the audit itself could not run.`;
+
+// Must precede any child_process work (task #498 / the 2026-07-14 --help incident).
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE);
+  process.exit(0);
+}
 
 let classifyPath = () => ({ tier: null });
 try {
