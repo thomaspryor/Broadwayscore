@@ -169,7 +169,13 @@ function stashFiles(sha) {
       sha + '^3',
     ]);
     if (untracked === null) return { failed: true, files };
+    const tracked_paths = new Set(files.map((f) => f.path));
     for (const p of untracked.split('\0').filter(Boolean)) {
+      // A path can appear BOTH in the tracked diff and in ^3 (git rm --cached
+      // with a stub left on disk). Reporting it twice gave the same file two
+      // contradictory verdicts in one entry — "do NOT apply" beside "nothing is
+      // overwritten". The tracked entry is the meaningful one, so it wins.
+      if (tracked_paths.has(p)) continue;
       // Untracked payload: present only in ^3, and overwrites nothing.
       files.push({ path: p, stashRev: sha + '^3', baseRev: null });
     }
@@ -178,7 +184,14 @@ function stashFiles(sha) {
   return { failed: false, files };
 }
 
-/** Paths git reports as binary (numstat prints "-" for both counts). */
+/**
+ * Paths git reports as undiffable (numstat prints "-" for both counts).
+ *
+ * -z matters: without it git C-quotes any path containing a quote, tab or
+ * control character even under core.quotePath=false, while the --name-only -z
+ * listing returns those paths raw. The two spellings then never match, and a
+ * genuinely undiffable file is silently judged as ordinary text.
+ */
 function binaryPaths(sha) {
   const out = run([
     '-c',
@@ -186,16 +199,34 @@ function binaryPaths(sha) {
     'diff',
     '--no-renames',
     '--numstat',
+    '-z',
     sha + '^',
     sha,
   ]);
   if (out === null) return new Set();
   const set = new Set();
-  for (const line of out.split('\n')) {
-    const m = line.match(/^-\t-\t(.+)$/);
-    if (m) set.add(m[1]);
+  // With -z an ordinary record is "<added>\t<deleted>\t<path>\0" — the path is
+  // TAB-separated inside the record, not its own NUL-delimited token. (Only
+  // rename records split the paths out with NULs, and --no-renames means we
+  // never see those.) Parsing it pairwise silently matched nothing, which made
+  // binary detection dead code.
+  for (const record of out.split('\0')) {
+    if (record === '') continue;
+    const parts = record.split('\t');
+    if (parts.length < 3) continue;
+    const [added, deleted] = parts;
+    const filePath = parts.slice(2).join('\t');
+    if (added === '-' && deleted === '-') set.add(filePath);
   }
   return set;
+}
+
+/** Blob size in bytes at <rev>:<path>, or null when it cannot be read. */
+function bytesAt(rev, filePath) {
+  const out = run(['cat-file', '-s', rev + ':' + filePath]);
+  if (out === null) return null;
+  const n = Number(out.trim());
+  return Number.isFinite(n) ? n : null;
 }
 
 function triage(stash) {
@@ -221,12 +252,16 @@ function triage(stash) {
       continue;
     }
 
+    const isBinary = binaries.has(filePath);
     const verdict = classifyStashedFile({
       path: filePath,
       stashedLines: stashed.absent ? null : stashed.lines,
       baseLines: base.absent ? null : base.lines,
       infraTier: tier,
-      binary: binaries.has(filePath),
+      binary: isBinary,
+      // Only pay for the size lookups when they will actually be used.
+      stashedBytes: isBinary && !stashed.absent ? bytesAt(stashRev, filePath) : null,
+      baseBytes: isBinary && !base.absent && baseRev ? bytesAt(baseRev, filePath) : null,
     });
     files.push({
       path: filePath,

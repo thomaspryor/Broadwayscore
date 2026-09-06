@@ -38,6 +38,9 @@ const TELEMETRY_PREFIXES = ['data/audit/'];
  */
 const MIN_BASE_LINES_FOR_RATIO = 20;
 
+/** Same idea for binary blobs, measured in bytes. */
+const MIN_BASE_BYTES_FOR_RATIO = 512;
+
 /** Kept <= this fraction of the base file: a truncation, not an edit. */
 const TRUNCATION_RATIO = 0.2;
 
@@ -48,14 +51,6 @@ function isTelemetryPath(filePath) {
   return TELEMETRY_PREFIXES.some((prefix) => filePath.startsWith(prefix));
 }
 
-/**
- * @param {object} file
- * @param {string} file.path            repo-relative path
- * @param {number|null} file.stashedLines line count in the stash tree, or null if absent (deleted)
- * @param {number|null} file.baseLines    line count in the stash's base commit, or null if absent (added)
- * @param {string|null} [file.infraTier]  tier from infra-review-scope classifyPath, if any
- * @returns {{verdict: string, severity: string, reason: string}}
- */
 /**
  * Render a kept-fraction without ever printing "0%" for a file that still has
  * content — 1 line against 231 is 0.4%, and rounding it to "0% kept" makes the
@@ -68,14 +63,33 @@ function formatKept(stashedLines, baseLines) {
   return Math.round(pct) + '%';
 }
 
+/**
+ * @param {object} file
+ * @param {string} file.path                 repo-relative path
+ * @param {number|null} file.stashedLines    line count in the stash tree, null if absent (deleted)
+ * @param {number|null} file.baseLines       line count at the stash base, null if absent (added)
+ * @param {string|null} [file.infraTier]     tier from infra-review-scope classifyPath, if any
+ * @param {boolean} [file.binary]            git reports the path as undiffable
+ * @param {number|null} [file.stashedBytes]  blob size in the stash tree (used when binary)
+ * @param {number|null} [file.baseBytes]     blob size at the stash base (used when binary)
+ * @returns {{verdict: string, severity: string, reason: string}}
+ */
 function classifyStashedFile(file) {
-  const { path: filePath, stashedLines, baseLines, infraTier = null, binary = false } = file;
+  const {
+    path: filePath,
+    stashedLines,
+    baseLines,
+    infraTier = null,
+    binary = false,
+    stashedBytes = null,
+    baseBytes = null,
+  } = file;
 
   if (isTelemetryPath(filePath)) {
     return {
       verdict: 'telemetry',
       severity: 'none',
-      reason: 'machine-written churn (data/audit or scratchpad); discardable',
+      reason: 'machine-written churn under data/audit/; discardable',
     };
   }
 
@@ -99,25 +113,41 @@ function classifyStashedFile(file) {
     };
   }
 
-  // Line counts are meaningless for binary blobs (a PNG "line count" is just
-  // how many 0x0a bytes it happens to contain), so never ratio-judge one.
-  if (binary) {
+  // Binary blobs cannot be judged by line count (a PNG "line count" is just how
+  // many 0x0a bytes it happens to contain) — but they must still be judged.
+  //
+  // An earlier version of this file simply exempted them, and that reopened the
+  // false-safe: git calls ANY file containing a NUL byte undiffable, including
+  // a half-written text stub, which is exactly the shape of a truncation. A
+  // single `-diff` line in .gitattributes did the same thing. So binaries fall
+  // through to the SAME ratio test, measured in bytes instead of lines. A file
+  // git cannot diff that also lost 99% of its bytes is more suspicious, not
+  // less.
+  const useBytes = binary;
+  const stashedSize = useBytes ? stashedBytes : stashedLines;
+  const baseSize = useBytes ? baseBytes : baseLines;
+  const unit = useBytes ? 'byte' : 'line';
+  const minBase = useBytes ? MIN_BASE_BYTES_FOR_RATIO : MIN_BASE_LINES_FOR_RATIO;
+
+  if (useBytes && (typeof stashedSize !== 'number' || typeof baseSize !== 'number')) {
+    // Undiffable AND unmeasurable is an unknown, and an unknown blocks.
     return {
-      verdict: 'code',
-      severity: critical ? 'warn' : 'info',
-      reason: 'binary file; not line-comparable — inspect manually before applying',
+      verdict: 'error',
+      severity: 'danger',
+      reason: 'binary file whose size could not be read — cannot rule out a truncation',
     };
   }
 
-  if (baseLines >= MIN_BASE_LINES_FOR_RATIO) {
-    const kept = stashedLines / baseLines;
+  if (baseSize >= minBase) {
+    const kept = stashedSize / baseSize;
     if (kept <= TRUNCATION_RATIO) {
       return {
         verdict: 'truncated',
         severity: 'danger',
         reason:
-          `${stashedLines} line(s) against ${baseLines} at the stash base ` +
-          `(${formatKept(stashedLines, baseLines)} kept)${critical ? ' in a CRITICAL shared-infrastructure file' : ''}; ` +
+          `${stashedSize} ${unit}(s) against ${baseSize} at the stash base ` +
+          `(${formatKept(stashedSize, baseSize)} kept)${critical ? ' in a CRITICAL shared-infrastructure file' : ''}` +
+          `${useBytes ? ', measured in bytes because git cannot diff it' : ''}; ` +
           'this is a truncation stub, not recoverable work — do NOT apply',
       };
     }
@@ -126,8 +156,10 @@ function classifyStashedFile(file) {
         verdict: 'shrunk',
         severity: 'warn',
         reason:
-          `${stashedLines} line(s) against ${baseLines} at the stash base ` +
-          `(${formatKept(stashedLines, baseLines)} kept); inspect the diff before applying`,
+          `${stashedSize} ${unit}(s) against ${baseSize} at the stash base ` +
+          `(${formatKept(stashedSize, baseSize)} kept)` +
+          `${useBytes ? ', measured in bytes because git cannot diff it' : ''}; ` +
+          'inspect the diff before applying',
       };
     }
   }
@@ -135,9 +167,11 @@ function classifyStashedFile(file) {
   return {
     verdict: 'code',
     severity: critical ? 'warn' : 'info',
-    reason: critical
-      ? 'code change to a critical shared-infrastructure file; review before applying'
-      : 'ordinary code change; review before applying',
+    reason:
+      (useBytes ? 'binary file, not line-comparable; ' : '') +
+      (critical
+        ? 'code change to a critical shared-infrastructure file; review before applying'
+        : 'ordinary code change; review before applying'),
   };
 }
 
@@ -183,6 +217,7 @@ module.exports = {
   formatKept,
   TELEMETRY_PREFIXES,
   MIN_BASE_LINES_FOR_RATIO,
+  MIN_BASE_BYTES_FOR_RATIO,
   TRUNCATION_RATIO,
   SHRUNK_RATIO,
 };

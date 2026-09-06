@@ -44,17 +44,66 @@ test('a surviving line never renders as "0% kept"', () => {
   assert.doesNotMatch(v.reason, /\(0% kept\)/);
 });
 
-test('binary files are never ratio-judged', () => {
+test('an undiffable file is judged on BYTES, not exempted', () => {
+  // A previous version of this test asserted binaries are never dangerous.
+  // That locked in a false-safe: git marks any file containing a NUL byte as
+  // undiffable, and a half-written stub is exactly that shape — so a
+  // truncation of a critical file was downgraded to INSPECT and exited 0.
+  const truncatedStub = classifyStashedFile({
+    path: 'scripts/lib/backlog-drain.js',
+    stashedLines: 1,
+    baseLines: 231,
+    infraTier: 'critical',
+    binary: true,
+    stashedBytes: 37,
+    baseBytes: 9000,
+  });
+  assert.equal(truncatedStub.verdict, 'truncated');
+  assert.equal(truncatedStub.severity, 'danger');
+  assert.match(truncatedStub.reason, /measured in bytes/);
+});
+
+test('a real binary asset edited normally is not flagged', () => {
   const v = classifyStashedFile({
     path: 'public/images/poster.png',
     stashedLines: 3,
     baseLines: 900,
     infraTier: null,
     binary: true,
+    stashedBytes: 41000,
+    baseBytes: 42000,
   });
   assert.equal(v.verdict, 'code');
   assert.notEqual(v.severity, 'danger');
   assert.match(v.reason, /binary/);
+});
+
+test('an undiffable file whose size cannot be read blocks rather than passing', () => {
+  const v = classifyStashedFile({
+    path: 'scripts/lib/backlog-drain.js',
+    stashedLines: 1,
+    baseLines: 231,
+    infraTier: 'critical',
+    binary: true,
+    stashedBytes: null,
+    baseBytes: null,
+  });
+  assert.equal(v.verdict, 'error');
+  assert.equal(v.severity, 'danger');
+});
+
+test('a tiny binary is not ratio-judged (below the byte floor)', () => {
+  const v = classifyStashedFile({
+    path: 'public/tiny.ico',
+    stashedLines: 1,
+    baseLines: 2,
+    infraTier: null,
+    binary: true,
+    stashedBytes: 10,
+    baseBytes: 100,
+  });
+  assert.equal(v.verdict, 'code');
+  assert.notEqual(v.severity, 'danger');
 });
 
 test('an entry git could not enumerate is DANGER, never ok', () => {
