@@ -43,6 +43,9 @@ const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
 const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
+
+// One-shot latch for the Guard F2 inert warning (see its call site).
+let _creditGuardInertWarned = false;
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
@@ -869,6 +872,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     || fields.manualEntry === true;
   if (!_operatorSupplied) {
     const creditVerdict = evaluateCreditedPersonAsCritic(_getShowById(showId), criticName);
+    // _getShowById swallows every load/parse error and caches {} for the life of
+    // the process, so a missing or briefly-unreadable shows.json turns this guard
+    // into a silent no-op that looks exactly like a clean pass. Fail OPEN is the
+    // right call (refusing every write because the catalogue is unreadable would
+    // be far worse), but it must not be SILENT. Warned once per process.
+    if (creditVerdict.reason === 'no-show-record' && !_creditGuardInertWarned) {
+      _creditGuardInertWarned = true;
+      console.warn(`  ⚠️  Credited-person guard inert: no show record for ${showId} (not in shows.json, or shows.json is missing/unreadable) — this write is not being checked against creative credits`);
+    }
     if (creditVerdict.kind === 'creative') {
       // Loud, like the misattribution guard above. A silent skip is how a
       // wrongly-scraped creativeTeam credit would veto a real review forever
