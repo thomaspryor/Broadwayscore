@@ -208,7 +208,7 @@ _fetch_with_captured_stderr() {
 }
 
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
-# abandoned — either the no-op-rebase abort or full retry exhaustion below — so
+# abandoned — the no-op-rebase abort, an early loop exit (deadline / early-fallback), or full retry exhaustion below — so
 # repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
 # surfaces data/audit/push-retry-failures.jsonl as the "Push-retry deadman" row.
 # Fail-OPEN: a telemetry write must never break or block the push flow.
@@ -1149,6 +1149,10 @@ _pushed_via_api_fallback=false
 #                          outside both.
 _LOCAL_ATTEMPTS_MADE="$MAX_RETRIES"
 _ABORT_QUALIFIER=""
+# Comma-separated inner term for reasons that ALREADY carry a parenthesised
+# qualifier, so an api-fallback row reads api-fallback-exhausted(timeout,deadline)
+# rather than losing which loop exit preceded it. Empty on true exhaustion.
+_abort_inner() { printf '%s' "${_ABORT_QUALIFIER:+,$_ABORT_QUALIFIER}"; }
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
   # script's start. If a prior attempt's git op stalled up to its per-op timeout,
@@ -2112,7 +2116,7 @@ if [ "$_api_fallback_ok" = "true" ]; then
       _pushed_via_api_fallback=true
     else
       echo "::error::push-with-retry: Git Data API fallback push succeeded but our commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619 class) — treating the fallback as failed."
-      record_push_failure "api-fallback-content-dropped" "$_LOCAL_ATTEMPTS_MADE"
+      record_push_failure "api-fallback-content-dropped${_ABORT_QUALIFIER:+($_ABORT_QUALIFIER)}" "$_LOCAL_ATTEMPTS_MADE"
     fi
   else
     # MUST be the first statement in this branch: $? here is the fallback's
@@ -2132,10 +2136,10 @@ if [ "$_api_fallback_ok" = "true" ]; then
       # in miniature the exact defect this change exists to remove. The exact
       # counts are in push-via-git-api.sh's breakdown line above.
       echo "::warning::push-with-retry: Git Data API fallback also failed — at least as many TIMEOUTS as lost races (rc=3); see the exhaustion breakdown above for exact counts"
-      record_push_failure "api-fallback-exhausted(timeout)" "$_LOCAL_ATTEMPTS_MADE"
+      record_push_failure "api-fallback-exhausted(timeout$(_abort_inner))" "$_LOCAL_ATTEMPTS_MADE"
     else
       echo "::warning::push-with-retry: Git Data API fallback also failed (rc=$_api_rc)"
-      record_push_failure "api-fallback-exhausted(race-or-other)" "$_LOCAL_ATTEMPTS_MADE"
+      record_push_failure "api-fallback-exhausted(race-or-other$(_abort_inner))" "$_LOCAL_ATTEMPTS_MADE"
     fi
   fi
 fi
