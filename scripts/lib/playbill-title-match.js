@@ -363,12 +363,27 @@ function legacyDecomposes(body, forms, knownVenueSlugs) {
 /**
  * Decide whether `url` names the same title as `show`.
  *
- * Returns { match, branch, form, corroboration }. `branch` is one of
+ * Returns { match, branch, form, marketTail, corroboration }. `branch` is one of
  * 'exact' | 'lossless' | 'lossy' | 'legacy' | null so callers and tests can
  * assert WHICH rule fired, not merely that something did.
  *
- * Title-only by design: market routing, the venue bonus and the year bonus stay
- * in scorePlaybillUrl. This replaces only its title hard filter.
+ * `marketTail` is the RAW path text from the market keyword onward — venue and
+ * year live there — for the split this match actually chose, and '' for legacy
+ * (which by definition has no market keyword). Callers must read the market off
+ * THIS, never off the whole url, because the title is part of the url.
+ *
+ * It exists because `form` cannot be used for that job and quietly looks as if
+ * it can. `form` is a NORMALIZED title, not a slice of the path: normalizeTitle
+ * strips a leading "the-" that Playbill keeps, so `pathTail.startsWith(form)`
+ * is false for every "The …" title. scorePlaybillUrl derived its tail that way
+ * and fell back to the whole path on 16 of the 97 title-matching live cache
+ * entries — "The Great Gatsby", "The Outsiders", "The Wiz", "The Who's Tommy" —
+ * with nothing in the output saying the narrowing had not applied. That is the
+ * shape where a market word inside a title is read as market signal, e.g.
+ * the-great-gatsby-broadway-BROADWAY-THEATRE-2024.
+ *
+ * Title-only otherwise, by design: market routing, the venue bonus and the year
+ * bonus stay in scorePlaybillUrl. This replaces only its title hard filter.
  *
  * @param {object} [opts]
  * @param {Set<string>} [opts.knownVenueSlugs] enables the legacy branch.
@@ -392,11 +407,11 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
     const segs = rawSegs.map((s) => ({ form: normSlug(s.head), tail: s.tail })).filter((s) => s.form);
     const exactHit = segs.find((s) => s.form === forms.exact);
     if (exactHit) {
-      return { match: true, branch: 'exact', form: forms.exact, corroboration: null };
+      return { match: true, branch: 'exact', form: forms.exact, marketTail: exactHit.tail, corroboration: null };
     }
     const losslessHit = segs.find((s) => forms.lossless.includes(s.form));
     if (losslessHit) {
-      return { match: true, branch: 'lossless', form: losslessHit.form, corroboration: null };
+      return { match: true, branch: 'lossless', form: losslessHit.form, marketTail: losslessHit.tail, corroboration: null };
     }
     // Try EVERY lossy reading, not just the first: a URL can offer more than one
     // split point, and only one of them may carry the venue in its tail.
@@ -406,7 +421,7 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
       // Venue specifically, not "venue or year": a lossy form is a SHORTENING
       // of our title, so it can land on a genuinely different production that
       // happens to open the same year. Sharing the same house is far rarer.
-      if (c.venueHit) return { match: true, branch: 'lossy', form: s.form, corroboration: c };
+      if (c.venueHit) return { match: true, branch: 'lossy', form: s.form, marketTail: s.tail, corroboration: c };
     }
     return miss;
   }
@@ -419,6 +434,14 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
     match: true,
     branch: 'legacy',
     form: hit.form,
+    // A legacy shape is DEFINED by carrying no market keyword — marketTitle
+    // Segments() found none, which is how control reached here — so the market
+    // tail is empty, not "the rest of the path". Empty is the honest value and
+    // the one the caller needs: scorePlaybillUrl must award no market bonus off
+    // a vault/season URL, and it has a dedicated venue-market check for this
+    // branch. Returning the remaining path instead would hand it the venue
+    // slug, and "…-broadway-theatre-vault-…" would read as a Broadway market.
+    marketTail: '',
     corroboration: { venueSlugInUrl: hit.venue },
   };
 }
