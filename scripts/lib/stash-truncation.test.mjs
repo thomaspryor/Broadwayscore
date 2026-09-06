@@ -7,13 +7,70 @@ const {
   classifyStashedFile,
   classifyStashEntry,
   isTelemetryPath,
+  formatKept,
 } = require('./stash-truncation.js');
 
 test('telemetry paths are recognised as discardable churn', () => {
   assert.equal(isTelemetryPath('data/audit/scraper-spend-ledger.jsonl'), true);
-  assert.equal(isTelemetryPath('scratchpad/lq.js'), true);
   assert.equal(isTelemetryPath('scripts/lib/backlog-drain.js'), false);
   assert.equal(isTelemetryPath('src/app/page.tsx'), false);
+});
+
+test('scratchpad/ is NOT telemetry — it carries tracked files on main', () => {
+  // scratchpad/dispatch-s3-morning.sh is tracked. Treating the prefix as churn
+  // would let a stash that truncates it roll up to telemetry-only and exit 0.
+  assert.equal(isTelemetryPath('scratchpad/dispatch-s3-morning.sh'), false);
+  const v = classifyStashedFile({
+    path: 'scratchpad/dispatch-s3-morning.sh',
+    stashedLines: 1,
+    baseLines: 120,
+    infraTier: null,
+  });
+  assert.equal(v.verdict, 'truncated');
+  assert.equal(v.severity, 'danger');
+});
+
+test('a surviving line never renders as "0% kept"', () => {
+  assert.equal(formatKept(1, 231), '<1%');
+  assert.equal(formatKept(0, 231), '0%');
+  assert.equal(formatKept(50, 100), '50%');
+  const v = classifyStashedFile({
+    path: 'scripts/lib/backlog-drain.js',
+    stashedLines: 1,
+    baseLines: 231,
+    infraTier: 'critical',
+  });
+  assert.match(v.reason, /<1% kept/);
+  assert.doesNotMatch(v.reason, /\(0% kept\)/);
+});
+
+test('binary files are never ratio-judged', () => {
+  const v = classifyStashedFile({
+    path: 'public/images/poster.png',
+    stashedLines: 3,
+    baseLines: 900,
+    infraTier: null,
+    binary: true,
+  });
+  assert.equal(v.verdict, 'code');
+  assert.notEqual(v.severity, 'danger');
+  assert.match(v.reason, /binary/);
+});
+
+test('an entry git could not enumerate is DANGER, never ok', () => {
+  // A guard that examined nothing must not report what a passing guard reports.
+  const e = classifyStashEntry([], { enumerationFailed: true });
+  assert.equal(e.verdict, 'unreadable');
+  assert.equal(e.danger, true);
+});
+
+test('an unreadable path inside an entry escalates the whole entry', () => {
+  const e = classifyStashEntry([
+    { verdict: 'telemetry', severity: 'none' },
+    { verdict: 'error', severity: 'danger' },
+  ]);
+  assert.equal(e.verdict, 'unreadable');
+  assert.equal(e.danger, true);
 });
 
 test('the real 2026-09-06 case: backlog-drain.js at 1 line against 231 is a truncation', () => {

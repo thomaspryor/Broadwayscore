@@ -20,8 +20,17 @@
  * This module is the decision; scripts/audit-wt-integ-stashes.js is the I/O.
  */
 
-/** Paths that are pure machine-written churn — safe to discard, never work. */
-const TELEMETRY_PREFIXES = ['data/audit/', 'scratchpad/'];
+/**
+ * Paths that are pure machine-written churn — safe to discard, never work.
+ *
+ * `scratchpad/` deliberately does NOT belong here even though it looks like
+ * scrap: it is not gitignored and carries tracked files on main today
+ * (dispatch-s3-morning.sh among them). Calling it telemetry would let a stash
+ * that truncates a tracked script roll up to `telemetry-only`, print "no entry
+ * would destroy a file if applied" and exit 0 — the exact false-safe verdict
+ * this module exists to prevent.
+ */
+const TELEMETRY_PREFIXES = ['data/audit/'];
 
 /**
  * Below this many base lines a file is too small for a ratio to mean anything
@@ -47,8 +56,20 @@ function isTelemetryPath(filePath) {
  * @param {string|null} [file.infraTier]  tier from infra-review-scope classifyPath, if any
  * @returns {{verdict: string, severity: string, reason: string}}
  */
+/**
+ * Render a kept-fraction without ever printing "0%" for a file that still has
+ * content — 1 line against 231 is 0.4%, and rounding it to "0% kept" makes the
+ * one evidence string an operator reads self-contradictory.
+ */
+function formatKept(stashedLines, baseLines) {
+  const pct = (stashedLines / baseLines) * 100;
+  if (pct === 0) return '0%';
+  if (pct < 1) return '<1%';
+  return Math.round(pct) + '%';
+}
+
 function classifyStashedFile(file) {
-  const { path: filePath, stashedLines, baseLines, infraTier = null } = file;
+  const { path: filePath, stashedLines, baseLines, infraTier = null, binary = false } = file;
 
   if (isTelemetryPath(filePath)) {
     return {
@@ -78,6 +99,16 @@ function classifyStashedFile(file) {
     };
   }
 
+  // Line counts are meaningless for binary blobs (a PNG "line count" is just
+  // how many 0x0a bytes it happens to contain), so never ratio-judge one.
+  if (binary) {
+    return {
+      verdict: 'code',
+      severity: critical ? 'warn' : 'info',
+      reason: 'binary file; not line-comparable — inspect manually before applying',
+    };
+  }
+
   if (baseLines >= MIN_BASE_LINES_FOR_RATIO) {
     const kept = stashedLines / baseLines;
     if (kept <= TRUNCATION_RATIO) {
@@ -86,7 +117,7 @@ function classifyStashedFile(file) {
         severity: 'danger',
         reason:
           `${stashedLines} line(s) against ${baseLines} at the stash base ` +
-          `(${Math.round(kept * 100)}% kept)${critical ? ' in a CRITICAL shared-infrastructure file' : ''}; ` +
+          `(${formatKept(stashedLines, baseLines)} kept)${critical ? ' in a CRITICAL shared-infrastructure file' : ''}; ` +
           'this is a truncation stub, not recoverable work — do NOT apply',
       };
     }
@@ -96,7 +127,7 @@ function classifyStashedFile(file) {
         severity: 'warn',
         reason:
           `${stashedLines} line(s) against ${baseLines} at the stash base ` +
-          `(${Math.round(kept * 100)}% kept); inspect the diff before applying`,
+          `(${formatKept(stashedLines, baseLines)} kept); inspect the diff before applying`,
       };
     }
   }
@@ -114,7 +145,21 @@ function classifyStashedFile(file) {
  * Roll per-file verdicts up to one verdict for a whole stash entry.
  * @param {Array<{verdict: string, severity: string}>} fileVerdicts
  */
-function classifyStashEntry(fileVerdicts) {
+function classifyStashEntry(fileVerdicts, options = {}) {
+  const { enumerationFailed = false } = options;
+
+  // A guard that examined NOTHING must never report what a guard that passed
+  // reports. This is the failure shape the whole module is about: silence
+  // reads as safety. If git could not tell us what the entry contains, that is
+  // an unknown, and an unknown blocks.
+  if (enumerationFailed) {
+    return { verdict: 'unreadable', severity: 'danger', danger: true };
+  }
+
+  if (fileVerdicts.some((f) => f.verdict === 'error')) {
+    return { verdict: 'unreadable', severity: 'danger', danger: true };
+  }
+
   if (fileVerdicts.length === 0) {
     return { verdict: 'empty', severity: 'none', danger: false };
   }
@@ -135,6 +180,7 @@ module.exports = {
   classifyStashedFile,
   classifyStashEntry,
   isTelemetryPath,
+  formatKept,
   TELEMETRY_PREFIXES,
   MIN_BASE_LINES_FOR_RATIO,
   TRUNCATION_RATIO,
