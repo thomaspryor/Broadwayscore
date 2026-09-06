@@ -34,14 +34,19 @@ const { sweepShows, ALLOWLIST } = require('./lib/doubled-market-ids');
 // worse, a data defect as noise it has learned to ignore. sweepShows() also
 // tolerates a wrong-shaped document and hands back empty arrays, which then
 // reports a clean corpus it never read.
-// SHOWS_PATH exists so the exit contract below is TESTABLE. Everything about
+// DOUBLED_MARKET_SHOWS_PATH exists so the exit contract below is TESTABLE. The
+// name is scoped rather than a bare SHOWS_PATH deliberately: a dozen scripts in
+// this repo already use SHOWS_PATH as a local const for exactly this file, so a
+// bare env var of that name reads as global and could silently redirect this
+// sweep to another corpus — which would report a clean bill of health for data
+// it never opened. Everything about
 // this script that a caller depends on is its exit code, and until the path was
 // overridable the only way to exercise exit 2 was to move the real core data out
 // from under a live checkout. A subprocess test now drives 0, 1 and 2 from
 // fixtures (scripts/lib/doubled-market-ids.test.mjs). Production passes nothing
 // and gets data/shows.json.
 function loadShows() {
-  const showsPath = process.env.SHOWS_PATH
+  const showsPath = process.env.DOUBLED_MARKET_SHOWS_PATH
     || path.join(__dirname, '..', 'data', 'shows.json');
   let raw;
   try {

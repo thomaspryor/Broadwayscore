@@ -261,7 +261,7 @@ function runCli(showsJson) {
   fs.writeFileSync(file, showsJson);
   const cli = path.join(here, '..', 'audit-doubled-market-ids.js');
   const r = spawnSync(process.execPath, [cli], {
-    env: { ...process.env, SHOWS_PATH: file },
+    env: { ...process.env, DOUBLED_MARKET_SHOWS_PATH: file },
     encoding: 'utf8',
   });
   fs.rmSync(dir, { recursive: true, force: true });
@@ -286,7 +286,7 @@ test('CLI exit 2, NOT 1, when it cannot run at all', () => {
   // Unreadable, wrong shape, and empty each mean "this sweep did not happen".
   // Exit 1 for any of them would report a checkout problem as a data defect.
   const missing = spawnSync(process.execPath, [path.join(here, '..', 'audit-doubled-market-ids.js')], {
-    env: { ...process.env, SHOWS_PATH: path.join(os.tmpdir(), 'dmi-does-not-exist', 'shows.json') },
+    env: { ...process.env, DOUBLED_MARKET_SHOWS_PATH: path.join(os.tmpdir(), 'dmi-does-not-exist', 'shows.json') },
     encoding: 'utf8',
   });
   assert.equal(missing.status, 2, missing.stdout + missing.stderr);
