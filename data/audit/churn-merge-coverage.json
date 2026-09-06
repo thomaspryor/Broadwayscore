@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-06T09:54:38.156Z",
+    "generatedAt": "2026-09-06T11:07:20.680Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,19 +20,19 @@
     },
     {
       "path": "data/audit/worktree-gc.log",
-      "churn": 75
+      "churn": 76
     },
     {
       "path": "data/audit/verify-merge-landed.log",
-      "churn": 66
+      "churn": 69
     },
     {
       "path": "data/audit/worktree-gc.launchd.log",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 42
+      "churn": 45
     }
   ],
   "exempt": [
@@ -53,14 +53,6 @@
       "churn": 80
     },
     {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 79
-    },
-    {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 79
-    },
-    {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
       "churn": 79
     },
@@ -71,6 +63,14 @@
     {
       "path": "public/data/shows/mass-west-end-2026.json",
       "churn": 79
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 78
+    },
+    {
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
+      "churn": 78
     },
     {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
@@ -94,7 +94,7 @@
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
-      "churn": 75
+      "churn": 76
     },
     {
       "path": "public/data/shows/hadestown-west-end-2024.json",
@@ -110,11 +110,11 @@
     },
     {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 70
+      "churn": 71
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 62
+      "churn": 61
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
@@ -125,28 +125,28 @@
       "churn": 52
     },
     {
-      "path": "public/data/mobile-shows.json",
-      "churn": 49
+      "path": "data/audit/alert-ledger.json",
+      "churn": 50
     },
     {
-      "path": "data/audit/alert-ledger.json",
+      "path": "public/data/mobile-shows.json",
       "churn": 48
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 48
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "public/data/shows/the-story-west-end-2026.json",
-      "churn": 46
+      "churn": 47
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 47
     },
     {
       "path": "public/data/shows/hit-machine-off-west-end-2026.json",
@@ -168,12 +168,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1042,
+      "churn": 1051,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1010,
+      "churn": 1019,
       "mergeAttr": "ours"
     },
     {
@@ -183,12 +183,12 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 470,
+      "churn": 469,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 204,
+      "churn": 205,
       "mergeAttr": "union"
     },
     {
@@ -198,32 +198,32 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 139,
+      "churn": 140,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 106,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 106,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 106,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 48,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 48,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
