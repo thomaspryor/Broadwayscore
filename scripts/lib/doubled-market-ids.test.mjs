@@ -28,7 +28,7 @@ test('the corrected id no longer doubles', () => {
 // This is the case a GREEDY prefix silently misses: `(?:off-)?` is optional, so
 // the longer prefix "...-of-broadway-off" plus market "broadway" also matches,
 // and that prefix ends in "off", which is not a market word. MEASURED: revert
-// the `?` in TRAILING_MARKET_RE and 8 of these 16 tests go red. The plain
+// the `?` in TRAILING_MARKET_RE and 8 of these 17 tests go red. The plain
 // zero-flagged corpus assertion is NOT one of them — it stays GREEN under that
 // break, because a detector that matches nothing flags nothing. That is the
 // whole reason 'the detector still DETECTS every allowlisted row' exists beside
@@ -110,25 +110,49 @@ test('sweepShows separates flagged from allowlisted', () => {
 // doubledMarketParts() rewritten as a lookup of those three literals passes
 // every one of them. This table is what makes that mutation fail: every
 // keyword, in bare and "off-" form, against every market segment form.
+// A TRIPWIRE, NOT A CARDINALITY FLOOR. The matrix below is exhaustive over
+// whatever MARKET_KEYWORDS holds, so it cannot go stale — but "exhaustive over a
+// list that quietly lost an entry" is still zero coverage for that entry.
+// Measured: stub the import without 'london' and every other assertion in this
+// file stays green while "bar-london-off-west-end-2026" starts returning null,
+// because 'london' is named in only one test and that test asserts null. So the
+// vocabulary itself is pinned here. This is NOT a copy of the list (the module
+// still imports it, and another test asserts that): it is a statement that
+// changing the list is a decision someone must come here and confirm.
+const EXPECTED_VOCABULARY = ['broadway', 'regional', 'tour', 'west-end', 'london'];
+
+test('the borrowed market vocabulary has not changed underneath this detector', () => {
+  const { MARKET_KEYWORDS } = require('./playbill-title-match.js');
+  assert.deepEqual(
+    [...MARKET_KEYWORDS].sort(),
+    [...EXPECTED_VOCABULARY].sort(),
+    'MARKET_KEYWORDS changed in playbill-title-match.js. That may be right — but '
+      + 'a REMOVED keyword silently stops being detected here, and an ADDED one '
+      + 'arrives with no allowlist review. Update EXPECTED_VOCABULARY deliberately.',
+  );
+});
+
 test('every MARKET_KEYWORDS x market-segment pair at the seam is detected', () => {
   const { MARKET_KEYWORDS } = require('./playbill-title-match.js');
   const segments = MARKET_KEYWORDS.flatMap((k) => [k, `off-${k}`]);
+  // Varied, ordinary-looking title slugs rather than one synthetic marker, so a
+  // mutation cannot special-case the fixture prefix and stay green.
+  const prefixes = ['a-quiet-place', 'the-winters-tale', 'hadestown', '1776', 'jajas-african-hair-braiding'];
   let checked = 0;
   for (const seamWord of MARKET_KEYWORDS) {
     for (const segment of segments) {
-      const id = `a-title-${seamWord}-${segment}-2026`;
+      const stem = prefixes[checked % prefixes.length];
+      const id = `${stem}-${seamWord}-${segment}-2026`;
       const parts = D.doubledMarketParts(id);
       assert.notEqual(parts, null, `${id} should be detected`);
       assert.equal(parts.market, segment, `${id}: market should be the whole segment`);
-      assert.equal(parts.prefix, `a-title-${seamWord}`, `${id}: prefix should stop at the seam`);
+      assert.equal(parts.prefix, `${stem}-${seamWord}`, `${id}: prefix should stop at the seam`);
       assert.equal(parts.doubledWord, seamWord, `${id}: seam word should be ${seamWord}`);
       assert.equal(parts.year, '2026');
       checked += 1;
     }
   }
-  // 5 keywords x 10 segment forms. A shrinking vocabulary is itself a defect.
   assert.equal(checked, MARKET_KEYWORDS.length * segments.length);
-  assert.ok(checked >= 50, `vocabulary shrank: only ${checked} pairs exercised`);
 });
 
 test('a mixed pair is detected and reports BOTH words, not one', () => {
@@ -142,7 +166,7 @@ test('a mixed pair is detected and reports BOTH words, not one', () => {
 // ASSERTING "zero flagged" ALONE IS NOT A TEST OF THIS DETECTOR. A detector that
 // matches nothing at all also reports zero flagged rows, so a broken regex makes
 // this file greener, not redder — MEASURED: reverting the lazy quantifier turns
-// 8 of these 16 tests red while the zero-flagged corpus assertion stays GREEN.
+// 8 of these 17 tests red while the zero-flagged corpus assertion stays GREEN.
 // That is why the detected-set assertion sits beside it.
 //
 // AND A SKIPPED TEST IS NOT A PASSING ONE. These read data/shows.json, which a

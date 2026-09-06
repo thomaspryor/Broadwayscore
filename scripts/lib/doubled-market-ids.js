@@ -97,11 +97,15 @@ const ALLOWLIST = new Map([
 // really NOISES OFF on Broadway, and greedy reads it that way ("noises-off" +
 // "broadway") while lazy reads "noises" + "off-broadway". Neither verdict
 // changes, because "noises" ends in no market word either way. The residual
-// exposure is a title that is ITSELF a bare market word followed by "Off" — a
-// show called "Broadway Off" playing off-Broadway would give
-// "broadway-off-broadway-2016", which lazy flags and greedy does not. No such
-// row exists in the corpus today; if one appears, it belongs in ALLOWLIST with
-// that reason, which is the same route every other correct-by-nature row takes.
+// exposure is the whole class "*-<market>-off-<market>-<YYYY>", which is WIDER
+// than a first draft of this comment claimed ("a title that is itself a bare
+// market word plus Off"). Any slug ending "<market>-off" is ambiguous:
+// "the-apology-tour-off-broadway-2026" reads equally as "The Apology Tour"
+// off-Broadway and as "The Apology Tour Off" on Broadway, and nothing in the id
+// settles it. Lazy picks the first, greedy the second. The id alone cannot
+// disambiguate, which is why the resolution is a human check recorded in
+// ALLOWLIST rather than a cleverer regex — the same route every other
+// correct-by-nature row takes.
 const TRAILING_MARKET_RE = new RegExp(
   `^(.*?)-((?:off-)?(?:${MARKET_KEYWORDS.join('|')}))-(\\d{4})$`,
 );

@@ -13,6 +13,10 @@
  * Decision logic is in scripts/lib/doubled-market-ids.js so the test asserts the
  * real function rather than a copy (CLAUDE.md rule 15).
  *
+ * Exit 0 when nothing is flagged, 1 when something is, 2 when the sweep COULD
+ * NOT RUN (no core data, wrong document shape, empty corpus) — a missing
+ * shows.json must never look like a finding, or like a clean bill of health.
+ *
  * Exit 0 when no unallowlisted id carries a market keyword at the seam between
  * its title slug and its market segment; exit 1 otherwise. The seam word need
  * not EQUAL the market segment ("...-tour-off-broadway-2026" counts) — the
@@ -23,10 +27,38 @@ const fs = require('fs');
 const path = require('path');
 const { sweepShows, ALLOWLIST } = require('./lib/doubled-market-ids');
 
-function main() {
+// EXIT 2 IS "COULD NOT RUN", AND IT HAS TO BE DISTINCT FROM EXIT 1.
+// This reads data/shows.json, which a worktree does not have. Left to itself the
+// missing file throws ENOENT and node exits 1 — the SAME code as "a bad id was
+// found" — so a caller or a cron reads a checkout problem as a data defect, or
+// worse, a data defect as noise it has learned to ignore. sweepShows() also
+// tolerates a wrong-shaped document and hands back empty arrays, which then
+// reports a clean corpus it never read.
+function loadShows() {
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-  const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  } catch (err) {
+    console.error(`CANNOT RUN: could not read ${showsPath} — ${err.message}`);
+    console.error('A worktree has no core data. Run ./scripts/setup-local-data.sh from the main checkout,');
+    console.error('or symlink data/shows.json from ~/broadway-scorecard-data.');
+    process.exit(2);
+  }
+  const shows = Array.isArray(raw) ? raw : raw && raw.shows;
+  if (!Array.isArray(shows)) {
+    console.error(`CANNOT RUN: ${showsPath} is neither an array nor an object with a "shows" array.`);
+    process.exit(2);
+  }
+  if (!shows.length) {
+    console.error(`CANNOT RUN: ${showsPath} holds zero shows — an empty corpus reports a clean sweep.`);
+    process.exit(2);
+  }
+  return shows;
+}
+
+function main() {
+  const shows = loadShows();
   const { flagged, allowlisted } = sweepShows(shows);
 
   console.log(`Doubled-market id sweep: ${shows.length} shows scanned.`);
