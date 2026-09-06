@@ -14,13 +14,31 @@
  * cost next run. Both writers are cron-driven and this machine routinely runs
  * several sessions at once.
  *
- * WHY MERGE-ON-WRITE AND NOT A LOCK. The card left that open. A lock
- * (scripts/lib/file-lock.js exists and is exercised 20x in CI) would serialise
- * the two writers, but it only protects writers that TAKE it: a third writer, a
- * hand edit, or a future script that forgets, and the loss is silently back.
- * Merge-on-write is a property of the write itself, so it holds no matter who
- * else is writing or whether they cooperate. It is also cheaper — no lock file,
- * no stale-lock recovery path, no new failure mode.
+ * WHAT THIS CLOSES AND WHAT IT DOES NOT. Read this before trusting it; an
+ * earlier draft of this comment claimed the race was closed and that was FALSE.
+ *
+ * CLOSED: the large window. A writer used to hold a whole-file copy for the
+ * length of its run — minutes, and for fetch-show-images-auto.js across many
+ * network round trips — and write it back wholesale. Every entry a peer added in
+ * that window died. Now only this process's DELTA is replayed, onto a read taken
+ * immediately before the write, so a peer's entries survive.
+ *
+ * NOT CLOSED: the read-to-rename window inside save(). A and B can both re-read
+ * {base}, A build {base,a}, B build {base,b}, A rename, B rename — and A's entry
+ * is gone, even though only A set it. Atomic rename prevents a TORN file; it does
+ * not serialise read-modify-write. Closing this needs a lock around the
+ * read-merge-write (scripts/lib/file-lock.js) or a CAS-retry loop on the file's
+ * mtime/inode, and it needs EVERY writer to take it.
+ *
+ * NOT CLOSED: a stale SET clobbering a correction. Sets are unconditional, so if
+ * A resolves X, B then verifies and corrects the key to Y, and A finally saves,
+ * A restores X. "Last save" is not "freshest resolution". Deletes are already
+ * compare-and-swap for exactly this reason; sets need the same treatment plus a
+ * conflict policy, which is a behavioural decision this change did not make.
+ *
+ * The residual is strictly smaller than what was there before, and the tests
+ * below are in-process and SERIALISED, so they prove the delta logic and cannot
+ * prove the multi-process behaviour. See BRO-2910 for the remaining work.
  *
  * WHY tmp+rename ALONE WOULD HAVE BEEN A FALSE FIX, in the card's own words:
  * it cures the TORN read and leaves the LOST UPDATE, which is the silent half.
@@ -44,12 +62,39 @@ const { atomicWriteJson } = require('./atomic-shows-write');
 const EMPTY = () => ({ shows: {}, lastUpdated: null });
 
 /** Read the cache, returning both the working copy and an immutable snapshot. */
+/**
+ * ONLY A MISSING FILE RESETS TO EMPTY. Everything else THROWS.
+ *
+ * The first draft caught every error and returned {} — so an unparseable file, a
+ * permission error, or a half-written file from a non-atomic writer all read as
+ * "no entries", and the next save then wrote this run's handful of entries over
+ * the top with allowShrink:true silently disabling the size guard. A transient
+ * corruption became an authorised wipe of the whole cache. ENOENT is the only
+ * genuinely recoverable case (first run); the rest are conditions a human should
+ * see, because a cache this expensive to rebuild must not be silently discarded.
+ */
+class PlaybillUrlsCacheError extends Error {
+  constructor(filePath, cause) {
+    super(`Refusing to read ${filePath} as an empty cache: ${cause}. `
+      + 'Fix or delete the file deliberately — an empty read here authorises '
+      + 'overwriting every cached URL with only this run\'s entries.');
+    this.name = 'PlaybillUrlsCacheError';
+  }
+}
+
 function loadPlaybillUrls(filePath) {
   let parsed;
+  let raw;
   try {
-    parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch {
-    parsed = EMPTY();
+    raw = fs.readFileSync(filePath, 'utf8');
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw new PlaybillUrlsCacheError(filePath, err.message);
+    return { data: EMPTY(), snapshot: {} };
+  }
+  try {
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    throw new PlaybillUrlsCacheError(filePath, `not valid JSON (${err.message})`);
   }
   // `typeof [] === 'object'`, so an ARRAY passes a bare typeof check and then
   // behaves as an empty map through Object.entries — a wrong-shaped file would
@@ -59,7 +104,7 @@ function loadPlaybillUrls(filePath) {
   const shows = parsed && parsed.shows;
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)
       || !shows || typeof shows !== 'object' || Array.isArray(shows)) {
-    parsed = EMPTY();
+    throw new PlaybillUrlsCacheError(filePath, 'shape is not { shows: { id: url } }');
   }
   return { data: parsed, snapshot: { ...parsed.shows } };
 }
@@ -122,8 +167,8 @@ function savePlaybillUrls(filePath, current, snapshot) {
   const delta = computeDelta(snapshot, current);
   // Re-read as late as possible: everything a peer wrote up to this instant is
   // preserved. The residual window is between this read and the rename below,
-  // in which only a key BOTH processes set can be lost — and there one value
-  // has to win regardless.
+  // and it is NOT limited to keys both processes set — two disjoint writers can
+  // still lose one entry there. See the header; closing it needs a lock.
   const { data: onDisk } = loadPlaybillUrls(filePath);
   const ours = (current && current.shows) || {};
   let recovered = 0;
@@ -172,6 +217,7 @@ function openPlaybillUrls(filePath) {
 }
 
 module.exports = {
+  PlaybillUrlsCacheError,
   loadPlaybillUrls,
   savePlaybillUrls,
   openPlaybillUrls,

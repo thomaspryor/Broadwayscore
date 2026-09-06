@@ -140,20 +140,40 @@ test('the write is atomic and leaves no tmp file behind', () => {
   assert.ok(fs.readFileSync(file, 'utf8').endsWith('\n'), 'trailing newline convention preserved');
 });
 
-test('a missing or unparseable cache file loads as empty rather than throwing', () => {
+test('ONLY a missing file loads as empty; corruption throws instead of authorising a wipe', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pbu-store-bad-'));
-  const missing = path.join(dir, 'nope.json');
-  assert.deepEqual(S.loadPlaybillUrls(missing).data.shows, {});
 
+  // First run: no file. This is the one recoverable case.
+  assert.deepEqual(S.loadPlaybillUrls(path.join(dir, 'nope.json')).data.shows, {});
+
+  // Everything else must throw. Returning {} here is what turns a transient
+  // corruption into "the cache is empty, write my 3 entries over it".
   const garbage = path.join(dir, 'garbage.json');
   fs.writeFileSync(garbage, '{ not json');
-  assert.deepEqual(S.loadPlaybillUrls(garbage).data.shows, {});
+  assert.throws(() => S.loadPlaybillUrls(garbage), S.PlaybillUrlsCacheError);
 
-  // Right shape, wrong type for `shows` — an array is not a map and would make
-  // every Object.entries() below behave like an empty object silently.
+  // Right outer shape, wrong type for `shows` — an array is not a map and would
+  // behave as an empty object through Object.entries, silently.
   const wrongShape = path.join(dir, 'wrong.json');
   fs.writeFileSync(wrongShape, JSON.stringify({ shows: [], lastUpdated: null }));
-  assert.deepEqual(S.loadPlaybillUrls(wrongShape).data.shows, {});
+  assert.throws(() => S.loadPlaybillUrls(wrongShape), S.PlaybillUrlsCacheError);
+
+  const notAnObject = path.join(dir, 'scalar.json');
+  fs.writeFileSync(notAnObject, '42');
+  assert.throws(() => S.loadPlaybillUrls(notAnObject), S.PlaybillUrlsCacheError);
+});
+
+test('a corrupt file also stops the SAVE, so the delta cannot overwrite it', () => {
+  // save() re-reads before writing. If that read swallowed corruption, the
+  // merge would proceed against {} and the atomic write (allowShrink:true)
+  // would replace a damaged-but-recoverable file with this run's few entries.
+  const file = tmpCache({ a: 'u-a', b: 'u-b' });
+  const mine = S.loadPlaybillUrls(file);
+  mine.data.shows.c = 'u-c';
+  fs.writeFileSync(file, '{ truncated mid-write');
+  assert.throws(() => S.savePlaybillUrls(file, mine.data, mine.snapshot), S.PlaybillUrlsCacheError);
+  assert.equal(fs.readFileSync(file, 'utf8'), '{ truncated mid-write',
+    'the damaged file must be left exactly as found for a human to inspect');
 });
 
 test('an eviction that shrinks the file past the 5% guard still writes', () => {
