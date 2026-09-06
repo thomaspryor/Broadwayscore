@@ -43,6 +43,71 @@
 
 'use strict';
 
+const { titleForms, MARKET_KEYWORDS } = require('./playbill-title-match');
+
+/**
+ * Does a TITLE slug carry a market word that can be misread as a market
+ * segment? Anchored at both ends on a hyphen or the string edge, because the
+ * damage happens at the SEAM: "prince-of-broadway" ends in "broadway", and the
+ * hyphen Playbill puts between title and venue completes a "-broadway-" the
+ * whole-url test then reads as a market segment. The market word does not have
+ * to sit INSIDE the title with hyphens on both sides; it only has to straddle
+ * the join (the shape that charged NOISES OFF an off-Broadway penalty in the
+ * scorer, one module over).
+ */
+const OWN_TITLE_MARKET_RE = new RegExp(`(?:^|-)(?:off-)?(?:${MARKET_KEYWORDS.join('|')})(?:-|$)`);
+
+/**
+ * Remove the SHOW'S OWN title from the front of the URL path, so the market
+ * test reads only the part of the URL that can carry market evidence.
+ *
+ * Returns null — meaning "change nothing" — unless the show's own title both
+ * prefixes the path AND contains a market word. That restriction is the whole
+ * safety argument: when the title carries no market word, stripping it cannot
+ * change any verdict, so not stripping keeps the blast radius to the one case
+ * this exists for.
+ *
+ * WHAT THE UNSTRIPPED TEST WAS SILENTLY CATCHING, enumerated, because replacing
+ * a broad test with a narrow one is where the sibling module lost a guard three
+ * times in one cycle:
+ *   - a market word in a VENUE name ("the-green-pastures-broadway-theatre-vault-
+ *     0000012335", a real poisoned entry) — KEPT: the venue lives after the
+ *     title, so it survives the strip.
+ *   - a market word in ANOTHER show's title, which is the shape of every
+ *     poisoned entry — KEPT: a URL naming a different production does not start
+ *     with OUR title, so nothing is stripped at all.
+ *   - a real market segment following our own title ("the-great-gatsby-broadway-
+ *     broadway-theatre-2024") — KEPT: only the title is removed, and the segment
+ *     after it still reads as "-broadway-".
+ *   - a market word inside our own title, with no market segment anywhere
+ *     ("prince-of-broadway-adelphi-theatre-vault-0000123") — DROPPED, which is
+ *     the defect: that URL is the show's own page and evicting it throws away a
+ *     correct cache entry (BRO-2899).
+ *
+ * The remainder deliberately keeps its leading "-", so a market word sitting
+ * immediately after the title still has the hyphen boundary the caller's
+ * substring tests require.
+ */
+function stripOwnTitlePrefix(pathText, show) {
+  const forms = titleForms(show && show.title);
+  const candidates = [forms.exact, ...forms.lossless, ...forms.legacyPrefixes]
+    .filter((f) => f && OWN_TITLE_MARKET_RE.test(f))
+    // Longest first: "prince-of-broadway" must win over a shorter form that is
+    // also a prefix, or the strip leaves the title's own market word behind.
+    .sort((a, b) => b.length - a.length);
+  if (!candidates.length) return null;
+  // normalizeTitle strips a leading "the-" that Playbill KEEPS, so the path may
+  // carry one our forms never do — the same asymmetry the legacy branch handles.
+  const bodies = pathText.startsWith('the-') ? [pathText, pathText.slice(4)] : [pathText];
+  for (const body of bodies) {
+    for (const f of candidates) {
+      if (body === f) return '';
+      if (body.startsWith(`${f}-`)) return body.slice(f.length);
+    }
+  }
+  return null;
+}
+
 // shows.json carries FIVE categories, measured 2026-09-05: broadway (2027),
 // off-broadway (420), west-end (132), off-west-end (335), regional (28).
 // Only the London pair is bucketed here, so `regional` falls on the non-London
@@ -73,10 +138,24 @@ const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
 function isCrossMarketPlaybillUrl(url, show) {
   if (!url || !show) return false;
   const u = String(url).toLowerCase();
+  // Read the market off the URL MINUS the show's own title. The title is part
+  // of the URL, so a show whose title contains a market word ("Prince of
+  // Broadway", a West End production) otherwise decides its own market from its
+  // own name and gets its CORRECT page evicted (BRO-2899). Falls back to the
+  // whole URL whenever no strip applies, which is every case but that one.
+  const at = u.indexOf('/production/');
+  const stripped = at === -1
+    ? null
+    : stripOwnTitlePrefix(u.slice(at + '/production/'.length).replace(/[?#].*$/, '').replace(/\/+$/, ''), show);
+  const haystack = stripped === null ? u : stripped;
   // Playbill's West End productions use "london" as the market segment, NOT
   // "west-end" — the same alternative scorePlaybillUrl had to learn (card #590).
-  const isLondonUrl = u.includes('-london-');
-  const isNycUrl = u.includes('-broadway-') || u.includes('-off-broadway-');
+  // Substring tests, deliberately: "-broadway-" must keep matching inside
+  // "-off-broadway-", and "-london-" inside "-off-london-". Exact-equality
+  // classification is what silently disarmed the sibling module's regional
+  // reject and turned CI run 34000023372 red.
+  const isLondonUrl = haystack.includes('-london-');
+  const isNycUrl = haystack.includes('-broadway-') || haystack.includes('-off-broadway-');
   const isLondonShow = LONDON_CATEGORIES.has(show.category);
 
   // A URL carrying BOTH markers is not evidence of anything — "two-strangers-
@@ -90,4 +169,12 @@ function isCrossMarketPlaybillUrl(url, show) {
   return false;
 }
 
-module.exports = { isCrossMarketPlaybillUrl, LONDON_CATEGORIES };
+module.exports = {
+  isCrossMarketPlaybillUrl,
+  LONDON_CATEGORIES,
+  // Exported so the test can assert the STRIP itself, not only the verdict it
+  // produces: a fixture that only checks the verdict passes unchanged when the
+  // strip is deleted and the both-markers guard happens to return false anyway.
+  stripOwnTitlePrefix,
+  OWN_TITLE_MARKET_RE,
+};
