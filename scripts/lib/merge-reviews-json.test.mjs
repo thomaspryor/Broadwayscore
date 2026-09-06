@@ -400,6 +400,12 @@ test('mergeReviewsJson: two sentinel rows with NO bylined twin are both kept (no
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [b] },
   );
   assert.equal(merged.reviews.length, 2);
+  // Assert the surviving rows are the two ORIGINAL sentinel rows, not just that
+  // two of something survived — the title claims both are kept, so check both.
+  assert.deepEqual(
+    merged.reviews.map(r => r.outlet).sort(),
+    ['Radio Times', 'Time Out'],
+  );
   assert.equal(stats.unknownBylineFossilsDropped, 0);
 });
 
@@ -423,8 +429,28 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   const data = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
   const reviews = Array.isArray(data.reviews) ? data.reviews : [];
   if (reviews.length === 0) return t.skip('data/reviews.json carries no reviews');
-  const { merged } = mergeReviewsJson({ _meta: data._meta, reviews }, { _meta: data._meta, reviews: [] });
+  // Count the fossil shape in the RAW corpus FIRST. Without this the test only
+  // ran the cleanup and then inspected its own output, which cannot distinguish
+  // "there were none" from "the pass ate something it should not have"
+  // (adversarial-review finding, Codex).
+  const rawBylinedUrls = new Set();
+  for (const r of reviews) if (!isUnknownByline(r.criticName)) { const k = urlKeyOf(r); if (k) rawBylinedUrls.add(k); }
+  const rawFossils = reviews.filter(r => isUnknownByline(r.criticName) && r.manualEntry !== true)
+    .filter(r => { const k = urlKeyOf(r); return k && rawBylinedUrls.has(k); });
+
+  const { merged, stats } = mergeReviewsJson({ _meta: data._meta, reviews }, { _meta: data._meta, reviews: [] });
   assert.ok(merged.reviews.length > 1000, `setup check: expected a real corpus, got ${merged.reviews.length} reviews`);
+  // Every row removed must be accounted for, and nothing else may vanish.
+  assert.equal(
+    reviews.length - merged.reviews.length,
+    stats.unknownBylineFossilsDropped,
+    'rows disappeared that the fossil pass did not account for',
+  );
+  assert.ok(
+    stats.unknownBylineFossilsDropped <= rawFossils.length,
+    `dropped ${stats.unknownBylineFossilsDropped} but only ${rawFossils.length} rows had the fossil shape in the raw corpus`,
+  );
+  assert.equal(stats.unknownBylineFossilsDroppedKeys.length, stats.unknownBylineFossilsDropped, 'every drop must be recorded with provenance');
   const bylinedUrls = new Set();
   for (const r of merged.reviews) if (!isUnknownByline(r.criticName)) { const k = urlKeyOf(r); if (k) bylinedUrls.add(k); }
   const fossils = merged.reviews
@@ -432,4 +458,72 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
     .map(r => urlKeyOf(r))
     .filter(k => k && bylinedUrls.has(k));
   assert.deepEqual(fossils, [], `Unknown-byline fossils survived the merge: ${fossils.slice(0, 3).join(', ')}`);
+});
+
+test('mergeReviewsJson: a sentinel-byline manualEntry row survives, and the manual rescue is what makes the fossil pass unable to reach it', () => {
+  // Named for what it actually proves. An adversarial review called the missing
+  // manualEntry guard a P0; checking it showed the case is unreachable, because
+  // the manual-entry rescue runs FIRST and splices every same-urlKey sibling of
+  // a manual row. This test pins that ordering invariant: if someone reorders
+  // the two passes, urlRescueConflicts stops being 1 here and the fossil pass
+  // starts seeing manual rows with siblings. The guard itself is defence in
+  // depth and this test does NOT fail without it — deliberately not claiming
+  // otherwise.
+  const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
+  const manualUnbylined = review({ criticName: 'Unknown', outlet: 'Time Out', url: SHARED_URL, contentTier: 'complete', manualEntry: true });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [manualUnbylined] },
+  );
+  assert.equal(merged.reviews.length, 1, 'the manual rescue collapses the pair before the fossil pass runs');
+  assert.equal(merged.reviews[0].manualEntry, true, 'the human correction is the survivor');
+  assert.equal(stats.urlRescueConflicts, 1, 'ordering invariant: the manual rescue, not the fossil pass, resolved this');
+  assert.equal(stats.unknownBylineFossilsDropped, 0, 'the fossil pass must not have touched a manual row');
+});
+
+test('mergeReviewsJson: same canonical key but a DIFFERENT raw path is NOT dropped', () => {
+  // canonicalizeUrlForDedup lowercases the whole URL, so a host with
+  // case-sensitive paths can collapse two genuinely different articles onto one
+  // canonical key. Deleting on that alone would remove a real unbylined review
+  // (adversarial-review finding, Codex). The raw-path guard is what stops it.
+  const bylined = review({ criticName: 'Olivia Garrett', url: 'https://example.com/Reviews/Into-The-Woods', contentTier: 'complete' });
+  const differentArticle = review({ criticName: 'Unknown', outlet: 'Time Out', url: 'https://example.com/reviews/into-the-woods', contentTier: 'complete' });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [differentArticle] },
+  );
+  assert.equal(urlKeyOf(bylined), urlKeyOf(differentArticle), 'precondition: these must share a canonical key, or the test proves nothing');
+  assert.equal(merged.reviews.length, 2, 'a case-only path difference must not authorise a deletion');
+  assert.equal(stats.unknownBylineFossilsDropped, 0);
+});
+
+test('mergeReviewsJson: a fossil differing only by tracking parameters IS still dropped', () => {
+  // The raw-path guard must not be so strict that it stops doing the job: the
+  // two real canonical collapses in the live corpus are a WSJ gaa_* parameter
+  // set and an NYT ?_r=1&, both the same article on a byte-identical path.
+  const bylined = review({ criticName: 'Olivia Garrett', url: 'https://example.com/reviews/into-the-woods?utm_source=x', contentTier: 'complete' });
+  const fossil = review({ criticName: 'Unknown', outlet: 'Time Out', url: 'https://example.com/reviews/into-the-woods', contentTier: 'stub' });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [fossil] },
+  );
+  assert.deepEqual(merged.reviews.map(r => r.criticName), ['Olivia Garrett']);
+  assert.equal(stats.unknownBylineFossilsDropped, 1);
+});
+
+test('mergeReviewsJson: every dropped fossil is recorded with provenance, not just counted', () => {
+  // A pass that DELETES rows must leave enough behind to answer "what went
+  // missing and why" from the merge result alone (adversarial-review finding,
+  // Codex: the first version recorded only a tally).
+  const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
+  const fossil = review({ criticName: 'Unknown', outlet: 'Time Out', url: SHARED_URL, contentTier: 'stub' });
+  const { stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [fossil] },
+  );
+  assert.equal(stats.unknownBylineFossilsDroppedKeys.length, 1);
+  const [rec] = stats.unknownBylineFossilsDroppedKeys;
+  assert.equal(rec.url, SHARED_URL);
+  assert.equal(rec.outlet, 'Time Out');
+  assert.equal(rec.supersededBy, 'Olivia Garrett', 'the record must name which byline superseded it');
 });

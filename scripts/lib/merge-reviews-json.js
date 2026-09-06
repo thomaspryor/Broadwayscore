@@ -350,22 +350,77 @@ function mergeReviewsJson(ours, remote) {
   // Note for whoever reads the module comment above next: its "7 legitimate
   // pairs" figure is that same group count as it stood on 2026-08-20, so the
   // legitimate subset is 6 today — the 7th is the fossil this pass removes.
+  // A manualEntry row is NEVER dropped here, even when its own byline is the
+  // sentinel. DEFENCE IN DEPTH, not a live bug fix — be precise about which,
+  // because a guard whose comment overclaims is the same defect as a test that
+  // asserts less than its name. An adversarial review (gpt-5.4-mini) raised
+  // this as a P0: "a manualEntry row with criticName 'Unknown' would be dropped
+  // here, defeating the manualEntry priority the module guarantees". Checked
+  // rather than taken on trust, and it is NOT reachable today: the manual-entry
+  // rescue immediately above registers each manual row's urlKeyOf and then
+  // splices EVERY other row sharing that key, so by the time this pass runs a
+  // manualEntry row provably has no same-urlKey sibling and can never match.
+  // Verified directly: merging a bylined row against a manual sentinel-byline
+  // row on one URL returns 1 row (the manual one) with urlRescueConflicts 1 and
+  // unknownBylineFossilsDropped 0. The guard stays because it costs one boolean
+  // and it is what stops a future reordering of these two passes from silently
+  // deleting human corrections — the failure it prevents is a refactor's, not
+  // today's.
+  // SECOND CONDITION, beyond the shared canonical key: the two rows must also
+  // agree on the raw URL PATH, compared case-sensitively. Adversarial-review
+  // finding (Codex): canonicalizeUrlForDedup lowercases the WHOLE url, so on a
+  // host with case-sensitive paths two genuinely different articles can collapse
+  // to one canonical key, and this pass would then delete a real unbylined
+  // review. Measured on the live corpus: canonicalization merges distinct raw
+  // URLs in exactly 2 groups, and both are the same article differing only by
+  // tracking parameters (a WSJ `gaa_*` set, an NYT `?_r=1&`) — so the risk is
+  // real in principle and absent in fact today. Requiring identical raw paths
+  // keeps the tracking-parameter cases working (their paths are byte-identical)
+  // while making a case-only or query-only path collapse unable to authorise a
+  // deletion. Deleting derived rows deserves the stricter of two available
+  // tests, not the more convenient one.
+  const rawPathOf = (u) => {
+    try {
+      const parsed = new URL(String(u));
+      return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/+$/, '')}`;
+    } catch {
+      return null;
+    }
+  };
+
   let unknownBylineFossilsDropped = 0;
-  const bylinedUrlIndex = new Set();
+  // Provenance, not just a tally. A pass that DELETES rows must leave enough
+  // behind to answer "what went missing and why" without digging through
+  // history (adversarial-review finding, Codex: the first version recorded only
+  // a count, so a wrong deletion was undiagnosable from the merge result).
+  const unknownBylineFossilsDroppedKeys = [];
+  const bylinedByUrlKey = new Map();
   for (const r of mergedReviews) {
     if (!r || isUnknownByline(r.criticName)) continue;
     const uk = urlKeyOf(r);
-    if (uk) bylinedUrlIndex.add(uk);
+    if (!uk) continue;
+    if (!bylinedByUrlKey.has(uk)) bylinedByUrlKey.set(uk, []);
+    bylinedByUrlKey.get(uk).push(r);
   }
-  if (bylinedUrlIndex.size) {
+  if (bylinedByUrlKey.size) {
     for (let i = mergedReviews.length - 1; i >= 0; i--) {
       const r = mergedReviews[i];
-      if (!r || !isUnknownByline(r.criticName)) continue;
+      if (!r || r.manualEntry === true || !isUnknownByline(r.criticName)) continue;
       const uk = urlKeyOf(r);
-      if (uk && bylinedUrlIndex.has(uk)) {
-        mergedReviews.splice(i, 1); // the bylined row is the real review
-        unknownBylineFossilsDropped++;
-      }
+      if (!uk) continue;
+      const candidates = bylinedByUrlKey.get(uk);
+      if (!candidates) continue;
+      const myPath = rawPathOf(r.url);
+      const winner = myPath && candidates.find((c) => rawPathOf(c.url) === myPath);
+      if (!winner) continue; // same canonical key but a different raw path — not provably the same article
+      mergedReviews.splice(i, 1); // the bylined row is the real review
+      unknownBylineFossilsDropped++;
+      unknownBylineFossilsDroppedKeys.push({
+        showId: r.showId,
+        outlet: r.outlet,
+        url: r.url,
+        supersededBy: winner.criticName,
+      });
     }
   }
 
@@ -399,6 +454,7 @@ function mergeReviewsJson(ours, remote) {
       remoteDuplicateKeysSkipped: remoteDeduped.duplicateKeysSkipped,
       urlRescueConflicts,
       unknownBylineFossilsDropped,
+      unknownBylineFossilsDroppedKeys,
       totalReviews: mergedReviews.length,
     },
   };
