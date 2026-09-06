@@ -122,6 +122,7 @@
 
 const { canonicalizeUrlForDedup } = require('./review-guards');
 const { criticKey } = require('./manual-entry-merge');
+const { isPlaceholderByline } = require('./placeholder-byline');
 
 const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
 
@@ -394,9 +395,26 @@ function mergeReviewsJson(ours, remote) {
   // history (adversarial-review finding, Codex: the first version recorded only
   // a count, so a wrong deletion was undiagnosable from the merge result).
   const unknownBylineFossilsDroppedKeys = [];
+  // What may ANCHOR a deletion is deliberately stricter than what may BE
+  // deleted. Widening the deleted side would remove more rows; narrowing the
+  // anchor side only ever removes fewer, so the asymmetry is the safe direction.
+  // Three ways a name fails to be a real byline, and isUnknownByline alone
+  // catches only the first (codebase-review finding, Claude):
+  //   - the sentinel itself;
+  //   - placeholder-byline.js's GENERIC_BYLINE_TERMS ('staff', 'news desk',
+  //     'editorial team', …) — that module is the repo's canonical predicate
+  //     for this same-URL duplicate class (card #1907), so reuse it rather than
+  //     grow a second, quietly divergent definition here (CLAUDE.md §15);
+  //   - punctuation-only junk. criticKey('—') is 'unknown' while
+  //     isUnknownByline('—') is false, so without this a junk em-dash row would
+  //     have counted as a real byline and taken out a genuine sentinel row.
+  const isRealByline = (name) => !isUnknownByline(name)
+    && !isPlaceholderByline(name)
+    && criticKey(name) !== 'unknown';
+
   const bylinedByUrlKey = new Map();
   for (const r of mergedReviews) {
-    if (!r || isUnknownByline(r.criticName)) continue;
+    if (!r || !isRealByline(r.criticName)) continue;
     const uk = urlKeyOf(r);
     if (!uk) continue;
     if (!bylinedByUrlKey.has(uk)) bylinedByUrlKey.set(uk, []);
@@ -411,8 +429,30 @@ function mergeReviewsJson(ours, remote) {
       const candidates = bylinedByUrlKey.get(uk);
       if (!candidates) continue;
       const myPath = rawPathOf(r.url);
-      const winner = myPath && candidates.find((c) => rawPathOf(c.url) === myPath);
-      if (!winner) continue; // same canonical key but a different raw path — not provably the same article
+      // Only a candidate on the SAME raw path may win, and it must not be
+      // poorer than the row it replaces. Every other resolution path in this
+      // module falls back to tierRank when it has to choose (see
+      // resolveConflict); preferring a byline unconditionally would let a
+      // bylined `stub` evict a sentinel `complete` and lose the richer text and
+      // its score until the next uncontended rebuild (codebase-review finding,
+      // Claude — the original tests only exercised the favourable direction).
+      // A tie still deletes: same tier, and the bylined row is the better
+      // attributed of the two.
+      // SAME OUTLET, too. urlKeyOf deliberately carries no outlet, and the
+      // source writer documents that aggregator roundup URLs are legitimately
+      // shared ACROSS outlets — so on URL alone a named Guardian row and a
+      // genuinely unbylined FT row backed by one roundup page would collapse
+      // into one, silently removing an outlet from the show's composite
+      // (adversarial-review finding, Codex). Scoping to one outlet also makes
+      // this pass exactly as wide as the defect it exists for: validate-data.js
+      // reports "duplicate URL(s) within same show+outlet", not across outlets.
+      const myOutlet = String(r.outlet || '').toLowerCase().trim();
+      const winner = myPath && candidates.find(
+        (c) => rawPathOf(c.url) === myPath
+          && String(c.outlet || '').toLowerCase().trim() === myOutlet
+          && tierRank(c) >= tierRank(r),
+      );
+      if (!winner) continue; // different outlet or raw path, or no candidate at least as rich — not safe to delete
       mergedReviews.splice(i, 1); // the bylined row is the real review
       unknownBylineFossilsDropped++;
       unknownBylineFossilsDroppedKeys.push({

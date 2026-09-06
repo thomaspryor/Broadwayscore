@@ -362,8 +362,7 @@ test('mergeReviewsJson: Unknown-byline fossil sharing a URL with a bylined row i
   const names = merged.reviews.map(r => r.criticName);
   assert.deepEqual(names, ['Olivia Garrett'], 'the sentinel row must not survive the union');
   assert.equal(stats.unknownBylineFossilsDropped, 1);
-  // _meta.stats.totalReviews must track the post-drop count, not the pre-drop one.
-  assert.equal(stats.totalReviews, 1);
+  assert.equal(stats.totalReviews, 1, 'returned stats must report the post-drop count');
 });
 
 test('mergeReviewsJson: fossil is dropped regardless of which side carries it', () => {
@@ -421,8 +420,10 @@ test('mergeReviewsJson: a sentinel row on a DIFFERENT url is untouched', () => {
 });
 
 // Corpus invariant: after this pass, no showId+URL may carry a sentinel row
-// alongside a bylined one. Asserts its own setup so a missing/empty corpus
-// FAILS loudly instead of passing as a silent no-op (crown rule 8).
+// alongside a bylined one. A missing/empty corpus SKIPS (visibly) rather than
+// passing as a silent no-op — note that means the invariant genuinely does not
+// run on checkouts without core data, e.g. a fork or Dependabot run where
+// checkout-core-data cannot execute. It asserts its own setup when it does run.
 test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (t) => {
   const reviewsPath = path.join(__dirname, '..', '..', 'data', 'reviews.json');
   if (!fs.existsSync(reviewsPath)) return t.skip('data/reviews.json not present in this checkout');
@@ -470,7 +471,7 @@ test('mergeReviewsJson: a sentinel-byline manualEntry row survives, and the manu
   // depth and this test does NOT fail without it — deliberately not claiming
   // otherwise.
   const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
-  const manualUnbylined = review({ criticName: 'Unknown', outlet: 'Time Out', url: SHARED_URL, contentTier: 'complete', manualEntry: true });
+  const manualUnbylined = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'complete', manualEntry: true });
   const { merged, stats } = mergeReviewsJson(
     { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [manualUnbylined] },
@@ -487,7 +488,7 @@ test('mergeReviewsJson: same canonical key but a DIFFERENT raw path is NOT dropp
   // canonical key. Deleting on that alone would remove a real unbylined review
   // (adversarial-review finding, Codex). The raw-path guard is what stops it.
   const bylined = review({ criticName: 'Olivia Garrett', url: 'https://example.com/Reviews/Into-The-Woods', contentTier: 'complete' });
-  const differentArticle = review({ criticName: 'Unknown', outlet: 'Time Out', url: 'https://example.com/reviews/into-the-woods', contentTier: 'complete' });
+  const differentArticle = review({ criticName: 'Unknown', url: 'https://example.com/reviews/into-the-woods', contentTier: 'complete' });
   const { merged, stats } = mergeReviewsJson(
     { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [differentArticle] },
@@ -502,7 +503,7 @@ test('mergeReviewsJson: a fossil differing only by tracking parameters IS still 
   // two real canonical collapses in the live corpus are a WSJ gaa_* parameter
   // set and an NYT ?_r=1&, both the same article on a byte-identical path.
   const bylined = review({ criticName: 'Olivia Garrett', url: 'https://example.com/reviews/into-the-woods?utm_source=x', contentTier: 'complete' });
-  const fossil = review({ criticName: 'Unknown', outlet: 'Time Out', url: 'https://example.com/reviews/into-the-woods', contentTier: 'stub' });
+  const fossil = review({ criticName: 'Unknown', url: 'https://example.com/reviews/into-the-woods', contentTier: 'stub' });
   const { merged, stats } = mergeReviewsJson(
     { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [fossil] },
@@ -516,7 +517,7 @@ test('mergeReviewsJson: every dropped fossil is recorded with provenance, not ju
   // missing and why" from the merge result alone (adversarial-review finding,
   // Codex: the first version recorded only a tally).
   const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
-  const fossil = review({ criticName: 'Unknown', outlet: 'Time Out', url: SHARED_URL, contentTier: 'stub' });
+  const fossil = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'stub' });
   const { stats } = mergeReviewsJson(
     { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
     { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [fossil] },
@@ -524,6 +525,115 @@ test('mergeReviewsJson: every dropped fossil is recorded with provenance, not ju
   assert.equal(stats.unknownBylineFossilsDroppedKeys.length, 1);
   const [rec] = stats.unknownBylineFossilsDroppedKeys;
   assert.equal(rec.url, SHARED_URL);
-  assert.equal(rec.outlet, 'Time Out');
+  assert.equal(rec.outlet, 'The Stage');
   assert.equal(rec.supersededBy, 'Olivia Garrett', 'the record must name which byline superseded it');
+});
+
+test('mergeReviewsJson: a bylined STUB never evicts a sentinel COMPLETE row', () => {
+  // The inverse of the live shape, and the direction the first tests left
+  // unpinned (codebase-review finding, Claude). Every other resolution path in
+  // this module falls back to tierRank; deleting the richer row would lose its
+  // text and score until the next uncontended rebuild.
+  const bylinedStub = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'stub' });
+  const sentinelComplete = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'complete' });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylinedStub] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinelComplete] },
+  );
+  assert.equal(merged.reviews.length, 2, 'the richer sentinel row must survive a poorer bylined one');
+  assert.equal(stats.unknownBylineFossilsDropped, 0);
+});
+
+test('mergeReviewsJson: an equal-tier bylined row DOES still evict the sentinel', () => {
+  // The tier guard must not be so strict that it stops doing the job.
+  const bylined = review({ criticName: 'Olivia Garrett', url: SHARED_URL, contentTier: 'complete' });
+  const sentinel = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'complete' });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [bylined] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinel] },
+  );
+  assert.deepEqual(merged.reviews.map(r => r.criticName), ['Olivia Garrett']);
+  assert.equal(stats.unknownBylineFossilsDropped, 1);
+});
+
+test('mergeReviewsJson: a generic placeholder byline cannot anchor a deletion', () => {
+  // placeholder-byline.js's GENERIC_BYLINE_TERMS are distinct primary-key
+  // identities (criticKey('Staff') is 'staff', not 'unknown'), so they DO reach
+  // the fossil pass — and must not anchor it. Without isPlaceholderByline in
+  // isRealByline, a 'Staff' row would evict a genuine sentinel row
+  // (codebase-review finding, Claude).
+  for (const junk of ['Staff', 'News Desk', 'Editorial Team']) {
+    const junkRow = review({ criticName: junk, url: SHARED_URL, contentTier: 'complete' });
+    const sentinel = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'stub' });
+    const { merged, stats } = mergeReviewsJson(
+      { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [junkRow] },
+      { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinel] },
+    );
+    assert.equal(stats.unknownBylineFossilsDropped, 0, `"${junk}" must not anchor a deletion`);
+    assert.ok(merged.reviews.some(r => isUnknownByline(r.criticName)), `the sentinel row must survive "${junk}"`);
+  }
+});
+
+test('mergeReviewsJson: a punctuation-only byline is resolved by the PRIMARY key, never by the fossil pass', () => {
+  // criticKey('\u2014') and criticKey('...') are both 'unknown', so such a row and a
+  // sentinel row are the SAME primary identity and the ordinary conflict
+  // resolution collapses them long before this pass runs. Asserting the sentinel
+  // "survives" here would be wrong — what matters is that the fossil pass is not
+  // what removed it, since criticKey and isUnknownByline disagree on these names.
+  for (const junk of ['\u2014', '...']) {
+    const junkRow = review({ criticName: junk, url: SHARED_URL, contentTier: 'complete' });
+    const sentinel = review({ criticName: 'Unknown', url: SHARED_URL, contentTier: 'stub' });
+    assert.equal(keyOf(junkRow), keyOf(sentinel), `precondition: "${junk}" must share a primary key with the sentinel`);
+    const { merged, stats } = mergeReviewsJson(
+      { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [junkRow] },
+      { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinel] },
+    );
+    assert.equal(merged.reviews.length, 1, 'same primary key collapses to one row');
+    assert.equal(stats.unknownBylineFossilsDropped, 0, `the fossil pass must not be the mechanism for "${junk}"`);
+  }
+});
+
+test('mergeReviewsJson: a cross-outlet pair sharing one aggregator URL is NEVER collapsed', () => {
+  // urlKeyOf deliberately carries no outlet, and the source writer documents
+  // that aggregator roundup URLs are legitimately shared ACROSS outlets. On URL
+  // alone, a named Guardian row and a genuinely unbylined FT row backed by one
+  // roundup page would collapse and an outlet would vanish from the composite
+  // (adversarial-review finding, Codex). validate-data.js reports duplicates
+  // "within same show+outlet", so this pass is scoped the same way.
+  const guardianNamed = review({ criticName: 'Arifa Akbar', outlet: 'Guardian', url: SHARED_URL, contentTier: 'complete' });
+  const ftUnbylined = review({ criticName: 'Unknown', outlet: 'Financial Times', url: SHARED_URL, contentTier: 'complete' });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [guardianNamed] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [ftUnbylined] },
+  );
+  assert.equal(merged.reviews.length, 2, 'two outlets sharing a roundup URL are two reviews');
+  assert.equal(stats.unknownBylineFossilsDropped, 0);
+});
+
+test('mergeReviewsJson: provenance records every drop, including showId, across multiple fossils', () => {
+  // The single-drop provenance test checked one record and only three of its
+  // fields (adversarial-review finding, Codex: it asserted less than its name).
+  const rows = [];
+  for (const n of [1, 2]) {
+    const url = `https://example.com/reviews/show-${n}`;
+    rows.push(review({ showId: `show-${n}`, criticName: `Critic ${n}`, outlet: 'Radio Times', url, contentTier: 'complete' }));
+    rows.push(review({ showId: `show-${n}`, criticName: 'Unknown', outlet: 'Radio Times', url, contentTier: 'stub' }));
+  }
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: rows },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [] },
+  );
+  assert.equal(stats.unknownBylineFossilsDropped, 2);
+  assert.equal(stats.unknownBylineFossilsDroppedKeys.length, 2);
+  assert.deepEqual(
+    stats.unknownBylineFossilsDroppedKeys.map(k => k.showId).sort(),
+    ['show-1', 'show-2'],
+    'each dropped row must name the show it came from',
+  );
+  for (const k of stats.unknownBylineFossilsDroppedKeys) {
+    assert.equal(k.outlet, 'Radio Times');
+    assert.ok(k.url && k.url.startsWith('https://example.com/reviews/show-'));
+    assert.ok(/^Critic [12]$/.test(k.supersededBy), `supersededBy must name the winning byline, got ${k.supersededBy}`);
+  }
+  assert.equal(merged.reviews.length, 2, 'exactly the two bylined rows remain');
 });
