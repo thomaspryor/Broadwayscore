@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-06T12:20:42.621Z",
-  "processed": 9,
-  "failed": 11,
-  "successRate": "45.0%",
+  "updatedAt": "2026-09-06T12:24:40.020Z",
+  "processed": 12,
+  "failed": 18,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-06T12:18:40.390Z",
@@ -37,6 +37,17 @@
       "event": "bb-session",
       "session": "4a0bf80b",
       "url": "https://www.sueterryvoices.com/news/a-month-in-the-country-at-the-donmar-warehou"
+    },
+    {
+      "t": "2026-09-06T12:23:02.875Z",
+      "event": "bb-session",
+      "session": "f4e15b73",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T12:23:03.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
