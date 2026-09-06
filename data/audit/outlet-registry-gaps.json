@@ -3,15 +3,13 @@
     "invalid": [],
     "armedCount": 6
   },
-  "invalidRegistryFields": [
-    "[registry-field] outlet \"zz-fault-injected-outlet\": starScale=null is invalid — must be one of 4, 5, 10, 100 — for an outlet with no star scale, OMIT the key entirely rather than setting it to null (that is how the other ~1,094 outlets express it)"
-  ],
-  "generatedAt": "2026-09-06T03:58:10.962Z",
+  "invalidRegistryFields": [],
+  "generatedAt": "2026-09-06T04:15:19.897Z",
   "summary": {
     "totalOutletsInReviews": 700,
     "inRegistry": 700,
     "missing": 0,
-    "unused": 471
+    "unused": 470
   },
   "missingOutlets": [],
   "unusedInRegistry": [
@@ -1894,9 +1892,6 @@
     {
       "outletId": "sueterryvoices",
       "displayName": "Sueterryvoices"
-    },
-    {
-      "outletId": "zz-fault-injected-outlet"
     }
   ],
   "suggestedAdditions": [],
