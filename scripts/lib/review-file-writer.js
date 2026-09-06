@@ -42,6 +42,7 @@ const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-d
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
+const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
@@ -710,6 +711,36 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
     return { action: 'skipped', reason: 'empty-unknown: no URL, no text, unknown critic' };
   }
+  // --- Guard F2: credited-person-as-critic rejection ---
+  // A byline that is a CREATIVE TEAM member of this same show is not a review;
+  // it is a mis-parsed roundup row. how-to-dance-in-ohio-2023 produced exactly
+  // this file three times ("Sammi Cannold", the show's Director, with an article
+  // headline as outletId and null url/publishDate/fullText). validate-data.js
+  // already ERRORS on it, so each occurrence reddened main and was deleted by
+  // hand — twice — while the source archive kept the row and the next extraction
+  // re-wrote it. Detection after ingest cannot break that loop; refusing the
+  // WRITE can. Same predicate object as the validator (CLAUDE.md §15), so the
+  // two can never drift apart.
+  //
+  // Scoped to the CREATIVE match only, deliberately. The validator treats a CAST
+  // match as a WARNING, not an error, because performer-bylined pieces are a real
+  // (if rare) genre and a stricter save-time rule than the validation rule would
+  // silently discard data no gate ever objected to.
+  //
+  // Operator-supplied rows are exempt: a human who typed this in has already made
+  // the judgement, and BRO-2916's lesson is that manual entries must never be
+  // dropped by an automated dedup/rejection pass.
+  const _operatorSupplied = fields.humanReviewScore != null || fields.manualEntry === true;
+  if (!_operatorSupplied) {
+    const creditVerdict = evaluateCreditedPersonAsCritic(_getShowById(showId), criticName);
+    if (creditVerdict.kind === 'creative') {
+      return {
+        action: 'skipped',
+        reason: `credited-person-as-critic: "${criticName}" is a creative team member of ${showId}`,
+      };
+    }
+  }
+
   const criticSlug = normalizeCritic(criticName);
 
   // --- Guard G: Critic-registry misattribution detection ---
