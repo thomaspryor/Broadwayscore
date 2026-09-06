@@ -42,8 +42,16 @@ test('the registration gate imports the shared rule and does not re-derive one',
     'audit-outlet-registry.js must import the shared field-shape rule');
   assert.match(src, /outletFieldShapeErrors\(/,
     'audit-outlet-registry.js must call the shared rule');
-  assert.doesNotMatch(src, /new Set\(\[\s*4\s*,\s*5\s*,\s*10\s*,\s*100\s*\]\)/,
-    'audit-outlet-registry.js must not re-declare the allowed-scale set locally');
+  // Catch re-derivation in ANY spelling, not just the one literal the module
+  // happens to use: `new Set([4,5,10,100])`, `[4,5,10,100].includes(x)`, a
+  // reordered set, or a set with an extra member all count. Matching only the
+  // exact literal would have let every one of those through, so the guard did
+  // not prevent the drift it names (code-review 2026-09-06). The test is
+  // simply "these four magic numbers do not appear together in this file".
+  const digitRuns = (src.match(/\b(?:4|5|10|100)\b/g) || []);
+  const hasAllFour = ['4', '5', '10', '100'].every(n => digitRuns.includes(n));
+  assert.equal(hasAllFour, false,
+    'audit-outlet-registry.js appears to re-declare the allowed star scales locally — import ALLOWED_STAR_SCALES instead');
 });
 
 test('an invalid field is part of the registration gate --strict FAILURE set, not just printed', () => {
@@ -51,9 +59,18 @@ test('an invalid field is part of the registration gate --strict FAILURE set, no
   // the gate "ran" and reported nothing actionable. Pin that badRegistryFields
   // participates in strictFail.
   const src = fs.readFileSync(path.join(SCRIPTS, 'audit-outlet-registry.js'), 'utf8');
-  const strictFail = src.match(/const strictFail =[\s\S]{0,400}?;/);
-  assert.ok(strictFail, 'could not locate the strictFail composition');
-  assert.match(strictFail[0], /badRegistryFields\.length > 0/,
+  // Slice from `const strictFail =` to the start of the next statement rather
+  // than lazily to the first `;`. The old form broke on a comment containing a
+  // semicolon inside the expression, or on the composition growing past an
+  // arbitrary 400-char cap — failing for a formatting change rather than a
+  // behavioural one (code-review 2026-09-06).
+  const start = src.indexOf('const strictFail =');
+  assert.notEqual(start, -1, 'could not locate the strictFail composition');
+  const rest = src.slice(start);
+  const end = rest.search(/;\s*\n/);
+  assert.notEqual(end, -1, 'could not find the end of the strictFail composition');
+  const strictFail = rest.slice(0, end);
+  assert.match(strictFail, /badRegistryFields\.length > 0/,
     'invalid registry fields must make --strict exit non-zero');
 });
 
@@ -74,21 +91,14 @@ test('the shared rule still rejects the exact value that put main red, via this 
   assert.deepEqual(outletFieldShapeErrors('arbuturian', {}), []);
 });
 
-test('the live registry passes the rule through the registration gate\'s own sweep', (t) => {
-  const registryPath = path.join(SCRIPTS, '..', 'data', 'outlet-registry.json');
-  if (!fs.existsSync(registryPath)) {
-    // Loud skip, never a vacuous pass — this file is gitignored core data and
-    // is absent in a bare worktree.
-    t.skip(`SKIPPED — ${registryPath} absent (gitignored core data not present here)`);
-    return;
-  }
-  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-  const outlets = registry.outlets || registry;
-  assert.ok(Object.keys(outlets).length > 100, 'expected a real registry');
-  const errors = [];
-  for (const [id, entry] of Object.entries(outlets)) {
-    if (id === '_aliasIndex' || id === '_meta') continue;
-    errors.push(...outletFieldShapeErrors(id, entry));
-  }
-  assert.deepEqual(errors, [], 'live outlet-registry.json violates the field-shape contract');
-});
+// NOTE — deliberately NO assertion here against the live data/outlet-registry.json.
+//
+// An earlier draft of this file scanned the real registry. That put a DATA
+// failure into a CODE-test job: a bad entry arriving via a data-repo or bot
+// commit would have reddened Unit Tests, on top of the two gates that already
+// cover it in Data Validation (validate-data.js at step 21 and
+// audit-outlet-registry.js --strict at step 43). The repo deliberately moved
+// corpus audits out of test.yml for exactly that reason, and duplicating the
+// coverage here buys nothing while making an unrelated job's red misleading
+// (code-review 2026-09-06). The tests above are pure and carry the regression
+// value on their own.
