@@ -418,13 +418,27 @@ function mergeReviewsJson(ours, remote) {
   //   - punctuation-only junk. criticKey('—') is 'unknown' while
   //     isUnknownByline('—') is false, so without this a junk em-dash row would
   //     have counted as a real byline and taken out a genuine sentinel row.
-  const isRealByline = (name) => !isUnknownByline(name)
-    && !isPlaceholderByline(name)
-    && criticKey(name) !== 'unknown';
+  //   - and the outlet's OWN NAME standing in for the critic. That is the very
+  //     case placeholder-byline.js was written for ("extraction fell back to
+  //     the outlet's own name"), but it is only reachable when the `outlet`
+  //     argument is actually supplied — called with the name alone, the
+  //     `norm === normOutlet` branch can never fire, so a record whose
+  //     criticName is literally its outlet ("Radio Times" at Radio Times)
+  //     counted as a real byline and could anchor the deletion of a genuine
+  //     sentinel row at that outlet. Passing `outlet` narrows the ANCHOR side,
+  //     which by the asymmetry noted above only ever deletes FEWER rows — safe
+  //     even without `opts.defaultCritic`, whose absence can only misread a
+  //     critic-named outlet as a placeholder and thereby decline to anchor.
+  const isRealByline = (rec) => {
+    const name = rec && rec.criticName;
+    return !isUnknownByline(name)
+      && !isPlaceholderByline(name, rec && rec.outlet)
+      && criticKey(name) !== 'unknown';
+  };
 
   const bylinedByUrlKey = new Map();
   for (const r of mergedReviews) {
-    if (!r || !isRealByline(r.criticName)) continue;
+    if (!r || !isRealByline(r)) continue;
     const uk = urlKeyOf(r);
     if (!uk) continue;
     if (!bylinedByUrlKey.has(uk)) bylinedByUrlKey.set(uk, []);

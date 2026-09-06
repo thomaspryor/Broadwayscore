@@ -392,6 +392,27 @@ test('mergeReviewsJson: two REAL bylines on one URL are never collapsed (anastas
   assert.equal(stats.unknownBylineFossilsDropped, 0);
 });
 
+test('mergeReviewsJson: an outlet-as-critic row may not anchor a deletion (isPlaceholderByline needs the outlet argument)', () => {
+  // placeholder-byline.js's `norm === normOutlet` branch is only reachable
+  // when `outlet` is passed. Called with the name alone it can never fire, so
+  // a record whose criticName is literally its outlet read as a real byline
+  // and could evict a genuine sentinel row at that same outlet.
+  const outletAsCritic = review({
+    criticName: 'Radio Times', outlet: 'Radio Times', outletId: 'radio-times',
+    url: SHARED_URL, contentTier: 'complete',
+  });
+  const sentinel = review({
+    criticName: 'Unknown', outlet: 'Radio Times', outletId: 'radio-times',
+    url: SHARED_URL, contentTier: 'complete',
+  });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [outletAsCritic] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinel] },
+  );
+  assert.equal(stats.unknownBylineFossilsDropped, 0, 'an outlet name is not a byline, so it may not anchor');
+  assert.equal(merged.reviews.length, 2, 'the genuine sentinel row must survive');
+});
+
 test('mergeReviewsJson: two sentinel rows with NO bylined twin are both kept (nothing to prefer)', () => {
   // Different outlets, same URL, both unbylined — the pass has no real byline to
   // anchor on, so it must not pick a winner arbitrarily.
