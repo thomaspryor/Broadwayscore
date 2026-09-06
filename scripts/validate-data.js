@@ -3829,34 +3829,22 @@ function validateReviewTextQuality(shows) {
   // Build per-show maps of creative team and cast names.
   // Skip placeholder values ("Unknown", "TBA", etc.) — they collide with generic "Unknown"
   // critic bylines and would flag legitimate reviews as garbage.
-  const PLACEHOLDER_NAMES = new Set(['unknown', 'tba', 'tbd', 'tbc', 'n/a', 'na', 'anonymous']);
-  const showCreativeTeam = {};  // showId -> Set of lowercase names
-  const showCast = {};          // showId -> Set of lowercase names
+  //
+  // The set-building AND the comparison now live in scripts/lib/creative-as-critic.js
+  // (CLAUDE.md §15) so that the save-time chokepoint — createOrMergeReviewFile in
+  // review-file-writer.js — rejects on the SAME predicate this validator errors on.
+  // Detection here alone could never hold: the roundup extractor re-created
+  // how-to-dance-in-ohio-2023/…--sammi-cannold.json after each of two deletes,
+  // reddening main every time, because nothing stopped the WRITE.
+  const showNameSets = {};      // showId -> { creative: Set, cast: Set }, sentinels removed
 
   // Show lookup + date helpers for the prior-production-by-date backstop (CHECK 0).
   const showById = {};
   for (const show of shows) if (show && show.id) showById[show.id] = show;
   const { evaluateDatePlausibility } = require('./lib/date-plausibility');
+  const { buildShowPersonNameSets, classifyCriticAgainstSets } = require('./lib/creative-as-critic');
   for (const show of shows) {
-    showCreativeTeam[show.id] = new Set();
-    showCast[show.id] = new Set();
-    if (show.creativeTeam) {
-      for (const member of show.creativeTeam) {
-        if (member.name) {
-          const name = member.name.toLowerCase().trim();
-          if (!PLACEHOLDER_NAMES.has(name)) showCreativeTeam[show.id].add(name);
-        }
-      }
-    }
-    if (show.cast) {
-      for (const member of show.cast) {
-        const name = typeof member === 'string' ? member : member.name;
-        if (name) {
-          const n = name.toLowerCase().trim();
-          if (!PLACEHOLDER_NAMES.has(n)) showCast[show.id].add(n);
-        }
-      }
-    }
+    showNameSets[show.id] = buildShowPersonNameSets(show);
   }
 
   let issues = 0;
@@ -3920,13 +3908,16 @@ function validateReviewTextQuality(shows) {
 
       // CHECK 1: Critic name matches a creative team member or cast member OF THE SAME SHOW
       // (Global matching causes false positives — e.g., critic "Scott Brown" ≠ actor "Scott Brown")
-      const showCreative = showCreativeTeam[showDir] || new Set();
-      const showCastSet = showCast[showDir] || new Set();
-      if (critic && showCreative.has(critic.toLowerCase())) {
+      // Sentinels lose on BOTH sides inside the predicate: la-ternura-off-broadway-2025's
+      // creativeTeam is literally [{name: "unknown"}], and unbylined reviews are saved as
+      // criticName "Unknown" — filtering only one side would condemn ordinary unbylined
+      // reviews. An unresolvable showDir yields reason 'no-show-record', not a bare false.
+      const creditVerdict = classifyCriticAgainstSets(showNameSets[showDir], critic);
+      if (creditVerdict.kind === 'creative') {
         error(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a creative team member of this show — likely not a real review`);
         creativeAsCritic++;
         issues++;
-      } else if (critic && showCastSet.has(critic.toLowerCase())) {
+      } else if (creditVerdict.kind === 'cast') {
         warn(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a cast member of this show — likely not a real review`);
         creativeAsCritic++;
         issues++;
