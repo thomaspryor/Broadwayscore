@@ -43,6 +43,20 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
+
+// Whole-registry sweep over the SAME per-entry decision validate-data.js uses.
+// Deliberately not a second copy of the rule: outlet-registry-field-shape.js
+// owns the contract and the message text, and this only walks the entries.
+function collectFieldShapeErrors(registry) {
+  const outlets = (registry && registry.outlets) || registry || {};
+  const errors = [];
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    errors.push(...outletFieldShapeErrors(id, entry));
+  }
+  return errors;
+}
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -602,9 +616,13 @@ function generateJsonOutput(auditResult) {
   // reason. Without this a red build ships a JSON document with zero findings
   // (code-review 2026-09-05).
   let cvStyleReport = { invalid: [], armedCount: 0 };
+  // Same reasoning for starScale/multiAuthor: --strict can now exit 1 on these,
+  // so a red build must not ship a findings-free JSON document.
+  let registryFieldsReport = [];
   try {
     const reg = loadRegistry();
     cvStyleReport = { invalid: findInvalidCvStyles(reg), armedCount: countArmedCvStyles(reg) };
+    registryFieldsReport = collectFieldShapeErrors(reg);
   } catch { /* registry unreadable is already fatal in loadRegistry() */ }
 
   // Transform missingFromRegistry to match spec format
@@ -623,6 +641,7 @@ function generateJsonOutput(auditResult) {
 
   return {
     cvStyle: cvStyleReport,
+    invalidRegistryFields: registryFieldsReport,
     generatedAt: new Date().toISOString(),
     summary: {
       totalOutletsInReviews,
@@ -1015,6 +1034,7 @@ async function main() {
     const cvRegistry = loadRegistry();
     const badCvStyles = findInvalidCvStyles(cvRegistry);
     const armedCvStyles = countArmedCvStyles(cvRegistry);
+    const badRegistryFields = collectFieldShapeErrors(cvRegistry);
     if (!JSON_OUTPUT) {
       if (badCvStyles.length > 0) {
         console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
@@ -1031,6 +1051,17 @@ async function main() {
           `\n⚠️  cvStyle DISARMED: 0 outlets carry 'long-biographical', so ` +
             `shouldDeferCvWrongShow() cannot fire for any review (BRO-2776). ` +
             `This is how the 2026-05-16 silent merge loss presented.`
+        );
+      }
+      if (badRegistryFields.length > 0) {
+        console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
+        for (const b of badRegistryFields) console.log(`  ${b}`);
+        console.log(
+          `  validate-data.js fails on these too, at an EARLIER step of the same ` +
+            `Data Validation job. Until 2026-09-06 registering an outlet with an ` +
+            `invalid field passed HERE and broke the build THERE — and this step, ` +
+            `then lacking an if:, was skipped by that earlier failure, so the run ` +
+            `reported nothing about the registry (arbuturian/starScale:null).`
         );
       }
     }
@@ -1052,6 +1083,7 @@ async function main() {
       // regression it looks like it guards. Only a positive count sees it.
       const strictFail = badCvStyles.length > 0
         || armedCvStyles === 0
+        || badRegistryFields.length > 0
         || newViolators.length > 0
         || newJunkViolators.length > 0;
       if (newViolators.length > 0 || newJunkViolators.length > 0) {

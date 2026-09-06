@@ -432,3 +432,126 @@ test('a show whose TITLE contains "tour" still matches its own correct URL (whol
   assert.ok(score !== null && score > 0,
     `the title's own "-tour-" must not reject its own off-Broadway page, got ${score}`);
 });
+
+// The SAME whole-url defect in the market tests a few lines further down.
+// v39 narrowed only the regional/tour reject to `marketTail`; `-london-`,
+// `-broadway-` and `-off-broadway-` were still read off the WHOLE url, and the
+// title is part of the url.
+//
+// Both of these are LATENT shapes, stated plainly so nobody later reads them as
+// incident repros: measured 2026-09-06, 16 of 2,942 corpus titles carry a market
+// word, none of them changes score under the market half of the fix, and all 107
+// live playbill-urls.json entries score identically old-vs-new on it. The
+// whole-url read only bites when the title's market word contradicts the url's
+// real market segment, which is why these two cases are constructed rather than
+// quoted. The venue half further down DOES move one live entry, named there.
+test('a show whose TITLE contains "london" still matches its own correct non-London URL', () => {
+  const show = {
+    id: 'a-night-in-london-off-broadway-2026',
+    title: 'A Night in London',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/a-night-in-london-off-broadway-soho-playhouse-2026', show);
+  assert.ok(score !== null && score > 0,
+    `the title's own "-london-" must not trip the cross-market reject on its own off-Broadway page, got ${score}`);
+  // `> 0` alone cannot tell "market read correctly" from "no market signal at
+  // all" — and that gap is exactly why neither of these tests caught the
+  // form-vs-raw-path defect in their own commit. Pin the bonus itself against a
+  // control whose title carries no market word.
+  const control = { ...show, id: 'a-night-out-off-broadway-2026', title: 'A Night Out' };
+  const controlScore = scorePlaybillUrl(
+    'https://playbill.com/production/a-night-out-off-broadway-soho-playhouse-2026', control);
+  assert.equal(score, controlScore,
+    `the "-london-" title must score exactly like the same show without it: ${score} vs ${controlScore}`);
+});
+
+test('a TITLE containing "broadway" does not change the market bonus (self-corroboration)', () => {
+  // Same category, same market segment in the url, same venue — the ONLY
+  // difference is a market word inside the title, so the scores must be equal.
+  const withWord = {
+    id: 'prince-of-broadway-regional-2024', title: 'Prince of Broadway',
+    venue: 'Some Company', category: 'regional',
+  };
+  const without = {
+    id: 'prince-of-tides-regional-2024', title: 'Prince of Tides',
+    venue: 'Some Company', category: 'regional',
+  };
+  const a = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-broadway-regional-some-company-2024', withWord);
+  const b = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-tides-regional-some-company-2024', without);
+  assert.ok(a !== null && b !== null, `both must match their own regional page, got ${a} and ${b}`);
+  assert.equal(a, b, `the title's own "-broadway-" must not earn a market bonus: ${a} vs ${b}`);
+});
+
+// The narrowing above is worthless unless the tail is derived correctly, and
+// the first cut of it was not. It read `pathTail.startsWith(titleMatch.form)`,
+// but `form` is a NORMALIZED title — normalizeTitle strips a leading "the-"
+// that Playbill keeps — so the test failed for every "The …" title and the
+// fallback silently restored whole-url behaviour on 16 of the 97 title-matching
+// live cache entries. The matcher now returns the raw tail for the split it
+// chose. This case is a "The …" title carrying a market word: it exercises the
+// derivation, not just the comparison.
+test('a "The …" title gets a REAL market tail, not a silent whole-url fallback', () => {
+  const show = {
+    id: 'the-london-season-off-broadway-2026',
+    title: 'The London Season',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/the-london-season-off-broadway-soho-playhouse-2026', show);
+  assert.ok(score !== null && score > 0,
+    `"the-" is stripped from the normalized form, so deriving the tail from it falls back to the whole url and the title's own "-london-" rejects the show, got ${score}`);
+});
+
+// The venue bonus had the same whole-url shape, defended by an argument that
+// was wrong: competing candidates need NOT consume the same title text, since
+// exact/lossless/lossy each consume a different form, so a +2 taken off the
+// title can outrank a candidate that names the real venue in its tail.
+// music-city-off-broadway-2026 is the live instance — its venue field is
+// literally its title, and it took +2 (18, now 16) off a url whose actual venue
+// is st-lukes-theatre. It is the only one of the 107 cache entries that moves.
+// NOTE for whoever reads these numbers: canonicalVenue() returns only the
+// venue's FIRST WORD, lowercased — "St. Luke's Theatre" becomes "st." — so the
+// bonus is first-word matching and never fires for a punctuated first word.
+// That is pre-existing and deliberately not touched here; it is why the cases
+// below use venues whose first word is a clean token.
+test('the venue bonus does not fire off the title (music-city-off-broadway-2026)', () => {
+  const url = 'https://playbill.com/production/music-city-off-broadway-st-lukes-theatre-2026';
+  // canonicalVenue("Music City") === "music", which appears in the TITLE and
+  // nowhere else in this url. This is the live entry: it scored 18, now 16.
+  const selfNamed = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Music City', category: 'off-broadway',
+  };
+  // canonicalVenue("Palace Theatre") === "palace", which appears nowhere at all.
+  const absent = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Palace Theatre', category: 'off-broadway',
+  };
+  const selfScore = scorePlaybillUrl(url, selfNamed);
+  const absentScore = scorePlaybillUrl(url, absent);
+  assert.ok(selfScore !== null && absentScore !== null,
+    `both must still match the title, got ${selfScore} and ${absentScore}`);
+  assert.equal(selfScore, absentScore,
+    `a venue that only appears inside the show's own TITLE must score the same as one that is absent: self=${selfScore} absent=${absentScore}`);
+});
+
+test('the venue bonus still fires when the venue is genuinely in the tail', () => {
+  // The positive control for the test above — without it, "no bonus ever" would
+  // pass just as happily as "no bonus off the title".
+  const url = 'https://playbill.com/production/music-city-off-broadway-soho-playhouse-2026';
+  const inTail = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const absent = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Palace Theatre', category: 'off-broadway',
+  };
+  const withVenue = scorePlaybillUrl(url, inTail);
+  const without = scorePlaybillUrl(url, absent);
+  assert.ok(withVenue > without,
+    `a venue named in the url's tail must still earn its bonus: ${withVenue} vs ${without}`);
+});
