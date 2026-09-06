@@ -9,8 +9,15 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
+      // Literal family names only — no var(). A var() whose custom property is
+      // undefined makes the ENTIRE font-family declaration invalid at
+      // computed-value time, so the browser uses the initial value (Times New
+      // Roman) rather than continuing down this stack. That is exactly how the
+      // 2026-08-16 serif incident reached production. See the @font-face block
+      // at the top of src/app/globals.css.
       sans: [
-        'var(--font-inter)',
+        'InterVariable',
+        'InterVariable Fallback',
         'Inter',
         'ui-sans-serif',
         '-apple-system',
