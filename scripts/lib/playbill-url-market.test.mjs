@@ -165,6 +165,14 @@ test('BRO-2899: a title with NO market word never triggers a strip', () => {
   // take this path and cannot be affected at all.
   assert.equal(stripOwnTitlePrefix('hadestown-broadway-walter-kerr-theatre-2019', { title: 'Hadestown' }), null);
   assert.equal(stripOwnTitlePrefix('cabaret-london-playhouse-theatre-2021', { title: 'Cabaret' }), null);
+  // Raised in adversarial review: a SHORT, generic legacy prefix ("the", "a")
+  // eating the front of an unrelated URL. It cannot happen, and this is the
+  // reason — a candidate must itself carry a market word, and no generic prefix
+  // does. Measured over all 2,942 corpus titles, the shortest candidate any
+  // title produces is "broadway" (8 chars, the 1927 play).
+  for (const title of ['The Piano Lesson', "A Doll's House", 'The Outsiders']) {
+    assert.equal(stripOwnTitlePrefix('the-green-pastures-broadway-theatre-vault-0000012335', { title }), null);
+  }
 });
 
 test('BRO-2899: the strip keeps the hyphen boundary the substring tests need', () => {
