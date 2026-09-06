@@ -418,13 +418,37 @@ function mergeReviewsJson(ours, remote) {
   //   - punctuation-only junk. criticKey('—') is 'unknown' while
   //     isUnknownByline('—') is false, so without this a junk em-dash row would
   //     have counted as a real byline and taken out a genuine sentinel row.
-  const isRealByline = (name) => !isUnknownByline(name)
-    && !isPlaceholderByline(name)
-    && criticKey(name) !== 'unknown';
+  //   - and the outlet's OWN NAME standing in for the critic. That is the very
+  //     case placeholder-byline.js was written for ("extraction fell back to
+  //     the outlet's own name"), but it is only reachable when the `outlet`
+  //     argument is actually supplied — called with the name alone, the
+  //     `norm === normOutlet` branch can never fire, so a record whose
+  //     criticName is literally its outlet ("Radio Times" at Radio Times)
+  //     counted as a real byline and could anchor the deletion of a genuine
+  //     sentinel row at that outlet. Passing `outlet` narrows the ANCHOR side,
+  //     which by the asymmetry noted above only ever deletes FEWER rows.
+  //     `opts.defaultCritic` is deliberately NOT resolved here: this module is
+  //     a merge driver wired into core-data-merge-registry.js:639 with a fixed
+  //     (ours, remote) signature and no I/O of its own, and reading
+  //     outlet-registry.json would break that purity. The cost is bounded and
+  //     one-directional — at an outlet named after its own sole critic
+  //     (placeholder-byline.js:52-61) that critic reads as a placeholder, so
+  //     the pass declines to anchor. That is safe against DELETION, not
+  //     against the duplicate gate: such a pair can then survive to
+  //     validate-data.js:2081 as a same-show+outlet duplicate URL, which is
+  //     loud and self-clearing on the next uncontended rebuild, unlike a
+  //     wrongly deleted review. scripts/dedupe-same-url-bylines.js:237 is the
+  //     caller that CAN afford the registry lookup and does pass defaultCritic.
+  const isRealByline = (rec) => {
+    const name = rec && rec.criticName;
+    return !isUnknownByline(name)
+      && !isPlaceholderByline(name, rec && rec.outlet)
+      && criticKey(name) !== 'unknown';
+  };
 
   const bylinedByUrlKey = new Map();
   for (const r of mergedReviews) {
-    if (!r || !isRealByline(r.criticName)) continue;
+    if (!r || !isRealByline(r)) continue;
     const uk = urlKeyOf(r);
     if (!uk) continue;
     if (!bylinedByUrlKey.has(uk)) bylinedByUrlKey.set(uk, []);
