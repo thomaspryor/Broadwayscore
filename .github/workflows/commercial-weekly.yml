@@ -521,6 +521,7 @@ jobs:
           exit 1
 
       - name: Commit applied data + audit
+        id: commit-public
         if: always() && steps.commit-gate.outcome == 'success'
         # Task #574: commits commercial-pending-review.json (union-merged
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
@@ -545,15 +546,42 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # BRO-2912. `commit-gate` runs BEFORE the commit, so its outcome is fixed
+      # at 'success' by the time the commit runs, and `always()` means a FAILED
+      # commit does not stop the two steps below. That is not hypothetical: in
+      # run 33988453526 (schedule, 2026-09-05) "Commit applied data + audit"
+      # failed on push contention while "Push core data to private repo" and
+      # "Dispatch deploy" both succeeded. The public repo then lacks
+      # commercial-pending-review.json marking those entries consumed, while
+      # push-core-data ships the mutated commercial.json (a CORE_FILE) to the
+      # private repo and on to production — so the next Saturday re-applies
+      # entries that are already applied. commit-gate cannot catch this: it
+      # already passed, so it never wrote the .skip-push-core-data sentinel
+      # that push-core-data's own refusal check reads.
+      #
+      # Chaining a second step id onto the barrier id, rather than moving the
+      # barrier or adding a second one, is the established shape here — see
+      # discover-historical-shows.yml's "Mark data pushed" step. A second
+      # barrier would mean a second restore site, which the comment on the
+      # deletion guard above deliberately rejects.
+      #
+      # A commit that legitimately commits NOTHING is still success: data/
+      # commercial.json is gitignored (.gitignore:204), so a run that only
+      # changed commercial.json takes the "No changes to commit" path, exits 0,
+      # and must still publish. That is the common case, not an edge case.
+      #
+      # Skipping "Dispatch deploy" on a contended push is deliberate and cheap:
+      # vercel-deploy.yml's 6h backstop still ships the data. Do not "fix" this
+      # back to an unconditional deploy.
       - name: Push core data to private repo
-        if: always() && steps.commit-gate.outcome == 'success'
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Commercial weekly orchestrator update'
 
       - name: Dispatch deploy
-        if: always() && steps.commit-gate.outcome == 'success'
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
         uses: ./.github/actions/dispatch-deploy
 
       - name: Summary
