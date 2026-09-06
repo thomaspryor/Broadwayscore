@@ -298,10 +298,20 @@ jobs:
       - name: Auto-apply high-confidence results
         # NOT continue-on-error: ship-check CDX-P0-4 found a failed apply could
         # silently progress to commit + push + deploy with a half-mutated
-        # workspace. If apply fails (validate-data error, malformed pending,
-        # whatever), we want the rest of this job to skip — the commit step
-        # below already guards with `if git diff --staged --quiet` so a hard
-        # abort here is safe; the next Saturday run picks up the same pending.
+        # workspace. A hard abort here makes every success()-gated step below
+        # skip, INCLUDING the strict gate — which is why the "Commit gate"
+        # step further down is `if: always()` and fails closed on
+        # `job.status != 'success'`. That barrier, not this step's exit code,
+        # is what stops the always()-gated commit/push/deploy from publishing
+        # a half-mutated workspace. The next Saturday run picks up the same
+        # pending, because the barrier also restores the files mutated here.
+        #
+        # BRO-2907: the comment that used to sit here claimed the abort was
+        # safe because "the commit step below already guards with
+        # `if git diff --staged --quiet`". That was wrong twice over — the
+        # commit step is `if: always()`, and a staged-diff guard only skips
+        # when there are NO changes, whereas a half-mutated workspace has
+        # exactly the changes you must not commit.
         run: |
           if [ -f data/commercial-pending-review.json ]; then
             node scripts/apply-commercial-pending.js --all --min-confidence=high
@@ -313,9 +323,14 @@ jobs:
         # Closes stale duplicates (pending claims already resolved+cited in
         # commercial.json by a prior pipeline run) and attempts SERP+LLM
         # verification of the rest against TRUSTED_RECOUPMENT_HOSTS. NOT
-        # continue-on-error, same reasoning as auto-apply above — writes only
-        # happen after the full pass succeeds, so a mid-run failure leaves no
-        # partial state for the strict gate below to catch.
+        # continue-on-error, same reasoning as auto-apply above.
+        #
+        # BRO-2907: the comment here used to claim "writes only happen after
+        # the full pass succeeds, so a mid-run failure leaves no partial state
+        # for the strict gate below to catch." Do not rely on that. This step
+        # can fail after auto-apply above has already mutated commercial.json
+        # and pending-review, and a failure here SKIPS the strict gate
+        # entirely. The "Commit gate" barrier below is what actually holds.
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -343,25 +358,15 @@ jobs:
       - name: Commercial data strict gate (required)
         # S1-T5: hard gate — recouped:true entries with no citation, or
         # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
-        # reach the private repo. The commit/push steps below are if: always(),
-        # so exit 1 alone would not stop them — the push-core-data refusal
-        # sentinel is what actually blocks the private-repo push. The public
-        # commit is safe regardless (data/commercial.json is gitignored there).
-        run: |
-          if ! node scripts/audit-commercial-data.js --strict; then
-            echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
-              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
-            # Make the failure atomic: the auto-apply + reconciler steps above
-            # already mutated commercial.json AND deleted/updated entries in
-            # pending-review. The always()-gated public commit below would
-            # otherwise record those entries as consumed while the sentinel
-            # blocks the commercial.json push — losing the pending data.
-            # Restore both so the next Saturday run retries the same pending.
-            cp /tmp/core-data-snapshot/commercial.json data/commercial.json 2>/dev/null || true
-            git checkout -- data/commercial-pending-review.json 2>/dev/null || true
-            git checkout -- data/recoupment-calibration-anchors.json 2>/dev/null || true
-            exit 1
-          fi
+        # reach the private repo.
+        #
+        # This step only DECIDES. Failing it makes job.status 'failure', and
+        # the "Commit gate" barrier below is what writes the push-core-data
+        # refusal sentinel and restores the mutated files. Keeping exactly one
+        # restore site is deliberate (BRO-2907): the previous version restored
+        # here too, so any later divergence between the two copies would have
+        # silently reopened the hole this card was filed for.
+        run: node scripts/audit-commercial-data.js --strict
 
       - name: Run commercial audit
         # continue-on-error: true — audit is read-only/informational; a failure
@@ -398,31 +403,125 @@ jobs:
         continue-on-error: true
 
       - name: Refresh recoupment model
+        id: refresh-model
         # continue-on-error: true — model refresh is derived data; failure
-        # leaves the previous run's values in place, no corruption risk.
+        # leaves the previous run's values in place. It writes through
+        # commercial-write-guard -> json-write-guard -> atomicWriteJson
+        # (temp file + rename), so commercial.json is never left half-written.
+        #
+        # BUT it is the one step below the strict gate that MUTATES
+        # commercial.json (scripts/merge-model-recoupment.js:253,
+        # saveCommercial), and continue-on-error means its failure does NOT
+        # set job.status to failure. So the Commit gate below checks this
+        # step's outcome explicitly as well as job.status — otherwise a failed
+        # model refresh would publish commercial data the strict gate never
+        # judged. Found by two independent reviewers on 2026-09-06.
         run: node scripts/merge-model-recoupment.js
         continue-on-error: true
 
       - name: Deletion guard for commercial.json
         if: always()
+        # BRO-2907: this guard had never run. It was wrapped in
+        # `if <diff of data/commercial.json> | grep -c '^-[^-]' > file; then`,
+        # but data/commercial.json is ignored AND untracked in the public repo
+        # (.gitignore:204), so the diff prints nothing, grep -c exits 1, and
+        # the condition was false on every run since the guard was written —
+        # the show-count check inside it never executed once. Absence of a
+        # signal read as safety, exactly like the skipped-step class this card
+        # was filed for. Now unconditional, matching the form that
+        # commercial-friday.yml already uses correctly.
         run: |
-          if git diff -- data/commercial.json | grep -c '^-[^-]' > /tmp/deletions.txt 2>/dev/null; then
-            DELETIONS=$(cat /tmp/deletions.txt)
-            echo "Lines removed from commercial.json: $DELETIONS"
-            # Check if show count dropped
-            node -e "
-              const comm = require('./data/commercial.json');
-              const count = Object.keys(comm.shows || {}).length;
-              console.log('Current show count: ' + count);
-              if (count < 120) {
-                console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting.');
-                process.exit(1);
-              }
-            "
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) { console.log('no commercial.json — nothing to guard'); process.exit(0); }
+            const comm = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(comm.shows || {}).length;
+            console.log('Current show count: ' + count);
+            if (count < 120) {
+              console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting.');
+              process.exit(1);
+            }
+          "
+
+      - name: Commit gate — refuse to publish after any earlier failure
+        id: commit-gate
+        if: always()
+        # BRO-2907. Every mutation step in this job (auto-apply, the recoupment
+        # reconciler, the dedupe self-heal) and the strict gate that judges
+        # them are success()-gated, so ANY earlier failure skips the gate —
+        # while "Commit applied data", "Push core data" and "Dispatch deploy"
+        # below are if: always() and publish regardless. That published
+        # half-mutated commercial data to the private repo AND recorded the
+        # pending entries as consumed, so the next run could not retry them.
+        #
+        # This barrier is the single fail-closed point. It keys off
+        # `job.status` rather than enumerating each earlier step's outcome
+        # because the whole bug class is "someone adds a step and nobody
+        # updates the guard" — job.status covers steps that do not exist yet,
+        # including checkout/setup. Same mechanism as
+        # llm-ensemble-score.yml's `always() && job.status != 'cancelled'`.
+        #
+        # A `continue-on-error: true` step that fails does NOT set job.status
+        # to failure. Most of the steps below the strict gate are genuinely
+        # informational and deliberately non-blocking — but "Refresh
+        # recoupment model" is NOT: it mutates commercial.json after the gate
+        # has already passed. So its outcome is checked explicitly below.
+        # Any future continue-on-error step that WRITES must be added here
+        # too; a read-only audit does not need to be.
+        #
+        # The publish steps below gate on `outcome == 'success'`, NOT on the
+        # `outcome != 'failure'` used by update-show-status.yml's commit-gate.
+        # Deliberate: `!= 'failure'` is TRUE when this step is skipped, which
+        # is the same read-as-safe-while-nothing-ran shape this card was filed
+        # for. `== 'success'` is the only form that requires the barrier to
+        # have actually run and passed.
+        env:
+          JOB_STATUS: ${{ job.status }}
+          MODEL_REFRESH_OUTCOME: ${{ steps.refresh-model.outcome }}
+        run: |
+          REASON=""
+          if [ "$JOB_STATUS" != "success" ]; then
+            REASON="an earlier step failed or was cancelled (job status: $JOB_STATUS)"
+          elif [ "$MODEL_REFRESH_OUTCOME" = "failure" ]; then
+            REASON="Refresh recoupment model failed after the strict gate; it mutates commercial.json, so its output was never judged"
           fi
+          if [ -z "$REASON" ]; then
+            echo "No earlier step failed — publish is clear to proceed."
+            exit 0
+          fi
+          echo "::error::Refusing to commit, push or deploy commercial data: $REASON."
+          # `|| true` ONLY on the sentinel write: under `bash -e` a failed
+          # redirection (unwritable RUNNER_TEMP) would abort this step before
+          # the restores below ever run. The step still exits 1 either way, so
+          # the publish steps are blocked by outcome regardless of the sentinel.
+          echo "commercial-weekly auto-apply refused to publish: $REASON" \
+            > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data" || \
+            echo "::error::could not write the push-core-data refusal sentinel — relying on step outcome to block the publish"
+          # Restore what the mutation steps above may have half-written, so the
+          # next Saturday run retries the same pending set. These restores are
+          # LOUD on failure: a silent `|| true` here would leave the workspace
+          # mutated while this step still reported the refusal, which is the
+          # same false-safe shape as the dead deletion guard above.
+          if [ -f /tmp/core-data-snapshot/commercial.json ]; then
+            if cp -f /tmp/core-data-snapshot/commercial.json data/commercial.json; then
+              echo "restored data/commercial.json from the pre-run snapshot"
+            else
+              echo "::error::could not restore data/commercial.json from the snapshot"
+            fi
+          else
+            echo "::error::/tmp/core-data-snapshot/commercial.json is missing — cannot restore commercial.json. checkout-core-data did not run or did not complete. The refusal sentinel is written, so the private-repo push is still blocked."
+          fi
+          for f in data/commercial-pending-review.json data/recoupment-calibration-anchors.json; do
+            if git checkout -- "$f"; then
+              echo "restored $f"
+            else
+              echo "::error::could not restore $f — entries it holds may be recorded as consumed"
+            fi
+          done
+          exit 1
 
       - name: Commit applied data + audit
-        if: always()
+        if: always() && steps.commit-gate.outcome == 'success'
         # Task #574: commits commercial-pending-review.json (union-merged
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
@@ -447,14 +546,14 @@ jobs:
           fi
 
       - name: Push core data to private repo
-        if: always()
+        if: always() && steps.commit-gate.outcome == 'success'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Commercial weekly orchestrator update'
 
       - name: Dispatch deploy
-        if: always()
+        if: always() && steps.commit-gate.outcome == 'success'
         uses: ./.github/actions/dispatch-deploy
 
       - name: Summary
