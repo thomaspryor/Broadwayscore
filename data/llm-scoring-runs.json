@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-31T09:06:22.414Z",
-    "completedAt": "2026-08-31T09:06:32.260Z",
-    "totalReviews": 42407,
-    "processed": 0,
-    "skipped": 42404,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 11391,
-      "output": 432,
-      "total": 33911
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-31T09:55:48.280Z",
     "completedAt": "2026-08-31T09:55:51.007Z",
     "totalReviews": 42407,
@@ -546610,6 +546596,31 @@
       {
         "showId": "grey-gardens-2006",
         "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-06T10:13:20.108Z",
+    "completedAt": "2026-09-06T10:13:48.809Z",
+    "totalReviews": 42733,
+    "processed": 4,
+    "skipped": 42725,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 29874,
+      "output": 1416,
+      "total": 79186
+    },
+    "errorDetails": [
+      {
+        "showId": "escape-to-margaritaville-2018",
+        "outletId": "billboard",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "john-lithgow-stories-by-heart-2018",
+        "outletId": "culturesauce",
         "error": "input_validation_failed:body_too_short"
       }
     ]
