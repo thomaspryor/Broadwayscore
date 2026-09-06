@@ -210,7 +210,7 @@ r6_attempt=$(row_field "$LOG6" attempt); r6_reason=$(row_field "$LOG6" reason)
 # EVERY post-loop row, not just the last: a regression at one of the three
 # api-fallback-* sites would be invisible to a last-row-only assertion, and
 # those are exactly the sites that win the durable first-write race.
-r6_maxrows=$(grep -c '"attempt":9' "$LOG6" 2>/dev/null || true)
+r6_maxrows=$(grep -c '"attempt":9,' "$LOG6" 2>/dev/null || true)
 if [ "$seed6_ok" != "true" ]; then
   echo "SKIP[6]: this environment cannot seed a file:// remote — early-fallback path untestable here"
 elif ! grep -q "breaking out of the local fetch+rebase+push loop early" <<<"$out6"; then
