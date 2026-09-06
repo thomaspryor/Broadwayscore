@@ -8,7 +8,9 @@
     "the-story-west-end-2026/theatrecat--unknown.json",
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
-    "a-month-in-the-country-west-end-2026/ents24--unknown.json"
+    "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -21,7 +23,15 @@
     "the-story-west-end-2026/nysr--frank-scheck.json",
     "the-story-west-end-2026/radio-times--patrick-cremona.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
-    "the-children-off-west-end-2026/daily-mail--unknown.json"
+    "the-children-off-west-end-2026/daily-mail--unknown.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,10 +39,14 @@
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "the-story-west-end-2026/london-box-office--stuart-king.json",
-      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "electra-persona-west-end-2026/theatreboard--unknown.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+    ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json"
     ],
@@ -48,6 +62,18 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "the-children-off-west-end-2026/daily-mail--unknown.json",
-  "log": []
+  "lastProcessed": "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+  "log": [
+    {
+      "t": "2026-09-06T14:23:31.313Z",
+      "event": "bb-session",
+      "session": "56e1fbd2",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T14:23:32.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }

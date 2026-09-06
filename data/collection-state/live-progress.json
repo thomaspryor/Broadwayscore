@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-09-06T14:21:22.564Z",
-  "processed": 9,
-  "failed": 11,
-  "successRate": "45.0%",
+  "updatedAt": "2026-09-06T14:23:51.550Z",
+  "processed": 11,
+  "failed": 19,
+  "successRate": "36.7%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-09-06T14:23:31.313Z",
+      "event": "bb-session",
+      "session": "56e1fbd2",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T14:23:32.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
