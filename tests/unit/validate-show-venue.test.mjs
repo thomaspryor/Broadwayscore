@@ -374,3 +374,61 @@ test('validate-show-venue exits non-zero when the run never reached the named --
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// ---------------------------------------------------------------------------
+// The regional/tour market reject. CI run 34000023372 went RED on
+// much-ado-about-nothing-2026: a Broadway show at the Winter Garden opening
+// 2026-11-19 scored a full 10 against
+// /production/much-ado-about-nothing-regional-playmakers-repertory-company-2023,
+// a different production three years earlier. The guard's own comment said
+// "never a fit for a NYC OB/Broadway entry" while its condition only covered
+// `isOB || !show.category` — the comment was the rule, the code was narrower.
+// An upcoming Broadway show often has no Playbill page yet, so the scorer
+// reaches for the nearest same-titled one; that is the population this guards.
+test('scorePlaybillUrl rejects a REGIONAL production URL for a Broadway show (CI run 34000023372 red main)', () => {
+  const muchAdo = {
+    id: 'much-ado-about-nothing-2026', title: 'Much Ado About Nothing',
+    venue: 'Winter Garden Theatre', category: 'broadway',
+  };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/much-ado-about-nothing-regional-playmakers-repertory-company-2023',
+    muchAdo), null);
+});
+
+test('scorePlaybillUrl rejects a regional URL for a West End show too — the reject is not NYC-only', () => {
+  const we = { id: 'y-2026', title: 'Some Play', venue: 'Apollo Theatre', category: 'west-end' };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', we), null);
+});
+
+test('a category-less entry still refuses a regional URL (unchanged behaviour)', () => {
+  const noCat = { id: 'x-2026', title: 'Some Play', venue: 'Whatever', category: null };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', noCat), null);
+});
+
+test('a REGIONAL show may still hold a regional URL — the reject must not swallow its own market', () => {
+  const regShow = { id: 'some-regional-2024', title: 'Some Play', venue: 'PlayMakers Repertory Company', category: 'regional' };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', regShow);
+  assert.ok(score !== null && score > 0, `a regional show's own regional URL must survive, got ${score}`);
+});
+
+// The other half of the same fix, and a defect that PREDATES it: the test used
+// to search the WHOLE url, and the title is part of the url, so a show whose
+// own name contains "tour" or "regional" condemned itself. This is BRO-2821
+// defect 5's shape (a venue gate that searched the whole url let a show
+// corroborate itself) pointed the other way. Exactly one corpus title has this
+// shape today, and it scored null on its own correct page.
+test('a show whose TITLE contains "tour" still matches its own correct URL (whole-url self-condemnation)', () => {
+  const apology = {
+    id: 'september-l-davis-the-apology-tour-off-broadway-2026',
+    title: 'September L. Davis: The Apology Tour',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/september-l-davis-the-apology-tour-off-broadway-soho-playhouse-2026',
+    apology);
+  assert.ok(score !== null && score > 0,
+    `the title's own "-tour-" must not reject its own off-Broadway page, got ${score}`);
+});

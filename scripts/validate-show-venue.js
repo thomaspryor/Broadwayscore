@@ -301,9 +301,32 @@ function scorePlaybillUrl(url, show) {
   let s = titleMatch.branch === 'exact' ? 10 : 8; // title match earned
   const isOB = show.category === 'off-broadway';
   const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
-  // Regional/tour URLs are never a fit for a NYC OB/Broadway entry — they
+  // Regional/tour URLs are never a fit for an entry from another market — they
   // describe a different production (different venue, different cast).
-  if ((u.includes('-regional-') || u.includes('-tour-')) && (isOB || !show.category)) return null;
+  //
+  // This used to read `(isOB || !show.category)` while its own comment said
+  // "NYC OB/Broadway". The comment was the correct rule and the condition was
+  // narrower, so a BROADWAY show was never checked: CI run 34000023372 went red
+  // with much-ado-about-nothing-2026 (Winter Garden, opening 2026-11-19)
+  // matched at a full score of 10 to
+  // /production/much-ado-about-nothing-regional-playmakers-repertory-company-2023,
+  // a different production three years earlier. An upcoming Broadway show
+  // often has no Playbill page yet, so the scorer reached for the nearest
+  // same-titled one. Only a `regional` SHOW may hold a regional/tour URL.
+  //
+  // And test the segment AFTER the matched title form, never the whole URL.
+  // The title is part of the URL, so a whole-URL test lets a show condemn
+  // ITSELF on its own name — the same shape as BRO-2821's defect 5, where a
+  // venue gate searched the whole URL and a show corroborated itself.
+  // "September L. Davis: The Apology Tour" scored null on its own correct
+  // off-Broadway page for exactly this reason, a false negative that predates
+  // this fix. `titleMatch.form` is the slug the matcher actually consumed as
+  // the title, so everything after it is the market/venue/year tail.
+  const pathTail = u.split('/production/')[1] || u;
+  const marketTail = titleMatch.form && pathTail.startsWith(titleMatch.form)
+    ? pathTail.slice(titleMatch.form.length)
+    : pathTail;
+  if ((marketTail.includes('-regional-') || marketTail.includes('-tour-')) && show.category !== 'regional') return null;
   // Cross-market hard reject: a same-titled show can have entirely separate
   // Broadway and West End productions (different venue, cast, often
   // different score) — the +10 title-match alone must never carry a
