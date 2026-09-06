@@ -42,16 +42,28 @@ test('the registration gate imports the shared rule and does not re-derive one',
     'audit-outlet-registry.js must import the shared field-shape rule');
   assert.match(src, /outletFieldShapeErrors\(/,
     'audit-outlet-registry.js must call the shared rule');
-  // Catch re-derivation in ANY spelling, not just the one literal the module
-  // happens to use: `new Set([4,5,10,100])`, `[4,5,10,100].includes(x)`, a
-  // reordered set, or a set with an extra member all count. Matching only the
-  // exact literal would have let every one of those through, so the guard did
-  // not prevent the drift it names (code-review 2026-09-06). The test is
-  // simply "these four magic numbers do not appear together in this file".
-  const digitRuns = (src.match(/\b(?:4|5|10|100)\b/g) || []);
-  const hasAllFour = ['4', '5', '10', '100'].every(n => digitRuns.includes(n));
-  assert.equal(hasAllFour, false,
-    'audit-outlet-registry.js appears to re-declare the allowed star scales locally — import ALLOWED_STAR_SCALES instead');
+  // Catch re-derivation in any spelling — `new Set([4,5,10,100])`,
+  // `[4,5,10,100].includes(x)`, a reordered set, one with an extra member —
+  // WITHOUT tripping on unrelated digits.
+  //
+  // Two earlier attempts were both wrong and are worth naming. Matching only
+  // the exact literal `new Set([4, 5, 10, 100])` let every other spelling
+  // through, so it did not prevent the drift it named. Replacing that with a
+  // scan for the bare tokens 4/5/10/100 anywhere in the file went too far the
+  // other way: the file already contains `// Check 4:`, `aliasSlug.length > 5`
+  // and two `.slice(0, 10)` calls, so it passed only because no literal `100`
+  // happened to appear — and any unrelated `.slice(0, 100)` or "100 reviews"
+  // comment would have failed Unit Tests with a false and baffling message
+  // (code-review 2026-09-06, second pass).
+  //
+  // Scope it to an actual bracketed list of numbers containing all four.
+  const numericLists = src.match(/\[[\s\d,.]*\]/g) || [];
+  const reDerived = numericLists.find(list => {
+    const nums = (list.match(/\d+/g) || []);
+    return ['4', '5', '10', '100'].every(n => nums.includes(n));
+  });
+  assert.equal(reDerived, undefined,
+    `audit-outlet-registry.js appears to re-declare the allowed star scales locally (${reDerived}) — import ALLOWED_STAR_SCALES instead`);
 });
 
 test('an invalid field is part of the registration gate --strict FAILURE set, not just printed', () => {
@@ -59,18 +71,21 @@ test('an invalid field is part of the registration gate --strict FAILURE set, no
   // the gate "ran" and reported nothing actionable. Pin that badRegistryFields
   // participates in strictFail.
   const src = fs.readFileSync(path.join(SCRIPTS, 'audit-outlet-registry.js'), 'utf8');
-  // Slice from `const strictFail =` to the start of the next statement rather
-  // than lazily to the first `;`. The old form broke on a comment containing a
-  // semicolon inside the expression, or on the composition growing past an
-  // arbitrary 400-char cap — failing for a formatting change rather than a
-  // behavioural one (code-review 2026-09-06).
+  // Don't try to find the statement's true end — every attempt at that has
+  // been wrong. A lazy match to the first `;` broke on an inline comment
+  // containing one, and so did searching for the first `;\n`: that is the same
+  // failure mode wearing a different hat (code-review 2026-09-06, second pass).
+  //
+  // What actually matters is only this: between the `const strictFail =`
+  // anchor and the `if (` that consumes it, the composition mentions
+  // badRegistryFields. Assert exactly that, over a window bounded by a real
+  // syntactic landmark rather than by punctuation guesswork.
   const start = src.indexOf('const strictFail =');
   assert.notEqual(start, -1, 'could not locate the strictFail composition');
-  const rest = src.slice(start);
-  const end = rest.search(/;\s*\n/);
-  assert.notEqual(end, -1, 'could not find the end of the strictFail composition');
-  const strictFail = rest.slice(0, end);
-  assert.match(strictFail, /badRegistryFields\.length > 0/,
+  const after = src.slice(start);
+  const consumer = after.indexOf('if (strictFail');
+  const window = consumer === -1 ? after.slice(0, 1000) : after.slice(0, consumer);
+  assert.match(window, /badRegistryFields\.length > 0/,
     'invalid registry fields must make --strict exit non-zero');
 });
 

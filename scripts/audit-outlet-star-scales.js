@@ -171,7 +171,12 @@ function modeDiscover(apply) {
     console.log(`  Supported scales: ${[...ALLOWED_STAR_SCALES].join(', ')}. Decide per outlet — widen ALLOWED_STAR_SCALES in`);
     console.log(`  scripts/lib/outlet-registry-field-shape.js if the scale is real, or fix the parse if it is a scraping`);
     console.log(`  artefact. Until then these outlets get heuristic scaling with no starScale ground truth.`);
-    process.exitCode = 1;
+    // Non-zero ONLY on a read-only discovery run, never under --apply.
+    // --apply's job is to WRITE: failing it after a successful write would make
+    // any `set -e` wrapper or CI commit/push step skip the commit and leave the
+    // registry edited locally and uncommitted — turning an advisory signal into
+    // data loss. The signal belongs to the scheduled report, not the writer.
+    if (!apply) process.exitCode = 1;
   }
 
   console.log(`\n=== LOW confidence (manual review recommended) ===`);
@@ -199,7 +204,8 @@ function modeDiscover(apply) {
       // Refuse at the writer instead: one contract, enforced where the value is
       // produced as well as where it is read.
       if (!ALLOWED_STAR_SCALES.has(r.starScale)) {
-        unsupported.push(r);
+        // Already collected by the discovery-mode filter above — pushing here
+        // too double-counted every one of them in the closing summary.
         continue;
       }
       if (entry.starScale === r.starScale) { skipped++; continue; }
