@@ -5,7 +5,10 @@
 #   bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 #
 # Defaults: 7 retries, main branch.
-# Exits 0 on success, 1 on failure (all retries exhausted).
+# Exits 0 on success, 1 on failure. Failure covers all THREE loop exits, not
+# just exhaustion: the overall-deadline abort and the early break to the Git
+# Data API fallback exit 1 too. The durable ledger row says which one fired
+# (retries-exhausted / retries-exhausted(deadline) / retries-exhausted(early-fallback)).
 #
 # Conflict resolution strategy:
 #   1. Try git push (fast path, no conflict)
@@ -2061,7 +2064,11 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
-  echo "::warning::push-with-retry: local fetch+rebase+push failed after up to $i of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
+  # $i is UNSET here when the seq loop ran zero iterations (MAX_RETRIES=0), and
+  # this script runs under `set -u`, so referencing it aborted before any
+  # telemetry was recorded. _LOCAL_ATTEMPTS_MADE is assigned before the loop and
+  # is the real completed count, so it is both safe and more accurate than "up to".
+  echo "::warning::push-with-retry: local fetch+rebase+push failed after $_LOCAL_ATTEMPTS_MADE of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
   # Task #1847 (Codex plan-review P1 finding): push-via-git-api.sh's own
   # retry budget (PUSH_API_MAX_RETRIES, default 6) is NOT bounded by this
   # script's PUSH_DEADLINE_SEC — each fallback attempt can cost up to
