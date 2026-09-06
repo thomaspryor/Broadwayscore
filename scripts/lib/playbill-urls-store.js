@@ -48,9 +48,12 @@
  * is the obvious version and it is wrong in both directions:
  *   - `{...mine, ...onDisk}` loses every entry I just resolved. The whole point.
  *   - `{...onDisk, ...mine}` RESURRECTS entries another writer deliberately
- *     DELETED, because my in-memory copy still holds the pre-delete value. The
- *     read-side self-heal in validate-show-venue.js evicts cross-market cache
- *     entries on purpose; this would put them straight back.
+ *     DELETED, because my in-memory copy still holds the pre-delete value. No
+ *     caller deletes today — validate-show-venue.js's cross-market self-heal
+ *     IGNORES a bad cached URL and re-resolves, it does not remove or re-save it
+ *     — so this guards a deletion path someone adds later, not one in the tree
+ *     now. It is here because the naive merge would make adding that path
+ *     silently ineffective; the tests pin the behaviour either way.
  * So the unit of replay is MY DELTA — the keys that differ between the snapshot
  * I loaded and the object I am saving — applied onto a FRESH read of the file.
  * Keys I never touched are whatever disk says, including gone.
@@ -99,8 +102,9 @@ function loadPlaybillUrls(filePath) {
   // `typeof [] === 'object'`, so an ARRAY passes a bare typeof check and then
   // behaves as an empty map through Object.entries — a wrong-shaped file would
   // read as "no entries" and the first save would overwrite it with the caller's
-  // few. Array.isArray is the guard that turns that into a reset, and the test
-  // for it caught this exact hole in the first draft of this function.
+  // few. Array.isArray is the guard that catches it, and it THROWS rather than
+  // resetting: a wrong shape is a condition a human should see, not one to write
+  // over. An earlier draft DID reset here, and its own test caught the array hole.
   const shows = parsed && parsed.shows;
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)
       || !shows || typeof shows !== 'object' || Array.isArray(shows)) {
