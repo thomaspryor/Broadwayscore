@@ -4795,6 +4795,16 @@ jobs:
         run: node scripts/audit-verifier-wiring.js
 
       - name: Audit outlet-registry gaps
+        # if: always() so an earlier failure in this job cannot SKIP the gate
+        # that diagnoses outlet-registry problems. Without it this step
+        # defaults to if: success(), and on 2026-09-06 that is exactly what
+        # happened: registering `arbuturian` with an invalid starScale failed
+        # the earlier "Run data validation" step, which skipped THIS step — so
+        # the run reported nothing about the registry, and the registry fix it
+        # was supposed to verify went unverified across two runs. The step is
+        # read-only (--strict just exits 1), so running it after an earlier
+        # failure is always safe and strictly more informative.
+        if: always()
         run: node scripts/audit-outlet-registry.js --strict
         # Surfaces unregistered outletIds + display-name + normalization mismatches.
         # Baseline-diff (task #1666, mirrors #1665/audit-broadway-category-predicate.js):
