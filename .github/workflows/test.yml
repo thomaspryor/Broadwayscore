@@ -2536,6 +2536,7 @@ jobs:
         run: node scripts/audit-workflow-hygiene.js
 
       - name: Audit — opening-night-broadcast node install runs before checklist_gate
+        if: always() && steps.deps.outcome == 'success'
         # #1407: checklist_gate used to run opening-night-checklist.js before
         # setup-node/npm ci, so node_modules didn't exist and any script
         # needing an npm package (cheerio) crashed with MODULE_NOT_FOUND —
@@ -2841,6 +2842,7 @@ jobs:
         run: node scripts/audit-reconcile-coverage.js
 
       - name: Audit — no direct Resend calls outside alert-router allowlist
+        if: always() && steps.deps.outcome == 'success'
         # Email-consolidation Sprint 1 (Notion 3a4637c5-416f-81eb, #279): every
         # owner-facing alert must route through scripts/lib/owner-alert-router.js
         # instead of a new ad-hoc direct-Resend-API caller. Without this gate, the
@@ -2850,6 +2852,7 @@ jobs:
         run: node scripts/lint-resend-calls.js
 
       - name: Audit — wrongProduction writers must record provenance
+        if: always() && steps.deps.outcome == 'success'
         # Task #1109, the P1 follow-up to the 2026-08-06 main-red (#1108):
         # mergeReviews() treated a MISSING provenance breadcrumb as "URL-based,
         # safe to auto-clear" and put a 2016 Broadway Cats review on the 2026
@@ -2872,6 +2875,7 @@ jobs:
         run: node scripts/audit-digest-clip-safety.js
 
       - name: Audit — no submitter PII in committed data/audit files
+        if: always() && steps.deps.outcome == 'success'
         # Task #1074/#1091. "Never store submitter name/email; cap free text" existed
         # only as a prose comment in feedback-request-ledger.js:54-60 until a
         # session violated it in a fresh code path the same week (#1064):
@@ -2921,6 +2925,7 @@ jobs:
         run: node scripts/audit-alert-senders.js --check
 
       - name: Audit — CLAUDE.md integrity anchors + byte cap
+        if: always() && steps.deps.outcome == 'success'
         # Single source of truth: scripts/lib/claude-md-anchors.json. Every listed
         # phrase MUST appear in CLAUDE.md (a trim/edit that drops one is the bug
         # this catches — same list ~/.claude/hooks/session-start.sh checks advisorily),
@@ -3011,6 +3016,7 @@ jobs:
           fi
 
       - name: Audit — Tony LOSO snapshot co-change
+        if: always() && steps.deps.outcome == 'success'
         # If TONY_RECIPES, TONY_RECIPES_TIER2, or categoryAwardsScore changes
         # in src/lib/data-tony-predictions.ts, data/tony-loso-stats.json MUST
         # also change in the same PR. The disclosure on /tony-awards/predictions
@@ -3075,6 +3081,7 @@ jobs:
           exit 1
 
       - name: Check workflows don't bypass npm prebuild lifecycle
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook (scripts/hooks/pre-push) so violations block
@@ -3082,6 +3089,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh prebuild
 
       - name: Check checkout-core-data has matching push-core-data
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # BLOCKING again as of 2026-07-12 (v2): keys on the three audited
           # core-data-writing scripts instead of the old checkout+write
@@ -3090,12 +3098,14 @@ jobs:
           bash scripts/lint-workflow-guards.sh core-data-pairing
 
       - name: Check workflows don't git-add private core data files
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook.
           bash scripts/lint-workflow-guards.sh private-git-add
 
       - name: Check for tracked symlinks or gitlinks
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Symlinks (120000) and gitlinks (160000) to local paths dangle in CI.
           # This has caused cascading workflow failures 3 times (reviews.json,
@@ -3110,12 +3120,14 @@ jobs:
           echo "No tracked symlinks or gitlinks"
 
       - name: Check .gitattributes merge drivers are registered
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook.
           bash scripts/lint-workflow-guards.sh merge-drivers
 
       - name: Check scraping workflows have multi-service fallback
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # fetchPage()/BD+SB fallback enforcement. Logic lives in
           # scripts/lint-workflow-guards.sh (EXEMPT list included) — shared
@@ -3123,6 +3135,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh scraping-fallback
 
       - name: Check scraping workflows have SCRAPINGDOG_API_KEY (Scraping v2 T9)
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # fetchPage()'s cheapest tier only fires when the workflow actually
           # carries the key. Logic lives in scripts/lint-workflow-guards.sh
@@ -3130,12 +3143,14 @@ jobs:
           bash scripts/lint-workflow-guards.sh scrapingdog-pairing
 
       - name: Check Theatr token is not passed to unauthorized workflows
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook.
           bash scripts/lint-workflow-guards.sh theatr-token
 
       - name: Check demo feature flags not used in server components
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook. [skip-demo-flag-check] commit-message bypass
@@ -3143,6 +3158,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh demo-flags
 
       - name: Check routeAlert() callers commit alert-ledger.json
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Logic lives in scripts/lint-workflow-guards.sh — shared with the
           # local pre-push hook. Prevents the 5th recurrence of the class
@@ -3151,6 +3167,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
 
       - name: Check SERP-calling workflows commit scraper-spend ledger
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Structural guard for card 3b1637c5's finding: 19 workflows whose
           # scripts call url-discovery.js's serpQuery()/discoverCorrectUrl()
@@ -3162,6 +3179,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh ledger-coverage
 
       - name: Check ledger-commit steps never fail their job (BRO-2243)
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # A "Commit scraper-spend ledger" step races every other concurrent
           # workflow pushing to main — losing that race is routine, expected
@@ -3180,6 +3198,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh ledger-step-guard
 
       - name: Check scripts avoid reset --soft + scoped-add + commit
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Phantom-staged-revert bug class (card #687, generalized from
           # task #677's ship-check finding in record-push-ledger.js, fixed
@@ -3189,6 +3208,7 @@ jobs:
           bash scripts/lint-workflow-guards.sh reset-soft-partial-commit
 
       - name: Check scripts route review-texts writes through safeWriteReview
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Joe Turner postmortem P0 #2 (2026-04-26). Logic lives in
           # scripts/lint-write-routing.sh — shared with the local pre-push hook
@@ -3197,6 +3217,7 @@ jobs:
           bash scripts/lint-write-routing.sh review-texts
 
       - name: Check scripts route reviews.json writes through rebuild-all-reviews
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # data/reviews.json is a derived aggregate produced by
           # scripts/rebuild-all-reviews.js. New scripts MUST NOT write to it
@@ -3213,6 +3234,7 @@ jobs:
           bash scripts/lint-write-routing.sh reviews-json
 
       - name: Check scripts route shows.json writes through shows-write-guard
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # 50+ scripts used to do their own unlocked fs.readFileSync/
           # writeFileSync(shows.json) pair — concurrent writers could
@@ -3223,6 +3245,7 @@ jobs:
           bash scripts/lint-write-routing.sh shows-json
 
       - name: Check scripts route commercial.json writes through commercial-write-guard
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Same class of bug as shows.json (card: generalize
           # shows-write-guard.js) — 13 genuine writers now go through
@@ -3232,6 +3255,7 @@ jobs:
           bash scripts/lint-write-routing.sh commercial-json
 
       - name: Check scripts route audience-buzz.json writes through audience-buzz-write-guard
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Same class of bug as shows.json — 15 genuine writers now go
           # through scripts/lib/audience-buzz-write-guard.js (file lock +
@@ -3240,6 +3264,7 @@ jobs:
           bash scripts/lint-write-routing.sh audience-buzz-json
 
       - name: Check tests don't write to a real tracked data/*.json path
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Task #1662: two tests independently mutated a real, symlinked,
           # tracked data/*.json file in place as a fixture (backup/restore or

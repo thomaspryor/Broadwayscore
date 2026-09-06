@@ -47,11 +47,20 @@ const EXEMPT = new Map([
  * there would run 31 audits after a failed checkout and emit 31 confusing
  * missing-file errors.
  *
- * Coverage in that job is PARTIAL and the limit is deliberate: 25 sibling
- * "Audit — …"/"Check …" steps run inline `node -e` or a shell script rather
- * than `scripts/audit-*.js`, so auditSteps() below does not match them and they
- * can still mask each other. Widening the matcher to reach them is a separate,
- * reviewed change.
+ * That partial coverage is now CLOSED. The 25 sibling "Audit — …"/"Check …"
+ * steps that run inline `node -e`, `scripts/lint-*.js`, `scripts/assert-*.js`
+ * or plain shell were still masking each other, because auditSteps() matches
+ * on `scripts/audit-*.js` and is blind to them. Rather than widen the matcher —
+ * which only moves the blind spot to whatever shape someone writes next — the
+ * lint-workflows job also carries a POSITION rule below: every step after the
+ * `deps` anchor must be fail-closed, with no name matching at all. That is the
+ * rule that would have caught these 25.
+ *
+ * KNOWN EDGE, deliberately accepted: every rule here is scoped to named jobs,
+ * so a NEW job with unguarded audits is invisible to this file. A repo-wide
+ * rule is unwritable for the reason tests/unit/commercial-publish-gate.test.mjs
+ * documents — most equivalent enforcement lives inside scripts, not in YAML a
+ * parser can see. Recorded so the next reader knows it is a known edge.
  */
 const SCOPED_JOBS = new Set(['data-validation', 'lint-workflows']);
 
@@ -230,13 +239,84 @@ test('lint-workflows runs its setup BEFORE the job-fatal actionlint step (BRO-29
   );
 });
 
+/**
+ * The POSITION rule. Everything after the `deps` anchor in lint-workflows is an
+ * independent read-only check, so it must be fail-closed — no name matching,
+ * because name matching is what let 25 steps sit unguarded while every other
+ * assertion in this file was green. A new gate written as
+ * `bash scripts/lint-workflow-guards.sh <name>` or an inline `node -e` is
+ * covered here by position alone.
+ */
+const POSITION_FLOOR = 55;
+
+function postAnchorSteps() {
+  const steps = loadWorkflow().jobs['lint-workflows'].steps || [];
+  const anchors = [];
+  steps.forEach((s, i) => { if (s.id === 'deps') anchors.push(i); });
+  return { steps, anchors, after: anchors.length === 1 ? steps.slice(anchors[0] + 1) : [] };
+}
+
+test('EVERY lint-workflows step after the deps anchor is fail-closed, by position not by name', () => {
+  const { anchors, after } = postAnchorSteps();
+
+  assert.equal(
+    anchors.length,
+    1,
+    `lint-workflows has ${anchors.length} steps with \`id: deps\` — expected exactly 1. With zero this ` +
+      'rule silently checks nothing; with two the split is ambiguous and findIndex would quietly take the first.'
+  );
+  // Per-job floor. The shared floor above counts data-validation too, so it
+  // stays satisfied even if every lint-workflows step vanished.
+  assert.ok(
+    after.length >= POSITION_FLOOR,
+    `only ${after.length} lint-workflows steps after the deps anchor, expected >= ${POSITION_FLOOR} — the job shrank or the anchor moved, and this rule is now checking almost nothing`
+  );
+
+  const offenders = after
+    .filter((s) => !EXEMPT.has(`lint-workflows / ${s.name || '(unnamed)'}`))
+    .filter((s) => !conditionIsFailClosed(s.if))
+    .map((s) => `lint-workflows / ${s.name || '(unnamed)'}\n      if: ${JSON.stringify(s.if)}`);
+
+  assert.deepEqual(
+    offenders,
+    [],
+    'These steps run after the dependency install and are independent read-only checks, but are not ' +
+      'fail-closed, so any earlier failure in the job SKIPS them and the run reports nothing about what ' +
+      'they check. This rule is by POSITION, so it covers inline `node -e`, scripts/lint-*.js, ' +
+      'scripts/assert-*.js and plain shell — the shapes the name matcher misses:\n' +
+      offenders.map((o) => `  - ${o}`).join('\n')
+  );
+});
+
+test('no lint-workflows audit uses continue-on-error, which masks a failure a different way', () => {
+  const { after } = postAnchorSteps();
+
+  // Offend on the key being PRESENT, not on it being `true`. GitHub accepts an
+  // expression here, and `continue-on-error: ${{ true }}` parses as a STRING,
+  // so a `!== true` check waves it through while GitHub evaluates it truthy.
+  const offenders = after
+    .filter((s) => Object.prototype.hasOwnProperty.call(s, 'continue-on-error'))
+    .filter((s) => s['continue-on-error'] !== false)
+    .map((s) => `lint-workflows / ${s.name || '(unnamed)'} (continue-on-error: ${JSON.stringify(s['continue-on-error'])})`);
+
+  assert.deepEqual(
+    offenders,
+    [],
+    'These steps carry `continue-on-error`. The step then RUNS, FAILS, and the job stays green — ' +
+      'identical masking to the skipped-step bug by a different mechanism, with every other assertion ' +
+      'in this file still passing:\n' + offenders.map((o) => `  - ${o}`).join('\n')
+  );
+});
+
 test('the two steps fixed on 2026-09-06 specifically carry if: always()', () => {
   const workflow = loadWorkflow();
-  const byName = new Map(auditSteps(workflow).map((s) => [s.name, s]));
+  // Keyed on `${jobId} / ${name}`: with two jobs in SCOPED_JOBS a bare step
+  // name collides silently and the last one parsed wins.
+  const byName = new Map(auditSteps(workflow).map((s) => [`${s.jobId} / ${s.name}`, s]));
   for (const name of [
-    'Audit critic-outlet affinities',
-    'Audit Broadway-category predicate re-derivations',
-    'Audit outlet-registry gaps',
+    'data-validation / Audit critic-outlet affinities',
+    'data-validation / Audit Broadway-category predicate re-derivations',
+    'data-validation / Audit outlet-registry gaps',
   ]) {
     const step = byName.get(name);
     assert.ok(step, `step "${name}" not found — was it renamed? Update this test deliberately.`);
