@@ -932,6 +932,26 @@ function saveAuditResults(jsonOutput) {
 // Main
 async function main() {
   try {
+    // Field shapes FIRST, before the corpus guard below can exit.
+    //
+    // This check needs only data/outlet-registry.json — not data/review-texts.
+    // The corpus guard exits 1 whenever the private review-texts checkout is
+    // missing or empty, which is precisely the "an earlier step failed" case
+    // the `if: always()` on this step in test.yml exists to survive. Leaving
+    // the field-shape sweep below that guard meant a missing corpus silently
+    // took the registry diagnosis with it — the same shape of bug as the
+    // skipped step it was added to fix, one level down (code-review
+    // 2026-09-06).
+    //
+    // It reports and lets execution continue, so the corpus guard and the
+    // missing-outlet diagnostics still run and an operator sees every reason
+    // in one pass; the exit code is decided once, in the --strict block below.
+    const earlyFieldErrors = collectFieldShapeErrors(loadRegistry());
+    if (earlyFieldErrors.length > 0 && !JSON_OUTPUT) {
+      console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
+      for (const e of earlyFieldErrors) console.log(`  ${e}`);
+    }
+
     const auditResult = auditOutletRegistry();
 
     // FAIL LOUD on an empty corpus (task #1666, same pattern as
@@ -1054,8 +1074,9 @@ async function main() {
         );
       }
       if (badRegistryFields.length > 0) {
-        console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
-        for (const b of badRegistryFields) console.log(`  ${b}`);
+        // The list itself is printed early in main(), above the corpus guard,
+        // so a missing review-texts checkout cannot swallow it. Only the
+        // explanatory footer belongs here, next to the other --strict reasons.
         console.log(
           `  validate-data.js fails on these too, at an EARLIER step of the same ` +
             `Data Validation job. Until 2026-09-06 registering an outlet with an ` +

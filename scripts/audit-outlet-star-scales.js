@@ -153,6 +153,27 @@ function modeDiscover(apply) {
     console.log(`  ${r.outletId.padEnd(40)} starScale=${r.starScale}  (${r.total} reviews, ${(r.topShare * 100).toFixed(0)}% same denom)${flag}`);
   }
 
+  // Surfaced in DISCOVERY mode, not only under --apply. An outlet that
+  // genuinely rates on an unsupported denominator is an editorial decision
+  // waiting to be made, not a no-op: with no starScale in the registry,
+  // llm-score-extractor.js omits the ground-truth line and its prompt forbids
+  // inventing a denominator, so that outlet's bare-star reviews fall back to
+  // heuristic scaling INDEFINITELY. Reporting it only from the --apply path
+  // (which nobody runs on a schedule) would leave it unnoticed forever, which
+  // is the silent-dead-end the writer guard was supposed to remove, not create
+  // (code-review 2026-09-06).
+  const unsupported = classification.high.filter(r => !ALLOWED_STAR_SCALES.has(r.starScale));
+  if (unsupported.length > 0) {
+    console.log(`\n=== ⚠️  UNSUPPORTED denominator — high confidence but NOT writable (${unsupported.length}) ===`);
+    for (const r of unsupported) {
+      console.log(`  ${r.outletId.padEnd(40)} denominator=${JSON.stringify(r.starScale)}  (${r.total} reviews, ${(r.topShare * 100).toFixed(0)}% same denom)`);
+    }
+    console.log(`  Supported scales: ${[...ALLOWED_STAR_SCALES].join(', ')}. Decide per outlet — widen ALLOWED_STAR_SCALES in`);
+    console.log(`  scripts/lib/outlet-registry-field-shape.js if the scale is real, or fix the parse if it is a scraping`);
+    console.log(`  artefact. Until then these outlets get heuristic scaling with no starScale ground truth.`);
+    process.exitCode = 1;
+  }
+
   console.log(`\n=== LOW confidence (manual review recommended) ===`);
   for (const r of classification.low.slice(0, 15)) {
     console.log(`  ${r.outletId.padEnd(40)} top=${r.starScale}  (${r.total} reviews, ${(r.topShare * 100).toFixed(0)}% same denom, distribution: ${JSON.stringify(r.distribution)})`);
@@ -163,6 +184,11 @@ function modeDiscover(apply) {
     console.log(`\n=== --apply: writing starScale to registry for HIGH confidence outlets ===`);
     let changed = 0;
     let skipped = 0;
+    // Counted separately from `skipped`, which means "already set or conflict".
+    // An unsupported denominator is a THIRD, different reason, and folding it
+    // into the same counter told an operator reading only the summary line
+    // that the entry was already set (code-review 2026-09-06).
+
     for (const r of classification.high) {
       const entry = outlets[r.outletId];
       // detectDenominator accepts any 0 < denom <= 100, and classifyOutlet
@@ -173,8 +199,7 @@ function modeDiscover(apply) {
       // Refuse at the writer instead: one contract, enforced where the value is
       // produced as well as where it is read.
       if (!ALLOWED_STAR_SCALES.has(r.starScale)) {
-        console.log(`  SKIP ${r.outletId}: denominator ${JSON.stringify(r.starScale)} is not a supported starScale (${[...ALLOWED_STAR_SCALES].join(', ')}) — not written`);
-        skipped++;
+        unsupported.push(r);
         continue;
       }
       if (entry.starScale === r.starScale) { skipped++; continue; }
@@ -192,7 +217,13 @@ function modeDiscover(apply) {
       console.log(`\n  Wrote ${changed} updates to ${path.relative(ROOT, REGISTRY_PATH)} (${skipped} skipped — already set or conflict)`);
       console.log(`  REMINDER: per memory/feedback_outlet_registry_dual_repo.md, commit to broadway-scorecard-data FIRST.`);
     } else {
-      console.log(`\n  No changes (${skipped} skipped).`);
+      console.log(`\n  No changes (${skipped} skipped — already set or conflict).`);
+    }
+
+    // Unsupported denominators are listed once, in the discovery report above,
+    // which runs in every mode. Nothing to repeat here.
+    if (unsupported.length > 0) {
+      console.log(`\n  (${unsupported.length} high-confidence outlet(s) not written — unsupported denominator, listed above.)`);
     }
   }
 }
