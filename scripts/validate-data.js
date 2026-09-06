@@ -29,6 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { findInvalidRegistryFields } = require('./lib/outlet-registry-fields');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
@@ -2459,27 +2460,15 @@ function validateOutletRegistryFields() {
     return;
   }
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-  const outlets = registry.outlets || registry;
 
-  const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
-  let badFields = 0;
-  for (const [id, entry] of Object.entries(outlets)) {
-    if (id === '_aliasIndex' || id === '_meta') continue;
-    if (!entry || typeof entry !== 'object') continue;
-
-    if (entry.starScale !== undefined) {
-      if (typeof entry.starScale !== 'number' || !ALLOWED_STAR_SCALES.has(entry.starScale)) {
-        error(`[registry-field] outlet "${id}": starScale=${JSON.stringify(entry.starScale)} is invalid — must be one of ${[...ALLOWED_STAR_SCALES].join(', ')}`);
-        badFields++;
-      }
-    }
-    if (entry.multiAuthor !== undefined) {
-      if (typeof entry.multiAuthor !== 'boolean') {
-        error(`[registry-field] outlet "${id}": multiAuthor=${JSON.stringify(entry.multiAuthor)} must be a boolean (true or false)`);
-        badFields++;
-      }
-    }
-  }
+  // Shared with audit-outlet-registry.js --strict so the gate an operator runs
+  // WHILE registering an outlet enforces the same contract this one does. They
+  // disagreed until 2026-09-06, when `starScale: null` passed the registration
+  // gate and failed here — skipping the registration gate's own CI step,
+  // because that step defaults to `if: success()`.
+  const invalidFields = findInvalidRegistryFields(registry);
+  for (const bad of invalidFields) error(`[registry-field] ${bad.message}`);
+  const badFields = invalidFields.length;
   if (badFields === 0) {
     ok('outlet-registry.json starScale + multiAuthor field shapes are valid');
   } else {
