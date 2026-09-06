@@ -147,6 +147,19 @@ function urlKeyOf(review) {
   }
 }
 
+/** Is this criticName the pipeline's no-byline sentinel rather than a person?
+ * rebuild-all-reviews.js and review-file-writer.js both normalise a missing
+ * byline to the literal string 'Unknown' (review-file-writer.js:707,
+ * `sanitizeCriticName(input.criticName) || 'Unknown'`), and null/'' reach
+ * reviews.json from older rows written before that default existed. Deliberately
+ * an exact match on the sentinel, NOT a fuzzy "looks anonymous" test: a real
+ * byline such as "Unknown Theatre Collective" must stay a distinct identity. */
+function isUnknownByline(criticName) {
+  if (criticName === null || criticName === undefined) return true;
+  const s = String(criticName).trim();
+  return s === '' || s.toLowerCase() === 'unknown';
+}
+
 function newerIso(a, b) {
   const ta = typeof a === 'string' ? Date.parse(a) : NaN;
   const tb = typeof b === 'string' ? Date.parse(b) : NaN;
@@ -305,6 +318,57 @@ function mergeReviewsJson(ours, remote) {
     }
   }
 
+  // Unknown-byline fossil rescue (BRO-2916). A THIRD narrow pass, same shape as
+  // the manual-entry rescue above but keyed on the no-byline sentinel instead of
+  // manualEntry. Every row in reviews.json is 1:1 with a review-texts file by
+  // construction — rebuild-all-reviews.js emits exactly one row per included
+  // file — so a second row for the same showId+URL can only have been minted by
+  // this merge, and a full rebuild can never evict it: the clean side is OURS
+  // and the fossil is the REMOTE-only addition that the disjoint-identity union
+  // faithfully preserves, forever.
+  //
+  // How the fossil is born: a review is first collected without a byline and
+  // written as criticName 'Unknown'; a later pass resolves the real byline. The
+  // primary key is showId|outlet|criticKey(criticName), so 'Unknown' and
+  // 'Olivia Garrett' are DIFFERENT identities for the same article and union
+  // rather than conflict. validate-data.js then errors with
+  // "duplicate URL(s) within same show+outlet" and Data Validation reds main on
+  // every subsequent run, for a reason unrelated to whatever that run changed.
+  //
+  // Safe where a bare same-URL rule is not (the same-URL/different-critic pairs
+  // the module comment describes, e.g. anastasia-2017's WSJ row carrying both
+  // Charles Isherwood and Edward Rothstein): this drops a row ONLY when its own
+  // byline is the sentinel and some other row for the same showId+URL carries a
+  // real one. Both sides of every legitimate pair are real bylines, so none of
+  // them is reachable.
+  //
+  // Measured 2026-09-06 against the live corpus, using urlKeyOf and
+  // isUnknownByline themselves rather than a hand-rolled probe: 7 same-showId+URL
+  // groups carry more than one DISTINCT critic. 1 is this fossil shape
+  // (into-the-woods-west-end-2025, Radio Times, "Olivia Garrett" vs "Unknown");
+  // 6 are two-real-byline pairs this pass cannot touch; 0 involve a manualEntry.
+  // Note for whoever reads the module comment above next: its "7 legitimate
+  // pairs" figure is that same group count as it stood on 2026-08-20, so the
+  // legitimate subset is 6 today — the 7th is the fossil this pass removes.
+  let unknownBylineFossilsDropped = 0;
+  const bylinedUrlIndex = new Set();
+  for (const r of mergedReviews) {
+    if (!r || isUnknownByline(r.criticName)) continue;
+    const uk = urlKeyOf(r);
+    if (uk) bylinedUrlIndex.add(uk);
+  }
+  if (bylinedUrlIndex.size) {
+    for (let i = mergedReviews.length - 1; i >= 0; i--) {
+      const r = mergedReviews[i];
+      if (!r || !isUnknownByline(r.criticName)) continue;
+      const uk = urlKeyOf(r);
+      if (uk && bylinedUrlIndex.has(uk)) {
+        mergedReviews.splice(i, 1); // the bylined row is the real review
+        unknownBylineFossilsDropped++;
+      }
+    }
+  }
+
   const merged = { ...ours, reviews: mergedReviews };
   const oursLu = ours._meta && ours._meta.lastUpdated;
   const remoteLu = remote._meta && remote._meta.lastUpdated;
@@ -334,9 +398,10 @@ function mergeReviewsJson(ours, remote) {
       oursDuplicateKeysSkipped: oursDeduped.duplicateKeysSkipped,
       remoteDuplicateKeysSkipped: remoteDeduped.duplicateKeysSkipped,
       urlRescueConflicts,
+      unknownBylineFossilsDropped,
       totalReviews: mergedReviews.length,
     },
   };
 }
 
-module.exports = { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank };
+module.exports = { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline };
