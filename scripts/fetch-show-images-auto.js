@@ -52,6 +52,7 @@ Usage:
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const store = require('./lib/playbill-urls-store');
 const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN_DIR = path.join(__dirname, '..', 'data', 'audit', 'image-dry-run');
@@ -1246,18 +1247,31 @@ function extractAllImageFormats(html) {
   };
 }
 
-// Load or create Playbill URL cache
+// Load or create Playbill URL cache.
+//
+// This script saves after EVERY resolved show, and it is cron-driven alongside
+// discover-playbill-urls.js, so it was the more exposed of the two writers: a
+// whole-file write per show meant a peer's entries were destroyed repeatedly
+// within one run, not once at the end (BRO-2895). The store diffs against the
+// snapshot taken at load and replays only this process's changes onto a fresh
+// read, so a peer's work survives every one of those saves.
+let playbillUrlSession = null;
+
 function loadPlaybillUrls() {
-  try {
-    return JSON.parse(fs.readFileSync(PLAYBILL_URLS_PATH, 'utf8'));
-  } catch {
-    return { shows: {}, lastUpdated: null };
-  }
+  playbillUrlSession = store.openPlaybillUrls(PLAYBILL_URLS_PATH);
+  return playbillUrlSession.data;
 }
 
 function savePlaybillUrls(data) {
-  data.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(PLAYBILL_URLS_PATH, JSON.stringify(data, null, 2) + '\n');
+  // The session owns the snapshot and its re-baselining between saves; the data
+  // object handed back here IS session.data, so the argument is only kept for
+  // the two existing call sites' shape.
+  if (!playbillUrlSession) loadPlaybillUrls();
+  const r = playbillUrlSession.save();
+  if (r.recovered > 0) {
+    console.log(`  [playbill-urls] merged ${r.recovered} entry(ies) another writer added since load`);
+  }
+  return r;
 }
 
 // Global cache for Playbill URLs (loaded at start)
