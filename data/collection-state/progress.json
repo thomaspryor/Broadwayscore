@@ -165,7 +165,17 @@
     "fences-2010/kqed--unknown.json",
     "fences-2010/playbill--unknown.json",
     "god-of-carnage-2009/theatrely--unknown.json",
-    "god-of-carnage-2009/playbill--unknown.json"
+    "god-of-carnage-2009/playbill--unknown.json",
+    "king-lear-2004/independent--unknown.json",
+    "king-lear-2004/playbill--unknown.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2002/hollywood-reporter--unknown.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2002/chicago-reader--justin-hayford.json",
+    "carrie-1988/playbill--unknown.json",
+    "into-the-woods-1987/indiewire--unknown.json",
+    "into-the-woods-1987/nypost--johnny-oleksinski.json",
+    "into-the-woods-1987/theatrely--unknown.json",
+    "into-the-woods-1987/amny--unknown.json",
+    "into-the-woods-1987/billboard--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -2233,7 +2243,10 @@
       "follies-2011/playbill--unknown.json",
       "fences-2010/kqed--unknown.json",
       "fences-2010/playbill--unknown.json",
-      "god-of-carnage-2009/playbill--unknown.json"
+      "god-of-carnage-2009/playbill--unknown.json",
+      "king-lear-2004/playbill--unknown.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2002/chicago-reader--justin-hayford.json",
+      "carrie-1988/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2254,7 +2267,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2002/hollywood-reporter--unknown.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2002/hollywood-reporter--unknown.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -2281,7 +2296,9 @@
       "legally-blonde-2007/musical-theatre-review--unknown.json",
       "legally-blonde-2007/njcom--unknown.json",
       "job-2024/broadwayworld--unknown.json",
-      "god-of-carnage-2009/theatrely--unknown.json"
+      "god-of-carnage-2009/theatrely--unknown.json",
+      "into-the-woods-1987/theatrely--unknown.json",
+      "into-the-woods-1987/billboard--unknown.json"
     ],
     "brightdata": [
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
@@ -2298,7 +2315,9 @@
       "kimberly-akimbo-2022/boston-globe--don-aucoin.json",
       "macbeth-1988/thewrap--robert-hofler.json",
       "follies-2011/philadelphia-inquirer--toby-zinman.json",
-      "fences-2010/thewrap--unknown.json"
+      "fences-2010/thewrap--unknown.json",
+      "into-the-woods-1987/indiewire--unknown.json",
+      "into-the-woods-1987/nypost--johnny-oleksinski.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -2320,11 +2339,13 @@
       "it-shoulda-been-you-2015/musical-theatre-review--unknown.json",
       "dead-outlaw-2025/njcom--unknown.json",
       "how-to-dance-in-ohio-2023/broadwayworld--unknown.json",
-      "hello-dolly-2017/theater-life--david-sheward.json"
+      "hello-dolly-2017/theater-life--david-sheward.json",
+      "king-lear-2004/independent--unknown.json",
+      "into-the-woods-1987/amny--unknown.json"
     ]
   },
   "startTime": "2026-09-05T15:56:01.029Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "into-the-woods-1987/billboard--unknown.json",
   "log": [
     {
       "t": "2026-09-05T15:58:26.521Z",
@@ -2647,6 +2668,12 @@
       "t": "2026-09-06T06:17:43.453Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-06T10:18:53.810Z",
+      "event": "bb-session",
+      "session": "d89125d4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/frankie-johnny-clair-"
     }
   ]
 }

@@ -1,25 +1,20 @@
 {
-  "updatedAt": "2026-09-06T10:18:25.444Z",
-  "processed": 166,
+  "updatedAt": "2026-09-06T10:21:04.290Z",
+  "processed": 176,
   "failed": 1952,
-  "successRate": "7.8%",
+  "successRate": "8.3%",
   "tierBreakdown": {
-    "playwright": 110,
+    "playwright": 113,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 5,
-    "scrapingbee": 18,
-    "brightdata": 15,
+    "scrapingbee": 20,
+    "brightdata": 17,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 21
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-05T22:57:57.095Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-09-05T22:59:57.434Z",
       "event": "bb-session",
@@ -129,6 +124,12 @@
       "t": "2026-09-06T06:17:43.453Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-06T10:18:53.810Z",
+      "event": "bb-session",
+      "session": "d89125d4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/frankie-johnny-clair-"
     }
   ]
 }
