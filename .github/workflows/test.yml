@@ -2418,7 +2418,22 @@ jobs:
           ACTIONLINT_VERSION=1.7.7
           curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
           sudo mv actionlint /usr/local/bin/
+      - name: Setup Node (for orphan-test audit)
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+      # This job previously ran with NO node_modules, so every audit here had to
+      # be dependency-free. audit-help-flag-safety.js now tokenizes with acorn to
+      # tell string CONTENT from a real call; with no deps it FAILS OPEN (source
+      # returned unchanged), which resurfaces the USAGE-string false positive and
+      # left Lint Workflows red on main after the first fix (task #684). Cached,
+      # so this costs seconds after the first run.
+      - name: Install dependencies (audits below use acorn)
+        id: deps
+        run: npm ci --no-audit --no-fund
       - name: Lint workflow files
+        if: always() && steps.deps.outcome == 'success'
         run: |
           # Emergency escape hatch (opening-night hotfixes only): if the
           # commit message contains "[skip-actionlint]", this gate exits 0.
@@ -2432,20 +2447,8 @@ jobs:
           actionlint -color -shellcheck="" \
             -ignore 'maximum number of inputs' \
             .github/workflows/*.yml
-      - name: Setup Node (for orphan-test audit)
-        uses: actions/setup-node@v5
-        with:
-          node-version: '20'
-          cache: 'npm'
-      # This job previously ran with NO node_modules, so every audit here had to
-      # be dependency-free. audit-help-flag-safety.js now tokenizes with acorn to
-      # tell string CONTENT from a real call; with no deps it FAILS OPEN (source
-      # returned unchanged), which resurfaces the USAGE-string false positive and
-      # left Lint Workflows red on main after the first fix (task #684). Cached,
-      # so this costs seconds after the first run.
-      - name: Install dependencies (audits below use acorn)
-        run: npm ci --no-audit --no-fund
       - name: Audit — no orphan unit tests
+        if: always() && steps.deps.outcome == 'success'
         # Notion 362637c5-416f-81f4 — every tests/unit/*.test.{mjs,ts,js} must be
         # wired into a workflow runner, or it silently doesn't run. Discovered
         # 59 orphans during Stuart King Fixes v2 (33% of the suite). Audit script
@@ -2464,6 +2467,7 @@ jobs:
           fi
           node scripts/audit-orphan-tests.js
       - name: Audit — decayed exemptions
+        if: always() && steps.deps.outcome == 'success'
         # If an EXEMPT_KNOWN_BROKEN test starts passing, the exemption is stale
         # and should be removed (otherwise the gate hides a now-passing test
         # forever). Run each exempt test and fail if any pass.
@@ -2504,6 +2508,7 @@ jobs:
           echo "All exemptions still failing — no decay."
 
       - name: Audit — no push-to-main workflow cancels main commits
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the recurring "no clean CI signal" class: a push-to-main workflow
         # with a ref-keyed concurrency group + cancel-in-progress:true kills the prior
         # run on every commit, so most main commits land unvalidated AND cancelled
@@ -2514,6 +2519,7 @@ jobs:
         run: node scripts/audit-workflow-concurrency.js
 
       - name: Audit — workflow hygiene (notify-failure, playwright, push-with-retry)
+        if: always() && steps.deps.outcome == 'success'
         # Guards three workflow hygiene rules:
         # (a) Any scheduled/push/dispatch workflow must include notify-failure as last step
         # (b) No inline `npx playwright install` — use .github/actions/setup-playwright
@@ -2538,6 +2544,7 @@ jobs:
         run: node scripts/assert-broadcast-step-order.js
 
       - name: Audit — scripts/lib test push-path deps outside scripts/lib/** (advisory, task #1745)
+        if: always() && steps.deps.outcome == 'success'
         # scripts/lib/** (added task #1745) covers every push-path trigger
         # INSIDE scripts/lib/, closing the bug class where 55 of 313
         # scripts/lib/*.test.mjs files had silently fallen off the old
@@ -2549,6 +2556,7 @@ jobs:
         run: node scripts/audit-test-yml-lib-deps.js
 
       - name: Gate — every manifest-registered test is reachable by on.push.paths (BRO-2647)
+        if: always() && steps.deps.outcome == 'success'
         # The last shape of the same gap the two entries above cover. A test can
         # be in tests/unit-test-manifest*.txt (so it RUNS once CI fires) while
         # sitting outside every push-path glob with no entry of its own — so a
@@ -2563,6 +2571,7 @@ jobs:
         run: node scripts/audit-test-yml-manifest-paths.js
 
       - name: Audit — workflow steps missing secrets their scripts require (advisory, task #1855)
+        if: always() && steps.deps.outcome == 'success'
         # Static analysis: traces which process.env.SECRET reads a workflow-
         # invoked script's (transitive, depth-bounded) require graph makes,
         # diffs against that step's/job's/workflow's env: block, and flags
@@ -2580,6 +2589,7 @@ jobs:
         run: node scripts/audit-workflow-secret-gaps.js
 
       - name: Audit — review-texts scripts missing from test.yml push-path allowlist (advisory, task #1760)
+        if: always() && steps.deps.outcome == 'success'
         # Sibling guard to the one directly above: catches the same
         # recurrence gap one level up. Task #1749 migrated 12 scripts to
         # resolveReviewTextsDir(); 8 of 12 were found missing from this
@@ -2591,6 +2601,7 @@ jobs:
         run: node scripts/audit-review-texts-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the #369/#415/#421 bug class recurring: a scheduled job with
         # timeout-minutes <= 35 and BD/SB secrets invoking a script whose per-item
         # loop calls a network helper with no scripts/lib/run-budget.js check gets
@@ -2600,6 +2611,7 @@ jobs:
         run: node scripts/audit-run-budget-coverage.js
 
       - name: Audit — push-core-data audit-persistence gap (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Task #1460 (cousin of #1442's rule (g) in audit-workflow-hygiene.js):
         # push-core-data's CORE_FILES list never includes data/audit/*.json, so
         # a workflow that writes an audit ledger (directly, or inside an
@@ -2612,6 +2624,7 @@ jobs:
         run: node scripts/audit-push-core-data-audit-gap.js
 
       - name: Audit — errexit-unguarded command substitution (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Task #97, follow-up to #676/#678: a composite-action step declared
         # shell: bash runs as `bash -e -o pipefail` — an unguarded
         # `VAR=$(node ...)` assignment or `git commit --amend` that can
@@ -2625,6 +2638,7 @@ jobs:
         run: node scripts/audit-errexit-unguarded-substitution.js
 
       - name: Audit — same-job CLEAR_BREADCRUMBS coverage (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # BRO-250 / Notion 3b9637c5: catches a script that force:true-clears a
         # PROTECTED_FIELDS field in a job that also calls push-review-texts
         # LATER, with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
@@ -2639,6 +2653,7 @@ jobs:
         run: node scripts/audit-same-job-breadcrumb-coverage.js
 
       - name: Audit — delete without CLEAR_BREADCRUMBS entry (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Task #1625 / Notion 3bd637c5: catches a script that `delete data.X`-s
         # a field with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
         # entry, then calls safeWriteReview() with no force:true. Unlike the
@@ -2654,6 +2669,7 @@ jobs:
         run: node scripts/audit-delete-without-breadcrumb.js
 
       - name: Audit — push-with-retry.sh budget undersizing (advisory, card #1918)
+        if: always() && steps.deps.outcome == 'success'
         # Card #1918 wires card #1910's scripts/audit-push-retry-budgets.js into
         # CI so the #1842/#1891 undersizing class (retries exhausting well
         # before PUSH_DEADLINE_SEC, or a push step's worst-case budget leaving
@@ -2670,6 +2686,7 @@ jobs:
         run: node scripts/audit-push-retry-budgets.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
+        if: always() && steps.deps.outcome == 'success'
         # Blocking: a shared chokepoint nobody is forced to use changes
         # nothing (8 Linear issues filed via a hand-rolled issueCreate call,
         # 2026-08-12, zero dispatched). Fails if anything outside
@@ -2679,6 +2696,7 @@ jobs:
         run: node scripts/audit-linear-issuecreate-chokepoint.js
 
       - name: Audit — launchd stale-sync-swallow pattern (BRO-1794)
+        if: always() && steps.deps.outcome == 'success'
         # Blocking: catches the NEXT copy of the ff-only/rebase `|| echo` /
         # `|| true` swallow that silently ran launchd jobs on stale code
         # (the class fixed for autonomous-shadow/morning-digest/backlog-
@@ -2695,6 +2713,7 @@ jobs:
         run: node scripts/audit-launchd-stale-sync-guard.js
 
       - name: Audit — gate corpus-guard coverage
+        if: always() && steps.deps.outcome == 'success'
         # Task #1069. Blocking, unlike the advisory audits around it: every
         # `node scripts/audit-*.js --gate` step below (in the data-validation
         # job) whose script walks data/review-texts (readdirSync) must call
@@ -2708,6 +2727,7 @@ jobs:
         run: node scripts/audit-gate-corpus-guard-coverage.js
 
       - name: Audit — invisible verification (git-ref read of a gitignored path)
+        if: always() && steps.deps.outcome == 'success'
         # Task #1075, the ad-hoc-script sibling of the gate above. Blocking and
         # mechanical: flags any `git show <ref>:<path>` / `git cat-file -e` whose
         # LITERAL path is gitignored in this repo — core data lives in a private
@@ -2720,6 +2740,7 @@ jobs:
         run: node scripts/audit-invisible-verification.js
 
       - name: Audit — direct provider calls bypassing fetchPage() (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Task #684 T12: flags scripts constructing a raw HTTP call to a BD/SB/SD
         # content-fetch endpoint instead of routing through fetchPage()/fetchJSON()
         # in scripts/lib/scraper.js — each direct caller is its own unmaintained
@@ -2730,6 +2751,7 @@ jobs:
         run: node scripts/audit-direct-provider-calls.js --strict
 
       - name: Audit — venue-write guard coverage (card #1923)
+        if: always() && steps.deps.outcome == 'success'
         # Card #994's sanitizeVenueForWrite() (scripts/lib/venue-classification.js)
         # fails closed on placeholder/junk venue strings before they reach
         # shows.json — a real incident (junk venue text tripping the
@@ -2743,6 +2765,7 @@ jobs:
         run: node scripts/audit-venue-write-guard.js --strict
 
       - name: Audit — fetchPage() cleanup on success path (advisory)
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the #438/#914 bug class recurring: fetchWithPlaywright() in
         # scripts/lib/scraper.js only closes Chromium on the error path — on
         # success the browser stays open, keeping Node's event loop alive
@@ -2754,6 +2777,7 @@ jobs:
         run: node scripts/audit-fetchpage-cleanup.js
 
       - name: Audit — help-flag safety (cousin --help bug class)
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the #260/#263/#264/#266/#185 bug class recurring: a CLI
         # script that executes real side effects (network, corpus writes,
         # child_process) when invoked with --help/-h instead of printing usage.
@@ -2767,6 +2791,7 @@ jobs:
         run: node scripts/audit-help-flag-safety.js
 
       - name: Audit — duplicateOf gate floor not raised without evidence
+        if: always() && steps.deps.outcome == 'success'
         # Task #1002. `audit-duplicate-of-url-mismatch.js --gate` blocks the
         # trunk only on a mass SPIKE of stale duplicateOf pointers, because a
         # spike means a producer regression and auto-healing it would flood
@@ -2784,6 +2809,7 @@ jobs:
         run: node scripts/audit-duplicate-of-floor.js
 
       - name: Audit — unbounded git fetch on shallow-checkout paths
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the #420/#466 bug class recurring. actions/checkout defaults
         # to fetch-depth: 1; from a shallow clone a `git fetch`/`git pull` with
         # no depth bound makes upload-pack send the ENTIRE repository (~2.1 GB /
@@ -2799,6 +2825,7 @@ jobs:
         run: node scripts/audit-unbounded-fetch.js
 
       - name: Audit — PUSH_RECONCILE_MERGED_JSON coverage on push-with-retry.sh callers
+        if: always() && steps.deps.outcome == 'success'
         # Prevents the task #574 bug class recurring. push-with-retry.sh
         # rebases with `-X theirs`, which resolves conflicting hunks in favour
         # of our replayed commits WITHOUT ever reporting a conflict — so the
@@ -2833,6 +2860,7 @@ jobs:
         run: node scripts/lint-wrongproduction-provenance.js
 
       - name: Audit — digest description clip-safety (statically checkable fields)
+        if: always() && steps.deps.outcome == 'success'
         # Static, PR-time counterpart to headStandsAlone() (card #1078,
         # scripts/lib/owner-alert-router.js) — that check only fires as a
         # runtime console.warn inside queueDigestLine, which is how the
@@ -2872,6 +2900,7 @@ jobs:
         run: node scripts/lint-committed-pii.js
 
       - name: Audit — alert-sender direct-bypass gate
+        if: always() && steps.deps.outcome == 'success'
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515
         # lineage): a NEW workflow/script calling sendAlert with email:true
         # directly bypasses owner-alert-router's ACTION-only bar + dedup and
@@ -2915,6 +2944,7 @@ jobs:
           '
 
       - name: Audit — check-cron-health max_hours vs real cron cadence
+        if: always() && steps.deps.outcome == 'success'
         # Catches the 2026-05-24 class of bug where an entry's max_hours is
         # less than the worst gap between its workflow's cron fires, guaranteeing
         # false-positive staleness alerts. Script reads CRITICAL_CRONS entries
@@ -2928,6 +2958,7 @@ jobs:
           node scripts/audit-cron-health-coverage.js
 
       - name: Audit — tests vs derived data (no silent factual pins)
+        if: always() && steps.deps.outcome == 'success'
         # Tests that read data/awards.json, data/reviews.json, or data/shows.json
         # (derived enricher outputs) must ALSO read from data/precursors/ or
         # data/review-texts/ (the sources that generate them), OR carry a
@@ -2941,6 +2972,7 @@ jobs:
         run: node scripts/audit-tests-vs-derived-data.js
 
       - name: Audit — no synthesized .click() in Playwright tests
+        if: always() && steps.deps.outcome == 'success'
         # `document.querySelector(...).click()` inside page.evaluate (or any
         # browser-side callback) bypasses Playwright's actionability checks.
         # On hydration-heavy pages, the synthesized DOM click fires before
@@ -2956,6 +2988,7 @@ jobs:
         run: node scripts/audit-playwright-evaluate-click.js
 
       - name: Audit — Playwright count() silent no-op (non-blocking)
+        if: always() && steps.deps.outcome == 'success'
         # `const count = await locator.count()` used to bound a loop
         # (Math.min(count, N)) with no assertion that count > 0 first: if the
         # selector drifts, count silently becomes 0, the loop body never runs,
