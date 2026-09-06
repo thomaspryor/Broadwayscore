@@ -403,8 +403,19 @@ jobs:
         continue-on-error: true
 
       - name: Refresh recoupment model
+        id: refresh-model
         # continue-on-error: true — model refresh is derived data; failure
-        # leaves the previous run's values in place, no corruption risk.
+        # leaves the previous run's values in place. It writes through
+        # commercial-write-guard -> json-write-guard -> atomicWriteJson
+        # (temp file + rename), so commercial.json is never left half-written.
+        #
+        # BUT it is the one step below the strict gate that MUTATES
+        # commercial.json (scripts/merge-model-recoupment.js:253,
+        # saveCommercial), and continue-on-error means its failure does NOT
+        # set job.status to failure. So the Commit gate below checks this
+        # step's outcome explicitly as well as job.status — otherwise a failed
+        # model refresh would publish commercial data the strict gate never
+        # judged. Found by two independent reviewers on 2026-09-06.
         run: node scripts/merge-model-recoupment.js
         continue-on-error: true
 
@@ -450,9 +461,13 @@ jobs:
         # including checkout/setup. Same mechanism as
         # llm-ensemble-score.yml's `always() && job.status != 'cancelled'`.
         #
-        # NOTE: a `continue-on-error: true` step that fails does NOT set
-        # job.status to failure. That is intended here — the informational
-        # audits below the strict gate are deliberately non-blocking.
+        # A `continue-on-error: true` step that fails does NOT set job.status
+        # to failure. Most of the steps below the strict gate are genuinely
+        # informational and deliberately non-blocking — but "Refresh
+        # recoupment model" is NOT: it mutates commercial.json after the gate
+        # has already passed. So its outcome is checked explicitly below.
+        # Any future continue-on-error step that WRITES must be added here
+        # too; a read-only audit does not need to be.
         #
         # The publish steps below gate on `outcome == 'success'`, NOT on the
         # `outcome != 'failure'` used by update-show-status.yml's commit-gate.
@@ -462,22 +477,37 @@ jobs:
         # have actually run and passed.
         env:
           JOB_STATUS: ${{ job.status }}
+          MODEL_REFRESH_OUTCOME: ${{ steps.refresh-model.outcome }}
         run: |
-          if [ "$JOB_STATUS" = "success" ]; then
+          REASON=""
+          if [ "$JOB_STATUS" != "success" ]; then
+            REASON="an earlier step failed or was cancelled (job status: $JOB_STATUS)"
+          elif [ "$MODEL_REFRESH_OUTCOME" = "failure" ]; then
+            REASON="Refresh recoupment model failed after the strict gate; it mutates commercial.json, so its output was never judged"
+          fi
+          if [ -z "$REASON" ]; then
             echo "No earlier step failed — publish is clear to proceed."
             exit 0
           fi
-          echo "::error::An earlier step in this job failed or was cancelled (job status: $JOB_STATUS). Refusing to commit, push or deploy commercial data that may be half-mutated."
-          echo "earlier step in commercial-weekly auto-apply failed (job status: $JOB_STATUS) — blocking core-data push" \
-            > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          echo "::error::Refusing to commit, push or deploy commercial data: $REASON."
+          # `|| true` ONLY on the sentinel write: under `bash -e` a failed
+          # redirection (unwritable RUNNER_TEMP) would abort this step before
+          # the restores below ever run. The step still exits 1 either way, so
+          # the publish steps are blocked by outcome regardless of the sentinel.
+          echo "commercial-weekly auto-apply refused to publish: $REASON" \
+            > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data" || \
+            echo "::error::could not write the push-core-data refusal sentinel — relying on step outcome to block the publish"
           # Restore what the mutation steps above may have half-written, so the
           # next Saturday run retries the same pending set. These restores are
           # LOUD on failure: a silent `|| true` here would leave the workspace
           # mutated while this step still reported the refusal, which is the
           # same false-safe shape as the dead deletion guard above.
           if [ -f /tmp/core-data-snapshot/commercial.json ]; then
-            cp -f /tmp/core-data-snapshot/commercial.json data/commercial.json
-            echo "restored data/commercial.json from the pre-run snapshot"
+            if cp -f /tmp/core-data-snapshot/commercial.json data/commercial.json; then
+              echo "restored data/commercial.json from the pre-run snapshot"
+            else
+              echo "::error::could not restore data/commercial.json from the snapshot"
+            fi
           else
             echo "::error::/tmp/core-data-snapshot/commercial.json is missing — cannot restore commercial.json. checkout-core-data did not run or did not complete. The refusal sentinel is written, so the private-repo push is still blocked."
           fi
