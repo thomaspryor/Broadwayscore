@@ -1076,7 +1076,11 @@ async function main() {
       if (badRegistryFields.length > 0) {
         // The list itself is printed early in main(), above the corpus guard,
         // so a missing review-texts checkout cannot swallow it. Only the
-        // explanatory footer belongs here, next to the other --strict reasons.
+        // explanatory footer belongs here, next to the other --strict reasons —
+        // but it needs its own header and a back-reference, or it reads as a
+        // stray indented paragraph about "these" with no antecedent, hundreds
+        // of lines after the actual list (code-review 2026-09-06).
+        console.log(`\n⚠️  ${badRegistryFields.length} invalid starScale/multiAuthor field(s) — listed at the TOP of this report:`);
         console.log(
           `  validate-data.js fails on these too, at an EARLIER step of the same ` +
             `Data Validation job. Until 2026-09-06 registering an outlet with an ` +
