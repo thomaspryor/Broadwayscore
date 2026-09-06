@@ -202,3 +202,110 @@ test('the commit-gate barrier comes before every publishing step', () => {
       tooEarly.join('\n  '),
   );
 });
+
+/**
+ * BRO-2912. `commit-gate` runs BEFORE the commit, so its outcome is already
+ * fixed at 'success' when the commit runs. Under `always()` a FAILED commit
+ * therefore does not stop "Push core data to private repo" or "Dispatch
+ * deploy". That fired in run 33988453526 (schedule, 2026-09-05): the commit
+ * step failed on push contention while both publishers succeeded. Because
+ * push-core-data ships commercial.json (a CORE_FILE) but the consumed-entry
+ * bookkeeping in commercial-pending-review.json only ever lands in the PUBLIC
+ * repo, the two repos diverge and the next run re-applies applied entries.
+ * commit-gate cannot catch it — it passed, so it never wrote the
+ * .skip-push-core-data sentinel that push-core-data's own check reads.
+ *
+ * The commit step itself is EXCLUDED from the both-ids rule: isPublishingStep()
+ * matches it (it runs push-with-retry.sh), and requiring a step to gate on its
+ * own outcome is unsatisfiable.
+ */
+const COMMIT_ID = 'commit-public';
+
+test('the public commit step carries an id, so later publishers can gate on it', () => {
+  const steps = loadJob().steps || [];
+  const commit = steps.find((s) => s.id === COMMIT_ID);
+
+  assert.ok(
+    commit,
+    `no step with id: ${COMMIT_ID} — without an id nothing downstream can require the public ` +
+      'commit to have succeeded (BRO-2912)',
+  );
+  assert.ok(
+    isPublishingStep(commit),
+    `the ${COMMIT_ID} step is expected to be the public commit+push. If publishing moved off it, ` +
+      'retire this assertion deliberately rather than letting the id drift onto an unrelated step.',
+  );
+  // The commit is itself gated by the barrier, and must stay that way.
+  assert.match(
+    String(commit.if || ''),
+    /steps\.commit-gate\.outcome\s*==\s*'success'/,
+    `the ${COMMIT_ID} step must still require steps.${GATE_ID}.outcome == 'success'`,
+  );
+});
+
+test('every publishing step AFTER the public commit requires that commit to have SUCCEEDED', () => {
+  const steps = loadJob().steps || [];
+  const commitIndex = steps.findIndex((s) => s.id === COMMIT_ID);
+  assert.ok(commitIndex >= 0, `no step with id: ${COMMIT_ID}`);
+
+  const downstream = steps
+    .map((step, index) => ({ step, index }))
+    .filter(({ step, index }) => isPublishingStep(step) && index > commitIndex)
+    .filter(({ step }) => isAlwaysReachable(step)); // success()-gated already fails closed
+
+  // Vacuity guard. If this set is ever empty the rule below passes while
+  // asserting nothing — the exact read-as-safe-while-nothing-ran shape both
+  // BRO-2907 and BRO-2912 were filed for.
+  assert.ok(
+    downstream.length >= 2,
+    'expected at least 2 always()-reachable publishing steps after the public commit ' +
+      '(core-data push, deploy dispatch), found ' +
+      `${downstream.length}. If publishing genuinely moved, retire this test deliberately.`,
+  );
+
+  const offenders = [];
+  for (const { step } of downstream) {
+    const cond = String(step.if || '');
+    // Same exact-form rule as the commit-gate assertion above: `!= 'failure'`
+    // is TRUE when the step is skipped, and `||` re-opens the hole while
+    // keeping a substring check green.
+    const ok =
+      /steps\.commit-public\.outcome\s*==\s*'success'/.test(cond) &&
+      !/\|\|/.test(cond) &&
+      !/!=/.test(cond);
+    if (!ok) offenders.push(`${step.name || step.uses} (if: ${cond})`);
+  }
+
+  assert.deepEqual(
+    offenders,
+    [],
+    `these steps publish commercial data AFTER the public commit without requiring ` +
+      `steps.${COMMIT_ID}.outcome == 'success', so a failed commit still ships mutated ` +
+      `commercial.json to the private repo and dispatches a deploy (BRO-2912):\n  ${offenders.join('\n  ')}`,
+  );
+});
+
+test('the public commit comes before the core-data push and the deploy dispatch', () => {
+  const steps = loadJob().steps || [];
+  const commitIndex = steps.findIndex((s) => s.id === COMMIT_ID);
+  assert.ok(commitIndex >= 0, `no step with id: ${COMMIT_ID}`);
+
+  // A position rule, not a name matcher: reordering the id above these steps
+  // would satisfy the id check while restoring the bug.
+  const tooEarly = steps
+    .map((step, index) => ({ step, index }))
+    .filter(
+      ({ step, index }) =>
+        index < commitIndex &&
+        (String(step.uses || '').includes('push-core-data') ||
+          String(step.uses || '').includes('dispatch-deploy')),
+    )
+    .map(({ step }) => step.name || step.uses);
+
+  assert.deepEqual(
+    tooEarly,
+    [],
+    `these steps publish BEFORE the ${COMMIT_ID} step, so gating them on its outcome is ` +
+      `meaningless:\n  ${tooEarly.join('\n  ')}`,
+  );
+});
