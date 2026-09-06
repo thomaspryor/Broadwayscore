@@ -413,6 +413,29 @@ test('mergeReviewsJson: an outlet-as-critic row may not anchor a deletion (isPla
   assert.equal(merged.reviews.length, 2, 'the genuine sentinel row must survive');
 });
 
+test('mergeReviewsJson: a self-branded critic also declines to anchor (known, bounded cost of omitting defaultCritic)', () => {
+  // Pinned rather than left silent. Some review sites are named after their one
+  // critic (placeholder-byline.js:52-61); without opts.defaultCritic — which
+  // this merge driver cannot resolve, having no I/O — such a byline reads as a
+  // placeholder and will not anchor. The consequence is a surviving duplicate
+  // for validate-data.js to flag, never a deleted review. If this ever starts
+  // failing, defaultCritic plumbing has arrived and the comment should follow.
+  const selfBranded = review({
+    criticName: 'Carole Di Tosti', outlet: 'Carole Di Tosti', outletId: 'carole-di-tosti',
+    url: SHARED_URL, contentTier: 'complete',
+  });
+  const sentinel = review({
+    criticName: 'Unknown', outlet: 'Carole Di Tosti', outletId: 'carole-di-tosti',
+    url: SHARED_URL, contentTier: 'complete',
+  });
+  const { merged, stats } = mergeReviewsJson(
+    { _meta: { lastUpdated: '2026-09-06T09:00:00Z' }, reviews: [selfBranded] },
+    { _meta: { lastUpdated: '2026-09-05T09:00:00Z' }, reviews: [sentinel] },
+  );
+  assert.equal(stats.unknownBylineFossilsDropped, 0);
+  assert.equal(merged.reviews.length, 2, 'declining to anchor keeps both rows — no review is ever deleted');
+});
+
 test('mergeReviewsJson: two sentinel rows with NO bylined twin are both kept (nothing to prefer)', () => {
   // Different outlets, same URL, both unbylined — the pass has no real byline to
   // anchor on, so it must not pick a winner arbitrarily.
@@ -468,7 +491,7 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   const outletOf = (r) => String(r.outlet || '').toLowerCase().trim();
   const anchors = new Map();
   for (const r of reviews) {
-    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName) || criticKey(r.criticName) === 'unknown') continue;
+    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName, r.outlet) || criticKey(r.criticName) === 'unknown') continue;
     const k = urlKeyOf(r);
     if (!k) continue;
     if (!anchors.has(k)) anchors.set(k, []);
@@ -496,7 +519,7 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   assert.equal(stats.unknownBylineFossilsDroppedKeys.length, stats.unknownBylineFossilsDropped, 'every drop must be recorded with provenance');
   const postAnchors = new Map();
   for (const r of merged.reviews) {
-    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName) || criticKey(r.criticName) === 'unknown') continue;
+    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName, r.outlet) || criticKey(r.criticName) === 'unknown') continue;
     const k = urlKeyOf(r);
     if (!k) continue;
     if (!postAnchors.has(k)) postAnchors.set(k, []);
