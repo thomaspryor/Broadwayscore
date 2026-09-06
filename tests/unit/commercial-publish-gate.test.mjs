@@ -309,3 +309,50 @@ test('the public commit comes before the core-data push and the deploy dispatch'
       `meaningless:\n  ${tooEarly.join('\n  ')}`,
   );
 });
+
+test('the public commit step cannot swallow its own push failure', () => {
+  const steps = loadJob().steps || [];
+  const commit = steps.find((s) => s.id === COMMIT_ID);
+  assert.ok(commit, `no step with id: ${COMMIT_ID}`);
+
+  // A reviewer defeated the guards above by appending `|| true` to the
+  // push-with-retry.sh line: the step then exits 0, its outcome stays
+  // 'success', and both downstream publishers run — BRO-2912 restored, with
+  // every YAML-wiring assertion still green. The wiring assertions cannot see
+  // it because they read `if:`/`id`/`uses` and never the body. commit-gate
+  // already has body assertions for the same reason; this is the matching
+  // pair for the commit.
+  const body = String(commit.run || '');
+  const pushLines = body.split('\n').filter((l) => l.includes('push-with-retry.sh'));
+
+  assert.ok(
+    pushLines.length > 0,
+    `the ${COMMIT_ID} body must actually invoke push-with-retry.sh; if the push moved, retire ` +
+      'this assertion deliberately rather than letting it pass on an empty set',
+  );
+  for (const line of pushLines) {
+    assert.doesNotMatch(
+      line,
+      /\|\|\s*(true|:)\s*$/,
+      `the ${COMMIT_ID} push must not be suffixed with "|| true" or "|| :" — that makes a failed ` +
+        `push exit 0, so steps.${COMMIT_ID}.outcome stays 'success' and the publish steps below ` +
+        `run anyway. That is exactly the BRO-2912 bug, invisible to every if:-based assertion.\n  ${line.trim()}`,
+    );
+  }
+  assert.doesNotMatch(
+    body,
+    /^\s*set \+e\s*$/m,
+    `the ${COMMIT_ID} body must not disable errexit with "set +e" — a failed push would stop ` +
+      'setting the step outcome to failure',
+  );
+
+  // One edit from confusing: continue-on-error would not actually bypass the
+  // guard (GHA reports `outcome` pre-continue-on-error) but it makes the
+  // conclusion diverge from the outcome for no reason here.
+  assert.notEqual(
+    commit['continue-on-error'],
+    true,
+    `the ${COMMIT_ID} step must not be continue-on-error: its failure is the signal the publish ` +
+      'steps below depend on',
+  );
+});
