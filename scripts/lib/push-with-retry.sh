@@ -5,7 +5,10 @@
 #   bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 #
 # Defaults: 7 retries, main branch.
-# Exits 0 on success, 1 on failure (all retries exhausted).
+# Exits 0 on success, 1 on failure. Failure covers all THREE loop exits, not
+# just exhaustion: the overall-deadline abort and the early break to the Git
+# Data API fallback exit 1 too. The durable ledger row says which one fired
+# (retries-exhausted / retries-exhausted(deadline) / retries-exhausted(early-fallback)).
 #
 # Conflict resolution strategy:
 #   1. Try git push (fast path, no conflict)
@@ -78,8 +81,12 @@ fi
 # timeouts don't cover this because the cost is local (rebase/merge + node
 # conflict-resolution scripts across however many commits landed since our
 # checkout), not a stalled transfer. At 240s the loop only fit ~1.3 such cycles
-# before self-aborting, so "All push attempts failed after 7 attempts" was
-# misleading — only ~2 real cycles ever ran.
+# before self-aborting, so the old "All push attempts failed after 7 attempts"
+# was misleading — only ~2 real cycles ever ran. FIXED for BRO-2839: the loop
+# now records which of its three exits fired (_LOCAL_ATTEMPTS_MADE /
+# _ABORT_QUALIFIER at the loop head), so the message and the durable telemetry
+# both name the real completed-attempt count and say "deadline" or
+# "early-fallback" rather than filing every early exit as full exhaustion.
 #
 # DO NOT raise this SHARED default — ~15 of the 100+ callers have 5-10 min job
 # timeouts (e.g. check-cron-health.yml, daily-digest.yml, update-deploy-
@@ -201,7 +208,7 @@ _fetch_with_captured_stderr() {
 }
 
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
-# abandoned — either the no-op-rebase abort or full retry exhaustion below — so
+# abandoned — the no-op-rebase abort, an early loop exit (deadline / early-fallback), or full retry exhaustion below — so
 # repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
 # surfaces data/audit/push-retry-failures.jsonl as the "Push-retry deadman" row.
 # Fail-OPEN: a telemetry write must never break or block the push flow.
@@ -1119,6 +1126,33 @@ verify_content_survived() {
 
 pushed=false
 _pushed_via_api_fallback=false
+# BRO-2839 loop-exit provenance. This loop has THREE exits and only one of them
+# is real exhaustion, but every post-loop record_push_failure call below used to
+# hardcode "$MAX_RETRIES" as the attempt count. Measured on the authoritative
+# ledger (origin/push-retry-failures:failures.jsonl, 2,264 rows on 2026-09-06):
+# all 2,156 retries-exhausted rows carry attempt exactly equal to some caller's
+# MAX_RETRIES {3,5,7,8,14,15,20,25} and NOT ONE carries a mid-loop count, so a
+# deadline abort after 3 real attempts was indistinguishable from a genuine
+# 7-attempt exhaustion. That is the exact discrimination BRO-2839 needs, and the
+# PUSH_DEADLINE_SEC comment above has documented the lie since task #458 without
+# fixing it.
+#   _LOCAL_ATTEMPTS_MADE - real completed local attempts at whichever exit ran.
+#   _ABORT_QUALIFIER     - empty for true exhaustion, else why we left early,
+#                          rendered as a (qualifier) suffix on the base reason
+#                          token to match the existing grammar in this file
+#                          (noop-rebase(...), commit-dropped-post-push(...),
+#                          api-fallback-exhausted(timeout)). push-retry-deadman.js
+#                          branches only on startsWith('noop-rebase') and its hint
+#                          tells readers to read the reason, so keeping the base
+#                          token holds this row in the retries-exhausted series
+#                          instead of starting a new top-level one that falls
+#                          outside both.
+_LOCAL_ATTEMPTS_MADE="$MAX_RETRIES"
+_ABORT_QUALIFIER=""
+# Comma-separated inner term for reasons that ALREADY carry a parenthesised
+# qualifier, so an api-fallback row reads api-fallback-exhausted(timeout,deadline)
+# rather than losing which loop exit preceded it. Empty on true exhaustion.
+_abort_inner() { printf '%s' "${_ABORT_QUALIFIER:+,$_ABORT_QUALIFIER}"; }
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
   # script's start. If a prior attempt's git op stalled up to its per-op timeout,
@@ -1143,6 +1177,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 
   if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
     echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded after $((i - 1)) attempt(s); giving up to avoid hanging the job"
+    # This iteration never ran an attempt, so i-1 is the real completed count -
+    # the same number the warning above has always printed accurately and the
+    # post-loop telemetry has always discarded.
+    _LOCAL_ATTEMPTS_MADE=$((i - 1))
+    _ABORT_QUALIFIER="deadline"
     break
   fi
 
@@ -1807,6 +1846,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # behavior.
   if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
     echo "::warning::push-with-retry: $i failed local attempt(s) reached (PUSH_API_FALLBACK_AFTER_ATTEMPTS=$PUSH_API_FALLBACK_AFTER_ATTEMPTS) — breaking out of the local fetch+rebase+push loop early to try the Git Data API fallback instead of waiting for full exhaustion"
+    # Unlike the deadline break above, THIS iteration's attempt ran and failed,
+    # so the real completed count is i, not i-1. This is the more common of the
+    # two early exits: PUSH_API_FALLBACK_AFTER_ATTEMPTS floors at 3 while the
+    # default MAX_RETRIES is 7, so a fallback-eligible caller reaches it first.
+    _LOCAL_ATTEMPTS_MADE="$i"
+    _ABORT_QUALIFIER="early-fallback"
     break
   fi
 
@@ -2023,7 +2068,11 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
-  echo "::warning::push-with-retry: local fetch+rebase+push failed after up to $i of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
+  # $i is UNSET here when the seq loop ran zero iterations (MAX_RETRIES=0), and
+  # this script runs under `set -u`, so referencing it aborted before any
+  # telemetry was recorded. _LOCAL_ATTEMPTS_MADE is assigned before the loop and
+  # is the real completed count, so it is both safe and more accurate than "up to".
+  echo "::warning::push-with-retry: local fetch+rebase+push failed after $_LOCAL_ATTEMPTS_MADE of $MAX_RETRIES budgeted attempt(s) — trying the Git Data API fallback (task #707)"
   # Task #1847 (Codex plan-review P1 finding): push-via-git-api.sh's own
   # retry budget (PUSH_API_MAX_RETRIES, default 6) is NOT bounded by this
   # script's PUSH_DEADLINE_SEC — each fallback attempt can cost up to
@@ -2067,7 +2116,7 @@ if [ "$_api_fallback_ok" = "true" ]; then
       _pushed_via_api_fallback=true
     else
       echo "::error::push-with-retry: Git Data API fallback push succeeded but our commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619 class) — treating the fallback as failed."
-      record_push_failure "api-fallback-content-dropped" "$MAX_RETRIES"
+      record_push_failure "api-fallback-content-dropped${_ABORT_QUALIFIER:+($_ABORT_QUALIFIER)}" "$_LOCAL_ATTEMPTS_MADE"
     fi
   else
     # MUST be the first statement in this branch: $? here is the fallback's
@@ -2087,17 +2136,21 @@ if [ "$_api_fallback_ok" = "true" ]; then
       # in miniature the exact defect this change exists to remove. The exact
       # counts are in push-via-git-api.sh's breakdown line above.
       echo "::warning::push-with-retry: Git Data API fallback also failed — at least as many TIMEOUTS as lost races (rc=3); see the exhaustion breakdown above for exact counts"
-      record_push_failure "api-fallback-exhausted(timeout)" "$MAX_RETRIES"
+      record_push_failure "api-fallback-exhausted(timeout$(_abort_inner))" "$_LOCAL_ATTEMPTS_MADE"
     else
       echo "::warning::push-with-retry: Git Data API fallback also failed (rc=$_api_rc)"
-      record_push_failure "api-fallback-exhausted(race-or-other)" "$MAX_RETRIES"
+      record_push_failure "api-fallback-exhausted(race-or-other$(_abort_inner))" "$_LOCAL_ATTEMPTS_MADE"
     fi
   fi
 fi
 
 if [ "$pushed" != "true" ]; then
-  record_push_failure "retries-exhausted" "$MAX_RETRIES"
-  echo "::error::All push attempts failed after $MAX_RETRIES attempts"
+  # BRO-2839: name the exit that actually happened. _ABORT_QUALIFIER is empty
+  # only on true exhaustion, in which case this renders the historical
+  # "retries-exhausted" verbatim and the 2,156-row series is unbroken.
+  _EXHAUSTION_REASON="retries-exhausted${_ABORT_QUALIFIER:+($_ABORT_QUALIFIER)}"
+  record_push_failure "$_EXHAUSTION_REASON" "$_LOCAL_ATTEMPTS_MADE"
+  echo "::error::All push attempts failed after $_LOCAL_ATTEMPTS_MADE of $MAX_RETRIES budgeted attempt(s) (${_ABORT_QUALIFIER:-retries-exhausted})"
   # Task #1792/#1847 (discoverability): a session hitting this had no way to
   # know WHY the fallback (default-on since #1847) didn't run unless it
   # already knew to look. Only add the pointer when the fallback did NOT run
@@ -2108,7 +2161,7 @@ if [ "$pushed" != "true" ]; then
   if [ "$_api_fallback_ok" != "true" ]; then
     echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
-  restore_head_if_moved "retries-exhausted"
+  restore_head_if_moved "$_EXHAUSTION_REASON"
   exit 1
 fi
 

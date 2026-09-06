@@ -4,8 +4,10 @@
  * Push-retry deadman (task #394) — decision logic.
  *
  * scripts/lib/push-with-retry.sh appends a JSONL record to
- * data/audit/push-retry-failures.jsonl whenever it abandons a push — either a
- * no-op-rebase abort or full retry exhaustion. This surfaces that telemetry so
+ * data/audit/push-retry-failures.jsonl whenever it abandons a push — a
+ * no-op-rebase abort, an EARLY loop exit (the overall-deadline abort or the
+ * break to the Git Data API fallback), or full retry exhaustion. This
+ * surfaces that telemetry so
  * a silent-forever push failure (the exact class that stranded the
  * alert-ledger and killed cooldown/dedup across CI) becomes a visible digest
  * row instead of a swallowed `|| echo ::warning`. Non-paging: it's a digest
@@ -97,7 +99,7 @@ function assessPushRetryDeadman(entries, opts = {}) {
     name: NAME,
     status,
     message,
-    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion does NOT by itself mean the remote could not be integrated — read the reason: api-fallback-exhausted(timeout) means every attempt was killed at the network timeout cap with no evidence the tip moved, which is a latency problem, not a contention one.',
+    hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion does NOT by itself mean the remote could not be integrated — read the reason: api-fallback-exhausted(timeout) means every attempt was killed at the network timeout cap with no evidence the tip moved, which is a latency problem, not a contention one. A trailing (deadline) or (early-fallback) qualifier (BRO-2911) says the local loop left EARLY rather than exhausting its retries, so the attempt count is the real number of completed attempts and is expected to be BELOW maxRetries — retries-exhausted(deadline) attempt:3 of 7 is a 420s budget running out, not seven failed pushes.',
   };
 }
 
