@@ -161,6 +161,30 @@ function isUnknownByline(criticName) {
   return s === '' || s.toLowerCase() === 'unknown';
 }
 
+/** May this record ANCHOR a fossil deletion — i.e. is its byline a real person?
+ * Three ways a name fails that, and isUnknownByline alone catches only the
+ * first: the sentinel itself; placeholder-byline.js's generic desk/staff terms
+ * AND its outlet-as-critic branch (which is only reachable when `outlet` is
+ * passed, so this must take the whole RECORD, not a bare name); and
+ * punctuation-only junk, since criticKey('—') is 'unknown' while
+ * isUnknownByline('—') is false.
+ *
+ * Module-scope and EXPORTED deliberately. The corpus tests need this exact
+ * predicate to reconstruct the anchor set over live reviews.json, and they
+ * previously kept their own hand-copied duplicate of it in two places — which
+ * CLAUDE.md rule 15 forbids ("never copy logic into test files — always
+ * require() the real function") for precisely the reason it nearly caused
+ * here: when production's definition changed, the copies did not, so the
+ * corpus assertion would have failed on rows production now correctly keeps.
+ * A copy that must be edited in lockstep is not a test of the real predicate.
+ * (Codex adversarial review.) */
+function isRealByline(rec) {
+  const name = rec && rec.criticName;
+  return !isUnknownByline(name)
+    && !isPlaceholderByline(name, rec && rec.outlet)
+    && criticKey(name) !== 'unknown';
+}
+
 function newerIso(a, b) {
   const ta = typeof a === 'string' ? Date.parse(a) : NaN;
   const tb = typeof b === 'string' ? Date.parse(b) : NaN;
@@ -435,17 +459,19 @@ function mergeReviewsJson(ours, remote) {
   //     (placeholder-byline.js:52-61) that critic reads as a placeholder, so
   //     the pass declines to anchor. That is safe against DELETION, not
   //     against the duplicate gate: such a pair can then survive to
-  //     validate-data.js:2081 as a same-show+outlet duplicate URL, which is
-  //     loud and self-clearing on the next uncontended rebuild, unlike a
-  //     wrongly deleted review. scripts/dedupe-same-url-bylines.js:237 is the
-  //     caller that CAN afford the registry lookup and does pass defaultCritic.
-  const isRealByline = (rec) => {
-    const name = rec && rec.criticName;
-    return !isUnknownByline(name)
-      && !isPlaceholderByline(name, rec && rec.outlet)
-      && criticKey(name) !== 'unknown';
-  };
-
+  //     validate-data.js:2081 as a same-show+outlet duplicate URL. Do NOT read
+  //     that as self-clearing — nothing in THIS module clears it, and the
+  //     path that would, scripts/dedupe-same-url-bylines.js:237, is separately
+  //     scheduled and is also the caller that CAN afford the registry lookup
+  //     and does pass defaultCritic. So merge-first can leave validation red
+  //     until that deduper runs (Codex adversarial review corrected an earlier
+  //     version of this comment, which claimed self-clearing without
+  //     establishing it). The trade is still the right way round: a surviving
+  //     duplicate is visible in a gate, a wrongly deleted review is not.
+  //     Closing the gap properly means injecting a registry-aware predicate at
+  //     registration time rather than reading the registry from in here.
+  // isRealByline is module-scope and exported so the corpus tests use THIS
+  // predicate rather than a copy of it (CLAUDE.md rule 15).
   const bylinedByUrlKey = new Map();
   for (const r of mergedReviews) {
     if (!r || !isRealByline(r)) continue;
@@ -534,4 +560,7 @@ function mergeReviewsJson(ours, remote) {
   };
 }
 
-module.exports = { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline };
+module.exports = {
+  mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank,
+  isUnknownByline, isRealByline,
+};

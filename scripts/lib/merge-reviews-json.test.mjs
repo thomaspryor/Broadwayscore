@@ -3,8 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline } from './merge-reviews-json.js';
-import { isPlaceholderByline } from './placeholder-byline.js';
+import { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline, isRealByline } from './merge-reviews-json.js';
 import pkg from './manual-entry-merge.js';
 const { criticKey } = pkg;
 
@@ -491,7 +490,7 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   const outletOf = (r) => String(r.outlet || '').toLowerCase().trim();
   const anchors = new Map();
   for (const r of reviews) {
-    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName, r.outlet) || criticKey(r.criticName) === 'unknown') continue;
+    if (!isRealByline(r)) continue; // the REAL predicate, not a copy (CLAUDE.md rule 15)
     const k = urlKeyOf(r);
     if (!k) continue;
     if (!anchors.has(k)) anchors.set(k, []);
@@ -519,7 +518,7 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   assert.equal(stats.unknownBylineFossilsDroppedKeys.length, stats.unknownBylineFossilsDropped, 'every drop must be recorded with provenance');
   const postAnchors = new Map();
   for (const r of merged.reviews) {
-    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName, r.outlet) || criticKey(r.criticName) === 'unknown') continue;
+    if (!isRealByline(r)) continue; // the REAL predicate, not a copy (CLAUDE.md rule 15)
     const k = urlKeyOf(r);
     if (!k) continue;
     if (!postAnchors.has(k)) postAnchors.set(k, []);
