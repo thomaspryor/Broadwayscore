@@ -428,7 +428,22 @@ push_mutex_acquire
 if [ "$PUSH_MUTEX_HELD" = "1" ]; then
   SECONDS=0
 fi
-trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+# The `command -v` guard is load-bearing (BRO-2909). This trap is deliberately
+# registered HERE, before restore_head_if_moved is defined below, so that no
+# failing command between push_mutex_acquire and the trap can leak the mutex
+# (task #556, see the comment block above). But the BRO-142 stale-marker
+# refusal EXITS inside that gap, and with `set -euo pipefail` (line 29) the
+# undefined function aborts the trap at "command not found" BEFORE `exit $rc`
+# runs — so a deliberate `exit 1` was reported to every caller as 127.
+#
+# Skipping the restore on that path is correct, not merely convenient: the
+# refusal fires before this run has fetched, rebased, merged or reset anything,
+# and RESTORE_BASE_HEAD is not assigned until further below, so the restore has
+# no base to work from and nothing to undo. Hoisting the definition instead
+# would NOT work: the body reads RESTORE_BASE_HEAD and SCRIPT_ENTRY_HEAD and
+# calls _head_is_descendant, all of which are still unset there, and `set -u`
+# aborts on the unbound read before the function's own guard can return 0.
+trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
