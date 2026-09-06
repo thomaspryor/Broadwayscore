@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-06T22:28:14.722Z",
-  "processed": 40,
-  "failed": 653,
-  "successRate": "5.8%",
+  "updatedAt": "2026-09-06T22:53:51.561Z",
+  "processed": 42,
+  "failed": 661,
+  "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 2,
     "scrapingbee": 5,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -37,6 +37,28 @@
       "event": "bb-session",
       "session": "d2ceaab6",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-06T22:53:00.022Z",
+      "event": "bb-session",
+      "session": "b3292812",
+      "url": "https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london"
+    },
+    {
+      "t": "2026-09-06T22:53:01.006Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-06T22:53:29.427Z",
+      "event": "bb-session",
+      "session": "88a236f2",
+      "url": "https://www.nytimes.com/2026/08/30/books/review/marlon-james-interview-the-disap"
+    },
+    {
+      "t": "2026-09-06T22:53:30.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
