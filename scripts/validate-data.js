@@ -29,7 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
-const { findInvalidRegistryFields } = require('./lib/outlet-registry-fields');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
@@ -2460,15 +2460,18 @@ function validateOutletRegistryFields() {
     return;
   }
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const outlets = registry.outlets || registry;
 
-  // Shared with audit-outlet-registry.js --strict so the gate an operator runs
-  // WHILE registering an outlet enforces the same contract this one does. They
-  // disagreed until 2026-09-06, when `starScale: null` passed the registration
-  // gate and failed here — skipping the registration gate's own CI step,
-  // because that step defaults to `if: success()`.
-  const invalidFields = findInvalidRegistryFields(registry);
-  for (const bad of invalidFields) error(`[registry-field] ${bad.message}`);
-  const badFields = invalidFields.length;
+  let badFields = 0;
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    if (!entry || typeof entry !== 'object') continue;
+
+    for (const message of outletFieldShapeErrors(id, entry)) {
+      error(message);
+      badFields++;
+    }
+  }
   if (badFields === 0) {
     ok('outlet-registry.json starScale + multiAuthor field shapes are valid');
   } else {

@@ -43,7 +43,20 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
-const { findInvalidRegistryFields } = require('./lib/outlet-registry-fields');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
+
+// Whole-registry sweep over the SAME per-entry decision validate-data.js uses.
+// Deliberately not a second copy of the rule: outlet-registry-field-shape.js
+// owns the contract and the message text, and this only walks the entries.
+function collectFieldShapeErrors(registry) {
+  const outlets = (registry && registry.outlets) || registry || {};
+  const errors = [];
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    errors.push(...outletFieldShapeErrors(id, entry));
+  }
+  return errors;
+}
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -609,7 +622,7 @@ function generateJsonOutput(auditResult) {
   try {
     const reg = loadRegistry();
     cvStyleReport = { invalid: findInvalidCvStyles(reg), armedCount: countArmedCvStyles(reg) };
-    registryFieldsReport = findInvalidRegistryFields(reg);
+    registryFieldsReport = collectFieldShapeErrors(reg);
   } catch { /* registry unreadable is already fatal in loadRegistry() */ }
 
   // Transform missingFromRegistry to match spec format
@@ -1021,7 +1034,7 @@ async function main() {
     const cvRegistry = loadRegistry();
     const badCvStyles = findInvalidCvStyles(cvRegistry);
     const armedCvStyles = countArmedCvStyles(cvRegistry);
-    const badRegistryFields = findInvalidRegistryFields(cvRegistry);
+    const badRegistryFields = collectFieldShapeErrors(cvRegistry);
     if (!JSON_OUTPUT) {
       if (badCvStyles.length > 0) {
         console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
@@ -1042,13 +1055,13 @@ async function main() {
       }
       if (badRegistryFields.length > 0) {
         console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
-        for (const b of badRegistryFields) console.log(`  ${b.message}`);
+        for (const b of badRegistryFields) console.log(`  ${b}`);
         console.log(
           `  validate-data.js fails on these too, at an EARLIER step of the same ` +
-            `Data Validation job — and because "Audit outlet-registry gaps" carries ` +
-            `no if:, that earlier failure SKIPS this gate entirely. Registering an ` +
-            `outlet with an invalid field used to pass here and break the build there ` +
-            `(arbuturian/starScale:null, 2026-09-06).`
+            `Data Validation job. Until 2026-09-06 registering an outlet with an ` +
+            `invalid field passed HERE and broke the build THERE — and this step, ` +
+            `then lacking an if:, was skipped by that earlier failure, so the run ` +
+            `reported nothing about the registry (arbuturian/starScale:null).`
         );
       }
     }

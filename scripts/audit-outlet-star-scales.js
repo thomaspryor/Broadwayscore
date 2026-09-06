@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { ALLOWED_STAR_SCALES } = require('./lib/outlet-registry-fields');
+const { ALLOWED_STAR_SCALES } = require('./lib/outlet-registry-field-shape');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
