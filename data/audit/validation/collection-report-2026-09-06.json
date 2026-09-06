@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-06T22:59:15.490Z",
+  "runDate": "2026-09-06T23:30:37.588Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,24 +11,24 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 41,
-    "failed": 713,
+    "processed": 43,
+    "failed": 733,
     "skipped": 0,
-    "successRate": "5.4%"
+    "successRate": "5.5%"
   },
   "tierBreakdown": {
     "playwright": 24,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 4,
     "directCookies": 2,
     "scrapingbee": 5,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -91,7 +91,9 @@
     "electra-persona-west-end-2026/southbank--unknown.json",
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
-    "holy-fool-off-west-end-2026/londonmumsmagazine--unknown.json"
+    "holy-fool-off-west-end-2026/londonmumsmagazine--unknown.json",
+    "the-story-west-end-2026/nytimes--unknown.json",
+    "electra-persona-west-end-2026/vocaleyes--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -747,6 +749,26 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "holy-fool-off-west-end-2026/thestage--holly-omahony.json",
+    "the-story-west-end-2026/nytimes--jesse-green.json",
+    "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/huffpost--ron-dicker.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+    "electra-persona-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
@@ -837,6 +859,9 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/the-story-west-end-2026/nytimes--unknown.json",
+      "the-story-west-end-2026/nytimes--unknown.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
@@ -857,7 +882,8 @@
       "spellbound-off-broadway-2026/thewrap--chase-hutchinson.json",
       "spellbound-off-broadway-2026/mashable--belen-edwards.json",
       "the-producers-west-end-2025/variety--bob-verini.json",
-      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/boston-globe--ty-burr.json"
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/boston-globe--ty-burr.json",
+      "electra-persona-west-end-2026/vocaleyes--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
