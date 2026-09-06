@@ -335,7 +335,10 @@ function flushRejectedCache() {
  */
 function shouldCacheSkipReason(reason) {
   if (!reason) return false;
-  return /cross-market|^domain-mismatch|junk-outlet|suspicious-outlet-id/.test(reason);
+  // credited-person-as-critic is durable in the same sense: the byline is a
+  // credited member of this show's creative team, and retrying the same URL
+  // cannot change that. Without it the poller re-attempts every cycle forever.
+  return /cross-market|^domain-mismatch|junk-outlet|suspicious-outlet-id|credited-person-as-critic/.test(reason);
 }
 
 // ---------------------------------------------------------------------------

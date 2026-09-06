@@ -77,9 +77,20 @@ describe('creative-team-as-critic detection', () => {
     assert.equal(v.matchedName, 'sammi cannold');
   });
 
+  // The raw string is passed through UNTOUCHED — an earlier version of this test
+  // pre-normalized its own input with .replace(/\s+/g,' ').trim(), so it asserted
+  // only that 'sammi cannold' equals 'sammi cannold'. A test that normalizes its
+  // input before handing it to the normalizer tests nothing.
   test('matching is case- and whitespace-insensitive', () => {
-    const v = evaluateCreditedPersonAsCritic(HOW_TO_DANCE, '  SAMMI   CANNOLD  '.replace(/\s+/g, ' ').trim());
-    assert.equal(v.kind, 'creative');
+    assert.equal(evaluateCreditedPersonAsCritic(HOW_TO_DANCE, '  SAMMI   CANNOLD  ').kind, 'creative');
+    assert.equal(evaluateCreditedPersonAsCritic(HOW_TO_DANCE, 'Sammi\tCannold').kind, 'creative');
+  });
+
+  // Irregular whitespace on the SHOW side too — credits are written to
+  // shows.json as raw scraped names, so both sides must survive it.
+  test('a credit with doubled internal spaces still matches a clean byline', () => {
+    const show = { id: 's', creativeTeam: [{ name: 'Sammi  Cannold' }], cast: [] };
+    assert.equal(evaluateCreditedPersonAsCritic(show, 'Sammi Cannold').kind, 'creative');
   });
 
   test('a cast member matches with kind "cast", NOT "creative"', () => {
@@ -181,6 +192,46 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       fields: { bwwExcerpt: 'a cast-bylined piece' },
     }, { dryRun: true });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `cast byline was skipped: ${res.reason}`);
+  });
+
+  // The guard is CREATE-only. A first version rejected merges too, which would
+  // have stopped the two already-existing matching files from ever self-healing:
+  // audit-show-review-gap.js re-ingests an empty-bodied flagged review under the
+  // file's OWN criticName so the writer merges and fills the body, and a
+  // rejection there burns all three attempts in flagged-recovery.js instead.
+  test('a MERGE into an existing matching file is not rejected', (t) => {
+    const reviewTextsDir = path.join(__dirname, '..', '..', 'data', 'review-texts');
+    if (!haveShows || !fs.existsSync(reviewTextsDir)) return t.skip('core data not available in this checkout');
+    const target = path.join(reviewTextsDir, 'allegra-west-end-2026', 'westend--peter-quilter.json');
+    if (!fs.existsSync(target)) return t.skip('fixture file not present in this corpus snapshot');
+    const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
+    const { createOrMergeReviewFile } = require('./review-file-writer.js');
+    const res = createOrMergeReviewFile('allegra-west-end-2026', {
+      outlet: existing.outlet,
+      outletId: existing.outletId,
+      criticName: existing.criticName,
+      url: existing.url,
+      source: 'audit-show-review-gap',
+      fields: { fullText: 'a body being filled in by the recovery path' },
+    }, { dryRun: true });
+    assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `merge was rejected by the create-only guard: ${res.reason}`);
+  });
+
+  // The exemption's SOURCE clause, pinned separately and WITHOUT a score.
+  // scripts/ingest-manual-review.js sets only `source: 'manual-entry'` and its
+  // score is optional, then exits 1 on a skip. An exemption keyed on
+  // humanReviewScore alone passes the test below while still breaking that
+  // caller — which is exactly what happened before a review round caught it.
+  test('an unscored manual-entry ingest is exempt on SOURCE alone', (t) => {
+    if (!haveShows) return t.skip('data/shows.json not available in this checkout');
+    const { createOrMergeReviewFile } = require('./review-file-writer.js');
+    const res = createOrMergeReviewFile('how-to-dance-in-ohio-2023', {
+      outlet: 'BroadwayWorld',
+      criticName: 'Sammi Cannold',
+      source: 'manual-entry',
+      fields: { bwwExcerpt: 'operator typed this in, no score given' },
+    }, { dryRun: true });
+    assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `unscored manual entry was skipped: ${res.reason}`);
   });
 
   test('an operator-supplied row is exempt from the guard', (t) => {

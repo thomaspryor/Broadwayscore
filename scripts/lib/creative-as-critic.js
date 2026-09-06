@@ -42,12 +42,19 @@ const PLACEHOLDER_NAMES = new Set([
   'unknown', 'tba', 'tbd', 'tbc', 'n/a', 'na', 'anonymous',
 ]);
 
-/** Cache of per-show name sets, keyed on the show object itself. */
-const _setsCache = new WeakMap();
-
-/** @param {*} name @returns {string} lowercased/trimmed, '' when unusable */
+/**
+ * Lowercase, trim, and collapse internal runs of whitespace.
+ *
+ * The collapse matters because the two sides come from different places:
+ * criticName arrives from a scraper via sanitizeCriticName, while credits are
+ * pushed into shows.json as the RAW scraped name (ibdb-dates.js writes rawName,
+ * not its own collapsed form). No credit carries irregular whitespace today,
+ * but a "Sammi  Cannold" on either side would otherwise silently miss.
+ *
+ * @param {*} name @returns {string} '' when unusable
+ */
 function normalizePersonName(name) {
-  return typeof name === 'string' ? name.toLowerCase().trim() : '';
+  return typeof name === 'string' ? name.toLowerCase().replace(/\s+/g, ' ').trim() : '';
 }
 
 /**
@@ -62,13 +69,19 @@ function isSentinelPersonName(name) {
 
 /**
  * Build the per-show credited-name sets, sentinels already removed.
+ *
+ * Deliberately UNCACHED. A memo keyed on the show object would go stale the
+ * moment a caller mutated show.creativeTeam in place, and would then veto
+ * reviews on credits that no longer exist — silently, and for the life of the
+ * process. Rebuilding a handful of Set entries per call costs nothing measurable
+ * (the validator hoists this to once per show anyway, before its 42,000-file
+ * walk), so the cache would buy nothing and could only ever be wrong.
+ *
  * @param {object|null} show - a shows.json record
  * @returns {{creative: Set<string>, cast: Set<string>}} lowercased names
  */
 function buildShowPersonNameSets(show) {
   if (!show || typeof show !== 'object') return { creative: new Set(), cast: new Set() };
-  const cached = _setsCache.get(show);
-  if (cached) return cached;
 
   const creative = new Set();
   const cast = new Set();
@@ -82,9 +95,7 @@ function buildShowPersonNameSets(show) {
     if (n && !PLACEHOLDER_NAMES.has(n)) cast.add(n);
   }
 
-  const sets = { creative, cast };
-  _setsCache.set(show, sets);
-  return sets;
+  return { creative, cast };
 }
 
 /**
