@@ -16,8 +16,8 @@
  * Two runs each read the file, each add their own shows, and the second write
  * discards the first's. Nothing throws and nothing is logged, so the only
  * symptom is a show that "never got a Playbill URL" and gets re-resolved at SERP
- * cost next run. Both writers are cron-driven and this machine routinely runs
- * several sessions at once.
+ * cost next run. All three writers are cron-driven and this machine routinely
+ * runs several sessions at once.
  *
  * WHAT THIS CLOSES AND WHAT IT DOES NOT. Read this before trusting it; an
  * earlier draft of this comment claimed the race was closed and that was FALSE.
@@ -141,9 +141,13 @@ function computeDelta(snapshot, current) {
 /**
  * Replay a delta onto whatever is on disk now.
  *
- * SETS are unconditional and DELETES are compare-and-swap, and the asymmetry is
- * deliberate. A set is a fresh resolution: if a peer resolved the same show in
- * the same window, either answer is current and last-write-wins is honest. A
+ * SETS are unconditional and DELETES are compare-and-swap. The asymmetry is
+ * deliberate but it is NOT free, and the header records the cost: an
+ * unconditional set can restore a stale url over a peer's verified correction,
+ * because "last save" is not "freshest resolution". It is left unconditional
+ * here only because choosing otherwise is a behavioural decision (older loses /
+ * older wins / log the conflict) that belongs to BRO-2910, not to this change.
+ * Do not read this paragraph as saying either answer is equally good. A
  * delete is an eviction decided against a value I read possibly minutes ago — if
  * a peer has since written a DIFFERENT url for that id, my delete is stale and
  * would destroy a fresher answer. So a delete only lands when disk still holds
