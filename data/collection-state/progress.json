@@ -39,7 +39,8 @@
     "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
     "electra-persona-west-end-2026/southbank--unknown.json",
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
-    "as-you-like-it-globe-west-end-2026/marquee--unknown.json"
+    "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -594,7 +595,9 @@
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
-    "as-you-like-it-globe-west-end-2026/thestage--unknown.json"
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -625,11 +628,13 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
-      "the-story-west-end-2026/times-uk--unknown.json"
+      "the-story-west-end-2026/times-uk--unknown.json",
+      "as-you-like-it-globe-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "scrapingbee": [
       "the-story-west-end-2026/ground--unknown.json",
@@ -655,7 +660,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -679,6 +684,17 @@
       "event": "bb-session",
       "session": "d2ceaab6",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-06T21:38:51.464Z",
+      "event": "bb-session",
+      "session": "5e1e4784",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T21:38:52.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
