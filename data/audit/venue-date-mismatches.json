@@ -1,20 +1,55 @@
 {
-  "generatedAt": "2026-09-05T18:18:19.958Z",
+  "generatedAt": "2026-09-06T00:27:01.346Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "much-ado-about-nothing-2026"
   },
   "timeBudgetMin": null,
   "counts": {
-    "total": 0,
-    "match": 0,
+    "total": 1,
+    "match": 1,
     "mismatch": 0,
     "unresolved": 0,
     "infraUnavailable": 0,
     "deferred": 0,
-    "carriedForward": 65
+    "carriedForward": 64
   },
   "results": [
+    {
+      "id": "much-ado-about-nothing-2026",
+      "title": "Much Ado About Nothing",
+      "venue": "Winter Garden Theatre",
+      "result": "match",
+      "playbillUrl": "https://playbill.com/production/much-ado-about-nothing-broadway-winter-garden-theatre-2026",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Much Ado About Nothing",
+          "market": "Broadway",
+          "venue": "Winter Garden Theatre",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-10-31",
+          "openingDate": "2026-11-19",
+          "closingDate": null
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Play",
+            "Comedy",
+            "Revival"
+          ],
+          "market": "Broadway",
+          "showType": "play",
+          "revivalStatus": "revival"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Winter Garden Theatre|2026-11-19|2027-01-10|true|Much Ado About Nothing|Theatre Royal Drury Lane~2025-02-10~2025-04-05|broadway",
+      "checkedAt": "2026-09-06T00:27:01.346Z",
+      "lastDefinitiveResult": "match"
+    },
     {
       "id": "wanted-2022",
       "title": "Wanted",
@@ -985,42 +1020,6 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Duke of York's Theatre|2024-10-30|2025-01-11|false|Barcelona||west-end",
-      "checkedAt": "2026-09-05T16:23:40.895Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "venue": "Winter Garden Theatre",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/much-ado-about-nothing-broadway-winter-garden-theatre-2026",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Much Ado About Nothing",
-          "market": "Broadway",
-          "venue": "Winter Garden Theatre",
-          "year": 2026
-        },
-        "dates": {
-          "firstPreview": "2026-10-31",
-          "openingDate": "2026-11-19",
-          "closingDate": null
-        },
-        "tagLine": {
-          "tags": [
-            "Broadway",
-            "Play",
-            "Comedy",
-            "Revival"
-          ],
-          "market": "Broadway",
-          "showType": "play",
-          "revivalStatus": "revival"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Winter Garden Theatre|2026-11-19|2027-01-10|true|Much Ado About Nothing|Theatre Royal Drury Lane~2025-02-10~2025-04-05|broadway",
       "checkedAt": "2026-09-05T16:23:40.895Z",
       "lastDefinitiveResult": "match"
     },
