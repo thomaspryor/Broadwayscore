@@ -8,13 +8,23 @@
  * title that was built from something other than the work's name. That is the
  * visible symptom of a bad title, and the title is what readers see (BRO-2886).
  *
- * WHAT THIS IS NOT. A doubled market is NOT proof of a defect. A show can be
- * genuinely named after a market: "Lauder: Scotland's Kilted King of Broadway"
- * really is called that, so "lauder-...-of-broadway-off-broadway-2026" is
- * correct and must keep its id. NO SYNTACTIC RULE SEPARATES THE TWO CASES —
- * both are a title slug ending in a market word followed by a market segment.
- * The difference is a fact about the world, not about the string. So this is a
- * detector with an ALLOWLIST of confirmed-correct titles, not a rule.
+ * WHAT IT ACTUALLY MATCHES, which is WIDER than the name suggests: a title slug
+ * ending in ANY market keyword, followed by ANY market segment. The two need not
+ * be the same market. "september-l-davis-the-apology-tour-off-broadway-2026"
+ * pairs "tour" with "off-broadway" and still matches, and that is deliberate —
+ * the signal is "a market word sits at the seam", because that is what a title
+ * built from the wrong source looks like, whichever market it names. Requiring
+ * the two to be equal would have missed the "tour" and "regional" rows entirely.
+ * `doubledWord` and `market` are both returned so a caller can tell the exact
+ * repeats apart from the mixed ones.
+ *
+ * WHAT THIS IS NOT. A match is NOT proof of a defect. A show can be genuinely
+ * named after a market: "Lauder: Scotland's Kilted King of Broadway" really is
+ * called that, so "lauder-...-of-broadway-off-broadway-2026" is correct and must
+ * keep its id. NO SYNTACTIC RULE SEPARATES THE TWO CASES — both are a title slug
+ * ending in a market word followed by a market segment. The difference is a fact
+ * about the world, not about the string. So this is a detector with an ALLOWLIST
+ * of confirmed-correct titles, not a rule.
  *
  * VOCABULARY IS BORROWED, NEVER COPIED. MARKET_KEYWORDS lives in
  * playbill-title-match.js and is the one list the Playbill scorer, the
@@ -62,17 +72,36 @@ const ALLOWLIST = new Map([
 
 // <title-slug>-<market>-<YYYY>, market optionally prefixed "off-".
 //
-// The prefix is LAZY, and that is load-bearing. A greedy prefix splits
-// "...-of-broadway-off-broadway-2026" as prefix "...-of-broadway-off" plus
-// market "broadway", because `(?:off-)?` is optional and the longer prefix wins
-// — leaving a prefix ending in "off", which is not a market word, so the row is
-// silently missed. Lazy takes the SHORTEST prefix, which pins the market to the
-// last market segment INCLUDING its "off-", the way the id convention means it.
-// What greedy caught that lazy drops: the split that treats a trailing "-off"
-// as part of the title ("noises-off-broadway-2016" -> "noises-off" + "broadway",
-// which is the correct reading of NOISES OFF). Lazy reads that id as "noises" +
-// "off-broadway" instead — a wrong market, but "noises" ends in no market word
-// so the row is a non-match either way and no verdict changes.
+// The prefix is LAZY, and that is load-bearing. `(?:off-)?` is optional, so a
+// greedy prefix splits "...-of-broadway-off-broadway-2026" into prefix
+// "...-of-broadway-off" plus market "broadway" — the longer prefix wins, it ends
+// in "off", "off" is not a market word, and the row is silently missed. Lazy
+// takes the SHORTEST prefix, which pins the market to the last market segment
+// INCLUDING its "off-", the way the id convention means it.
+//
+// MEASURED against the 2,942-show corpus, not reasoned: the CAPTURE differs
+// between lazy and greedy on 666 ids (every one ending "-off-broadway-<YYYY>" or
+// "-off-west-end-<YYYY>"). The VERDICT differs on exactly 2 —
+// lauder-scotlands-kilted-king-of-broadway-off-broadway-2026 and
+// september-l-davis-the-apology-tour-off-broadway-2026, both of which greedy
+// misses entirely. The third allowlisted row,
+// paranormal-activity-national-tour-regional-2025, is found by BOTH: its market
+// segment is a bare "regional" with no "off-" to split, so the ambiguity never
+// arises. Do not restate this as "it only affects one id", and do not restate it
+// as three: an earlier draft said one by confusing a changed capture for a
+// changed verdict, and a reviewer's correction said three by assuming all the
+// allowlisted rows shared the cause.
+//
+// WHAT GREEDY CAUGHT THAT LAZY DROPS, enumerated: the split that treats a
+// trailing "-off" as belonging to the TITLE. "noises-off-broadway-2016" is
+// really NOISES OFF on Broadway, and greedy reads it that way ("noises-off" +
+// "broadway") while lazy reads "noises" + "off-broadway". Neither verdict
+// changes, because "noises" ends in no market word either way. The residual
+// exposure is a title that is ITSELF a bare market word followed by "Off" — a
+// show called "Broadway Off" playing off-Broadway would give
+// "broadway-off-broadway-2016", which lazy flags and greedy does not. No such
+// row exists in the corpus today; if one appears, it belongs in ALLOWLIST with
+// that reason, which is the same route every other correct-by-nature row takes.
 const TRAILING_MARKET_RE = new RegExp(
   `^(.*?)-((?:off-)?(?:${MARKET_KEYWORDS.join('|')}))-(\\d{4})$`,
 );
@@ -88,8 +117,10 @@ function doubledMarketParts(id) {
   if (!m) return null;
   const [, prefix, market, year] = m;
   // Only a market word at the END of the title slug can be the market leaking
-  // across the seam. Longest first so "west-end" wins over a shorter keyword
-  // that is also a suffix.
+  // across the seam. Longest first so a keyword that is a suffix of a longer one
+  // never wins: no pair in MARKET_KEYWORDS has that shape TODAY ("end" is not a
+  // keyword, only "west-end"), so this ordering is currently a no-op — it is
+  // here so that adding one later cannot silently change which word is reported.
   const word = [...MARKET_KEYWORDS]
     .sort((a, b) => b.length - a.length)
     .find((k) => prefix === k || prefix.endsWith(`-${k}`));

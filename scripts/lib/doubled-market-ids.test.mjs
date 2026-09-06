@@ -27,9 +27,13 @@ test('the corrected id no longer doubles', () => {
 
 // This is the case a GREEDY prefix silently misses: `(?:off-)?` is optional, so
 // the longer prefix "...-of-broadway-off" plus market "broadway" also matches,
-// and that prefix ends in "off", which is not a market word. Revert the `?` in
-// TRAILING_MARKET_RE and this test — and only this one plus the two below it —
-// goes red.
+// and that prefix ends in "off", which is not a market word. MEASURED: revert
+// the `?` in TRAILING_MARKET_RE and exactly 5 of these 13 tests go red — this
+// one, 'the real defect', 'allowlisted ids are detected but not flagged',
+// 'sweepShows separates flagged from allowlisted', and 'the detector still
+// DETECTS every allowlisted row in the live corpus'. The plain zero-flagged
+// corpus assertion stays GREEN under that break, which is the reason the
+// detects-every-allowlisted-row test exists beside it.
 test('an "off-" market segment is read whole, not split into a trailing "off"', () => {
   const parts = D.doubledMarketParts('lauder-scotlands-kilted-king-of-broadway-off-broadway-2026');
   assert.notEqual(parts, null, 'greedy prefix split "off-broadway" and lost the row');
@@ -100,15 +104,51 @@ test('sweepShows separates flagged from allowlisted', () => {
   assert.ok(allowlisted[0].reason.length > 40);
 });
 
-test('the live corpus has zero unallowlisted doubled-market ids', () => {
+// ASSERTING "zero flagged" ALONE IS NOT A TEST OF THIS DETECTOR. A detector that
+// matches nothing at all also reports zero flagged rows, so a broken regex makes
+// this file greener, not redder — measured: reverting the lazy quantifier turns
+// 4 of these tests red and leaves the corpus assertion GREEN. So the corpus test
+// pins the DETECTED set, which is the thing that disappears when detection dies.
+function loadCorpus() {
   const showsPath = path.join(here, '..', '..', 'data', 'shows.json');
-  if (!fs.existsSync(showsPath)) return; // a worktree without core data symlinked
+  if (!fs.existsSync(showsPath)) return null; // a worktree without core data
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
+  return Array.isArray(raw) ? raw : raw.shows;
+}
+
+test('the live corpus has zero unallowlisted doubled-market ids', () => {
+  const shows = loadCorpus();
+  if (!shows) return;
   const { flagged } = D.sweepShows(shows);
   assert.deepEqual(
     flagged.map((r) => `${r.id} ${JSON.stringify(r.title)}`),
     [],
     'fix the title, or allowlist the id with the source you checked',
+  );
+});
+
+test('the detector still DETECTS every allowlisted row in the live corpus', () => {
+  const shows = loadCorpus();
+  if (!shows) return;
+  const { allowlisted } = D.sweepShows(shows);
+  assert.deepEqual(
+    allowlisted.map((r) => r.id).sort(),
+    [...D.ALLOWLIST.keys()].sort(),
+    'the detected set no longer matches the allowlist — either detection broke '
+      + '(every allowlisted row silently stopped matching) or a row was renamed',
+  );
+});
+
+test('no allowlist key is stale — every one names a show that still exists', () => {
+  const shows = loadCorpus();
+  if (!shows) return;
+  const ids = new Set(shows.map((s) => s.id));
+  const missing = [...D.ALLOWLIST.keys()].filter((id) => !ids.has(id));
+  assert.deepEqual(
+    missing,
+    [],
+    'an allowlisted id is not in shows.json. A rename or a year correction '
+      + 'leaves the key matching nothing while the renamed row rejoins the '
+      + 'flagged set — update the key, do not delete the reason.',
   );
 });
