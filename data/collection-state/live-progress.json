@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-06T22:57:08.250Z",
+  "updatedAt": "2026-09-06T23:00:21.334Z",
   "processed": 43,
-  "failed": 670,
+  "failed": 673,
   "successRate": "6.0%",
   "tierBreakdown": {
     "playwright": 24,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 2,
     "scrapingbee": 5,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -59,6 +59,17 @@
       "t": "2026-09-06T22:53:30.376Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-06T23:00:09.778Z",
+      "event": "bb-session",
+      "session": "901126b1",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T23:00:10.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

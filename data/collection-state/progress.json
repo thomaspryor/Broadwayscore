@@ -714,7 +714,10 @@
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
-    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json"
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -748,7 +751,8 @@
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-story-west-end-2026/nytimes--unknown.json",
-      "the-story-west-end-2026/nytimes--unknown.json"
+      "the-story-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -779,7 +783,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -825,6 +829,17 @@
       "t": "2026-09-06T22:53:30.376Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-06T23:00:09.778Z",
+      "event": "bb-session",
+      "session": "901126b1",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-06T23:00:10.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
