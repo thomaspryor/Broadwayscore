@@ -28,6 +28,13 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
+      # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
+      # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs
+      # via the scripts/lib/*.test.mjs glob, but scripts/lib/** does not TRIGGER
+      # on a solo edit to the CLI itself, so a CLI-only regression would get zero
+      # CI — the exact shape the note above this list describes (task #1745).
+      - 'scripts/audit-doubled-market-ids.js'
       - 'vercel.json'
       # scripts/lib/freeze-ledgers.test.mjs requires ../freeze-ledgers.js (a
       # top-level scripts/ file, outside the glob above) — same gap shape as
