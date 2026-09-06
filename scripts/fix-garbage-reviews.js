@@ -22,6 +22,7 @@ const path = require('path');
 
 // Import content quality module
 const { assessTextQuality } = require('./lib/content-quality.js');
+const { resolveShowIdentity } = require('./lib/show-identity');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const REPORT_PATH = path.join(__dirname, '../data/garbage-reviews-report.json');
@@ -149,8 +150,11 @@ async function main() {
     let reason = quickCheck.reason;
 
     if (!isGarbage) {
-      const showTitle = showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
-      const qualityResult = assessTextQuality(data.fullText, showTitle);
+      // Must pass the id and the real title separately — this script DELETES
+      // fullText on a garbage verdict, so the slug-in-showId bug here silently
+      // destroys restored text rather than merely refusing to save it.
+      const { showId: qualityShowId, showTitle } = resolveShowIdentity(showId);
+      const qualityResult = assessTextQuality(data.fullText, qualityShowId, showTitle);
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         isGarbage = true;

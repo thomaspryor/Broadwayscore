@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { assessTextQuality } = require('./lib/content-quality');
+const { resolveShowIdentity } = require('./lib/show-identity');
 
 const testFiles = [
   'data/review-texts/aladdin/nysr--elysa-gardner.json',
@@ -16,8 +17,8 @@ for (const f of testFiles) {
   if (!fs.existsSync(fp)) { console.log(`NOT FOUND: ${f}`); continue; }
   const data = JSON.parse(fs.readFileSync(fp, 'utf-8'));
   const text = data.fullText || '';
-  const showTitle = data.showId ? data.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-  const result = assessTextQuality(text, showTitle);
+  const { showId: qShowId, showTitle } = resolveShowIdentity(data.showId);
+  const result = assessTextQuality(text, qShowId, showTitle);
   console.log(`${f.split('/').pop()}:`);
   console.log(`  quality=${result.quality}, confidence=${result.confidence}`);
   console.log(`  textLen=${text.length}, issues=${result.issues.join(', ') || 'none'}`);

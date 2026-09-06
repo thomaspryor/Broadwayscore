@@ -133,6 +133,7 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { resolveShowIdentity } = require('./lib/show-identity');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
@@ -6222,6 +6223,7 @@ function clearFailedFetch(reviewId) {
 // PROCESS REVIEW
 // ============================================================================
 
+
 async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
@@ -6357,8 +6359,8 @@ async function processReview(review) {
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
     // Content quality check - detect garbage/invalid content before saving
-    const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-    const qualityCheck = assessTextQuality(result.text, showTitle);
+    const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
       // Don't save garbage content as fullText - log as failed fetch
@@ -6645,8 +6647,8 @@ async function processReview(review) {
           // Check for garbage content BEFORE writing URL to file
           // (prevents cost leak: if we write the URL first and content is garbage,
           // future runs would re-discover the same URL and waste SERP credits)
-          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+          const qualityCheck = assessTextQuality(retryResult.text, qualityShowId, showTitle);
           if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
             console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
             review.url = originalUrl; // restore before failing

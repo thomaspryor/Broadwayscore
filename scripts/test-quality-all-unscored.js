@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { assessTextQuality } = require('./lib/content-quality');
+const { resolveShowIdentity } = require('./lib/show-identity');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dir = path.join(__dirname, '../data/review-texts');
@@ -18,8 +19,8 @@ for (const s of shows) {
       if (d.llmScore || !d.fullText || d.fullText.length < 50) continue;
       if (d.wrongShow || d.wrongProduction) continue;
 
-      const showTitle = s.replace(/-\d{4}$/, '').replace(/-/g, ' ');
-      const result = assessTextQuality(d.fullText, showTitle);
+      const { showId: qShowId, showTitle } = resolveShowIdentity(s);
+      const result = assessTextQuality(d.fullText, qShowId, showTitle);
 
       if (result.quality === 'garbage') {
         garbage++;
