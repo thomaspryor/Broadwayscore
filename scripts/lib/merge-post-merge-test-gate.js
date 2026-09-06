@@ -109,6 +109,7 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const { parseTapOutput } = require('./tap-failure-parser.js');
+const { execErrorDetail } = require('./exec-error-detail.js');
 
 // Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
 // hang is worse than a failure" applies equally to this gate's two spawns.
@@ -319,6 +320,35 @@ function formatFailureList(label, items) {
   return `${label} ${items.length} failure(s):\n${items.map((f) => `    - ${f.file}::${f.name}`).join('\n')}`;
 }
 
+// How the child ACTUALLY ended, as a short suffix for `reason`. BRO-2874: the
+// gate used to report only `status=${result.status}`, which prints the literal
+// string "status=null" whenever spawnSync fails at the spawn layer rather than
+// the child exiting — a timeout (SIGTERM via TEST_GATE_TIMEOUT_MS) or a spawn
+// error such as ENOBUFS. `result.error` was read NOWHERE in this file, so the
+// one field naming the real cause was discarded, and the caller in
+// scripts/merge-worktree-to-main.sh then asserted a cause it could not know.
+//
+// Reason-string only, deliberately: `mergedPassed` is `result.status === 0` and
+// nothing here feeds a predicate. A spawn error already yields status !== 0
+// (null), so it already blocks; naming it changes no decision, only the message.
+// Do NOT add `|| result.error` to any predicate — that WOULD change behavior.
+//
+// Kept ABOVE runTestGate's contract block on purpose: a comment block binds to
+// the NEXT declaration, so slotting this between that block and its function
+// silently re-pointed the whole documented contract at this helper (the exact
+// defect an adversarial review caught in the first draft of this change).
+function describeExit(result) {
+  const r = result || {};
+  // Template-literal stringification is deliberate and covers every shape:
+  // 0 -> "status=0", null -> "status=null", absent -> "status=undefined".
+  // Never collapse a null status to a falsy default — "status=null" IS the
+  // signal that the child never ran, and hiding it is the original bug.
+  const parts = [`status=${r.status}`];
+  if (r.signal) parts.push(`signal=${r.signal}`);
+  if (r.error) parts.push(`spawn error: ${execErrorDetail(r.error, 200)}`);
+  return parts.join(', ');
+}
+
 // Run the post-merge test floor. Returns { ran, passed, output, reason }.
 //   ran     — whether tests were actually executed
 //   passed  — true when ran is false (nothing to fail) OR the run exited 0
@@ -369,11 +399,32 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   const mergedPassed = result.status === 0;
 
   if (mergedPassed || !makeBaselineCheckout) {
+    // This branch serves BOTH the passing and failing halves, so the reason
+    // format changed for both — on a pass nothing reads it (main() prints
+    // `reason` only on the skip and fail paths), which is why the change is
+    // invisible in practice, but "only the failure message changed" would be
+    // an inaccurate description of the edit.
+    //
+    // On the FAILING half (MERGE_TEST_GATE_SKIP_BASELINE=1, or no
+    // baseline available) `reason` is what main() prints as
+    // "post-merge test floor: FAILED (...)" — the one line the operator reads.
+    // It used to enumerate all ~402 selected filenames and carry no exit detail,
+    // so the escape hatch the die text recommends produced a message with no
+    // cause in it at all. Counts + how the child ended.
+    //
+    // The filenames are NOT unconditionally recoverable from `output`: an
+    // earlier revision of this comment claimed they were, and that is false in
+    // exactly the case that matters most — a spawn-layer failure produces EMPTY
+    // stdout/stderr, so `output` is empty too (caught by an adversarial review
+    // of this very change). The scope is still reconstructible, because
+    // selectTestFiles() is a pure function of `cwd` + `changedFiles`, but that
+    // is a re-derivation, not a recovery. The count is what goes in the reason;
+    // naming the cause matters more than naming 402 files.
     return {
       ran: true,
       passed: mergedPassed,
       output,
-      reason: `ran ${testFiles.length} file(s): ${testFiles.join(', ')}`,
+      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}`,
     };
   }
 
@@ -395,7 +446,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: false,
       output: `${output}\n\n⚠ post-merge test floor: merged tree exited non-zero but no individual test failure could be parsed (crash/timeout/syntax error, not a normal assertion failure) — blocking as a fail-safe rather than risk a silent pass`,
-      reason: `ran ${testFiles.length} file(s); merged run failed unparseably (status=${result.status})`,
+      reason: `ran ${testFiles.length} file(s); merged run failed unparseably (${describeExit(result)})`,
     };
   }
   let checkout = null;
@@ -424,7 +475,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       // fails toward blocking, not toward a silent pass, but still isn't the
       // honest "baseline unavailable" signal this gate should give).
       if (baselineResult.status !== 0 && baselineParsed.failures.size === 0) {
-        throw new Error('baseline run exited non-zero but no individual test failure could be parsed (crash/timeout) — cannot trust it as "zero pre-existing failures"');
+        // describeExit here too, not just on the merged run (BRO-2874): the
+        // baseline child dies from the same timeouts and spawn errors, and this
+        // message is the ONLY place its cause can ever surface — the catch below
+        // folds it into "baseline checkout unavailable", which reads like broken
+        // baseline INFRASTRUCTURE rather than a crashed test process.
+        throw new Error(`baseline run exited non-zero but no individual test failure could be parsed (${describeExit(baselineResult)}) — cannot trust it as "zero pre-existing failures"`);
       }
       baselineFailures = baselineParsed.failures;
     }

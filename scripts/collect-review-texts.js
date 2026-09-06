@@ -134,6 +134,9 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { resolveShowIdentity } = require('./lib/show-identity');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 const {
   isWithinPriorRun,
   isWithinTourLeg,
@@ -3681,8 +3684,7 @@ function extractFromJsonLd(html) {
     let bestText = '';
     while ((match = ldRegex.exec(html)) !== null) {
       try {
-        const data = JSON.parse(match[1].trim());
-        const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
+        const items = parseJsonLd(match[1].trim());
         for (const item of items) {
           const body = item.articleBody || item.reviewBody || item.text;
           if (body && typeof body === 'string' && body.length > bestText.length) {

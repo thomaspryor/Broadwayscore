@@ -176,3 +176,44 @@ test('isProvisional flags manual-user-request entries like Bronco Billy for vali
   assert.equal(isProvisional({ discoverySource: 'manual-user-request', provisional: true }), true);
   assert.equal(isProvisional({ discoverySource: 'todaytix-sync', provisional: false }), false);
 });
+
+test('scorePlaybillUrl rejects a legacy URL whose venue is in another market (BRO-2821)', () => {
+  // A legacy (vault / "-YYYY-YYYY") URL carries NO market segment, so the
+  // -regional-/-tour-, -london- and -broadway- rejects are all no-ops on it and
+  // isCrossMarketPlaybillUrl is too. An earlier fix rejected only legacy+London,
+  // which was one-directional; both of these still scored 8.
+  const obChicago = scorePlaybillUrl(
+    'https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074',
+    { id: 'chicago-ob-2026', title: 'Chicago', venue: 'Some Theatre', category: 'off-broadway' });
+  assert.equal(obChicago, null, 'an off-Broadway stub must not take a Broadway house\'s vault page');
+
+  const bwVsLondon = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018',
+    { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: null });
+  assert.equal(bwVsLondon, null, 'a Broadway show must not take a West End season page');
+
+  // …and the real recovery this branch exists for still works: Chicago the
+  // Broadway production, whose vault URL names the ORIGINAL house while the
+  // corpus records the current one.
+  const bwChicago = scorePlaybillUrl(
+    'https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074',
+    { id: 'chicago-1996', title: 'Chicago', venue: 'Ambassador Theatre', category: null });
+  assert.ok(bwChicago !== null && bwChicago > 0, 'the genuine Broadway recovery must survive');
+});
+
+test('scorePlaybillUrl ranks an exact-title candidate above a relaxed one (BRO-2821)', () => {
+  // The title gate used to score a flat 10 for every accepted URL; it now scores
+  // exact=10 and relaxed=8, so when a SERP page returns both readings of a title
+  // the exact one wins. Nothing pinned multi-candidate ORDERING before — the only
+  // consumer filters `score > 0` and sorts — so an adversarial review noted the
+  // ranking change was only accidentally safe. Pin it.
+  const show = { id: 'doubt-2024', title: 'Doubt: A Parable', venue: 'Todd Haimes Theatre', category: null };
+  const exact = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-a-parable-broadway-todd-haimes-theatre-2024', show);
+  const relaxed = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-broadway-todd-haimes-theatre-2024', show);
+  assert.ok(exact !== null && exact > 0, 'the exact-title URL must still be accepted');
+  assert.ok(relaxed !== null && relaxed > 0, 'the relaxed URL must still be accepted');
+  assert.ok(exact > relaxed,
+    `exact (${exact}) must outrank relaxed (${relaxed}) at the same venue and year`);
+});

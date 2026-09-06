@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const LIB = fileURLToPath(new URL('./venue-listing-discover.js', import.meta.url));
-const { loadStaging, updateStaging, candidateHash } = require('./venue-listing-discover.js');
+const { loadStaging, updateStaging, candidateHash, extractJsonLdTheaterEvents } = require('./venue-listing-discover.js');
 
 function tmpStagingPath(prefix) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -135,4 +135,32 @@ test('a failing concurrent producer loses only its own update, not the others in
     assert.ok(titles.has(`Mixed Show ${i}`));
   }
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// --- @graph regression (Rhinoceros at A.R.T., 2026-08-24) -----------------
+// extractJsonLdTheaterEvents used to hand-roll `Array.isArray(p) ? p : [p]`,
+// so a @graph-wrapped TheaterEvent was invisible. Verified against the
+// pre-migration version: the five non-@graph cases are byte-identical and the
+// two @graph cases went from [] to found.
+test('extractJsonLdTheaterEvents sees @graph-wrapped events', async () => {
+  const { JSDOM } = await import('jsdom');
+  const docOf = (ld) =>
+    new JSDOM(
+      `<html><body><script type="application/ld+json">${JSON.stringify(ld)}</script></body></html>`
+    ).window.document;
+
+  const EVENT = { '@type': 'TheaterEvent', name: 'Hamlet' };
+  const ARRAY_TYPED = { '@type': ['Event', 'TheaterEvent'], name: 'Macbeth' };
+  const names = (ld) => extractJsonLdTheaterEvents(docOf(ld)).map((e) => e.name);
+
+  // Unchanged by the migration.
+  assert.deepEqual(names(EVENT), ['Hamlet']);
+  assert.deepEqual(names([EVENT, ARRAY_TYPED]), ['Hamlet', 'Macbeth']);
+  assert.deepEqual(names(ARRAY_TYPED), ['Macbeth'], '@type array form still works');
+  assert.deepEqual(names({ ...EVENT, subEvent: [{}] }), [], 'season containers still skipped');
+  assert.deepEqual(names({ '@type': 'Organization', name: 'Nope' }), []);
+
+  // Recovered by the migration — these returned [] before.
+  assert.deepEqual(names({ '@context': 'https://schema.org', '@graph': [EVENT] }), ['Hamlet']);
+  assert.deepEqual(names({ '@graph': [EVENT, ARRAY_TYPED] }), ['Hamlet', 'Macbeth']);
 });

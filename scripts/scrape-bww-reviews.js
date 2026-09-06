@@ -46,6 +46,9 @@ const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -458,9 +461,10 @@ function extractBwwReviewsPageData(html, showId) {
   let aggregateRating = null;
   try {
     $('script[type="application/ld+json"]').each((_, el) => {
-      const json = JSON.parse($(el).html());
-      if (json.aggregateRating && json.aggregateRating.ratingValue) {
-        aggregateRating = json.aggregateRating.ratingValue;
+      for (const json of parseJsonLd($(el).html())) {
+        if (json.aggregateRating && json.aggregateRating.ratingValue) {
+          aggregateRating = json.aggregateRating.ratingValue;
+        }
       }
     });
   } catch (e) { /* ignore JSON-LD parse errors */ }
@@ -927,15 +931,11 @@ function extractBwwRoundupData(html, showId) {
       let datePublished = '';
       $('script[type="application/ld+json"]').each((_, el) => {
         try {
-          const json = JSON.parse($(el).html());
-          if (json.articleBody) articleBodyText = json.articleBody;
-          if (json.datePublished) datePublished = json.datePublished;
-          // Also check @graph array
-          if (Array.isArray(json['@graph'])) {
-            for (const item of json['@graph']) {
-              if (item.articleBody) articleBodyText = item.articleBody;
-              if (item.datePublished) datePublished = item.datePublished;
-            }
+          // parseJsonLd yields the wrapper AND its @graph nodes, so the
+          // last-wins precedence of the old hand-rolled version is kept.
+          for (const json of parseJsonLd($(el).html())) {
+            if (json.articleBody) articleBodyText = json.articleBody;
+            if (json.datePublished) datePublished = json.datePublished;
           }
         } catch (e) { /* ignore */ }
       });
