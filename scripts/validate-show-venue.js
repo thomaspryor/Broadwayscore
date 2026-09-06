@@ -334,7 +334,23 @@ function scorePlaybillUrl(url, show) {
   // penalty isn't enough here: -5 off a +10 title match still nets positive
   // (adversarial review, card #590 — this was a real false-positive path
   // introduced by adding "london" as a recognized market segment above).
-  const isLondonUrl = u.includes('-london-');
+  // Read the market off `marketTail`, never off the whole URL, for exactly the
+  // reason the regional/tour line above does: the TITLE is part of the URL, so
+  // a whole-URL test lets a show decide its own market from its own name.
+  //
+  // What is MEASURED, 2026-09-05, and what is not. 16 of 2,942 corpus titles
+  // slugify to something containing "broadway", "london", "regional" or "tour"
+  // (13 broadway, 2 off-broadway, 1 off-west-end). NONE of them changes score
+  // under this edit, and 0 of the 107 live playbill-urls.json entries differ
+  // old-vs-new — so this is a no-op on everything currently observable, NOT a
+  // fix with a live victim. It is hardening: the whole-URL read only bites when
+  // the title's market word CONTRADICTS the URL's real market segment, which
+  // needs either a slug prefix ("dion-boucicaults-london-assurance-broadway-…",
+  // where the whole-URL test sees "-london-" and hard-rejects a Broadway show's
+  // own page) or a legacy URL carrying no market segment at all, where
+  // "…king-of-broadway-vault-…" spends the off-Broadway penalty on its own
+  // name. Both shapes are pinned by tests; neither is in the corpus today.
+  const isLondonUrl = marketTail.includes('-london-');
   if (isLondonUrl && !isLondon) return null;
   // A legacy URL (vault page / "-YYYY-YYYY" season page) carries NO market
   // segment at all, so neither the London check above nor the Broadway check
@@ -359,13 +375,20 @@ function scorePlaybillUrl(url, show) {
     const staged = slug && _venueMarkets ? _venueMarkets.get(slug) : null;
     if (!staged || !staged.has(marketOf(show.category))) return null;
   }
-  if (!isLondonUrl && isLondon && (u.includes('-broadway-') || u.includes('-off-broadway-'))) return null;
-  if (u.includes('-off-broadway-')) s += isOB ? 5 : -5;
-  else if (u.includes('-broadway-')) s += isOB ? -5 : 5;
+  if (!isLondonUrl && isLondon && (marketTail.includes('-broadway-') || marketTail.includes('-off-broadway-'))) return null;
+  if (marketTail.includes('-off-broadway-')) s += isOB ? 5 : -5;
+  else if (marketTail.includes('-broadway-')) s += isOB ? -5 : 5;
   else if (isLondonUrl) s += 5;
   const cv = canonicalVenue(show.venue || '');
   if (cv) {
     const cvSlug = cv.replace(/\s+/g, '-');
+    // Deliberately the WHOLE url, unlike the market tests above. 18 of 2,942
+    // titles contain their own venue slug (stub titles shaped "Show — Venue":
+    // "The Cherry Orchard Park Avenue Armory", "Dear England New Wimbledon
+    // Theatre", …), so this +2 can fire off the title. Measured and left: the
+    // title is in EVERY title-matching candidate, so the bonus lands on all of
+    // them equally and cannot reorder them, and +8 already clears findPlaybill
+    // Url's `score > 0`. Narrowing it to marketTail would change no outcome.
     if (u.includes(cvSlug)) s += 2;
   }
   const idYear = (show.id || '').match(/\d{4}/)?.[0];

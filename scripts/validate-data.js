@@ -29,6 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
@@ -2461,23 +2462,14 @@ function validateOutletRegistryFields() {
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
   const outlets = registry.outlets || registry;
 
-  const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
   let badFields = 0;
   for (const [id, entry] of Object.entries(outlets)) {
     if (id === '_aliasIndex' || id === '_meta') continue;
     if (!entry || typeof entry !== 'object') continue;
 
-    if (entry.starScale !== undefined) {
-      if (typeof entry.starScale !== 'number' || !ALLOWED_STAR_SCALES.has(entry.starScale)) {
-        error(`[registry-field] outlet "${id}": starScale=${JSON.stringify(entry.starScale)} is invalid — must be one of ${[...ALLOWED_STAR_SCALES].join(', ')}`);
-        badFields++;
-      }
-    }
-    if (entry.multiAuthor !== undefined) {
-      if (typeof entry.multiAuthor !== 'boolean') {
-        error(`[registry-field] outlet "${id}": multiAuthor=${JSON.stringify(entry.multiAuthor)} must be a boolean (true or false)`);
-        badFields++;
-      }
+    for (const message of outletFieldShapeErrors(id, entry)) {
+      error(message);
+      badFields++;
     }
   }
   if (badFields === 0) {

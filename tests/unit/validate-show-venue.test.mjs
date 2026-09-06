@@ -432,3 +432,45 @@ test('a show whose TITLE contains "tour" still matches its own correct URL (whol
   assert.ok(score !== null && score > 0,
     `the title's own "-tour-" must not reject its own off-Broadway page, got ${score}`);
 });
+
+// The SAME whole-url defect in the market tests a few lines further down.
+// v39 narrowed only the regional/tour reject to `marketTail`; `-london-`,
+// `-broadway-` and `-off-broadway-` were still read off the WHOLE url, and the
+// title is part of the url.
+//
+// Both of these are LATENT shapes, stated plainly so nobody later reads them as
+// incident repros: measured 2026-09-05, 16 of 2,942 corpus titles carry a market
+// word, none of them changes score under the fix, and all 107 live
+// playbill-urls.json entries score identically old-vs-new. The whole-url read
+// only bites when the title's market word contradicts the url's real market
+// segment, which is why these two cases are constructed rather than quoted.
+test('a show whose TITLE contains "london" still matches its own correct non-London URL', () => {
+  const show = {
+    id: 'a-night-in-london-off-broadway-2026',
+    title: 'A Night in London',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/a-night-in-london-off-broadway-soho-playhouse-2026', show);
+  assert.ok(score !== null && score > 0,
+    `the title's own "-london-" must not trip the cross-market reject on its own off-Broadway page, got ${score}`);
+});
+
+test('a TITLE containing "broadway" does not change the market bonus (self-corroboration)', () => {
+  // Same category, same market segment in the url, same venue — the ONLY
+  // difference is a market word inside the title, so the scores must be equal.
+  const withWord = {
+    id: 'prince-of-broadway-regional-2024', title: 'Prince of Broadway',
+    venue: 'Some Company', category: 'regional',
+  };
+  const without = {
+    id: 'prince-of-tides-regional-2024', title: 'Prince of Tides',
+    venue: 'Some Company', category: 'regional',
+  };
+  const a = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-broadway-regional-some-company-2024', withWord);
+  const b = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-tides-regional-some-company-2024', without);
+  assert.ok(a !== null && b !== null, `both must match their own regional page, got ${a} and ${b}`);
+  assert.equal(a, b, `the title's own "-broadway-" must not earn a market bonus: ${a} vs ${b}`);
+});

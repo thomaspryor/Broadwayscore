@@ -47,9 +47,16 @@
 // off-broadway (420), west-end (132), off-west-end (335), regional (28).
 // Only the London pair is bucketed here, so `regional` falls on the non-London
 // side and a regional show cached to a Broadway URL is NOT flagged. That is
-// deliberate and matches scorePlaybillUrl, which likewise only rejects a
-// regional/tour URL for an off-broadway or category-less show and never
-// rejects a regional SHOW on a Broadway URL. There are zero such entries in
+// deliberate and still matches scorePlaybillUrl in the direction that matters:
+// it never rejects a regional SHOW on a Broadway URL either. Do NOT read the
+// other direction off this comment — it used to say scorePlaybillUrl "only
+// rejects a regional/tour URL for an off-broadway or category-less show", and
+// that stopped being true when CI run 34000023372 went red: the reject now
+// covers EVERY non-regional category. A comment describing another module's
+// rule is the shape that put main red in the first place, so it is narrowed
+// here to the one claim this file's own bucketing depends on.
+//
+// There are zero such entries in
 // the live cache (all 113 resolve to -broadway-, -off-broadway-, -london- or
 // no market segment at all, and only the 6 London ones were wrong), and
 // widening the buckets means changing the scorer in the same breath — a
