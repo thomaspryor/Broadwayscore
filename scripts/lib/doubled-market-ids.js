@@ -128,7 +128,13 @@ function doubledMarketParts(id) {
   return { prefix, market, year, doubledWord: word };
 }
 
-/** @returns {boolean} true when the id doubles its market AND is not allowlisted. */
+/**
+ * @returns {boolean} true when the id carries a market keyword at the seam
+ *   between its title slug and its market segment AND is not allowlisted. The
+ *   seam word need NOT equal the market segment — see the header; an earlier
+ *   version of this line said "doubles its market", which is the narrower rule
+ *   the implementation deliberately does not use.
+ */
 function isUnallowlistedDoubledMarketId(id) {
   return doubledMarketParts(id) !== null && !ALLOWLIST.has(String(id));
 }

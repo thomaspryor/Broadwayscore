@@ -13,7 +13,10 @@
  * Decision logic is in scripts/lib/doubled-market-ids.js so the test asserts the
  * real function rather than a copy (CLAUDE.md rule 15).
  *
- * Exit 0 when no unallowlisted id doubles its market; exit 1 otherwise.
+ * Exit 0 when no unallowlisted id carries a market keyword at the seam between
+ * its title slug and its market segment; exit 1 otherwise. The seam word need
+ * not EQUAL the market segment ("...-tour-off-broadway-2026" counts) — the
+ * signal is a market word at the join, whichever market it names.
  */
 
 const fs = require('fs');
