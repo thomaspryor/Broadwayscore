@@ -40,11 +40,18 @@ const EXEMPT = new Map([
  * Scoped to the job where the 2026-09-06 incident happened and where the
  * change was reviewed.
  *
- * The `lint-workflows` job has the same shape in 7 more steps, but widening
- * this rule there is a separate call needing its own review under the
- * shared-infrastructure rule: that job's earlier steps are checkout/setup, so
- * whether an audit should still run after they fail is a different question
- * from a 56-step data job. Tracked on Linear rather than folded in silently.
+ * `lint-workflows` was added 2026-09-06 (BRO-2906). Its count was NOT 7 as the
+ * card said: 31 of its 61 steps invoke a scripts/audit-*.js and none carried an
+ * `if:`. It uses the compound `always() && steps.deps.outcome == 'success'`
+ * rather than data-validation's bare `always()`, because a blanket always()
+ * there would run 31 audits after a failed checkout and emit 31 confusing
+ * missing-file errors.
+ *
+ * Coverage in that job is PARTIAL and the limit is deliberate: 25 sibling
+ * "Audit — …"/"Check …" steps run inline `node -e` or a shell script rather
+ * than `scripts/audit-*.js`, so auditSteps() below does not match them and they
+ * can still mask each other. Widening the matcher to reach them is a separate,
+ * reviewed change.
  */
 const SCOPED_JOBS = new Set(['data-validation', 'lint-workflows']);
 
@@ -152,6 +159,56 @@ test('a step gated on steps.<id>.outcome actually runs AFTER that step (BRO-2906
     'A gate referencing a step that runs later, or no step at all, evaluates to a non-success ' +
       'outcome forever, so the gated step never runs and the guard silently protects nothing:\n  ' +
       problems.join('\n  ')
+  );
+});
+
+/**
+ * The ordering test above is not enough on its own. A reviewer defeated it by
+ * inserting a decoy `id: gate` step carrying `if: false` ABOVE Setup Node and
+ * repointing all 32 gates at it: every audit is then permanently skipped and
+ * all tests still passed. Two more invariants close that, and the related case
+ * where a new failing step is slipped in ahead of the step the gates depend on.
+ */
+test('lint-workflows gates reference the real, unconditional deps step (BRO-2906)', () => {
+  const steps = loadWorkflow().jobs['lint-workflows'].steps || [];
+
+  const wrongRef = steps
+    .filter((s) => /steps\.[A-Za-z0-9_-]+\.outcome/.test(String(s.if || '')))
+    .filter((s) => !/steps\.deps\.outcome/.test(String(s.if || '')))
+    .map((s) => `${s.name}: ${s.if}`);
+  assert.deepEqual(
+    wrongRef,
+    [],
+    'these steps gate on something other than steps.deps — a decoy step that is always skipped ' +
+      'would permanently disable every audit while looking correctly gated:\n  ' + wrongRef.join('\n  ')
+  );
+
+  const deps = steps.find((s) => s.id === 'deps');
+  assert.ok(deps, 'no step carries id: deps');
+  assert.equal(
+    deps.if,
+    undefined,
+    `the deps step must be unconditional; with an if: (${JSON.stringify(deps.if)}) it can evaluate ` +
+      'to skipped forever, and every audit gated on its outcome is then skipped forever too'
+  );
+});
+
+test('nothing new sits ahead of the deps step that could skip it (BRO-2906)', () => {
+  const steps = loadWorkflow().jobs['lint-workflows'].steps || [];
+  const depsIndex = steps.findIndex((s) => s.id === 'deps');
+  assert.ok(depsIndex >= 0, 'no step carries id: deps');
+
+  // Anything before deps that FAILS leaves deps skipped, which re-masks all 31
+  // audits while every other assertion here stays green. Keep that prefix an
+  // explicit allowlist so adding to it is a deliberate, reviewed act.
+  const ALLOWED_PREFIX = ['Checkout', 'Install actionlint', 'Setup Node (for orphan-test audit)'];
+  const actual = steps.slice(0, depsIndex).map((s) => String(s.name || s.uses));
+  assert.deepEqual(
+    actual,
+    ALLOWED_PREFIX,
+    'the steps preceding `deps` changed. Every one of them can skip `deps` by failing, which ' +
+      'silently re-masks all 31 gated audits. If the new step is genuinely required setup, add it ' +
+      'to ALLOWED_PREFIX deliberately; if it is an audit, it belongs BELOW the gate.'
   );
 });
 
