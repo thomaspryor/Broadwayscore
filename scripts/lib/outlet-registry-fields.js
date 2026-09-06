@@ -26,8 +26,18 @@
  * `!== undefined` test. Outlets that publish no star rating omit the key.
  */
 
-// Denominators the score parsers understand. Keep in sync with
-// scripts/lib/score-parsers.js.
+// The denominators an outlet is allowed to DECLARE in the registry.
+//
+// This is deliberately NOT "whatever score-parsers.js can divide by" —
+// score-parsers.js accepts any positive finite number (see its outlet-scale
+// branch), so it imposes no constraint at all. This set is the narrower
+// editorial contract: these are the rating scales real outlets publish, and
+// anything else in the registry is a data-entry or scraper-inference mistake
+// rather than a new scale. Widen it only alongside a real outlet that uses the
+// new denominator.
+//
+// scripts/audit-outlet-star-scales.js --apply imports this set to refuse
+// writing an inferred denominator outside it.
 const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
 
 /**

@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { ALLOWED_STAR_SCALES } = require('./lib/outlet-registry-fields');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
@@ -164,6 +165,18 @@ function modeDiscover(apply) {
     let skipped = 0;
     for (const r of classification.high) {
       const entry = outlets[r.outletId];
+      // detectDenominator accepts any 0 < denom <= 100, and classifyOutlet
+      // promotes whatever denominator dominates — so a corpus dominated by a
+      // "/6" or "/3" rating would write a starScale that both
+      // audit-outlet-registry.js --strict and validate-data.js now reject,
+      // landing an invalid value in the registry and breaking the next CI run.
+      // Refuse at the writer instead: one contract, enforced where the value is
+      // produced as well as where it is read.
+      if (!ALLOWED_STAR_SCALES.has(r.starScale)) {
+        console.log(`  SKIP ${r.outletId}: denominator ${JSON.stringify(r.starScale)} is not a supported starScale (${[...ALLOWED_STAR_SCALES].join(', ')}) — not written`);
+        skipped++;
+        continue;
+      }
       if (entry.starScale === r.starScale) { skipped++; continue; }
       if (entry.starScale != null && entry.starScale !== r.starScale) {
         console.log(`  SKIP ${r.outletId}: existing starScale=${entry.starScale} disagrees with audit=${r.starScale}`);

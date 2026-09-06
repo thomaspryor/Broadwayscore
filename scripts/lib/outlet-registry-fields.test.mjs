@@ -49,6 +49,27 @@ test('every allowed denominator passes, and a plausible-but-unsupported one fail
   assert.equal(findInvalidRegistryFields({ outlets: { o: { starScale: '5' } } }).length, 1);
 });
 
+test('ALLOWED_STAR_SCALES is pinned — widening it silently weakens both gates AND the writer', () => {
+  // scripts/audit-outlet-star-scales.js --apply imports this set to refuse
+  // writing an inferred denominator outside it. Adding a value here quietly
+  // permits that denominator in three places at once, so the set is pinned and
+  // a deliberate widening has to update this test in the same commit.
+  assert.deepEqual([...ALLOWED_STAR_SCALES].sort((a, b) => a - b), [4, 5, 10, 100]);
+});
+
+test('the star-scale writer imports the shared allow-list rather than re-deriving one', () => {
+  // Structural assertion: the guard added at the --apply write site is the
+  // thing that stops an inferred "/6" landing in the registry and breaking the
+  // next CI run. If someone deletes the import or the membership check, this
+  // fails rather than the regression reappearing silently in production.
+  const writerPath = path.join(HERE, '..', 'audit-outlet-star-scales.js');
+  const src = fs.readFileSync(writerPath, 'utf8');
+  assert.match(src, /require\(['"]\.\/lib\/outlet-registry-fields['"]\)/,
+    'audit-outlet-star-scales.js must import the shared allow-list');
+  assert.match(src, /ALLOWED_STAR_SCALES\.has\(/,
+    'audit-outlet-star-scales.js must gate its registry write on ALLOWED_STAR_SCALES');
+});
+
 test('multiAuthor must be a real boolean, not a truthy string', () => {
   assert.deepEqual(findInvalidRegistryFields({ outlets: { o: { multiAuthor: true } } }), []);
   assert.deepEqual(findInvalidRegistryFields({ outlets: { o: { multiAuthor: false } } }), []);
