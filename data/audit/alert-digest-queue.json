@@ -24,18 +24,6 @@
     "queuedAt": "2026-09-05T02:23:04.226Z"
   },
   {
-    "conditionKey": "dispatch-flow-dead",
-    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
-    "description": "Only 9 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 195). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T04:17:49.477Z"
-  },
-  {
     "conditionKey": "on-monitor-launched-on-monitor-2026-09-04",
     "title": "Opening-night monitor pass complete: holy-fool-off-west-end-2026",
     "description": "Pass 1, model opus, 11min, $1.09. Pass 1 complete — exited cleanly inside the 15-min budget, no report sent (parity not reached, window open until 22:59Z).\n\n**Holy Fool (Park Theatre, off-West-End) — press night 2026-09-04**\n\nLive on prod: **1 review** — WhatsOnStage / Miriam Sallon, score 38 (Negative). No composite score yet (1 review is below display threshold). Show status is already `open`.\n\nIndependent census found **9 outlets**, so the gap is large:\n- 6 never seen by the pipeline at all: The Stage, Everything Theatre, The Spy in the Stalls (4★), West End Best Friend, Jewish News, Theatre and Tonic\n- 2 discovered but text never collected (0-byte stubs): The Reviews Hub, readaboutstuff\n- 1 duplicate artifact: `whatsonstage--unknown.json` is a 0-byte stub of the same URL as the live WhatsOnStage file\n\nCaveat I recorded",
@@ -231,5 +219,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T23:00:06.190Z"
+  },
+  {
+    "conditionKey": "dispatch-flow-dead",
+    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
+    "description": "Only 8 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 197). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-06T04:32:22.232Z"
   }
 ]
