@@ -46,7 +46,26 @@ const EXEMPT = new Map([
  * whether an audit should still run after they fail is a different question
  * from a 56-step data job. Tracked on Linear rather than folded in silently.
  */
-const SCOPED_JOBS = new Set(['data-validation']);
+const SCOPED_JOBS = new Set(['data-validation', 'lint-workflows']);
+
+/**
+ * An audit step is only genuinely unmaskable if its condition is one of these
+ * two exact shapes. Checking merely that the string CONTAINS `always()` is not
+ * enough — `always() && false`, `always() && steps.x.outcome != 'failure'`
+ * (true when x is skipped) and `always() && (… || true)` all contain it while
+ * reopening the hole. BRO-2906.
+ */
+const ACCEPTED_CONDITIONS = [
+  /^always\(\)$/,
+  /^always\(\)\s*&&\s*steps\.[A-Za-z0-9_-]+\.outcome\s*==\s*'success'$/,
+];
+
+function conditionIsFailClosed(cond) {
+  const c = String(cond || '').trim();
+  if (/\|\|/.test(c)) return false; // an OR can always be made true
+  if (/!=/.test(c)) return false; // != 'failure' is true when the step is SKIPPED
+  return ACCEPTED_CONDITIONS.some((re) => re.test(c));
+}
 
 function loadWorkflow() {
   return yaml.load(fs.readFileSync(WORKFLOW, 'utf-8'));
@@ -76,9 +95,13 @@ test('the workflow parses and actually contains audit steps (guard against a vac
   const steps = auditSteps(workflow);
   // If this ever drops to 0 the assertions below would pass while checking
   // nothing — the exact silence-reads-as-safety shape this file is about.
+  // Raised from 20 to 50 when lint-workflows joined SCOPED_JOBS (BRO-2906).
+  // data-validation alone contributes 24, so a floor of 20 would still pass
+  // even if every lint-workflows step silently vanished — the guard against a
+  // vacuous pass would itself have become vacuous.
   assert.ok(
-    steps.length >= 20,
-    `expected at least 20 audit-*.js steps, found ${steps.length} — the matcher or the workflow shape changed`
+    steps.length >= 50,
+    `expected at least 50 audit-*.js steps across ${[...SCOPED_JOBS].join(' + ')}, found ${steps.length} — the matcher or the workflow shape changed`
   );
 });
 
@@ -86,8 +109,7 @@ test('every audit-*.js CI step carries if: always(), so an earlier failure canno
   const workflow = loadWorkflow();
   const offenders = auditSteps(workflow).filter((step) => {
     if (EXEMPT.has(step.name)) return false;
-    const cond = typeof step.if === 'string' ? step.if : '';
-    return !cond.includes('always()');
+    return !conditionIsFailClosed(step.if);
   });
 
   assert.deepEqual(
@@ -97,6 +119,57 @@ test('every audit-*.js CI step carries if: always(), so an earlier failure canno
       'the run reports nothing about what they check — the 2026-09-06 outlet-registry incident. ' +
       'Add `if: always()` (they are read-only), or add the step to EXEMPT with a reason:\n' +
       offenders.map((o) => `  - ${o.jobId} / ${o.name}\n      if: ${JSON.stringify(o.if)}\n      run: ${o.run}`).join('\n')
+  );
+});
+
+test('a step gated on steps.<id>.outcome actually runs AFTER that step (BRO-2906)', () => {
+  const workflow = loadWorkflow();
+  const problems = [];
+
+  for (const [jobId, job] of Object.entries(workflow.jobs || {})) {
+    if (!SCOPED_JOBS.has(jobId)) continue;
+    const steps = job.steps || [];
+    const indexOfId = new Map();
+    steps.forEach((s, i) => { if (s.id) indexOfId.set(s.id, i); });
+
+    steps.forEach((step, i) => {
+      const m = String(step.if || '').match(/steps\.([A-Za-z0-9_-]+)\.outcome/);
+      if (!m) return;
+      const refId = m[1];
+      if (!indexOfId.has(refId)) {
+        problems.push(`${jobId} / ${step.name}: gated on steps.${refId} which has no step carrying that id`);
+        return;
+      }
+      if (indexOfId.get(refId) > i) {
+        problems.push(`${jobId} / ${step.name}: gated on steps.${refId}, which runs LATER (index ${indexOfId.get(refId)} vs ${i})`);
+      }
+    });
+  }
+
+  assert.deepEqual(
+    problems,
+    [],
+    'A gate referencing a step that runs later, or no step at all, evaluates to a non-success ' +
+      'outcome forever, so the gated step never runs and the guard silently protects nothing:\n  ' +
+      problems.join('\n  ')
+  );
+});
+
+test('lint-workflows runs its setup BEFORE the job-fatal actionlint step (BRO-2906)', () => {
+  const steps = loadWorkflow().jobs['lint-workflows'].steps || [];
+  const idx = (pred) => steps.findIndex(pred);
+
+  const deps = idx((s) => s.id === 'deps');
+  const lint = idx((s) => String(s.name || '') === 'Lint workflow files');
+
+  assert.ok(deps >= 0, 'no step carries id: deps — the audit gates below reference it');
+  assert.ok(lint >= 0, 'the "Lint workflow files" step is gone');
+  assert.ok(
+    lint > deps,
+    '"Lint workflow files" (actionlint) runs BEFORE the deps step it is ordered after. actionlint ' +
+      'is job-fatal — it has no continue-on-error, whatever .github/workflows/CLAUDE.md may say — ' +
+      'so with it above the setup, an actionlint failure leaves steps.deps skipped and EVERY audit ' +
+      `gated on it is skipped too. The unmasking fix silently does nothing. (deps=${deps}, lint=${lint})`
   );
 });
 
