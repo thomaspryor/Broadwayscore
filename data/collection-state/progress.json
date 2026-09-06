@@ -36,7 +36,10 @@
     "pride-west-end-2026/whatsonstage--editorial-staff.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "spellbound-off-broadway-2026/theater-life--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -151,7 +154,8 @@
     "beetlejuice-west-end-2026/deadline--greg-evans.json",
     "beetlejuice-west-end-2026/ew--nick-romano.json",
     "beetlejuice-west-end-2026/newsday--barbara-schuler.json",
-    "beetlejuice-west-end-2026/nydailynews--chris-jones.json"
+    "beetlejuice-west-end-2026/nydailynews--chris-jones.json",
+    "paranormal-activity-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -181,14 +185,17 @@
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "spellbound-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-story-west-end-2026/times-uk--clive-davis.json",
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
@@ -199,7 +206,8 @@
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-      "pride-west-end-2026/whatsonstage--editorial-staff.json"
+      "pride-west-end-2026/whatsonstage--editorial-staff.json",
+      "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -210,7 +218,7 @@
     ]
   },
   "startTime": "2026-09-06T12:13:38.167Z",
-  "lastProcessed": "beetlejuice-west-end-2026/nydailynews--chris-jones.json",
+  "lastProcessed": "spellbound-off-broadway-2026/theater-life--unknown.json",
   "log": [
     {
       "t": "2026-09-06T12:18:40.390Z",
@@ -275,6 +283,28 @@
       "event": "bb-session",
       "session": "4631a743",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-06T13:20:51.554Z",
+      "event": "bb-session",
+      "session": "327d0948",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-06T13:20:52.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-06T13:21:06.759Z",
+      "event": "bb-session",
+      "session": "5e30a1ea",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-06T13:21:08.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

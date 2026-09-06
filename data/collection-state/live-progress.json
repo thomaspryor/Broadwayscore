@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-06T12:50:04.310Z",
-  "processed": 37,
-  "failed": 113,
-  "successRate": "24.7%",
+  "updatedAt": "2026-09-06T13:22:01.424Z",
+  "processed": 40,
+  "failed": 114,
+  "successRate": "26.0%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 1,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-06T12:18:40.390Z",
@@ -78,6 +78,28 @@
       "event": "bb-session",
       "session": "4631a743",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-06T13:20:51.554Z",
+      "event": "bb-session",
+      "session": "327d0948",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-06T13:20:52.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-06T13:21:06.759Z",
+      "event": "bb-session",
+      "session": "5e30a1ea",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-06T13:21:08.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
