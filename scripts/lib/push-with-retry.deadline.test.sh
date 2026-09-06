@@ -142,11 +142,16 @@ setup_repo "$TMP5"
 git -C "$TMP5" remote add origin "file:///nonexistent/definitely/not/a/repo.git"
 printf '{ "ok": 5 }\n' > "$TMP5/state.json"
 git -C "$TMP5" add state.json
-( cd "$TMP5" && PUSH_DEADLINE_SEC=600 PUSH_API_FALLBACK_DISABLE=1 \
+out5=$( cd "$TMP5" && PUSH_DEADLINE_SEC=600 PUSH_API_FALLBACK_DISABLE=1 \
     PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$LOG5" \
-    bash "$PUSH_SCRIPT" 2 main >/dev/null 2>&1 )
+    bash "$PUSH_SCRIPT" 2 main 2>&1 )
 r5_reason=$(row_field "$LOG5" reason); r5_attempt=$(row_field "$LOG5" attempt)
-if [ ! -s "$LOG5" ]; then
+# Assert the loop really exited by EXHAUSTION. Without this the case could pass
+# on a row produced by a different exit entirely and still look like proof that
+# the historical reason survives.
+if grep -qE "overall deadline .* exceeded|breaking out of the local" <<<"$out5"; then
+  echo "FAIL[5]: an EARLY exit fired — this case must exercise true exhaustion"; fail=1
+elif [ ! -s "$LOG5" ]; then
   echo "FAIL[5]: no failure row written for a genuine exhaustion"; fail=1
 elif [ "$r5_reason" != "retries-exhausted" ]; then
   echo "FAIL[5]: true exhaustion must stay 'retries-exhausted' verbatim, got '$r5_reason'"; fail=1
@@ -159,15 +164,21 @@ fi
 # --- Case 6: EARLY-FALLBACK exit. This is the reviewer's correctness blocker:
 # _FAILURE_TELEMETRY_SENT is first-write-wins, so for a fallback-ELIGIBLE caller
 # the api-fallback-* row is the one that reaches the durable ledger, and fixing
-# only the generic site would leave those callers uncorrected. Eligibility needs
-# a resolvable origin merge-base (SCRIPT_ENTRY_BASE), so the remote must be
-# SEEDED FIRST and only then made to reject: install the pre-receive hook before
-# the seed push and origin/main never exists, no merge base resolves, the
-# fallback is never eligible and the early break never fires — the loop then
-# runs to true exhaustion and attempt==MAX_RETRIES is CORRECT, not the bug.
-# That is why this case branches on which warning actually fired instead of
-# assuming the path it wanted was the path it got (absence of a signal is not
-# a passing signal). ---
+# only the generic site would leave those callers uncorrected.
+#
+# Eligibility needs a resolvable origin merge-base (SCRIPT_ENTRY_BASE), so the
+# remote must be SEEDED FIRST and only then made to reject. Install the
+# pre-receive hook before the seed push and origin/main never exists, no merge
+# base resolves, the fallback is never eligible, the early break never fires,
+# and attempt==MAX_RETRIES is then CORRECT rather than the bug.
+#
+# THE SETUP IS ASSERTED, NOT ASSUMED. An earlier draft of this case treated a
+# missing early-fallback warning as a passing SKIP, which meant any sandbox that
+# disallows file:// pushes would silently delete the ONLY coverage of the
+# early-fallback half of the fix while the suite stayed green. So the seed push
+# and the merge-base are checked explicitly: if they worked, the warning MUST
+# appear and its absence is a FAILURE. Only a demonstrably incapable
+# environment (seed push refused) skips, and it says so. ---
 TMP6=$(mktemp -d); LOG6="$TMP6/failures.jsonl"
 BARE6="$TMP6/origin.git"; WORK6="$TMP6/work"
 git init -q --bare "$BARE6"
@@ -177,8 +188,11 @@ git -C "$WORK6" config user.name t
 git -C "$WORK6" commit -q --allow-empty -m init
 git -C "$WORK6" branch -M main
 git -C "$WORK6" remote add origin "file://$BARE6"
-git -C "$WORK6" push -q origin main            # SEED first, while pushes still work
-git -C "$WORK6" fetch -q origin main:refs/remotes/origin/main
+seed6_ok=true
+git -C "$WORK6" push -q origin main 2>/dev/null || seed6_ok=false
+git -C "$WORK6" fetch -q origin main:refs/remotes/origin/main 2>/dev/null || seed6_ok=false
+base6=$(git -C "$WORK6" merge-base HEAD origin/main 2>/dev/null || true)
+[ -n "$base6" ] || seed6_ok=false
 printf '#!/bin/sh\nexit 1\n' > "$BARE6/hooks/pre-receive"   # now reject everything
 chmod +x "$BARE6/hooks/pre-receive"
 printf '{ "ok": 6 }\n' > "$WORK6/state.json"
@@ -187,22 +201,30 @@ git -C "$WORK6" add state.json
 # so their pushes fail whatever the tree holds; this case's remote is real and
 # only its pre-receive hook rejects, so a staged-but-uncommitted change leaves
 # nothing ahead of origin/main and the script correctly reports "Everything
-# up-to-date / Push succeeded on attempt 1" without ever entering the retry loop.
+# up-to-date / Push succeeded on attempt 1" without entering the retry loop.
 git -C "$WORK6" commit -q -m "state 6"
 out6=$( cd "$WORK6" && PUSH_DEADLINE_SEC=45 PUSH_API_FALLBACK_AFTER_ATTEMPTS=1 \
     PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$LOG6" \
     bash "$PUSH_SCRIPT" 9 main 2>&1 )
 r6_attempt=$(row_field "$LOG6" attempt); r6_reason=$(row_field "$LOG6" reason)
-if ! grep -q "breaking out of the local fetch+rebase+push loop early" <<<"$out6"; then
-  echo "SKIP[6]: early-fallback break did not fire in this sandbox (fallback ineligible or deadline won) — nothing asserted"
+# EVERY post-loop row, not just the last: a regression at one of the three
+# api-fallback-* sites would be invisible to a last-row-only assertion, and
+# those are exactly the sites that win the durable first-write race.
+r6_maxrows=$(grep -c '"attempt":9' "$LOG6" 2>/dev/null || true)
+if [ "$seed6_ok" != "true" ]; then
+  echo "SKIP[6]: this environment cannot seed a file:// remote — early-fallback path untestable here"
+elif ! grep -q "breaking out of the local fetch+rebase+push loop early" <<<"$out6"; then
+  echo "FAIL[6]: setup was good (merge base $base6) but the early-fallback break never fired — coverage lost"; fail=1
 elif [ ! -s "$LOG6" ]; then
   echo "FAIL[6]: early break fired but NO failure row was written"; fail=1
-elif [ "$r6_attempt" = "9" ]; then
-  echo "FAIL[6]: early break at attempt 1 still recorded attempt=9 (MAX_RETRIES) — reason '$r6_reason'"; fail=1
+elif [ "${r6_maxrows:-0}" != "0" ]; then
+  echo "FAIL[6]: ${r6_maxrows} row(s) recorded attempt=9 (MAX_RETRIES) after an early break at i=1"; fail=1
 elif [ "$r6_attempt" != "1" ]; then
   echo "FAIL[6]: expected attempt 1 after an early break at i=1, got '$r6_attempt' (reason '$r6_reason')"; fail=1
+elif [[ "$r6_reason" != retries-exhausted\(early-fallback\) && "$r6_reason" != api-fallback-* ]]; then
+  echo "FAIL[6]: unexpected reason '$r6_reason' — wanted retries-exhausted(early-fallback) or an api-fallback-* row"; fail=1
 else
-  echo "PASS[6]: early break records attempt=1, not MAX_RETRIES 9 (reason '$r6_reason')"
+  echo "PASS[6]: early break records attempt=1 on every post-loop row, reason '$r6_reason'"
 fi
 
 if [ "$fail" -ne 0 ]; then
