@@ -5,6 +5,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
+
 const require = createRequire(import.meta.url);
 const D = require('./doubled-market-ids.js');
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -245,4 +248,57 @@ test('no allowlist key is stale — every one names a show that still exists', (
       + 'leaves the key matching nothing while the renamed row rejoins the '
       + 'flagged set — update the key, do not delete the reason.',
   );
+});
+
+// THE CLI'S EXIT CODE IS ITS ENTIRE CONTRACT, and until this test existed nothing
+// covered it: every assertion above imports the library, so changing exit 2 back
+// to exit 1 — the change that makes "core data is missing" indistinguishable from
+// "a bad id was found" — left the whole file green. Driven as a SUBPROCESS,
+// because process.exit() is the behaviour under test.
+function runCli(showsJson) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dmi-cli-'));
+  const file = path.join(dir, 'shows.json');
+  fs.writeFileSync(file, showsJson);
+  const cli = path.join(here, '..', 'audit-doubled-market-ids.js');
+  const r = spawnSync(process.execPath, [cli], {
+    env: { ...process.env, SHOWS_PATH: file },
+    encoding: 'utf8',
+  });
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+
+test('CLI exit 0: a corpus with nothing flagged', () => {
+  const r = runCli(JSON.stringify({ shows: [{ id: 'redwood-2025', title: 'Redwood' }] }));
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /0 unallowlisted/);
+});
+
+test('CLI exit 1: a corpus with a flagged row', () => {
+  const r = runCli(JSON.stringify({
+    shows: [{ id: '1536-west-end-off-west-end-2026', title: '1536 West End' }],
+  }));
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  assert.match(r.stdout, /1536-west-end-off-west-end-2026/);
+});
+
+test('CLI exit 2, NOT 1, when it cannot run at all', () => {
+  // Unreadable, wrong shape, and empty each mean "this sweep did not happen".
+  // Exit 1 for any of them would report a checkout problem as a data defect.
+  const missing = spawnSync(process.execPath, [path.join(here, '..', 'audit-doubled-market-ids.js')], {
+    env: { ...process.env, SHOWS_PATH: path.join(os.tmpdir(), 'dmi-does-not-exist', 'shows.json') },
+    encoding: 'utf8',
+  });
+  assert.equal(missing.status, 2, missing.stdout + missing.stderr);
+  assert.match(missing.stderr, /CANNOT RUN/);
+
+  const wrongShape = runCli(JSON.stringify({ data: [] }));
+  assert.equal(wrongShape.status, 2, wrongShape.stdout + wrongShape.stderr);
+
+  const empty = runCli(JSON.stringify({ shows: [] }));
+  assert.equal(empty.status, 2, empty.stdout + empty.stderr);
+  assert.match(empty.stderr, /zero shows/);
+
+  const notJson = runCli('{ this is not json');
+  assert.equal(notJson.status, 2, notJson.stdout + notJson.stderr);
 });
