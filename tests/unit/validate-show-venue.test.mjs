@@ -555,3 +555,102 @@ test('the venue bonus still fires when the venue is genuinely in the tail', () =
   assert.ok(withVenue > without,
     `a venue named in the url's tail must still earn its bonus: ${withVenue} vs ${without}`);
 });
+
+// ---------------------------------------------------------------------------
+// Four defects a review found in the lines the market-tail change had just
+// rewritten. Each was reproduced before being fixed, and each assertion below
+// is that reproduction.
+
+// A market word can straddle the title/market SEAM without being inside the
+// title: "Noises Off" + "-broadway-" reads as "-off-broadway-" across the join,
+// so a Broadway show was charged the off-Broadway penalty on its own page
+// (8, then 18). This is a REGRESSION GUARD, not a fix in this commit — the tail
+// read already closed it, and this test passes with or without the four fixes
+// beside it. It is here because it is the clearest real instance of the whole
+// defect class and nothing pinned it: the market word is not in the title, so
+// every title-based sweep, including my own, walked straight past it.
+test('a title ending in "off" is not read as an OFF-BROADWAY url (noises-off)', () => {
+  const bw = { id: 'noises-off-2016', title: 'Noises Off', venue: 'American Airlines Theatre', category: 'broadway' };
+  const seam = scorePlaybillUrl(
+    'https://playbill.com/production/noises-off-broadway-american-airlines-theatre-2016', bw);
+  const control = { id: 'noises-on-2016', title: 'Noises On', venue: 'American Airlines Theatre', category: 'broadway' };
+  const clean = scorePlaybillUrl(
+    'https://playbill.com/production/noises-on-broadway-american-airlines-theatre-2016', control);
+  assert.equal(seam, clean,
+    `the "off" ending must not turn a Broadway url into an off-Broadway one: ${seam} vs ${clean}`);
+});
+
+// MARKET_KEYWORD_RE accepts "-west-end-", so such a url title-matched and then
+// fell through every market gate — the card #590 hole, left open on the other
+// spelling of the same market.
+// …and the first cut of that fix tested "-west-end-" with `includes`, which is
+// the same whole-string mistake one level down: the tail's venue portion
+// contains market words. othello-bedlam-off-broadway-2026 plays at the WEST END
+// THEATRE, a real off-Broadway house on West 86th, and went 16 -> null on its
+// own correct page. Caught by a corpus sweep before it shipped. The market word
+// is now read as the tail's LEADING segment only.
+test('an off-Broadway show at the West End Theatre keeps its own off-Broadway url', () => {
+  const othello = {
+    id: 'othello-bedlam-off-broadway-2026', title: 'Othello (Bedlam)',
+    venue: 'West End Theatre', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/othello-bedlam-off-broadway-west-end-theatre-2026', othello);
+  assert.ok(score !== null && score > 0,
+    `a venue named "West End Theatre" must not read as the West End market, got ${score}`);
+});
+
+test('a "-west-end-" url is rejected for a Broadway show, exactly like "-london-"', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/hamilton-west-end-victoria-palace-theatre-2017', bw), null,
+  'a West End url must not be accepted for a Broadway show under the "-west-end-" spelling');
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/hamilton-london-victoria-palace-theatre-2017', bw), null,
+  'and the "-london-" spelling must still be rejected');
+});
+
+// canonicalVenue() returns a venue's FIRST WORD, so "Broadway Theatre" is
+// "broadway" — which matched the market segment the tail begins with, awarding
+// the venue bonus on a url naming a different house entirely.
+test('a house named after its market does not match the market segment itself', () => {
+  const url = 'https://playbill.com/production/some-play-off-broadway-soho-playhouse-2026';
+  const atBroadwayTheatre = { id: 'some-play-2026', title: 'Some Play', venue: 'Broadway Theatre', category: 'off-broadway' };
+  const atPalace = { id: 'some-play-2026', title: 'Some Play', venue: 'Palace Theatre', category: 'off-broadway' };
+  const a = scorePlaybillUrl(url, atBroadwayTheatre);
+  const b = scorePlaybillUrl(url, atPalace);
+  assert.equal(a, b,
+    `neither venue appears in this url's tail, so both must score the same: Broadway Theatre=${a} Palace=${b}`);
+});
+
+// Our ids are "<title-slug>-<year>", so the FIRST four-digit run is the title
+// for a numerically-titled show. Reading the year off the tail made the signal
+// dead for those 16 shows until the id parse took the LAST run instead.
+// Asserting only "the right url outscores the wrong one" is NOT enough here and
+// the first draft of this test made exactly that mistake — it passed against the
+// unfixed code, because the venue bonus alone produced the gap (17 vs 15) while
+// the year contributed 0 to both. Hold venue and url constant and vary ONLY the
+// id's year, so the assertion can be about the year bonus and nothing else.
+test('a numeric title does not steal the year signal (1776-2022)', () => {
+  const url = 'https://playbill.com/production/1776-broadway-american-airlines-theatre-2022';
+  const matching = { id: '1776-2022', title: '1776', venue: 'American Airlines Theatre', category: 'broadway' };
+  const notMatching = { id: '1776-1999', title: '1776', venue: 'American Airlines Theatre', category: 'broadway' };
+  const withYear = scorePlaybillUrl(url, matching);
+  const withoutYear = scorePlaybillUrl(url, notMatching);
+  assert.ok(withYear > withoutYear,
+    `1776-2022 must earn the year bonus on a 2022 url — reading the FIRST 4-digit run gives "1776", which is the title and is not in the tail, so neither scored it: ${withYear} vs ${withoutYear}`);
+});
+
+// A legacy url has no market tail, and the year bonus used to read the WHOLE
+// url for it — so a numerically-titled show earned the bonus off its own name.
+// This one has to assert the ABSOLUTE score: every relative form of it passes
+// either way, because varying the id's year changes nothing when the bonus is
+// really being paid by the title. 10 = 8 (legacy title match) + 2 (venue), with
+// NO year component; before the fix it was 11.
+test('a legacy url does not pay the year bonus out of the title (1984)', () => {
+  const show = { id: '1984-2017', title: '1984', venue: 'Hudson Theatre', category: 'broadway' };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/1984-hudson-theatre-vault-0000012345', show);
+  assert.equal(score, 10,
+    `expected 8 (legacy) + 2 (venue) and no year bonus; 11 means "1984" in the path was read as this show's production year, got ${score}`);
+});

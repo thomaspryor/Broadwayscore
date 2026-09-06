@@ -399,7 +399,11 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
     // SERP results are not guaranteed slash-free, so strip before matching.
     .replace(/\/+$/, '');
   const forms = titleForms(show && show.title);
-  const miss = { match: false, branch: null, form: null, corroboration: null };
+  // marketTail is '' here, not absent: the docblock tells callers to read the
+  // market off it, so a miss must still satisfy that shape. The only caller
+  // checks `match` first, but a second one following the docblock literally
+  // would get "Cannot read properties of undefined (reading 'includes')".
+  const miss = { match: false, branch: null, form: null, marketTail: '', corroboration: null };
   if (!forms.exact) return miss;
 
   const rawSegs = marketTitleSegments(u);
