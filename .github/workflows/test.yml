@@ -4775,6 +4775,16 @@ jobs:
         # bodies (e.g. a cookie-expiry) trips it. That's a real ship-blocker.
 
       - name: Audit critic-outlet affinities
+        # if: always() for the same reason as "Audit outlet-registry gaps" below
+        # (2026-09-06): without it this step defaults to if: success() and any
+        # earlier failure in this 56-step job SKIPS it, so the run reports
+        # nothing about critic-outlet affinities and the silence reads as a
+        # pass. Read-only (--strict never writes), so running it after an
+        # earlier failure is always safe and strictly more informative. If the
+        # review-texts checkout is what failed, this step fails too, saying so
+        # explicitly — the same deliberate pairing as the six REQUIRE_REVIEW_CORPUS
+        # steps in this job.
+        if: always()
         run: node scripts/audit-critic-outlets.js --strict
         # Baseline-diff (task #1668, mirrors #1665/#1666): the pre-existing
         # 43-flagged-review backlog is frozen in
@@ -4813,6 +4823,12 @@ jobs:
         # un-baselined missing outlet fails the build.
 
       - name: Audit Broadway-category predicate re-derivations
+        # if: always() — same skip-on-earlier-failure shape as the 2026-09-06
+        # outlet-registry incident documented above. This script reads only
+        # scripts/** source plus its git-tracked baseline, so it has no
+        # dependency on any earlier step's side effects and is always safe to
+        # run after a failure.
+        if: always()
         run: node scripts/audit-broadway-category-predicate.js --strict
         # Flags raw `category === 'broadway'` literals that should call
         # isBroadwayCategory() (scripts/lib/venue-classification.js) instead —
