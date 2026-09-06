@@ -21,6 +21,7 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const { loadPlaybillUrls, savePlaybillUrls } = require('./lib/playbill-urls-store');
 
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -158,11 +159,10 @@ async function main() {
 
   console.log(`Target: ${targetShows.length} open Broadway shows\n`);
 
-  // Load existing URLs
-  let existing = { shows: {}, lastUpdated: '' };
-  try {
-    existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
-  } catch { /* first run */ }
+  // Load existing URLs. The SNAPSHOT is the load-bearing half: savePlaybillUrls
+  // diffs the working copy against it to replay only what THIS run changed onto
+  // a fresh read, so a concurrent writer's entries survive (BRO-2895).
+  const { data: existing, snapshot: existingSnapshot } = loadPlaybillUrls(OUTPUT_PATH);
 
   let found = 0, failed = 0, skipped = 0;
 
@@ -227,14 +227,18 @@ async function main() {
     await sleep(300); // Small delay between shows
   }
 
-  existing.lastUpdated = new Date().toISOString();
 
   console.log(`\nResults: ${found} found, ${failed} failed, ${skipped} skipped (already have URL)`);
   console.log(`Total URLs in file: ${Object.keys(existing.shows).length}`);
 
   if (!dryRun && (found > 0)) {
-    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(existing, null, 2) + '\n');
-    console.log(`Saved to ${OUTPUT_PATH}`);
+    const r = savePlaybillUrls(OUTPUT_PATH, existing, existingSnapshot);
+    console.log(`Saved to ${OUTPUT_PATH} (${r.sets} set, ${r.deletes} removed)`);
+    if (r.recovered > 0) {
+      // Non-zero means a concurrent writer added entries while this run was
+      // working. The old whole-file write destroyed exactly these silently.
+      console.log(`  merged ${r.recovered} entry(ies) another writer added since this run loaded the cache`);
+    }
   } else if (dryRun) {
     console.log('[DRY RUN] Would save to playbill-urls.json');
   }
