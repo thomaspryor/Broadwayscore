@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T22:44:24.670Z",
+  "generatedAt": "2026-09-06T12:59:19.934Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,25 @@
       "status": "open",
       "slug": "holy-fool-off-west-end",
       "thumbnail": "/images/shows/holy-fool-off-west-end-2026/thumbnail.webp",
-      "siteScore": 57.35,
-      "liveScore": 57,
-      "scoreDrift": -0.3500000000000014,
+      "siteScore": 55.82,
+      "liveScore": 56,
+      "scoreDrift": 0.17999999999999972,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 20,
       "t1": 1,
-      "t2": 5,
-      "t3": 11,
-      "positive": 4,
+      "t2": 6,
+      "t3": 13,
+      "positive": 5,
       "mixed": 8,
-      "negative": 5,
+      "negative": 7,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -146,6 +146,18 @@
           "m": 8,
           "n": 5,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-06T12:59:19.934Z",
+          "rc": 20,
+          "s": 55.82,
+          "t1": 1,
+          "t2": 6,
+          "t3": 13,
+          "p": 5,
+          "m": 8,
+          "n": 7,
+          "bc": "waiting"
         }
       ]
     },
@@ -159,23 +171,23 @@
       "status": "open",
       "slug": "the-story-west-end",
       "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "siteScore": 59.25,
-      "liveScore": 59,
-      "scoreDrift": -0.25,
+      "siteScore": 59.57,
+      "liveScore": 60,
+      "scoreDrift": 0.4299999999999997,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 8,
+      "total": 22,
+      "t1": 9,
       "t2": 7,
-      "t3": 5,
-      "positive": 5,
-      "mixed": 10,
+      "t3": 6,
+      "positive": 6,
+      "mixed": 11,
       "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -198,10 +210,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -307,291 +315,23 @@
           "m": 10,
           "n": 5,
           "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-09-02",
-      "status": "open",
-      "slug": "a-month-in-the-country-west-end",
-      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.13,
-      "liveScore": 78,
-      "scoreDrift": -0.12999999999999545,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 21,
-      "t1": 8,
-      "t2": 8,
-      "t3": 5,
-      "positive": 17,
-      "mixed": 3,
-      "negative": 1,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 11,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
         },
         {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-09-02T10:31:59.044Z",
-          "rc": 2,
-          "s": 77,
-          "t1": 1,
-          "t2": 0,
-          "t3": 1,
-          "p": 1,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-02T13:26:38.266Z",
-          "rc": 4,
-          "s": 71.83,
-          "t1": 1,
-          "t2": 0,
-          "t3": 3,
-          "p": 2,
-          "m": 1,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-03T19:22:35.678Z",
-          "rc": 8,
-          "s": 83.18,
-          "t1": 2,
-          "t2": 3,
-          "t3": 3,
-          "p": 7,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T08:27:37.984Z",
-          "rc": 12,
-          "s": 82.32,
-          "t1": 5,
-          "t2": 4,
-          "t3": 3,
-          "p": 11,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:04:25.510Z",
-          "rc": 16,
-          "s": 81.89,
-          "t1": 7,
-          "t2": 6,
-          "t3": 3,
-          "p": 15,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:32:32.186Z",
-          "rc": 16,
-          "s": 81.93,
-          "t1": 7,
-          "t2": 6,
-          "t3": 3,
-          "p": 15,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T00:32:37.593Z",
-          "rc": 17,
-          "s": 82.33,
-          "t1": 7,
-          "t2": 6,
-          "t3": 4,
-          "p": 16,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T09:27:13.806Z",
-          "rc": 18,
-          "s": 81.83,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 17,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T11:27:49.218Z",
-          "rc": 18,
-          "s": 81.91,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 17,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T12:56:39.806Z",
-          "rc": 18,
-          "s": 81.43,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 16,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T13:28:53.088Z",
-          "rc": 20,
-          "s": 78.7,
-          "t1": 8,
+          "t": "2026-09-06T12:59:19.934Z",
+          "rc": 22,
+          "s": 59.57,
+          "t1": 9,
           "t2": 7,
-          "t3": 5,
-          "p": 17,
-          "m": 2,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T15:36:13.489Z",
-          "rc": 21,
-          "s": 78.39,
-          "t1": 8,
-          "t2": 8,
-          "t3": 5,
-          "p": 17,
-          "m": 3,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T20:03:25.780Z",
-          "rc": 21,
-          "s": 78.06,
-          "t1": 8,
-          "t2": 8,
-          "t3": 5,
-          "p": 16,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T22:07:25.647Z",
-          "rc": 21,
-          "s": 78.34,
-          "t1": 8,
-          "t2": 8,
-          "t3": 5,
-          "p": 17,
-          "m": 3,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T22:44:24.670Z",
-          "rc": 21,
-          "s": 78.13,
-          "t1": 8,
-          "t2": 8,
-          "t3": 5,
-          "p": 17,
-          "m": 3,
-          "n": 1,
+          "t3": 6,
+          "p": 6,
+          "m": 11,
+          "n": 5,
           "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
-    {
-      "id": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-09-08",
-      "status": "upcoming",
-      "slug": "school-girls-or-the-african-mean-girls-play",
-      "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
-      "daysUntil": 3,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
     {
       "id": "jane-eyre-off-west-end-2026",
       "title": "Jane Eyre",
@@ -602,7 +342,7 @@
       "status": "previews",
       "slug": "jane-eyre-off-west-end",
       "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -624,10 +364,10 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-09-09",
-      "status": "previews",
+      "status": "open",
       "slug": "kimberly-akimbo-off-west-end",
       "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -652,7 +392,7 @@
       "status": "previews",
       "slug": "lean-to-off-broadway",
       "thumbnail": "/images/shows/lean-to-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -691,7 +431,7 @@
       "status": "previews",
       "slug": "day-of-the-hog-off-broadway",
       "thumbnail": "/images/shows/day-of-the-hog-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -730,7 +470,7 @@
       "status": "previews",
       "slug": "man-to-man-west-end",
       "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -755,7 +495,7 @@
       "status": "upcoming",
       "slug": "america-who-hurt-you-off-broadway",
       "thumbnail": "/images/shows/america-who-hurt-you-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -794,7 +534,7 @@
       "status": "upcoming",
       "slug": "the-human-voice-the-seven-deadly-sins-west-end",
       "thumbnail": "/images/shows/the-human-voice-the-seven-deadly-sins-west-end-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -819,7 +559,7 @@
       "status": "previews",
       "slug": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
       "thumbnail": "/images/shows/mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
