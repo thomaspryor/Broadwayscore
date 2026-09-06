@@ -210,21 +210,33 @@ r6_attempt=$(row_field "$LOG6" attempt); r6_reason=$(row_field "$LOG6" reason)
 # EVERY post-loop row, not just the last: a regression at one of the three
 # api-fallback-* sites would be invisible to a last-row-only assertion, and
 # those are exactly the sites that win the durable first-write race.
-r6_maxrows=$(grep -c '"attempt":9,' "$LOG6" 2>/dev/null || true)
+# COVERAGE, measured by dumping this case's ledger rather than assumed: it
+# reaches api-fallback-exhausted(race-or-other) and retries-exhausted(early-fallback).
+# It does NOT reach api-fallback-content-dropped or the rc=3 (timeout) branch,
+# which need a real remote that accepts then diverges, and a fallback that times
+# out. Those two remain unexercised here.
+# Count rows whose attempt is anything OTHER than 1. The previous form only
+# rejected the specific value 9, so any other wrong number passed while the PASS
+# text claimed every row was 1. record_push_failure writes the value UNQUOTED as
+# "attempt":N, — anchored on the comma the printf always emits.
+r6_badrows=$(grep -cv '"attempt":1,' "$LOG6" 2>/dev/null || true)
+r6_rows=$(grep -c . "$LOG6" 2>/dev/null || true)
 if [ "$seed6_ok" != "true" ]; then
   echo "SKIP[6]: this environment cannot seed a file:// remote — early-fallback path untestable here"
 elif ! grep -q "breaking out of the local fetch+rebase+push loop early" <<<"$out6"; then
   echo "FAIL[6]: setup was good (merge base $base6) but the early-fallback break never fired — coverage lost"; fail=1
 elif [ ! -s "$LOG6" ]; then
   echo "FAIL[6]: early break fired but NO failure row was written"; fail=1
-elif [ "${r6_maxrows:-0}" != "0" ]; then
-  echo "FAIL[6]: ${r6_maxrows} row(s) recorded attempt=9 (MAX_RETRIES) after an early break at i=1"; fail=1
+elif [ "${r6_rows:-0}" = "0" ]; then
+  echo "FAIL[6]: ledger file exists but holds no rows"; fail=1
+elif [ "${r6_badrows:-0}" != "0" ]; then
+  echo "FAIL[6]: ${r6_badrows} of ${r6_rows} post-loop row(s) recorded an attempt other than 1 after an early break at i=1"; fail=1
 elif [ "$r6_attempt" != "1" ]; then
   echo "FAIL[6]: expected attempt 1 after an early break at i=1, got '$r6_attempt' (reason '$r6_reason')"; fail=1
 elif [[ "$r6_reason" != retries-exhausted\(early-fallback\) && "$r6_reason" != api-fallback-* ]]; then
   echo "FAIL[6]: unexpected reason '$r6_reason' — wanted retries-exhausted(early-fallback) or an api-fallback-* row"; fail=1
 else
-  echo "PASS[6]: early break records attempt=1 on every post-loop row, reason '$r6_reason'"
+  echo "PASS[6]: early break records attempt=1 on all $r6_rows post-loop row(s), reason '$r6_reason'"
 fi
 
 if [ "$fail" -ne 0 ]; then
