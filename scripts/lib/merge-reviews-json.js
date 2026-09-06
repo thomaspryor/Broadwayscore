@@ -324,9 +324,19 @@ function mergeReviewsJson(ours, remote) {
   // manualEntry. Every row in reviews.json is 1:1 with a review-texts file by
   // construction — rebuild-all-reviews.js emits exactly one row per included
   // file — so a second row for the same showId+URL can only have been minted by
-  // this merge, and a full rebuild can never evict it: the clean side is OURS
-  // and the fossil is the REMOTE-only addition that the disjoint-identity union
-  // faithfully preserves, forever.
+  // this merge: the clean side is OURS and the fossil is the REMOTE-only
+  // addition that the disjoint-identity union faithfully preserves.
+  //
+  // It is NOT permanent, and an earlier draft of this comment wrongly said it
+  // was. An UNCONTENDED rebuild does clear it — measured: the live
+  // into-the-woods-west-end-2025 Radio Times fossil was gone from reviews.json
+  // after the 2026-09-06T09:45:46Z rebuild, leaving one bylined row. That
+  // matches the union's KNOWN LIMITATION note above, which already says the
+  // resurrection is "bounded by eventually corrected by the next rebuild that
+  // isn't racing". What this pass buys is the interval: while pushes keep
+  // racing, the fossil is re-minted on every contended merge, and Data
+  // Validation reds main for the whole window — which is how it managed to red
+  // two consecutive runs before anyone looked.
   //
   // How the fossil is born: a review is first collected without a byline and
   // written as criticName 'Unknown'; a later pass resolves the real byline. The

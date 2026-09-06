@@ -4,6 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline } from './merge-reviews-json.js';
+import { isPlaceholderByline } from './placeholder-byline.js';
+import pkg from './manual-entry-merge.js';
+const { criticKey } = pkg;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -434,10 +437,28 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
   // ran the cleanup and then inspected its own output, which cannot distinguish
   // "there were none" from "the pass ate something it should not have"
   // (adversarial-review finding, Codex).
-  const rawBylinedUrls = new Set();
-  for (const r of reviews) if (!isUnknownByline(r.criticName)) { const k = urlKeyOf(r); if (k) rawBylinedUrls.add(k); }
-  const rawFossils = reviews.filter(r => isUnknownByline(r.criticName) && r.manualEntry !== true)
-    .filter(r => { const k = urlKeyOf(r); return k && rawBylinedUrls.has(k); });
+  // This predicate must mirror the PASS's conditions, not a looser "any
+  // sentinel row coexisting with any named row on one canonical URL" — the pass
+  // deliberately preserves cross-outlet pairs, different-raw-path pairs, pairs
+  // anchored only by a placeholder byline, and pairs where the sentinel row is
+  // the richer one. A wider invariant would fail CI on rows the implementation
+  // is correct to keep (adversarial-review finding, Codex).
+  const rawPath = (u) => { try { const x = new URL(String(u)); return `${x.hostname.toLowerCase()}${x.pathname.replace(/\/+$/, '')}`; } catch { return null; } };
+  const outletOf = (r) => String(r.outlet || '').toLowerCase().trim();
+  const anchors = new Map();
+  for (const r of reviews) {
+    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName) || criticKey(r.criticName) === 'unknown') continue;
+    const k = urlKeyOf(r);
+    if (!k) continue;
+    if (!anchors.has(k)) anchors.set(k, []);
+    anchors.get(k).push(r);
+  }
+  const rawFossils = reviews.filter(r => isUnknownByline(r.criticName) && r.manualEntry !== true).filter((r) => {
+    const k = urlKeyOf(r);
+    if (!k || !anchors.has(k)) return false;
+    const myPath = rawPath(r.url);
+    return Boolean(myPath && anchors.get(k).some(c => rawPath(c.url) === myPath && outletOf(c) === outletOf(r) && tierRank(c) >= tierRank(r)));
+  });
 
   const { merged, stats } = mergeReviewsJson({ _meta: data._meta, reviews }, { _meta: data._meta, reviews: [] });
   assert.ok(merged.reviews.length > 1000, `setup check: expected a real corpus, got ${merged.reviews.length} reviews`);
@@ -452,13 +473,21 @@ test('no Unknown-byline fossil survives in the real data/reviews.json corpus', (
     `dropped ${stats.unknownBylineFossilsDropped} but only ${rawFossils.length} rows had the fossil shape in the raw corpus`,
   );
   assert.equal(stats.unknownBylineFossilsDroppedKeys.length, stats.unknownBylineFossilsDropped, 'every drop must be recorded with provenance');
-  const bylinedUrls = new Set();
-  for (const r of merged.reviews) if (!isUnknownByline(r.criticName)) { const k = urlKeyOf(r); if (k) bylinedUrls.add(k); }
-  const fossils = merged.reviews
-    .filter(r => isUnknownByline(r.criticName))
-    .map(r => urlKeyOf(r))
-    .filter(k => k && bylinedUrls.has(k));
-  assert.deepEqual(fossils, [], `Unknown-byline fossils survived the merge: ${fossils.slice(0, 3).join(', ')}`);
+  const postAnchors = new Map();
+  for (const r of merged.reviews) {
+    if (isUnknownByline(r.criticName) || isPlaceholderByline(r.criticName) || criticKey(r.criticName) === 'unknown') continue;
+    const k = urlKeyOf(r);
+    if (!k) continue;
+    if (!postAnchors.has(k)) postAnchors.set(k, []);
+    postAnchors.get(k).push(r);
+  }
+  const survivors = merged.reviews.filter(r => isUnknownByline(r.criticName) && r.manualEntry !== true).filter((r) => {
+    const k = urlKeyOf(r);
+    if (!k || !postAnchors.has(k)) return false;
+    const myPath = rawPath(r.url);
+    return Boolean(myPath && postAnchors.get(k).some(c => rawPath(c.url) === myPath && outletOf(c) === outletOf(r) && tierRank(c) >= tierRank(r)));
+  }).map(r => `${r.showId}|${r.outlet}|${r.url}`);
+  assert.deepEqual(survivors, [], `Unknown-byline fossils survived the merge: ${survivors.slice(0, 3).join(', ')}`);
 });
 
 test('mergeReviewsJson: a sentinel-byline manualEntry row survives, and the manual rescue is what makes the fossil pass unable to reach it', () => {
