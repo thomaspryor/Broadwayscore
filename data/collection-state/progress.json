@@ -962,7 +962,17 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "spellbound-off-broadway-2026/nytimes--ben-kenigsberg.json",
-    "spellbound-off-broadway-2026/theater-life--unknown.json"
+    "spellbound-off-broadway-2026/theater-life--unknown.json",
+    "holy-fool-off-west-end-2026/thestage--holly-omahony.json",
+    "the-story-west-end-2026/nytimes--jesse-green.json",
+    "the-story-west-end-2026/nytimes--mj-franklin.json",
+    "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/huffpost--ron-dicker.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1031,7 +1041,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "spellbound-off-broadway-2026/theater-life--unknown.json",
+  "lastProcessed": "the-story-west-end-2026/nysr--frank-scheck.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1099,6 +1109,17 @@
       "t": "2026-09-07T01:20:21.932Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T01:45:24.105Z",
+      "event": "bb-session",
+      "session": "d033c199",
+      "url": "https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london"
+    },
+    {
+      "t": "2026-09-07T01:45:25.148Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
