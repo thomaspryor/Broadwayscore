@@ -17,6 +17,7 @@
  */
 
 const https = require('https');
+const { recordSbCall } = require('./provider-telemetry');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
 const MAX_RETRIES = 3;
@@ -127,12 +128,27 @@ async function fetchViaScrapingBee(url) {
 
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${apiKey}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
 
+  // premium_proxy=true bills 10 credits per attempt whatever the status — the
+  // most expensive SB tier in the repo, and until now it wrote no ledger row,
+  // so Reddit's SB spend was invisible to the weekly cost report.
+  let _recorded = false;
+  // ScrapingBee bills only requests it actually proxied: 401/402 (bad key /
+  // no credits) and connection errors cost 0, everything else costs the tier
+  // price whatever the target returned.
+  const _rec = (success, status) => {
+    if (_recorded) return;
+    _recorded = true;
+    const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 10;
+    try { recordSbCall({ url, fn: 'json', success, status, credits: billed }); } catch (_) {}
+  };
+
   return new Promise((resolve, reject) => {
     https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) {
+          _rec(true, 200);
           try {
             resolve(JSON.parse(data));
           } catch (e) {
@@ -146,6 +162,7 @@ async function fetchViaScrapingBee(url) {
           // misdiagnosed again (2026-06-21: a "credits exhausted (401)" label
           // sent debugging toward top-ups/OAuth when CI just had a stale key).
           scrapingBeeDown = true;
+          _rec(false, res.statusCode);
           let sbMsg = data.slice(0, 200);
           try { sbMsg = JSON.parse(data).message || sbMsg; } catch (_) {}
           reject(new Error(
@@ -153,10 +170,11 @@ async function fetchViaScrapingBee(url) {
             `the account has credits (app.scrapingbee.com/api/v1/usage); disabling ScrapingBee`
           ));
         } else {
+          _rec(false, res.statusCode);
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
       });
-    }).on('error', reject);
+    }).on('error', (err) => { _rec(false, 'error'); reject(err); });
   });
 }
 

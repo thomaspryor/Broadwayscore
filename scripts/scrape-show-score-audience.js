@@ -28,6 +28,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
+const { recordSbCall } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -166,18 +167,35 @@ function fetchViaScrapingBeeSingle(url) {
 
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
 
+    // render_js=true bills 5 credits whatever the response status — record the
+    // spend on EVERY outcome, not just success (ledger-blindspot fix: this
+    // allowlisted direct-SB caller emitted no telemetry at all, so the weekly
+    // cost report could not attribute its credits to any workflow).
+    let _recorded = false;
+    // ScrapingBee bills only requests it actually proxied: 401/402 (bad key /
+    // no credits) and connection errors cost 0, everything else costs the tier
+    // price whatever the target returned.
+    const _rec = (success, status) => {
+      if (_recorded) return;
+      _recorded = true;
+      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
+      try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
+    };
+
     https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) {
+          _rec(true, 200);
           resolve(data);
         } else {
+          _rec(false, res.statusCode);
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', reject)
-      .on('timeout', () => reject(new Error('ScrapingBee request timeout')));
+    }).on('error', (err) => { _rec(false, 'error'); reject(err); })
+      .on('timeout', () => { _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
   });
 }
 
