@@ -54,7 +54,14 @@ function pidLooksLikeClaude(pid) {
 /**
  * Acquire the per-task lease. Returns {ok:true} or {ok:false, reason, holder}.
  * A holder whose recorded PID is dead (or not a claude process) is stale and
- * gets stolen; a live holder wins.
+ * gets stolen; a live holder wins. A holder with pid:null (lease claimed but
+ * its subprocess hasn't spawned yet — see runJob's initial acquireLease call,
+ * which always writes pid:null) is ALSO treated as live, never stolen: same
+ * fix as worktree-gc-reclaim.js's computeLiveLeaseCwds (BRO-2319), applied
+ * here for the same root cause (BRO-2414) — pid:null means "still
+ * provisioning", not "confirmed dead". A lease that gets stuck at pid:null
+ * because its holder crashed before ever spawning is reclaimed by
+ * bsc-reconcile.js's periodic sweep (GRACE_MS-based), not by this function.
  *
  * `isAliveFn` (test-only seam, defaults to the real pidLooksLikeClaude):
  * faking a genuinely-alive holder process to test the "lease already held"
@@ -75,7 +82,7 @@ function acquireLease(taskId, meta, { isAliveFn = pidLooksLikeClaude } = {}) {
   } catch (e) {
     if (e.code !== 'EEXIST') return { ok: false, reason: `lease mkdir failed: ${e.message}`, holder: null };
     const holder = readLease(taskId);
-    if (holder && isAliveFn(holder.pid)) {
+    if (holder && (holder.pid == null || isAliveFn(holder.pid))) {
       return { ok: false, reason: 'task already has a live job', holder };
     }
     // Stale lease (crashed holder / dead pid): steal.
