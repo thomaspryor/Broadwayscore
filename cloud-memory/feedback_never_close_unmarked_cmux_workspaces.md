@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 53acbb0e-e0c9-444c-9fdd-991f191cdf00
-  modified: 2026-08-02T23:15:40.389Z
+  modified: 2026-09-07T21:42:27.545Z
 ---
 
 On 2026-07-14 I closed 11 "idle" cmux workspaces (no running claude process, associated
@@ -83,5 +83,23 @@ owner said "why did I need to make a call?" after being asked. Recommend-and-act
 state which copy is being closed and why (keep the one further along / the one
 the owner opened), prefix `CMUX_CLOSE_OK=1`, and report it. Do NOT extend this
 to unmarked non-duplicate tabs — those still always go to the owner.
+
+2026-09-07 socket-password-mode broke everything, reverted: cmux.app restarted
+~17:16 that day and picked up automation.socketControlMode="password" for the
+first time (set 2026-08-02, never live until this restart). Result: the CLI
+socket file (~/Library/Application Support/cmux/cmux.sock) stopped being
+created at all — every `cmux` CLI call, including from inside a live cmux tab,
+failed "Socket not found" (not an auth error). This killed bsc-autoprune
+(launchd, failing every 5min), bsc-prune, dispatch-watchdog, and
+zombie-tab-sweep simultaneously — the entire auto-close/dispatch layer was
+dark with no alert. Reverted cmux.json automation block back to
+{"socketControlMode":"cmuxOnly"} (matches pre-2026-08-02 behavior); takes
+effect on next cmux restart (owner's call — bounces all live tabs). If
+password mode is wanted again, it needs the CLI wrapper (cmux-workspaces.js
+run()) to actually pass the password, not just the app-side config flag.
+Separately, confirmed by design (not a bug): 👑-prefixed "Crown" successor-
+chain tabs (v24...v46+, one per hand-off) are permanently exempt from all
+auto-close paths (isCrownTab() in prune-closeable.js, task #1751) — they will
+keep accumulating forever and need a periodic owner-approved manual sweep.
 
 Related: [[feedback_absorb_gate_ceremony]]
