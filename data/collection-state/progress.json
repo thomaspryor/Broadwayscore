@@ -111,7 +111,11 @@
     "jeeves-takes-charge-west-end-2026/ground--unknown.json",
     "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
     "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
-    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
+    "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+    "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1031,7 +1035,13 @@
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
-    "jeeves-takes-charge-west-end-2026/thestage--unknown.json"
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
+    "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
+    "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1087,7 +1097,9 @@
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
       "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
-      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json"
+      "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+      "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1138,7 +1150,8 @@
       "matilda-the-musical-west-end-2021/daily-mail--quentin-letts.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "spellbound-off-broadway-2026/theater-life--unknown.json",
@@ -1147,7 +1160,8 @@
       "just-in-time-2025/newyorker--conde-nast.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1173,7 +1187,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -1360,6 +1374,17 @@
       "event": "bb-session",
       "session": "38848fb8",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
+    },
+    {
+      "t": "2026-09-07T22:53:51.861Z",
+      "event": "bb-session",
+      "session": "5559d89e",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-09-07T22:53:52.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
