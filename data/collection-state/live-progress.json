@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-09-07T21:48:35.122Z",
-  "processed": 40,
-  "failed": 160,
-  "successRate": "20.0%",
+  "updatedAt": "2026-09-07T22:01:16.126Z",
+  "processed": 54,
+  "failed": 246,
+  "successRate": "18.0%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 9,
     "directCookies": 3,
-    "scrapingbee": 8,
-    "brightdata": 2,
+    "scrapingbee": 10,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 11
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-09-07T16:54:59.341Z",
-      "event": "bb-session",
-      "session": "3ba9b4e3",
-      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
-    },
     {
       "t": "2026-09-07T16:55:00.211Z",
       "event": "bb-cookie-inject",
@@ -110,6 +104,29 @@
       "event": "bb-session",
       "session": "6ead814e",
       "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-07T21:51:10.113Z",
+      "event": "bb-session",
+      "session": "a9b8487e",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-07T21:58:11.348Z",
+      "event": "bb-session",
+      "session": "aeb70564",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-07T21:58:12.165Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-07T21:59:45.688Z",
+      "event": "bb-session",
+      "session": "bc93547e",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
