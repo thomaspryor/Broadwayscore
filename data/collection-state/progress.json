@@ -1505,7 +1505,17 @@
     "beetlejuice-west-end-2026/thewrap--robert-hofler.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
-    "sabrage-off-west-end-2026/guardian--brian-logan.json"
+    "sabrage-off-west-end-2026/guardian--brian-logan.json",
+    "sabrage-off-west-end-2026/standard--nick-curtis.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1594,7 +1604,8 @@
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1646,7 +1657,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "sabrage-off-west-end-2026/guardian--brian-logan.json",
+  "lastProcessed": "avenue-q-west-end-2026/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1947,6 +1958,17 @@
       "event": "bb-session",
       "session": "63039543",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-07T11:40:31.572Z",
+      "event": "bb-session",
+      "session": "d8f0df81",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-07T11:40:32.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
