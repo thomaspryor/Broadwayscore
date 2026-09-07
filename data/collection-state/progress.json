@@ -92,7 +92,8 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
-    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "aida-off-broadway-2027/times-uk--kevin-ng.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -851,7 +852,16 @@
     "evita-2026/nytimes--houman-barekat.json",
     "evita-2026/variety--david-benedict.json",
     "evita-2026/edge-media-network--robert-nesti.json",
-    "evita-2026/independent--alice-saville.json"
+    "evita-2026/independent--alice-saville.json",
+    "evita-2026/standard--nick-curtis.json",
+    "evita-2026/thestage--sam-marlowe.json",
+    "aida-off-broadway-2027/financialtimes--george-grella.json",
+    "miles-for-mary-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "billy-elliot-the-musical-west-end-2027/thereviewshub--the-reviews-hub.json",
+    "miles-for-mary-off-broadway-2026/thewrap--robert-hofler.json",
+    "miles-for-mary-off-broadway-2026/timeout--helen-shaw.json",
+    "no-mans-land-west-end-2026/newsday--unknown.json",
+    "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -919,7 +929,8 @@
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
-      "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json"
+      "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+      "aida-off-broadway-2027/times-uk--kevin-ng.json"
     ],
     "scrapingbee": [
       "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json",
@@ -976,7 +987,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "evita-2026/independent--alice-saville.json",
+  "lastProcessed": "billy-elliot-the-musical-west-end-2027/londontheatre1--chris-omaweng.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -1146,6 +1157,17 @@
       "t": "2026-09-07T22:26:06.104Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-07T22:34:32.906Z",
+      "event": "bb-session",
+      "session": "b6b7bfb0",
+      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rache"
+    },
+    {
+      "t": "2026-09-07T22:34:33.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
