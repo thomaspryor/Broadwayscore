@@ -555,7 +555,7 @@ jobs:
 
       # Record pipeline health timestamp (always, even if no show changes)
       - name: Record pipeline success
-        if: always() && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome == 'success'
         run: |
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/update-show-status.last-success
@@ -565,12 +565,13 @@ jobs:
       # fallback) in sync with the OB shows now in shows.json. Idempotent —
       # a no-op when no new OB venue appeared. See scripts/build-ob-venues.js.
       - name: Regenerate Off-Broadway venue allowlist
-        if: always() && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome == 'success'
         run: node scripts/build-ob-venues.js
         continue-on-error: true
 
       - name: Commit and push changes
-        if: always() && steps.commit-gate.outcome != 'failure'
+        id: commit-public
+        if: always() && steps.commit-gate.outcome == 'success'
         # PUSH_DEADLINE_SEC override (task #458): this step's push measured ~3
         # min per GENUINE (non-stalled) conflict-resolution cycle under this
         # workflow's high main-branch churn (run 30186060030) — the shared 240s
@@ -784,7 +785,7 @@ jobs:
       # discard-good-work bug this fix targets, just one step downstream.
       # Ship-check finding, task #649.
       - name: Clear stale push-refusal sentinel (pre-existing errors only)
-        if: always() && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome == 'success'
         run: |
           SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
           if [ -f "$SENTINEL" ]; then
@@ -792,15 +793,63 @@ jobs:
             rm -f "$SENTINEL"
           fi
 
+      # BRO-2913, the sibling of BRO-2912 in commercial-weekly.yml. `commit-gate`
+      # runs at step 31, BEFORE the commit at 36, so its outcome is already
+      # fixed at 'success' when the commit runs, and `always()` means a FAILED
+      # commit does not stop the publishers below. Observed live in run
+      # 32947722300 (schedule, 2026-08-26), job update-shows:
+      #   31 success  Commit gate — block only on NEW validation errors
+      #   36 FAILURE  Commit and push changes
+      #   42 success  Clear stale push-refusal sentinel
+      #   43 success  Push core data to private repo   <- published anyway
+      #
+      # What diverges: push-core-data ships data/shows.json (gitignored in this
+      # repo at .gitignore:200, so it lives only in the private core-data repo),
+      # while data/new-shows-pending.json — the bookkeeping the `create-issue`
+      # job reads to open a tracking issue for each newly discovered show — only
+      # ever lands in the PUBLIC repo, from the commit above. A failed commit
+      # therefore ships the new shows into shows.json while permanently losing
+      # their pending record: the next run no longer sees them as new (they are
+      # in shows.json already), so the tracking issue is never created and the
+      # OB/OWE venue staging baseline never persists. Skipping BOTH publishers
+      # instead makes that failure self-healing — nothing shipped, so the next
+      # run re-discovers and re-commits the pair together.
+      #
+      # The availability cost is real and was measured, not assumed: across the
+      # 12 most recent runs (2026-08-27 .. 2026-09-06) "Commit and push changes"
+      # reported `success` in 11/11 completed runs, so this gate is a no-op on
+      # the normal path. The one observed failure is exactly the divergence case
+      # above. A skip here delays a status flip by one daily cron, which is the
+      # cheaper of the two failures.
+      #
+      # `== 'success'` and not `!= 'failure'`: commit-gate carries `if: always()`
+      # so it has no legitimate `skipped` outcome, and `!= 'failure'` is TRUE for
+      # both `skipped` and `cancelled` — the reads-as-safe-while-nothing-ran
+      # shape BRO-2907's own barrier comment warns against.
+      #
+      # NOT gated, deliberately, and pinned as a named exclusion in
+      # tests/unit/update-show-status-publish-gate.test.mjs so the exclusion is a
+      # recorded decision rather than an invisible gap:
+      #   - "Push aggregator-archive to private repo": an append-only scrape
+      #     cache with no pairing to shows.json; losing a run's scrapes to a
+      #     failed public commit would be a pure regression.
+      #   - "Push discovery-blocked audit to private repo": it exists to record
+      #     the failure path, so gating it on success would delete the evidence.
       - name: Push core data to private repo
-        if: always() && steps.commit-gate.outcome != 'failure'
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-show-status'
 
+      # NOTE: this step has been `skipped` in 11/11 completed runs since at
+      # least 2026-08-27, because `git-check` computes `changes` with
+      # `git diff --exit-code data/shows.json` and that path is gitignored at
+      # .gitignore:200 — the diff is always empty, so `changes` is never set.
+      # Tracked separately as BRO-2919; the commit-public clause below is
+      # correct either way and does not depend on that being fixed first.
       - name: Trigger deploy (core data changed)
-        if: always() && steps.git-check.outputs.changes == 'true'
+        if: always() && steps.git-check.outputs.changes == 'true' && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
