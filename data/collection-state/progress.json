@@ -102,7 +102,8 @@
     "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json",
     "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--unknown.json",
-    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json"
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--mrs-claudia-gil.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1405,7 +1406,16 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
     "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
-    "im-every-woman-off-west-end-2026/theupcoming--unknown.json"
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1473,7 +1483,8 @@
       "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json",
       "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--unknown.json",
-      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json"
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--mrs-claudia-gil.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1543,7 +1554,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1803,6 +1814,17 @@
       "t": "2026-09-07T11:23:46.232Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-07T11:27:51.530Z",
+      "event": "bb-session",
+      "session": "d389da4d",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-07T11:27:52.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
