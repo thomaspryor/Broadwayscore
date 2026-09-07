@@ -52,7 +52,16 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { hasAutoDispatchMarker, isCrownTab } = require('./lib/prune-closeable.js');
 const { detectDuplicateCrownTabs } = require('./lib/crown-duplicate-detector.js');
-const REPO = path.join(__dirname, '..');
+// code-review catch (2026-09-07): a bare `path.join(__dirname, '..')`
+// resolves to whichever CHECKOUT's copy of this file is executing —
+// including a worktree's, since every worktree carries its own copy of
+// scripts/. Live Crown tabs always report the bare main checkout as their
+// cwd, so running this from a worktree (this repo's own mandatory workflow
+// for any tracked code edit) silently zeroed the crown-duplicate report:
+// `w.cwd === repoRoot` never matched. Same canonical-root resolver bsc-next.js
+// already uses for exactly this reason (BRO-2668).
+const { resolveCanonicalRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveCanonicalRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 const { isReclaimable } = require('./lib/prune-dead-autodispatch-tabs.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
@@ -238,6 +247,17 @@ function mainLocked({ dryRun, deps }) {
     let crownWithCwd = [];
     try { crownWithCwd = listWorkspacesWithCwdFn(); }
     catch (e) { console.error(`[bsc-prune] WARN crown-duplicate cwd lookup failed (non-fatal, report skipped): ${e.message}`); }
+    // code-review catch (2026-09-07): parseWorkspacesJson fails safe to []
+    // on any malformed/truncated payload — correct for its OTHER caller
+    // (selfCloseAfterSuccession, where "can't confirm" must mean "don't
+    // close"), but here it would let the report go silently blank on the
+    // exact load conditions (cmux socket busy under a real pileup) most
+    // likely to produce a genuine duplicate. `all` already proved crown
+    // tabs exist via the plain-text listing moments ago — a zero-length
+    // JSON listing despite that is a signal worth surfacing, not silence.
+    if (!crownWithCwd.length) {
+      console.error(`[bsc-prune] WARN crown-duplicate report: 'cmux workspace list --json' returned no usable workspaces despite ${crownCandidateCount} crown tab(s) in the plain-text listing — duplicate report skipped, not confirmed clean`);
+    }
     if (crownWithCwd.length) {
       let crownEntries = [];
       try { crownEntries = readLedgerEntriesFn(); } catch { crownEntries = []; }
