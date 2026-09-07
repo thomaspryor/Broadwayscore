@@ -113,13 +113,40 @@ describe('findUndeclaredDomainCollisions', () => {
     assert.deepStrictEqual(collisions, []);
   });
 
-  test('DECLARED_ALIAS_OVERLAPS is exactly the four known domain/domainAlias overlaps', () => {
+  test('DECLARED_ALIAS_OVERLAPS is exactly the three known domain/domainAlias overlaps', () => {
+    // Was four until 2026-09-07 (BRO-2921), when chicago-sun-times/suntimes was
+    // MERGED rather than declared and suntimes was deleted from the registry.
     assert.deepStrictEqual(DECLARED_ALIAS_OVERLAPS.map((p) => [...p].sort()), [
       ['abc-news', 'ap'],
       ['bobs-theater-blog', 'gotham-playgoer'],
       ['dc-metro-theater-arts', 'dctheatrescene'],
-      ['chicago-sun-times', 'suntimes'],
     ]);
+  });
+
+  // BRO-2921 prevention. Deleting a duplicate outlet from the registry while
+  // leaving its DECLARED_ALIAS_OVERLAPS line behind is the specific mistake
+  // this merge could make, and NOTHING caught it: the two tests above use a
+  // synthetic fixture and a hardcoded list respectively, and the whole suite
+  // stayed 19/19 green with suntimes already removed from the live registry.
+  // A dangling declaration is not inert — it permanently suppresses collision
+  // reporting for a pair, so a genuinely new outlet later squatting on that id
+  // would be waved through.
+  test('every id in DECLARED_ALIAS_OVERLAPS and EDITION_PAIRS exists in the live registry', () => {
+    const registry = JSON.parse(readFileSync(resolve(ROOT, 'data/outlet-registry.json'), 'utf8'));
+    const outlets = registry.outlets || registry;
+    for (const [label, pairs] of [
+      ['DECLARED_ALIAS_OVERLAPS', DECLARED_ALIAS_OVERLAPS],
+      ['EDITION_PAIRS', EDITION_PAIRS],
+    ]) {
+      for (const pair of pairs) {
+        for (const id of pair) {
+          assert.ok(
+            Object.prototype.hasOwnProperty.call(outlets, id),
+            `${label} declares "${id}" but no such outlet exists in data/outlet-registry.json — a merged/deleted outlet left a dangling declaration, which silently suppresses collision reporting for that pair`,
+          );
+        }
+      }
+    }
   });
 });
 

@@ -26,7 +26,8 @@ const EDITION_PAIRS = [
 // prevent, reachable through a field it never checked. A domainAliases-
 // inclusive scan of the live registry (2026-08-11) found 4 such pairs; each
 // was individually investigated against reviews.json/review-texts before
-// being declared here:
+// being declared here. One of the four (chicago-sun-times/suntimes) was
+// MERGED on 2026-09-07 and removed, leaving 3:
 const DECLARED_ALIAS_OVERLAPS = [
   // AP wire copy syndicates on abcnews.go.com. 'ap' is in
   // review-normalization.js's WIRE_SERVICE_OUTLETS set, so the cross-outlet
@@ -51,14 +52,14 @@ const DECLARED_ALIAS_OVERLAPS = [
   // this was found, making a same-repo file rename unsafe to attempt here —
   // see Notion card for the follow-up merge.
   ['dctheatrescene', 'dc-metro-theater-arts'],
-  // CONFIRMED accidental registry duplicate, not yet merged. chicago-sun-times
-  // and suntimes are the same real publication (Chicago Sun-Times): same
-  // critics (Catey Sullivan, Steven Oxman), same host (chicago.suntimes.com);
-  // 7 suntimes--*.json review-text files duplicate an identity
-  // chicago-sun-times already owns. Declared (not merged) for the same
-  // review-texts-WIP reason as above — see Notion card for the follow-up
-  // merge.
-  ['chicago-sun-times', 'suntimes'],
+  // chicago-sun-times / suntimes was the fourth entry here. MERGED and removed
+  // 2026-09-07 (BRO-2921): the blocker this declaration recorded (review-texts
+  // carrying another session's uncommitted WIP) was gone, so the duplicate was
+  // resolved rather than declared. suntimes is deleted from the registry, its
+  // review-text files were relabeled to chicago-sun-times, and its 2 remaining
+  // manualEntry rows in reviews.json were moved over at tier 2. Do not re-add
+  // it: the pair no longer overlaps because only one of the two ids still
+  // exists.
 ];
 
 function normalizeDomain(d) {
