@@ -82,10 +82,35 @@ function hasLiveClaude(tsvText) {
   });
 }
 
+// Parse `cmux workspace list --json` into the same shape as parseWorkspaces
+// PLUS `cwd` (card #1938, crown-duplicate-detector.js): the plain-text
+// `list-workspaces` form used everywhere else in this file never carried the
+// working directory, and telling a bare-checkout Crown tab (dangerous — it
+// shares the main checkout with every other bare-cwd session) from a
+// worktree-scoped one (safe — its own branch) needs it. A malformed/empty
+// payload returns [] rather than throwing — callers treat a lookup failure
+// as "no crown candidates found," not license to crash a routine sweep.
+function parseWorkspacesJson(jsonText) {
+  let parsed;
+  try { parsed = JSON.parse(jsonText); } catch { return []; }
+  const workspaces = parsed && Array.isArray(parsed.workspaces) ? parsed.workspaces : [];
+  return workspaces.map(w => ({
+    ref: w.ref,
+    id: w.id || null,
+    title: w.custom_title || w.title || '',
+    selected: Boolean(w.selected),
+    cwd: w.current_directory || null,
+  })).filter(w => w.ref);
+}
+
 // ── socket wrappers ─────────────────────────────────────────────────────────
 
 function listWorkspaces() {
   return parseWorkspaces(run(['list-workspaces']));
+}
+
+function listWorkspacesWithCwd() {
+  return parseWorkspacesJson(run(['workspace', 'list', '--json']));
 }
 
 function closeWorkspace(ref) {
@@ -390,8 +415,8 @@ function pruneDone(opts = {}) {
 
 module.exports = {
   CMUX, cmuxAvailable, run,
-  parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
+  parseWorkspaces, parseWorkspacesJson, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
-  listWorkspaces, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
+  listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
 };

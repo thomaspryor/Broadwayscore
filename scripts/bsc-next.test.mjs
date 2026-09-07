@@ -28,7 +28,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
+const { actionable, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed, shouldSelfCloseAfterSuccession, selfCloseAfterSuccession } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
 const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
 const { matchesTaskWorkBranch, findWorkBranchCollisions, workBranchCollisionGuard } = require('./lib/dispatch-guards.js');
@@ -438,6 +438,110 @@ test('successionRefusal: --force bypasses the cap refusal', () => {
   assert.equal(result.refusal, null);
 });
 
+// Card #1938: the root-cause fix for the 2026-09-07 incident (55 concurrent
+// live duplicate Crown successors). Pure decision only — the side-effecting
+// selfCloseAfterSuccession() is exercised separately below with injected
+// fakes, never through a real cmux socket.
+test('shouldSelfCloseAfterSuccession: closes when cmux-launched, not selected, not disabled', () => {
+  assert.equal(shouldSelfCloseAfterSuccession({ workspaceId: 'UUID-1', selected: false, disabled: false }), true);
+});
+
+test('shouldSelfCloseAfterSuccession: never closes when no workspace id (not cmux-launched)', () => {
+  assert.equal(shouldSelfCloseAfterSuccession({ workspaceId: null, selected: false, disabled: false }), false);
+});
+
+test('shouldSelfCloseAfterSuccession: never closes the selected tab (owner may be reading the handoff)', () => {
+  assert.equal(shouldSelfCloseAfterSuccession({ workspaceId: 'UUID-1', selected: true, disabled: false }), false);
+});
+
+test('shouldSelfCloseAfterSuccession: kill switch wins even when otherwise closeable', () => {
+  assert.equal(shouldSelfCloseAfterSuccession({ workspaceId: 'UUID-1', selected: false, disabled: true }), false);
+});
+
+test('selfCloseAfterSuccession: no CMUX_WORKSPACE_ID set → closes nothing, never calls the close fn', () => {
+  const prevId = process.env.CMUX_WORKSPACE_ID;
+  delete process.env.CMUX_WORKSPACE_ID;
+  const closed = [];
+  try {
+    selfCloseAfterSuccession({ listWorkspacesWithCwd: () => { throw new Error('must not be called without a workspace id'); }, closeWorkspace: (id) => closed.push(id) });
+  } finally {
+    if (prevId !== undefined) process.env.CMUX_WORKSPACE_ID = prevId;
+  }
+  assert.deepEqual(closed, []);
+});
+
+test('selfCloseAfterSuccession: kill switch set → closes nothing, never even looks up selection', () => {
+  const prevId = process.env.CMUX_WORKSPACE_ID;
+  const prevDisabled = process.env.SUCCESSION_SELF_CLOSE_DISABLED;
+  process.env.CMUX_WORKSPACE_ID = 'UUID-1';
+  process.env.SUCCESSION_SELF_CLOSE_DISABLED = '1';
+  const closed = [];
+  try {
+    selfCloseAfterSuccession({ listWorkspacesWithCwd: () => { throw new Error('must not be called when disabled'); }, closeWorkspace: (id) => closed.push(id) });
+  } finally {
+    if (prevId !== undefined) process.env.CMUX_WORKSPACE_ID = prevId; else delete process.env.CMUX_WORKSPACE_ID;
+    if (prevDisabled !== undefined) process.env.SUCCESSION_SELF_CLOSE_DISABLED = prevDisabled; else delete process.env.SUCCESSION_SELF_CLOSE_DISABLED;
+  }
+  assert.deepEqual(closed, []);
+});
+
+test('selfCloseAfterSuccession: real workspace id, not selected → closes exactly that id, nothing else', () => {
+  const prevId = process.env.CMUX_WORKSPACE_ID;
+  process.env.CMUX_WORKSPACE_ID = 'UUID-mine';
+  const closed = [];
+  try {
+    selfCloseAfterSuccession({
+      listWorkspacesWithCwd: () => [{ id: 'UUID-mine', ref: 'workspace:12', selected: false }, { id: 'UUID-other', ref: 'workspace:13', selected: true }],
+      closeWorkspace: (id) => closed.push(id),
+    });
+  } finally {
+    if (prevId !== undefined) process.env.CMUX_WORKSPACE_ID = prevId; else delete process.env.CMUX_WORKSPACE_ID;
+  }
+  assert.deepEqual(closed, ['UUID-mine']);
+});
+
+test('selfCloseAfterSuccession: this workspace IS currently selected → defers, closes nothing', () => {
+  const prevId = process.env.CMUX_WORKSPACE_ID;
+  process.env.CMUX_WORKSPACE_ID = 'UUID-mine';
+  const closed = [];
+  try {
+    selfCloseAfterSuccession({
+      listWorkspacesWithCwd: () => [{ id: 'UUID-mine', ref: 'workspace:12', selected: true }],
+      closeWorkspace: (id) => closed.push(id),
+    });
+  } finally {
+    if (prevId !== undefined) process.env.CMUX_WORKSPACE_ID = prevId; else delete process.env.CMUX_WORKSPACE_ID;
+  }
+  assert.deepEqual(closed, []);
+});
+
+test('selfCloseAfterSuccession: a lookup failure closes nothing (fail safe, never guess)', () => {
+  const prevId = process.env.CMUX_WORKSPACE_ID;
+  process.env.CMUX_WORKSPACE_ID = 'UUID-mine';
+  const closed = [];
+  try {
+    selfCloseAfterSuccession({
+      listWorkspacesWithCwd: () => { throw new Error('cmux socket busy'); },
+      closeWorkspace: (id) => closed.push(id),
+    });
+  } finally {
+    if (prevId !== undefined) process.env.CMUX_WORKSPACE_ID = prevId; else delete process.env.CMUX_WORKSPACE_ID;
+  }
+  assert.deepEqual(closed, []);
+});
+
+test('runSuccessionDispatch end-to-end: self-close fires exactly once per successful launch, never on refusal', () => {
+  const { selfClosed, dispatchOnce } = runSuccessionHarness();
+  const task = { id: '1938', subject: 'self-close wiring test', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-selfclose-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(selfClosed.length, 1, 'a successful succession launch must call selfCloseAfterSuccession exactly once');
+
+  fs.unlinkSync(handoffPath);
+});
+
 test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth/cap', () => {
   const task = { id: '856', subject: 'Session-system S3', status: 'in_progress' };
   const seed = buildSuccessionSeed(task, 'Data', 'sonnet', 3, SUCCESSION_DEPTH_CAP, '## What is done\nfoo\n## What is next\nbar');
@@ -458,12 +562,13 @@ test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth
 // hand-constructed ledger entries with successionOf pre-populated, which is
 // exactly why this slipped through: nothing drove runSuccessionDispatch()
 // itself against a real read/append round-trip. This test does.
-function runSuccessionHarness({ fetchCard: fetchCardOverride, launchCmux: launchCmuxOverride } = {}) {
+function runSuccessionHarness({ fetchCard: fetchCardOverride, launchCmux: launchCmuxOverride, selfCloseAfterSuccession: selfCloseOverride } = {}) {
   const { runSuccessionDispatch } = require('./bsc-next.js');
   const ledger = [];
   const launched = [];
   const paged = [];
   const released = [];
+  const selfClosed = [];
   let exitCode = null;
   const origExit = process.exit;
   const deps = {
@@ -485,6 +590,15 @@ function runSuccessionHarness({ fetchCard: fetchCardOverride, launchCmux: launch
     // this test from that filesystem race entirely.
     acquireSuccessionLock: () => true,
     releaseSuccessionLock: (taskId) => released.push(taskId),
+    // CRITICAL (card #1938): without this stub, a test run FROM INSIDE a
+    // real cmux-launched session (CMUX_WORKSPACE_ID set in the environment —
+    // true of every interactive Claude Code session in this repo) would
+    // drive the REAL selfCloseAfterSuccession() default and could close
+    // THIS SESSION'S OWN live workspace mid-test-run. Always stub it here
+    // unless a test explicitly wants to exercise the real function (which
+    // has its own dedicated unit tests below, never run through this
+    // end-to-end harness).
+    selfCloseAfterSuccession: selfCloseOverride || (() => { selfClosed.push(true); }),
   };
   const dispatchOnce = (task, args) => {
     process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
@@ -495,7 +609,7 @@ function runSuccessionHarness({ fetchCard: fetchCardOverride, launchCmux: launch
     exitCode = null;
     return result;
   };
-  return { ledger, launched, paged, released, dispatchOnce };
+  return { ledger, launched, paged, released, selfClosed, dispatchOnce };
 }
 
 test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, the 6th is refused (no fabricated ledger state)', () => {
@@ -572,7 +686,7 @@ test('runSuccessionDispatch: --allow-closed-card dispatches AND is recorded in t
 // Drives the REAL runSuccessionDispatch/runSuccessionDispatchLocked, not a
 // hand-fabricated ledger entry, so the wiring itself is under test.
 test('runSuccessionDispatch: a failed launch journals a dead breadcrumb (BRO-2251)', () => {
-  const { ledger, dispatchOnce } = runSuccessionHarness({
+  const { ledger, selfClosed, dispatchOnce } = runSuccessionHarness({
     launchCmux: () => ({
       ok: false, reason: 'command injection never ran (no wrapper process appeared) in workspace:920',
       deadConfirmed: true, workspaceRef: 'workspace:920', wrapperAlive: false,
@@ -585,6 +699,7 @@ test('runSuccessionDispatch: a failed launch journals a dead breadcrumb (BRO-225
 
   const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
   assert.equal(r.exitCode, 1, 'a failed succession launch still exits 1');
+  assert.equal(selfClosed.length, 0, 'a FAILED launch must never self-close the predecessor — there is no confirmed successor to hand off to');
 
   const dead = ledger.filter(e => e.event === 'dead');
   assert.equal(dead.length, 1, 'a deadConfirmed succession failure must journal a dead breadcrumb — it did not, before this fix');
