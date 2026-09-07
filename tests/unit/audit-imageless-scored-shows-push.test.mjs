@@ -86,6 +86,36 @@ test('workflow: all three audit paths are staged in ONE push-with-retry call', (
   assert.equal(staged.length, ALL_STAGED.length, `unexpected staged paths: ${JSON.stringify(staged)}`);
 });
 
+// Codex adversarial ship-check finding. stagedPathsPerCall() collects every
+// `git add` that precedes a push-with-retry call, but it does NOT prove those
+// adds precede the `git commit`. Moving a telemetry `git add` to AFTER the
+// commit would leave the test above green while reproducing the exact data
+// loss this file exists to prevent: the file would still be dirty-but-
+// uncommitted when push-with-retry.sh reaches its destructive resets
+// (scripts/lib/push-with-retry.sh:1938 pre-fallback, :2114 on fallback
+// success). Assert the ORDER inside the step body, not just the membership.
+test('workflow: every audit path is staged BEFORE the commit, not merely before the push', () => {
+  const stepStart = workflowText.indexOf('- name: Commit audit ledger');
+  assert.ok(stepStart !== -1, 'could not locate the "Commit audit ledger" step');
+  // Bound the slice at the next step so a later step's git commit can't satisfy us.
+  const nextStep = workflowText.indexOf('\n      - name:', stepStart + 1);
+  const stepBody = workflowText.slice(stepStart, nextStep === -1 ? workflowText.length : nextStep);
+
+  const commitIdx = stepBody.indexOf('git commit');
+  assert.ok(commitIdx !== -1, 'the step must contain a git commit');
+
+  for (const file of ALL_STAGED) {
+    const addIdx = stepBody.indexOf(`git add ${file}`) !== -1
+      ? stepBody.indexOf(`git add ${file}`)
+      : stepBody.indexOf(file);
+    assert.ok(addIdx !== -1, `${file} is not staged in the "Commit audit ledger" step`);
+    assert.ok(
+      addIdx < commitIdx,
+      `${file} must be git-added BEFORE the git commit. Staged after it, the file stays dirty-but-uncommitted through push-with-retry.sh, whose reset --hard (push-with-retry.sh:1938 and :2114) discards it.`,
+    );
+  }
+});
+
 test('workflow: the commit step keeps the raised push deadline and is not retry-starved', () => {
   const sites = auditWorkflowText(workflowText, 'audit-imageless-scored-shows.yml');
   assert.equal(sites.length, 1, 'expected exactly one push-with-retry call site');

@@ -117,10 +117,11 @@ jobs:
       #   3. The split actively broke this workflow. The audit script writes
       #      alert-ledger.json/alert-router-attempts.jsonl during "Run audit",
       #      so under a split they stay UNCOMMITTED while the first step
-      #      pushes — and push-with-retry.sh does an unguarded
-      #      `git reset --hard origin/$PULL_BRANCH` on its API-fallback
-      #      SUCCESS path (scripts/lib/push-with-retry.sh:2114; the script has
-      #      zero autostash/clean-tree guards). That discards the telemetry
+      #      pushes — and push-with-retry.sh does unguarded `git reset --hard`
+      #      on BOTH its pre-fallback path (scripts/lib/push-with-retry.sh:1938,
+      #      which fires even when the fallback then FAILS) and its API-fallback
+      #      SUCCESS path (:2114); the script has zero autostash or clean-tree
+      #      guards anywhere. That discards the telemetry
       #      edits, the second step then reports "No telemetry changes", and
       #      routeAlert's 7-day cooldown never persists — the exact failure
       #      this step's staging exists to prevent.
