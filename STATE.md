@@ -1,119 +1,100 @@
-# STATE — headless crown successor (BRO-343 v28), 2026-09-02
+# BRO-2930 — Scraper cost watch — state as of session interruption
 
-Branch: `job/crown-BRO-343-v28-headless-mtkprngr`. Everything below is MERGED to main
-and confirmed on origin (`git merge-base --is-ancestor <sha> origin/main` for each).
+## Root cause found (high confidence)
+ScrapingBee stays heavily used despite the Scrapingdog migration because several
+cron-reachable scripts construct raw ScrapingBee HTTP calls directly instead of
+routing through `scripts/lib/scraper.js`'s `fetchPage()` — the chokepoint where
+Scrapingdog is tried first (see `fetchPage()` around scraper.js:962-1005: order is
+Playwright(public sites) → Scrapingdog → BrightData → ScrapingBee → Playwright).
+These direct-call scripts never attempt SD at all, regardless of the migration.
 
-## DONE
+This is tracked, pre-existing debt: `data/audit/direct-provider-calls-baseline.json`
+(frozen 2026-08-12) lists 7 cron-reachable ScrapingBee-only files:
+`backfill-cast-web.js`, `collect-review-texts.js`, `gather-reviews.js`,
+`recollect-for-scores.js`, `scrape-bww-reviews.js`, `scrape-lottery-rush.js`,
+`scrape-nyc-theatre-roundups.js`.
 
-### Priority (a) — CI on main, job-by-job
-- Run 33697401511 on my merge commit `931f050f2cd` came back **failure**. Job-by-job:
-  TypeScript Check / Lint Workflows / E2E Tests / **Unit Tests** / Design Token Drift Guard
-  all `success`; Dependency Audit, Visual Regression, Awards Data Freshness `skipped`
-  (gated on `event_name == 'schedule' || 'workflow_dispatch'` — by design on a push);
-  **Data Validation `failure`**, Test Summary `failure` (it just mirrors).
-- Data Validation's failing step was "Audit cast-changes.json":
-  `GATE: 0 cross-show conflict(s) (zero-tolerance) + 25 total issue(s) vs floor 15`.
-  Not a code regression — see BRO-2752 below. Fixed and merged (`37e3244d6ee`).
-- **Unit Tests passing on that run is the acceptance signal for the BRO-2751 work below**
-  (the two newly-registered bash tests run in that job).
+Independent corroboration: `data/audit/provider-spend-daily.jsonl` for 2026-08-30
+(the one day both providers reported real billing `dayCredits`) shows
+`attributedPct.scrapingdog = 0.109` and `attributedPct.scrapingbee = 0.0088` —
+i.e. ~90%+ of BOTH providers' actual billed credits that day came from code paths
+that never emit `[SD Call]`/`[SB Call]` telemetry. This is also the direct answer
+to the email's own "TELEMETRY NOTE" mystery (SD near-zero in log samples vs 2.35M
+billed credits) — it's not a workflow-name mismatch in `measure-scraper-usage.js`,
+it's a code-level bypass in the highest-volume scripts.
 
-### Priority (b) — safe-form allowlist / BRO-2718
-Already landed before I picked up (commit `602a1f0d5a6`, 3 -> 39 entries). Re-derived
-rather than trusted:
-- `node scripts/audit-safe-form-allowlist.js` exit 0; `node --test scripts/lib/safe-form-allowlist.test.mjs` 14/14.
-- `data/audit/card-verifiability-linear.json`: total 300, armed 145, refused 155 (51.7%),
-  byKind `{no-command: 89, no-section: 24, shape: 37, basename: 5}`.
-- **The allowlist is no longer the blocker.** `basename` is 5 of 155. The dominant refusal
-  is `no-command` (89) — cards whose acceptance criteria are prose only. Further widening
-  buys almost nothing; the remaining work on BRO-2718 is card CONTENT (enrichment), not
-  the allowlist. `audit-outlet-registry.js --strict` staying refused is still correct
-  (it calls `saveAuditResults()` unconditionally at line 948, writing a git-tracked file).
+Scripts that DO go through `fetchPage()` (e.g. `audit-show-review-gap.js`, used by
+"Audit Aggregator Review Gap") are working as intended — SB there is a legitimate
+fallback when SD misses per-domain, not a routing bug.
 
-### Priority (c) — P1s drained
-- **BRO-2751 — CLOSED (Done).** The card was parked as "needs an interactive session".
-  It did not: rule 18 needs a recorded PLAN verdict, and a headless session can run
-  /second-opinion and record it itself. Recorded `second-opinion / pass / restructure-flag: adopted`.
-  Shipped in `9dc90907c39` + `9300070bd39`. Full outcome is on the Linear issue.
-  The card's "pure gain, no red-CI risk" claim was WRONG and review caught it:
-  `disk-floor-check.test.sh` FAILS under a runner's ambient `GITHUB_ACTIONS=true`
-  (`ensure_disk_floor` returns 0 immediately, disk-floor-check.sh:17) — cases 1 and 4
-  failed, 2 and 5 passed vacuously. Registering it as-is would have reddened main.
-- **BRO-2748 — verified already Done, no work needed.** Mutated the containment check to
-  `startsWith(publicDir)` without `path.sep` on a scratch copy: a test named
-  "a public/-PREFIXED SIBLING directory is outside containment (BRO-2748)" catches it.
-  Restored; suite 10/10; tree clean.
-- **BRO-2322 — evidence attached, not fixed.** Diagnosed the recurring
-  "Rebuild Reviews (Fast)" red (4 of last 8 runs): `PUSH_DEADLINE_SEC=600` funds ~5
-  attempts at ~100s/cycle under contention, while the caller advertises `MAX_RETRIES=20`
-  — a 4x disagreement — and the Git Data API fallback is disqualified by construction on
-  this workflow because its whole output IS reviews.json. Left for that audit card
-  because it is shared push infra (rule 18) and needs per-caller resizing, not a bump.
-- **BRO-2752 — FILED (parked).** See below.
-- **BRO-2432 — deliberately left alone.** Its own park reason says a live parallel session
-  owns `scripts/clear-stale-wrong-show-flags.js`; dispatching would race it.
+## Done this session
+- Fixed 2 of the 7 direct-call sites (low-risk, single-purpose scripts, each
+  tested live against real target hosts via `fetchWithScrapingdog` before editing):
+  - `scripts/scrape-bww-reviews.js` — added `fetchHtmlViaSD()`, tried before the
+    existing `fetchHtmlViaSB()` retry loop. Purely additive; falls through
+    unchanged on any SD miss.
+  - `scripts/scrape-nyc-theatre-roundups.js` — same pattern, added
+    `fetchHtmlViaSD()` before the existing SB retry loop.
+  - Both verified live: `fetchWithScrapingdog` returns 200 + real HTML for
+    `broadwayworld.com/reviews/Hamilton` and `newyorkcitytheatre.com/news/reviews/`.
+  - Committed: `bb00c332532` "fix(scraper): try Scrapingdog before ScrapingBee in
+    BWW + NYC Theatre scrapers". Pushed to `origin/job/linear-BRO-2930-mtrep6u5`.
+- **CAUTION for next session:** while testing, `require('./scripts/scrape-bww-reviews.js')`
+  from a `node -e` one-liner executed the script's top-level `main()` for real
+  (no `require.main === module` guard) — it started scraping ~200 real shows
+  before being cut off by an EPIPE from a piped `head`. No review-text/archive
+  file writes were found afterward (checked `git status` on
+  `data/review-texts`/`data/aggregator-archive` — clean), and the only file
+  changes it caused (`data/audit/scraper-spend-ledger.jsonl`,
+  `data/audit/stage-latency.jsonl`) were reverted with `git checkout --`. Don't
+  `require()` these CLI scripts directly again — spawn them as a subprocess with
+  a `--help`/dry-run flag, or extract the function under test instead.
 
-## THE ONE THING STILL OPEN — now CLOSED
+## NOT done — remaining work
+1. **Not yet fixed (same bug class, higher risk/complexity — do NOT blind-migrate):**
+   - `scripts/gather-reviews.js` — only 1 direct-SB hit (line ~4426, WE live-fetch
+     fallback when archives are empty), low volume, should be a similarly safe
+     additive SD-first swap.
+   - `scripts/collect-review-texts.js` — **highest-volume culprit**, 2 direct
+     hits (SB at line ~2433 "Tier 2", BD at line ~2605). This has its own bespoke
+     multi-tier pipeline (Playwright → AMP → Browserbase → directCookies →
+     ScrapingBee(proxy-tier escalation: standard/premium/stealth) → BrightData →
+     archive.org) that predates the SD migration and has NO Scrapingdog tier at
+     all. Runs 3x/day at 150/batch + auto-chains. This is the single biggest
+     lever but needs a dedicated session: map SD's `renderJs`/`premium`/
+     `stealthMode` options against SB's `standard`/`premium_proxy`/`stealth_proxy`
+     credit tiers, insert as a new tier before the existing SB tier, and do a
+     real before/after comparison on a handful of paywalled + non-paywalled URLs
+     per CLAUDE.md rule 12.5 ("Script migrations: compare output before/after on
+     same input").
+   - `scripts/recollect-for-scores.js`, `scripts/backfill-cast-web.js`,
+     `scripts/scrape-lottery-rush.js` — same low-risk pattern as the 2 already
+     fixed (single SB call each), not yet touched. Good candidates for a
+     follow-up session using the exact same additive pattern.
+2. **Not run:** `npx tsc --noEmit`, `npx next lint` (CLAUDE.md rule 12) on the
+   2 changed files — do this first in the next session before anything else.
+3. **Not filed:** a Linear P2 card for the `collect-review-texts.js` migration
+   (the real fix for the bulk of the cost pressure) — this is a scoped,
+   substantial task that deserves its own card, not a quick add-on.
+4. **Not run:** `/ship-check`.
+5. **Verify command for the acceptance criteria** (not yet posted to the Linear
+   card) — proposed:
+   `grep -q fetchHtmlViaSD scripts/scrape-bww-reviews.js scripts/scrape-nyc-theatre-roundups.js && echo PASS`
+   This structurally pins that the 2 fixed scripts keep their SD-first attempt
+   and won't silently regress back to SB-only. It does NOT prove the cost trend
+   improved (that needs multi-week `data/audit/provider-spend-daily.jsonl`
+   history, not a single command) — say so explicitly when reporting.
+6. **Not yet reported** to Linear via `node scripts/linear-session.js report`.
 
-`gh workflow run test.yml --ref main` -> run **33698960075** on `37e3244d6ee`:
-**`success`, 10/10 jobs, ZERO skipped.**
-
-    Data Validation  success        Unit Tests            success
-    Lint Workflows   success        TypeScript Check      success
-    E2E Tests        success        Design Token Drift    success
-    Dependency Audit success        Visual Regression     success
-    Awards Data Fr.  success        Test Summary          success
-
-Dispatched rather than push-triggered because `data/cast-changes.json` is NOT in test.yml's
-push `paths:`, so the heal commit alone could not re-run the job that was red. A side
-benefit: on `workflow_dispatch` the three normally-skipped jobs (Dependency Audit, Visual
-Regression, Awards Data Freshness) DO run, and all three are green too — so this run
-covers strictly more than a push-triggered one.
-
-Corroborated independently before the run finished: `git show origin/main:data/cast-changes.json`
-is byte-identical to the local file, and `node scripts/audit-cast-changes.js --gate` exits
-**0** against it ("0 cross-show conflicts, 0 issue(s) <= floor 15"). AUTO-FLAGGED 315 -> 290.
-
-Nothing is in flight. There is no next command to run.
-
-## BRO-2752 — the real finding, filed and parked
-
-`audit-cast-changes.js:180` drops `[AUTO-FLAGGED]` entries older than 30 days. All 25 that
-reddened main shared `addedDate: "2026-08-04"`, so they crossed that threshold in the same
-instant, at UTC midnight. `check-corpus-drift.yml:73-91` runs the correct remedy but only
-daily — it ran at 19:45 UTC and correctly changed nothing (they were 29 days old then;
-verified: commit `2aad9d9f8d8` moved the AUTO-FLAGGED count 315 -> 315). The gate runs on
-every push. So the gate and the healer disagree about what time it is, and the gate runs
-~50x more often. This is a step function, not the "routine churn" test.yml:4345-4359
-describes as tolerable: any single day's batch larger than the floor of 15 guarantees a red
-trunk until the next heal. Recommendation on the card is option A — `--gate` should not
-count issues its own `--write` would auto-fix — plus a test asserting N auto-healable-only
-issues never fail `--gate` for any N.
-
-## Cycle state at handoff
-
-`behind 0 / unpushed 0` at last check. 36 worktrees (31 at v28 handoff).
-Disk **13Gi** free on `/System/Volumes/Data` (16-17Gi at v28 handoff) — watch the trend.
-Dispatch ledger 11,588 rows, `runaway:0 future:0`.
-
-Crown gates: `merge-reviews-json` keyOf tripwire 28/28 pass.
-`audit-outlet-registry.js --strict` and `audit-critic-outlets.js --strict` could NOT run
-here — this fresh worktree has an EMPTY `data/review-texts`, and both gates correctly
-refuse to pass vacuously ("scanned 0 review files"). Environmental, not a failure; they
-run for real in CI.
-
-## Owner decisions — still open, untouched (a headless session cannot decide them)
-
-1. iOS overnight worktrees (`~/BroadwayScorecard-app`, Aug 31 + Sep 1 `feedback-overnight`):
-   review+merge vs confirmed discard. Each holds ONE real unmerged commit of TestFlight
-   beta-feedback fixes. Standing recommendation: review+merge.
-2. Forbes / Marc Hershberg walkthrough date. Standing recommendation: mid-to-late October,
-   ahead of a Nov 1 publish rather than depending on it.
-
-Not a decision, already made, execution blocked on the owner: Cyrus Team Cloud $120/mo
-cancellation needs a hand on an external dashboard; no CLI/API path exists on this machine.
-
-## Deliberately NOT done
-
-No CronCreate. The v28 brief's crown loop assumes an interactive session that outlives its
-cron; this one is hard-killed at 120 minutes, so a `13,43 * * * *` cron would only have
-fired inside my own turn and duplicated work in flight.
+## Exact next command
+```
+cd /Users/tompryor/Broadwayscore/.claude/worktrees/job-linear-BRO-2930-mtrep6u5
+npx tsc --noEmit && npx next lint
+node scripts/linear-session.js report --issue=BRO-2930 --status=in-review \
+  --summary="Root cause found: 7 cron-reachable scripts bypass fetchPage()'s SD-first chokepoint with raw ScrapingBee calls (data/audit/direct-provider-calls-baseline.json), confirmed by <11%/<1% telemetry attribution on billed SD/SB credits. Fixed 2 of 7 (scrape-bww-reviews.js, scrape-nyc-theatre-roundups.js) with additive SD-first attempts, verified live. collect-review-texts.js (highest volume) and gather-reviews.js still need the same fix — see STATE.md for scoped follow-up." \
+  --key-files="scripts/scrape-bww-reviews.js,scripts/scrape-nyc-theatre-roundups.js,data/audit/direct-provider-calls-baseline.json,scripts/lib/provider-telemetry.js" \
+  --verification="grep -q fetchHtmlViaSD scripts/scrape-bww-reviews.js scripts/scrape-nyc-theatre-roundups.js && echo PASS"
+```
+Then file the `collect-review-texts.js` follow-up card and continue the
+remaining 3 low-risk migrations (`recollect-for-scores.js`,
+`backfill-cast-web.js`, `scrape-lottery-rush.js`, `gather-reviews.js`).
