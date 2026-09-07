@@ -42,7 +42,7 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
-const { fetchPage, fetchWithScrapingdog, cleanup: cleanupScraper } = require('./lib/scraper');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
@@ -183,7 +183,9 @@ async function fetchHtmlViaSD(url) {
   if (!process.env.SCRAPINGDOG_API_KEY) return null;
   try {
     const raw = await fetchWithScrapingdog(url, { renderJs: false });
-    return raw && raw.content ? raw.content : null;
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    return raw.content;
   } catch {
     return null;
   }

@@ -35,7 +35,7 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
-const { fetchWithScrapingdog } = require('./lib/scraper');
+const { fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -87,7 +87,9 @@ async function fetchHtmlViaSD(url, renderJs) {
   if (!process.env.SCRAPINGDOG_API_KEY) return null;
   try {
     const raw = await fetchWithScrapingdog(url, { renderJs });
-    return raw && raw.content ? raw.content : null;
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    return raw.content;
   } catch {
     return null;
   }
