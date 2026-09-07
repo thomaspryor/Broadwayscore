@@ -460,6 +460,97 @@ function buildSuccessionSeed(task, project, model, depth, cap, handoffText) {
   ].filter(v => v !== null).join('\n');
 }
 
+// Card #1938: after a succession successor is confirmed running, the
+// OUTGOING predecessor closes its OWN workspace as its final act — never
+// guessing another tab's ref, only ever the caller's own known
+// CMUX_WORKSPACE_ID. Verified live (second-opinion review, 2026-09-07):
+// every cmux-launched session's environment carries CMUX_WORKSPACE_ID, and
+// `cmux workspace close` accepts a UUID directly (its own --help: "a UUID,
+// a short ref... or an index"). This is the root-cause fix for the incident
+// that motivated crown-duplicate-detector.js: without it, a Crown
+// succession hand-off leaves its predecessor open forever — Crown tabs are
+// deliberately exempt from every OTHER close path (prune-closeable.js's
+// isCrownTab) — and 55 of them piled up running concurrently on the bare
+// checkout (323% CPU, 22.8GB RAM) before anyone noticed.
+//
+// Pure decision (CLAUDE.md rule 15): mirrors pruneDone's "never close the
+// selected tab" invariant — the owner may be reading THIS session's final
+// handoff summary the instant it posts, and the successor's own opening
+// message repeats the handoff brief in full, so deferring one tick costs
+// nothing real.
+function shouldSelfCloseAfterSuccession({ workspaceId, selected, disabled }) {
+  if (disabled) return false;
+  if (!workspaceId) return false; // not running inside a cmux-launched session (bare CLI, test harness, etc.)
+  if (selected) return false;
+  return true;
+}
+
+// Side-effecting wrapper. Any failure here (env var absent, lookup error,
+// close error) is swallowed and logged, never thrown or surfaced as a
+// dispatch failure: this only ever runs AFTER the successor is already
+// confirmed launched, so a failure to self-close must never be mistaken for
+// a failure of the succession itself. Worst case on any error: the
+// predecessor tab is left open exactly like it always was before this fix —
+// which crown-duplicate-detector.js's report-only sweep now catches instead
+// of letting it silently reaccumulate. Kill switch (adversarial review,
+// 2026-09-07): SUCCESSION_SELF_CLOSE_DISABLED=1 only stops NEW invocations of
+// this process — it does not retrofit an already-running session's
+// inherited environment, same limitation every other env-var kill switch in
+// this codebase has (NO_PAYLOAD_REAPER_DISABLED, ZOMBIE_TAB_SWEEP_DISABLED).
+//
+// Fail-safe requirement (adversarial review, 2026-09-07 — two independent
+// reviewers caught this): if the fresh listing does NOT contain this exact
+// workspace id, that is "cannot confirm state," not "confirmed not
+// selected." The prior version defaulted `selected` to false on a miss,
+// which is fail-UNSAFE — the opposite of this codebase's checkLiveness
+// convention ("uncertainty must never resolve to dead/closeable"). A miss
+// here (id lookup bug, schema drift in `cmux workspace list --json`, a
+// recycled ref) must abort, never proceed to close.
+function selfCloseAfterSuccession(deps = {}) {
+  const { listWorkspacesWithCwd: listFn = cmuxws.listWorkspacesWithCwd, closeWorkspace: closeFn = cmuxws.closeWorkspace } = deps;
+  const workspaceId = process.env.CMUX_WORKSPACE_ID || null;
+  const disabled = process.env.SUCCESSION_SELF_CLOSE_DISABLED === '1';
+  if (disabled) { console.log('[bsc-next] succession self-close disabled (SUCCESSION_SELF_CLOSE_DISABLED=1) — predecessor tab stays open'); return; }
+  if (!workspaceId) return; // not cmux-launched (e.g. a headless/manual run) — nothing to close
+  let mine;
+  try {
+    mine = listFn().find(w => w.id === workspaceId);
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close lookup failed (non-fatal, predecessor tab stays open): ${e.message}`);
+    return;
+  }
+  if (!mine) {
+    console.error(`[bsc-next] WARN succession self-close: own workspace id ${workspaceId} not found in a fresh listing — cannot confirm it's safe to close, leaving it open`);
+    return;
+  }
+  if (!shouldSelfCloseAfterSuccession({ workspaceId, selected: mine.selected, disabled })) {
+    if (mine.selected) console.log('[bsc-next] succession self-close deferred — this tab is currently selected (owner may be reading the handoff)');
+    return;
+  }
+  // TOCTOU guard (adversarial review, 2026-09-07 — mirrors pruneDone's own
+  // "re-list immediately before the destructive close" pattern in
+  // cmux-workspaces.js): the owner can select this exact tab, or it can
+  // vanish/renumber, in the gap between the check above and the close call.
+  // Re-list right before the destructive call; abort on any change.
+  let fresh;
+  try {
+    fresh = listFn().find(w => w.id === workspaceId);
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close re-check failed (non-fatal, predecessor tab stays open): ${e.message}`);
+    return;
+  }
+  if (!fresh || fresh.selected) {
+    console.log('[bsc-next] succession self-close aborted at the final check — tab vanished or became selected since the first check');
+    return;
+  }
+  try {
+    closeFn(workspaceId);
+    console.log('[bsc-next] predecessor self-closed after successor launch confirmed');
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close failed (non-fatal, predecessor tab stays open): ${e.message}`);
+  }
+}
+
 // Best-effort digest page when a succession chain hits the depth cap (card
 // #856 P0 guard) — never lets an alerting failure mask the refusal already
 // printed to the caller. See cmux-launch.js's pageAuthPreflightFailure for
@@ -546,6 +637,7 @@ function runSuccessionDispatch(task, args, deps) {
     // owner's actual morning digest reads — exactly what happened before
     // this was made injectable. Production callers get the real pager.
     pageSuccessionCapExceeded: pageCapExceededFn = pageSuccessionCapExceeded,
+    selfCloseAfterSuccession: selfCloseFn = selfCloseAfterSuccession,
   } = deps;
 
   if (typeof args.handoff !== 'string' || !args.handoff) {
@@ -588,14 +680,14 @@ function runSuccessionDispatch(task, args, deps) {
   // finally always runs (releasing the lock) before this function exits.
   let exitCode;
   try {
-    exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn });
+    exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn, selfCloseFn });
   } finally {
     if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id);
   }
   if (exitCode) process.exit(exitCode);
 }
 
-function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn }) {
+function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn, selfCloseFn }) {
   const handoffText = fs.readFileSync(args.handoff, 'utf8');
   const entries = readLedgerEntriesFn();
   const { newDepth, refusal } = successionRefusal(task.id, entries, args);
@@ -642,6 +734,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   if (res.ok) {
     const tabTitle = buildAutoTitle({ subject: task.subject, project, model });
     console.log(`[bsc-next] opened SUCCESSION Cmux tab "${tabTitle}" (${res.ref}) on #${task.id}, depth ${newDepth}/${dispatchLedger.SUCCESSION_DEPTH_CAP} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
+    let ledgerWritten = false;
     try {
       appendLedgerEntryFn({
         event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
@@ -681,7 +774,19 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         // dead launches and terminal-runtime pressure.
         liveRuntimes: res.liveRuntimes ?? null,
       });
+      ledgerWritten = true;
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+    // Card #1938: gated on the ledger write above actually succeeding
+    // (adversarial review, 2026-09-07: a swallowed write failure must not
+    // silently self-close anyway — crown-duplicate-detector.js's PRIMARY
+    // grouping signal is this exact ledger taskId, so a succession that
+    // self-closed without a ledger trail would be invisible to the very
+    // safety net this fix pairs with). If the write failed, the predecessor
+    // stays open — same as before this fix, and now visible in the ⚠
+    // WARN log above for the owner to notice.
+    if (ledgerWritten) {
+      try { selfCloseFn(); } catch (e) { console.error(`[bsc-next] WARN succession self-close threw (non-fatal, predecessor tab stays open): ${e.message}`); }
+    }
   } else if (res.refusedForCapacity && !res.workspaceRef) {
     // Task #1904, same distinction the fresh-dispatch branch draws: cmux is
     // out of terminal runtimes, so NOTHING was created. Reporting this as
@@ -1659,4 +1764,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard, shouldSelfCloseAfterSuccession, selfCloseAfterSuccession };
