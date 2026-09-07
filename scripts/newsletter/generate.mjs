@@ -2093,7 +2093,7 @@ function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
-    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
+    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
     // Genuine in-week openings always outrank a grace-window catch-up show
     // (openingDate outside this week — see inLondonOpeningWindow()), however
     // many reviews the catch-up show has: a catch-up show is there to be
@@ -2515,11 +2515,23 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // (opened May 12, shown in the body) and fall back to an obscure closing.
 const bwEvents = IS_WE ? [] : bwO.list.map(s => ({ show: s }));
 const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
+// A genuinely dead Broadway/Off-Broadway news week (no openings at all this
+// week — closings/movers/outlier are still handled by the normal weight
+// system below). Relaxes the >=75 gate just below so the US edition falls
+// back to a multi-show London roundup instead of picking a single secondary
+// story almost at random (2026-09-06: "A Month in the Country opens in
+// London to strong reviews" led the whole email when 3 OTHER London
+// openings that week — Electra/Persona, The Story, Holy Fool — scored below
+// 75 and were silently dropped from the candidate pool entirely).
+const quietBroadwayWeek = !IS_WE && bwEvents.length === 0 && obEvents.length === 0;
 // West End openings that lead the subject/lede: Recommended-or-better (score
 // >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar
 // (75, Palladium, 19 reviews) is genuinely the week's biggest story and the
 // reader should see it (user, 2026-07-12). The scorer phrases by score, so a
-// 75 reads "strong reviews", a 90 "near-universal praise".
+// 75 reads "strong reviews", a 90 "near-universal praise". On a quiet
+// Broadway week ONLY, every scored London opening enters the pool regardless
+// of tier — normal weeks are unaffected (bwEvents/obEvents non-empty keeps
+// quietBroadwayWeek false, so the >=75 gate is unchanged).
 // Ordering matters: candidates tie on weight within an edition, so the FIRST
 // entry here is the one the subject/lede names. weOpeningStories() ranks
 // most-reviewed-first and londonSection floats the same show to the top card,
@@ -2675,7 +2687,16 @@ function _closingCtx(usedKinds) {
     showRef: { id: _closingLede.id, slug: _closingLede.slug, title: _closingLede.title },
   };
 }
-const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'short' ? 3 : 4) || { sentences: [], kinds: [], showRefs: [] };
+// On a quiet Broadway week the candidate pool is nothing BUT same-run WE
+// openings (see quietBroadwayWeek above), so the run-compression in
+// buildLedeSentences folds everything past the anchor into one clause
+// anyway — the normal 3-sentence cap would otherwise silently truncate the
+// pool BEFORE compression runs, dropping whichever show sorted last (venue
+// tier outranks score — see weTierRank — so this can and did drop the
+// actual best-reviewed show of the week, off-West-End A Month in the
+// Country at 80, in favor of keeping two lower-scoring West End openings).
+const _maxLedeSentences = LEDE_STYLE === 'short' ? (quietBroadwayWeek ? Math.min(6, newsworthyCandidates.length) : 3) : 4;
+const _ledeParts = buildLedeSentences(newsworthyCandidates, _maxLedeSentences) || { sentences: [], kinds: [], showRefs: [] };
 // WE aggregate opener (owner, 2026-08-02: the two-sentence lede reads too
 // sparse on a big opening week; wanted e.g. "A big weekend for London theatre,
 // six shows opening, four scoring over 75"). Fires only in the WE edition when
@@ -2699,7 +2720,18 @@ if (IS_WE && !process.env.LEDE_OVERRIDE) {
         : `A busy week for London theatre, with ${_w(_stories.length)} new openings.`;
   }
 }
-const _withOpener = (sentences) => _weOpener ? [_weOpener, ...sentences] : sentences;
+// US-edition counterpart: on a quiet Broadway week (see quietBroadwayWeek
+// above) the lede is now built entirely from secondary London candidates —
+// say so up front rather than launching straight into "Electra / Persona
+// opens to decent reviews" with no framing for why a NYC-branded email is
+// suddenly talking about London.
+let _bwOpener = '';
+if (quietBroadwayWeek && !process.env.LEDE_OVERRIDE) {
+  const _stories = weOpeningStories();
+  if (_stories.length >= 2) _bwOpener = 'A quiet week on Broadway.';
+}
+const _opener = _weOpener || _bwOpener;
+const _withOpener = (sentences) => _opener ? [_opener, ...sentences] : sentences;
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
   for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
