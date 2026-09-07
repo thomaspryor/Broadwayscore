@@ -35,6 +35,7 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
+const { fetchWithScrapingdog } = require('./lib/scraper');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -76,7 +77,26 @@ async function fetchHtmlSingle(url, renderJs = true) {
   });
 }
 
+// Scrapingdog attempt before ScrapingBee (BRO-2930): this file called
+// ScrapingBee directly with no other tier, so NYC Theatre traffic never
+// touched Scrapingdog even after the SD migration — one of the
+// direct-provider-call sites in data/audit/direct-provider-calls-baseline.json.
+// Purely additive: any SD miss/failure falls straight through to the
+// pre-existing SB retry loop below, unchanged.
+async function fetchHtmlViaSD(url, renderJs) {
+  if (!process.env.SCRAPINGDOG_API_KEY) return null;
+  try {
+    const raw = await fetchWithScrapingdog(url, { renderJs });
+    return raw && raw.content ? raw.content : null;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchHtml(url, renderJs = true, maxRetries = 2) {
+  const sdHtml = await fetchHtmlViaSD(url, renderJs);
+  if (sdHtml) return sdHtml;
+
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
