@@ -268,5 +268,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-06T22:30:23.067Z"
+  },
+  {
+    "conditionKey": "watchdog-heartbeat-stale",
+    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
+    "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T12:51:57.071Z"
   }
 ]
