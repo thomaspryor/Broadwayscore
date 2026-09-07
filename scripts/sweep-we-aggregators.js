@@ -27,6 +27,7 @@ const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
+const { recordSbCall } = require('./lib/provider-telemetry');
 
 // Reuse extraction functions from existing scrapers
 const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
@@ -266,8 +267,13 @@ async function scrapingBeeRender(url) {
       timeout: 30000,
       responseType: 'text',
     });
+    recordSbCall({ url, fn: 'render', success: true, status: resp.status, credits: 5 });
     return resp.data || null;
   } catch (err) {
+    const status = err.response?.status || 'error';
+    // 401/402 (bad key / no credits) and connection errors are not billed.
+    const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
+    recordSbCall({ url, fn: 'render', success: false, status, credits: billed });
     console.log(`    [SB] Render failed for ${url}: ${(err.message || '').substring(0, 60)}`);
     return null;
   }
@@ -491,8 +497,13 @@ async function sweepWET(show) {
           params: { api_key: SB_KEY, url: apiUrl, render_js: 'false' },
           timeout: 20000, responseType: 'text',
         });
+        recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1 });
         try { posts = JSON.parse(resp.data); } catch {}
-      } catch {}
+      } catch (err) {
+        const status = err.response?.status || 'error';
+        const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 1;
+        recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: billed });
+      }
     }
 
     if (posts && Array.isArray(posts)) {

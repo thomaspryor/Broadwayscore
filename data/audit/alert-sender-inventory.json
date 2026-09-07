@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-05T17:05:28.471Z",
+  "generatedAt": "2026-09-07T21:51:54.266Z",
   "counts": {
-    "router": 115,
+    "router": 116,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -58,21 +58,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 3087,
+      "line": 3165,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 5464,
+      "line": 5578,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 5487,
+      "line": 5601,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -379,6 +379,13 @@
       "disposition": "digest"
     },
     {
+      "file": "scripts/check-missed-broadcasts.js",
+      "line": 193,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
+    },
+    {
       "file": "scripts/check-provider-spend.js",
       "line": 147,
       "kind": "routeAlert",
@@ -562,21 +569,21 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2275,
+      "line": 2302,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2416,
+      "line": 2443,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 4177,
+      "line": 4204,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -611,7 +618,7 @@
     },
     {
       "file": "scripts/lib/core-data-merge-registry.js",
-      "line": 517,
+      "line": 525,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
