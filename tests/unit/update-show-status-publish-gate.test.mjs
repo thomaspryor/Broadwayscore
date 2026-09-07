@@ -334,7 +334,11 @@ test('no OTHER job in this workflow publishes without requiring update-shows to 
     // requiresUpstreamSuccess() models GitHub reachability, not YAML text:
     // "lacks always()" is NOT the same as "fails closed", because
     // `!cancelled()` overrides implicit needs-gating too.
-    if (!requiresUpstreamSuccess(job, SCOPED_JOB)) {
+    // Passing the whole jobs map resolves `needs` TRANSITIVELY: a job that
+    // needs a job that needs update-shows does fail closed on GitHub, and
+    // flagging it would be a false positive that blocks a legitimate refactor
+    // of the fan-out jobs.
+    if (!requiresUpstreamSuccess(job, SCOPED_JOB, workflow.jobs || {})) {
       const what = job.uses
         ? `reusable workflow ${job.uses}`
         : (job.steps || []).filter(isPublishingStep).map(stepLabel).join(', ');

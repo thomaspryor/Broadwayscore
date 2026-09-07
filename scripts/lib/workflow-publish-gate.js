@@ -12,73 +12,96 @@
  * both depend on live here, per CLAUDE.md rule 15, so that hardening one
  * hardens the other.
  *
- * WHY THIS FILE EXISTS AT ALL — read before weakening anything in it.
- * This guard has now been defeated by adversarial reviewers FOUR separate
- * times, and each round taught the same lesson one level further out.
+ * WHY THIS FILE EXISTS — read before weakening anything in it. This guard has
+ * been defeated by adversarial reviewers FIVE times. Each round went one
+ * level further out than the last:
  *
- *   Round 1: the barrier's whole body was replaced with an `echo`. Every
- *            `if:`-based assertion stayed green.
- *   Round 2: `|| true` appended to the push line. The step exits 0, its
- *            outcome stays 'success', both publishers run.
- *   Round 3: five more one-line defeats of the DENYLIST that round 2
- *            produced — `|| echo "..."` (this repo's own house style),
- *            `|| true  # comment` (the trailing comment beats a `$` anchor),
- *            `|| exit 0`, backgrounding with `&`, and `set +ex` slipping past
- *            an anchored `set +e`. Plus a decoy step that satisfied the
- *            publishing predicate with nothing but a COMMENT mentioning
- *            push-with-retry.sh.
- *   Round 4: four defeats that all went AROUND the push line rather than
- *            through it — swallow the `git commit` failure instead of the
- *            push (the allowlist only policed push lines); use `!cancelled()`
- *            instead of `always()` (the reachability test was a literal
- *            string match, so the gated tests simply skipped the step); a
- *            sibling job gated `!cancelled()` (the cross-job rule read
- *            "lacks always()" as "fails closed"); and a reusable-workflow job
- *            whose job-level `uses:` means it has NO `steps` for a
- *            step-walking predicate to see.
+ *   1. The barrier's whole body replaced with an `echo`.
+ *   2. `|| true` appended to the push line.
+ *   3. Five defeats of the denylist that round 2 produced — `|| echo "..."`,
+ *      `|| true  # comment`, `|| exit 0`, `&`, `set +ex` — plus a decoy step
+ *      that satisfied the publishing predicate with only a COMMENT.
+ *   4. Four that went AROUND the push line: swallow the `git commit` failure
+ *      instead; `!cancelled()` instead of `always()`; a sibling job gated
+ *      `!cancelled()`; a reusable-workflow job with no `steps`.
+ *   5. Nine more, every one of which made the guard fail OPEN:
+ *      - `|| true` on the CLOSING line of a multi-line commit message, which
+ *        a line-scoped scan never attributes to the `git commit`.
+ *      - `git -C . commit` (any pre-subcommand global option) evading a
+ *        `\bgit\s+(?:commit|push)\b` matcher.
+ *      - `echo "deploying" && gh workflow run ...` — dropping the whole line
+ *        because its FIRST token was `echo` hid a real dispatch.
+ *      - `actions/github-script` + `createWorkflowDispatch(...)` and
+ *        `gh api --method PUT .../contents/...`, the two idioms this repo
+ *        actually uses to publish, recognised by nothing.
+ *      - `Always()`: GitHub expression functions are case-INSENSITIVE, these
+ *        regexes were not, so a capitalised publisher read as fail-closed.
+ *      - `shell: bash {0}`, a custom template that drops the default `-e`.
+ *      - `!(steps.x.outcome == 'success')` — a condition that runs the
+ *        publisher only when the barrier FAILED — accepted as correct gating.
+ *      - `exit 0 # comment` and `exit 0;` escaping an anchored matcher.
  *
- * THE STANDING LESSON: every defeat came from a predicate that was a STRING
- * MATCHER over YAML text rather than a model of what GitHub Actions will
- * actually RUN. When you extend this file, ask "what does GitHub do?", not
- * "what does the YAML say?". And when you add a rule, prefer an ALLOWLIST of
- * the one correct form over a denylist of ways to break it: a denylist of
- * shell idioms can always be extended by one more idiom.
+ * THE STANDING LESSON: every single defeat came from a predicate that matched
+ * YAML or shell TEXT instead of modelling what GitHub Actions and bash will
+ * actually DO. When you extend this file, ask "what runs?", not "what does the
+ * source say?". Prefer an ALLOWLIST of the one correct form over a denylist of
+ * ways to break it — a denylist of idioms can always be extended by one more.
  */
 
 /** Shell operators that can stop a failing command from failing its step. */
 const SWALLOWING_OPERATORS = /\|\||&&|;|\||(?:^|[^&])&(?:[^&]|$)/;
 
 /**
- * Remove quoted spans so an operator search sees only real shell syntax.
+ * Split a `run:` body into LOGICAL lines: newlines inside a quoted string do
+ * not end a line, and a trailing backslash continues one.
  *
- * A commit message legitimately contains `;` and `|`, and in
- * commercial-weekly.yml the message OPENS a double quote that closes several
- * lines later. Balanced spans are removed; a trailing unmatched quote
- * truncates the line, which is the correct reading for a multi-line message.
+ * This is load-bearing. commercial-weekly's commit message opens a double
+ * quote that closes three lines later; with a naive per-physical-line scan the
+ * `|| true` an attacker appends lands on the message's CLOSING line, which
+ * contains no `git commit` and so is never inspected. Joining the logical line
+ * puts the operator back next to the command it neuters.
  */
-function stripQuoted(line) {
-  let out = String(line);
-  // Replace with a SPACE, never with `""`/`''` — a quote-shaped placeholder
-  // is itself found by the unmatched-quote truncation below, which then cuts
-  // the line at the placeholder and hides every operator after it. That bug
-  // let `git commit -m "..." || echo "..."` through a probe that was
-  // otherwise correct.
-  out = out.replace(/"(?:[^"\\]|\\.)*"/g, ' ');
-  out = out.replace(/'(?:[^'\\]|\\.)*'/g, ' ');
-  const dq = out.indexOf('"');
-  const sq = out.indexOf("'");
-  const cut = [dq, sq].filter((i) => i >= 0).sort((a, b) => a - b)[0];
-  return cut === undefined ? out : out.slice(0, cut);
+function logicalLines(run) {
+  const src = String(run || '');
+  const out = [];
+  let cur = '';
+  let quote = null;
+  for (let i = 0; i < src.length; i += 1) {
+    const ch = src[i];
+    if (quote) {
+      if (ch === '\\') {
+        cur += ch + (src[i + 1] || '');
+        i += 1;
+        continue;
+      }
+      if (ch === quote) quote = null;
+      cur += ch;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      cur += ch;
+      continue;
+    }
+    if (ch === '\\' && src[i + 1] === '\n') {
+      i += 1;
+      cur += ' ';
+      continue;
+    }
+    if (ch === '\n') {
+      out.push(cur);
+      cur = '';
+      continue;
+    }
+    cur += ch;
+  }
+  out.push(cur);
+  return out
+    .map((l) => l.replace(/\s+$/, ''))
+    .filter((l) => l.trim() !== '' && !/^\s*#/.test(l));
 }
 
-/**
- * Body lines with comments and blanks removed.
- *
- * Comment-stripping is load-bearing, not tidiness. A reviewer moved
- * `id: commit-public` onto an unrelated step and dropped
- * `# see scripts/lib/push-with-retry.sh` into its body; that bare comment
- * satisfied the publishing predicate and the vacuity guard at once.
- */
+/** Physical, comment-stripped lines. Kept for callers that want raw shape. */
 function bodyLines(step) {
   return String((step && step.run) || '')
     .split('\n')
@@ -92,22 +115,57 @@ function strippedRun(step) {
 }
 
 /**
- * Body lines that could actually INVOKE something, excluding lines whose
- * command is `echo`/`printf`. A reviewer padded a decoy step with
- * `run: echo "next step will gh workflow run vercel-deploy.yml"` purely to
- * satisfy a vacuity counter — the token was real, the invocation was not.
+ * Remove quoted spans so an operator or token search sees only real shell
+ * syntax. A commit message legitimately contains `;` and `|`.
+ *
+ * Replace with a SPACE, never with `""`/`''` — a quote-shaped placeholder is
+ * itself found by the unmatched-quote truncation below, which then cuts the
+ * line at the placeholder and hides every operator after it.
  */
-function invocationLines(step) {
-  return bodyLines(step).filter((l) => !/^\s*(?:echo|printf)\b/.test(l));
+function stripQuoted(line) {
+  let out = String(line);
+  out = out.replace(/"(?:[^"\\]|\\.)*"/g, ' ');
+  out = out.replace(/'(?:[^'\\]|\\.)*'/g, ' ');
+  const dq = out.indexOf('"');
+  const sq = out.indexOf("'");
+  const cut = [dq, sq].filter((i) => i >= 0).sort((a, b) => a - b)[0];
+  return cut === undefined ? out : out.slice(0, cut);
+}
+
+/** Strip a trailing `# comment` and any trailing `;` from an unquoted line. */
+function bareCommand(line) {
+  return stripQuoted(line).replace(/#.*$/, '').replace(/;+\s*$/, '').trim();
+}
+
+/**
+ * Does this logical line INVOKE a publisher?
+ *
+ * Tokens are looked for OUTSIDE quotes, which is what distinguishes
+ * `echo "deploying" && gh workflow run x.yml` (a real dispatch) from
+ * `echo "next step will gh workflow run x.yml"` (a decoy planted purely to
+ * satisfy a vacuity counter). An earlier version dropped any line whose first
+ * token was `echo`, which correctly killed the decoy and incorrectly hid the
+ * real one.
+ *
+ * `gh api` URLs are usually quoted, so the VERB is required outside quotes
+ * while the path may be found anywhere on the line.
+ */
+function publishesOnLine(line) {
+  const bare = stripQuoted(line);
+  if (bare.includes('push-with-retry.sh')) return true;
+  if (/\bgh\s+workflow\s+run\b/.test(bare)) return true;
+  if (/\bgh\s+api\b/.test(bare)) {
+    if (/\/dispatches\b/.test(line)) return true;
+    if (/--method\s+(?:PUT|POST)/i.test(bare) && /\/contents\//.test(line)) return true;
+  }
+  // actions/github-script bodies and inline node: the REST calls this repo
+  // uses to dispatch a workflow or write a file into another repo.
+  if (/\bcreateWorkflowDispatch\b|\bcreateOrUpdateFileContents\b/.test(line)) return true;
+  return false;
 }
 
 /**
  * Steps that publish data outside the runner, and must never run unguarded.
- *
- * The `run:` forms matter as much as the `uses:` ones. update-show-status.yml
- * dispatches its deploy with `run: gh workflow run vercel-deploy.yml`, not
- * with `uses: ./.github/actions/dispatch-deploy` — a uses-only predicate does
- * not see it at all.
  */
 function isPublishingStep(step) {
   const uses = String((step && step.uses) || '');
@@ -115,72 +173,88 @@ function isPublishingStep(step) {
   if (uses.includes('dispatch-deploy')) return true;
   if (uses.includes('push-aggregator-archive')) return true;
 
-  const body = invocationLines(step).join('\n');
-  if (body.includes('push-with-retry.sh')) return true;
-  if (/\bgh workflow run\b/.test(body)) return true;
-  if (/\bgh api\b[^\n]*\/dispatches\b/.test(body)) return true;
-  return false;
+  // `actions/github-script` carries its payload in `with.script`, not `run`.
+  const withText = JSON.stringify((step && step.with) || {});
+  if (/\bcreateWorkflowDispatch\b|\bcreateOrUpdateFileContents\b/.test(withText)) return true;
+
+  return logicalLines(step && step.run).some(publishesOnLine);
 }
 
 /**
  * Will GitHub still run this step (or job) after an EARLIER failure?
  *
- * This is a reachability question, not a text question. A step with no `if:`
- * defaults to `if: success()` and fails closed. Everything else that
- * mentions a status check function can survive an earlier failure:
- * `always()`, `!cancelled()`, `!failure()`, `success() || failure()`, and a
- * bare `failure()`/`cancelled()` all keep running where plain `success()`
- * would not.
- *
- * The previous version tested `String(step.if).includes('always()')`, so a
- * reviewer swapped in `!cancelled()` and every downstream rule simply SKIPPED
- * the step — reading as safe while the publisher ran unguarded.
+ * A reachability question, not a text question. No `if:` means `success()`,
+ * which fails closed. Everything else naming a status check function can
+ * survive an earlier failure. GitHub expression functions are
+ * case-INSENSITIVE, so `Always()` must count exactly as `always()` does — a
+ * case-sensitive matcher reported a capitalised publisher as fail-closed and
+ * every rule then skipped it.
  */
 function isAlwaysReachable(stepOrJob) {
   const cond = String((stepOrJob && stepOrJob.if) || '').trim();
   if (!cond) return false; // no if: === success() === fails closed
   const inner = cond.replace(/^\$\{\{/, '').replace(/\}\}$/, '').trim();
-  if (/\balways\s*\(\s*\)/.test(inner)) return true;
-  if (/\bcancelled\s*\(\s*\)/.test(inner)) return true; // covers !cancelled()
-  if (/\bfailure\s*\(\s*\)/.test(inner)) return true; // covers !failure()
+  if (/\balways\s*\(\s*\)/i.test(inner)) return true;
+  if (/\bcancelled\s*\(\s*\)/i.test(inner)) return true; // covers !cancelled()
+  if (/\bfailure\s*\(\s*\)/i.test(inner)) return true; // covers !failure()
   return false;
 }
 
 /**
  * Does `cond` REQUIRE `steps.<id>.outcome` to be exactly 'success'?
  *
- * `!= 'failure'` is TRUE when the step is skipped or cancelled — the
- * reads-as-safe-while-nothing-ran shape the barrier exists to prevent — and
- * an `||` anywhere in the condition re-opens the hole while keeping a
- * substring check green.
+ * `!= 'failure'` is TRUE when the step is skipped or cancelled. An `||`
+ * re-opens the hole while keeping a substring check green. And a NEGATED
+ * comparison — `!(steps.x.outcome == 'success')` — runs the publisher only
+ * when the barrier failed, which a naive "contains the right comparison"
+ * check happily accepted.
  *
- * `.outcome` and not `.conclusion`: `continue-on-error` rewrites
- * `conclusion` to 'success' while leaving `outcome` at 'failure', so gating
- * on conclusion would be satisfied by the very thing it must catch.
+ * `.outcome` and not `.conclusion`: `continue-on-error` rewrites `conclusion`
+ * to 'success' while leaving `outcome` at 'failure'.
  */
 function requiresOutcomeSuccess(cond, id) {
   const text = String(cond || '');
+  if (/\|\|/.test(text)) return false;
+  if (/!=/.test(text)) return false;
+  if (/!\s*\(/.test(text)) return false; // negated group
   const esc = String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`steps\\.${esc}\\.outcome\\s*==\\s*'success'`);
-  return re.test(text) && !/\|\|/.test(text) && !/!=/.test(text);
+  return new RegExp(`steps\\.${esc}\\.outcome\\s*==\\s*'success'`, 'i').test(text);
 }
 
-/** Does a JOB require its upstream job to have succeeded before it runs? */
-function requiresUpstreamSuccess(job, upstreamJobName) {
-  const jobIf = String((job && job.if) || '');
+/**
+ * Does a JOB require `upstreamJobName` to have succeeded before it runs?
+ *
+ * Resolved TRANSITIVELY through the `needs` graph: a job that needs a job
+ * that needs the upstream does fail closed on GitHub, and reporting it as an
+ * offender is a false positive that would block a legitimate refactor.
+ */
+function requiresUpstreamSuccess(job, upstreamJobName, jobs, seen) {
+  if (!job) return false;
+  const jobIf = String(job.if || '');
   const esc = String(upstreamJobName).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  if (new RegExp(`needs\\.${esc}\\.result\\s*==\\s*'success'`).test(jobIf)) return true;
+  if (new RegExp(`needs\\.${esc}\\.result\\s*==\\s*'success'`, 'i').test(jobIf)) return true;
+
   // Implicit gating: a job with `needs:` runs only on upstream success UNLESS
   // its own `if` carries a status function that overrides that. "Lacks
-  // always()" is NOT the test — `!cancelled()` also overrides it.
-  const needs = [].concat((job && job.needs) || []);
-  return needs.includes(upstreamJobName) && !isAlwaysReachable(job);
+  // always()" is NOT the test — `!cancelled()` overrides it too.
+  if (isAlwaysReachable(job)) return false;
+
+  const needs = [].concat(job.needs || []);
+  if (needs.includes(upstreamJobName)) return true;
+  if (!jobs) return false;
+
+  const visited = seen || new Set();
+  return needs.some((n) => {
+    if (visited.has(n)) return false;
+    visited.add(n);
+    return requiresUpstreamSuccess(jobs[n], upstreamJobName, jobs, visited);
+  });
 }
 
 /**
  * Does this JOB publish outside the runner? A job-level `uses:` (reusable
  * workflow) has NO `steps`, so a step-walking predicate is blind to it —
- * treat it as an opaque publisher and hold it to the same rule.
+ * treat it as an opaque publisher.
  */
 function jobPublishes(job) {
   if (job && job.uses) return true;
@@ -190,18 +264,30 @@ function jobPublishes(job) {
 /**
  * The one shell form the push line is allowed to take.
  *
- * Args are restricted to what scripts/lib/push-with-retry.sh actually takes
- * — `[max_retries] [branch]`, defaults 7 and main. The previous permissive
- * `[\w./=@:-]+` arg pattern admitted `push-with-retry.sh 0` (zero retries)
- * and `push-with-retry.sh 7 HEAD:refs/heads/junk` (push to a scratch ref),
- * both of which exit 0 while publishing nothing.
+ * Args restricted to what scripts/lib/push-with-retry.sh actually takes,
+ * `[max_retries] [branch]`. A permissive arg pattern admitted
+ * `push-with-retry.sh 0` (zero retries) and `... 7 HEAD:refs/heads/junk`
+ * (push to a scratch ref), both of which exit 0 while publishing nothing.
  */
 const ALLOWED_PUSH_LINE = /^bash scripts\/lib\/push-with-retry\.sh(?: [1-9][0-9]?)?(?: main)?$/;
 
+/**
+ * Is this logical line a git commit or push?
+ *
+ * Matched as "a `git` command whose subcommand is commit/push", allowing
+ * pre-subcommand global options. `\bgit\s+(?:commit|push)\b` required the
+ * subcommand to follow `git` directly, so `git -C . commit -m "x" || echo`
+ * sailed past the rule written to catch exactly that swallow.
+ */
+function isGitCommitOrPush(line) {
+  const bare = bareCommand(line);
+  return /(^|[|&;(]\s*)git\b[^|&;]*?\b(?:commit|push)\b/.test(bare);
+}
+
 /** Lines whose failure MUST fail the step for the barrier downstream to mean anything. */
 function criticalLines(step) {
-  return invocationLines(step).filter(
-    (l) => l.includes('push-with-retry.sh') || /\bgit\s+(?:commit|push)\b/.test(l),
+  return logicalLines(step && step.run).filter(
+    (l) => stripQuoted(l).includes('push-with-retry.sh') || isGitCommitOrPush(l),
   );
 }
 
@@ -210,19 +296,30 @@ function criticalLines(step) {
  * Returns human-readable offences; empty means the body is strict.
  */
 function failureSwallowOffenders(step) {
-  const lines = bodyLines(step);
+  const lines = logicalLines(step && step.run);
   const offenders = [];
-
   const critical = criticalLines(step);
+
   if (critical.length === 0) {
     // Caller asserts non-vacuity separately; nothing to judge here.
     return offenders;
   }
 
+  // A custom `shell:` template drops bash's default `-e`, so a failed commit
+  // no longer aborts the script and the push runs with nothing staged,
+  // exiting 0. One added YAML line, whole bug restored.
+  const shell = String((step && step.shell) || '');
+  if (shell && shell.includes('{0}') && !/(?:^|\s)-\w*e/.test(shell)) {
+    offenders.push(
+      `shell: ${shell} is a custom template without errexit (-e), so a failed commit does not ` +
+        'abort the step and its outcome stays success',
+    );
+  }
+
   for (const line of critical) {
     const trimmed = line.trim();
-    if (trimmed.includes('push-with-retry.sh')) {
-      if (!ALLOWED_PUSH_LINE.test(trimmed)) {
+    if (stripQuoted(trimmed).includes('push-with-retry.sh')) {
+      if (!ALLOWED_PUSH_LINE.test(bareCommand(trimmed))) {
         offenders.push(
           'the push invocation must be exactly "bash scripts/lib/push-with-retry.sh" (optionally ' +
             'a retry count 1-99 and the branch "main") with no "||", "&&", ";", pipe, "&", ' +
@@ -232,10 +329,6 @@ function failureSwallowOffenders(step) {
       }
       continue;
     }
-    // git commit / git push: the failure the publishers below key off is not
-    // only the PUSH's. A reviewer restored the whole bug by appending
-    // `|| echo "::warning::commit failed"` to the commit line, which the
-    // push-only allowlist never looked at.
     if (SWALLOWING_OPERATORS.test(stripQuoted(trimmed))) {
       offenders.push(
         'a git commit/push line must not be chained with "||", "&&", ";", a pipe or "&" — that ' +
@@ -259,9 +352,11 @@ function failureSwallowOffenders(step) {
 
   // An `exit 0` BEFORE the first critical line is the legitimate "nothing to
   // commit" early return. One at or after it forces a zero exit regardless.
+  // Compared on the BARE command so `exit 0 # always clean` and `exit 0;`
+  // cannot slip past an anchored matcher.
   const firstCritical = lines.findIndex((l) => critical.includes(l));
   lines.forEach((line, i) => {
-    if (i >= firstCritical && /^\s*exit\s+0\s*$/.test(line)) {
+    if (i >= firstCritical && /^exit\s+0$/.test(bareCommand(line))) {
       offenders.push(
         `"exit 0" at or after the commit/push forces a zero exit even when it ` +
           `failed.\n    ${line.trim()}`,
@@ -279,23 +374,29 @@ function failureSwallowOffenders(step) {
 }
 
 /**
- * Lines that actually invoke the push (comments and `echo` excluded). Callers
- * use this as the vacuity guard: an empty set means the body no longer pushes
- * at all, which must fail loudly rather than pass silently.
+ * Lines that actually invoke the push (comments and quoted mentions
+ * excluded). Callers use this as the vacuity guard: an empty set means the
+ * body no longer pushes at all, which must fail loudly rather than pass
+ * silently.
  */
 function pushInvocationLines(step) {
-  return invocationLines(step).filter((l) => l.includes('push-with-retry.sh'));
+  return logicalLines(step && step.run).filter((l) =>
+    stripQuoted(l).includes('push-with-retry.sh'),
+  );
 }
 
 module.exports = {
   ALLOWED_PUSH_LINE,
+  bareCommand,
   bodyLines,
   criticalLines,
   failureSwallowOffenders,
-  invocationLines,
   isAlwaysReachable,
+  isGitCommitOrPush,
   isPublishingStep,
   jobPublishes,
+  logicalLines,
+  publishesOnLine,
   pushInvocationLines,
   requiresOutcomeSuccess,
   requiresUpstreamSuccess,
