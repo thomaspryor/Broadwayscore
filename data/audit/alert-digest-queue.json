@@ -280,5 +280,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-07T12:51:57.071Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026",
+    "title": "Placeholder synopsis on Kimberly Akimbo",
+    "description": "synopsis for kimberly-akimbo-off-west-end-2026 is too thin (119 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.994Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:kimberly-akimbo-off-west-end-2026",
+    "title": "Pre-opening publishDate on Kimberly Akimbo",
+    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-30 (10d before openingDate 2026-09-09): https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.997Z"
   }
 ]
