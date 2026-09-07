@@ -77,7 +77,11 @@
     "pride-west-end-2026/whatsonstage--editorial-staff.json",
     "music-city-off-broadway-2026/deadline--greg-evans.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-hassan.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1165,7 +1169,13 @@
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
     "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
     "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
-    "sinatra-the-musical-west-end-2026/front-row-center--unknown.json"
+    "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/frontmezzjunkies--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1215,7 +1225,10 @@
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1227,7 +1240,8 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1267,11 +1281,12 @@
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
       "paranormal-activity-2026/wsj--charles-isherwood.json",
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/npr--sacha-pfeiffer.json",
-      "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json"
+      "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-hassan.json"
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "sinatra-the-musical-west-end-2026/front-row-center--unknown.json",
+  "lastProcessed": "much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1446,6 +1461,12 @@
       "event": "bb-session",
       "session": "6b845f1e",
       "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-07T10:23:50.981Z",
+      "event": "bb-session",
+      "session": "230f703c",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     }
   ]
 }
