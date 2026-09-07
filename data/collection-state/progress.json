@@ -97,7 +97,9 @@
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1325,7 +1327,15 @@
     "operation-mincemeat-2025/british-theatre--unknown.json",
     "operation-mincemeat-2025/londontheatre1--unknown.json",
     "operation-mincemeat-2025/standard--nick-curtis.json",
-    "buena-vista-social-club-2025/new-york-city-theatre--unknown.json"
+    "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+    "my-neighbour-totoro-west-end-2025/thestage--sam-marlowe.json",
+    "titanique-west-end-2024/nytimes--unknown.json",
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
+    "titanique-west-end-2024/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1388,7 +1398,9 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+      "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1405,7 +1417,8 @@
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1455,7 +1468,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
+  "lastProcessed": "titanique-west-end-2024/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1682,6 +1695,17 @@
       "t": "2026-09-07T10:40:48.283Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T10:43:34.925Z",
+      "event": "bb-session",
+      "session": "72307dd1",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-07T10:43:35.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
