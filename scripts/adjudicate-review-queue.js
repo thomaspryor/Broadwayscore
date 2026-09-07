@@ -22,6 +22,7 @@ const require = createRequire(import.meta.url);
 const { isLondonMarket } = require('./lib/venue-classification');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -381,7 +382,18 @@ Respond with ONLY this JSON (no markdown fences):
               continue;
             }
             sourceData.wrongProduction = true;
-            sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
+            sourceData.wrongProductionNote = `${ADJUDICATED_NOTE_PREFIX} ${result.productionType}. ${result.reasoning}`;
+            // BRO-2841 follow-up: shouldAutoClearWrongProduction and
+            // shouldAutoClearWrongProductionUkDualMarket (the two auto-clear
+            // predicates in wrong-production-autoclear.js this card is about)
+            // treat wrongProductionReason as the "this was a manual/adjudicated
+            // call, don't auto-clear it" signal — but until now this was the
+            // only writer of a high-confidence contamination verdict that set
+            // wrongProductionNote WITHOUT also setting wrongProductionReason,
+            // leaving both predicates unprotected. Setting it here fixes both
+            // through the field they already check, rather than adding a
+            // field-specific exemption to each one as they accrete.
+            sourceData.wrongProductionReason = `contamination-adjudicated: ${result.productionType}`;
           } else {
             sourceData.tourCheckVerified = 'false-positive';
             sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;

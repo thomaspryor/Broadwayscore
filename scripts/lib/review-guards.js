@@ -1481,8 +1481,12 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   // pass — high confidence — already confirmed this IS the Off-West End run).
   // wrongProductionReason is unset on that path; the note carries the tag.
   const reason = String(data.wrongProductionReason || '');
-  const note = String(data.wrongProductionNote || '');
-  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason) && !/^Auto-adjudicated:/.test(note)) return false;
+  // hasAdjudicatedNote, not a hand-typed /^Auto-adjudicated:/ regex here: BRO-2841
+  // made the note prefix a shared, exported constant (ADJUDICATED_NOTE_PREFIX)
+  // specifically because a duplicate literal can drift silently between call
+  // sites — this used to be exactly that duplicate.
+  const { hasAdjudicatedNote } = require('./wrong-production-autoclear');
+  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason) && !hasAdjudicatedNote(data)) return false;
 
   // Never re-touch a human/manual decision (and avoid no-op churn).
   if (data.wrongProductionManualClear === true) return false;
