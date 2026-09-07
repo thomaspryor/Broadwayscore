@@ -23,11 +23,16 @@ import {
 //      NOT disqualify the fallback. There was never anything to unblock.
 //   2. The workflow must stage all three paths in ONE push-with-retry call.
 //      Under a split, the telemetry files stay UNCOMMITTED while the first step
-//      pushes, and push-with-retry.sh does an unguarded
-//      `git reset --hard origin/$PULL_BRANCH` on its API-fallback SUCCESS path
-//      (scripts/lib/push-with-retry.sh:2114 — the script has zero autostash or
-//      clean-tree guards). That discards the telemetry edits and routeAlert's
-//      7-day cooldown never persists.
+//      pushes, and push-with-retry.sh has zero autostash or clean-tree guards.
+//      UNDER PUSH CONTENTION (not on an uncontended run, where the first push
+//      just succeeds) that is fatal: the rebase refuses on unstaged changes and
+//      the merge refuses as "would be overwritten", so the script falls to its
+//      reset+cherry-pick last resort and runs
+//      `git reset --hard origin/$PULL_BRANCH` (scripts/lib/push-with-retry.sh
+//      :1682), reverting the telemetry files to the remote's content. The edits
+//      are gone and routeAlert's 7-day cooldown never persists. Two later
+//      resets (:1938 pre-fallback, :2114 on fallback success) would do the same,
+//      but :1682 is the one that fires first and most often.
 //   3. The single step must keep PUSH_DEADLINE_SEC=600. The split left the
 //      higher-contention telemetry half on the 240s default, which the repo's
 //      own audit flagged `deadline-cannot-fund-retries`.
@@ -104,14 +109,27 @@ test('workflow: every audit path is staged BEFORE the commit, not merely before 
   const commitIdx = stepBody.indexOf('git commit');
   assert.ok(commitIdx !== -1, 'the step must contain a git commit');
 
+  // Match the file only on an actual `git add` LINE, never a bare mention:
+  // a filename appearing in a comment above the commit would otherwise satisfy
+  // the ordering assertion (ship-check P2). The two telemetry paths share one
+  // multi-path `git add`, so scan lines rather than looking for `git add <file>`.
+  const addLineIndexFor = (file) => {
+    let offset = 0;
+    for (const line of stepBody.split('\n')) {
+      const start = offset;
+      offset += line.length + 1;
+      const code = line.split('#')[0];
+      if (code.includes('git add') && code.includes(file)) return start;
+    }
+    return -1;
+  };
+
   for (const file of ALL_STAGED) {
-    const addIdx = stepBody.indexOf(`git add ${file}`) !== -1
-      ? stepBody.indexOf(`git add ${file}`)
-      : stepBody.indexOf(file);
-    assert.ok(addIdx !== -1, `${file} is not staged in the "Commit audit ledger" step`);
+    const addIdx = addLineIndexFor(file);
+    assert.ok(addIdx !== -1, `${file} is not staged by a git add line in the "Commit audit ledger" step`);
     assert.ok(
       addIdx < commitIdx,
-      `${file} must be git-added BEFORE the git commit. Staged after it, the file stays dirty-but-uncommitted through push-with-retry.sh, whose reset --hard (push-with-retry.sh:1938 and :2114) discards it.`,
+      `${file} must be git-added BEFORE the git commit. Staged after it, the file stays dirty-but-uncommitted through push-with-retry.sh; under push contention its reset+cherry-pick path (push-with-retry.sh:1682) reverts the file to the remote's content and the edit is gone.`,
     );
   }
 });
