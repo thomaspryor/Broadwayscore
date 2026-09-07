@@ -3494,9 +3494,17 @@ function validateBlogReviews() {
  * age of 57 days. This validator prevents that class of gap from growing
  * silently in the future.
  *
- * The filter mirrors rebuild-all-reviews.js skip logic as of 2026-04-11.
- * If rebuild adds a new skip flag, mirror it here or this validator will
- * start surfacing files that rebuild correctly excludes.
+ * As of 2026-07-21 (T1-retrieval S1-T3, commit d377c35faaf) this delegates
+ * directly to the canonical isIncludableForRebuild/hasValidScore predicates
+ * in scripts/lib/review-guards.js — the same functions rebuild-all-reviews.js
+ * itself imports (see its require at the top of the file) — instead of a
+ * hand-copied flag list. There is no separate mirror left to go stale: any
+ * new skip flag added to isIncludableForRebuild is picked up here for free.
+ * BRO-2451: the docstring above previously claimed a "mirror ... as of
+ * 2026-04-11" that needed manual updates; that claim stopped being true once
+ * the delegation above landed but the comment was never corrected. Keep this
+ * function calling isIncludableForRebuild directly — do NOT reintroduce a
+ * hand-copied skip-flag list here.
  */
 function validateUnscoredReviewTexts() {
   info('Checking for unscored review-text files (silent gaps)...');
