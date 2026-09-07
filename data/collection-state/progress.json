@@ -50,7 +50,8 @@
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -271,7 +272,16 @@
     "avenue-q-west-end-2026/valentine-dsides--unknown.json",
     "titanique-2026/new-york-city-theatre--unknown.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
-    "titanique-2026/frontmezzjunkies--unknown.json"
+    "titanique-2026/frontmezzjunkies--unknown.json",
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+    "oh-mary-west-end-2025/theatrely--emily-wyrwa.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -312,7 +322,9 @@
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -350,7 +362,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "titanique-2026/frontmezzjunkies--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -464,6 +476,12 @@
       "t": "2026-09-07T21:58:12.165Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-07T21:59:45.688Z",
+      "event": "bb-session",
+      "session": "bc93547e",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
