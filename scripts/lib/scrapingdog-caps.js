@@ -71,6 +71,17 @@ const DEFAULT_DAILY_CREDIT_CEILING = 45000;
  */
 const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS = 3000;
 
+/**
+ * Burst multiplier on the plan-derived fair share (BRO-2943). The prepaid
+ * pack's per-day fair share is (credits left at day start) / (days to
+ * renewal); a routine day sits well under it and a burst day (bulk backfill,
+ * several opening nights) can run ~2x. 1.5x lets bursts through while still
+ * shrinking toward the fair share when the pack is genuinely running low —
+ * the ONLY case where withholding prepaid SD credits is cheaper than paying
+ * Bright Data (17x) / ScrapingBee SERP (5x) for the rest of the day.
+ */
+const DEFAULT_FAIR_SHARE_BURST_FACTOR = 1.5;
+
 const DEFAULT_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'sd-circuit-breaker.json');
 const STATE_CACHE_MS = 60_000;
 
@@ -82,6 +93,53 @@ function _posInt(raw, fallback) {
 /** Daily credit ceiling: SD_BREAKER_CEILING, else the shared default. */
 function resolveDailyCreditCeiling(env = process.env) {
   return _posInt(env.SD_BREAKER_CEILING, DEFAULT_DAILY_CREDIT_CEILING);
+}
+
+/**
+ * Plan-derived daily ceiling (BRO-2943): the prepaid pack's fair share for
+ * today, times a burst factor, clamped to what is actually left.
+ *
+ *   remaining = limit - dayBaseline          (credits unspent at day start)
+ *   ceiling   = min(round(remaining / max(daysToRenewal, 1) * burst), remaining)
+ *
+ * Why this replaces the hardcoded 45,000: the pack silently went 4M -> 3M
+ * and demand is ~50K/day, so a fixed number is either wrong on day one or
+ * wrong after the next plan change. Measured 2026-09-07: the 45K line (minus
+ * the opening-window reserve) tripped by mid-morning most days and rerouted
+ * routine SERP/page traffic to Bright Data + ScrapingBee — ~900K+ ScrapingBee
+ * credits per cycle attributed to nothing else. Returns null when any input
+ * is unusable so the caller can fall back (env override, then the legacy
+ * default) — never a NaN/0 that shouldTripBreaker would read as "no ceiling".
+ */
+function planFairShareCeiling({ limit, dayBaseline, daysToRenewal, burstFactor = DEFAULT_FAIR_SHARE_BURST_FACTOR } = {}) {
+  if (!Number.isFinite(limit) || limit <= 0) return null;
+  if (!Number.isFinite(dayBaseline) || dayBaseline < 0) return null;
+  if (!Number.isFinite(daysToRenewal)) return null;
+  if (!Number.isFinite(burstFactor) || burstFactor <= 0) return null;
+  const remaining = Math.max(0, limit - dayBaseline);
+  const fairShare = remaining / Math.max(daysToRenewal, 1);
+  return Math.min(Math.round(fairShare * burstFactor), remaining);
+}
+
+/**
+ * The ceiling check-sd-breaker.js should enforce today, with its provenance.
+ * Precedence: SD_BREAKER_CEILING env override (operator pin) > plan fair
+ * share (needs the /account limit + days-to-renewal AND today's baseline) >
+ * legacy DEFAULT_DAILY_CREDIT_CEILING. `account` is parseSdAccount()'s shape
+ * ({cycleUsed, limit, daysToRenewal}) or null when billing was unreachable.
+ * @returns {{ceiling: number, source: 'env'|'plan'|'default'}}
+ */
+function resolveCeilingForDay({ env = process.env, account = null, dayBaseline = null } = {}) {
+  const envCeiling = _posInt(env.SD_BREAKER_CEILING, null);
+  if (envCeiling !== null) return { ceiling: envCeiling, source: 'env' };
+  const baseline = Number.isFinite(dayBaseline) ? dayBaseline : (account && Number.isFinite(account.cycleUsed) ? account.cycleUsed : null);
+  const plan = account ? planFairShareCeiling({
+    limit: account.limit,
+    dayBaseline: baseline,
+    daysToRenewal: account.daysToRenewal,
+  }) : null;
+  if (plan !== null) return { ceiling: plan, source: 'plan' };
+  return { ceiling: DEFAULT_DAILY_CREDIT_CEILING, source: 'default' };
 }
 
 /**
@@ -299,8 +357,11 @@ function _resetForTests() {
 module.exports = {
   DEFAULT_DAILY_CREDIT_CEILING,
   DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS,
+  DEFAULT_FAIR_SHARE_BURST_FACTOR,
   DEFAULT_STATE_PATH,
   resolveDailyCreditCeiling,
+  planFairShareCeiling,
+  resolveCeilingForDay,
   resolveExemptScripts,
   resolveOpeningWindowReservePerShowCredits,
   shouldTripBreaker,
