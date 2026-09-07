@@ -11,6 +11,24 @@ const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), 
 const WORKFLOW = path.join(REPO_ROOT, '.github', 'workflows', 'commercial-weekly.yml');
 
 /**
+ * Shared with tests/unit/update-show-status-publish-gate.test.mjs (BRO-2913).
+ * These predicates were inline here until an adversarial pass found five
+ * one-line ways to defeat them — `|| echo`, a trailing comment after
+ * `|| true`, `|| exit 0`, backgrounding with `&`, and `set +ex` slipping past
+ * an anchored `set +e` denylist — plus a decoy step that satisfied the
+ * publishing predicate with nothing but a COMMENT mentioning
+ * push-with-retry.sh. The hardened versions live in scripts/lib so that
+ * fixing one workflow's guard fixes the other's too (CLAUDE.md rule 15).
+ */
+const {
+  failureSwallowOffenders,
+  isAlwaysReachable,
+  isPublishingStep,
+  pushInvocationLines,
+  requiresOutcomeSuccess,
+} = require(path.join(REPO_ROOT, 'scripts', 'lib', 'workflow-publish-gate.js'));
+
+/**
  * BRO-2907. In `commercial-weekly.yml`'s `auto-apply` job, three steps mutate
  * commercial data (auto-apply, the recoupment reconciler, the dedupe
  * self-heal) and a strict gate judges the result. All of them are
@@ -35,21 +53,6 @@ const WORKFLOW = path.join(REPO_ROOT, '.github', 'workflows', 'commercial-weekly
  */
 const SCOPED_JOB = 'auto-apply';
 const GATE_ID = 'commit-gate';
-
-/** Steps that publish data outside the runner, and must never run unguarded. */
-function isPublishingStep(step) {
-  const uses = String(step.uses || '');
-  const run = String(step.run || '');
-  if (uses.includes('push-core-data')) return true;
-  if (uses.includes('dispatch-deploy')) return true;
-  if (run.includes('push-with-retry.sh')) return true;
-  return false;
-}
-
-/** A step GitHub will run even after an earlier failure in the job. */
-function isAlwaysReachable(step) {
-  return String(step.if || '').includes('always()');
-}
 
 function loadJob() {
   const workflow = yaml.load(fs.readFileSync(WORKFLOW, 'utf-8'));
@@ -169,11 +172,9 @@ test('every always()-reachable publishing step requires the gate to have SUCCEED
     // barrier is skipped, and `|| true` / `|| <anything>` re-opens the hole
     // while still mentioning the outcome — both keep a substring check green.
     const cond = String(step.if || '');
-    const ok =
-      /steps\.commit-gate\.outcome\s*==\s*'success'/.test(cond) &&
-      !/\|\|/.test(cond) &&
-      !/!=/.test(cond);
-    if (!ok) offenders.push(`${step.name || step.uses} (if: ${cond})`);
+    if (!requiresOutcomeSuccess(cond, GATE_ID)) {
+      offenders.push(`${step.name || step.uses} (if: ${cond})`);
+    }
   }
 
   assert.deepEqual(
@@ -269,11 +270,9 @@ test('every publishing step AFTER the public commit requires that commit to have
     // Same exact-form rule as the commit-gate assertion above: `!= 'failure'`
     // is TRUE when the step is skipped, and `||` re-opens the hole while
     // keeping a substring check green.
-    const ok =
-      /steps\.commit-public\.outcome\s*==\s*'success'/.test(cond) &&
-      !/\|\|/.test(cond) &&
-      !/!=/.test(cond);
-    if (!ok) offenders.push(`${step.name || step.uses} (if: ${cond})`);
+    if (!requiresOutcomeSuccess(cond, COMMIT_ID)) {
+      offenders.push(`${step.name || step.uses} (if: ${cond})`);
+    }
   }
 
   assert.deepEqual(
@@ -322,37 +321,53 @@ test('the public commit step cannot swallow its own push failure', () => {
   // it because they read `if:`/`id`/`uses` and never the body. commit-gate
   // already has body assertions for the same reason; this is the matching
   // pair for the commit.
-  const body = String(commit.run || '');
-  const pushLines = body.split('\n').filter((l) => l.includes('push-with-retry.sh'));
-
+  // The first version of this assertion was a DENYLIST — `|| true` / `|| :`
+  // anchored at end-of-line, plus an anchored `set +e`. A second adversarial
+  // pass (BRO-2913) found five one-line ways through it, all re-verified
+  // against the real file: `|| echo "..."` (already this repo's house style at
+  // update-show-status.yml's deploy dispatch), `|| true  # comment` (the
+  // trailing comment defeats the `$` anchor), `|| exit 0`, backgrounding with
+  // `&`, and `set +ex`. A denylist of shell idioms can always be extended by
+  // one more idiom, so the rule is now an ALLOWLIST of the exact invocation,
+  // shared with update-show-status's guard via scripts/lib.
   assert.ok(
-    pushLines.length > 0,
-    `the ${COMMIT_ID} body must actually invoke push-with-retry.sh; if the push moved, retire ` +
-      'this assertion deliberately rather than letting it pass on an empty set',
-  );
-  for (const line of pushLines) {
-    assert.doesNotMatch(
-      line,
-      /\|\|\s*(true|:)\s*$/,
-      `the ${COMMIT_ID} push must not be suffixed with "|| true" or "|| :" — that makes a failed ` +
-        `push exit 0, so steps.${COMMIT_ID}.outcome stays 'success' and the publish steps below ` +
-        `run anyway. That is exactly the BRO-2912 bug, invisible to every if:-based assertion.\n  ${line.trim()}`,
-    );
-  }
-  assert.doesNotMatch(
-    body,
-    /^\s*set \+e\s*$/m,
-    `the ${COMMIT_ID} body must not disable errexit with "set +e" — a failed push would stop ` +
-      'setting the step outcome to failure',
+    pushInvocationLines(commit).length > 0,
+    `the ${COMMIT_ID} body must actually invoke push-with-retry.sh outside a comment; if the push ` +
+      'moved, retire this assertion deliberately rather than letting it pass on an empty set',
   );
 
-  // One edit from confusing: continue-on-error would not actually bypass the
-  // guard (GHA reports `outcome` pre-continue-on-error) but it makes the
-  // conclusion diverge from the outcome for no reason here.
-  assert.notEqual(
-    commit['continue-on-error'],
-    true,
-    `the ${COMMIT_ID} step must not be continue-on-error: its failure is the signal the publish ` +
-      'steps below depend on',
+  const offenders = failureSwallowOffenders(commit);
+  assert.deepEqual(
+    offenders,
+    [],
+    `the ${COMMIT_ID} step can swallow its own push failure, which leaves its outcome 'success' ` +
+      `and unblocks every publisher below — BRO-2912 fully restored with every if:-based ` +
+      `assertion still green:\n  ${offenders.join('\n  ')}`,
+  );
+});
+
+test('exactly one step carries the commit id, and no decoy step mimics it', () => {
+  const steps = loadJob().steps || [];
+  const withId = steps.filter((s) => s.id === COMMIT_ID);
+  assert.equal(
+    withId.length,
+    1,
+    `expected exactly one step with id: ${COMMIT_ID}, found ${withId.length}. A second one lets a ` +
+      'decoy absorb the gate while the real commit publishes ungated.',
+  );
+
+  // isPublishingStep() tests whether a body MENTIONS push-with-retry.sh, and a
+  // reviewer showed a bare COMMENT satisfies that: move the id onto an
+  // unrelated always()-gated step, drop `# see push-with-retry.sh` in its
+  // body, and the id check, the vacuity guard and the ordering rule all pass
+  // while the real commit gates nothing. Comment-stripping in scripts/lib
+  // closes that; this pins the positive form too.
+  const committers = steps.filter(
+    (s) => /\bgit commit\b/.test(String(s.run || '')) && pushInvocationLines(s).length > 0,
+  );
+  assert.ok(
+    committers.some((s) => s.id === COMMIT_ID),
+    `the step with id: ${COMMIT_ID} must be one of the commit+push steps in this job, not a ` +
+      `decoy. Commit+push steps found: ${committers.map((s) => s.name || s.uses).join(', ') || '(none)'}`,
   );
 });
