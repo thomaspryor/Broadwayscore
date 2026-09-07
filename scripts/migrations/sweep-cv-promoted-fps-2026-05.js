@@ -187,6 +187,7 @@ for (const filePath of allFiles) {
     defer = shouldDeferCvWrongShow({
       outletId: data.outletId,
       fullText: data.fullText,
+      contentTier: data.contentTier,
     });
   } catch {
     defer = false;
