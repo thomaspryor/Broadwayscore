@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-09-07T16:12:34.323Z",
-  "processed": 1,
-  "failed": 9,
-  "successRate": "10.0%",
+  "updatedAt": "2026-09-07T16:13:41.838Z",
+  "processed": 4,
+  "failed": 16,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-09-07T16:12:57.133Z",
+      "event": "bb-session",
+      "session": "567b33c6",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-09-07T16:12:58.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
