@@ -15,7 +15,14 @@
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/theatrecat--unknown.json",
     "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
-    "a-month-in-the-country-west-end-2026/ents24--unknown.json"
+    "a-month-in-the-country-west-end-2026/ents24--unknown.json",
+    "electra-persona-west-end-2026/southbank--unknown.json",
+    "electra-persona-west-end-2026/theatreboard--unknown.json",
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "paranormal-activity-2026/wsj--charles-isherwood.json",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -81,7 +88,10 @@
     "the-children-off-west-end-2026/daily-mail--unknown.json",
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
-    "the-children-off-west-end-2026/times-uk--unknown.json"
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -94,12 +104,17 @@
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "the-story-west-end-2026/london-box-office--stuart-king.json",
       "the-story-west-end-2026/theatrecat--unknown.json",
-      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "electra-persona-west-end-2026/theatreboard--unknown.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
+      "paranormal-activity-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json"
@@ -111,21 +126,20 @@
       "a-month-in-the-country-west-end-2026/ents24--unknown.json"
     ],
     "brightdata": [
-      "spellbound-off-broadway-2026/theater-life--unknown.json"
+      "spellbound-off-broadway-2026/theater-life--unknown.json",
+      "electra-persona-west-end-2026/vocaleyes--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "aida-off-broadway-2027/times-uk--kevin-ng.json",
-      "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json"
+      "electra-persona-west-end-2026/southbank--unknown.json",
+      "paranormal-activity-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "the-children-off-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -154,6 +168,28 @@
       "event": "bb-session",
       "session": "8ca33d2a",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-07T21:27:15.724Z",
+      "event": "bb-session",
+      "session": "d4c2a444",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-07T21:27:16.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-07T21:27:34.011Z",
+      "event": "bb-session",
+      "session": "14ee2fb4",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-07T21:27:34.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
