@@ -383,16 +383,15 @@ Respond with ONLY this JSON (no markdown fences):
             }
             sourceData.wrongProduction = true;
             sourceData.wrongProductionNote = `${ADJUDICATED_NOTE_PREFIX} ${result.productionType}. ${result.reasoning}`;
-            // BRO-2841 follow-up: every auto-clear predicate in
-            // wrong-production-autoclear.js treats wrongProductionReason as the
-            // "this was a manual/adjudicated call, don't auto-clear it" signal
-            // (shouldAutoClearWrongProduction, shouldAutoClearWrongProductionUrlYear,
-            // shouldAutoClearWrongShowUkUrl all gate on it) — but until now this
-            // was the only writer of a high-confidence contamination verdict that
-            // set wrongProductionNote WITHOUT also setting wrongProductionReason,
-            // leaving every one of those predicates unprotected. Setting it here
-            // is the systemic fix: it protects ALL current and future auto-clear
-            // paths through the field they already check, rather than adding a
+            // BRO-2841 follow-up: shouldAutoClearWrongProduction and
+            // shouldAutoClearWrongProductionUkDualMarket (the two auto-clear
+            // predicates in wrong-production-autoclear.js this card is about)
+            // treat wrongProductionReason as the "this was a manual/adjudicated
+            // call, don't auto-clear it" signal — but until now this was the
+            // only writer of a high-confidence contamination verdict that set
+            // wrongProductionNote WITHOUT also setting wrongProductionReason,
+            // leaving both predicates unprotected. Setting it here fixes both
+            // through the field they already check, rather than adding a
             // field-specific exemption to each one as they accrete.
             sourceData.wrongProductionReason = `contamination-adjudicated: ${result.productionType}`;
           } else {
