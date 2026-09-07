@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-09-07T00:03:03.051Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 43,
+    "failed": 793,
+    "skipped": 0,
+    "successRate": "5.1%"
+  },
+  "tierBreakdown": {
+    "playwright": 24,
+    "amp": 0,
+    "browserbase": 4,
+    "directCookies": 2,
+    "scrapingbee": 5,
+    "brightdata": 8,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 60,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 60,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
     "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
@@ -839,8 +890,7 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
@@ -902,64 +952,6 @@
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json"
     ]
   },
-  "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": [
-    {
-      "t": "2026-09-06T14:23:31.313Z",
-      "event": "bb-session",
-      "session": "56e1fbd2",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-06T14:23:32.641Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-06T14:25:35.673Z",
-      "event": "bb-session",
-      "session": "2770b4b8",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
-    {
-      "t": "2026-09-06T14:25:51.669Z",
-      "event": "bb-session",
-      "session": "d2ceaab6",
-      "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
-    },
-    {
-      "t": "2026-09-06T22:53:00.022Z",
-      "event": "bb-session",
-      "session": "b3292812",
-      "url": "https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london"
-    },
-    {
-      "t": "2026-09-06T22:53:01.006Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-06T22:53:29.427Z",
-      "event": "bb-session",
-      "session": "88a236f2",
-      "url": "https://www.nytimes.com/2026/08/30/books/review/marlon-james-interview-the-disap"
-    },
-    {
-      "t": "2026-09-06T22:53:30.376Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-06T23:00:09.778Z",
-      "event": "bb-session",
-      "session": "901126b1",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-06T23:00:10.793Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
