@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-07T11:16:21.690Z",
-  "processed": 101,
-  "failed": 1263,
-  "successRate": "7.4%",
+  "updatedAt": "2026-09-07T11:20:40.424Z",
+  "processed": 103,
+  "failed": 1271,
+  "successRate": "7.5%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 64,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 16,
     "directCookies": 4,
     "scrapingbee": 14,
     "brightdata": 10,
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-07T09:58:50.954Z",
-      "event": "bb-session",
-      "session": "195e86c3",
-      "url": "https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-m"
-    },
-    {
-      "t": "2026-09-07T09:58:51.837Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-09-07T10:00:39.984Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "t": "2026-09-07T10:43:35.785Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-07T11:18:04.158Z",
+      "event": "bb-session",
+      "session": "011e7a9a",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T11:18:05.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

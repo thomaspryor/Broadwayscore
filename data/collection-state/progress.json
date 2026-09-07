@@ -100,7 +100,9 @@
     "just-in-time-2025/newyorker--conde-nast.json",
     "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
     "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json",
-    "oliver-west-end-2024/all-that-dazzles-uk--unknown.json"
+    "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--unknown.json",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1365,7 +1367,15 @@
     "the-children-off-west-end-2026/daily-mail--unknown.json",
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
-    "the-children-off-west-end-2026/times-uk--unknown.json"
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "spellbound-off-broadway-2026/nytimes--ben-kenigsberg.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "spellbound-off-broadway-2026/theater-life--unknown.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1431,7 +1441,9 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
       "my-neighbour-totoro-west-end-2025/visit-london--carole-rocton.json",
-      "oliver-west-end-2024/all-that-dazzles-uk--unknown.json"
+      "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--unknown.json",
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1449,7 +1461,8 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1499,7 +1512,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "the-children-off-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1737,6 +1750,17 @@
       "t": "2026-09-07T10:43:35.785Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-07T11:18:04.158Z",
+      "event": "bb-session",
+      "session": "011e7a9a",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T11:18:05.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
