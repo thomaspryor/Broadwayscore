@@ -807,6 +807,16 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
     || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
   if (isStructuralFlag) return false;
+  // adjudicate-review-queue.js's LLM-driven contamination adjudicator (BRO-2841)
+  // writes a high-confidence verdict as wrongProductionNote = "Auto-adjudicated:
+  // <type>. <reasoning>" — it never sets wrongProductionReason, the field this
+  // predicate's OWN exemption two lines below checks. Without this, a review
+  // already adjudicated as e.g. a Sheffield Lyceum tour stop on a Sadler's Wells
+  // show gets silently re-cleared here the next time a rebuild runs, because the
+  // outlet's registry region ('london' or 'uk') is enough to satisfy the gates
+  // below regardless of what a prior, more specific pass already decided.
+  // Concrete incident: the-car-man-west-end-2026/north-west-end--natalia-prucnal.json.
+  if (wpNote.startsWith('Auto-adjudicated:')) return false;
   if (ctx.isDateMismatch) return false;
 
   // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
