@@ -56,6 +56,41 @@ test('shouldAutoClearWrongProduction refuses to clear a unanimous ensemble wrong
   assert.strictEqual(shouldAutoClearWrongProduction({ wrongProduction: true, allowCrossMarket: true }), true);
 });
 
+// BRO-2841 follow-up: a review-guard review of the initial fix (which only
+// exempted shouldAutoClearWrongProductionUkDualMarket) found this SIBLING path
+// completely unprotected — it runs in the same rebuild pass on the same data
+// object (rebuild-all-reviews.js), is gated on allowEarlyDate/allowCrossMarket
+// (plausible on exactly the cross-market shows this card is about), and never
+// read wrongProductionNote at all. Before the fix, a file carrying
+// adjudicate-review-queue.js's "Auto-adjudicated: ..." note but no
+// wrongProductionReason would be silently cleared HERE, undoing the
+// adjudicator's verdict through a different call site than the one BRO-2841
+// originally reported. The systemic fix — adjudicate-review-queue.js now also
+// sets wrongProductionReason alongside wrongProductionNote — closes this for
+// free, since every auto-clear predicate in this file already gates on
+// wrongProductionReason. This test pins that this path specifically is
+// protected, using the adjudicator's actual value shape.
+test('shouldAutoClearWrongProduction refuses to clear an adjudicated verdict (BRO-2841 sibling-path regression)', () => {
+  const adjudicated = {
+    wrongProduction: true,
+    allowCrossMarket: true,
+    wrongProductionNote: 'Auto-adjudicated: national-tour. The review explicitly states this is a performance at the Sheffield Lyceum',
+    wrongProductionReason: 'contamination-adjudicated: national-tour',
+  };
+  assert.strictEqual(shouldAutoClearWrongProduction(adjudicated), false);
+  // The note ALONE (the shape every file the adjudicator wrote BEFORE this
+  // fix landed carries — no wrongProductionReason) must ALSO protect this
+  // path: shouldAutoClearWrongProduction checks hasAdjudicatedNote
+  // specifically so historical corpus files aren't left exposed just because
+  // they predate the reason-field fix.
+  const { wrongProductionReason, ...noteOnly } = adjudicated;
+  assert.strictEqual(shouldAutoClearWrongProduction(noteOnly), false);
+  // Sanity: an ordinary, non-adjudicated cross-market override with NEITHER
+  // field still clears normally — the fix must not go blanket-inert.
+  const { wrongProductionNote, ...neither } = noteOnly;
+  assert.strictEqual(shouldAutoClearWrongProduction(neither), true);
+});
+
 test('shouldAutoClearWrongShow refuses to clear a unanimous ensemble wrong_show verdict', () => {
   const data = {
     wrongShow: true,

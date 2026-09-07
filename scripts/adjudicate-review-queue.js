@@ -22,6 +22,7 @@ const require = createRequire(import.meta.url);
 const { isLondonMarket } = require('./lib/venue-classification');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -381,7 +382,19 @@ Respond with ONLY this JSON (no markdown fences):
               continue;
             }
             sourceData.wrongProduction = true;
-            sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
+            sourceData.wrongProductionNote = `${ADJUDICATED_NOTE_PREFIX} ${result.productionType}. ${result.reasoning}`;
+            // BRO-2841 follow-up: every auto-clear predicate in
+            // wrong-production-autoclear.js treats wrongProductionReason as the
+            // "this was a manual/adjudicated call, don't auto-clear it" signal
+            // (shouldAutoClearWrongProduction, shouldAutoClearWrongProductionUrlYear,
+            // shouldAutoClearWrongShowUkUrl all gate on it) — but until now this
+            // was the only writer of a high-confidence contamination verdict that
+            // set wrongProductionNote WITHOUT also setting wrongProductionReason,
+            // leaving every one of those predicates unprotected. Setting it here
+            // is the systemic fix: it protects ALL current and future auto-clear
+            // paths through the field they already check, rather than adding a
+            // field-specific exemption to each one as they accrete.
+            sourceData.wrongProductionReason = `contamination-adjudicated: ${result.productionType}`;
           } else {
             sourceData.tourCheckVerified = 'false-positive';
             sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;
