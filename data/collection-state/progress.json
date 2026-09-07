@@ -6,7 +6,9 @@
     "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
     "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -41,7 +43,15 @@
     "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
     "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
     "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
-    "shifters-off-broadway-2026/independent--alice-saville.json"
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -49,12 +59,18 @@
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--unknown.json"
+    ],
     "brightdata": [
       "spellbound-off-broadway-2026/theater-life--unknown.json"
     ],
@@ -66,7 +82,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "shifters-off-broadway-2026/independent--alice-saville.json",
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -89,6 +105,12 @@
       "t": "2026-09-07T16:55:56.343Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T17:01:51.115Z",
+      "event": "bb-session",
+      "session": "8ca33d2a",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
     }
   ]
 }
