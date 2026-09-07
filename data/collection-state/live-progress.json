@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-07T22:24:57.513Z",
-  "processed": 84,
-  "failed": 646,
-  "successRate": "11.5%",
+  "updatedAt": "2026-09-07T22:26:38.819Z",
+  "processed": 86,
+  "failed": 654,
+  "successRate": "11.6%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 13,
     "directCookies": 3,
     "scrapingbee": 21,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 14
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-09-07T21:27:16.759Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-07T21:27:34.011Z",
-      "event": "bb-session",
-      "session": "14ee2fb4",
-      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
-    },
-    {
-      "t": "2026-09-07T21:27:34.952Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-07T21:29:58.056Z",
-      "event": "bb-session",
-      "session": "a87ef3c1",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
     {
       "t": "2026-09-07T21:29:59.034Z",
       "event": "bb-cookie-inject",
@@ -127,6 +105,28 @@
       "event": "bb-session",
       "session": "d7d36637",
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-09-07T22:25:38.279Z",
+      "event": "bb-session",
+      "session": "f01f09f7",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-07T22:25:42.905Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-07T22:26:01.715Z",
+      "event": "bb-session",
+      "session": "7d872c37",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-07T22:26:06.104Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
