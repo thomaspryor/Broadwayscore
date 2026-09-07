@@ -15,7 +15,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear');
+const { shouldAutoClearWrongProductionUkDualMarket, ADJUDICATED_NOTE_PREFIX, hasAdjudicatedNote } = require('./wrong-production-autoclear');
 const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion, outletIsUkMarketRegion, classifyReverseCrossMarket } = require('./cross-market-guard');
 
 const baseCtx = {
@@ -139,6 +139,24 @@ describe('shouldAutoClearWrongProductionUkDualMarket', () => {
         baseCtx
       ),
       true
+    );
+  });
+
+  // BRO-2841 follow-up: proves the writer (adjudicate-review-queue.js) and
+  // reader (this predicate, via hasAdjudicatedNote) are coupled through the
+  // SAME exported constant rather than two hand-typed literals that could
+  // drift apart silently. Built from ADJUDICATED_NOTE_PREFIX, not a copy of
+  // the string.
+  it('hasAdjudicatedNote recognizes a note built from the shared ADJUDICATED_NOTE_PREFIX export', () => {
+    assert.strictEqual(ADJUDICATED_NOTE_PREFIX, 'Auto-adjudicated:');
+    const note = `${ADJUDICATED_NOTE_PREFIX} national-tour. reasoning`;
+    assert.strictEqual(hasAdjudicatedNote({ wrongProductionNote: note }), true);
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        { wrongProduction: true, wrongProductionNote: note, url: 'https://timeout.com/london/x' },
+        baseCtx
+      ),
+      false
     );
   });
 
