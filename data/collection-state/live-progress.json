@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-07T22:01:16.126Z",
-  "processed": 54,
-  "failed": 246,
-  "successRate": "18.0%",
+  "updatedAt": "2026-09-07T22:05:50.471Z",
+  "processed": 57,
+  "failed": 293,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 29,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 3,
     "scrapingbee": 10,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-09-07T16:55:00.211Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-07T16:55:55.489Z",
-      "event": "bb-session",
-      "session": "a0a62ae8",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
     {
       "t": "2026-09-07T16:55:56.343Z",
       "event": "bb-cookie-inject",
@@ -127,6 +116,17 @@
       "event": "bb-session",
       "session": "bc93547e",
       "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-09-07T22:04:32.666Z",
+      "event": "bb-session",
+      "session": "cc049256",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-07T22:04:33.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
