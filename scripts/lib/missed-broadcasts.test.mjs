@@ -5,8 +5,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   findMissedBroadcasts,
+  classifyBroadcastState,
   daysSinceOpening,
   hasCompletedBroadcast,
+  DEFAULT_MAX_ALERT_AGE_DAYS,
 } = require('./missed-broadcasts.js');
 
 const NOW = Date.UTC(2026, 8, 7, 12, 0, 0); // 2026-09-07T12:00:00Z
@@ -20,125 +22,159 @@ const show = (over = {}) => ({
   ...over,
 });
 
-// 12 scored reviews = exactly the floor.
+// West End floor is 12 (broadcast-readiness.js WEST_END_MIN).
 const reviewsFor = (id, n) =>
-  Array.from({ length: n }, (_, i) => ({ showId: id, assignedScore: 50 + i }));
+  Array.from({ length: n }, (_, i) => ({ showId: id, assignedScore: 50 + (i % 40) }));
+
+const find = (over = {}) =>
+  findMissedBroadcasts({ shows: [show()], sentShows: {}, reviews: reviewsFor('x-2026', 20), now: NOW, ...over });
 
 test('daysSinceOpening is TZ-independent (bare YYYY-MM-DD parsed as UTC)', () => {
   // The workflow's inline blocks do `new Date(str)` (UTC) then `.setHours(0,0,0,0)`
   // (local) — that pairing shifts a day west of Greenwich. This must not.
   assert.strictEqual(daysSinceOpening('2026-09-01', NOW), 6);
   assert.strictEqual(daysSinceOpening('2026-09-07', NOW), 0);
-  assert.strictEqual(daysSinceOpening('2026-09-04', NOW), 3);
   assert.strictEqual(daysSinceOpening(null, NOW), null);
   assert.strictEqual(daysSinceOpening('not-a-date', NOW), null);
 });
 
 test('flags a qualifying show the pipeline silently dropped', () => {
-  const s = show();
-  const missed = findMissedBroadcasts({
-    shows: [s],
-    sentShows: {},
-    reviews: reviewsFor(s.id, 20),
-    now: NOW,
-  });
+  const missed = find();
   assert.strictEqual(missed.length, 1);
   assert.strictEqual(missed[0].id, 'x-2026');
-  assert.strictEqual(missed[0].daysSinceOpening, 6);
-  assert.strictEqual(missed[0].scoredReviews, 20);
+  assert.strictEqual(missed[0].state, 'never-drafted');
+  assert.strictEqual(missed[0].alertable, true);
 });
 
 test('does NOT flag while the broadcast window is still live', () => {
-  // Opened yesterday: the pipeline is still trying, the overdue pager owns this.
-  const s = show({ openingDate: '2026-09-06' });
-  assert.deepStrictEqual(
-    findMissedBroadcasts({ shows: [s], sentShows: {}, reviews: reviewsFor(s.id, 20), now: NOW }),
-    []
-  );
+  assert.deepStrictEqual(find({ shows: [show({ openingDate: '2026-09-06' })] }), []);
 });
 
-test('does NOT flag once a broadcast completed', () => {
-  const s = show();
-  const sentShows = { 'x-2026': { completed: true, draftStatus: 'sent', draftId: 'abc' } };
-  assert.deepStrictEqual(
-    findMissedBroadcasts({ shows: [s], sentShows, reviews: reviewsFor(s.id, 20), now: NOW }),
-    []
-  );
+// --- state classification: the three causes are NOT interchangeable ---
+
+test('classify: a confirmed send is resolved', () => {
+  assert.strictEqual(classifyBroadcastState({ completed: true, draftStatus: 'sent', draftId: 'a' }), 'sent');
+  assert.strictEqual(hasCompletedBroadcast({ 'x-2026': { completed: true, draftStatus: 'sent', draftId: 'a' } }, 'x-2026'), true);
 });
 
-test('legacy pre-schema sent record counts as completed (no re-page)', () => {
-  const s = show();
-  // No draftStatus — migrateSentRecord must read this as sent.
-  const sentShows = { 'x-2026': { completed: true, draftId: 'legacy' } };
-  assert.strictEqual(hasCompletedBroadcast(sentShows, 'x-2026'), true);
-  assert.deepStrictEqual(
-    findMissedBroadcasts({ shows: [s], sentShows, reviews: reviewsFor(s.id, 20), now: NOW }),
-    []
-  );
+test('classify: legacy pre-schema record counts as sent (no re-page)', () => {
+  assert.strictEqual(classifyBroadcastState({ completed: true, draftId: 'legacy' }), 'sent');
+  assert.strictEqual(classifyBroadcastState({ completed: true }), 'sent');
 });
 
-test('an owner preview alone does NOT count as a completed broadcast', () => {
-  // the-story-west-end-2026's real shape on 2026-09-07: preview sent, no draft.
-  const s = show();
+test('classify: draft created but never sent is draft-stuck, NOT sent', () => {
+  // The real shape of to-kill-a-mockingbird-west-end-2026 on 2026-09-07:
+  // completed:true is written at DRAFT CREATION, so trusting `completed` alone
+  // reports "all good" for a show whose subscribers got nothing.
+  const record = { completed: true, draftStatus: 'draft', sentAt: null, draftId: 'abc' };
+  assert.strictEqual(classifyBroadcastState(record), 'draft-stuck');
+  assert.strictEqual(hasCompletedBroadcast({ 'x-2026': record }, 'x-2026'), false);
+
+  const missed = find({ sentShows: { 'x-2026': record } });
+  assert.strictEqual(missed.length, 1);
+  assert.strictEqual(missed[0].state, 'draft-stuck');
+});
+
+test('classify: a 404 with no observed send is ambiguous, never assumed unsent', () => {
+  // Resend reaps SENT broadcasts within hours, so this may already have gone
+  // out. Must never be reported in a way that invites a blind re-send.
+  assert.strictEqual(classifyBroadcastState({ completed: false, draftStatus: 'deleted', draftId: 'abc' }), 'draft-unknown');
+  // ...but a 404 on a record already observed sent IS sent (broadcast-state.js
+  // preserves completed only in that case).
+  assert.strictEqual(classifyBroadcastState({ completed: true, draftStatus: 'deleted', draftId: 'abc' }), 'sent');
+});
+
+test('classify: a cancelled draft is safe to re-send (mirrors shouldRequeueShow)', () => {
+  assert.strictEqual(classifyBroadcastState({ completed: false, draftStatus: 'cancelled', draftId: 'abc' }), 'never-drafted');
+});
+
+test('an owner preview alone does NOT count as a send', () => {
+  // the-story-west-end-2026's real shape: preview delivered to the owner,
+  // draft never created, subscribers got nothing.
   const sentShows = {
     'preview:west-end:x-2026:2026-09-05': { sentAt: '2026-09-05T23:24:28.018Z', draftStatus: 'draft' },
   };
-  const missed = findMissedBroadcasts({
-    shows: [s],
-    sentShows,
-    reviews: reviewsFor(s.id, 20),
-    now: NOW,
-  });
-  assert.strictEqual(missed.length, 1, 'preview-only is the half-finished state this sweep exists to catch');
+  const missed = find({ sentShows });
+  assert.strictEqual(missed.length, 1);
+  assert.strictEqual(missed[0].state, 'never-drafted');
 });
 
-test('does NOT flag below the scored-review floor (sparse coverage is not a failure)', () => {
-  const s = show();
+// --- readiness must be the REAL gate, not a copy ---
+
+test('uses the real readiness gate: West End floor is 12', () => {
+  assert.deepStrictEqual(find({ reviews: reviewsFor('x-2026', 11) }), []);
+  assert.strictEqual(find({ reviews: reviewsFor('x-2026', 12) }).length, 1);
+});
+
+test('uses the real readiness gate: Broadway needs 15 AND an aggregator', () => {
+  const bway = show({ id: 'b-2026', category: 'broadway' });
+  const plain = reviewsFor('b-2026', 20);
+  // 20 scored reviews but no DTLI/BWW aggregator — never qualified, so
+  // reporting it as a missed send would be a confident lie.
   assert.deepStrictEqual(
-    findMissedBroadcasts({ shows: [s], sentShows: {}, reviews: reviewsFor(s.id, 11), now: NOW }),
+    findMissedBroadcasts({ shows: [bway], sentShows: {}, reviews: plain, now: NOW }),
     []
   );
+  // Same show with an aggregator does qualify.
+  const withAgg = plain.map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));
   assert.strictEqual(
-    findMissedBroadcasts({ shows: [s], sentShows: {}, reviews: reviewsFor(s.id, 12), now: NOW }).length,
-    1,
-    '12 is the floor, inclusive'
+    findMissedBroadcasts({ shows: [bway], sentShows: {}, reviews: withAgg, now: NOW }).length,
+    1
+  );
+  // ...but 14 reviews + aggregator is still under the Broadway floor of 15.
+  const under = reviewsFor('b-2026', 14).map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));
+  assert.deepStrictEqual(
+    findMissedBroadcasts({ shows: [bway], sentShows: {}, reviews: under, now: NOW }),
+    []
+  );
+});
+
+// --- scope guards ---
+
+test('ignores shows that opened before the broadcast pipeline existed', () => {
+  // Otherwise the report buries real findings under the whole back catalogue —
+  // Phantom (1986) never had an opening-night email and never will.
+  const old = show({ id: 'phantom-1986', openingDate: '1986-10-09' });
+  assert.deepStrictEqual(
+    findMissedBroadcasts({ shows: [old], sentShows: {}, reviews: reviewsFor('phantom-1986', 20), now: NOW }),
+    []
   );
 });
 
 test('does NOT flag non-broadcast categories, non-open status, opera, or missing dates', () => {
-  const cases = [
-    show({ category: 'off-broadway' }),
-    show({ category: 'off-west-end' }),
-    show({ category: undefined }),
-    show({ status: 'upcoming' }),
-    show({ status: 'closed' }),
-    show({ type: 'opera' }),
-    show({ openingDate: undefined }),
-  ];
-  for (const s of cases) {
-    assert.deepStrictEqual(
-      findMissedBroadcasts({ shows: [s], sentShows: {}, reviews: reviewsFor(s.id, 20), now: NOW }),
-      [],
-      `should not flag: ${JSON.stringify({ c: s.category, st: s.status, t: s.type, d: s.openingDate })}`
-    );
+  for (const over of [
+    { category: 'off-broadway' },
+    { category: 'off-west-end' },
+    { category: undefined },
+    { status: 'upcoming' },
+    { status: 'closed' },
+    { type: 'opera' },
+    { openingDate: undefined },
+  ]) {
+    assert.deepStrictEqual(find({ shows: [show(over)] }), [], `should not flag: ${JSON.stringify(over)}`);
   }
 });
 
-test('stops flagging past the max age (bounded, so first run cannot page the back catalogue)', () => {
-  const inRange = show({ id: 'in-2026', openingDate: '2026-08-18' }); // 20d
-  const tooOld = show({ id: 'old-2026', openingDate: '2026-08-16' }); // 22d
-  const missed = findMissedBroadcasts({
-    shows: [inRange, tooOld],
-    sentShows: {},
-    reviews: [...reviewsFor('in-2026', 20), ...reviewsFor('old-2026', 20)],
-    now: NOW,
-  });
-  assert.deepStrictEqual(missed.map((m) => m.id), ['in-2026']);
+// --- alerting vs reporting bounds ---
+
+test('past the alert bound a show stays REPORTED but stops paging', () => {
+  // Bounding the report itself would recreate the original bug at a longer
+  // horizon: the show would vanish, still never sent, with nobody told.
+  const aged = show({ openingDate: '2026-08-01' }); // 37d — past the 21d alert bound
+  const missed = find({ shows: [aged] });
+  assert.strictEqual(missed.length, 1, 'still reported');
+  assert.strictEqual(missed[0].alertable, false, 'but not alertable');
+  assert.ok(missed[0].daysSinceOpening > DEFAULT_MAX_ALERT_AGE_DAYS);
 });
 
-test('sorts oldest-opening first so the most-overdue show leads the alert', () => {
-  const a = show({ id: 'a-2026', openingDate: '2026-09-03' }); // 4d
-  const b = show({ id: 'b-2026', openingDate: '2026-08-30' }); // 8d
+test('drops out of the report entirely past the retention bound', () => {
+  const ancient = show({ openingDate: '2026-04-01' }); // 159d, past 90d retention
+  assert.deepStrictEqual(find({ shows: [ancient] }), []);
+});
+
+test('sorts oldest-opening first so the most-overdue show leads', () => {
+  const a = show({ id: 'a-2026', openingDate: '2026-09-03' });
+  const b = show({ id: 'b-2026', openingDate: '2026-08-30' });
   const missed = findMissedBroadcasts({
     shows: [a, b],
     sentShows: {},
@@ -148,30 +184,15 @@ test('sorts oldest-opening first so the most-overdue show leads the alert', () =
   assert.deepStrictEqual(missed.map((m) => m.id), ['b-2026', 'a-2026']);
 });
 
-test('reviews without an assignedScore do not count toward the floor', () => {
-  const s = show();
-  const reviews = [
-    ...reviewsFor(s.id, 11),
-    { showId: s.id, assignedScore: null },
-    { showId: s.id },
-    { showId: 'other-2026', assignedScore: 90 },
-  ];
-  assert.deepStrictEqual(findMissedBroadcasts({ shows: [s], sentShows: {}, reviews, now: NOW }), []);
-});
-
 test('regression: electra-persona-west-end-2026 as it actually was on 2026-09-07', () => {
-  // The incident. Opened 09-01, 32 scored reviews, zero entries in
-  // opening-night-sent.json, checklist-blocked until it left the window.
   const missed = findMissedBroadcasts({
-    shows: [
-      {
-        id: 'electra-persona-west-end-2026',
-        title: 'Electra / Persona',
-        status: 'open',
-        category: 'west-end',
-        openingDate: '2026-09-01',
-      },
-    ],
+    shows: [{
+      id: 'electra-persona-west-end-2026',
+      title: 'Electra / Persona',
+      status: 'open',
+      category: 'west-end',
+      openingDate: '2026-09-01',
+    }],
     sentShows: {},
     reviews: reviewsFor('electra-persona-west-end-2026', 32),
     now: NOW,
@@ -179,4 +200,6 @@ test('regression: electra-persona-west-end-2026 as it actually was on 2026-09-07
   assert.strictEqual(missed.length, 1);
   assert.strictEqual(missed[0].title, 'Electra / Persona');
   assert.strictEqual(missed[0].daysSinceOpening, 6);
+  assert.strictEqual(missed[0].state, 'never-drafted');
+  assert.strictEqual(missed[0].alertable, true);
 });

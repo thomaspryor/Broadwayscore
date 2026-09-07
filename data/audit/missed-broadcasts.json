@@ -1,14 +1,92 @@
 {
-  "generatedAt": "2026-09-07T18:51:56.574Z",
-  "missedCount": 3,
+  "generatedAt": "2026-09-07T19:04:51.099Z",
+  "missedCount": 9,
+  "alertableCount": 3,
+  "agedOutCount": 6,
   "missed": [
+    {
+      "id": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "category": "west-end",
+      "openingDate": "2026-06-24",
+      "daysSinceOpening": 75,
+      "scoredReviews": 37,
+      "readiness": "37 scored reviews (West End — no aggregator gate)",
+      "state": "draft-unknown",
+      "alertable": false,
+      "draftUrl": "https://resend.com/broadcasts/ac4424ec-e73f-4135-bb0f-f1db8660e10d"
+    },
+    {
+      "id": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "title": "The Truth",
+      "category": "west-end",
+      "openingDate": "2026-06-24",
+      "daysSinceOpening": 75,
+      "scoredReviews": 29,
+      "readiness": "29 scored reviews (West End — no aggregator gate)",
+      "state": "draft-unknown",
+      "alertable": false,
+      "draftUrl": "https://resend.com/broadcasts/ac4424ec-e73f-4135-bb0f-f1db8660e10d"
+    },
+    {
+      "id": "pride-west-end-2026",
+      "title": "Pride",
+      "category": "west-end",
+      "openingDate": "2026-06-25",
+      "daysSinceOpening": 74,
+      "scoredReviews": 20,
+      "readiness": "20 scored reviews (West End — no aggregator gate)",
+      "state": "draft-unknown",
+      "alertable": false,
+      "draftUrl": "https://resend.com/broadcasts/ac4424ec-e73f-4135-bb0f-f1db8660e10d"
+    },
+    {
+      "id": "to-kill-a-mockingbird-west-end-2026",
+      "title": "To Kill a Mockingbird",
+      "category": "west-end",
+      "openingDate": "2026-06-30",
+      "daysSinceOpening": 69,
+      "scoredReviews": 21,
+      "readiness": "21 scored reviews (West End — no aggregator gate)",
+      "state": "draft-stuck",
+      "alertable": false,
+      "draftUrl": "https://resend.com/broadcasts/2509233c-5672-415a-8e07-325d99a4aaf9"
+    },
+    {
+      "id": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "category": "west-end",
+      "openingDate": "2026-07-30",
+      "daysSinceOpening": 39,
+      "scoredReviews": 28,
+      "readiness": "28 scored reviews (West End — no aggregator gate)",
+      "state": "never-drafted",
+      "alertable": false,
+      "draftUrl": null
+    },
+    {
+      "id": "how-the-other-half-loves-west-end-2026",
+      "title": "How the Other Half Loves",
+      "category": "west-end",
+      "openingDate": "2026-08-12",
+      "daysSinceOpening": 26,
+      "scoredReviews": 26,
+      "readiness": "26 scored reviews (West End — no aggregator gate)",
+      "state": "never-drafted",
+      "alertable": false,
+      "draftUrl": null
+    },
     {
       "id": "abigails-party-west-end-2026",
       "title": "Abigail’s Party",
       "category": "west-end",
       "openingDate": "2026-08-19",
       "daysSinceOpening": 19,
-      "scoredReviews": 31
+      "scoredReviews": 31,
+      "readiness": "31 scored reviews (West End — no aggregator gate)",
+      "state": "never-drafted",
+      "alertable": true,
+      "draftUrl": null
     },
     {
       "id": "electra-persona-west-end-2026",
@@ -16,7 +94,11 @@
       "category": "west-end",
       "openingDate": "2026-09-01",
       "daysSinceOpening": 6,
-      "scoredReviews": 32
+      "scoredReviews": 32,
+      "readiness": "32 scored reviews (West End — no aggregator gate)",
+      "state": "never-drafted",
+      "alertable": true,
+      "draftUrl": null
     },
     {
       "id": "the-story-west-end-2026",
@@ -24,7 +106,11 @@
       "category": "west-end",
       "openingDate": "2026-09-03",
       "daysSinceOpening": 4,
-      "scoredReviews": 22
+      "scoredReviews": 22,
+      "readiness": "22 scored reviews (West End — no aggregator gate)",
+      "state": "never-drafted",
+      "alertable": true,
+      "draftUrl": null
     }
   ]
 }
