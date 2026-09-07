@@ -1,50 +1,67 @@
 {
   "stale": [
+    "Check Opening Night Drift",
     "Commercial Friday Refresh",
     "Commercial RSS Poll",
     "Commercial Weekly Orchestrator",
+    "Daily Data Health Check (digest snapshot carrier)",
     "Enrich Off-Broadway Dates",
     "Opening Night Checklist",
     "Process Feedback Submissions",
+    "Refresh Show Score (opening-night)",
     "Scrape WestEndTheatre",
     "Update Social Pulse"
   ],
   "redispatched": [
-    "Enrich Off-Broadway Dates"
+    "Check Opening Night Drift",
+    "Daily Data Health Check (digest snapshot carrier)",
+    "Refresh Show Score (opening-night)"
   ],
   "staleStreak": {
+    "Check Opening Night Drift": {
+      "days": 1,
+      "lastCounted": "2026-09-07"
+    },
     "Commercial Friday Refresh": {
-      "days": 14,
-      "lastCounted": "2026-09-06"
+      "days": 15,
+      "lastCounted": "2026-09-07"
     },
     "Commercial RSS Poll": {
-      "days": 5,
-      "lastCounted": "2026-09-06"
+      "days": 6,
+      "lastCounted": "2026-09-07"
     },
     "Commercial Weekly Orchestrator": {
-      "days": 18,
-      "lastCounted": "2026-09-06"
+      "days": 19,
+      "lastCounted": "2026-09-07"
+    },
+    "Daily Data Health Check (digest snapshot carrier)": {
+      "days": 1,
+      "lastCounted": "2026-09-07"
     },
     "Enrich Off-Broadway Dates": {
-      "days": 1,
-      "lastCounted": "2026-09-06"
+      "days": 2,
+      "lastCounted": "2026-09-07"
     },
     "Opening Night Checklist": {
-      "days": 11,
-      "lastCounted": "2026-09-06"
+      "days": 12,
+      "lastCounted": "2026-09-07"
     },
     "Process Feedback Submissions": {
-      "days": 3,
-      "lastCounted": "2026-09-06"
+      "days": 4,
+      "lastCounted": "2026-09-07"
+    },
+    "Refresh Show Score (opening-night)": {
+      "days": 1,
+      "lastCounted": "2026-09-07"
     },
     "Scrape WestEndTheatre": {
-      "days": 2,
-      "lastCounted": "2026-09-06"
+      "days": 3,
+      "lastCounted": "2026-09-07"
     },
     "Update Social Pulse": {
-      "days": 5,
-      "lastCounted": "2026-09-06"
+      "days": 6,
+      "lastCounted": "2026-09-07"
     }
   },
-  "updatedAt": "2026-09-06T14:44:19.407Z"
+  "updatedAt": "2026-09-07T17:00:26.466Z"
 }

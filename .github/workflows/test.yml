@@ -28,6 +28,11 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # scripts/check-missed-broadcasts.js is the I/O wrapper for
+      # scripts/lib/missed-broadcasts.js (globbed above). The predicate is
+      # covered by scripts/lib/**, but a solo edit to the wrapper would
+      # otherwise trigger ZERO CI — the exact gap task #1745 documents.
+      - 'scripts/check-missed-broadcasts.js'
       # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
       # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
       # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs

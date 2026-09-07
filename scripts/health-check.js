@@ -1490,6 +1490,33 @@ function checkQuality() {
       return { name, status: 'pass', message: `No new violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
     })),
 
+    // Missed opening-night broadcast sweep (BRO-2934). The dead-man half of
+    // this check is the point: check-missed-broadcasts.js runs under
+    // continue-on-error in data-health-check.yml (like every sibling sweep),
+    // so if the script or the alert router breaks, it fails silently and the
+    // owner simply stops being told about missed sends — the exact silence
+    // this whole feature exists to end. A stale snapshot is therefore an
+    // ERROR, not a warning. The findings themselves ride as a warn: the
+    // script already pages per-show for anything actionable, so the digest
+    // line's job is to keep the aged-out backlog visible rather than to
+    // re-alarm about it.
+    runCheck('Data quality: missed opening-night broadcasts', () => {
+      const name = 'Data quality: missed opening-night broadcasts';
+      const snapPath = path.join(AUDIT_DIR, 'missed-broadcasts.json');
+      if (!fs.existsSync(snapPath)) {
+        return { name, status: 'warn', message: 'No missed-broadcast snapshot yet (cron not yet run)', hint: 'node scripts/check-missed-broadcasts.js --dry-run' };
+      }
+      const snap = readJSON(snapPath);
+      const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'error', message: `Missed-broadcast snapshot is ${formatAge(age)} old (>48h) — the sweep itself has stopped running, so missed sends are going unreported again`, hint: 'Check the "Missed opening-night broadcast sweep" step in data-health-check.yml' };
+      }
+      if (snap.missedCount > 0) {
+        return { name, status: 'warn', message: `${snap.missedCount} show(s) opened and qualified but never emailed subscribers (${snap.alertableCount} still alertable, ${snap.agedOutCount} aged out past the paging window, ${formatAge(age)} ago)`, hint: 'node scripts/check-missed-broadcasts.js --dry-run to list them with per-show remediation' };
+      }
+      return { name, status: 'pass', message: `Every qualifying show reached subscribers (${formatAge(age)} ago)` };
+    }),
+
     // Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
     // shows.js now runs in this same job's "Stale announced shows audit
     // (shadow mode)" step — see that step's own comment for why nothing ran
