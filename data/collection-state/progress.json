@@ -44,7 +44,11 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/reviewsgate--william-russell.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -251,7 +255,13 @@
     "the-lost-boys-2026/bloomberg--chris-rovzar.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
-    "the-rocky-horror-show-2026/british-theatre--unknown.json"
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -279,7 +289,9 @@
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "avenue-q-west-end-2026/reviewsgate--william-russell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -288,7 +300,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -309,7 +322,8 @@
     ],
     "brightdata": [
       "spellbound-off-broadway-2026/theater-life--unknown.json",
-      "electra-persona-west-end-2026/vocaleyes--unknown.json"
+      "electra-persona-west-end-2026/vocaleyes--unknown.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -319,11 +333,12 @@
       "electra-persona-west-end-2026/southbank--unknown.json",
       "paranormal-activity-2026/wsj--charles-isherwood.json",
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
-      "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json"
+      "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "the-rocky-horror-show-2026/british-theatre--unknown.json",
+  "lastProcessed": "avenue-q-west-end-2026/theatermania--andy-propst.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -426,6 +441,17 @@
       "event": "bb-session",
       "session": "a9b8487e",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-07T21:58:11.348Z",
+      "event": "bb-session",
+      "session": "aeb70564",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-07T21:58:12.165Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
