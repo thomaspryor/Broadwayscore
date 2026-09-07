@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-31T22:20:32.022Z",
-    "completedAt": "2026-08-31T22:20:50.297Z",
-    "totalReviews": 42428,
-    "processed": 0,
-    "skipped": 42423,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 19549,
-      "output": 766,
-      "total": 57202
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-31T22:52:32.851Z",
     "completedAt": "2026-08-31T22:52:52.606Z",
     "totalReviews": 42428,
@@ -456266,5 +456252,25 @@
       "total": 10926
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-07T11:12:13.517Z",
+    "completedAt": "2026-09-07T11:12:23.965Z",
+    "totalReviews": 42785,
+    "processed": 1,
+    "skipped": 42782,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 10614,
+      "output": 473,
+      "total": 27265
+    },
+    "errorDetails": [
+      {
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
