@@ -47,7 +47,11 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { detectCvFlagContradiction } = require('./lib/flag-contradiction');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const {
+  assertCorpusScanned,
+  CorpusNotScannedError,
+  summarizeWindowCoverage,
+} = require('./lib/corpus-scan-guard');
 const { baselineKeySet, computeNewViolators } = require('./lib/cv-flag-contradiction-baseline');
 
 const USAGE = `audit-cv-flag-contradiction.js — flag-vs-CV contradiction detector (#651)
@@ -112,6 +116,17 @@ function main() {
     return !Number.isNaN(t) && t >= cutoff;
   });
 
+  // Coverage bookkeeping (BRO-2348). These are counted, not inferred, because
+  // `recentShows.length` is NOT the number of shows this sweep looks at: a
+  // show with no data/review-texts/<id> directory hits the `continue` below
+  // and is never opened. Measured 2026-09-07: 132 selected, 72 examined.
+  const eligibleShows = shows.filter(
+    (s) => s.openingDate && !Number.isNaN(Date.parse(s.openingDate))
+  ).length;
+  const openedShows = recentShows.filter((s) => Date.parse(s.openingDate) <= Date.now()).length;
+  let showsWithTexts = 0;
+  let filesParsed = 0;
+
   const hits = [];
   for (const show of recentShows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show.id);
@@ -121,6 +136,8 @@ function main() {
     } catch {
       continue;
     }
+    showsWithTexts++;
+    filesParsed += files.length;
     for (const file of files) {
       let data;
       try {
@@ -135,12 +152,30 @@ function main() {
     }
   }
 
-  console.log(`Flag-vs-CV contradiction sweep: ${recentShows.length} shows opened in the last ${args.window}d, ${hits.length} contradiction(s) found.`);
+  // "shows opened in the last Nd" was false: the window filter is a lower
+  // bound only, so 110 of the 132 it selected on 2026-09-07 had not opened.
+  console.log(`Flag-vs-CV contradiction sweep: ${recentShows.length} shows in the last ${args.window}d window, ${hits.length} contradiction(s) found.`);
   for (const h of hits) {
     // No cvReasoning in stdout: this repo is public and CV reasoning often
     // embeds verbatim quotes from copyrighted review text (CLAUDE.md §3) —
     // this script runs in CI (public Actions logs), not just locally.
     console.log(`  [${h.flag}] ${h.showId}/${h.file} (${h.wordCount}w)`);
+  }
+
+  // Printed on EVERY path, before the --update-baseline branch exits, because
+  // the misreading this prevents is of a CLEAN run: "(12 baselined, 0 new)"
+  // followed by exit 0 reads as a healthy corpus when the sweep examined 72
+  // of 2,943 shows (BRO-2348).
+  for (const line of summarizeWindowCoverage({
+    windowDays: args.window,
+    corpusShows: shows.length,
+    eligibleShows,
+    windowShows: recentShows.length,
+    openedShows,
+    showsWithTexts,
+    filesParsed,
+  }).lines) {
+    console.log(line);
   }
 
   // --update-baseline: regenerate the baseline from the current scan and exit
