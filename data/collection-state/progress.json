@@ -1415,7 +1415,17 @@
     "disruption-off-broadway-2026/standard--nick-curtis.json",
     "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
     "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
-    "disruption-off-broadway-2026/whatsonstage--alun-hood.json"
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/ew--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/newsday--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/amny--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/bloomberg--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/nbcny--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1554,7 +1564,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+  "lastProcessed": "loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1825,6 +1835,30 @@
       "t": "2026-09-07T11:27:52.845Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T11:31:05.605Z",
+      "event": "bb-session",
+      "session": "4876f09d",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-09-07T11:31:14.331Z",
+      "event": "bb-session",
+      "session": "ce63b11f",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-09-07T11:32:19.362Z",
+      "event": "bb-session",
+      "session": "5da0a36d",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-07T11:32:39.470Z",
+      "event": "bb-session",
+      "session": "3e596110",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
     }
   ]
 }
