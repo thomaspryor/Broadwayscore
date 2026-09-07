@@ -982,7 +982,13 @@
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
-    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json"
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1017,6 +1023,7 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-story-west-end-2026/nytimes--unknown.json",
       "the-story-west-end-2026/nytimes--unknown.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
@@ -1051,7 +1058,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1130,6 +1137,17 @@
       "t": "2026-09-07T01:45:25.148Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-07T01:51:50.647Z",
+      "event": "bb-session",
+      "session": "4ed88a2f",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T01:51:51.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-07T01:50:33.080Z",
+  "updatedAt": "2026-09-07T01:53:52.001Z",
   "processed": 46,
-  "failed": 935,
+  "failed": 941,
   "successRate": "4.7%",
   "tierBreakdown": {
     "playwright": 24,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 2,
     "scrapingbee": 7,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -92,6 +92,17 @@
       "t": "2026-09-07T01:45:25.148Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-07T01:51:50.647Z",
+      "event": "bb-session",
+      "session": "4ed88a2f",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T01:51:51.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
