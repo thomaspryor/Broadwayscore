@@ -270,15 +270,87 @@
     "queuedAt": "2026-09-06T22:30:23.067Z"
   },
   {
-    "conditionKey": "watchdog-heartbeat-stale",
-    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
-    "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-electra-persona-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Electra / Persona",
+    "description": "independent/Alice Saville (independent--alice-saville.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review discusses a production at the National The — https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/electra-persona-review-cate-blanchett-b3043382.html\nsouth-london/Michael Holland (south-london--michael-holland.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] This is a genuine review (critic Katie Kelly evaluate — https://southlondon.co.uk/area/southwark/review-electra-persona-at-the-national-theatre/",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-07T12:51:57.071Z"
+    "queuedAt": "2026-09-07T18:26:26.613Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:electra-persona-west-end-2026",
+    "title": "Shipped review too short to verify on Electra / Persona",
+    "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T18:26:26.615Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:electra-persona-west-end-2026",
+    "title": "Pre-opening publishDate on Electra / Persona",
+    "description": "cultural-capital/Unknown SHIPPED with publishDate 2026-08-24 (8d before openingDate 2026-09-01): https://maryamphilpottblog.wordpress.com/2026/08/24/electra-persona-national-theatre/\nmonstagigz/Unknown SHIPPED with publishDate 2026-08-23 (9d before openingDate 2026-09-01): https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/\ntimboatswain/Tim Boatswain SHIPPED with publishDate 2026-08-23 (9d before openingDate 2026-09-01): https://timboatswain.wixsite.com/website/post/a-review-of-the-national-theatre-s-electra-persona\n⚠️  thestage/Holly O'Mahony also missing publishDate: https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T18:26:26.616Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-electra-persona-west-end-2026",
+    "title": "Review URL cross-show mismatch on Electra / Persona",
+    "description": "Review URL for boycotting-trends/Alex Ramon does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): http://boycottingtrends.blogspot.com/2026/08/theatre-review-electrapersona-lyttelton.html\nReview URL for broadwayworld/Clementine Scott does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.broadwayworld.com/westend/article/Review-ELECTRAPERSONA-National-Theatre-20260901\nReview URL for guardian/Arifa Akbar does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-blanchett-and-hoss-face-off-in-lopsided-sophocles-bergman-double-bill\nReview URL for thestage/Holly O'Mahony does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london\nReview URL for times-uk/Clive Davis, Chief Theatre Critic does not mention show slug (checked: electra-persona-west-end, electra-persona, electra, persona): https://www.thetimes.com/culture/theatre-dance/article/electrapersona-review-cate-blanchett-is-captivating-despite-the-script-q35z7fpn5",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T18:26:26.616Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-electra-persona-west-end-2026",
+    "title": "Stale 'upcoming' tag on Electra / Persona",
+    "description": "electra-persona-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=electra-persona-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T18:26:26.617Z"
+  },
+  {
+    "conditionKey": "watchdog-heartbeat-stale",
+    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
+    "description": "The 👑 OWNER watchdog heartbeat is 1860 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T19:02:13.372Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:83:1917",
+    "title": "Zombie-tab sweep closed workspace:83",
+    "description": "closed corpse workspace:83 \"❓ 🤖⚡ Data·BRO-2627 P1: Data Validation hits its 30-minute ti\" (task-completed)",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T21:18:18.433Z"
   }
 ]
