@@ -51,14 +51,6 @@ const DECLARED_ALIAS_OVERLAPS = [
   // this was found, making a same-repo file rename unsafe to attempt here —
   // see Notion card for the follow-up merge.
   ['dctheatrescene', 'dc-metro-theater-arts'],
-  // CONFIRMED accidental registry duplicate, not yet merged. chicago-sun-times
-  // and suntimes are the same real publication (Chicago Sun-Times): same
-  // critics (Catey Sullivan, Steven Oxman), same host (chicago.suntimes.com);
-  // 7 suntimes--*.json review-text files duplicate an identity
-  // chicago-sun-times already owns. Declared (not merged) for the same
-  // review-texts-WIP reason as above — see Notion card for the follow-up
-  // merge.
-  ['chicago-sun-times', 'suntimes'],
 ];
 
 function normalizeDomain(d) {
