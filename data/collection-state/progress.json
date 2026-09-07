@@ -48,7 +48,10 @@
     "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/npr--sacha-pfeiffer.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json",
+    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1055,7 +1058,14 @@
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--ben-reiss.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/the-recs--unknown.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/wsj--by-charles-isherwood.json",
-    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json"
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "cats-west-end-2026/nypost--kyle-smith.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "cats-west-end-2026/ap--mark-kennedy.json",
+    "cats-west-end-2026/curtainup--elyse-sommer.json",
+    "cats-west-end-2026/frontmezzjunkies--steven-ross.json",
+    "cats-west-end-2026/huffpost--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1084,7 +1094,9 @@
       "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
       "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
       "holy-fool-off-west-end-2026/londonmumsmagazine--unknown.json",
-      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json"
+      "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
+      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "an-american-daughter-off-broadway-2026/nysr--david-finkle.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1118,7 +1130,8 @@
       "spellbound-off-broadway-2026/mashable--belen-edwards.json",
       "the-producers-west-end-2025/variety--bob-verini.json",
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/boston-globe--ty-burr.json",
-      "electra-persona-west-end-2026/vocaleyes--unknown.json"
+      "electra-persona-west-end-2026/vocaleyes--unknown.json",
+      "an-american-daughter-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1130,7 +1143,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "cats-west-end-2026/huffpost--david-finkle.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1263,6 +1276,17 @@
     },
     {
       "t": "2026-09-07T09:58:51.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T10:00:39.984Z",
+      "event": "bb-session",
+      "session": "7cfe5357",
+      "url": "https://www.wsj.com/articles/an-american-daughter-review-a-far-fetched-fiasco-of"
+    },
+    {
+      "t": "2026-09-07T10:00:40.947Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
