@@ -1039,7 +1039,13 @@
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
-    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json"
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1076,6 +1082,7 @@
       "the-story-west-end-2026/nytimes--unknown.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
@@ -1110,7 +1117,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1223,6 +1230,17 @@
       "event": "bb-session",
       "session": "a719463a",
       "url": "https://www.broadwayworld.com/shows/Anansi-the-Spider-335929/current-cast"
+    },
+    {
+      "t": "2026-09-07T04:33:56.096Z",
+      "event": "bb-session",
+      "session": "15350264",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T04:33:56.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
