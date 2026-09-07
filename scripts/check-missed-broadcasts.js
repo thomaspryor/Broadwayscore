@@ -213,7 +213,19 @@ async function main() {
         { name: 'Readiness', value: m.readiness },
       ],
     });
-    console.log(`[alert-router] ${m.id} (${m.state}): ${result.action}`);
+    // 'digest' means the page-worthy gate (card #611) downgraded this from
+    // 'human'. The owner still sees it — in the next morning digest — so it
+    // counts as informed, and nothing here should treat it as a failure. But
+    // it is worth saying out loud: this sweep's whole premise is that the PAGE
+    // is the recovery mechanism (nothing retries a missed send automatically),
+    // so a silent downgrade turns same-day recovery into next-digest recovery.
+    // If this line starts appearing, 'broadcast:never-sent:' has fallen off
+    // PAGE_WORTHY_PREFIXES in scripts/lib/page-worthy-alerts.js.
+    if (result.action === 'digest') {
+      console.log(`::warning::${m.id}: never-sent alert was downgraded to the morning digest — check that 'broadcast:never-sent:' is still in scripts/lib/page-worthy-alerts.js`);
+    } else {
+      console.log(`[alert-router] ${m.id} (${m.state}): ${result.action}`);
+    }
   }
 }
 
