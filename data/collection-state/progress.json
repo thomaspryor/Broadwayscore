@@ -83,7 +83,9 @@
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
     "much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1205,7 +1207,15 @@
     "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
     "beetlejuice-west-end-2026/thewrap--robert-hofler.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+    "sabrage-off-west-end-2026/guardian--brian-logan.json",
+    "sabrage-off-west-end-2026/standard--nick-curtis.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1259,7 +1269,9 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1272,7 +1284,8 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1318,7 +1331,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+  "lastProcessed": "schmigadoon-2026/variety--clayton-davis.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1499,6 +1512,29 @@
       "event": "bb-session",
       "session": "230f703c",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-07T10:30:20.354Z",
+      "event": "bb-session",
+      "session": "bf73df34",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-07T10:30:28.926Z",
+      "event": "bb-session",
+      "session": "7561c2ee",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-07T10:31:40.878Z",
+      "event": "bb-session",
+      "session": "3cd4e8f3",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-07T10:31:41.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
