@@ -33,14 +33,9 @@ jobs:
         id: check
         run: |
           FOLLOW_COUNT=$(node -e "
+            const { countFollowers } = require('./scripts/lib/follower-count.js');
             try {
-              const f = require('./data/followers.json');
-              // sync-followers.js writes { _meta, followers: { showId: [emails] } } —
-              // summing Object.values(f) directly sums the two top-level values
-              // (_meta, followers), neither an array, and always yields 0. Must
-              // reach into f.followers.
-              const total = Object.values(f.followers || {}).reduce((s,v) => s + (Array.isArray(v) ? v.length : 0), 0);
-              console.log(total);
+              console.log(countFollowers(require('./data/followers.json')));
             } catch { console.log(0); }
           ")
           echo "follower_count=$FOLLOW_COUNT"
@@ -120,7 +115,20 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # followers.json is gitignored + owned by sync-followers.yml (private core-data repo).
           # This workflow only writes audit files — do not re-add followers.json here.
-          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json
+          # follow-send-checkpoint.json is ephemeral (send-follow-notifications.js
+          # deletes it on a full-success run), so `git add` must not be a single
+          # all-or-nothing command: a nonexistent pathspec makes git add fail with
+          # nothing staged (verified), silently dropping the digest/checkpoint
+          # commit on every successful send and re-diffing the same stale digest
+          # next run — the exact mechanism that resent duplicate notifications on
+          # 2026-08-24, 2026-08-31 and 2026-09-07 (BRO-1593).
+          for f in data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json; do
+            if [ -f "$f" ]; then
+              git add "$f"
+            elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+              git rm --cached "$f"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
