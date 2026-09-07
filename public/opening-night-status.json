@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T12:59:19.934Z",
+  "generatedAt": "2026-09-07T00:43:05.048Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,25 @@
       "status": "open",
       "slug": "holy-fool-off-west-end",
       "thumbnail": "/images/shows/holy-fool-off-west-end-2026/thumbnail.webp",
-      "siteScore": 55.82,
-      "liveScore": 56,
-      "scoreDrift": 0.17999999999999972,
+      "siteScore": 54.36,
+      "liveScore": 54,
+      "scoreDrift": -0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 23,
       "t1": 1,
-      "t2": 6,
-      "t3": 13,
-      "positive": 5,
+      "t2": 8,
+      "t3": 14,
+      "positive": 6,
       "mixed": 8,
-      "negative": 7,
+      "negative": 9,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -158,174 +158,17 @@
           "m": 8,
           "n": 7,
           "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "the-story-west-end-2026",
-      "title": "The Story",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-09-03",
-      "status": "open",
-      "slug": "the-story-west-end",
-      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "siteScore": 59.57,
-      "liveScore": 60,
-      "scoreDrift": 0.4299999999999997,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 22,
-      "t1": 9,
-      "t2": 7,
-      "t3": 6,
-      "positive": 6,
-      "mixed": 11,
-      "negative": 5,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 7,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
         },
         {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-09-04T08:27:37.984Z",
-          "rc": 3,
-          "s": 47,
+          "t": "2026-09-07T00:43:05.048Z",
+          "rc": 23,
+          "s": 54.36,
           "t1": 1,
-          "t2": 2,
-          "t3": 0,
-          "p": 0,
-          "m": 1,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:04:25.510Z",
-          "rc": 15,
-          "s": 63.68,
-          "t1": 7,
-          "t2": 6,
-          "t3": 2,
-          "p": 3,
-          "m": 10,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T00:32:37.593Z",
-          "rc": 18,
-          "s": 60.4,
-          "t1": 7,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 4,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T09:27:13.806Z",
-          "rc": 18,
-          "s": 59.85,
-          "t1": 7,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 4,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T12:56:39.806Z",
-          "rc": 19,
-          "s": 59.39,
-          "t1": 7,
-          "t2": 7,
-          "t3": 5,
-          "p": 4,
-          "m": 10,
-          "n": 5,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T13:28:53.088Z",
-          "rc": 20,
-          "s": 58.88,
-          "t1": 7,
           "t2": 8,
-          "t3": 5,
-          "p": 4,
-          "m": 10,
-          "n": 6,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T15:36:13.489Z",
-          "rc": 19,
-          "s": 58.95,
-          "t1": 8,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 5,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T20:03:25.780Z",
-          "rc": 20,
-          "s": 59.25,
-          "t1": 8,
-          "t2": 7,
-          "t3": 5,
-          "p": 5,
-          "m": 10,
-          "n": 5,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-06T12:59:19.934Z",
-          "rc": 22,
-          "s": 59.57,
-          "t1": 9,
-          "t2": 7,
-          "t3": 6,
+          "t3": 14,
           "p": 6,
-          "m": 11,
-          "n": 5,
+          "m": 8,
+          "n": 9,
           "bc": "waiting"
         }
       ]
@@ -342,7 +185,7 @@
       "status": "previews",
       "slug": "jane-eyre-off-west-end",
       "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -367,7 +210,7 @@
       "status": "open",
       "slug": "kimberly-akimbo-off-west-end",
       "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -392,7 +235,7 @@
       "status": "previews",
       "slug": "lean-to-off-broadway",
       "thumbnail": "/images/shows/lean-to-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -431,7 +274,7 @@
       "status": "previews",
       "slug": "day-of-the-hog-off-broadway",
       "thumbnail": "/images/shows/day-of-the-hog-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -470,7 +313,7 @@
       "status": "previews",
       "slug": "man-to-man-west-end",
       "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -495,7 +338,7 @@
       "status": "upcoming",
       "slug": "america-who-hurt-you-off-broadway",
       "thumbnail": "/images/shows/america-who-hurt-you-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -534,7 +377,7 @@
       "status": "upcoming",
       "slug": "the-human-voice-the-seven-deadly-sins-west-end",
       "thumbnail": "/images/shows/the-human-voice-the-seven-deadly-sins-west-end-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -559,7 +402,7 @@
       "status": "previews",
       "slug": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
       "thumbnail": "/images/shows/mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
