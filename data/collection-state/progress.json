@@ -53,7 +53,10 @@
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
     "cats-west-end-2026/north-west-end--michelle-knight.json",
-    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+    "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--alok-srivastava.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -1075,7 +1078,14 @@
     "cats-west-end-2026/times-uk--carol-midgley.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
-    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json"
+    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+    "im-every-woman-off-west-end-2026/north-west-end--olivia-cox.json",
+    "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1108,7 +1118,9 @@
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
       "cats-west-end-2026/north-west-end--michelle-knight.json",
-      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json"
+      "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--alok-srivastava.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1132,7 +1144,8 @@
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "brightdata": [
       "spellbound-off-broadway-2026/hollywood-reporter--lovia-gyarkye.json",
@@ -1155,7 +1168,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
+  "lastProcessed": "disruption-off-broadway-2026/everything-theatre--dave-b.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1299,6 +1312,17 @@
     },
     {
       "t": "2026-09-07T10:00:40.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T10:06:38.445Z",
+      "event": "bb-session",
+      "session": "8076dd42",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-09-07T10:06:39.372Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
