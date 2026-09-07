@@ -115,7 +115,10 @@
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
     "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+    "masticate-off-broadway-2026/nyu--unknown.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1041,7 +1044,14 @@
     "the-winters-tale-off-broadway-2026/guardian--kate-wyver.json",
     "the-winters-tale-off-broadway-2026/timeout-london--anya-ryan.json",
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
-    "the-winters-tale-off-broadway-2026/independent--alice-saville.json"
+    "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json",
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1099,7 +1109,8 @@
       "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
       "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-      "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "masticate-off-broadway-2026/nyu--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1151,7 +1162,9 @@
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "isla-off-broadway-2026/goseeashowpodcast--robby.json",
+      "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json"
     ],
     "brightdata": [
       "spellbound-off-broadway-2026/theater-life--unknown.json",
@@ -1187,7 +1200,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+  "lastProcessed": "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -1385,6 +1398,28 @@
       "t": "2026-09-07T22:53:52.679Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-07T22:54:25.896Z",
+      "event": "bb-session",
+      "session": "98d1572b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-07T22:54:26.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-07T22:54:45.015Z",
+      "event": "bb-session",
+      "session": "a2c9dc41",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-07T22:54:45.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
