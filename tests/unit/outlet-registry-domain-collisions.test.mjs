@@ -123,31 +123,6 @@ describe('findUndeclaredDomainCollisions', () => {
     ]);
   });
 
-  // BRO-2921 prevention. Deleting a duplicate outlet from the registry while
-  // leaving its DECLARED_ALIAS_OVERLAPS line behind is the specific mistake
-  // this merge could make, and NOTHING caught it: the two tests above use a
-  // synthetic fixture and a hardcoded list respectively, and the whole suite
-  // stayed 19/19 green with suntimes already removed from the live registry.
-  // A dangling declaration is not inert — it permanently suppresses collision
-  // reporting for a pair, so a genuinely new outlet later squatting on that id
-  // would be waved through.
-  test('every id in DECLARED_ALIAS_OVERLAPS and EDITION_PAIRS exists in the live registry', () => {
-    const registry = JSON.parse(readFileSync(resolve(ROOT, 'data/outlet-registry.json'), 'utf8'));
-    const outlets = registry.outlets || registry;
-    for (const [label, pairs] of [
-      ['DECLARED_ALIAS_OVERLAPS', DECLARED_ALIAS_OVERLAPS],
-      ['EDITION_PAIRS', EDITION_PAIRS],
-    ]) {
-      for (const pair of pairs) {
-        for (const id of pair) {
-          assert.ok(
-            Object.prototype.hasOwnProperty.call(outlets, id),
-            `${label} declares "${id}" but no such outlet exists in data/outlet-registry.json — a merged/deleted outlet left a dangling declaration, which silently suppresses collision reporting for that pair`,
-          );
-        }
-      }
-    }
-  });
 });
 
 describe('wouldCauseDomainCollision', () => {
@@ -201,6 +176,42 @@ describe('current registry', () => {
     const collisions = findUndeclaredDomainCollisions(registry.outlets || registry);
     assert.deepStrictEqual(collisions, [],
       `undeclared collisions: ${JSON.stringify(collisions)} — merge the duplicates, fix the domain, or declare the pair in EDITION_PAIRS`);
+  });
+
+  // BRO-2921 prevention. Deleting a duplicate outlet from the registry while
+  // leaving its DECLARED_ALIAS_OVERLAPS line behind is the specific mistake
+  // that merge could make, and nothing caught it: the declaration tests above
+  // use a synthetic fixture and a hardcoded list, and findUndeclaredDomainCollisions
+  // never checks that a declared id exists. Measured — the suite stayed 19/19
+  // green with suntimes already deleted from the live registry and its
+  // declaration still in place.
+  //
+  // A dangling declaration is not inert: it permanently suppresses collision
+  // reporting for that pair, so a genuinely new outlet later taking the freed
+  // id would be waved through the gate this module exists to enforce.
+  //
+  // SCOPE, deliberately narrow: this asserts only that both declared ids still
+  // EXIST. It does not assert the pair still overlaps, so resolving a duplicate
+  // by dropping a domainAlias while keeping both ids would still leave an
+  // equally suppressive declaration and still pass here. Tightening it to
+  // "every declared pair must actually collide when declarations are ignored"
+  // is the stronger form, left undone because it needs its own revert-check.
+  test('every id in DECLARED_ALIAS_OVERLAPS and EDITION_PAIRS exists in the live registry', () => {
+    const registry = JSON.parse(readFileSync(resolve(ROOT, 'data/outlet-registry.json'), 'utf8'));
+    const outlets = registry.outlets || registry;
+    for (const [label, pairs] of [
+      ['DECLARED_ALIAS_OVERLAPS', DECLARED_ALIAS_OVERLAPS],
+      ['EDITION_PAIRS', EDITION_PAIRS],
+    ]) {
+      for (const pair of pairs) {
+        for (const id of pair) {
+          assert.ok(
+            Object.prototype.hasOwnProperty.call(outlets, id),
+            `${label} declares "${id}" but no such outlet exists in data/outlet-registry.json — a merged/deleted outlet left a dangling declaration, which silently suppresses collision reporting for that pair`,
+          );
+        }
+      }
+    }
   });
 });
 
