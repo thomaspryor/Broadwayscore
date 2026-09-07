@@ -49,6 +49,15 @@ const PAGE_WORTHY_PREFIXES = [
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   'broadcast:overdue:', // opening-night-broadcast.yml: broadcast hasn't sent 6+h after a show's opening — the pipeline (gather/rebuild/score) may be stuck
+  // check-missed-broadcasts.js: a show opened, qualified on scored reviews, and
+  // then left the 2-day broadcast window without an email ever going out. This
+  // is the TERMINAL form of the line above: 'broadcast:overdue:' can only fire
+  // while the show is still in the window, so a show blocked for longer than
+  // that used to exit the pipeline in total silence (Electra / Persona, The
+  // Story and Abigail's Party all did, 2026-08/09 — found only because the
+  // owner noticed one show's email arriving and another's never had). Nothing
+  // retries these automatically, so the page IS the recovery mechanism.
+  'broadcast:never-sent:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
