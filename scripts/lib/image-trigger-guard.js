@@ -76,4 +76,115 @@ function findImagelessScoredShows(shows, { nowMs, thresholdHours = DEFAULT_THRES
   });
 }
 
-module.exports = { buildImageDispatchInputs, findImagelessScoredShows, DEFAULT_THRESHOLD_HOURS };
+/**
+ * Decide what one self-heal cycle of audit-imageless-scored-shows.js should do.
+ *
+ * BRO-2672 batched dispatch-new-show-images.js but left this second caller
+ * dispatching one workflow_dispatch per show inside its loop. Every dispatch
+ * lands in fetch-all-image-formats.yml's single-slot concurrency group
+ * (`group: fetch-images`, `cancel-in-progress: false`), which keeps ONE run
+ * queued and silently CANCELS the rest — so a cap of 5 produced bursts of five
+ * runs seconds apart of which at most one survived. Worse, the caller recorded
+ * lastDispatchedAt for every one of them, so the cooldown then suppressed the
+ * retry: the ledger showed five self-heal attempts for images that were never
+ * fetched. Observed 2026-09-07 at 08:44 and 16:48 UTC, five dispatches each,
+ * zero successes.
+ *
+ * Returning `dispatchInputs` through buildImageDispatchInputs() is what makes
+ * the fan-out structurally impossible rather than a rule to remember: that
+ * function collapses any number of ids into at most ONE dispatch entry.
+ *
+ * Pure — no I/O, no clock, no network. `prevById` is a Map of id -> ledger row.
+ */
+function planSelfHealDispatch({ orderedFlagged, prevById, nowMs, cooldownHours, maxDispatchesPerRun }) {
+  const prev = prevById instanceof Map ? prevById : new Map(Object.entries(prevById || {}));
+  const due = [];
+  const deferred = [];
+  const entries = [];
+  for (const f of orderedFlagged || []) {
+    const row = prev.get(f.id) || {
+      firstFlaggedAt: new Date(nowMs).toISOString(),
+      dispatchAttempts: 0,
+      lastDispatchedAt: null,
+    };
+    const cooldownOk = !row.lastDispatchedAt
+      || (nowMs - Date.parse(row.lastDispatchedAt)) >= cooldownHours * 3600 * 1000;
+    if (cooldownOk) {
+      if (due.length < maxDispatchesPerRun) due.push(f);
+      else deferred.push(f);
+    }
+    entries.push({ ...row, id: f.id, title: f.title });
+  }
+  return {
+    due,
+    deferred,
+    entries,
+    dispatchInputs: buildImageDispatchInputs(due.map((f) => f.id)),
+  };
+}
+
+/**
+ * Execute a plan from planSelfHealDispatch(): fire the batch (at most one
+ * workflow_dispatch), and advance attempt/cooldown state ONLY for shows a
+ * successful dispatch actually carried.
+ *
+ * Lives here rather than in the caller so the "N shows, ONE dispatch" property
+ * and the "a failed dispatch must not start a cooldown" property are both
+ * reachable by a test with a stubbed dispatcher. A pre-ship review of the first
+ * version of this fix pointed out that planner-only tests stay green if the
+ * caller reverts to its own per-show loop — the loop has to be gone from the
+ * caller entirely for the guard to mean anything.
+ *
+ * @param {object}   plan       from planSelfHealDispatch()
+ * @param {Function} dispatch   async (showIdOrCsv) => {ok, error?}
+ * @param {number}   nowMs
+ * @param {Function} [onAlert]  async ({show, error, batchIds}) => void, called
+ *                              once PER DUE SHOW when the dispatch fails, so
+ *                              alert dedup keys stay per-show and a later batch
+ *                              of different shows is not silenced behind an
+ *                              earlier one's cooldown (review finding).
+ * @param {Function} [log]
+ * @returns {Promise<{dispatchCalls: number, ok: boolean|null, dispatched: string[]}>}
+ */
+async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = () => {} }) {
+  const entryById = new Map(plan.entries.map((e) => [e.id, e]));
+  let dispatchCalls = 0;
+  let ok = null;
+  const dispatched = [];
+
+  for (const input of plan.dispatchInputs) {
+    const batchIds = input.inputs.show_id;
+    dispatchCalls += 1;
+    const result = await dispatch(batchIds);
+    ok = Boolean(result && result.ok);
+    if (ok) {
+      for (const f of plan.due) {
+        const entry = entryById.get(f.id);
+        if (!entry) continue;
+        entry.dispatchAttempts = (entry.dispatchAttempts || 0) + 1;
+        entry.lastDispatchedAt = new Date(nowMs).toISOString();
+        dispatched.push(f.id);
+        log(`✓ self-heal dispatched for ${f.id} (attempt ${entry.dispatchAttempts})`);
+      }
+    } else {
+      const error = (result && result.error) || 'unknown';
+      log(`✗ self-heal dispatch failed for ${plan.due.length} show(s): ${error}`);
+      if (onAlert) {
+        for (const show of plan.due) {
+          // eslint-disable-next-line no-await-in-loop
+          await onAlert({ show, error, batchIds });
+        }
+      }
+    }
+  }
+
+  return { dispatchCalls, ok, dispatched };
+}
+
+module.exports = {
+  buildImageDispatchInputs,
+  planSelfHealDispatch,
+  executeSelfHealDispatch,
+  findImagelessScoredShows,
+  DEFAULT_THRESHOLD_HOURS,
+};
