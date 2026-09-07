@@ -14,8 +14,10 @@ const {
   failureSwallowOffenders,
   isAlwaysReachable,
   isPublishingStep,
+  jobPublishes,
   pushInvocationLines,
   requiresOutcomeSuccess,
+  requiresUpstreamSuccess,
 } = require(path.join(REPO_ROOT, 'scripts', 'lib', 'workflow-publish-gate.js'));
 
 /**
@@ -292,26 +294,52 @@ test('the public commit step cannot swallow its own push failure', () => {
   );
 });
 
+/**
+ * Jobs that publish on the FAILURE path by design. Named, so the exemption is
+ * a recorded decision; asserted to still exist, so it cannot go stale and be
+ * inherited by an unrelated future job that reuses the name.
+ */
+const JOBS_UNGATED_BY_DESIGN = new Map([
+  [
+    'alert-on-failure',
+    "runs on if: failure() and commits the alert ledger — gating it on upstream success would " +
+      'delete the record of the very failure it exists to report',
+  ],
+]);
+
+test('the failure-path jobs on the exemption list still exist', () => {
+  const workflow = loadWorkflow();
+  for (const [jobName, why] of JOBS_UNGATED_BY_DESIGN) {
+    assert.ok(
+      (workflow.jobs || {})[jobName],
+      `job "${jobName}" is exempted from the cross-job publish rule (${why}) but no longer ` +
+        'exists. Remove it from JOBS_UNGATED_BY_DESIGN rather than leaving a stale exemption.',
+    );
+  }
+});
+
 test('no OTHER job in this workflow publishes without requiring update-shows to have succeeded', () => {
   const workflow = loadWorkflow();
   const offenders = [];
 
   for (const [jobName, job] of Object.entries(workflow.jobs || {})) {
     if (jobName === SCOPED_JOB) continue;
-    const publishers = (job.steps || []).filter(isPublishingStep);
-    if (publishers.length === 0) continue;
+    if (JOBS_UNGATED_BY_DESIGN.has(jobName)) continue;
 
-    const jobIf = String(job.if || '');
-    const needs = [].concat(job.needs || []);
-    const requiresUpstreamSuccess =
-      /needs\.update-shows\.result\s*==\s*'success'/.test(jobIf) ||
-      // A job with `needs:` and no always() is implicitly gated on upstream
-      // success by GitHub itself.
-      (needs.includes(SCOPED_JOB) && !jobIf.includes('always()'));
+    // jobPublishes() also catches a job-level `uses:` (reusable workflow),
+    // which has NO steps for a step-walking predicate to see — a reviewer
+    // published unconditionally from exactly that shape.
+    if (!jobPublishes(job)) continue;
 
-    if (!requiresUpstreamSuccess) {
+    // requiresUpstreamSuccess() models GitHub reachability, not YAML text:
+    // "lacks always()" is NOT the same as "fails closed", because
+    // `!cancelled()` overrides implicit needs-gating too.
+    if (!requiresUpstreamSuccess(job, SCOPED_JOB)) {
+      const what = job.uses
+        ? `reusable workflow ${job.uses}`
+        : (job.steps || []).filter(isPublishingStep).map(stepLabel).join(', ');
       offenders.push(
-        `job "${jobName}" publishes (${publishers.map(stepLabel).join(', ')}) with ` +
+        `job "${jobName}" publishes (${what}) with ` +
           `needs: ${JSON.stringify(job.needs || null)} and if: ${JSON.stringify(job.if || null)}`,
       );
     }

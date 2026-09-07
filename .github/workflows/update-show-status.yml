@@ -846,7 +846,7 @@ jobs:
       # least 2026-08-27, because `git-check` computes `changes` with
       # `git diff --exit-code data/shows.json` and that path is gitignored at
       # .gitignore:200 — the diff is always empty, so `changes` is never set.
-      # Tracked separately as BRO-2919; the commit-public clause below is
+      # Tracked separately as BRO-2936; the commit-public clause below is
       # correct either way and does not depend on that being fixed first.
       - name: Trigger deploy (core data changed)
         if: always() && steps.git-check.outputs.changes == 'true' && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
