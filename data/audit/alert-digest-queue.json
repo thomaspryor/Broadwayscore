@@ -304,5 +304,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-07T20:38:47.997Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
+    "title": "Zombie-tab sweep closed workspace:87",
+    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2569 No dispatcher path-checks the command it\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T22:06:55.537Z"
   }
 ]
