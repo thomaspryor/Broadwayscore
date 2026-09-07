@@ -442,6 +442,25 @@ jobs:
       # to trip on the rest). The digest check in health-check.js surfaces
       # flaggedCount and silencedByContaminationCount; --fail-on-gap is for
       # manual/local triage runs, not this cron.
+      # Not shadow mode, unlike the sweeps above: this one pages. Those measure
+      # populations of unknown precision; this one reports a binary, verifiable
+      # fact (a show qualified to broadcast and no email exists), and nothing
+      # retries it automatically — opening-night-broadcast.yml only ever looks
+      # at shows opened within the last 2 days, so once a show ages out of that
+      # window the owner acting on this alert is the ONLY remaining path to the
+      # send. Exits non-zero only on missing/empty core data (a cheerful zero
+      # read off a partial checkout would be worse than a crash); the alert
+      # itself is routed, not thrown, so a real finding never fails the job.
+      - name: Missed opening-night broadcast sweep
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-missed-broadcasts.js
+
       - name: Stale announced shows audit (shadow mode)
         if: always()
         continue-on-error: true
@@ -654,6 +673,7 @@ jobs:
           git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
           git add data/audit/stale-announced-shows.json 2>/dev/null || true
+          git add data/audit/missed-broadcasts.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check audit snapshot changes"
           else

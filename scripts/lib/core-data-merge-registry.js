@@ -354,6 +354,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   {
+    file: 'audit/missed-broadcasts.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: "2026-09-07 (BRO-2934): grep of .github/workflows/*.yml for check-missed-broadcasts.js + 'git add data/audit/missed-broadcasts.json' — 1 writer (data-health-check.yml), group data-health-check, cancel-in-progress: false. Same residual risk already accepted for audit/stale-announced-shows.json below: the CLI writer (scripts/check-missed-broadcasts.js) can also be run locally, and the concurrency group only serializes CI against CI. Accepted on the same grounds — the file is disposable telemetry regenerated in full by the next scheduled run, and it holds no state the alert ledger does not already own.",
+  },
+  {
     file: 'audit/stale-announced-shows.json',
     surface: 'public-repo',
     status: 'single-writer',
