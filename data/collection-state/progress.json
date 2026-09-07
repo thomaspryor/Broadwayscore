@@ -1375,7 +1375,17 @@
     "spellbound-off-broadway-2026/nytimes--ben-kenigsberg.json",
     "abigails-party-west-end-2026/london-box-office--stuart-king.json",
     "spellbound-off-broadway-2026/theater-life--unknown.json",
-    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json"
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "jeeves-takes-charge-west-end-2026/thestage--unknown.json",
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "an-american-daughter-off-broadway-2026/theatermania--rachel-graham.json",
+    "death-note-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "cats-west-end-2026/hollywood-reporter--angie-han.json",
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/newyorker--emily-nussbaum.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1484,7 +1494,8 @@
       "pride-west-end-2026/broadwayworld--jay-irwin.json",
       "pride-west-end-2026/whatsonstage--editorial-staff.json",
       "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "spellbound-off-broadway-2026/theater-life--unknown.json"
     ],
     "brightdata": [
       "spellbound-off-broadway-2026/hollywood-reporter--lovia-gyarkye.json",
@@ -1512,7 +1523,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "cats-west-end-2026/newyorker--emily-nussbaum.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -1761,6 +1772,17 @@
       "t": "2026-09-07T11:18:05.422Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T11:23:45.052Z",
+      "event": "bb-session",
+      "session": "47ed36ef",
+      "url": "https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-charing-cross-thea"
+    },
+    {
+      "t": "2026-09-07T11:23:46.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
