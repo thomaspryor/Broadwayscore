@@ -101,17 +101,35 @@ jobs:
       # cooldown/escalation state would silently never reach the repo, and
       # every run would start cold. Same pattern as discover-regional-serp-
       # reviews.yml's "Commit audit log" step.
-      # BRO-2683: split from a single combined step. That step staged this
-      # apiFallbackSafe file together with alert-ledger.json/alert-router-
-      # attempts.jsonl (genuinely multi-writer, not apiFallbackSafe) in one
-      # commit — push-with-retry.sh's Git Data API fallback disqualifies a
-      # WHOLE commit if ANY changed data/audit/ path is neither MANAGED nor
-      # apiFallbackSafe, so the apiFallbackSafe registration below was a
-      # complete no-op. Same fix pattern as opening-night-checklist.yml
-      # (BRO-2670) and opening-night-broadcast.yml (BRO-2435): isolate the
-      # apiFallbackSafe file into its own commit, FIRST, so the fallback can
-      # actually engage for it while the multi-writer commit still contends.
-      - name: Commit audit ledger (apiFallbackSafe)
+      #
+      # DO NOT SPLIT THIS STEP IN TWO. BRO-2683 did (merge 28431284988,
+      # 2026-09-07) on the theory that bundling the apiFallbackSafe file with
+      # alert-ledger.json/alert-router-attempts.jsonl defeats the Git Data API
+      # fallback. That was already false when it landed and the split was
+      # reverted the same day (BRO-2942). Three independent proofs:
+      #   1. Both telemetry files carry apiFallbackMerge:true as of BRO-2413
+      #      (core-data-merge-registry.js), and the disqualifier is
+      #      `(isManaged && !isApiFallbackMerge) || ...` — so they evaluate to
+      #      disqualifiesFallback:false. See classifyPushFallbackSafety() in
+      #      scripts/lib/audit-push-retry-budgets.js.
+      #   2. Auditing the PRE-split step directly reported mixedSafetyBundle:
+      #      false with disqualifyingFiles: [] — there was nothing to unblock.
+      #   3. The split actively broke this workflow. The audit script writes
+      #      alert-ledger.json/alert-router-attempts.jsonl during "Run audit",
+      #      so under a split they stay UNCOMMITTED while the first step
+      #      pushes — and push-with-retry.sh does an unguarded
+      #      `git reset --hard origin/$PULL_BRANCH` on its API-fallback
+      #      SUCCESS path (scripts/lib/push-with-retry.sh:2114; the script has
+      #      zero autostash/clean-tree guards). That discards the telemetry
+      #      edits, the second step then reports "No telemetry changes", and
+      #      routeAlert's 7-day cooldown never persists — the exact failure
+      #      this step's staging exists to prevent.
+      # Staging all three paths in ONE commit keeps them safe across the push.
+      # opening-night-checklist.yml IS legitimately split, because its second
+      # commit carries genuinely disqualifying files (remediation-log.jsonl,
+      # opening-night-latency-*.json); this workflow's does not.
+      # Guarded by tests/unit/audit-imageless-scored-shows-push.test.mjs.
+      - name: Commit audit ledger
         if: always() && inputs.dry_run != true
         env:
           # History: PR #667 first fixed this step's push by raising the
@@ -132,34 +150,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/imageless-scored-shows.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No ledger changes"
-          else
-            git commit -m "data: imageless-scored-shows audit [skip ci]
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-            bash scripts/lib/push-with-retry.sh
-          fi
-
-      - name: Commit shared audit telemetry
-        if: always() && inputs.dry_run != true
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           # This script also calls routeAlert(disposition:'auto') on escalation
           # (scripts/audit-imageless-scored-shows.js:134-159), which writes
           # routeAlert's cooldown ledger + attempt log — without staging those
           # too, every run starts with a cold ledger and the 7-day cooldown
           # never actually holds across runs (same bug class as BRO-2441 /
           # audit-time-bomb-tests.yml, caught there by an adversarial review).
-          # Both files are genuinely multi-writer (alert-ledger.json,
-          # alert-router-attempts.jsonl), not apiFallbackSafe — kept on the
-          # slower local push path, unchanged from before this split.
           git add data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No telemetry changes"
+            echo "No ledger changes"
           else
-            git commit -m "data: imageless-scored-shows audit telemetry [skip ci]
+            git commit -m "data: imageless-scored-shows audit [skip ci]
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             bash scripts/lib/push-with-retry.sh
