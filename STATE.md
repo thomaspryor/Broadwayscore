@@ -37,8 +37,16 @@ fallback when SD misses per-domain, not a routing bug.
     `fetchHtmlViaSD()` before the existing SB retry loop.
   - Both verified live: `fetchWithScrapingdog` returns 200 + real HTML for
     `broadwayworld.com/reviews/Hamilton` and `newyorkcitytheatre.com/news/reviews/`.
-  - Committed: `bb00c332532` "fix(scraper): try Scrapingdog before ScrapingBee in
-    BWW + NYC Theatre scrapers". Pushed to `origin/job/linear-BRO-2930-mtrep6u5`.
+  - Committed: `bb00c332532`. Pushed.
+- Ran `/second-opinion` on the diff (agent read both full files + `scraper.js`'s
+  `fetchWithScrapingdog`/`fetchPage`/`_isChallengeOrGarbage`). Verdict: Ready to
+  implement, no correctness/design blockers. One real warning: the new helpers
+  accepted any truthy SD response without `fetchPage()`'s own
+  `_isChallengeOrGarbage()` check (same bug class as task #712). Fixed
+  immediately — both helpers now reuse scraper.js's exported
+  `isChallengeOrGarbage()`. Re-verified live against both hosts after the fix.
+  Committed: `78cb7b698c3`. Pushed. Review verdict recorded via
+  `scripts/lib/review-gate.mjs --query=record --reviewer=second-opinion --result=pass`.
 - **CAUTION for next session:** while testing, `require('./scripts/scrape-bww-reviews.js')`
   from a `node -e` one-liner executed the script's top-level `main()` for real
   (no `require.main === module` guard) — it started scraping ~200 real shows
