@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-07T00:13:32.072Z",
-  "processed": 43,
-  "failed": 813,
-  "successRate": "5.0%",
+  "updatedAt": "2026-09-07T00:17:44.282Z",
+  "processed": 44,
+  "failed": 820,
+  "successRate": "5.1%",
   "tierBreakdown": {
     "playwright": 24,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 2,
     "scrapingbee": 5,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -70,6 +70,23 @@
       "t": "2026-09-06T23:00:10.793Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T00:14:45.309Z",
+      "event": "bb-session",
+      "session": "5bc826c0",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T00:14:46.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T00:17:25.642Z",
+      "event": "bb-session",
+      "session": "395b7989",
+      "url": "https://staybook.in/activities/jeeves-takes-charge"
     }
   ]
 }

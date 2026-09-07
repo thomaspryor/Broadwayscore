@@ -42,7 +42,8 @@
     "as-you-like-it-globe-west-end-2026/marquee--unknown.json",
     "holy-fool-off-west-end-2026/londonmumsmagazine--unknown.json",
     "the-story-west-end-2026/nytimes--unknown.json",
-    "electra-persona-west-end-2026/vocaleyes--unknown.json"
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -857,7 +858,14 @@
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
     "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
-    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json"
+    "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+    "abigails-party-west-end-2026/london-box-office--stuart-king.json",
+    "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
+    "anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
+    "anansi-the-spider-west-end-2026/theatremonkey--unknown.json",
+    "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+    "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -892,7 +900,10 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-story-west-end-2026/nytimes--unknown.json",
       "the-story-west-end-2026/nytimes--unknown.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/jeeves-takes-charge-west-end-2026/staybook--staybook.json",
+      "jeeves-takes-charge-west-end-2026/staybook--staybook.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -923,7 +934,7 @@
     ]
   },
   "startTime": "2026-09-06T14:14:13.440Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "jeeves-takes-charge-west-end-2026/staybook--staybook.json",
   "log": [
     {
       "t": "2026-09-06T14:23:31.313Z",
@@ -980,6 +991,23 @@
       "t": "2026-09-06T23:00:10.793Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T00:14:45.309Z",
+      "event": "bb-session",
+      "session": "5bc826c0",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-07T00:14:46.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-07T00:17:25.642Z",
+      "event": "bb-session",
+      "session": "395b7989",
+      "url": "https://staybook.in/activities/jeeves-takes-charge"
     }
   ]
 }
