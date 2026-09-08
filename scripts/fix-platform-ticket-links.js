@@ -122,14 +122,16 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl, show) {
     // one matcher, not a second independently-drifting reimplementation.
     if (!titleMatches(r.title || '', showTitle, show.venue || '')) continue;
 
-    if (matched) {
-      const cleanUrl = url.replace(/^http:/, 'https:')
-        .replace('://ticketmaster.com', '://www.ticketmaster.com')
-        .replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
-      if (cleanUrl === existingUrl) {
-        return { status: 'ok' };
-      }
-      return { status: 'updated', newUrl: cleanUrl };
+    // Reaching here IS the match: every non-matching case above has already
+    // `continue`d (region mismatch, title mismatch, search/listing page). The
+    // `if (matched)` wrapper that used to sit here referenced an identifier that
+    // was never declared, and put `cleanUrl` in a scope the trailing return
+    // could not see — two ReferenceErrors on the first line that ran.
+    const cleanUrl = url.replace(/^http:/, 'https:')
+      .replace('://ticketmaster.com', '://www.ticketmaster.com')
+      .replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
+    if (cleanUrl === existingUrl) {
+      return { status: 'ok' };
     }
     return { status: 'updated', newUrl: cleanUrl };
   }
