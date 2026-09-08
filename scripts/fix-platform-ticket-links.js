@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
-const { isRegionMismatch, showRegion } = require('./lib/ticket-link-discovery.js');
+const { isRegionMismatch, showRegion, titleMatches } = require('./lib/ticket-link-discovery.js');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -112,14 +112,15 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl, show) {
     // Reject search/listing/category pages
     if (url.includes('/search') || url.includes('/discover') || url.includes('/category')) continue;
 
-    const serpTitle = normalizeShowName(r.title || '');
-    const showNorm = normalizeShowName(showTitle);
-    const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
-    const matched = [showNorm, primaryTitle].some(candidate => {
-      const words = candidate.split(' ').filter(w => w.length > 2);
-      const matchCount = words.filter(w => serpTitle.includes(w)).length;
-      return words.length === 0 || matchCount >= Math.ceil(words.length * 0.5);
-    });
+    // Region check before the title check, same order as pickTicketUrl()
+    // (task #1002): a touring "A Christmas Carol" runs on both sides of the
+    // Atlantic every December, so title-matching alone can't tell the
+    // storefronts apart — reject a wrong-market host before it ever gets to
+    // decide whether the title also happens to match.
+    if (isRegionMismatch(url, show)) continue;
+    // Shared with the CI corpus gate (tm-gap-links.test.mjs) and pickTicketUrl —
+    // one matcher, not a second independently-drifting reimplementation.
+    if (!titleMatches(r.title || '', showTitle, show.venue || '')) continue;
 
     if (matched) {
       const cleanUrl = url.replace(/^http:/, 'https:')
@@ -130,6 +131,7 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl, show) {
       }
       return { status: 'updated', newUrl: cleanUrl };
     }
+    return { status: 'updated', newUrl: cleanUrl };
   }
 
   return null; // No matching result found

@@ -71,8 +71,8 @@ test('classifyCmuxError separates a permanent auth fault from a transient outage
     ['Error: Command timed out', 'timeout'],
     ['spawn ENOENT', 'not-found'],
     ['something else entirely', 'unknown'],
-    ['', 'unknown'],
-    [null, 'unknown'],
+    ['', 'empty'],
+    [null, 'empty'],
   ];
   for (const [input, expected] of cases) {
     assert.equal(auth.classifyCmuxError(input), expected, `input: ${input}`);
@@ -176,6 +176,16 @@ test('summarizeCmuxFailures escalates on the FIRST auth denial, not after N', ()
   const one = auth.summarizeCmuxFailures(['Error: ERROR: Access denied - only processes started inside cmux can connect']);
   assert.equal(one.escalate, true);
   assert.equal(one.authDenied, 1);
+});
+
+test('an error with NO diagnostic text is "empty" and does NOT page', () => {
+  // Absence of evidence is not evidence of a reworded message. Paging here
+  // would page on any odd exec failure that produced no stderr.
+  const blank = new Error(''); blank.stderr = '';
+  assert.equal(auth.classifyCmuxError(blank), 'empty');
+  assert.equal(auth.summarizeCmuxFailures([blank]).escalate, false);
+  assert.equal(auth.classifyCmuxError(null), 'empty');
+  assert.equal(auth.classifyCmuxError(''), 'empty');
 });
 
 test('summarizeCmuxFailures escalates an UNCLASSIFIABLE cmux failure', () => {
