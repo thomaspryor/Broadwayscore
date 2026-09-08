@@ -278,6 +278,8 @@ async function _fetchReviewsPageAnchorsUncached() {
       apiKey, projectId,
       caller: 'bww-rr-discover.js',
       purpose: 'BWW reviews.php Cloudflare bypass',
+      host: 'broadwayworld.com',
+      category: 'discovery',
       body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
     });
     sessionId = bbSession.id;

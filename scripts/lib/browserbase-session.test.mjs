@@ -236,3 +236,52 @@ test('sanitizeMetadataValue caps length at 255', () => {
   const long = 'a'.repeat(400);
   assert.equal(sanitizeMetadataValue(long).length, 255);
 });
+
+test('createBbSession (BRO-3097) records host and category on the ledger row', async () => {
+  _resetDayCapCacheForTests();
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 0);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_bro3097', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    await createBbSession({
+      apiKey: 'k', projectId: 'p',
+      caller: 'test-caller',
+      host: 'nytimes.com',
+      category: 'review-text',
+    });
+    const lines = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n');
+    const row = JSON.parse(lines[lines.length - 1]);
+    assert.equal(row.host, 'nytimes.com');
+    assert.equal(row.category, 'review-text');
+  } finally {
+    fetchMock.mock.restore();
+    windowMock.mock.restore();
+    liveMock.mock.restore();
+  }
+});
+
+test('createBbSession (BRO-3097) leaves host/category null when the caller does not pass them (unchanged behavior)', async () => {
+  _resetDayCapCacheForTests();
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 0);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_bro3097_bare', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    const lines = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n');
+    const row = JSON.parse(lines[lines.length - 1]);
+    assert.equal(row.host, null);
+    assert.equal(row.category, null);
+  } finally {
+    fetchMock.mock.restore();
+    windowMock.mock.restore();
+    liveMock.mock.restore();
+  }
+});

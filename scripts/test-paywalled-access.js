@@ -797,6 +797,7 @@ async function main() {
       apiKey, projectId,
       caller: 'test-paywalled-access.js',
       purpose: 'manual paywalled-access diagnostic',
+      category: 'review-text', // multi-site diagnostic session — no single host to attribute
       body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
     });
 

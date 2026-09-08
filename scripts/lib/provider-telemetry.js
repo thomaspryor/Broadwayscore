@@ -88,6 +88,9 @@ function _appendLedgerLine(record) {
  * @param {number|null} [opts.credits] - SB/SD credit cost
  * @param {string|null} [opts.fallbackFrom]
  * @param {string|null} [opts.purpose] - free-text reason (Browserbase userMetadata parity)
+ * @param {'review-text'|'discovery'|null} [opts.category] - Browserbase only (BRO-3097): distinguishes a
+ *   Tier-1.5 paywalled review-text fetch from an aggregator-discovery session (BWW/Stagedoor/WE listing
+ *   crawls). Null for every other provider — they don't have this split.
  */
 function recordProviderCall(opts) {
   if (process.env.BD_TELEMETRY_DISABLED === '1') return;
@@ -107,6 +110,7 @@ function recordProviderCall(opts) {
       credits: opts.credits ?? null,
       fallback_from: opts.fallbackFrom || null,
       purpose: opts.purpose || null,
+      category: opts.category || null,
     };
     console.log(`[${tag} Call] ${JSON.stringify(record)}`);
     _appendLedgerLine(record);
@@ -133,7 +137,7 @@ function recordSdCall(opts) {
   recordProviderCall({ ...opts, provider: 'scrapingdog', fn: opts.fn || 'page' });
 }
 
-/** New: recordBbCall(opts: {caller, purpose, success, status}) — called only from browserbase-session.js. */
+/** New: recordBbCall(opts: {caller, host, purpose, category, success, status}) — called only from browserbase-session.js. */
 function recordBbCall(opts) {
   opts = opts || {};
   recordProviderCall({ ...opts, provider: 'browserbase', fn: 'session' });
