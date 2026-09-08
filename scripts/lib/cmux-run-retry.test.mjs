@@ -6,12 +6,16 @@
 // not just listings. Drives the real run() through its injectable exec seam
 // (CLAUDE.md rule 15 — no reimplementation of the ladder here).
 
-import { test } from 'node:test';
+import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { run } = require('./cmux-workspaces.js');
+const { run, _resetRunWarnings } = require('./cmux-workspaces.js');
+
+// The recovery warning is deduped once per process, so every test that
+// asserts on logging starts from a clean slate.
+beforeEach(() => _resetRunWarnings());
 
 const AUTH = 'Error: ERROR: Access denied - only processes started inside cmux can connect';
 const BAD_PW = 'Error: ERROR: Invalid password';
@@ -105,6 +109,43 @@ test('a succeeding SECOND attempt is announced too', () => {
   assert.equal(calls.length, 2, 'must have recovered on attempt 2');
   assert.equal(logged.length, 1, 'recovering on attempt 2 must not be silent');
   assert.match(logged[0], /password/i);
+});
+
+test('the recovery warning is logged ONCE per process, not once per call', () => {
+  // A stale credential in a process the socket would admit by ancestry makes
+  // attempt 1 fail and attempt 2 succeed on EVERY call. A tick issues dozens
+  // of cmux calls, so per-call logging would be dozens of identical lines
+  // every five minutes.
+  const logged = [];
+  for (let i = 0; i < 5; i++) {
+    const { execFn } = recorder([authErr(), 'ok']);
+    run(['list-workspaces'], { execFn, logFn: (m) => logged.push(m) });
+  }
+  assert.equal(logged.length, 1);
+});
+
+test('a throwing logFn cannot turn a successful command into a failure', () => {
+  // The warning is diagnostic; the cmux command has already run.
+  const { execFn } = recorder([authErr(), 'ok']);
+  const boom = () => { throw new Error('log sink is broken'); };
+  assert.equal(run(['list-workspaces'], { execFn, logFn: boom }), 'ok');
+});
+
+test('a stale caller credential with nothing on disk gets its own diagnosis', () => {
+  // "succeeded without it" would be wrong here: success came from DISCARDING
+  // the caller's rejected value, which is a different thing to fix.
+  const logged = [];
+  const { execFn } = recorder([authErr(), 'ok']);
+  const prev = process.env.CMUX_SOCKET_PASSWORD;
+  process.env.CMUX_SOCKET_PASSWORD = 'stale-operator-value';
+  try {
+    run(['list-workspaces'], { execFn, logFn: (m) => logged.push(m) });
+  } finally {
+    if (prev === undefined) delete process.env.CMUX_SOCKET_PASSWORD;
+    else process.env.CMUX_SOCKET_PASSWORD = prev;
+  }
+  assert.equal(logged.length, 1);
+  assert.match(logged[0], /CMUX_SOCKET_PASSWORD in this environment|refreshed one/);
 });
 
 test('a first-attempt success stays quiet', () => {
