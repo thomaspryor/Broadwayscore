@@ -165,7 +165,7 @@ async function handleBlocked(baseMsg, impact) {
   });
   const fullMsg = `${baseMsg} Override: ${overrideCommand}`;
 
-  if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks)) {
+  if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks, { firstBlockedAt: state.firstBlockedAt, now: Date.now() })) {
     // First (or still-below-threshold) failure: fail loud, unchanged from
     // before BRO-2424 — a one-off failure is worth flagging immediately.
     console.error(`::error::${fullMsg}`);

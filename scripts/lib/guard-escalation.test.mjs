@@ -12,6 +12,7 @@ const {
   buildOverrideCommand,
   buildGuardBlockedAlert,
   DEFAULT_ESCALATION_THRESHOLD,
+  DEFAULT_REMINDER_EVERY,
 } = require('./guard-escalation.js');
 
 const NOW = Date.parse('2026-08-26T12:00:00Z');
@@ -68,13 +69,18 @@ test('shouldAutoRecover: a hard guard does NOT auto-recover below the threshold'
 });
 
 test('shouldAutoRecover: a hard guard auto-recovers once it hits the default threshold (2)', () => {
-  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2), true);
-  assert.equal(shouldAutoRecover('stale-checkout-staleness', 3), true);
+  // BRO-2955: the run-count threshold is now necessary but NOT sufficient —
+  // callers must also clear the 24h wall-clock floor (see the time-bound tests
+  // below for why the count alone meant 1h on a */30 cron).
+  const OLD = { firstBlockedAt: 1_000_000_000_000, now: 1_000_000_000_000 + 25 * 3600 * 1000 };
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2, OLD), true);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 3, OLD), true);
 });
 
 test('shouldAutoRecover: threshold is overridable', () => {
-  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2, { threshold: 3 }), false);
-  assert.equal(shouldAutoRecover('stale-checkout-staleness', 3, { threshold: 3 }), true);
+  const AGED = { firstBlockedAt: 1_000_000_000_000, now: 1_000_000_000_000 + 25 * 3600 * 1000 };
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2, { ...AGED, threshold: 3 }), false);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 3, { ...AGED, threshold: 3 }), true);
 });
 
 test('shouldEscalate: never escalates below the threshold — a single blip never pages', () => {
@@ -154,4 +160,45 @@ test('buildGuardBlockedAlert: default impact text is generic, not the first call
 test('buildGuardBlockedAlert: explicit impact text overrides the generic default', () => {
   const { description } = buildGuardBlockedAlert({ guardId: 'x', consecutiveBlocks: 2, impact: 'the Vercel ignore-build-step setting may still be drifted' });
   assert.ok(description.includes('the Vercel ignore-build-step setting may still be drifted'));
+});
+
+// ── BRO-2955 review: bound auto-recovery in TIME and in COUNT ───────────────
+// Two correctness blockers an independent review of the merged diff found.
+// (a) The threshold was runs, not hours, so the same constant meant ONE HOUR
+//     on vercel-build-guard.yml's */30 cron and ~12h on rebuild-reviews.yml's
+//     ~4 runs/day. firstBlockedAt was already persisted for this and never
+//     read. (b) Nothing bounded how long a guard could keep self-recovering:
+//     a revoked VERCEL_TOKEN routes into the blocked path (and every network
+//     error / 401 / 5xx maps there too), so the guard that exists because of
+//     a $3,500 accidental-build incident would report green forever.
+const T0 = 1_700_000_000_000;
+const hrs = (n) => T0 + n * 3600 * 1000;
+
+test('shouldAutoRecover: the run threshold alone does NOT auto-recover inside 24h', () => {
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2, { firstBlockedAt: T0, now: hrs(1) }), false);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 9, { firstBlockedAt: T0, now: hrs(23) }), false);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 2, { firstBlockedAt: T0, now: hrs(24) }), true);
+});
+
+test('shouldAutoRecover: refuses to recover when the timestamps needed to judge age are missing', () => {
+  // Fail CLOSED. A caller that forgets to thread firstBlockedAt/now must not
+  // silently fall back to the old count-only behaviour this fix replaced.
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 5, {}), false);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 5, { firstBlockedAt: T0 }), false);
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 5, { now: hrs(99) }), false);
+  // ...unless it explicitly opts out of the time bound.
+  assert.equal(shouldAutoRecover('stale-checkout-staleness', 5, { minHoursBlocked: 0 }), true);
+});
+
+test('shouldAutoRecover: stops self-recovering past the cap, so a never-clearing guard blocks loud again', () => {
+  const aged = (blocks) => shouldAutoRecover('stale-checkout-staleness', blocks, { firstBlockedAt: T0, now: hrs(24 * 365), maxRecoveries: 3 });
+  assert.equal(aged(2), true, 'first recovery');
+  assert.equal(aged(2 + DEFAULT_REMINDER_EVERY * 2), true, 'still inside the cap');
+  assert.equal(aged(2 + DEFAULT_REMINDER_EVERY * 3), false, 'cap reached — guard blocks again');
+  assert.equal(aged(2 + DEFAULT_REMINDER_EVERY * 50), false, 'and stays blocked, however long it runs');
+});
+
+test('shouldAutoRecover: soft-warn guards are unaffected by either bound', () => {
+  assert.equal(shouldAutoRecover('review-count-regression', 0, {}), true);
+  assert.equal(shouldAutoRecover('review-count-regression', 9999, { firstBlockedAt: T0, now: T0 }), true);
 });

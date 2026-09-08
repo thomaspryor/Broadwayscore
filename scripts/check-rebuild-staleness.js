@@ -219,7 +219,7 @@ async function main() {
       return;
     }
 
-    if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks)) {
+    if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks, { firstBlockedAt: state.firstBlockedAt, now: Date.now() })) {
       // First (or still-below-threshold) block: fail loud, unchanged from
       // before BRO-545 — a one-off stale-checkout race is worth flagging
       // immediately.
@@ -284,7 +284,16 @@ async function main() {
       resolveCondition(ALERT_CONDITION_KEY);
     } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
   }
-  saveGuardState(nextGuardState(priorState, false, Date.now()));
+  // Only write when the healthy run actually CLEARS something (BRO-2955
+  // review). check-corpus-drift.js:402 and check-vercel-build-guard.js:95 both
+  // already skip the no-op write; this one rewrote lastClearedAt on every
+  // clean run, flipping GUARD_STATE_CHANGED and forcing a commit+push on
+  // otherwise no-op cron runs — and it falsified the "a write only happens
+  // when that key's state actually changes" rationale the callers' own
+  // comments rely on.
+  if (priorState && (priorState.consecutiveBlocks || 0) > 0) {
+    saveGuardState(nextGuardState(priorState, false, Date.now()));
+  }
 
   console.log(
     `[check-rebuild-staleness] verified ${candidateShowIds.length} drifted show(s), ` +

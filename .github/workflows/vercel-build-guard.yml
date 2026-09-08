@@ -45,8 +45,13 @@ jobs:
       - name: Commit guard-escalation state
         if: always()
         run: |
-          if git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null | grep -q .; then
-            git add data/audit/guard-escalation-state.json
+          if git status --porcelain data/audit/guard-escalation-state.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
+            # BRO-2955 review: routeAlert(disposition:'digest') writes ONLY
+            # alert-digest-queue.json + alert-ledger.json (owner-alert-router.js).
+            # Staging just guard-escalation-state.json meant the escalation — the
+            # entire payoff of auto-recovery — died with the runner and the job
+            # went green with no alert reaching the owner anywhere.
+            bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
             git commit -m "chore: vercel-build-guard escalation state [skip ci]"
             bash scripts/lib/push-with-retry.sh
           fi

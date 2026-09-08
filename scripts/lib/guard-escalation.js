@@ -22,6 +22,12 @@
 
 const DEFAULT_ESCALATION_THRESHOLD = 2;
 const DEFAULT_REMINDER_EVERY = 4;
+// BRO-2955 review. Auto-recovery needs a WALL-CLOCK floor as well as a run
+// count (the same run count is 1h on a */30 cron and ~12h on a 4x/day one),
+// and a bound on how long it may keep self-recovering — a guard that can
+// never clear otherwise reports green indefinitely.
+const DEFAULT_MIN_HOURS_BLOCKED = 24;
+const DEFAULT_MAX_RECOVERIES = 14; // ~2 weeks of daily reminders before the guard blocks loud again
 
 /**
  * Guards already configured to log + write an audit trail and let the run
@@ -79,9 +85,37 @@ function nextGuardState(priorState, blocked, now) {
  * begin with). A hard guard answers true only once it has blocked `threshold`
  * runs in a row — its first block still fails loud, unchanged from today.
  */
-function shouldAutoRecover(guardId, consecutiveBlocks, { threshold = DEFAULT_ESCALATION_THRESHOLD } = {}) {
+function shouldAutoRecover(guardId, consecutiveBlocks, {
+  threshold = DEFAULT_ESCALATION_THRESHOLD,
+  firstBlockedAt = null,
+  now = null,
+  minHoursBlocked = DEFAULT_MIN_HOURS_BLOCKED,
+  maxRecoveries = DEFAULT_MAX_RECOVERIES,
+} = {}) {
   if (isSoftWarnGuard(guardId)) return true;
-  return Number.isInteger(consecutiveBlocks) && consecutiveBlocks >= threshold;
+  if (!Number.isInteger(consecutiveBlocks) || consecutiveBlocks < threshold) return false;
+
+  // TIME bound (BRO-2955 review). The run-count threshold alone means wildly
+  // different things per caller: vercel-build-guard.yml runs */30, so 2
+  // consecutive blocks is ONE HOUR, while rebuild-reviews.yml's ~4 runs/day
+  // makes the same constant ~12h. The ticket asked for ">24h", and
+  // firstBlockedAt was already persisted for exactly this and then never
+  // read. Both bounds must be satisfied: enough runs AND enough wall time.
+  // Callers that genuinely want count-only pass minHoursBlocked: 0.
+  if (minHoursBlocked > 0) {
+    if (!Number.isFinite(firstBlockedAt) || !Number.isFinite(now)) return false;
+    if (now - firstBlockedAt < minHoursBlocked * 3600 * 1000) return false;
+  }
+
+  // RECOVERY CAP (BRO-2955 review). Without this, a guard that can never
+  // clear — a revoked VERCEL_TOKEN routes into the blocked path, and every
+  // network error/401/5xx maps to the same place — satisfies the condition on
+  // every subsequent run and reports green forever. Recurrence must not BE
+  // the recovery condition indefinitely. Past the cap the guard blocks loud
+  // again, which is the correct end state for something no longer
+  // self-healing.
+  const overshoot = consecutiveBlocks - threshold;
+  return Math.floor(overshoot / Math.max(1, DEFAULT_REMINDER_EVERY)) < maxRecoveries;
 }
 
 /**
@@ -141,6 +175,8 @@ module.exports = {
   isSoftWarnGuard,
   nextGuardState,
   shouldAutoRecover,
+  DEFAULT_MIN_HOURS_BLOCKED,
+  DEFAULT_MAX_RECOVERIES,
   shouldEscalate,
   buildOverrideCommand,
   buildGuardBlockedAlert,

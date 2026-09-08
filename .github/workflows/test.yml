@@ -41,6 +41,13 @@ on:
       # tests/unit/audit-imageless-scored-shows-push.test.mjs asserts the loop
       # is gone by reading this file's real source (BRO-2955 review finding).
       - 'scripts/audit-imageless-scored-shows.js'
+      # BRO-2955 review: the two remaining guard-escalation callers. Both are
+      # top-level scripts/ files (outside the scripts/lib/** glob) that decide
+      # whether a hard-blocking pipeline guard auto-recovers — a solo edit to
+      # either triggered ZERO CI. scripts/check-rebuild-staleness.js is already
+      # listed above.
+      - 'scripts/check-vercel-build-guard.js'
+      - 'scripts/check-corpus-drift.js'
       # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
       # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
       # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs
