@@ -406,9 +406,12 @@ function estimateCostUSD(usage, model) {
  * @param {(pid:number)=>void} [opts.onSpawn]      called with the child PID immediately
  * @param {(sessionId:string)=>void} [opts.onSessionId] called once, on the first event carrying one
  * @returns {Promise<{ok:boolean, stage:string|null, resultText:string, sessionId:string|null,
- *                    exitCode:number|null, pid:number|null, durationMs:number,
+ *                    exitCode:number|null, exitSignal:string|null, pid:number|null, durationMs:number,
  *                    usage:object|null, costUSD:number|null, costEstimated:boolean,
  *                    errorDetail:string|null}>}
+ * exitSignal (BRO-3053) is the POSIX signal name when the child was killed
+ * ('SIGKILL' for an OS/jetsam kill), null otherwise. Node sets exactly one of
+ * exitCode/exitSignal, so a signalled death always carries exitCode null.
  * Never rejects — failures come back as {ok:false, stage}.
  */
 function runClaudeCli(opts) {
@@ -427,7 +430,10 @@ function runClaudeCli(opts) {
   const started = Date.now();
   const done = (r) => ({
     ok: false, stage: null, resultText: '', sessionId: resumeSessionId || null,
-    exitCode: null, pid: null, usage: null, costUSD: null, costEstimated: false, errorDetail: null,
+    // exitSignal (BRO-3053) defaults alongside exitCode so every result has the
+    // field present-and-null rather than sometimes-undefined — a consumer can
+    // then test `r.exitSignal === 'SIGKILL'` without a truthiness dance.
+    exitCode: null, exitSignal: null, pid: null, usage: null, costUSD: null, costEstimated: false, errorDetail: null,
     ...r, durationMs: Date.now() - started,
   });
 
@@ -535,14 +541,26 @@ function runClaudeCli(opts) {
       if (logFd !== null) { try { fs.closeSync(logFd); } catch { /* ignore */ } }
       resolve(done({ stage: STAGES.ERROR, pid, errorDetail: `child error: ${e.message}` }));
     });
-    child.on('close', (code) => {
+    // BRO-3053: `signal` was DROPPED here, and the log line below recorded only
+    // exit=${code}. Node passes (code, signal) and sets exactly one of them —
+    // a process killed by the OS yields code=null, signal='SIGKILL', which was
+    // indistinguishable from any other non-zero exit once the argument was
+    // discarded. Two headless jobs died ~90s after spawn on 2026-09-08 with
+    // logs that simply stop mid-stream (no result event, no error), and the
+    // pipeline could not say whether the kernel killed them, so a whole
+    // root-cause theory got built on host memory gauges that turned out to
+    // mean nothing (free pages sit near vm_page_free_target regardless of
+    // available memory; swapusage `used` is a high-water mark macOS never
+    // shrinks). Capturing the signal is what makes that question answerable at
+    // all, which is why it ships before any admission control.
+    child.on('close', (code, signal) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer); clearTimeout(graceTimer);
       if (lineBuf.trim()) handleLine(lineBuf); // last line may lack a newline
       if (logFd !== null) {
         try {
-          fs.writeSync(logFd, `===== ${new Date().toISOString()} exit=${code}${timedOut ? ' TIMEOUT' : ''} =====\n${stderr ? `--- stderr ---\n${stderr}\n` : ''}`);
+          fs.writeSync(logFd, `===== ${new Date().toISOString()} exit=${code}${signal ? ` signal=${signal}` : ''}${timedOut ? ' TIMEOUT' : ''} =====\n${stderr ? `--- stderr ---\n${stderr}\n` : ''}`);
           fs.closeSync(logFd);
         } catch { /* logging must never fail the job */ }
       }
@@ -555,16 +573,27 @@ function runClaudeCli(opts) {
       const cost = { costUSD: realCost != null ? realCost : est, costEstimated: realCost == null && est != null };
       if (timedOut) {
         return resolve(done({
-          stage: STAGES.TIMEOUT, pid, exitCode: code, sessionId,
+          stage: STAGES.TIMEOUT, pid, exitCode: code, exitSignal: signal || null, sessionId,
           usage: (resultEvent && resultEvent.usage) || usageTotal, ...cost,
-          errorDetail: `killed at ${timeoutMs}ms (SIGTERM + ${graceMs}ms grace)`,
+          errorDetail: `killed at ${timeoutMs}ms (SIGTERM + ${graceMs}ms grace)${signal ? `, signal=${signal}` : ''}`,
         }));
       }
       if (code !== 0) {
+        // BRO-3053: deliberately still STAGES.ERROR, not a new stage value.
+        // classifyFailure and the CONTENT_STAGES/INFRA_STAGES sets switch on
+        // these strings and this file's own header says not to invent
+        // spellings, so a new one would silently fall out of both sets and
+        // change retry/breaker behaviour. The signal rides as a FIELD instead,
+        // and leads errorDetail so it is greppable in a log tail — an
+        // OS-killed job otherwise reports the same empty `exit null` as any
+        // other abrupt end.
+        const killed = signal && !timedOut;
         return resolve(done({
-          stage: STAGES.ERROR, pid, exitCode: code, sessionId,
+          stage: STAGES.ERROR, pid, exitCode: code, exitSignal: signal || null, sessionId,
           usage: usageTotal, ...cost,
-          errorDetail: (stderr || tail).slice(-500) || `exit ${code}`,
+          errorDetail: killed
+            ? `killed by ${signal} (exit ${code}) — ${(stderr || tail).slice(-400) || 'no stderr; stream ended mid-run'}`
+            : ((stderr || tail).slice(-500) || `exit ${code}`),
         }));
       }
       // Every exit below carries `...cost` (code-review finding on the S1-S3
