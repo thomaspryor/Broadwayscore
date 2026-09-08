@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-08T15:05:36.720Z",
-  "windowDays": 1095,
-  "targets": 194,
-  "auditedThisRun": 22,
-  "carriedForward": 477,
+  "generatedAt": "2026-09-08T16:04:48.214Z",
+  "windowDays": 21,
+  "targets": 15,
+  "auditedThisRun": 15,
+  "carriedForward": 484,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 307,
-    "totalMissing": 1566,
+    "totalMissing": 1587,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1752,
-    "totalRecoverable": 19,
+    "totalFlaggedMisses": 1745,
+    "totalRecoverable": 17,
     "totalRecovered": 2
   },
   "results": [
@@ -2815,9 +2815,9 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+        "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
         "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
-        "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
+        "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
         "https://www.thetimes.com/culture/theatre-dance/article/abigails-party-review-tamzin-outhwaite-cwx780tnl",
         "https://www.thestage.co.uk/reviews/abigails-party-review-harold-pinter-theatre-london-tamzin-outhwaite",
         "https://www.ft.com/content/544dee79-62af-4118-9392-dded7f52c33f",
@@ -2831,9 +2831,9 @@
         "https://www.londontheatre.co.uk/reviews/abigails-party-review-harold-pinter-theatre",
         "https://www.londonboxoffice.co.uk/news/post/abigails-party-review"
       ],
-      "dirFiles": 34,
+      "dirFiles": 35,
       "dirClean": 22,
-      "inReviewsJson": 28,
+      "inReviewsJson": 31,
       "missing": [],
       "dirOnly": [
         {
@@ -2871,9 +2871,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
+          "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2881,9 +2881,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "london-box-office--stuart-king.json",
+              "file": "british-theatre--john-johnson.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review"
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
             }
           ],
           "serpCensus": true
@@ -2998,7 +2998,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -3008,7 +3008,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -3038,7 +3038,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -3048,7 +3048,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -3058,10 +3058,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 14,
         "byReason": {
-          "non-review-host": 14,
-          "roundup-page": 4,
+          "roundup-page": 3,
+          "non-review-host": 10,
           "ticketing-listing": 1
         }
       },
@@ -3070,11 +3070,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review"
+            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781"
           },
           {
             "outletId": "timeout-london",
@@ -3094,14 +3094,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-            "outletId": "curtaincallreviews.co.uk",
+            "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-abigail-s-party-harold-pinter-theatre",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
+            "outletId": "curtaincallreviews.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
@@ -3166,11 +3166,11 @@
             "firstSeenAt": "2026-08-22T12:13:43.001Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
-            "outletId": "london-box-office",
+            "url": "https://www.britishtheatreguide.info/reviews/abigail-s-party-the-arts-theatr-25781",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-25T05:35:06.890Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/abigails-party-5-review",
@@ -3188,9 +3188,9 @@
           }
         ],
         "liveCount": 12,
-        "candidateCount": 14
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-25T22:17:08.499Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -8055,39 +8055,62 @@
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
-      "title": "As You Like It - Globe",
+      "title": "As You Like It",
       "openingDate": "2026-08-21",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-did-critics-think-of-the-public-works-as-you-like-it-at-free-shakespeare-in-the-park",
+        "https://playbill.com/article/what-did-critics-think-of-off-broadways-as-you-like-it-starring-ellen-burstyn",
+        "https://www.broadwayworld.com/article/Review-Roundup-Shakespeares-AS-YOU-LIKE-IT-At-the-Delacorte-Theatre-20220830",
+        "https://www.broadwayworld.com/article/Review-Roundup-Public-Theaters-AS-YOU-LIKE-IT-in-the-Park-20120622"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
-        "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
-        "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
-        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
-        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
-        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+        "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
+        "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
+        "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+        "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
+        "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park",
+        "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
+        "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
+        "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+        "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/",
+        "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704",
+        "https://www.nytimes.com/2017/09/28/theater/as-you-like-it-review-classic-stage-company.html",
+        "https://www.thestage.co.uk/reviews/2017/as-you-like-it-ellen-burstyn-new-york-review/",
+        "http://theater.nytimes.com/2012/06/22/theater/reviews/as-you-like-it-with-lily-rabe-in-central-park.html",
+        "http://www.boston.com/ae/theater-arts/2012/06/21/review-public-you-like-confident-hit/zNZVJgK81sJA6vZItZdSOO/story.html",
+        "http://www.huffingtonpost.com/wilborn-hampton/as-you-like-it-review-shakespeare-in-the-park_b_1609146.html",
+        "http://www.hollywoodreporter.com/review/as-you-like-it-shakespeare-review-340743",
+        "http://manhattan.ny1.com/content/ny1_living/theater_reviews/163551/time-out-theater-review---as-you-like-it-",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-as-you-like-it-looks-highly-likable",
         "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
+        "https://everything-theatre.co.uk/2026/08/review-as-you-like-it-shakespeares-globe/",
+        "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
         "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
+        "https://stalbanstimes.co.uk/st-albans/theatre-review-as-you-like-it/",
+        "https://theatreandtonic.co.uk/blog/as-you-like-it-illyria-outdoor-theatre-review",
         "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
-        "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
-        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/shakespeare-dice-as-you-like-it/",
         "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
-        "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
-        "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
-        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-        "https://www.westendbestfriend.co.uk/news/review-as-you-like-it-shakespeares-globe",
-        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
-        "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
-        "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
-        "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
-        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
+        "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
         "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
-        "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
+        "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
+        "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
+        "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
+        "https://www.britishtheatreguide.info/reviews/as-you-like-it-shakespeare-s-g-25910",
+        "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
+        "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
+        "https://www.timeout.com/london/theatre/as-you-like-it-40-review",
+        "https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-shakespeares-globe-2026/",
+        "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+        "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
+        "https://www.londontheatre.co.uk/reviews/review-as-you-like-it-at-shakespeares-globe",
+        "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
         "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/as-you-like-it-review-the-globe-london-2026-qb7pgdzf2",
-        "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
-        "https://www.shakespearesglobe.com/",
+        "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
         "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
         "https://www.theguardian.com/stage/2022/dec/15/as-you-like-it-review-josie-rourke-sohoplace-martha-plimpton",
         "https://www.standard.co.uk/culture/theatre/as-you-like-it-at-sohoplace-review-west-end-martha-plimpton-rose-aylingellis-alfred-enoch-b1047363.html",
@@ -8098,10 +8121,115 @@
         "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
         "https://inews.co.uk/culture/arts/as-you-like-it-sohoplace-review-rose-ayling-ellis-charming-west-end-debut-2033245"
       ],
-      "dirFiles": 54,
-      "dirClean": 30,
-      "inReviewsJson": 26,
+      "dirFiles": 56,
+      "dirClean": 27,
+      "inReviewsJson": 27,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/09/28/theater/as-you-like-it-review-classic-stage-company.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/06/22/theater/reviews/as-you-like-it-with-lily-rabe-in-central-park.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.boston.com/ae/theater-arts/2012/06/21/review-public-you-like-confident-hit/zNZVJgK81sJA6vZItZdSOO/story.html",
+          "host": "boston.com",
+          "knownOutletId": "boston-com",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/wilborn-hampton/as-you-like-it-review-shakespeare-in-the-park_b_1609146.html",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/as-you-like-it-shakespeare-review-340743",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://manhattan.ny1.com/content/ny1_living/theater_reviews/163551/time-out-theater-review---as-you-like-it-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-as-you-like-it-looks-highly-likable",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
           "host": "theatre.reviews",
@@ -8109,9 +8237,27 @@
           "serpCensus": true
         },
         {
+          "url": "https://stalbanstimes.co.uk/st-albans/theatre-review-as-you-like-it/",
+          "host": "stalbanstimes.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/shakespeare-dice-as-you-like-it/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
           "host": "show-score.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-shakespeares-globe-2026/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
           "serpCensus": true
         }
       ],
@@ -8121,15 +8267,23 @@
           "count": 1
         },
         {
+          "host": "firstnightmagazine.com",
+          "count": 1
+        },
+        {
           "host": "jackstage.co.uk",
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
+          "host": "letterboxd.com",
           "count": 1
         },
         {
           "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
           "count": 1
         },
         {
@@ -8139,9 +8293,51 @@
         {
           "host": "theupcoming.co.uk",
           "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "new-york-sun--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
           "host": "shakespearesglobe.com",
@@ -8161,9 +8357,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
+          "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+          "host": "marquee.tv",
+          "knownOutletId": "marquee",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -8171,35 +8367,12 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "artsdesk--unknown.json",
+              "file": "marquee--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://theartsdesk.com/theatre/you-it-shakespeares-globe-review-vibrant-ebullient-fun-forest-where-anything-goes"
+              "urlInDir": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre"
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.shakespearesglobe.com/",
-          "host": "shakespearesglobe.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "shakespearesglobe--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
@@ -8411,7 +8584,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 22,
+        "rowCount": 15,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -8421,15 +8594,15 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": true,
-            "rows": 8,
+            "found": false,
+            "rows": 0,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -8443,16 +8616,16 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 22,
-        "corroborated": 9,
+        "currentRunRows": 15,
+        "corroborated": 6,
         "perSource": {
-          "theatre-reviews": {
-            "cited": 8,
-            "corroborated": 7
-          },
           "westendtheatre": {
             "cited": 5,
             "corroborated": 5
+          },
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
           },
           "thestage-archive": {
             "cited": 9,
@@ -8463,31 +8636,31 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"As You Like It - Globe\" West End review 2026",
+        "query": "\"As You Like It\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"As You Like It - Globe\" West End review 2026",
+            "query": "\"As You Like It\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 4,
+            "results": 10,
+            "accepted": 9,
             "error": null
           },
           {
             "arm": "scoped1",
-            "query": "\"As You Like It - Globe\" review shakespeare",
+            "query": "\"As You Like It\" review shakespeare",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
             "arm": "scoped2",
-            "query": "\"As You Like It - Globe\" Shakespeare review",
+            "query": "\"As You Like It\" Shakespeare review",
             "page": 0,
             "geo": "gb",
             "ok": true,
@@ -8497,17 +8670,17 @@
           },
           {
             "arm": "naive-p0",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
+            "query": "As You Like It Shakespeare's Globe review",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
             "arm": "naive-p1",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
+            "query": "As You Like It Shakespeare's Globe review",
             "page": 1,
             "geo": "gb",
             "ok": true,
@@ -8517,29 +8690,140 @@
           },
           {
             "arm": "naive-p2",
-            "query": "As You Like It - Globe Shakespeare's Globe review",
+            "query": "As You Like It Shakespeare's Globe review",
             "page": 2,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 8,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 23,
+        "resultCount": 24,
         "error": null
       },
       "candidatesRejected": {
-        "count": 20,
+        "count": 828,
         "byReason": {
-          "non-review-host": 14,
-          "roundup-page": 2,
-          "ticketing-listing": 4
+          "non-review-host": 83,
+          "aggregator-internal-nav": 603,
+          "not-http-url": 126,
+          "aggregator-section-root": 16
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-the-public-works-as-you-like-it-at-free-shakespeare-in-the-park",
+          "publishDate": "2022-08-31"
+        },
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-off-broadways-as-you-like-it-starring-ellen-burstyn",
+          "publishDate": "2017-09-29"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Shakespeares-AS-YOU-LIKE-IT-At-the-Delacorte-Theatre-20220830",
+          "publishDate": "2022-08-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Public-Theaters-AS-YOU-LIKE-IT-in-the-Park-20120622",
+          "publishDate": "2012-06-22"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/09/28/theater/as-you-like-it-review-classic-stage-company.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/06/22/theater/reviews/as-you-like-it-with-lily-rabe-in-central-park.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.boston.com/ae/theater-arts/2012/06/21/review-public-you-like-confident-hit/zNZVJgK81sJA6vZItZdSOO/story.html",
+          "host": "boston.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/wilborn-hampton/as-you-like-it-review-shakespeare-in-the-park_b_1609146.html",
+          "host": "huffingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/as-you-like-it-shakespeare-review-340743",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://manhattan.ny1.com/content/ny1_living/theater_reviews/163551/time-out-theater-review---as-you-like-it-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-as-you-like-it-looks-highly-likable",
+          "host": "newjerseynewsroom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
@@ -8554,6 +8838,30 @@
           "reason": "unknown-outlet-no-host"
         },
         {
+          "url": "https://stalbanstimes.co.uk/st-albans/theatre-review-as-you-like-it/",
+          "host": "stalbanstimes.co.uk",
+          "outletId": "stalbanstimes",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/shakespeare-dice-as-you-like-it/",
+          "host": "fringereview.co.uk",
+          "outletId": "fringereview",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
           "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
           "host": "show-score.com",
           "outletId": null,
@@ -8564,6 +8872,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-no-host"
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-shakespeares-globe-2026/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-sha"
         }
       ],
       "ingestSkippedByCap": [],
@@ -8571,11 +8891,130 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2017/09/28/theater/as-you-like-it-review-classic-stage-company.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theater.nytimes.com/2012/06/22/theater/reviews/as-you-like-it-with-lily-rabe-in-central-park.html"
+          },
+          {
+            "outletId": "boston-com",
+            "outlet": "boston-com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.boston.com/ae/theater-arts/2012/06/21/review-public-you-like-confident-hit/zNZVJgK81sJA6vZItZdSOO/story.html"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/wilborn-hampton/as-you-like-it-review-shakespeare-in-the-park_b_1609146.html"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/as-you-like-it-shakespeare-review-340743"
+          },
+          {
+            "outletId": "ny1",
+            "outlet": "ny1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://manhattan.ny1.com/content/ny1_living/theater_reviews/163551/time-out-theater-review---as-you-like-it-"
+          },
+          {
+            "outletId": "new-jersey-newsroom",
+            "outlet": "new-jersey-newsroom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-as-you-like-it-looks-highly-likable"
+          },
+          {
             "outletId": "theatre.reviews",
             "outlet": "theatre.reviews",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/"
+          },
+          {
+            "outletId": "stalbanstimes.co.uk",
+            "outlet": "stalbanstimes.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stalbanstimes.co.uk/st-albans/theatre-review-as-you-like-it/"
+          },
+          {
+            "outletId": "fringereview",
+            "outlet": "fringereview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/shakespeare-dice-as-you-like-it/"
           },
           {
             "outletId": "show-score.com",
@@ -8585,6 +9024,27 @@
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre"
           },
           {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-shakespeares-globe-2026/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/"
+          },
+          {
             "outletId": "shakespearesglobe.com",
             "outlet": "shakespearesglobe.com",
             "critic": "Unknown",
@@ -8592,18 +9052,11 @@
             "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/"
           },
           {
-            "outletId": "artsdesk",
-            "outlet": "artsdesk",
+            "outletId": "marquee",
+            "outlet": "marquee",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe"
-          },
-          {
-            "outletId": "shakespearesglobe.com",
-            "outlet": "shakespearesglobe.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.shakespearesglobe.com/"
+            "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre"
           },
           {
             "outletId": "london-theatre",
@@ -8672,20 +9125,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.thestage.co.uk/reviews/2017/as-you-like-it-ellen-burstyn-new-york-review/",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T14:45:45.152Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe-2026",
             "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T14:43:57.981Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/as-you-like-it-globe-theatre-review/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-25T05:35:06.890Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
@@ -8696,16 +9149,16 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://theatreweekly.com/review-as-you-like-it-at-shakespeares-globe/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/as-you-like-it-41-review",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-illyria-outdoor-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-shakespeare-s-globe",
@@ -8714,10 +9167,10 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-08-25T05:35:06.890Z"
+            "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-at-shakespeares-globe-review",
@@ -8726,52 +9179,28 @@
             "firstSeenAt": "2026-08-25T22:17:08.499Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/23/as-you-like-it-review-shakespeares-globe-london",
-            "outletId": "theguardian.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T23:21:50.513Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/as-you-like-it-at-shakespeares-globe-review_1729999/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
-            "url": "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
-            "outletId": "marquee.tv",
+            "url": "https://www.thereviewshub.com/26-as-you-like-it-shakespeares-globe-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-as-you-like-it-shakespeares-globe",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
-            "outletId": "myreviewer.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-globe-theatre-22391",
+            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-shakespeare-s-g-25910",
             "outletId": "britishtheatreguide.info",
             "state": "live",
-            "firstSeenAt": "2026-08-25T05:35:06.890Z"
-          },
-          {
-            "url": "https://letterboxd.com/film/shakespeares-globe-as-you-like-it/",
-            "outletId": "letterboxd.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-25T14:45:45.152Z"
-          },
-          {
-            "url": "https://firstnightmagazine.com/2026/08/24/review-of-as-you-like-it-2026-shakespeares-globe-boisterous-production-is-nearly-madness-and-i-tell-you-doesnt-deserve-as-well-a-dark-house-or-a-whip/",
-            "outletId": "firstnightmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-review-shakespeares-globe",
@@ -8780,10 +9209,28 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-AS-YOU-LIKE-IT-Shakespeares-Globe-20260821",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.timeout.com/london/theatre/as-you-like-it-40-review",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/08/22/as-you-like-it-review-shakespeares-globe-theatre-london-charlie-josephine-summary/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/review-as-you-like-it-at-shakespeares-globe",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington",
+            "outletId": "myreviewer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-25T14:45:45.152Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/as-you-like-it-shakespeares-globe-review/",
@@ -8798,10 +9245,115 @@
             "firstSeenAt": "2026-08-24T14:43:57.981Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-shakespeares-globe-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-shakespeares-globe-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/as-you-like-it-off-broadway-review-shakespeare-in-the-park",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://deadline.com/2017/09/review-as-you-like-it-hannah-cabell-stephen-schwartz-ellen-burstyn-1202178984/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/as-you-like-it-theater-1043704",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/09/28/theater/as-you-like-it-review-classic-stage-company.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2012/06/22/theater/reviews/as-you-like-it-with-lily-rabe-in-central-park.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://www.boston.com/ae/theater-arts/2012/06/21/review-public-you-like-confident-hit/zNZVJgK81sJA6vZItZdSOO/story.html",
+            "outletId": "boston-com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/wilborn-hampton/as-you-like-it-review-shakespeare-in-the-park_b_1609146.html",
+            "outletId": "huffpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/as-you-like-it-shakespeare-review-340743",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://manhattan.ny1.com/content/ny1_living/theater_reviews/163551/time-out-theater-review---as-you-like-it-",
+            "outletId": "ny1",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-as-you-like-it-looks-highly-likable",
+            "outletId": "new-jersey-newsroom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://theatre.reviews/reviews-roundup/as-you-like-it-globe-reviews/",
@@ -8811,11 +9363,46 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
+            "url": "https://stalbanstimes.co.uk/st-albans/theatre-review-as-you-like-it/",
+            "outletId": "stalbanstimes.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/shakespeare-dice-as-you-like-it/",
+            "outletId": "fringereview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/as-you-like-it-shakespeare-s-globe-theatre",
             "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
+          },
+          {
+            "url": "https://lovelondonloveculture.com/2026/08/29/review-round-up-as-you-like-it-shakespeares-globe-2026/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/shakespeare-himself-nodded-toward-this-as-you-like-it",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.shakespearesglobe.com/whats-on/as-you-like-it/",
@@ -8825,18 +9412,11 @@
             "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/you-it-shakespeares-globe",
-            "outletId": "artsdesk",
+            "url": "https://marquee.tv/videos/as-you-like-it-shakespeares-globe-theatre",
+            "outletId": "marquee",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "https://www.shakespearesglobe.com/",
-            "outletId": "shakespearesglobe.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-24T23:21:50.513Z"
+            "firstSeenAt": "2026-08-25T05:35:06.890Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-soho-place-review-rose-ayling-ellis",
@@ -8902,10 +9482,10 @@
             "firstSeenAt": "2026-08-14T01:02:05.257Z"
           }
         ],
-        "liveCount": 21,
-        "candidateCount": 34
+        "liveCount": 17,
+        "candidateCount": 47
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -29680,7 +30260,7 @@
       "showId": "darkling-off-west-end-2026",
       "title": "Darkling",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -29709,7 +30289,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-02T22:17:45.717Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -33750,7 +34330,7 @@
       "showId": "delirium-off-broadway-2026",
       "title": "Delirium",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -33779,7 +34359,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -35968,20 +36548,20 @@
         "https://www.broadwayworld.com/westend/article/Review-ELECTRAPERSONA-National-Theatre-20260901",
         "https://www.timeout.com/london/news/persona-starring-cate-blanchett-at-the-national-theatre-090226",
         "https://www.thestage.co.uk/reviews/electrapersona-review-lyttelton-theatre-national-theatre-london",
-        "https://www.thereviewshub.com/electra-persona-national-theatre-london/",
-        "https://www.cityam.com/electra-persona-at-the-national-theatre-review-a-dull-mash-up-of-sophocles-and-bergman/",
-        "https://playsinternational.org.uk/electra-persona-national-theatre/",
-        "https://lovelondonloveculture.com/2026/09/03/review-round-up-electra-persona-national-theatre/",
-        "https://www.afridiziak.com/reviews/electra-persona/",
-        "https://www.theatreworkout.com/theatre-tickets/electra-persona",
         "https://timboatswain.wixsite.com/website/post/a-review-of-the-national-theatre-s-electra-persona",
+        "https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
+        "https://www.thereviewshub.com/electra-persona-national-theatre-london/",
+        "https://www.theatreworkout.com/theatre-tickets/electra-persona",
         "https://www.theatremonkey.com/show/electra-persona/",
+        "https://www.afridiziak.com/reviews/electra-persona/",
+        "https://sierz.co.uk/reviews/electra-persona-national-theatre/",
+        "https://lovelondonloveculture.com/2026/09/03/review-round-up-electra-persona-national-theatre/",
         "https://www.thetimes.com/culture/theatre-dance/article/electrapersona-review-cate-blanchett-is-captivating-despite-the-script-q35z7fpn5",
         "https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-blanchett-and-hoss-face-off-in-lopsided-sophocles-bergman-double-bill",
         "http://telegraph.co.uk/theatre/what-to-see/electra-persona-national-theatre-cate-blanchett-review/",
         "https://www.ft.com/content/f0e97e40-d9e7-4054-8ae3-0957083f8cb5"
       ],
-      "dirFiles": 45,
+      "dirFiles": 47,
       "dirClean": 32,
       "inReviewsJson": 32,
       "missing": [
@@ -36002,6 +36582,10 @@
           "count": 1
         },
         {
+          "host": "cityam.com",
+          "count": 1
+        },
+        {
           "host": "maryamphilpottblog.wordpress.com",
           "count": 1
         },
@@ -36014,11 +36598,7 @@
           "count": 1
         },
         {
-          "host": "monstagigz.com",
-          "count": 1
-        },
-        {
-          "host": "sierz.co.uk",
+          "host": "playsinternational.org.uk",
           "count": 1
         }
       ],
@@ -36038,8 +36618,7 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.nytimes.com/2026/09/03/theater/electra-persona-national-theatre-cate-blanchett-nina-hoss-review.html"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.theatreworkout.com/theatre-tickets/electra-persona",
@@ -36136,7 +36715,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 4,
             "error": null
           },
@@ -36146,8 +36725,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -36156,7 +36735,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -36167,7 +36746,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -36177,24 +36756,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 102,
+        "count": 110,
         "byReason": {
-          "non-review-host": 27,
+          "roundup-page": 2,
+          "non-review-host": 36,
           "ticketing-listing": 1,
-          "not-http-url": 20,
           "aggregator-internal-nav": 45,
+          "not-http-url": 20,
           "aggregator-section-root": 5,
-          "roundup-page": 3,
           "venue-production-page": 1
         }
       },
@@ -36351,22 +36930,22 @@
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
-            "url": "https://www.thereviewshub.com/electra-persona-national-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://timboatswain.wixsite.com/website/post/a-review-of-the-national-theatre-s-electra-persona",
+            "outletId": "timboatswain.wixsite.com",
             "state": "live",
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
-            "url": "https://www.cityam.com/electra-persona-at-the-national-theatre-review-a-dull-mash-up-of-sophocles-and-bergman/",
-            "outletId": "cityam.com",
+            "url": "https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
+            "outletId": "monstagigz.com",
             "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
-            "url": "https://playsinternational.org.uk/electra-persona-national-theatre/",
-            "outletId": "playsinternational.org.uk",
+            "url": "https://www.thereviewshub.com/electra-persona-national-theatre-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+            "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
             "url": "https://www.afridiziak.com/reviews/electra-persona/",
@@ -36375,10 +36954,10 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://timboatswain.wixsite.com/website/post/a-review-of-the-national-theatre-s-electra-persona",
-            "outletId": "timboatswain.wixsite.com",
+            "url": "https://sierz.co.uk/reviews/electra-persona-national-theatre/",
+            "outletId": "sierz.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-02T22:17:45.717Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/electrapersona-review-cate-blanchett-is-captivating-despite-the-script-q35z7fpn5",
@@ -36436,7 +37015,7 @@
         "liveCount": 25,
         "candidateCount": 29
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "electrapersona-west-end-2026",
@@ -42343,7 +42922,7 @@
       "showId": "garry-starr-classic-penguins-off-broadway-2026",
       "title": "Garry Starr: Classic Penguins",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -42372,7 +42951,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-31T14:43:54.309Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "giant-2026",
@@ -66980,265 +67559,28 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant",
-        "https://www.bestoftheatre.co.uk/jane-eyre",
-        "https://theatreweekly.com/first-look-production-images-released-for-uk-premiere-of-jane-eyre-at-southwark-playhouse-elephant/",
-        "https://www.southernartsreviews.co.uk/review-jane-eyre/",
-        "https://www.whatsonstage.com/news/jane-eyre-musicals-uk-premiere-first-look-photos_1731005/",
-        "https://www.timeout.com/london/theatre/jane-eyre-a-musical",
-        "https://southwarkplayhouse.co.uk/productions/jane-eyre/",
-        "https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/",
-        "https://www.westendbestfriend.co.uk/news/jane-eyre-musical-uk-premiere-southwark-playhouse",
-        "https://www.thefancarpet.com/movie_news/a-masterpiece-reimagined-everything-you-need-to-know-before-jane-eyre-opens-at-southwark-playhouse-elephant/",
-        "https://thelivereview.co.uk/tag/jane-eyre/",
-        "https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-london/",
         "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre"
       ],
       "dirFiles": 14,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-london/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": true,
-          "recoverableFile": "london-box-office--shehrazade-zafar-arif.json",
-          "recoverableOutletId": "london-box-office",
-          "recoverableCritic": "Shehrazade Zafar-Arif",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "london-box-office--phil-willmott.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-            },
-            {
-              "file": "london-box-office--shehrazade-zafar-arif.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-            },
-            {
-              "file": "london-box-office--stacey-tyler.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/jane-eyre",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bestoftheatre.co.uk/jane-eyre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/first-look-production-images-released-for-uk-premiere-of-jane-eyre-at-southwark-playhouse-elephant/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://theatreweekly.com/first-look-production-images-released-for-uk-premiere-of-jane-eyre-at-southwark-playhouse-elephant/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.southernartsreviews.co.uk/review-jane-eyre/",
-          "host": "southernartsreviews.co.uk",
-          "knownOutletId": "southernartsreviews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "southernartsreviews--david-cradduck.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.southernartsreviews.co.uk/review-jane-eyre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/jane-eyre-musicals-uk-premiere-first-look-photos_1731005/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--alex-wood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/jane-eyre-tour-announces-casting_1730007/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/jane-eyre-a-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/jane-eyre-a-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://southwarkplayhouse.co.uk/productions/jane-eyre/",
-          "host": "southwarkplayhouse.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "southwarkplayhouse--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://southwarkplayhouse.co.uk/productions/jane-eyre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/jane-eyre-musical-uk-premiere-southwark-playhouse",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/jane-eyre-musical-uk-premiere-southwark-playhouse"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thefancarpet.com/movie_news/a-masterpiece-reimagined-everything-you-need-to-know-before-jane-eyre-opens-at-southwark-playhouse-elephant/",
-          "host": "thefancarpet.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thefancarpet--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.thefancarpet.com/movie_news/a-masterpiece-reimagined-everything-you-need-to-know-before-jane-eyre-opens-at-southwark-playhouse-elephant/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://thelivereview.co.uk/tag/jane-eyre/",
-          "host": "thelivereview.co.uk",
-          "knownOutletId": "thelivereview",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thelivereview--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thelivereview.co.uk/tag/jane-eyre/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre",
           "host": "londonboxoffice.co.uk",
           "knownOutletId": "london-box-office",
-          "recoverable": true,
-          "recoverableFile": "london-box-office--shehrazade-zafar-arif.json",
-          "recoverableOutletId": "london-box-office",
-          "recoverableCritic": "Shehrazade Zafar-Arif",
-          "recoverableCount": 1,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
           "dirFlags": [
-            {
-              "file": "london-box-office--phil-willmott.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-            },
             {
               "file": "london-box-office--shehrazade-zafar-arif.json",
               "flag": "nonReview",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-            },
-            {
-              "file": "london-box-office--stacey-tyler.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre"
             }
           ],
           "weRef": true,
@@ -67293,201 +67635,17 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Jane Eyre\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Jane Eyre\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Jane Eyre\" review southwark",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Jane Eyre Southwark Playhouse Elephant review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Jane Eyre Southwark Playhouse Elephant review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Jane Eyre Southwark Playhouse Elephant review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 12,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 23,
-        "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 19,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-london/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-lon"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant",
-          "host": "londonboxoffice.co.uk",
-          "file": "london-box-office--shehrazade-zafar-arif.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre",
-          "host": "londonboxoffice.co.uk",
-          "file": "london-box-office--shehrazade-zafar-arif.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-london/"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/jane-eyre"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/first-look-production-images-released-for-uk-premiere-of-jane-eyre-at-southwark-playhouse-elephant/"
-          },
-          {
-            "outletId": "southernartsreviews",
-            "outlet": "southernartsreviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.southernartsreviews.co.uk/review-jane-eyre/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/jane-eyre-musicals-uk-premiere-first-look-photos_1731005/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/jane-eyre-a-musical"
-          },
-          {
-            "outletId": "southwarkplayhouse.co.uk",
-            "outlet": "southwarkplayhouse.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://southwarkplayhouse.co.uk/productions/jane-eyre/"
-          },
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/"
-          },
-          {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/jane-eyre-musical-uk-premiere-southwark-playhouse"
-          },
-          {
-            "outletId": "thefancarpet.com",
-            "outlet": "thefancarpet.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thefancarpet.com/movie_news/a-masterpiece-reimagined-everything-you-need-to-know-before-jane-eyre-opens-at-southwark-playhouse-elephant/"
-          },
-          {
-            "outletId": "thelivereview",
-            "outlet": "thelivereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thelivereview.co.uk/tag/jane-eyre/"
-          },
           {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
@@ -67499,90 +67657,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.westendtheatre.com/344318/news/jane-eyre-musical-to-premiere-in-london/",
-            "outletId": "westendtheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant",
-            "outletId": "london-box-office",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/jane-eyre",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://theatreweekly.com/first-look-production-images-released-for-uk-premiere-of-jane-eyre-at-southwark-playhouse-elephant/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.southernartsreviews.co.uk/review-jane-eyre/",
-            "outletId": "southernartsreviews",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/jane-eyre-musicals-uk-premiere-first-look-photos_1731005/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/jane-eyre-a-musical",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://southwarkplayhouse.co.uk/productions/jane-eyre/",
-            "outletId": "southwarkplayhouse.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/",
-            "outletId": "musical-theatre-review",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/jane-eyre-musical-uk-premiere-southwark-playhouse",
-            "outletId": "west-end-best-friend",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.thefancarpet.com/movie_news/a-masterpiece-reimagined-everything-you-need-to-know-before-jane-eyre-opens-at-southwark-playhouse-elephant/",
-            "outletId": "thefancarpet.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://thelivereview.co.uk/tag/jane-eyre/",
-            "outletId": "thelivereview",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre",
             "outletId": "london-box-office",
             "state": "IN_FLIGHT",
@@ -67591,9 +67665,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 12
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -104393,29 +104467,34 @@
         "https://www.theatrely.com/post/paranormal-activity-is-a-terrifying-delight-review",
         "https://theaterpizzazz.com/paranormal-activity-is-frighteningly-thin/",
         "https://www.timeout.com/newyork/news/broadway-review-paranormal-activity-delivers-stage-frights-082526",
+        "https://www.thetimes.com/us/news-today/article/paranormal-activity-broadway-halloween-review-j70jp0kmd",
         "https://variety.com/2026/legit/reviews/paranormal-activity-review-broadway-stage-experience-1236841925/",
         "https://www.vulture.com/article/paranormal-activity-play-review-broadway.html",
         "https://www.newyorktheatreguide.com/reviews/paranormal-activity-broadway-review",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=8IHRX7",
-        "https://www.talkinbroadway.com/page/world/ParanormalActivity.html",
-        "https://lavocedinewyork.com/en/new-york/2026/08/25/horror-returns-to-broadway-in-the-form-of-startle-core-but-without-much-substance-to-back-it-up/",
-        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
         "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+        "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
         "https://slate.com/culture/2026/08/paranormal-activity-broadway-play-2026-horror-movie-review.html",
         "https://didtheylikeit.com/shows/paranormal-activity/",
-        "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
-        "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
-        "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/",
-        "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
         "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/",
+        "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
+        "https://showriz.com/blogcategoryreviews/2026/8/20/my-variety-review-broadways-paranormal-activity",
+        "https://joshatthemovies.com/2026/08/28/theater-review-paranormal-activity/",
+        "https://broadwaystars.com/show/paranormal-activity-2026/",
         "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html",
-        "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
-        "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
+        "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
+        "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/"
       ],
-      "dirFiles": 49,
-      "dirClean": 33,
-      "inReviewsJson": 33,
+      "dirFiles": 52,
+      "dirClean": 34,
+      "inReviewsJson": 34,
       "missing": [
+        {
+          "url": "https://showriz.com/blogcategoryreviews/2026/8/20/my-variety-review-broadways-paranormal-activity",
+          "host": "showriz.com",
+          "knownOutletId": "showriz",
+          "serpCensus": true
+        },
         {
           "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
           "host": "show-score.com",
@@ -104424,6 +104503,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
         {
           "host": "mashable.com",
           "count": 1
@@ -104437,6 +104520,14 @@
           "count": 1
         },
         {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        },
+        {
           "host": "theaterlife.com",
           "count": 1
         },
@@ -104447,9 +104538,31 @@
         {
           "host": "t2conline.com",
           "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--helen-shaw.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html?eafs_enabled=false"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/",
           "host": "nydailynews.com",
@@ -104468,24 +104581,6 @@
           ]
         },
         {
-          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--william-earl.json",
-              "flag": "clean",
-              "urlInDir": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
           "host": "frontmezzjunkies.com",
           "knownOutletId": "frontmezzjunkies",
@@ -104499,6 +104594,24 @@
               "file": "frontmezzjunkies--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--william-earl.json",
+              "flag": "clean",
+              "urlInDir": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
             }
           ],
           "serpCensus": true
@@ -104540,9 +104653,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-          "host": "goldderby.com",
-          "knownOutletId": "goldderby",
+          "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
+          "host": "broadwaystars.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -104550,9 +104663,27 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "goldderby--ethan-alter.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
+              "file": "broadwaystars--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaystars.com/show/paranormal-activity-2026/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html",
+          "host": "thedaviddesk2.blogspot.com",
+          "knownOutletId": "thedaviddesk2",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thedaviddesk2--davidsheward.json",
+              "flag": "clean",
+              "urlInDir": "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html"
             }
           ],
           "serpCensus": true
@@ -104571,8 +104702,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 7,
+            "results": 10,
+            "accepted": 8,
             "error": null
           },
           {
@@ -104581,8 +104712,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 5,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -104591,8 +104722,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -104601,8 +104732,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -104612,7 +104743,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -104622,27 +104753,39 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 20,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
-        "count": 393,
+        "count": 399,
         "byReason": {
-          "non-review-host": 45,
-          "roundup-page": 2,
-          "not-http-url": 91,
-          "aggregator-internal-nav": 246,
-          "aggregator-section-root": 9
+          "roundup-page": 5,
+          "non-review-host": 47,
+          "aggregator-internal-nav": 252,
+          "not-http-url": 85,
+          "aggregator-section-root": 10
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://showriz.com/blogcategoryreviews/2026/8/20/my-variety-review-broadways-paranormal-activity",
+          "host": "showriz.com",
+          "outletId": "showriz",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
         {
           "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
           "host": "show-score.com",
@@ -104661,11 +104804,25 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "showriz",
+            "outlet": "showriz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://showriz.com/blogcategoryreviews/2026/8/20/my-variety-review-broadways-paranormal-activity"
+          },
+          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html"
           },
           {
             "outletId": "nydailynews",
@@ -104675,18 +104832,18 @@
             "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/"
           },
           {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
-          },
-          {
             "outletId": "frontmezzjunkies",
             "outlet": "frontmezzjunkies",
             "critic": "Unknown",
             "stars": null,
             "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/"
           },
           {
             "outletId": "dtli",
@@ -104703,11 +104860,18 @@
             "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/"
           },
           {
-            "outletId": "goldderby",
-            "outlet": "goldderby",
+            "outletId": "broadwaystars.com",
+            "outlet": "broadwaystars.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/"
+            "url": "https://broadwaystars.com/show/paranormal-activity-2026/"
+          },
+          {
+            "outletId": "thedaviddesk2",
+            "outlet": "thedaviddesk2",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html"
           }
         ],
         "suppressedMissing": [],
@@ -104751,12 +104915,6 @@
           {
             "url": "https://newyorknotebook.substack.com/p/paranormal-activity",
             "outletId": "newyorknotebook.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html",
-            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
@@ -104809,6 +104967,12 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
+            "url": "https://www.thetimes.com/us/news-today/article/paranormal-activity-broadway-halloween-review-j70jp0kmd",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
             "url": "https://variety.com/2026/legit/reviews/paranormal-activity-review-broadway-stage-experience-1236841925/",
             "outletId": "variety.com",
             "state": "live",
@@ -104833,20 +104997,14 @@
             "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
-            "url": "https://www.talkinbroadway.com/page/world/ParanormalActivity.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/08/25/horror-returns-to-broadway-in-the-form-of-startle-core-but-without-much-substance-to-back-it-up/",
-            "outletId": "lavocedinewyork.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
             "url": "https://slate.com/culture/2026/08/paranormal-activity-broadway-play-2026-horror-movie-review.html",
             "outletId": "slate.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-30T07:41:12.140Z"
+          },
+          {
+            "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/",
+            "outletId": "deadline.com",
             "state": "live",
             "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
@@ -104857,28 +105015,17 @@
             "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/show/46971-paranormal-activity",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "https://deadline.com/2026/08/paranormal-activity-broadway-review-1237061077/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-30T07:41:12.140Z"
-          },
-          {
-            "url": "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html",
-            "outletId": "thedaviddesk2.blogspot.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T00:09:38.552Z"
-          },
-          {
             "url": "https://www.chicagotribune.com/2026/08/25/review-paranormal-activity-broadway/",
             "outletId": "chicagotribune.com",
             "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
+          },
+          {
+            "url": "https://showriz.com/blogcategoryreviews/2026/8/20/my-variety-review-broadways-paranormal-activity",
+            "outletId": "showriz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.show-score.com/broadway-shows/paranormal-activity-broadway",
@@ -104888,6 +105035,13 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
             "url": "https://www.nydailynews.com/2026/08/25/paranormal-activity-broadway-review/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -104895,15 +105049,15 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
-            "outletId": "variety",
+            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+            "outletId": "frontmezzjunkies",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-30T07:41:12.140Z"
           },
           {
-            "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
-            "outletId": "frontmezzjunkies",
+            "url": "https://variety.com/2026/legit/features/paranormal-activity-stage-show-fans-scream-broadway-1236832024/",
+            "outletId": "variety",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-30T07:41:12.140Z"
@@ -104923,17 +105077,24 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://www.goldderby.com/theater/2026/paranormal-activity-broadway-reviews-critics/",
-            "outletId": "goldderby",
+            "url": "https://broadwaystars.com/show/paranormal-activity-2026/",
+            "outletId": "broadwaystars.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "http://thedaviddesk2.blogspot.com/2026/08/bway-review-paranormal-activity.html",
+            "outletId": "thedaviddesk2",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-31T00:09:38.552Z"
           }
         ],
-        "liveCount": 26,
+        "liveCount": 23,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-31T14:43:54.309Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
@@ -106914,7 +107075,7 @@
       "showId": "pre-existing-condition-off-broadway-2026",
       "title": "Pre-Existing Condition",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-critics-sound-off-on-pre-existing-condition-off-broadway",
@@ -107025,11 +107186,11 @@
           "outletId": "new-york-sun",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 123 chars — pattern may be missing for this outlet. Add an entry to scri"
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
@@ -107151,7 +107312,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "pride-west-end-2026",
@@ -118476,7 +118637,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-25T05:35:06.890Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "scorched-earth-off-broadway-2026",
@@ -118818,7 +118979,7 @@
       "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
       "title": "Shamilton! The Improvised Hip-Hop Musical",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -118886,7 +119047,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
@@ -132801,7 +132962,7 @@
       "showId": "the-children-off-west-end-2026",
       "title": "The Children",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/read-reviews-for-lucy-kirkwoods-the-children-on-broadway",
@@ -132845,7 +133006,7 @@
         "https://www.wsj.com/articles/the-children-review-living-in-the-shadow-of-the-meltdown-1513288224",
         "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/"
       ],
-      "dirFiles": 3,
+      "dirFiles": 5,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -133758,7 +133919,7 @@
         "liveCount": 0,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -138291,7 +138452,7 @@
       "showId": "the-holes-off-broadway-2026",
       "title": "The Holes",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -138320,7 +138481,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -146991,20 +147152,41 @@
         "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/",
         "https://culturesauce.com/chekhov-real-ivanov-off-broadway-review/",
         "https://theaterscene.com/reviews/the-real-ivanov/",
+        "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
         "https://nystagereview.com/2026/08/25/the-real-ivanov-diary-of-a-loser/",
-        "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
         "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
         "https://www.newyorktheatreguide.com/show/47351-the-real-ivanov",
-        "https://twi-ny.com/tag/the-real-ivanov/"
+        "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
+        "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer",
+        "http://thedaviddesk2.blogspot.com/2026/08/off-bway-review-real-ivanov.html",
+        "https://www.adriandimanlig.com/the-hangover-report-laura-strausfelds-the-real-ivanov-truncates-and-puts-a-farcical-spin-on-chekhovs-early-career-play-to-mixed-results/",
+        "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/attachment/the-real-ivanov-08cruss-rowland/"
       ],
-      "dirFiles": 17,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirFiles": 19,
+      "dirClean": 16,
+      "inReviewsJson": 16,
       "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
           "host": "show-score.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "http://thedaviddesk2.blogspot.com/2026/08/off-bway-review-real-ivanov.html",
+          "host": "thedaviddesk2.blogspot.com",
+          "knownOutletId": "thedaviddesk2",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.adriandimanlig.com/the-hangover-report-laura-strausfelds-the-real-ivanov-truncates-and-puts-a-farcical-spin-on-chekhovs-early-career-play-to-mixed-results/",
+          "host": "adriandimanlig.com",
+          "knownOutletId": "adriandimanlig",
           "serpCensus": true
         }
       ],
@@ -147018,15 +147200,46 @@
           "count": 1
         },
         {
+          "host": "offoffonline.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
           "count": 1
         },
         {
           "host": "theaterpizzazz.com",
           "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -147040,7 +147253,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 6,
             "error": null
           },
@@ -147050,7 +147263,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -147060,8 +147273,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -147071,7 +147284,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -147080,27 +147293,39 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 21,
         "byReason": {
-          "non-review-host": 5,
-          "roundup-page": 3,
-          "venue-production-page": 1,
-          "not-http-url": 10
+          "roundup-page": 2,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 2,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
           "host": "show-score.com",
@@ -147112,6 +147337,30 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-no-host"
+        },
+        {
+          "url": "http://thedaviddesk2.blogspot.com/2026/08/off-bway-review-real-ivanov.html",
+          "host": "thedaviddesk2.blogspot.com",
+          "outletId": "thedaviddesk2",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.adriandimanlig.com/the-hangover-report-laura-strausfelds-the-real-ivanov-truncates-and-puts-a-farcical-spin-on-chekhovs-early-career-play-to-mixed-results/",
+          "host": "adriandimanlig.com",
+          "outletId": "adriandimanlig",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -147119,11 +147368,39 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html"
+          },
+          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov"
+          },
+          {
+            "outletId": "thedaviddesk2",
+            "outlet": "thedaviddesk2",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://thedaviddesk2.blogspot.com/2026/08/off-bway-review-real-ivanov.html"
+          },
+          {
+            "outletId": "adriandimanlig",
+            "outlet": "adriandimanlig",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.adriandimanlig.com/the-hangover-report-laura-strausfelds-the-real-ivanov-truncates-and-puts-a-farcical-spin-on-chekhovs-early-career-play-to-mixed-results/"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer"
           }
         ],
         "suppressedMissing": [],
@@ -147177,22 +147454,29 @@
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
-            "outletId": "joshatthemovies.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-26T16:26:36.457Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/show/47351-the-real-ivanov",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
           },
           {
-            "url": "https://twi-ny.com/tag/the-real-ivanov/",
-            "outletId": "twi-ny.com",
+            "url": "https://joshatthemovies.com/2026/08/24/theater-review-the-real-ivanov/",
+            "outletId": "joshatthemovies.com",
             "state": "live",
-            "firstSeenAt": "2026-08-31T00:09:38.552Z"
+            "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-the-real-ivanov-at-lynn-f-angelson-theater/attachment/the-real-ivanov-08cruss-rowland/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/the-real-ivanov",
@@ -147200,12 +147484,33 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-26T16:26:36.457Z"
+          },
+          {
+            "url": "http://thedaviddesk2.blogspot.com/2026/08/off-bway-review-real-ivanov.html",
+            "outletId": "thedaviddesk2",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.adriandimanlig.com/the-hangover-report-laura-strausfelds-the-real-ivanov-truncates-and-puts-a-farcical-spin-on-chekhovs-early-career-play-to-mixed-results/",
+            "outletId": "adriandimanlig",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/world-premier-of-the-real-ivanov-comes-to-the-lynn-f-angelson-theatre-this-summer",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T16:04:48.214Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 11
+        "liveCount": 9,
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-31T14:43:54.309Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "the-receptionist-off-broadway-2026",
@@ -150953,7 +151258,7 @@
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "title": "Thelma & Louise: A New Musical",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -150982,7 +151287,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-31T14:43:54.309Z"
+      "computedAt": "2026-09-08T16:04:48.214Z"
     },
     {
       "showId": "this-is-my-favorite-song-off-broadway-2024",

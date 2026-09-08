@@ -1,15 +1,30 @@
 {
-  "generatedAt": "2026-09-08T15:05:58.729Z",
+  "generatedAt": "2026-09-08T16:05:01.194Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 119,
-  "clean": 112,
-  "defective": 7,
+  "clean": 110,
+  "defective": 9,
   "byType": {
-    "score-drift": 7
+    "score-drift": 9
   },
   "shows": [
+    {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.94 vs local 60.5 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25
+    },
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "title": "A Month in the Country",
@@ -18,7 +33,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.03 vs local 79.9 (Δ0.87)"
+          "detail": "deployed cs 79.77 vs local 79.03 (Δ0.74)"
         }
       ],
       "missingFromProd": [],
@@ -33,12 +48,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.07 vs local 72.87 (Δ0.2)"
+          "detail": "deployed cs 72.92 vs local 73.07 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
       "localCount": 35,
       "deployedCount": 35
+    },
+    {
+      "showId": "disruption-off-broadway-2026",
+      "title": "Disruption",
+      "openingDate": "2026-08-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.99 vs local 61.6 (Δ2.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -48,7 +78,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.45 vs local 78.67 (Δ0.22)"
+          "detail": "deployed cs 78.56 vs local 78.45 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
@@ -56,49 +86,34 @@
       "deployedCount": 23
     },
     {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.95 vs local 74.06 (Δ0.11)"
+          "detail": "deployed cs 75.79 vs local 75.72 (Δ0.07)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
-      "showId": "operation-mincemeat-west-end-2024",
-      "title": "Operation Mincemeat",
-      "openingDate": "2023-05-09",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-16",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 88.08 vs local 88.02 (Δ0.06)"
+          "detail": "deployed cs 87.29 vs local 86.78 (Δ0.51)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.71 vs local 69.62 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20
+      "localCount": 22,
+      "deployedCount": 22
     },
     {
       "showId": "six-the-musical-west-end-2021",
@@ -108,12 +123,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.25 vs local 81.13 (Δ0.12)"
+          "detail": "deployed cs 81.13 vs local 81.25 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
       "localCount": 14,
       "deployedCount": 14
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "title": "Magic Mike Live",
+      "openingDate": "2018-11-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.63 vs local 62.34 (Δ1.29)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10
     }
   ]
 }
