@@ -80,18 +80,13 @@ on:
       # glob) so a solo edit triggers CI.
       - 'scripts/fix-platform-ticket-links.js'
       # Gaps found by the new scripts/audit-toplevel-script-test-yml-coverage.js
-      # (BRO-172 follow-up): each of these has a test.mjs registered in
-      # tests/unit-test-manifest.txt (so CI is meant to run it) but was
-      # missing its own — or its sibling source's — push-path entry, meaning
-      # a solo push touching only that file triggered zero CI.
-      - 'scripts/audit-cross-outlet-attributions.test.mjs'
+      # (BRO-172 follow-up): each test.mjs below was already path-listed
+      # further down this file, but its SIBLING SOURCE was not — so a solo
+      # push editing only the source triggered zero CI even though a test
+      # exists and would have caught the regression. (The branch also re-added
+      # the .test.mjs entries themselves; dropped as duplicates, BRO-2955.)
       - 'scripts/audit-errexit-unguarded-substitution.js'
-      - 'scripts/audit-errexit-unguarded-substitution.test.mjs'
       - 'scripts/check-cross-outlet-attribution-drift.js'
-      - 'scripts/check-cross-outlet-attribution-drift.test.mjs'
-      - 'scripts/fetch-show-images-auto.test.mjs'
-      - 'scripts/send-opening-night-broadcast.test.mjs'
-      - 'scripts/verify-contamination-gate.test.mjs'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.test.mjs'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
