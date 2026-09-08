@@ -35,7 +35,19 @@ jobs:
   poll-and-apply:
     runs-on: ubuntu-latest
     # Polling 2 feeds + up to 20 LLM calls + fetchPage per match. Budget headroom.
-    timeout-minutes: 15
+    # BRO-335 follow-up: raised 15->20min after a Codex adversarial review of
+    # the "Commit breaker state" PUSH_DEADLINE_SEC=300 change flagged that the
+    # two sequential push-with-retry.sh steps in this job now advertise 300s
+    # + 420s (720s) of deadline budget alone — under the OLD 15min (900s) cap
+    # that left only ~180s for checkout/poll/apply/breaker-checks/push-core-
+    # data/deploy-dispatch combined, which the poll step's own worst case (up
+    # to 20 LLM calls) can exceed on its own. A worst case where both push
+    # steps fully exhaust local+API-fallback retries simultaneously could
+    # have hit the job timeout, which cancels the job outright — losing the
+    # "Dispatch deploy" and "Notify on failure" steps, strictly worse than a
+    # single failed step. 20min (1200s) leaves real margin (~300s+) even in
+    # that compound worst case.
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
