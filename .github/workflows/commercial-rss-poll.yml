@@ -177,6 +177,33 @@ jobs:
         # a failed breaker-state push is exactly the bug this step exists to
         # surface, unlike the billing-API-blip checks above it.
         if: always() && inputs.dry_run != true
+        # BRO-335 (2026-09-08): this step ran on the script's default 240s
+        # PUSH_DEADLINE_SEC/fundable=2-attempt budget until run 34195321965
+        # (2026-09-08T06:35 UTC) failed here with the exact push-contention
+        # signature BRO-2811 (965408d99d6, commit below) had already fixed on
+        # the sibling "Commit data changes" step: 2 local attempts (~291s,
+        # cheaper than the 180s/attempt worst-case model since fetch was fast
+        # both times) blew the 240s deadline, leaving 0s remaining for the Git
+        # Data API fallback, which floors to 2 retries (push-with-retry.sh
+        # ~L2200-2207) — both of which also timed out that run. 965408d99d6's
+        # own message explicitly investigated this step and left it alone,
+        # but only evaluated PUSH_API_FALLBACK_AFTER_ATTEMPTS ("only
+        # below-boundary override is 1 — premature"); it never tried
+        # PUSH_DEADLINE_SEC, the lever that actually fixed the sibling step.
+        # 300s is NOT a fundability fix — scripts/lib/audit-push-retry-budgets.js's
+        # own worst-case model still computes fundableAttempts=2 at 300s (needs
+        # ≥373s to reach 3, and 400s+ trips its job-timeout-margin guardrail
+        # given this job's shared 15-min budget across two push-with-retry.sh
+        # calls). It's a narrow, evidence-targeted nudge past the exact
+        # observed choke point (291s > 240s deadline check), matching the
+        # existing 300s precedent at opening-night-broadcast.yml's commit
+        # step. Not raising PUSH_API_FALLBACK_AFTER_ATTEMPTS — still agrees
+        # with 965408d99d6 that 1 is too aggressive for an hourly
+        # primary-path commit. If this repeats, the real fix is
+        # `timeout-minutes: 20` on the job to unlock room for an actual
+        # fundability fix, not further per-step tuning.
+        env:
+          PUSH_DEADLINE_SEC: '300'
         run: |
           bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json
           if git diff --staged --quiet; then
