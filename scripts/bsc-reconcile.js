@@ -1155,7 +1155,13 @@ async function escalateCmuxAuthFailures() {
           : `bsc-reconcile could not reach the cmux control socket on ${summary.unknown} sweep(s) this tick, and the failure matched NONE of the known shapes (auth, daemon-down, timeout, missing binary).\n\n`
             + 'The likeliest cause is that cmux changed its error wording: the classifier recognises rejections by their English text, so a reworded message stops being detected as auth and would otherwise fail silently. Check the raw error below and update classifyCmuxError in scripts/lib/cmux-socket-auth.js.\n\n') +
         'This is a configuration state, not a blip: it does not clear on its own. While it holds, the cmux tab-lane self-heal, bsc-prune and dispatch-watchdog are all disabled simultaneously — dead workspaces stop being recovered and nothing else notices.\n\n' +
-        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.',
+        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.\n\n' +
+        // Both shapes are stated unconditionally. The title above reflects
+        // whichever shape opened the incident, and one conditionKey means a
+        // later tick of the OTHER shape re-fires under that original wording
+        // (ship-check finding). Naming both counts here keeps the body honest
+        // whichever way round it happened.
+        `This tick: ${summary.authDenied} rejected outright, ${summary.unknown} unclassifiable. Full breakdown in the fields below.`,
       hint:
         'Check `automation.socketControlMode` in ~/.config/cmux/cmux.json. For launchd callers it must be "password" with a matching `automation.socketPassword` (scripts/lib/cmux-socket-auth.js reads it and injects CMUX_SOCKET_PASSWORD). Verify with: node -e "require(\'./scripts/lib/cmux-workspaces.js\').listWorkspaces()".',
         severity: 'error',
