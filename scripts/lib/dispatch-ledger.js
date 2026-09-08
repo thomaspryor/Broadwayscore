@@ -521,6 +521,72 @@ function unreconciledLaunchForRef(ref, entries, lastTerminal = null) {
   return reconciled ? null : launch;
 }
 
+// The terminal event that ended THIS task's launch, or null if none has been
+// recorded — i.e. "has the ledger already journaled that this specific launch
+// is over?". Returns the entry (not a boolean) so a caller can name the event
+// and its timestamp when it explains a decision to a human.
+//
+// BRO-3045. isAttemptEvent above deliberately excludes 'vanished' /
+// 'prune-closed' / 'remapped' because they describe what happened to a
+// WORKSPACE, not a fresh attempt. That is correct for latestAttemptForTask,
+// but it left linear-dispatch.js's hasLiveLedgerEntry with no way to see a
+// death the ledger had already written: latestAttemptForTask skipped straight
+// past the terminal row back to the stale 'launch', so the dispatch dedup
+// guard called the task live forever. Measured on the live ledger 2026-09-08:
+// 133 linear:BRO-* tasks were "already dispatched", 127 of them already
+// carried one of these breadcrumbs (117 prune-closed, 8 vanished, 2 remapped)
+// and the oldest was 630 hours old. Those cards could only be dispatched with
+// --force. The breadcrumb was written; the reader threw it away.
+//
+// KEYED ON taskId AS WELL AS ref, unlike unreconciledLaunchForRef above.
+// That helper asks a WORKSPACE-ownership question, so ref-scoping is right for
+// it. This one asks a TASK question, and cmux recycles workspace:N across
+// restarts — review measured 8 of the 133 whose launch ref was later
+// re-launched by a different taskId, and for 8 the last same-ref terminal row
+// belonged to a stranger (linear:BRO-2586 held workspace:59, task 75 recycled
+// the ref weeks later and wrote 'remapped' onto it). A ref-only rule would
+// read a stranger's death as this task's.
+//
+// A remapped-then-still-running task is structurally safe here: remapEntries
+// writes 'remapped' AND a new same-taskId 'launch' for the new ref, so
+// latestAttemptForTask returns the new launch and the old ref's terminal row
+// is never consulted.
+//
+// Timestamp handling deliberately DIVERGES from unreconciledLaunchForRef's.
+// That helper treats an unorderable pair as reconciled, which is right for it:
+// its failure direction is stranding a husk. This helper's failure direction is
+// dispatching a SECOND worker onto a card someone is already working, so it
+// requires both timestamps to be present and parseable and the terminal row to
+// be at-or-after the launch. Anything unorderable means "not proven over" and
+// the task stays live. Adversarial review supplied the four sequences that
+// forced this (each of which the looser `e.ts && launch.ts && e.ts < launch.ts`
+// form got wrong, all in the dangerous direction):
+//   launch(A,R,t10) -> prune-closed(A,R,t11) -> launch(A,R, ts missing)
+//   launch(A,R,t10) -> prune-closed(A,R, ts missing) -> launch(A,R,t12)
+//   launch(A,R,t10) -> prune-closed(A,R, malformed ts) -> launch(A,R,t12)
+//   a terminal row appended before its launch by two concurrent writers
+function terminalForLaunch(launch, entries) {
+  if (!launch || !launch.workspaceRef) return null;
+  const launchTs = Date.parse(launch.ts || '');
+  if (!Number.isFinite(launchTs)) return null; // unorderable launch — never claim it is over
+  let found = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (!TERMINAL_LAUNCH_EVENTS.has(e.event)) continue;
+    if (e.workspaceRef !== launch.workspaceRef) continue;
+    if (String(e.taskId) !== String(launch.taskId)) continue;
+    const ts = Date.parse(e.ts || '');
+    if (!Number.isFinite(ts)) continue; // unorderable terminal — proves nothing
+    // STRICTLY after. A terminal row sharing a timestamp with the launch is
+    // ambiguous — it can be a relaunch onto the same ref in the same
+    // millisecond as an older terminal — and the ambiguous answer must be
+    // "still live", never "safe to dispatch a second worker".
+    if (ts <= launchTs) continue;
+    found = e; // last-wins, matching this file's lastByRef/launchByRef convention
+  }
+  return found;
+}
+
 function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
   const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
   const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
@@ -1249,6 +1315,7 @@ module.exports = {
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
+  terminalForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,

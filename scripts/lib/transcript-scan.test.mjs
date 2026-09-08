@@ -296,6 +296,77 @@ test('push-ingress: rejects non-push commands', () => {
   }
 });
 
+// BRO-3046. `node scripts/audit-push-retry-budgets.js` — a read-only CI
+// advisory audit — was hard-blocked by pre-push-review-gate.sh as "push to
+// main of 1335 unreviewed code lines" purely because its FILENAME contains
+// "push". 39 files under scripts/ classified isPush; 17 were test harnesses.
+// Training sessions to burn a NO-SHIP-CHECK bypass on read-only commands is
+// how a gate stops being obeyed for real pushes.
+test('push-ingress: read-only audit/check scripts are not a push ingress (BRO-3046)', () => {
+  for (const cmd of [
+    'node scripts/audit-push-retry-budgets.js',
+    'node scripts/audit-push-core-data-audit-gap.js',
+    'node scripts/check-push-ledger.js',
+    'node scripts/lib/audit-push-retry-budgets.js',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, false, `should not match: ${cmd}`);
+  }
+});
+
+// The other half of the same rule, asserted against the REAL corpus so it stays
+// true as these files change: a shell harness that genuinely runs `git push`
+// (even against its own mktemp bare remote) is NOT scrubbed. These were gated
+// before this change and remain gated — no regression, and deliberately no
+// unsound claim that a name makes a shell script safe.
+test('push-ingress: shell harnesses that really run a push stay gated (BRO-3046)', () => {
+  for (const cmd of [
+    'bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh',
+    'bash scripts/lib/push-mutex.race-test.sh',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should stay gated: ${cmd}`);
+  }
+});
+
+// Every push-with-retry / push-mutex / merge-worktree-to-main harness under
+// scripts/lib/ builds its remote with `mktemp -d` + `git init --bare`
+// (verified 2026-09-08) — a test file can never reach a real remote.
+test('push-ingress: test harnesses are not a push ingress (BRO-3046)', () => {
+  for (const cmd of [
+    'node --test scripts/lib/push-content-survival.test.mjs',
+    'node scripts/lib/push-retry-deadman.test.mjs',
+    'node --test scripts/lib/audit-push-retry-budgets.test.mjs | tail -8',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, false, `should not match: ${cmd}`);
+  }
+});
+
+// The read-only exclusion SUBTRACTS tokens before matching rather than adding a
+// negative lookahead, precisely so a compound command still gates on its real
+// push. A lookahead inside the alternation would have un-gated all three.
+test('push-ingress: a read-only token does not un-gate a compound real push (BRO-3046)', () => {
+  for (const cmd of [
+    'node scripts/audit-push-retry-budgets.js && git push origin main',
+    'node --test scripts/lib/push-content-survival.test.mjs; git push',
+    'node scripts/audit-push-retry-budgets.js && bash scripts/lib/push-with-retry.sh',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should still gate: ${cmd}`);
+  }
+});
+
+// Pre-existing FALSE NEGATIVE closed in the same change: the script
+// alternatives required `\.?\/?scripts\/`, so an absolute path escaped every
+// one of them and pushed straight past the gate. Only the `git` alternative
+// had absolute-path handling.
+test('push-ingress: absolute-path push wrappers gate (BRO-3046 false negative)', () => {
+  for (const cmd of [
+    'node /Users/tompryor/Broadwayscore/scripts/lib/push-with-retry.js',
+    'bash /Users/tompryor/Broadwayscore/scripts/lib/push-via-git-api.sh',
+    'bash /Users/tompryor/Broadwayscore/scripts/lib/push-with-retry.sh',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should gate: ${cmd}`);
+  }
+});
+
 // ── reference-attached ──────────────────────────────────────────────────────
 
 test('reference-attached: detects [Image #N] marker in user text', () => {
@@ -749,4 +820,82 @@ test('override marker-ns: review-gate namespace does not collide with visual gat
     if (r1.marker && existsSync(r1.marker)) unlinkSync(r1.marker);
     if (r2.marker && existsSync(r2.marker)) unlinkSync(r2.marker);
   } finally { cleanup(); }
+});
+
+// The class the first version of this suite MISSED. `\S` includes & | ; > , so
+// an UNSPACED compound had its real push swallowed by the read-only scrub and
+// passed the gate; the spaced form gated correctly, which is exactly why
+// testing only the spaced form proved nothing. Adversarial ship-check finding.
+test('push-ingress: UNSPACED compound still gates (BRO-3046 scrub bypass)', () => {
+  for (const cmd of [
+    'node scripts/audit-push-retry-budgets.js&&git push',
+    'node scripts/audit-push-retry-budgets.js;git push',
+    'node scripts/audit-push-retry-budgets.js|git push',
+    'node scripts/audit-push-retry-budgets.js&&gh pr merge 1 --squash',
+    'node scripts/audit-push-retry-budgets.js>/tmp/x;git push origin main',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should still gate: ${cmd}`);
+  }
+});
+
+// A NAME IS NOT A SAFETY PROPERTY, and neither is a file's apparent contents.
+// A script is exempt from the gate only by being written down in
+// READONLY_SCRIPT_ALLOWLIST. These assert the mechanism itself: an
+// audit-/test-NAMED file that is not on the list is never scrubbed, however
+// harmless it looks, and a symlink at an allowlisted path that escapes the
+// checkout is not scrubbed either.
+test('push-ingress: an audit-named file NOT on the allowlist is never scrubbed (BRO-3046 P0)', async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync } = await import('node:fs');
+  const { join: j } = await import('node:path');
+  const { tmpdir: td } = await import('node:os');
+  const root = mkdtempSync(j(td(), 'pushgate-'));
+  mkdirSync(j(root, 'scripts', 'lib'), { recursive: true });
+  // Named audit-*, contains a real push, NOT allowlisted -> must gate.
+  writeFileSync(j(root, 'scripts', 'audit-push-to-main.js'), 'const {execSync}=require("child_process");\nexecSync("git push origin main");\n');
+  // Named audit-*, looks entirely harmless, NOT allowlisted -> must STILL gate.
+  // This is the case the contents-inference version got wrong: it is exactly as
+  // exempt as the pushing one, i.e. not at all.
+  writeFileSync(j(root, 'scripts', 'audit-push-harmless.js'), 'console.log("scanned");\n');
+  assert.equal(queryPushIngress('node scripts/audit-push-to-main.js', { repoRoot: root }).isPush, true);
+  assert.equal(queryPushIngress('node scripts/audit-push-harmless.js', { repoRoot: root }).isPush, true);
+});
+
+test('push-ingress: an allowlisted path IS scrubbed, and a symlink escaping the checkout is not (BRO-3046)', async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync, symlinkSync } = await import('node:fs');
+  const { join: j } = await import('node:path');
+  const { tmpdir: td } = await import('node:os');
+  const root = mkdtempSync(j(td(), 'pushgate3-'));
+  mkdirSync(j(root, 'scripts', 'lib'), { recursive: true });
+  const outside = mkdtempSync(j(td(), 'outside-'));
+  writeFileSync(j(outside, 'evil.js'), 'require("child_process").execSync("git push origin main");\n');
+
+  // A real allowlist entry, present as an ordinary file -> scrubbed.
+  writeFileSync(j(root, 'scripts', 'audit-push-retry-budgets.js'), 'console.log("ok");\n');
+  assert.equal(queryPushIngress('node scripts/audit-push-retry-budgets.js', { repoRoot: root }).isPush, false);
+
+  // The SAME allowlisted path, but a symlink pointing out of the checkout ->
+  // not scrubbed, because the allowlist asserts something about a file in THIS
+  // repo, not about whatever a link happens to resolve to.
+  mkdirSync(j(root, 'scripts', 'lib', 'x'), { recursive: true });
+  const linked = j(root, 'scripts', 'lib', 'push-content-survival.test.mjs');
+  symlinkSync(j(outside, 'evil.js'), linked);
+  assert.equal(queryPushIngress('node --test scripts/lib/push-content-survival.test.mjs', { repoRoot: root }).isPush, true);
+});
+
+// Every uncertainty fails CLOSED: the gate keeps firing rather than guessing.
+test('push-ingress: unresolvable read-only candidates fail closed (BRO-3046)', async () => {
+  const { mkdtempSync, mkdirSync } = await import('node:fs');
+  const { join: j } = await import('node:path');
+  const { tmpdir: td } = await import('node:os');
+  const root = mkdtempSync(j(td(), 'pushgate2-'));
+  mkdirSync(j(root, 'scripts'), { recursive: true });
+  // names a file that does not exist
+  assert.equal(queryPushIngress('node scripts/audit-push-nope.js', { repoRoot: root }).isPush, true);
+  // no repo root resolvable at all
+  assert.equal(queryPushIngress('node scripts/audit-push-nope.js', { repoRoot: null }).isPush, true);
+});
+
+// A scripts/audit-*/ DIRECTORY must not un-gate everything beneath it.
+test('push-ingress: an audit-named DIRECTORY does not un-gate a real wrapper (BRO-3046)', () => {
+  assert.equal(queryPushIngress('bash scripts/audit-tools/push-with-retry.sh').isPush, true);
 });
