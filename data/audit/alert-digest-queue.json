@@ -304,5 +304,30 @@
       }
     ],
     "queuedAt": "2026-09-08T10:16:42.947Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-09-08T12:26:05.880168+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nSpellbound — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Spellbound closed on september 6\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/809",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34232807906",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-09-08T13:36:53.336Z"
   }
 ]
