@@ -10,11 +10,11 @@
  * (correctly), but nothing surfaces how many are stuck or fixes them. This
  * script is read-only w.r.t. Notion/Linear — it never writes to either — and
  * writes a report consumed by health-check.js's warn row and by
- * enrich-card-acceptance.js. BRO-2977: when any card names a `node --test`
- * path, it also does a local, depth-bound `git fetch origin main` (never a
- * Notion/Linear write) to check that path's existence — see
- * card-premises-auditor.js's header for why it must check origin/main and
- * not this process's own checkout.
+ * enrich-card-acceptance.js. BRO-2977/BRO-3076: when any card names a
+ * `node --test`/`npx tsx --test`/`test -f` path, it also does a local,
+ * depth-bound `git fetch origin main` (never a Notion/Linear write) to check
+ * that path's existence — see card-premises-auditor.js's header for why it
+ * must check origin/main and not this process's own checkout.
  *
  * task #1830: --source linear adds a second, independent sweep over open
  * Linear (BRO-*) issues (the same verify gate linear-next.js enforces at
@@ -41,7 +41,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
-const { findCardsWithMissingTestFiles, isNodeTestCommand, auditCardTestPaths, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
+const { findCardsWithMissingCheckPaths, isCheckPathCommand, auditCardCheckPaths, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
@@ -190,17 +190,17 @@ async function fetchLinearOpenIssuesWithDescriptions() {
   return linear.listOpenIssuesWithDescriptions();
 }
 
-// BRO-2977: an armed card's `node --test`/`npx tsx --test` command can still
-// name a file that does not exist anywhere — isSafeCheckCommand only checks
-// SHAPE, never existence — which permanently starves the card at
-// linear-brain.js's Done gate. Checked against origin/main (not this
-// process's local checkout — see card-premises-auditor.js's header for why),
-// so it's additive on top of buildReport rather than folded into
-// armed/refused: a card with a confirmed-missing test file is still "armed"
-// by the dispatch gate's own definition, just unable to ever pass its own
-// acceptance check.
-function attachMissingTestFiles(report, evaluated, opts) {
-  report.missingTestFiles = findCardsWithMissingTestFiles(evaluated, opts);
+// BRO-2977/BRO-3076: an armed card's `node --test`/`npx tsx --test`/`test -f`
+// command can still name a file that does not exist anywhere —
+// isSafeCheckCommand only checks SHAPE, never existence — which permanently
+// starves the card at linear-brain.js's Done gate. Checked against
+// origin/main (not this process's local checkout — see
+// card-premises-auditor.js's header for why), so it's additive on top of
+// buildReport rather than folded into armed/refused: a card with a
+// confirmed-missing check path is still "armed" by the dispatch gate's own
+// definition, just unable to ever pass its own acceptance check.
+function attachMissingCheckPaths(report, evaluated, opts) {
+  report.missingCheckPaths = findCardsWithMissingCheckPaths(evaluated, opts);
   return report;
 }
 
@@ -214,7 +214,7 @@ function attachMissingTestFiles(report, evaluated, opts) {
 // just the already-flagged subset — the same one-round-trip-per-card cost
 // runNotionAudit's fetchCard() loop already pays for its ENTIRE sweep, not
 // just a flagged subset — so this is comparatively cheap.
-async function reconcileMissingTestFilesWithComments(flagged, opts = {}) {
+async function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
   // Injectable (opts.getIssue) so tests never make a live Linear API call —
   // same DI convention linear-next.js's tests rely on (noopLinearDeps()).
   const getIssue = opts.getIssue || require('./lib/linear-client.js').getIssue;
@@ -237,8 +237,8 @@ async function reconcileMissingTestFilesWithComments(flagged, opts = {}) {
     }
     if (!issue) { stillMissing.push(card); continue; }
     const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
-    if (!gate.armed || !isNodeTestCommand(gate.cmd)) continue; // corrected away from a node --test claim entirely
-    const recheck = auditCardTestPaths([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
+    if (!gate.armed || !isCheckPathCommand(gate.cmd)) continue; // corrected away from a file-naming claim entirely
+    const recheck = auditCardCheckPaths([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
     if (recheck.length) stillMissing.push(recheck[0]);
   }
   return stillMissing;
@@ -249,11 +249,11 @@ async function runLinearAudit(limit) {
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
-  const initialFlagged = findCardsWithMissingTestFiles(evaluated, { log: console.error });
+  const initialFlagged = findCardsWithMissingCheckPaths(evaluated, { log: console.error });
   if (initialFlagged.length) {
     console.error(`[audit-card-verifiability] linear: re-checking ${initialFlagged.length} flagged card(s) against their own comments (BRO-2796 correction path)`);
   }
-  report.missingTestFiles = await reconcileMissingTestFilesWithComments(initialFlagged, { log: console.error });
+  report.missingCheckPaths = await reconcileMissingCheckPathsWithComments(initialFlagged, { log: console.error });
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
@@ -271,7 +271,7 @@ function runNotionAudit(status, limit) {
   }
 
   const report = buildReport(evaluated);
-  attachMissingTestFiles(report, evaluated, { log: console.error });
+  attachMissingCheckPaths(report, evaluated, { log: console.error });
   writeReport(report, REPORT_PATH);
   return report;
 }
@@ -289,12 +289,12 @@ function printReport(label, report, reportPath) {
     console.log(`\nFirst 15 ${label.toLowerCase()} refused:`);
     report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] [${c.kind || 'unknown'}] ${c.name} — ${c.reason}`));
   }
-  const missingTestFiles = report.missingTestFiles || [];
-  console.log(`${label} armed but naming a node --test file absent from origin/main: ${missingTestFiles.length}`);
-  if (missingTestFiles.length) {
-    console.log(`\n${label} cards naming a nonexistent test file — evidence, not proof: some are simply a card`);
-    console.log(`whose test hasn't been written yet; a reader should judge each before acting:`);
-    missingTestFiles.forEach(c => console.log(`  ${c.id} ${c.name} — ${c.cmd} (missing: ${c.missingPaths.join(', ')})`));
+  const missingCheckPaths = report.missingCheckPaths || [];
+  console.log(`${label} armed but naming a check path (node --test/npx tsx --test/test -f) absent from origin/main: ${missingCheckPaths.length}`);
+  if (missingCheckPaths.length) {
+    console.log(`\n${label} cards naming a nonexistent check path — evidence, not proof: some are simply a card`);
+    console.log(`whose file hasn't been written yet; a reader should judge each before acting:`);
+    missingCheckPaths.forEach(c => console.log(`  ${c.id} ${c.name} — ${c.cmd} (missing: ${c.missingPaths.join(', ')})`));
   }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
 }
@@ -328,7 +328,7 @@ async function main() {
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
-      `| Armed but node --test file absent from origin/main | ${(report.missingTestFiles || []).length} |`,
+      `| Armed but check path absent from origin/main | ${(report.missingCheckPaths || []).length} |`,
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',
@@ -350,6 +350,6 @@ module.exports = {
   REPORT_PATH, DEFAULT_STATUS, DEFAULT_LIMIT, USAGE,
   // task #1830: Linear audit path — exported for unit coverage.
   evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
-  // BRO-2977: exported for unit coverage.
-  attachMissingTestFiles, reconcileMissingTestFilesWithComments,
+  // BRO-2977/BRO-3076: exported for unit coverage.
+  attachMissingCheckPaths, reconcileMissingCheckPathsWithComments,
 };
