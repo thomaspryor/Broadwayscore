@@ -80,6 +80,8 @@ function _resetRunWarnings() { warnedMessages.clear(); }
 function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
   const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
   let firstAuthError = null;
+  // Recorded so attempt 3 can tell whether it would be a byte-identical repeat.
+  let retryEnvUsed = null;
 
   try {
     return execFn(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
@@ -94,6 +96,7 @@ function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
     // byte-identical to the one that just failed.
     const callerHadPassword = Boolean(process.env.CMUX_SOCKET_PASSWORD);
     const retryEnv = cmuxSpawnEnv(process.env, { refresh: true, force: true });
+    retryEnvUsed = retryEnv;
     const out = execFn(CMUX, args, { ...base, env: retryEnv });
     // Announce here too, not only on attempt 3. Once a rejected credential is
     // DROPPED under force, the common "no password on disk" case succeeds
@@ -112,13 +115,28 @@ function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
         : '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
     return out;
   } catch (e2) {
-    if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
+    // Same rule as the final throw below, which was fixed first and left this
+    // rung behind (review finding): surface the ORIGINAL auth rejection. If
+    // the credential is rejected and then the daemon drops between attempts —
+    // a cmux restart, which is how the socket mode changed in the first
+    // place — throwing attempt 2's 'unavailable' would erase the auth
+    // diagnosis and the permanent misconfiguration would go unreported again.
+    if (classifyCmuxError(e2) !== 'auth-denied') throw firstAuthError || e2;
   }
 
   try {
     // Last resort: no credential, so an in-cmux caller falls back to the
     // ancestry check that admitted it before any of this existed.
-    const out = execFn(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    const finalEnv = withoutCmuxPassword(process.env);
+    // Skip a spawn byte-identical to one already tried. In the primary
+    // BRO-2959 state — socketControlMode "cmuxOnly", so no password anywhere —
+    // all three attempts build the same credential-less env, so every cmux
+    // call cost three guaranteed-identical spawns for the whole outage
+    // (review finding).
+    if (retryEnvUsed && !retryEnvUsed.CMUX_SOCKET_PASSWORD && !finalEnv.CMUX_SOCKET_PASSWORD) {
+      throw firstAuthError;
+    }
+    const out = execFn(CMUX, args, { ...base, env: finalEnv });
     // Saying nothing here would mask a permanently wrong password forever:
     // every call would quietly cost three spawns and still look healthy.
     warnOnce(logFn, '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');

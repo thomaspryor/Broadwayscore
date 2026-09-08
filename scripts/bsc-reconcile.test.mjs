@@ -730,6 +730,40 @@ test('zombie sweep: a card already carrying the outcome-park marker is skipped e
   assert.equal(r.checked, 0, 'must not even fetch the card for an already-parked task');
 });
 
+// ── BRO-2993: a failed cmux listing must fail closed, not silently disable
+// the live-tab guard ────────────────────────────────────────────────────────
+test('zombie sweep: a failed cmux listing flips ZERO tasks, even one otherwise eligible to flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(r.flipped, [], 'a cmux outage must never authorize a flip — uncertainty is not evidence the tab is dead');
+  assert.deepEqual(h.flips, []);
+  assert.equal(r.checked, 0, 'must not even reach the Notion card fetch — the guard fires before it');
+  assert.ok(r.skipped.some(s => s.id === '9' && /^live-tab cmux-unavailable:/.test(s.why)));
+  assert.ok(h.reports.some(rep => rep.kind === 'untracked-sweep-error' && /cmux socket busy/.test(rep.detail)));
+});
+
+test('zombie sweep: a successful (even empty) cmux listing behaves exactly as before — a genuinely idle task still flips', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], workspaces: [], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.flips, ['9'], 'a real empty workspace list is legitimate evidence of no live tab, not uncertainty');
+  assert.deepEqual(r.flipped, ['9']);
+});
+
+test('zombie sweep: a failed cmux listing still respects ledger-tracked/recheck-parked exclusions (no over-broad skip inflation)', () => {
+  const h = zombieHarness({
+    tasks: [zTask(1), zTask(2, { metadata: { recheckAfter: '2026-08-20' } })],
+    entries: [{ event: 'launch', taskId: '1', ts: tsAgo(100) }],
+  });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(r.flipped, []);
+  assert.ok(!r.skipped.some(s => /cmux-unavailable/.test(s.why)), 'neither task was ever a candidate for the live-tab guard, so the cmux-unavailable reason must not appear for them');
+});
+
 test('zombie sweep: a failed Notion park is reported honestly and never stamps the local marker (retried next sweep)', () => {
   const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
   const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });

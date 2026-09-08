@@ -10175,3 +10175,65 @@
 [2026-09-07 23:20:32] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
 [2026-09-07 23:20:32] DIGEST[ios]: 20 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/feedback-overnight-2026-08-31T06-15-03 ios/feedback-overnight-2026-09-01T06-15-07 ios/feedback-overnight-2026-09-04T06-15-04 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
 [2026-09-07 23:20:32] DONE  removed=3 kept=47 skipped=22 freed=2.9GB (dry_run=0)
+[2026-09-08 01:22:47] KEEP  [web] agent-a70b3646af63ee6bc — 1 unmerged commit(s) on worktree-agent-a70b3646af63ee6bc
+[2026-09-08 01:22:48] SKIP  [web] bro-2776-cvstyle-restore — worktree-bro-2776-cvstyle-restore merged but a live process has this worktree as its cwd
+[2026-09-08 01:22:49] SKIP  [web] bro-2943-sd-breaker — worktree-bro-2943-sd-breaker merged but a live process has this worktree as its cwd
+[2026-09-08 01:22:53] REMOVE [web] bro-2959-cmux-socket-auth — worktree-bro-2959-cmux-socket-auth merged, worktree removed (branch kept)
+[2026-09-08 01:22:54] SKIP  [web] bro-2983-main-commit-churn — worktree-bro-2983-main-commit-churn merged but a live process has this worktree as its cwd
+[2026-09-08 01:22:54] SKIP  [web] bro-2992-cmux-reachability — worktree-bro-2992-cmux-reachability merged but a live process has this worktree as its cwd
+[2026-09-08 01:22:54] SKIP  [web] bro-2993-untracked-sweep-guard — worktree-bro-2993-untracked-sweep-guard merged but a live process has this worktree as its cwd
+[2026-09-08 01:22:55] SKIP  [web] bro-525-dmarc-ingest — worktree-bro-525-dmarc-ingest merged but a live process has this worktree as its cwd
+[2026-09-08 01:23:00] REMOVE [web] bro-78-rageclick-labels — worktree-bro-78-rageclick-labels merged, worktree removed (branch kept)
+[2026-09-08 01:23:01] SKIP  [web] bro1618-sla-clock — worktree-bro1618-sla-clock merged but a live process has this worktree as its cwd
+[2026-09-08 01:23:06] REMOVE [web] bro2955-land — bro2955-land merged, worktree removed (branch kept)
+[2026-09-08 01:23:08] KEEP  [web] car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-09-08 01:23:10] KEEP  [web] claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-09-08 01:23:12] SKIP  [web] crown-v45-bro2348-cv-coverage — worktree-crown-v45-bro2348-cv-coverage merged but a live process has this worktree as its cwd
+[2026-09-08 01:23:12] SKIP  [web] diary-phase0c — worktree-diary-phase0c merged but worktree is LOCKED (active session: diary calendar Phase 0 picker work); not forcing
+[2026-09-08 01:23:13] SKIP  [web] fix-compareshow-tests — merged but worktree dirty; not forcing
+[2026-09-08 01:23:15] SKIP  [web] job-1850-mt1uvnig — merged but worktree dirty; not forcing
+[2026-09-08 01:23:15] SKIP  [web] job-crown-BRO-343-v28-headless-mtkkeeoe — job/crown-BRO-343-v28-headless-mtkkeeoe merged but a live process has this worktree as its cwd
+[2026-09-08 01:23:16] KEEP  [web] job-linear-BRO-2542-mtgkdpzm — 3 unmerged commit(s) on job/linear-BRO-2542-mtgkdpzm
+[2026-09-08 01:23:23] REMOVE [web] job-linear-BRO-2598-mtrwgyye — job/linear-BRO-2598-mtrwgyye merged, worktree removed (branch kept)
+[2026-09-08 01:23:29] FORCE-REMOVE [web] job-linear-BRO-2953-mtrwk4gx — job/linear-BRO-2953-mtrwk4gx merged, discarded uncommitted data/ churn (branch kept)
+[2026-09-08 01:23:33] REMOVE [web] job-linear-BRO-2989-mtryvo7q — job/linear-BRO-2989-mtryvo7q merged, worktree removed (branch kept)
+[2026-09-08 01:23:35] SKIP  [web] job-linear-BRO-54-mt1uscas — merged but worktree dirty; not forcing
+[2026-09-08 01:23:36] KEEP  [web] job-linear-BRO-554-mt1savkf — 1 unmerged commit(s) on job/linear-BRO-554-mt1savkf
+[2026-09-08 01:23:38] KEEP  [web] job-linear-BRO-712-mt2q808f — 1 unmerged commit(s) on job/linear-BRO-712-mt2q808f
+[2026-09-08 01:23:41] KEEP  [web] scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-09-08 01:23:43] KEEP  [web] task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-09-08 01:23:44] DIGEST[web]: 8 unmerged worktree(s) untouched >3d holding stranded work: web/agent-a70b3646af63ee6bc web/car-man-completeness-874 web/claude-902-coverage-verdict-s0 web/job-linear-BRO-2542-mtgkdpzm web/job-linear-BRO-554-mt1savkf web/job-linear-BRO-712-mt2q808f web/scraping-v2-t12-ship-check-fixes web/task-653-corpus-determinism
+[2026-09-08 01:23:45] REMOVE [ios] bro2986-visual-gate-show-detail — worktree-bro2986-visual-gate-show-detail merged, worktree removed (branch kept)
+[2026-09-08 01:23:45] SKIP  [ios] feedback-overnight-2026-08-06T13-26-40 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:46] SKIP  [ios] feedback-overnight-2026-08-06T18-50-35 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:46] SKIP  [ios] feedback-overnight-2026-08-07T06-15-02 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:46] SKIP  [ios] feedback-overnight-2026-08-08T06-15-05 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:47] KEEP  [ios] feedback-overnight-2026-08-09T06-15-01 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-09T06-15-01
+[2026-09-08 01:23:47] KEEP  [ios] feedback-overnight-2026-08-09T19-25-58 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-09T19-25-58
+[2026-09-08 01:23:47] KEEP  [ios] feedback-overnight-2026-08-09T19-49-30 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-09T19-49-30
+[2026-09-08 01:23:47] KEEP  [ios] feedback-overnight-2026-08-12T06-15-03 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-12T06-15-03
+[2026-09-08 01:23:48] KEEP  [ios] feedback-overnight-2026-08-13T06-15-05 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-13T06-15-05
+[2026-09-08 01:23:48] KEEP  [ios] feedback-overnight-2026-08-14T06-15-06 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-14T06-15-06
+[2026-09-08 01:23:48] KEEP  [ios] feedback-overnight-2026-08-15T06-15-01 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-15T06-15-01
+[2026-09-08 01:23:48] KEEP  [ios] feedback-overnight-2026-08-16T06-15-01 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-16T06-15-01
+[2026-09-08 01:23:48] KEEP  [ios] feedback-overnight-2026-08-17T06-15-06 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-17T06-15-06
+[2026-09-08 01:23:49] KEEP  [ios] feedback-overnight-2026-08-18T06-15-04 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-18T06-15-04
+[2026-09-08 01:23:49] SKIP  [ios] feedback-overnight-2026-08-21T06-15-06 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:49] KEEP  [ios] feedback-overnight-2026-08-22T06-15-02 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-22T06-15-02
+[2026-09-08 01:23:49] KEEP  [ios] feedback-overnight-2026-08-24T06-15-06 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-24T06-15-06
+[2026-09-08 01:23:50] SKIP  [ios] feedback-overnight-2026-08-27T06-15-07 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:50] SKIP  [ios] feedback-overnight-2026-08-28T06-15-06 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:51] SKIP  [ios] feedback-overnight-2026-08-29T06-15-05 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:51] SKIP  [ios] feedback-overnight-2026-08-30T06-15-06 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:51] KEEP  [ios] feedback-overnight-2026-08-31T06-15-03 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-08-31T06-15-03
+[2026-09-08 01:23:52] KEEP  [ios] feedback-overnight-2026-09-01T06-15-07 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-09-01T06-15-07
+[2026-09-08 01:23:52] KEEP  [ios] feedback-overnight-2026-09-04T06-15-04 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-09-04T06-15-04
+[2026-09-08 01:23:53] SKIP  [ios] feedback-overnight-2026-09-06T06-15-06 — merged but worktree dirty; not forcing
+[2026-09-08 01:23:53] KEEP  [ios] feedback-overnight-2026-09-07T06-15-07 — 1 unmerged commit(s) on worktree-feedback-overnight-2026-09-07T06-15-07
+[2026-09-08 01:23:54] KEEP  [ios] ios-design-proposals-atlas — 6 unmerged commit(s) on worktree-ios-design-proposals-atlas
+[2026-09-08 01:23:54] KEEP  [ios] ios-diary-fable-round — 6 unmerged commit(s) on worktree-ios-diary-fable-round
+[2026-09-08 01:23:54] KEEP  [ios] my-shows-redesign — 11 unmerged commit(s) on worktree-my-shows-redesign
+[2026-09-08 01:23:55] KEEP  [ios] show-below-fold — 5 unmerged commit(s) on worktree-show-below-fold
+[2026-09-08 01:23:55] KEEP  [ios] show-hero-v2 — 3 unmerged commit(s) on worktree-show-hero-v2
+[2026-09-08 01:23:55] DIGEST[ios]: 20 unmerged worktree(s) untouched >3d holding stranded work: ios/feedback-overnight-2026-08-09T06-15-01 ios/feedback-overnight-2026-08-09T19-25-58 ios/feedback-overnight-2026-08-09T19-49-30 ios/feedback-overnight-2026-08-12T06-15-03 ios/feedback-overnight-2026-08-13T06-15-05 ios/feedback-overnight-2026-08-14T06-15-06 ios/feedback-overnight-2026-08-15T06-15-01 ios/feedback-overnight-2026-08-16T06-15-01 ios/feedback-overnight-2026-08-17T06-15-06 ios/feedback-overnight-2026-08-18T06-15-04 ios/feedback-overnight-2026-08-22T06-15-02 ios/feedback-overnight-2026-08-24T06-15-06 ios/feedback-overnight-2026-08-31T06-15-03 ios/feedback-overnight-2026-09-01T06-15-07 ios/feedback-overnight-2026-09-04T06-15-04 ios/ios-design-proposals-atlas ios/ios-diary-fable-round ios/my-shows-redesign ios/show-below-fold ios/show-hero-v2
+[2026-09-08 01:23:55] DONE  removed=7 kept=29 skipped=23 freed=5.4GB (dry_run=0)

@@ -157,6 +157,26 @@ test('a first-attempt success stays quiet', () => {
   assert.equal(logged.length, 0);
 });
 
+test('the auth diagnosis survives when ATTEMPT 2 fails differently', () => {
+  // The daemon dropping between attempts (a cmux restart — how the socket
+  // mode changed in the first place) must not erase the auth rejection, or
+  // the permanent misconfiguration goes unreported exactly as it did before.
+  const { execFn } = recorder([authErr(), authErr(DOWN)]);
+  assert.throws(
+    () => run(['list-workspaces'], { execFn, logFn: quiet }),
+    (e) => /Access denied/.test(`${e.message}${e.stderr || ''}`),
+  );
+});
+
+// NOT tested here: the "skip attempt 3 when it would repeat attempt 2" short
+// circuit. Whether attempts 2 and 3 differ depends on whether the HOST has a
+// password in ~/.config/cmux/cmux.json, and run() has no seam to override that
+// path — so any assertion here passes on a machine with a config and fails on
+// one without. A host-dependent test is exactly the defect an earlier round of
+// this same change shipped; the short circuit is a cost optimisation whose
+// worst case is one wasted spawn, which does not justify adding a config-path
+// seam to production code purely to test it.
+
 test('the ORIGINAL auth rejection survives when the last attempt fails differently', () => {
   // If the ladder threw attempt 3's 'unavailable' error, summarizeCmuxFailures
   // would classify it 'unknown' and nothing would page — the exact
