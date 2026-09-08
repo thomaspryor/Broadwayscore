@@ -19,6 +19,7 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { cmuxSpawnEnv, classifyCmuxError, withoutCmuxPassword } = require('./cmux-socket-auth.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -26,8 +27,122 @@ function cmuxAvailable() {
   return fs.existsSync(CMUX);
 }
 
-function run(args) {
-  return execFileSync(CMUX, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+// Every socket call funnels through here (see this file's header: only the
+// run/close/list wrappers touch the cmux socket), which makes it the one
+// place that has to carry the socket credential — see cmux-socket-auth.js
+// for why per-LaunchAgent injection under-fixes (BRO-2959).
+//
+// The retry is the safety valve: if the password on disk is stale, a caller
+// that would otherwise have been admitted by cmux-ancestry alone would now
+// fail on a credential it never needed. So on an auth rejection we re-read
+// the config once (picking up a rotation) and, failing that, try again with
+// no credential at all.
+//
+// Retrying ONLY on auth-denied is what makes this safe for the mutating
+// commands that also come through here (closing a workspace, respawn-pane,
+// workspace-action, creating a workspace). An auth rejection happens at the
+// connection handshake, BEFORE the daemon ever sees the command, so nothing
+// was applied and re-sending cannot double-apply it. A timeout is the
+// opposite — the command may well have landed and only the reply was lost —
+// which is exactly why timeouts (and refused connections) are re-thrown to
+// the caller's existing degraded path instead of being retried here.
+//
+// The timeout is new too: this call sits inside a 5-min launchd tick, and a
+// wedged socket previously blocked it indefinitely, silently disabling the
+// orphan detection that runs after it.
+const RUN_TIMEOUT_MS = 30_000;
+
+// The recovery warnings below describe a standing CONFIG state, so they are
+// the same on every call. A stale credential in a process whose socket would
+// admit it by ancestry makes attempt 1 fail and attempt 2 succeed EVERY time,
+// and a tick issues dozens of cmux calls — unguarded that is dozens of
+// identical lines every five minutes (review finding). Once per process is
+// enough to diagnose it; the condition cannot change mid-process without a
+// config edit, which starts a new tick anyway.
+const warnedMessages = new Set();
+
+// logFn must never be able to convert a SUCCESSFUL cmux call into a failure:
+// the warning is diagnostic, the command already ran.
+function warnOnce(logFn, message) {
+  if (warnedMessages.has(message)) return;
+  warnedMessages.add(message);
+  try { logFn(message); } catch { /* diagnostics must not break the caller */ }
+}
+
+// Test-only: the once-per-process guard is module state, so each test needs a
+// clean slate or only the first one would ever observe a warning.
+function _resetRunWarnings() { warnedMessages.clear(); }
+
+// `execFn` is a test-only seam (same idiom as this file's listWorkspaces/
+// closeWorkspace injection points). The ladder below is the riskiest logic in
+// the module and execFileSync is otherwise impossible to drive from a test
+// without spawning real processes against a live socket.
+function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
+  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
+  let firstAuthError = null;
+
+  try {
+    return execFn(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
+  } catch (e) {
+    if (classifyCmuxError(e) !== 'auth-denied') throw e;
+    firstAuthError = e;
+  }
+
+  try {
+    // force: the caller's own CMUX_SOCKET_PASSWORD has now been PROVEN wrong
+    // by a rejection, so disk wins. Without force this attempt would be
+    // byte-identical to the one that just failed.
+    const callerHadPassword = Boolean(process.env.CMUX_SOCKET_PASSWORD);
+    const retryEnv = cmuxSpawnEnv(process.env, { refresh: true, force: true });
+    const out = execFn(CMUX, args, { ...base, env: retryEnv });
+    // Announce here too, not only on attempt 3. Once a rejected credential is
+    // DROPPED under force, the common "no password on disk" case succeeds
+    // right here — and reporting only from attempt 3 made a permanently wrong
+    // LaunchAgent password completely invisible, which is the masking this
+    // warning exists to prevent (review finding).
+    //
+    // Which message is right depends on what the CALLER had, not just on what
+    // the retry env ended up with: a dropped stale credential and a caller
+    // that never had one both leave retryEnv empty, but they are different
+    // diagnoses and only the first names something to fix.
+    warnOnce(logFn, retryEnv.CMUX_SOCKET_PASSWORD
+      ? '[cmux] socket password was rejected; a refreshed one from ~/.config/cmux/cmux.json worked. The stale value is still in this process’s environment.'
+      : callerHadPassword
+        ? '[cmux] the CMUX_SOCKET_PASSWORD in this environment was rejected and no usable one is on disk; the call succeeded without any credential. Fix automation.socketPassword in ~/.config/cmux/cmux.json or drop the stale value from the caller.'
+        : '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e2) {
+    // Same rule as the final throw below, which was fixed first and left this
+    // rung behind (review finding): surface the ORIGINAL auth rejection. If
+    // the credential is rejected and then the daemon drops between attempts —
+    // a cmux restart, which is how the socket mode changed in the first
+    // place — throwing attempt 2's 'unavailable' would erase the auth
+    // diagnosis and the permanent misconfiguration would go unreported again.
+    if (classifyCmuxError(e2) !== 'auth-denied') throw firstAuthError || e2;
+  }
+
+  try {
+    // Last resort: no credential, so an in-cmux caller falls back to the
+    // ancestry check that admitted it before any of this existed.
+    // A "skip attempt 3 when it would repeat attempt 2 byte-for-byte" short
+    // circuit was tried here and REVERTED. It saved one spawn in the outage
+    // state, but whether attempts 2 and 3 differ depends on whether the HOST
+    // has a password in ~/.config/cmux/cmux.json — so it silently changed the
+    // ladder's call count on any machine without one, breaking three existing
+    // tests on exactly the CI runners that have no cmux config. A one-spawn
+    // saving is not worth a host-dependent ladder (review finding).
+    const out = execFn(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    // Saying nothing here would mask a permanently wrong password forever:
+    // every call would quietly cost three spawns and still look healthy.
+    warnOnce(logFn, '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e3) {
+    // Surface the ORIGINAL auth rejection, not this last attempt's error.
+    // If attempt 3 happens to fail as 'unavailable', throwing it would hide
+    // the auth diagnosis from summarizeCmuxFailures and nothing would page —
+    // precisely the under-alerting this whole change exists to end.
+    throw classifyCmuxError(e3) === 'auth-denied' ? e3 : (firstAuthError || e3);
+  }
 }
 
 // ── pure logic (exported for tests) ────────────────────────────────────────
@@ -414,7 +529,7 @@ function pruneDone(opts = {}) {
 }
 
 module.exports = {
-  CMUX, cmuxAvailable, run,
+  CMUX, cmuxAvailable, run, _resetRunWarnings,
   parseWorkspaces, parseWorkspacesJson, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,

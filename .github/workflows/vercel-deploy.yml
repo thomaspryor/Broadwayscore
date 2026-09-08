@@ -413,6 +413,16 @@ jobs:
           # full 3-min timeout on most deploys (~5 CI-hours/day) — often losing
           # the event anyway. The watermark run appends the event with the
           # deployed_at timestamp captured above and commits it in one push.
+          #
+          # BRO-2983: always dispatches (deliberately NOT throttled here). This
+          # job's own checkout can be up to ~20min stale by the time this step
+          # runs (25-min job timeout), and multiple deploy jobs' checkouts are
+          # independent — a throttle read here races and can't enforce "at
+          # most once". The throttle decision lives inside
+          # update-deploy-watermark.yml instead, checked immediately before
+          # its write, serialized by that workflow's own concurrency group
+          # (deploy-watermark-update, cancel-in-progress: false) — see that
+          # file's "Check watermark throttle" step.
           gh workflow run update-deploy-watermark.yml \
             -f deployed_at='${{ steps.deploy.outputs.deployed_at }}' \
             -f deploy_sha='${{ github.sha }}' \

@@ -61,9 +61,11 @@ Per arm: `EXPOSED` (distinct persons whose first flag response = arm),
   CONSECUTIVE meaningful weeks (baseline ~4/wk pre-experiment) is grounds to
   consider reverting the cold-start gate.
 - **Guardrail — impression split**: control:cold-start shown should stay
-  roughly 10:1 (the 2-page minimum suppresses treatment impressions by
-  selection). Drift toward parity means the treatment filter silently
-  stopped applying, not that "it's working."
+  roughly in the 2.5:1 band measured since real data became available
+  (BRO-2952, 2026-09-07 amendment below — the original "~10:1" here was an
+  untested pre-launch projection, never confirmed against real numbers).
+  A further collapse toward parity means the treatment filter silently
+  stopped applying, not that "it's working." Thresholds: `scripts/lib/gate-cold-start-rules.js`.
 - **Primary judgment**: minimum 4 weeks (28 days) of experiment runtime
   before reading the ITT primary metric. `scripts/monitor-gate-cold-start.js`
   fires a one-time "time to look" nudge at that milestone — it never judges
@@ -107,3 +109,59 @@ Pure, testable, and the actual source of truth for the numbers above:
   `primaryReadyAlertedAt` is already stamped (one-time alert, won't re-fire)
   — re-read with `node scripts/analyze-gate-cold-start.js --days=60` in
   ~3-4 weeks to reassess with a larger sample.
+
+- **2026-09-07 (BRO-2952)**: the impression-split guardrail fired
+  `control:cold-start shown = 208:75` (2.8:1, vs the pre-registered "~10:1")
+  on 2026-08-31 and again 2026-09-07, read by the alert as "the treatment
+  filter silently stopped applying." Investigated as a possible client-side
+  regression or PostHog flag-payload change; found neither. What actually
+  happened:
+  - Flag health was fine both weeks (`flagHealthy: true`, exposed ~50/50 —
+    1123:1153 on 09-07, 1227:1233 on 08-31).
+  - The client-side filter (`coldStartCheckApplies` / `hasSeenEnoughPages` in
+    `src/lib/gate-logic.ts`, wired in `ProGateContext.triggerGate`) has had
+    no code changes since launch and its full test suite
+    (`tests/unit/gate-logic.test.mjs`, 13 tests incl. the "EXPERIMENT LOCK"
+    wiring checks) passes clean.
+  - `scripts/analyze-email-gate-funnel.js`'s trigger breakdown for the same
+    7d window (`data/audit/email-gate-funnel-monitor-state.json`) shows
+    `gate_modal_shown` coming almost entirely from `exit_intent`/
+    `scroll_depth`/`return_visitor` — the three triggers the cold-start
+    filter actually gates. `page_view_limit` (exempt from the filter by
+    design — see `triggerGate`'s blocking-trigger branch) is negligible, so
+    it isn't diluting the ratio either.
+  - The real cause: the "~10:1" figure was never measured — it was a
+    pre-launch projection ("cut impressions ~85-90%" — see
+    `scripts/analyze-email-gate-funnel.js` header) written before any data
+    existed. The HogQL `GROUP BY` row-cap bug (fixed 2026-08-26, commit
+    `b6d48ce42f5`) meant every "recent" 7-day reading before that date was
+    near-zero noise (e.g. 08-24: `1:1` on an exposed base of ~50 each,
+    against a true daily rate of ~300+) — not a valid baseline. The first
+    three real 7-day readings (08-31: 230:86, 09-01: 226:86, 09-07: 208:75)
+    all land in the same ~2.6-2.8:1 band: a real, stable selection effect
+    (a meaningfully large share of engaged visitors — those who clear the
+    30s exit-intent/scroll-gate dwell floor — do go on to view a 2nd page),
+    just milder than the untested pre-launch guess.
+  - No client behavior changed and no experiment arm was touched — this is a
+    measurement/guardrail-threshold correction only, not a treatment change,
+    so it does not invalidate the running experiment. `IMPRESSION_SPLIT_EXPECTED_RATIO`
+    (10 → 2.5) and `IMPRESSION_SPLIT_MIN_RATIO` (5 → 2.2) in
+    `scripts/lib/gate-cold-start-rules.js` now track the measured band, with
+    a floor kept close under it (not down near 1:1) so a partial regression —
+    the filter still applying, but to a shrinking subset of visits — still
+    trips it, not only a full collapse to parity.
+  - Second-opinion catch (Codex adversarial review) on the first draft of
+    this fix: the guardrail computed `max(shown)/min(shown)`, which discards
+    *which* arm is bigger — an inverted split (cold-start showing as much or
+    more than control, e.g. from mislabeled arms or the filter applied to the
+    wrong arm) would read as a "healthy" large ratio and never alert. Fixed
+    to compute `controlShown / coldStartShown` directly and alert on
+    inversion independent of the ratio floor.
+  - Regression tests live in the **existing** colocated
+    `scripts/lib/gate-cold-start-rules.test.mjs` (added by the original
+    monitor PR, #247) — an earlier draft of this fix mistakenly believed the
+    file had zero coverage and added a duplicate `tests/unit/` test file;
+    that was wrong (the colocated file already had 16 tests and runs in CI
+    via `scripts/lib/`'s own test glob, not the `tests/unit-test-manifest.txt`
+    path) and has been corrected — the new BRO-2952 cases were merged into
+    the existing file instead.

@@ -551,7 +551,7 @@ function computeBackoffSum(maxRetries) {
 // Both match `2 * GIT_NET_TIMEOUT_SEC + backoff` per attempt, because ONE loop
 // iteration can spend the cap TWICE: the loop-top `git_push` and, after the
 // fetch+rebase, the post-resolution `git_push` (push-with-retry.sh's
-// "Post-resolution push failed (attempt N)" branch). A rejected push, by
+// "Post-resolution push (attempt N) FAILED in Ns — ..." branch). A rejected push, by
 // contrast, returns in ~1s (measured against this repo's origin), so this is
 // the HANG/slow-push ceiling, not the ordinary race-loss path.
 //

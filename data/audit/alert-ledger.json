@@ -132,17 +132,17 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-06T10:47:05.782Z",
-      "lastNotifiedAt": "2026-09-06T10:47:05.782Z",
-      "notifyCount": 57,
+      "lastSeen": "2026-09-08T02:20:40.020Z",
+      "lastNotifiedAt": "2026-09-08T01:51:33.446Z",
+      "notifyCount": 58,
       "cardId": null,
       "linearIdentifier": null,
-      "resolvedAt": "2026-09-06T11:15:42.179Z"
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -768,26 +768,25 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2126/1500 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2140/500 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-09-06T09:46:22.208Z",
-      "lastNotifiedAt": "2026-09-06T09:46:22.208Z",
-      "notifyCount": 16,
+      "lastSeen": "2026-09-08T01:36:10.966Z",
+      "lastNotifiedAt": "2026-09-08T01:36:10.966Z",
+      "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-06T10:47:05.781Z",
-      "lastNotifiedAt": "2026-09-06T09:43:03.538Z",
-      "notifyCount": 41,
+      "lastSeen": "2026-09-08T02:20:40.018Z",
+      "lastNotifiedAt": "2026-09-08T01:16:11.199Z",
+      "notifyCount": 42,
       "cardId": null,
       "linearIdentifier": "BRO-2867",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-06T11:15:42.099Z"
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1287,24 +1286,22 @@
       "disposition": "digest",
       "title": "Pre-opening publishDate on Abigail’s Party",
       "firstSeen": "2026-08-19T04:02:52.959Z",
-      "lastSeen": "2026-08-20T10:51:29.370Z",
-      "lastNotifiedAt": "2026-08-19T04:02:52.959Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:59.259Z",
+      "lastNotifiedAt": "2026-09-07T23:58:59.259Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "opening-night-stale-upcoming-tag-abigails-party-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Abigail’s Party",
       "firstSeen": "2026-08-19T07:09:55.863Z",
-      "lastSeen": "2026-08-20T10:51:29.371Z",
-      "lastNotifiedAt": "2026-08-19T07:09:55.863Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:59.263Z",
+      "lastNotifiedAt": "2026-09-07T23:58:59.263Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "opening-night-stale-upcoming-tag-spellbound-off-broadway-2026": {
       "status": "open",
@@ -1395,12 +1392,11 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on Abigail’s Party",
       "firstSeen": "2026-08-20T05:49:12.223Z",
-      "lastSeen": "2026-08-20T10:51:29.369Z",
-      "lastNotifiedAt": "2026-08-20T05:49:12.223Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:59.256Z",
+      "lastNotifiedAt": "2026-09-07T23:58:59.256Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "opening-night-fulltext-mentions-show:short:abigails-party-west-end-2026": {
       "status": "open",
@@ -1418,12 +1414,11 @@
       "disposition": "digest",
       "title": "Unverified revival on Abigail’s Party",
       "firstSeen": "2026-08-20T05:49:12.229Z",
-      "lastSeen": "2026-08-20T10:51:29.371Z",
-      "lastNotifiedAt": "2026-08-20T05:49:12.229Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:59.261Z",
+      "lastNotifiedAt": "2026-09-07T23:58:59.261Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "cron-health:Commercial Weekly Orchestrator": {
       "status": "open",
@@ -1815,24 +1810,22 @@
       "disposition": "digest",
       "title": "Pre-opening publishDate on Electra / Persona",
       "firstSeen": "2026-08-30T00:25:09.189Z",
-      "lastSeen": "2026-09-03T23:38:49.814Z",
-      "lastNotifiedAt": "2026-08-30T00:25:09.189Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:58.476Z",
+      "lastNotifiedAt": "2026-09-07T23:58:58.476Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 4
+      "linearIdentifier": null
     },
     "opening-night-stale-upcoming-tag-electra-persona-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Electra / Persona",
       "firstSeen": "2026-08-30T00:25:09.192Z",
-      "lastSeen": "2026-09-03T23:38:49.817Z",
-      "lastNotifiedAt": "2026-08-30T00:25:09.192Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-07T23:58:58.479Z",
+      "lastNotifiedAt": "2026-09-07T23:58:58.479Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "health-check:Workflow repeat-failure: Fetch Show Images": {
       "status": "open",
@@ -2113,33 +2106,36 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on Electra / Persona",
       "firstSeen": "2026-09-03T23:38:49.810Z",
-      "lastSeen": "2026-09-03T23:38:49.810Z",
+      "lastSeen": "2026-09-07T23:58:58.473Z",
       "lastNotifiedAt": "2026-09-03T23:38:49.810Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-fulltext-mentions-show:short:electra-persona-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review too short to verify on Electra / Persona",
       "firstSeen": "2026-09-03T23:38:49.812Z",
-      "lastSeen": "2026-09-03T23:38:49.812Z",
+      "lastSeen": "2026-09-07T23:58:58.475Z",
       "lastNotifiedAt": "2026-09-03T23:38:49.812Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-electra-persona-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Review URL cross-show mismatch on Electra / Persona",
       "firstSeen": "2026-09-03T23:38:49.815Z",
-      "lastSeen": "2026-09-03T23:38:49.815Z",
+      "lastSeen": "2026-09-07T23:58:58.478Z",
       "lastNotifiedAt": "2026-09-03T23:38:49.815Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "broadcast-gate:checklist:electra-persona-west-end-2026": {
       "status": "open",
@@ -2158,12 +2154,12 @@
       "disposition": "digest",
       "title": "Unverified revival on The Story",
       "firstSeen": "2026-09-04T06:05:32.017Z",
-      "lastSeen": "2026-09-05T23:22:42.383Z",
+      "lastSeen": "2026-09-07T23:58:57.416Z",
       "lastNotifiedAt": "2026-09-04T06:05:32.017Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "we-aggregator-go-live:the-story-olivier-west-end-2026": {
       "status": "open",
@@ -2206,23 +2202,24 @@
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 6 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
-      "lastSeen": "2026-09-07T22:23:42.141Z",
+      "lastSeen": "2026-09-08T01:51:05.876Z",
       "lastNotifiedAt": "2026-09-07T22:23:42.141Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2765"
+      "linearIdentifier": "BRO-2765",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on The Story",
       "firstSeen": "2026-09-04T19:40:20.124Z",
-      "lastSeen": "2026-09-04T22:04:02.750Z",
+      "lastSeen": "2026-09-07T23:58:57.414Z",
       "lastNotifiedAt": "2026-09-04T19:40:20.124Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:times-uk": {
       "status": "open",
@@ -2357,11 +2354,12 @@
       "disposition": "auto",
       "title": "Orlando still has no image after 5 self-heal attempts",
       "firstSeen": "2026-09-05T17:48:04.136Z",
-      "lastSeen": "2026-09-07T22:23:43.725Z",
+      "lastSeen": "2026-09-08T01:51:05.877Z",
       "lastNotifiedAt": "2026-09-07T22:23:43.725Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2837"
+      "linearIdentifier": "BRO-2837",
+      "silentRefires": 1
     },
     "cron-health-chronic:Scrape WestEndTheatre": {
       "status": "open",
@@ -2403,11 +2401,12 @@
       "disposition": "auto",
       "title": "Madama Butterfly still has no image after 3 self-heal attempts",
       "firstSeen": "2026-09-07T22:23:44.860Z",
-      "lastSeen": "2026-09-07T22:23:44.860Z",
+      "lastSeen": "2026-09-08T01:51:05.879Z",
       "lastNotifiedAt": "2026-09-07T22:23:44.860Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2927"
+      "linearIdentifier": "BRO-2927",
+      "silentRefires": 1
     }
   }
 }

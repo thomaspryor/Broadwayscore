@@ -169,6 +169,40 @@ git_push() {
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
 }
+# BRO-2732: classify a FAILED git_push's exit status for the log. git_push runs
+# git under `_timeout ... -k 10` above, and when timeout kills git mid-transport
+# git prints NOTHING of its own — so a fast REJECTION (git's own stderr visible,
+# ~1s) and a full-$GIT_NET_TIMEOUT_SEC transport HANG (silent) were
+# INDISTINGUISHABLE in CI logs. That is BRO-2732's defect #2 ("the retry wrapper
+# swallows the underlying git stderr... arguably the more expensive bug"): the
+# rebuild-reviews.yml push failures could not be diagnosed from a run log at all.
+# Task #1810 already fixed the fully-silent case at the post-resolution site by
+# adding a message, but without the rc the two causes still read the same.
+#
+# GNU timeout exits 124 when the TERM it sends suffices and 137 (128+9) when it
+# has to escalate to the `-k 10` KILL; BOTH are reachable here. When
+# $_TIMEOUT_BIN is absent (the fail-open branch of _timeout — e.g. macOS without
+# coreutils) git runs UNWRAPPED, so neither code can originate from a timeout and
+# the plain rc is reported instead. Kept as one helper next to the `-k 10` that
+# produces those codes rather than duplicated inline per call site, so the two
+# sites cannot drift apart.
+#
+# Pure string formatting: no side effects, no git stderr, no ledger write —
+# nothing here can carry a credential (contrast redact_git_stderr() below, which
+# exists for the paths that DO capture git's stderr). Deliberately does NOT call
+# record_push_failure(): that function's durable telemetry write is gated to the
+# FIRST call per invocation, so recording a merely TRANSIENT post-resolution
+# timeout — one a later attempt often recovers from — would write a durable
+# "push failed" row for a run that ultimately SUCCEEDED, and
+# scripts/lib/push-retry-deadman.js would surface healthy runs as failures.
+describe_push_rc() {
+  case "$1" in
+    124) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=124, SIGTERM), so git printed no error of its own — a transport HANG, not a rejection" ;;
+    137) echo "rc=137 (SIGKILL) with no git error of its own — almost always _timeout escalating past the ${GIT_NET_TIMEOUT_SEC}s cap via -k 10, i.e. a transport HANG; an external SIGKILL (OOM killer) produces the same code, so check runner memory before ruling out a rejection" ;;
+    143) echo "rc=143 (SIGTERM) with no git error of its own — busybox timeout reports the signal rather than 124; treat as a transport HANG at the ${GIT_NET_TIMEOUT_SEC}s cap" ;;
+    *)   echo "rc=$1 — git's own stderr above carries the rejection reason" ;;
+  esac
+}
 
 # Strips credential-shaped text out of captured git stderr before it's echoed
 # to CI logs (ship-check adversarial finding, task #1849). Two passes:
@@ -872,6 +906,25 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/audit/alert-digest-queue.json)
+        # BRO-257: 12+ independent workflows call queueDigestLine() and push
+        # through this file (data-health-check.yml, scrape-new-aggregators.yml,
+        # process-feedback.yml, audit-aggregator-gap.yml, check-arm-yield.yml,
+        # weekly-affiliate-report.yml, promote-we-aggregator.yml,
+        # opening-night-broadcast.yml, ...). Unlike the per-run-independent
+        # audit/ logs in the generic arm below, this queue accumulates lines
+        # across runs — a whole-file keep-local here would silently drop
+        # whichever writer lost the rebase/push race's newly-queued (or
+        # newly-cleared) digest line. Same class as feedback-request-ledger.json
+        # and express-retry-queue.json above.
+        echo "  Auto-resolving (alert-digest-queue merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::alert-digest-queue merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
         echo "  Auto-resolving (keep local): $file"
@@ -1031,15 +1084,39 @@ restore_protected_fields() {
 # Fail-OPEN like restore_protected_fields — a reconciliation error must never
 # block an otherwise-good push.
 reconcile_merged_json() {
-  [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ] || return 0
   command -v node >/dev/null 2>&1 || return 0
   [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] || return 0
-  # ONE invocation: stdout is one changed repo-relative path per line (empty =
-  # nothing to do), stderr streams to the job log. Running it twice (once for
-  # the log, once for the list) would report empty the second time — the
-  # first pass has already written the merged files.
-  local out
-  out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || return 0
+
+  # ONE invocation per target set: stdout is one changed repo-relative path
+  # per line (empty = nothing to do), stderr streams to the job log. Running
+  # the SAME target set twice (once for the log, once for the list) would
+  # report empty the second time — the first pass has already written the
+  # merged files.
+  local out=""
+  if [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ]; then
+    out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || out=""
+  fi
+
+  # BRO-257: unconditional — NOT gated behind PUSH_RECONCILE_MERGED_JSON like
+  # the opt-in sweep above. data/audit/alert-digest-queue.json's own case arm
+  # in resolve_conflicts() only fires when git actually reports a conflict,
+  # but two writers appending a new entry at the same position (the common
+  # case: queueDigestLine() always appends at the end) hit exactly the hole
+  # this whole module exists for — `git rebase -X theirs` auto-resolves that
+  # add/add hunk in favour of our replayed commit WITHOUT ever reporting a
+  # conflict, so resolve_conflicts() never runs. Most of this file's 12+
+  # writer workflows never set PUSH_RECONCILE_MERGED_JSON (confirmed via
+  # grep across .github/workflows/*.yml), and its registry entry is
+  # deliberately optInReconcile:false (reconciled via the case arm, not the
+  # opt-in sweep) — so without this second, targeted call it would be
+  # silently unprotected on the common path. Scoped to exactly this one file;
+  # does not change the opt-in default for any other MANAGED file or caller.
+  local ledger_out
+  ledger_out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json) || ledger_out=""
+  if [ -n "$ledger_out" ]; then
+    out="${out}${out:+$'\n'}${ledger_out}"
+  fi
+
   [ -n "$out" ] || return 0
 
   # `git add` exactly the reconciled paths — NEVER `-A` (task #574 ship-check/
@@ -1190,6 +1267,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # resolution might have left in the now-outgoing commits.
   assert_no_conflict_markers
   assert_no_orphan_commit
+  # BRO-2732: bare assignment, NOT `local` — this is the top-level retry loop
+  # (`for i in $(seq 1 "$MAX_RETRIES")`), not a function, and `local` outside a
+  # function aborts under this script's `set -euo pipefail` at line 29, which
+  # would turn a transient push failure into a hard exit that skips every
+  # remaining retry AND the Git Data API fallback. Same reason the fetch path's
+  # explicit_fetch_rc/fetch_start (line ~1333) are bare too.
+  push_start=$SECONDS
   if git_push origin "$BRANCH"; then
     if verify_content_survived; then
       echo "Push succeeded on attempt $i"
@@ -1218,6 +1302,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         HEAD_TRUSTED_CLEAN=true
       fi
     fi
+  else
+    # BRO-2732: $? here is git_push's own status (an `if` condition's status is
+    # not clobbered on entry to its `else`). This branch is reached ONLY when the
+    # push itself failed — the push-succeeded-but-content-lost path above stays
+    # inside the `then` arm and falls through untouched. Previously this was the
+    # FIRST and most common push of every attempt and it reported nothing at all:
+    # control fell straight to the generic "Push failed (attempt N/M)" line below,
+    # which names neither the exit code nor the elapsed time, so a 1s rejection
+    # and a 90s hang produced identical log text.
+    pre_push_rc=$?
+    echo "  Pre-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$pre_push_rc")"
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
@@ -1800,6 +1895,8 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # (ship-check finding, task #183). Bounded by the same per-op timeout; a failure
   # just falls through to the normal backoff + next attempt.
   if [ "$history_changed" = "true" ]; then
+    # BRO-2732: see the identical bare-assignment note at the pre-resolution push.
+    push_start=$SECONDS
     if git_push origin "$BRANCH"; then
       if verify_content_survived; then
         echo "Push succeeded after conflict resolution (attempt $i)"
@@ -1832,7 +1929,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # no else) — a 90s GIT_NET_TIMEOUT_SEC hang here printed NOTHING,
       # which is why update-show-status.yml's identical hang on this exact
       # push call went undiagnosed in CI logs for 4+ days.
-      echo "  Post-resolution push failed (attempt $i) — will retry after backoff"
+      # BRO-2732: the message alone was still not diagnosable. In run
+      # 33674821020's sibling 33678227543 ("Rebuild Reviews (Fast)"), attempt 3
+      # fetched origin/main at 20:25:17Z and printed this line at 20:26:48Z —
+      # 91s, i.e. exactly GIT_NET_TIMEOUT_SEC — while origin/main took ZERO
+      # commits in that window (20:25:12Z, then 20:28:04Z). So it was a
+      # transport hang, not the lost write race it looked like. The rc makes
+      # that readable directly off the log instead of by timestamp archaeology.
+      post_push_rc=$?
+      echo "  Post-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$post_push_rc") — will retry after backoff"
     fi
   fi
 
@@ -2083,6 +2188,15 @@ if [ "$_api_fallback_ok" = "true" ]; then
   # the overall wall-clock budget is left, so a tight-timeout caller gets a
   # bounded couple of fallback attempts instead of open-ended extra minutes.
   # A caller that explicitly sets PUSH_API_MAX_RETRIES keeps its own choice.
+  # BRO-2951: a TIMEOUT-classified push attempt inside push-via-git-api.sh
+  # now also sleeps an escalating PUSH_API_TIMEOUT_BACKOFF_BASE/MAX_SEC
+  # backoff (defaults 5s/15s, so ≤~15s per gap, skipped entirely on the
+  # last attempt) before its next retry — kept small relative to this
+  # comment's ~3 * GIT_NET_TIMEOUT_SEC per-attempt cost model rather than
+  # invalidating it. Worst case is at the DEFAULT _api_max_retries_default=6
+  # below (5 gaps, ~5-19s each): roughly a minute added on top, not
+  # "well under" one — that lighter framing only holds for the scaled-down
+  # 2/4-retry paths a tight remaining deadline actually grants.
   _api_remaining_sec=$(( PUSH_DEADLINE_SEC - SECONDS ))
   [ "$_api_remaining_sec" -lt 0 ] && _api_remaining_sec=0
   _api_max_retries_default=6

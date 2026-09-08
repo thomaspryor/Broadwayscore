@@ -10,6 +10,7 @@ scripts/audit-false-balance.test.mjs
 scripts/audit-fetch-timeouts.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
+scripts/audit-orphan-inprogress.test.mjs
 scripts/audit-orphan-tests.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-pull-quotes.test.mjs
@@ -21,9 +22,11 @@ scripts/audit-run-budget-coverage.test.mjs
 scripts/audit-self-contradictory-clear-drained.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
+scripts/audit-stale-open-premises.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-t1-silent-gaps.test.mjs
 scripts/audit-test-yml-lib-deps.test.mjs
+scripts/audit-toplevel-script-test-yml-coverage.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
 scripts/audit-venue-write-guard.test.mjs
 scripts/auto-fix-show-data.test.mjs
@@ -68,6 +71,9 @@ scripts/lib/bww-archive-category-guard.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/cmux-launch.test.mjs
+scripts/lib/cmux-run-retry.test.mjs
+scripts/lib/cmux-socket-auth.test.mjs
+scripts/lib/cmux-spawn-guard.test.mjs
 scripts/lib/cmux-workspaces.test.mjs
 scripts/lib/collect-time-budget.test.mjs
 scripts/lib/colocated-test-ci-coverage.test.mjs
@@ -95,12 +101,14 @@ scripts/lib/prune-closeable.test.mjs
 scripts/lib/push-content-survival.test.mjs
 scripts/lib/scraper-playwright-missing-browser.test.mjs
 scripts/lib/serp-review-census.test.mjs
+scripts/lib/t1-sla.test.mjs
 scripts/lib/title-match.test.js
 scripts/lib/venue-date-compare.test.mjs
 scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
+scripts/newsletter/bw-quiet-week-fallback.test.mjs
 scripts/newsletter/featured-state-persist-order.test.mjs
 scripts/newsletter/lastfeatured-inweek.test.mjs
 scripts/newsletter/newsworthiness.test.mjs
@@ -137,6 +145,7 @@ scripts/tests/brightdata-daily-spend.test.mjs
 scripts/tests/bww-roundup-yield-provenance.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
+scripts/tests/cmux-reachability-check.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
 scripts/tests/dispatch-claim-requires-workspace.test.mjs
 scripts/tests/dispatch-outcome-digest.test.mjs
@@ -423,6 +432,7 @@ tests/unit/health-check-green-streak.test.mjs
 tests/unit/health-check-repeat-failures.test.mjs
 tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
+tests/unit/homepage-interactive-labels.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
@@ -617,6 +627,7 @@ tests/unit/restore-protected-fields-stale-checkout.test.mjs
 tests/unit/reverify-clear-guards.test.mjs
 tests/unit/reverify-stale-cv-title-mismatch-guard.test.mjs
 tests/unit/reverse-discovery-freshness.test.mjs
+tests/unit/review-completeness-monitor.test.mjs
 tests/unit/review-file-creation-same-url-check.test.mjs
 tests/unit/review-file-writer-preserves-flags-on-url-change.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs

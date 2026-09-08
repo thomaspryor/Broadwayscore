@@ -17,14 +17,27 @@ test('classifyMeasurability: suspect review is unmeasurable with a reason; real 
   assert.equal(susp.reason, 'publish-eq-fetch-date');
   assert.equal(susp.clockStart, null);
 
-  const good = classifyMeasurability({ publishDate: '2026-04-18', firstSeenAt: '2026-04-20T00:00:00Z' }, '2026-04-01');
+  // CONTRACT CHANGE (BRO-1618): a day-resolution publishDate is no longer measurable.
+  // This case previously asserted measurable:true with clockStart 2026-04-18T00:00Z —
+  // midnight UTC — which is what made every evening-published review read as a ~26h
+  // breach and pinned the reported SLA at a flat 0%. Day resolution carries ±24h of
+  // imprecision against a 24h threshold, so it is now surfaced as unmeasurable.
+  const dateOnly = classifyMeasurability({ publishDate: '2026-04-18', firstSeenAt: '2026-04-20T00:00:00Z' }, '2026-04-01');
+  assert.equal(dateOnly.measurable, false);
+  assert.equal(dateOnly.reason, 'date-only-publish-date');
+
+  // A real per-article timestamp still gets a clock.
+  const good = classifyMeasurability({ publishDate: '2026-04-18T18:00:00Z', firstSeenAt: '2026-04-20T00:00:00Z' }, '2026-04-01');
   assert.equal(good.measurable, true);
   assert.equal(good.clockStart.slice(0, 10), '2026-04-18', 'clock = publishDate when it is after showCreatedAt');
 });
 
 test('clockStart = max(publishDate, showCreatedAt) — late catalog add moves the clock forward', () => {
   // Review published 2026-01-01 but the show wasn't in our catalog until 2026-04-01.
-  const m = classifyMeasurability({ publishDate: '2026-01-01', firstSeenAt: '2026-04-05T00:00:00Z' }, '2026-04-01');
+  // Uses a precise publish time so the row is measurable under the BRO-1618 contract;
+  // the max() behaviour under test is unchanged.
+  const m = classifyMeasurability({ publishDate: '2026-01-01T12:00:00Z', firstSeenAt: '2026-04-05T00:00:00Z' }, '2026-04-01');
+  assert.equal(m.measurable, true);
   assert.equal(m.clockStart.slice(0, 10), '2026-04-01', 'showCreatedAt wins when it is later than publishDate');
 });
 

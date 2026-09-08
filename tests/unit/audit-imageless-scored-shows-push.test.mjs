@@ -149,3 +149,57 @@ test('workflow: the commit step keeps the raised push deadline and is not retry-
     `step must not be retry-starved; flags: ${JSON.stringify(site.flags)}`,
   );
 });
+
+// ── BRO-2955: pin the fan-out fix AT THE CALLER ────────────────────────────
+// BRO-2672 batched dispatch-new-show-images.js and missed this second caller,
+// which kept firing one workflow_dispatch per show inside its own loop. The
+// fix moved that orchestration into image-trigger-guard.js's
+// executeSelfHealDispatch, but every test of that lib stays green if the
+// caller reverts to a per-show loop tomorrow — the lib is simply not called.
+// So assert on the caller's REAL source (CLAUDE.md rule 15), the same way the
+// assertions above read the real workflow text.
+const CALLER_PATH = path.join(repoRoot, 'scripts', 'audit-imageless-scored-shows.js');
+const callerText = fs.readFileSync(CALLER_PATH, 'utf8');
+
+test('caller delegates dispatch to executeSelfHealDispatch and owns no dispatch loop', () => {
+  assert.match(
+    callerText,
+    /await\s+executeSelfHealDispatch\s*\(/,
+    'audit-imageless-scored-shows.js must dispatch through executeSelfHealDispatch()',
+  );
+
+  // The regression shape: dispatchImageFetch called from inside a loop body.
+  // One direct call is the fan-out; the lib call site passes it as a VALUE
+  // (`dispatch: dispatchImageFetch`), which is what the negative match allows.
+  assert.equal(
+    /dispatchImageFetch\s*\(/.test(callerText),
+    false,
+    'audit-imageless-scored-shows.js must not invoke dispatchImageFetch() itself — ' +
+      'pass it to executeSelfHealDispatch({ dispatch: dispatchImageFetch }) so the ' +
+      '"N shows produce at most ONE dispatch" guard cannot be bypassed (BRO-2672)',
+  );
+
+  // Nothing may CALL a dispatcher from inside a loop — that is the fan-out
+  // shape itself. Matched by brace-walking each loop body rather than by a
+  // line regex, so a reintroduced multi-line loop cannot slip past. Only real
+  // invocations count: a benign log line that merely says "dispatch", or the
+  // `dispatch: dispatchImageFetch` value passed to the lib, must not trip it.
+  const DISPATCH_CALL = /\b(?:dispatchImageFetch|executeSelfHealDispatch)\s*\(/;
+  for (const m of callerText.matchAll(/\b(?:for|while)\s*\(/g)) {
+    const open = callerText.indexOf('{', m.index);
+    if (open === -1) continue;
+    let depth = 0;
+    let end = open;
+    for (; end < callerText.length; end++) {
+      if (callerText[end] === '{') depth++;
+      else if (callerText[end] === '}' && --depth === 0) break;
+    }
+    const body = callerText.slice(open, end + 1);
+    assert.equal(
+      DISPATCH_CALL.test(body),
+      false,
+      'audit-imageless-scored-shows.js calls a dispatcher from inside a loop — this is the ' +
+        `exact BRO-2672 fan-out shape (N shows, N dispatches):\n${body.slice(0, 300)}`,
+    );
+  }
+});

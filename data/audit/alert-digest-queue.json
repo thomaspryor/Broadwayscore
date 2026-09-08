@@ -209,18 +209,6 @@
     "queuedAt": "2026-09-06T04:32:22.232Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (2126/1500 reqs)",
-    "description": "Zone serp_api1 billed 2126 requests today against a ceiling of 1500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (54), gather-reviews.js (33), collect-outlet-reviews.js (2).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-06T09:46:22.209Z"
-  },
-  {
     "conditionKey": "sd-circuit-breaker",
     "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
     "description": "Scrapingdog billed 35560 credits today against a ceiling of 21000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (717), collect-review-texts.js (300), collect-outlet-reviews.js (276).",
@@ -231,31 +219,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-06T09:46:22.710Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34027549825",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34027549825)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34026955409)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "4"
-      }
-    ],
-    "queuedAt": "2026-09-06T10:47:05.783Z"
   },
   {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
@@ -316,5 +279,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-07T22:06:55.537Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 11 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34177197421",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34177197421)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34177524619)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "11"
+      }
+    ],
+    "queuedAt": "2026-09-08T02:09:41.443Z"
   }
 ]

@@ -2904,6 +2904,41 @@ function checkDispatchHealth() {
   })];
 }
 
+// --- Category I1c: cmux socket reachability (BRO-2992) ---
+//
+// Every consumer of the cmux socket (checkDispatchOutcomes above,
+// dispatch-watchdog-core.js, overnight-digest.js) degrades quietly when it
+// can't be reached instead of asserting reachability directly — that silence
+// is why the 2026-09-07 BRO-2959 auth migration disabled bsc-reconcile's tab
+// self-heal, bsc-prune, and dispatch-watchdog simultaneously for ~2h with
+// nothing paging. Decision logic (streak tracking + the alert threshold)
+// lives in scripts/lib/cmux-reachability-check.js, shared verbatim with the
+// dedicated launchd sentinel (scripts/check-cmux-reachability.js) that
+// actually catches this in near-real-time — data-health-check.yml only runs
+// this row once/day on ubuntu-latest, where cmux.app can never exist, so
+// this row degrades to the same "(unmeasurable here)" pattern
+// checkDispatchHealth() uses above rather than manufacturing a permanent
+// false "unreachable" streak out of a CI runner that was never going to have
+// cmux installed.
+async function checkCmuxReachability() {
+  const { runReachabilityCheck } = require('./lib/cmux-reachability-check.js');
+  // Always dryRun:true here, independent of health-check.js's own dryRun param
+  // (plan-review finding, BRO-2992): cmux-workspaces.js's run() admits a
+  // process INSIDE cmux by ancestry alone, no credential needed, while an
+  // outside-cmux launchd process must present CMUX_SOCKET_PASSWORD — exactly
+  // the axis BRO-2959 broke along. health-check.js is routinely run
+  // interactively FROM inside a cmux workspace (including this card's own
+  // `VERIFY: node scripts/health-check.js`), so if this row wrote to the same
+  // attempts log the dedicated launchd sentinel (scripts/check-cmux-
+  // reachability.js) uses, one healthy in-cmux run would reset the
+  // consecutive-failure streak to zero even during a real outside-cmux
+  // outage — silently defeating the very alert this card exists to
+  // guarantee. This row still probes live and reads the sentinel's real
+  // persisted streak for display, it just never writes to it or pages —
+  // paging stays the sentinel's job alone.
+  return [await runReachabilityCheck({ dryRun: true })];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -4672,6 +4707,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(dryRun),
     ...checkDispatchHealth(),
+    ...(await checkCmuxReachability()),
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),

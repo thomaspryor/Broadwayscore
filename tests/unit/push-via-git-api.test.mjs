@@ -459,8 +459,15 @@ done
 exec "$@"
 `);
 
+    // BRO-2951: TIMEOUT retries now sleep an escalating backoff (default
+    // 5-15s) instead of a flat 1-3s. Pin BASE/MAX to 0 to keep this test's
+    // wait close to the OLD magnitude — the floor clamp still forces at
+    // least 1s(+0-4s jitter) per retry, so this doesn't reach zero, it just
+    // avoids the new escalation this test isn't exercising.
     const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
       PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
     });
 
     assert.equal(res.code, 0, `expected success after retrying the timeout, got ${res.code}\n${res.stderr}`);
@@ -509,8 +516,11 @@ done
 exec "$@"
 `);
 
+    // BRO-2951: see backoff-pin comment on the test above.
     const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
       PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
     });
 
     assert.equal(res.code, 0, `expected success, got ${res.code}\n${res.stderr}`);
@@ -557,8 +567,11 @@ done
 exec "$@"
 `);
 
+    // BRO-2951: see backoff-pin comment on the timeout-retry test above.
     const res = await spawnScriptWithEnv(['main', baseSha, '2'], runnerDir, {
       PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
     });
 
     assert.notEqual(res.code, 0, 'a run where every push times out must fail');
@@ -573,6 +586,155 @@ exec "$@"
     // Prove the fixture really did drive the timeout path, so a future change
     // that stops timing out cannot leave this test passing vacuously.
     assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124/, 'the timeout path was never exercised');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// BRO-2951: a TIMEOUT-classified retry used to sleep a near-flat 1-3s
+// regardless of how many times it had already timed out — hammering straight
+// back into an active GitHub-side throttle window (confirmed live: 4/4
+// attempts in data-health-check run 34145757217 hit the full 90s cap with
+// empty stderr and 0 lost ref races, ~92-95s apart — essentially no backoff
+// at all). It now sleeps an escalating, capped backoff instead.
+//
+// BASE=5/jitter-width=5 (RANDOM % 5, i.e. 0-4) is the smallest BASE that
+// makes consecutive tiers' jittered ranges provably non-overlapping
+// (tier N's range is [N*BASE, N*BASE+4]; tier 2's floor exceeds tier 1's
+// ceiling iff BASE > 4) — so this asserts real escalation deterministically
+// instead of being jitter-flaky, at the cost of ~15-23s of real sleep this
+// test intentionally exercises (it's testing that a wait happens, not just
+// that a number is logged).
+test('BRO-2951: a TIMEOUT retry backs off by an ESCALATING amount, not a flat 1-3s', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-backoff-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    // Every push attempt times out. MAX_RETRIES=3: attempts 1 and 2 sleep a
+    // backoff and log it before continuing; attempt 3 is the LAST budgeted
+    // attempt, so it skips the backoff entirely (ship-check finding: sleeping
+    // on the final attempt only delays the exhaustion report for nothing) —
+    // exactly 2 backoffs get logged, not 3.
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ]; then
+    exit 124
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '3'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '5',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '100',
+    });
+
+    assert.equal(res.code, 3, 'timeout-dominated exhaustion must exit 3');
+    const backoffs = [...res.stderr.matchAll(/backing off (\d+)s before retrying/g)].map((m) => Number(m[1]));
+    assert.equal(backoffs.length, 2, `expected 2 logged backoffs (attempts 1-2; attempt 3 is last and must skip its backoff), got: ${JSON.stringify(backoffs)}\n${res.stderr}`);
+    assert.ok(backoffs[0] >= 5 && backoffs[0] <= 9, `1st backoff (count=1) out of expected [5,9] range: ${backoffs[0]}`);
+    assert.ok(backoffs[1] >= 10 && backoffs[1] <= 14, `2nd backoff (count=2) out of expected [10,14] range: ${backoffs[1]}`);
+    assert.ok(backoffs[1] > backoffs[0], `backoff must escalate across consecutive timeouts, got: ${backoffs}`);
+    assert.match(res.stderr, /no attempts remain, skipping backoff/, 'the last attempt must not compute/log a backoff it will never sleep');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// BRO-2951 (ship-check finding, two independent reviewers): a non-numeric
+// PUSH_API_TIMEOUT_BACKOFF_BASE_SEC (e.g. accidentally empty or garbage)
+// used to throw an unbound-variable error under this file's `set -u` inside
+// the `$((BASE * count))` arithmetic, aborting the WHOLE retry loop before a
+// single retry could happen. A non-numeric MAX_SEC took a different, equally
+// bad path: the `-gt` comparison silently evaluated false, defeating the
+// clamp instead of erroring. Both must degrade to the built-in default
+// instead of crashing or silently misbehaving.
+test('BRO-2951: non-numeric backoff env vars degrade to defaults instead of crashing or silently disabling the clamp', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-backoff-nan-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    const marker = path.join(tmp, 'push-timed-out-once');
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ] && [ ! -f "${marker}" ]; then
+    touch "${marker}"
+    exit 124
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: 'not-a-number',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: 'also-garbage',
+    });
+
+    assert.equal(res.code, 0, `garbage backoff config must not abort the retry loop, got ${res.code}\n${res.stderr}`);
+    assert.ok(fs.existsSync(marker), 'the shim never intercepted a push — the script died before reaching it');
+    assert.doesNotMatch(res.stderr, /unbound variable|integer expression expected/, 'garbage config reached raw bash arithmetic/comparison instead of being coerced to the default');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// BRO-2951 correctness blocker (second-opinion review): PUSH_API_TIMEOUT_BACKOFF_MAX_SEC
+// misconfigured to 0 or negative must never reach a bare `sleep` with a
+// non-positive argument — `sleep` errors on a negative arg, which under this
+// file's `set -euo pipefail` would abort the WHOLE retry loop mid-flight
+// (silently burning every remaining budgeted attempt) instead of just
+// skipping a backoff.
+test('BRO-2951: a misconfigured non-positive PUSH_API_TIMEOUT_BACKOFF_MAX_SEC does not abort the retry loop', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-backoff-clamp-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    const marker = path.join(tmp, 'push-timed-out-once');
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ] && [ ! -f "${marker}" ]; then
+    touch "${marker}"
+    exit 124
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '5',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '-5',
+    });
+
+    assert.equal(res.code, 0, `a negative MAX_SEC must not abort the retry loop, got ${res.code}\n${res.stderr}`);
+    assert.ok(fs.existsSync(marker), 'the shim never intercepted a push');
+    assert.doesNotMatch(res.stderr, /sleep: invalid|negative/i, 'a negative value reached sleep unclamped');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

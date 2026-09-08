@@ -461,7 +461,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'commercial-data-write',
-    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "bd-circuit-breaker"/"check-bd-breaker.js" — sole writer is scripts/check-bd-breaker.js, invoked only by commercial-rss-poll.yml\'s "Bright Data daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so overlapping runs (its own cron racing a workflow_dispatch) queue rather than race.',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "bd-circuit-breaker"/"check-bd-breaker.js" — sole writer is scripts/check-bd-breaker.js, invoked only by commercial-rss-poll.yml\'s "Bright Data daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so overlapping runs (its own cron racing a workflow_dispatch) queue rather than race. 2026-09-07 (BRO-2960): still sole writer/same concurrency group — the ONLY change is that commercial-rss-poll.yml now commits this file in its own earlier "Commit breaker state" step (a second push-with-retry.sh call in the same job, right after the two breaker checks) instead of bundling it into the later "Commit data changes" step, so a failure on that later, larger commit no longer costs the breaker verdict its push.',
   },
   {
     file: 'audit/sd-circuit-breaker.json',
@@ -469,7 +469,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'commercial-data-write',
-    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow.',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow. 2026-09-07 (BRO-2960): same "Commit breaker state" step move as bd-circuit-breaker.json above.',
   },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
