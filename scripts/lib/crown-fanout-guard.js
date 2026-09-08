@@ -21,6 +21,24 @@
  * DIFFERENT singleton role with its own tab and is deliberately NOT matched
  * here — conflating the two would let this guard refuse a watchdog launch for
  * a reason that has nothing to do with it.
+ *
+ * Liveness and the successor exemption are the CALLER's job, not this
+ * predicate's (cmux-launch.js does both before calling shouldLaunchNewCrown):
+ * this module only ever sees an array the caller has already decided counts
+ * as "live", and title-matching stays pure and mockable without an injected
+ * liveness function (rule 15).
+ *
+ * Known limitation, deliberately not closed here (Codex adversarial review,
+ * 2026-09-07): this is a check-then-act, not a lock — two crown launches
+ * starting within the same instant can both list zero live crowns and both
+ * proceed. Closing that would mean holding scripts/lib/file-lock.js across
+ * the ENTIRE launch (including up to a 6-minute slow-boot verification wait
+ * inside launchCmuxSessionInner), which would make one crown launch block an
+ * unrelated one for minutes — a worse failure than the race it prevents. The
+ * incident this guard closes was never a millisecond race: five crowns
+ * accumulated over WEEKS of separate, uncoordinated handoffs, and this check
+ * closes exactly that failure mode. A true simultaneous double-launch is a
+ * real but much narrower residual risk than what shipped before this fix.
  */
 
 'use strict';
@@ -37,21 +55,16 @@ function isCrownLaunchTitle(title) {
 }
 
 /**
- * @param {Array<{ref:string,title:string}>} existingWorkspaces the live
- *   fleet snapshot (`cmux list-workspaces` / cmux-workspaces.listWorkspaces())
- *   — closed workspaces never appear in this list, so presence alone means
- *   "Running or Idle but not explicitly closed."
+ * @param {Array<{ref:string,title:string}>} existingWorkspaces crown-titled
+ *   workspaces the caller has already confirmed are LIVE (claude alive, not
+ *   just present in `cmux list-workspaces`) and, if `successorOf` was given,
+ *   already excludes that ref. Passing an unfiltered listing here would treat
+ *   a dead corpse tab as a permanent block and a sanctioned predecessor as an
+ *   independent duplicate — see cmux-launch.js's call site.
  * @param {string} title the title of the workspace about to be launched.
  *   Only a crown-mandate title (see isCrownLaunchTitle) is gated at all —
  *   this predicate is a no-op for every other launch (auto-dispatch task
- *   sessions, the watchdog tab, opening-night monitors, ...). Note this
- *   refuses a SANCTIONED successor hand-off too, not just an independent
- *   duplicate start: the predecessor is still alive (by design) at the exact
- *   moment its successor launches, and this predicate has no way to tell
- *   "my own coordinated predecessor" from "someone else's independent crown"
- *   from the launch args alone. A hand-off script must pass force:true —
- *   see cmux-launch.js's call site for why that's the intended fix, not a
- *   gap in this one.
+ *   sessions, the watchdog tab, opening-night monitors, ...).
  * @returns {{allow:boolean, existing?:{ref:string,title:string}, reason?:string}}
  */
 function shouldLaunchNewCrown(existingWorkspaces, title) {
@@ -68,9 +81,11 @@ function shouldLaunchNewCrown(existingWorkspaces, title) {
     existing,
     reason:
       `a BRO-343 crown session is already running in ${existing.ref} ("${existing.title}") — ` +
-      `refusing to launch a duplicate "${title}". Message the existing session to consolidate ` +
-      `instead of spawning a sibling, or pass force:true to launch one anyway (also required for a ` +
-      `sanctioned successor hand-off, since the predecessor is still alive until it self-closes).`,
+      `refusing to launch a duplicate "${title}". Message the existing session to consolidate instead ` +
+      `of spawning a sibling. If this IS a sanctioned successor hand-off, pass successorOf: ` +
+      `process.env.CMUX_WORKSPACE_ID (your own predecessor ref) so only your own predecessor is exempted ` +
+      `— any OTHER live crown still refuses. force:true is for a genuinely deliberate second, independent ` +
+      `crown; it also bypasses the terminal-capacity preflight, so prefer successorOf for a hand-off.`,
   };
 }
 
