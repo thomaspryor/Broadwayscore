@@ -1545,6 +1545,15 @@ async function main(): Promise<void> {
         fileData.rejectedBy = 'ensemble-scoreability-check';
         fileData.rejectionReason = rejection;
         fileData.rejectionReasoning = rejectionReasoning;
+        // How many rejecting models actually named `rejection` — see
+        // rejectionAgreeCount doc comment (types.ts). Only ensembleResult
+        // carries it (finalizeScoredFile's rejection branch); other writers
+        // of rejectedBy='ensemble-scoreability-check' leave it undefined and
+        // hasEnsembleConsensus() falls back to its pre-existing heuristic.
+        const ensembleRejectionAgreeCount = (result as any).ensembleResult?.rejectionAgreeCount;
+        if (typeof ensembleRejectionAgreeCount === 'number') {
+          fileData.rejectionAgreeCount = ensembleRejectionAgreeCount;
+        }
         fileData.promptVersion = PROMPT_VERSION;
         saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
       }
