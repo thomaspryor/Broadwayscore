@@ -3371,7 +3371,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             console.log(`    ⟳ Prefix match: merged ${filename} into ${existingFile}`);
             return true;
@@ -3381,7 +3381,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -3396,7 +3396,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -3515,7 +3515,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+          }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
 
           // Rename to canonical filename if different
@@ -3592,7 +3592,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const corrected = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             // mergeReviews keeps the FIRST-seen source as primary (existing's roundup source);
             // force both fields so a corrected file no longer reads as roundup-attributed.
             corrected.criticName = reviewData.criticName;
@@ -3620,7 +3620,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+          }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
           console.log(`    ⟳ URL match: ${!merged.isPreviewPlaceholder && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
           return true;

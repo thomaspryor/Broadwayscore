@@ -1068,7 +1068,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // candidate URL that belongs to a different show (combined-roundup
   // contamination), and the full show record so the regression guard (#1416)
   // can reject a candidate dated outside the current run (a prior production).
-  if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId), show: _getShowById(showId) })) {
+  if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, {
+    showTitle: _getShowTitle(showId),
+    show: _getShowById(showId),
+    // BRO-3092: sibling URL-collision guard. findExistingReviewFile's pass-0
+    // URL dedup skips wrongProduction/duplicateOf files, so a flagged sibling
+    // that already owns input.url routes the write here by outlet+critic
+    // instead — the swap would duplicate the URL and wipe this file.
+    showDir: path.dirname(filepath),
+    selfFilename: path.basename(filepath),
+  })) {
     changed = true;
   }
   if (!urlLocked && input.url && !existing.url &&

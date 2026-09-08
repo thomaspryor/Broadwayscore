@@ -33,6 +33,7 @@ const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
+const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
@@ -2041,7 +2042,10 @@ function validateReviewsJson() {
     // (chicago.suntimes.com) mints a provisional second outlet, and the same
     // article then counts twice under two IDs at two different scores
     // (iceboy-regional-2026, Steven Oxman, 75 + 65 — found 2026-08-02).
-    const key = `${r.showId}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
+    // Shared with the writer-side guard in lib/review-url-collision.js
+    // (BRO-3092) so the gate and the thing that prevents the gate tripping can
+    // never disagree about what "the same URL" means.
+    const key = sameUrlDuplicateKey(r.showId, r.url);
     if (seenUrls[key]) {
       const prev = seenUrls[key];
       urlDuplicates.push({

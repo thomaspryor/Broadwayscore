@@ -23,6 +23,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
+const { retractStaleClearBreadcrumb } = require('./lib/flag-contradiction');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -394,6 +395,22 @@ Respond with ONLY this JSON (no markdown fences):
             // through the field they already check, rather than adding a
             // field-specific exemption to each one as they accrete.
             sourceData.wrongProductionReason = `contamination-adjudicated: ${result.productionType}`;
+            // BRO-3092: re-flagging OVERRULES any earlier auto-clear, so its
+            // breadcrumb must be retracted in the same write. Leaving it
+            // standing produces the wrongProduction + wrongProductionAutoCleared
+            // self-contradiction #1020 exists to catch — and because
+            // wrongProductionAutoCleared is in PROTECTED_FIELDS, only the
+            // clearBreadcrumbRetracted stamp this helper writes lets the
+            // deletion survive push-review-texts' restore. the-car-man-west-end-
+            // 2026/north-west-end--natalia-prucnal.json (a Sheffield Lyceum tour
+            // review adjudicated national-tour after the rebuild had auto-cleared
+            // it on registry region 'london') sat undrained here and failed the
+            // drain acceptance test on main.
+            retractStaleClearBreadcrumb(sourceData, {
+              flag: 'wrongProduction',
+              breadcrumb: 'wrongProductionAutoCleared',
+              task: '#1020',
+            });
           } else {
             sourceData.tourCheckVerified = 'false-positive';
             sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;
