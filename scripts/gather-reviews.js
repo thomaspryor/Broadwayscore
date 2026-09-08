@@ -79,6 +79,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
@@ -4427,8 +4428,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               params: { api_key: scrapingBeeKey, url: apiUrl, render_js: 'false' },
               timeout: 20000, responseType: 'text',
             });
+            recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1, purpose: 'wet-live-fetch' });
             try { posts = JSON.parse(resp.data); } catch {}
-          } catch {}
+          } catch (e) {
+            const status = e.response?.status || 'error';
+            recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'wet-live-fetch' });
+          }
         }
 
         if (posts && Array.isArray(posts)) {

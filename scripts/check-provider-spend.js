@@ -27,16 +27,24 @@ const {
   fetchBdZoneCostDay, fetchBbSessionCountForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
-  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday,
+  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
 } = require('./lib/provider-spend-core');
 const {
-  countCallsByProvider, topCallers, computeAttributedPct, LEDGER_PATH: CALL_LEDGER_PATH,
+  countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
+  computeAttributedPct, CREDIT_BILLED_PROVIDERS, BILLING_COUNT_FIELD, LEDGER_PATH: CALL_LEDGER_PATH,
 } = require('./lib/provider-telemetry');
 
 const REPO = path.join(__dirname, '..');
 const LEDGER = path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl');
 const SNAPSHOT = path.join(REPO, 'data', 'audit', 'provider-spend-snapshot.json');
 const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json');
+// S0-T6: durable daily rollup of the per-call ledger. The raw ledger
+// (CALL_LEDGER_PATH, provider-telemetry.js) rotates at MAX_LEDGER_LINES —
+// under a day at unthrottled Scrapingdog volume — so it cannot answer a
+// 7-day attribution question by itself. This file is NEVER rotated; each
+// day's rows are written once and, on re-run, idempotently replaced (same
+// pattern as LEDGER above).
+const DAILY_AGG = path.join(REPO, 'data', 'audit', 'scraper-spend-daily-agg.jsonl');
 
 if (hasHelpFlag(process.argv)) {
   console.log('Usage: node scripts/check-provider-spend.js [--dry-run] [--day=YYYY-MM-DD]\n'
@@ -69,6 +77,20 @@ function readLedger() {
 function readCallLedger() {
   let lines;
   try { lines = fs.readFileSync(CALL_LEDGER_PATH, 'utf8').split('\n').filter(Boolean); }
+  catch { return []; }
+  const records = [];
+  for (const line of lines) {
+    try { records.push(JSON.parse(line)); }
+    catch { /* skip corrupt line */ }
+  }
+  return records;
+}
+
+// Same corrupt-line-tolerant read as the ledgers above; a bad row loses one
+// aggregate record, never the run.
+function readDailyAgg() {
+  let lines;
+  try { lines = fs.readFileSync(DAILY_AGG, 'utf8').split('\n').filter(Boolean); }
   catch { return []; }
   const records = [];
   for (const line of lines) {
@@ -114,12 +136,25 @@ async function main() {
   // wrong — the exact gap that let the Aug 1 Browserbase rebound go unnamed.
   const callLedger = readCallLedger();
   const ledgerCounts = countCallsByProvider(callLedger, DAY);
-  const attributedPct = computeAttributedPct(ledgerCounts, record.providers);
+  const ledgerCredits = creditsByProvider(callLedger, DAY);
+  const attributedPct = computeAttributedPct(ledgerCounts, record.providers, ledgerCredits);
   record.attributedPct = attributedPct;
+  // Billed-unit denominator per provider — reuses provider-telemetry.js's
+  // BILLING_COUNT_FIELD directly (not a re-typed copy) so this can't drift
+  // from computeAttributedPct's own denominator if the mapping ever changes.
   const attribution = {};
   for (const provider of Object.keys(attributedPct)) {
     if (attributedPct[provider] == null) continue;
-    attribution[provider] = { pct: attributedPct[provider], top: topCallers(callLedger, DAY, provider, 5) };
+    const isCreditBased = CREDIT_BILLED_PROVIDERS.has(provider);
+    const top = isCreditBased
+      ? topCallersByCredits(callLedger, DAY, provider, 5).map((t) => ({ script: t.script, amount: t.credits }))
+      : topCallers(callLedger, DAY, provider, 5).map((t) => ({ script: t.script, amount: t.count }));
+    const billingUnit = BILLING_COUNT_FIELD[provider](record.providers[provider] || {});
+    const topSum = top.reduce((s, t) => s + t.amount, 0);
+    const topCoveragePct = billingUnit ? Math.min(1, topSum / billingUnit) : (billingUnit === 0 ? 1 : null);
+    attribution[provider] = {
+      pct: attributedPct[provider], top, unit: isCreditBased ? 'credits' : 'calls', topCoveragePct,
+    };
   }
 
   const breaches = budgetBreaches(record, thresholds);
@@ -127,10 +162,21 @@ async function main() {
   const streak = computeStreak(series, thresholds);
   const snapshot = renderSnapshot({
     record, streak, breaches, generatedAt: new Date().toISOString(), attribution,
+    attributionCoverageMin: thresholds.attributionCoverageMin ?? 0.8,
   });
 
   console.log(`[provider-spend] ${DAY}: ${snapshot.bannerText}`);
   for (const item of snapshot.items) console.log(`  ${item.title}`);
+
+  // S0-T6: roll today's per-call ledger into the durable daily aggregate
+  // BEFORE the raw ledger rotates it away. Idempotent by day, same as LEDGER.
+  const todaysAggRows = aggregateLedgerByDay(callLedger, DAY);
+  const existingAgg = readDailyAgg();
+  const aggSeries = [...existingAgg.filter((r) => r.day !== DAY), ...todaysAggRows];
+  console.log(`[provider-spend] ${DAY}: daily aggregate — ${todaysAggRows.length} (provider,workflow,script,fn) row(s)`);
+  for (const row of todaysAggRows.slice(0, 5)) {
+    console.log(`  ${row.provider} ${row.credits}cr / ${row.calls} calls — ${row.script} (${row.fn}, workflow=${row.workflow || 'none'})`);
+  }
 
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');
@@ -140,6 +186,7 @@ async function main() {
   fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
   fs.writeFileSync(LEDGER, series.map((r) => JSON.stringify(r)).join('\n') + '\n');
   fs.writeFileSync(SNAPSHOT, JSON.stringify(snapshot, null, 2) + '\n');
+  fs.writeFileSync(DAILY_AGG, aggSeries.map((r) => JSON.stringify(r)).join('\n') + '\n');
 
   if (breaches.overspend.length || breaches.unmeasured.length) {
     const { routeAlert } = require('./lib/owner-alert-router');

@@ -179,6 +179,66 @@ function topCallers(ledgerRecords, day, provider, n = 5) {
 }
 
 /**
+ * Sum ledger `credits` per provider for one UTC day. This is the numerator
+ * ScrapingBee/Scrapingdog attribution must use (S0-T1): those two providers
+ * bill by credit, not by call, so a 25-credit SERP row and a 1-credit page
+ * row are not interchangeable units. countCallsByProvider() stays row-count
+ * based for Browserbase (billed per session) and Bright Data (billed per
+ * request) — both of those are 1 unit = 1 billed thing.
+ * @returns {{[provider: string]: number}}
+ */
+function creditsByProvider(ledgerRecords, day) {
+  const sums = {};
+  for (const r of ledgerRecords || []) {
+    if (!r || _dayOf(r.ts) !== day) continue;
+    const credits = typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
+    sums[r.provider] = (sums[r.provider] || 0) + credits;
+  }
+  return sums;
+}
+
+/**
+ * Top-N callers BY CREDITS SPENT for one provider on one day — the
+ * credit-weighted counterpart to topCallers(), used for scrapingbee/
+ * scrapingdog where a caller's row count says nothing about its cost (one
+ * 25-credit SERP row can outweigh 20 one-credit page rows).
+ * @returns {Array<{script: string, credits: number}>}
+ */
+function topCallersByCredits(ledgerRecords, day, provider, n = 5) {
+  const sums = {};
+  for (const r of ledgerRecords || []) {
+    if (!r || _dayOf(r.ts) !== day || r.provider !== provider) continue;
+    const key = r.script || 'unknown';
+    const credits = typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
+    sums[key] = (sums[key] || 0) + credits;
+  }
+  return Object.entries(sums)
+    .map(([script, credits]) => ({ script, credits }))
+    .sort((a, b) => b.credits - a.credits || a.script.localeCompare(b.script))
+    .slice(0, n);
+}
+
+/** Providers billed by credit, not by call — the set that must divide credits
+ * by credits in computeAttributedPct() rather than call count by credits. */
+const CREDIT_BILLED_PROVIDERS = new Set(['scrapingbee', 'scrapingdog']);
+
+/**
+ * ScrapingBee bills 0 credits for auth/plan failures (401/402) and
+ * connection-level errors ('error') — those requests never reach SB's proxy.
+ * Everything else (including a non-2xx response FROM the target site, and a
+ * timeout once the request was sent) bills the full tier price. This was
+ * already hand-duplicated in reddit-api.js and site-search-discovery.js;
+ * centralized here (S0-T5 review finding) so new direct-SB callers don't
+ * reinvent — or omit — the same zero-credit exception and end up mixing
+ * "0 on any failure" and "full credits on any failure" for equivalent
+ * outcomes, which skews credit-based attribution (S0-T1) in opposite
+ * directions depending on which caller happened to fail.
+ */
+function sbBilledCredits(status, credits) {
+  return (status === 401 || status === 402 || status === 'error') ? 0 : credits;
+}
+
+/**
  * The billing-count field to compare ledger counts against, per provider, as
  * produced by provider-spend-core.js's computeDayRecord().
  */
@@ -195,20 +255,29 @@ const BILLING_COUNT_FIELD = {
  * believe we track everything" becomes a number that fails loudly.
  *
  * @param {Object} ledgerCounts - { [provider]: count } from countCallsByProvider()
+ *   — the numerator for browserbase (sessions) and brightdata (requests),
+ *   where 1 ledger row IS 1 billed unit.
  * @param {Object} billingRecord - one day's record.providers from provider-spend-daily.jsonl
  *   (shape: { browserbase: {status, sessions}, brightdata: {status, serpReqs, unlockerReqs}, ... })
+ * @param {Object} [ledgerCredits] - { [provider]: totalCredits } from creditsByProvider()
+ *   — the numerator for scrapingbee/scrapingdog. Billed in credits (a SERP call
+ *   can cost 25x a plain page call), so dividing ROW COUNT by billed CREDITS
+ *   silently understated attribution by up to 25x (S0-T1; the 1-3% headline
+ *   this function originally produced was largely this units bug).
  * @returns {{[provider: string]: number|null}} null = cannot be computed (billing
  *   unmeasurable, or billing count is 0 with ledger also 0 — a genuine zero-spend
  *   day is reported as 1.0, not null, since 0/0 IS full coverage of nothing spent)
  */
-function computeAttributedPct(ledgerCounts, billingRecord) {
+function computeAttributedPct(ledgerCounts, billingRecord, ledgerCredits) {
   const out = {};
   for (const provider of Object.keys(BILLING_COUNT_FIELD)) {
     const p = billingRecord && billingRecord[provider];
     if (!p || p.status !== 'ok') { out[provider] = null; continue; }
     const billingCount = BILLING_COUNT_FIELD[provider](p);
     if (billingCount == null) { out[provider] = null; continue; }
-    const ledgerCount = ledgerCounts[provider] || 0;
+    const ledgerCount = CREDIT_BILLED_PROVIDERS.has(provider)
+      ? (ledgerCredits && ledgerCredits[provider]) || 0
+      : (ledgerCounts[provider] || 0);
     if (billingCount === 0) { out[provider] = ledgerCount === 0 ? 1 : null; continue; }
     out[provider] = Math.min(1, ledgerCount / billingCount);
   }
@@ -223,7 +292,12 @@ module.exports = {
   recordBbCall,
   countCallsByProvider,
   topCallers,
+  creditsByProvider,
+  topCallersByCredits,
   computeAttributedPct,
+  CREDIT_BILLED_PROVIDERS,
+  BILLING_COUNT_FIELD,
+  sbBilledCredits,
   LEDGER_PATH,
   MAX_LEDGER_LINES,
 };
