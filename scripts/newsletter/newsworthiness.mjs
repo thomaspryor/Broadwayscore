@@ -50,6 +50,15 @@ export const WEIGHTS = {
   // West End within that secondary slot for the same reason as above.
   WE_OPENING_SECONDARY_BASE: 66,
   OFF_WE_OPENING_SECONDARY_BASE: 60,
+  // WE edition: a Broadway opening is SECONDARY news — below even the
+  // smallest real West End-market opening (OFF_WE_OPENING_BASE 70) — mirrors
+  // WE_OPENING_SECONDARY_BASE/OFF_WE_OPENING_SECONDARY_BASE just above
+  // (the Broadway edition treating a West End opening as secondary), inverted.
+  // Broadway can lead the WE subject/lede in a quiet West End week, but must
+  // never outrank a real West End/Off West End opening (owner decision,
+  // BRO-2598 — mirrors how weGoldOpenings is already secondary-weighted in
+  // the Broadway edition today).
+  BW_OPENING_WE_SECONDARY_BASE: 66,
   OUTLIER_BASE: 70,                   // a critic out of step IS review news
   OUTLIER_LARGE_BUMP: 10,             // ≥20pt delta from consensus
   BIGGEST_MOVER_BASE: 72,             // score moves are the most direct review signal
@@ -137,19 +146,30 @@ export function scoreCandidates(input) {
 
   // 1. Broadway openings (or reopenings). Input items are `{show, isReopening}`
   // — the same flag the section uses, so headline verbiage matches the card.
+  // Edition-aware weight (BRO-2598): PRIMARY in the Broadway edition (its own
+  // market); SECONDARY in the West End edition (weBroadwaySection's "Opened
+  // on Broadway" feed) — below every real West End/Off West End opening, the
+  // same relationship weGoldOpenings already has in reverse (see
+  // WE_OPENING_SECONDARY_BASE above).
   for (const item of (input.bwOpenings || [])) {
     const s = item.show || item; // backward compat if a bare show is passed
     const isReopen = !!item.isReopening;
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
     const tier = reviewVerdictTier(score, s.category);
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
+    const isWeEdition = (input.edition || 'broadway') === 'west-end';
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.BW_OPENING_GOLD_BUMP : 0;
+    const weight = isWeEdition ? WEIGHTS.BW_OPENING_WE_SECONDARY_BASE : WEIGHTS.BW_OPENING_BASE + goldBump;
     const verb = isReopen ? 'reopens' : 'opens';
+    // "on Broadway" is redundant in the Broadway edition (the whole email IS
+    // Broadway) but essential context in the WE edition — mirrors how the
+    // weGoldOpenings block below drops "in London" only for the WE edition.
+    const loc = isWeEdition ? ' on Broadway' : '';
     const headline = verdict
-      ? `${s.title} ${verb} to ${verdict}`
+      ? `${s.title} ${verb}${loc} to ${verdict}`
       : `${s.title} ${verb} on Broadway`;
-    out.push({ kind: isReopen ? 'bw-reopening' : 'bw-opening', weight: WEIGHTS.BW_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} ${verb} to `, openingVenue: 'Broadway' });
+    out.push({ kind: isReopen ? 'bw-reopening' : 'bw-opening', weight, headline, show: s, slug: s.slug,
+      verdictTier: tier, verdictPrefix: `${s.title} ${verb}${loc} to `, openingVenue: 'Broadway' });
   }
 
   // 1b. West End Gold openings — only Critical Gold WE shows enter the scorer.

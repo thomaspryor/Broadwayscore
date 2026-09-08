@@ -2191,14 +2191,18 @@ function inBroadwayOpeningWindowForWE(s) {
 // reverse (a Broadway-run call polluting WE-only state), so self-gating is
 // the safer default even though today's call site already only needs the
 // WE-edition value.
+// Returns { html, list } — mirrors broadwayOpenings()/offBroadwayOpenings()'s
+// shape (BRO-2598) so the newsworthiness scorer's bwOpenings candidate feed
+// can consume the SAME shows this section renders (lede ⊆ body), the way
+// bwO.list already feeds the Broadway edition's own bwOpenings candidates.
 function weBroadwaySection() {
-  if (!IS_WE) return null;
+  if (!IS_WE) return { html: null, list: [] };
   const list = shows.filter(s => isBroadwayCategory(s) && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
-  if (!list.length) return null;
+  if (!list.length) return { html: null, list: [] };
   const withScore = list
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
     .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
-  if (!withScore.length) return null;
+  if (!withScore.length) return { html: null, list: [] };
   // Sort: genuine in-week openings before grace-window catch-up shows, then
   // Gold first, then by score desc, ties broken by review count — same
   // ordering rules as londonSection() minus the WE-only tier split (this
@@ -2218,7 +2222,8 @@ function weBroadwaySection() {
   const cards = withScore.map(x => showRow(x.s)).join('');
   const seeAll = seeAllLink(SITE, 'Explore the full Broadway Scorecard', { color: '#d4a574' });
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+  const html = sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+  return { html, list: withScore.map(x => x.s) };
 }
 
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
@@ -2353,7 +2358,8 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 const cas  = sections.run('casting-updates', () => castingSection());
 
 const lon  = sections.run('london-openings', () => londonSection());
-const bwWe = sections.run('broadway-we', () => weBroadwaySection());
+const weBwO = weBroadwaySection();
+const bwWe = sections.run('broadway-we', () => weBwO.html);
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
@@ -2513,7 +2519,11 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // review gate AND the OB 14-day grace window. Recomputing with the strict
 // in-week window here was the bug that made the subject ignore Heated Rivalry
 // (opened May 12, shown in the body) and fall back to an obscure closing.
-const bwEvents = IS_WE ? [] : bwO.list.map(s => ({ show: s }));
+// WE edition: feed weBwO.list (weBroadwaySection's own "Opened on Broadway"
+// list, the SAME shows that section renders) as SECONDARY candidates
+// (BRO-2598) — never bwO.list, which is forced empty for IS_WE (see bwO's
+// own comment above) to avoid double-marking Broadway/OB shows featured.
+const bwEvents = IS_WE ? weBwO.list.map(s => ({ show: s })) : bwO.list.map(s => ({ show: s }));
 const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
 // West End openings that lead the subject/lede: Recommended-or-better (score
 // >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar

@@ -335,3 +335,45 @@ test('a later item\'s Critical Gold score cannot outrank an earlier, non-gold we
   assert.deepEqual(weCandidates.map((c) => c.show.id), ['first', 'second']);
   assert.ok(weCandidates[0].weight > weCandidates[1].weight, `expected 'first' to outweigh 'second' despite its gold bump; got ${JSON.stringify(weCandidates.map((c) => c.weight))}`);
 });
+
+// ── BRO-2598: Broadway can lead the WE edition's subject/lede, but only when
+// there's no real West End/Off West End story that week (owner decision,
+// 2026-09-07) — mirrors how weGoldOpenings is already secondary-weighted in
+// the Broadway edition (WE_OPENING_SECONDARY_BASE, above).
+test('a quiet West End week with a Broadway opening leads the WE subject/lede with Broadway', () => {
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [], // no West End or Off West End opening this week
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  assert.equal(candidates[0].kind, 'bw-opening');
+  assert.equal(candidates[0].show.id, 'bw-show');
+  assert.match(candidates[0].headline, /on Broadway/);
+});
+
+test('a real West End opening still leads the WE subject/lede over a bigger Broadway opening', () => {
+  const weShow = { id: 'we-show', slug: 'we-show', title: 'Modest West End Opening', category: 'west-end' };
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Huge Broadway Smash', category: 'broadway' };
+  const scores = { 'we-show': 76, 'bw-show': 98 }; // Broadway show reviews far better...
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [{ show: weShow }], // ...but this is a real West End story
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].show.id, 'we-show');
+});
+
+test('Broadway is never secondary-weighted in the Broadway edition itself', () => {
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
+  const candidates = scoreCandidates({
+    edition: 'broadway',
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  assert.equal(candidates[0].weight, 85); // WEIGHTS.BW_OPENING_BASE, unaffected by BRO-2598
+  assert.doesNotMatch(candidates[0].headline, /on Broadway/);
+});
