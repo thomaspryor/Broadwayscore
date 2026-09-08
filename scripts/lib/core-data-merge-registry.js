@@ -397,6 +397,38 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
     note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
   },
+  // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
+  // cron exists specifically to keep these two baseline files current so
+  // test.yml's "Audit outlet-registry gaps" --strict gate doesn't flap red
+  // on organic new-critic-outlet growth (card #1766). Without apiFallbackSafe
+  // it was doing the opposite: its commit touches an unaudited data/audit/
+  // path, so push-with-retry.sh's disqualifier forced it onto the slow
+  // local fetch+rebase+push path, which lost the race against main's
+  // constant deploy-watermark/stage-latency churn on 4 of the last 8
+  // scheduled runs (2026-09-02, 09-04, 09-05, 09-07 all failed at the push
+  // step with "overall deadline 240s exceeded" per `gh run list
+  // --workflow=outlet-registry-baseline-maintenance.yml`). Each loss left
+  // the baseline stale until the next successful cron, and any real new
+  // outlet appearing in review-texts during that window hard-failed
+  // test.yml's Data Validation job on main exactly as BRO-2699 reported.
+  {
+    file: 'audit/outlet-registry-baseline.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'outlet-registry-baseline-maintenance',
+    verifiedBy: '2026-09-07 (BRO-2699): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-outlet-registry.js\'s --update-baseline mode, invoked only by outlet-registry-baseline-maintenance.yml\'s "Maintain outlet-registry baseline (with burst guard)" step and committed by its own "Commit updated baseline" step (one `git add` line covering both files below). test.yml only READS it (via --strict). That workflow declares concurrency: {group: outlet-registry-baseline-maintenance, cancel-in-progress: false}, so its own cron racing a manual workflow_dispatch queues rather than races. RESIDUAL RISK (same class already accepted for audit/stale-announced-shows.json and audit/autonomous-recheck-ledger.jsonl above): the CLI writer (node scripts/audit-outlet-registry.js --update-baseline) can also be run locally by a human. The concurrency group only serializes CI against CI, not CI against a local run — a locally-pushed baseline could in principle be overwritten by the next CI run\'s Git Data API fallback. Accepted on the same grounds as those two entries: the file is a frozen-backlog snapshot regenerated in full by the next scheduled --update-baseline run, not append-only state that can lose history.',
+    note: 'the frozen missing-outlet backlog scripts/audit-outlet-registry.js --strict diffs new corpus finds against — see that script\'s header for the baseline-diff design',
+  },
+  {
+    file: 'audit/outlet-registry-junk-baseline.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'outlet-registry-baseline-maintenance',
+    verifiedBy: '2026-09-07 (BRO-2699): same writer/commit step/concurrency group as audit/outlet-registry-baseline.json above — both files are written by the same --update-baseline call and staged in the same `git add` line. Same residual local-vs-CI risk accepted for the same reason (full-overwrite snapshot, not append-only state).',
+    note: 'sentinel/reserved-word outletIds already accepted into the registry (e.g. "lets-note") — frozen so isJunkOutlet() suggestions don\'t re-flag them',
+  },
   // BRO-2435 (opening-night-broadcast.yml "Commit orphan-rescore-requeue
   // state" hard-failing every run, retries-exhausted): unlike alert-
   // ledger.json (19 writers — see the "NOT added" note just below), this

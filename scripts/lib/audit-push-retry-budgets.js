@@ -412,15 +412,23 @@ function parseWorkflow(text) {
 
         const runText = runField ? scalarBlockText(lines, runField.idx, runField.inline) : '';
         let envDeadlineSec = null;
+        let envFallbackAfterAttempts = null;
+        let envFallbackDisabled = false;
         if (envField) {
           const envKids = childLines(lines, envField.idx);
           const deadlineField = findChildKey(envKids, 'PUSH_DEADLINE_SEC');
           if (deadlineField) envDeadlineSec = parseIntOrNull(deadlineField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackAfterField = findChildKey(envKids, 'PUSH_API_FALLBACK_AFTER_ATTEMPTS');
+          if (fallbackAfterField) envFallbackAfterAttempts = parseIntOrNull(fallbackAfterField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackDisableField = findChildKey(envKids, 'PUSH_API_FALLBACK_DISABLE');
+          if (fallbackDisableField) envFallbackDisabled = fallbackDisableField.inline.replace(/^['"]|['"]$/g, '').trim() === '1';
         }
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
         step.runText = runText;
         step.envDeadlineSec = envDeadlineSec;
+        step.envFallbackAfterAttempts = envFallbackAfterAttempts;
+        step.envFallbackDisabled = envFallbackDisabled;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
       }
@@ -586,6 +594,15 @@ function backoffForAttempt(i) {
   return 3 + 2 * i;
 }
 
+// push-with-retry.sh ~L594: _default_fallback_after=$(( (MAX_RETRIES + 1) / 2 )),
+// floored at 3, then PUSH_API_FALLBACK_AFTER_ATTEMPTS=${PUSH_API_FALLBACK_AFTER_ATTEMPTS:-$_default_fallback_after}.
+// Bash `/` on positive integers truncates toward zero, same as Math.floor here
+// since maxRetries+1 is always >= 0.
+function computeEffectiveFallbackAfter(maxRetries, explicitOverride) {
+  if (explicitOverride != null) return explicitOverride;
+  return Math.max(3, Math.floor((maxRetries + 1) / 2));
+}
+
 function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = MIN_TIMED_OUT_ATTEMPT_SEC) {
   if (!(maxRetries > 0) || !(deadlineSec > 0)) return 0;
   let elapsed = 0;
@@ -677,10 +694,14 @@ function estimateCronIntervalMinutes(text) {
  *   maxRetries: number, deadlineSec: number, backoffSum: number,
  *   retryDeadlineRatio: number, jobTimeoutSec: number, stepBudgetSec: number,
  *   otherStepsBudgetSec: number, marginSec: number, marginRatio: number,
+ *   fallbackAfterAttempts: number, fallbackEarlyTriggerReachable: boolean,
  *   flags: string[]
  * }}
  */
-function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0 }) {
+function evaluateStep({
+  maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0,
+  fallbackAfterAttemptsOverride = null, fallbackDisabled = false,
+}) {
   const backoffSum = computeBackoffSum(maxRetries);
   const retryDeadlineRatio = deadlineSec > 0 ? backoffSum / deadlineSec : Infinity;
   const jobTimeoutSec = (jobTimeoutMinutes == null ? DEFAULT_JOB_TIMEOUT_MIN : jobTimeoutMinutes) * 60;
@@ -689,6 +710,8 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
 
   const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
+  const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
+  const fallbackEarlyTriggerReachable = fallbackDisabled || fundableAttempts >= fallbackAfterAttempts;
 
   const flags = [];
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
@@ -703,11 +726,36 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   if (fundableAttempts < Math.min(maxRetries, MIN_FUNDABLE_ATTEMPTS)) {
     flags.push('deadline-cannot-fund-retries');
   }
+  // BRO-2811: same class as BRO-2370 DEFECT B, made systemic. push-with-retry.sh
+  // checks its loop-top deadline BEFORE an attempt starts (~L1091, the same
+  // control flow computeFundableAttempts models), so an attempt that would first
+  // reach PUSH_API_FALLBACK_AFTER_ATTEMPTS (explicit override, else floor(3,
+  // (MAX_RETRIES+1)/2) — mirrors push-with-retry.sh ~L594) never starts once
+  // fundableAttempts attempts have already exhausted the deadline.
+  //
+  // CORRECTNESS NOTE (Codex adversarial ship-check finding, 2026-09-07): this
+  // does NOT mean the Git Data API fallback "never engages" — push-with-
+  // retry.sh's post-loop fallback block (~L2005) runs on ANY loop exit
+  // (early-trigger break ~L1952 OR the deadline break ~L1255 OR full retry
+  // exhaustion) as long as `_PUSH_API_FALLBACK_ELIGIBLE=true`, independent of
+  // whether the early-trigger threshold itself was ever reached. What an
+  // unreachable early-trigger actually costs: the fallback only gets invoked
+  // LATE, after PUSH_DEADLINE_SEC is already exhausted, at which point
+  // `_api_remaining_sec` (~L2200) is ~0 and push-via-git-api.sh's own retry
+  // budget scales down to its minimum (2 attempts, vs up to 6 with time to
+  // spare) — a real degradation, but not "never". Flag name and this comment
+  // updated accordingly; see auditWorkflowText for the companion fix (this
+  // flag is additionally gated off when the call's own staged files already
+  // disqualify the fallback outright, in which case the trigger's
+  // reachability is moot).
+  if (!fallbackEarlyTriggerReachable) {
+    flags.push('fallback-early-trigger-unreachable');
+  }
 
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
-    fundableAttempts,
+    fundableAttempts, fallbackAfterAttempts, fallbackEarlyTriggerReachable,
     flags,
   };
 }
@@ -773,6 +821,8 @@ function auditWorkflowText(text, filePath) {
         deadlineSec,
         jobTimeoutMinutes: job.timeoutMinutes,
         otherStepsBudgetSec,
+        fallbackAfterAttemptsOverride: step.envFallbackAfterAttempts,
+        fallbackDisabled: step.envFallbackDisabled === true,
       });
 
       // A push wrapped in `|| echo`/`|| true` or a `continue-on-error: true`
@@ -798,6 +848,22 @@ function auditWorkflowText(text, filePath) {
       const mixedSafetyBundleDisqualifyingFiles = stagedPaths.filter((p) => classifyPushFallbackSafety(p).disqualifiesFallback);
       const mixedSafetyBundle = mixedSafetyBundleSafeFiles.length > 0 && mixedSafetyBundleDisqualifyingFiles.length > 0;
       if (mixedSafetyBundle) evaluation.flags.push('mixed-safety-bundle');
+
+      // BRO-2811 (Codex adversarial ship-check finding, 2026-09-07): a call
+      // whose OWN known staged files already disqualify the Git Data API
+      // fallback outright (classifyPushFallbackSafety's disqualifiesFallback —
+      // the SAME per-call staged-path evidence mixed-safety-bundle above
+      // already computes) would never get a working fallback regardless of
+      // whether PUSH_API_FALLBACK_AFTER_ATTEMPTS is reachable — the trigger's
+      // reachability is moot when the destination it triggers is disqualified
+      // on file-safety grounds alone. Only suppresses on POSITIVE evidence of
+      // disqualification (a known disqualifying path was actually staged);
+      // stagedPaths being empty (a bulk-stage idiom this parser can't resolve,
+      // see extractStagedPaths' documented blind spots) leaves the flag on
+      // rather than guessing safety from an absence of evidence.
+      if (mixedSafetyBundleDisqualifyingFiles.length > 0) {
+        evaluation.flags = evaluation.flags.filter((f) => f !== 'fallback-early-trigger-unreachable');
+      }
 
       let contentionScore = 0;
       if (managed) contentionScore += apiFallbackSafe ? 1 : 2;
@@ -841,6 +907,7 @@ module.exports = {
   MIN_FUNDABLE_ATTEMPTS,
   backoffForAttempt,
   computeFundableAttempts,
+  computeEffectiveFallbackAfter,
   parseWorkflow,
   findPushRetryCalls,
   countRawCallSites,
