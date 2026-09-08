@@ -31,11 +31,25 @@
 #   updateRef    -> git push <new-sha>:refs/heads/<branch> (git itself
 #                   rejects this non-fast-forward if the remote moved,
 #                   which IS the force=false compare-and-swap semantic)
-# This is deliberately provider-agnostic (works identically against the
-# private review-texts/aggregator-archive remotes, not just GitHub-hosted
-# public repos) and is what makes this script testable end-to-end against
-# a real local bare-repo fixture (see tests/unit/push-via-git-api.test.mjs)
-# without any live network dependency or GitHub credentials.
+# Using git plumbing rather than REST is what makes this script testable
+# end-to-end against a real local bare-repo fixture (see
+# tests/unit/push-via-git-api.test.mjs) with no live network dependency and
+# no GitHub credentials. THAT is the property worth protecting here.
+#
+# CORRECTION (BRO-2951, 2026-09-08): this block used to also claim the shape
+# was "deliberately provider-agnostic (works identically against the private
+# review-texts/aggregator-archive remotes, not just GitHub-hosted public
+# repos)". That justification was simply false, and it was load-bearing in a
+# proposed design before plan-review caught it. Every remote this repo
+# pushes to is GitHub — github.com/thomaspryor/broadway-review-texts and
+# github.com/thomaspryor/broadway-scorecard-data — and review-texts is in any
+# case hard-excluded from this script entirely by push-with-retry.sh's
+# _PUSH_API_REPO_EXCLUDED gate, because the API path has no
+# restore_protected_fields() step. So "we must stay provider-agnostic for the
+# non-GitHub remotes" can never justify a design decision here: there are no
+# non-GitHub remotes. The local-fixture testability above is the real
+# constraint, and any GitHub-specific path added later must keep the
+# git-plumbing path alive and exercised for it.
 #
 # CONFLICT STRATEGY: every path touched between <base_sha> and HEAD wins
 # outright — our version replaces whatever the current remote tip has for
@@ -173,6 +187,95 @@ _timeout() {  # fail-open (run directly) if no timeout binary on this box
 _git_net() {
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" "$@"
+}
+
+# ---------------------------------------------------------------------------
+# BRO-2951 diagnostics: GitHub REST write-latency probe.
+#
+# Everything below is DIAGNOSTIC ONLY. It never changes which push path runs,
+# never mutates a ref, and every failure in it is swallowed — a probe that
+# breaks must never break a push. See github-rest-write-probe.js for why a
+# blob create (and not a ref read, and emphatically not a scratch-ref push)
+# is the measurement that discriminates ref-lock contention from
+# actor-level receive-pack throttling.
+# ---------------------------------------------------------------------------
+
+# Resolve a GitHub token WITHOUT assuming the caller's step declared one.
+#
+# THIS IS THE PART THAT WOULD OTHERWISE MAKE ALL OF THIS A NO-OP. The step
+# whose failure motivated this card — .github/workflows/data-health-check.yml
+# "Commit digest snapshot" — declares ONLY PUSH_DEADLINE_SEC and
+# PUSH_API_FALLBACK_AFTER_ATTEMPTS in its env: block. There is no GH_TOKEN and
+# no GITHUB_TOKEN. Its pushes authenticate purely off the credential
+# actions/checkout persisted into the local git config, and plan-review found
+# 51 of 155 push-with-retry.sh callers are in the same shape. Any REST work
+# gated on `env has a token` would therefore silently never run in exactly
+# the jobs it was built for, and the card would close "fixed" with zero
+# behavior change.
+#
+# actions/checkout stores that credential as
+#   http.https://github.com/.extraheader = AUTHORIZATION: basic <base64>
+# where the decoded payload is `x-access-token:<token>`.
+#
+# The resolved value is a SECRET: it is only ever exported into a child
+# process's environment, never echoed, never interpolated into a logged
+# command line, and never written to a file.
+# The two parsers live in a sibling sourceable file so a test can exercise
+# the REAL implementations (CLAUDE.md §15) — this script cannot be sourced to
+# reach a function, since it runs top-to-bottom under `set -euo pipefail` and
+# requires its positional args. Sourced defensively: an absent file must
+# degrade the DIAGNOSTIC, never break the push.
+_REMOTE_PARSE_OK=0
+if [ -f "$SCRIPT_DIR/github-remote-parse.sh" ]; then
+  # shellcheck source=./github-remote-parse.sh
+  . "$SCRIPT_DIR/github-remote-parse.sh" && _REMOTE_PARSE_OK=1
+fi
+
+_resolve_github_token() {
+  if [ -n "${GH_TOKEN:-}" ]; then printf '%s' "$GH_TOKEN"; return 0; fi
+  if [ -n "${GITHUB_TOKEN:-}" ]; then printf '%s' "$GITHUB_TOKEN"; return 0; fi
+  [ "$_REMOTE_PARSE_OK" = "1" ] || return 1
+  local hdr
+  hdr="$(git config --get 'http.https://github.com/.extraheader' 2>/dev/null || true)"
+  github_token_from_extraheader "$hdr"
+}
+
+# owner/repo for the remote, but ONLY when it is really github.com. Prints
+# nothing (rc 1) for the local filesystem remotes the fixture tests use, so
+# the probe can never fire inside a test.
+_github_repo_slug() {
+  [ "$_REMOTE_PARSE_OK" = "1" ] || return 1
+  local url
+  url="$(git remote get-url "$REMOTE" 2>/dev/null || true)"
+  github_repo_slug_from_url "$url"
+}
+
+# Fires at most ONCE per script invocation — a diagnostic that ran on every
+# retry would itself add API writes to a repo we may already be throttled on.
+_REST_PROBE_DONE=0
+_rest_write_probe() {
+  [ "${PUSH_API_REST_PROBE:-1}" = "1" ] || return 0
+  [ "$_REST_PROBE_DONE" = "0" ] || return 0
+  _REST_PROBE_DONE=1
+
+  local slug token out
+  slug="$(_github_repo_slug)" || return 0
+  token="$(_resolve_github_token || true)"
+  if [ -z "$token" ]; then
+    # Loud, because a silent skip here is indistinguishable from "the probe
+    # ran and found nothing" — and that ambiguity is what this whole card is
+    # about. Names the condition without ever naming the value.
+    echo "::warning::push-via-git-api: REST write probe SKIPPED — remote is github.com ($slug) but no token resolved from GH_TOKEN, GITHUB_TOKEN, or the checkout extraheader (BRO-2951)" >&2
+    return 0
+  fi
+  [ -f "$SCRIPT_DIR/github-rest-write-probe.js" ] || return 0
+
+  out="$(GH_TOKEN="$token" _timeout 45 node "$SCRIPT_DIR/github-rest-write-probe.js" "$slug" 2>/dev/null || true)"
+  if [ -n "$out" ]; then
+    echo "  push-via-git-api: push-api-probe rest_write $out" >&2
+  else
+    echo "  push-via-git-api: push-api-probe rest_write {\"ok\":false,\"skipped\":true,\"reason\":\"probe produced no output\"}" >&2
+  fi
 }
 
 HEAD_SHA="$(git rev-parse HEAD)"
@@ -513,6 +616,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # matching push-with-retry.sh:1373-1381's shape for the same problem.
   if _git_net push "$REMOTE" "${NEW_COMMIT}:refs/heads/${BRANCH}" >/dev/null 2>"$PUSH_ERR"; then
     rm -f "$PUSH_ERR"
+    # BRO-2951: report the wall-time of a push that WORKED, not only of one
+    # that died. Every timing this card has on record comes from failures, so
+    # the success distribution is entirely unknown — and the two hypotheses
+    # predict very different ones. If successful ref updates cluster at
+    # 40-85s, the 90s cap is simply clipping the tail off a slow-but-working
+    # operation and the fix is to raise/measure the cap. If they land in ~2s,
+    # then a push either completes almost instantly or not at all, which is
+    # the signature of blocking on a lock rather than of transferring slowly.
+    # Cheap enough to leave on permanently: one stderr line per successful
+    # fallback push. `push-api-probe` is the grep handle across both lines.
+    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":true,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"${BRANCH}\"}" >&2
     echo "$NEW_COMMIT"
     exit 0
   else
@@ -534,6 +648,18 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
     FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
     rm -f "$PUSH_ERR"
+    # BRO-2951: the discriminating measurement, taken HERE because here is
+    # the only place that satisfies all three conditions at once — the right
+    # actor (github-actions[bot], not a developer's laptop), the right moment
+    # (the same seconds in which receive-pack just failed to answer), and a
+    # confirmed timeout rather than a rejection. A REST write that returns
+    # promptly right after a 90s receive-pack timeout proves the throttle is
+    # not actor-wide, which is what makes a REST ref-update path the fix;
+    # a REST write that is ALSO slow proves the opposite and redirects this
+    # work to BRO-2983. Fires at most once per invocation, and its own
+    # failures are swallowed.
+    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"rc\":$push_rc,\"attempt\":$i,\"branch\":\"${BRANCH}\"}" >&2
+    _rest_write_probe
     # BRO-2951: no point computing or sleeping a backoff on the LAST budgeted
     # attempt — there is no next retry to space out, and doing it anyway
     # wastes up to PUSH_API_TIMEOUT_BACKOFF_MAX_SEC(+jitter) seconds before
