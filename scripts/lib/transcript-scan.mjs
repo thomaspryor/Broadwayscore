@@ -20,7 +20,7 @@
 //
 // Exit: 0 + JSON to stdout on success; 1 bad args; 2 transcript not found.
 
-import { readFileSync, existsSync, writeFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
+import { readFileSync, existsSync, realpathSync, writeFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -28,7 +28,8 @@ import { tmpdir } from 'node:os';
 // This file lives at <root>/scripts/lib/, so the checkout root is two levels
 // up. Derived from THIS file rather than cwd on purpose: the gate hooks invoke
 // it from whatever directory the agent happens to be in, including a worktree,
-// and isProvablyReadOnlyScript must read the same tree the command names.
+// and the allowlist's symlink-escape check must resolve against the same tree
+// the command names.
 const CANONICAL_REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 // ── shared regex / config ────────────────────────────────────────────────────
@@ -68,15 +69,10 @@ const GIT_GLOBAL_OPTS = String.raw`(?:-C\s+[^\s;&|]+\s+|-c\s+[^\s;&|]+\s+|--git-
 // && git push origin main` must still gate, and it does, because only the
 // audit token is scrubbed and the `git push` remains.
 //
-// A NAME IS NOT A SAFETY PROPERTY. The first version of this scrub trusted the
-// filename alone, and adversarial review killed it with one command:
-// `node scripts/audit-push-to-main.js` — a file named audit-* that really does
-// push. Nothing stops someone adding that file tomorrow, and the gate would
-// have waved it through silently. So the name only nominates a CANDIDATE; the
-// token is scrubbed only after reading the file and confirming it contains no
-// push primitive (isProvablyReadOnlyScript below). Unreadable, missing, or
-// outside the repo means NOT scrubbed — the gate keeps firing, which is the
-// safe direction for a false positive and the whole point for a false negative.
+// A NAME IS NOT A SAFETY PROPERTY. This regex only finds CANDIDATE tokens; a
+// candidate is scrubbed solely when it appears in READONLY_SCRIPT_ALLOWLIST
+// below. See that constant's header for why nothing is inferred from a file's
+// name or its contents.
 //
 // Deliberately NOT attempted here: basename-anchoring the "push" match. Review
 // measured that 16 of ~19 scripts that really can push to origin have no
@@ -293,71 +289,75 @@ export function queryApprovalOf(events, hash) {
   return { approved: false, reason: 'no user text in transcript' };
 }
 
-// Does the file this token names provably contain no push primitive? Read the
-// FILE, never trust the name (see READONLY_SCRIPT_TOKEN_RE's header — a file
-// called audit-push-to-main.js that really pushes is the exact attack).
+// Exempting a script from the push gate is an ASSERTION, and this is where it
+// is recorded. Nothing here infers anything from a filename or from a file's
+// contents.
 //
-// Fails CLOSED on every uncertainty: a path that escapes the repo, a file that
-// does not exist, an unreadable file, or any push primitive in the body all
-// return false, leaving the token in place so the gate still fires.
+// Three rounds of adversarial review killed the inference approach. The first
+// cut trusted the NAME, and `scripts/audit-push-to-main.js` — a file named
+// audit-* that really pushes — walked straight through. The next two cuts READ
+// the file and looked for a push primitive, and review kept producing valid
+// bypasses faster than they could be closed: a generator method whose line
+// begins with `*` (indistinguishable from a JSDoc line), an exec call split
+// across lines from the command string it runs, a command assembled by
+// `["git","push"].join(" ")`, eval, a require() of some other module that
+// pushes, and a symlink out of the tree. That is not a heuristic with a few
+// holes left in it; deciding whether a program pushes is the halting problem
+// wearing a regex, and each round of patching bought a narrower bypass rather
+// than none.
 //
-// `repoRoot` is injectable so the colocated test can point at a fixture tree
-// instead of monkey-patching fs.
-function isProvablyReadOnlyScript(token, repoRoot) {
+// So: an explicit allowlist of exact repo-relative paths. A script is exempt
+// because it is written down here, not because of anything it is named or
+// appears to contain. Adding an entry is a reviewed edit to gated
+// infrastructure (scripts/lib/** is rule-18 scope), which is exactly the
+// checkpoint the inference version was missing — an agent can no longer exempt
+// its own pushing script by naming it audit-something.
+//
+// Entries below are the read-only advisory audits and JS test harnesses that
+// the gate was blocking (BRO-3046). Deliberately NOT listed: every *.sh
+// harness under scripts/lib/ — push-mutex.race-test.sh and
+// push-with-retry.stranded-commit-cascade.test.sh really do run `git push`
+// (against their own `mktemp -d` bare remotes, but the gate cannot see that
+// distinction and should not pretend to). They were gated before this change
+// and stay gated.
+const READONLY_SCRIPT_ALLOWLIST = new Set([
+  'scripts/audit-push-retry-budgets.js',
+  'scripts/audit-push-core-data-audit-gap.js',
+  'scripts/audit-push-core-data-audit-gap.test.mjs',
+  'scripts/audit-outputs-after-push.py',
+  'scripts/check-push-ledger.js',
+  'scripts/lib/audit-push-retry-budgets.js',
+  'scripts/lib/audit-push-retry-budgets.test.mjs',
+  'scripts/lib/push-content-survival.test.mjs',
+  'scripts/lib/push-rebase-progress.test.mjs',
+  'scripts/lib/push-retry-deadman.test.mjs',
+  'scripts/lib/push-retry-ci-detection.test.mjs',
+  'scripts/lib/run-push-audits.test.mjs',
+  'scripts/lib/test-yml-push-paths.js',
+  'scripts/pre-push.test.mjs',
+]);
+
+// Is this command token one of the allowlisted read-only scripts?
+//
+// Normalises a leading `./` only. An absolute path, any `..`, or any other
+// spelling is NOT matched — the answer is then "not allowlisted", the token
+// stays, and the gate fires. Every uncertainty resolves toward gating.
+//
+// `repoRoot` is accepted so a caller (and the colocated test) can additionally
+// require that the path resolves inside this checkout and is not a symlink
+// pointing out of it. Passing null skips only that filesystem check; the
+// allowlist itself still governs.
+function isAllowlistedReadOnlyScript(token, repoRoot) {
   try {
-    if (!repoRoot) return false;
-    const rel = String(token).replace(/^\.?\//, '');
-    // Only ever resolve tokens that are repo-relative and stay under scripts/.
-    // Rejects absolute paths and any `..` traversal outright.
-    if (!/^scripts\//.test(rel)) return false;
-    if (rel.split('/').includes('..')) return false;
+    const rel = String(token).replace(/^\.\//, '');
+    if (!READONLY_SCRIPT_ALLOWLIST.has(rel)) return false;
+    if (!repoRoot) return true;
+    // A symlink at an allowlisted path could point at a pushing script, so
+    // resolve it and require the real file to still live under <root>/scripts.
     const full = join(repoRoot, rel);
-    if (!full.startsWith(join(repoRoot, 'scripts'))) return false;
     if (!existsSync(full)) return false;
-    const body = readFileSync(full, 'utf8');
-    // A push primitive on any NON-COMMENT line disqualifies the file.
-    //
-    // Line position, not comment stripping. Measured 2026-09-08 across the real
-    // corpus: every push token in scripts/audit-push-*.js and check-push-*.js
-    // is prose in a header comment (they audit push code, so of course they
-    // name it), while scripts/lib/push-mutex.race-test.sh really does run
-    // `git push -q origin main` against its mktemp bare remote. A whole-file
-    // substring test called all of those unsafe and un-fixed the bug; a
-    // comment-STRIPPING pass can swallow real code when a string literal
-    // contains `/*`, which fails in the dangerous direction. Checking whether
-    // the token's own line begins with a comment marker gets every measured
-    // case right and fails safe on the rest: `x(); // git push` counts as real
-    // (over-gate, recoverable), and a token inside a multi-line string counts
-    // as real too.
-    // Two disqualifiers, both evaluated per non-comment line:
-    //
-    //   DIRECT — `git push` / `gh pr merge` anywhere in executable position.
-    //     This is what catches the adversarial case that killed the first
-    //     version of this function: a file named audit-* whose body is
-    //     `execSync("git push origin main")`.
-    //
-    //   WRAPPER — a push wrapper's filename, but ONLY in executable position:
-    //     on the same line as a subprocess call, or anywhere in a shell script
-    //     (where a bare mention in command position IS the invocation).
-    //     Measured against the real corpus 2026-09-08: the audits that exist to
-    //     REPORT on push-with-retry.sh call sites carry its name in a regex
-    //     literal (`/push-with-retry\.sh/.test(raw)`) and inside advice strings
-    //     ("bash scripts/lib/push-with-retry.sh"). Treating a bare mention as
-    //     proof of a push disqualified those audits and re-broke the exact bug
-    //     being fixed, so the name alone is not enough — but
-    //     `execSync('bash scripts/lib/push-with-retry.sh')` still is.
-    const DIRECT_PUSH = /\bgit\s+(?:-{1,2}[^\s]+\s+)*push\b|\bgh\s+pr\s+merge\b/i;
-    const WRAPPER_NAME = /push-with-retry|push-via-git-api|merge-worktree-to-main/i;
-    const SUBPROCESS = /child_process|execSync|spawnSync|execFileSync|\bspawn\s*\(|\bexec\s*\(/;
-    const isShell = /\.(?:sh|bash|zsh)$/i.test(rel);
-    for (const line of body.split('\n')) {
-      const t = line.trim();
-      if (!t) continue;
-      if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*') || t.startsWith('#')) continue;
-      if (DIRECT_PUSH.test(t)) return false;
-      if (WRAPPER_NAME.test(t) && (isShell || SUBPROCESS.test(t))) return false;
-    }
-    return true;
+    const real = realpathSync(full);
+    return real.startsWith(join(realpathSync(repoRoot), 'scripts'));
   } catch {
     return false;
   }
@@ -369,9 +369,10 @@ export function queryPushIngress(command, opts = {}) {
   // Scrub read-only script tokens first, then match. Order matters: scrubbing
   // removes only the verified-read-only token, so any real push elsewhere in a
   // compound command (`node scripts/audit-x.js && git push`) still matches.
-  // Each candidate is confirmed by READING the file — the name only nominates.
+  // A candidate is scrubbed only if it is on the explicit allowlist above —
+  // nothing is inferred from the name or the contents.
   const scrubbed = String(command).replace(READONLY_SCRIPT_TOKEN_RE, (tok) =>
-    isProvablyReadOnlyScript(tok, repoRoot) ? ' ' : tok
+    isAllowlistedReadOnlyScript(tok, repoRoot) ? ' ' : tok
   );
   const matched = PUSH_INGRESS_RE.test(scrubbed);
   return { isPush: matched, command: command.slice(0, 200), matched };

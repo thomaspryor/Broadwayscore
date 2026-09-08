@@ -838,26 +838,48 @@ test('push-ingress: UNSPACED compound still gates (BRO-3046 scrub bypass)', () =
   }
 });
 
-// A NAME IS NOT A SAFETY PROPERTY. A file called audit-* that really pushes must
-// not be scrubbed — the scrub is only applied after READING the file. These use
-// a fixture tree via opts.repoRoot rather than writing into the real scripts/.
-test('push-ingress: an audit-named file that REALLY pushes is not scrubbed (BRO-3046 P0)', async () => {
+// A NAME IS NOT A SAFETY PROPERTY, and neither is a file's apparent contents.
+// A script is exempt from the gate only by being written down in
+// READONLY_SCRIPT_ALLOWLIST. These assert the mechanism itself: an
+// audit-/test-NAMED file that is not on the list is never scrubbed, however
+// harmless it looks, and a symlink at an allowlisted path that escapes the
+// checkout is not scrubbed either.
+test('push-ingress: an audit-named file NOT on the allowlist is never scrubbed (BRO-3046 P0)', async () => {
   const { mkdtempSync, mkdirSync, writeFileSync } = await import('node:fs');
   const { join: j } = await import('node:path');
   const { tmpdir: td } = await import('node:os');
   const root = mkdtempSync(j(td(), 'pushgate-'));
   mkdirSync(j(root, 'scripts', 'lib'), { recursive: true });
+  // Named audit-*, contains a real push, NOT allowlisted -> must gate.
   writeFileSync(j(root, 'scripts', 'audit-push-to-main.js'), 'const {execSync}=require("child_process");\nexecSync("git push origin main");\n');
-  writeFileSync(j(root, 'scripts', 'audit-harmless.js'), '// mentions git push only in a comment\nconsole.log("scanned");\n');
-  // NOTE the filename carries "push". PUSH_INGRESS_RE is a NAME heuristic, so a
-  // file it never matches by name was never gated in the first place and proves
-  // nothing about the scrub. This fixture is one the gate genuinely sees.
-  writeFileSync(j(root, 'scripts', 'lib', 'push-evil.test.mjs'), 'import {execSync} from "node:child_process";\nexecSync("git push origin main");\n');
-
+  // Named audit-*, looks entirely harmless, NOT allowlisted -> must STILL gate.
+  // This is the case the contents-inference version got wrong: it is exactly as
+  // exempt as the pushing one, i.e. not at all.
+  writeFileSync(j(root, 'scripts', 'audit-push-harmless.js'), 'console.log("scanned");\n');
   assert.equal(queryPushIngress('node scripts/audit-push-to-main.js', { repoRoot: root }).isPush, true);
-  assert.equal(queryPushIngress('node --test scripts/lib/push-evil.test.mjs', { repoRoot: root }).isPush, true);
-  // and the genuinely read-only one, whose only push mention is a comment, is scrubbed
-  assert.equal(queryPushIngress('node scripts/audit-harmless.js', { repoRoot: root }).isPush, false);
+  assert.equal(queryPushIngress('node scripts/audit-push-harmless.js', { repoRoot: root }).isPush, true);
+});
+
+test('push-ingress: an allowlisted path IS scrubbed, and a symlink escaping the checkout is not (BRO-3046)', async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync, symlinkSync } = await import('node:fs');
+  const { join: j } = await import('node:path');
+  const { tmpdir: td } = await import('node:os');
+  const root = mkdtempSync(j(td(), 'pushgate3-'));
+  mkdirSync(j(root, 'scripts', 'lib'), { recursive: true });
+  const outside = mkdtempSync(j(td(), 'outside-'));
+  writeFileSync(j(outside, 'evil.js'), 'require("child_process").execSync("git push origin main");\n');
+
+  // A real allowlist entry, present as an ordinary file -> scrubbed.
+  writeFileSync(j(root, 'scripts', 'audit-push-retry-budgets.js'), 'console.log("ok");\n');
+  assert.equal(queryPushIngress('node scripts/audit-push-retry-budgets.js', { repoRoot: root }).isPush, false);
+
+  // The SAME allowlisted path, but a symlink pointing out of the checkout ->
+  // not scrubbed, because the allowlist asserts something about a file in THIS
+  // repo, not about whatever a link happens to resolve to.
+  mkdirSync(j(root, 'scripts', 'lib', 'x'), { recursive: true });
+  const linked = j(root, 'scripts', 'lib', 'push-content-survival.test.mjs');
+  symlinkSync(j(outside, 'evil.js'), linked);
+  assert.equal(queryPushIngress('node --test scripts/lib/push-content-survival.test.mjs', { repoRoot: root }).isPush, true);
 });
 
 // Every uncertainty fails CLOSED: the gate keeps firing rather than guessing.
