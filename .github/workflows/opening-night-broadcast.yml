@@ -561,76 +561,145 @@ jobs:
           fi
 
       - name: Commit orphan-rescore-requeue state (early — before the job's 24-min budget can time out)
-        # Writes Before Pushes (.github/workflows/CLAUDE.md): the "Commit data"
-        # step near the end of this job only runs on success/always(), which
-        # does NOT fire on cancellation — and this job runs consensus
-        # generation (Claude calls) + broadcast send after this point, well
-        # within reach of the 24-min job timeout on a multi-show day. A
-        # cancellation between here and the late commit would silently lose
-        # the attempt/alert-ledger state this self-heal depends on, resetting
-        # the 2-attempt/24h budget and re-arming an alert that already fired
-        # — the exact "repeated forever" failure mode this fix closes.
-        # Committing right after the state is written removes that window;
-        # the late "Commit data" step re-stages the same paths as a no-op
-        # defense-in-depth if nothing changed since.
+        # Writes Before Pushes (.github/workflows/CLAUDE.md): the late commit
+        # steps near the end of this job run under `if: always()`, which does
+        # NOT fire on cancellation — and this job runs consensus generation
+        # (Claude calls) + broadcast send after this point, well within reach
+        # of the 24-min job timeout on a multi-show day. A cancellation
+        # between here and the late commit would silently lose the
+        # attempt/alert-ledger state this self-heal depends on, resetting the
+        # 2-attempt/24h budget and re-arming an alert that already fired —
+        # the exact "repeated forever" failure mode this fix closes.
+        # Committing+pushing right after the state is written NARROWS that
+        # window; the late steps re-stage the same paths as defense-in-depth.
+        # It does not CLOSE it: only a successful push reaches origin, and if
+        # the job is cancelled or the runner dies before the late steps, an
+        # unpushed local commit dies with the runner (ship-check/Codex,
+        # 2026-09-08 — the earlier wording here claimed otherwise and was
+        # wrong). That residual window is identical whether this step is
+        # hard-fail or continue-on-error, so it is not a cost of this change.
         #
-        # BRO-2435 (2026-08-26): this step was hard-failing on EVERY run
-        # (push-retry "retries-exhausted" on this genuinely single-writer
-        # file bundled with the 19-writer alert-ledger.json), which skipped
-        # every later step including "Create broadcast draft" — the entire
-        # point of a scheduled run. Split into two independent commit+push
-        # steps below so orphan-rescore-requeue-state.json (this repo's ONLY
-        # writer — grepped across every .github/workflows/*.yml) can use
-        # push-with-retry.sh's Git Data API fallback (registered
-        # apiFallbackSafe in scripts/lib/core-data-merge-registry.js); the
-        # genuinely multi-writer alert-ledger.json stays on the slow local
-        # fetch+rebase+push path, unblocked from this one's failures.
-        # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
-        # 2026-08-26): was on the bare shared default (7 retries/240s,
-        # backoffSum 77s, ratio 0.32) — this and "Commit data" below are the
-        # only genuinely hard-fail push steps in this 24-min job (the
-        # other, "Record indexing quota usage", is already `|| echo`-
-        # wrapped). Sized smaller than the 20/600s pairing used elsewhere in
-        # this audit because these hard-fail steps share this job's tight
-        # 24-min budget — see the timeout-minutes comment below for the
-        # combined math. `node scripts/audit-push-retry-budgets.js` reports
-        # no flags on either step at this sizing (ratio 0.84, well inside
-        # margin) — re-confirm with that script before changing these numbers.
+        # BRO-2435 (2026-08-26): this step used to bundle BOTH audit files
+        # into one step under a shared PUSH_DEADLINE_SEC, and hard-failed on
+        # every run that actually had something to push — which skipped every
+        # later step including "Create broadcast draft" (the entire point of a
+        # scheduled run). Now one file per step, per the BRO-2455 rationale at
+        # the late steps below: two steps, two `env:` blocks, so
+        # scripts/lib/audit-push-retry-budgets.js can attribute a deadline to
+        # each call instead of charging one step's budget to both.
+        #
+        # BRO-2435 phase 2 (2026-09-08): `continue-on-error: true` replaces the
+        # old `STATUS=0 / || STATUS=1 / exit $STATUS` hard-fail. Rationale,
+        # measured on run 34171674469 rather than assumed:
+        #   * The hard-fail bought NOTHING. By the time `exit $STATUS` ran, the
+        #     push had already been attempted and the commit already existed on
+        #     local HEAD. Failing the step afterwards does not retry the push
+        #     and does not shrink the cancellation window above (the commit and
+        #     push happen at the same instant either way). Its only observable
+        #     effect was skipping "Create broadcast draft".
+        #   * Red signal is NOT lost: the late "Commit orphan-rescore-requeue
+        #     state" step below is still a bare hard-fail push, still carries
+        #     the `git log origin/main..HEAD` stranded-commit gate, and runs
+        #     AFTER the draft. So a commit that genuinely never reaches origin
+        #     still fails the job — just after the draft exists, not instead
+        #     of it. On run 34171674469 that late step recovered this exact
+        #     stranded commit in 6s on attempt 1 (7d6ff226..e05e52b7).
+        #   * The push failures are NOT budget starvation and cannot be fixed
+        #     by resizing. Every push in that run burned the full
+        #     GIT_NET_TIMEOUT_SEC=90s cap (rc=124 transport hang — the
+        #     repo-wide BRO-2373 wall documented at push-with-retry.sh:~140).
+        #     The audit models a hung attempt at MIN_TIMED_OUT_ATTEMPT_SEC=180
+        #     (push+fetch), so funding its MIN_FUNDABLE_ATTEMPTS=3 would need a
+        #     >372s deadline — impossible inside this 24-min job's margin.
+        #     `deadline-cannot-fund-retries` is therefore permanent here and on
+        #     all 5 of this job's push sites; do not "fix" it by raising the
+        #     deadline (a /second-opinion FAIL already stands against 300->600).
+        # Sizing: 240s/13 here + 60s/5 for alert-ledger below == the single
+        # 300s/14 step these replace, so the split is budget-NEUTRAL and adds
+        # no job-timeout-margin-undersized flag (MARGIN_THRESHOLD 0.15; this
+        # job sits at 0.167 and any net increase would trip it). Re-confirm
+        # with `node scripts/audit-push-retry-budgets.js` before changing them.
+        id: commit_orphan_state_early
         if: steps.check.outputs.pending_shows != ''
+        continue-on-error: true
         env:
-          PUSH_DEADLINE_SEC: '300'
+          PUSH_DEADLINE_SEC: '240'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # ship-check/Codex adversarial finding (2026-08-26): GitHub Actions
-          # runs `run:` blocks as `bash -e`, so a bare push-with-retry.sh call
-          # that exits 1 would terminate this script immediately — the SECOND
-          # file's commit+push below would never even run. `|| STATUS=1`
-          # keeps each push independent (matching the whole point of the
-          # split: one file's failure must not block the other's) while
-          # `exit $STATUS` at the end still surfaces a real failure — this
-          # step must stay hard-fail-capable per the "writes before pushes"
-          # rationale above, not become silently non-fatal.
-          STATUS=0
 
           bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json
           if git diff --cached --quiet; then
             echo "No orphan-rescore-requeue-state.json changes to commit"
           else
             git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
-            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+            bash scripts/lib/push-with-retry.sh 13 main
           fi
+
+      - name: Commit alert-ledger state (early — before the job's 24-min budget can time out)
+        # Split out of the step above (BRO-2435). Unlike
+        # orphan-rescore-requeue-state.json — single-writer and registered
+        # apiFallbackSafe in scripts/lib/core-data-merge-registry.js — this
+        # file has 12 independent writers via routeAlert() (see that
+        # registry's `verifiedBy` for audit/alert-ledger.json, BRO-2413), so
+        # it can never claim a whole-file "ours wins" API fallback. It does
+        # get the Git Data API fallback's per-conditionKey UNION merge
+        # (scripts/lib/merge-alert-ledger.js) — that fallback ran on run
+        # 34171674469 and reconciled cleanly, then timed out on the same 90s
+        # transport wall as the local path. So this file's push is the one
+        # that structurally cannot be made reliable here.
+        #
+        # Deliberately sized SMALL (60s/5, mirroring the late
+        # orphan-rescore-requeue step below) rather than the 300s/14 it
+        # inherited: it is non-fatal and fully recovered downstream, so
+        # spending job margin on attempts that all hit the 90s wall buys
+        # nothing. NOTE (BRO-2435 review): push-with-retry.sh runs its API
+        # fallback AFTER the deadline expires, so this step's real worst case
+        # is ~60s + up to 2 more capped API attempts — do not treat the freed
+        # budget as spendable elsewhere.
+        id: commit_alert_ledger_early
+        if: steps.check.outputs.pending_shows != ''
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '60'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
           bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json
           if git diff --cached --quiet; then
             echo "No alert-ledger.json changes to commit"
           else
             git commit -m "chore: Update alert-ledger state [skip ci]"
-            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+            bash scripts/lib/push-with-retry.sh 5 main
           fi
 
-          exit $STATUS
+      - name: Surface early-push failures (continue-on-error hides them from failure())
+        # BRO-2435 ship-check (Codex + gpt-5.4-mini, both flagged): under
+        # `continue-on-error: true` GitHub keeps `steps.<id>.outcome` as
+        # 'failure' but sets the effective conclusion to 'success', so a lost
+        # early push does NOT make failure() true and "Notify on failure"
+        # below never fires. That is deliberate — the late hard-fail steps are
+        # the real signal, and alerting on a transport blip the late step then
+        # recovers would be pure noise. But the blip must not be INVISIBLE:
+        # this echoes it into the run log and the job summary so an operator
+        # grepping a green run can still see the BRO-2373 wall was hit.
+        # Cannot fail (plain echoes), so it cannot re-introduce the cascade.
+        if: always() && steps.check.outputs.pending_shows != ''
+        run: |
+          ORPHAN='${{ steps.commit_orphan_state_early.outcome }}'
+          LEDGER='${{ steps.commit_alert_ledger_early.outcome }}'
+          if [ "$ORPHAN" = "failure" ]; then
+            echo "::warning::early orphan-rescore-requeue-state push failed (outcome=$ORPHAN) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early orphan-rescore-requeue-state push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$LEDGER" = "failure" ]; then
+            echo "::warning::early alert-ledger push failed (outcome=$LEDGER) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early alert-ledger push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$ORPHAN" != "failure" ] && [ "$LEDGER" != "failure" ]; then
+            echo "Both early state pushes OK (orphan=$ORPHAN, ledger=$LEDGER)"
+          fi
 
       - name: Sync subscribers (Formspree → local)
         if: steps.check.outputs.pending_shows != ''
@@ -1087,11 +1156,19 @@ jobs:
           # commits+pushes it, and its only writer
           # (dispatch-orphan-rescore-requeue.js) runs BEFORE that early step,
           # not between the two — so under normal operation nothing NEW is
-          # staged here. This step exists purely to flush a commit stranded
-          # by a failed EARLY push (rare: single-writer, grepped every
-          # workflow — see core-data-merge-registry.js's entry — so genuine
-          # rebase conflicts are rare), and apiFallbackSafe kicks in after
+          # staged here. This step exists to flush a commit stranded by a
+          # failed EARLY push, and apiFallbackSafe kicks in after
           # ceil((5+1)/2)=3 local attempts, well inside this smaller budget.
+          # BRO-2435 (2026-09-08): that stranded-commit path is NO LONGER
+          # rare, and this step is now the job's primary red-signal source.
+          # The early steps are `continue-on-error: true` (they must not skip
+          # "Create broadcast draft"), so whenever the BRO-2373 90s transport
+          # wall defeats an early push, its commit lands here instead. This
+          # step stays a BARE hard-fail push on purpose: it runs AFTER the
+          # draft, so failing it still turns the job red — and fires "Notify
+          # on failure" below — without costing the broadcast. Do not add
+          # `|| echo` or continue-on-error here; that would erase the last
+          # signal that state never reached origin.
           # `node scripts/audit-push-retry-budgets.js` reports no flags at
           # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
           # restored to ~17%) — re-confirm with that script before changing.
@@ -1114,7 +1191,21 @@ jobs:
             git add data/audit/orphan-rescore-requeue-state.json
             echo "Staged orphan-rescore-requeue-state.json"
           fi
-          if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
             echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits — skipping push"
             exit 0
           fi
@@ -1163,11 +1254,40 @@ jobs:
             git add data/audit/alert-digest-queue.json
             echo "Staged alert-digest-queue.json"
           fi
-          if git diff --cached --quiet; then
-            echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit"
+          # BRO-2435: a dirty index is not the only reason to push here. The
+          # two early commit steps commit BEFORE pushing (by design) and are
+          # now `continue-on-error: true`, so a failed early push leaves its
+          # commit sitting on local HEAD, unpushed — push-with-retry.sh's
+          # restore_head_if_moved() preserves an advanced HEAD rather than
+          # resetting it (task #769). The old bare `git diff --cached --quiet`
+          # gate could not see that: nothing NEW is staged here (the file was
+          # already committed), so it exited 0 and left the commit stranded.
+          # The late orphan step above normally catches this first (it pushes
+          # all of origin/main..HEAD); this is the second chance if that push
+          # also failed. Same gate shape as that step, deliberately.
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
+            echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit and no unpushed local commits — skipping push"
             exit 0
           fi
-          git commit -m "data: Update opening-night broadcast audit state"
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update opening-night broadcast audit state"
+          else
+            echo "No new audit-state changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
           bash scripts/lib/push-with-retry.sh 14 main
 
 
