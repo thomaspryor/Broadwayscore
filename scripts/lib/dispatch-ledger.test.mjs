@@ -1141,6 +1141,96 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
   assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
 });
 
+// ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
+const {
+  orphanSuspectEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
+  ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS, isDeadlikeEvent, isAttemptEvent,
+  isLatestDispatchDead,
+} = require('./dispatch-ledger.js');
+
+test('orphanSuspectEntry: shapes a non-terminal job-orphan-suspect row', () => {
+  const e = orphanSuspectEntry('42', 'j1');
+  assert.equal(e.event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.equal(e.taskId, '42');
+  assert.equal(e.jobId, 'j1');
+});
+
+test('JOB_EVENTS.ORPHAN_SUSPECT is neither deadlike nor an attempt event — a suspicion must not itself count as a death or move "latest attempt"', () => {
+  assert.equal(isDeadlikeEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
+});
+
+test('lastOrphanSuspect: scoped to jobId, last-wins, ignores other jobIds', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2', jobId: 'j2', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+  ];
+  const found = lastOrphanSuspect('j1', entries);
+  assert.equal(found.ts, '2026-09-08T04:05:00.000Z');
+  assert.equal(lastOrphanSuspect('j-missing', entries), null);
+});
+
+test('orphanConfirmed: false with no suspect row at all — a job must never be confirmed orphaned off a single glance', () => {
+  assert.equal(orphanConfirmed('j1', [], Date.now()), false);
+});
+
+test('orphanConfirmed: false while the suspect row is still fresh (inside ORPHAN_CONFIRM_MS) — the live BRO-2565 shape', () => {
+  // job-spawned 04:14:26Z, first negative glance at 04:21:27Z (7 min later,
+  // matching the live incident) — must NOT confirm immediately.
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + 60 * 1000; // 1 min later — still well inside the confirm window
+  assert.equal(orphanConfirmed('j2565', entries, now), false, 'one minute after the FIRST negative glance is not two independent observations yet');
+});
+
+test('orphanConfirmed: true once a second tick finds it still dead ORPHAN_CONFIRM_MS later', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_CONFIRM_MS + 1000;
+  assert.equal(orphanConfirmed('j2565', entries, now), true);
+});
+
+test('orphanConfirmed: false once the suspect row is stale (past ORPHAN_SUSPECT_MAX_AGE_MS) — a transient blip must not corroborate an unrelated later death', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_SUSPECT_MAX_AGE_MS + 1000;
+  assert.equal(orphanConfirmed('j2565', entries, now), false, 'an ancient suspect row is disconnected evidence, not corroboration');
+});
+
+test('orphanConfirmed: requires nowMs (no clock of its own, matches this file\'s other now-threaded functions)', () => {
+  assert.throws(() => orphanConfirmed('j1', [], undefined), /nowMs/);
+});
+
+test('orphanSuspectIsStale: true when no suspect exists yet (must write a fresh one)', () => {
+  assert.equal(orphanSuspectIsStale('j1', [], Date.now()), true);
+});
+
+test('orphanSuspectIsStale: false while an existing suspect is still within its confirm/hold window', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + 60 * 1000;
+  assert.equal(orphanSuspectIsStale('j2565', entries, now), false, 'must not spam a fresh suspect row every tick while waiting to confirm');
+});
+
+test('orphanSuspectIsStale: true once the suspect ages past ORPHAN_SUSPECT_MAX_AGE_MS — re-arms the debounce for a later, unrelated death', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_SUSPECT_MAX_AGE_MS + 1000;
+  assert.equal(orphanSuspectIsStale('j2565', entries, now), true);
+});
+
+test('BRO-2565 end-to-end shape: latestAttemptForTask/isLatestDispatchDead never see the task as dead while a suspicion is unconfirmed', () => {
+  // job-spawned, then ONE negative glance (suspect only, no job-orphaned yet)
+  // — hasLiveLedgerEntry-style callers must keep reading this task as live.
+  const entries = [
+    { event: 'launch', taskId: '2565', workspaceRef: 'headless:2565', ts: '2026-09-08T04:14:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:21:27.000Z' },
+  ];
+  assert.equal(isLatestDispatchDead('2565', entries), false, 'a bare suspicion must never make isLatestDispatchDead true');
+});
+
 // ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
 // A 'dead' row proven false by the buried worker's own later Linear session
 // report (audit-false-dead-ledger-rows.js, BRO-2575) must not count toward

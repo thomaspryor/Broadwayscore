@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { reconcileTaskSessions, redispatchArgv, USAGE } = require('./bsc-reconcile.js');
+const { JOB_EVENTS, ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS } = require('./lib/dispatch-ledger.js');
 
 test('redispatchArgv: the real redispatch command MUST carry --force', () => {
   // Self-review catch (2026-08-03): bsc-next's duplicate-dispatch guard
@@ -772,4 +773,102 @@ test('zombie sweep: a failed Notion park is reported honestly and never stamps t
   assert.deepEqual(h.outcomeParkMarks, [], 'no local marker on a failed park — must retry, not silently give up');
   assert.ok(h.reports.some(rep => rep.kind === 'zombie-outcome-park-failed' && rep.taskId === '9'));
   assert.deepEqual(r.flipped, []);
+});
+
+// ── sweepOrphanedJobs (BRO-3052) ────────────────────────────────────────────
+// Live 2026-09-08 (linear:BRO-2565): a single negative liveness glance wrote
+// job-orphaned + released the lease while the job's process was still
+// running 15+ minutes later. sweepOrphanedJobs debounces: the first negative
+// glance writes ORPHAN_SUSPECT only; the terminal job-orphaned row (and the
+// lease release) only happens once a LATER call still finds it dead, past
+// dispatch-ledger.js's ORPHAN_CONFIRM_MS.
+const { sweepOrphanedJobs, GRACE_MS } = require('./bsc-reconcile.js');
+
+const ORPHAN_NOW = Date.parse('2026-09-08T04:30:00.000Z');
+
+function orphanHarness({ lease = null, alive = false } = {}) {
+  const appended = [];
+  const released = [];
+  const reports = [];
+  const deps = {
+    readLeaseFn: () => lease,
+    pidLooksLikeClaudeFn: () => alive,
+    appendEntryFn: (e) => appended.push(e),
+    releaseLeaseFn: (taskId, jobId) => released.push({ taskId, jobId }),
+    reportFn: (r) => reports.push(r),
+    nowFn: () => ORPHAN_NOW,
+  };
+  return { appended, released, reports, deps };
+}
+
+test('sweepOrphanedJobs: an alive lease is never touched', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a freshly-acquired lease (pid:null, inside GRACE_MS) is presumed starting, not orphaned', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: null, acquiredAt: new Date(ORPHAN_NOW - 1000).toISOString() }, alive: false });
+  assert.ok(1000 < GRACE_MS, 'fixture must actually land inside the grace window');
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: FIRST negative glance writes an ORPHAN_SUSPECT row, not job-orphaned — the live BRO-2565 shape', () => {
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not write the terminal row off one glance');
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.equal(h.appended[0].jobId, 'j2565');
+  assert.deepEqual(h.released, [], 'the lease must not be released on a mere suspicion');
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-suspect'));
+});
+
+test('sweepOrphanedJobs: a SECOND tick that still finds it dead, past ORPHAN_CONFIRM_MS, writes the real job-orphaned row and releases the lease', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs },
+  ];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.equal(orphans.length, 1);
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHANED);
+  assert.deepEqual(h.released, [{ taskId: '2565', jobId: 'j2565' }]);
+});
+
+test('sweepOrphanedJobs: does not spam a fresh suspect row every tick while still waiting to confirm', () => {
+  const suspectTs = new Date(ORPHAN_NOW - 30 * 1000).toISOString(); // 30s old, well inside ORPHAN_CONFIRM_MS
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'a suspect row already exists and is fresh — must not write a duplicate');
+});
+
+test('sweepOrphanedJobs: a STALE suspect row (past ORPHAN_SUSPECT_MAX_AGE_MS) is not corroboration — re-arms with a fresh suspect instead of confirming', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_SUSPECT_MAX_AGE_MS - 1000).toISOString();
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'an ancient suspicion must never confirm an unrelated later observation');
+  assert.equal(h.appended.length, 1, 'must re-arm with a fresh suspect row');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+});
+
+test('sweepOrphanedJobs: dryRun never writes to the ledger or releases the lease, even once confirmed', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { dryRun: true, deps: h.deps });
+  assert.equal(orphans.length, 1, 'dry-run still reports what WOULD be orphaned');
+  assert.deepEqual(h.appended, []);
+  assert.deepEqual(h.released, []);
 });

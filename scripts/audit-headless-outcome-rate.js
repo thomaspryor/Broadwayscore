@@ -66,14 +66,17 @@ function main() {
   }
 
   console.log(`\nHeadless dispatch outcome rate — last ${windowDays}d (since ${headless.windowStartIso.slice(0, 16).replace('T', ' ')}Z)\n`);
-  console.log(`  ${headless.launches} headless launches: ${headless.done} done, ${headless.failed} failed, ${headless.inFlight} in-flight, ${headless.none} with no job event yet`);
+  console.log(`  ${headless.launches} headless launches: ${headless.done} done, ${headless.failed} failed, ${headless.orphaned} orphaned (supervisor lost track — not counted as failure), ${headless.inFlight} in-flight, ${headless.none} with no job event yet`);
   if (headless.resolved === 0) {
-    console.log('  success rate: unmeasurable (0 resolved launches — everything still in flight or unspawned)');
+    console.log('  success rate: unmeasurable (0 resolved launches — everything still in flight, orphaned, or unspawned)');
   } else {
     console.log(`  success rate (of ${headless.resolved} resolved): ${(headless.successRate * 100).toFixed(1)}%   failure rate: ${(headless.failureRate * 100).toFixed(1)}%`);
   }
   if (headless.failedTaskIds.length) {
     console.log(`  failed task(s) (${headless.failedTaskIds.length}): ${headless.failedTaskIds.join(', ')}`);
+  }
+  if (headless.orphanedTaskIds.length) {
+    console.log(`  orphaned task(s) (${headless.orphanedTaskIds.length}, verify with reconcile-landed-but-open.js before treating as dead): ${headless.orphanedTaskIds.join(', ')}`);
   }
 
   console.log(`\nTab-lane (cmux) dead-launch rate — same window, for comparison\n`);

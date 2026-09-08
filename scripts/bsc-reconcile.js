@@ -983,30 +983,67 @@ function amendViaBscNext(taskId) {
   }
 }
 
-async function main() {
-  const entries = ledger.readEntries();
+// ── Orphan sweep (BRO-3052) ─────────────────────────────────────────────────
+// Extracted from main()'s old inline loop so it can be require()d and driven
+// with injected deps in tests — same DI shape as sweepUntrackedInProgress/
+// reconcileTaskSessions above (CLAUDE.md rule 15: this is exactly the kind of
+// decision logic that must not live untested inside main()).
+//
+// A single negative liveness glance no longer writes the terminal
+// job-orphaned row directly — see dispatch-ledger.js's orphanConfirmed for
+// why (live 2026-09-08: linear:BRO-2565 was marked orphaned while its
+// process was still running 15+ minutes later, and releasing its lease is
+// exactly what let a second worker dispatch onto the same card). The first
+// negative glance writes a non-terminal ORPHAN_SUSPECT row instead; only a
+// LATER tick that still finds the job dead (orphanConfirmed) promotes it to
+// the real ORPHANED row and releases the lease.
+function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
+  const {
+    readLeaseFn = readLease,
+    pidLooksLikeClaudeFn = pidLooksLikeClaude,
+    appendEntryFn = (entry) => ledger.appendEntry(entry),
+    releaseLeaseFn = releaseLease,
+    reportFn = report,
+    nowFn = Date.now,
+  } = deps;
+
   const open = ledger.openJobs(entries);
-  let orphaned = 0;
   const orphans = [];
 
   for (const job of open) {
-    const lease = readLease(job.taskId);
+    const lease = readLeaseFn(job.taskId);
+    const now = nowFn();
     // STARTUP GRACE (ship-check Codex blocker): a freshly-acquired lease has
     // pid:null until claude-cli's onSpawn lands. Treating that window as dead
     // would orphan a healthy job at t+0 and let a duplicate dispatch in.
     // Anything younger than the grace window is presumed starting.
-    const leaseAgeMs = lease && lease.acquiredAt ? Date.now() - Date.parse(lease.acquiredAt) : Infinity;
+    const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
-    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaude(lease.pid);
+    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
     if (alive || starting) continue;
-    orphaned++;
-    orphans.push({ job, lease });
-    if (!DRY) {
-      ledger.appendEntry({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });
-      releaseLease(job.taskId, job.jobId); // ownership-checked: never removes a replacement job's lease
+
+    if (ledger.orphanConfirmed(job.jobId, entries, now)) {
+      orphans.push({ job, lease });
+      if (!dryRun) {
+        appendEntryFn({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });
+        releaseLeaseFn(job.taskId, job.jobId); // ownership-checked: never removes a replacement job's lease
+      }
+      reportFn({ kind: 'orphan', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process` });
+    } else {
+      if (!dryRun && ledger.orphanSuspectIsStale(job.jobId, entries, now)) {
+        appendEntryFn(ledger.orphanSuspectEntry(job.taskId, job.jobId));
+      }
+      reportFn({ kind: 'orphan-suspect', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process — awaiting confirmation next tick` });
     }
-    report({ kind: 'orphan', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process` });
   }
+
+  return { orphans };
+}
+
+async function main() {
+  const entries = ledger.readEntries();
+  const open = ledger.openJobs(entries);
+  const { orphans } = sweepOrphanedJobs(entries, { dryRun: DRY });
 
   // Optional, capped resume-retry (default OFF — detection first, automation later).
   if (process.env.BSC_RECONCILE_RETRY === '1' && !DRY && orphans.length) {
@@ -1082,7 +1119,7 @@ async function main() {
     if (!DRY) releaseLease(dir);
   }
 
-  console.log(`[bsc-reconcile] open=${open.length} orphaned=${orphaned} sweptLeases=${sweptLeases}${DRY ? ' (dry-run)' : ''}`);
+  console.log(`[bsc-reconcile] open=${open.length} orphaned=${orphans.length} sweptLeases=${sweptLeases}${DRY ? ' (dry-run)' : ''}`);
 
   // Task #883: cmux-tab session reconciler, same tick. Failure here must
   // never take down the headless-job detection above it — this whole step
@@ -1199,4 +1236,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS };

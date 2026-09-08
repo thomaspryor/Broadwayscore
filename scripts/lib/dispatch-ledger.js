@@ -1238,6 +1238,12 @@ const JOB_EVENTS = Object.freeze({
   // feeding it into the substantive-dead-attempt count would let two benign
   // concurrent-dispatch races permanently park a task that never actually failed.
   ABANDONED: 'job-abandoned',
+  // BRO-3052: written by bsc-reconcile the FIRST tick it finds a job's lease
+  // pid not alive, BEFORE it ever writes ORPHANED. Deliberately NOT terminal
+  // (see TERMINAL_JOB_EVENTS below) and NOT deadlike — a single negative
+  // liveness glance is a suspicion, never a verdict. See ORPHAN_CONFIRM_MS's
+  // header for the incident this exists to close.
+  ORPHAN_SUSPECT: 'job-orphan-suspect',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
@@ -1247,7 +1253,103 @@ const JOB_EVENTS = Object.freeze({
 // lease-held/pre-spawn-abandoned "job" reads as perpetually open to every
 // TERMINAL_JOB_EVENTS consumer (bsc-status.js, backlog-drain.js,
 // dispatch-card-drift.js, digest-autofix.js, autofix-canary.js).
+// ORPHAN_SUSPECT is deliberately EXCLUDED — it must keep reading as open
+// (same bucket as SPAWNED) until a later tick either confirms it (a real
+// ORPHANED row) or the job is found alive again (the suspect row is simply
+// never revisited and ages out — see orphanConfirmed/orphanSuspectIsStale).
 const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED]);
+
+// ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
+// bsc-reconcile.js's orphan sweep used to treat a SINGLE liveness glance
+// (lease pid vs `ps`) as proof of death, immediately writing job-orphaned AND
+// releasing the task's lease — the exact mutex a second worker needs stolen
+// out from under a live job. Reproduced live 2026-09-08 (linear:BRO-2565):
+// job-orphaned landed 7 minutes after job-spawned, `hadLease:true`, and the
+// job's wrapper process was still demonstrably running 15+ minutes later —
+// isDeadlikeEvent('job-orphaned') then made isLatestDispatchDead() /
+// hasLiveLedgerEntry() read the still-working card as free to re-dispatch.
+// A second, independent case (linear:BRO-2817) was marked orphaned AFTER its
+// work had already merged — the process finished the real work but the
+// ledger's own terminal job-done write never landed (killed in the gap
+// between finishing and appending it).
+//
+// Fix: a negative liveness reading is a SUSPICION, not a verdict.
+// bsc-reconcile writes ORPHAN_SUSPECT (not ORPHANED) the first time a job's
+// lease pid isn't alive, then only promotes to the real terminal ORPHANED row
+// — and releases the lease — once a LATER tick confirms it. Same risk
+// asymmetry this file already applies elsewhere (RESTART_HOLD_MAX_MS below):
+// one extra sweep costs nothing, a false death costs a duplicate dispatch
+// onto live work.
+//
+// BOUNDED like RESTART_HOLD_MAX_MS, not open-ended (ship-check/plan-review
+// catch): a suspect row only counts as corroboration while it is FRESH. A
+// suspect row that is itself already older than ORPHAN_SUSPECT_MAX_AGE_MS is
+// stale evidence — the job was found alive (or the reconciler didn't run)
+// for the whole gap since, so an unrelated NEW negative reading today must
+// not confirm off an old, unrelated blip. Without this bound, a one-off `ps`
+// hiccup writes a suspect row that then sits in the ledger forever; if the
+// SAME jobId ever goes genuinely dead — hours or days later — the very next
+// negative glance would find that ancient row already past ORPHAN_CONFIRM_MS
+// and confirm immediately, collapsing back to the single-glance bug this
+// feature exists to close. A stale suspect is treated as if it never
+// existed: bsc-reconcile re-arms by writing a fresh one (see
+// orphanSuspectIsStale) and debounces again from there.
+//
+// ORPHAN_CONFIRM_MS (3min) is < the 5-min launchd cadence bsc-reconcile.js
+// runs on (com.broadwayscore.bsc-reconcile.plist, StartInterval=300 — same
+// file's own header comment), so the very next tick always qualifies.
+// ORPHAN_SUSPECT_MAX_AGE_MS (15min = 3 ticks) matches RESTART_HOLD_MAX_MS's
+// own "3 ticks at the 5-min ledger cadence" bound: generous enough to absorb
+// one skipped/delayed tick without falsely expiring, but never letting a
+// stale suspicion stand in for corroboration indefinitely.
+const ORPHAN_CONFIRM_MS = 3 * 60 * 1000;
+const ORPHAN_SUSPECT_MAX_AGE_MS = 15 * 60 * 1000;
+
+function orphanSuspectEntry(taskId, jobId) {
+  return { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: String(taskId), jobId };
+}
+
+// Last ORPHAN_SUSPECT row for this exact jobId, or null. Scoped to jobId, not
+// taskId: a taskId can cycle through multiple jobIds (retries/redispatch),
+// and a stale suspicion about an OLD job must never confirm a death for a
+// NEW, unrelated one.
+function lastOrphanSuspect(jobId, entries) {
+  let found = null;
+  for (const e of entries || []) {
+    if (e && e.event === JOB_EVENTS.ORPHAN_SUSPECT && e.jobId === jobId) found = e;
+  }
+  return found;
+}
+
+// True once a job's non-liveness has been observed on two reconcile ticks:
+// an existing suspect row whose age is inside [ORPHAN_CONFIRM_MS,
+// ORPHAN_SUSPECT_MAX_AGE_MS] — old enough to be a genuinely separate, later
+// observation, not so old it's disconnected evidence. `nowMs` is the
+// caller's own clock (test seam, matching this file's now-threading
+// convention throughout — see countRecentLaunches/vanishedBreadcrumbs/
+// detectLauncherOutage).
+function orphanConfirmed(jobId, entries, nowMs) {
+  if (!Number.isFinite(nowMs)) throw new Error('orphanConfirmed requires nowMs (ms epoch)');
+  const suspect = lastOrphanSuspect(jobId, entries);
+  if (!suspect) return false;
+  const suspectTs = Date.parse(suspect.ts || '');
+  if (!Number.isFinite(suspectTs)) return false;
+  const age = nowMs - suspectTs;
+  return age >= ORPHAN_CONFIRM_MS && age <= ORPHAN_SUSPECT_MAX_AGE_MS;
+}
+
+// True when a fresh ORPHAN_SUSPECT row needs to be (re-)written: none exists
+// yet, or the existing one has aged past ORPHAN_SUSPECT_MAX_AGE_MS (stale —
+// see this section's header for why an expired suspect must never be reused
+// as corroboration for an unrelated later observation).
+function orphanSuspectIsStale(jobId, entries, nowMs) {
+  if (!Number.isFinite(nowMs)) throw new Error('orphanSuspectIsStale requires nowMs (ms epoch)');
+  const suspect = lastOrphanSuspect(jobId, entries);
+  if (!suspect) return true;
+  const suspectTs = Date.parse(suspect.ts || '');
+  if (!Number.isFinite(suspectTs)) return true;
+  return (nowMs - suspectTs) > ORPHAN_SUSPECT_MAX_AGE_MS;
+}
 
 // Latest job state per jobId: fold events, last one wins. Returns
 // Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.
@@ -1326,4 +1428,5 @@ module.exports = {
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
   detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
   FUTURE_TS_GRACE_MS,
+  ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS, orphanSuspectEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
 };
