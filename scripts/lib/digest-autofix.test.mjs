@@ -602,6 +602,30 @@ test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, o
   });
 });
 
+// BRO-3060: a second, independent guard (headless-dispatchability.js's
+// PARKED_SENTINEL) refuses the exact same population allowAutofixFiled waives
+// — every issue these pipelines dispatch also carries the PARKED: marker
+// fileCard's --park writes. allowAutofixFiled alone was not enough; this is
+// the other half.
+test('dispatchDetached: --allow-automation-parked is appended only for linear ids, only when opted in (BRO-3060)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutomationParked: true });
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-automation-parked/);
+
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
+    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --allow-autofix-filed --allow-automation-parked/);
+
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
+    assert.doesNotMatch(calls.spawn[2][1][1], /--allow-automation-parked/);
+
+    // bsc-next.js has no such flag and no such guard — never append it there.
+    mod.dispatchDetached(7, () => {}, 0, null, { allowAutomationParked: true });
+    assert.ok(String(calls.spawn[3][1][3]).endsWith('bsc-next.js'));
+    assert.doesNotMatch(calls.spawn[3][1][1], /--allow-automation-parked/);
+  });
+});
+
 // Cross-module pin (BRO-2499 code-review finding): the canary half already had
 // one (autofix-canary.test.mjs runs isAutofixFiledTitle over a real
 // canaryCardTitle), but "BSC Daily:" was two independent string literals — this
@@ -683,6 +707,11 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
     for (const call of calls) {
       assert.match(call, /allowAutofixFiled:\s*true/,
         `${rel} dispatches without the BRO-2499 waiver — autofixFiledIssueGuard refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);
+      // BRO-3060: same class of bug, the OTHER guard. allowAutofixFiled alone
+      // was not enough — every call site here was still refused by
+      // PARKED_SENTINEL until this waiver was added too.
+      assert.match(call, /allowAutomationParked:\s*true/,
+        `${rel} dispatches without the BRO-3060 waiver — PARKED_SENTINEL refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);
     }
   }
 });
@@ -701,6 +730,6 @@ test('runAutofix: passes allowAutofixFiled to the dispatcher for its own filed r
     dispatchFn: (...args) => dispatchCalls.push(args),
   });
   assert.equal(dispatchCalls.length, 1);
-  assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true },
-    'runAutofix must waive autofixFiledIssueGuard for the issues it just filed');
+  assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true, allowAutomationParked: true },
+    'runAutofix must waive both autofixFiledIssueGuard AND PARKED_SENTINEL for the issues it just filed (BRO-2499, BRO-3060)');
 });

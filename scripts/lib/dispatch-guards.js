@@ -78,7 +78,7 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 // autonomous-triage-core.js's own requires (autonomous-eligibility.js,
 // attempt-memory.js) never reach back to this file.
 const { resolveCheckPaths } = require('./autonomous-triage-core.js');
-const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./headless-dispatchability.js');
+const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS, isAutomationParked } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
 // Pure leaf module (no requires of its own), so this cannot cycle back here.
@@ -960,6 +960,7 @@ module.exports = {
   evaluateVerifiability,
   classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS,
+  isAutomationParked,
   // BRO-2569 — deliberately not in GUARD_NAMES, see the guard's own header.
   resolvePathCheck,
   resolveCanonicalRepoRoot,

@@ -21,6 +21,7 @@ const {
   classifyHeadlessDispatchability,
   looksLikeUiPath,
   uiPathsIn,
+  isAutomationParked,
 } = require(path.join(REPO, 'scripts', 'lib', 'headless-dispatchability.js'));
 
 const codes = (r) => r.blockers.map(b => b.code);
@@ -264,6 +265,69 @@ describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
     const r = parked('Straightforward backend fix.\n\nVERIFY: node scripts/validate-data.js');
     assert.ok(r.dispatchable, `expected dispatchable, blocked by ${codes(r)}`);
     assert.deepStrictEqual(r.blockers, []);
+  });
+
+  // BRO-3060: 143 of the sentinel's live cards were parked by automation
+  // (owner-alert-router.js or digest-autofix.js filing their own tracker),
+  // not an owner — but every one printed "an owner parked this deliberately",
+  // which is why 126 of them sat untouched for weeks. The blocker CODE stays
+  // PARKED_SENTINEL in all three cases (nothing downstream branches on it);
+  // only the operator-facing .detail text should tell the two apart.
+  describe('detail text distinguishes automation parks from owner parks', () => {
+    test('digest-autofix-filed card names its own drain, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /digest-autofix/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('owner-alert-router-filed card names linear-drain-parked.js, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /owner-alert-router/);
+      assert.match(b.detail, /linear-drain-parked\.js/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('a hand-written park still reads as an owner decision', () => {
+      const r = parked('PARKED: card owns this file and is In Progress in a live parallel session');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /an owner parked this deliberately/);
+    });
+
+    // Ship-check finding (Claude + Codex adversarial review, BRO-3060): an
+    // UNANCHORED substring check for the owner-alert-router marker would
+    // misclassify a hand-parked, genuinely owner-gated issue whose body
+    // merely QUOTES "Auto-filed by owner-alert-router" (discussing the
+    // pipeline, e.g. a meta-issue about this exact bug) as automation-parked
+    // — reintroducing the exact false-positive class BRO-2499 anchored
+    // AUTOFIX_PARKED_RE to avoid for the sibling marker. This matters more
+    // here than a wording bug would: isAutomationParked (below) gates
+    // whether --allow-automation-parked is honoured at all, so a false
+    // positive here would let an operator bypass a REAL owner park.
+    test('a hand-written park that only QUOTES the alert-router marker still reads as an owner decision', () => {
+      const r = parked('PARKED: card owns this file and is In Progress in a live parallel session\n\nSee also: owner-alert-router.js files trackers with "Auto-filed by owner-alert-router" as their park reason.');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /an owner parked this deliberately/);
+    });
+  });
+
+  describe('isAutomationParked (BRO-3060) — the predicate --allow-automation-parked trusts', () => {
+    test('true for the real digest-autofix and owner-alert-router shapes', () => {
+      assert.equal(isAutomationParked('PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately'), true);
+      assert.equal(isAutomationParked('PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage.'), true);
+    });
+
+    test('false for a hand-written park, even one that quotes an automation marker in prose', () => {
+      assert.equal(isAutomationParked('PARKED: card owns this file and is In Progress'), false);
+      assert.equal(isAutomationParked('PARKED: owner call\n\nSee also: "Auto-filed by owner-alert-router" is the marker that pipeline uses.'), false);
+    });
+
+    test('false for no description at all', () => {
+      assert.equal(isAutomationParked(''), false);
+      assert.equal(isAutomationParked(null), false);
+      assert.equal(isAutomationParked(undefined), false);
+    });
   });
 
   test('the exported regex and the classifier agree, and keep the /m flag', () => {

@@ -213,3 +213,11 @@ clear-stale-wrong-show-flags.yml
 # check-file-sizes/action.yml, so there's no user-facing staleness or gate
 # risk to page on. Failures alert via notify-failure (warning severity).
 stage-latency-rotation.yml
+
+# BRO-3060: read-only backlog-health monitor for scripts/linear-drain-parked.js
+# (real dispatch runs on the Mac via launchd, disabled by default — see that
+# plist's header). A stale/missed run just means a slower-to-notice pileup of
+# undispatched automation-parked issues, not user-facing staleness — its own
+# job failure (>1 cap's worth idle) already surfaces via notify-failure
+# (warning severity) and the daily digest. Not real-time-paging material.
+check-linear-drain-health.yml

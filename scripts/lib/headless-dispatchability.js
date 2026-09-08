@@ -45,6 +45,19 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
+const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
+
+// Anchored to the leading `PARKED:` line, same reasoning and same shape as
+// autofix-filed-marker.js's own AUTOFIX_PARKED_RE (BRO-2499 ship-check): an
+// unanchored `.includes()` misclassifies any issue that merely QUOTES the
+// marker while discussing this pipeline (a meta-issue about BRO-3060 itself,
+// for instance) as automation-parked. That would have been a message-only
+// bug when this predicate only picked the wording of an operator hint — but
+// BRO-3060's own fix reuses this SAME predicate to gate --allow-automation-
+// parked's PARKED_SENTINEL waiver, where the same false positive would let
+// an operator bypass a genuine owner park (ship-check finding).
+const ALERT_ROUTER_PARKED_RE = new RegExp(`^PARKED:[^\\n]*${ALERT_ROUTER_FILED_MARKER.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
 
 const BLOCKERS = Object.freeze({
   PARKED_SENTINEL: 'PARKED_SENTINEL',
@@ -190,6 +203,21 @@ function firstMatch(res, text) {
  *   its own reason to dispatch unarmed (--allow-unverifiable, truncated mirror).
  * @returns {{dispatchable: boolean, blockers: Array<{code: string, detail: string}>, reason: string|null}}
  */
+// Exported (BRO-3060 ship-check finding, Codex adversarial review): a
+// blindly-trusted --allow-automation-parked flag — waived purely because the
+// caller passed it, the same convention --allow-autofix-filed already uses —
+// would also unpark a genuine owner park if a caller ever passed the flag on
+// the wrong issue (by mistake, or a future careless caller). PARKED_SENTINEL
+// is the one guard this fix exists to get past correctly, so linear-next.js
+// re-verifies the description against this SAME predicate before honouring
+// the flag, rather than trusting it blindly like the autofix-filed waiver
+// does. One function, so the classifier's own detail text and linear-next.js's
+// waiver check can never drift apart on what counts as "automation-parked".
+function isAutomationParked(notes) {
+  const n = String(notes || '');
+  return hasAutofixFiledMarker(n) || ALERT_ROUTER_PARKED_RE.test(n);
+}
+
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const subject = String(card.subject || '');
   const notes = String(card.notes != null ? card.notes : (card.description || ''));
@@ -201,10 +229,21 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   // `text` would still work under /m but would also let a subject line that
   // merely starts "PARKED:" refuse a card nobody parked.
   if (PARKED_SENTINEL_RE.test(notes)) {
-    blockers.push({
-      code: BLOCKERS.PARKED_SENTINEL,
-      detail: 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated',
-    });
+    // BRO-3060: the sentinel doesn't only mean "an owner parked this
+    // deliberately" — owner-alert-router.js and digest-autofix.js both park
+    // issues THEY file, pending their own drain (scripts/linear-drain-parked.js,
+    // digest-autofix.js's own dispatchDetached call). Telling an operator "an
+    // owner parked this deliberately" for one of those is false and is why
+    // 126 automation-parked issues sat untouched — nobody read past that
+    // sentence to check who actually wrote the sentinel.
+    const filedByAutofix = hasAutofixFiledMarker(notes);
+    const filedByAlertRouter = !filedByAutofix && ALERT_ROUTER_PARKED_RE.test(notes);
+    const detail = filedByAutofix
+      ? 'description carries the repo\'s PARKED: do-not-dispatch sentinel — parked by digest-autofix, awaiting its own drain (not an owner decision); override with --allow-automation-parked, --force, or --allow-human-gated'
+      : filedByAlertRouter
+      ? 'description carries the repo\'s PARKED: do-not-dispatch sentinel — parked by owner-alert-router, awaiting linear-drain-parked.js (not an owner decision); override with --allow-automation-parked, --force, or --allow-human-gated'
+      : 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated';
+    blockers.push({ code: BLOCKERS.PARKED_SENTINEL, detail });
   }
 
   const uiPaths = uiPathsIn(text);
@@ -286,6 +325,7 @@ module.exports = {
   BLOCKERS,
   UI_PATH_RE,
   UI_CARD_CLASS_RE,
+  isAutomationParked,
   // Exported so a test can assert this array holds the SHARED owner-judgment
   // regex object rather than a fourth handwritten copy (task #1154).
   OWNER_DECISION_RES,

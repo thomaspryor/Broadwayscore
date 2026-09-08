@@ -301,6 +301,20 @@ test('every dispatchDetached call site passes allowAutofixFiled (BRO-2499)', () 
   }
 });
 
+// BRO-3060: fileCard's --park ALSO means every canary card carries
+// headless-dispatchability.js's PARKED_SENTINEL — a second, independent
+// guard the allowAutofixFiled waiver above does not cover. Discovered live
+// 2026-09-08: the canary was dispatching itself into a guaranteed refusal
+// every day. Same source-level pin as the test above, for the same reason.
+test('every dispatchDetached call site passes allowAutomationParked (BRO-3060)', () => {
+  const src = readFileSync(new URL('./autofix-canary.js', import.meta.url), 'utf8');
+  const calls = src.match(/dispatchDetached\([^)]*\)/g) || [];
+  assert.ok(calls.length >= 2, `expected at least 2 dispatchDetached call sites, found ${calls.length}`);
+  for (const call of calls) {
+    assert.match(call, /allowAutomationParked:\s*true/, `dispatchDetached call site missing the BRO-3060 waiver: ${call}`);
+  }
+});
+
 test('canaryCardTitle is exactly the shape autofixFiledIssueGuard recognises (BRO-2499)', () => {
   // Cross-module pin: if canaryCardTitle's prefix is ever changed, the guard
   // stops recognising the canary and a crown-loop sweep can pick it up.

@@ -63,11 +63,16 @@
  *   --help, -h   show this message, do nothing else
  *
  * Wiring: NOT a data-health-check.yml step — the runner has no `claude`
- * binary to hand off to, so a headless dispatch can't run there. Wired on
- * the Mac side via its own launchd tick (scripts/launchd/
+ * binary to hand off to, so a headless dispatch can't run there. Real
+ * dispatch is wired on the Mac side via its own launchd tick (scripts/launchd/
  * com.broadwayscore.linear-drain-parked.plist, disabled by default — see
  * that file's header for the install command), mirroring backlog-drain.js's
  * own launchd cadence rather than folding into send-morning-digest.js.
+ * BRO-3060: .github/workflows/check-linear-drain-health.yml runs this file's
+ * own --dry-run daily as a READ-ONLY CI monitor (Linear API read only, no
+ * spawn) — it goes red if eligible candidates pile up past one dispatch cap,
+ * catching a dead Mac-side drain in days instead of the weeks it took for
+ * 126 issues to accumulate before anyone noticed the drain never ran.
  */
 'use strict';
 
@@ -358,7 +363,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // exists only in the detached child's log file.
       // Passed here, at the call site that owns this population — not inside
       // dispatchDetached, which would waive it for every future caller too.
-      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): every candidate here passed
+      // isAutoFiledParked above, i.e. its description carries owner-alert-
+      // router's PARKED marker — a second, independent guard from
+      // autofixFiledIssueGuard that allowAutofixFiled does NOT waive. Without
+      // this every dispatch this drain ever attempted was refused inside the
+      // detached child (discovered live, 2026-09-08: all 3 of this run's
+      // candidates were refused before this fix).
+      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true, allowAutomationParked: true });
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),
