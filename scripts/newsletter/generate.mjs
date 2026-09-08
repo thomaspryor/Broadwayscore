@@ -2358,8 +2358,12 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 const cas  = sections.run('casting-updates', () => castingSection());
 
 const lon  = sections.run('london-openings', () => londonSection());
-const weBwO = weBroadwaySection();
-const bwWe = sections.run('broadway-we', () => weBwO.html);
+// weBwO is captured as a side effect of the sections.run() call below rather
+// than computed beforehand — keeps weBroadwaySection() inside the runner's
+// try/catch (a thrown error degrades to one skipped section, same as every
+// other section here) instead of aborting the whole generate.mjs run.
+let weBwO = { html: null, list: [] };
+const bwWe = sections.run('broadway-we', () => { weBwO = weBroadwaySection(); return weBwO.html; });
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
@@ -2523,7 +2527,14 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // list, the SAME shows that section renders) as SECONDARY candidates
 // (BRO-2598) — never bwO.list, which is forced empty for IS_WE (see bwO's
 // own comment above) to avoid double-marking Broadway/OB shows featured.
-const bwEvents = IS_WE ? weBwO.list.map(s => ({ show: s })) : bwO.list.map(s => ({ show: s }));
+// Non-WE (primary) path: bwO.reopeningIds actually carries the flag this
+// comment block promises — the map below was dropping it (pre-existing gap,
+// found while wiring BRO-2598: a Broadway reopening's subject/lede headline
+// always said "opens", never "reopens", same bug seasonStandings already
+// works around via bwO.reopeningIds at line ~2414). weBwO has no reopening
+// concept (weBroadwaySection() doesn't track it), so the WE-edition arm is
+// unaffected either way.
+const bwEvents = IS_WE ? weBwO.list.map(s => ({ show: s })) : bwO.list.map(s => ({ show: s, isReopening: bwO.reopeningIds.has(s.id) }));
 const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
 // West End openings that lead the subject/lede: Recommended-or-better (score
 // >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar
@@ -2578,7 +2589,14 @@ const newsworthyInputs = {
     s.closingDate && s.closingDate > weekEndStr && s.closingDate <= horizon7Str
     && s.status === 'open' && isPrimaryMarket(s) && !isOperaShow(s)
     && featuredShowIds.has(s.id) && _subjHasScore(s)),
-  announcedClosings: (() => {
+  // IS_WE-gated (lede ⊆ body invariant, card #482 — same fix as the
+  // recoupments/topMover gates above): announced-closings is Broadway-edition-
+  // only (`IS_WE ? null : sections.run(...)`, line ~2346) and this loop only
+  // ever considers `show.category === 'broadway'` shows, so an announced
+  // Broadway closing could win a quiet WE week's lede/subject while never
+  // appearing anywhere in that WE issue's body — pre-existing gap, found
+  // while auditing every newsworthyInputs feed for BRO-2598.
+  announcedClosings: IS_WE ? [] : (() => {
     // Mirror announcedClosingsSection exactly: closure events added IN THE
     // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
     // closures (Ragtime case, user-flagged 2026-05-24).

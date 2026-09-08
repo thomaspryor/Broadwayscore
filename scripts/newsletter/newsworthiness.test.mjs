@@ -367,6 +367,20 @@ test('a real West End opening still leads the WE subject/lede over a bigger Broa
   assert.equal(candidates[0].show.id, 'we-show');
 });
 
+test('a non-gold Off West End opening still beats a Broadway opening — the tightest real margin (70 vs 66)', () => {
+  const oweShow = { id: 'owe-show', slug: 'owe-show', title: 'Small Off West End Show', category: 'off-west-end' };
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Huge Broadway Smash', category: 'broadway' };
+  const scores = { 'owe-show': 76, 'bw-show': 98 }; // Off West End is non-gold and reviews far worse...
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [{ show: oweShow }], // ...but it's still a real West End-market story
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].show.id, 'owe-show');
+});
+
 test('Broadway is never secondary-weighted in the Broadway edition itself', () => {
   const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
   const candidates = scoreCandidates({
