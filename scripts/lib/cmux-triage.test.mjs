@@ -143,7 +143,8 @@ test('the task store answers when the title carries no Linear key', () => {
   );
   assert.equal(only(withStatus('completed')).bucket, 'safeToClose');
   assert.equal(only(withStatus('pending')).entry.reason, 'task-pending');
-  assert.equal(only(withStatus('in_progress')).entry.reason, 'task-in_progress');
+  // in_progress is NOT resumed here — see the reconciler-territory test below.
+  assert.equal(only(withStatus('in_progress')).entry.reason, 'reconciler-territory');
 });
 
 test('Linear outranks a stale task-store status (Linear is the board of record)', () => {
@@ -385,4 +386,205 @@ test('the module closes nothing: no close path exists in the source at all', () 
   assert.doesNotMatch(src, /closeWorkspace/, 'must not close workspaces');
   assert.doesNotMatch(src, /appendEntry/, 'must not write to the dispatch ledger');
   assert.doesNotMatch(src, /--apply/, 'the --apply flag must stay gone');
+});
+
+// ── resolveLinearStates: the I/O half's one injectable seam ─────────────────
+
+test('a failed Linear lookup becomes {error}, and reaches the report as unverifiable', () => {
+  // End-to-end across the seam: the real resolveLinearStates must produce the
+  // `{error}` shape the classifier's contract requires, and the classifier
+  // must route it to unverifiable-lookup. Unit-testing the two halves against
+  // separate hand-written fixtures would let their agreed shape drift apart —
+  // this is the case the card names ("an unverifiable PR due to an API
+  // outage"), so the handoff itself is what needs pinning.
+  return triage.resolveLinearStates(['BRO-77'], {
+    getIssue: async () => { throw new Error('api.linear.app 503'); },
+  }).then((states) => {
+    assert.deepEqual(states.get('BRO-77'), { error: 'api.linear.app 503' });
+
+    const { bucket, entry } = only(run(
+      [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+      { linearStateByKey: (k) => (states.has(k) ? states.get(k) : null) },
+    ));
+    assert.equal(bucket, 'needsOwnerCall');
+    assert.equal(entry.reason, 'unverifiable-lookup');
+  });
+});
+
+test('resolveLinearStates distinguishes a missing issue (null) from a failed lookup', () => {
+  // null means "Linear answered, there is no such issue" — a real, usable
+  // answer that must NOT be treated as an outage. Only `{error}` is an outage.
+  return triage.resolveLinearStates(['BRO-1', 'BRO-2'], {
+    getIssue: async (key) => (key === 'BRO-1' ? null : { state: { type: 'completed', name: 'Done' } }),
+  }).then((states) => {
+    assert.equal(states.get('BRO-1'), null);
+    assert.deepEqual(states.get('BRO-2'), { type: 'completed', name: 'Done' });
+  });
+});
+
+test('resolveLinearStates makes no network call when there are no keys', () => {
+  // The common case is zero dead tabs; it must not construct a client or pay
+  // for a round trip to say so.
+  return triage.resolveLinearStates([], {
+    getIssue: () => { throw new Error('must not be called'); },
+  }).then((states) => assert.equal(states.size, 0));
+});
+
+// ── second-reviewer findings, pinned ───────────────────────────────────────
+
+test('P0: a stale "completed" task row must NOT stand in for an unreachable Linear', () => {
+  // The module declares the task store a frozen mirror that Linear outranks,
+  // then fell back to it as SOLE evidence exactly when Linear was unreachable
+  // — the moment the mirror is least trustworthy and the verdict most
+  // destructive. Linear 503 + a month-old "completed" row read "safe to close".
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    {
+      launchByRef: () => ({ taskId: 989 }),
+      taskStatusById: () => 'completed',
+      linearStateByKey: () => ({ error: 'api.linear.app 503' }),
+    },
+  ));
+  assert.equal(bucket, 'needsOwnerCall');
+  assert.equal(entry.reason, 'unverifiable-lookup');
+});
+
+test('P0 sibling: a THROWN Linear lookup also blocks the stale-completed shortcut', () => {
+  const { entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    {
+      launchByRef: () => ({ taskId: 989 }),
+      taskStatusById: () => 'completed',
+      linearStateByKey: () => { throw new Error('ENOTFOUND'); },
+    },
+  ));
+  assert.equal(entry.reason, 'unverifiable-lookup');
+});
+
+test('a task-store "completed" still stands on its own when Linear simply has no such issue', () => {
+  // null = Linear answered "no such issue". That is a real answer, not an
+  // outage, so the task store remains usable evidence.
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·legacy task' }],
+    { launchByRef: () => ({ taskId: 989 }), taskStatusById: () => 'completed', linearStateByKey: () => null },
+  ));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'task-completed');
+});
+
+test('a Linear state with a name but no type is a malformed answer, not a verdict', () => {
+  const { entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    { linearStateByKey: () => ({ name: 'In Review' }) },
+  ));
+  assert.equal(entry.reason, 'unverifiable-lookup');
+});
+
+test('two untitled tabs are never duplicates of each other', () => {
+  // parseWorkspacesJson defaults `title` to '' — every untitled tab shared one
+  // key, so the dead one was declared safe to close.
+  const buckets = triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '' }],
+    ...NOTHING,
+  });
+  assert.equal(buckets.safeToClose.length, 0);
+  assert.equal(buckets.needsOwnerCall[0].reason, 'unmapped');
+});
+
+test('two owner tabs sharing a generic cwd-derived title are never duplicates', () => {
+  const buckets = triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: 'Broadwayscore' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: 'Broadwayscore' }],
+    ...NOTHING,
+  });
+  assert.equal(buckets.safeToClose.length, 0, 'a shared generic title proves nothing');
+});
+
+test('title-equality duplicates still work for 🤖 tabs, whose titles are generated', () => {
+  // zombie-tab-sweep.js relies on this and is safe because buildAutoTitle
+  // derives the title from a unique card. The precondition is re-asserted
+  // here rather than inherited.
+  const { bucket, entry } = only(triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '🤖 Data·some dispatched card' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '🤖 Data·some dispatched card' }],
+    ...NOTHING,
+  }));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'live-duplicate');
+});
+
+test('a free-text ledger SUBJECT naming an issue never proves duplication', () => {
+  // subjects "Follow-up to BRO-100: …" and "Revert BRO-100 and …" are
+  // different tasks that both mention BRO-100.
+  const launches = {
+    'workspace:9': { taskId: 11, subject: 'Follow-up to BRO-100: add the guard' },
+    'workspace:12': { taskId: 22, subject: 'Revert BRO-100 and re-land it' },
+  };
+  const buckets = triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '🤖 Data·follow-up' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '🤖 Data·revert' }],
+    ...NOTHING,
+    launchByRef: (ref) => launches[ref] || null,
+    taskStatusById: () => 'in_progress',
+  });
+  assert.equal(buckets.safeToClose.length, 0, 'different taskIds are not duplicates');
+});
+
+test('a task-store in_progress row defers to the #883 reconciler instead of re-dispatching', () => {
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·legacy task' }],
+    { launchByRef: () => ({ taskId: 42 }), taskStatusById: () => 'in_progress' },
+  ));
+  assert.equal(bucket, 'needsOwnerCall');
+  assert.equal(entry.reason, 'reconciler-territory');
+});
+
+test('liveAgentIn sees a SUFFIXED claude_code tag that hasLiveClaude anchors past', () => {
+  // The suffix-tolerant regex is the point: this is a live Claude session the
+  // repo's own predicate reports dead, so it must not be filtered out as
+  // "not a foreign agent".
+  const suffixed = '0.7\t202\t1\tprocess\t24430\tworkspace:B270:tag:claude_code.01a0-55e0\t2.1.263';
+  const cmuxws = require('./cmux-workspaces.js');
+  assert.equal(cmuxws.hasLiveClaude(suffixed), false, 'anchored regex misses the suffixed form');
+  assert.equal(triage.liveAgentIn(suffixed), 'claude_code');
+});
+
+test('the CLI treats ANY live agent as alive, and a failed probe as alive too', () => {
+  const fs = require('fs');
+  const src = fs.readFileSync(new URL('./cmux-triage.js', import.meta.url), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1');
+  // Swallowing a probe error to null resolved a transient socket failure to
+  // "dead", inverting checkLiveness's fail-safe-to-alive rule.
+  assert.doesNotMatch(src, /agent !== 'claude_code'/, 'must not exclude suffixed claude_code');
+  assert.match(src, /livenessUnverifiable\.push/, 'a failed probe must be reported, not dropped');
+});
+
+test('the watchdog predicate stays byte-identical to dispatch-watchdog.js isWatchdogTitle', () => {
+  // Same drift guard prune-closeable.test.mjs applies to CROWN_TAB_RE: the two
+  // definitions live in different files and must not silently split in half.
+  // (dispatch-watchdog-core.js:468 uses a SUBSTRING marker test — a third,
+  // deliberately looser definition for a different question. Not compared.)
+  const fs = require('fs');
+  const wd = fs.readFileSync(new URL('../dispatch-watchdog.js', import.meta.url), 'utf8');
+  const m = /function isWatchdogTitle\(title\) \{\s*return ([\s\S]*?);\s*\}/.exec(wd);
+  assert.ok(m, 'could not locate isWatchdogTitle in dispatch-watchdog.js');
+  const theirs = m[1].replace(/\s+/g, '');
+  // Both must agree on: strip leading non-alphanumeric-non-👑, then startsWith
+  // the prefix+marker. Compare behaviour on the titles that discriminate.
+  for (const t of [
+    '👑 OWNER watchdog — 5 in flight',
+    '⠙ 👑 OWNER watchdog — 5 in flight',
+    '👑 OWNER — repair dispatch-watchdog alerts',
+    '✅ 👑 OWNER watchdog — done',
+    'watchdog',
+    '',
+  ]) {
+    const theirResult = new Function('title', 'WATCHDOG_TITLE_START', `return ${m[1]};`)(
+      t, `${require('./dispatch-watchdog-core.js').WATCHDOG_TAB_PREFIX} ${require('./dispatch-watchdog-core.js').WATCHDOG_TAB_MARKER}`,
+    );
+    assert.equal(triage.isWatchdogDashboardTitle(t), theirResult, `disagreement on ${JSON.stringify(t)}`);
+  }
+  assert.ok(theirs.includes('startsWith'), 'their predicate is still an exact-prefix test');
 });

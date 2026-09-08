@@ -178,6 +178,26 @@ function ledgerLinearKey(taskId, subject) {
 }
 
 /**
+ * The ONLY key allowed to prove two tabs are the same work: the one the
+ * dispatcher itself wrote into the ledger's taskId ("linear:BRO-2623").
+ *
+ * ledgerLinearKey above also falls back to the ledger `subject`, and that is
+ * one step too loose for this purpose: the subject is the CARD TITLE, free
+ * text with exactly the multi-key hazard titles have. Two tabs on genuinely
+ * different tasks with subjects "Follow-up to BRO-100: …" and "Revert BRO-100
+ * and …" both yield BRO-100, and the dead one is then declared a duplicate of
+ * live work it has nothing to do with (ship-check finding, 2026-09-07). The
+ * taskId branch already covers every real duplicate, so the subject branch
+ * added risk and no reach. Subject-derived keys keep feeding status lookup,
+ * where the cost of being wrong is one misleading report line.
+ * @param {string|null} taskId
+ * @returns {string|null}
+ */
+function dispatchLinearKey(taskId) {
+  return extractLinearKey(taskId);
+}
+
+/**
  * Is this the fleet-watchdog DASHBOARD tab?
  *
  * It is permanently indistinguishable from a corpse to every liveness check in
@@ -278,6 +298,38 @@ function liveAgentIn(tsvText) {
  * @param {string} title
  * @returns {string}
  */
+/**
+ * May this tab's TITLE alone be used to claim it duplicates another tab?
+ *
+ * Two fences, both from a ship-check finding (2026-09-07):
+ *  - a non-empty title. cmux-workspaces.parseWorkspacesJson defaults `title`
+ *    to '' when a workspace has neither a custom nor a derived title, so two
+ *    untitled tabs matched each other and the dead one was declared safe to
+ *    close.
+ *  - the 🤖 auto-dispatch marker. zombie-tab-sweep.js uses full normalized
+ *    title equality for its unmapped tabs and is safe doing so ONLY because
+ *    it pre-filters to 🤖 tabs, whose titles buildAutoTitle generates from a
+ *    unique card. This module deliberately dropped that pre-filter — that is
+ *    its whole point — so it has to re-add the precondition here instead of
+ *    inheriting the conclusion without it. Owner-renamed tabs routinely share
+ *    a generic cwd-derived title ("Broadwayscore") that proves nothing.
+ * A tab failing either fence just falls through to 'unmapped': "open it and
+ * look", which is the honest answer when the only evidence is a shared name.
+ * @param {{title?:string}} w
+ * @returns {boolean}
+ */
+function titleDupEligible(w) {
+  const title = String((w && w.title) || '');
+  if (normalizeTitle(title).length === 0) return false;
+  // Crown tabs qualify on a DIFFERENT basis than the 🤖 marker: workKeyForTitle
+  // gives them the version-stripping family key (Crown v20 ≡ Crown v46), a
+  // purpose-built succession key that crown-duplicate-detector.js already
+  // treats as sufficient. Requiring 🤖 of them too would have silently dropped
+  // the one duplicate class this module is most often asked about — caught by
+  // the existing "dead crown whose loop has a LIVE successor" test.
+  return hasAutoDispatchMarker(title) || isCrownTab(title);
+}
+
 function workKeyForTitle(title) {
   return isCrownTab(title) ? `crown:${titleFamilyKey(title)}` : `title:${normalizeTitle(title)}`;
 }
@@ -315,15 +367,17 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
   const needsOwnerCall = [];
 
   const live = liveWorkspaces || [];
-  const liveWorkKeys = new Set(live.map(w => workKeyForTitle(w.title)));
+  // Only tabs eligible for the TITLE-fallback duplicate test (see the
+  // `liveDup` computation) contribute keys to it.
+  const liveWorkKeys = new Set(live.filter(titleDupEligible).map(w => workKeyForTitle(w.title)));
   const liveTaskIds = new Set();
   const liveLinearKeys = new Set();
   for (const w of live) {
     const launch = value(safeCall(() => launchByRef(w.ref)));
     const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
     if (taskId) liveTaskIds.add(taskId);
-    // Ledger provenance ONLY for duplicate matching — see ledgerLinearKey.
-    const key = ledgerLinearKey(taskId, launch && launch.subject);
+    // Dispatch provenance ONLY for duplicate matching — see dispatchLinearKey.
+    const key = dispatchLinearKey(taskId);
     if (key) liveLinearKeys.add(key);
   }
 
@@ -333,10 +387,20 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
   // closing them is likewise owner-only. Counted across dead tabs only —
   // a dead crown whose family has a LIVE member is already answered by the
   // stronger live-duplicate test below (the live one IS the successor).
+  // Keyed by taskId when the ledger has one, title family otherwise — the
+  // same two-tier rule crown-duplicate-detector.js:104 uses, so a renamed
+  // succession sibling is still grouped with its family.
+  const crownFamilyKey = (w) => {
+    const launch = value(safeCall(() => launchByRef(w.ref)));
+    const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
+    return taskId ? `task:${taskId}` : workKeyForTitle(w.title);
+  };
   const deadCrownFamilyCounts = new Map();
+  const deadCrownKeys = new Map();
   for (const w of deadTabs || []) {
     if (!isCrownTab(w.title)) continue;
-    const key = workKeyForTitle(w.title);
+    const key = crownFamilyKey(w);
+    deadCrownKeys.set(w.ref, key);
     deadCrownFamilyCounts.set(key, (deadCrownFamilyCounts.get(key) || 0) + 1);
   }
 
@@ -346,15 +410,22 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
     const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
     const taskStatusRaw = taskId ? safeCall(() => taskStatusById(taskId)) : null;
     const taskStatus = value(taskStatusRaw);
-    const ledgerKey = ledgerLinearKey(taskId, launch && launch.subject);
-    const linearKey = ledgerKey || extractLinearKey(w.title);
+    const dupKey = dispatchLinearKey(taskId);
+    const linearKey = ledgerLinearKey(taskId, launch && launch.subject) || extractLinearKey(w.title);
     const linearRaw = linearKey ? safeCall(() => linearStateByKey(linearKey)) : null;
     const linear = value(linearRaw);
-    // A collaborator that THREW, or one that answered `{error}`, are the same
-    // fact: this tab's status could not be established. Both must reach the
-    // unverifiable branch — never fall through to 'unmapped'.
-    const lookupFailure = failed(launchRaw) || failed(taskStatusRaw) || failed(linearRaw)
-      || Boolean(linear && linear.error);
+    // Failure is tracked PER SOURCE, not as one flag. A collaborator that
+    // THREW and one that answered `{error}` are the same fact — this source
+    // could not be reached — but WHICH source failed changes the verdict, and
+    // collapsing them let a P0 through (ship-check, 2026-09-07): see the
+    // task-store branch below. A malformed Linear answer (a state with a name
+    // but no type) counts as a failure too; it is not a usable verdict.
+    const linearFailed = failed(linearRaw)
+      || Boolean(linear && linear.error)
+      || Boolean(linear && !linear.type);
+    const ledgerFailed = failed(launchRaw);
+    const taskFailed = failed(taskStatusRaw);
+    const lookupFailure = linearFailed || ledgerFailed || taskFailed;
     const isAutoDispatched = hasAutoDispatchMarker(w.title);
 
     const entry = {
@@ -391,19 +462,34 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
     // `ledgerKey`, not `linearKey`: only a key the DISPATCH RECORD vouches for
     // may prove two tabs share work (see ledgerLinearKey). A title-derived key
     // still feeds the status lookup above, it just never closes a tab here.
+    // Title equality is the LAST resort and the weakest evidence, so it is
+    // fenced twice: only for a tab the ledger cannot identify at all, and only
+    // when both tabs are titleDupEligible (see that predicate for why an
+    // untitled or owner-renamed tab must never match another on title alone).
     const liveDup = (taskId && liveTaskIds.has(taskId))
-      || (ledgerKey && liveLinearKeys.has(ledgerKey))
-      || (!taskId && !ledgerKey && liveWorkKeys.has(workKeyForTitle(w.title)));
+      || (dupKey && liveLinearKeys.has(dupKey))
+      || (!taskId && !dupKey && titleDupEligible(w) && liveWorkKeys.has(workKeyForTitle(w.title)));
     if (liveDup) { push(safeToClose, entry, 'live-duplicate'); continue; }
 
     // 2. Confirmed finished. Linear is the board of record (CLAUDE.md §6), so
     //    it outranks the task-store mirror, which froze for Notion-sourced
     //    cards on 2026-08-20 and can report a stale status.
     if (linear && isTerminalStateType(linear.type)) { push(safeToClose, entry, `linear-${linear.type}`); continue; }
-    if (taskStatus === 'completed') { push(safeToClose, entry, 'task-completed'); continue; }
+    // ...but ONLY when Linear actually answered. This module's own header
+    // calls the task store a mirror that froze for Notion-sourced cards on
+    // 2026-08-20 and says Linear outranks it — and then, before this guard, it
+    // fell back to that stale mirror as SOLE evidence in precisely the moment
+    // Linear was unreachable, which is when the mirror is least trustworthy
+    // and the verdict is most destructive. A P0 found by ship-check on
+    // 2026-09-07: Linear 503 + a month-old "completed" task row read as
+    // "safe to close". `ledgerFailed` is in the guard for the same reason —
+    // an unreadable ledger means this taskId may not even be this tab's.
+    if (taskStatus === 'completed' && !linearFailed && !ledgerFailed) {
+      push(safeToClose, entry, 'task-completed'); continue;
+    }
 
     // 3. Duplicate crown loops — owner's call, both to close and to re-crown.
-    if (entry.crown && (deadCrownFamilyCounts.get(workKeyForTitle(w.title)) || 0) > 1) {
+    if (entry.crown && (deadCrownFamilyCounts.get(deadCrownKeys.get(w.ref)) || 0) > 1) {
       push(needsOwnerCall, entry, 'duplicate-crown-loop'); continue;
     }
 
@@ -414,6 +500,11 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
 
     // 5. Still open, terminal died. This is the re-dispatch bucket.
     if (linear && linear.type && !isTerminalStateType(linear.type)) { push(needsResuming, entry, 'linear-open'); continue; }
+    // A task-store `in_progress` row is the #883 reconciler's territory, and
+    // zombie-tab-sweep.js:101 deliberately defers to it rather than racing it
+    // with a re-dispatch. Same deference here — `pending` (the launch never
+    // ran) is the only task-store status this module recommends resuming.
+    if (taskStatus === 'in_progress') { push(needsOwnerCall, entry, 'reconciler-territory'); continue; }
     if (OPEN_TASK_STATUSES.has(taskStatus)) { push(needsResuming, entry, `task-${taskStatus}`); continue; }
 
     // 6. No ledger entry, no task file, no issue key: too little evidence to
@@ -457,8 +548,15 @@ function formatTriageReport({ safeToClose, needsResuming, needsOwnerCall }) {
   const total = safeToClose.length + needsResuming.length + needsOwnerCall.length;
   lines.push(`[cmux-triage] ${total} dead workspace(s): ${safeToClose.length} safe to close, ${needsResuming.length} need resuming, ${needsOwnerCall.length} need an owner call.`);
 
-  section('SAFE TO CLOSE — work is finished or running elsewhere', safeToClose, e =>
-    e.autoActionAllowed ? 'bsc-prune will close this on its next sweep' : 'OWNER-ONLY: not 🤖-dispatched or is a crown tab — close it by hand');
+  section('SAFE TO CLOSE — work is finished or running elsewhere', safeToClose, e => {
+    if (!e.autoActionAllowed) return 'OWNER-ONLY: not 🤖-dispatched or is a crown tab — close it by hand';
+    // Not "bsc-prune will close this": classifyZombieTabs has no Linear-key
+    // duplicate branch, so a live-duplicate whose task is still pending is
+    // REVIVED there, not closed. Only claim what that sweep actually does.
+    return e.reason === 'live-duplicate'
+      ? 'bsc-prune may instead re-dispatch this (it has no Linear-key duplicate branch) — close it by hand'
+      : 'bsc-prune will close this on its next sweep';
+  });
   section('NEEDS RESUMING — work is still open, the terminal died', needsResuming, e =>
     e.linearKey ? `re-dispatch: node scripts/linear-next.js --id ${e.linearKey}` : 're-dispatch: no issue key in title, identify the work first');
   section('NEEDS AN OWNER CALL — not enough evidence, or your decision', needsOwnerCall, e => ({
@@ -466,6 +564,7 @@ function formatTriageReport({ safeToClose, needsResuming, needsOwnerCall }) {
     'unverifiable-lookup': 'status lookup FAILED (API outage) — re-run before deciding',
     'watchdog-dashboard': 'NOT a corpse: dispatch-watchdog.js runs this as a plain node dashboard and owns its lifecycle — leave it open',
     unmapped: 'no ledger entry, no task file, no issue key — open it and look',
+    'reconciler-territory': 'task is in_progress — the #883 reconciler owns this; do not race it with a re-dispatch',
   }[e.reason] || 'review by hand'));
 
   function section(heading, entries, adviceFor) {
@@ -567,23 +666,49 @@ async function main(argv = process.argv.slice(2)) {
   const dead = [];
   const alive = [];
   const foreignAgentAlive = [];
+  const livenessUnverifiable = [];
   for (const w of all) {
     // Same two-signal, fail-safe-to-alive test bsc-prune uses. Uncertainty
     // must never resolve to dead in a tool that can close tabs.
     const { dead: isDead } = cmux.checkLiveness(w.ref, cmux.claudeAliveIn, cmux.terminalSurfaceAliveIn);
     if (!isDead) { alive.push(w); continue; }
-    // THIRD signal, and the one both of the above are blind to: a live
-    // NON-Claude agent CLI. See liveAgentIn's header — this is not a corpse,
-    // and the existing sweeps cannot tell.
-    const agent = (() => { try { return liveAgentIn(cmux.run(['top', '--workspace', w.ref, '--processes', '--format', 'tsv'])); } catch { return null; } })();
-    if (agent && agent !== 'claude_code') { foreignAgentAlive.push({ ...w, agent }); alive.push(w); continue; }
+    // THIRD signal, and the one both of the above are blind to: a live agent
+    // process of ANY kind. See liveAgentIn's header.
+    let agent = null;
+    let probeError = null;
+    try { agent = liveAgentIn(cmux.run(['top', '--workspace', w.ref, '--processes', '--format', 'tsv'])); }
+    catch (e) { probeError = e.message || String(e); }
+
+    // A FAILED probe is not a dead tab. Swallowing the error to null resolved
+    // a transient socket failure to "dead" — inverting the fail-safe-to-alive
+    // rule claudeAliveIn/checkLiveness state for exactly this call
+    // (cmux-workspaces.js:270), in the one place this module adds a signal
+    // they do not have. Reported as unverifiable instead (ship-check, 2026-09-07).
+    if (probeError) { livenessUnverifiable.push({ ...w, probeError }); alive.push(w); continue; }
+
+    // NOT `agent !== 'claude_code'`. AGENT_TAG_RE tolerates a `.uuid` tag
+    // suffix while hasLiveClaude anchors on /:tag:claude_code$/, so a suffixed
+    // claude_code tag is a live Claude session this module can see and
+    // hasLiveClaude cannot — and filtering it out here would have thrown away
+    // that evidence for the very agent whose blind spot matters most. Any live
+    // agent means not a corpse (ship-check, 2026-09-07).
+    if (agent) { foreignAgentAlive.push({ ...w, agent }); alive.push(w); continue; }
     dead.push(w);
   }
 
   if (foreignAgentAlive.length) {
-    console.log(`[cmux-triage] ${foreignAgentAlive.length} tab(s) look DEAD to bsc-prune but are running a live non-Claude agent — NOT corpses:`);
+    console.log(`[cmux-triage] ${foreignAgentAlive.length} tab(s) look DEAD to bsc-prune but have a live agent process — NOT corpses:`);
     for (const w of foreignAgentAlive) console.log(`  ${w.ref}  ${JSON.stringify(w.title)}  — live ${w.agent} session`);
     console.log('');
+  }
+  if (livenessUnverifiable.length) {
+    console.error(`[cmux-triage] WARN ${livenessUnverifiable.length} tab(s) could not be probed for a live agent — treated as ALIVE, not triaged:`);
+    for (const w of livenessUnverifiable) console.error(`  ${w.ref}  ${JSON.stringify(w.title)}  — ${w.probeError}`);
+    console.error('');
+  }
+  if (!useLinear) {
+    console.error('[cmux-triage] WARN --no-linear: verdicts below rest on the dispatch ledger and the task-store mirror alone. That mirror froze for Notion-sourced cards on 2026-08-20, so a tab may read as unmapped or stale-completed when Linear knows better. Re-run without --no-linear before acting on anything here.');
+    console.error('');
   }
 
   // A ledger read failure is NOT an empty ledger. Falling back to [] silently
@@ -625,12 +750,17 @@ async function main(argv = process.argv.slice(2)) {
   });
 
   if (asJson) {
-    console.log(JSON.stringify({ deadCount: dead.length, liveCount: alive.length, foreignAgentAlive, ...buckets }, null, 2));
+    console.log(JSON.stringify({ deadCount: dead.length, liveCount: alive.length, foreignAgentAlive, livenessUnverifiable, degraded: Boolean(ledgerError || livenessUnverifiable.length || !useLinear), ...buckets }, null, 2));
   } else {
     console.log(formatTriageReport(buckets).join('\n'));
   }
 
-  return 0;
+  // 0 clean / 2 could-not-fully-run, the exit contract this repo's other
+  // audit CLIs use (audit-doubled-market-ids.js). A report produced with an
+  // unreadable ledger, an unprobeable tab, or Linear deliberately skipped is
+  // NOT a clean run, and returning 0 for it let a degraded report look
+  // authoritative to any caller that checks only the status (ship-check).
+  return (ledgerError || livenessUnverifiable.length || !useLinear) ? 2 : 0;
 }
 
 if (require.main === module) {
