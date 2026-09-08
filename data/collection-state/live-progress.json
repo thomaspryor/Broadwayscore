@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-08T02:42:08.957Z",
+  "updatedAt": "2026-09-08T02:43:53.327Z",
   "processed": 121,
-  "failed": 1159,
-  "successRate": "9.5%",
+  "failed": 1169,
+  "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 56,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 19,
     "directCookies": 9,
     "scrapingbee": 27,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 19
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-07T22:26:01.715Z",
-      "event": "bb-session",
-      "session": "7d872c37",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-07T22:26:06.104Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-09-07T22:34:32.906Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "t": "2026-09-08T02:38:08.071Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-08T02:43:37.061Z",
+      "event": "bb-session",
+      "session": "60a01e7e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-08T02:43:38.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

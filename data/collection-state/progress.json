@@ -1281,7 +1281,17 @@
     "the-producers-west-end-2025/deadline--unknown.json",
     "the-producers-west-end-2025/people--unknown.json",
     "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
-    "the-producers-west-end-2025/thestage--paul-vale.json"
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "burlesque-west-end-2026/broadwayworld--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1362,7 +1372,8 @@
       "cinderella-west-end-2026/hollywood-reporter--jordan-riefe.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json"
+      "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1438,7 +1449,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "the-producers-west-end-2025/thestage--paul-vale.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -1709,6 +1720,17 @@
       "t": "2026-09-08T02:38:08.071Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-08T02:43:37.061Z",
+      "event": "bb-session",
+      "session": "60a01e7e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-08T02:43:38.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
