@@ -281,12 +281,23 @@ function partitionAuditedResults(results, riskyIds) {
  * @param {Object} [opts]
  * @param {number} [opts.retentionDays=45]
  * @param {string} [opts.now=runAudit.generatedAt]  ISO stamp for this run
+ * @param {Set<string>|string[]} [opts.protectedIds]  showIds exempt from the
+ *   retention-age drop below, even though this run did not re-audit them.
+ *   BRO-3002: a quarantined show's carried-forward entry is otherwise an
+ *   ordinary stale row — its computedAt is frozen at the run BEFORE it got
+ *   quarantined and never advances (excluded from freshIds every subsequent
+ *   run for as long as it stays risky), so once real wall-clock time exceeds
+ *   retentionDays it would silently get pruned — "lost", not "parked",
+ *   exactly the outcome the quarantine split exists to prevent. The caller
+ *   (audit-show-review-gap.js) passes the risky showIds here on every
+ *   quarantined-merge call.
  * @returns {Object} merged audit — same shape, plus per-result `computedAt`
  */
 function mergeGapAudit(prevAudit, runAudit, opts = {}) {
   const now = opts.now || (runAudit && runAudit.generatedAt) || new Date().toISOString();
   const retentionDays = opts.retentionDays == null ? DEFAULT_RETENTION_DAYS : opts.retentionDays;
   const cutoffMs = Date.parse(now) - retentionDays * 24 * 3600 * 1000;
+  const protectedIds = opts.protectedIds instanceof Set ? opts.protectedIds : new Set(opts.protectedIds || []);
 
   const runResults = Array.isArray(runAudit && runAudit.results) ? runAudit.results : [];
   const freshIds = new Set(runResults.map(r => r && r.showId).filter(Boolean));
@@ -312,7 +323,7 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
     const stampMs = stamp ? Date.parse(stamp) : NaN;
     // Unparseable/absent stamp → KEEP. Dropping real audited state because a
     // timestamp didn't parse is the wrong direction to fail on this file.
-    if (Number.isFinite(stampMs) && Number.isFinite(cutoffMs) && stampMs < cutoffMs) { dropped++; continue; }
+    if (!protectedIds.has(r.showId) && Number.isFinite(stampMs) && Number.isFinite(cutoffMs) && stampMs < cutoffMs) { dropped++; continue; }
     if (!byId.has(r.showId)) carried++;
     byId.set(r.showId, stamp ? { ...r, computedAt: stamp } : { ...r });
   }

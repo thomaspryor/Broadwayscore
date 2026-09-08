@@ -80,6 +80,20 @@ test('carried-forward entries age out; this run’s entries never do', () => {
   assert.strictEqual(kept.prunedStale, 0);
 });
 
+test('BRO-3002: protectedIds exempt a quarantined show from the retention-age drop (Codex adversarial review finding)', () => {
+  const prev = mergeGapAudit(null, runOf([result('old-quarantined-show'), result('old-show')], '2026-01-01T00:00:00.000Z'));
+  // Without protection, a show this old and not re-audited gets pruned...
+  const unprotected = mergeGapAudit(prev, runOf([result('fresh-show')]), { retentionDays: 45 });
+  assert.deepStrictEqual(unprotected.results.map(r => r.showId).sort(), ['fresh-show']);
+  // ...but with protectedIds, the same stale show survives the exact same cutoff.
+  const protectedRun = mergeGapAudit(prev, runOf([result('fresh-show')]), {
+    retentionDays: 45,
+    protectedIds: new Set(['old-quarantined-show']),
+  });
+  assert.deepStrictEqual(protectedRun.results.map(r => r.showId).sort(), ['fresh-show', 'old-quarantined-show']);
+  assert.strictEqual(protectedRun.prunedStale, 1, 'the UNprotected old-show still ages out normally');
+});
+
 test('a pre-#893 file (no per-result computedAt) is adopted, not discarded', () => {
   const legacy = { generatedAt: '2026-08-01T00:00:00.000Z', windowDays: 21, targets: 2, results: [result('a-show'), result('b-show')] };
   const after = mergeGapAudit(legacy, runOf([result('b-show')]));

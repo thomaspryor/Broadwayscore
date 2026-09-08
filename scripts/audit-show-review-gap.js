@@ -2070,7 +2070,7 @@ async function main(argv = process.argv.slice(2)) {
   // again, from a different cause. This satisfies the plan's S0 acceptance
   // ("--show=X twice concurrently → no lost data"), proven by
   // scripts/lib/gap-audit-merge.concurrent.test.mjs.
-  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds, quarantined } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
+  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds, quarantined, outletsWritten } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
   let prevAudit = null;
   let prevUnreadable = null;
   if (fs.existsSync(AUDIT_PATH)) {
@@ -2167,7 +2167,18 @@ async function main(argv = process.argv.slice(2)) {
     ? partitionAuditedResults(results, blast.changedIds)
     : { safe: [], risky: [] };
   const canPartialWrite = !blast.ok && !prevUnreadable && riskyResults.length > 0 && safeResults.length > 0;
-  const quarantined = canPartialWrite ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }) : null;
+  // protectedIds (Codex adversarial review, BRO-3002): a quarantined show's
+  // carried-forward entry is otherwise just an ordinary stale row to
+  // mergeGapAudit's retention clock — its computedAt is frozen at the run
+  // BEFORE it got quarantined and never advances (it's excluded from
+  // freshIds every subsequent run for as long as it stays risky), so once
+  // real wall-clock time exceeds DEFAULT_RETENTION_DAYS it would silently
+  // get pruned — the exact "lost, not just parked" outcome this whole fix
+  // exists to prevent. Exempt it from the retention drop (still carried
+  // forward, still comparable, just never evicted purely for staleness).
+  const quarantined = canPartialWrite
+    ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }, { protectedIds: new Set(riskyResults.map(r => r.showId)) })
+    : null;
 
   if (!dryRun && (blast.ok || canPartialWrite)) {
     const toWrite = blast.ok ? audit : quarantined;
@@ -2185,8 +2196,9 @@ async function main(argv = process.argv.slice(2)) {
       outlets: outletsToWrite,
     });
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${outletsToWrite.length} hosts)`);
+    return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: outletsToWrite };
   }
-  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined };
+  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: unknownOutlets };
   }); // end withFileLock
 
   if (!lockHeld) {
@@ -2258,13 +2270,13 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
-  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${unknownOutlets.length} unknown outlets`);
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
-  if (verbose && unknownOutlets.length > 0) {
+  if (verbose && outletsWritten.length > 0) {
     console.log('\nUnknown outlets (not in outlet-registry.json):');
-    for (const u of unknownOutlets) {
+    for (const u of outletsWritten) {
       console.log(`  ${u.host} — ${u.occurrences} occurrence(s) across ${u.shows.length} show(s): ${u.sampleUrls[0]}`);
     }
   }
@@ -2368,21 +2380,21 @@ async function main(argv = process.argv.slice(2)) {
   // audit.counts here would redden CI on gaps this run never looked at — and
   // keep it red until every historical entry aged out.
   const runWithGap = countsFor(results).withGap;
-  // A FULL block (nothing written) must redden the run. Exiting 0 would leave
-  // the workflow green while the audit file silently went stale — the same
-  // "green run, nobody notices" shape as the collector/discovery outage
-  // floors above, which both exit 1. The alert alone is not enough: it is
-  // cooldown'd and email-delivery can fail.
-  //
-  // A PARTIAL write (BRO-3002) is deliberately NOT in that same bucket: it
-  // made real forward progress (the safe majority persisted), and the
-  // quarantined subset alerts on its own via routeAlert above every run it
-  // recurs. Keeping this exit code red for a partial write would make the
-  // cron permanently red the moment even one show carries a real, benign
-  // flag-out change — exactly the false-alarm-forever loop that stalled this
-  // workflow in the first place, just moved from "the write" to "the exit
-  // code".
-  const exitCode = (!dryRun && !blast.ok && !partial) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
+  // A refused write — full OR partial (BRO-3002) — must redden the run.
+  // Exiting 0 would leave the workflow green while a real, unresolved issue
+  // (a show whose coverage state disagrees with its own recent history)
+  // sits quarantined indefinitely — the exact "green run, nobody notices"
+  // shape as the collector/discovery outage floors above, which both exit 1.
+  // The alert alone is not enough: it is cooldown'd and email-delivery can
+  // fail. Unlike the write/checkpoint split above, staying red here is
+  // deliberately NOT relaxed for a partial write (adversarial review, BRO-3002
+  // follow-up): the quarantined shows' underlying flag never heals on its
+  // own, so a green partial-write run would let check-cron-health's
+  // CRITICAL_CRONS entry report "healthy" while genuinely unresolved coverage
+  // sat parked — the workflow now makes real progress (the fix's whole
+  // point) but still surfaces loudly until a human resolves or overrides the
+  // specific quarantined shows.
+  const exitCode = (!dryRun && !blast.ok) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);
 }
