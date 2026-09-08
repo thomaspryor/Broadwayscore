@@ -106,6 +106,22 @@ const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 // DISPATCH_CLAIM_DIR below).
 const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
 
+// BRO-3045: the idempotency refusal used to print a dispatch record's body and
+// timestamp but never its AGE, so "it already looks dispatched" read the same
+// for a job spawned 90 seconds ago and one abandoned 26 days ago. Nothing in
+// the message told a human which they were looking at. Purely cosmetic — the
+// staleness DECISION is made from the ledger's own terminal breadcrumb (see
+// dispatch-ledger.js's terminalForLaunch), never from this number.
+function describeAge(ts, now = Date.now()) {
+  const t = Date.parse(ts || '');
+  if (!Number.isFinite(t)) return '';
+  const hours = (now - t) / 3600000;
+  if (hours < 0) return ' — timestamped in the future';
+  if (hours < 1) return ` — ${Math.round(hours * 60)}m ago`;
+  if (hours < 48) return ` — ${hours.toFixed(1)}h ago`;
+  return ` — ${Math.round(hours / 24)}d ago`;
+}
+
 // Resolved, not __dirname-relative: this script is routinely run from
 // inside a worktree (this session included), and a relative REPO would
 // resolve into that worktree's own tree instead of the canonical checkout —
@@ -670,12 +686,63 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // for why both exist (cross-machine vs. host-local).
   const entries0 = readLedgerEntriesFn();
   if (!args.force) {
-    const priorComment = ld.findUnresolvedDispatchComment(issue);
+    const rawComment = ld.findUnresolvedDispatchComment(issue);
+    // BRO-3045: a "Dispatched ..." comment naming a correlationId this host
+    // launched and has since journaled terminal is our OWN finished dispatch,
+    // not evidence of live work. Without this the ledger half of the fix
+    // unblocks nothing: reportDispatchOnIssue posts a comment on every
+    // dispatch, and findUnresolvedDispatchComment returns it for any
+    // non-terminal issue, so the comment alone would still refuse all 127.
+    const commentFinished = ld.dispatchCommentIsOurFinishedLaunch(rawComment, taskId, entries0);
+    const priorComment = commentFinished ? null : rawComment;
     const liveLedger = ld.hasLiveLedgerEntry(taskId, entries0);
+    // Demotions are printed even when the dispatch proceeds — a guard that
+    // silently stops refusing is indistinguishable from a guard that broke.
+    const ledgerCrumb = ld.terminalBreadcrumbForTask(taskId, entries0);
+    // A 'prune-closed' row does NOT prove the workspace actually closed.
+    // bsc-prune writes one for EVERY ✅-titled workspace, including those it
+    // then SKIPS closing because a claude process is still alive in them (an
+    // accepted tradeoff there, because it was only ever used for PARKING).
+    // Consuming it as a death would make a card dispatchable during the whole
+    // mark-✅-then-run-/ship-check-/wrap-up-and-push window — minutes to hours
+    // on this fleet — and the ordinary duplicate-tab brake cannot catch it,
+    // because findLiveWorkspaceForTask excludes done-titled workspaces by
+    // design. So for that one event we ask the machine, not the ledger.
+    // Adversarial ship-check finding; the other terminal events are unaffected
+    // (a 'vanished'/'remapped'/'dead' row is written about a workspace that
+    // demonstrably went away).
+    if (ledgerCrumb && !liveLedger && ledgerCrumb.event === 'prune-closed' && ledgerCrumb.workspaceRef) {
+      let stillAlive = false;
+      try {
+        stillAlive = cmuxAvailableFn() && claudeAliveInFn(ledgerCrumb.workspaceRef);
+      } catch (e) {
+        // Unknown liveness is not evidence of death. Fail toward refusing.
+        console.error(`[linear-next] liveness probe for ${ledgerCrumb.workspaceRef} failed (${e.message}) — treating as still live.`);
+        stillAlive = true;
+      }
+      if (stillAlive) {
+        console.error(`[linear-next] REFUSING to dispatch ${identifier}: its ledger record was closed by a 'prune-closed' breadcrumb at ${ledgerCrumb.ts}, but a claude process is STILL ALIVE in ${ledgerCrumb.workspaceRef}.`);
+        console.error(`  bsc-prune writes prune-closed for every ✅-titled workspace, including ones it skips closing because work is still running.`);
+        console.error(`  Re-run with --force if you know that session is finished.`);
+        process.exit(1);
+      }
+    }
+    if (ledgerCrumb && !liveLedger) {
+      console.error(`[linear-next] NOTE: ledger dispatch record for ${taskId} was already closed by a '${ledgerCrumb.event}' breadcrumb at ${ledgerCrumb.ts} — not treating it as live.`);
+    }
+    if (commentFinished) {
+      console.error(`[linear-next] NOTE: the "Dispatched ..." comment on ${identifier} (${rawComment.createdAt}) names a dispatch this host already journaled as finished — not treating it as live.`);
+    }
     if (priorComment || liveLedger) {
       console.error(`[linear-next] REFUSING to dispatch ${identifier}: it already looks dispatched.`);
-      if (priorComment) console.error(`  Linear comment: "${priorComment.body}" (${priorComment.createdAt})`);
-      if (liveLedger) console.error(`  Local dispatch ledger has a live (non-dead, non-finished) entry for ${taskId}.`);
+      if (priorComment) {
+        console.error(`  Linear comment: "${priorComment.body}" (${priorComment.createdAt}${describeAge(priorComment.createdAt)})`);
+      }
+      if (liveLedger) {
+        const latest = dispatchLedger.latestAttemptForTask(taskId, entries0);
+        const when = latest && latest.ts ? ` — latest attempt '${latest.event}' at ${latest.ts}${describeAge(latest.ts)}` : '';
+        console.error(`  Local dispatch ledger has a live (non-dead, non-finished) entry for ${taskId}${when}.`);
+      }
       console.error(`  Re-run with --force if you know this is stale.`);
       process.exit(1);
     }
