@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-08T09:57:22.509Z",
-  "processed": 184,
-  "failed": 2066,
-  "successRate": "8.2%",
+  "updatedAt": "2026-09-08T10:19:24.639Z",
+  "processed": 215,
+  "failed": 2135,
+  "successRate": "9.1%",
   "tierBreakdown": {
-    "playwright": 93,
+    "playwright": 117,
     "amp": 0,
-    "browserbase": 29,
+    "browserbase": 31,
     "directCookies": 10,
-    "scrapingbee": 35,
-    "brightdata": 11,
+    "scrapingbee": 37,
+    "brightdata": 14,
     "archiveToday": 0,
-    "archive": 29
+    "archive": 31
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-08T02:55:57.622Z",
-      "event": "bb-session",
-      "session": "1173f9e7",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-08T02:56:02.751Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-09-08T02:56:28.399Z",
       "event": "bb-session",
@@ -127,6 +116,17 @@
       "t": "2026-09-08T09:57:08.466Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-08T10:17:47.852Z",
+      "event": "bb-session",
+      "session": "7605d58a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/equus-review-toby-stephen"
+    },
+    {
+      "t": "2026-09-08T10:17:48.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
