@@ -102,10 +102,13 @@ function extractSocketPassword(configText) {
  *
  * @param {Error|string|null|undefined} err an Error from execFileSync (whose
  *   .message carries the captured stderr) or a bare message string.
- * @returns {'auth-denied'|'unavailable'|'not-found'|'timeout'|'unknown'}
+ * @returns {'auth-denied'|'unavailable'|'not-found'|'timeout'|'unknown'|'empty'}
+ *   'unknown' means a real message we could not classify (the "cmux reworded
+ *   its error" signal, which escalates); 'empty' means no diagnostic text at
+ *   all, which does not.
  */
 function classifyCmuxError(err) {
-  if (!err) return 'unknown';
+  if (!err) return 'empty';
   // Deliberately does NOT read err.stdout. stdout carries COMMAND OUTPUT —
   // workspace titles, `top` process tables — any of which could contain the
   // literal words "Access denied" and be mistaken for a rejection (ship-check
@@ -115,7 +118,13 @@ function classifyCmuxError(err) {
   const text = typeof err === 'string'
     ? err
     : `${err.message || ''}\n${err.stderr || ''}`;
-  if (!text.trim()) return 'unknown';
+  // A failure carrying NO diagnostic text is its own category, distinct from
+  // one whose text we simply do not recognise. That distinction is
+  // load-bearing: 'unknown' escalates (it is the "cmux reworded its error"
+  // signal), and an empty error is absence of evidence, not evidence of a
+  // rewording — paging on it would page on any odd exec failure that happened
+  // to produce no stderr (ship-check finding).
+  if (!text.trim()) return 'empty';
 
   // Both rejection shapes cmux emits: no credential offered, and a wrong one.
   if (/Access denied|Invalid password|only processes started inside cmux/i.test(text)) {

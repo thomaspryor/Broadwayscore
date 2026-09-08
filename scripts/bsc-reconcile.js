@@ -1136,7 +1136,12 @@ async function escalateCmuxAuthFailures() {
     await Promise.race([
       routeAlert({
       // Stable key: one open incident for the whole outage, not one per tick.
-      conditionKey: summary.authDenied > 0 ? 'cmux-socket:auth-denied' : 'cmux-socket:unclassified',
+      // ONE key for both shapes on purpose. The cooldown is per-key, so
+      // splitting auth-denied and unclassified would let a single ongoing
+      // outage page twice if the classification flapped tick to tick
+      // (ship-check finding). It is one incident — "the sweeps cannot reach
+      // cmux" — and the title/description below carry the distinction.
+      conditionKey: 'cmux-socket:unreachable',
       title: summary.authDenied > 0
         ? 'cmux socket is rejecting automation — every self-heal sweep is down'
         : 'cmux is failing in a way this code does not recognise — self-heal may be down',
