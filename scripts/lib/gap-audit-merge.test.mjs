@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange } = require('./gap-audit-merge.js');
+const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange, partitionAuditedResults } = require('./gap-audit-merge.js');
 
 const result = (showId, over = {}) => ({
   showId,
@@ -231,6 +231,62 @@ test('censusVerdictFor: liveCount excludes non-live candidates', () => {
   assert.strictEqual(v.candidateCount, 2);
   assert.strictEqual(v.liveCount, 1);
   assert.strictEqual(v.verdict, 'incomplete');
+});
+
+test('partitionAuditedResults: splits by showId membership in riskyIds, order preserved within each bucket', () => {
+  const results = [result('a'), result('b'), result('c'), result('d')];
+  const { safe, risky } = partitionAuditedResults(results, ['b', 'd']);
+  assert.deepStrictEqual(safe.map(r => r.showId), ['a', 'c']);
+  assert.deepStrictEqual(risky.map(r => r.showId), ['b', 'd']);
+});
+
+test('partitionAuditedResults: empty riskyIds puts everything in safe (BRO-3002 full-write path)', () => {
+  const results = [result('a'), result('b')];
+  const { safe, risky } = partitionAuditedResults(results, []);
+  assert.deepStrictEqual(safe.map(r => r.showId), ['a', 'b']);
+  assert.deepStrictEqual(risky, []);
+});
+
+test('partitionAuditedResults: every id risky puts everything in risky (degrades to full-block)', () => {
+  const results = [result('a'), result('b')];
+  const { safe, risky } = partitionAuditedResults(results, ['a', 'b']);
+  assert.deepStrictEqual(safe, []);
+  assert.deepStrictEqual(risky.map(r => r.showId), ['a', 'b']);
+});
+
+test('partitionAuditedResults: tolerates junk rows and a missing/undefined riskyIds arg', () => {
+  const results = [result('a'), null, { title: 'no id' }];
+  const { safe, risky } = partitionAuditedResults(results, undefined);
+  assert.strictEqual(safe.length, 3);
+  assert.strictEqual(safe[0].showId, 'a');
+  assert.deepStrictEqual(risky, []);
+});
+
+test('BRO-3002: quarantining the risky subset then re-merging only the safe results carries the risky ones forward unchanged (no data loss, no full block)', () => {
+  const prev = {
+    generatedAt: '2026-09-05T00:00:00Z',
+    results: [
+      result('safe-1', { aggregatorListedUrls: ['https://a.com/1'] }),
+      result('risky-1', { aggregatorListedUrls: ['https://a.com/2'] }),
+    ],
+  };
+  const run = {
+    generatedAt: '2026-09-07T00:00:00Z',
+    results: [
+      result('safe-1', { aggregatorListedUrls: ['https://a.com/1', 'https://a.com/1b'] }), // genuinely grew — safe
+      result('risky-1', { flaggedMisses: [{ url: 'https://a.com/2', dirFlags: [] }] }),      // lost live coverage — risky
+    ],
+  };
+  const { safe } = partitionAuditedResults(run.results, ['risky-1']);
+  const quarantined = mergeGapAudit(prev, { ...run, results: safe });
+  const bySid = Object.fromEntries(quarantined.results.map(r => [r.showId, r]));
+  // safe-1 advanced to this run's fresher data.
+  assert.strictEqual(bySid['safe-1'].aggregatorListedUrls.length, 2);
+  assert.strictEqual(bySid['safe-1'].computedAt, run.generatedAt);
+  // risky-1 was NOT clobbered by this run's risky result — it kept the prior
+  // entry (still present, still comparable next run) rather than being lost.
+  assert.strictEqual(bySid['risky-1'].aggregatorListedUrls.length, 1);
+  assert.strictEqual(bySid['risky-1'].computedAt, prev.generatedAt);
 });
 
 test('censusVerdictFor: public counts are outlet-level even as candidates stay URL-level', () => {

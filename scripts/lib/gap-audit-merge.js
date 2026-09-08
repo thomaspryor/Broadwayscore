@@ -233,6 +233,47 @@ function isRiskyGapChange(prevState, nextState) {
 }
 
 /**
+ * Split this run's freshly-audited results into the subset safe to persist
+ * and the subset blastRadiusCheck flagged as risky (BRO-3002).
+ *
+ * WHY THIS EXISTS: the checkpoint selects the LEAST-RECENTLY-audited shows
+ * each run — which shows land in one batch is unrelated to which of them
+ * happen to carry a real new flag. Before this, a batch that mixed a handful
+ * of genuinely-changed shows into a much larger set of unrelated ones had its
+ * ENTIRE write refused, and the checkpoint rollback (audit-show-review-gap.js)
+ * restored ALL of them — including the unrelated majority — to their old
+ * timestamps. Next run, the same least-recently-audited selection picks the
+ * identical batch again, hits the identical few risky shows, and refuses
+ * again — forever. BRO-3002 observed exactly this: the same ~9-show set
+ * recurred across three consecutive hourly runs on 2026-09-07, each one
+ * comparing against the same 2026-09-05 baseline because no run since had
+ * ever been allowed to advance it.
+ *
+ * Splitting the write lets the unrelated majority's freshness stamps advance
+ * normally (so the checkpoint moves on to genuinely-stale shows next run)
+ * while the risky subset alone stays parked at its old entry/timestamp —
+ * still flagged, still re-selected, still alerting, but no longer able to
+ * starve every other show behind it. A batch where EVERY examined show is
+ * risky (the actual dead-SERP/empty-census/partial-checkout signature this
+ * guard exists to catch) degrades to `safe: []` — i.e. today's full-block
+ * behavior, unchanged.
+ *
+ * @param {Array} results  this run's raw per-show results (pre-merge)
+ * @param {string[]} riskyIds  showIds blastRadiusCheck returned as changedIds
+ * @returns {{safe: Array, risky: Array}}
+ */
+function partitionAuditedResults(results, riskyIds) {
+  const risky = new Set(riskyIds || []);
+  const safe = [];
+  const flagged = [];
+  for (const r of (results || [])) {
+    if (r && r.showId && risky.has(r.showId)) flagged.push(r);
+    else safe.push(r);
+  }
+  return { safe, risky: flagged };
+}
+
+/**
  * Merge this run's results into the previously-persisted audit.
  *
  * @param {Object|null} prevAudit  parsed previous show-review-gap.json (or null)
@@ -327,4 +368,4 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, withFileLock, DEFAULT_RETENTION_DAYS };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS };
