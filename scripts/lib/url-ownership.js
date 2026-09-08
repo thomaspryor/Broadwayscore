@@ -147,4 +147,5 @@ module.exports = {
   recordUrlOwner,
   _resetUrlOwnershipIndex,
   _isBlockingOwnerCopy,
+  _isOwnableUrl,
 };
