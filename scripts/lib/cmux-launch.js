@@ -29,6 +29,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
+const { isCrownLaunchTitle, shouldLaunchNewCrown } = require('./crown-fanout-guard.js');
 const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   shouldProbeSurface, shouldReprobeCapacity,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
@@ -788,6 +789,7 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
  *                                 wake, intervalSec, now, idleSec,
  *                                 strictlyAlive, cmuxExists, cwdIsDir,
+ *                                 listWorkspaces, crownAlive,
  *                                 newWorkspace} — never set in real use. Tests calling
  *                                 waitForLaunchOutcome directly MUST pass
  *                                 probes.wake (a no-op), or a local test run
@@ -836,7 +838,35 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 capacity estimate is not the same class of
  *                                 act as bypassing a liveness check, which is
  *                                 why one is forceable and the other is not.
- * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
+ *                                 It ALSO bypasses the BRO-2953 crown-fanout
+ *                                 guard (a genuinely deliberate SECOND,
+ *                                 independent crown is a real, if rare, use
+ *                                 case) — see crown-fanout-guard.js. For a
+ *                                 sanctioned successor hand-off, prefer
+ *                                 opts.successorOf instead: it exempts only
+ *                                 the caller's own predecessor from the guard
+ *                                 without also disabling the unrelated
+ *                                 terminal-capacity preflight below.
+ * @param {string}  [opts.successorOf] BRO-2953: the workspace ref of the
+ *                                 CALLER's own predecessor in a crown
+ *                                 succession hand-off (read
+ *                                 process.env.CMUX_WORKSPACE_ID inside the
+ *                                 predecessor session before composing the
+ *                                 successor's launch call — every
+ *                                 cmux-launched session's env carries it).
+ *                                 Exempts exactly that one ref from the
+ *                                 crown-fanout guard so a sanctioned hand-off
+ *                                 is not itself treated as the duplicate it
+ *                                 exists to prevent; any OTHER live crown
+ *                                 still refuses. No effect on any non-crown
+ *                                 launch, and no effect at all once `force`
+ *                                 is set (force already bypasses the whole
+ *                                 guard). Ignored (with no error) if it does
+ *                                 not match any live crown-titled workspace —
+ *                                 a stale or wrong ref here degrades to "no
+ *                                 exemption", never to "grant an exemption
+ *                                 that was never earned."
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, refusedForCrownFanout?: boolean, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
  *   seedFile/command are null only for the argument-validation refusals
  *   (BRO-2251) — those return before either is computed, since no seed/cmd
  *   file is ever written for a call that fails validation.
@@ -874,7 +904,7 @@ function pageAuthPreflightFailure(detail) {
   } catch { /* alerting must never block reporting the real launch failure */ }
 }
 
-function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
+function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, successorOf = null, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
   // force is deliberately NOT consulted by the reclaim check below — see the
   // @param note. Its one effect is bypassing the terminal-capacity preflight
   // (task #1904); everything between here and there behaves identically with
@@ -1001,6 +1031,75 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     };
   }
   if (journalEntry) clearLaunchJournalEntry(effectiveWorkKey, journalPath); // recorded failure is now confirmed dead (or unreachable) — stop tracking it
+
+  // BRO-2953: refuse a second concurrent BRO-343 "crown" launch. Every launch
+  // path (fresh dispatch, succession hand-off, manual scratchpad script)
+  // funnels through here, so this is the one chokepoint that sees every
+  // attempt regardless of caller. Deliberately placed AFTER the reclaim block
+  // above, not before it: reclaim's whole job is recognizing "the live
+  // workspace already out there IS this exact work's own prior attempt,
+  // adopt it" and returns before reaching here — putting this guard earlier
+  // would treat that legitimate self-reclaim as a duplicate sibling and
+  // refuse it outright, defeating task #1706's reclaim mechanism for every
+  // crown-titled launch.
+  //
+  // Two things happen here that shouldLaunchNewCrown itself deliberately does
+  // NOT do (kept pure — rule 15):
+  //  1. LIVENESS: `cmux list-workspaces` lists a title the instant a workspace
+  //     is created and keeps listing it until the tab is closed — a crashed
+  //     claude leaves a corpse tab that still appears. Passing that straight
+  //     to the predicate would let one dead crown block every future crown
+  //     launch until someone notices and closes it by hand. crownAliveFn
+  //     (default cmuxws.claudeAliveIn) filters to workspaces with a live
+  //     claude process first. Its own fail-open contract ("never kill a
+  //     maybe-alive tab") is inverted correctly here: on a socket error it
+  //     reports alive=true, which for a REFUSE decision is the conservative
+  //     answer (never mistakenly allow a probable duplicate on an uncertain
+  //     read) — the same fail-toward-safety direction as the listWorkspaces
+  //     catch below, just pointed at a different failure mode.
+  //  2. SUCCESSOR EXEMPTION: opts.successorOf is the caller's OWN predecessor
+  //     workspace ref (every cmux-launched session's env carries
+  //     CMUX_WORKSPACE_ID — see bsc-next.js's self-close comment for the same
+  //     fact used the other direction). A sanctioned hand-off's predecessor
+  //     is legitimately still alive and crown-titled at the exact moment the
+  //     successor launches; excluding exactly that one ref lets the hand-off
+  //     through while any OTHER, unrelated live crown still refuses. This is
+  //     deliberately separate from `force`, which also bypasses the
+  //     terminal-capacity preflight below — a routine hand-off has no reason
+  //     to touch that unrelated guard, and coupling the two was flagged as a
+  //     design defect (Codex adversarial review, 2026-09-07): every ordinary
+  //     succession would otherwise need force:true just to get past THIS
+  //     check, silently weakening capacity protection on every single hand-off.
+  //     `force` remains the escape hatch for a genuinely deliberate SECOND,
+  //     independent crown (not a hand-off) — see the refusal message.
+  // CROWN_FANOUT_GUARD_DISABLED=1 is the operational kill switch (matches the
+  // CMUX_AUTH_PREFLIGHT_DISABLED / CMUX_CAPACITY_PREFLIGHT_DISABLED /
+  // CMUX_LAUNCH_RECLAIM_DISABLED convention) if this ever needs to be pulled
+  // without a code revert.
+  // isCrownLaunchTitle short-circuit first: every non-crown launch (the
+  // overwhelming majority) skips listWorkspaces()/crownAliveFn entirely —
+  // no reason to pay a cmux round trip per listed crown tab on a launch this
+  // guard is a no-op for anyway.
+  if (!force && isCrownLaunchTitle(title) && process.env.CROWN_FANOUT_GUARD_DISABLED !== '1') {
+    const listWorkspacesFn = probes.listWorkspaces || cmuxws.listWorkspaces;
+    const crownAliveFn = probes.crownAlive || cmuxws.claudeAliveIn;
+    let existingWorkspaces = [];
+    try {
+      existingWorkspaces = listWorkspacesFn().filter((w) => {
+        if (!w || w.ref === successorOf || !isCrownLaunchTitle(w.title)) return false;
+        try { return crownAliveFn(w.ref); } catch { return true; } // uncertain → treat as alive (see header)
+      });
+    } catch (e) {
+      console.error(`[cmux-launch] WARN could not list existing workspaces for the crown-fanout guard (${e.message}) — proceeding without a duplicate-crown check`);
+      existingWorkspaces = [];
+    }
+    const crownCheck = shouldLaunchNewCrown(existingWorkspaces, title);
+    if (!crownCheck.allow) {
+      const reason = crownCheck.reason;
+      console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+      return { ok: false, reason, refusedForCrownFanout: true, seedFile, command };
+    }
+  }
 
   // Launcher auth pre-check (card #856, Session-system overhaul S3): 7 cmux
   // launches died to "Not logged in" in the 5 days before this fix, and
