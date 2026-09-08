@@ -74,6 +74,22 @@ function extractSiteImageUrls(html) {
   return [...urls];
 }
 
+// Unique broadwayscorecard.com page URLs referenced by <a href> anywhere in
+// the HTML — for the best-effort network check (does prod actually serve
+// these?). utm_* query params are stripped before dedup so the same page
+// linked from two sections (footer About + a card) is only checked once.
+// Born from the recurring "footer link 404s" class (#804 fixed twice; the
+// outlet-slug 404 this sits alongside neither commit caught) — Resend's own
+// pre-send checker caught both live, after generate.mjs had already shipped
+// them, because nothing here checked page links, only image src.
+function extractSiteLinkUrls(html) {
+  const urls = new Set();
+  for (const m of String(html || '').matchAll(/<a\s[^>]*href="(https:\/\/broadwayscorecard\.com\/[^"]*)"/g)) {
+    urls.add(m[1].split('?')[0]);
+  }
+  return [...urls];
+}
+
 // Classify one gap-audit-checkpoint entry for a featured show.
 //   'gap'     — audit is fresh and reports uncollected reviews → block
 //   'ok'      — audit is fresh and reports zero uncollected reviews
@@ -206,6 +222,7 @@ module.exports = {
   phantomImageViolations,
   countEmptyImgSrc,
   extractSiteImageUrls,
+  extractSiteLinkUrls,
   classifyGapEntry,
   completenessFindings,
   gapDisclosureDecisions,
