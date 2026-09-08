@@ -1,21 +1,37 @@
-# Off-Broadway closing-date detector — ALERT ONLY.
+# Off-Broadway closing-date detector.
 #
-# OB shows have no closing-date automation today: update-show-status.yml and
-# audit-closing-dates.js are Broadway-only (broadway.com has no reliable OB
-# calendar, see memory/feedback_closing_date_audit_gaps.md). This workflow
-# never writes to shows.json — it only produces
-# data/audit/ob-closing-candidates.json for human review, using two signals
-# that require no new scraping: a review-text closing-date sweep and a
-# TodayTix showtimes-feed staleness diff.
+# OB shows are outside the Broadway closing-date automation: update-show-status.yml
+# and audit-closing-dates.js both rely on broadway.com, which has no reliable OB
+# calendar (see memory/feedback_closing_date_audit_gaps.md). Two signals that need
+# no new scraping stand in for it: a review-text closing-date sweep and a TodayTix
+# showtimes-feed staleness diff.
+#
+# Shows both signals agree on are closed automatically; everything else is written
+# to data/audit/ob-closing-candidates.json, which scripts/health-check.js surfaces
+# in the daily digest. This workflow was alert-only until 2026-09-08 — that failed
+# in the obvious way, with a five-outlet-confirmed closure sitting unactioned in
+# the digest for five months.
 name: Detect OB Closings
 
 on:
   schedule:
     - cron: '0 12 * * 1'  # Weekly Mondays 12:00 UTC
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report candidates without writing shows.json'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
+
+# Shared with audit-closing-dates.yml / update-show-status.yml — overlapping
+# runs race on shows.json and push-core-data rebases with `-X ours`, which
+# silently drops an applied closingDate.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
 
 jobs:
   detect:
@@ -43,7 +59,33 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Run detector
-        run: node scripts/detect-ob-closings.js --dry-run
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/detect-ob-closings.js --dry-run
+          else
+            node scripts/detect-ob-closings.js
+          fi
+
+      - name: Validate shows.json before push (rollback on failure)
+        run: |
+          # The detector can now write shows.json. If it produced something
+          # invalid, restore the pristine core-data copy and fail before the
+          # push steps run.
+          if ! node scripts/validate-data.js 2>&1 | tail -30; then
+            echo "::error::validate-data.js failed after detector — reverting shows.json"
+            if [ -f /tmp/core-data-checkout/shows.json ]; then
+              cp -f /tmp/core-data-checkout/shows.json data/shows.json
+              echo "Restored data/shows.json from /tmp/core-data-checkout/"
+            fi
+            exit 1
+          fi
+
+      - name: Push core data to private repo
+        if: success()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Auto-close OB shows confirmed by review + TodayTix signals'
 
       - name: Check for changes
         id: changes
@@ -84,6 +126,9 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           node -e "
             const r = require('./data/audit/ob-closing-candidates.json');
+            console.log('**Auto-applied closures:** ' + (r.autoApplied || []).length);
+            (r.autoApplied || []).forEach(c => console.log('- ' + c.showId + ' -> ' + c.closingDate + ' (' + c.reason + ')'));
+            console.log('');
             console.log('**Review-text sweep:** ' + r.reviewTextSweep.scanned + ' scanned, ' + r.reviewTextSweep.showsWithNoTexts + ' with no review-texts dir');
             console.log('**Review-text candidates:** ' + r.reviewTextSweep.candidates.length);
             r.reviewTextSweep.candidates.forEach(c => console.log('- ' + c.showId + ' -> ' + c.proposedClosingDate + ' [' + c.confidence + '] (' + c.reason + ')'));
@@ -98,5 +143,9 @@ jobs:
         with:
           title: 'Detect OB Closings Failed'
           severity: 'warning'
+          # This workflow is the only OB closing-date safety net, and it now
+          # writes shows.json. Its 2026-09-07 run died at the push step with
+          # email:false, so the failure was invisible until a reader wrote in.
+          email: 'true'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
