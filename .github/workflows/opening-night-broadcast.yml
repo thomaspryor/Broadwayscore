@@ -1164,11 +1164,15 @@ jobs:
           # The early steps are `continue-on-error: true` (they must not skip
           # "Create broadcast draft"), so whenever the BRO-2373 90s transport
           # wall defeats an early push, its commit lands here instead. This
-          # step stays a BARE hard-fail push on purpose: it runs AFTER the
-          # draft, so failing it still turns the job red — and fires "Notify
-          # on failure" below — without costing the broadcast. Do not add
-          # `|| echo` or continue-on-error here; that would erase the last
-          # signal that state never reached origin.
+          # step's failure still turns the job red AFTER the draft rather
+          # than instead of it. Correction (ship-check, Claude): red here does
+          # NOT always page. "Notify on failure" below is suppressed when
+          # orphan_gate.outputs.blocked == 'true', and the paths that write
+          # orphan state (dispatch/wait/in-flight/alert) are exactly the ones
+          # that set it — so those runs go red in the Actions UI with no
+          # email. They are also runs where the draft is gate-skipped anyway,
+          # so this does not affect the BRO-2435 symptom; the durable record
+          # is push-retry-failures.jsonl via push-retry-deadman.js.
           # `node scripts/audit-push-retry-budgets.js` reports no flags at
           # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
           # restored to ~17%) — re-confirm with that script before changing.
@@ -1214,7 +1218,19 @@ jobs:
           else
             echo "No new orphan-rescore-requeue-state.json changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
           fi
-          bash scripts/lib/push-with-retry.sh 5 main
+          # BRO-2435 ship-check (Claude): NON-FATAL, deliberately. This step is
+          # sized 60s/5 — ~1 fundable attempt against the 90s BRO-2373 wall —
+          # because it was written to flush a RARE stranded orphan-state
+          # commit. It is now the first step to see a stranded alert-ledger
+          # commit too, so hard-failing here produced a FALSE RED: this push
+          # loses, the job goes red, and then "Commit data" below (300s/14,
+          # budgeted for exactly that multi-writer file) pushes the very same
+          # commit successfully. State was never at risk; only the job
+          # conclusion was wrong. "Commit data" is now the single hard-fail
+          # authority for stranded commits — it runs immediately after this,
+          # is gated `always()`, and carries the same origin/main..HEAD gate,
+          # so nothing is lost by letting this one warn instead of fail.
+          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::late orphan-state push failed (60s/5 budget) — the stranded commit is still on local HEAD; 'Commit data' below retries it with the 300s/14 budget and hard-fails if it too cannot land"
 
       # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
       # 2026-08-26): see "Commit orphan-rescore-requeue state" (early) above
