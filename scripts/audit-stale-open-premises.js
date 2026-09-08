@@ -328,6 +328,18 @@ async function main() {
     return 0;
   }
   if (!selected.length) {
+    // --json must emit a document on EVERY exit path, not just the happy one.
+    // This is the sibling of the --dry-run bug fixed above: both early returns
+    // sit before report(), so `--json` produced an empty pipeline whenever
+    // nothing was selected — contradicting the documented contract, and
+    // indistinguishable to a consumer from the tool crashing.
+    if (opts.json) {
+      console.log(JSON.stringify({
+        results: [], skippedCount: skipped.length, checkoutSha: null,
+        dataComplete: false, missingCorpora: [],
+      }, null, 2));
+      return 0;
+    }
     progress('Nothing to check.');
     return 0;
   }
