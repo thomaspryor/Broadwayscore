@@ -2070,7 +2070,7 @@ async function main(argv = process.argv.slice(2)) {
   // again, from a different cause. This satisfies the plan's S0 acceptance
   // ("--show=X twice concurrently → no lost data"), proven by
   // scripts/lib/gap-audit-merge.concurrent.test.mjs.
-  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
+  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds, quarantined } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
   let prevAudit = null;
   let prevUnreadable = null;
   if (fs.existsSync(AUDIT_PATH)) {
@@ -2186,7 +2186,7 @@ async function main(argv = process.argv.slice(2)) {
     });
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${outletsToWrite.length} hosts)`);
   }
-  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId) };
+  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined };
   }); // end withFileLock
 
   if (!lockHeld) {
@@ -2251,7 +2251,14 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
   if (verbose) console.log(`Blast radius: ${blast.reason}`);
-  console.log(`Summary: ${audit.counts.withGap}/${mergedResults.length} shows on file with gaps (${results.length} audited this run) | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed) | ${unknownOutlets.length} unknown outlets`);
+  // BRO-3002: on a partial (quarantine) write, `audit`/`mergedResults` still
+  // describe the FULL unpartitioned merge — including the risky shows'
+  // rejected fresh data, which was never persisted. Report against
+  // `quarantined` (what's actually on disk) whenever it exists, so the CI log
+  // matches the file a reader would open to debug the discrepancy.
+  const reportedAudit = (partial && quarantined) ? quarantined : audit;
+  const reportedResults = reportedAudit.results;
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${unknownOutlets.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
