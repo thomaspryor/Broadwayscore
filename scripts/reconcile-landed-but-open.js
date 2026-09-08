@@ -51,6 +51,7 @@ const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { readLease, pidLooksLikeClaude, REPO } = require('./lib/bsc-runner.js');
 const { classifyLandedButOpen, lastLedgerEventForTask } = require('./lib/landed-but-open-reconciler.js');
+const { repoDepthArgs } = require('./lib/shallow-fetch-args.js');
 
 const USAGE = `reconcile-landed-but-open — report In-Progress Linear issues whose work already landed on origin/main (BRO-2558).
 
@@ -249,8 +250,12 @@ async function main(argv = process.argv.slice(2)) {
   // Best-effort refresh so the merge-commit grep sees recent pushes. Never
   // fatal — a stale local origin/main just means a just-landed merge is
   // under-reported this run (fails toward "still open", the safe direction).
-  try { execFileSync('git', ['-C', REPO, 'fetch', 'origin', 'main'], { timeout: GIT_TIMEOUT_MS, stdio: 'ignore' }); }
-  catch { /* best effort */ }
+  try {
+    const depthArgs = repoDepthArgs({ repoRoot: REPO });
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a
+    // spread (same pattern as audit-card-relevance.js's fetchOriginMain).
+    execFileSync('git', ['-C', REPO, 'fetch', ...depthArgs, 'origin', 'main'], { timeout: GIT_TIMEOUT_MS, stdio: 'ignore' });
+  } catch { /* best effort */ }
 
   if (!asJson) console.error('[reconcile-landed-but-open] fetching In-Progress issues from Linear...');
   const issues = await fetchStartedIssues();
