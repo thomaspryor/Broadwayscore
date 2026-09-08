@@ -80,3 +80,35 @@ test('keyless remote entries are skipped (no dedupe key), keyless local entries 
   assert.equal(merged.length, 2);
   assert.ok(merged.some((e) => e.conditionKey === 'real'));
 });
+
+// ── BRO-2955 ship-check: the CALLERS must pass a base, not just the merger ──
+// merge-alert-digest-queue.js has honoured a three-way base since BRO-2413,
+// but both call sites invoked it with two arguments — reconcile-merged-json.js
+// (which push-with-retry.sh now calls unconditionally for this file) and
+// merge-commercial-conflict.js (the resolve_conflicts case arm). Two-way turns
+// health-check.js's post-send drain into a no-op: the remote still holds the
+// pre-drain rows, the union puts them back, and the owner re-receives a digest
+// they already got. Both callers now dispatch on merge.length >= 3. This test
+// pins the property at the merger so a caller reverting to two args is at
+// least visibly choosing the weaker behaviour.
+test('BRO-2955: a drained queue stays drained when the base is supplied, and is resurrected without it', () => {
+  const row = { conditionKey: 'k1', title: 'already delivered', queuedAt: '2026-09-01T00:00:00.000Z' };
+  const drainedLocal = [];
+  const staleRemote = [row];
+
+  const twoWay = mergeAlertDigestQueue(drainedLocal, staleRemote);
+  assert.equal(twoWay.merged.length, 1,
+    'two-way genuinely cannot tell a drain from a remote-only addition — this is WHY the callers must pass a base');
+
+  const threeWay = mergeAlertDigestQueue(drainedLocal, staleRemote, [row]);
+  assert.deepEqual(threeWay.merged, [],
+    'with the base, the deletion wins: an already-delivered digest row must not come back');
+});
+
+test('BRO-2955: a GENUINE remote addition still survives the three-way path', () => {
+  // The base must not become a licence to drop rows the other side really added.
+  const old = { conditionKey: 'k1', queuedAt: '2026-09-01T00:00:00.000Z' };
+  const fresh = { conditionKey: 'k2', queuedAt: '2026-09-02T00:00:00.000Z' };
+  const merged = mergeAlertDigestQueue([old], [old, fresh], [old]).merged;
+  assert.deepEqual(merged.map((e) => e.conditionKey).sort(), ['k1', 'k2']);
+});

@@ -79,7 +79,7 @@ function repoRoot() {
   }
 }
 
-const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry');
+const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor, findEntry } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -137,6 +137,23 @@ function apiFallbackMergerFor(file) {
   return API_FALLBACK_MERGE.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
 }
 
+/** Pure: pick the merger for an EXPLICITLY-named path (BRO-257), unlike
+ * mergerFor() above which only searches MANAGED (activeEntriesFor(), which
+ * excludes `optInReconcile: false` registry entries by design — those are
+ * meant to be reconciled only via push-with-retry.sh's resolve_conflicts()
+ * case arms, not via this module's opt-in whole-sweep default). A caller
+ * that names a specific file is a DIFFERENT, deliberate call site (not the
+ * blanket "reconcile everything opted in" sweep `main()` runs with no file
+ * args) and should find that file's real merge function regardless of its
+ * optInReconcile flag — see push-with-retry.sh's unconditional single-file
+ * call for data/audit/alert-digest-queue.json. Falls back to registry data
+ * (bare basename, no `data/` prefix) the same way MANAGED does above. */
+function explicitMergerFor(file) {
+  const entry = findEntry(file, 'public-repo');
+  if (!entry || !entry.merge) return null;
+  return { file, merge: entry.merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
+}
+
 /** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
  * THROWS — deliberately, unlike bww-roundup-persistence.js's own lenient
  * readRoundupMisses(). This function only feeds the reconciliation pass
@@ -167,6 +184,34 @@ function readRemote(ref, file, format) {
   }
 }
 
+/**
+ * The common-ancestor content of `file`, for the three-argument mergers.
+ *
+ * BRO-2955 ship-check. Three registry mergers (alert-ledger.json,
+ * alert-digest-queue.json, alert-router-attempts.jsonl) take (local, remote,
+ * base) and NEED the base to tell "the other side added a row" apart from "WE
+ * DELETED a row the other side still has". This pass was calling every merger
+ * with two arguments, which is exactly the shape merge-alert-digest-queue.js's
+ * own header calls the Codex adversarial ship-check P0: health-check.js drains
+ * the queue to [] after emailing it, and a two-way union against a remote that
+ * still holds the pre-drain rows puts every already-delivered row straight
+ * back — the owner re-receives the same digest. Verified: two-way [] vs [row]
+ * yields 1 row, three-way with base [row] yields 0.
+ *
+ * Returns undefined when no base is obtainable, which the mergers treat as
+ * "fall back to the conservative two-way behavior" — same as before this fix.
+ */
+function readBase(ref, file, format) {
+  try {
+    const base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (!base) return undefined;
+    const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
+  } catch {
+    return undefined; // no common ancestor, file absent there, or unparsable
+  }
+}
+
 function main() {
   const [ref, ...only] = process.argv.slice(2);
   if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(0); }
@@ -174,8 +219,17 @@ function main() {
   const root = repoRoot();
   if (root) { try { process.chdir(root); } catch { /* fall through, per-file try/catch below fails open */ } }
 
+  // BRO-257: explicit file args resolve via explicitMergerFor() (registry
+  // lookup, unfiltered by optInReconcile) rather than mergerFor()/MANAGED
+  // (the no-args sweep below) — so naming a file here reconciles it even if
+  // its registry entry is optInReconcile:false. Today's only caller is
+  // push-with-retry.sh's single-file alert-digest-queue.json call; any
+  // FUTURE explicit-arg caller gets the same "any active registry entry,
+  // regardless of optInReconcile" behavior — deliberate, not scoped to one
+  // filename, since a caller that names a specific file is making its own
+  // explicit choice, distinct from the opt-in whole-sweep default below.
   const targets = only.length
-    ? only.map((f) => ({ ...(mergerFor(f) || {}), file: f })).filter((t) => t.merge)
+    ? only.map((f) => explicitMergerFor(f)).filter(Boolean)
     : MANAGED;
 
   const changedFiles = [];
@@ -187,7 +241,12 @@ function main() {
       const remote = readRemote(ref, t.file, t.format);
       if (remote === null) continue;
 
-      const result = t.merge(ours, remote);
+      // Three-argument mergers get the common ancestor; two-argument ones are
+      // called exactly as before (arity is the dispatch, so a future merger
+      // cannot silently receive a third argument it defines differently).
+      const result = t.merge.length >= 3
+        ? t.merge(ours, remote, readBase(ref, t.file, t.format))
+        : t.merge(ours, remote);
       const after = t.format === 'jsonl'
         ? result.merged.map((e) => JSON.stringify(e)).join('\n') + (result.merged.length ? '\n' : '')
         : JSON.stringify(result.merged, null, 2) + (t.newline ? '\n' : '');
@@ -211,6 +270,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { MANAGED, mergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
+module.exports = { MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
 
 if (require.main === module) main();

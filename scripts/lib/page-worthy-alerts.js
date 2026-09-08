@@ -109,6 +109,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // daily cap (scripts/lib/serp-burst-caps.js) still auto-stops the runaway
   // regardless of whether this page fires.
   'serp-burst:tripwire', // opening-night-poller.js: WE SERP burst cascade tripwire, one page per UTC day
+  // Category 3 (BRO-545, pipeline self-healing): a hard-blocking rebuild
+  // guard that has fired 2+ consecutive times means reviews.json — the
+  // site's single source of truth for scores — has stopped advancing. This
+  // is the "data-loss in progress" category the file header notes had no
+  // entries yet; scripts/check-rebuild-staleness.js (via
+  // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
+  'guard-escalation:stale-checkout-staleness',
 ]);
 
 function isPageWorthy(conditionKey) {
