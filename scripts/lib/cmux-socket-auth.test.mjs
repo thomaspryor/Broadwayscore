@@ -211,6 +211,28 @@ test('an error with NO diagnostic text is "empty" and does NOT page', () => {
   assert.equal(auth.classifyCmuxError(''), 'empty');
 });
 
+test('the Error form and the PRODUCTION STRING form classify identically', () => {
+  // No production caller passes an Error: bsc-reconcile's sweep sites report
+  // `cmux listing failed: ${e.message}` as a string. When the argv line was
+  // stripped only on the Error branch the two disagreed — Error -> 'empty'
+  // (quiet) but string -> 'unknown' (pages) — so any cmux failure exiting
+  // non-zero without stderr paged the owner every 5-minute tick.
+  const err = new Error('Command failed: /path/cmux list-workspaces');
+  err.stderr = '';
+  const asString = `cmux listing failed: ${err.message}`;
+  assert.equal(auth.classifyCmuxError(err), auth.classifyCmuxError(asString));
+  assert.equal(auth.summarizeCmuxFailures([asString]).escalate, false,
+    'a stderr-less cmux failure must not page every tick');
+});
+
+test('a REAL sweep-error string still classifies auth-denied', () => {
+  // The normalisation must not swallow the reason that follows the argv line.
+  const real = 'cmux listing failed: Command failed: /path/cmux list-workspaces\n'
+    + 'Error: ERROR: Access denied - only processes started inside cmux can connect';
+  assert.equal(auth.classifyCmuxError(real), 'auth-denied');
+  assert.equal(auth.summarizeCmuxFailures([real]).escalate, true);
+});
+
 test('summarizeCmuxFailures escalates an UNCLASSIFIABLE cmux failure', () => {
   // The taxonomy recognises auth rejections by their English prose, so the day
   // cmux rewords them every rejection becomes 'unknown'. If that stayed quiet

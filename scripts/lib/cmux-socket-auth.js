@@ -128,11 +128,22 @@ function classifyCmuxError(err) {
   // Only when stderr is empty do we fall back to the message, and even then
   // the "Command failed: <argv>" first line is dropped so arguments can never
   // reach the matcher.
-  const text = typeof err === 'string'
+  const raw = typeof err === 'string'
     ? err
     : String(err.stderr || '').trim()
       ? String(err.stderr)
-      : String(err.message || '').split('\n').filter((l) => !/^Command failed:/.test(l)).join('\n');
+      : String(err.message || '');
+  // Strip the argv line on BOTH branches. This used to run only for Error
+  // inputs, and no production caller passes an Error: bsc-reconcile's three
+  // sweep sites build `cmux listing failed: ${e.message}` and report that
+  // STRING, so the argv survived and the two branches disagreed —
+  //   Error  form -> 'empty'   (quiet, as designed)
+  //   string form -> 'unknown' (pages)
+  // meaning any cmux failure that exits non-zero without writing stderr
+  // (crash, SIGKILL, a version that prints to stdout) paged the owner every
+  // 5-minute tick. It also re-opened argv-forging for the string path.
+  // One normalisation, applied to whatever we were handed (review finding).
+  const text = raw.split('\n').filter((l) => !/^\s*(cmux listing failed:\s*)?Command failed:/.test(l)).join('\n');
   // A failure carrying NO diagnostic text is its own category, distinct from
   // one whose text we simply do not recognise. That distinction is
   // load-bearing: 'unknown' escalates (it is the "cmux reworded its error"
