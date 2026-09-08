@@ -406,9 +406,12 @@ function estimateCostUSD(usage, model) {
  * @param {(pid:number)=>void} [opts.onSpawn]      called with the child PID immediately
  * @param {(sessionId:string)=>void} [opts.onSessionId] called once, on the first event carrying one
  * @returns {Promise<{ok:boolean, stage:string|null, resultText:string, sessionId:string|null,
- *                    exitCode:number|null, pid:number|null, durationMs:number,
+ *                    exitCode:number|null, exitSignal:string|null, pid:number|null, durationMs:number,
  *                    usage:object|null, costUSD:number|null, costEstimated:boolean,
  *                    errorDetail:string|null}>}
+ * exitSignal (BRO-3053) is the POSIX signal name when the child was killed
+ * ('SIGKILL' for an OS/jetsam kill), null otherwise. Node sets exactly one of
+ * exitCode/exitSignal, so a signalled death always carries exitCode null.
  * Never rejects — failures come back as {ok:false, stage}.
  */
 function runClaudeCli(opts) {

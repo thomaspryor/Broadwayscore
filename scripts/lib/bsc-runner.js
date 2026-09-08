@@ -402,14 +402,23 @@ async function runJob(opts) {
       // resume path keys off exactly these fields, and the spend breaker
       // stops reading killed sessions as $0 (costEstimated marks the ones
       // computed from streamed usage rather than the CLI's own total).
+      // BRO-3053: exitSignal rides the FAILED row too. This projection is an
+      // ALLOWLIST, so capturing the signal in claude-cli.js alone left it
+      // stranded at the primitive — only direct callers and tests could see
+      // it, and the ledger (the thing anyone actually audits after a job dies)
+      // still could not distinguish an OS kill from any other abrupt exit.
+      // Adversarial review caught that; without this line the whole change is
+      // cosmetic for its own use case. `undefined` on a normal failure so the
+      // row shape is unchanged for everything except a signalled death.
       ledger.appendEntry({
         event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage,
         sessionId: res.sessionId, cwd, model: model || null,
         costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,
+        exitSignal: res.exitSignal || undefined,
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the
