@@ -73,8 +73,23 @@ jobs:
 
       - name: Detect and auto-fix critic typos
         id: typos
+        # BRO-2811 (2026-09-08): BRO-2799 above raised this to 900s/25 retries
+        # to fund enough LOCAL attempts, but the early-trigger threshold for
+        # the Git Data API fallback — floor((25+1)/2)=13 — is still not
+        # reached before the deadline aborts the loop (computeFundableAttempts
+        # gives ~5), so the fallback only ever engages LATE, with its own
+        # minimum retry budget instead of the larger one it'd get from an
+        # early break (scripts/audit-push-retry-budgets.js's
+        # fallback-early-trigger-unreachable flag, ac121bef9bd/45f0ea3e897).
+        # data/auto-critic-aliases.json is outside data/audit/ and unmanaged,
+        # so it's fallback-eligible by push-with-retry.sh's own disqualifier.
+        # Override=3 matches the BRO-2370 data-health-check.yml precedent
+        # exactly (not the full ~5 fundableAttempts) — leaves 2 attempts of
+        # margin for ordinary transient contention to resolve locally before
+        # the early-trigger break hands off to the fallback.
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           node scripts/detect-critic-typos.js
           # Commit auto-aliases if changed
@@ -237,8 +252,15 @@ jobs:
 
       - name: Commit tier-skip drift alert state (only if a verdict alerted)
         if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — alert-ledger.json and
+        # alert-digest-queue.json are both apiFallbackMerge-registered
+        # (BRO-2413), so this call is fallback-eligible, but the fallback only
+        # engages LATE at these numbers. Override=3 matches the same BRO-2370
+        # precedent.
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -262,8 +284,14 @@ jobs:
 
       - name: Commit history update
         if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — integrity-history.json/
+        # integrity-report.json are outside data/audit/ and unmanaged, so this
+        # call is fallback-eligible by default. Override=3 matches the same
+        # BRO-2370 precedent.
         env:
           PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

@@ -200,7 +200,22 @@ jobs:
           # churn. This job runs hourly with only a 15min timeout (poll+LLM
           # steps use ~4min), so 420s (not the 600s used elsewhere) to leave
           # real buffer against the job timeout.
+          #
+          # BRO-2811 (2026-09-08): commercial-pending-review.json is
+          # apiFallbackMerge (BRO-2795) and the incidental breaker files
+          # stage-data-changes.sh sweeps along (bd-circuit-breaker.json etc.,
+          # also BRO-2795) are apiFallbackSafe, so this diff is fallback-
+          # eligible — but the default fallback threshold, floor((7+1)/2)=4,
+          # exceeds the 3 attempts 420s actually funds, so the fallback only
+          # ever engages LATE with its minimum 2-attempt API budget. Override
+          # to 2 (below the 3 fundable, not just at the boundary — an
+          # override at exactly 3 would fire at essentially the same moment
+          # natural deadline exhaustion would anyway, buying nothing) frees a
+          # real ~185s of extra fallback budget while still giving 2 local
+          # attempts first, in line with push-with-retry.sh's own "ordinary
+          # transient contention resolves in 2-3 attempts" design assumption.
           PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh

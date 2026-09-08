@@ -619,6 +619,22 @@ jobs:
         # no job-timeout-margin-undersized flag (MARGIN_THRESHOLD 0.15; this
         # job sits at 0.167 and any net increase would trip it). Re-confirm
         # with `node scripts/audit-push-retry-budgets.js` before changing them.
+        #
+        # BRO-2811 (2026-09-08, investigated — deliberately NOT overridden):
+        # this call is fallback-eligible (orphan-rescore-requeue-state.json is
+        # apiFallbackSafe) and scripts/audit-push-retry-budgets.js flags it
+        # fallback-early-trigger-unreachable (240s/13 funds only 2 attempts
+        # against the derived default's floor((13+1)/2)=7). But an explicit
+        # PUSH_API_FALLBACK_AFTER_ATTEMPTS override only helps when set BELOW
+        # fundableAttempts — at exactly 2 (the max reachable) the early-break
+        # fires at essentially the same wall-clock moment the deadline check
+        # would have anyway, so it buys nothing; dropping to 1 would bail to
+        # the API after a single local attempt on this job's PRIMARY hard-fail
+        # recovery step, which is premature (push-with-retry.sh's own docs:
+        # ordinary transient contention resolves in 2-3 attempts) for a site
+        # this job's own header comment already establishes is dominated by a
+        # 90s-transport-hang wall a reviewed /second-opinion rejected trying
+        # to fix via deadline/retry sizing. Left as-is.
         id: commit_orphan_state_early
         if: steps.check.outputs.pending_shows != ''
         continue-on-error: true
