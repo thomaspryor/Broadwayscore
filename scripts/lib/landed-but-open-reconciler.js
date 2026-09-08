@@ -27,7 +27,9 @@
  *      and job-leases are host-local by design, so a comment-thread check is
  *      the only cross-machine signal available)
  *   3. the card's own most recent dispatch-ledger event is a terminal
- *      SUCCESS (job-done) — not job-failed/job-orphaned/dead/absent
+ *      SUCCESS (job-done) OR a confirmed job-orphaned (BRO-3052 — see
+ *      ACCEPTED_TERMINAL_EVENTS below) — never job-failed/job-abandoned/
+ *      dead/absent
  *   4. the card's own acceptance-criteria command, re-run against a fresh
  *      origin/main checkout, actually PASSES (scripts/lib/acceptance-check-
  *      core.js — reused, not a fourth definition of "done")
@@ -54,6 +56,29 @@
 // dependency-free; scripts/reconcile-landed-but-open.js is what threads the
 // real JOB_EVENTS.DONE constant into the evidence it builds.
 const SUCCESS_LEDGER_EVENT = 'job-done';
+
+// BRO-3052: 'job-orphaned' also qualifies as a terminal state this gate will
+// accept, alongside job-done. Live case (linear:BRO-2817): a job's real work
+// merged successfully, but the process was killed in the gap between
+// finishing and appending its own job-done row, so the ledger's last word on
+// it was job-orphaned instead — and gate 3 alone rejected it forever, even
+// though gates 1/2/4 (merge commit, nothing live, acceptance re-check passes)
+// already independently prove it's safe to report.
+//
+// job-failed/job-abandoned/dead stay excluded — BRO-516's counterexample in
+// this file's own header (a stale look-alike merge commit sitting next to a
+// genuine job-failed) is exactly why a terminal-but-unsuccessful event must
+// never satisfy this gate.
+//
+// This is safe to accept ONLY because dispatch-ledger.js's orphanConfirmed
+// debounce (BRO-3052) makes a job-orphaned row itself trustworthy — it is no
+// longer written off one liveness glance, but only after a later tick
+// confirms the process is still gone. Gate 2 (liveDispatch/liveLease/
+// crossMachineDispatch) cannot independently catch a "still finishing up"
+// race here: by the time job-orphaned is written, releaseLease has already
+// run, so the lease itself is gone. If that debounce is ever removed, this
+// line must be reverted with it.
+const ACCEPTED_TERMINAL_EVENTS = new Set([SUCCESS_LEDGER_EVENT, 'job-orphaned']);
 
 /**
  * @param {object} evidence
@@ -99,11 +124,11 @@ function classifyLandedButOpen(evidence = {}) {
   }
   reasons.push('no live dispatch or lease (local or cross-machine)');
 
-  if (lastLedgerEvent !== SUCCESS_LEDGER_EVENT) {
-    reasons.push(`most recent dispatch-ledger event is "${lastLedgerEvent || 'none'}", not "${SUCCESS_LEDGER_EVENT}"`);
+  if (!ACCEPTED_TERMINAL_EVENTS.has(lastLedgerEvent)) {
+    reasons.push(`most recent dispatch-ledger event is "${lastLedgerEvent || 'none'}", not one of [${[...ACCEPTED_TERMINAL_EVENTS].join(', ')}]`);
     return { closable: false, reasons };
   }
-  reasons.push(`most recent dispatch-ledger event is "${SUCCESS_LEDGER_EVENT}"`);
+  reasons.push(`most recent dispatch-ledger event is "${lastLedgerEvent}"`);
 
   if (acceptanceStatus !== 'pass') {
     reasons.push(`acceptance-criteria re-check against origin/main did not pass (status: ${acceptanceStatus || 'not run'})`);
@@ -134,4 +159,4 @@ function lastLedgerEventForTask(taskId, entries) {
   return last ? last.event : null;
 }
 
-module.exports = { classifyLandedButOpen, lastLedgerEventForTask, lastLedgerEntryForTask, SUCCESS_LEDGER_EVENT };
+module.exports = { classifyLandedButOpen, lastLedgerEventForTask, lastLedgerEntryForTask, SUCCESS_LEDGER_EVENT, ACCEPTED_TERMINAL_EVENTS };
