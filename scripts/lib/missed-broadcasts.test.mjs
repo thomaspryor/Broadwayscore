@@ -207,27 +207,41 @@ test('regression: electra-persona-west-end-2026 as it actually was on 2026-09-07
 
 // --- BRO-3088: West End Weekly Round-up suppression ---
 
-test('wasCoveredByWeeklyRoundup: true when featured in any issue, regardless of edition tag', () => {
-  // generate.mjs runs a West End openings section in BOTH editions (primary in
-  // 'west-end', secondary in 'broadway') — a 'broadway'-tagged issue can and
-  // does carry full West End cards, so the edition tag must not gate this.
+test('wasCoveredByWeeklyRoundup: true only for issues actually delivered to the West End Resend audience', () => {
+  // create-broadcast-draft.mjs derives audience strictly from edition:
+  // 'west-end' edition -> the 'west-end' Resend audience, everything else
+  // (including 'broadway') -> 'general'. Those are two DISTINCT lists, so a
+  // 'broadway'-tagged issue — even one whose quiet-Broadway-week fallback
+  // filled featuredShowIds with West End show ids — is NOT proof West End
+  // subscribers received it.
   assert.strictEqual(
     wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', edition: 'broadway', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    false,
+    "a 'broadway'-edition issue must not count as West End coverage"
+  );
+  assert.strictEqual(
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    true
+  );
+  // Pre edition-split issues (no `edition` field) had one combined audience.
+  assert.strictEqual(
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-06-01', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
     true
   );
   assert.strictEqual(wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', featuredShowIds: [] }], 'electra-persona-west-end-2026'), false);
   assert.strictEqual(wasCoveredByWeeklyRoundup([], 'electra-persona-west-end-2026'), false);
   assert.strictEqual(wasCoveredByWeeklyRoundup(null, 'electra-persona-west-end-2026'), false);
-  assert.strictEqual(wasCoveredByWeeklyRoundup([{ featuredShowIds: ['x'] }], null), false);
+  assert.strictEqual(wasCoveredByWeeklyRoundup([{ edition: 'west-end', featuredShowIds: ['x'] }], null), false);
 });
 
-test('regression: BRO-3088 — a West End show already in the Round-up does not page as missed', () => {
+test('regression: BRO-3088 — a West End show already in a real west-end-edition Round-up does not page as missed', () => {
   // The real shape on 2026-09-07: electra-persona-west-end-2026, the-story-west-end-2026,
   // and abigails-party-west-end-2026 all paged "Opening Night Email Never Reached
-  // Subscribers" despite the 2026-08-31 Round-up draft already carrying full cards
-  // for all three — a redundant force_broadcast ask the owner declined.
+  // Subscribers" despite each already having a properly edition:'west-end'-tagged
+  // Round-up card (2026-08-24 issue) that actually reached West End subscribers —
+  // a redundant force_broadcast ask the owner declined.
   const newsletterIssues = [
-    { weekStart: '2026-08-31', edition: 'broadway', featuredShowIds: ['electra-persona-west-end-2026', 'the-story-west-end-2026', 'a-month-in-the-country-west-end-2026'] },
+    { weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026', 'the-story-west-end-2026', 'a-month-in-the-country-west-end-2026'] },
   ];
   const shows = [
     show({ id: 'electra-persona-west-end-2026', openingDate: '2026-09-01' }),

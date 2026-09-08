@@ -139,25 +139,38 @@ function hasCompletedBroadcast(sentShows, showId) {
 
 /**
  * True if a West End show was already featured in a Weekly Round-up email
- * (data/newsletter-state.json `.issues[].featuredShowIds`) — the same
- * Critics' Take/score/review-count content a redundant force-send would
- * repeat (owner decision 2026-09-08, BRO-3088: West End does not get an
- * individual broadcast as a matter of course when the Round-up already
- * covered it). Broadway has no equivalent weekly digest, so this predicate is
- * only meaningful for West End — callers must gate on category themselves.
+ * ACTUALLY DELIVERED to West End subscribers (data/newsletter-state.json
+ * `.issues[].featuredShowIds`) — the same Critics' Take/score/review-count
+ * content a redundant force-send would repeat (owner decision 2026-09-08,
+ * BRO-3088: West End does not get an individual broadcast as a matter of
+ * course when the Round-up already covered it). Broadway has no equivalent
+ * weekly digest, so this predicate is only meaningful for West End — callers
+ * must gate on category themselves.
  *
- * Deliberately NOT filtered by `issue.edition`: generate.mjs runs a West End
- * openings section in BOTH editions (primary in the 'west-end' edition,
- * secondary in the 'broadway' one — see that file's EDITION comments), so a
- * 'broadway'-tagged issue can and does carry full West End show cards. The
- * real 2026-08-31 draft that motivated this fix is tagged edition:'broadway'
- * and its featuredShowIds are exactly the three WE shows the owner confirmed
- * were already covered — excluding it here would silently reintroduce this
- * bug for any show whose only coverage happened to land in that edition.
+ * MUST exclude `edition: 'broadway'` issues. Resend audience is derived
+ * strictly from edition in create-broadcast-draft.mjs: `EDITION === 'west-end'
+ * ? 'west-end' : 'general'` — two DISTINCT audience lists ("General is the
+ * weekly newsletter list. west-end is the smaller WE list."). generate.mjs
+ * does render a West End openings section into the Broadway edition during a
+ * quiet Broadway week (`quietBroadwayWeek` fallback), which is exactly why
+ * the real 2026-08-31 issue that motivated this fix is tagged
+ * edition:'broadway' with only West End show ids in featuredShowIds — but
+ * that draft went to the 'general' audience, not 'west-end', so it is not
+ * proof West End subscribers received it. Treating it as coverage would risk
+ * silently suppressing the one channel that actually reaches them, in a
+ * future week where a show's ONLY appearance happens to be quiet-week
+ * Broadway-edition filler. Every show actually validated against this
+ * predicate (electra-persona, the-story, abigails-party, a-month-in-the-
+ * country, how-the-other-half-loves-west-end-2026) independently has a
+ * properly `edition: 'west-end'`-tagged issue too, so this restriction does
+ * not change any confirmed-correct outcome — it only removes a false-positive
+ * risk for the next week. Untagged issues (pre edition-split) count, since
+ * before the split there was one combined audience.
  */
 function wasCoveredByWeeklyRoundup(issues, showId) {
   if (!showId) return false;
-  return (issues || []).some((issue) => Array.isArray(issue?.featuredShowIds) && issue.featuredShowIds.includes(showId));
+  return (issues || []).some((issue) => issue && issue.edition !== 'broadway'
+    && Array.isArray(issue.featuredShowIds) && issue.featuredShowIds.includes(showId));
 }
 
 /**
