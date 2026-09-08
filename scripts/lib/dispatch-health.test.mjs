@@ -298,14 +298,16 @@ const hlLaunch = (ts, taskId) => ({ ts, event: 'launch', taskId, workspaceRef: `
 const hlSpawn = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.SPAWNED, taskId, jobId });
 const hlDone = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.DONE, taskId, jobId });
 const hlFailed = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.FAILED, taskId, jobId });
+const hlOrphaned = (ts, taskId, jobId) => ({ ts, event: JOB_EVENTS.ORPHANED, taskId, jobId });
 
 function headlessRun(taskId, launchTs, outcome) {
   const jobId = `j-${taskId}`;
   const spawnTs = new Date(Date.parse(launchTs) + 1000).toISOString();
   const rows = [hlLaunch(launchTs, taskId), hlSpawn(spawnTs, taskId, jobId)];
-  if (outcome === 'done' || outcome === 'failed') {
+  if (outcome === 'done' || outcome === 'failed' || outcome === 'orphaned') {
     const termTs = new Date(Date.parse(launchTs) + 60000).toISOString();
-    rows.push((outcome === 'done' ? hlDone : hlFailed)(termTs, taskId, jobId));
+    const build = outcome === 'done' ? hlDone : outcome === 'failed' ? hlFailed : hlOrphaned;
+    rows.push(build(termTs, taskId, jobId));
   }
   return rows;
 }
@@ -354,6 +356,44 @@ test('the headless digest row is shaped for health-check.js (name/status/message
   assert.equal(row.name, 'Headless dispatch: success rate');
   assert.ok(['pass', 'warn', 'error'].includes(row.status));
   assert.equal(typeof row.message, 'string');
+});
+
+// BRO-3052 (Codex adversarial ship-check catch): orphaned launches are
+// correctly excluded from the resolved/successRate math (they're unknown,
+// not evidence either way — see computeJobLaneOutcomeRate), but that has its
+// own blind spot: a supervisor that starts mass-orphaning jobs can still show
+// a clean 100% successRate off a shrinking resolved pool while most launches
+// silently fall into the unmeasured bucket. This must never read as 'pass'.
+test('headless digest: a high orphan rate downgrades an otherwise-clean successRate to warn, never a silent pass', () => {
+  const entries = [];
+  for (let i = 0; i < 5; i++) entries.push(...headlessRun(`h-ok-${i}`, `2026-08-0${i + 1}T00:00:00.000Z`, 'done'));
+  for (let i = 0; i < 20; i++) {
+    const day = String((i % 9) + 1).padStart(2, '0');
+    const hour = String(i % 24).padStart(2, '0');
+    entries.push(...headlessRun(`h-orphan-${i}`, `2026-08-${day}T${hour}:00:00.000Z`, 'orphaned'));
+  }
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.successRate, 1, 'the resolved-only rate really is a clean 100% — the point of this test');
+  assert.notEqual(row.status, 'pass', 'a supervisor orphaning 20 of 25 launches must never read as a clean pass');
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /orphan/i);
+});
+
+test('headless digest: a LOW orphan rate does not trip the gate — an occasional orphan is not a systemic failure', () => {
+  const entries = [];
+  for (let i = 0; i < 9; i++) entries.push(...headlessRun(`h-ok-${i}`, `2026-08-0${(i % 5) + 1}T00:0${i}:00.000Z`, 'done'));
+  entries.push(...headlessRun('h-orphan-0', '2026-08-05T00:00:00.000Z', 'orphaned'));
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'pass');
+});
+
+test('headless digest: orphan-rate gate requires a real sample — a single early orphan must not warn on day one', () => {
+  const entries = [...headlessRun('h-orphan-0', '2026-08-05T00:00:00.000Z', 'orphaned')];
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  // resolved === 0 here (orphaned is excluded), so this hits the vacuous-gate
+  // branch, not the orphan-rate gate — either way, never a confident verdict.
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /cannot be measured/);
 });
 
 // ── Task #1904: a recycled ref must not resurrect a finished attempt ───────

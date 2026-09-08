@@ -1003,6 +1003,7 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
     pidLooksLikeClaudeFn = pidLooksLikeClaude,
     appendEntryFn = (entry) => ledger.appendEntry(entry),
     releaseLeaseFn = releaseLease,
+    readLedgerEntriesFn = ledger.readEntries,
     reportFn = report,
     nowFn = Date.now,
   } = deps;
@@ -1020,9 +1021,36 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
     const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
     const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
-    if (alive || starting) continue;
+    if (alive || starting) {
+      // Clear a pending suspicion the moment the job is observed alive again
+      // (Codex adversarial ship-check catch): without this, a one-off `ps`
+      // blip's suspect row sits in the ledger unrefuted, and a LATER,
+      // unrelated death within ORPHAN_SUSPECT_MAX_AGE_MS would wrongly read
+      // that old blip as its second confirming observation. Only write when
+      // there's an actual suspicion to clear — alive jobs are the overwhelming
+      // common case and must not get a ledger row every tick.
+      if (!dryRun && ledger.lastOrphanSuspect(job.jobId, entries)) {
+        appendEntryFn(ledger.orphanClearedEntry(job.taskId, job.jobId));
+      }
+      continue;
+    }
 
     if (ledger.orphanConfirmed(job.jobId, entries, now)) {
+      // TOCTOU close (Codex adversarial ship-check catch, mirrors reconcile-
+      // landed-but-open.js's own re-check before trusting a stale verdict):
+      // `entries` is this tick's snapshot from the top of main(). The job's
+      // OWN process can legitimately finish and append job-done in the gap
+      // between that snapshot and this write — appendEntryFn always appends
+      // to the CURRENT end of the ledger regardless of what we read earlier,
+      // so writing ORPHANED here would land after that real job-done in file
+      // order and foldJobs' last-wins fold would silently show the job as
+      // orphaned, not done. Re-derive the job's CURRENT terminal state right
+      // before committing to the write.
+      const freshJob = ledger.foldJobs(readLedgerEntriesFn()).get(job.jobId);
+      if (freshJob && ledger.TERMINAL_JOB_EVENTS.has(freshJob.event)) {
+        reportFn({ kind: 'orphan-resolved', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} already reached a terminal state (${freshJob.event}) since this tick's snapshot — not orphaning` });
+        continue;
+      }
       orphans.push({ job, lease });
       if (!dryRun) {
         appendEntryFn({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });

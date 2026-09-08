@@ -1143,7 +1143,7 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
 
 // ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
 const {
-  orphanSuspectEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
+  orphanSuspectEntry, orphanClearedEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
   ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS, isDeadlikeEvent, isAttemptEvent,
   isLatestDispatchDead,
 } = require('./dispatch-ledger.js');
@@ -1155,9 +1155,18 @@ test('orphanSuspectEntry: shapes a non-terminal job-orphan-suspect row', () => {
   assert.equal(e.jobId, 'j1');
 });
 
-test('JOB_EVENTS.ORPHAN_SUSPECT is neither deadlike nor an attempt event — a suspicion must not itself count as a death or move "latest attempt"', () => {
+test('orphanClearedEntry: shapes a non-terminal job-orphan-cleared row', () => {
+  const e = orphanClearedEntry('42', 'j1');
+  assert.equal(e.event, JOB_EVENTS.ORPHAN_CLEARED);
+  assert.equal(e.taskId, '42');
+  assert.equal(e.jobId, 'j1');
+});
+
+test('JOB_EVENTS.ORPHAN_SUSPECT/ORPHAN_CLEARED are neither deadlike nor attempt events — neither must itself count as a death or move "latest attempt"', () => {
   assert.equal(isDeadlikeEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
   assert.equal(isAttemptEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
+  assert.equal(isDeadlikeEvent(JOB_EVENTS.ORPHAN_CLEARED), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.ORPHAN_CLEARED), false);
 });
 
 test('lastOrphanSuspect: scoped to jobId, last-wins, ignores other jobIds', () => {
@@ -1169,6 +1178,44 @@ test('lastOrphanSuspect: scoped to jobId, last-wins, ignores other jobIds', () =
   const found = lastOrphanSuspect('j1', entries);
   assert.equal(found.ts, '2026-09-08T04:05:00.000Z');
   assert.equal(lastOrphanSuspect('j-missing', entries), null);
+});
+
+// Codex adversarial ship-check catch: a bare elapsed-time bound on the
+// suspect row is only ONE observation plus a clock, not two independent
+// ones. A job observed dead, then alive, then dead again within the window
+// must not let the FIRST (refuted) blip corroborate the second, unrelated
+// death.
+test('lastOrphanSuspect: a CLEARED row after a SUSPECT row voids the suspicion entirely', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+  ];
+  assert.equal(lastOrphanSuspect('j1', entries), null);
+});
+
+test('lastOrphanSuspect: a SUSPECT row AFTER an earlier CLEARED row is a fresh, live suspicion again', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:20:00.000Z' },
+  ];
+  const found = lastOrphanSuspect('j1', entries);
+  assert.equal(found.ts, '2026-09-08T04:20:00.000Z');
+});
+
+test('orphanConfirmed: a cleared-then-stale-suspect shape (found alive in between) never confirms off the old blip', () => {
+  // The exact shape Codex's review flagged: dead at t0 (suspect written),
+  // alive at t0+1min (cleared), dead again for real at t0+10min — well
+  // inside a bare elapsed-time window, but the clearing must void the t0
+  // suspicion so this reads as a FRESH, unconfirmed death, not a corroborated one.
+  const t0 = '2026-09-08T04:00:00.000Z';
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: t0 },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: new Date(Date.parse(t0) + 60 * 1000).toISOString() },
+  ];
+  const now = Date.parse(t0) + 10 * 60 * 1000;
+  assert.equal(orphanConfirmed('j1', entries, now), false, 'the cleared suspicion must not corroborate an unrelated later death');
+  assert.equal(orphanSuspectIsStale('j1', entries, now), true, 'must be treated as no suspicion exists — write a fresh one');
 });
 
 test('orphanConfirmed: false with no suspect row at all — a job must never be confirmed orphaned off a single glance', () => {

@@ -325,7 +325,17 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
  * faking a big-enough sample.
  */
 const HEADLESS_CHECK_NAME = 'Headless dispatch: success rate';
-const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10 };
+// orphanRateCeiling (BRO-3052, Codex adversarial ship-check catch): excluding
+// orphaned from `resolved`/`successRate` (correct — see computeJobLaneOutcomeRate)
+// has a blind spot on its own: a supervisor that starts mass-orphaning jobs
+// (the exact failure this card is about — measured live at 23% of dispatches
+// in 24h, ~6x the baseline rate) can still show a clean 100% successRate off
+// a shrinking resolved pool while every OTHER launch silently falls into the
+// unmeasured orphaned bucket. minResolved alone doesn't catch it, since a
+// dozen genuinely-successful resolved launches can sit next to hundreds of
+// orphaned ones. 30% mirrors this card's own "orphan rate roughly 6x [a
+// healthy] baseline" framing as the alarm threshold, not an arbitrary number.
+const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10, orphanRateCeiling: 0.30 };
 
 const HEADLESS_HINT = 'Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown of failed launches. '
   + 'Judge any fix by this rate over the window, never by one clean dispatch (same doctrine as the tab-lane dead-launch rate, card #1199).';
@@ -336,6 +346,7 @@ function computeHeadlessDispatchDigest({
   windowDays = HEADLESS_DEFAULTS.windowDays,
   successRateFloor = HEADLESS_DEFAULTS.successRateFloor,
   minResolved = HEADLESS_DEFAULTS.minResolved,
+  orphanRateCeiling = HEADLESS_DEFAULTS.orphanRateCeiling,
   lane = JOB_LANE,
 } = {}) {
   const stats = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane });
@@ -361,6 +372,21 @@ function computeHeadlessDispatchDigest({
   }
 
   const pct = (stats.successRate * 100).toFixed(0);
+
+  // Orphan-rate gate BEFORE the successRate pass check (Codex adversarial
+  // ship-check catch): a high orphan rate must never hide behind a clean
+  // resolved-only successRate. See HEADLESS_DEFAULTS.orphanRateCeiling.
+  const orphanPool = stats.resolved + stats.orphaned;
+  const orphanRate = orphanPool > 0 ? stats.orphaned / orphanPool : 0;
+  if (orphanPool >= minResolved && orphanRate >= orphanRateCeiling) {
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'warn',
+      message: `${(orphanRate * 100).toFixed(0)}% of headless launches (${stats.orphaned}/${orphanPool}) are landing as orphaned rather than done/failed — the supervisor may be losing track of live processes (BRO-3052). Success rate ${pct}% looks clean because orphaned launches are excluded from it. ${detail}.`,
+      hint: HEADLESS_HINT,
+      ...stats,
+    };
+  }
 
   if (stats.successRate >= successRateFloor) {
     return {

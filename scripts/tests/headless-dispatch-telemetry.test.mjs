@@ -51,10 +51,10 @@ test('JOB_EVENTS.ABANDONED is terminal but NOT deadlike', () => {
 });
 
 test('every JOB_EVENTS value is exactly terminal or open (no unclassified event name)', () => {
-  // ORPHAN_SUSPECT (BRO-3052) joins SPAWNED in the open set — it must keep
-  // reading as an in-flight job until a LATER tick either confirms it (a
-  // real ORPHANED row) or the job turns out to be alive after all.
-  const OPEN = new Set([JOB_EVENTS.SPAWNED, JOB_EVENTS.ORPHAN_SUSPECT]);
+  // ORPHAN_SUSPECT/ORPHAN_CLEARED (BRO-3052) join SPAWNED in the open set —
+  // a job must keep reading as in-flight through a suspicion and its
+  // clearing, until a LATER tick writes the real terminal ORPHANED row.
+  const OPEN = new Set([JOB_EVENTS.SPAWNED, JOB_EVENTS.ORPHAN_SUSPECT, JOB_EVENTS.ORPHAN_CLEARED]);
   for (const [key, value] of Object.entries(JOB_EVENTS)) {
     const classified = TERMINAL_JOB_EVENTS.has(value) || OPEN.has(value);
     assert.ok(classified, `JOB_EVENTS.${key} (${value}) is neither in TERMINAL_JOB_EVENTS nor the known-open set — every consumer that folds job state needs one or the other`);

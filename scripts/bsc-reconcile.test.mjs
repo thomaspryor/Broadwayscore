@@ -786,7 +786,7 @@ const { sweepOrphanedJobs, GRACE_MS } = require('./bsc-reconcile.js');
 
 const ORPHAN_NOW = Date.parse('2026-09-08T04:30:00.000Z');
 
-function orphanHarness({ lease = null, alive = false } = {}) {
+function orphanHarness({ lease = null, alive = false, freshEntries = null } = {}) {
   const appended = [];
   const released = [];
   const reports = [];
@@ -795,6 +795,12 @@ function orphanHarness({ lease = null, alive = false } = {}) {
     pidLooksLikeClaudeFn: () => alive,
     appendEntryFn: (e) => appended.push(e),
     releaseLeaseFn: (taskId, jobId) => released.push({ taskId, jobId }),
+    // Explicit, never the real on-disk ledger (dispatch-ledger.js's REPO is a
+    // hardcoded Mac-local absolute path) — a test that forgets this override
+    // would silently read this machine's actual dispatch-ledger.jsonl instead
+    // of its own fixture. Defaults to the same entries the sweep was called
+    // with (no divergence since the snapshot), matching the common case.
+    readLedgerEntriesFn: () => freshEntries || [],
     reportFn: (r) => reports.push(r),
     nowFn: () => ORPHAN_NOW,
   };
@@ -830,18 +836,65 @@ test('sweepOrphanedJobs: FIRST negative glance writes an ORPHAN_SUSPECT row, not
   assert.ok(h.reports.some((r) => r.kind === 'orphan-suspect'));
 });
 
+test('sweepOrphanedJobs: an alive job with a stale prior suspicion CLEARS it — the ledger stops trusting that old blip', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.equal(h.appended.length, 1, 'must clear the stale suspicion now that the job is observed alive');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_CLEARED);
+  assert.equal(h.appended[0].jobId, 'j9');
+});
+
+test('sweepOrphanedJobs: an alive job with NO prior suspicion writes nothing (the overwhelming common case must not spam the ledger)', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
 test('sweepOrphanedJobs: a SECOND tick that still finds it dead, past ORPHAN_CONFIRM_MS, writes the real job-orphaned row and releases the lease', () => {
   const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
-  const h = orphanHarness({ lease: null, alive: false });
   const entries = [
     { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
     { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs },
   ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
   const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
   assert.equal(orphans.length, 1);
   assert.equal(h.appended.length, 1);
   assert.equal(h.appended[0].event, JOB_EVENTS.ORPHANED);
   assert.deepEqual(h.released, [{ taskId: '2565', jobId: 'j2565' }]);
+});
+
+// Codex adversarial ship-check catch: main() confirms off a SNAPSHOT read at
+// the top of its tick. The job's own process can legitimately finish and
+// append job-done in the real, on-disk ledger between that snapshot and this
+// write — appendEntryFn always appends to the CURRENT end of the file, so a
+// stale-snapshot ORPHANED write would otherwise land after a real job-done
+// and silently override it (foldJobs' last-wins fold). readLedgerEntriesFn is
+// the TOCTOU re-check's fresh read; here it diverges from the stale snapshot.
+test('sweepOrphanedJobs: TOCTOU — a job-done that landed AFTER this tick\'s snapshot but BEFORE the write is never overridden by job-orphaned', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2817', jobId: 'j2817', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2817', jobId: 'j2817', ts: suspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '2817', jobId: 'j2817', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not orphan a job that has since reached job-done');
+  assert.deepEqual(h.appended, [], 'must not write job-orphaned over a real completion');
+  assert.deepEqual(h.released, []);
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-resolved'));
 });
 
 test('sweepOrphanedJobs: does not spam a fresh suspect row every tick while still waiting to confirm', () => {
@@ -865,8 +918,8 @@ test('sweepOrphanedJobs: a STALE suspect row (past ORPHAN_SUSPECT_MAX_AGE_MS) is
 
 test('sweepOrphanedJobs: dryRun never writes to the ledger or releases the lease, even once confirmed', () => {
   const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
-  const h = orphanHarness({ lease: null, alive: false });
   const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
   const { orphans } = sweepOrphanedJobs(entries, { dryRun: true, deps: h.deps });
   assert.equal(orphans.length, 1, 'dry-run still reports what WOULD be orphaned');
   assert.deepEqual(h.appended, []);
