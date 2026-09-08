@@ -55,11 +55,19 @@ function isTestFCommand(cmd) {
   return /^test -f\b/.test(String(cmd || '').trim());
 }
 
-// Every SAFE_CHECK_FORMS shape whose path group names a file THIS card's own
-// work is responsible for (creating or already having created) — as opposed
-// to a fixed, already-vetted repo script name (the generic audit-/lint- form,
-// the bash *.test.sh form), which can never be a hallucinated path because
-// its basename is checked against an allowlist, not the filesystem.
+// Scoped to the two forms BRO-2977/BRO-3076 actually cover — NOT a claim that
+// every other SAFE_CHECK_FORMS shape with a pathsGroup is immune to this bug.
+// The bash *.test.sh form IS immune (its regex hardcodes the one existing
+// path, autonomous-triage-core.js:284 — no card-authored value to hallucinate).
+// The generic audit-/lint- form is NOT immune despite checking its basename
+// against AUDIT_LINT_GENERIC_FORM_ALLOWED: that allowlist deliberately admits
+// basenames "shape-only," before the file exists on disk (see
+// autonomous-triage-core.js's audit-worktree-unpushed.js entry and comment —
+// confirmed still absent from origin/main as of this writing), so a card
+// naming `node scripts/audit-worktree-unpushed.js` is exactly as armed and
+// exactly as starvable as a phantom `node --test` path. Left out of scope
+// here deliberately (BRO-3076 is `test -f` only) — tracked as a follow-up,
+// not silently declared safe.
 function isCheckPathCommand(cmd) {
   return isNodeTestCommand(cmd) || isTestFCommand(cmd);
 }
