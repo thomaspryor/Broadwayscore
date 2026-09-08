@@ -31,7 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { decideRequeueAction } = require('./lib/orphan-rescore-requeue');
+const { decideRequeueAction, hasNoDispatchableOrphans } = require('./lib/orphan-rescore-requeue');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 
@@ -112,6 +112,19 @@ async function run(showId) {
     if (resolveCondition(conditionKeyFor(showId))) changed = true;
     if (changed) saveState(state);
     return { showId, action: 'clear', orphanCount: 0 };
+  }
+
+  // BRO-2985: `orphanCount > 0` above means "a broadcast should keep waiting",
+  // which is NOT the same as "a rescore dispatch would help". See
+  // hasNoDispatchableOrphans() for the full rationale + the back-compat rule.
+  if (hasNoDispatchableOrphans(marker)) {
+    return {
+      showId,
+      action: 'wait',
+      orphanCount: marker.orphanCount,
+      reason: 'no-dispatchable-orphans',
+      waitMs: 0,
+    };
   }
 
   if (marker.lastDispatch === 'ok') {

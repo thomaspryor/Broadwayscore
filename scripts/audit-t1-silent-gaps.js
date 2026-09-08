@@ -396,6 +396,11 @@ async function main() {
         outletId,
         tier,
         type: gap.type,
+        // BRO-2985: carried through from classifySilentGap so the self-heal
+        // dispatch below can tell "scoring hasn't run yet" apart from "the
+        // scorer will never take this file". undefined for gap types where the
+        // question doesn't apply (empty-body, rejected-unscoreable).
+        dispatchable: gap.dispatchable,
         url: d.url || null,
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
@@ -488,7 +493,25 @@ async function main() {
   // hourly runs don't re-dispatch while scoring is still in flight.
   let stateDirty = false;
   if (DO_RECOVER && !DRY_RUN) {
-    const unscoredShowIds = [...new Set(gaps.filter((g) => g.type === 'unscored').map((g) => g.showId))];
+    // BRO-2985: only dispatch for shows with at least one gap the scorer would
+    // actually pick up. `dispatchable === false` means classifySilentGap asked
+    // the scorer's selector and got a skip reason — re-running scoring produces
+    // the identical skip, so a dispatch here is pure runner-minute burn (and
+    // this sweep runs hourly). The gap is still reported and still emails via
+    // shouldEmailUnscoredGap below; it just stops paying for a no-op run.
+    const unscoredGaps = gaps.filter((g) => g.type === 'unscored');
+    const blockedOnly = unscoredGaps.filter((g) => g.dispatchable === false);
+    if (blockedOnly.length > 0) {
+      console.log(
+        `  ⏭️  ${blockedOnly.length} unscored gap(s) are not dispatchable (the scorer would skip them) — no dispatch:`,
+      );
+      for (const g of blockedOnly.slice(0, 10)) {
+        console.log(`     ${g.showId}/${g.file || '(unknown file)'}`);
+      }
+    }
+    const unscoredShowIds = [
+      ...new Set(unscoredGaps.filter((g) => g.dispatchable !== false).map((g) => g.showId)),
+    ];
     for (const showId of unscoredShowIds) {
       const key = `dispatch:${showId}`;
       if (!shouldDispatchScoring(state[key] || null, now)) continue;

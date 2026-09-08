@@ -7,7 +7,7 @@
 
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { decideRequeueAction, DEFAULT_COOLDOWN_MS, DEFAULT_MAX_ATTEMPTS, DEFAULT_WINDOW_MS } from './orphan-rescore-requeue.js';
+import { decideRequeueAction, hasNoDispatchableOrphans, DEFAULT_COOLDOWN_MS, DEFAULT_MAX_ATTEMPTS, DEFAULT_WINDOW_MS } from './orphan-rescore-requeue.js';
 
 const NOW = new Date('2026-07-23T12:00:00.000Z');
 
@@ -67,4 +67,26 @@ test('exactly at cooldown boundary resolves to dispatch (strict less-than in the
   const attempts = [{ at: new Date(NOW.getTime() - DEFAULT_COOLDOWN_MS).toISOString(), ok: true }];
   const result = decideRequeueAction(attempts, NOW);
   assert.equal(result.action, 'dispatch');
+});
+
+// ── BRO-2985: dispatch gate vs broadcast gate ───────────────────────────────
+
+test('hasNoDispatchableOrphans: 0 dispatchable → skip the dispatch', () => {
+  assert.equal(
+    hasNoDispatchableOrphans({ orphanCount: 2, dispatchableOrphanCount: 0 }),
+    true,
+    'orphans that remain only because the scorer refuses them must not re-dispatch',
+  );
+});
+
+test('hasNoDispatchableOrphans: some dispatchable → still dispatch', () => {
+  assert.equal(hasNoDispatchableOrphans({ orphanCount: 2, dispatchableOrphanCount: 1 }), false);
+});
+
+test('hasNoDispatchableOrphans: pre-BRO-2985 marker (field absent) keeps old behaviour', () => {
+  // Reading `undefined` as 0 would silently disable the #356 self-heal for
+  // every show until the next marker rewrite.
+  assert.equal(hasNoDispatchableOrphans({ orphanCount: 2 }), false);
+  assert.equal(hasNoDispatchableOrphans({}), false);
+  assert.equal(hasNoDispatchableOrphans(null), false);
 });

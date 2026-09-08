@@ -240,8 +240,37 @@ function countScoringQueues(baseDir, options) {
   return counts;
 }
 
+/**
+ * Is this skip reason a WAIT (it clears itself on a timer) or a DEAD END (it
+ * clears only when the file's text or flags change)?
+ *
+ * Both are equally "do not dispatch the scorer right now" — that distinction
+ * belongs to unscoredSkipReason() alone. This one exists for callers that also
+ * gate something on the file resolving EVENTUALLY: the opening-night broadcast
+ * must keep waiting on a file that will score itself in 24h, but must not wait
+ * forever on one no automation will ever touch (BRO-2985 —
+ * the-story-west-end-2026 opened 2026-09-03 and was still gated 5 days later on
+ * a 2020 archive.org contact page).
+ *
+ * manual_clear_fallback_cooldown is the only self-clearing reason: a 24h–7d
+ * backoff (manual-clear-fallback-cooldown.js) after a failed Haiku rescue. It
+ * becomes permanent when manualClearFallbackAbandoned is set, but treating the
+ * whole reason as transient errs toward "keep waiting", which is the safe
+ * direction for a send.
+ *
+ * @param {string|null} reason a UNSCORED_SKIP value, or null
+ * @returns {boolean} true when the reason is expected to clear on its own
+ */
+const TRANSIENT_SKIP_REASONS = new Set([UNSCORED_SKIP.FALLBACK_COOLDOWN]);
+
+function isTransientSkipReason(reason) {
+  return TRANSIENT_SKIP_REASONS.has(reason);
+}
+
 module.exports = {
   UNSCORED_SKIP,
+  TRANSIENT_SKIP_REASONS,
+  isTransientSkipReason,
   unscoredSkipReason,
   isActionableUnscored,
   isActionableRescore,
