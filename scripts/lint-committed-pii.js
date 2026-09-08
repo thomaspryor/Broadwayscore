@@ -46,6 +46,16 @@ const ALLOWLIST = new Map([
       maxFindings: 39,
     },
   ],
+  [
+    'data/audit/card-enrichment-log.jsonl',
+    {
+      reason:
+        'line293 previousNotes/newNotes carry the site\'s own hi@broadwayscorecard.com ' +
+        'address, discussed inside a DMARC-configuration card (BRO-2593) about that ' +
+        'address\'s own DNS policy — the org\'s operational address, not submitter PII',
+      maxFindings: 2,
+    },
+  ],
 ]);
 
 function listTrackedAuditFiles() {
