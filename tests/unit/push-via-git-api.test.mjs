@@ -460,8 +460,10 @@ exec "$@"
 `);
 
     // BRO-2951: TIMEOUT retries now sleep an escalating backoff (default
-    // 5-15s) instead of a flat 1-3s — pin it small so this test doesn't
-    // slow down for a real wall-clock wait it isn't testing.
+    // 5-15s) instead of a flat 1-3s. Pin BASE/MAX to 0 to keep this test's
+    // wait close to the OLD magnitude — the floor clamp still forces at
+    // least 1s(+0-4s jitter) per retry, so this doesn't reach zero, it just
+    // avoids the new escalation this test isn't exercising.
     const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
       PATH: `${binDir}:${process.env.PATH}`,
       PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
@@ -614,8 +616,11 @@ test('BRO-2951: a TIMEOUT retry backs off by an ESCALATING amount, not a flat 1-
     sh('git add -A', runnerDir);
     sh('git commit -q -m "our change"', runnerDir);
 
-    // Every push attempt times out — MAX_RETRIES=2 means both attempts
-    // sleep+continue before the loop ends and exhaustion is reported.
+    // Every push attempt times out. MAX_RETRIES=3: attempts 1 and 2 sleep a
+    // backoff and log it before continuing; attempt 3 is the LAST budgeted
+    // attempt, so it skips the backoff entirely (ship-check finding: sleeping
+    // on the final attempt only delays the exhaustion report for nothing) —
+    // exactly 2 backoffs get logged, not 3.
     const binDir = installTimeoutShim(tmp, `#!/bin/bash
 shift 2
 shift
@@ -627,7 +632,7 @@ done
 exec "$@"
 `);
 
-    const res = await spawnScriptWithEnv(['main', baseSha, '2'], runnerDir, {
+    const res = await spawnScriptWithEnv(['main', baseSha, '3'], runnerDir, {
       PATH: `${binDir}:${process.env.PATH}`,
       PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '5',
       PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '100',
@@ -635,10 +640,57 @@ exec "$@"
 
     assert.equal(res.code, 3, 'timeout-dominated exhaustion must exit 3');
     const backoffs = [...res.stderr.matchAll(/backing off (\d+)s before retrying/g)].map((m) => Number(m[1]));
-    assert.equal(backoffs.length, 2, `expected 2 logged backoffs (one per attempt), got: ${JSON.stringify(backoffs)}\n${res.stderr}`);
+    assert.equal(backoffs.length, 2, `expected 2 logged backoffs (attempts 1-2; attempt 3 is last and must skip its backoff), got: ${JSON.stringify(backoffs)}\n${res.stderr}`);
     assert.ok(backoffs[0] >= 5 && backoffs[0] <= 9, `1st backoff (count=1) out of expected [5,9] range: ${backoffs[0]}`);
     assert.ok(backoffs[1] >= 10 && backoffs[1] <= 14, `2nd backoff (count=2) out of expected [10,14] range: ${backoffs[1]}`);
     assert.ok(backoffs[1] > backoffs[0], `backoff must escalate across consecutive timeouts, got: ${backoffs}`);
+    assert.match(res.stderr, /no attempts remain, skipping backoff/, 'the last attempt must not compute/log a backoff it will never sleep');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// BRO-2951 (ship-check finding, two independent reviewers): a non-numeric
+// PUSH_API_TIMEOUT_BACKOFF_BASE_SEC (e.g. accidentally empty or garbage)
+// used to throw an unbound-variable error under this file's `set -u` inside
+// the `$((BASE * count))` arithmetic, aborting the WHOLE retry loop before a
+// single retry could happen. A non-numeric MAX_SEC took a different, equally
+// bad path: the `-gt` comparison silently evaluated false, defeating the
+// clamp instead of erroring. Both must degrade to the built-in default
+// instead of crashing or silently misbehaving.
+test('BRO-2951: non-numeric backoff env vars degrade to defaults instead of crashing or silently disabling the clamp', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-backoff-nan-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    const marker = path.join(tmp, 'push-timed-out-once');
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ] && [ ! -f "${marker}" ]; then
+    touch "${marker}"
+    exit 124
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '5'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: 'not-a-number',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: 'also-garbage',
+    });
+
+    assert.equal(res.code, 0, `garbage backoff config must not abort the retry loop, got ${res.code}\n${res.stderr}`);
+    assert.ok(fs.existsSync(marker), 'the shim never intercepted a push — the script died before reaching it');
+    assert.doesNotMatch(res.stderr, /unbound variable|integer expression expected/, 'garbage config reached raw bash arithmetic/comparison instead of being coerced to the default');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

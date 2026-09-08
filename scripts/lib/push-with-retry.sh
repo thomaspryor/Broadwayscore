@@ -2085,10 +2085,13 @@ if [ "$_api_fallback_ok" = "true" ]; then
   # A caller that explicitly sets PUSH_API_MAX_RETRIES keeps its own choice.
   # BRO-2951: a TIMEOUT-classified push attempt inside push-via-git-api.sh
   # now also sleeps an escalating PUSH_API_TIMEOUT_BACKOFF_BASE/MAX_SEC
-  # backoff (defaults 5s/15s, so ≤~15s per gap) before its next retry —
-  # deliberately kept small enough to stay NOISE against this comment's
-  # ~3 * GIT_NET_TIMEOUT_SEC per-attempt cost model rather than invalidating
-  # it; worst case adds well under a minute across a full retry budget.
+  # backoff (defaults 5s/15s, so ≤~15s per gap, skipped entirely on the
+  # last attempt) before its next retry — kept small relative to this
+  # comment's ~3 * GIT_NET_TIMEOUT_SEC per-attempt cost model rather than
+  # invalidating it. Worst case is at the DEFAULT _api_max_retries_default=6
+  # below (5 gaps, ~5-19s each): roughly a minute added on top, not
+  # "well under" one — that lighter framing only holds for the scaled-down
+  # 2/4-retry paths a tight remaining deadline actually grants.
   _api_remaining_sec=$(( PUSH_DEADLINE_SEC - SECONDS ))
   [ "$_api_remaining_sec" -lt 0 ] && _api_remaining_sec=0
   _api_max_retries_default=6
