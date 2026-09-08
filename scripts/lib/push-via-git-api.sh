@@ -307,13 +307,38 @@ _rest_write_probe() {
   # retry's deadline — but it still must not hang a finished job.
   out="$(GH_TOKEN="$token" _timeout 20 node "$SCRIPT_DIR/github-rest-write-probe.js" "$slug" 2>/dev/null || true)"
   _restore_xt
-  if [ -n "$out" ]; then
-    echo "  push-via-git-api: push-api-probe rest_write $out" >&2 || true
-  else
+  if [ -z "$out" ]; then
     # A probe that produced nothing within 20s is itself the slow-REST
     # signal, not an absence of data — say so rather than reporting a bare
     # skip that reads as "we learned nothing".
-    echo "  push-via-git-api: push-api-probe rest_write {\"ok\":false,\"skipped\":true,\"reason\":\"no output within the 20s probe cap (itself evidence REST writes are NOT fast for this actor)\"}" >&2 || true
+    out="{\"ok\":false,\"skipped\":true,\"reason\":\"no output within the 20s probe cap (itself evidence REST writes are NOT fast for this actor)\"}"
+  fi
+  echo "  push-via-git-api: push-api-probe rest_write $out" >&2 || true
+
+  # A measurement nobody reads is not a measurement. A /what-else sweep found
+  # that NOTHING in scripts/ or .github/ greps for this handle, and
+  # push-ledger.js records no duration — so on the stderr line alone this
+  # verdict would only ever be seen by someone manually opening a failed
+  # run's raw log, which is exactly how the original 90s timeouts went unread
+  # "for days" (see the comment above GIT_NET_TIMEOUT_SEC).
+  #
+  # ::notice:: puts it in the run's annotation list, and the step summary puts
+  # it on the run page permanently — both visible without opening any log.
+  # Guarded so this stays a no-op outside Actions (and in the fixture suite).
+  echo "::notice title=BRO-2951 REST write probe::$out" >&2 || true
+  if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -w "${GITHUB_STEP_SUMMARY}" ]; then
+    {
+      echo "### BRO-2951 push fallback exhausted — REST write probe"
+      echo ""
+      echo "Ref update over receive-pack timed out ${FAIL_TIMEOUT}x. One REST write, same actor, same window:"
+      echo ""
+      echo '```json'
+      echo "$out"
+      echo '```'
+      echo ""
+      echo "Fast (\`ms\` well under 1000) => the throttle is NOT actor-wide; the cost is specific to the contended ref, and a REST ref-update path is the fix."
+      echo "Slow or failed => this actor's writes are throttled generally; the answer is BRO-2983 / moving the state off main, NOT a REST ref update."
+    } >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
   fi
   return 0
 }
