@@ -102,3 +102,32 @@ Reddit's SD traffic respect the daily ceiling like every other caller.
    inherently marginal — small day-to-day variance will flip it between
    `warn` and `error` even with no underlying change. Don't chase noise here;
    only re-open if the gap widens materially or the balance drops under 15%.
+
+## Known limitations (ship-check findings, out of scope for this card)
+
+Surfaced by adversarial review of the reddit-api.js fix — real, but broader
+than BRO-364's specific attribution/breaker-wiring gap, so left as documented
+follow-ups rather than folded into this fix:
+
+- **The breaker is an hourly snapshot, not an atomic per-request reservation.**
+  `consultScrapingdog()` reads state `check-sd-breaker.js` last wrote (hourly
+  cron), so several concurrent bulk shards (e.g. `bulk-reddit-sentiment.yml`'s
+  matrix) can all pass the same stale check and spend well past the ceiling
+  before the next hourly recompute catches it. This is a pre-existing
+  characteristic of the breaker shared by every chokepoint (`scraper.js`,
+  `url-discovery.js`), not something reddit-api.js-specific.
+- **reddit-api.js has no per-run credit budget.** `scraper.js`'s
+  `fetchWithScrapingdog` also checks `SD_CREDIT_BUDGET` before every attempt;
+  reddit-api.js's SD path has no equivalent, so a single Reddit run can spend
+  unbounded credits within one process even with the daily breaker green.
+- **The spend ledger (`provider-telemetry.js`'s `_appendLedgerLine`) does a
+  read-modify-write with no locking.** Concurrent callers across processes can
+  race and silently drop each other's rows — a pre-existing gap across all
+  four providers, not introduced here.
+- **`recordSdCall` bills full tier credit on 401/403**, matching
+  `scraper.js`'s established SD convention (its final-failure branch bills
+  `creditCost * attemptsMade` regardless of outcome) but NOT ScrapingBee's
+  convention in this same file (`sbBilledCredits` zero-rates 401/402). Kept
+  consistent with the SD-specific precedent rather than the SB one; whether SD
+  actually charges for auth failures has never been confirmed by a billing
+  probe the way SB's zero-on-401 was.
