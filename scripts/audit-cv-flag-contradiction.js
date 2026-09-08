@@ -67,11 +67,18 @@ Usage:
 // BSC_AUDIT_ROOT exists so the coverage counting below can be proven against
 // a fixture corpus instead of asserted by eye — the counters are the whole
 // point of BRO-2348, and an uncounted counter is exactly the "absence of a
-// signal looks like the safe outcome" trap. Unset in every real invocation,
-// including CI, where this resolves to the repo root exactly as before.
-const ROOT = process.env.BSC_AUDIT_ROOT
-  ? path.resolve(process.env.BSC_AUDIT_ROOT)
-  : path.resolve(__dirname, '..');
+// signal looks like the safe outcome" trap.
+//
+// It is REFUSED under --strict and --update-baseline (see main()). Without
+// that refusal it was a vacuous-pass vector on this repo's own CI gate: a
+// decoy root containing one directory satisfies assertCorpusScanned, so
+// `--strict` printed "0 contradiction(s)" and exited 0. This command is the
+// gate at test.yml:4485 AND is on the autonomous-triage safe-check
+// allowlist, so a stray env var would have turned both green (round 2
+// finding 3). Report-only runs may redirect it; nothing that can PASS a gate
+// may.
+const ROOT_OVERRIDE = process.env.BSC_AUDIT_ROOT || '';
+const ROOT = ROOT_OVERRIDE ? path.resolve(ROOT_OVERRIDE) : path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'cv-flag-contradiction-baseline.json');
@@ -97,6 +104,16 @@ function loadBaseline() {
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
+
+  // A redirected root may never produce a PASSING gate verdict, and may never
+  // rewrite the baseline (BASELINE_PATH follows ROOT too).
+  if (ROOT_OVERRIDE && (args.strict || args.updateBaseline)) {
+    console.error(
+      'FAIL: BSC_AUDIT_ROOT is set, so --strict and --update-baseline are refused. ' +
+        'A redirected corpus would pass vacuously. Use report-only mode.'
+    );
+    process.exit(2);
+  }
 
   // Corpus presence, checked independent of the date window below (#1063
   // ship-check finding): gating on the window-filtered per-file `scanned`

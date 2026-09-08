@@ -73,14 +73,24 @@ function summarizeWindowCoverage({
 } = {}) {
   const num = (v) => (Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0);
   const corpus = num(corpusShows);
-  const eligible = Math.min(num(eligibleShows), corpus);
   const inWindow = Math.min(num(windowShows), corpus);
+  // Every windowed show has a parseable openingDate by construction, so the
+  // eligible set always CONTAINS the window. Clamping the two independently
+  // let a caller produce an `ineligible` larger than `notExamined`, making
+  // the "of which" on the last line a non-subset (round 2 finding 4).
+  const eligible = Math.min(Math.max(num(eligibleShows), inWindow), corpus);
   const opened = Math.min(num(openedShows), inWindow);
   const withTexts = Math.min(num(showsWithTexts), inWindow);
 
   const upcoming = inWindow - opened;
   const ineligible = corpus - eligible;
-  const notExamined = corpus - inWindow;
+  // Examined is `withTexts`, so NOT-examined must be measured from the same
+  // baseline. Using `corpus - inWindow` left the in-window-but-unexamined
+  // shows in NEITHER bucket: on the real corpus that printed "examined 72"
+  // and "2811 NOT examined" against a 2943 corpus, losing exactly the 60
+  // this feature exists to surface (round 2 finding 1, a P0 introduced by
+  // the round 1 fix). examined + notExamined now equals corpus, always.
+  const notExamined = corpus - withTexts;
   const skippedNoTexts = inWindow - withTexts;
 
   const lines = [

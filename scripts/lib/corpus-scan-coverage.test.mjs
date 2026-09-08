@@ -45,7 +45,11 @@ test('separates the four populations that a single "scanned" number conflates', 
   const s = summarizeWindowCoverage(REAL);
   assert.equal(s.upcomingShows, 110, 'window filter has no upper bound: 132 - 22 opened');
   assert.equal(s.skippedNoTexts, 60, 'selected but contributed nothing: 132 - 72');
-  assert.equal(s.notExamined, 2811, 'corpus minus the window: 2943 - 132');
+  // Measured from the SAME baseline as "examined", so the two always sum to
+  // the corpus: 72 + 2871 = 2943. The earlier value (2811 = corpus - window)
+  // left the 60 skipped shows in neither bucket — round 2 finding 1.
+  assert.equal(s.notExamined, 2871, 'corpus minus examined: 2943 - 72');
+  assert.equal(s.showsWithTexts + s.notExamined, s.corpusShows, 'must partition the corpus');
   assert.equal(s.ineligibleShows, 342, 'no usable openingDate: 2943 - 2601');
 });
 
@@ -90,7 +94,8 @@ test('upcomingShows is derived from openedShows, not from the corpus size', () =
   });
   assert.equal(s.upcomingShows, 6, 'window(10) - opened(4), not corpus(100) - opened(4)');
   assert.equal(s.skippedNoTexts, 7, 'window(10) - withTexts(3)');
-  assert.equal(s.notExamined, 90);
+  assert.equal(s.notExamined, 97, 'corpus(100) - examined(3), not corpus - window');
+  assert.equal(s.showsWithTexts + s.notExamined, s.corpusShows, 'must partition the corpus');
 });
 
 test('an empty scan never reports negative or invented coverage', () => {
@@ -140,6 +145,7 @@ function buildFixture() {
     { id: 'good-show', openingDate: iso(Date.now() - 2 * day) },      // opened, parses
     { id: 'corrupt-show', openingDate: iso(Date.now() - 3 * day) },   // opened, 1 of 2 parses
     { id: 'pending-only', openingDate: iso(Date.now() - 4 * day) },   // dir exists, no .json
+    { id: 'all-corrupt', openingDate: iso(Date.now() - 4 * day) },    // .json present, none parse
     { id: 'missing-dir', openingDate: iso(Date.now() - 5 * day) },    // no dir at all
     { id: 'future-show', openingDate: iso(Date.now() + 30 * day) },   // in window, not opened
     { id: 'ancient-show', openingDate: '1990-01-01' },                // outside window
@@ -154,6 +160,13 @@ function buildFixture() {
   fs.writeFileSync(path.join(rt, 'corrupt-show', 'ok.json'), file({ textWordCount: 10 }));
   fs.writeFileSync(path.join(rt, 'corrupt-show', 'broken.json'), '{ this is not json');
   fs.mkdirSync(path.join(rt, 'pending-only', '_pending'), { recursive: true });
+  // The case round 2 caught as untested: a directory that LISTS .json files
+  // none of which parse. Without it, `files.length > 0` and
+  // `parsedThisShow > 0` are indistinguishable and the suite passes on the
+  // bug it exists to catch.
+  fs.mkdirSync(path.join(rt, 'all-corrupt'), { recursive: true });
+  fs.writeFileSync(path.join(rt, 'all-corrupt', 'bad1.json'), '{ nope');
+  fs.writeFileSync(path.join(rt, 'all-corrupt', 'bad2.json'), 'also not json');
   fs.mkdirSync(path.join(rt, 'future-show'), { recursive: true });
   fs.writeFileSync(path.join(rt, 'future-show', 'f.json'), file({ textWordCount: 10 }));
   fs.mkdirSync(path.join(rt, 'ancient-show'), { recursive: true });
@@ -180,6 +193,7 @@ test('the CLI counts files it PARSED, not files it listed', () => {
     // = 3 parsed. ancient-show is outside the window. Listing would give 4.
     assert.match(out, /\(3 review file\(s\) parsed\)/, out);
     assert.doesNotMatch(out, /\(4 review file\(s\) parsed\)/, 'counted a corrupt file as parsed');
+    assert.doesNotMatch(out, /\(6 review file\(s\) parsed\)/, 'counted all-corrupt files as parsed');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -191,11 +205,15 @@ test('the CLI does not report a show as examined when it yielded nothing', () =>
     const out = runCli(root);
     // Examined = good-show, corrupt-show, future-show = 3 of 7 corpus shows.
     // pending-only has a directory but no .json; missing-dir has no directory.
-    assert.match(out, /^Coverage: examined 3 of 7 corpus show\(s\)/m, out);
-    // Window selects good, corrupt, pending-only, missing-dir, future = 5.
-    assert.match(out, /selected 5 show\(s\): 4 already opened, 1 not yet opened/, out);
-    assert.match(out, /2 selected show\(s\) yielded no readable review file/, out);
-    assert.match(out, /2 corpus show\(s\) were NOT examined, of which 1 carry no usable openingDate/, out);
+    assert.match(out, /^Coverage: examined 3 of 8 corpus show\(s\)/m, out);
+    // Window selects good, corrupt, pending-only, all-corrupt, missing-dir,
+    // future = 6. Examined = good, corrupt, future = 3.
+    assert.match(out, /selected 6 show\(s\): 5 already opened, 1 not yet opened/, out);
+    // pending-only (no .json), all-corrupt (none parse), missing-dir (no dir).
+    assert.match(out, /3 selected show\(s\) yielded no readable review file/, out);
+    // examined + notExamined must equal the corpus: 3 + 5 = 8. The earlier
+    // version asserted 2 here, which locked in the round 2 finding 1 P0.
+    assert.match(out, /5 corpus show\(s\) were NOT examined, of which 1 carry no usable openingDate/, out);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
