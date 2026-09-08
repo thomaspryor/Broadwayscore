@@ -95,6 +95,44 @@ export interface ScoreReviewFileResult {
   inputValidationFailed?: boolean;
 }
 
+// Most-specific-first. garbage_text is the catch-all "no better label"
+// bucket (nav menus, error pages, ad copy) — it should only win a
+// disagreement when every rejecting model converges on it, never by
+// virtue of merely resolving first in Promise.all order.
+const REJECTION_TYPE_PRIORITY: string[] = ['wrong_show', 'wrong_production', 'not_a_review', 'garbage_text'];
+
+/**
+ * Pick the rejection TYPE a >=2-model consensus should record, from the
+ * models that rejected. Exported (not just used inline) so a unit test can
+ * drive the exact disagreement shape without calling any LLM API.
+ *
+ * @param rejections ModelOutcome[] where every entry has rejected=true
+ */
+export function pickConsensusRejection(rejections: ModelOutcome[]): ModelOutcome {
+  const counts = new Map<string, number>();
+  for (const r of rejections) {
+    if (!r.rejection) continue;
+    counts.set(r.rejection, (counts.get(r.rejection) || 0) + 1);
+  }
+  // Strict majority on a single type wins outright, even if that type is
+  // garbage_text — 2 independent models agreeing the text is literal garbage
+  // outranks a single model's differently-labeled reasoning.
+  for (const type of REJECTION_TYPE_PRIORITY) {
+    const c = counts.get(type) || 0;
+    if (c > rejections.length / 2) {
+      return rejections.find(r => r.rejection === type)!;
+    }
+  }
+  // No strict majority (e.g. 1-vs-1 on a 2-model consensus): prefer the most
+  // specific editorial type any rejecting model gave over the generic
+  // garbage_text catch-all.
+  for (const type of REJECTION_TYPE_PRIORITY) {
+    const found = rejections.find(r => r.rejection === type);
+    if (found) return found;
+  }
+  return rejections[0];
+}
+
 // ========================================
 // ENSEMBLE SCORER
 // ========================================
@@ -360,8 +398,19 @@ export class EnsembleReviewScorer {
     const totalModels = results.length;
 
     if (rejections.length >= 2) {
-      // 2/3 or 3/3 models rejected — consensus rejection
-      const primaryRejection = rejections[0];
+      // 2/3 or 3/3 models rejected — consensus rejection. Pick the TYPE by
+      // majority vote among the rejecting models, not just rejections[0]
+      // (BRO-372: for a BroadwayWorld promo/casting page, openai — first in
+      // results push order (claude, openai, gemini, kimi) — labeled its own
+      // "promotional content... lacks a coherent review" reasoning as
+      // 'garbage_text', while gemini's reasoning for the SAME text described
+      // exactly a not_a_review verdict. Blindly taking rejections[0] recorded
+      // 'garbage_text' — t1-silent-gap.js treats that as a retriable
+      // fetch-quality issue, not the terminal editorial exclusion it actually
+      // was, so the >24h backstop re-alerted every 7 days forever with no
+      // possible resolution: no better fetch of this URL can ever produce a
+      // review that was never published).
+      const primaryRejection = pickConsensusRejection(rejections);
       const rejectionResult: EnsembleResultType = {
         score: 0,
         bucket: 'Pan',
