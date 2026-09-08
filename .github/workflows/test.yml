@@ -33,6 +33,14 @@ on:
       # covered by scripts/lib/**, but a solo edit to the wrapper would
       # otherwise trigger ZERO CI — the exact gap task #1745 documents.
       - 'scripts/check-missed-broadcasts.js'
+      # scripts/audit-imageless-scored-shows.js is the I/O caller for
+      # scripts/lib/image-trigger-guard.js (globbed above). BRO-2672's fan-out
+      # bug lived in a per-show dispatch LOOP in this caller, not in the lib —
+      # and a solo edit to it triggers ZERO CI without this entry, so
+      # reintroducing that loop would ship unchecked. The colocated
+      # tests/unit/audit-imageless-scored-shows-push.test.mjs asserts the loop
+      # is gone by reading this file's real source (BRO-2955 review finding).
+      - 'scripts/audit-imageless-scored-shows.js'
       # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
       # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
       # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs

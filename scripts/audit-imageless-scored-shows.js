@@ -25,9 +25,13 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { hasRealImage } = require('./lib/show-images.js');
-const { findImagelessScoredShows, DEFAULT_THRESHOLD_HOURS } = require('./lib/image-trigger-guard.js');
+const {
+  findImagelessScoredShows,
+  DEFAULT_THRESHOLD_HOURS,
+  planSelfHealDispatch,
+  executeSelfHealDispatch,
+} = require('./lib/image-trigger-guard.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
-const { planSelfHealDispatch, executeSelfHealDispatch } = require('./lib/image-trigger-guard.js');
 
 const USAGE = `Usage: node scripts/audit-imageless-scored-shows.js [--dry-run]
   --dry-run    Compute + print findings, skip dispatch/alert/write.
@@ -37,14 +41,17 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const OUTPUT_FILE = path.join(DATA_DIR, 'audit', 'imageless-scored-shows.json');
 const COOLDOWN_HOURS = 12; // min gap between re-dispatch attempts for the same show
 const ESCALATE_AFTER_ATTEMPTS = 3; // self-heal dispatched 3x and still imageless -> alert
-// Real-corpus dry-run (2026-08-14) found 71 pre-existing imageless shows —
-// dispatching all of them in one run would flood the fetch-images
-// concurrency group (cancel-in-progress:false) exactly like the dispatch
-// storm the plan review warned about, just fanned out across shows instead
-// of across time. Cap + prioritize newest-first: THIS card is about a new
-// show going live, not draining the historical backlog — that backlog still
-// drains gradually across cycles (and via the twice-weekly full sweep).
-const MAX_DISPATCHES_PER_RUN = 5;
+// Caps how many shows ride in ONE batch, not how many dispatches fire — since
+// BRO-2672's second-caller fix a cycle fires at most one workflow_dispatch no
+// matter how many shows are due, so the old "flooding the fetch-images
+// concurrency group" rationale for this number no longer applies. What it
+// still buys: fetch-all-image-formats.yml processes the comma list serially
+// inside a single job, so an unbounded batch would push that one run past its
+// timeout and lose the whole batch instead of the tail. Prioritize
+// newest-first — THIS card is about a new show going live, not draining the
+// historical backlog, which still drains gradually across cycles (and via the
+// twice-weekly full sweep).
+const MAX_SHOWS_PER_BATCH = 5;
 
 function loadJson(file, fallback) {
   try {
@@ -124,13 +131,13 @@ async function main() {
     prevById,
     nowMs,
     cooldownHours: COOLDOWN_HOURS,
-    maxDispatchesPerRun: MAX_DISPATCHES_PER_RUN,
+    maxDispatchesPerRun: MAX_SHOWS_PER_BATCH,
   });
   const nextLedger = plan.entries;
   const entryById = new Map(nextLedger.map(e => [e.id, e]));
 
   for (const f of plan.deferred) {
-    console.log(`… ${f.id} due for dispatch but MAX_DISPATCHES_PER_RUN=${MAX_DISPATCHES_PER_RUN} reached this cycle — picked up next run`);
+    console.log(`… ${f.id} due for dispatch but MAX_SHOWS_PER_BATCH=${MAX_SHOWS_PER_BATCH} reached this cycle — picked up next run`);
   }
 
   // Only shows a SUCCESSFUL dispatch actually carried get their attempt counter
@@ -187,7 +194,7 @@ async function main() {
     thresholdHours: DEFAULT_THRESHOLD_HOURS,
     cooldownHours: COOLDOWN_HOURS,
     escalateAfterAttempts: ESCALATE_AFTER_ATTEMPTS,
-    maxDispatchesPerRun: MAX_DISPATCHES_PER_RUN,
+    maxDispatchesPerRun: MAX_SHOWS_PER_BATCH,
     flagged: nextLedger,
   }, null, 2) + '\n');
 }

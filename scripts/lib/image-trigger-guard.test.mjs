@@ -263,3 +263,35 @@ test('executeSelfHealDispatch: nothing due means the dispatcher is never called 
   assert.equal(out.dispatchCalls, 0);
   assert.equal(out.ok, null, 'no dispatch means no verdict, not a false success');
 });
+
+// ── BRO-2955 review finding ────────────────────────────────────────────────
+// executeSelfHealDispatch used to advance attempt/cooldown state by iterating
+// plan.due, while the dispatch itself carried buildImageDispatchInputs()'s
+// deduped/trimmed id list. Those two sets are NOT the same: an empty or
+// non-string id is silently dropped from the payload but was still in due —
+// so a show that was never dispatched got a 12h cooldown for work that never
+// happened. That is precisely the ledger corruption BRO-2672 was about, one
+// layer down. State must be derived from the batch string that was actually
+// sent.
+test('executeSelfHealDispatch: a due show dropped from the batch gets NO cooldown', async () => {
+  const orderedFlagged = [
+    { id: 'show-real', title: 'Real' },
+    { id: '   ', title: 'Whitespace id — dropped by buildImageDispatchInputs' },
+  ];
+  const plan = planSelfHealDispatch({
+    orderedFlagged, prevById: new Map(), nowMs: NOW, cooldownHours: 12, maxDispatchesPerRun: 5,
+  });
+  assert.equal(plan.due.length, 2, 'the planner still queues both');
+  assert.equal(plan.dispatchInputs[0].inputs.show_id, 'show-real', 'but only one rides in the payload');
+
+  const calls = [];
+  await executeSelfHealDispatch({
+    plan, nowMs: NOW, dispatch: async (ids) => { calls.push(ids); return { ok: true }; },
+  });
+
+  const byId = Object.fromEntries(plan.entries.map((e) => [e.id, e]));
+  assert.equal(byId['show-real'].dispatchAttempts, 1);
+  assert.equal(byId['show-real'].lastDispatchedAt, new Date(NOW).toISOString());
+  assert.equal(byId['   '].dispatchAttempts, 0, 'a show the dispatch never carried must not be counted as attempted');
+  assert.equal(byId['   '].lastDispatchedAt, null, 'and must not start a cooldown that suppresses its next real retry');
+});

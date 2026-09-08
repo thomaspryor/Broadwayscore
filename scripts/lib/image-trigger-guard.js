@@ -1,10 +1,19 @@
 /**
  * image-trigger-guard.js
  *
- * Pure decision functions for card #1456 (new shows going live with
- * images:{} for up to 3.5 days because image fetch was cron-only). No I/O
- * here — callers do the shows.json/reviews.json/disk reads (per CLAUDE.md
- * §15 test-extraction rule) and pass in plain data.
+ * Decision functions for card #1456 (new shows going live with images:{} for
+ * up to 3.5 days because image fetch was cron-only). No I/O here — callers do
+ * the shows.json/reviews.json/disk reads (per CLAUDE.md §15 test-extraction
+ * rule) and pass in plain data.
+ *
+ * buildImageDispatchInputs / findImagelessScoredShows / planSelfHealDispatch
+ * are pure. executeSelfHealDispatch is the one exception and is deliberately
+ * NOT an I/O function either: every effect it performs (dispatch, onAlert,
+ * log) is injected by the caller, so the module still reads and writes
+ * nothing itself. It lives here rather than in the caller because the two
+ * properties worth guarding — "N shows produce at most ONE dispatch" and "a
+ * FAILED dispatch starts no cooldown" — are only reachable by a test with a
+ * stubbed dispatcher if the loop is gone from the caller entirely.
  *
  * hasImages should be computed by callers via hasRealImage() from
  * scripts/lib/show-images.js — the same disk-existence predicate
@@ -158,13 +167,20 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
     const result = await dispatch(batchIds);
     ok = Boolean(result && result.ok);
     if (ok) {
-      for (const f of plan.due) {
-        const entry = entryById.get(f.id);
+      // Advance state from the ids the dispatch ACTUALLY carried (the batch
+      // string), not from plan.due. buildImageDispatchInputs() drops empty /
+      // non-string ids, so the two sets can diverge — and a show marked
+      // dispatched here that was never in the payload gets a 12h cooldown for
+      // work that never happened, which is precisely the ledger corruption
+      // this whole fix exists to stop (see planSelfHealDispatch's BRO-2672
+      // note). Deriving from batchIds makes the two impossible to diverge.
+      for (const id of String(batchIds).split(',')) {
+        const entry = entryById.get(id);
         if (!entry) continue;
         entry.dispatchAttempts = (entry.dispatchAttempts || 0) + 1;
         entry.lastDispatchedAt = new Date(nowMs).toISOString();
-        dispatched.push(f.id);
-        log(`✓ self-heal dispatched for ${f.id} (attempt ${entry.dispatchAttempts})`);
+        dispatched.push(id);
+        log(`✓ self-heal dispatched for ${id} (attempt ${entry.dispatchAttempts})`);
       }
     } else {
       const error = (result && result.error) || 'unknown';
