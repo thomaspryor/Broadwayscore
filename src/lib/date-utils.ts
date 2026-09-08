@@ -94,6 +94,21 @@ export function getRunLength(
   return `${years} year${years === 1 ? '' : 's'}, ${remaining} month${remaining === 1 ? '' : 's'}`;
 }
 
+/**
+ * Extract the calendar year from a bare "YYYY-MM-DD" show date field. Reads
+ * the year straight from the string rather than through `new Date(...).
+ * getFullYear()` — that reads the LOCAL year, so a Jan-1 date (13 shows in
+ * shows.json have one, e.g. "A Christmas Carol" closingDate 2023-01-01)
+ * parses as UTC midnight and would read back as the prior year on any
+ * negative-UTC-offset machine — the same bug class as BRO-3047, just for a
+ * year instead of a full date.
+ */
+export function getShowYear(dateStr: string | null | undefined): number | null {
+  if (!dateStr || dateStr.length < 4) return null;
+  const year = Number.parseInt(dateStr.slice(0, 4), 10);
+  return Number.isNaN(year) ? null : year;
+}
+
 /** Format a date string as "Mon YYYY" (e.g. "Jan 2025") */
 export function formatOpeningDate(dateStr: string | null | undefined): string {
   // Returns '' rather than a formatted epoch for missing/invalid input.
