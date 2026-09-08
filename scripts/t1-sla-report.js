@@ -124,6 +124,17 @@ function main() {
     console.log(`  To make these measurable, capture per-article publication times at COLLECTION`);
     console.log(`  (JSON-LD datePublished, stamped with publishDateSource) — not at report time.`);
   }
+  // "n/a" must not be misread as "healthy". This metric only ever sees reviews that were
+  // eventually SCORED — a review nobody discovered has no row here at all, so a coverage
+  // gap is invisible to it by construction. Say so, rather than letting an empty
+  // denominator pass for a clean bill of health.
+  if (sla.measured === 0) {
+    console.log(`\nNOTE: "n/a" is not "on time". This metric only covers reviews that were`);
+    console.log(`  eventually scored — a review never discovered has no row here at all, so a`);
+    console.log(`  coverage gap cannot show up in this number. Coverage (did we find every`);
+    console.log(`  review?) is audit-opening-night-coverage.js. Timeliness of the reviews we`);
+    console.log(`  DID find is scripts/time-to-publish-sla.js, which has its own clock.`);
+  }
   if (sla.pct === 0 && sla.measured > 0) {
     console.log(`\n⚠ scoredAt is the EARLIEST 'scored' event in stage-latency.jsonl. If a bulk`);
     console.log(`  rescore (e.g. the 2026-07 NYC anchored-bands rollout) re-stamped older`);

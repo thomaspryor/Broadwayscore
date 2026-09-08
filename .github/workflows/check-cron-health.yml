@@ -129,8 +129,12 @@ jobs:
             # unmonitored: the system that proves "every published review is live" had no
             # heartbeat of its own, so it could stop silently and look exactly like a quiet
             # week with no openings. That is the failure mode this whole file exists for.
-            # Hourly at :37; 3h = 2 missed runs. Detects aggregator-listed URLs missing from
-            # review-texts, so a dead cron here means real published reviews stay invisible.
+            # NOTE ON DETECTION LATENCY: this workflow itself runs once daily (12:00 UTC),
+            # so a threshold below 24h does not buy faster detection — it only decides
+            # whether the outage is still flagged when the daily check does run. Both
+            # entries are sized so any real stall is still stale at the next noon pass.
+            # Hourly at :37; 3h. Detects aggregator-listed URLs missing from review-texts,
+            # so a dead cron here means real published reviews stay invisible.
             "audit-aggregator-gap.yml|3|Audit Aggregator Review Gap"
             # Rolling cadence: heavy passes 05:00/17:00 UTC plus light ticks at
             # 02,08,11,14,20,23 — a run every ~3h. 5h = 1 missed tick + cron-lag cushion.

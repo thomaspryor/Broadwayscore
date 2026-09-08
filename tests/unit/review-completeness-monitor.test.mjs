@@ -44,6 +44,37 @@ test('hasPrecisePublishTime: only an HH:MM clock counts as precise', () => {
   assert.equal(hasPrecisePublishTime('undefined'), false);
 });
 
+test('a zone-less timestamp is NOT trusted as a clock (it parses differently per machine)', () => {
+  // `new Date("2026-08-25T20:51:56")` is parsed in the LOCAL zone: 20:51Z under TZ=UTC
+  // (CI) but 00:51Z on a New York laptop — a 4h swing against a 24h threshold, which
+  // would make the SLA disagree with itself depending on where it ran.
+  assert.equal(hasPrecisePublishTime('2026-08-25T20:51:56'), false);
+  assert.equal(hasPrecisePublishTime('2026-08-25T20:51:56Z'), true);
+  assert.equal(hasPrecisePublishTime('2026-08-25T20:51:56-04:00'), true);
+  assert.equal(hasPrecisePublishTime('2026-08-25T20:51:56+0100'), true);
+
+  const m = classifyMeasurability(
+    { showId: 's', outletId: 'o', publishDate: '2026-08-25T20:51:56', firstSeenAt: '2026-08-27T02:00:00Z' },
+    '2026-08-14',
+  );
+  assert.equal(m.measurable, false);
+  assert.equal(m.reason, 'date-only-publish-date');
+});
+
+test('contamination is keyed on the INSTANT, not the raw string', () => {
+  // Same moment, two spellings. A raw-string key would see two distinct timestamps and
+  // let the bled pair through as if each were a unique per-article time.
+  const rows = [
+    { showId: 'x', outletId: 'variety', publishDate: '2026-08-25T20:51:56-04:00' },
+    { showId: 'x', outletId: 'vulture', publishDate: '2026-08-26T00:51:56Z' },
+  ];
+  const shared = findSharedPublishTimestamps(rows);
+  assert.equal(shared.size, 1, 'the two spellings must collapse to one contaminated key');
+  const m = classifyMeasurability({ ...rows[0], firstSeenAt: '2026-08-26T02:00:00Z' }, '2026-08-14', shared);
+  assert.equal(m.measurable, false);
+  assert.equal(m.reason, 'shared-roundup-timestamp');
+});
+
 test('a day-resolution publishDate is unmeasurable, NOT a breach', () => {
   // The paranormal-activity-2026 NYT row: published on the evening of 8/25 ET and
   // scored 02:28Z on 8/26 (22:28 ET the same night). Measured from midnight UTC that
@@ -88,9 +119,16 @@ test('findSharedPublishTimestamps flags an instant shared across outlets of one 
     { showId: 'paranormal-activity-2026', outletId: 'nytimes', publishDate: '2026-08-25T21:04:11-04:00' },
   ];
   const shared = findSharedPublishTimestamps(rows);
-  assert.equal(shared.has(`paranormal-activity-2026|${PRECISE}`), true);
-  assert.equal(shared.has(`other-show-2026|${PRECISE}`), false);
-  assert.equal(shared.has('paranormal-activity-2026|2026-08-25T21:04:11-04:00'), false);
+  // Asserted through classifyMeasurability rather than the key format, so the internal
+  // key shape (raw string vs parsed instant) stays an implementation detail.
+  const verdict = (row) => classifyMeasurability({ ...row, firstSeenAt: '2026-08-27T02:00:00Z' }, '2026-08-14', shared);
+
+  assert.equal(verdict(rows[0]).reason, 'shared-roundup-timestamp', 'bled row rejected');
+  // Same instant but a DIFFERENT show — not evidence of bleed within a show.
+  assert.equal(verdict(rows[3]).measurable, true, 'same instant on another show stays measurable');
+  // A genuinely unique per-article time must stay trusted.
+  assert.equal(verdict(rows[4]).measurable, true, 'unshared timestamp stays measurable');
+  assert.equal(shared.size, 1, 'exactly one contaminated cluster');
 });
 
 test('a roundup-bled timestamp is rejected as a clock even though it looks precise', () => {
@@ -105,6 +143,23 @@ test('a roundup-bled timestamp is rejected as a clock even though it looks preci
   );
   assert.equal(m.measurable, false);
   assert.equal(m.reason, 'shared-roundup-timestamp');
+});
+
+test('an explicit fetch-date stamp is refused even when it looks precise and unique', () => {
+  // firstSeenAt is already a full zoned ISO, so a collector that wrote its fetch instant
+  // into publishDate would be precise AND unique → clockStart ≈ firstSeenAt → ageMs ≈ 0
+  // → a fabricated SLA *hit*. Inflation is the one direction this metric must never fail.
+  const m = classifyMeasurability(
+    {
+      showId: 's', outletId: 'o',
+      publishDate: '2026-08-26T02:28:23-04:00',
+      firstSeenAt: '2026-08-26T02:28:23.671Z',
+      publishDateSource: 'fetch-date',
+    },
+    '2026-08-14',
+  );
+  assert.equal(m.measurable, false);
+  assert.equal(m.reason, 'publish-eq-fetch-date');
 });
 
 test('computeSla never reports a fabricated 0% from clockless rows', () => {
