@@ -82,10 +82,23 @@ function buildAcceptSlugs(show) {
 
   // Add meaningful single-word tokens from the title (length>=4, not stopwords).
   // This catches "schmigadoon" in longer URLs even if our slug is "schmigadoon".
+  const significantWords = [];
   for (const token of (show.title || '').toLowerCase().split(/\s+/)) {
     const clean = token.replace(/[^a-z0-9]/g, '');
-    if (clean.length >= 4 && !STOPWORDS.has(clean)) slugs.add(clean);
+    if (clean.length >= 4 && !STOPWORDS.has(clean)) {
+      slugs.add(clean);
+      significantWords.push(clean);
+    }
   }
+
+  // Some outlets glue a multi-word title into one compound path segment with
+  // NO separator at all — e.g. "Electra / Persona" -> "electrapersona-review"
+  // (found live on electra-persona-west-end-2026, BRO-3025). A hyphen/space-
+  // anchored slug can never match that via word boundaries even though the
+  // review is unambiguously about this show. Add the fully-concatenated
+  // significant words as their own accept-slug, still boundary-matched like
+  // every other entry, so it can't swallow an unrelated substring.
+  if (significantWords.length >= 2) slugs.add(significantWords.join(''));
 
   return Array.from(slugs).filter(Boolean);
 }

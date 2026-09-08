@@ -77,6 +77,7 @@ scripts/lib/cmux-socket-auth.test.mjs
 scripts/lib/cmux-spawn-guard.test.mjs
 scripts/lib/cmux-workspaces.test.mjs
 scripts/lib/collect-time-budget.test.mjs
+scripts/lib/collection-attempt-guard.test.mjs
 scripts/lib/colocated-test-ci-coverage.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
 scripts/lib/cyrus-runner-health.test.mjs
@@ -592,6 +593,7 @@ tests/unit/protected-fields-sync.test.mjs
 tests/unit/protected-fields-three-way-sync.test.mjs
 tests/unit/provider-telemetry.test.mjs
 tests/unit/prune-dead-autodispatch-tabs.test.mjs
+tests/unit/publish-date-pre-opening-previews-priorruns.test.mjs
 tests/unit/pull-quote-guards.test.mjs
 tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-ledger-store.test.mjs
@@ -703,6 +705,7 @@ tests/unit/show-score-pagination-regex.test.mjs
 tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/sibling-matchers-diacritics.test.mjs
+tests/unit/slug-mismatch-glued-compound-title.test.mjs
 tests/unit/slug-mismatch-opaque-urls.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs

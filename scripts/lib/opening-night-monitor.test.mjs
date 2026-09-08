@@ -116,6 +116,31 @@ test('runMonitorPass: a nonzero exit surfaces as a failed stage, not a thrown ex
     });
     assert.equal(result.ok, false);
     assert.ok(result.stage);
+    assert.equal(result.exitSignal, null, 'present and null on an ordinary nonzero exit, never undefined');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// BRO-3056: the same "runClaudeCli returns a field, callers project through
+// an ALLOWLIST" class that stranded exitSignal in bsc-runner.js (BRO-3053).
+// This runs the REAL runClaudeCli against a self-SIGKILLing stub binary
+// (same fixture shape as claude-cli.test.mjs's proof) so it fails loudly if
+// runMonitorPass's return-object literal ever drops the field again.
+test('runMonitorPass: a SIGKILLed pass reports exitSignal, not just a generic failure (BRO-3056)', async () => {
+  const dir = mkTmp();
+  try {
+    const bin = path.join(dir, 'claude');
+    fs.writeFileSync(bin, '#!/bin/sh\necho \'{"type":"system","subtype":"init"}\'\nkill -KILL $$\nsleep 60\n');
+    fs.chmodSync(bin, 0o755);
+
+    const result = await runMonitorPass({
+      prompt: 'x', cwd: REPO_ROOT, model: 'opus', maxWallMin: 1,
+      env: { ...process.env, CLAUDE_BIN: bin },
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.exitSignal, 'SIGKILL', 'the signal must survive runMonitorPass\'s projection, not just runClaudeCli');
+    assert.match(String(result.error), /killed by SIGKILL/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

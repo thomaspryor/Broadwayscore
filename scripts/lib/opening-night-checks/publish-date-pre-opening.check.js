@@ -19,6 +19,42 @@ function parseDate(v) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+/**
+ * A review counts as "on time" if it falls in ANY of these windows, not just
+ * >= openingDate - grace:
+ *   - the current run, starting at previewsStartDate if declared (West End /
+ *     UK critics routinely review preview performances well before press
+ *     night — that is not an "anticipatory" post, it's a real review of a
+ *     real performance)
+ *   - any declared priorRuns window (project convention: priorRuns re-includes
+ *     an earlier run's reviews, e.g. a Broadway transfer's Off-Broadway
+ *     notices — those reviews predate the CURRENT openingDate by design)
+ */
+function acceptableWindows(show, openingDate) {
+  const windows = [];
+  const previewsStart = parseDate(show.previewsStartDate);
+  const graceOnly = new Date(openingDate.getTime() - GRACE_DAYS_BEFORE_OPENING * MS_PER_DAY);
+  windows.push({
+    start: previewsStart && previewsStart < graceOnly ? previewsStart : graceOnly,
+    end: null,
+  });
+
+  for (const prior of Array.isArray(show.priorRuns) ? show.priorRuns : []) {
+    const priorOpen = parseDate(prior.openingDate);
+    if (!priorOpen) continue;
+    const priorClose = parseDate(prior.closingDate);
+    windows.push({
+      start: new Date(priorOpen.getTime() - GRACE_DAYS_BEFORE_OPENING * MS_PER_DAY),
+      end: priorClose ? new Date(priorClose.getTime() + GRACE_DAYS_BEFORE_OPENING * MS_PER_DAY) : null,
+    });
+  }
+  return windows;
+}
+
+function withinAnyWindow(published, windows) {
+  return windows.some(w => published >= w.start && (w.end === null || published <= w.end));
+}
+
 function run(show, context) {
   const openingDate = parseDate(show.openingDate);
   if (!openingDate) {
@@ -30,7 +66,7 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: 'No shipped reviews — skipping' };
   }
 
-  const cutoff = new Date(openingDate.getTime() - GRACE_DAYS_BEFORE_OPENING * MS_PER_DAY);
+  const windows = acceptableWindows(show, openingDate);
   const shippedByUrl = new Map(
     reviews.filter(r => r.url).map(r => [r.url, r])
   );
@@ -73,7 +109,7 @@ function run(show, context) {
       continue;
     }
 
-    if (published >= cutoff) continue;
+    if (withinAnyWindow(published, windows)) continue;
 
     // Honor explicit manual clears for anticipatory posts — curator may decide
     // an early in-depth feature is a legitimate scored review.
@@ -161,4 +197,6 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, GRACE_DAYS_BEFORE_OPENING };
+module.exports = {
+  name, description, run, GRACE_DAYS_BEFORE_OPENING, acceptableWindows, withinAnyWindow,
+};

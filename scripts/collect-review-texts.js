@@ -55,6 +55,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
+const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
 const https = require('https');
 
@@ -5721,10 +5722,9 @@ function findReviewsToProcess() {
       // further down as `fetchGate`, once `data` (the review file) is loaded —
       // it needs the review's own fetchRetryAfter/fetchDiscoveryAbandoned
       // state and the urlCorrectedRefetch bypass, neither available here.
-      // Skip already processed in this run
-      if (state.processed.includes(reviewId)) continue;
-      // Skip failed unless retry mode
-      if (!CONFIG.retryFailed && state.failed.includes(reviewId)) continue;
+      // Skip already processed/failed in this session (BRO-3024: shared with
+      // the per-attempt guard below so both loops agree on one definition).
+      if (shouldSkipAlreadyAttempted(state, reviewId, CONFIG.retryFailed)) continue;
 
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -7169,6 +7169,16 @@ async function main() {
       }
 
       const review = reviews[i];
+
+      // BRO-3024: findReviewsToProcess() only excludes reviews already
+      // failed/processed as of when it built the queue — a defensive re-check
+      // here catches anything recorded as attempted since then (this loop is
+      // the only place that pushes to state.failed/state.processed), so a
+      // paid fetch is never repeated for the same reviewId within one run.
+      if (shouldSkipAlreadyAttempted(state, review.reviewId, CONFIG.retryFailed)) {
+        console.log(`  ⏭ Skipping ${review.reviewId} — already attempted this session`);
+        continue;
+      }
 
       // Hard timeout per review - prevents hung Playwright from killing entire run
       let result;
