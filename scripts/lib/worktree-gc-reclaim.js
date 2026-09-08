@@ -56,10 +56,6 @@ function shouldRefuseDispatch({ freeGB, floorGB }) {
 }
 
 /**
- * Given parsed job-lease records (data/audit/job-leases/*\/lease.json) and a
- * pid-liveness predicate, return the Set of `cwd` values that GC must treat
- * as live and never remove.
- *
  * A lease with pid === null/undefined is NOT the same as a dead pid — it
  * means the job is still being provisioned (acquireLease writes pid:null;
  * the real pid only lands once the subprocess actually spawns, via
@@ -68,8 +64,23 @@ function shouldRefuseDispatch({ freeGB, floorGB }) {
  * origin/main, so it reads as already-merged) — fail SAFE and count it as
  * live. Only a lease with a KNOWN, non-null pid is checked against
  * isAliveFn for staleness; a dead-pid lease (crashed holder) is correctly
- * NOT counted as live, matching bsc-runner.acquireLease's own "steal on
- * dead pid" reclaim semantics for that case.
+ * NOT counted as live. Shared by computeLiveLeaseCwds (GC) and
+ * bsc-runner.acquireLease (steal-on-dead-pid reclaim) so the two decisions
+ * can't drift apart (BRO-2414).
+ *
+ * @param {{pid?: number|null}|null|undefined} lease
+ * @param {(pid: number|null|undefined) => boolean} isAliveFn
+ * @returns {boolean}
+ */
+function isLeaseLive(lease, isAliveFn) {
+  if (!lease) return false;
+  return lease.pid == null || isAliveFn(lease.pid);
+}
+
+/**
+ * Given parsed job-lease records (data/audit/job-leases/*\/lease.json) and a
+ * pid-liveness predicate, return the Set of `cwd` values that GC must treat
+ * as live and never remove. See isLeaseLive for the pid:null-is-live rationale.
  *
  * @param {Array<{cwd?: string, pid?: number|null}>} leases
  * @param {(pid: number|null|undefined) => boolean} isAliveFn
@@ -79,9 +90,9 @@ function computeLiveLeaseCwds(leases, isAliveFn) {
   const cwds = new Set();
   for (const lease of leases || []) {
     if (!lease || !lease.cwd) continue;
-    if (lease.pid == null || isAliveFn(lease.pid)) cwds.add(lease.cwd);
+    if (isLeaseLive(lease, isAliveFn)) cwds.add(lease.cwd);
   }
   return cwds;
 }
 
-module.exports = { decideWorktreeReclaim, shouldRefuseDispatch, computeLiveLeaseCwds };
+module.exports = { decideWorktreeReclaim, shouldRefuseDispatch, computeLiveLeaseCwds, isLeaseLive };
