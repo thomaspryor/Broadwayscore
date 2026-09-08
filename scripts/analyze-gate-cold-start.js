@@ -193,7 +193,7 @@ async function main() {
   say(`\nGUARDRAIL combined modal captures/week: ${totalCapturesPerWeek.toFixed(2)} (baseline ~4/wk pre-experiment; alert < 1/wk for 2 consecutive weeks → revert per pre-registration)`);
   const cShown = arms['control'].gate_modal_shown?.size || 0;
   const tShown = arms['cold-start'].gate_modal_shown?.size || 0;
-  say(`GUARDRAIL impression split control:treatment = ${cShown}:${tShown} (expect roughly 10:1 — parity would mean the treatment gate is NOT applying)`);
+  say(`GUARDRAIL impression split control:treatment = ${cShown}:${tShown} (expect roughly 2.5:1, per measured reality — BRO-2952, 2026-09-07; a further drop toward parity would mean the treatment gate is NOT applying)`);
   say(`\nRules: minimum 4 weeks before judging the primary (from ${EXPERIMENT_START}); full pre-registration in docs/experiments/gate-cold-start.md.`);
   if (JSON_OUT) console.log(JSON.stringify(summary));
 }

@@ -145,8 +145,23 @@ Pure, testable, and the actual source of truth for the numbers above:
   - No client behavior changed and no experiment arm was touched — this is a
     measurement/guardrail-threshold correction only, not a treatment change,
     so it does not invalidate the running experiment. `IMPRESSION_SPLIT_EXPECTED_RATIO`
-    (10 → 2.5) and `IMPRESSION_SPLIT_MIN_RATIO` (5 → 1.5) in
-    `scripts/lib/gate-cold-start-rules.js` now track the measured band with a
-    floor that still catches an actual collapse toward 1:1 parity. Regression
-    test: `tests/unit/gate-cold-start-rules.test.mjs` (previously no test
-    coverage existed for this file at all).
+    (10 → 2.5) and `IMPRESSION_SPLIT_MIN_RATIO` (5 → 2.2) in
+    `scripts/lib/gate-cold-start-rules.js` now track the measured band, with
+    a floor kept close under it (not down near 1:1) so a partial regression —
+    the filter still applying, but to a shrinking subset of visits — still
+    trips it, not only a full collapse to parity.
+  - Second-opinion catch (Codex adversarial review) on the first draft of
+    this fix: the guardrail computed `max(shown)/min(shown)`, which discards
+    *which* arm is bigger — an inverted split (cold-start showing as much or
+    more than control, e.g. from mislabeled arms or the filter applied to the
+    wrong arm) would read as a "healthy" large ratio and never alert. Fixed
+    to compute `controlShown / coldStartShown` directly and alert on
+    inversion independent of the ratio floor.
+  - Regression tests live in the **existing** colocated
+    `scripts/lib/gate-cold-start-rules.test.mjs` (added by the original
+    monitor PR, #247) — an earlier draft of this fix mistakenly believed the
+    file had zero coverage and added a duplicate `tests/unit/` test file;
+    that was wrong (the colocated file already had 16 tests and runs in CI
+    via `scripts/lib/`'s own test glob, not the `tests/unit-test-manifest.txt`
+    path) and has been corrected — the new BRO-2952 cases were merged into
+    the existing file instead.

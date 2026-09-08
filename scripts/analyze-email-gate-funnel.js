@@ -12,10 +12,14 @@
  * posthog-friction-analyzer's getGateFunnel (scripts/lib/posthog-query.js).
  *
  * ABSOLUTE captures/week is the PRIMARY guardrail, not conversion rate — the cold-start
- * gate (2+ pages/session, live 2026-07-20 16:37 UTC) is projected to cut impressions
- * ~85-90% and lift conversion rate ~5-8x by pure selection. Rate thresholds alone would
- * declare victory while list growth actually falls. Baseline: ~0.93 modal captures/day
- * (P0, Jun 15 - Jul 12). Full analysis: ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
+ * gate (2+ pages/session, live 2026-07-20 16:37 UTC) was PROJECTED at launch to cut
+ * impressions ~85-90% and lift conversion rate ~5-8x by pure selection; real measurement
+ * (only available after an unrelated HogQL row-cap bug fix, 2026-08-26) instead shows a
+ * steady ~2.5-2.8:1 cut — see docs/experiments/gate-cold-start.md "Amendments" 2026-09-07
+ * (BRO-2952). The launch-time projection number below is kept for historical context only;
+ * do not treat it as a live guardrail. Rate thresholds alone would declare victory while
+ * list growth actually falls. Baseline: ~0.93 modal captures/day (P0, Jun 15 - Jul 12).
+ * Full analysis: ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
  *
  * Real-users lens: owner + SG/CN/VN excluded (memory: feedback_analytics_real_users_lens).
  *
