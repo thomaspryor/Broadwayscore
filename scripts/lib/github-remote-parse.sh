@@ -56,21 +56,37 @@ github_repo_slug_from_url() {
 #
 # NEVER log the return value of this function.
 github_token_from_extraheader() {
+  # Suppress xtrace for the whole function: under `bash -x` the assignments
+  # below would otherwise print BOTH the base64 credential and the decoded
+  # plaintext token into the log. Restored on every exit path.
+  local _xt=0
+  case "$-" in *x*) _xt=1; set +x ;; esac
+  _gtfe_ret() { [ "$_xt" = "1" ] && set -x; return "$1"; }
+
   local hdr="${1:-}" b64 decoded
-  [ -n "$hdr" ] || return 1
+  [ -n "$hdr" ] || { _gtfe_ret 1; return 1; }
   case "$hdr" in
     *[Bb][Aa][Ss][Ii][Cc]\ *) ;;
-    *) return 1 ;;
+    *) _gtfe_ret 1; return 1 ;;
   esac
   b64="$(printf '%s' "$hdr" | sed -E 's/^.*[Bb][Aa][Ss][Ii][Cc][[:space:]]+//')"
-  [ -n "$b64" ] || return 1
+  [ -n "$b64" ] || { _gtfe_ret 1; return 1; }
+  # GNU coreutils uses -d; classic BSD/macOS uses -D. Current macOS accepts
+  # both (verified), but older BSD does not, and a decode that silently
+  # yields empty here degrades to "no token" — i.e. the REST path quietly
+  # never runs, which is precisely the silent-no-op failure this card is
+  # about. Try both rather than depend on which platform we landed on.
   decoded="$(printf '%s' "$b64" | base64 -d 2>/dev/null || true)"
+  if [ -z "$decoded" ]; then
+    decoded="$(printf '%s' "$b64" | base64 -D 2>/dev/null || true)"
+  fi
   case "$decoded" in
     *:*) ;;
-    *) return 1 ;;
+    *) _gtfe_ret 1; return 1 ;;
   esac
   decoded="${decoded#*:}"
-  [ -n "$decoded" ] || return 1
+  [ -n "$decoded" ] || { _gtfe_ret 1; return 1; }
   printf '%s' "$decoded"
+  _gtfe_ret 0
   return 0
 }

@@ -232,12 +232,24 @@ if [ -f "$SCRIPT_DIR/github-remote-parse.sh" ]; then
 fi
 
 _resolve_github_token() {
-  if [ -n "${GH_TOKEN:-}" ]; then printf '%s' "$GH_TOKEN"; return 0; fi
-  if [ -n "${GITHUB_TOKEN:-}" ]; then printf '%s' "$GITHUB_TOKEN"; return 0; fi
-  [ "$_REMOTE_PARSE_OK" = "1" ] || return 1
-  local hdr
+  # Suppress xtrace here too, not only inside the parser. A function's
+  # ARGUMENTS are expanded and traced at the CALL SITE, before the callee's
+  # body can turn tracing off — so `github_token_from_extraheader "$hdr"`
+  # below would print the base64 credential under `bash -x` even though the
+  # parser guards its own body. Verified with a canary: guarding only the
+  # parser left the base64 blob in the trace; guarding here removes it.
+  local _xt=0
+  case "$-" in *x*) _xt=1; set +x ;; esac
+  _rgt_ret() { [ "$_xt" = "1" ] && set -x; return "$1"; }
+
+  if [ -n "${GH_TOKEN:-}" ]; then printf '%s' "$GH_TOKEN"; _rgt_ret 0; return 0; fi
+  if [ -n "${GITHUB_TOKEN:-}" ]; then printf '%s' "$GITHUB_TOKEN"; _rgt_ret 0; return 0; fi
+  if [ "$_REMOTE_PARSE_OK" != "1" ]; then _rgt_ret 1; return 1; fi
+  local hdr rc=0
   hdr="$(git config --get 'http.https://github.com/.extraheader' 2>/dev/null || true)"
-  github_token_from_extraheader "$hdr"
+  github_token_from_extraheader "$hdr" || rc=$?
+  _rgt_ret "$rc"
+  return "$rc"
 }
 
 # owner/repo for the remote, but ONLY when it is really github.com. Prints
@@ -252,30 +264,58 @@ _github_repo_slug() {
 
 # Fires at most ONCE per script invocation — a diagnostic that ran on every
 # retry would itself add API writes to a repo we may already be throttled on.
+# A branch name is caller-supplied and ends up inside a JSON-shaped log
+# line, so strip it to a charset that cannot terminate the string or inject
+# a newline. Refs cannot legally contain a double quote or backslash anyway;
+# this makes the log line structurally safe regardless.
+_json_safe() { printf '%s' "${1:-}" | tr -cd '[:alnum:]._/@+-'; }
+
 _REST_PROBE_DONE=0
 _rest_write_probe() {
   [ "${PUSH_API_REST_PROBE:-1}" = "1" ] || return 0
   [ "$_REST_PROBE_DONE" = "0" ] || return 0
-  _REST_PROBE_DONE=1
+
+  # Defense in depth: a caller running this script under `bash -x` / set -x
+  # would otherwise print the expanded token assignments below straight into
+  # a CI log. `2>/dev/null` suppresses a CHILD's stderr, not the parent
+  # shell's xtrace, so suppressing the trace is the only thing that closes
+  # it (ship-check/Codex finding). Restored to whatever it was on the way
+  # out, including on every early return below.
+  local _xt=0
+  case "$-" in *x*) _xt=1; set +x ;; esac
+  _restore_xt() { [ "$_xt" = "1" ] && set -x; return 0; }
 
   local slug token out
-  slug="$(_github_repo_slug)" || return 0
+  slug="$(_github_repo_slug)" || { _restore_xt; return 0; }
   token="$(_resolve_github_token || true)"
   if [ -z "$token" ]; then
     # Loud, because a silent skip here is indistinguishable from "the probe
     # ran and found nothing" — and that ambiguity is what this whole card is
     # about. Names the condition without ever naming the value.
-    echo "::warning::push-via-git-api: REST write probe SKIPPED — remote is github.com ($slug) but no token resolved from GH_TOKEN, GITHUB_TOKEN, or the checkout extraheader (BRO-2951)" >&2
-    return 0
+    echo "::warning::push-via-git-api: REST write probe SKIPPED — remote is github.com ($slug) but no token resolved from GH_TOKEN, GITHUB_TOKEN, or the checkout extraheader (BRO-2951)" >&2 || true
+    _restore_xt; return 0
   fi
-  [ -f "$SCRIPT_DIR/github-rest-write-probe.js" ] || return 0
+  [ -f "$SCRIPT_DIR/github-rest-write-probe.js" ] || { _restore_xt; return 0; }
 
-  out="$(GH_TOKEN="$token" _timeout 45 node "$SCRIPT_DIR/github-rest-write-probe.js" "$slug" 2>/dev/null || true)"
+  # Only NOW is the single opportunity actually spent. Setting the flag up
+  # front (the first draft) let a transient missing precondition permanently
+  # consume the run's one diagnostic (ship-check finding).
+  _REST_PROBE_DONE=1
+
+  # 20s outer cap against the probe's own 15s socket timeout. This runs only
+  # after the retry loop is over (see the call site), so it cannot eat a
+  # retry's deadline — but it still must not hang a finished job.
+  out="$(GH_TOKEN="$token" _timeout 20 node "$SCRIPT_DIR/github-rest-write-probe.js" "$slug" 2>/dev/null || true)"
+  _restore_xt
   if [ -n "$out" ]; then
-    echo "  push-via-git-api: push-api-probe rest_write $out" >&2
+    echo "  push-via-git-api: push-api-probe rest_write $out" >&2 || true
   else
-    echo "  push-via-git-api: push-api-probe rest_write {\"ok\":false,\"skipped\":true,\"reason\":\"probe produced no output\"}" >&2
+    # A probe that produced nothing within 20s is itself the slow-REST
+    # signal, not an absence of data — say so rather than reporting a bare
+    # skip that reads as "we learned nothing".
+    echo "  push-via-git-api: push-api-probe rest_write {\"ok\":false,\"skipped\":true,\"reason\":\"no output within the 20s probe cap (itself evidence REST writes are NOT fast for this actor)\"}" >&2 || true
   fi
+  return 0
 }
 
 HEAD_SHA="$(git rev-parse HEAD)"
@@ -626,7 +666,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # the signature of blocking on a lock rather than of transferring slowly.
     # Cheap enough to leave on permanently: one stderr line per successful
     # fallback push. `push-api-probe` is the grep handle across both lines.
-    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":true,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"${BRANCH}\"}" >&2
+    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":true,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\"}" >&2 || true
     echo "$NEW_COMMIT"
     exit 0
   else
@@ -648,18 +688,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
     FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
     rm -f "$PUSH_ERR"
-    # BRO-2951: the discriminating measurement, taken HERE because here is
-    # the only place that satisfies all three conditions at once — the right
-    # actor (github-actions[bot], not a developer's laptop), the right moment
-    # (the same seconds in which receive-pack just failed to answer), and a
-    # confirmed timeout rather than a rejection. A REST write that returns
-    # promptly right after a 90s receive-pack timeout proves the throttle is
-    # not actor-wide, which is what makes a REST ref-update path the fix;
-    # a REST write that is ALSO slow proves the opposite and redirects this
-    # work to BRO-2983. Fires at most once per invocation, and its own
-    # failures are swallowed.
-    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"rc\":$push_rc,\"attempt\":$i,\"branch\":\"${BRANCH}\"}" >&2
-    _rest_write_probe
+    echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"rc\":$push_rc,\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\"}" >&2 || true
     # BRO-2951: no point computing or sleeping a backoff on the LAST budgeted
     # attempt — there is no next retry to space out, and doing it anyway
     # wastes up to PUSH_API_TIMEOUT_BACKOFF_MAX_SEC(+jitter) seconds before
@@ -706,6 +735,33 @@ done
 # State what actually happened. The "exhausted $MAX_RETRIES attempts" prefix is
 # load-bearing and must stay verbatim — tests/unit/push-via-git-api.test.mjs
 # asserts on it (plural even when MAX_RETRIES is 1).
+# BRO-2951: the discriminating measurement, taken HERE — after the retry
+# loop has ended — and ONLY when timeouts are what ended it.
+#
+# WHY AFTER THE LOOP AND NOT AT THE TIMEOUT ITSELF: the first draft ran this
+# inside the timeout branch, before the backoff and the next attempt. An
+# adversarial review pointed out that made the "diagnostic only, no behavior
+# change" claim FALSE — a probe taking up to its cap on every timeout eats
+# the caller's remaining PUSH_DEADLINE_SEC and can cost a later attempt that
+# would otherwise have run, in a script whose caller sizes MAX_RETRIES off a
+# "~3 * GIT_NET_TIMEOUT_SEC per attempt" cost model. Down here every attempt
+# is already spent and the script is exiting regardless, so the measurement
+# is genuinely free.
+#
+# It still satisfies the three conditions that make it worth taking at all:
+# the right ACTOR (github-actions[bot], not a developer's laptop — the local
+# probing done while diagnosing this card could not isolate the actor, which
+# is the gap this closes), the right MOMENT (seconds after receive-pack
+# failed to answer, in the same job), and a confirmed TIMEOUT rather than a
+# rejection. A REST write that returns promptly here proves the throttle is
+# not actor-wide, which is what would make a REST ref-update path the fix; a
+# REST write that is ALSO slow proves the opposite and redirects this work to
+# BRO-2983. `|| true` because a diagnostic must never change this script's
+# exit code.
+if [ "$FAIL_TIMEOUT" -gt 0 ]; then
+  _rest_write_probe || true
+fi
+
 EXHAUSTION_BREAKDOWN="$FAIL_TIMEOUT timed out at the ${GIT_NET_TIMEOUT_SEC}s cap, $FAIL_RACE lost the ref race"
 if [ "$FAIL_OTHER" -gt 0 ]; then
   # Without this bucket the message can read "0 timed out, 0 lost the ref race"
