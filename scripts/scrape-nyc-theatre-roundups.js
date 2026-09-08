@@ -36,6 +36,7 @@ const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre'
 
 const { serpQuery } = require('./lib/url-discovery');
 const { fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -59,12 +60,23 @@ async function fetchHtmlSingle(url, renderJs = true) {
   }
 
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}&wait=3000`;
+  const credits = renderJs ? 5 : 1;
 
   return new Promise((resolve, reject) => {
+    // recorded guards against a double ledger row for one billed call: after
+    // req.destroy() on timeout, the socket can still emit 'error' — at most
+    // one of {response, error, timeout} may call recordSbCall.
+    let recorded = false;
+    const record = (opts) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: renderJs ? 'render' : 'page', purpose: 'nyc-theatre-roundup', ...opts, credits: sbBilledCredits(opts.status, credits) });
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        record({ success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) {
           resolve(data);
         } else {
@@ -72,8 +84,15 @@ async function fetchHtmlSingle(url, renderJs = true) {
         }
       });
     });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.on('error', (e) => {
+      record({ success: false, status: 'error' });
+      reject(e);
+    });
+    req.setTimeout(60000, () => {
+      req.destroy();
+      record({ success: false, status: 'timeout' });
+      reject(new Error('Timeout'));
+    });
   });
 }
 

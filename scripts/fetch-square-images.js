@@ -22,6 +22,7 @@ const http = require('http');
 const { execSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpImagesQuery } = require('./lib/url-discovery');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -114,7 +115,19 @@ async function searchGoogleImages(query) {
 async function getOriginalImageUrl(pageUrl, showTitle) {
   try {
     const url = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(pageUrl)}&render_js=false&wait=1000`;
-    const buffer = await downloadUrl(url, 20000);
+    let buffer;
+    try {
+      buffer = await downloadUrl(url, 20000);
+      recordSbCall({ url: pageUrl, fn: 'page', success: true, status: 200, credits: 1, purpose: 'square-image-source-page' });
+    } catch (e) {
+      // downloadUrl throws Error(`HTTP ${statusCode}`) for a non-2xx response,
+      // or a generic network/timeout Error otherwise — parse out a real
+      // status when present so 401/402 correctly bill 0 credits.
+      const httpMatch = /^HTTP (\d+)$/.exec(e.message || '');
+      const status = httpMatch ? Number(httpMatch[1]) : 'error';
+      recordSbCall({ url: pageUrl, fn: 'page', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'square-image-source-page' });
+      throw e;
+    }
     const html = buffer.toString();
 
     // Extract high-res image URLs from the page
