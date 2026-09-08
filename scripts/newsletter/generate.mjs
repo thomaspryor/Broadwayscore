@@ -36,8 +36,21 @@ const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/plural
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
-const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
-const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
+// NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH: TEST-ONLY override
+// (mirrors NEWSLETTER_STATE_PATH below) so a regression test can run the real
+// composer against a small fixture corpus instead of the live, ever-growing
+// data/ — see bw-quiet-week-fallback.test.mjs's header comment for why a
+// "dead week" premise can't be pinned to a real historical week. Named with a
+// TEST_ prefix (not e.g. NEWSLETTER_SHOWS_PATH) and logged loudly when set so
+// a stray exported shell var can never silently swap a real cron/CLI run onto
+// fixture data without a visible trace (Codex adversarial review, BRO-3042).
+const _testShowsPath = process.env.NEWSLETTER_TEST_SHOWS_PATH;
+const _testReviewsPath = process.env.NEWSLETTER_TEST_REVIEWS_PATH;
+if (_testShowsPath || _testReviewsPath) {
+  console.error(`[generate.mjs] TEST OVERRIDE ACTIVE — reading ${_testShowsPath ? 'shows' : ''}${_testShowsPath && _testReviewsPath ? '/' : ''}${_testReviewsPath ? 'reviews' : ''} from a test fixture, not data/. This must only ever be set by a test.`);
+}
+const { reviews } = JSON.parse(fs.readFileSync(_testReviewsPath || path.join(repo, 'data/reviews.json'), 'utf8'));
+const { shows } = JSON.parse(fs.readFileSync(_testShowsPath || path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
 const buzzRaw = JSON.parse(fs.readFileSync(path.join(repo, 'data/audience-buzz.json'), 'utf8'));
 const audienceBuzz = buzzRaw.shows;
