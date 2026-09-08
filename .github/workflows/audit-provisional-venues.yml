@@ -47,19 +47,36 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  # contents: write — the two commit steps push venue-date-mismatches.json and the
+  # scraper-spend ledger back to this repo.
+  # actions: READ, not write (least privilege for a paid-scraper cron). This
+  # workflow dispatches nothing, so the `actions: write` that
+  # audit-aggregator-gap.yml needs is blast radius with no use here. Read is kept
+  # rather than dropped entirely because notify-failure's
+  # `github.rest.actions.listWorkflowRuns` calls
+  # (.github/actions/notify-failure/action.yml:90,135) back its cooldown and
+  # consecutive-failure logic — inert at this step's severity: 'warning', but the
+  # grant should not have to be rediscovered if that is ever raised.
   contents: write
-  actions: write
+  actions: read
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    # 48min. The sweep itself is bounded by --time-budget-min (25 by default, see
-    # the step below), the commit step by push-with-retry.sh's 900s PUSH_DEADLINE_SEC
-    # override + one in-flight GIT_NET_TIMEOUT_SEC overshoot, and the ledger commit
-    # by its own composite action. 25 + 16.5 + setup leaves real margin rather than a
-    # hairline pass — the same proportional buffer audit-aggregator-gap.yml uses.
-    # Modeled and ratcheted by tests/unit/data-validation-job-budget.test.mjs.
-    timeout-minutes: 48
+    # 95min. This MUST exceed the sum of the per-step caps below, because a
+    # job-level timeout reports CANCELLED, not FAILED — `if: failure()` does not
+    # fire on it, so the notify-failure step at the bottom would never run and
+    # the whole audit would fail SILENTLY (the exact misread BRO-2611 wasted its
+    # analysis on). Sum of the caps: sweep 30 + persist 35 = 65, plus uncapped
+    # setup — Checkout at fetch-depth 300 was measured at 569s in the job this
+    # moved out of, setup-playwright is capped at 480s by its own composite
+    # action, then npm ci + checkout-core-data + the ledger commit. ~90 worst
+    # case, so 95 is margin over the sum rather than a hairline pass. These are
+    # worst-case ceilings, not the expected run: the sweep's own
+    # --time-budget-min=25 and a typical uncontended push put a normal run
+    # around 30 min. Modeled and ratcheted by
+    # tests/unit/data-validation-job-budget.test.mjs.
+    timeout-minutes: 95
     # Kill switch: `gh variable set PROVISIONAL_VENUE_AUDIT_DISABLED --body true`.
     # Same pattern as AGGREGATOR_GAP_AUDIT_DISABLED / BROWSERBASE_KILL_SWITCH —
     # lets the owner stop the spend without a code change if Playbill starts
@@ -106,6 +123,23 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Fail if scrape secrets are missing on a scheduled run
+        # "Green but never scanned" guard. The sweep below is gated on
+        # HAS_SCRAPE_SECRETS, which is correct for forks (no secrets, nothing to
+        # do) but is a silent-coverage hole for the real cron: if
+        # SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN is ever rotated away, every
+        # scheduled run would skip the sweep and report SUCCESS forever, and the
+        # cron-health exemption means nothing else would notice either. A
+        # scheduled run that cannot scan is a failure, not a pass — and because
+        # it fails, notify-failure below carries it into the daily digest.
+        # Scoped to `schedule` so a fork's manual dispatch still degrades quietly.
+        if: github.event_name == 'schedule' && env.HAS_SCRAPE_SECRETS != 'true'
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+        run: |
+          echo "::error::Provisional venue audit cannot run — SCRAPINGBEE_API_KEY and/or BRIGHTDATA_TOKEN is unset. The daily Playbill cross-validation (CLAUDE.md §3) has NOT run. Restore the secrets or set PROVISIONAL_VENUE_AUDIT_DISABLED=true to stop this alert deliberately."
+          exit 1
+
       - name: Validate provisional show venue+dates against Playbill
         # Cross-checks every provisional:true (or manual-user-request /
         # venue-page) entry in shows.json against its Playbill production page.
@@ -125,7 +159,10 @@ jobs:
         # Fix a hit by editing shows.json to match Playbill (the authoritative
         # source per CLAUDE.md §3).
         #
-        # Skips silently when SERP/scrape secrets are absent (forks).
+        # Skipped when SERP/scrape secrets are absent, which is right for forks.
+        # On the real cron that same condition is a hard failure instead — see
+        # the "Fail if scrape secrets are missing" guard step above, without
+        # which a rotated key would leave this workflow green-but-never-scanning.
         #
         # --time-budget-min (BRO-2627) is still load-bearing even at daily
         # cadence: the target list is unbounded and growing (73 provisional
@@ -147,7 +184,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           # fetchPage()'s cheapest tier (~3x less than Bright Data), enforced by
-          # `lint-workflow-guards.sh scrapingdog-coverage`. The test.yml step this
+          # `lint-workflow-guards.sh scrapingdog-pairing`. The test.yml step this
           # sweep moved out of never passed it, so every Playbill fetch fell
           # straight through to the expensive providers -- relocating the sweep
           # makes it CHEAPER per run, not just less frequent.
@@ -155,6 +192,20 @@ jobs:
           BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '25' }}
           FAIL_ON_MISMATCH: ${{ github.event.inputs.fail_on_mismatch || 'true' }}
         run: |
+          # Reject a non-numeric dispatch input rather than passing it through.
+          # parseTimeBudgetMin (scripts/lib/run-budget.js:26-31) normalizes an
+          # unparseable value to 0, and createRunBudget treats 0 as "no budget"
+          # (exceeded() always false) — so `--time-budget-min=abc` would silently
+          # DISABLE the budget rather than error, and the sweep would run to the
+          # 30-min step timeout as a SIGKILL. Fail loudly on the typo instead.
+          # (The scheduled path can't reach this: github.event.inputs is null on
+          # `schedule`, so BUDGET_MIN is '25'.)
+          case "$BUDGET_MIN" in
+            ''|*[!0-9]*)
+              echo "::error::time_budget_min must be a positive whole number of minutes, got: '$BUDGET_MIN'"
+              exit 1
+              ;;
+          esac
           FLAGS="--all-provisional --time-budget-min=$BUDGET_MIN"
           if [ "$FAIL_ON_MISMATCH" = "true" ]; then
             FLAGS="$FLAGS --fail-on-mismatch"
@@ -186,8 +237,21 @@ jobs:
         # core-data-merge-registry.js's API_FALLBACK_SAFE list, so
         # push-with-retry.sh's Git Data API fallback is structurally disqualified
         # for it and the deadline is the only budget that applies.
+        # 35min, NOT the 17 that PUSH_DEADLINE_SEC alone would suggest. Worst
+        # case is 900s (push_mutex_acquire's own wait, which blocks BEFORE the
+        # deadline clock resets — push-with-retry.sh:436-450, reproduced live in
+        # card #669) + 900s (PUSH_DEADLINE_SEC) + 90s (one in-flight
+        # GIT_NET_TIMEOUT_SEC overshoot, since the deadline is only checked
+        # BETWEEN retries) = ~31.5min. A step killed mid-`git rebase` leaves a
+        # stale REBASE_HEAD that push-with-retry.sh's BRO-142 guard then refuses
+        # to run on top of, so every later push in this job fails too.
+        # NOTE: audit-workflow-hygiene.js rule (i) does NOT catch this shape —
+        # it only parses an inline `PUSH_DEADLINE_SEC=N` on the push line, so
+        # with the override in this step's `env:` block it compares against the
+        # 240s default and passes. The number below is hand-derived, not
+        # gate-derived; don't lower it on the strength of a green hygiene run.
         if: always() && env.HAS_SCRAPE_SECRETS == 'true'
-        timeout-minutes: 17
+        timeout-minutes: 35
         env:
           HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
           PUSH_DEADLINE_SEC: '900'
