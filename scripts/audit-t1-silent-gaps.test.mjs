@@ -73,7 +73,15 @@ test('video-promo-stuck-in-rescore-loop class (end-of-the-rainbow): includable, 
     rescoreAttempts: 69,
     rescoreBlockedReason: 'input_validation_failed:body_too_short',
   };
-  assert.deepEqual(classify(stuckInRescoreLoop), { type: 'unscored', recoverable: false });
+  // BRO-2985 added a `dispatchable` field to this branch's return value, which
+  // broke this exact-shape assertion. This test predates that field and is
+  // about gap CLASSIFICATION, not dispatchability, so assert only the two
+  // fields it owns. Whether dispatchable:true is correct for a piece the
+  // scorer already refused with body_too_short is a BRO-2985 question, tracked
+  // in BRO-3113 — asserting either value here would silently ratify one.
+  const stuck = classify(stuckInRescoreLoop);
+  assert.equal(stuck.type, 'unscored');
+  assert.equal(stuck.recoverable, false);
 
   const terminallyExcluded = {
     ...stuckInRescoreLoop,
