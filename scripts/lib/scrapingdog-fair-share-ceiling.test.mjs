@@ -109,3 +109,13 @@ test('resolveCeilingForDay: legacy default when billing is unreachable or the pl
     { ceiling: DEFAULT_DAILY_CREDIT_CEILING, source: 'default' },
   );
 });
+
+test('SD_BREAKER_CEILING: scientific/float/garbage pins are rejected, not parsed to 1 credit', () => {
+  const account = { cycleUsed: 272_000, limit: 3_000_000, daysToRenewal: 26 };
+  for (const bad of ['100000.5', '-5', '0', ' ', 'abc']) {
+    assert.equal(resolveCeilingForDay({ env: { SD_BREAKER_CEILING: bad }, account, dayBaseline: 221_180 }).source, 'plan', `pin ${JSON.stringify(bad)} should be ignored`);
+  }
+  // '1e5' used to parseInt to 1 (a one-credit ceiling); it now means 100,000
+  assert.deepEqual(resolveCeilingForDay({ env: { SD_BREAKER_CEILING: '1e5' }, account, dayBaseline: 221_180 }), { ceiling: 100_000, source: 'env' });
+  assert.deepEqual(resolveCeilingForDay({ env: { SD_BREAKER_CEILING: ' 100000 ' }, account, dayBaseline: 221_180 }), { ceiling: 100_000, source: 'env' });
+});

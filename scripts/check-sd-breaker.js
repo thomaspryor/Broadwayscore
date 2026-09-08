@@ -114,6 +114,12 @@ async function main() {
   // poller hammering this provider tonight"). Exempt opening-night callers
   // never consult the breaker at all (scrapingdog-caps.js consultScrapingdog),
   // so this only throttles the routine sweeps that were starving them.
+  if (ceilingSource === 'default' && account) {
+    // Billing answered but without a usable plan shape — the legacy 45K line
+    // is back in force and will trip most days. Loud, not silent.
+    console.warn(`  ⚠️  Scrapingdog /account lacks plan limit/validity (limit=${account.limit}, daysToRenewal=${account.daysToRenewal}) — falling back to the legacy ${ceiling} ceiling`);
+  }
+
   const reserveShows = countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
   const effectiveCeiling = effectiveCeilingForOpeningWindow({
     ceiling,

@@ -39,14 +39,17 @@ const { utcDay, isExemptCaller, DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata
 const { isNextUtcDay } = require('./provider-spend-core');
 
 /**
- * Daily credit ceiling default — matches scripts/config/provider-spend-thresholds.json's
- * scrapingdogDailyCredits (owner-approved 2026-07-30 alarm line). Kept as its
- * OWN constant rather than reading that JSON file at call time: scraper.js is
- * a hot path, and thresholds.json is documented as digest-only config. Same
- * pattern brightdata-caps.js uses (its own DEFAULT_DAILY_REQ_CEILING is a
- * separate constant from thresholds.json's brightdataDailyUsd). If the two
- * numbers drift, that is a known, accepted cost of the split — update both
- * when changing the intended daily budget.
+ * LEGACY daily credit ceiling — since BRO-2943 (2026-09-07) this is only the
+ * fallback used when the Scrapingdog /account response is unreachable or is
+ * missing the plan limit / days-to-renewal; the enforced ceiling is otherwise
+ * plan-derived (see planFairShareCeiling / resolveCeilingForDay below). It
+ * historically matched scripts/config/provider-spend-thresholds.json's
+ * scrapingdogDailyCredits alarm line (owner-approved 2026-07-30); that digest
+ * line is owner-owned and deliberately NOT changed here, so the digest may
+ * flag "overspend" on days the breaker intentionally allows. Kept as its OWN
+ * constant rather than reading that JSON at call time: scraper.js is a hot
+ * path and thresholds.json is digest-only config (same split as
+ * brightdata-caps.js's DEFAULT_DAILY_REQ_CEILING vs brightdataDailyUsd).
  */
 const DEFAULT_DAILY_CREDIT_CEILING = 45000;
 
@@ -86,8 +89,12 @@ const DEFAULT_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'sd
 const STATE_CACHE_MS = 60_000;
 
 function _posInt(raw, fallback) {
-  const n = parseInt(raw, 10);
-  return Number.isFinite(n) && n > 0 ? n : fallback;
+  // Number() + isInteger, not parseInt: parseInt('1e5') is 1, which turned
+  // an operator's "100,000" pin into a ceiling of ONE credit (ship-check
+  // finding). Non-integer, negative, empty or garbage → fallback.
+  if (raw == null || String(raw).trim() === '') return fallback;
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 0 ? n : fallback;
 }
 
 /** Daily credit ceiling: SD_BREAKER_CEILING, else the shared default. */
