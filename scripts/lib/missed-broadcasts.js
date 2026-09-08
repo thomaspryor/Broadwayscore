@@ -138,20 +138,58 @@ function hasCompletedBroadcast(sentShows, showId) {
 }
 
 /**
+ * True if a West End show was already featured in a Weekly Round-up email
+ * ACTUALLY DELIVERED to West End subscribers (data/newsletter-state.json
+ * `.issues[].featuredShowIds`) — the same Critics' Take/score/review-count
+ * content a redundant force-send would repeat (owner decision 2026-09-08,
+ * BRO-3088: West End does not get an individual broadcast as a matter of
+ * course when the Round-up already covered it). Broadway has no equivalent
+ * weekly digest, so this predicate is only meaningful for West End — callers
+ * must gate on category themselves.
+ *
+ * MUST exclude `edition: 'broadway'` issues. Resend audience is derived
+ * strictly from edition in create-broadcast-draft.mjs: `EDITION === 'west-end'
+ * ? 'west-end' : 'general'` — two DISTINCT audience lists ("General is the
+ * weekly newsletter list. west-end is the smaller WE list."). generate.mjs
+ * does render a West End openings section into the Broadway edition during a
+ * quiet Broadway week (`quietBroadwayWeek` fallback), which is exactly why
+ * the real 2026-08-31 issue that motivated this fix is tagged
+ * edition:'broadway' with only West End show ids in featuredShowIds — but
+ * that draft went to the 'general' audience, not 'west-end', so it is not
+ * proof West End subscribers received it. Treating it as coverage would risk
+ * silently suppressing the one channel that actually reaches them, in a
+ * future week where a show's ONLY appearance happens to be quiet-week
+ * Broadway-edition filler. Every show actually validated against this
+ * predicate (electra-persona, the-story, abigails-party, a-month-in-the-
+ * country, how-the-other-half-loves-west-end-2026) independently has a
+ * properly `edition: 'west-end'`-tagged issue too, so this restriction does
+ * not change any confirmed-correct outcome — it only removes a false-positive
+ * risk for the next week. Untagged issues (pre edition-split) count, since
+ * before the split there was one combined audience.
+ */
+function wasCoveredByWeeklyRoundup(issues, showId) {
+  if (!showId) return false;
+  return (issues || []).some((issue) => issue && issue.edition !== 'broadway'
+    && Array.isArray(issue.featuredShowIds) && issue.featuredShowIds.includes(showId));
+}
+
+/**
  * @param {object} args
  * @param {Array}  args.shows     - shows.json `.shows`
  * @param {object} args.sentShows - opening-night-sent.json `.shows`
  * @param {Array}  args.reviews   - reviews.json entries
  * @param {number} args.now       - epoch ms
+ * @param {Array}  [args.newsletterIssues] - newsletter-state.json `.issues`
  * @returns {Array<object>} unresolved shows, oldest-opening first. Each carries
- *   `state` (see classifyBroadcastState) and `alertable` (within the paging
- *   age bound). Empty array is the healthy case.
+ *   `state` (see classifyBroadcastState, plus 'covered-by-roundup') and
+ *   `alertable` (within the paging age bound). Empty array is the healthy case.
  */
 function findMissedBroadcasts({
   shows,
   sentShows,
   reviews,
   now,
+  newsletterIssues = [],
   minAgeDays = DEFAULT_MIN_AGE_DAYS,
   maxAlertAgeDays = DEFAULT_MAX_ALERT_AGE_DAYS,
   maxReportAgeDays = DEFAULT_MAX_REPORT_AGE_DAYS,
@@ -190,6 +228,14 @@ function findMissedBroadcasts({
     const verdict = evaluateBroadcastReadiness(reviewsByShow.get(s.id) || [], s.category);
     if (!verdict.ready) continue;
 
+    // Only the never-drafted case is what the redundant-force-send scenario
+    // this exists for looks like — a draft-stuck/draft-unknown show already
+    // has Resend-side state that needs a human look regardless of round-up
+    // coverage (a stray draft, an ambiguous 404), so don't paper over those.
+    const roundupCovered = state === 'never-drafted'
+      && s.category === 'west-end'
+      && wasCoveredByWeeklyRoundup(newsletterIssues, s.id);
+
     missed.push({
       id: s.id,
       title: s.title || s.id,
@@ -198,8 +244,10 @@ function findMissedBroadcasts({
       daysSinceOpening: age,
       scoredReviews: verdict.count,
       readiness: verdict.reason,
-      state,
-      alertable: age <= maxAlertAgeDays,
+      state: roundupCovered ? 'covered-by-roundup' : state,
+      // Suppressed regardless of age — the Round-up already sent subscribers
+      // this content, so there is nothing left to page about.
+      alertable: roundupCovered ? false : age <= maxAlertAgeDays,
       draftUrl: ((sentShows || {})[s.id] || {}).draftUrl || null,
     });
   }
@@ -210,6 +258,7 @@ function findMissedBroadcasts({
 module.exports = {
   findMissedBroadcasts,
   classifyBroadcastState,
+  wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
   BROADCAST_CATEGORIES,
