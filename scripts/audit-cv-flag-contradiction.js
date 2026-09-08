@@ -51,6 +51,7 @@ const {
   assertCorpusScanned,
   CorpusNotScannedError,
   summarizeWindowCoverage,
+  shouldRefuseRedirectedGate,
 } = require('./lib/corpus-scan-guard');
 const { baselineKeySet, computeNewViolators } = require('./lib/cv-flag-contradiction-baseline');
 
@@ -69,14 +70,15 @@ Usage:
 // point of BRO-2348, and an uncounted counter is exactly the "absence of a
 // signal looks like the safe outcome" trap.
 //
-// It is REFUSED under --strict and --update-baseline (see main()). Without
-// that refusal it was a vacuous-pass vector on this repo's own CI gate: a
-// decoy root containing one directory satisfies assertCorpusScanned, so
-// `--strict` printed "0 contradiction(s)" and exited 0. This command is the
-// gate at test.yml:4485 AND is on the autonomous-triage safe-check
-// allowlist, so a stray env var would have turned both green (round 2
-// finding 3). Report-only runs may redirect it; nothing that can PASS a gate
-// may.
+// A redirect that could PASS a gate is REFUSED in main(), via
+// shouldRefuseRedirectedGate(): a NON-EMPTY decoy root satisfies
+// assertCorpusScanned, so `--strict` once printed "0 contradiction(s)" and
+// exited 0 on this repo's own CI gate (test.yml:4485), which is also on the
+// autonomous-triage safe-check allowlist. An EMPTY redirected corpus is
+// deliberately allowed through, because it can only ever FAIL loudly at
+// assertCorpusScanned -- refusing it too made that guard untestable and let
+// its `gate:` argument be mutated to false with every suite still green.
+// Report-only runs may always redirect.
 const ROOT_OVERRIDE = process.env.BSC_AUDIT_ROOT || '';
 const ROOT = ROOT_OVERRIDE ? path.resolve(ROOT_OVERRIDE) : path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -92,7 +94,12 @@ function parseArgs(argv) {
       // Keep the RAW token: parseInt truncates, so '1e9' becomes 1 and '30d'
       // becomes 30 — nonsense silently turned into a plausible window
       // (round 4 finding 3). main() validates the token, not just the number.
-      args.windowRaw = a.split('=')[1];
+      // slice, NOT split('=')[1]: split truncates at a SECOND '=', so
+      // '--window=1=e9' handed the regex just '1' and passed, running a
+      // one-day scan (round 5). That is the very bug round 4 filed --
+      // validating the truncation instead of the token -- reintroduced by
+      // round 4's own fix.
+      args.windowRaw = a.slice('--window='.length);
       args.window = parseInt(args.windowRaw, 10);
     }
   }
@@ -150,7 +157,12 @@ function main() {
   // gate wiring at all. Refusing it earlier made the #1063 vacuous-pass guard
   // untestable from a fixture, which round 4 found had left `gate:` mutable
   // to false with both suites still green.
-  if (ROOT_OVERRIDE && corpusEntries > 0 && (args.strict || args.updateBaseline)) {
+  if (shouldRefuseRedirectedGate({
+    rootOverride: ROOT_OVERRIDE,
+    corpusEntries,
+    strict: args.strict,
+    updateBaseline: args.updateBaseline,
+  })) {
     console.error(
       'FAIL: BSC_AUDIT_ROOT is set with a non-empty corpus, so --strict and ' +
         '--update-baseline are refused. A redirected corpus would pass vacuously. ' +

@@ -123,4 +123,28 @@ function summarizeWindowCoverage({
   };
 }
 
-module.exports = { assertCorpusScanned, CorpusNotScannedError, summarizeWindowCoverage };
+/**
+ * Should a gate-capable run be refused because its corpus root was
+ * redirected? Extracted as a pure predicate (CLAUDE.md rule 15) because
+ * inlining it left the `rootOverride` term untestable: deleting it made
+ * EVERY real --strict run exit 2 while the suite stayed fully green
+ * (round 5 finding 3).
+ *
+ * True only when a redirect is in effect AND the redirected corpus is
+ * non-empty AND the run could produce a passing or baseline-writing verdict.
+ * An EMPTY redirected corpus is deliberately allowed through so it reaches
+ * assertCorpusScanned, which can only FAIL loudly -- that is what makes the
+ * corpus-empty guard testable at all.
+ */
+function shouldRefuseRedirectedGate({ rootOverride, corpusEntries, strict, updateBaseline } = {}) {
+  if (!rootOverride) return false;
+  if (!(Number(corpusEntries) > 0)) return false;
+  return Boolean(strict || updateBaseline);
+}
+
+module.exports = {
+  assertCorpusScanned,
+  CorpusNotScannedError,
+  summarizeWindowCoverage,
+  shouldRefuseRedirectedGate,
+};

@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { summarizeWindowCoverage } = require('./corpus-scan-guard.js');
+const { summarizeWindowCoverage, shouldRefuseRedirectedGate } = require('./corpus-scan-guard.js');
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..', '..');
@@ -337,7 +337,7 @@ test('the corpus-empty FAIL-LOUD gate is actually armed under --strict', () => {
 test('a --window token that parseInt would silently truncate is refused', () => {
   // Round 4 finding 3: parseInt('1e9') === 1 and parseInt('30d') === 30, so
   // validating parseInt's RESULT let nonsense through as a plausible window.
-  for (const w of ['1e9', '30d', '3O', '1.5']) {
+  for (const w of ['1e9', '30d', '3O', '1.5', '1=e9', '30=d']) {
     let code = 0, stderr = '';
     try {
       execFileSync(process.execPath, [CLI, `--window=${w}`, '--strict'], {
@@ -350,4 +350,23 @@ test('a --window token that parseInt would silently truncate is refused', () => 
     assert.equal(code, 2, `--window=${w} must exit 2, got ${code}`);
     assert.match(stderr, /--window must be a positive number of days/, stderr);
   }
+});
+
+test('a redirected gate is refused only when a redirect is actually in effect', () => {
+  // Round 5 finding 3: with the predicate inlined, deleting the rootOverride
+  // term made EVERY real --strict run exit 2 while the suite stayed green.
+  const R = shouldRefuseRedirectedGate;
+  // No redirect: never refused, whatever else is true. This is the case that
+  // pins that a legitimate CI --strict run can still PASS.
+  assert.equal(R({ rootOverride: '', corpusEntries: 5000, strict: true }), false);
+  assert.equal(R({ rootOverride: '', corpusEntries: 5000, updateBaseline: true }), false);
+  assert.equal(R({ rootOverride: undefined, corpusEntries: 5000, strict: true }), false);
+  // Redirect + non-empty decoy + a gate-capable flag: refused.
+  assert.equal(R({ rootOverride: '/tmp/x', corpusEntries: 1, strict: true }), true);
+  assert.equal(R({ rootOverride: '/tmp/x', corpusEntries: 1, updateBaseline: true }), true);
+  // Redirect + EMPTY corpus: allowed through, so it reaches the FAIL-LOUD guard.
+  assert.equal(R({ rootOverride: '/tmp/x', corpusEntries: 0, strict: true }), false);
+  // Redirect + report-only: always allowed.
+  assert.equal(R({ rootOverride: '/tmp/x', corpusEntries: 99 }), false);
+  assert.equal(R(), false);
 });
