@@ -360,7 +360,7 @@ function run(argv) {
   }
   console.log(`[audit-orphan-inprogress] ${orphans.length} in_progress task(s) with no live workspace`);
   for (const bucket of ['FINISHED', 'STALE', 'LOST', 'NEEDS-REVIEW']) {
-    console.log(`\n${bucket}: ${buckets[bucket].length}`);
+    console.log(`\n${bucket}: ${buckets[bucket].length}${cmuxUnavailable ? ' (UNVERIFIED — cmux unreachable)' : ''}`);
     for (const d of buckets[bucket]) console.log(`  #${d.id} [${d.action}] ${d.subject.slice(0, 70)} — ${d.reason}`);
   }
   return { orphans, decisions, buckets };
