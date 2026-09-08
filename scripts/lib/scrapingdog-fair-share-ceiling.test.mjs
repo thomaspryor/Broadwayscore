@@ -42,17 +42,22 @@ test('planFairShareCeiling: shrinks toward the fair share as the pack runs low, 
   assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 99_000, daysToRenewal: 1 }), 1_000);
   // renewal day (0 days) is treated as 1 day, not a divide-by-zero
   assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 99_000, daysToRenewal: 0 }), 1_000);
-  // pack fully spent → 0 (shouldTripBreaker reads 0 as "no ceiling": the
-  // 401/403/429 exhaustion latch owns that case, not the daily breaker)
-  assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 100_000, daysToRenewal: 5 }), 0);
-  assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 150_000, daysToRenewal: 5 }), 0);
-  assert.equal(shouldTripBreaker({ dayCredits: 10, ceiling: 0 }).reason, 'no-ceiling');
+  // pack fully spent, or downgraded below what is already used → 1, so the
+  // first credit trips. NOT 0: shouldTripBreaker reads 0 as "no ceiling" and
+  // would fail open on an exhausted pack (Codex ship-check finding).
+  assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 100_000, daysToRenewal: 5 }), 1);
+  assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 150_000, daysToRenewal: 5 }), 1);
+  assert.equal(shouldTripBreaker({ dayCredits: 1, ceiling: 1 }).tripped, true);
+  // a handful of credits left over many days never rounds down to 0 either
+  assert.equal(planFairShareCeiling({ limit: 100_000, dayBaseline: 99_998, daysToRenewal: 30 }), 1);
 });
 
 test('planFairShareCeiling: unusable inputs return null (never NaN/undefined)', () => {
   assert.equal(planFairShareCeiling({ limit: null, dayBaseline: 0, daysToRenewal: 26 }), null);
   assert.equal(planFairShareCeiling({ limit: 3_000_000, dayBaseline: null, daysToRenewal: 26 }), null);
   assert.equal(planFairShareCeiling({ limit: 3_000_000, dayBaseline: 0, daysToRenewal: null }), null);
+  // negative validity = expired/grace pack, not "renews today" (would license the whole remainder in a day)
+  assert.equal(planFairShareCeiling({ limit: 3_000_000, dayBaseline: 0, daysToRenewal: -1 }), null);
   assert.equal(planFairShareCeiling({ limit: 0, dayBaseline: 0, daysToRenewal: 26 }), null);
   assert.equal(planFairShareCeiling({ limit: 3_000_000, dayBaseline: -1, daysToRenewal: 26 }), null);
   assert.equal(planFairShareCeiling({ limit: 3_000_000, dayBaseline: 0, daysToRenewal: 26, burstFactor: 0 }), null);
@@ -78,6 +83,15 @@ test('resolveCeilingForDay: plan fair share when the account carries limit + ren
     resolveCeilingForDay({ env: {}, account, dayBaseline: null }),
     { ceiling: Math.round((3_000_000 - 272_000) / 26 * 1.5), source: 'plan' },
   );
+});
+
+test('resolveCeilingForDay: SD_BREAKER_BURST_FACTOR tunes the multiplier; garbage falls back to 1.5', () => {
+  const account = { cycleUsed: 272_000, limit: 3_000_000, daysToRenewal: 26 };
+  assert.deepEqual(resolveCeilingForDay({ env: { SD_BREAKER_BURST_FACTOR: '1' }, account, dayBaseline: 221_180 }), { ceiling: 106_878, source: 'plan' });
+  assert.deepEqual(resolveCeilingForDay({ env: { SD_BREAKER_BURST_FACTOR: 'lots' }, account, dayBaseline: 221_180 }), { ceiling: 160_317, source: 'plan' });
+  assert.deepEqual(resolveCeilingForDay({ env: { SD_BREAKER_BURST_FACTOR: '0' }, account, dayBaseline: 221_180 }), { ceiling: 160_317, source: 'plan' });
+  // negative validity on the account → plan unusable → legacy default, not a one-day free-for-all
+  assert.deepEqual(resolveCeilingForDay({ env: {}, account: { ...account, daysToRenewal: -2 }, dayBaseline: 221_180 }), { ceiling: DEFAULT_DAILY_CREDIT_CEILING, source: 'default' });
 });
 
 test('resolveCeilingForDay: legacy default when billing is unreachable or the plan shape is missing', () => {

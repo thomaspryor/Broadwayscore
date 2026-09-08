@@ -114,11 +114,18 @@ function resolveDailyCreditCeiling(env = process.env) {
 function planFairShareCeiling({ limit, dayBaseline, daysToRenewal, burstFactor = DEFAULT_FAIR_SHARE_BURST_FACTOR } = {}) {
   if (!Number.isFinite(limit) || limit <= 0) return null;
   if (!Number.isFinite(dayBaseline) || dayBaseline < 0) return null;
-  if (!Number.isFinite(daysToRenewal)) return null;
+  // A negative validity is an expired/grace-period pack, not "renews today":
+  // treating it as 1 day would license the whole remainder in one day
+  // (Codex ship-check finding; scrapingdog-ack.js rejects negatives too).
+  if (!Number.isFinite(daysToRenewal) || daysToRenewal < 0) return null;
   if (!Number.isFinite(burstFactor) || burstFactor <= 0) return null;
   const remaining = Math.max(0, limit - dayBaseline);
+  // Pack spent (or downgraded below what is already used): a ceiling of 1
+  // trips on the first credit. shouldTripBreaker() reads 0 as "no ceiling"
+  // and would fail OPEN — the wrong direction for an exhausted pack.
+  if (remaining <= 0) return 1;
   const fairShare = remaining / Math.max(daysToRenewal, 1);
-  return Math.min(Math.round(fairShare * burstFactor), remaining);
+  return Math.max(1, Math.min(Math.round(fairShare * burstFactor), remaining));
 }
 
 /**
@@ -133,10 +140,15 @@ function resolveCeilingForDay({ env = process.env, account = null, dayBaseline =
   const envCeiling = _posInt(env.SD_BREAKER_CEILING, null);
   if (envCeiling !== null) return { ceiling: envCeiling, source: 'env' };
   const baseline = Number.isFinite(dayBaseline) ? dayBaseline : (account && Number.isFinite(account.cycleUsed) ? account.cycleUsed : null);
+  // SD_BREAKER_BURST_FACTOR: rollback/tuning knob for the 1.5x default
+  // without a code change (garbage/non-positive → default).
+  const burstRaw = parseFloat(env.SD_BREAKER_BURST_FACTOR);
+  const burstFactor = Number.isFinite(burstRaw) && burstRaw > 0 ? burstRaw : DEFAULT_FAIR_SHARE_BURST_FACTOR;
   const plan = account ? planFairShareCeiling({
     limit: account.limit,
     dayBaseline: baseline,
     daysToRenewal: account.daysToRenewal,
+    burstFactor,
   }) : null;
   if (plan !== null) return { ceiling: plan, source: 'plan' };
   return { ceiling: DEFAULT_DAILY_CREDIT_CEILING, source: 'default' };

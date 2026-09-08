@@ -48,6 +48,7 @@ Env:
                                              fair share: (pack credits left at day start / days to renewal)
                                              x 1.5, clamped to what is left; falls back to 45000 only when
                                              the /account limit or renewal date is unavailable (BRO-2943)
+  SD_BREAKER_BURST_FACTOR                    multiplier on the plan fair share (default 1.5)
   SD_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS per-show ceiling reserve for opening-window shows (default 3000)
   SD_BREAKER_STATE_PATH                      override the state file location (tests)
 `);

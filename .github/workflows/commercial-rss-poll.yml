@@ -146,6 +146,13 @@ jobs:
         continue-on-error: true
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-2943 rollback knobs, sourced from repo VARIABLES so an
+          # emergency pin needs `gh variable set SD_BREAKER_CEILING --body N`
+          # (or SD_BREAKER_BURST_FACTOR), not a workflow commit riding the
+          # same push path that loses races most hours. Unset → empty →
+          # ignored by the script (plan-derived fair share applies).
+          SD_BREAKER_CEILING: ${{ vars.SD_BREAKER_CEILING }}
+          SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
         run: node scripts/check-sd-breaker.js
 
       - name: Commit data changes
