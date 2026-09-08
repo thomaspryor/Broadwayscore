@@ -900,6 +900,7 @@ jobs:
           OVERDUE_RAW=$(node -e "
             const fs = require('fs');
             const { hasRecentOverdueAlert } = require('./scripts/lib/preview-dedup');
+            const { wasCoveredByWeeklyRoundup } = require('./scripts/lib/missed-broadcasts');
             const shows = require('./data/shows.json').shows;
             const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
             const now = Date.now();
@@ -907,6 +908,13 @@ jobs:
             // Dedup: read sent tracking to skip shows already alerted within 24h
             let sent = {};
             try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
+
+            // BRO-3088: West End does not get an individual broadcast as a matter
+            // of course once the Weekly Round-up already covered it (owner decision
+            // 2026-09-08) — same predicate/rationale as check-missed-broadcasts.js's
+            // stale catch-up sweep. Broadway has no equivalent weekly digest.
+            let newsletterIssues = [];
+            try { newsletterIssues = JSON.parse(fs.readFileSync('data/newsletter-state.json', 'utf8')).issues || []; } catch {}
 
             // Load reviews to check whether a show has enough scored reviews to actually send.
             // A show with <8 scored reviews cannot broadcast yet — this is not a pipeline failure,
@@ -931,6 +939,11 @@ jobs:
               const overdueAfter = new Date(s.openingDate + 'T04:00:00Z');
               overdueAfter.setDate(overdueAfter.getDate() + 1); // day AFTER opening
               if (now <= overdueAfter.getTime()) return false;
+              // Skip West End shows the Weekly Round-up already covered — paging to
+              // ask for a force_broadcast here would be the exact redundant-send
+              // ask the owner declined for electra-persona/the-story/abigails-party
+              // on 2026-09-07/08 (BRO-3088).
+              if (s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, id)) return false;
               // Skip if overdue alert already sent within the rolling 24h window for this show.
               // Previously startsWith(today) against UTC date — silently re-alerted across UTC
               // midnight (2026-04-11 bug class). Helper lives in scripts/lib/preview-dedup.js.
