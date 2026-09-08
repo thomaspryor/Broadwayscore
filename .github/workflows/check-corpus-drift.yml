@@ -168,7 +168,7 @@ jobs:
         run: |
           # Fires on a new or modified verdict for EITHER monitor file (porcelain
           # prints "?? path" for untracked, "M path" for modified, nothing if clean).
-          if git status --porcelain data/audit/corpus-drift.json data/audit/churn-merge-coverage.json | grep -q .; then
+          if git status --porcelain data/audit/corpus-drift.json data/audit/churn-merge-coverage.json data/audit/guard-escalation-state.json | grep -q .; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -179,8 +179,15 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/audit/corpus-drift.json
-          [ -f data/audit/churn-merge-coverage.json ] && git add data/audit/churn-merge-coverage.json
+          # BRO-2424: guard-escalation-state.json must be staged here or the
+          # audit-crash streak resets to 0 on every fresh checkout — the same
+          # class of bug BRO-545 documents in rebuild-reviews.yml's commit
+          # step. Each path is staged independently (memory/feedback_silent_git_add_failures.md):
+          # a single `git add A B` is atomic on pathspec-match failure, so a
+          # not-yet-written state file (common case — it's only written when
+          # a guard's streak actually changes) would otherwise silently drop
+          # corpus-drift.json too.
+          bash scripts/lib/git-add-existing.sh data/audit/corpus-drift.json data/audit/churn-merge-coverage.json data/audit/guard-escalation-state.json
           SUMMARY=$(node -e "const d=require('./data/audit/corpus-drift.json'); console.log(d.summary.driftCount + ' drift, ' + d.summary.crashCount + ' crashed')")
           git commit -m "audit: corpus-drift monitor ($SUMMARY) [skip ci]
 
