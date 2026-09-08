@@ -419,6 +419,15 @@ function seeAllLink(href, label, opts = {}) {
     </td></tr>`;
 }
 
+// Matches slugify() in src/lib/data-core.ts — the outlet/critic detail pages
+// (src/lib/data-reviews.ts) derive their slugs from displayName via this same
+// regex, NOT from the outlet-registry.json key, so any link builder here must
+// use it too or it 404s (e.g. registry key "hollywood-reporter" vs the actual
+// page slug "the-hollywood-reporter" for displayName "The Hollywood Reporter").
+function slugify(name) {
+  return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 // Critic + outlet registries — look up the slug for a critic / outlet name so
 // we can deep-link to /critics/{slug} and /critics/outlets/{slug}.
 let _criticReg, _outletReg;
@@ -439,8 +448,10 @@ function loadOutletReg() {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(repo, 'data/outlet-registry.json'), 'utf8'));
     const byName = new Map();
-    for (const [slug, o] of Object.entries(raw.outlets || {})) {
-      if (o.displayName) byName.set(o.displayName.toLowerCase(), slug);
+    for (const [, o] of Object.entries(raw.outlets || {})) {
+      if (!o.displayName) continue;
+      const slug = slugify(o.displayName);
+      byName.set(o.displayName.toLowerCase(), slug);
       for (const alias of (o.aliases || [])) byName.set(alias.toLowerCase(), slug);
     }
     _outletReg = byName;
