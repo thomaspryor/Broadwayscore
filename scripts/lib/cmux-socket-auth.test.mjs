@@ -193,3 +193,41 @@ test('summarizeCmuxFailures handles an empty / non-array tick', () => {
     assert.equal(auth.summarizeCmuxFailures(input).escalate, false);
   }
 });
+
+test('buildCmuxEnv under force DROPS a rejected credential when disk has nothing better', () => {
+  // Keeping it would repeat the credential cmux just rejected, making the
+  // retry a no-op a second way — and it made the ladder test depend on
+  // whether the machine running it happened to have a cmux config at all.
+  const out = auth.buildCmuxEnv({ PATH: '/bin', CMUX_SOCKET_PASSWORD: 'rejected' }, null, { force: true });
+  assert.ok(!('CMUX_SOCKET_PASSWORD' in out));
+  assert.equal(out.PATH, '/bin');
+});
+
+test('buildCmuxEnv under force replaces a rejected credential with the disk one', () => {
+  const out = auth.buildCmuxEnv({ CMUX_SOCKET_PASSWORD: 'rejected' }, 'fresh-from-disk', { force: true });
+  assert.equal(out.CMUX_SOCKET_PASSWORD, 'fresh-from-disk');
+});
+
+test('an unreadable config is reported ONCE per path, not once per read', () => {
+  // Every auth rejection re-reads with refresh:true, and a tick makes dozens
+  // of cmux calls — unguarded, a persistently unreadable config would flood
+  // every 5-minute launchd tick with identical lines.
+  auth._resetPasswordCache();
+  const logged = [];
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cmux-eacces-'));
+  const cfg = path.join(dir, 'cmux.json');
+  fs.writeFileSync(cfg, '{}');
+  fs.chmodSync(cfg, 0o000);
+  try {
+    for (let i = 0; i < 5; i++) {
+      auth.readSocketPasswordFromDisk({ configPath: cfg, refresh: true, logFn: (m) => logged.push(m) });
+    }
+    // Running as root can still read a 0o000 file, so only assert the guard
+    // when the read genuinely failed.
+    if (logged.length > 0) assert.equal(logged.length, 1);
+  } finally {
+    fs.chmodSync(cfg, 0o600);
+    fs.rmSync(dir, { recursive: true, force: true });
+    auth._resetPasswordCache();
+  }
+});

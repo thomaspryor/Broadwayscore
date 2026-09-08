@@ -160,7 +160,14 @@ function buildCmuxEnv(baseEnv, password, { force = false } = {}) {
   // byte-identical to attempt 1 (ship-check finding). Deferring to the
   // operator is right until their value has been PROVEN wrong by a rejection.
   if (base.CMUX_SOCKET_PASSWORD && !force) return { ...base };
-  if (typeof password !== 'string' || password === '') return { ...base };
+  if (typeof password !== 'string' || password === '') {
+    // Under `force` the caller's credential has already been REJECTED, so
+    // re-sending it is guaranteed to fail again. With nothing better on disk
+    // the only move that can still succeed is to drop it and fall back to
+    // cmux-ancestry. Returning `base` here would repeat the rejected
+    // credential verbatim — the retry defeated a second way.
+    return force ? withoutCmuxPassword(base) : { ...base };
+  }
   return { ...base, CMUX_SOCKET_PASSWORD: password };
 }
 
@@ -186,6 +193,8 @@ function withoutCmuxPassword(baseEnv) {
 // or any future multi-config caller) poison the answer for the default path
 // process-wide.
 const passwordCache = new Map();
+// Paths already reported as unreadable, so the warning is emitted once.
+const readErrorLogged = new Set();
 
 function readSocketPasswordFromDisk({
   refresh = false, configPath = CMUX_CONFIG_PATH, logFn = console.error,
@@ -199,7 +208,12 @@ function readSocketPasswordFromDisk({
     // exists but cannot be READ (EACCES/EPERM) is a different animal and must
     // not be reported as "no password configured": that is indistinguishable
     // from the outage's own cause class, which is how this stayed invisible.
-    if (e && e.code !== 'ENOENT') {
+    // Once per path, not once per read. Every auth rejection re-reads with
+    // refresh:true (bypassing the cache), and a tick makes dozens of cmux
+    // calls — without this guard a persistently unreadable config would emit
+    // dozens of identical lines every five minutes.
+    if (e && e.code !== 'ENOENT' && !readErrorLogged.has(configPath)) {
+      readErrorLogged.add(configPath);
       logFn(`[cmux] could not read ${configPath} (${e.code || e.message}) — proceeding with no socket credential.`);
     }
     text = '';
@@ -210,7 +224,7 @@ function readSocketPasswordFromDisk({
 }
 
 // Test-only: drop the memo so a fixture-driven test isn't order-dependent.
-function _resetPasswordCache() { passwordCache.clear(); }
+function _resetPasswordCache() { passwordCache.clear(); readErrorLogged.clear(); }
 
 /** Convenience: the env a cmux subprocess should inherit. */
 function cmuxSpawnEnv(baseEnv = process.env, opts = {}) {
