@@ -17,8 +17,15 @@ test('shouldRunTestGate: true when a scripts/lib/ file changed', () => {
   assert.equal(shouldRunTestGate(['scripts/lib/foo.js', 'src/app.tsx']), true);
 });
 
-test('shouldRunTestGate: false when nothing under scripts/lib/ changed', () => {
-  assert.equal(shouldRunTestGate(['scripts/other.js', 'src/app.tsx']), false);
+test('shouldRunTestGate: true for a top-level scripts/ file too (BRO-3063 — arming is not scripts/lib/-only)', () => {
+  // scripts/other.js is a top-level scripts/ file, not scripts/lib/ — it used
+  // to leave the gate unarmed entirely (BRO-3060's exact shape). Widened
+  // arming means this is now true; src/app.tsx alone still isn't.
+  assert.equal(shouldRunTestGate(['scripts/other.js', 'src/app.tsx']), true);
+});
+
+test('shouldRunTestGate: false when nothing under scripts/ or .github/workflows/ changed', () => {
+  assert.equal(shouldRunTestGate(['src/app.tsx', 'README.md']), false);
 });
 
 test('shouldRunTestGate: false on empty/undefined input', () => {
@@ -465,6 +472,9 @@ test('runTestGate baseline mode: a baseline run that exits non-zero with ZERO pa
 const {
   touchesLib,
   touchesWorkflows,
+  touchesScripts,
+  correspondingUnitTestPath,
+  listCorrespondingUnitTestFiles,
   listWorkflowGuardTestFiles,
   selectTestFiles,
   REQUIRED_WORKFLOW_GUARDS,
@@ -709,4 +719,149 @@ test('runTestGate: merged and baseline runs select from the SAME change set, so 
   assert.equal(seen.length, 2, 'merged run + baseline run');
   assert.deepEqual(seen[0][1], seen[1][1], 'both runs must execute the same file list');
   assert.equal(result.passed, true, 'a failure present in BOTH trees is pre-existing and must not block');
+});
+
+// --- BRO-3063: scripts/**/*.{js,mjs} -> tests/unit/<basename>.test.mjs ------
+//
+// Two incidents, same session (2026-09-08):
+//   (1) scripts/lib/landed-but-open-reconciler.js changed; its colocated
+//       scripts/lib/*.test.mjs passed; tests/unit/landed-but-open-reconciler.test.mjs
+//       broke; the floor (armed, glob-scoped) reported green.
+//   (2) scripts/linear-drain-parked.js (top-level, not scripts/lib/) changed;
+//       tests/unit/linear-drain-parked.test.mjs broke; the floor never armed.
+// These tests pin the fix by basename correspondence, and prove each
+// incident's exact shape by mutation: the OLD selection (colocated glob only)
+// would have missed it, the NEW selection (selectTestFiles) catches it.
+
+test('touchesScripts: true for any scripts/ source file, top-level or scripts/lib/', () => {
+  assert.equal(touchesScripts(['scripts/linear-drain-parked.js']), true);
+  assert.equal(touchesScripts(['scripts/lib/landed-but-open-reconciler.js']), true);
+  assert.equal(touchesScripts(['scripts/newsletter/generate.mjs']), true);
+});
+
+test('touchesScripts: false for a colocated test file itself, or a non-scripts path', () => {
+  // .test.mjs files arm via touchesLib already (directory-only check); they
+  // must not ALSO match here, which would just be redundant, but the
+  // exclusion is the thing under test.
+  assert.equal(touchesScripts(['scripts/lib/foo.test.mjs']), false);
+  assert.equal(touchesScripts(['src/app.tsx']), false);
+  assert.equal(touchesScripts([]), false);
+  assert.equal(touchesScripts(undefined), false);
+});
+
+test('correspondingUnitTestPath: basename-only, ignores directory — matches both real incidents', () => {
+  assert.equal(
+    correspondingUnitTestPath('scripts/lib/landed-but-open-reconciler.js'),
+    path.join('tests', 'unit', 'landed-but-open-reconciler.test.mjs')
+  );
+  assert.equal(
+    correspondingUnitTestPath('scripts/linear-drain-parked.js'),
+    path.join('tests', 'unit', 'linear-drain-parked.test.mjs')
+  );
+  assert.equal(
+    correspondingUnitTestPath('scripts/newsletter/generate.mjs'),
+    path.join('tests', 'unit', 'generate.test.mjs')
+  );
+});
+
+test('listCorrespondingUnitTestFiles: includes only tests that actually exist on disk', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'), "import { test } from 'node:test';\ntest('x', () => {});\n");
+  const found = listCorrespondingUnitTestFiles(dir, [
+    'scripts/linear-drain-parked.js',
+    'scripts/lib/no-such-test-yet.js',
+    'src/app.tsx',
+  ]);
+  assert.deepEqual(found, [path.join('tests', 'unit', 'linear-drain-parked.test.mjs')]);
+});
+
+test('listCorrespondingUnitTestFiles: two source files sharing a basename both resolve to the one test, de-duplicated', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'foo.test.mjs'), "import { test } from 'node:test';\ntest('x', () => {});\n");
+  const found = listCorrespondingUnitTestFiles(dir, ['scripts/foo.js', 'scripts/lib/foo.js']);
+  assert.deepEqual(found, [path.join('tests', 'unit', 'foo.test.mjs')]);
+});
+
+test('selectTestFiles: a scripts/lib/ change also selects its tests/unit/ correspondence, not just the colocated glob', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'landed-but-open-reconciler.test.mjs'); // colocated, passes
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+    "import { test } from 'node:test';\ntest('x', () => {});\n"
+  );
+  const selected = selectTestFiles(dir, ['scripts/lib/landed-but-open-reconciler.js']);
+  assert.deepEqual(selected, [
+    path.join('scripts', 'lib', 'landed-but-open-reconciler.test.mjs'),
+    path.join('tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+  ]);
+  // Mutation proof: the OLD selection (colocated glob alone) would have
+  // missed the tests/unit/ file entirely — this is incident 1's exact hole.
+  assert.deepEqual(listColocatedTestFiles(dir), [path.join('scripts', 'lib', 'landed-but-open-reconciler.test.mjs')]);
+});
+
+test('selectTestFiles: a top-level scripts/ change selects its tests/unit/ correspondence even with zero scripts/lib/ involvement', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'),
+    "import { test } from 'node:test';\ntest('x', () => {});\n"
+  );
+  const selected = selectTestFiles(dir, ['scripts/linear-drain-parked.js']);
+  assert.deepEqual(selected, [path.join('tests', 'unit', 'linear-drain-parked.test.mjs')]);
+  // Mutation proof: incident 2's exact hole — the OLD arming condition
+  // (touchesLib || touchesWorkflows) is false for a top-level scripts/ file,
+  // so the pre-fix floor would not have run anything at all.
+  assert.equal(touchesLib(['scripts/linear-drain-parked.js']), false);
+  assert.equal(touchesWorkflows(['scripts/linear-drain-parked.js']), false);
+});
+
+test('runTestGate: incident 1 shape — scripts/lib/ file, colocated test passes, tests/unit/ correspondence FAILS — REFUSED', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'landed-but-open-reconciler.test.mjs');
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('no dispatch-ledger entry at all for this taskId -> still open, not closable', () => { assert.equal(1, 2, 'widened accepted set regression'); });\n"
+  );
+  const result = runTestGate({ cwd: dir, changedFiles: ['scripts/lib/landed-but-open-reconciler.js'] });
+  assert.equal(result.ran, true);
+  assert.equal(result.passed, false, 'incident 1 must be refused now that tests/unit/ is in scope');
+  assert.match(result.output, /widened accepted set regression/);
+});
+
+test('runTestGate: incident 2 shape — top-level scripts/ file with a failing tests/unit/ correspondence — REFUSED (previously never even armed)', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('main() — kill switch and dispatch wiring, fully injected (no live I/O)', () => { assert.deepEqual([{ allowAutofixFiled: true, allowAutomationParked: true }], [{ allowAutofixFiled: true }]); });\n"
+  );
+  const result = runTestGate({ cwd: dir, changedFiles: ['scripts/linear-drain-parked.js'] });
+  assert.equal(result.ran, true, 'must actually arm and run — pre-fix this was ran:false, passed:true');
+  assert.equal(result.passed, false, 'incident 2 must be refused');
+});
+
+test('runTestGate: tests/unit/ correspondence already failing on the baseline sha is NOT blocking (task #1149/#1433 behavior preserved for this new class)', () => {
+  const failingCorrespondence =
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('pre-existing unit test failure', () => { assert.equal(1, 2, 'already red before this merge'); });\n";
+  const mk = () => {
+    const d = makeScratchRepo();
+    fs.mkdirSync(path.join(d, 'tests', 'unit'), { recursive: true });
+    fs.writeFileSync(path.join(d, 'tests', 'unit', 'linear-drain-parked.test.mjs'), failingCorrespondence);
+    return d;
+  };
+  const baselineDir = mk();
+  const mergedDir = mk(); // identical, unfixed pre-existing failure — this branch didn't touch it
+
+  const result = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/linear-drain-parked.js'],
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, true, 'a tests/unit/ failure already red on origin/main must not block this merge');
+  assert.match(result.output, /pre-existing on origin\/main/);
 });
