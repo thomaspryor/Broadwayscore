@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-09-01T13:28:57.275Z",
-    "completedAt": "2026-09-01T13:29:16.254Z",
-    "totalReviews": 42462,
-    "processed": 0,
-    "skipped": 42459,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 11756,
-      "output": 336,
-      "total": 34367
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-01T14:01:12.635Z",
-    "completedAt": "2026-09-01T14:02:30.253Z",
-    "totalReviews": 42505,
-    "processed": 3,
-    "skipped": 42493,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 48075,
-      "output": 2099,
-      "total": 139331
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-01T14:32:14.999Z",
     "completedAt": "2026-09-01T14:32:40.880Z",
     "totalReviews": 42470,
@@ -433688,5 +433660,54 @@
       "total": 10920
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-08T09:24:20.842Z",
+    "completedAt": "2026-09-08T09:27:39.657Z",
+    "totalReviews": 42869,
+    "processed": 40,
+    "skipped": 42827,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 160781,
+      "output": 11951,
+      "total": 486891
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-08T09:27:48.087Z",
+    "completedAt": "2026-09-08T09:32:01.921Z",
+    "totalReviews": 42869,
+    "processed": 23,
+    "skipped": 42731,
+    "errors": 4,
+    "tokensUsed": {
+      "input": 245733,
+      "output": 9659,
+      "total": 630135
+    },
+    "errorDetails": [
+      {
+        "showId": "cult-of-love-2024",
+        "outletId": "nypost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-hills-of-california-2024",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "bob-fosses-dancin-2023",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "kpop-2022",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
