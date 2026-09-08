@@ -66,7 +66,7 @@ test('createBbSession rejects when the live daily session count is at/over the c
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 10);
   try {
     await assert.rejects(
-      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' }),
+      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' }),
       /Browserbase daily cap reached \(10\/10\)/,
     );
     assert.equal(liveMock.mock.callCount(), 1);
@@ -90,7 +90,7 @@ test('createBbSession proceeds past the day-cap check when the live count is und
     json: async () => ({ id: 'sess_123', connectUrl: 'wss://example.test' }),
   }));
   try {
-    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
     assert.equal(result.id, 'sess_123');
     assert.equal(liveMock.mock.callCount(), 1);
   } finally {
@@ -112,7 +112,7 @@ test('createBbSession does not block on a null live count (network hiccup treate
     json: async () => ({ id: 'sess_456', connectUrl: 'wss://example.test' }),
   }));
   try {
-    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
     assert.equal(result.id, 'sess_456');
   } finally {
     fetchMock.mock.restore();
@@ -137,9 +137,9 @@ test('createBbSession caches the live count briefly so back-to-back calls do not
     json: async () => ({ id: 'sess_789', connectUrl: 'wss://example.test' }),
   }));
   try {
-    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
-    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
-    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
     assert.equal(liveMock.mock.callCount(), 1, 'three rapid calls should share one cached live-count fetch');
   } finally {
     fetchMock.mock.restore();
@@ -164,7 +164,7 @@ test('createBbSession (#1333): a bulk caller is blocked below the raw ceiling on
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 6);
   try {
     await assert.rejects(
-      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' }),
+      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' }),
       /Browserbase daily cap reached \(6\/5 \(raw ceiling 10, reduced for opening-window reserve\)\)/,
     );
   } finally {
@@ -192,7 +192,7 @@ test('createBbSession (#1333): an exempt opening-night caller is NOT blocked by 
   try {
     // Same live count (6) that blocked the bulk caller above must succeed
     // here — the exempt caller checks the RAW ceiling (10), not the reduced one (5).
-    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' });
     assert.equal(result.id, 'sess_exempt');
   } finally {
     fetchMock.mock.restore();
@@ -265,9 +265,24 @@ test('createBbSession (BRO-3097) records host and category on the ledger row', a
 });
 
 test('createBbSession (BRO-3097) rejects an unrecognized category before any network call', async () => {
+  const fetchMock = mock.method(globalThis, 'fetch', async () => {
+    throw new Error('fetch should never be called — category validation must short-circuit first');
+  });
+  try {
+    await assert.rejects(
+      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'typo-category' }),
+      /opts\.category is required and must be one of review-text\/discovery/,
+    );
+    assert.equal(fetchMock.mock.callCount(), 0);
+  } finally {
+    fetchMock.mock.restore();
+  }
+});
+
+test('createBbSession (BRO-3097) rejects a missing category the same way as a missing caller', async () => {
   await assert.rejects(
-    () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'typo-category' }),
-    /opts\.category must be one of review-text\/discovery/,
+    () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' }),
+    /opts\.category is required and must be one of review-text\/discovery/,
   );
 });
 
@@ -300,7 +315,7 @@ test('BB_CATEGORIES exposes exactly the two valid category values', () => {
   assert.deepEqual(BB_CATEGORIES, ['review-text', 'discovery']);
 });
 
-test('createBbSession (BRO-3097) leaves host/category null when the caller does not pass them (unchanged behavior)', async () => {
+test('createBbSession (BRO-3097) leaves host null when a caller passes category but omits host (host stays optional)', async () => {
   _resetDayCapCacheForTests();
   const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 0);
@@ -310,11 +325,11 @@ test('createBbSession (BRO-3097) leaves host/category null when the caller does 
     json: async () => ({ id: 'sess_bro3097_bare', connectUrl: 'wss://example.test' }),
   }));
   try {
-    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'review-text' });
     const lines = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n');
     const row = JSON.parse(lines[lines.length - 1]);
     assert.equal(row.host, null);
-    assert.equal(row.category, null);
+    assert.equal(row.category, 'review-text');
   } finally {
     fetchMock.mock.restore();
     windowMock.mock.restore();

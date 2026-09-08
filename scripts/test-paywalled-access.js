@@ -793,11 +793,17 @@ async function main() {
     }
 
     console.log('Creating Browserbase session...');
+    // Single-site run (--site=X) has one attributable target; a full run
+    // touches every SITES entry in one session, so there's no single host.
+    const singleSiteHost = siteFilter && SITES[siteFilter]
+      ? new URL(SITES[siteFilter].testArticle).hostname.replace(/^www\./, '')
+      : null;
     const bbSession = await createBbSession({
       apiKey, projectId,
       caller: 'test-paywalled-access.js',
       purpose: 'manual paywalled-access diagnostic',
-      category: 'review-text', // multi-site diagnostic session — no single host to attribute
+      host: singleSiteHost,
+      category: 'review-text',
       body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
     });
 
