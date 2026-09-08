@@ -347,11 +347,20 @@ test('test.yml data-validation: fixed cost + its push-bound steps fit inside tim
   // are fresh per job with sequential steps, so nothing else can hold it.
   const perPushSec = pushWithRetryDefault('PUSH_DEADLINE_SEC') + pushWithRetryDefault('GIT_NET_TIMEOUT_SEC');
 
-  const jobText = jobLines.join('\n');
+  // Match an actual `- name:` STEP line, not any occurrence of the string:
+  // both of these names also appear in prose comments in this job, so a
+  // `jobText.includes(name)` check would keep passing after the step itself was
+  // deleted — the model would then silently describe a job that no longer
+  // exists.
+  const stepNames = jobLines
+    .map((l) => l.match(/^ {6}- name:\s*(.+?)\s*$/))
+    .filter(Boolean)
+    .map((m) => m[1]);
   for (const name of DATA_VALIDATION_PUSH_STEP_NAMES) {
     assert.ok(
-      jobText.includes(name),
-      `expected a "${name}" step in data-validation — if it was removed, this budget model needs updating`,
+      stepNames.includes(name),
+      `expected a "${name}" STEP in data-validation (found steps: ${stepNames.length}) — ` +
+        'if it was renamed or removed, this budget model needs updating',
     );
   }
   const pushWorstCaseSec = DATA_VALIDATION_PUSH_STEP_NAMES.length * perPushSec;
