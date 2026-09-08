@@ -1,0 +1,232 @@
+name: Audit Provisional Show Venues
+
+# BRO-2984 — this sweep used to live in test.yml's `data-validation` job, where it
+# ran `validate-show-venue.js --all-provisional` on EVERY push to main with
+# SCRAPINGBEE_API_KEY + BRIGHTDATA_TOKEN in scope. Measured cost: 222 rows in
+# data/audit/scraper-spend-ledger.jsonl attributed to workflow "Test Suite" over a
+# ~2-day ledger window (219 Bright Data serp-unlocker + 3 ScrapingBee SERP at 25
+# credits each), and ~86 provisional targets x ~12s each of wall-clock inside a
+# unit-test workflow. A unit-test workflow must not spend money at paid providers
+# on every push (owner rule, 2026-09-08) — but CLAUDE.md §3 still requires the
+# Playbill cross-validation to EXIST, so it moved here rather than being deleted.
+#
+# Own workflow file rather than a second job in data-health-check.yml, deliberately:
+#   - that workflow's "Notify on failure" step is job-scoped (inside `health-check`),
+#     so a second job's failure would surface NOWHERE;
+#   - data-health-check.yml is a CRITICAL_CRONS entry on a tight 26h band keyed on
+#     the last SUCCESSFUL run, so a venue mismatch would page the owner as
+#     "the daily digest cron is dead" — the wrong alarm entirely;
+#   - it already has four concurrent `push-with-retry.sh 25 main` steps whose
+#     data/audit/* conflict rule keeps the LOCAL side wholesale; a fifth pusher in
+#     the same run can clobber the health snapshot pushes.
+# Shape follows audit-aggregator-gap.yml (this repo's pattern for a paid-scraper
+# cron): own concurrency group, kill-switch repo variable, a soft time budget, and
+# an advisory `fail_on_mismatch` dispatch input.
+
+on:
+  schedule:
+    # 05:25 UTC daily. Chosen to land BEFORE data-health-check.yml's 06:45 tick so
+    # data/audit/venue-date-mismatches.json is same-day fresh for the morning digest
+    # and for scripts/promote-ob-historical.js (which reads this file's `match` rows
+    # as a shows.json write-path input), while staying clear of the 07:00 UTC cron
+    # trio. See the staleness-band note in check-cron-health.yml before re-timing.
+    - cron: '25 5 * * *'
+  workflow_dispatch:
+    inputs:
+      time_budget_min:
+        description: 'Soft wall-clock budget for the sweep in minutes (default 25)'
+        required: false
+        default: '25'
+      fail_on_mismatch:
+        description: 'Exit non-zero when a provisional entry mismatches Playbill (default true)'
+        required: false
+        default: 'true'
+
+concurrency:
+  group: audit-provisional-venues
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # 48min. The sweep itself is bounded by --time-budget-min (25 by default, see
+    # the step below), the commit step by push-with-retry.sh's 900s PUSH_DEADLINE_SEC
+    # override + one in-flight GIT_NET_TIMEOUT_SEC overshoot, and the ledger commit
+    # by its own composite action. 25 + 16.5 + setup leaves real margin rather than a
+    # hairline pass — the same proportional buffer audit-aggregator-gap.yml uses.
+    # Modeled and ratcheted by tests/unit/data-validation-job-budget.test.mjs.
+    timeout-minutes: 48
+    # Kill switch: `gh variable set PROVISIONAL_VENUE_AUDIT_DISABLED --body true`.
+    # Same pattern as AGGREGATOR_GAP_AUDIT_DISABLED / BROWSERBASE_KILL_SWITCH —
+    # lets the owner stop the spend without a code change if Playbill starts
+    # blocking or the provisional backlog explodes.
+    if: ${{ vars.PROVISIONAL_VENUE_AUDIT_DISABLED != 'true' }}
+    steps:
+      - name: Checkout
+        # fetch-depth 300 for the same reason test.yml's data-validation job uses it
+        # (task #466): the commit steps below run 25+ minutes after this checkout,
+        # and push-with-retry.sh needs real history to rebase onto rather than a
+        # depth-1 stub against a main branch that moved many commits in the interim.
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 300
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Setup Playwright
+        # BRO-2695: playbill.com/web.playbill.com are in PLAYWRIGHT_FIRST_DOMAINS
+        # (scripts/lib/scraper.js) -- fetchPage() deliberately tries Playwright
+        # BEFORE Bright Data for Playbill production pages (their ad/analytics
+        # XHRs never let networkidle settle for other scrapers). Without a
+        # browser installed here, every one of validate-show-venue.js's targets
+        # pays a guaranteed-fail Playwright round trip before falling through to
+        # Bright Data -- pure wasted latency inside the --time-budget-min budget
+        # below (observed: "Executable doesn't exist at
+        # /home/runner/.cache/ms-playwright/...chrome-headless-shell" on every
+        # show in run 33454567745). This step moved here from test.yml with the
+        # sweep it exists for; leaving it behind there would have orphaned it.
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout core data
+        # data/shows.json is ignored by version control in this repo and served
+        # from the private broadway-scorecard-data clone — without this step the
+        # sweep has nothing to validate.
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Validate provisional show venue+dates against Playbill
+        # Cross-checks every provisional:true (or manual-user-request /
+        # venue-page) entry in shows.json against its Playbill production page.
+        # Catches the class of bug surfaced 2026-05-26 where OB venue-page
+        # scrapers wrote stub entries with wrong years (Sunset Baby 2014
+        # confused with the 2024 Signature revival; multiple Signature past-
+        # productions captured with publication-year as opening-year).
+        #
+        # STRICT by default (flipped from advisory 2026-05-27 after the 6
+        # mismatches in data/audit/venue-date-mismatches.json were remediated:
+        # sunset-baby, three-houses, grangeville, eurydice,
+        # oratorio-for-living-things, shit-meet-fan). A real mismatch reddens
+        # THIS workflow only — its blast radius is one daily audit, not every
+        # push to main, which is the whole point of the BRO-2984 move. The
+        # failure reaches the owner through the notify-failure step below and
+        # the daily digest, the same channel audit-aggregator-gap.yml uses.
+        # Fix a hit by editing shows.json to match Playbill (the authoritative
+        # source per CLAUDE.md §3).
+        #
+        # Skips silently when SERP/scrape secrets are absent (forks).
+        #
+        # --time-budget-min (BRO-2627) is still load-bearing even at daily
+        # cadence: the target list is unbounded and growing (73 provisional
+        # shows when the budget was introduced, 86 today) at ~12s/show, so
+        # without it a large enough backlog is SIGKILLed mid-run at the job
+        # timeout instead of stopping cleanly. The script orders shows
+        # new/previously-broken-first (orderProvisionalTargets in
+        # lib/venue-date-compare.js) so a tight budget never starves the
+        # incident-relevant case (a bad NEW stub entry) regardless of how large
+        # the backlog grows -- only the re-sweep of already-clean legacy
+        # entries degrades gracefully. 25 (was 9 under the per-push regime):
+        # 86 targets x ~12s is ~17min, so this covers the full sweep with
+        # headroom instead of deferring a tail every run.
+        if: env.HAS_SCRAPE_SECRETS == 'true'
+        timeout-minutes: 30
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # fetchPage()'s cheapest tier (~3x less than Bright Data), enforced by
+          # `lint-workflow-guards.sh scrapingdog-coverage`. The test.yml step this
+          # sweep moved out of never passed it, so every Playbill fetch fell
+          # straight through to the expensive providers -- relocating the sweep
+          # makes it CHEAPER per run, not just less frequent.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '25' }}
+          FAIL_ON_MISMATCH: ${{ github.event.inputs.fail_on_mismatch || 'true' }}
+        run: |
+          FLAGS="--all-provisional --time-budget-min=$BUDGET_MIN"
+          if [ "$FAIL_ON_MISMATCH" = "true" ]; then
+            FLAGS="$FLAGS --fail-on-mismatch"
+          fi
+          echo "Running: node scripts/validate-show-venue.js $FLAGS"
+          node scripts/validate-show-venue.js $FLAGS
+
+      - name: Persist venue/date audit rotation state (BRO-2695)
+        # validate-show-venue.js's --time-budget-min rotation (BRO-2627) only
+        # advances if THIS run's data/audit/venue-date-mismatches.json is
+        # visible to the NEXT run's loadPreviousResultById() -- and the job that
+        # used to host this sweep never committed the file back for its first
+        # months, so every run re-read the same stale human-committed snapshot,
+        # the same priority-ordered shows got checked every time, and the same
+        # tail was deferred every single run (BRO-2695).
+        #
+        # `if: always()`, with the env-gate redeclared here (step `env:` blocks
+        # are NOT visible to a later step's `if:`) so this runs even when the
+        # sweep above exits 1 under --fail-on-mismatch: a budget-cut or failing
+        # run's partial progress is exactly the state that must survive for the
+        # next run's rotation to advance. This step must never flip the job's
+        # own pass/fail verdict -- it only ever warns on push failure, so a
+        # mismatch stays the only thing that can redden this workflow.
+        #
+        # Expect this to push on nearly every run: the file's own `generatedAt`
+        # timestamp changes on every invocation, so the staged diff is rarely
+        # empty. PUSH_DEADLINE_SEC 900 matches every other high-churn data/audit
+        # pusher in this repo (task #1791) -- this file is not in
+        # core-data-merge-registry.js's API_FALLBACK_SAFE list, so
+        # push-with-retry.sh's Git Data API fallback is structurally disqualified
+        # for it and the deadline is the only budget that applies.
+        if: always() && env.HAS_SCRAPE_SECRETS == 'true'
+        timeout-minutes: 17
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/venue-date-mismatches.json
+          if git diff --staged --quiet; then
+            echo "No venue-date-mismatches.json change to persist"
+            exit 0
+          fi
+          git commit -q -m "data: venue/date audit rotation state [skip ci]"
+          if ! bash scripts/lib/push-with-retry.sh; then
+            echo "::warning::venue-date-mismatches.json push failed -- next run falls back to the last-committed snapshot (pre-BRO-2695-fix behavior for this run only)."
+          fi
+
+      # Own step, if: always() + continue-on-error, matching every other
+      # commit-scraper-spend-ledger call site (BRO-163): this sweep's Bright
+      # Data / ScrapingBee SERP rows are written to the runner's local
+      # data/audit/scraper-spend-ledger.jsonl by scraper.js, and without this
+      # step they are discarded at job end -- the exact gap
+      # `lint-workflow-guards.sh ledger-coverage` (test.yml) exists to prevent.
+      # This is also what makes BRO-2984's own acceptance measurable: with the
+      # rows now attributed to this workflow instead of "Test Suite", the
+      # ledger shows the spend moved rather than vanished.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-provisional-venues
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Provisional Show Venue Audit Failed'
+          description: >-
+            A provisional shows.json entry disagrees with its Playbill production page
+            (venue or year). See data/audit/venue-date-mismatches.json in the run, and
+            fix shows.json to match Playbill — the authoritative source per CLAUDE.md §3.
+          severity: 'warning'
