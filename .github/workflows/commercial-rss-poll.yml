@@ -183,7 +183,16 @@ jobs:
         # every trip/clear alert from all three checks — the ledger only
         # exists on this job's ephemeral runner disk and must be committed
         # in the SAME job (owner-alert-router.js, card #618) or that alert
-        # state is silently lost. data-health-check.yml already establishes
+        # state is silently lost. BRO-3022 adds breaker-transitions.jsonl to
+        # the same list for the same reason: it is the ONLY record of which
+        # DAYS each guard tripped (alert-ledger.json keeps a cumulative
+        # notifyCount per condition and nothing per-day), it is appended by the
+        # two checks directly above, and it lives only on this runner's disk
+        # until committed. It is registered apiFallbackMerge in
+        # scripts/lib/core-data-merge-registry.js precisely so adding it here
+        # does NOT trip push-with-retry.sh's "unaudited data/audit/ path"
+        # disqualifier and strip the Git Data API fallback from this commit.
+        # data-health-check.yml already establishes
         # multiple push-with-retry.sh calls per job as a supported pattern
         # (see its stranded-commit-cascade test). Not continue-on-error —
         # a failed breaker-state push is exactly the bug this step exists to
@@ -217,7 +226,7 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '300'
         run: |
-          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json
           if git diff --staged --quiet; then
             echo "No breaker state changes to commit"
           else

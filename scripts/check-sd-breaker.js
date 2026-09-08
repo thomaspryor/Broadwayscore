@@ -33,6 +33,7 @@ const { utcDay, breakerAlertSeverity, effectiveCeilingForOpeningWindow } = requi
 const { fetchSdAccount } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
+const { recordTransitionSafely, stateOf } = require('./lib/breaker-transitions');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -176,9 +177,29 @@ async function main() {
     return;
   }
 
+  const conditionKey = 'sd-circuit-breaker';
+
+  // BRO-3022: record the TRANSITION. This is the only per-day trip record that
+  // exists — data/audit/alert-ledger.json keeps a single cumulative
+  // notifyCount per condition (gated by the router's own 6h cooldown), which
+  // cannot answer Sprint 3's "how many days did this guard trip this week".
+  // Deliberately inside this branch, which is already the "status changed"
+  // branch, so an unchanged status appends nothing; and deliberately AFTER the
+  // --dry-run early return above, so --dry-run writes no row. recordTransition-
+  // Safely swallows its own errors: the alert below matters more than the row,
+  // and an unwritable ledger must never suppress it.
+  recordTransitionSafely({
+    conditionKey,
+    from: stateOf(wasActive),
+    to: stateOf(verdict.tripped),
+    day,
+    units: dayCredits,
+    ceiling: effectiveCeiling,
+    ceilingSource,
+  });
+
   const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
-  const conditionKey = 'sd-circuit-breaker';
 
   if (!verdict.tripped) {
     const resolved = resolveCondition(conditionKey);

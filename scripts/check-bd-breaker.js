@@ -37,6 +37,7 @@ const {
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
+const { recordTransitionSafely, stateOf } = require('./lib/breaker-transitions');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -136,7 +137,11 @@ async function main() {
       : null;
     state.zones[zone] = { day, trippedAt, billedReqs, ceiling: effectiveCeiling, cost: billing.cost };
     if (verdict.tripped !== wasActive) {
-      changes.push({ zone, tripped: verdict.tripped, billedReqs, ceiling: effectiveCeiling });
+      // wasActive is carried through (BRO-3022) so the transition ledger below
+      // can record the real from-state rather than inferring it: this branch is
+      // already "the status changed", so from is always !tripped today, but
+      // spelling it out keeps the row honest if a third state is ever added.
+      changes.push({ zone, tripped: verdict.tripped, wasActive, billedReqs, ceiling: effectiveCeiling });
     }
   }
 
@@ -160,7 +165,31 @@ async function main() {
   const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const change of changes) {
+    // NOTE the per-zone suffix. BRO-3011's Sprint 3 plan names a flat
+    // 'bd-circuit-breaker' key; that key has never existed. The real condition
+    // keys are bd-circuit-breaker-web_unlocker2 and bd-circuit-breaker-serp_api1,
+    // and the transition rows below use them verbatim so a reader can join the
+    // two files on conditionKey without a translation table.
     const conditionKey = `bd-circuit-breaker-${change.zone}`;
+
+    // BRO-3022: record the TRANSITION — the only per-day trip record there is.
+    // `changes` holds exactly the zones whose status flipped this run, so an
+    // unchanged zone appends nothing, and the --dry-run early return above
+    // means --dry-run writes no row. Errors are swallowed: the alert below
+    // matters more than the row.
+    recordTransitionSafely({
+      conditionKey,
+      from: stateOf(change.wasActive),
+      to: stateOf(change.tripped),
+      day,
+      units: change.billedReqs,
+      ceiling: change.ceiling,
+      // BD's resolveDailyCeiling() is a bare env-or-default number with no
+      // source string of its own (unlike SD's resolveCeilingForDay(), which
+      // returns {ceiling, source}), so name the two cases explicitly rather
+      // than writing a null the reader would have to guess at.
+      ceilingSource: process.env.BD_BREAKER_CEILING ? 'env' : 'default',
+    });
 
     // Recovery is not news. Resolving the condition (rather than routing a
     // second "all clear" line) clears the cooldown so the NEXT trip notifies
