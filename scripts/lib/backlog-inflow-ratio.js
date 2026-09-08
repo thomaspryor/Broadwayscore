@@ -75,6 +75,16 @@ const WATCH_MAX_RATIO = 2.5;
 // documented fate of the 21 unheeded email-worker alerts.
 const MIN_CREATED_FOR_ALARM = 5;
 
+// Retry budget for the digest's calls, injected into linear-client's graphql().
+// A Promise.race() timeout at the call site REJECTS but cannot CANCEL: the
+// pagination keeps running in the background, and linear-client's defaults
+// (5 attempts, up to a 60s backoff each, 30s per attempt) mean a degraded
+// Linear could leave this walking pages long after the email has sent,
+// competing with every other job on this machine. Racing alone is not
+// bounding. 2 attempts at a 6s ceiling keeps the worst case inside the
+// caller's timeout instead of merely outliving it visibly.
+const DIGEST_GRAPHQL_OPTS = { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 };
+
 /**
  * The exact query text sent over the wire. Exported so the test asserts on
  * the real string rather than a second, drifting copy of it (CLAUDE.md rule
@@ -135,13 +145,13 @@ function buildOpenFilter(teamKey = TEAM_KEY) {
  *   `truncated` true means the walk stopped at maxPages and `count` is a
  *   FLOOR, not the answer.
  */
-async function countMatching({ graphql, filter, includeArchived = false, maxPages = MAX_PAGES }) {
+async function countMatching({ graphql, filter, includeArchived = false, maxPages = MAX_PAGES, graphqlOpts = DIGEST_GRAPHQL_OPTS }) {
   const query = buildInflowCountQuery();
   let after = null;
   let count = 0;
   let pages = 0;
   for (;;) {
-    const data = await graphql(query, { filter, after, includeArchived });
+    const data = await graphql(query, { filter, after, includeArchived }, graphqlOpts);
     const conn = data && data.issues;
     if (!conn || !Array.isArray(conn.nodes)) {
       throw new Error('Linear returned no issues connection for the inflow count');
@@ -160,17 +170,30 @@ async function countMatching({ graphql, filter, includeArchived = false, maxPage
  * paginated walks against a rate-limited API is a worse neighbour than four
  * sequential ones that finish in a couple of seconds.
  */
-async function fetchInflowCounts({ graphql, now = new Date(), windowDays = INFLOW_WINDOW_DAYS, teamKey = TEAM_KEY, maxPages = MAX_PAGES } = {}) {
+async function fetchInflowCounts({ graphql, now = new Date(), windowDays = INFLOW_WINDOW_DAYS, teamKey = TEAM_KEY, maxPages = MAX_PAGES, graphqlOpts = DIGEST_GRAPHQL_OPTS } = {}) {
   const since = windowStart(now, windowDays);
   // includeArchived TRUE for the three closure/creation counts and FALSE for
   // the open count — see ARCHIVED ISSUES in the header. Getting this wrong is
   // not a rounding error: measured live 2026-09-07, the default (archived
   // excluded) hid 41 of 101 closures and 56 of 324 creations in a 7-day
   // window, reporting 4.4:1 for a board that was actually running 3.2:1.
-  const created = await countMatching({ graphql, filter: buildCreatedFilter(since, teamKey), includeArchived: true, maxPages });
-  const completed = await countMatching({ graphql, filter: buildCompletedFilter(since, teamKey), includeArchived: true, maxPages });
-  const canceled = await countMatching({ graphql, filter: buildCanceledFilter(since, teamKey), includeArchived: true, maxPages });
-  const open = await countMatching({ graphql, filter: buildOpenFilter(teamKey), includeArchived: false, maxPages });
+  const created = await countMatching({ graphql, filter: buildCreatedFilter(since, teamKey), includeArchived: true, maxPages, graphqlOpts });
+  const completed = await countMatching({ graphql, filter: buildCompletedFilter(since, teamKey), includeArchived: true, maxPages, graphqlOpts });
+  const canceled = await countMatching({ graphql, filter: buildCanceledFilter(since, teamKey), includeArchived: true, maxPages, graphqlOpts });
+  const open = await countMatching({ graphql, filter: buildOpenFilter(teamKey), includeArchived: false, maxPages, graphqlOpts });
+  // WHICH count truncated matters, and the first version threw it away by
+  // OR-ing four bits into one. Truncating `created` and truncating `completed`
+  // move the ratio in OPPOSITE directions, so a single bit cannot support any
+  // claim about which way the real number lies.
+  const truncatedCounts = [
+    ['created', created],
+    ['completed', completed],
+    ['canceled', canceled],
+    ['open', open],
+  ]
+    .filter(([, r]) => r.truncated)
+    .map(([name]) => name);
+
   return {
     created: created.count,
     completed: completed.count,
@@ -178,7 +201,8 @@ async function fetchInflowCounts({ graphql, now = new Date(), windowDays = INFLO
     open: open.count,
     windowDays,
     since,
-    truncated: created.truncated || completed.truncated || canceled.truncated || open.truncated,
+    truncated: truncatedCounts.length > 0,
+    truncatedCounts,
   };
 }
 
@@ -197,7 +221,7 @@ function assessInflowRatio(counts) {
   if (!counts || typeof counts !== 'object') {
     return { status: 'unknown', ratio: null, message: null };
   }
-  const { created, completed, canceled = 0, open = null, windowDays = INFLOW_WINDOW_DAYS, truncated = false } = counts;
+  const { created, completed, canceled = 0, open = null, windowDays = INFLOW_WINDOW_DAYS, truncated = false, truncatedCounts = [] } = counts;
   if (!Number.isFinite(created) || !Number.isFinite(completed)) {
     return { status: 'unknown', ratio: null, message: null };
   }
@@ -208,14 +232,21 @@ function assessInflowRatio(counts) {
   const ratio = completed > 0 ? created / completed : null;
   const shown = ratio === null ? null : Math.round(ratio * 10) / 10;
 
-  // A truncated walk under-counts, and an under-count can only ever make the
-  // board look healthier than it is. Say so instead of publishing the floor
-  // as if it were the number.
+  // A truncated walk under-counts, but NOT in a knowable direction: an
+  // under-counted `created` makes the ratio look better than it is, an
+  // under-counted `completed` makes it look worse. The first version of this
+  // asserted "the real ratio is worse than any number here", which is simply
+  // false when the denominator is the truncated one — 250/250 could really be
+  // 250/1,000. Report both counts as floors and refuse to claim a direction;
+  // an alarm that states a falsehood is worse than one that says "unknown".
   if (truncated) {
+    const which = Array.isArray(truncatedCounts) && truncatedCounts.length
+      ? ` (${truncatedCounts.join(' and ')} hit the limit)`
+      : '';
     return {
       status: 'unknown',
-      ratio: shown,
-      message: `Backlog inflow: the Linear count hit its page limit, so the last ${days} read as at least ${created} filed / ${completed} closed and the real ratio is worse than any number here.`,
+      ratio: null,
+      message: `Backlog inflow: the Linear count hit its page limit${which}, so the last ${days} read as AT LEAST ${created} filed and AT LEAST ${completed} closed. Both are floors, so the real ratio could be better or worse than these numbers — treat it as unmeasured, not as a verdict.`,
     };
   }
 
@@ -246,6 +277,17 @@ function assessInflowRatio(counts) {
   if (ratio <= OK_MAX_RATIO) {
     return { status: 'ok', ratio: shown, message: `${base} Holding.` };
   }
+  // The volume floor applies to the RATIO branches too, not just to the
+  // zero-closed branch above. 4 filed / 1 closed is a ratio of 4.0 and would
+  // otherwise render red — "the backlog is growing about 21 issues a week" —
+  // over a quiet week. The header's own reasoning ("a week with 4 filed and 0
+  // closed is a quiet week, not an emergency… without this floor the row would
+  // cry wolf and get ignored") applies identically here, and the first version
+  // simply failed to implement it on this path. A ratio computed from a handful
+  // of issues is noise, so it is capped at `watch` and never escalates.
+  if (created < MIN_CREATED_FOR_ALARM) {
+    return { status: 'watch', ratio: shown, message: `${base} Too few issues this ${days === '1 day' ? 'day' : 'window'} to call it a trend.` };
+  }
   if (ratio <= WATCH_MAX_RATIO) {
     return { status: 'watch', ratio: shown, message: `${base} Drifting — the backlog grows about ${perWeek} issues a week at this rate.` };
   }
@@ -263,6 +305,7 @@ module.exports = {
   OK_MAX_RATIO,
   WATCH_MAX_RATIO,
   MIN_CREATED_FOR_ALARM,
+  DIGEST_GRAPHQL_OPTS,
   buildInflowCountQuery,
   windowStart,
   buildCreatedFilter,

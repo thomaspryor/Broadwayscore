@@ -1171,8 +1171,51 @@ async function existingCardTitles() {
     // was capped at --limit 50, which on a board this size silently compared
     // each new finding against an arbitrary slice of the board.
     const linear = require('./lib/linear-client.js');
-    const issues = await linear.listOpenIssuesWithDescriptions();
-    return { titles: (issues || []).map(i => i.title).filter(Boolean), ok: true };
+    const openIssues = await linear.listOpenIssuesWithDescriptions();
+    const titles = (openIssues || []).map(i => i.title).filter(Boolean);
+
+    // CLOSED findings count for dedup too. listOpenIssuesWithDescriptions
+    // filters out completed/canceled/duplicate, but a UX finding closed as
+    // won't-fix or duplicate describes a defect that is usually STILL THERE —
+    // the walkthrough will re-detect it tonight, not match it against the
+    // open board, and file it again. And again. The old Notion search matched
+    // cards at any status; narrowing to open-only here would have turned this
+    // fix into the nightly duplicate generator it exists to prevent.
+    // includeArchived: true because linear-archive-done.js archives every
+    // terminal issue older than 48h, which is most of them.
+    try {
+      const closed = await linear.graphql(
+        `query($after: String) {
+          issues(filter: { team: { key: { eq: "BRO" } }, title: { startsWith: "UX audit:" } },
+                 first: 250, after: $after, includeArchived: true) {
+            pageInfo { hasNextPage endCursor }
+            nodes { title }
+          }
+        }`,
+        { after: null }
+      );
+      for (const n of closed?.issues?.nodes || []) if (n.title) titles.push(n.title);
+    } catch (err) {
+      // Non-fatal: dedup against the open board still works, we just lose the
+      // closed-findings half. Say so rather than silently narrowing.
+      console.error(`[ux-walkthrough] WARN could not read closed UX-audit issues, dedup covers open issues only: ${err.message}`);
+    }
+    // A ZERO-length read is treated as a FAILED read, not an empty board.
+    // listOpenIssuesWithDescriptions turns a malformed response into an empty
+    // list by design (`data.issues || { nodes: [], … }`, linear-client.js:340),
+    // so "no issues" and "the API returned something we could not parse" are
+    // the same value — and the second one, taken as an empty board, refiles
+    // every historical finding. The BRO board carries ~1,074 open issues and
+    // has never been empty; if it ever legitimately were, skipping one night
+    // of filing costs nothing, while the opposite mistake costs a cleanup.
+    // Same reasoning as the repo's absolute-floor gates (test.yml's 500-show /
+    // 15k-review floors, corpus-scan-guard.js) — an implausibly small read is
+    // a broken read.
+    if (titles.length === 0) {
+      console.error('[ux-walkthrough] board read returned ZERO open issues — treating as a failed read, not an empty board (see this function\'s comment).');
+      return { titles: [], ok: false };
+    }
+    return { titles, ok: true };
   } catch (err) {
     console.error(`[ux-walkthrough] could not fetch existing UX-audit issues: ${err.message}`);
     return { titles: [], ok: false };
@@ -1206,7 +1249,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
   const plan = planFilings({ findings: deduped, existing });
   if (plan.refused) {
     console.error(`[ux-walkthrough] REFUSING to file: ${plan.reason}. Findings are in the run directory; fix the Linear read and re-run.`);
-    return [];
+    return { filed: [], failed: [], refused: true, reason: plan.reason };
   }
   for (const t of plan.skippedDuplicate) console.error(`[ux-walkthrough] skip (existing issue match): ${t}`);
 
@@ -1221,10 +1264,21 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
     try {
       // linear-brain.js, NOT notion-brain.js: Notion has been read-only since
       // 2026-08-30 and its create exits 6, so every finding this walkthrough
-      // produced was logged as a one-line failure and dropped. linear-brain
-      // is also the single creation chokepoint, so the duplicate gate and cap
-      // policy apply here for free. Linear priority is numeric 0-4 (2 high,
-      // 3 normal); there is no --status/--category/--type/--tags.
+      // produced was logged as a one-line failure and dropped. Linear priority
+      // is numeric 0-4 (2 high, 3 normal); there is no
+      // --status/--category/--type/--tags.
+      //
+      // An earlier version of this comment claimed linear-brain's create
+      // applies "the duplicate gate and cap policy for free". That was FALSE
+      // and unverified — linear-issue-create.js has no duplicate gate at all
+      // (linear-brain's duplicate gate guards the `update` path into a
+      // duplicate STATE, which is a different thing). Dedup here is
+      // check-then-create against a snapshot taken before this loop, so a
+      // concurrent filer can still mint a twin between the read and this call.
+      // The workflow's concurrency group only excludes another UX-walkthrough
+      // run. Closing that properly needs a deterministic client-supplied id
+      // (Linear's IssueCreateInput accepts one — see linear-retry-policy.js's
+      // header) and belongs with the wider board work, not smuggled in here.
       execFileSync('node', [
         'scripts/linear-brain.js', 'create', title,
         '--priority', String(priority),
@@ -1249,7 +1303,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
   if (failed.length) {
     console.error(`[ux-walkthrough] ${filed.length} filed, ${failed.length} FAILED to file — findings are in the run directory, not on the board.`);
   }
-  return filed;
+  return { filed, failed, refused: false, reason: null };
 }
 
 // ── Self-test (calibration) ─────────────────────────────────────────────────
@@ -1376,11 +1430,29 @@ async function main() {
           models: [`ux-walkthrough:${f.tag}`], agreementCount: 2, deterministic: true,
         }));
         const allFindings = mergeFindingSources(deduped, deterministicAsDeduped);
-        const existing = await existingCardTitles();
+        // Skipped entirely under --noFile: a calibration run would otherwise
+        // do a full paginated board read it never uses, and print a scary
+        // "could not fetch existing issues" line for nothing.
+        const existing = args.noFile ? { titles: [], ok: false } : await existingCardTitles();
         const respondingCount = panel.filter(p => !p.error).length;
-        const filed = args.noFile ? [] : await fileBoardIssues(allFindings, existing, respondingCount);
+        const fileResult = args.noFile
+          ? { filed: [], failed: [], refused: false, reason: 'skipped (--no-file)' }
+          : await fileBoardIssues(allFindings, existing, respondingCount);
+        const filed = fileResult.filed;
 
-        writeFileSync(join(outDir, 'review.json'), JSON.stringify({ panel, deduped, deterministicFindings, filed }, null, 2));
+        // filingStatus is persisted, not just logged: `filed: []` alone cannot
+        // distinguish a clean night from a night where the board read failed
+        // and nothing was filed, and the workflow step is continue-on-error so
+        // a silent zero looks identical to success.
+        writeFileSync(join(outDir, 'review.json'), JSON.stringify({
+          panel, deduped, deterministicFindings, filed,
+          filingStatus: { refused: fileResult.refused, reason: fileResult.reason, failedToFile: fileResult.failed },
+        }, null, 2));
+        if (fileResult.refused) {
+          console.error(`::warning::UX walkthrough filed NOTHING — ${fileResult.reason}`);
+        } else if (fileResult.failed.length) {
+          console.error(`::warning::UX walkthrough failed to file ${fileResult.failed.length} finding(s) to Linear`);
+        }
         console.error(`[ux-walkthrough] ${deduped.length} model finding(s), ${deterministicFindings.length} deterministic finding(s), ${filed.length} filed to Linear`);
         console.log('━'.repeat(60));
         console.log(`UX WALKTHROUGH — ${shots.length} screenshots, ${deduped.length} model findings, ${deterministicFindings.length} deterministic findings, ${filed.length} filed`);

@@ -175,6 +175,54 @@ test('the walkthrough files through the linear-brain chokepoint', () => {
   assert.ok(/planFilings/.test(code), 'the filing decision must come from planFilings, not be re-inlined here');
 });
 
+test('the caller treats a ZERO-issue board read as a failed read', () => {
+  // listOpenIssuesWithDescriptions turns a malformed response into an empty
+  // list by design (`data.issues || { nodes: [], … }`), so "empty board" and
+  // "unparseable response" are the same value — and the second, taken at face
+  // value, refiles every historical finding. The caller must convert a
+  // zero-length read into ok:false before it ever reaches planFilings.
+  const code = walkthroughCode();
+  assert.ok(/titles\.length === 0/.test(code), 'existingCardTitles must guard against a zero-length board read');
+  assert.ok(/ok: false/.test(code), 'a zero-length read must return ok:false, not an empty ok:true board');
+});
+
+test('dedup covers CLOSED findings, not only the open board', () => {
+  // listOpenIssuesWithDescriptions excludes completed/canceled/duplicate. A UX
+  // finding closed as won't-fix describes a defect that is usually still there,
+  // so the walkthrough re-detects it, fails to match it against an open-only
+  // board, and refiles it every night. The old Notion search matched any
+  // status; narrowing here would turn this fix into the duplicate generator it
+  // exists to prevent.
+  const code = walkthroughCode();
+  assert.ok(/includeArchived: true/.test(code), 'the closed-findings read must include archived issues (most terminal issues are archived within 48h)');
+  assert.ok(/UX audit:/.test(code), 'the closed-findings read must be scoped to UX-audit titles');
+});
+
+test('a calibration run does not read the board at all', () => {
+  const code = walkthroughCode();
+  assert.ok(/args\.noFile \? \{ titles: \[\], ok: false \}/.test(code), '--noFile must skip the paginated board read it never uses');
+});
+
+test('the caller persists WHY nothing was filed, not just an empty list', () => {
+  // `filed: []` alone cannot tell a clean night from a night where the board
+  // read failed and nothing reached Linear. The workflow step is
+  // continue-on-error, so a silent zero looks exactly like success.
+  const code = walkthroughCode();
+  assert.ok(/filingStatus/.test(code), 'review.json must record filingStatus');
+  assert.ok(/::warning::/.test(code), 'a refusal or a failed create must emit a CI warning annotation');
+});
+
+test('the caller no longer claims linear-brain applies a duplicate gate', () => {
+  // It does not — linear-issue-create.js has no duplicate gate, and filing is
+  // check-then-create against a snapshot taken before the loop. An earlier
+  // comment here asserted otherwise without verifying it.
+  const raw = readFileSync(WALKTHROUGH, 'utf8'); // comments INCLUDED on purpose
+  assert.ok(
+    !/duplicate gate and cap policy apply here for free/.test(raw),
+    'the false "duplicate gate for free" claim must not come back'
+  );
+});
+
 test('the walkthrough does not carry its own copy of titleFor', () => {
   // A byte-identical twin left in the caller is the definition a future "fix
   // the title format" edit lands on, with CI staying green.

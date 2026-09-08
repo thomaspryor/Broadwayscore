@@ -53,7 +53,16 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          # LINEAR_API_KEY, not NOTION_API_KEY: this walkthrough files its
+          # findings to Linear and reads the board to dedup against it. Without
+          # this, linear-client.js's getApiKey() throws, the board read fails,
+          # and the filing guard correctly REFUSES — which would have replaced
+          # a silently-dead Notion path with a silently-dead Linear one, since
+          # the step is continue-on-error. scripts/audit-workflow-secret-gaps.js
+          # already prints this gap ("reads LINEAR_API_KEY") but exits 0, so
+          # nothing blocks on it — the missing key has to be caught by reading
+          # the audit, not by CI going red.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
 
       - name: Upload screenshot + review artifact
         if: always()

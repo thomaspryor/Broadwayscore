@@ -14,6 +14,7 @@ import {
   OK_MAX_RATIO,
   WATCH_MAX_RATIO,
   MIN_CREATED_FOR_ALARM,
+  DIGEST_GRAPHQL_OPTS,
   buildInflowCountQuery,
   windowStart,
   buildCreatedFilter,
@@ -97,6 +98,28 @@ test('nothing filed and nothing closed is quiet, not broken', () => {
   assert.equal(r.ratio, null);
 });
 
+test('the volume floor applies to the RATIO branches, not just zero-closed', () => {
+  // 4 filed / 1 closed is a ratio of 4.0. The first version rendered that red
+  // — "growing about 21 issues a week" — over a quiet week, because the floor
+  // was implemented only in the completed===0 branch. A row that cries wolf on
+  // a quiet week is a row the owner stops reading.
+  const quiet = assessInflowRatio({ created: MIN_CREATED_FOR_ALARM - 1, completed: 1, windowDays: 7 });
+  assert.equal(quiet.status, 'watch');
+  assert.ok(!/growing/.test(quiet.message), quiet.message);
+  assert.ok(/Too few issues/.test(quiet.message), quiet.message);
+
+  // One more filed, same terrible ratio, and it IS an alarm.
+  const real = assessInflowRatio({ created: MIN_CREATED_FOR_ALARM, completed: 1, windowDays: 7 });
+  assert.equal(real.status, 'error');
+});
+
+test('the volume floor never downgrades a genuinely healthy verdict', () => {
+  // A quiet week that is nonetheless closing more than it files stays ok —
+  // the floor caps alarm, it does not manufacture one.
+  const r = assessInflowRatio({ created: 2, completed: 4, windowDays: 7 });
+  assert.equal(r.status, 'ok');
+});
+
 test('a few filed with none closed is watch, not an emergency', () => {
   const r = assessInflowRatio({ created: MIN_CREATED_FOR_ALARM - 1, completed: 0, windowDays: 7 });
   assert.equal(r.status, 'watch');
@@ -109,12 +132,57 @@ test('many filed with none closed is an error', () => {
   assert.ok(r.message.includes('NOTHING closed'), r.message);
 });
 
-test('a truncated count is reported as a floor, never as the answer', () => {
-  // An under-count can only ever make the board look healthier than it is.
-  const r = assessInflowRatio({ created: 250, completed: 250, open: 250, windowDays: 7, truncated: true });
+test('a truncated count is reported as a floor with NO claimed direction', () => {
+  // The first version asserted "the real ratio is worse than any number here".
+  // That is false when the DENOMINATOR is the truncated one: 250/250 could
+  // really be 250/1,000, which is better. Truncating `created` and truncating
+  // `completed` move the ratio in opposite directions, so no single claim
+  // about direction is safe.
+  const r = assessInflowRatio({ created: 250, completed: 250, open: 250, windowDays: 7, truncated: true, truncatedCounts: ['completed'] });
   assert.equal(r.status, 'unknown');
+  assert.equal(r.ratio, null, 'a truncated walk must not publish a ratio at all');
   assert.ok(/page limit/.test(r.message), r.message);
-  assert.ok(/worse/.test(r.message), r.message);
+  assert.ok(/AT LEAST/.test(r.message), r.message);
+  assert.ok(/better or worse/.test(r.message), r.message);
+  assert.ok(!/\bthe real ratio is worse\b/.test(r.message), 'must not claim a direction it cannot know');
+  assert.ok(r.message.includes('completed'), 'name which count truncated');
+});
+
+test('fetchInflowCounts reports WHICH counts truncated, not one merged bit', () => {
+  // One OR-ed bit cannot support any statement about direction, which is how
+  // the false "ratio is worse" claim above became possible.
+  const graphql = async (_q, vars) => ({
+    issues: {
+      nodes: [{ id: 'x' }],
+      // Only the completed walk (2nd) needs another page.
+      pageInfo: { hasNextPage: 'completedAt' in vars.filter, endCursor: 'c' },
+    },
+  });
+  return fetchInflowCounts({ graphql, now: new Date('2026-09-08T00:00:00.000Z'), maxPages: 1 }).then((counts) => {
+    assert.equal(counts.truncated, true);
+    assert.deepEqual(counts.truncatedCounts, ['completed']);
+  });
+});
+
+test('the digest retry budget is bounded, not linear-client defaults', () => {
+  // A Promise.race timeout REJECTS but cannot CANCEL the pagination. Without
+  // an injected budget the walk keeps going on linear-client's defaults
+  // (5 attempts, up to 60s backoff, 30s per attempt) long after the email
+  // sent. Racing is not bounding.
+  assert.ok(DIGEST_GRAPHQL_OPTS.maxAttempts <= 2, JSON.stringify(DIGEST_GRAPHQL_OPTS));
+  assert.ok(DIGEST_GRAPHQL_OPTS.timeoutMs <= 10_000, JSON.stringify(DIGEST_GRAPHQL_OPTS));
+});
+
+test('the injected retry budget actually reaches graphql()', () => {
+  const seen = [];
+  const graphql = async (_q, _v, opts) => {
+    seen.push(opts);
+    return { issues: { nodes: [], pageInfo: { hasNextPage: false } } };
+  };
+  return fetchInflowCounts({ graphql, now: new Date('2026-09-08T00:00:00.000Z') }).then(() => {
+    assert.equal(seen.length, 4);
+    for (const o of seen) assert.deepEqual(o, DIGEST_GRAPHQL_OPTS);
+  });
 });
 
 test('missing or unusable counts return unknown with no message', () => {

@@ -756,7 +756,18 @@ async function main() {
     const counts = await Promise.race([fetchInflowCounts({ graphql, now: new Date() }), timeout(20_000)]);
     inflow = assessInflowRatio(counts);
   } catch (err) {
-    console.error(`[digest] WARN backlog inflow ratio failed: ${String(err.message).slice(0, 120)}`);
+    const why = String(err.message).slice(0, 120);
+    console.error(`[digest] WARN backlog inflow ratio failed: ${why}`);
+    // Say so IN THE EMAIL, do not leave the row out. A row that vanishes on
+    // exactly the failure it exists to expose is the bug this whole metric was
+    // built to end: silence then means "healthy" and "the collector is dead"
+    // at the same time, and the owner cannot tell which. Same shape as
+    // localLinearDelegationMessage's unreadable-file branch above.
+    inflow = {
+      status: 'unknown',
+      ratio: null,
+      message: `Backlog inflow: could not be measured this morning (${why}). This row is not "no news" — nobody is watching the create-to-close rate until it comes back.`,
+    };
   }
 
   const problemsNote = describeProblems(problems);
