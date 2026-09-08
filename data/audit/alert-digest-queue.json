@@ -329,5 +329,53 @@
       }
     ],
     "queuedAt": "2026-09-08T13:36:53.336Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:kimberly-akimbo-off-west-end-2026",
+    "title": "Auto-remediation gave up on kimberly-akimbo-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"kimberly-akimbo-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.815Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-kimberly-akimbo-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Kimberly Akimbo",
+    "description": "kimberly-akimbo-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=kimberly-akimbo-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.819Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jane-eyre-off-west-end-2026",
+    "title": "Auto-remediation gave up on jane-eyre-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jane-eyre-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.820Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-jane-eyre-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Jane Eyre",
+    "description": "jane-eyre-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jane-eyre-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.822Z"
   }
 ]

@@ -137,11 +137,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-08T10:16:42.947Z",
+      "lastSeen": "2026-09-08T14:39:14.897Z",
       "lastNotifiedAt": "2026-09-08T10:16:42.947Z",
       "notifyCount": 61,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -780,12 +781,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-08T14:12:41.607Z",
+      "lastSeen": "2026-09-08T14:39:14.896Z",
       "lastNotifiedAt": "2026-09-08T10:16:42.627Z",
       "notifyCount": 46,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -2376,12 +2377,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Kimberly Akimbo",
       "firstSeen": "2026-09-07T20:38:47.994Z",
-      "lastSeen": "2026-09-08T04:44:02.508Z",
+      "lastSeen": "2026-09-08T14:37:07.817Z",
       "lastNotifiedAt": "2026-09-07T20:38:47.994Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-publish-date-pre-opening:kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -2415,6 +2416,50 @@
       "firstSeen": "2026-09-08T13:36:53.333Z",
       "lastSeen": "2026-09-08T13:36:53.333Z",
       "lastNotifiedAt": "2026-09-08T13:36:53.333Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-empty-cast:kimberly-akimbo-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on kimberly-akimbo-off-west-end-2026",
+      "firstSeen": "2026-09-08T14:37:07.814Z",
+      "lastSeen": "2026-09-08T14:37:07.814Z",
+      "lastNotifiedAt": "2026-09-08T14:37:07.814Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-kimberly-akimbo-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Kimberly Akimbo",
+      "firstSeen": "2026-09-08T14:37:07.818Z",
+      "lastSeen": "2026-09-08T14:37:07.818Z",
+      "lastNotifiedAt": "2026-09-08T14:37:07.818Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-empty-cast:jane-eyre-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on jane-eyre-off-west-end-2026",
+      "firstSeen": "2026-09-08T14:37:07.820Z",
+      "lastSeen": "2026-09-08T14:37:07.820Z",
+      "lastNotifiedAt": "2026-09-08T14:37:07.820Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-jane-eyre-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Jane Eyre",
+      "firstSeen": "2026-09-08T14:37:07.822Z",
+      "lastSeen": "2026-09-08T14:37:07.822Z",
+      "lastNotifiedAt": "2026-09-08T14:37:07.822Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

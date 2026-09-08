@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   findMissedBroadcasts,
   classifyBroadcastState,
+  wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
   DEFAULT_MAX_ALERT_AGE_DAYS,
@@ -201,5 +202,82 @@ test('regression: electra-persona-west-end-2026 as it actually was on 2026-09-07
   assert.strictEqual(missed[0].title, 'Electra / Persona');
   assert.strictEqual(missed[0].daysSinceOpening, 6);
   assert.strictEqual(missed[0].state, 'never-drafted');
+  assert.strictEqual(missed[0].alertable, true);
+});
+
+// --- BRO-3088: West End Weekly Round-up suppression ---
+
+test('wasCoveredByWeeklyRoundup: true only for issues actually delivered to the West End Resend audience', () => {
+  // create-broadcast-draft.mjs derives audience strictly from edition:
+  // 'west-end' edition -> the 'west-end' Resend audience, everything else
+  // (including 'broadway') -> 'general'. Those are two DISTINCT lists, so a
+  // 'broadway'-tagged issue — even one whose quiet-Broadway-week fallback
+  // filled featuredShowIds with West End show ids — is NOT proof West End
+  // subscribers received it.
+  assert.strictEqual(
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', edition: 'broadway', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    false,
+    "a 'broadway'-edition issue must not count as West End coverage"
+  );
+  assert.strictEqual(
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    true
+  );
+  // Pre edition-split issues (no `edition` field) had one combined audience.
+  assert.strictEqual(
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-06-01', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    true
+  );
+  assert.strictEqual(wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', featuredShowIds: [] }], 'electra-persona-west-end-2026'), false);
+  assert.strictEqual(wasCoveredByWeeklyRoundup([], 'electra-persona-west-end-2026'), false);
+  assert.strictEqual(wasCoveredByWeeklyRoundup(null, 'electra-persona-west-end-2026'), false);
+  assert.strictEqual(wasCoveredByWeeklyRoundup([{ edition: 'west-end', featuredShowIds: ['x'] }], null), false);
+});
+
+test('regression: BRO-3088 — a West End show already in a real west-end-edition Round-up does not page as missed', () => {
+  // The real shape on 2026-09-07: electra-persona-west-end-2026, the-story-west-end-2026,
+  // and abigails-party-west-end-2026 all paged "Opening Night Email Never Reached
+  // Subscribers" despite each already having a properly edition:'west-end'-tagged
+  // Round-up card (2026-08-24 issue) that actually reached West End subscribers —
+  // a redundant force_broadcast ask the owner declined.
+  const newsletterIssues = [
+    { weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026', 'the-story-west-end-2026', 'a-month-in-the-country-west-end-2026'] },
+  ];
+  const shows = [
+    show({ id: 'electra-persona-west-end-2026', openingDate: '2026-09-01' }),
+    show({ id: 'the-story-west-end-2026', openingDate: '2026-09-01' }),
+  ];
+  const reviews = [...reviewsFor('electra-persona-west-end-2026', 20), ...reviewsFor('the-story-west-end-2026', 20)];
+
+  const withoutRoundup = findMissedBroadcasts({ shows, sentShows: {}, reviews, now: NOW });
+  assert.strictEqual(withoutRoundup.every((m) => m.alertable), true, 'sanity: pages without the round-up signal');
+
+  const missed = findMissedBroadcasts({ shows, sentShows: {}, reviews, now: NOW, newsletterIssues });
+  assert.strictEqual(missed.length, 2, 'still reported, not silently dropped');
+  for (const m of missed) {
+    assert.strictEqual(m.state, 'covered-by-roundup');
+    assert.strictEqual(m.alertable, false, 'no page for round-up-covered West End shows');
+  }
+});
+
+test('round-up coverage does not suppress Broadway (no equivalent weekly digest)', () => {
+  const bway = show({ id: 'b-2026', category: 'broadway' });
+  const withAgg = reviewsFor('b-2026', 20).map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));
+  const newsletterIssues = [{ weekStart: '2026-08-31', featuredShowIds: ['b-2026'] }];
+  const missed = findMissedBroadcasts({ shows: [bway], sentShows: {}, reviews: withAgg, now: NOW, newsletterIssues });
+  assert.strictEqual(missed.length, 1);
+  assert.strictEqual(missed[0].state, 'never-drafted');
+  assert.strictEqual(missed[0].alertable, true);
+});
+
+test('round-up coverage does not mask a genuinely stuck draft (draft-stuck still pages)', () => {
+  // A West End show can be both round-up-covered AND have a stray Resend draft
+  // sitting unsent — that draft still needs a human, so coverage must not
+  // paper over a state other than never-drafted.
+  const record = { completed: true, draftStatus: 'draft', sentAt: null, draftId: 'abc' };
+  const newsletterIssues = [{ weekStart: '2026-08-31', featuredShowIds: ['x-2026'] }];
+  const missed = find({ sentShows: { 'x-2026': record }, newsletterIssues });
+  assert.strictEqual(missed.length, 1);
+  assert.strictEqual(missed[0].state, 'draft-stuck');
   assert.strictEqual(missed[0].alertable, true);
 });
