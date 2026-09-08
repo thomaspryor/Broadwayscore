@@ -29,17 +29,23 @@ const path = require('path');
 // Reuse the production success bar so the bake-off can't mark a homepage soft-404
 // or wrong-article redirect as "OK" (BWW returns its homepage with 200 on a miss).
 const { verifyFetchedUrl } = require('./lib/scraper');
+const { creditsFor } = require('./lib/provider-credits');
+const { usdFor } = require('./lib/provider-pricing');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
 
-// Pricing (USD per request) — keep in sync with scraper-cost-report.yml.
+// Pricing (USD per request), derived at load time from the two shared tables
+// rather than hand-maintained here (BRO-3009 S1-T6): credits per tier from
+// provider-credits.js, USD per credit from scripts/config/provider-pricing.json.
+// The old "keep in sync with scraper-cost-report.yml" comment was the only
+// thing holding four literals in step with three other files.
 const COST = {
-  bd: 0.0015,            // BD Web Unlocker, per successful request
-  sd_standard: 0.00009,  // Scrapingdog 1 credit  @ $90 / 1,000,000 credits
-  sd_render: 0.00045,    // Scrapingdog 5 credits (dynamic=true)
-  sd_premium: 0.0009,    // Scrapingdog 10 credits (premium=true)
+  bd: usdFor('brightdata', 1),
+  sd_standard: usdFor('scrapingdog', creditsFor('sd', 'page')),    // 1 credit
+  sd_render: usdFor('scrapingdog', creditsFor('sd', 'render')),    // 5 credits (dynamic=true)
+  sd_premium: usdFor('scrapingdog', creditsFor('sd', 'premium')),  // 10 credits (premium=true)
 };
 
 // Default targets: real URLs for the hosts BD actually hits most, plus controls.
@@ -174,7 +180,7 @@ async function fetchScrapingdog(url, mode) {
     // that only worked on premium, or wasted standard+render first, is counted
     // at its true cost, not the optimistic 1-credit rate.
     const BD_MONTHLY_REQ = 100000; // ≈ this account's BD Web Unlocker volume/mo
-    const CREDIT_USD = 0.00009;    // Scrapingdog Standard plan: $90 / 1,000,000
+    const CREDIT_USD = usdFor('scrapingdog', 1);  // plan rate, from provider-pricing.json
     const matchedRows = results.filter((r) => r.bd.ok && r.sd && r.sd.ok);
     const rerouteFrac = bdOk ? matchedRows.length / bdOk : 0;
     const avgCredits = matchedRows.length

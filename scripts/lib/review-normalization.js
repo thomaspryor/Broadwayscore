@@ -715,6 +715,47 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     }
   }
 
+  // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
+  // a DIFFERENT file in this show already owns manufactures exactly the state
+  // validate-data.js errors on ("One URL per outlet per show = one review"),
+  // and the applyUrlChangeInvariant call below then wipes this file's
+  // excerpts/llmScore/assignedScore as "old-URL-derived state" on the way in.
+  // That is how the-addams-family-2010's scored Terry Teachout record was
+  // reduced to an empty stub while 6.6KB of WSJ registration boilerplate under
+  // the byline "Unknown" survived into reviews.json (2026-09-08 08:41Z).
+  //
+  // Either the two files are the same review — in which case they need
+  // merging, not a second copy of the URL — or the candidate is wrong.
+  // Refusing keeps this file's url AND its content in both readings.
+  //
+  // Only applies when the caller supplied context.showDir; fails open
+  // otherwise, same shape as the context.show gate above.
+  let urlCollidesWithSibling = false;
+  if (urlChanged && context.showDir) {
+    const { findSiblingUrlOwner } = require('./review-url-collision');
+    const owner = findSiblingUrlOwner({
+      showDir: context.showDir,
+      url: incoming.url,
+      selfOutletId: existing.outletId,
+      selfCriticName: existing.criticName,
+      selfFilename: context.file && context.file !== '-' ? context.file : undefined,
+    });
+    if (owner) {
+      urlCollidesWithSibling = true;
+      console.warn(`[mergeReviews] refused url swap for ${existing.outletId || context.file || '?'}: ${incoming.url} is already owned by ${owner.filename}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedSiblingUrlCollision',
+        details: {
+          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+          criticName: existing.criticName, ownedBy: owner.filename,
+        },
+      });
+    }
+  }
+
   // Cross-outlet guard: an incoming record whose URL the registry maps to a
   // DIFFERENT outlet is another outlet's review — do not merge ANY of it
   // (url, text, critic, dates). Slots whose outletId was minted from a SERP
@@ -760,7 +801,11 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // regression, or as a flip-flop — that text was scraped from the rejected
   // candidate URL, so adopting it here would contaminate the existing
   // (correct) url's record with the oscillating/wrong-production content.
-  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop) {
+  // urlCollidesWithSibling joins the same suppression set: that text was
+  // scraped from the sibling's URL, so taking it here would pair THIS file's
+  // (retained) url with ANOTHER article's body — undetectable by url-dated
+  // audits, exactly like the regressed-swap case.
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -785,7 +830,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange && !urlSwapRegressed) {
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
@@ -914,7 +959,17 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const cvSaysWrongProduction = !!cv
     && cv.wrongProduction === true
     && cv.confidence === 'high';
+  // A REFUSED url is not evidence of anything (BRO-3092 ship-check, Codex).
+  // This self-heal reads "a new URL arrived, so a URL-shaped wrong-production
+  // verdict about the OLD url is void" — but it only ever tested that
+  // incoming.url looks like an http url, never that the swap was accepted. All
+  // three refusal guards leave merged.url exactly as it was, so without this
+  // the rejected candidate still un-excludes the review: the record keeps the
+  // very URL the flag is about, minus the flag. urlSwapRegressed and
+  // urlFlipFlop had this hole before BRO-3092; urlCollidesWithSibling would
+  // have inherited it.
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && isUrlBasedWrongProd) {
@@ -1938,6 +1993,42 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     const verdict = isUrlSwapRegression({ newUrl, show: opts.show, outletId: existingData.outletId });
     if (verdict.regression) {
       console.warn(`[maybeUpgradeUrl] refused regressing swap for ${existingData.outletId || source || '?'}: ${verdict.reason}`);
+      return false;
+    }
+  }
+
+  // Sibling URL-collision guard (BRO-3092), the mergeReviews guard's twin.
+  // findExistingReviewFile's pass-0 URL dedup normally stops this writer from
+  // ever reaching a byline file when another file already owns the candidate
+  // URL — but pass 0 SKIPS wrongProduction/duplicateOf siblings, so a flagged
+  // sibling's URL still routes here by outlet+critic and gets swapped in,
+  // duplicating the URL and wiping this file via applyUrlChangeInvariant
+  // below. Only applies when the caller supplied opts.showDir; fails open.
+  if (opts.showDir) {
+    const { findSiblingUrlOwner } = require('./review-url-collision');
+    const owner = findSiblingUrlOwner({
+      showDir: opts.showDir,
+      url: newUrl,
+      selfOutletId: existingData.outletId,
+      selfCriticName: existingData.criticName,
+      selfFilename: opts.selfFilename,
+    });
+    if (owner) {
+      console.warn(`[maybeUpgradeUrl] refused colliding swap for ${existingData.outletId || source || '?'}: ${newUrl} is already owned by ${owner.filename}`);
+      // Machine-readable trace, matching the mergeReviews twin. This is the
+      // higher-traffic writer path; a console.warn alone leaves refusals here
+      // invisible to every audit (BRO-3092 ship-check).
+      logExclusion({
+        script: source || 'maybeUpgradeUrl',
+        showId: existingData.showId || 'unknown',
+        file: opts.selfFilename || '-',
+        reason: 'skippedSiblingUrlCollision',
+        details: {
+          existingUrl: existingData.url, incomingUrl: newUrl,
+          outletId: existingData.outletId, criticName: existingData.criticName,
+          ownedBy: owner.filename,
+        },
+      });
       return false;
     }
   }
