@@ -699,6 +699,34 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // Demotions are printed even when the dispatch proceeds — a guard that
     // silently stops refusing is indistinguishable from a guard that broke.
     const ledgerCrumb = ld.terminalBreadcrumbForTask(taskId, entries0);
+    // A 'prune-closed' row does NOT prove the workspace actually closed.
+    // bsc-prune writes one for EVERY ✅-titled workspace, including those it
+    // then SKIPS closing because a claude process is still alive in them (an
+    // accepted tradeoff there, because it was only ever used for PARKING).
+    // Consuming it as a death would make a card dispatchable during the whole
+    // mark-✅-then-run-/ship-check-/wrap-up-and-push window — minutes to hours
+    // on this fleet — and the ordinary duplicate-tab brake cannot catch it,
+    // because findLiveWorkspaceForTask excludes done-titled workspaces by
+    // design. So for that one event we ask the machine, not the ledger.
+    // Adversarial ship-check finding; the other terminal events are unaffected
+    // (a 'vanished'/'remapped'/'dead' row is written about a workspace that
+    // demonstrably went away).
+    if (ledgerCrumb && !liveLedger && ledgerCrumb.event === 'prune-closed' && ledgerCrumb.workspaceRef) {
+      let stillAlive = false;
+      try {
+        stillAlive = cmuxAvailableFn() && claudeAliveInFn(ledgerCrumb.workspaceRef);
+      } catch (e) {
+        // Unknown liveness is not evidence of death. Fail toward refusing.
+        console.error(`[linear-next] liveness probe for ${ledgerCrumb.workspaceRef} failed (${e.message}) — treating as still live.`);
+        stillAlive = true;
+      }
+      if (stillAlive) {
+        console.error(`[linear-next] REFUSING to dispatch ${identifier}: its ledger record was closed by a 'prune-closed' breadcrumb at ${ledgerCrumb.ts}, but a claude process is STILL ALIVE in ${ledgerCrumb.workspaceRef}.`);
+        console.error(`  bsc-prune writes prune-closed for every ✅-titled workspace, including ones it skips closing because work is still running.`);
+        console.error(`  Re-run with --force if you know that session is finished.`);
+        process.exit(1);
+      }
+    }
     if (ledgerCrumb && !liveLedger) {
       console.error(`[linear-next] NOTE: ledger dispatch record for ${taskId} was already closed by a '${ledgerCrumb.event}' breadcrumb at ${ledgerCrumb.ts} — not treating it as live.`);
     }

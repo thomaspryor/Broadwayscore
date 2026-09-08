@@ -770,8 +770,13 @@ test('BRO-3045: a launch closed by prune-closed is not live', () => {
   assert.equal(terminalBreadcrumbForTask('linear:BRO-1', entries).event, 'prune-closed');
 });
 
-test('BRO-3045: vanished, remapped and dead close a launch too', () => {
-  for (const event of ['vanished', 'remapped', 'dead']) {
+// 'dead' is deliberately NOT in this list: isDeadlikeEvent makes it an ATTEMPT
+// event, so isLatestDispatchDead already demoted it before this change and
+// asserting it here would pass identically against the pre-fix code — a vacuous
+// test (ship-check finding). Only vanished/prune-closed/remapped exercise the
+// new reader, because only those are excluded from isAttemptEvent.
+test('BRO-3045: vanished and remapped close a launch too', () => {
+  for (const event of ['vanished', 'remapped']) {
     const entries = [
       launch('linear:BRO-2', 'workspace:9', '2026-08-12T10:00:00.000Z'),
       { event, taskId: 'linear:BRO-2', workspaceRef: 'workspace:9', ts: '2026-08-12T11:00:00.000Z' },

@@ -552,17 +552,36 @@ function unreconciledLaunchForRef(ref, entries, lastTerminal = null) {
 // latestAttemptForTask returns the new launch and the old ref's terminal row
 // is never consulted.
 //
-// Timestamp handling matches unreconciledLaunchForRef's: an unorderable pair
-// counts as reconciled rather than guessing.
+// Timestamp handling deliberately DIVERGES from unreconciledLaunchForRef's.
+// That helper treats an unorderable pair as reconciled, which is right for it:
+// its failure direction is stranding a husk. This helper's failure direction is
+// dispatching a SECOND worker onto a card someone is already working, so it
+// requires both timestamps to be present and parseable and the terminal row to
+// be at-or-after the launch. Anything unorderable means "not proven over" and
+// the task stays live. Adversarial review supplied the four sequences that
+// forced this (each of which the looser `e.ts && launch.ts && e.ts < launch.ts`
+// form got wrong, all in the dangerous direction):
+//   launch(A,R,t10) -> prune-closed(A,R,t11) -> launch(A,R, ts missing)
+//   launch(A,R,t10) -> prune-closed(A,R, ts missing) -> launch(A,R,t12)
+//   launch(A,R,t10) -> prune-closed(A,R, malformed ts) -> launch(A,R,t12)
+//   a terminal row appended before its launch by two concurrent writers
 function terminalForLaunch(launch, entries) {
   if (!launch || !launch.workspaceRef) return null;
+  const launchTs = Date.parse(launch.ts || '');
+  if (!Number.isFinite(launchTs)) return null; // unorderable launch — never claim it is over
   let found = null;
   for (const e of entries || []) {
     if (!e || typeof e !== 'object') continue;
     if (!TERMINAL_LAUNCH_EVENTS.has(e.event)) continue;
     if (e.workspaceRef !== launch.workspaceRef) continue;
     if (String(e.taskId) !== String(launch.taskId)) continue;
-    if (e.ts && launch.ts && e.ts < launch.ts) continue;
+    const ts = Date.parse(e.ts || '');
+    if (!Number.isFinite(ts)) continue; // unorderable terminal — proves nothing
+    // STRICTLY after. A terminal row sharing a timestamp with the launch is
+    // ambiguous — it can be a relaunch onto the same ref in the same
+    // millisecond as an older terminal — and the ambiguous answer must be
+    // "still live", never "safe to dispatch a second worker".
+    if (ts <= launchTs) continue;
     found = e; // last-wins, matching this file's lastByRef/launchByRef convention
   }
   return found;

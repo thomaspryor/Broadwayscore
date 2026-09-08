@@ -405,9 +405,20 @@ function dispatchCommentIsOurFinishedLaunch(comment, taskId, entries) {
   if (!m) return false; // unparseable — fail toward "possibly live"
   const correlationId = m[1];
   const list = entries || [];
-  const launch = list.find(
-    (e) => e && String(e.taskId) === String(taskId) && e.correlationId === correlationId
-  );
+  // Must be a 'launch' row, and LAST-wins — not `.find()`'s first match of any
+  // event. Both were adversarial-review findings: correlationId is only 4 bytes
+  // (generateCorrelationId), so a collision or a reused id could otherwise
+  // select an unrelated or long-terminated row and suppress the cross-machine
+  // warning for a genuinely live dispatch. Last-wins also matches this
+  // codebase's launchByRef/lastByRef/latestAttemptForTask convention rather
+  // than inventing a second ordering rule beside them.
+  let launch = null;
+  for (const e of list) {
+    if (!e || e.event !== 'launch') continue;
+    if (String(e.taskId) !== String(taskId)) continue;
+    if (e.correlationId !== correlationId) continue;
+    launch = e;
+  }
   if (!launch) return false; // not a dispatch this host recorded — cross-machine, stay live
   return Boolean(dispatchLedger.terminalForLaunch(launch, list));
 }
