@@ -398,6 +398,7 @@ tests/unit/found-outlet-ids-skip-blocked-url.test.mjs
 tests/unit/found-outlet-ids-skip-not-a-review.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
+tests/unit/gate-cold-start-rules.test.mjs
 tests/unit/gather-reviews-bww-geography.test.mjs
 tests/unit/gather-reviews-collision.test.mjs
 tests/unit/gather-reviews-createreviewfile-preserves-exclusion-flags.test.mjs
@@ -423,6 +424,7 @@ tests/unit/health-check-green-streak.test.mjs
 tests/unit/health-check-repeat-failures.test.mjs
 tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
+tests/unit/homepage-interactive-labels.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
