@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-09-01T14:32:14.999Z",
-    "completedAt": "2026-09-01T14:32:40.880Z",
-    "totalReviews": 42470,
-    "processed": 0,
-    "skipped": 42464,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 23837,
-      "output": 831,
-      "total": 69281
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-01T15:10:43.433Z",
     "completedAt": "2026-09-01T15:11:03.835Z",
     "totalReviews": 42468,
@@ -433706,6 +433692,26 @@
       {
         "showId": "kpop-2022",
         "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-08T10:05:35.784Z",
+    "completedAt": "2026-09-08T10:06:01.704Z",
+    "totalReviews": 42870,
+    "processed": 3,
+    "skipped": 42864,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 22666,
+      "output": 1030,
+      "total": 62424
+    },
+    "errorDetails": [
+      {
+        "showId": "romeo-and-juliet-off-broadway-2026",
+        "outletId": "talkinbroadway",
         "error": "input_validation_failed:body_too_short"
       }
     ]
