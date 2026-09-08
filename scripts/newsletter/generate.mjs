@@ -2706,7 +2706,7 @@ function _closingCtx(usedKinds) {
     showRef: { id: _closingLede.id, slug: _closingLede.slug, title: _closingLede.title },
   };
 }
-// On a quiet Broadway week the candidate pool is nothing BUT same-run WE
+// A quiet Broadway week's candidate pool is USUALLY nothing but same-run WE
 // openings (see quietBroadwayWeek above), so the run-compression in
 // buildLedeSentences folds everything past the anchor into one clause
 // anyway — the normal 3-sentence cap would otherwise silently truncate the
@@ -2714,7 +2714,15 @@ function _closingCtx(usedKinds) {
 // tier outranks score — see weTierRank — so this can and did drop the
 // actual best-reviewed show of the week, off-West-End A Month in the
 // Country at 80, in favor of keeping two lower-scoring West End openings).
-const _maxLedeSentences = LEDE_STYLE === 'short' ? (quietBroadwayWeek ? Math.min(6, newsworthyCandidates.length) : 3) : 4;
+// It's NOT always ONLY WE openings though: a closing/mover/recoupment can
+// legitimately outrank the relaxed-gate WE candidates and take a slot too
+// (Codex adversarial review, 2026-09-07) — a fixed, modest bump (5, not
+// scaled to newsworthyCandidates.length) keeps the lede's length bounded and
+// sane either way; a week with more WE openings than that still shows all
+// of them in the "London Openings" card section, just not all named in the
+// shorter lede paragraph — the same curated-top-N tradeoff every other week
+// already makes at the original cap of 3.
+const _maxLedeSentences = LEDE_STYLE === 'short' ? (quietBroadwayWeek ? 5 : 3) : 4;
 const _ledeParts = buildLedeSentences(newsworthyCandidates, _maxLedeSentences) || { sentences: [], kinds: [], showRefs: [] };
 // WE aggregate opener (owner, 2026-08-02: the two-sentence lede reads too
 // sparse on a big opening week; wanted e.g. "A big weekend for London theatre,
@@ -2752,8 +2760,14 @@ if (IS_WE && !process.env.LEDE_OVERRIDE) {
 // of real Broadway news (second-opinion review, 2026-09-07).
 let _bwOpener = '';
 if (quietBroadwayWeek && !process.env.LEDE_OVERRIDE && newsworthyCandidates[0]?.kind === 'we-gold-opening') {
+  // >= 1, not >= 2 (Codex adversarial review, 2026-09-07): a single relaxed-
+  // gate WE story is exactly the confusing case this opener exists for — a
+  // Broadway-branded email launching straight into "Electra / Persona opens
+  // to decent reviews" with zero framing. weOpeningStories() is already
+  // guaranteed non-empty here (the >=1 gate above requires a we-gold-opening
+  // candidate, and weGoldEvents is built from this same function's output).
   const _stories = weOpeningStories();
-  if (_stories.length >= 2) _bwOpener = 'A quiet week on Broadway.';
+  if (_stories.length >= 1) _bwOpener = 'A quiet week on Broadway.';
 }
 const _opener = _weOpener || _bwOpener;
 const _withOpener = (sentences) => _opener ? [_opener, ...sentences] : sentences;
