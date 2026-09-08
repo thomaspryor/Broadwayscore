@@ -659,6 +659,7 @@ jobs:
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
           # digest-history.json intentionally NOT added here — ship-check
           # review (2026-08-23) found it has zero writers anywhere in the
           # codebase (orphaned since card #364); see core-data-merge-

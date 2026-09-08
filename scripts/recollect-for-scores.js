@@ -24,6 +24,7 @@ const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOUR
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 const { setExtractedScore } = require('./lib/score-routing');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -185,13 +186,17 @@ function fetchWithScrapingBee(url, cookieHeader) {
       let data = '';
       res.on('data', chunk => { data += chunk; });
       res.on('end', () => {
+        recordSbCall({ url, fn: 'render', success: res.statusCode === 200, status: res.statusCode, credits: sbBilledCredits(res.statusCode, 5), purpose: 'score-recollect' });
         if (res.statusCode === 200) {
           resolve(data);
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', reject);
+    }).on('error', (e) => {
+      recordSbCall({ url, fn: 'render', success: false, status: 'error', credits: 0, purpose: 'score-recollect' });
+      reject(e);
+    });
   });
 }
 

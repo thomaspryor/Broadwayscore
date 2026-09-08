@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
+  aggregateLedgerByDay,
 } = require('./provider-spend-core.js');
 
 const THRESHOLDS = {
@@ -134,4 +135,111 @@ test('renderSnapshot: unmeasured day never reads as green', () => {
     generatedAt: '2026-07-31T06:45:00Z',
   });
   assert.match(snap.bannerText, /Could not measure: brightdata/);
+});
+
+// ---------- renderSnapshot: attribution coverage degrades, never suppresses (S0-T7) ----------
+
+test('renderSnapshot: attribution line names "top callers (covers N% of billed credits)" for a credit-based provider', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: {
+        pct: 0.92, unit: 'credits', topCoveragePct: 0.6,
+        top: [{ script: 'a.js', amount: 300 }, { script: 'b.js', amount: 150 }],
+      },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  const line = snap.items.find((i) => i.title.startsWith('ScrapingBee attribution'));
+  assert.ok(line, 'expected a ScrapingBee attribution line');
+  assert.match(line.title, /top callers \(covers 60% of billed credits\): a\.js 300cr, b\.js 150cr/);
+});
+
+test('renderSnapshot: below attributionCoverageMin adds a warning naming BRO-2961, does not suppress the line', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: { pct: 0.92, unit: 'credits', topCoveragePct: 0.5, top: [{ script: 'a.js', amount: 500 }] },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  assert.ok(snap.items.some((i) => i.title.startsWith('ScrapingBee attribution')), 'attribution line must still be present');
+  assert.ok(snap.items.some((i) => i.title.includes('BRO-2961') && i.title.includes('coverage low')), 'warning must name BRO-2961');
+});
+
+test('renderSnapshot: at/above attributionCoverageMin adds no warning', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: { pct: 0.92, unit: 'credits', topCoveragePct: 0.85, top: [{ script: 'a.js', amount: 850 }] },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  assert.ok(!snap.items.some((i) => i.title.includes('BRO-2961')), 'no warning when coverage is healthy');
+});
+
+// ---------- aggregateLedgerByDay (S0-T6: daily aggregation for a 7-day window) ----------
+
+test('aggregateLedgerByDay: only picks up rows for the requested day, two-day fixture', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-02T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 999 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].day, '2026-09-01');
+  assert.equal(rows[0].credits, 1);
+});
+
+test('aggregateLedgerByDay: same (provider,workflow,script,fn) sums credits and counts calls', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].credits, 2);
+});
+
+test('aggregateLedgerByDay: rows differing only in fn produce separate groups', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'sweep-we-aggregators.js', fn: 'render', credits: 5 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'sweep-we-aggregators.js', fn: 'json', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 2);
+  assert.ok(rows.some((r) => r.fn === 'render' && r.credits === 5));
+  assert.ok(rows.some((r) => r.fn === 'json' && r.credits === 1));
+});
+
+test('aggregateLedgerByDay: missing/non-numeric credits count as 0, never NaN', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker', credits: null },
+    { ts: '2026-09-01T02:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker' },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].credits, 0);
+  assert.ok(!Number.isNaN(rows[0].credits));
+});
+
+test('aggregateLedgerByDay: sorted by credits descending, most expensive grouping first', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'cheap.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'expensive.js', fn: 'stealth', credits: 75 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows[0].script, 'expensive.js');
+  assert.equal(rows[1].script, 'cheap.js');
 });

@@ -1,6 +1,11 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
+import https from 'node:https';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { EventEmitter } from 'node:events';
 import { createRequire } from 'node:module';
 
 // Mock Scrapingdog endpoint — behavior keyed off the target url param
@@ -164,5 +169,74 @@ test('fetchViaScrapingDog rejects when no key is configured', async () => {
     await assert.rejects(() => fetchViaScrapingDog('https://old.reddit.com/x.json'), /not set/);
   } finally {
     process.env.SCRAPINGDOG_API_KEY = saved;
+  }
+});
+
+// ---------- fetchViaScrapingBee ledger attribution (S0-T4) ----------
+//
+// fetchViaScrapingBee's target host is hardcoded (app.scrapingbee.com — no
+// SCRAPINGDOG_BASE_URL-style override), so it can't be redirected to the mock
+// HTTP server above. Instead, monkeypatch the shared 'https' module's get()
+// — the same object instance reddit-api.js's own `require('https')` resolves
+// to — to simulate a response without a real network call.
+
+function withMockedHttpsGet(statusCode, body, fn) {
+  const original = https.get;
+  https.get = (_url, cb) => {
+    const res = new EventEmitter();
+    res.statusCode = statusCode;
+    const req = new EventEmitter();
+    process.nextTick(() => {
+      cb(res);
+      res.emit('data', Buffer.from(body));
+      res.emit('end');
+    });
+    return req;
+  };
+  return fn().finally(() => { https.get = original; });
+}
+
+test('fetchViaScrapingBee writes exactly one ledger row (premium_proxy, 10 credits) on success', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sb-ledger-test-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  process.env.SCRAPINGBEE_API_KEY = 'sb-test-key';
+  try {
+    const { fetchViaScrapingBee } = load();
+    await withMockedHttpsGet(200, JSON.stringify({ data: { children: [] } }), () => fetchViaScrapingBee('https://old.reddit.com/r/broadway/good.json'));
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    assert.equal(rows.length, 1, 'exactly one ledger row per SB fallback call');
+    assert.equal(rows[0].provider, 'scrapingbee');
+    assert.equal(rows[0].success, true);
+    assert.equal(rows[0].credits, 10, 'premium_proxy=true bills 10 credits');
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    delete process.env.SCRAPINGBEE_API_KEY;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
+  }
+});
+
+test('fetchViaScrapingBee writes credits:0 on a 401 (billing/auth failure never charges)', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sb-ledger-test-401-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  process.env.SCRAPINGBEE_API_KEY = 'sb-test-key';
+  try {
+    const { fetchViaScrapingBee } = load();
+    await assert.rejects(
+      () => withMockedHttpsGet(401, JSON.stringify({ message: 'Invalid api key' }), () => fetchViaScrapingBee('https://old.reddit.com/r/broadway/good.json')),
+    );
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].success, false);
+    assert.equal(rows[0].credits, 0);
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    delete process.env.SCRAPINGBEE_API_KEY;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
   }
 });

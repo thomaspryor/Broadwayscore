@@ -43,6 +43,7 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
 const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
@@ -210,17 +211,35 @@ async function fetchHtmlViaSB(url) {
   if (!SCRAPINGBEE_KEY) return null;
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
   return new Promise((resolve, reject) => {
+    // recorded guards against a double ledger row for one billed call: after
+    // req.destroy() on timeout, the socket can still emit 'error', and a slow
+    // response can still land after the timeout fires — at most one of
+    // {response, error, timeout} may call recordSbCall.
+    let recorded = false;
+    const record = (opts) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: 'page', purpose: 'bww-reviews', ...opts, credits: sbBilledCredits(opts.status, 1) });
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        record({ success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) resolve(data);
         else if (res.statusCode === 404 || res.statusCode === 410) resolve(null);
         else reject(new Error(`SB HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
       });
     });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('SB Timeout')); });
+    req.on('error', (e) => {
+      record({ success: false, status: 'error' });
+      reject(e);
+    });
+    req.setTimeout(60000, () => {
+      req.destroy();
+      record({ success: false, status: 'timeout' });
+      reject(new Error('SB Timeout'));
+    });
   });
 }
 
