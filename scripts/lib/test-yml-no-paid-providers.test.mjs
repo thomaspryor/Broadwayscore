@@ -177,6 +177,77 @@ test('scanner: credential shapes that fail open are all caught', () => {
   );
 });
 
+test('scanner: every legal `on:` spelling of a push trigger is recognised', () => {
+  // Each of these was a FAIL-OPEN miss found in review: a legal GitHub spelling
+  // that made a spending workflow read as not-push-triggered, so its spend went
+  // entirely unchecked. Fail-open is the dangerous direction for a cost gate.
+  for (const yml of [
+    'on: push\n',
+    'on: "push"\n',
+    "on: 'push'\n",
+    'on: push  # every merge\n',
+    'on: [push, schedule]\n',
+    "on: [ 'push', schedule ]\n",
+    'on: {push: {}}\n',
+    'on:\n  push:\n',
+    'on:\n    push:\n',
+    '"on":\n  push:\n',
+    'on:\n  - push\n',
+    'on:\n  schedule:\n    - cron: "0 5 * * *"\n  push:\n',
+  ]) {
+    assert.equal(hasPushTrigger(yml), true, `should be push-triggered: ${JSON.stringify(yml)}`);
+  }
+
+  // And the shapes that must NOT count — a false positive here would block a
+  // cron workflow that is entitled to spend.
+  for (const yml of [
+    'on: [schedule]\n',
+    'on: {schedule: {}}\n',
+    'on:\n  - schedule\n',
+    'on:\n  schedule:\n    - cron: "0 5 * * *"\n',
+    'on:\n  workflow_run:\n    workflows: [push]\n',
+    'on:\n  pull_request:\n    branches:\n      push: x\n',
+  ]) {
+    assert.equal(hasPushTrigger(yml), false, `should NOT be push-triggered: ${JSON.stringify(yml)}`);
+  }
+});
+
+test('scanner: an `if:` secret gate is not a credential hand-off', () => {
+  // `if: ${{ secrets.X }}` is the other standard "skip this step when the key
+  // isn't configured" spelling alongside `!= ''`. It is evaluated by Actions and
+  // never reaches the process environment, so flagging it would hard-fail the
+  // blocking lint gate on a step doing exactly the right thing.
+  const head = ['on:', '  push:', 'jobs:', '  j:', '    steps:'];
+  const gated = [...head, '      - name: S', '        if: ${{ secrets.OPENAI_API_KEY }}', '        run: x', ''].join('\n');
+  assert.deepEqual(scanWorkflow(gated, 'f.yml').violations, [], 'an if: gate must not be flagged');
+
+  // The same secret in an env: mapping IS a hand-off and must still be caught.
+  const handoff = [...head, '      - name: S', '        env:', '          K: ${{ secrets.OPENAI_API_KEY }}', '        run: x', ''].join('\n');
+  assert.equal(scanWorkflow(handoff, 'f.yml').violations.length, 1);
+});
+
+test('scanner: a per-line exemption does not silence the whole file', () => {
+  // The file-wide marker is blunt. When the per-line form was added, a bare
+  // raw.includes() check meant an inline marker next to ONE legitimate line
+  // also silenced every other violation in the file — a narrow exemption
+  // silently becoming a blanket one.
+  const withInlineMarker = [
+    'on:', '  push:', 'jobs:', '  j:',
+    '    uses: ./.github/workflows/called.yml',
+    '    secrets: inherit  # paid-provider-ok: the called workflow spends nothing',
+    '    steps:', '      - env:', '          K: ${{ secrets.BRIGHTDATA_TOKEN }}', '        run: x', '',
+  ].join('\n');
+  const r = scanWorkflow(withInlineMarker, 'f.yml');
+  assert.equal(r.exempt, false, 'an inline marker must not make the whole file exempt');
+  assert.equal(r.violations.length, 1, 'the unrelated paid-secret hand-off must still be reported');
+  assert.equal(r.violations[0].kind, 'paid-secret-in-push-workflow');
+
+  // A top-level standalone marker IS file-wide, matching the hygiene-*-ok convention.
+  const fileWide = `# ${EXEMPTION_MARKER} reviewed in full\n` + withInlineMarker;
+  assert.equal(scanWorkflow(fileWide, 'f.yml').exempt, true);
+  assert.deepEqual(scanWorkflow(fileWide, 'f.yml').violations, []);
+});
+
 test('scanner: `secrets: inherit` in a push workflow is a violation', () => {
   // Invisible by construction: it forwards EVERY secret to a called workflow,
   // paid providers included, without naming one — so no secret-name scan can

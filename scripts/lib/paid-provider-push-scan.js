@@ -37,7 +37,11 @@
  * merge flow pushes to main directly (memory/feedback_branch_protection_direct_push).
  * A workflow that spends on `pull_request` is a real but different problem.
  *
- * Escape hatch: `# paid-provider-ok: <reason>` anywhere in the workflow file.
+ * Escape hatch, two scopes:
+ *   - PER LINE (preferred): `# paid-provider-ok: <reason>` on the offending
+ *     line, or on the comment line directly above it. Exempts that one finding.
+ *   - FILE-WIDE (blunt): the same marker as a top-level comment at column 0.
+ *     Silences every violation in the workflow, so prefer the per-line form.
  * As of BRO-2984 no workflow uses it — of this repo's 11 push-triggered
  * workflows, test.yml was the ONLY one exposing any paid-provider secret, so
  * the allowlist is empty by construction rather than by policy. Adding an entry
@@ -82,7 +86,24 @@ const PAID_SWEEP_COMMANDS = [
 
 const EXEMPTION_MARKER = 'paid-provider-ok:';
 
+/**
+ * True when a specific finding is exempted on its own line, or on the line
+ * directly above it. The file-wide marker is a blunt instrument — it silences
+ * every violation in the workflow, including ones nobody reviewed — so a
+ * narrower per-line escape hatch exists for the legitimate single case
+ * (`secrets: inherit` on a reusable-workflow call being the expected one).
+ * `lineNo` is 1-based.
+ */
+function isLineExempt(lines, lineNo) {
+  const here = lines[lineNo - 1] || '';
+  const above = lines[lineNo - 2] || '';
+  return here.includes(EXEMPTION_MARKER) || above.trim().startsWith('#') && above.includes(EXEMPTION_MARKER);
+}
+
 const indentOfLine = (line) => line.length - line.replace(/^ +/, '').length;
+
+/** Strip surrounding single/double quotes from a scalar token. */
+const unquote = (t) => t.trim().replace(/^["'](.*)["']$/, '$1').trim();
 
 /** Strip a YAML comment, honoring `#` inside quotes so a URL fragment isn't eaten. */
 function stripComment(line) {
@@ -116,18 +137,26 @@ function hasPushTrigger(raw) {
     // trigger finder already tolerates the quoted form, and disagreeing with it
     // would let a workflow read as push-triggered by one gate and not the other.
     if (/^['"]?on['"]?\s*:/.test(line)) {
-      // Inline forms: `on: push` / `on: [push, schedule]`, possibly with a
-      // trailing comment (`on: push  # every merge`).
+      // Inline forms: `on: push`, `on: "push"`, `on: [push, schedule]`,
+      // `on: [ 'push', schedule ]`, `on: {push: {...}}` — possibly with a
+      // trailing comment (`on: push  # every merge`). Every quoted spelling is
+      // valid YAML that GitHub accepts, and each one used to read as
+      // NOT-push-triggered, which fails OPEN: the workflow's paid-provider
+      // spend would go entirely unchecked.
       const inline = stripComment(line.slice(line.indexOf(':') + 1)).trim();
       if (inline) {
         if (/^\[.*\]$/.test(inline)) {
+          return inline.slice(1, -1).split(',').map(unquote).includes('push');
+        }
+        if (/^\{.*\}$/.test(inline)) {
+          // Flow mapping: keys are everything before each `:`.
           return inline
             .slice(1, -1)
             .split(',')
-            .map((s) => s.trim())
+            .map((entry) => unquote(entry.split(':')[0]))
             .includes('push');
         }
-        return inline === 'push';
+        return unquote(inline) === 'push';
       }
       inOn = true;
       continue;
@@ -143,8 +172,14 @@ function hasPushTrigger(raw) {
     // An indented key directly under `on:` is a trigger name. Matched at any
     // depth >= 1 rather than exactly 2 spaces: a 4-space-indented workflow is
     // valid YAML and would otherwise read as NOT push-triggered, which fails
-    // open (the dangerous direction for a spend gate).
-    if (/^\s+push\s*:/.test(line) && indentOfLine(line) <= minTriggerIndent) return true;
+    // open (the dangerous direction for a spend gate). Quoted keys count too.
+    const keyMatch = line.match(/^\s*["']?([A-Za-z_][A-Za-z0-9_-]*)["']?\s*:/);
+    if (keyMatch && keyMatch[1] === 'push' && indentOfLine(line) <= minTriggerIndent) return true;
+    // Block-sequence form:
+    //   on:
+    //     - push
+    const seqMatch = stripComment(line).match(/^\s*-\s*(.+?)\s*$/);
+    if (seqMatch && unquote(seqMatch[1]) === 'push') return true;
   }
   return false;
 }
@@ -170,6 +205,14 @@ function findPaidSecretEnvLines(raw) {
     // A comparison means the expression yields a boolean about the secret,
     // never the secret itself. `!=` / `==` are the only forms in use here.
     if (/[!=]=/.test(expr)) continue;
+    // `if:` is a step/job CONDITION, not a mapping — its value is evaluated by
+    // Actions and never reaches the process environment. `if: ${{ secrets.X }}`
+    // is the other standard "skip this step when the key isn't configured"
+    // spelling alongside the `!= ''` form above, so treating it as a
+    // credential hand-off would hard-fail the lint gate on a step that is
+    // doing exactly the right thing. (Found in review; no live instance yet,
+    // so this was a trap laid for the next person, not a current breakage.)
+    if (envName === 'if') continue;
     for (const secret of PAID_PROVIDER_SECRETS) {
       if (new RegExp(`secrets\\.${secret}\\b`).test(expr)) {
         hits.push({ line: i + 1, envName, secret, text: lines[i].trim() });
@@ -221,14 +264,23 @@ function findPaidSweepCommands(raw) {
  */
 function scanWorkflow(raw, filename = '<workflow>') {
   const pushTriggered = hasPushTrigger(raw);
-  const exempt = raw.includes(EXEMPTION_MARKER);
+  // File-wide exemption requires the marker as a TOP-LEVEL standalone comment
+  // (column 0), matching how the other `# hygiene-*-ok:` markers are written.
+  // Deliberately NOT a bare `raw.includes(...)`: with the per-line escape hatch
+  // below, a marker written inline next to one legitimate line would otherwise
+  // ALSO silence every other violation in the file — a narrow exemption
+  // silently becoming a blanket one, which is the exact failure the per-line
+  // form exists to prevent.
+  const exempt = new RegExp(`^#\\s*${EXEMPTION_MARKER}`, 'm').test(raw);
   const secretExposures = pushTriggered ? findPaidSecretEnvLines(raw) : [];
   const sweepCommands = pushTriggered ? findPaidSweepCommands(raw) : [];
   const secretsInherit = pushTriggered ? findSecretsInherit(raw) : [];
 
+  const rawLines = raw.split('\n');
   const violations = [];
   if (pushTriggered && !exempt) {
     for (const h of secretExposures) {
+      if (isLineExempt(rawLines, h.line)) continue;
       violations.push({
         file: filename,
         line: h.line,
@@ -237,6 +289,7 @@ function scanWorkflow(raw, filename = '<workflow>') {
       });
     }
     for (const h of sweepCommands) {
+      if (isLineExempt(rawLines, h.line)) continue;
       violations.push({
         file: filename,
         line: h.line,
@@ -245,6 +298,7 @@ function scanWorkflow(raw, filename = '<workflow>') {
       });
     }
     for (const h of secretsInherit) {
+      if (isLineExempt(rawLines, h.line)) continue;
       violations.push({
         file: filename,
         line: h.line,
@@ -271,6 +325,7 @@ module.exports = {
   PAID_SWEEP_COMMANDS,
   EXEMPTION_MARKER,
   hasPushTrigger,
+  isLineExempt,
   findPaidSecretEnvLines,
   findPaidSweepCommands,
   findSecretsInherit,

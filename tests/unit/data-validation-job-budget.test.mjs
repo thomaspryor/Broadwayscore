@@ -98,7 +98,7 @@ function jobTimeoutMinutes(jobLines) {
   const line = jobLines.find(
     (l) => indentOf(l) === headerIndent + 2 && /^\s*timeout-minutes\s*:\s*\d+/.test(l),
   );
-  assert.ok(line, 'the audit job must declare an explicit timeout-minutes');
+  assert.ok(line, 'this job must declare an explicit timeout-minutes');
   return parseInt(line.trim().split(':')[1].trim(), 10);
 }
 
@@ -383,6 +383,7 @@ test('test.yml data-validation no longer runs the paid Playbill sweep', () => {
   // comes back, this model understates the job by ~15 minutes AND the job is
   // spending money on every push again (the BRO-2984 defect itself).
   const jobLines = readJobBlock('data-validation', TEST_YML);
+  assert.ok(jobLines, 'could not find the data-validation: job in test.yml');
   assert.equal(
     findVenueAuditStepText(jobLines),
     null,
