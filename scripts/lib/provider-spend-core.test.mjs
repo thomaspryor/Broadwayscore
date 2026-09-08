@@ -243,3 +243,47 @@ test('aggregateLedgerByDay: sorted by credits descending, most expensive groupin
   assert.equal(rows[0].script, 'expensive.js');
   assert.equal(rows[1].script, 'cheap.js');
 });
+
+// ---------- aggregateLedgerByDay host/category split (BRO-3097) ----------
+
+test('aggregateLedgerByDay: browserbase rows with the same script/fn but different host stay separate rows', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'browserbase', workflow: null, script: 'collect-review-texts.js', fn: 'session', host: 'nytimes.com', category: 'review-text', credits: 0 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'browserbase', workflow: null, script: 'collect-review-texts.js', fn: 'session', host: 'wsj.com', category: 'review-text', credits: 0 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 2);
+  assert.ok(rows.some((r) => r.host === 'nytimes.com' && r.calls === 1));
+  assert.ok(rows.some((r) => r.host === 'wsj.com' && r.calls === 1));
+});
+
+test('aggregateLedgerByDay: browserbase rows with the same host/category merge and sum calls', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'browserbase', workflow: null, script: 'bww-rr-discover.js', fn: 'session', host: 'broadwayworld.com', category: 'discovery', credits: 0 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'browserbase', workflow: null, script: 'bww-rr-discover.js', fn: 'session', host: 'broadwayworld.com', category: 'discovery', credits: 0 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].host, 'broadwayworld.com');
+  assert.equal(rows[0].category, 'discovery');
+});
+
+test('aggregateLedgerByDay: non-browserbase rows ignore `host` in the grouping key — different hosts still merge, output host is null', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'gather-reviews.js', fn: 'page', host: 'nytimes.com', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'gather-reviews.js', fn: 'page', host: 'vulture.com', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1, 'host must not fragment the aggregate for non-HOST_DIMENSION_PROVIDERS');
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].host, null);
+});
+
+test('aggregateLedgerByDay: category is null for providers that never set it', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows[0].category, null);
+});

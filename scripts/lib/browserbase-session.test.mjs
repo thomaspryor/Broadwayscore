@@ -15,7 +15,7 @@ import path from 'node:path';
 process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bb-session-test-')), 'ledger.jsonl');
 
 const require = createRequire(import.meta.url);
-const { sanitizeMetadataValue, createBbSession, _resetDayCapCacheForTests } = require('./browserbase-session.js');
+const { sanitizeMetadataValue, createBbSession, BB_CATEGORIES, _resetDayCapCacheForTests } = require('./browserbase-session.js');
 const browserbaseLiveUsage = require('./browserbase-live-usage.js');
 const openingNightSelection = require('./opening-night-selection.js');
 
@@ -262,6 +262,42 @@ test('createBbSession (BRO-3097) records host and category on the ledger row', a
     windowMock.mock.restore();
     liveMock.mock.restore();
   }
+});
+
+test('createBbSession (BRO-3097) rejects an unrecognized category before any network call', async () => {
+  await assert.rejects(
+    () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'typo-category' }),
+    /opts\.category must be one of review-text\/discovery/,
+  );
+});
+
+test('createBbSession (BRO-3097) sends host/category through to Browserbase userMetadata, sanitized', async () => {
+  _resetDayCapCacheForTests();
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 0);
+  let capturedBody = null;
+  const fetchMock = mock.method(globalThis, 'fetch', async (_url, init) => {
+    capturedBody = JSON.parse(init.body);
+    return { ok: true, status: 200, json: async () => ({ id: 'sess_meta', connectUrl: 'wss://example.test' }) };
+  });
+  try {
+    await createBbSession({
+      apiKey: 'k', projectId: 'p',
+      caller: 'test-caller',
+      host: 'nytimes.com',
+      category: 'review-text',
+    });
+    assert.equal(capturedBody.userMetadata.host, 'nytimes.com');
+    assert.equal(capturedBody.userMetadata.category, 'review-text');
+  } finally {
+    fetchMock.mock.restore();
+    windowMock.mock.restore();
+    liveMock.mock.restore();
+  }
+});
+
+test('BB_CATEGORIES exposes exactly the two valid category values', () => {
+  assert.deepEqual(BB_CATEGORIES, ['review-text', 'discovery']);
 });
 
 test('createBbSession (BRO-3097) leaves host/category null when the caller does not pass them (unchanged behavior)', async () => {

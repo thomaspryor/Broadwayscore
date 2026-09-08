@@ -85,6 +85,10 @@ const { isExemptCaller, effectiveCeilingForOpeningWindow } = require('./brightda
 const SESSIONS_URL = 'https://api.browserbase.com/v1/sessions';
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
+// BRO-3097: the only two valid values for opts.category — enforced below so a
+// typo doesn't silently create a third, unrecognized bucket in the ledger.
+const BB_CATEGORIES = ['review-text', 'discovery'];
+
 // Short TTL cache for the live day-cap count (#1248 ship-check finding):
 // without this, every createBbSession() call hits the live-usage API, which
 // defeats collect-review-texts.js's own deliberate "only re-check live count
@@ -145,9 +149,13 @@ function sanitizeMetadataValue(value) {
  * @param {string} [opts.host] - target site this session is fetching (e.g. 'nytimes.com', 'broadwayworld.com').
  *   BRO-3097: recorded on the ledger row so spend is attributable by host, not just by caller script.
  * @param {'review-text'|'discovery'} [opts.category] - BRO-3097: splits ledger rows into Tier-1.5 paywalled
- *   review-text fetches (collect-review-texts.js, newspapers-com-extract.js) vs aggregator-discovery
- *   sessions that clear an anti-bot challenge to crawl a listing page (bww-rr-discover.js,
- *   scrape-stagedoor-critics.js, the WE aggregator sweeps). Measurement only — does not affect routing.
+ *   review-text fetches (collect-review-texts.js, newspapers-com-extract.js) vs aggregator sessions that
+ *   clear an anti-bot challenge against a WE/BWW/Stagedoor aggregator — whether that session ends up
+ *   crawling a listing for URLs (bww-rr-discover.js) or reading review content straight off the
+ *   aggregator's own page (The Stage callers, theatre.reviews) — both count as 'discovery' because the
+ *   $ is spent on beating the aggregator's bot-wall, not on any one outlet's paywall. Must be exactly
+ *   'review-text' or 'discovery' — createBbSession throws on any other non-null value (BB_CATEGORIES).
+ *   Measurement only — does not affect routing.
  * @param {Object} [opts.body] - extra session-create fields merged in (keepAlive, timeout, browserSettings, proxies, ...)
  * @returns {Promise<{id: string, connectUrl: string, raw: Object}>}
  */
@@ -162,6 +170,9 @@ async function createBbSession(opts) {
   }
   if (!opts.caller) {
     throw new Error('createBbSession: opts.caller is required (attribution would be lost otherwise)');
+  }
+  if (opts.category != null && !BB_CATEGORIES.includes(opts.category)) {
+    throw new Error(`createBbSession: opts.category must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
   }
 
   // Account-wide daily ceiling (#1248). Live count already reflects every
@@ -258,4 +269,4 @@ function _resetDayCapCacheForTests() {
   _openingWindowCache = { count: null, ts: 0 };
 }
 
-module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, _resetDayCapCacheForTests };
+module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests };

@@ -227,6 +227,18 @@ function topCallersByCredits(ledgerRecords, day, provider, n = 5) {
 const CREDIT_BILLED_PROVIDERS = new Set(['scrapingbee', 'scrapingdog']);
 
 /**
+ * BRO-3097: providers whose ledger rows carry a bounded, known set of `host`
+ * values worth splitting the daily aggregate on (provider-spend-core.js's
+ * aggregateLedgerByDay()). Browserbase only touches ~15-20 known outlet/
+ * aggregator hosts; brightdata/scrapingbee/scrapingdog hit dozens of review-
+ * outlet hosts per script per day (20,886-row ledger sample: scrapingdog
+ * alone spans 60 distinct hosts), so adding host to their grouping key would
+ * multiply that aggregate's row count past the "tiny, bounded" cardinality
+ * its own docstring promises, for a host-level split nobody has asked for.
+ */
+const HOST_DIMENSION_PROVIDERS = new Set(['browserbase']);
+
+/**
  * ScrapingBee bills 0 credits for auth/plan failures (401/402) and
  * connection-level errors ('error') — those requests never reach SB's proxy.
  * Everything else (including a non-2xx response FROM the target site, and a
@@ -300,6 +312,7 @@ module.exports = {
   topCallersByCredits,
   computeAttributedPct,
   CREDIT_BILLED_PROVIDERS,
+  HOST_DIMENSION_PROVIDERS,
   BILLING_COUNT_FIELD,
   sbBilledCredits,
   LEDGER_PATH,
