@@ -1661,7 +1661,17 @@
     "matilda-the-musical-west-end-2021/talkinbroadway--unknown.json",
     "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
     "matilda-the-musical-west-end-2021/washpost--peter-marks.json",
-    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json"
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+    "wicked-west-end-2021/newyorker--unknown.json",
+    "wicked-west-end-2021/nytimes--ben-brantley.json",
+    "wicked-west-end-2021/nydailynews--howard-kissel.json",
+    "wicked-west-end-2021/timeout--david-cote.json",
+    "wicked-west-end-2021/timeout--unknown.json",
+    "wicked-west-end-2021/daily-mail--brian-viner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1823,7 +1833,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "wicked-west-end-2021/daily-mail--brian-viner.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -2127,6 +2137,28 @@
       "t": "2026-09-08T02:51:00.352Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-08T02:55:57.622Z",
+      "event": "bb-session",
+      "session": "1173f9e7",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-08T02:56:02.751Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-08T02:56:28.399Z",
+      "event": "bb-session",
+      "session": "1a3dfbb3",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-08T02:56:33.352Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
