@@ -37,6 +37,7 @@ const {
   selectAutoApplyClosures,
 } = require('./lib/ob-closing-detector');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -192,8 +193,27 @@ function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) 
   return written;
 }
 
+const USAGE = `detect-ob-closings.js — find Off-Broadway shows that have closed and are still marked open.
+
+Two signals, neither of which needs new scraping:
+  1. review-text sweep — closing-date boilerplate in data/review-texts/<show>/*.json
+  2. TodayTix staleness — an open show whose todaytixId has dropped out of the feed
+
+Shows both signals agree on are closed in shows.json (see selectAutoApplyClosures for
+the full gate). Everything else is written to data/audit/ob-closing-candidates.json,
+which health-check.js surfaces in the daily digest.
+
+Usage:
+  node scripts/detect-ob-closings.js            apply confirmed closures
+  node scripts/detect-ob-closings.js --dry-run  report only, never write shows.json
+  node scripts/detect-ob-closings.js --help
+`;
+
 function main() {
-  const dryRun = process.argv.includes('--dry-run');
+  const argv = process.argv.slice(2);
+  // --help before any read/write, per scripts/lib/cli-help.js.
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const dryRun = argv.includes('--dry-run');
   const showsData = loadJson(SHOWS_PATH, null);
   if (!showsData) {
     console.error(`::error::${SHOWS_PATH} not found — cannot run detector.`);
