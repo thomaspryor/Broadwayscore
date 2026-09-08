@@ -300,7 +300,12 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   // it was. See dispatch-ledger.deadBreadcrumbs' header for the mechanism.
   let isWrapperAlive = null;
   try { isWrapperAlive = makeWrapperAliveProbeFn(); }
-  catch (e) { reportFn({ kind: 'task-sweep-error', taskId: 'sweep', detail: `wrapper-process probe unavailable (${e.message}) — cmux-only liveness this tick` }); }
+  // Its own kind, NOT task-sweep-error: this is an OS process-table probe, not
+  // a cmux socket call, and task-sweep-error is in CMUX_SWEEP_ERROR_KINDS — so
+  // filing it there fed a non-cmux failure to the cmux classifier, where it
+  // read as 'unknown' and escalated "cmux is unreachable" while cmux was
+  // perfectly healthy (review finding).
+  catch (e) { reportFn({ kind: 'wrapper-probe-error', taskId: 'sweep', detail: `wrapper-process probe unavailable (${e.message}) — cmux-only liveness this tick` }); }
   const confirmedDead = candidates.filter(({ task, launch }) => {
     if (!ledger.wrapperVouchesAlive(launch, isWrapperAlive)) return true;
     reportFn({
