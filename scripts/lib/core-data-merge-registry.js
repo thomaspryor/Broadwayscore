@@ -532,7 +532,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'process-feedback',
-    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Sole writer script: scripts/process-feedback.js.',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Sole writer script: scripts/process-feedback.js. RESIDUAL RISK (same class as audit/stale-announced-shows.json/autonomous-recheck-ledger.jsonl/outlet-registry-baseline.json above): the concurrency group only serializes CI against CI, not CI against a local run — scripts/process-feedback.js needs ANTHROPIC_API_KEY/FORMSPREE_TOKEN from local .env, so a developer running it by hand and pushing could race a CI run. Unlike those disposable-telemetry files, a stale overwrite here would cause loadTracking() to re-see already-answered Formspree submissions as new, i.e. duplicate thank-you emails / duplicate bug-diagnosis issues — accepted knowingly given local pushes to data/audit/ already violate this project\'s worktree-discipline norms (low likelihood), not eliminated.',
   },
   {
     file: 'audit/pending-bug-diagnoses.json',
@@ -540,7 +540,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'process-feedback',
-    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Written by scripts/process-feedback.js and drained/rewritten by the same workflow\'s "Create Bug Diagnosis Issues" github-script step.',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Written by scripts/process-feedback.js and drained/rewritten by the same workflow\'s "Create Bug Diagnosis Issues" github-script step. Same CI-vs-local residual risk as audit/processed-feedback.json above: a stale local overwrite could resurrect an already-drained diagnosis and re-file its bug issue.',
   },
   {
     file: 'audit/sd-circuit-breaker.json',
