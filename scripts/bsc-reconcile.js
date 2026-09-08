@@ -1120,12 +1120,21 @@ async function main() {
 // have correct degraded-mode handling — they stay silent here on purpose,
 // which is what keeps this from becoming one more line of noise in a report
 // file that already logs thousands of them.
+const ESCALATION_TIMEOUT_MS = 20 * 1000;
+
 async function escalateCmuxAuthFailures() {
   const summary = summarizeCmuxFailures(cmuxFailuresThisTick);
   if (!summary.escalate || DRY) return;
   try {
     const { routeAlert } = require('./lib/owner-alert-router.js');
-    await routeAlert({
+    // Hard time bound. routeAlert's 'auto' path makes three Linear GraphQL
+    // calls, each 30s per attempt with up to 5 retries and no outer timeout
+    // of its own — worst case several minutes against this job's 300s
+    // StartInterval, which would make launchd skip the NEXT reconcile tick.
+    // An alert that is late is a nuisance; a self-heal tick that never runs
+    // because the alert about it hung is the failure this card is about.
+    await Promise.race([
+      routeAlert({
       // Stable key: one open incident for the whole outage, not one per tick.
       conditionKey: 'cmux-socket:auth-denied',
       title: 'cmux socket is rejecting automation — every self-heal sweep is down',
@@ -1135,10 +1144,15 @@ async function escalateCmuxAuthFailures() {
         'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.',
       hint:
         'Check `automation.socketControlMode` in ~/.config/cmux/cmux.json. For launchd callers it must be "password" with a matching `automation.socketPassword` (scripts/lib/cmux-socket-auth.js reads it and injects CMUX_SOCKET_PASSWORD). Verify with: node -e "require(\'./scripts/lib/cmux-workspaces.js\').listWorkspaces()".',
-      severity: 'error',
-      disposition: 'auto',
-      fields: Object.entries(summary.counts).map(([name, value]) => ({ name, value: String(value) })),
-    });
+        severity: 'error',
+        disposition: 'auto',
+        fields: Object.entries(summary.counts).map(([name, value]) => ({ name, value: String(value) })),
+      }),
+      new Promise((_, reject) => setTimeout(
+        () => reject(new Error(`escalation timed out after ${ESCALATION_TIMEOUT_MS}ms`)),
+        ESCALATION_TIMEOUT_MS,
+      ).unref()),
+    ]);
     console.error('[bsc-reconcile] cmux auth failure escalated to the owner alert router');
   } catch (e) {
     console.error(`[bsc-reconcile] cmux auth escalation failed: ${e.message}`);

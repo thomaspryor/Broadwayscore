@@ -52,23 +52,47 @@ function cmuxAvailable() {
 // orphan detection that runs after it.
 const RUN_TIMEOUT_MS = 30_000;
 
-function run(args) {
+// `execFn` is a test-only seam (same idiom as this file's listWorkspaces/
+// closeWorkspace injection points). The ladder below is the riskiest logic in
+// the module and execFileSync is otherwise impossible to drive from a test
+// without spawning real processes against a live socket.
+function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
   const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
+  let firstAuthError = null;
+
   try {
-    return execFileSync(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
+    return execFn(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
   } catch (e) {
     if (classifyCmuxError(e) !== 'auth-denied') throw e;
-    try {
-      return execFileSync(CMUX, args, {
-        ...base,
-        env: cmuxSpawnEnv(process.env, { refresh: true }),
-      });
-    } catch (e2) {
-      if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
-      // Last resort: no credential, so an in-cmux caller falls back to the
-      // ancestry check that admitted it before any of this existed.
-      return execFileSync(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
-    }
+    firstAuthError = e;
+  }
+
+  try {
+    // force: the caller's own CMUX_SOCKET_PASSWORD has now been PROVEN wrong
+    // by a rejection, so disk wins. Without force this attempt would be
+    // byte-identical to the one that just failed.
+    return execFn(CMUX, args, {
+      ...base,
+      env: cmuxSpawnEnv(process.env, { refresh: true, force: true }),
+    });
+  } catch (e2) {
+    if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
+  }
+
+  try {
+    // Last resort: no credential, so an in-cmux caller falls back to the
+    // ancestry check that admitted it before any of this existed.
+    const out = execFn(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    // Saying nothing here would mask a permanently wrong password forever:
+    // every call would quietly cost three spawns and still look healthy.
+    logFn('[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e3) {
+    // Surface the ORIGINAL auth rejection, not this last attempt's error.
+    // If attempt 3 happens to fail as 'unavailable', throwing it would hide
+    // the auth diagnosis from summarizeCmuxFailures and nothing would page —
+    // precisely the under-alerting this whole change exists to end.
+    throw classifyCmuxError(e3) === 'auth-denied' ? e3 : (firstAuthError || e3);
   }
 }
 

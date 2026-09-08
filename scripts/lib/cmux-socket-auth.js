@@ -151,9 +151,15 @@ function classifyCmuxError(err) {
  * @param {string|null} password from extractSocketPassword.
  * @returns {Record<string,string|undefined>} a new env object (never mutates).
  */
-function buildCmuxEnv(baseEnv, password) {
+function buildCmuxEnv(baseEnv, password, { force = false } = {}) {
   const base = baseEnv && typeof baseEnv === 'object' ? baseEnv : {};
-  if (base.CMUX_SOCKET_PASSWORD) return { ...base };
+  // `force` exists for the retry path and ONLY for it. Without it the
+  // deference rule above silently defeats the refresh: a LaunchAgent holding
+  // a STALE CMUX_SOCKET_PASSWORD is the exact case the retry was written for,
+  // and re-reading disk only to discard the fresh value made attempt 2
+  // byte-identical to attempt 1 (ship-check finding). Deferring to the
+  // operator is right until their value has been PROVEN wrong by a rejection.
+  if (base.CMUX_SOCKET_PASSWORD && !force) return { ...base };
   if (typeof password !== 'string' || password === '') return { ...base };
   return { ...base, CMUX_SOCKET_PASSWORD: password };
 }
@@ -176,24 +182,40 @@ function withoutCmuxPassword(baseEnv) {
 // per workspace, ~44 per tick at 22 workspaces), so the config must not be
 // re-read per call. Invalidated only by an explicit refresh, which the
 // auth-denied retry path uses to pick up a rotated password.
-let cachedPassword;
-let cacheLoaded = false;
+// Keyed BY PATH: a single shared slot let a read with a custom path (a test,
+// or any future multi-config caller) poison the answer for the default path
+// process-wide.
+const passwordCache = new Map();
 
-function readSocketPasswordFromDisk({ refresh = false, configPath = CMUX_CONFIG_PATH } = {}) {
-  if (cacheLoaded && !refresh) return cachedPassword;
+function readSocketPasswordFromDisk({
+  refresh = false, configPath = CMUX_CONFIG_PATH, logFn = console.error,
+} = {}) {
+  if (!refresh && passwordCache.has(configPath)) return passwordCache.get(configPath);
   let text = '';
-  try { text = fs.readFileSync(configPath, 'utf8'); } catch { text = ''; }
-  cachedPassword = extractSocketPassword(text);
-  cacheLoaded = true;
-  return cachedPassword;
+  try {
+    text = fs.readFileSync(configPath, 'utf8');
+  } catch (e) {
+    // A missing config is ordinary — cmux may not be installed. A config that
+    // exists but cannot be READ (EACCES/EPERM) is a different animal and must
+    // not be reported as "no password configured": that is indistinguishable
+    // from the outage's own cause class, which is how this stayed invisible.
+    if (e && e.code !== 'ENOENT') {
+      logFn(`[cmux] could not read ${configPath} (${e.code || e.message}) — proceeding with no socket credential.`);
+    }
+    text = '';
+  }
+  const pw = extractSocketPassword(text);
+  passwordCache.set(configPath, pw);
+  return pw;
 }
 
 // Test-only: drop the memo so a fixture-driven test isn't order-dependent.
-function _resetPasswordCache() { cachedPassword = undefined; cacheLoaded = false; }
+function _resetPasswordCache() { passwordCache.clear(); }
 
 /** Convenience: the env a cmux subprocess should inherit. */
 function cmuxSpawnEnv(baseEnv = process.env, opts = {}) {
-  return buildCmuxEnv(baseEnv, readSocketPasswordFromDisk(opts));
+  const { force = false, ...readOpts } = opts;
+  return buildCmuxEnv(baseEnv, readSocketPasswordFromDisk(readOpts), { force });
 }
 
 /**
