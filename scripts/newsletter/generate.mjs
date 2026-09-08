@@ -2826,7 +2826,7 @@ if (process.env.LEDE_OVERRIDE) {
   // ledeShowRefs / meta.ledeShows, the exact list the lede-⊆-body invariant
   // trusts. _maxLedeSentences matches the cap buildLedeSentences was actually
   // called with, so this is a no-op for every pre-existing case (still 3)
-  // and only changes behavior for the new quiet-week case (up to 6).
+  // and only changes behavior for the new quiet-week case (fixed cap of 5).
   ledeText = _withOpener(_ledeParts.sentences.slice(0, _maxLedeSentences)).join(' ') || '';
   ledeShowRefs = _ledeParts.showRefs.slice(0, _maxLedeSentences);
 }
