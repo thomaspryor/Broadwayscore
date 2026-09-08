@@ -109,11 +109,15 @@ describe('classifyPremiseOutcome', () => {
     );
   });
 
-  it('a fail means the premise is still live', () => {
-    assert.equal(
-      classifyPremiseOutcome({ status: 'fail', detail: 'assertion failed' }).verdict,
-      'premise-live'
-    );
+  // Deliberately NOT called 'premise-live'. Measured on BRO-2356: its command
+  // failed in the fresh checkout with "scanned 0 review files — data/review-texts
+  // is missing or empty" while passing on a main checkout, because the detached
+  // checkout carries no private-repo data. The tool cannot tell a live premise
+  // from an unprepared checkout, so the verdict must not claim to.
+  it('a fail is reported as still-failing, never as a claim about the premise', () => {
+    const out = classifyPremiseOutcome({ status: 'fail', detail: 'assertion failed' });
+    assert.equal(out.verdict, 'still-failing');
+    assert.notEqual(out.verdict, 'premise-stale-candidate');
   });
 
   // THE LOAD-BEARING ASSERTION. runVerify() reports a timeout, a missing

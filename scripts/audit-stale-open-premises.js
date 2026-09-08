@@ -37,6 +37,17 @@
  * judge, and never closes anything itself. Same shadow-mode contract the
  * Done-side recheck runs under, for the same reason.
  *
+ * AND THE FAILING SIDE IS NOT A VERDICT ABOUT THE CARD AT ALL. The fresh
+ * checkout has no private-repo data (data/review-texts, core data), so a card
+ * whose command reads that data FAILS there for reasons that have nothing to
+ * do with its premise. Measured on BRO-2356: its command came back failing
+ * with "scanned 0 review files — data/review-texts is missing or empty", while
+ * the identical command passes on a main checkout. That is why the failing
+ * bucket is called `still-failing` and not `premise-live` — the tool cannot
+ * tell a live premise from an unprepared checkout, and must not claim to. Only
+ * the PASS side is actionable; `still-failing` means "leave this card alone",
+ * which is the conservative direction either way.
+ *
  * Safety properties, all inherited from scripts/lib/acceptance-check-core.js
  * rather than re-implemented (CLAUDE.md rule 15 — one implementation):
  *   - the command is UNTRUSTED text off a card, re-validated against
@@ -129,8 +140,14 @@ function selectAuditableCards(issues, { filter = null, limit = null } = {}) {
  * premise-stale candidate is an unambiguous pass. Everything else — a
  * failure, a timeout, a missing binary, exit 3 — leaves the card alone.
  *
+ * The failing bucket is `still-failing`, NOT `premise-live`: the fresh
+ * checkout carries no private-repo data, so a card whose command reads
+ * data/review-texts or core data fails there regardless of its premise
+ * (measured on BRO-2356). Naming that verdict `premise-live` would assert
+ * something this tool cannot determine.
+ *
  * @param {{status:'pass'|'fail'|'unverifiable', detail:string|null}} runResult
- * @returns {{verdict:'premise-stale-candidate'|'premise-live'|'unverifiable', detail:string|null}}
+ * @returns {{verdict:'premise-stale-candidate'|'still-failing'|'unverifiable', detail:string|null}}
  */
 function classifyPremiseOutcome(runResult) {
   const status = runResult && runResult.status;
@@ -139,7 +156,7 @@ function classifyPremiseOutcome(runResult) {
     return { verdict: 'premise-stale-candidate', detail };
   }
   if (status === 'fail') {
-    return { verdict: 'premise-live', detail };
+    return { verdict: 'still-failing', detail };
   }
   return { verdict: 'unverifiable', detail };
 }
@@ -166,7 +183,7 @@ function report(results, skipped, opts) {
     return;
   }
   const stale = results.filter((r) => r.verdict === 'premise-stale-candidate');
-  const live = results.filter((r) => r.verdict === 'premise-live');
+  const live = results.filter((r) => r.verdict === 'still-failing');
   const unver = results.filter((r) => r.verdict === 'unverifiable');
 
   console.log(`\nChecked ${results.length} open card(s); skipped ${skipped.length}.\n`);
@@ -179,8 +196,14 @@ function report(results, skipped, opts) {
     }
     console.log('');
   }
-  console.log(`Premise still live: ${live.length}   No verdict: ${unver.length}`);
-  for (const r of unver) console.log(`  (no verdict) ${r.identifier}: ${r.detail || 'unknown'}`);
+  console.log(`Still failing: ${live.length}   No verdict: ${unver.length}\n`);
+  // Print the detail for BOTH non-pass buckets. A still-failing card is very
+  // often failing because this checkout has no private-repo data, not because
+  // its premise is live — that is only visible in the detail, so hiding it
+  // (as an earlier version did) turns an environment artefact into what reads
+  // like a confirmed live bug.
+  for (const r of live) console.log(`  (still failing) ${r.identifier}: ${String(r.detail || 'unknown').trim().slice(0, 160)}`);
+  for (const r of unver) console.log(`  (no verdict)    ${r.identifier}: ${String(r.detail || 'unknown').trim().slice(0, 160)}`);
 }
 
 async function main() {
