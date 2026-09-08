@@ -542,6 +542,39 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'process-feedback',
     verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Written by scripts/process-feedback.js and drained/rewritten by the same workflow\'s "Create Bug Diagnosis Issues" github-script step. Same CI-vs-local residual risk as audit/processed-feedback.json above: a stale local overwrite could resurrect an already-drained diagnosis and re-file its bug issue.',
   },
+  // BRO-345 /what-else follow-up (2026-09-08): auditWorkflowText() over every
+  // workflow found 82 commit steps sharing this exact disqualified-fallback
+  // shape. Most are 24h-cadence audits with ample slack to land a push before
+  // the 600s deadline, but these two run every 15-30min — the same exposure
+  // class that caused process-feedback.yml's repeat-failure alert — so they
+  // get fixed now rather than parked on the roadmap. Both verified single-
+  // writer via findWritingWorkflows() with their own dedicated concurrency
+  // group. The remaining ~78 daily-cadence steps are lower urgency and
+  // tracked as a follow-up card rather than fixed inline here.
+  {
+    file: 'audit/opening-night-completeness-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-completeness-check',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-completeness-check.yml), group opening-night-completeness-check (cancel-in-progress: false). Runs every 15min — the tightest cadence of any step found with this disqualification shape.',
+  },
+  {
+    file: 'audit/opening-night-live-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-completeness-check',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-completeness-check.yml), group opening-night-completeness-check (cancel-in-progress: false). Same "Commit state file" step as audit/opening-night-completeness-state.json above.',
+  },
+  {
+    file: 'audit/drift-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-opening-night-drift',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (check-opening-night-drift.yml), group check-opening-night-drift (cancel-in-progress: false). Runs every 30min.',
+  },
   {
     file: 'audit/sd-circuit-breaker.json',
     surface: 'public-repo',
