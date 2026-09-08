@@ -28,6 +28,7 @@ const { isDoneTitle } = require('./cmux-workspaces.js');
 const { isNeedsYouTitle } = require('./needs-you-snapshot.js');
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
+const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
 function esc(s) {
@@ -131,7 +132,9 @@ function gatherDigest({ repo, hours = 24 } = {}) {
   // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
   // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
   // morning email for minutes (codex ship-check). Coarse calls keep 30s.
-  const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, { cwd: cwd || repo, encoding: 'utf8', timeout: timeoutMs, stdio: ['ignore', 'pipe', 'pipe'] });
+  // cmux calls need the socket credential like every other caller (BRO-2959);
+  // git/gh calls are unaffected by the extra variable.
+  const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, { cwd: cwd || repo, encoding: 'utf8', timeout: timeoutMs, stdio: ['ignore', 'pipe', 'pipe'], env: cmuxSpawnEnv(process.env) });
 
   // 1. What landed on origin/main (fetch first so we see CI's commits, not
   //    the possibly-stale local main).

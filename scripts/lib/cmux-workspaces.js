@@ -19,6 +19,7 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { cmuxSpawnEnv, classifyCmuxError, withoutCmuxPassword } = require('./cmux-socket-auth.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -26,8 +27,41 @@ function cmuxAvailable() {
   return fs.existsSync(CMUX);
 }
 
+// Every socket call funnels through here (see this file's header: only the
+// run/close/list wrappers touch the cmux socket), which makes it the one
+// place that has to carry the socket credential — see cmux-socket-auth.js
+// for why per-LaunchAgent injection under-fixes (BRO-2959).
+//
+// The retry is the safety valve: if the password on disk is stale, a caller
+// that would otherwise have been admitted by cmux-ancestry alone would now
+// fail on a credential it never needed. So on an auth rejection we re-read
+// the config once (picking up a rotation) and, failing that, try again with
+// no credential at all. Only auth failures retry — a refused connection is
+// left to the caller's own degraded path, unchanged.
+//
+// The timeout is new too: this call sits inside a 5-min launchd tick, and a
+// wedged socket previously blocked it indefinitely, silently disabling the
+// orphan detection that runs after it.
+const RUN_TIMEOUT_MS = 30_000;
+
 function run(args) {
-  return execFileSync(CMUX, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
+  try {
+    return execFileSync(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
+  } catch (e) {
+    if (classifyCmuxError(e) !== 'auth-denied') throw e;
+    try {
+      return execFileSync(CMUX, args, {
+        ...base,
+        env: cmuxSpawnEnv(process.env, { refresh: true }),
+      });
+    } catch (e2) {
+      if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
+      // Last resort: no credential, so an in-cmux caller falls back to the
+      // ancestry check that admitted it before any of this existed.
+      return execFileSync(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    }
+  }
 }
 
 // ── pure logic (exported for tests) ────────────────────────────────────────

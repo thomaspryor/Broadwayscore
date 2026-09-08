@@ -68,6 +68,7 @@ const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
+const { summarizeCmuxFailures } = require('./lib/cmux-socket-auth.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -98,9 +99,18 @@ const DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
 // (and the owner's screen, if any of them wake it) in one tick.
 const MAX_REVIVE_PER_TICK = 3;
 
+// Every cmux failure this tick, collected so main() can escalate ONCE at the
+// end rather than paging per sweep (BRO-2959). Routing through report() means
+// all three sweep sites are covered by construction — including any added
+// later — instead of each remembering to escalate for itself.
+const cmuxFailuresThisTick = [];
+
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
   console.log(`[bsc-reconcile] ${entry.kind}: ${entry.detail}`);
+  if (typeof entry.kind === 'string' && entry.kind.endsWith('-error') && entry.detail) {
+    cmuxFailuresThisTick.push(entry.detail);
+  }
   if (DRY) return;
   try {
     fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
@@ -599,7 +609,14 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   const entries = readLedgerEntriesFn();
   const trackedIds = new Set(entries.filter(e => e.taskId != null).map(e => String(e.taskId)));
   let workspaces = [];
-  try { workspaces = listWorkspacesFn() || []; } catch { /* cmux down — title guard degrades to skip-none */ }
+  // Degrading to skip-none is right for a cmux that is merely down, but the
+  // failure still has to be SEEN: this was the third blind spot in BRO-2959,
+  // where an auth rejection here produced literally no output at all.
+  try {
+    workspaces = listWorkspacesFn() || [];
+  } catch (e) {
+    reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${e.message}` });
+  }
 
   const flipped = [];
   const skipped = [];
@@ -1085,6 +1102,39 @@ async function main() {
     }
   } catch (e) {
     console.error(`[bsc-reconcile] card-drift sweep crashed (non-fatal): ${e.message}`);
+  }
+
+  await escalateCmuxAuthFailures();
+}
+
+// BRO-2959: a cmux socket AUTH rejection disables every sweep above at once
+// and never clears on its own, so it has to page immediately. The other
+// failure kinds (daemon down, timeout) are genuinely transient and already
+// have correct degraded-mode handling — they stay silent here on purpose,
+// which is what keeps this from becoming one more line of noise in a report
+// file that already logs thousands of them.
+async function escalateCmuxAuthFailures() {
+  const summary = summarizeCmuxFailures(cmuxFailuresThisTick);
+  if (!summary.escalate || DRY) return;
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    await routeAlert({
+      // Stable key: one open incident for the whole outage, not one per tick.
+      conditionKey: 'cmux-socket:auth-denied',
+      title: 'cmux socket is rejecting automation — every self-heal sweep is down',
+      description:
+        `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n` +
+        'This is a configuration state, not a blip: it does not clear on its own. While it holds, the cmux tab-lane self-heal, bsc-prune and dispatch-watchdog are all disabled simultaneously — dead workspaces stop being recovered and nothing else notices.\n\n' +
+        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.',
+      hint:
+        'Check `automation.socketControlMode` in ~/.config/cmux/cmux.json. For launchd callers it must be "password" with a matching `automation.socketPassword` (scripts/lib/cmux-socket-auth.js reads it and injects CMUX_SOCKET_PASSWORD). Verify with: node -e "require(\'./scripts/lib/cmux-workspaces.js\').listWorkspaces()".',
+      severity: 'error',
+      disposition: 'auto',
+      fields: Object.entries(summary.counts).map(([name, value]) => ({ name, value: String(value) })),
+    });
+    console.error('[bsc-reconcile] cmux auth failure escalated to the owner alert router');
+  } catch (e) {
+    console.error(`[bsc-reconcile] cmux auth escalation failed: ${e.message}`);
   }
 }
 

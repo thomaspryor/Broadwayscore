@@ -65,6 +65,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { withFileLock } = require('./file-lock.js');
 
+const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
 // os.tmpdir(), NOT data/audit/ (pre-implementation review, 2026-08-26).
@@ -442,7 +443,7 @@ function runCmuxDebugTerminals({ attempts = 2, backoffMs = 300 } = {}) {
   for (let i = 0; i < attempts; i++) {
     try {
       if (!fs.existsSync(CMUX)) return null;
-      const r = spawnSync(CMUX, ['debug-terminals'], { encoding: 'utf8', timeout: 5000, maxBuffer: 32 * 1024 * 1024 });
+      const r = spawnSync(CMUX, ['debug-terminals'], { encoding: 'utf8', timeout: 5000, maxBuffer: 32 * 1024 * 1024, env: cmuxSpawnEnv(process.env) });
       if (!r.error && r.status === 0 && r.stdout) return r.stdout;
       // Synchronous sleep, INSIDE the try (ship-check catch): SharedArrayBuffer
       // can be unavailable or blocked depending on how node was started, and a
