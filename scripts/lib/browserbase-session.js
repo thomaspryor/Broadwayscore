@@ -7,9 +7,9 @@
  * spend rebounded on 2026-08-01, the billing API could count sessions but
  * could not say which script created them.
  *
- * Every caller migrates to createBbSession({ apiKey, projectId, caller, purpose, body }):
+ * Every caller migrates to createBbSession({ apiKey, projectId, caller, purpose, host, category, body }):
  *   - records one telemetry line + durable ledger row (provider-telemetry.js)
- *   - sets Browserbase's own `userMetadata: {caller, purpose}` on session create,
+ *   - sets Browserbase's own `userMetadata: {caller, purpose, host, category}` on session create,
  *     so attribution also lives in the vendor's API and survives a lost ledger.
  *     Confirmed supported on our plan by a live create+release round-trip
  *     2026-08-02 (userMetadata echoed back in the response) — do not re-assume
@@ -62,6 +62,14 @@
  * Browserbase's $0.10/session cost; checking them against the raw ceiling
  * preserves that backstop while still freeing the reserved slice from the
  * bulk callers that were starving them.
+ *
+ * BRO-3097 (2026-09-08): `caller` attribution was already landing in the
+ * ledger (task #752), but every row's `host` was null and there was no way
+ * to split sessions/day between review-text fetches and aggregator-discovery
+ * crawls — the two Browserbase use cases have very different value per
+ * session and the owner's spend decision needs them separated. Callers now
+ * pass `host` (the target site) and `category` ('review-text' | 'discovery')
+ * through to the ledger row. Measurement only — no routing/budget change.
  */
 'use strict';
 
@@ -76,6 +84,10 @@ const { isExemptCaller, effectiveCeilingForOpeningWindow } = require('./brightda
 
 const SESSIONS_URL = 'https://api.browserbase.com/v1/sessions';
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+
+// BRO-3097: the only two valid values for opts.category — enforced below so a
+// typo doesn't silently create a third, unrecognized bucket in the ledger.
+const BB_CATEGORIES = ['review-text', 'discovery'];
 
 // Short TTL cache for the live day-cap count (#1248 ship-check finding):
 // without this, every createBbSession() call hits the live-usage API, which
@@ -134,6 +146,16 @@ function sanitizeMetadataValue(value) {
  * @param {string} [opts.projectId] - defaults to process.env.BROWSERBASE_PROJECT_ID
  * @param {string} opts.caller - short label for who's asking (e.g. 'gather-reviews:talkin-broadway')
  * @param {string} [opts.purpose] - free-text reason, surfaced in userMetadata for vendor-side lookup
+ * @param {string} [opts.host] - target site this session is fetching (e.g. 'nytimes.com', 'broadwayworld.com').
+ *   BRO-3097: recorded on the ledger row so spend is attributable by host, not just by caller script.
+ * @param {'review-text'|'discovery'} opts.category - BRO-3097: splits ledger rows into Tier-1.5 paywalled
+ *   review-text fetches (collect-review-texts.js, newspapers-com-extract.js) vs aggregator sessions that
+ *   clear an anti-bot challenge against a WE/BWW/Stagedoor aggregator — whether that session ends up
+ *   crawling a listing for URLs (bww-rr-discover.js) or reading review content straight off the
+ *   aggregator's own page (The Stage callers, theatre.reviews) — both count as 'discovery' because the
+ *   $ is spent on beating the aggregator's bot-wall, not on any one outlet's paywall. Required, like
+ *   `caller` — an omitted/mistyped value would silently fall into the ledger's null bucket, defeating
+ *   the split for that caller (BB_CATEGORIES). Measurement only — does not affect routing.
  * @param {Object} [opts.body] - extra session-create fields merged in (keepAlive, timeout, browserSettings, proxies, ...)
  * @returns {Promise<{id: string, connectUrl: string, raw: Object}>}
  */
@@ -148,6 +170,13 @@ async function createBbSession(opts) {
   }
   if (!opts.caller) {
     throw new Error('createBbSession: opts.caller is required (attribution would be lost otherwise)');
+  }
+  // BRO-3097 ship-check finding: required (not merely validated-if-present) —
+  // an omitted category would silently fall into the ledger's null bucket,
+  // defeating the review-text/discovery split for any future or regressed
+  // call site exactly the way a missing `caller` would defeat attribution.
+  if (!BB_CATEGORIES.includes(opts.category)) {
+    throw new Error(`createBbSession: opts.category is required and must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
   }
 
   // Account-wide daily ceiling (#1248). Live count already reflects every
@@ -179,7 +208,7 @@ async function createBbSession(opts) {
 
   const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
   if (liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay) {
-    recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: 'day-cap-reached' });
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
     const reserveNote = effectiveMaxPerDay !== maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
     throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${effectiveMaxPerDay}${reserveNote}) — session create blocked for ${opts.caller}`);
   }
@@ -197,6 +226,8 @@ async function createBbSession(opts) {
       ...sanitizedUserMetadata,
       caller: sanitizeMetadataValue(opts.caller),
       purpose: sanitizeMetadataValue(opts.purpose),
+      host: sanitizeMetadataValue(opts.host),
+      category: sanitizeMetadataValue(opts.category),
     },
   };
 
@@ -210,23 +241,23 @@ async function createBbSession(opts) {
     });
     status = res.status;
   } catch (err) {
-    recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: err.message || 'network-error' });
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: err.message || 'network-error' });
     throw err;
   }
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status });
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status });
     throw new Error(`Browserbase session create failed: ${status} ${text.slice(0, 200)}`);
   }
 
   const session = await res.json();
   if (!session || !session.id) {
-    recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: 'no-session-id' });
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'no-session-id' });
     throw new Error(`Browserbase session create returned no id: ${JSON.stringify(session).slice(0, 200)}`);
   }
 
-  recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: true, status });
+  recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: true, status });
 
   const connectUrl = session.connectUrl
     || `wss://connect.browserbase.com?apiKey=${apiKey}&sessionId=${session.id}`;
@@ -242,4 +273,4 @@ function _resetDayCapCacheForTests() {
   _openingWindowCache = { count: null, ts: 0 };
 }
 
-module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, _resetDayCapCacheForTests };
+module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests };

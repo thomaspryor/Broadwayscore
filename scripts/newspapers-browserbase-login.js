@@ -71,6 +71,8 @@ async function main() {
     projectId,
     caller: 'newspapers-browserbase-login.js',
     purpose: 'newspapers.com interactive login into persistent context',
+    host: 'newspapers.com',
+    category: 'review-text',
     body: {
       keepAlive: true,
       proxies: true,

@@ -57,6 +57,8 @@ async function launchBrowser() {
     const session = await createBbSession({
       caller: 'scrape-thestage-roundups.js',
       purpose: 'The Stage review round-up login + fetch',
+      host: 'thestage.co.uk',
+      category: 'discovery',
       body: { browserSettings: { solveCaptchas: true } },
     });
     const browser = await chromium.connectOverCDP(session.connectUrl);

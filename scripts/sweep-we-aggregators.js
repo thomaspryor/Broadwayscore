@@ -49,6 +49,13 @@ Usage:
   node scripts/sweep-we-aggregators.js --help, -h    print this usage and exit
 `;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+
+// BRO-3097: best-effort hostname extraction for Browserbase ledger attribution
+// (a malformed/undefined indexUrl must not throw — attribution is measurement
+// only, never allowed to break the scrape it's observing).
+function safeHostOf(url) {
+  try { return url ? new URL(url).hostname.replace(/^www\./, '') : null; } catch { return null; }
+}
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
 
 // Manually discovered URLs that automated matching can't find (verified via web search)
@@ -825,6 +832,8 @@ async function sweepTheatreReviews(show) {
       const session = await createBbSession({
         caller: 'sweep-we-aggregators.js:theatre-reviews',
         purpose: 'Theatre Reviews (TR) CleanTalk bypass, one-shot',
+        host: safeHostOf(indexUrl) || 'theatre.reviews',
+        category: 'discovery',
         body: { browserSettings: { solveCaptchas: true } },
       });
       const browser = await chromium.connectOverCDP(session.connectUrl);
@@ -1051,6 +1060,8 @@ async function getStagePageViaBrowserBase(url) {
     const session = await createBbSession({
       caller: 'sweep-we-aggregators.js:the-stage',
       purpose: 'The Stage cookie-auth session (reused across shows)',
+      host: safeHostOf(url) || 'thestage.co.uk',
+      category: 'discovery',
       body: { keepAlive: true, timeout: 1800, browserSettings: { solveCaptchas: true } },
     });
 

@@ -16,6 +16,9 @@
 // number here) is what keeps the digest's cap-exhausted line honest after the
 // T13 step-down moves the cap.
 const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
+// BRO-3097: which providers' ledger rows get `host` folded into the daily
+// aggregate's grouping key — see HOST_DIMENSION_PROVIDERS's own docstring.
+const { HOST_DIMENSION_PROVIDERS } = require('./provider-telemetry');
 
 const BB_COST_PER_SESSION = 0.10;
 
@@ -237,8 +240,10 @@ function renderSnapshot({
  * NON-rotated file — check-provider-spend.js owns that I/O), idempotently
  * replacing that day's rows on re-run (same pattern as provider-spend-daily.
  * jsonl). No rotation policy is needed here: cardinality is bounded by
- * (day x provider x workflow x script x fn), tiny next to the raw per-call
- * ledger it summarizes.
+ * (day x provider x workflow x script x fn x host x category) — host/
+ * category are non-null for exactly one provider today (see
+ * HOST_DIMENSION_PROVIDERS below), so this stays tiny next to the raw
+ * per-call ledger it summarizes.
  *
  * Grouping key is (provider, workflow, script, fn) rather than just provider
  * so the Sprint 3 guard audit and any "which caller costs the most" query can
@@ -248,9 +253,21 @@ function renderSnapshot({
  * purpose, not a bug: null and any real workflow name should stay two
  * different call paths for the same script, not be conflated.
  *
+ * BRO-3097 (ship-check finding): the grouping key also splits on `category`
+ * ('review-text'|'discovery'|null) and, for HOST_DIMENSION_PROVIDERS members
+ * (currently just browserbase), on `host`. Without this the review-text/
+ * discovery split BRO-3097 exists to enable would have been lost the moment
+ * the raw ledger rotated past a day — this durable aggregate is what
+ * actually survives the 7-day window the card's spend decision needs. `host`
+ * is scoped to HOST_DIMENSION_PROVIDERS (not every provider) because BD/
+ * ScrapingBee/Scrapingdog hit dozens of review-outlet hosts per script —
+ * adding host to their grouping key would multiply this file's row count
+ * well past the bounded cardinality above, for no attribution question
+ * anyone has asked yet.
+ *
  * @param {Array<Object>} ledgerRecords - raw parsed ledger lines
  * @param {string} day - "YYYY-MM-DD" UTC
- * @returns {Array<{day, provider, workflow, script, fn, calls, credits}>}
+ * @returns {Array<{day, provider, workflow, script, fn, host, category, calls, credits}>}
  *   sorted by credits descending (most expensive grouping first), so a
  *   --dry-run print or digest line can just take the head of the list.
  */
@@ -261,8 +278,10 @@ function aggregateLedgerByDay(ledgerRecords, day) {
     const workflow = r.workflow || null;
     const script = r.script || 'unknown';
     const fn = r.fn || 'unknown';
-    const key = `${r.provider}|${workflow}|${script}|${fn}`;
-    if (!groups[key]) groups[key] = { day, provider: r.provider, workflow, script, fn, calls: 0, credits: 0 };
+    const host = HOST_DIMENSION_PROVIDERS.has(r.provider) ? (r.host || null) : null;
+    const category = r.category || null;
+    const key = `${r.provider}|${workflow}|${script}|${fn}|${host}|${category}`;
+    if (!groups[key]) groups[key] = { day, provider: r.provider, workflow, script, fn, host, category, calls: 0, credits: 0 };
     groups[key].calls += 1;
     groups[key].credits += typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
   }

@@ -2183,6 +2183,8 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
       projectId: CONFIG.browserbaseProjectId,
       caller: 'collect-review-texts.js',
       purpose: urlDomain ? `paywalled review fetch: ${urlDomain}` : 'paywalled review fetch',
+      host: urlDomain || null,
+      category: 'review-text',
       body: {
         browserSettings: {
           // Enable stealth and CAPTCHA solving
