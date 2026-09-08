@@ -17,7 +17,7 @@ import SharedDatePicker from '@/components/user/DatePickerButton';
 import ShowtimePicker from '@/components/user/ShowtimePicker';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
-import { localToday } from '@/lib/date-utils';
+import { localToday, formatShowDate } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
@@ -1822,7 +1822,7 @@ function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | nu
     }
     const start = show.previewDate || show.openingDate;
     const text = start
-      ? `Opens ${new Date(start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+      ? `Opens ${formatShowDate(start, { month: 'short', day: 'numeric' })}`
       : 'Not yet open';
     return { text, cls: 'bg-blue-500/80 text-white' };
   }
@@ -1932,7 +1932,7 @@ function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemo
         )}
         {show?.closingDate && (
           <p className="text-xs text-gray-500 mt-1">
-            Closes {new Date(show.closingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            Closes {formatShowDate(show.closingDate)}
           </p>
         )}
       </div>

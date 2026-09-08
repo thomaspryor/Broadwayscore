@@ -17,6 +17,7 @@ import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient'
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import FeaturedSpotSlim from '@/components/FeaturedSpotSlim';
 import { getTonyTrackRecord, isTonyPromoActive, isBtcPromoActive } from '@/lib/data-tony-predictions';
+import { formatShowDate } from '@/lib/date-utils';
 
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
 const currentYear = new Date().getFullYear();
@@ -151,7 +152,7 @@ export default function HomePage() {
     .map(serializeShow);
 
   const now = new Date();
-  const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const shortDate = (d: string) => formatShowDate(d, { month: 'short', day: 'numeric' });
 
   const closingSoonShowsList = allShows
     .filter(s => {
