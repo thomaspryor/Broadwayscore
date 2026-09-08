@@ -62,6 +62,17 @@
  * audit-workflow-secret-gaps.js) would close this gap but is real, separate
  * work — not done here.
  *
+ * Two more known false-negative classes (adversarial review, BRO-2817),
+ * accepted for the same reason the blind spot above is: a regex/text scanner,
+ * not a real analyzer. (1) A `uses:` (composite action / marketplace action)
+ * step has no `run:` block, so `stepCanHardFail` always returns false for
+ * it — an action step that fails can ALSO skip a later un-guarded alert step,
+ * invisibly to this tool. (2) `extractRouteAlertCalls` requires a literal
+ * `conditionKey:`/`disposition:` inside the call's own text — a call built
+ * from a variable or spread (`routeAlert(alertOptions)`, `routeAlert({
+ * ...base, conditionKey })`) yields no match at all, so it's silently treated
+ * as if it doesn't exist.
+ *
  * Suppress a false positive for a whole workflow file:
  *   # audit-alert-reachability-ok: <reason>
  *
@@ -186,11 +197,18 @@ function getJobBlocks(raw) {
 // --- hard-fail-gate heuristic -----------------------------------------------
 
 const EXIT_1_RE = /\bprocess\.exit\(\s*1\s*\)/;
+// Trailing `# comment` is stripped before this test (adversarial review,
+// BRO-2817): `some-cmd || true  # explain why` is just as guarded as
+// `some-cmd || true`, but the bare `$` anchor doesn't see past the comment.
 const TRAILING_OR_TRUE_RE = /\|\|\s*true\s*$/;
+const TRAILING_COMMENT_RE = /\s+#.*$/;
 
 /** True if `runText` has at least one line that isn't `|| true`-guarded (i.e. can propagate a non-zero exit). */
 function hasUnguardedCommand(runText) {
-  const lines = runText.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
+  const lines = runText
+    .split('\n')
+    .map((l) => l.trim().replace(TRAILING_COMMENT_RE, ''))
+    .filter((l) => l && !l.startsWith('#'));
   return lines.some((l) => !TRAILING_OR_TRUE_RE.test(l));
 }
 
@@ -202,8 +220,14 @@ function stepCanHardFail(step) {
   return hasUnguardedCommand(step.run);
 }
 
-function stepIfHasAlways(step) {
-  return Boolean(step && step.ifRaw && /\balways\(\)/.test(step.ifRaw));
+// A later step is reachable after an earlier hard-fail either via `always()`
+// (runs unconditionally) or `failure()` (runs ONLY because something upstream
+// failed — still reachable in exactly the scenario this audit cares about).
+// Adversarial review (BRO-2817) found a real corpus shape this would
+// otherwise false-positive on: .github/workflows/recover-wsj-subscriber.yml's
+// failure-handler step, gated on `if: failure()` alone.
+function stepIfSurvivesEarlierFailure(step) {
+  return Boolean(step && step.ifRaw && /\b(?:always|failure)\(\)/.test(step.ifRaw));
 }
 
 // --- routeAlert() call extraction -------------------------------------------
@@ -255,7 +279,7 @@ function findUnreachableAlerts(jobs) {
         if (call.disposition !== 'human') continue;
         if (!isPageWorthyLiteralPrefix(call.conditionKeyLiteral)) continue;
         if (!hardFailSeen) continue;
-        if (stepIfHasAlways(step)) continue;
+        if (stepIfSurvivesEarlierFailure(step)) continue;
         findings.push({ job: job.name, step: step.name, conditionKey: call.conditionKeyLiteral });
       }
       if (stepCanHardFail(step)) hardFailSeen = true;
@@ -315,7 +339,7 @@ module.exports = {
   getJobBlocks,
   getStepBlocks,
   stepCanHardFail,
-  stepIfHasAlways,
+  stepIfSurvivesEarlierFailure,
   hasUnguardedCommand,
   extractRouteAlertCalls,
   splitRouteAlertCalls,

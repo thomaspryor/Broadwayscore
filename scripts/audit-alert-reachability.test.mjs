@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   getJobBlocks,
   stepCanHardFail,
-  stepIfHasAlways,
+  stepIfSurvivesEarlierFailure,
   extractRouteAlertCalls,
   isPageWorthyLiteralPrefix,
   findUnreachableAlerts,
@@ -70,6 +70,13 @@ test('stepCanHardFail is false when every line is || true-guarded', () => {
   assert.equal(stepCanHardFail({ run: 'node scripts/check-something.js || true' }), false);
 });
 
+// Adversarial review (BRO-2817): a trailing comment after `|| true` must not
+// make the line read as unguarded — `cmd || true` and `cmd || true  # why`
+// are equally guarded.
+test('stepCanHardFail is false when a || true-guarded line has a trailing comment', () => {
+  assert.equal(stepCanHardFail({ run: 'node scripts/check-something.js || true  # explain why' }), false);
+});
+
 test('stepCanHardFail is false when the step has continue-on-error: true', () => {
   assert.equal(stepCanHardFail({ run: 'process.exit(1)', continueOnError: true }), false);
 });
@@ -78,12 +85,17 @@ test('stepCanHardFail is false for a step with no run block (e.g. a `uses:` acti
   assert.equal(stepCanHardFail({ run: '' }), false);
 });
 
-// --- stepIfHasAlways ---------------------------------------------------------
+// --- stepIfSurvivesEarlierFailure ---------------------------------------------------------
 
-test('stepIfHasAlways is true only when the if condition contains always()', () => {
-  assert.equal(stepIfHasAlways({ ifRaw: "always() && steps.x.outputs.y != ''" }), true);
-  assert.equal(stepIfHasAlways({ ifRaw: "steps.x.outputs.y != ''" }), false);
-  assert.equal(stepIfHasAlways({ ifRaw: null }), false);
+test('stepIfSurvivesEarlierFailure is true for always() or failure(), false otherwise', () => {
+  assert.equal(stepIfSurvivesEarlierFailure({ ifRaw: "always() && steps.x.outputs.y != ''" }), true);
+  // Adversarial review (BRO-2817): a step gated on `if: failure()` alone (the
+  // real shape in .github/workflows/recover-wsj-subscriber.yml:171) is also
+  // reachable after an earlier hard-fail — it runs BECAUSE of that failure,
+  // which is exactly the scenario this audit cares about.
+  assert.equal(stepIfSurvivesEarlierFailure({ ifRaw: 'failure()' }), true);
+  assert.equal(stepIfSurvivesEarlierFailure({ ifRaw: "steps.x.outputs.y != ''" }), false);
+  assert.equal(stepIfSurvivesEarlierFailure({ ifRaw: null }), false);
 });
 
 // --- extractRouteAlertCalls ---------------------------------------------------
