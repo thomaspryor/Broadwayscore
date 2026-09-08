@@ -96,7 +96,7 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 // file's header for the DispatchGuardTask shape these expect.
 const {
   findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
-  evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS,
+  evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS, isAutomationParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
@@ -960,10 +960,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // human-gate block (also too broad — a card that's automation-parked AND
     // touches a UI path should still trip VISUAL_QA_GATE). This flag waives
     // PARKED_SENTINEL alone, nothing else, matching --force's own scope for
-    // that one blocker. Trusted per call site, not re-verified against the
-    // description — same convention as --allow-autofix-filed just above.
+    // that one blocker.
+    //
+    // UNLIKE --allow-autofix-filed (which trusts the caller blindly),
+    // --allow-automation-parked also re-verifies the description against
+    // isAutomationParked (ship-check finding, Codex adversarial review,
+    // BRO-3060): a blindly-trusted flag would waive PARKED_SENTINEL for a
+    // GENUINE owner park too, the moment any caller passed the flag on the
+    // wrong issue — the exact mass-unpark the sentinel exists to prevent.
+    // The 3 legitimate callers (linear-drain-parked.js, digest-autofix.js,
+    // autofix-canary.js) only ever pass this for issues they just parked
+    // themselves, so the re-check is a no-op for them and a real backstop
+    // for everyone else.
+    const automationParked = args['allow-automation-parked'] && isAutomationParked(issue.description);
     const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
-      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && (args.force || args['allow-automation-parked'])));
+      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && (args.force || automationParked)));
     if (!hg.dispatchable && blocking.length) {
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
       for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
@@ -1007,6 +1018,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // the guard was waived is auditable in the ledger rather than
         // invisible.
         allowAutofixFiled: args['allow-autofix-filed'] || null,
+        // BRO-3060 — same reasoning as allowAutofixFiled above: a dispatch
+        // that only happened because PARKED_SENTINEL was waived for an
+        // automation park must be auditable, not invisible (ship-check
+        // finding, Codex adversarial review).
+        allowAutomationParked: args['allow-automation-parked'] || null,
         allowReportedWork: ld.bypassReasonForLedger(args),
         notionId: null, linearId: issue.identifier, correlationId,
       });
@@ -1119,6 +1135,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,
+      // BRO-3060 — see the headless launch entry above.
+      allowAutomationParked: args['allow-automation-parked'] || null,
         allowReportedWork: ld.bypassReasonForLedger(args),
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux

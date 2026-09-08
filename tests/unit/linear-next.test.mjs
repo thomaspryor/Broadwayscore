@@ -655,6 +655,48 @@ test('--allow-automation-parked wiring: the SAME issue dispatches once the flag 
   assert.doesNotMatch(res.stderr, /PARKED_SENTINEL/, 'the sentinel must not still be refusing once the flag is passed');
 });
 
+// Ship-check finding (Claude + Codex adversarial review, BRO-3060): the flag
+// must NOT be a blind trust — passing it on a GENUINELY owner-parked issue
+// (no automation marker in the description) must still refuse, or an
+// operator (or a future careless caller) could use --allow-automation-parked
+// as a generic unpark, exactly the mass-unpark the sentinel exists to
+// prevent. This is the regression test for that re-verification.
+test('--allow-automation-parked wiring: does NOT dispatch a genuinely owner-parked issue even with the flag (real subprocess)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-owner-parked', identifier: 'BRO-9329',
+      title: 'Genuinely owner-parked regression fixture issue',
+      description: 'PARKED: card owns this file and is In Progress in a live parallel session\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9329/owner-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (PARKED_SENTINEL still refuses a real owner park), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /PARKED_SENTINEL/, 'must still report the parked-sentinel refusal for a genuine owner park');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, '--allow-automation-parked must NOT act as a generic unpark for a genuinely owner-parked issue');
+});
+
 test('reportedOutcomeGuard wiring: it refuses BEFORE startedStateGuard, so the message never says "re-run with --force"', () => {
   // Ordering matters for behaviour, not just prose: startedStateGuard's own
   // remedy line is "Re-run with --force if you know this is a stalled issue
