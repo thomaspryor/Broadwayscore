@@ -142,6 +142,21 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = 
       // Circuit breaker tripped: advance the timestamp only (already in
       // `current`/`merged` from this run's per-show stamp) — never adopt
       // this run's untrusted gaps/uncollected. See the module comment above.
+      //
+      // Residual same-show concurrency gap (2nd Codex adversarial pass): if a
+      // DIFFERENT, non-refused run legitimately re-stamped this exact id
+      // between our lock's re-read and now, `merged[id].at` is that run's
+      // real, trustworthy timestamp, but we still pair it with OUR OWN stale
+      // `priorEntry` gaps/uncollected — a fresh timestamp next to stale
+      // counts. This requires two runs auditing the identical show
+      // concurrently, which the workflow's own concurrency group already
+      // prevents for the normal hourly cron; only a manual `--show=X` run
+      // racing the cron could trigger it. Same class of risk the module's
+      // top-of-file docstring already accepts for the whole rollback
+      // mechanism ("a real cross-process lock is out of S0 scope") — not
+      // resolved here, since disambiguating "our own untrusted stamp" from
+      // "a different run's trustworthy one" needs cross-run bookkeeping this
+      // file doesn't have.
       const freshAt = (merged[id] && merged[id].at) || new Date().toISOString();
       merged[id] = hadTrustedEntry
         ? { ...priorEntry, at: freshAt, quarantineStreak: 0 }
