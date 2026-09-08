@@ -1876,6 +1876,11 @@ on:
       # is NOT globbed). Path-listed so a solo edit to any of the three
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-orphan-inprogress.js'
+      # BRO-2999: fail-closed unit test for a thrown listWorkspacesFn() —
+      # registered in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs is NOT globbed). Path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-orphan-inprogress.test.mjs'
       - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'

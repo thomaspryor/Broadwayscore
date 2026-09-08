@@ -99,7 +99,7 @@ const JUSTIFIED_SURVIVORS = {
 // while their Notion card stays Paused (not Done) until the recheck date.
 
 test('every in_progress-with-no-workspace task is a named, justified survivor', () => {
-  const orphans = findOrphans();
+  const { orphans } = findOrphans();
   const orphanIds = orphans.map((t) => String(t.id));
   const unexplained = orphanIds.filter((id) => !(id in JUSTIFIED_SURVIVORS));
 

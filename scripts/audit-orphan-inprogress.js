@@ -44,6 +44,7 @@ const { taskBranchEvidence, notionMarkerOf } = require('./lib/task-reclaim.js');
 const { classifyOrphanInProgress } = require('./lib/orphan-inprogress-triage.js');
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `audit-orphan-inprogress.js — classify in_progress tasks with no live cmux workspace (task #1705).
@@ -77,12 +78,25 @@ function loadLiveTasks(dir) {
   return out;
 }
 
-/** in_progress tasks whose title/subject matches no currently-listed cmux workspace. */
+/**
+ * in_progress tasks whose title/subject matches no currently-listed cmux
+ * workspace.
+ *
+ * BRO-2999: listWorkspacesFn() throwing degrades `workspaces` to `[]`, and
+ * `[].some(...)` is always false — every in_progress task would silently
+ * look orphaned during a cmux outage, with no signal that the listing never
+ * actually happened. `cmuxUnavailable` (set only in the catch, classified via
+ * the same taxonomy as the BRO-2993 sibling fix in bsc-reconcile.js) makes
+ * that distinction explicit so the caller can refuse to --fix on an
+ * unverified all-orphan result instead of trusting it.
+ */
 function findOrphans({ loadTasksFn = loadLiveTasks, dir = tasksDir(), listWorkspacesFn = cmuxws.listWorkspaces } = {}) {
   const tasks = loadTasksFn(dir).filter((t) => t.status === 'in_progress');
   let workspaces = [];
-  try { workspaces = listWorkspacesFn() || []; } catch { /* cmux down — degrade to "no workspaces", the caller decides what to do with an all-orphan result */ }
-  return tasks.filter((t) => !workspaces.some((w) => ledger.titleMatchesSubject(w.title, t.subject)));
+  let cmuxUnavailable = null;
+  try { workspaces = listWorkspacesFn() || []; } catch (e) { cmuxUnavailable = classifyCmuxError(e); }
+  const orphans = tasks.filter((t) => !workspaces.some((w) => ledger.titleMatchesSubject(w.title, t.subject)));
+  return { orphans, cmuxUnavailable };
 }
 
 /**
@@ -269,7 +283,22 @@ function applyDecision(decision, { dir, now, dryRun, cardOfCache }) {
 
 function run(argv) {
   const dir = tasksDir();
-  const orphans = findOrphans({ dir });
+  const { orphans, cmuxUnavailable } = findOrphans({ dir });
+  // BRO-2999: a cmux outage must never authorize --fix on the resulting
+  // (unverified) all-orphan result — refuse outright, matching the
+  // dispatch-ledger-unreadable convention just below. A bare report is still
+  // allowed through for visibility (a human can decide what to do with it);
+  // only --fix's classify-then-mutate path is blocked.
+  if (cmuxUnavailable && argv.includes('--fix')) {
+    const msg = `cmux workspace listing failed (${cmuxUnavailable}) — refusing --fix.\n`
+      + `  Every in_progress task would look orphaned with no live workspaces to check against,\n`
+      + '  which is unverified, not confirmed. Re-run once cmux is reachable, or run without\n'
+      + '  --fix to see the (unverified) candidate list.';
+    if (argv.includes('--json')) console.log(JSON.stringify({ error: msg, cmuxUnavailable }, null, 2));
+    else console.error(`[audit-orphan-inprogress] REFUSED — ${msg}`);
+    process.exitCode = 2;
+    return null;
+  }
   // dispatchedTaskIds returns null (not []) when dispatch-ledger.jsonl is
   // unreadable — gitignored, so absent by construction in a git worktree
   // (audit-archived-in-progress.js's own docstring: "absent input must read
@@ -322,10 +351,13 @@ function run(argv) {
   }
 
   if (argv.includes('--json')) {
-    console.log(JSON.stringify({ total: orphans.length, buckets }, null, 2));
-    return { orphans, decisions, buckets };
+    console.log(JSON.stringify({ total: orphans.length, cmuxUnavailable, buckets }, null, 2));
+    return { orphans, decisions, buckets, cmuxUnavailable };
   }
 
+  if (cmuxUnavailable) {
+    console.log(`[audit-orphan-inprogress] WARNING: cmux workspace listing failed (${cmuxUnavailable}) — the list below is UNVERIFIED (every in_progress task looks orphaned with no workspaces to check against). --fix will refuse until cmux is reachable.`);
+  }
   console.log(`[audit-orphan-inprogress] ${orphans.length} in_progress task(s) with no live workspace`);
   for (const bucket of ['FINISHED', 'STALE', 'LOST', 'NEEDS-REVIEW']) {
     console.log(`\n${bucket}: ${buckets[bucket].length}`);
