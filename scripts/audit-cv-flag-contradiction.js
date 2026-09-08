@@ -105,6 +105,20 @@ function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
 
+  // An unusable --window is a vacuous PASS of the same class as the redirected
+  // root below: `--window=abc` made parseInt return NaN, every date comparison
+  // false, and `--strict` exit 0 having examined ZERO shows, while the
+  // coverage line laundered the NaN into a clean-looking "--window=0d"
+  // (round 3 finding 1). `--window=-5` passed too. Reject it outright rather
+  // than letting a downstream clamp turn nonsense into a plausible number.
+  if (!Number.isFinite(args.window) || args.window <= 0) {
+    console.error(
+      `FAIL: --window must be a positive number of days, got "${args.window}". ` +
+        'Refusing rather than scanning an empty window and reporting it as clean.'
+    );
+    process.exit(2);
+  }
+
   // A redirected root may never produce a PASSING gate verdict, and may never
   // rewrite the baseline (BASELINE_PATH follows ROOT too).
   if (ROOT_OVERRIDE && (args.strict || args.updateBaseline)) {

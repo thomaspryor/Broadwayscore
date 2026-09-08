@@ -98,6 +98,22 @@ test('upcomingShows is derived from openedShows, not from the corpus size', () =
   assert.equal(s.showsWithTexts + s.notExamined, s.corpusShows, 'must partition the corpus');
 });
 
+test('the eligible set is never smaller than the window, so "of which" is a subset', () => {
+  // Round 2 finding 4's fix had no test: with eligibleShows < windowShows the
+  // independent clamps produced ineligible > notExamined, making the last
+  // line's "of which" a non-subset. Only the Math.max clamp passes this.
+  const s = summarizeWindowCoverage({
+    windowDays: 30, corpusShows: 100, eligibleShows: 5, windowShows: 40,
+    openedShows: 10, showsWithTexts: 8, filesParsed: 20,
+  });
+  assert.equal(s.eligibleShows, 40, 'eligible clamps UP to the window it contains');
+  assert.equal(s.ineligibleShows, 60);
+  assert.ok(
+    s.ineligibleShows <= s.notExamined,
+    `"of which" must be a subset: ineligible ${s.ineligibleShows} > notExamined ${s.notExamined}`
+  );
+});
+
 test('an empty scan never reports negative or invented coverage', () => {
   const s = summarizeWindowCoverage({
     windowDays: 30, corpusShows: 2943, eligibleShows: 2601,
@@ -149,13 +165,18 @@ function buildFixture() {
     { id: 'missing-dir', openingDate: iso(Date.now() - 5 * day) },    // no dir at all
     { id: 'future-show', openingDate: iso(Date.now() + 30 * day) },   // in window, not opened
     { id: 'ancient-show', openingDate: '1990-01-01' },                // outside window
+    { id: 'bad-date-show', openingDate: 'TBD' },                      // unparseable date
     { id: 'no-date-show' },                                           // excluded at any window
   ];
   fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify(shows));
 
   const file = (o) => JSON.stringify(o);
   fs.mkdirSync(path.join(rt, 'good-show'), { recursive: true });
+  // TWO parseable files, so shows-examined (3) and files-parsed (4) differ.
+  // With one each, `filesParsed += Math.min(parsedThisShow, 1)` was
+  // indistinguishable from the truth (round 3 finding 3).
   fs.writeFileSync(path.join(rt, 'good-show', 'a.json'), file({ textWordCount: 10 }));
+  fs.writeFileSync(path.join(rt, 'good-show', 'b.json'), file({ textWordCount: 12 }));
   fs.mkdirSync(path.join(rt, 'corrupt-show'), { recursive: true });
   fs.writeFileSync(path.join(rt, 'corrupt-show', 'ok.json'), file({ textWordCount: 10 }));
   fs.writeFileSync(path.join(rt, 'corrupt-show', 'broken.json'), '{ this is not json');
@@ -191,9 +212,11 @@ test('the CLI counts files it PARSED, not files it listed', () => {
     assert.match(out, /^Coverage: /m, `no coverage line in output:\n${out}`);
     // good-show 1 + corrupt-show 1 (broken.json must NOT count) + future-show 1
     // = 3 parsed. ancient-show is outside the window. Listing would give 4.
-    assert.match(out, /\(3 review file\(s\) parsed\)/, out);
-    assert.doesNotMatch(out, /\(4 review file\(s\) parsed\)/, 'counted a corrupt file as parsed');
-    assert.doesNotMatch(out, /\(6 review file\(s\) parsed\)/, 'counted all-corrupt files as parsed');
+    assert.match(out, /\(4 review file\(s\) parsed\)/, out);
+    assert.doesNotMatch(out, /\(5 review file\(s\) parsed\)/, 'counted a corrupt file as parsed');
+    assert.doesNotMatch(out, /\(7 review file\(s\) parsed\)/, 'counted all-corrupt files as parsed');
+    // files-parsed (4) must not collapse to shows-examined (3).
+    assert.doesNotMatch(out, /\(3 review file\(s\) parsed\)/, 'counted shows, not files');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -205,16 +228,64 @@ test('the CLI does not report a show as examined when it yielded nothing', () =>
     const out = runCli(root);
     // Examined = good-show, corrupt-show, future-show = 3 of 7 corpus shows.
     // pending-only has a directory but no .json; missing-dir has no directory.
-    assert.match(out, /^Coverage: examined 3 of 8 corpus show\(s\)/m, out);
+    assert.match(out, /^Coverage: examined 3 of 9 corpus show\(s\)/m, out);
     // Window selects good, corrupt, pending-only, all-corrupt, missing-dir,
     // future = 6. Examined = good, corrupt, future = 3.
     assert.match(out, /selected 6 show\(s\): 5 already opened, 1 not yet opened/, out);
     // pending-only (no .json), all-corrupt (none parse), missing-dir (no dir).
     assert.match(out, /3 selected show\(s\) yielded no readable review file/, out);
+    // bad-date-show ('TBD') and no-date-show are both ineligible at ANY window,
+    // which is what "missing or unparseable" claims (round 3 finding 2).
     // examined + notExamined must equal the corpus: 3 + 5 = 8. The earlier
     // version asserted 2 here, which locked in the round 2 finding 1 P0.
-    assert.match(out, /5 corpus show\(s\) were NOT examined, of which 1 carry no usable openingDate/, out);
+    assert.match(out, /6 corpus show\(s\) were NOT examined, of which 2 carry no usable openingDate/, out);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('a redirected root is refused for --strict and --update-baseline', () => {
+  // Round 2 finding 3's fix had no test: the suite never invoked --strict, so
+  // deleting the refusal left it fully green while the CI gate at
+  // test.yml:4485 became passable against a decoy corpus.
+  const root = buildFixture();
+  try {
+    for (const flag of ['--strict', '--update-baseline']) {
+      let code = 0, stderr = '';
+      try {
+        execFileSync(process.execPath, [CLI, '--window=30', flag], {
+          encoding: 'utf8', stdio: 'pipe',
+          env: { ...process.env, BSC_AUDIT_ROOT: root },
+        });
+      } catch (e) {
+        code = e.status;
+        stderr = String(e.stderr || '');
+      }
+      assert.equal(code, 2, `${flag} with BSC_AUDIT_ROOT must exit 2, got ${code}`);
+      assert.match(stderr, /BSC_AUDIT_ROOT is set/, stderr);
+    }
+    // Report-only against the same redirected root must still work.
+    assert.match(runCli(root), /^Coverage: /m);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('an unusable --window is refused rather than scanned as clean', () => {
+  // Round 3 finding 1: --window=abc made parseInt return NaN, every date
+  // comparison false, and --strict exit 0 having examined ZERO shows while
+  // the coverage line printed a plausible "--window=0d".
+  for (const w of ['abc', '-5', '0']) {
+    let code = 0, stderr = '';
+    try {
+      execFileSync(process.execPath, [CLI, `--window=${w}`, '--strict'], {
+        encoding: 'utf8', stdio: 'pipe',
+      });
+    } catch (e) {
+      code = e.status;
+      stderr = String(e.stderr || '');
+    }
+    assert.equal(code, 2, `--window=${w} --strict must exit 2, got ${code}`);
+    assert.match(stderr, /--window must be a positive number of days/, stderr);
   }
 });
