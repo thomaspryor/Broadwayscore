@@ -55,6 +55,12 @@ on:
       # on a solo edit to the CLI itself, so a CLI-only regression would get zero
       # CI — the exact shape the note above this list describes (task #1745).
       - 'scripts/audit-doubled-market-ids.js'
+      # Same gap shape (BRO-3001): a top-level CLI outside scripts/lib/**. It
+      # owns "did dispatched work actually land?" and its cmux-liveness read
+      # feeds dispatch-outcome.js's workspaceGone check, where an empty result
+      # would report the whole in-flight fleet ABANDONED — worth CI on a solo
+      # edit.
+      - 'scripts/audit-dispatch-outcomes.js'
       - 'vercel.json'
       # scripts/lib/freeze-ledgers.test.mjs requires ../freeze-ledgers.js (a
       # top-level scripts/ file, outside the glob above) — same gap shape as
@@ -443,6 +449,10 @@ on:
       # Detection is pure + colocated-tested (lib-test glob); path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-unbounded-fetch.js'
+      # Same shape (BRO-3001): no direct cmux spawn may go without the socket
+      # credential. Detection is pure + colocated-tested; the walker is
+      # path-listed so a solo edit to it still triggers CI.
+      - 'scripts/audit-cmux-spawn-credential.js'
       # Same class, lower stakes: this one lives in scripts/tests/ (not globbed)
       # and is registered in tests/unit-test-manifest-tsx.txt. Its two subjects
       # (src/lib/ticket-utils.ts, scripts/lib/ticket-link-discovery.js) already
@@ -2910,6 +2920,23 @@ jobs:
         # style debt. Waive a reviewed false positive with an inline
         # "unbounded-fetch-ok: <reason>".
         run: node scripts/audit-unbounded-fetch.js
+
+      - name: Audit — no cmux spawn without the socket credential
+        if: always() && steps.deps.outcome == 'success'
+        # BRO-3001. On 2026-09-07 a cmux upgrade set socketControlMode to
+        # "cmuxOnly", which admits only processes whose ancestry is inside
+        # cmux; every launchd-run automation was denied at the socket, three
+        # recovery layers died at the same instant, and nothing paged for ~2h
+        # (BRO-2959). That fix wired the credential into eight spawn sites and
+        # wrote the rule in a comment — after which nine review rounds still
+        # missed two more sites, because one used the re-exported cmuxws.CMUX
+        # constant and one a bare `cmux` off PATH, and neither is visible to a
+        # grep for the absolute app path. This gate is that comment, executed.
+        # Blocking on a credential-less spawn; a spawn that carries the
+        # credential but bypasses cmux-workspaces.run()'s retry ladder is
+        # reported and does NOT fail. Waive a reviewed false positive with an
+        # inline "cmux-spawn-ok: <reason>".
+        run: node scripts/audit-cmux-spawn-credential.js
 
       - name: Audit — PUSH_RECONCILE_MERGED_JSON coverage on push-with-retry.sh callers
         if: always() && steps.deps.outcome == 'success'
