@@ -46,6 +46,15 @@ const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*(?:#.*)?$/;
 const FOR_LOOP_HEADER_RE = /^\s*for\s+(\w+)\s+in\s+(.+?)\s*$/;
 const BARE_DO_RE = /^\s*do\s*$/;
 const DONE_RE = /^\s*done\s*$/;
+// KNOWN LIMITATION (BRO-3051 /ship-check pass): text-based, not YAML/JS-aware.
+// A line whose first non-whitespace char is `#` inside a `script: |` block
+// could in principle be data within a JS template literal rather than a real
+// comment (e.g. a string starting with "# ${routeAlert(...)}"), which would
+// then be wrongly skipped by both this and jobStagesFile()'s pre-existing
+// comment-skip. Same class of blind spot the header above already accepts
+// for subprocess-indirect callers; no workflow in this repo writes calls
+// that way today, and a real parser is out of proportion to a heuristic,
+// non-blocking advisory lint.
 const COMMENT_LINE_RE = /^\s*#/;
 
 // Returns { varName, list, bodyStart } if `line` (at index i in jobLines)
