@@ -71,6 +71,7 @@ function pathExistsOnOriginMain(relPath, { repo = REPO, log = () => {} } = {}) {
 function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
   const depthArgs = repoDepthArgs({ repoRoot: repo });
   try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
     execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
     return true;
   } catch (err) {
