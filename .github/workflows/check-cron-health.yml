@@ -125,6 +125,22 @@ jobs:
             # fire Jul-Mar, so only check during Apr-Jun (was chronic-stale noise
             # in the digest every day of July 2026 before the seasonal field).
             "update-tony-awards.yml|36|Update Tony Awards|4-6"
+            # The two carriers of the review-completeness invariant (BRO-1618). Both were
+            # unmonitored: the system that proves "every published review is live" had no
+            # heartbeat of its own, so it could stop silently and look exactly like a quiet
+            # week with no openings. That is the failure mode this whole file exists for.
+            # NOTE ON DETECTION LATENCY: this workflow itself runs once daily (12:00 UTC),
+            # so a threshold below 24h does not buy faster detection — it only decides
+            # whether the outage is still flagged when the daily check does run. Both
+            # entries are sized so any real stall is still stale at the next noon pass.
+            # Hourly at :37; 3h. Detects aggregator-listed URLs missing from review-texts,
+            # so a dead cron here means real published reviews stay invisible.
+            "audit-aggregator-gap.yml|3|Audit Aggregator Review Gap"
+            # Rolling cadence: heavy passes 05:00/17:00 UTC plus light ticks at
+            # 02,08,11,14,20,23 — a run every ~3h. 5h = 1 missed tick + cron-lag cushion.
+            # The 13-hour blind window this schedule replaced is what let the Guardian and
+            # Telegraph Tao of Glass reviews (2026-07-31) publish after the day's last run.
+            "opening-night-reviews.yml|5|Opening Night Reviews"
             # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
