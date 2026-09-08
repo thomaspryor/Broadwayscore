@@ -10,7 +10,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { formatShowDate } from '../../src/lib/date-utils';
+import { formatShowDate, getShowYear } from '../../src/lib/date-utils';
 
 test('renders the stored calendar date under process.env.TZ = America/Los_Angeles', () => {
   const original = process.env.TZ;
@@ -58,4 +58,26 @@ test('a field that unexpectedly carries a full timestamp-with-offset does not sh
   assert.equal(formatShowDate('2026-07-26T23:00:00-04:00'), 'Jul 26, 2026');
   assert.equal(formatShowDate('2026-07-26T00:00:00+01:00'), 'Jul 26, 2026');
   assert.equal(formatShowDate('2026-07-26T12:00:00Z'), 'Jul 26, 2026');
+});
+
+test('getShowYear reads the year straight from the string, immune to a Jan-1 date under a non-UTC TZ', () => {
+  // 13 shows in shows.json close/open exactly on Jan 1 (e.g. "A Christmas
+  // Carol" closingDate 2023-01-01). new Date('2023-01-01').getFullYear()
+  // reads the LOCAL year, so under America/New_York it returns 2022 —
+  // wrong by a year, same root cause as BRO-3047.
+  const original = process.env.TZ;
+  process.env.TZ = 'America/New_York';
+  try {
+    assert.equal(getShowYear('2023-01-01'), 2023);
+    assert.equal(new Date('2023-01-01').getFullYear(), 2022, 'sanity: confirms the bug this helper avoids');
+  } finally {
+    process.env.TZ = original;
+  }
+});
+
+test('getShowYear handles missing/invalid input', () => {
+  assert.equal(getShowYear(null), null);
+  assert.equal(getShowYear(undefined), null);
+  assert.equal(getShowYear(''), null);
+  assert.equal(getShowYear('not-a-date'), null);
 });
