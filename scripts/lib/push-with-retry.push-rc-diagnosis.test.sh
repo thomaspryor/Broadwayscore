@@ -88,13 +88,34 @@ if [ "$skip_hang" = "0" ]; then
 # Attempt-agnostic on purpose: WHICH attempt hangs is fixture timing (a first
 # attempt can fail fast with rc=128 before the transport ever stalls), but the
 # behaviour under test is "a failed push names its exit code", so requiring
-# attempt 1 specifically made this flaky without testing anything extra. Still
-# requires a real rc=124 line — a plain "FAILED" cannot satisfy it.
-if grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in .*rc=124" "$LOG" \
-   && grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in .*transport HANG, not a rejection" "$LOG"; then
-  pass 1 "pre-resolution push timeout is reported as rc=124 + transport HANG"
+# attempt 1 specifically made this flaky without testing anything extra.
+#
+# Code-agnostic for the same reason (BRO-2955 review): 10.255.255.1 blackholes
+# on most networks (-> rc=124) but GHA ubuntu runners live inside Azure
+# 10.0.0.0/8 VNets, where that address can ICMP-unreachable instead and git
+# returns 128 in under a second. Pinning rc=124 would turn that into a red
+# step on every push-with-retry.sh edit while testing nothing extra — the
+# property that actually regressed is "a failed push names AN exit code and an
+# elapsed time" (before BRO-2732 this site had no else branch at all, so the
+# line did not exist in any form). The HANG wording is then asserted
+# conditionally, only for the codes that actually mean a hang.
+if grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in [0-9]+s — .*rc=[0-9]+" "$LOG"; then
+  rc_seen=$(grep -oE "Pre-resolution push \(attempt [0-9]+\) FAILED in [0-9]+s — .*rc=[0-9]+" "$LOG" | grep -oE "rc=[0-9]+" | head -1)
+  case "$rc_seen" in
+    rc=124|rc=137|rc=143)
+      if grep -qE "Pre-resolution push \(attempt [0-9]+\) FAILED in .*(transport HANG)" "$LOG"; then
+        pass 1 "pre-resolution push failure names $rc_seen and classifies it as a transport HANG"
+      else
+        fail 1 "pre-resolution push reported $rc_seen (a timeout code) but did not classify it as a transport HANG"
+        grep -n "Pre-resolution" "$LOG" | head -3
+      fi
+      ;;
+    *)
+      pass 1 "pre-resolution push failure names its exit code ($rc_seen) and elapsed time"
+      ;;
+  esac
 else
-  fail 1 "pre-resolution push timeout not classified"
+  fail 1 "pre-resolution push failure named no exit code at all (the BRO-2732 regression)"
   grep -n "Pre-resolution" "$LOG" | head -3
 fi
 

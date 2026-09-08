@@ -198,7 +198,8 @@ git_push() {
 describe_push_rc() {
   case "$1" in
     124) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=124, SIGTERM), so git printed no error of its own — a transport HANG, not a rejection" ;;
-    137) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=137, SIGKILL after -k 10), so git printed no error of its own — a transport HANG, not a rejection" ;;
+    137) echo "rc=137 (SIGKILL) with no git error of its own — almost always _timeout escalating past the ${GIT_NET_TIMEOUT_SEC}s cap via -k 10, i.e. a transport HANG; an external SIGKILL (OOM killer) produces the same code, so check runner memory before ruling out a rejection" ;;
+    143) echo "rc=143 (SIGTERM) with no git error of its own — busybox timeout reports the signal rather than 124; treat as a transport HANG at the ${GIT_NET_TIMEOUT_SEC}s cap" ;;
     *)   echo "rc=$1 — git's own stderr above carries the rejection reason" ;;
   esac
 }
