@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "the-story-west-end-2026",
   "openingDate": "2026-09-03",
-  "detectedAt": "2026-09-08T15:02:24.458Z",
+  "detectedAt": "2026-09-08T15:52:37.731Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,6 +11,9 @@
       "criticName": "Unknown",
       "url": "https://www.spectator.co.uk/submit/",
       "fullTextLen": 583,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -21,7 +24,9 @@
     }
   ],
   "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
