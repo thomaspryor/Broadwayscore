@@ -4590,6 +4590,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               projectId: bbProjectId,
               caller: 'gather-reviews.js:the-stage',
               purpose: 'The Stage cookie-auth live fetch',
+              host: 'thestage.co.uk',
+              category: 'discovery',
               body: { keepAlive: true, timeout: 300, browserSettings: { solveCaptchas: true } },
             });
 

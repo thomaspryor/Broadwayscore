@@ -974,6 +974,8 @@ async function runAggregators(show) {
           const session = await createBbSession({
             caller: 'opening-night-poller.js:the-stage',
             purpose: 'The Stage cookie-auth live fetch',
+            host: 'thestage.co.uk',
+            category: 'discovery',
             body: { browserSettings: { solveCaptchas: true } },
           });
 

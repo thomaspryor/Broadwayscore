@@ -88,6 +88,9 @@ function _appendLedgerLine(record) {
  * @param {number|null} [opts.credits] - SB/SD credit cost
  * @param {string|null} [opts.fallbackFrom]
  * @param {string|null} [opts.purpose] - free-text reason (Browserbase userMetadata parity)
+ * @param {'review-text'|'discovery'|null} [opts.category] - Browserbase only (BRO-3097): distinguishes a
+ *   Tier-1.5 paywalled review-text fetch from an aggregator-discovery session (BWW/Stagedoor/WE listing
+ *   crawls). Null for every other provider — they don't have this split.
  */
 function recordProviderCall(opts) {
   if (process.env.BD_TELEMETRY_DISABLED === '1') return;
@@ -107,6 +110,7 @@ function recordProviderCall(opts) {
       credits: opts.credits ?? null,
       fallback_from: opts.fallbackFrom || null,
       purpose: opts.purpose || null,
+      category: opts.category || null,
     };
     console.log(`[${tag} Call] ${JSON.stringify(record)}`);
     _appendLedgerLine(record);
@@ -133,7 +137,7 @@ function recordSdCall(opts) {
   recordProviderCall({ ...opts, provider: 'scrapingdog', fn: opts.fn || 'page' });
 }
 
-/** New: recordBbCall(opts: {caller, purpose, success, status}) — called only from browserbase-session.js. */
+/** New: recordBbCall(opts: {caller, host, purpose, category, success, status}) — called only from browserbase-session.js. */
 function recordBbCall(opts) {
   opts = opts || {};
   recordProviderCall({ ...opts, provider: 'browserbase', fn: 'session' });
@@ -223,6 +227,18 @@ function topCallersByCredits(ledgerRecords, day, provider, n = 5) {
 const CREDIT_BILLED_PROVIDERS = new Set(['scrapingbee', 'scrapingdog']);
 
 /**
+ * BRO-3097: providers whose ledger rows carry a bounded, known set of `host`
+ * values worth splitting the daily aggregate on (provider-spend-core.js's
+ * aggregateLedgerByDay()). Browserbase only touches ~15-20 known outlet/
+ * aggregator hosts; brightdata/scrapingbee/scrapingdog hit dozens of review-
+ * outlet hosts per script per day (20,886-row ledger sample: scrapingdog
+ * alone spans 60 distinct hosts), so adding host to their grouping key would
+ * multiply that aggregate's row count past the "tiny, bounded" cardinality
+ * its own docstring promises, for a host-level split nobody has asked for.
+ */
+const HOST_DIMENSION_PROVIDERS = new Set(['browserbase']);
+
+/**
  * ScrapingBee bills 0 credits for auth/plan failures (401/402) and
  * connection-level errors ('error') — those requests never reach SB's proxy.
  * Everything else (including a non-2xx response FROM the target site, and a
@@ -296,6 +312,7 @@ module.exports = {
   topCallersByCredits,
   computeAttributedPct,
   CREDIT_BILLED_PROVIDERS,
+  HOST_DIMENSION_PROVIDERS,
   BILLING_COUNT_FIELD,
   sbBilledCredits,
   LEDGER_PATH,

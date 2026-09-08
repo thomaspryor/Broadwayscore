@@ -919,6 +919,8 @@ async function main() {
       apiKey, projectId,
       caller: 'newspapers-com-extract.js',
       purpose: 'newspapers.com Cloudflare Turnstile bypass, persistent login context',
+      host: 'newspapers.com',
+      category: 'review-text',
       body: { proxies: true, browserSettings: { context: { id: contextId, persist: false }, solveCaptchas: true } },
     });
     console.log(`  session ${session.id} → connecting...`);
