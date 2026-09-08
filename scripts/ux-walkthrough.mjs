@@ -1179,9 +1179,17 @@ async function existingCardTitles() {
   }
 }
 
-function titleFor(finding) {
-  return `UX audit: ${finding.summary}`.slice(0, 120);
-}
+// titleFor() used to live here. It now lives in scripts/lib/ux-walkthrough-filing.js,
+// which is the ONLY definition — a byte-identical copy left behind here would
+// be the one a future "fix the title format" edit lands on, with CI staying
+// green because nothing calls it.
+//
+// similarity() above (:1097) is deliberately NOT the same function as the
+// lib's. This file uses it at 0.5 to GROUP findings from different models into
+// one finding; the lib uses 0.6 to decide whether a finding is already on the
+// board. Same arithmetic, two different questions and two different
+// thresholds, so they are left separate on purpose rather than merged into a
+// shared helper whose single threshold would be wrong for one of them.
 
 // Files agreed findings on the board. Renamed from fileNotionCards: it files
 // LINEAR issues now (Notion has been read-only since 2026-08-30 and

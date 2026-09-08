@@ -131,3 +131,52 @@ test('null entries in the findings list are ignored, not crashed on', () => {
   assert.equal(plan.refused, false);
   assert.equal(plan.toFile.length, 1);
 });
+
+// ─── Source scan of the caller ──────────────────────────────────────────────
+// The path entry for scripts/ux-walkthrough.mjs in test.yml buys a CI TRIGGER;
+// on its own it does not buy DETECTION — an edit repointing the filing call
+// back at notion-brain.js would run CI and pass, because nothing asserts the
+// argv. These cases close that, following the precedent set by
+// scripts/audit-imageless-scored-shows.js's test (test.yml:36-43), which reads
+// its caller's real source to assert a removed loop stays removed.
+//
+// The file is read, never imported: ux-walkthrough.mjs calls main() at its tail
+// with no import.meta.main guard, so importing it would launch the whole
+// Playwright walkthrough.
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Structural assertions must read CODE, not prose — the same helper and the
+// same reason as scripts/lib/notion-write-guard.test.mjs: this module's own
+// comments necessarily quote `notion-brain.js create` to explain what was
+// wrong, and a scan of the raw source would match that and fail on correct
+// code. A test a comment can fool proves nothing.
+function stripComments(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .split('\n')
+    .map((line) => line.replace(/(^|\s)\/\/.*$/, ''))
+    .join('\n');
+}
+
+const WALKTHROUGH = join(dirname(fileURLToPath(import.meta.url)), '..', 'ux-walkthrough.mjs');
+const walkthroughCode = () => stripComments(readFileSync(WALKTHROUGH, 'utf8'));
+
+test('the walkthrough has no live reference to the retired Notion brain', () => {
+  const code = walkthroughCode();
+  assert.ok(!/notion-brain/.test(code), 'ux-walkthrough.mjs reaches notion-brain.js again — that command has exited 6 since 2026-08-30, so every finding would be silently dropped');
+  assert.ok(!/notion/i.test(code), 'ux-walkthrough.mjs mentions Notion in code again — the board is Linear');
+});
+
+test('the walkthrough files through the linear-brain chokepoint', () => {
+  const code = walkthroughCode();
+  assert.ok(/linear-brain\.js/.test(code), 'filing must go through scripts/linear-brain.js — the single creation chokepoint, which is what applies the duplicate gate and cap policy');
+  assert.ok(/planFilings/.test(code), 'the filing decision must come from planFilings, not be re-inlined here');
+});
+
+test('the walkthrough does not carry its own copy of titleFor', () => {
+  // A byte-identical twin left in the caller is the definition a future "fix
+  // the title format" edit lands on, with CI staying green.
+  assert.ok(!/function titleFor/.test(walkthroughCode()), 'titleFor is defined in this lib; a second copy in ux-walkthrough.mjs will drift');
+});

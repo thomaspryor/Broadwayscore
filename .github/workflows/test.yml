@@ -41,6 +41,23 @@ on:
       # tests/unit/audit-imageless-scored-shows-push.test.mjs asserts the loop
       # is gone by reading this file's real source (BRO-2955 review finding).
       - 'scripts/audit-imageless-scored-shows.js'
+      # scripts/ux-walkthrough.mjs is the I/O caller for
+      # scripts/lib/ux-walkthrough-filing.js (globbed above). Same shape as the
+      # two entries above, and it has already bitten once: this file shelled
+      # out to notion-brain.js for BOTH filing findings and deduping against
+      # the board, and BOTH calls have exited non-zero since the 2026-08-30
+      # read-only flip. The dedup half caught its own failure and returned
+      # "no existing issues", i.e. dedup silently OFF — against a board at
+      # 1,074 open issues, a repoint of only the filing half would have refiled
+      # every historical finding nightly. Without this entry a solo edit
+      # repointing it back at notion-brain.js triggers ZERO CI.
+      # The colocated scripts/lib/ux-walkthrough-filing.test.mjs asserts this
+      # file's real source (comments stripped first — a source scan that a
+      # comment can fool proves nothing), so the entry buys detection, not just
+      # a trigger. Note the lib-deps audit CANNOT enforce this entry for us:
+      # it walks require/import literals, and that test reads the caller with
+      # readFileSync, so this hand-listing is load-bearing.
+      - 'scripts/ux-walkthrough.mjs'
       # BRO-2955 review: the two remaining guard-escalation callers. Both are
       # top-level scripts/ files (outside the scripts/lib/** glob) that decide
       # whether a hard-blocking pipeline guard auto-recovers — a solo edit to
