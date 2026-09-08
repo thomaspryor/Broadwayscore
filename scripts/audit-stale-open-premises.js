@@ -155,6 +155,24 @@ const REQUIRED_CORPORA = ['data/review-texts', 'public/data/shows', 'data/audit'
  * So a pass from an incomplete checkout is reported in its own, weaker bucket
  * rather than being laundered into a stale nomination. Wording alone would not
  * do it: the whole point is that the output looks identical either way.
+ *
+ * KNOWN LIMITATION, deliberately accepted (BRO-2980). A fresh checkout NEVER
+ * has data/review-texts, so in practice `complete` is always false and every
+ * pass lands in the unconfirmed bucket — the actionable `premise-stale-candidate`
+ * bucket effectively never fires unattended. That is the safe direction (the
+ * cost of a wrong "your premise is stale" is a real bug getting closed), but it
+ * is real signal loss, and a second-round reviewer was right to call it out.
+ *
+ * The two ways to recover the signal were both rejected as unsound to ship
+ * under this session's constraints, and are carded instead:
+ *   - Scope the requirement per command by scanning the named script's source
+ *     for corpus references. UNSOUND: a test that reaches a corpus through a
+ *     transitive require would not match, and under-demoting is exactly the
+ *     dangerous direction.
+ *   - Link the real data/review-texts into the disposable checkout. This makes
+ *     `complete` true and the bucket meaningful, but it exposes the live corpus
+ *     to UNTRUSTED commands taken off cards; it would need to be opt-in and
+ *     read-only, which is more surface than a fix should carry.
  */
 function assessCheckoutData(wt) {
   const missing = [];
@@ -297,6 +315,14 @@ async function main() {
   progress(`${issues.length} open issue(s); ${selected.length} carry a runnable acceptance command and are unstarted.`);
 
   if (opts.dryRun) {
+    // --json must still produce a JSON document on stdout here. Moving progress
+    // to stderr silently turned `--dry-run --json` into an empty pipeline,
+    // because every dry-run line went to stderr and this returned before
+    // report() (second-round review finding).
+    if (opts.json) {
+      console.log(JSON.stringify({ dryRun: true, selected, skippedCount: skipped.length }, null, 2));
+      return 0;
+    }
     for (const c of selected) progress(`  would check ${c.identifier} [${c.state}] :: ${c.cmd}`);
     progress(`\n--dry-run: nothing was executed.`);
     return 0;
