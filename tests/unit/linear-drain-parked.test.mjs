@@ -545,8 +545,31 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
       // every dispatch it makes must carry the waiver — without it the guard
       // refuses inside the detached child and this drain silently does
       // nothing while still journaling "attempted".
-      assert.deepStrictEqual(dispatchOpts, [{ allowAutofixFiled: true }, { allowAutofixFiled: true }],
-        'linear-drain-parked must waive autofixFiledIssueGuard for the population it owns');
+      // BRO-3060 added a SECOND waiver to the same call: allowAutomationParked,
+      // which lets the drain past linear-next.js's PARKED_SENTINEL for issues an
+      // automation filer parked (provenance re-verified at the call site) rather
+      // than an owner. That commit changed scripts/linear-drain-parked.js without
+      // updating this file and reddened main — the same shape BRO-3052 hit hours
+      // earlier, both through the gap filed as BRO-3063 (the pre-merge test floor
+      // never runs a changed source file's tests/unit test).
+      //
+      // Asserting on the two waivers BY NAME rather than deep-equalling the whole
+      // opts object keeps what this test is actually for — proving the drain
+      // waives the guards for the population it owns — while not failing the next
+      // time an unrelated option is threaded through the same call. The negative
+      // half below is what keeps that from being a weakening: no OTHER waiver may
+      // appear without a deliberate edit here.
+      assert.equal(dispatchOpts.length, 2, 'both candidates must be dispatched');
+      for (const o of dispatchOpts) {
+        assert.equal(o.allowAutofixFiled, true,
+          'linear-drain-parked must waive autofixFiledIssueGuard for the population it owns');
+        assert.equal(o.allowAutomationParked, true,
+          'linear-drain-parked must waive PARKED_SENTINEL for automation-parked issues (BRO-3060)');
+        assert.deepStrictEqual(
+          Object.keys(o).sort(), ['allowAutofixFiled', 'allowAutomationParked'],
+          `no undeclared waiver may ride along on this dispatch — got ${JSON.stringify(o)}`,
+        );
+      }
       assert.strictEqual(journaled.length, 2);
       assert.strictEqual(journaled[0].event, 'drain-parked-dispatch');
       assert.strictEqual(journaled[0].identifier, 'BRO-1');
