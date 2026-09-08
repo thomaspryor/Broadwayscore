@@ -5,6 +5,13 @@ on:
     - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
   workflow_dispatch: {}
 
+# BRO-2957: this workflow no longer creates issues, so it no longer needs
+# issues: write. Six `gh run list`/`gh run view` calls in the first step still
+# need actions: read, and checkout needs contents: read.
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   report:
     runs-on: ubuntu-latest
@@ -294,54 +301,20 @@ jobs:
           </div>
           HTMLEOF
 
-          # --- Build markdown for GitHub issue ---
-          cat > /tmp/report.md << MDEOF
-          # Scraper Cost Report — $PERIOD_START – $PERIOD_END
-
-          ## Cost
-          | Provider | Requests | Cost |
-          |----------|----------|------|
-          | Playwright (free) | $PW_TOTAL | \$0 |
-          | BrightData | $BD_TOTAL | ~\$$BD_COST |
-          | ScrapingBee | $SB_TOTAL | $SB_CREDITS_TOTAL credits |
-          | Browserbase | $BB_SESSIONS sessions | \$$BB_COST |
-
-          SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP
-
-          ## Provider-Reported (billing ground truth)
-          - ScrapingDog: $SD_LINE
-          - Bright Data: $BD_LINE
-
-          Telemetry above is sampled attribution; disagreement with these numbers means an untelemetried path is burning.
-
-          ## ScrapingBee Cycle Usage
-          - Used this cycle: $SB_USED_NUM / $SB_CAP_NUM (${SB_PCT}%)
-          - Projected end-of-cycle: ${SB_PROJECTED}% of current cap
-          - Post-downgrade target cap: $SB_TARGET_CAP credits (Startup plan)
-          - Status: $SB_STATUS
-
-          ## Top SB Credit Consumers This Week
-          \`\`\`
-          $SB_TOP5
-          \`\`\`
-
-          ## Workflow Runs ($TOTAL_RUNS total, $TOTAL_FAILED failed)
-          MDEOF
-
           cat /tmp/report.html
 
-      - name: Create GitHub issue
-        id: create-issue
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TITLE="Scraper Cost Report — Week of $(date '+%Y-%m-%d')"
-          ISSUE_URL=$(gh issue create \
-            --title "$TITLE" \
-            --label "cost-report" \
-            --body-file /tmp/report.md \
-            --repo $GITHUB_REPOSITORY)
-          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+      # BRO-2957: the weekly public GitHub issue used to be, accidentally, the
+      # only durable copy of this report. Now that it is gone, the artifact is
+      # that copy — private to the repo, retention-bounded, and written with
+      # if: always() so it survives a failed email send.
+      - name: Upload report artifact (private durable copy)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-cost-report-${{ github.run_id }}
+          path: /tmp/report.html
+          if-no-files-found: warn
+          retention-days: 90
 
       - name: Email report
         if: success()
@@ -349,19 +322,37 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          ISSUE_URL="${{ steps.create-issue.outputs.issue_url }}"
-          # Append link to HTML
-          sed -i "s|Broadway Scorecard automated report|<a href=\"$ISSUE_URL\">View on GitHub</a> · Broadway Scorecard automated report|" /tmp/report.html
-
+          # BRO-2957: this step used to end in
+          #   | curl -s ... -d @- || echo "Email send failed (non-fatal)"
+          # which could not report its own failure. `curl -s` without `-f`
+          # exits 0 on an HTTP 401/422/429, so the `||` branch never ran, the
+          # step went green, "Notify on failure" never fired, and
+          # check-cron-health.yml saw a successful run and stayed quiet. That
+          # was survivable only because the public GitHub issue happened to be
+          # a second copy of the report. BRO-2957 removed the issue, so a
+          # silent Resend rejection would now lose the week's report outright.
+          # Capture the status code and fail loudly instead.
           jq -n \
             --arg to "$OWNER_EMAIL" \
             --arg subject "Scraper Cost Report — $(date '+%b %d')" \
             --rawfile html /tmp/report.html \
             '{from: "Broadway Scorecard <alerts@broadwayscorecard.com>", to: [$to], subject: $subject, html: $html}' \
-          | curl -s -X POST https://api.resend.com/emails \
+            > /tmp/resend-payload.json
+
+          HTTP_CODE=$(curl -s -o /tmp/resend-response.json -w '%{http_code}' \
+            -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d @- || echo "Email send failed (non-fatal)"
+            -d @/tmp/resend-payload.json)
+
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "::error::Resend rejected the cost report email (HTTP $HTTP_CODE)"
+            head -c 500 /tmp/resend-response.json || true
+            echo
+            echo "The report itself is still available as this run's uploaded artifact."
+            exit 1
+          fi
+          echo "Cost report emailed (HTTP $HTTP_CODE)"
 
       - name: Notify on failure
         if: failure()
