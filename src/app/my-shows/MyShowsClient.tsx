@@ -1822,7 +1822,7 @@ function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | nu
     }
     const start = show.previewDate || show.openingDate;
     const text = start
-      ? `Opens ${new Date(start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+      ? `Opens ${formatShowDate(start, { month: 'short', day: 'numeric' })}`
       : 'Not yet open';
     return { text, cls: 'bg-blue-500/80 text-white' };
   }

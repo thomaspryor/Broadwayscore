@@ -542,7 +542,7 @@ function formatFAQDate(dateStr?: string | null): string | null {
   if (!dateStr) return null;
   const date = new Date(dateStr);
   if (isNaN(date.getTime()) || date.getFullYear() < 1950) return null;
-  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return formatShowDate(dateStr, { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 export function getShowFAQs(show: ComputedShow, consensusText?: string | null): { question: string; answer: string }[] {

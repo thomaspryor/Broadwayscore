@@ -115,13 +115,22 @@ export function formatOpeningDate(dateStr: string | null | undefined): string {
  * result to the viewer's local timezone, rendering one day early for every
  * US timezone (BRO-3047). This always formats in UTC so the calendar date
  * shown matches the stored value regardless of the viewer's timezone.
+ *
+ * Only the first 10 characters (the YYYY-MM-DD date part) are parsed, and
+ * always as UTC midnight — a field that unexpectedly carries a full
+ * timestamp-with-offset (e.g. "2026-07-26T23:00:00-04:00") would otherwise
+ * shift the calendar date depending on the embedded offset, reintroducing
+ * the same class of bug this helper exists to prevent. `options.timeZone`
+ * is always forced to UTC, even if a caller passes one — this helper's
+ * entire contract is "render the stored calendar date," which only holds
+ * under UTC.
  */
 export function formatShowDate(
   dateStr: string | null | undefined,
   options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
 ): string {
   if (!dateStr) return '';
-  const date = new Date(dateStr);
+  const date = new Date(`${dateStr.slice(0, 10)}T00:00:00Z`);
   if (Number.isNaN(date.getTime())) return '';
   return date.toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });
 }

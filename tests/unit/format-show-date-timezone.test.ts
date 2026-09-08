@@ -48,3 +48,14 @@ test('missing or invalid dates format to empty string', () => {
     assert.equal(formatShowDate(missing as string | null | undefined), '');
   }
 });
+
+test('a field that unexpectedly carries a full timestamp-with-offset does not shift the calendar date', () => {
+  // Ship-check (Codex adversarial review) flagged that naive `new Date(dateStr)`
+  // parsing lets an embedded time+offset shift the rendered day depending on
+  // the offset — exactly the class of bug this helper exists to prevent, just
+  // triggered by unexpected input shape instead of the missing timeZone
+  // override. Only the first 10 chars (the date part) are ever parsed.
+  assert.equal(formatShowDate('2026-07-26T23:00:00-04:00'), 'Jul 26, 2026');
+  assert.equal(formatShowDate('2026-07-26T00:00:00+01:00'), 'Jul 26, 2026');
+  assert.equal(formatShowDate('2026-07-26T12:00:00Z'), 'Jul 26, 2026');
+});
