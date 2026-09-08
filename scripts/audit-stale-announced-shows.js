@@ -41,6 +41,7 @@
 'use strict';
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const {
   loadAcks,
@@ -92,7 +93,13 @@ function findSilencedByContamination(shows) {
   return out;
 }
 
+const USAGE = `Usage:
+  node scripts/audit-stale-announced-shows.js                                  # report stale 'announced' shows
+  node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="<why>"  # record a triage decision
+`;
+
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadJSON(SHOWS_FILE);
   if (!showsData || !Array.isArray(showsData.shows)) {
     console.error(`Could not load ${SHOWS_FILE}`);

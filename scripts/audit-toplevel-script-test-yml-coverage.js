@@ -36,6 +36,7 @@
 'use strict';
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { readPushPaths, isCovered } = require('./audit-test-yml-lib-deps.js');
 
@@ -99,7 +100,13 @@ function findGaps() {
   return gaps;
 }
 
+const USAGE = `Usage:
+  node scripts/audit-toplevel-script-test-yml-coverage.js            # human-readable, exit 0 always
+  node scripts/audit-toplevel-script-test-yml-coverage.js --json      # JSON output for CI/scripts
+`;
+
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const gaps = findGaps();
   const asJson = process.argv.includes('--json');
 
