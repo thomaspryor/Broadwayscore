@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { usdFor } = require('./lib/provider-pricing');
 
 const QUERIES_ARG = process.argv.find(a => a.startsWith('--queries='));
 const NUM_QUERIES = QUERIES_ARG ? parseInt(QUERIES_ARG.split('=')[1]) : 20;
@@ -211,7 +212,7 @@ async function main() {
   console.log(`BD-only failures: ${bdErrors.length}`);
 
   console.log(`\nScrapingBee credits used: ${sbCredits} (${sbCredits * 25} at 25/query)`);
-  console.log(`BrightData estimated cost: $${(results.length * 0.0015).toFixed(3)} (at $1.50/1K)`);
+  console.log(`BrightData estimated cost: $${usdFor('brightdata', results.length).toFixed(3)} (at $1.50/1K)`);
 
   // Verdict
   console.log('\n=== VERDICT ===\n');

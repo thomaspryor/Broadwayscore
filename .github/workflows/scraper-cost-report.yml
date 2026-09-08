@@ -86,8 +86,19 @@ jobs:
               done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
-          # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
-          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
+          # BD Web Unlocker rate comes from scripts/config/provider-pricing.json,
+          # never a literal here (BRO-3009 S1-T6). This value was wrong once
+          # already — 0.001 vs the real 0.0015, a 50% under-report that stood
+          # because four files each held their own copy of the rate. `bc` still
+          # does the arithmetic so the printed figure is unchanged; only the
+          # rate's source moved. Empty/zero rate fails the step loudly rather
+          # than reporting $0.00 BD spend, which reads as "nothing to see".
+          BD_RATE=$(node -e "process.stdout.write(String(require('./scripts/config/provider-pricing.json').brightdata.usdPerUnit))")
+          if ! echo "$BD_RATE" | grep -qE '^0\.[0-9]+$'; then
+            echo "::error::scraper-cost-report: bad brightdata.usdPerUnit from provider-pricing.json ('$BD_RATE')"
+            exit 1
+          fi
+          BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
 
           # Disable `bash -e` for the rest of this step. Everything from here on is
           # observability — partial data is acceptable, but a failed report email is

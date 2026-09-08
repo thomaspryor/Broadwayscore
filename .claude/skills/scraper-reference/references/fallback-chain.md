@@ -46,6 +46,112 @@ Tier 1.5: Browserbase — Cloudflare-protected sites ONLY
 - BD (raw HTML) can't replace SB for JS-rendered pages
 - Do NOT add BD to `weekly-grosses.yml` or `scrape-alltime-grosses.yml`
 
+## Costs: never write a rate or a credit count inline
+
+Two tables, deliberately separate lifecycles. Nothing anywhere else in the repo
+may hold its own copy of either — that is what let the Bright Data rate sit at
+`0.001` in the weekly cost report while the real rate was `0.0015`, a 50%
+under-report nobody caught because four files each "kept in sync" by comment.
+
+**`scripts/lib/provider-credits.js` — how many credits one call bills.** The
+provider's API contract; changes only when a provider ships a new tier.
+
+```js
+const { creditsFor, assertFiniteCost } = require('./lib/provider-credits');
+creditsFor('sd', 'render');       // 5
+creditsFor('sb', 'stealth_proxy'); // 75
+creditsFor('sb', 'typo');          // THROWS
+```
+
+`creditsFor` **throws on an unknown (provider, mode) pair** rather than
+returning `undefined`, and that is the whole point. `undefined` credits make
+`spent + credits > budget` evaluate to `NaN > budget`, which is `false` — so a
+silent miss does not merely mis-report a cost, it *disables the spend guard*
+and the run bills without a ceiling. Same reasoning for `assertFiniteCost(n,
+label)`: use it on every value that reaches a budget comparison or a running
+total, including the budget itself (a malformed `SB_PAGE_CREDIT_BUDGET=abc` is
+`NaN` and fails open exactly the same way). A guard that fails open is worse
+than no guard, because the operator believes it is holding.
+
+Modes are the LITERAL strings the call sites already hold — `sb` carries both
+`page/render/premium` (scraper.js) and `standard/premium_proxy/stealth_proxy`
+(collect-review-texts.js, where the value is also a real ScrapingBee API
+param). Never invent an alias.
+
+**`scripts/config/provider-pricing.json` — what a credit costs in USD.** Plan
+economics; the owner can renegotiate any time. Read it only through
+`scripts/lib/provider-pricing.js`:
+
+```js
+const { usdFor } = require('./lib/provider-pricing');
+usdFor('brightdata', requests);                          // per-request rate
+usdFor('scrapingdog', credits);                          // prepaid plan rate
+usdFor('scrapingdog', credits, undefined, { billing: 'payg' }); // PAYG add-on rate
+```
+
+`usdFor` throws on an unpriced provider or an unknown `billing` mode instead of
+multiplying by `undefined` and printing `$NaN`. Shell callers (e.g.
+`scraper-cost-report.yml`) read the JSON through a `node -e` one-liner and
+validate the result before handing it to `bc` — never a literal in the YAML.
+
+Consumers today: `scraper.js` (the `[Scraper Summary]` line),
+`measure-scraper-usage.js`, `scrapingdog-bakeoff.js`,
+`evaluate-brightdata-serp.js`, `url-discovery.js` (SERP credits),
+`collect-review-texts.js` (via the budget guard below), and
+`scraper-cost-report.yml`.
+
+## Budget guards
+
+`scripts/lib/crt-sb-credit-guard.js` holds `collect-review-texts.js`'s per-run
+ScrapingBee page-credit decision — extracted so the test exercises the real
+function (CLAUDE.md §15), not a copy:
+
+```js
+const { sbPageBudgetDecision } = require('./lib/crt-sb-credit-guard');
+const { credits, exhausted } = sbPageBudgetDecision({
+  spentCredits: stats.scrapingBeePageCredits,
+  mode: proxyType,              // unknown proxyType throws
+  budget: SB_PAGE_CREDIT_BUDGET, // NaN budget throws
+});
+```
+
+Boundary semantics match the comparison it replaced: `projected === budget` is
+allowed, one credit more is not.
+
+## Chain order is a pure function, and it is tested
+
+`pageChainOrder(flags)` (exported from `scripts/lib/scraper.js`) and
+`serpChainOrder(...)` (from `scripts/lib/url-discovery.js`) return the ordered
+tier names for a fetch — `['scrapingdog', 'brightdata', 'scrapingbee',
+'playwright-last']` and so on. They decide ORDER ONLY: whether a key, budget,
+quota or breaker check passes is computed by the caller and handed in as flags,
+and each tier re-checks its own budget internally. Extracting the order this
+way is what makes the ordering testable without a network call.
+
+`scripts/lib/chain-escalation.test.mjs` walks both chains and prices every
+consecutive pair through `creditsFor` + `usdFor`. A step that gets **more
+expensive** must be declared in that file with a stated reason; an undeclared
+cost increase fails the test. That is the mechanism that makes a silent
+backwards-cost fallback structurally impossible rather than something a human
+might spot in a log. Reordering a chain means updating that file's declarations
+in the same commit — if you cannot write down why the pricier tier comes next,
+that is the test telling you something.
+
+`scripts/lib/page-chain-order.test.mjs` and `serp-chain-order.test.mjs` pin the
+orders themselves against enumerated flag combinations.
+
+## Why a tier ran: `fallback_from`
+
+Every spend-ledger row (`data/audit/scraper-spend-ledger.jsonl`) carries
+`fallback_from` — the tier that failed, or was breaker-blocked, immediately
+before this one. `fetchPage` threads it through the chain via
+`fallbackFromLabel()` in `scripts/lib/fallback-attribution.js`, using
+`pageChainOrder`'s own tier names, plus one special value: **`'sd-breaker'`**
+when Scrapingdog was never attempted because its daily circuit breaker was
+shut. "Never attempted, the day cap was closed" and "attempted and missed" are
+opposite cost stories, and the ledger has to tell them apart to explain a
+Bright Data spike. This is telemetry only — nothing routes on it.
+
 ## The Architecture Rule
 
 ```js

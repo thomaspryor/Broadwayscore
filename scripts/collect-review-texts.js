@@ -57,7 +57,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
-const { creditsFor } = require('./lib/provider-credits.js');
+const { sbPageBudgetDecision } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -2392,10 +2392,20 @@ async function fetchWithScrapingBee(url, useStealth = false) {
   // the shared provider-credits.js table, instead of an independently
   // maintained literal — a proxyType typo now throws instead of silently
   // billing the wrong cost.
-  const credits = creditsFor('sb', proxyType);
+  // BRO-3009 S1-T5: the budget comparison itself now runs through
+  // scripts/lib/crt-sb-credit-guard.js, which asserts both sides are finite
+  // before comparing — an unknown proxyType or a malformed
+  // SB_PAGE_CREDIT_BUDGET used to make `spent + credits > budget` evaluate to
+  // false and disable the cap entirely instead of tripping it.
+  const budgetCheck = sbPageBudgetDecision({
+    spentCredits: stats.scrapingBeePageCredits,
+    mode: proxyType,
+    budget: SB_PAGE_CREDIT_BUDGET,
+  });
+  const credits = budgetCheck.credits;
 
   // Per-run budget guard
-  if (stats.scrapingBeePageCredits + credits > SB_PAGE_CREDIT_BUDGET) {
+  if (budgetCheck.exhausted) {
     throw new Error(`SB page credit budget exhausted (${stats.scrapingBeePageCredits}/${SB_PAGE_CREDIT_BUDGET})`);
   }
 
