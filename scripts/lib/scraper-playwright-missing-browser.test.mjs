@@ -1,7 +1,11 @@
-// BRO-2560: test.yml's Data Validation job runs validate-show-venue.js with
+// BRO-2560: the CI job hosting validate-show-venue.js once ran it with
 // no Playwright browsers installed — every fetch logged "browserType.launch:
 // Executable doesn't exist..." and the resulting fetch-error was
 // indistinguishable from a real venue/date mismatch in the step's output.
+// (That job was test.yml's Data Validation until BRO-2984 moved the sweep to
+// the daily .github/workflows/audit-provisional-venues.yml, which installs a
+// browser via ./.github/actions/setup-playwright. The predicate still matters:
+// it is what keeps a missing browser from reading as a venue mismatch.)
 // isPlaywrightMissingBrowserError() is the pure predicate validate-show-venue.js
 // uses to tell "no browser in this environment" apart from a real scrape
 // failure — locking in the regex here per CLAUDE.md §15 (extract pure

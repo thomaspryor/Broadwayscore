@@ -77,11 +77,11 @@ const MEASURED_FIXED_COST_SEC = 569 + 480 + 366;
 // without hardcoding an exact number that has to be updated every edit.
 const MIN_HEADROOM_FRACTION = 0.15;
 
-function readJobBlock(jobName) {
-  const raw = fs.readFileSync(SWEEP_YML, 'utf8');
+function readJobBlock(jobName, ymlPath = SWEEP_YML) {
+  const raw = fs.readFileSync(ymlPath, 'utf8');
   const lines = raw.split('\n');
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
-  assert.notEqual(jobsIdx, -1, 'audit-provisional-venues.yml must have a top-level jobs: key');
+  assert.notEqual(jobsIdx, -1, `${path.basename(ymlPath)} must have a top-level jobs: key`);
   const jobStarts = findJobBoundaries(lines, jobsIdx);
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -299,5 +299,85 @@ test('audit-provisional-venues: fixed step cost + the budgeted step\'s own cap +
       `leaves only ${headroomSec}s headroom against a ${timeoutSec}s (${timeoutMin}min) budget — need >= ` +
       `${(timeoutSec * MIN_HEADROOM_FRACTION).toFixed(0)}s. Either the job timeout-minutes shrank, ` +
       '--time-budget-min grew, or a push-with-retry.sh step\'s deadline grew, without matching headroom.',
+  );
+});
+
+
+// ── The ratchet BRO-2984 briefly lost ────────────────────────────────────────
+// Retargeting this file to the relocated sweep left test.yml's own
+// `data-validation` job with NO budget model at all — and within the same
+// change its timeout-minutes was cut 37 -> 25, below that job's real worst
+// case, with nothing to catch it. (Caught in review; the cut was reverted.)
+// This block restores the ratchet so the same gap cannot reopen. The model
+// differs from the sweep's above in one way: that job no longer has a budgeted
+// step, so its projection is fixed cost + its push-bound steps alone.
+
+const TEST_YML = path.join(__dirname, '..', '..', '.github', 'workflows', 'test.yml');
+
+// Same two measured components as MEASURED_FIXED_COST_SEC's first and third
+// terms (run 33410708893): Checkout at fetch-depth 300, plus the whole
+// non-Playbill audit bucket. The 480s setup-playwright term is deliberately
+// NOT included — that step moved to audit-provisional-venues.yml with the
+// sweep it existed for, and no remaining data-validation step needs a browser.
+const DATA_VALIDATION_FIXED_COST_SEC = 569 + 366;
+
+// Steps in data-validation that reach push-with-retry.sh. "Record pipeline
+// success" calls it inline; "Commit scraper-spend ledger" calls it from inside
+// .github/actions/commit-scraper-spend-ledger, so findAllPushRetrySteps()
+// structurally cannot see it — it is counted explicitly here rather than
+// silently omitted, which is what made the 25 look survivable.
+const DATA_VALIDATION_PUSH_STEP_NAMES = [
+  'Record pipeline success',
+  'Commit scraper-spend ledger',
+];
+
+test('test.yml data-validation: fixed cost + its push-bound steps fit inside timeout-minutes with headroom', () => {
+  const jobLines = readJobBlock('data-validation', TEST_YML);
+  assert.ok(jobLines, 'could not find the data-validation: job in test.yml');
+
+  const timeoutMin = jobTimeoutMinutes(jobLines);
+  const timeoutSec = timeoutMin * 60;
+
+  // Every push-bound step is modelled at the shared default deadline + one
+  // in-flight net-timeout overshoot. Neither file it pushes is in
+  // core-data-merge-registry.js's API_FALLBACK_SAFE list, so the Git Data API
+  // fallback is disqualified for both and the deadline is the real cap.
+  // push-mutex.sh's 900s wait is deliberately excluded: its lock lives in the
+  // repo's git common dir (or a cwd-keyed /tmp fallback), and Actions runners
+  // are fresh per job with sequential steps, so nothing else can hold it.
+  const perPushSec = pushWithRetryDefault('PUSH_DEADLINE_SEC') + pushWithRetryDefault('GIT_NET_TIMEOUT_SEC');
+
+  const jobText = jobLines.join('\n');
+  for (const name of DATA_VALIDATION_PUSH_STEP_NAMES) {
+    assert.ok(
+      jobText.includes(name),
+      `expected a "${name}" step in data-validation — if it was removed, this budget model needs updating`,
+    );
+  }
+  const pushWorstCaseSec = DATA_VALIDATION_PUSH_STEP_NAMES.length * perPushSec;
+
+  const projectedTotalSec = DATA_VALIDATION_FIXED_COST_SEC + pushWorstCaseSec;
+  const headroomSec = timeoutSec - projectedTotalSec;
+
+  assert.ok(
+    headroomSec >= timeoutSec * MIN_HEADROOM_FRACTION,
+    `projected data-validation time ${projectedTotalSec}s (fixed ${DATA_VALIDATION_FIXED_COST_SEC}s + ` +
+      `${DATA_VALIDATION_PUSH_STEP_NAMES.length} push step(s) at ${perPushSec}s each = ${pushWorstCaseSec}s) ` +
+      `leaves only ${headroomSec}s headroom against a ${timeoutSec}s (${timeoutMin}min) budget — need >= ` +
+      `${(timeoutSec * MIN_HEADROOM_FRACTION).toFixed(0)}s. BRO-2984: this job was cut to 25min once, ` +
+      'below its own worst case, and a breach reports CANCELLED (not FAILED) so nothing alerts.',
+  );
+});
+
+test('test.yml data-validation no longer runs the paid Playbill sweep', () => {
+  // The budget above is only defensible while the sweep is gone. If it ever
+  // comes back, this model understates the job by ~15 minutes AND the job is
+  // spending money on every push again (the BRO-2984 defect itself).
+  const jobLines = readJobBlock('data-validation', TEST_YML);
+  assert.equal(
+    findVenueAuditStepText(jobLines),
+    null,
+    'the --all-provisional Playbill sweep is back in test.yml\'s data-validation job — ' +
+      'it spends real ScrapingBee/Bright Data credits on every push (BRO-2984)',
   );
 });

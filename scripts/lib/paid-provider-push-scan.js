@@ -82,6 +82,8 @@ const PAID_SWEEP_COMMANDS = [
 
 const EXEMPTION_MARKER = 'paid-provider-ok:';
 
+const indentOfLine = (line) => line.length - line.replace(/^ +/, '').length;
+
 /** Strip a YAML comment, honoring `#` inside quotes so a URL fragment isn't eaten. */
 function stripComment(line) {
   let inSingle = false;
@@ -107,10 +109,16 @@ function stripComment(line) {
 function hasPushTrigger(raw) {
   const lines = raw.split('\n');
   let inOn = false;
+  let minTriggerIndent = null;
   for (const line of lines) {
-    if (/^on\s*:/.test(line)) {
-      // Inline forms: `on: push` / `on: [push, schedule]`
-      const inline = line.slice(line.indexOf(':') + 1).trim();
+    // `on` is the YAML 1.1 boolean true, so some authors quote it. Accept
+    // "on":/'on': as well as bare on: — scripts/audit-workflow-hygiene.js's own
+    // trigger finder already tolerates the quoted form, and disagreeing with it
+    // would let a workflow read as push-triggered by one gate and not the other.
+    if (/^['"]?on['"]?\s*:/.test(line)) {
+      // Inline forms: `on: push` / `on: [push, schedule]`, possibly with a
+      // trailing comment (`on: push  # every merge`).
+      const inline = stripComment(line.slice(line.indexOf(':') + 1)).trim();
       if (inline) {
         if (/^\[.*\]$/.test(inline)) {
           return inline
@@ -128,8 +136,15 @@ function hasPushTrigger(raw) {
     if (line.trim() === '' || /^\s*#/.test(line)) continue;
     // A non-indented line ends the `on:` block.
     if (!/^\s/.test(line)) break;
-    // A 2-space-indented key is a trigger name.
-    if (/^ {2}push\s*:/.test(line)) return true;
+    // The first indented key establishes the trigger-name depth; anything
+    // deeper is a trigger's OPTIONS (e.g. `workflow_run: workflows: [push]`),
+    // not a trigger.
+    if (minTriggerIndent === null) minTriggerIndent = indentOfLine(line);
+    // An indented key directly under `on:` is a trigger name. Matched at any
+    // depth >= 1 rather than exactly 2 spaces: a 4-space-indented workflow is
+    // valid YAML and would otherwise read as NOT push-triggered, which fails
+    // open (the dangerous direction for a spend gate).
+    if (/^\s+push\s*:/.test(line) && indentOfLine(line) <= minTriggerIndent) return true;
   }
   return false;
 }
@@ -146,7 +161,10 @@ function findPaidSecretEnvLines(raw) {
   const lines = raw.split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = stripComment(lines[i]);
-    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(\$\{\{.*\}\})\s*$/);
+    // Hyphens are allowed in the key: `api-key: ${{ secrets.X }}` is the
+    // conventional spelling for a composite-action `with:` input, and excluding
+    // `-` silently missed that whole shape. The value may be quoted.
+    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*["']?(\$\{\{.*\}\})["']?\s*$/);
     if (!m) continue;
     const [, envName, expr] = m;
     // A comparison means the expression yields a boolean about the secret,
@@ -156,6 +174,23 @@ function findPaidSecretEnvLines(raw) {
       if (new RegExp(`secrets\\.${secret}\\b`).test(expr)) {
         hits.push({ line: i + 1, envName, secret, text: lines[i].trim() });
       }
+    }
+  }
+  return hits;
+}
+
+/**
+ * `secrets: inherit` on a reusable-workflow call hands the CALLED workflow every
+ * secret this repo has, paid providers included, without naming one. Nothing
+ * else in this scanner can see that, so it is its own check.
+ */
+function findSecretsInherit(raw) {
+  const hits = [];
+  const lines = raw.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*#/.test(lines[i])) continue;
+    if (/^\s*secrets\s*:\s*inherit\s*$/.test(stripComment(lines[i]))) {
+      hits.push({ line: i + 1, text: lines[i].trim() });
     }
   }
   return hits;
@@ -189,6 +224,7 @@ function scanWorkflow(raw, filename = '<workflow>') {
   const exempt = raw.includes(EXEMPTION_MARKER);
   const secretExposures = pushTriggered ? findPaidSecretEnvLines(raw) : [];
   const sweepCommands = pushTriggered ? findPaidSweepCommands(raw) : [];
+  const secretsInherit = pushTriggered ? findSecretsInherit(raw) : [];
 
   const violations = [];
   if (pushTriggered && !exempt) {
@@ -208,8 +244,26 @@ function scanWorkflow(raw, filename = '<workflow>') {
         message: `${filename}:${h.line} runs ${h.label} in a push-triggered workflow`,
       });
     }
+    for (const h of secretsInherit) {
+      violations.push({
+        file: filename,
+        line: h.line,
+        kind: 'secrets-inherit-in-push-workflow',
+        message:
+          `${filename}:${h.line} uses \`secrets: inherit\` in a push-triggered workflow — ` +
+          'that forwards every secret, paid providers included, without naming one',
+      });
+    }
   }
-  return { file: filename, pushTriggered, exempt, secretExposures, sweepCommands, violations };
+  return {
+    file: filename,
+    pushTriggered,
+    exempt,
+    secretExposures,
+    sweepCommands,
+    secretsInherit,
+    violations,
+  };
 }
 
 module.exports = {
@@ -219,5 +273,6 @@ module.exports = {
   hasPushTrigger,
   findPaidSecretEnvLines,
   findPaidSweepCommands,
+  findSecretsInherit,
   scanWorkflow,
 };

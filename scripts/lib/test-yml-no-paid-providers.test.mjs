@@ -18,7 +18,7 @@
  *
  * Pattern: require() the real scanner (CLAUDE.md §15) — the decision logic
  * lives in scripts/lib/paid-provider-push-scan.js and is also wired into
- * scripts/audit-workflow-hygiene.js as rule (k), so this test and the blocking
+ * scripts/audit-workflow-hygiene.js as rule (l), so this test and the blocking
  * CI lint gate can never disagree about what counts as a violation.
  *
  * Runs in CI via the unit-tests job's `scripts/lib/*.test.mjs` glob
@@ -40,6 +40,7 @@ const {
   scanWorkflow,
   hasPushTrigger,
   findPaidSecretEnvLines,
+  findSecretsInherit,
   PAID_PROVIDER_SECRETS,
   EXEMPTION_MARKER,
 } = require('./paid-provider-push-scan.js');
@@ -142,6 +143,58 @@ test('scanner: hasPushTrigger understands inline and list `on:` forms', () => {
   assert.equal(hasPushTrigger('on:\n  schedule:\n    - cron: "0 5 * * *"\n'), false);
   // `push` nested under another trigger's options is not a push trigger.
   assert.equal(hasPushTrigger('on:\n  workflow_run:\n    workflows: [push]\n'), false);
+
+  // Shapes that were MISSED by the first cut of this scanner (found in review,
+  // zero live instances at the time). A miss here fails OPEN — the workflow
+  // reads as not-push-triggered and its spend goes unchecked — so each stays
+  // pinned.
+  assert.equal(hasPushTrigger('"on":\n  push:\n'), true, 'quoted `"on":` key');
+  assert.equal(hasPushTrigger("'on':\n  push:\n"), true, "quoted `'on':` key");
+  assert.equal(hasPushTrigger('on:\n    push:\n'), true, '4-space-indented trigger');
+  assert.equal(hasPushTrigger('on: push  # every merge\n'), true, 'inline form with a trailing comment');
+});
+
+test('scanner: credential shapes that fail open are all caught', () => {
+  // Each of these was a real false negative in the first cut. They are the
+  // dangerous direction: a missed spend is invisible, a false positive is not.
+  const wrap = (envLines) =>
+    ['on:', '  push:', 'jobs:', '  j:', '    steps:', '      - env:', ...envLines, '        run: x', ''].join('\n');
+
+  assert.equal(
+    scanWorkflow(wrap(['          K: "${{ secrets.BRIGHTDATA_TOKEN }}"']), 'f.yml').violations.length,
+    1,
+    'a QUOTED secret value is still a credential hand-off',
+  );
+
+  const hyphenated = [
+    'on:', '  push:', 'jobs:', '  j:', '    steps:', '      - uses: ./.github/actions/thing',
+    '        with:', '          api-key: ${{ secrets.SCRAPINGBEE_API_KEY }}', '',
+  ].join('\n');
+  assert.equal(
+    scanWorkflow(hyphenated, 'f.yml').violations.length,
+    1,
+    'a hyphenated key (`api-key:`) is the conventional composite-action input spelling',
+  );
+});
+
+test('scanner: `secrets: inherit` in a push workflow is a violation', () => {
+  // Invisible by construction: it forwards EVERY secret to a called workflow,
+  // paid providers included, without naming one — so no secret-name scan can
+  // see it.
+  const fixture = [
+    'on:', '  push:', 'jobs:', '  j:',
+    '    uses: ./.github/workflows/called.yml', '    secrets: inherit', '',
+  ].join('\n');
+  const r = scanWorkflow(fixture, 'f.yml');
+  assert.equal(r.violations.length, 1);
+  assert.equal(r.violations[0].kind, 'secrets-inherit-in-push-workflow');
+
+  // Not a violation off the push path — the daily cron legitimately spends.
+  const cron = fixture.replace('  push:', "  schedule:\n    - cron: '0 5 * * *'");
+  assert.deepEqual(scanWorkflow(cron, 'f.yml').violations, []);
+
+  // And the raw finder is direction-correct on a non-match.
+  assert.deepEqual(findSecretsInherit('jobs:\n  j:\n    secrets:\n      A: b\n'), []);
 });
 
 test('scanner: every listed paid secret is actually detected', () => {
