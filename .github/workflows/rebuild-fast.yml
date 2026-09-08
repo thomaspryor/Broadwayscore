@@ -310,6 +310,28 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '600'
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-334: 11 failures/24h traced via the durable push-retry-failures
+          # ledger (origin/push-retry-failures) to the SAME signature on every
+          # occurrence — "Pre/Post-resolution push FAILED in 90s" (exactly the
+          # push-with-retry.sh default GIT_NET_TIMEOUT_SEC), zero bytes of git's
+          # own --progress output (Enumerating/Writing objects never printed),
+          # and rc=124 (clean SIGTERM, not a stuck process). That combination
+          # means the hang is in TCP/TLS connection setup, before any transfer
+          # starts — http.lowSpeedLimit/Time (also configured in push-with-
+          # retry.sh) cannot catch a pre-transfer stall, only a stalled
+          # transfer. Every observed failure exhausted PUSH_DEADLINE_SEC after
+          # only ~4 attempts (90s pre + 90s post per cycle), nowhere near the
+          # MAX_RETRIES=20 budget below — so the 90s-per-attempt default is the
+          # actual constraint here, not attempt count. Fetch+rebase/merge in
+          # every one of these failures completed in 0-1s once it ran, and this
+          # step's own diffs are small (tens of files) with no evidence any
+          # attempt ever got far enough to need more than a few seconds once
+          # connected. Lowering the per-attempt cap to 30s roughly triples the
+          # realized attempts inside the same 600s deadline without changing
+          # behavior for a healthy connection. This is a per-caller override
+          # (push-with-retry.sh already reads GIT_NET_TIMEOUT_SEC from env) —
+          # it does not touch the shared 90s default other callers rely on.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
