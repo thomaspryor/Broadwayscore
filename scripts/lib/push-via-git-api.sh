@@ -90,6 +90,77 @@ REMOTE="${PUSH_API_REMOTE:-origin}"
 # so a caller tuning one tunes both consistently.
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}
+
+# BRO-2951: escalating backoff for a TIMEOUT-classified push failure only
+# (the ref-race branch below keeps its short flat jitter — a lost
+# compare-and-swap means the remote genuinely just moved, and retrying fast
+# against the new tip is correct; a timeout is a different failure mode).
+#
+# WHY THIS EXISTS — two failure signatures were confirmed distinct by a live
+# local repro (a server that accepts the push body then never responds):
+# that genuine dead-hang case is caught CLEANLY by the http.lowSpeedLimit/
+# lowSpeedTime guard above at ~46s, with `curl 28 Operation too slow` on
+# stderr. Real production failures (data-health-check run 34145757217,
+# 2026-09-07) instead hit the FULL ${GIT_NET_TIMEOUT_SEC}s cap via a bare
+# SIGTERM (rc=124, EMPTY stderr) on 4/4 attempts, 0 lost races — a
+# categorically different signature. Since a truly dead connection is
+# already proven to abort in ~45s, something must be trickling enough bytes
+# to keep the low-speed average above threshold for the full 90s — i.e. the
+# connection is alive, not hung. That, plus the same job's LOCAL (non-API)
+# push-with-retry.sh push independently hitting the identical ~91s wall in
+# the same window, and dozens of other jobs landing commits to main every
+# 5-10s during that window, points at GitHub-side serialization/throttling
+# of receive-pack traffic under sustained concurrent push volume from the
+# same actor — not a client-side hang this script can fix directly. The
+# retry loop was hammering straight back into that state with only a 1-3s
+# gap (near-zero backoff), which is the one part of this that IS a bug:
+# GitHub's own guidance for secondary rate limits is to back off, not retry
+# immediately. Bounds are kept small relative to GIT_NET_TIMEOUT_SEC by
+# design — push-with-retry.sh sizes this script's MAX_RETRIES off a
+# "~3 * GIT_NET_TIMEOUT_SEC per attempt" cost model (see its own comment
+# above the push-via-git-api.sh invocation); at the default MAX_RETRIES=6
+# this backoff can add roughly a minute across the full run (5 gaps,
+# ~5-19s each) — noticeable but still small next to 6 * 90s of timeouts,
+# and push-with-retry.sh only ever grants 6 when there's ample deadline
+# left. The scaled-down 2/4-retry paths a tight deadline actually grants
+# add well under that.
+PUSH_API_TIMEOUT_BACKOFF_BASE_SEC=${PUSH_API_TIMEOUT_BACKOFF_BASE_SEC:-5}
+PUSH_API_TIMEOUT_BACKOFF_MAX_SEC=${PUSH_API_TIMEOUT_BACKOFF_MAX_SEC:-15}
+# A misconfigured (non-integer, e.g. an accidentally-empty or garbage env
+# var) BASE/MAX must never propagate into the arithmetic below: `$((VAR *
+# n))` on a non-numeric BASE throws an unbound-variable error under this
+# file's `set -u` and aborts the WHOLE retry loop mid-flight (verified via
+# a ship-check subagent's repro), and a non-numeric MAX silently defeats the
+# `-gt` comparison's clamp instead of erroring — two different failure
+# shapes for the same root mistake. Coerce anything that isn't a plain
+# integer back to the default rather than either crashing or silently
+# misbehaving; a backoff feature degrading to its own default is a fine
+# outcome for a bad config, aborting the push fallback entirely is not.
+if ! [[ "$PUSH_API_TIMEOUT_BACKOFF_BASE_SEC" =~ ^[0-9]+$ ]]; then
+  PUSH_API_TIMEOUT_BACKOFF_BASE_SEC=5
+fi
+if ! [[ "$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC" =~ ^-?[0-9]+$ ]]; then
+  PUSH_API_TIMEOUT_BACKOFF_MAX_SEC=15
+fi
+# escalating_backoff_sec <cumulative-timeout-count-this-run> -> prints a
+# sleep duration to stdout. "Cumulative", not strictly "consecutive": a
+# race-classified retry in between two timeouts does not reset the count —
+# deliberate, since an intervening race doesn't mean the throttle (if any)
+# cleared, so treating the run's timeouts as one escalating series is the
+# more conservative reading. Floor-clamped to 1: a misconfigured
+# PUSH_API_TIMEOUT_BACKOFF_MAX_SEC of 0 or negative must never reach `sleep`
+# with a non-positive argument — `sleep` errors on a negative arg, which
+# under this file's `set -euo pipefail` would abort the whole retry loop
+# mid-flight instead of just skipping a backoff.
+escalating_backoff_sec() {
+  local count="$1" backoff
+  backoff=$((PUSH_API_TIMEOUT_BACKOFF_BASE_SEC * count))
+  if [ "$backoff" -gt "$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC" ]; then
+    backoff="$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC"
+  fi
+  [ "$backoff" -lt 1 ] && backoff=1
+  echo "$((backoff + RANDOM % 5))"
+}
 _TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
 _timeout() {  # fail-open (run directly) if no timeout binary on this box
   local secs="$1"; shift
@@ -461,10 +532,22 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # lost race. Bounded by MAX_RETRIES, which push-with-retry.sh already scales
   # to 2/4/6 by remaining PUSH_DEADLINE_SEC.
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
-    echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — retrying rather than treating a timeout as fatal" >&2
     FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
     rm -f "$PUSH_ERR"
-    sleep $((1 + RANDOM % 3))
+    # BRO-2951: no point computing or sleeping a backoff on the LAST budgeted
+    # attempt — there is no next retry to space out, and doing it anyway
+    # wastes up to PUSH_API_TIMEOUT_BACKOFF_MAX_SEC(+jitter) seconds before
+    # the exhaustion message and exit code even get reported (ship-check
+    # finding: this used to fire unconditionally, same as the pre-existing
+    # flat-jitter behavior it replaced, but the escalated amount makes the
+    # waste far more noticeable).
+    if [ "$i" -lt "$MAX_RETRIES" ]; then
+      _backoff="$(escalating_backoff_sec "$FAIL_TIMEOUT")"
+      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — backing off ${_backoff}s before retrying (BRO-2951, see comment above GIT_NET_TIMEOUT_SEC)" >&2
+      sleep "$_backoff"
+    else
+      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — no attempts remain, skipping backoff" >&2
+    fi
     continue
   fi
 
