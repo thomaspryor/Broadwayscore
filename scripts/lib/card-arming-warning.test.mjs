@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { armingWarning, missingTestPaths, KIND_HINTS } = require('./card-arming-warning.js');
+const { armingWarning, fabricatedPathReason, KIND_HINTS } = require('./card-arming-warning.js');
 // Rule 15: require the REAL validator the production path uses, so a change to
 // SAFE_CHECK_FORMS breaks this test rather than drifting silently past it.
 const verifyGate = require('./verify-gate.js');
@@ -77,54 +77,61 @@ test('the warning never claims the card was rejected — creation is warn-only',
   assert.match(w, /The card was still saved/);
 });
 
-// ── BRO-2789: shape-valid but the named file does not exist ──────────────
+// ── BRO-2789 / ship-check: shape-valid but the LOCATION is fabricated ────
 //
-// The real acceptance command from BRO-2789, verbatim. It passes safe-form and
-// so LOOKS armed, but tests/unit/cmux-swap-memory.test.mjs has never existed.
-// `node --test <missing path>` exits 1 and runVerify() calls that 'fail', so a
-// card armed this way goes permanently red on the nightly recheck once it is
-// Done — measured, not assumed:
-//   runVerify(cwd, 'node --test tests/unit/definitely-not-a-real-file.test.mjs')
-//   -> {"status":"fail","detail":"Could not find '...'"}
-const PHANTOM = '## Acceptance criteria\n\n`node --test tests/unit/cmux-swap-memory.test.mjs`\n';
+// The existence probe delegates to autonomous-triage-core.js's
+// resolveCheckPaths(), which encodes the NEW-ARTIFACT ALLOWANCE (card #529):
+// a missing file in a REAL directory is a to-be-created test and is correct.
+// Only a fabricated DIRECTORY, or a path naming a directory rather than a
+// file, is a defect. An earlier version of this file warned on every missing
+// path and would have re-broken the 3 cards card #529 was written to unbreak.
+const FABRICATED = '## Acceptance criteria\n\n`node --test tests/nosuchdir/nope.test.mjs`\n';
+const NEW_ARTIFACT = '## Acceptance criteria\n\n`node --test tests/unit/not-written-yet.test.mjs`\n';
+const NAMES_A_DIR = '## Acceptance criteria\n\n`test -f scripts/lib`\n';
 const REAL = '## Acceptance criteria\n\n`node --test scripts/lib/card-arming-warning.test.mjs`\n';
 
-test('BRO-2789 regression: a safe-form command naming a nonexistent test file warns', () => {
-  // Premise guard: this must still be SHAPE-valid, or the test passes for the
-  // wrong reason.
-  assert.equal(verifyGate.isSafeCheckCommand('node --test tests/unit/cmux-swap-memory.test.mjs'), true);
-  assert.equal(verifyGate.evaluateVerifiability(PHANTOM).armed, true, 'premise: shape check calls it armed');
+test('a fabricated directory warns', () => {
+  // Premise guard: it must still be SHAPE-valid, or this passes for the wrong reason.
+  assert.equal(verifyGate.evaluateVerifiability(FABRICATED).armed, true, 'premise: shape check calls it armed');
+  const w = armingWarning(FABRICATED);
+  assert.ok(w, 'expected a warning');
+  assert.match(w, /NAMES A LOCATION THAT DOES NOT EXIST/);
+  assert.match(w, /tests\/nosuchdir/);
+});
 
-  const w = armingWarning(PHANTOM);
-  assert.ok(w, 'expected a warning despite the card reading as armed');
-  assert.match(w, /NAMES A FILE THAT DOES NOT EXIST/);
-  assert.match(w, /tests\/unit\/cmux-swap-memory\.test\.mjs/);
+test('NEW-ARTIFACT ALLOWANCE: a not-yet-written test in a REAL directory stays silent', () => {
+  // This is the case card #529 exists to protect. Warning here would re-break it.
+  assert.equal(verifyGate.evaluateVerifiability(NEW_ARTIFACT).armed, true);
+  assert.equal(armingWarning(NEW_ARTIFACT), null);
+});
+
+test('a command naming a DIRECTORY rather than a file warns', () => {
+  const w = armingWarning(NAMES_A_DIR);
+  assert.ok(w, 'expected a warning — `test -f <dir>` can never pass');
+  assert.match(w, /directory/i);
 });
 
 test('a command naming a test file that DOES exist stays silent', () => {
   assert.equal(armingWarning(REAL), null);
 });
 
-test('missingTestPaths only reports the paths that are actually absent', () => {
-  const repoRoot = new URL('../..', import.meta.url).pathname;
-  assert.deepEqual(
-    missingTestPaths('node --test scripts/lib/card-arming-warning.test.mjs tests/unit/nope.test.mjs', repoRoot),
-    ['tests/unit/nope.test.mjs']
+test('fabricatedPathReason is silent for the non-path forms', () => {
+  const root = new URL('../..', import.meta.url).pathname;
+  assert.equal(fabricatedPathReason('npx tsc --noEmit', root), null);
+  assert.equal(fabricatedPathReason('npx next lint', root), null);
+});
+
+test('the probe fails OPEN when the canonical resolver is unavailable', () => {
+  // Never block or mislabel a card because our own tooling is missing.
+  const root = new URL('../..', import.meta.url).pathname;
+  assert.equal(
+    fabricatedPathReason('node --test tests/nosuchdir/x.test.mjs', root, {
+      triageCore: { resolveCheckPaths() { throw new Error('boom'); } },
+    }),
+    null
   );
-  assert.deepEqual(missingTestPaths('npx tsc --noEmit', repoRoot), [], 'a non-runner form names no paths');
-  assert.deepEqual(missingTestPaths('node --test scripts/lib/card-arming-warning.test.mjs', repoRoot), []);
 });
 
-test('missingTestPaths never probes outside the repo via traversal', () => {
-  const repoRoot = new URL('../..', import.meta.url).pathname;
-  assert.deepEqual(missingTestPaths('node --test ../../../etc/passwd', repoRoot), []);
-});
-
-test('the tsx runner form is covered too, not just plain node', () => {
-  const repoRoot = new URL('../..', import.meta.url).pathname;
-  assert.deepEqual(missingTestPaths('npx tsx --test tests/unit/nope.test.ts', repoRoot), ['tests/unit/nope.test.ts']);
-});
-
-test('an owner-judgment declaration still short-circuits before the existence probe', () => {
+test('an owner-judgment declaration short-circuits before the path probe', () => {
   assert.equal(armingWarning(OWNER), null);
 });

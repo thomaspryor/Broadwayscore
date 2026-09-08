@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 /**
  * card-arming-warning.js — the creation-time "this card cannot be closed"
@@ -62,30 +61,48 @@ const SAFE_FORM_EXAMPLES =
 // not exist. Node exits 1 there ("Could not find ..."), and
 // acceptance-check-core.js's runVerify() reports that as status 'fail' — so a
 // card armed this way reports FAILING forever once it is marked Done, not
-// silently passing. That is the right failure direction and the wrong outcome:
-// crown v50 had to hand-correct two such commands for exactly this reason, and
-// a permanently-red recheck trains everyone to ignore the recheck. Found again
-// on BRO-2789, whose command named tests/unit/cmux-swap-memory.test.mjs — a
-// file that has never existed — which the shape check alone called armed.
-// Same defect class as BRO-2977.
-const TEST_RUNNER_RE = /^(?:node|npx tsx) --test(?: --test-timeout \d+)?((?: [\w@./-]+)+)$/;
+// silently passing. Crown v50 had to hand-correct two such commands, and a
+// permanently-red recheck trains everyone to ignore the recheck.
+//
+// BUT "the path does not exist" is NOT by itself a defect, and this must not
+// re-litigate that. autonomous-triage-core.js's NEW-ARTIFACT ALLOWANCE
+// (card #529, 2026-07-26) settled it after a measured incident: vetoing every
+// missing path killed 3 in-scope cards in one live run, purely because their
+// proof command named the test they were going to write. This repo's own
+// convention (CLAUDE.md rule 15) is that a fix ships WITH its new colocated
+// test, so naming a to-be-created file is CORRECT.
+//
+// So this delegates to resolveCheckPaths() rather than re-implementing the
+// rule — the "must match X" comment IS the bug, per
+// memory/feedback_includability_predicates_must_be_canonical.md. It warns only
+// on what that function already fails closed: a path whose PARENT DIRECTORY
+// does not exist (a fabricated location), or one naming a real DIRECTORY
+// rather than a file. A missing file in a real directory comes back in
+// `newPaths` and is deliberately silent.
+//
+// Delegating also inherits two things this file got wrong on its own: the
+// canonical probe uses statSync().isFile() (existsSync happily accepts a
+// directory, or a symlink pointing outside the repo), and extractCheckPaths()
+// derives paths from SAFE_CHECK_FORMS instead of a looser local regex that
+// treated arbitrary extensions and flag-looking tokens as paths.
 
-// @returns {string[]} the paths this command names that are NOT present in repoRoot
-function missingTestPaths(cmd, repoRoot) {
-  const m = TEST_RUNNER_RE.exec(String(cmd || '').trim());
-  if (!m) return [];
-  return m[1]
-    .trim()
-    .split(/\s+/)
-    .filter((rel) => {
-      // Never let a traversal escape the repo while probing.
-      if (rel.split('/').includes('..')) return false;
-      try {
-        return !fs.existsSync(path.join(repoRoot, rel));
-      } catch (e) {
-        return false;
-      }
-    });
+// @returns {{reason:string}|null} a fabricated-location diagnosis, or null
+function fabricatedPathReason(cmd, repoRoot, deps = {}) {
+  let core = deps.triageCore;
+  if (!core) {
+    try {
+      core = require('./autonomous-triage-core.js');
+    } catch (e) {
+      return null; // fail open, same contract as the validator-unavailable path
+    }
+  }
+  try {
+    const r = core.resolveCheckPaths(String(cmd || ''), { repoRoot });
+    if (r && r.ok === false && r.reason) return { reason: r.reason };
+    return null;
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -114,22 +131,22 @@ function armingWarning(notesStr, deps = {}) {
   if (verdict && verdict.ownerJudgment) return null;
 
   if (verdict && verdict.armed) {
-    // Shape-valid, but does the file it names exist?
+    // Shape-valid — but does it name a location that could ever exist?
     const repoRoot = deps.repoRoot || path.resolve(__dirname, '..', '..');
-    const missing = missingTestPaths(verdict.cmd, repoRoot);
-    if (!missing.length) return null;
+    const bad = fabricatedPathReason(verdict.cmd, repoRoot, deps);
+    if (!bad) return null;
     return (
-      '\u26a0\ufe0f  ACCEPTANCE COMMAND NAMES A FILE THAT DOES NOT EXIST.\n\n' +
+      '\u26a0\ufe0f  ACCEPTANCE COMMAND NAMES A LOCATION THAT DOES NOT EXIST.\n\n' +
       `  ${verdict.cmd}\n` +
-      `Missing: ${missing.join(', ')}\n\n` +
+      `  ${bad.reason}\n\n` +
       'The command is a valid safe form, so the shape check passes and the card LOOKS armed.\n' +
-      'It is not. `node --test <missing path>` prints "Could not find ..." and exits 1, which\n' +
+      'It is not. `node --test <bad path>` prints "Could not find ..." and exits 1, which\n' +
       "acceptance-check-core.js's runVerify() reports as 'fail' — so once this card is marked\n" +
       'Done its nightly recheck goes red forever, for a reason that has nothing to do with the\n' +
       'work. A permanently-red recheck is how a real regression gets ignored.\n\n' +
-      'If the test file is something this card WILL create, that is fine and expected — but come\n' +
-      'back once the work lands and replace the command with the real filename. A card armed\n' +
-      'against an invented filename is worse than one that is honestly unarmed.\n\n' +
+      'Naming a test file this card WILL CREATE is correct and does NOT trigger this warning —\n' +
+      'the parent directory just has to exist. This fires only when the directory itself is\n' +
+      'fabricated, or when the path names a directory rather than a file.\n\n' +
       'The card was still saved.'
     );
   }
@@ -178,4 +195,4 @@ function armingWarning(notesStr, deps = {}) {
   );
 }
 
-module.exports = { armingWarning, missingTestPaths, KIND_HINTS, SAFE_FORM_EXAMPLES, TEST_RUNNER_RE };
+module.exports = { armingWarning, fabricatedPathReason, KIND_HINTS, SAFE_FORM_EXAMPLES };
