@@ -138,6 +138,21 @@ test('nonsense or missing inputs clamp instead of producing negative counts', ()
   }
 });
 
+test('opened and examined clamp to the WINDOW, not the corpus', () => {
+  // Round 4 finding 4: clamping these to `corpus` survived green because the
+  // only nonsense-input case had corpus === windowShows. With them different,
+  // clamping to corpus (100) would leave opened=50 > inWindow=10 and make
+  // upcomingShows negative.
+  const s = summarizeWindowCoverage({
+    windowDays: 30, corpusShows: 100, eligibleShows: 100, windowShows: 10,
+    openedShows: 50, showsWithTexts: 80, filesParsed: 3,
+  });
+  assert.equal(s.openedShows, 10, 'opened clamps to the window, not the corpus');
+  assert.equal(s.showsWithTexts, 10, 'examined clamps to the window, not the corpus');
+  assert.equal(s.upcomingShows, 0);
+  assert.ok(s.upcomingShows >= 0 && s.skippedNoTexts >= 0);
+});
+
 test('called with no arguments it does not throw and reports an empty corpus', () => {
   const s = summarizeWindowCoverage();
   assert.equal(s.corpusShows, 0);
@@ -210,8 +225,9 @@ test('the CLI counts files it PARSED, not files it listed', () => {
     // absent or carry the real corpus numbers, and the greps below would be
     // meaningless.
     assert.match(out, /^Coverage: /m, `no coverage line in output:\n${out}`);
-    // good-show 1 + corrupt-show 1 (broken.json must NOT count) + future-show 1
-    // = 3 parsed. ancient-show is outside the window. Listing would give 4.
+    // good-show 2 + corrupt-show 1 (broken.json must NOT count) + future-show 1
+    // = 4 parsed. ancient-show is outside the window; all-corrupt yields 0.
+    // Listing rather than parsing would give 7.
     assert.match(out, /\(4 review file\(s\) parsed\)/, out);
     assert.doesNotMatch(out, /\(5 review file\(s\) parsed\)/, 'counted a corrupt file as parsed');
     assert.doesNotMatch(out, /\(7 review file\(s\) parsed\)/, 'counted all-corrupt files as parsed');
@@ -226,8 +242,9 @@ test('the CLI does not report a show as examined when it yielded nothing', () =>
   const root = buildFixture();
   try {
     const out = runCli(root);
-    // Examined = good-show, corrupt-show, future-show = 3 of 7 corpus shows.
-    // pending-only has a directory but no .json; missing-dir has no directory.
+    // Examined = good-show, corrupt-show, future-show = 3 of 9 corpus shows.
+    // pending-only has a directory but no .json; all-corrupt parses none;
+    // missing-dir has no directory.
     assert.match(out, /^Coverage: examined 3 of 9 corpus show\(s\)/m, out);
     // Window selects good, corrupt, pending-only, all-corrupt, missing-dir,
     // future = 6. Examined = good, corrupt, future = 3.
@@ -236,7 +253,7 @@ test('the CLI does not report a show as examined when it yielded nothing', () =>
     assert.match(out, /3 selected show\(s\) yielded no readable review file/, out);
     // bad-date-show ('TBD') and no-date-show are both ineligible at ANY window,
     // which is what "missing or unparseable" claims (round 3 finding 2).
-    // examined + notExamined must equal the corpus: 3 + 5 = 8. The earlier
+    // examined + notExamined must equal the corpus: 3 + 6 = 9. An earlier
     // version asserted 2 here, which locked in the round 2 finding 1 P0.
     assert.match(out, /6 corpus show\(s\) were NOT examined, of which 2 carry no usable openingDate/, out);
   } finally {
@@ -286,6 +303,51 @@ test('an unusable --window is refused rather than scanned as clean', () => {
       stderr = String(e.stderr || '');
     }
     assert.equal(code, 2, `--window=${w} --strict must exit 2, got ${code}`);
+    assert.match(stderr, /--window must be a positive number of days/, stderr);
+  }
+});
+
+test('the corpus-empty FAIL-LOUD gate is actually armed under --strict', () => {
+  // Round 4 finding 1: `{ gate: args.strict || args.updateBaseline }` could be
+  // mutated to `{ gate: false }` with every suite still green, because the
+  // BSC_AUDIT_ROOT refusal made empty-corpus + --strict unconstructible. The
+  // refusal now applies only to a NON-EMPTY redirected corpus, so this case
+  // reaches the guard — and it can only ever FAIL, never pass.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cv-empty-'));
+  fs.mkdirSync(path.join(root, 'data', 'audit'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'data', 'shows.json'), '[]');
+  try {
+    let code = 0, stderr = '';
+    try {
+      execFileSync(process.execPath, [CLI, '--window=30', '--strict'], {
+        encoding: 'utf8', stdio: 'pipe',
+        env: { ...process.env, BSC_AUDIT_ROOT: root },
+      });
+    } catch (e) {
+      code = e.status;
+      stderr = String(e.stderr || '');
+    }
+    assert.equal(code, 1, `empty corpus under --strict must FAIL (exit 1), got ${code}`);
+    assert.match(stderr, /scanned 0 review files/, stderr);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('a --window token that parseInt would silently truncate is refused', () => {
+  // Round 4 finding 3: parseInt('1e9') === 1 and parseInt('30d') === 30, so
+  // validating parseInt's RESULT let nonsense through as a plausible window.
+  for (const w of ['1e9', '30d', '3O', '1.5']) {
+    let code = 0, stderr = '';
+    try {
+      execFileSync(process.execPath, [CLI, `--window=${w}`, '--strict'], {
+        encoding: 'utf8', stdio: 'pipe',
+      });
+    } catch (e) {
+      code = e.status;
+      stderr = String(e.stderr || '');
+    }
+    assert.equal(code, 2, `--window=${w} must exit 2, got ${code}`);
     assert.match(stderr, /--window must be a positive number of days/, stderr);
   }
 });

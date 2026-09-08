@@ -88,7 +88,13 @@ function parseArgs(argv) {
   for (const a of argv) {
     if (a === '--strict') args.strict = true;
     else if (a === '--update-baseline') args.updateBaseline = true;
-    else if (a.startsWith('--window=')) args.window = parseInt(a.split('=')[1], 10);
+    else if (a.startsWith('--window=')) {
+      // Keep the RAW token: parseInt truncates, so '1e9' becomes 1 and '30d'
+      // becomes 30 — nonsense silently turned into a plausible window
+      // (round 4 finding 3). main() validates the token, not just the number.
+      args.windowRaw = a.split('=')[1];
+      args.window = parseInt(args.windowRaw, 10);
+    }
   }
   return args;
 }
@@ -111,6 +117,13 @@ function main() {
   // coverage line laundered the NaN into a clean-looking "--window=0d"
   // (round 3 finding 1). `--window=-5` passed too. Reject it outright rather
   // than letting a downstream clamp turn nonsense into a plausible number.
+  if (args.windowRaw !== undefined && !/^\d+$/.test(args.windowRaw)) {
+    console.error(
+      `FAIL: --window must be a positive number of days, got "${args.windowRaw}". ` +
+        'Refusing rather than scanning an empty window and reporting it as clean.'
+    );
+    process.exit(2);
+  }
   if (!Number.isFinite(args.window) || args.window <= 0) {
     console.error(
       `FAIL: --window must be a positive number of days, got "${args.window}". ` +
@@ -119,15 +132,6 @@ function main() {
     process.exit(2);
   }
 
-  // A redirected root may never produce a PASSING gate verdict, and may never
-  // rewrite the baseline (BASELINE_PATH follows ROOT too).
-  if (ROOT_OVERRIDE && (args.strict || args.updateBaseline)) {
-    console.error(
-      'FAIL: BSC_AUDIT_ROOT is set, so --strict and --update-baseline are refused. ' +
-        'A redirected corpus would pass vacuously. Use report-only mode.'
-    );
-    process.exit(2);
-  }
 
   // Corpus presence, checked independent of the date window below (#1063
   // ship-check finding): gating on the window-filtered per-file `scanned`
@@ -137,6 +141,24 @@ function main() {
   // depending on which shows happen to fall inside --window.
   let corpusEntries = 0;
   try { corpusEntries = fs.readdirSync(REVIEW_TEXTS_DIR).length; } catch { corpusEntries = 0; }
+
+  // A redirected root may never produce a PASSING gate verdict, and may never
+  // rewrite the baseline (BASELINE_PATH follows ROOT too). The refusal is
+  // seated HERE rather than at the top of main() so that an EMPTY redirected
+  // corpus still reaches assertCorpusScanned below: that path can only ever
+  // FAIL loudly, so allowing it costs nothing and is the only way to test the
+  // gate wiring at all. Refusing it earlier made the #1063 vacuous-pass guard
+  // untestable from a fixture, which round 4 found had left `gate:` mutable
+  // to false with both suites still green.
+  if (ROOT_OVERRIDE && corpusEntries > 0 && (args.strict || args.updateBaseline)) {
+    console.error(
+      'FAIL: BSC_AUDIT_ROOT is set with a non-empty corpus, so --strict and ' +
+        '--update-baseline are refused. A redirected corpus would pass vacuously. ' +
+        'Use report-only mode.'
+    );
+    process.exit(2);
+  }
+
   try {
     assertCorpusScanned(corpusEntries, { gate: args.strict || args.updateBaseline });
   } catch (e) {
