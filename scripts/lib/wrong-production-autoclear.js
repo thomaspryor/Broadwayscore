@@ -475,6 +475,32 @@ function isTextStaleRelativeToUrlRewrite(data) {
   return fetchedMs < rewriteMs;
 }
 
+// The exact prefix adjudicate-review-queue.js's LLM contamination adjudicator
+// writes into wrongProductionNote for a high-confidence verdict (BRO-2841).
+// Exported so the writer requires this constant instead of duplicating the
+// literal — a future rewording there would otherwise silently reopen BRO-2841
+// with no test pointing at the cause, since a hand-typed duplicate can drift
+// without either side noticing.
+const ADJUDICATED_NOTE_PREFIX = 'Auto-adjudicated:';
+
+/**
+ * True when wrongProductionNote carries the adjudicator's own high-confidence
+ * verdict prefix. adjudicate-review-queue.js also sets wrongProductionReason
+ * on every write going forward (the systemic BRO-2841 fix — every auto-clear
+ * predicate here already gates on that field), so this exists specifically to
+ * protect files the adjudicator wrote BEFORE that fix landed, which carry the
+ * note but not the reason. Named and shared (rather than a local
+ * `wpNote.startsWith(...)` per call site) so every current and future
+ * auto-clear predicate gets this for free, not just the one BRO-2841 happened
+ * to name first.
+ *
+ * @param {object} data
+ * @returns {boolean}
+ */
+function hasAdjudicatedNote(data) {
+  return (data?.wrongProductionNote || '').startsWith(ADJUDICATED_NOTE_PREFIX);
+}
+
 /**
  * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
  * strip wrongProduction from a review file.
@@ -496,6 +522,16 @@ function shouldAutoClearWrongProduction(data) {
     && data.contentVerification?.confidence === 'high';
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  // BRO-2841 sibling-path fix: this predicate runs in the same rebuild pass as
+  // shouldAutoClearWrongProductionUkDualMarket, on the same data, gated on
+  // allowEarlyDate/allowCrossMarket — plausible on exactly the cross-market
+  // shows the adjudicator handles — and previously read only
+  // wrongProductionReason, never the note. adjudicate-review-queue.js now sets
+  // wrongProductionReason on every adjudicated write (the systemic fix), so
+  // hasManualReason already covers new writes; hasAdjudicatedNote is the
+  // backward-compatible half, protecting files the adjudicator wrote BEFORE
+  // that fix landed, which carry the note but not the reason.
+  if (hasAdjudicatedNote(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -807,6 +843,12 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
     || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
   if (isStructuralFlag) return false;
+  // BRO-2841: backward-compat half of the fix — see hasAdjudicatedNote's
+  // docstring. Forward-looking protection now comes from the
+  // wrongProductionReason check a few lines below, which adjudicate-
+  // review-queue.js populates on every write since this fix.
+  // Concrete incident: the-car-man-west-end-2026/north-west-end--natalia-prucnal.json.
+  if (hasAdjudicatedNote(data)) return false;
   if (ctx.isDateMismatch) return false;
 
   // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
@@ -828,6 +870,8 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
 module.exports = {
   DATE_ONLY_AUTO_REASONS,
   REVIEW_LAG_GRACE_DAYS,
+  ADJUDICATED_NOTE_PREFIX,
+  hasAdjudicatedNote,
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,

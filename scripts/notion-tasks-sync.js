@@ -35,6 +35,7 @@ const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
 const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
 const { findLiveWorkspaceForTask } = require('./lib/dispatch-guards.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // Reuse task-reclaim.js's constants/helpers rather than re-declaring copies —
 // same idle bar (48h) and same "never make an Archived/Cancelled card
 // dispatchable again" rule as the archive-trapped case (card #1402) this
@@ -928,7 +929,25 @@ function selectLeastRecentlyReconciled(candidates, limit) {
     .slice(0, limit);
 }
 
-function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false } = {}) {
+// BRO-2998: the fail-closed half of reconcileStaleMirrors's cmux-outage
+// handling, pulled out as a pure function so the wiring is unit-testable
+// without a live cmux process (matching this file's own convention — see
+// planLivenessDowngrade above — of exporting pure decision helpers directly
+// rather than adding a scripts/lib/ file for a single-caller helper).
+// `unavailable` truthy means the workspace LISTING couldn't be trusted this
+// round (see classifyCmuxError) — in that case report a synthetic live
+// workspace unconditionally, same shape as bsc-reconcile.js's BRO-2993
+// `liveTab` fallback, so planLivenessDowngrade's skip-live branch fires
+// instead of falling through to the idle/outcome checks that assume wsList
+// is a genuine (possibly empty) snapshot. When `unavailable` is falsy,
+// this is a pure passthrough to the real lookup — behavior for a
+// successful listing (including a genuinely empty one) is unchanged.
+function resolveLiveWorkspace(task, wsList, unavailable, isDoneTitle) {
+  if (unavailable) return { ref: `cmux-unavailable:${unavailable}` };
+  return findLiveWorkspaceForTask(task, wsList, isDoneTitle);
+}
+
+function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, listWorkspacesFn = () => cmuxws.listWorkspaces() } = {}) {
   const map = readMap(dir);
   const allCandidates = Object.entries(map).filter(([, e]) => {
     const t = readLiveTask(dir, e.taskId);
@@ -939,15 +958,30 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
   // Task #1697: liveness primitives for planLivenessDowngrade, fetched once
   // up front (cmux listing is a subprocess call — same "fetch once, reuse
   // across the loop" shape bsc-reconcile.js's sweepUntrackedInProgress uses
-  // for its own workspace snapshot). Degrades to "no live workspace found"
-  // if cmux is down, matching that sweep's own try/catch.
+  // for its own workspace snapshot).
+  // BRO-2998: a failed listing must NOT read as "cmux confirmed zero
+  // workspaces" — same bug class BRO-2993 fixed in that sweep, but this path
+  // runs on every `pull` (CLAUDE.md's own dispatch cadence) instead of once
+  // per 6h sweep, so an outage window is sampled far more often.
+  // cmuxUnavailable (set only in the catch) makes the failure explicit —
+  // both so resolveLiveWorkspace below can fail closed instead of treating
+  // an empty array as real evidence, and so the failure is actually SEEN
+  // (BRO-2993's "third blind spot": an unreported cmux failure here
+  // produced no output at all). listWorkspacesFn is injectable so this
+  // exact wiring is testable without a live cmux process.
   let workspaces = [];
-  try { workspaces = cmuxws.listWorkspaces() || []; } catch { /* cmux down — liveness guard degrades to skip-none */ }
+  let cmuxUnavailable = null;
+  try {
+    workspaces = listWorkspacesFn() || [];
+  } catch (e) {
+    cmuxUnavailable = classifyCmuxError(e);
+    console.error(`[sync] reconcile: cmux listing failed (${cmuxUnavailable}) — liveness guard fails closed this run (no in_progress task will be downgraded on a workspace check)`);
+  }
   const leaseAliveOf = (taskId) => {
     const lease = readLease(taskId);
     return !!(lease && pidLooksLikeClaude(lease.pid));
   };
-  const liveWorkspaceOf = (t, wsList) => findLiveWorkspaceForTask(t, wsList, cmuxws.isDoneTitle);
+  const liveWorkspaceOf = (t, wsList, unavailable) => resolveLiveWorkspace(t, wsList, unavailable, cmuxws.isDoneTitle);
 
   // Task #1790: stamp lastReconciledAt for a candidate that was genuinely
   // EXAMINED this round — on a successful GET, a failed one, AND the stale-
@@ -1021,7 +1055,7 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
     // gated on task.status here purely for clarity, not correctness.
     let viaLiveness = false;
     if (!drift && task.status === 'in_progress') {
-      const liveness = planLivenessDowngrade(task, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, workspaces) });
+      const liveness = planLivenessDowngrade(task, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, workspaces, cmuxUnavailable) });
       if (liveness && liveness.newStatus) {
         drift = { newStatus: liveness.newStatus, cardStatus: liveness.cardStatus, reason: liveness.reason };
         viaLiveness = true;
@@ -1087,8 +1121,24 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false }
       // trust the pre-lock snapshot for this path.
       if (viaLiveness) {
         let freshWorkspaces = workspaces;
-        try { freshWorkspaces = cmuxws.listWorkspaces() || []; } catch { /* degrade to the pre-lock snapshot */ }
-        const recheck = planLivenessDowngrade(freshTask, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, freshWorkspaces) });
+        // BRO-2998: defaults to the outer cmuxUnavailable (always null here
+        // in practice — an unavailable outer listing already makes the
+        // outer planLivenessDowngrade call above take the skip-live branch,
+        // so viaLiveness never becomes true for that entry), then re-derived
+        // fresh below. A successful re-listing supersedes the pre-lock
+        // snapshot outright (real data beats a synthetic marker); a failure
+        // here — cmux going down in the window between the outer snapshot
+        // and this lock, across up to `limit` sequential Notion GETs — must
+        // fail closed the same way, not silently trust the stale snapshot.
+        let freshCmuxUnavailable = cmuxUnavailable;
+        try {
+          freshWorkspaces = listWorkspacesFn() || [];
+          freshCmuxUnavailable = null;
+        } catch (e) {
+          freshCmuxUnavailable = classifyCmuxError(e);
+          console.error(`[sync] reconcile: in-lock cmux re-check failed (${freshCmuxUnavailable}) for #${entry.taskId} — skipping this downgrade`);
+        }
+        const recheck = planLivenessDowngrade(freshTask, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, freshWorkspaces, freshCmuxUnavailable) });
         if (!recheck || !recheck.newStatus) {
           fixed.pop();
           unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: `SKIPPED (became live during this run: ${recheck ? recheck.reason : 'status changed'})` });
@@ -1187,4 +1237,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, resolveLiveWorkspace, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible };

@@ -30,6 +30,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 // ==================== Configuration ====================
 
@@ -167,6 +168,7 @@ async function fetchJson(url) {
       });
       const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
       const result = await httpsRequest(apiUrl);
+      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1, purpose: 'lottery-rush' });
       if (result) {
         try {
           const json = JSON.parse(result);
@@ -177,6 +179,9 @@ async function fetchJson(url) {
         }
       }
     } catch (err) {
+      const httpMatch = /^HTTP (\d+):/.exec(err.message || '');
+      const status = httpMatch ? Number(httpMatch[1]) : 'error';
+      recordSbCall({ url, fn: 'json', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'lottery-rush' });
       console.error(`  [ScrapingBee] JSON fetch failed: ${err.message}`);
     }
   }

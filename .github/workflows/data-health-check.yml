@@ -351,6 +351,35 @@ jobs:
         timeout-minutes: 5
         run: node scripts/audit-cv-wrongproduction-lifetime.js
 
+      # BRO-80: unopened-show prior-run / readmission sweep. The pre-opening
+      # temporal gate (review-guards.js isPrematureReviewForUnopenedShow) is a
+      # TEMPORARY exclusion - it only fires while a show's status is
+      # announced/upcoming/previews. Every old review it silently holds out
+      # readmits into the live score the moment the show opens, so a
+      # contaminated review with no durable flag of its own becomes an
+      # opening-night landmine. The 2026-08-30 triage of 54 unopened shows
+      # found 2 genuine Edinburgh Fringe transfers (declared via priorRuns,
+      # readmitting 4 legitimate reviews) and 6 contaminated reviews with no
+      # durable flag of their own, now explicitly flagged. Those 6 would ALSO
+      # have been caught by the rebuild's own pre-window date guard once their
+      # show had a real opening date, so the flags are defence in depth rather
+      # than a rescue - which is why this sweep now models that guard too and
+      # only reports what survives BOTH.
+      #
+      # This has to run on a CRON, not in test.yml: the risk is a DATA state
+      # that changes when update-show-status.js flips a show, with no code
+      # push involved, so a code-triggered gate would never see it.
+      #
+      # SHADOW MODE, non-blocking, same reasoning as the sweep above:
+      # explainExclusion is a strong diagnostic mirror of the rebuild's rules
+      # but explicitly NOT the audit of record (see its docstring), so a false
+      # positive must never be able to red main.
+      - name: unopened-show readmission-risk sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/triage-unopened-shows.mjs
+
       # 4 more lifetime corpus sweeps (task #1746), extending #1731's pattern
       # above to the other opening-night-checks plugins with the exact same
       # structural risk: wrong/mismatched content shipped into reviews.json,
@@ -413,6 +442,25 @@ jobs:
       # to trip on the rest). The digest check in health-check.js surfaces
       # flaggedCount and silencedByContaminationCount; --fail-on-gap is for
       # manual/local triage runs, not this cron.
+      # Not shadow mode, unlike the sweeps above: this one pages. Those measure
+      # populations of unknown precision; this one reports a binary, verifiable
+      # fact (a show qualified to broadcast and no email exists), and nothing
+      # retries it automatically — opening-night-broadcast.yml only ever looks
+      # at shows opened within the last 2 days, so once a show ages out of that
+      # window the owner acting on this alert is the ONLY remaining path to the
+      # send. Exits non-zero only on missing/empty core data (a cheerful zero
+      # read off a partial checkout would be worse than a crash); the alert
+      # itself is routed, not thrown, so a real finding never fails the job.
+      - name: Missed opening-night broadcast sweep
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-missed-broadcasts.js
+
       - name: Stale announced shows audit (shadow mode)
         if: always()
         continue-on-error: true
@@ -611,6 +659,7 @@ jobs:
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
           # digest-history.json intentionally NOT added here — ship-check
           # review (2026-08-23) found it has zero writers anywhere in the
           # codebase (orphaned since card #364); see core-data-merge-
@@ -625,6 +674,7 @@ jobs:
           git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
           git add data/audit/stale-announced-shows.json 2>/dev/null || true
+          git add data/audit/missed-broadcasts.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check audit snapshot changes"
           else

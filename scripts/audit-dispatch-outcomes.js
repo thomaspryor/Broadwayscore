@@ -21,8 +21,8 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { classifyDispatches, OUTCOMES } = require('./lib/dispatch-outcome.js');
 
 const USAGE = `audit-dispatch-outcomes.js — did dispatched work land?
@@ -61,12 +61,37 @@ function loadTasksUnioned() {
   return tasks;
 }
 
+// cmux-workspaces.js is the shared, tested cmux-liveness abstraction — the same
+// one health-check.js:2775 reuses "rather than re-parsing `cmux list-workspaces`
+// a second way". This used to shell out to a bare `cmux` on PATH with no socket
+// credential, no stderr, and its own copy of the workspace:N regex, which broke
+// three ways at once (BRO-3001): under launchd `cmux` is not on PATH; under any
+// non-ancestry socket mode the call is rejected outright; and the discarded
+// stderr made both look identical to "cmux isn't running".
+//
+// Returning null on ANY doubt is the point — classifyDispatches treats a missing
+// set as "don't judge liveness at all" and falls back to the ledger.
 function liveWorkspaceRefs() {
   try {
-    const out = execFileSync('cmux', ['list-workspaces'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-    return new Set([...out.matchAll(/workspace:\d+/g)].map(m => m[0]));
-  } catch {
-    return null; // cmux unavailable — fall back to ledger-only, never guess
+    const { cmuxAvailable, listWorkspaces } = require('./lib/cmux-workspaces.js');
+    if (!cmuxAvailable()) return null;
+    const refs = listWorkspaces().map(w => w.ref).filter(Boolean);
+    // An EMPTY result is treated the same as cmux being unavailable (the
+    // #1106 vacuous-gate class). listWorkspaces() returns [] on a daemon
+    // hiccup or malformed output rather than throwing, and an empty Set is
+    // still TRUTHY — so it would sail through the `live ? {...} : {}` guard
+    // below and make dispatch-outcome.js's `!live.has(ref)` true for every
+    // launch at once, reporting the entire in-flight fleet ABANDONED off one
+    // bad read. health-check.js:2773 already guards its mirror of this call
+    // with `refs.length > 0`, and its comment claims THIS helper's "never
+    // guess" rule governs there — it did not; the rule was in the comment
+    // only. Now it is in the code.
+    return refs.length > 0 ? new Set(refs) : null;
+  } catch (e) {
+    // Say WHY. A silent degrade to ledger-only is how an auth rejection hid
+    // for two hours on 2026-09-07: the audit kept reporting, just blind.
+    console.error(`[audit-dispatch-outcomes] cmux liveness unavailable (${classifyCmuxError(e)}) — falling back to ledger-only: ${e.message}`);
+    return null;
   }
 }
 

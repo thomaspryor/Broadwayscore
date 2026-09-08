@@ -15,7 +15,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear');
+const { shouldAutoClearWrongProductionUkDualMarket, ADJUDICATED_NOTE_PREFIX, hasAdjudicatedNote } = require('./wrong-production-autoclear');
 const { UK_SIDE_REGIONS, UK_SELF_HEAL_REGIONS, UK_MARKET_REGIONS, outletIsUkSideSelfHealRegion, outletIsUkMarketRegion, classifyReverseCrossMarket } = require('./cross-market-guard');
 
 const baseCtx = {
@@ -89,6 +89,76 @@ describe('shouldAutoClearWrongProductionUkDualMarket', () => {
       );
     });
   }
+
+  // BRO-2841: adjudicate-review-queue.js's LLM contamination adjudicator writes
+  // a high-confidence verdict into wrongProductionNote ("Auto-adjudicated: <type>.
+  // <reasoning>"), never into wrongProductionReason — the field this predicate's
+  // sibling exemption checks. Without a dedicated exemption, a review already
+  // adjudicated as a genuine other-market production gets silently re-cleared
+  // here on the next rebuild purely because the outlet is UK-side registered.
+  // Concrete incident: a Sheffield Lyceum tour review adjudicated onto a
+  // Sadler's Wells show (the-car-man-west-end-2026).
+  it('returns false for an Auto-adjudicated note (BRO-2841 regression)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Auto-adjudicated: national-tour. The review explicitly states this is a performance at the Sheffield Lyceum',
+          url: 'https://northwestend.com/matthew-bournes-the-car-man-sheffield-lyceum/',
+        },
+        baseCtx
+      ),
+      false
+    );
+  });
+
+  // Guards against the fix going blanket-inert: a note that merely CONTAINS the
+  // adjudication phrase mid-string (not as a prefix) must NOT trip the new
+  // exemption — only a genuine adjudicator-authored note should.
+  it('does NOT exempt a note that merely mentions "Auto-adjudicated" mid-sentence', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Reviewer disputed the Auto-adjudicated verdict from a prior pass',
+          url: 'https://timeout.com/london/x',
+        },
+        baseCtx
+      ),
+      true
+    );
+  });
+
+  // The predicate must still fire for the ordinary, non-adjudicated case — this
+  // is the regression the fix must NOT introduce: a real region='london'/'uk'
+  // false-positive clear that was never adjudicated must still clear normally.
+  it('still returns true for a plain region-based clear with no adjudication note (no regression)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        { wrongProduction: true, url: 'https://timeout.com/london/x' },
+        baseCtx
+      ),
+      true
+    );
+  });
+
+  // BRO-2841 follow-up: proves the writer (adjudicate-review-queue.js) and
+  // reader (this predicate, via hasAdjudicatedNote) are coupled through the
+  // SAME exported constant rather than two hand-typed literals that could
+  // drift apart silently. Built from ADJUDICATED_NOTE_PREFIX, not a copy of
+  // the string.
+  it('hasAdjudicatedNote recognizes a note built from the shared ADJUDICATED_NOTE_PREFIX export', () => {
+    assert.strictEqual(ADJUDICATED_NOTE_PREFIX, 'Auto-adjudicated:');
+    const note = `${ADJUDICATED_NOTE_PREFIX} national-tour. reasoning`;
+    assert.strictEqual(hasAdjudicatedNote({ wrongProductionNote: note }), true);
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        { wrongProduction: true, wrongProductionNote: note, url: 'https://timeout.com/london/x' },
+        baseCtx
+      ),
+      false
+    );
+  });
 
   it('returns false when isDateMismatch (review predates show by > PRE_WINDOW_DAYS)', () => {
     assert.strictEqual(

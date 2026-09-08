@@ -26,6 +26,7 @@
     "test:functional": "RUN_UGC_TESTS=1 TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/my-shows-functional.spec.ts tests/e2e/show-rating-functional.spec.ts",
     "test:ugc": "RUN_UGC_TESTS=1 TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/my-shows-mock.spec.ts tests/e2e/my-shows-functional.spec.ts tests/e2e/show-rating-functional.spec.ts tests/e2e/ugc-visual-regression.spec.ts tests/e2e/ugc-visual-baselines.spec.ts",
     "test:unit": "node --test 'tests/unit/*.test.mjs' && npx tsx --test 'tests/unit/*.test.ts'",
+    "test:one": "npx tsx --test",
     "data:check": "node scripts/check-data-health.js --fix",
     "deploy-now": "node scripts/deploy-now.js",
     "preview-branch": "bash scripts/preview-branch.sh",

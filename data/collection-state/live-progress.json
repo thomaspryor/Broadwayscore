@@ -1,48 +1,132 @@
 {
-  "updatedAt": "2026-09-05T16:11:16.472Z",
-  "processed": 17,
-  "failed": 133,
-  "successRate": "11.3%",
+  "updatedAt": "2026-09-08T03:23:29.564Z",
+  "processed": 147,
+  "failed": 1903,
+  "successRate": "7.2%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 71,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
+    "browserbase": 22,
+    "directCookies": 9,
+    "scrapingbee": 29,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 27
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 16,
   "recentActivity": [
     {
-      "t": "2026-09-05T15:58:26.521Z",
+      "t": "2026-09-08T02:27:27.952Z",
       "event": "bb-session",
-      "session": "d9f01193",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+      "session": "9ef2c229",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     },
     {
-      "t": "2026-09-05T15:58:27.673Z",
+      "t": "2026-09-08T02:34:18.004Z",
+      "event": "bb-session",
+      "session": "317d1ba3",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-08T02:38:06.856Z",
+      "event": "bb-session",
+      "session": "d4f6fc79",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-08T02:38:08.071Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-09-05T16:03:10.092Z",
+      "t": "2026-09-08T02:43:37.061Z",
       "event": "bb-session",
-      "session": "f90d302f",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "60a01e7e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
     },
     {
-      "t": "2026-09-05T16:08:49.605Z",
-      "event": "bb-session",
-      "session": "ffa1801d",
-      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+      "t": "2026-09-08T02:43:38.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-05T16:09:05.505Z",
+      "t": "2026-09-08T02:45:29.549Z",
       "event": "bb-session",
-      "session": "1fe8306c",
-      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+      "session": "32f6571c",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-08T02:45:30.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-08T02:50:59.134Z",
+      "event": "bb-session",
+      "session": "48055e8f",
+      "url": "https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-you-n"
+    },
+    {
+      "t": "2026-09-08T02:51:00.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-08T02:55:57.622Z",
+      "event": "bb-session",
+      "session": "1173f9e7",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-08T02:56:02.751Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-08T02:56:28.399Z",
+      "event": "bb-session",
+      "session": "1a3dfbb3",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-08T02:56:33.352Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-08T03:03:12.163Z",
+      "event": "bb-session",
+      "session": "c45228a7",
+      "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-"
+    },
+    {
+      "t": "2026-09-08T03:03:13.160Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-08T03:12:36.378Z",
+      "event": "bb-session",
+      "session": "c1926544",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-08T03:12:56.714Z",
+      "event": "bb-session",
+      "session": "456bf87c",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-08T03:20:38.595Z",
+      "event": "bb-session",
+      "session": "fc9a5f28",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-08T03:20:59.960Z",
+      "event": "bb-session",
+      "session": "25b4c0d7",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
     }
   ]
 }

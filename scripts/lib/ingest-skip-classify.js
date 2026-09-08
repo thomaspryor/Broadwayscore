@@ -110,6 +110,15 @@ const EXPECTED_REJECTION_REASONS = [
   // review of this production — the refusal is correct and permanent, same
   // footing as cross-market.
   'tour-review',
+  // The byline is a CREATIVE TEAM member of this same show
+  // (review-file-writer.js Guard F2, BRO-2915) — a mis-parsed roundup row, not
+  // a review. validate-data.js ERRORS on the same shape, so writing it would
+  // red the trunk; refusing it is correct and permanent. EXPECTED rather than
+  // CONFLICT: the two records do not disagree about reality, the row is simply
+  // not a review. It stays visible per-occurrence because the other way to
+  // reach it — a wrongly scraped creativeTeam credit — is a real data bug the
+  // operator should see.
+  'credited-person-as-critic',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -211,6 +220,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'tour-review') {
     return `${showId}: ${url} looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js.`;
+  }
+  if (reason === 'credited-person-as-critic') {
+    return `${showId}: ${url} was refused because its byline is a creative team member of this same show${detail ? ` (${detail})` : ''} — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json.`;
   }
   if (reason === 'aggregator-url-mismatch') {
     return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `

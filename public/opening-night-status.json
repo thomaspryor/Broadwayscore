@@ -1,36 +1,39 @@
 {
-  "generatedAt": "2026-09-05T15:36:13.489Z",
+  "generatedAt": "2026-09-08T02:51:24.922Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "holy-fool-off-west-end-2026",
-      "title": "Holy Fool",
+      "id": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
       "market": "west-end",
       "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-09-04",
-      "status": "open",
-      "slug": "holy-fool-off-west-end",
-      "thumbnail": "/images/shows/holy-fool-off-west-end-2026/thumbnail.webp",
-      "siteScore": 57.82,
-      "liveScore": 58,
-      "scoreDrift": 0.17999999999999972,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
+      "type": "musical",
+      "openingDate": "2026-09-08",
+      "status": "previews",
+      "slug": "jane-eyre-off-west-end",
+      "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 1,
-      "t2": 3,
-      "t3": 10,
-      "positive": 3,
-      "mixed": 7,
-      "negative": 4,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3"
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
         ],
-        "highConfidence": 6,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -70,106 +73,9 @@
         {
           "name": "Daily Mail",
           "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
         },
         {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-09-05T12:56:39.806Z",
-          "rc": 1,
-          "s": 38,
-          "t1": 0,
-          "t2": 1,
-          "t3": 0,
-          "p": 0,
-          "m": 0,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T13:28:53.088Z",
-          "rc": 7,
-          "s": 61.76,
-          "t1": 1,
-          "t2": 2,
-          "t3": 4,
-          "p": 2,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T15:36:13.489Z",
-          "rc": 14,
-          "s": 57.82,
-          "t1": 1,
-          "t2": 3,
-          "t3": 10,
-          "p": 3,
-          "m": 7,
-          "n": 4,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "the-story-west-end-2026",
-      "title": "The Story",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-09-03",
-      "status": "open",
-      "slug": "the-story-west-end",
-      "thumbnail": "/images/shows/the-story-west-end-2026/thumbnail.webp",
-      "siteScore": 58.95,
-      "liveScore": 59,
-      "scoreDrift": 0.04999999999999716,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 19,
-      "t1": 8,
-      "t2": 7,
-      "t3": 4,
-      "positive": 4,
-      "mixed": 10,
-      "negative": 5,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 6,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -183,368 +89,17 @@
           "isDualMarket": true
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-09-04T08:27:37.984Z",
-          "rc": 3,
-          "s": 47,
-          "t1": 1,
-          "t2": 2,
-          "t3": 0,
-          "p": 0,
-          "m": 1,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:04:25.510Z",
-          "rc": 15,
-          "s": 63.68,
-          "t1": 7,
-          "t2": 6,
-          "t3": 2,
-          "p": 3,
-          "m": 10,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T00:32:37.593Z",
-          "rc": 18,
-          "s": 60.4,
-          "t1": 7,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 4,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T09:27:13.806Z",
-          "rc": 18,
-          "s": 59.85,
-          "t1": 7,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 4,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T12:56:39.806Z",
-          "rc": 19,
-          "s": 59.39,
-          "t1": 7,
-          "t2": 7,
-          "t3": 5,
-          "p": 4,
-          "m": 10,
-          "n": 5,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T13:28:53.088Z",
-          "rc": 20,
-          "s": 58.88,
-          "t1": 7,
-          "t2": 8,
-          "t3": 5,
-          "p": 4,
-          "m": 10,
-          "n": 6,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T15:36:13.489Z",
-          "rc": 19,
-          "s": 58.95,
-          "t1": 8,
-          "t2": 7,
-          "t3": 4,
-          "p": 4,
-          "m": 10,
-          "n": 5,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-09-02",
-      "status": "open",
-      "slug": "a-month-in-the-country-west-end",
-      "thumbnail": "/images/shows/a-month-in-the-country-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.39,
-      "liveScore": 78,
-      "scoreDrift": -0.39000000000000057,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 21,
-      "t1": 8,
-      "t2": 8,
-      "t3": 5,
-      "positive": 17,
-      "mixed": 3,
-      "negative": 1,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 11,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
+          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-09-02T10:31:59.044Z",
-          "rc": 2,
-          "s": 77,
-          "t1": 1,
-          "t2": 0,
-          "t3": 1,
-          "p": 1,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-02T13:26:38.266Z",
-          "rc": 4,
-          "s": 71.83,
-          "t1": 1,
-          "t2": 0,
-          "t3": 3,
-          "p": 2,
-          "m": 1,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-03T19:22:35.678Z",
-          "rc": 8,
-          "s": 83.18,
-          "t1": 2,
-          "t2": 3,
-          "t3": 3,
-          "p": 7,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T08:27:37.984Z",
-          "rc": 12,
-          "s": 82.32,
-          "t1": 5,
-          "t2": 4,
-          "t3": 3,
-          "p": 11,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:04:25.510Z",
-          "rc": 16,
-          "s": 81.89,
-          "t1": 7,
-          "t2": 6,
-          "t3": 3,
-          "p": 15,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-04T17:32:32.186Z",
-          "rc": 16,
-          "s": 81.93,
-          "t1": 7,
-          "t2": 6,
-          "t3": 3,
-          "p": 15,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T00:32:37.593Z",
-          "rc": 17,
-          "s": 82.33,
-          "t1": 7,
-          "t2": 6,
-          "t3": 4,
-          "p": 16,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T09:27:13.806Z",
-          "rc": 18,
-          "s": 81.83,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 17,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T11:27:49.218Z",
-          "rc": 18,
-          "s": 81.91,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 17,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T12:56:39.806Z",
-          "rc": 18,
-          "s": 81.43,
-          "t1": 7,
-          "t2": 6,
-          "t3": 5,
-          "p": 16,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T13:28:53.088Z",
-          "rc": 20,
-          "s": 78.7,
-          "t1": 8,
-          "t2": 7,
-          "t3": 5,
-          "p": 17,
-          "m": 2,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-09-05T15:36:13.489Z",
-          "rc": 21,
-          "s": 78.39,
-          "t1": 8,
-          "t2": 8,
-          "t3": 5,
-          "p": 17,
-          "m": 3,
-          "n": 1,
-          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
-    {
-      "id": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-09-08",
-      "status": "upcoming",
-      "slug": "school-girls-or-the-african-mean-girls-play",
-      "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
-      "daysUntil": 3,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
-      "id": "jane-eyre-off-west-end-2026",
-      "title": "Jane Eyre",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-09-08",
-      "status": "previews",
-      "slug": "jane-eyre-off-west-end",
-      "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "kimberly-akimbo-off-west-end-2026",
       "title": "Kimberly Akimbo",
@@ -555,7 +110,7 @@
       "status": "previews",
       "slug": "kimberly-akimbo-off-west-end",
       "thumbnail": "/images/shows/kimberly-akimbo-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -580,7 +135,7 @@
       "status": "previews",
       "slug": "lean-to-off-broadway",
       "thumbnail": "/images/shows/lean-to-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -619,7 +174,7 @@
       "status": "previews",
       "slug": "day-of-the-hog-off-broadway",
       "thumbnail": "/images/shows/day-of-the-hog-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -658,7 +213,7 @@
       "status": "previews",
       "slug": "man-to-man-west-end",
       "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -683,7 +238,7 @@
       "status": "upcoming",
       "slug": "america-who-hurt-you-off-broadway",
       "thumbnail": "/images/shows/america-who-hurt-you-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -722,7 +277,7 @@
       "status": "upcoming",
       "slug": "the-human-voice-the-seven-deadly-sins-west-end",
       "thumbnail": "/images/shows/the-human-voice-the-seven-deadly-sins-west-end-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -747,6 +302,109 @@
       "status": "previews",
       "slug": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
       "thumbnail": "/images/shows/mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 4,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "title": "IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-15",
+      "status": "upcoming",
+      "slug": "in-honor-of-jean-michel-basquiat-off-broadway",
+      "thumbnail": "/images/shows/in-honor-of-jean-michel-basquiat-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-15",
+      "status": "upcoming",
+      "slug": "golden-boy-off-west-end",
+      "thumbnail": null,
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+      "title": "THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-15",
+      "status": "upcoming",
+      "slug": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway",
+      "thumbnail": null,
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {

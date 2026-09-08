@@ -8,15 +8,25 @@
  * Compares local data against committed baseline (data/audit/validation-baseline.json)
  * to detect missing shows/reviews even when files exist but are outdated.
  *
+ * Also reports how far the private clone is BEHIND ORIGIN. Age and currency are
+ * different questions: on 2026-09-05 a 30-minute-old clone that was 8 commits
+ * behind reported "Data healthy", and ~10,700 local tests passed against data
+ * CI would never see (CI checks the data repo out at origin). See
+ * scripts/lib/data-freshness.js.
+ *
  * Exit codes: 0 = healthy, 1 = missing/empty/drift (critical), 2 = stale (warning)
- * Usage: node scripts/check-data-health.js [--fix]
- *   --fix  Auto-pull latest data from private repo if stale or missing
+ * Usage: node scripts/check-data-health.js [--fix] [--no-fetch]
+ *   --fix       Auto-pull latest data from private repo if stale or missing
+ *   --no-fetch  Skip refreshing remote refs (offline). The behind-origin count
+ *               then falls back to the local ref and is only a LOWER BOUND, so
+ *               "0 behind" no longer proves the clone is current.
  */
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
+const { classifyDataFreshness } = require('./lib/data-freshness');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PRIVATE_REPO = process.env.BSC_DATA_REPO || path.join(os.homedir(), 'broadway-scorecard-data');
@@ -238,6 +248,41 @@ const ageLabel = ageHours < 1 ? `${Math.round(ageHours * 60)}m ago`
   : ageHours < 48 ? `${Math.round(ageHours)}h ago`
   : `${Math.round(ageHours / 24)}d ago`;
 
+// ── Step 5: Currency — how far behind origin? ──
+// Age says nothing about currency; see the header note and data-freshness.js.
+// Fetch by DEFAULT. Without it, behindCount is computed from the local
+// remote-tracking ref, which setup-local-data.sh leaves level with HEAD — so
+// the 2026-09-05 clone would have reported 0 behind and this guard would have
+// stayed silent through the very incident it exists to catch. One small fetch
+// at session start is the price of the check meaning anything. --no-fetch
+// opts out for offline work.
+const wantFetch = !process.argv.includes('--no-fetch');
+let refsFetched = false;
+if (wantFetch) {
+  try {
+    execSync('git fetch origin main', {
+      cwd: PRIVATE_REPO, stdio: ['ignore', 'ignore', 'ignore'], timeout: 30000,
+    });
+    refsFetched = true;
+  } catch { /* offline or no remote — behindCount stays a lower bound */ }
+}
+
+let behindCount = null;
+try {
+  behindCount = parseInt(execSync('git rev-list --count HEAD..origin/main', {
+    cwd: PRIVATE_REPO, stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000,
+  }).toString().trim(), 10);
+} catch { /* no origin/main ref — classify as unknown */ }
+
+const freshness = classifyDataFreshness({ behindCount, refsFetched });
+if (freshness.level === 'behind' || freshness.level === 'far-behind') {
+  console.warn(`\u26a0\ufe0f  ${freshness.message}`);
+  console.warn(`   Fix: ${freshness.remedy}`);
+  console.log(`   ${statsLine} | Updated: ${ageLabel}`);
+  process.exit(2);
+}
+
+
 if (ageHours > STALE_ERROR_HOURS) {
   if (doFix) {
     console.log(`Data stale (${ageLabel}). Auto-pulling latest...`);
@@ -264,3 +309,7 @@ if (ageHours > STALE_WARN_HOURS) {
 }
 
 console.log(`\u2705 Data healthy: ${statsLine} | Updated: ${ageLabel}`);
+if (!freshness.trustworthy) {
+  // Not a failure: refs simply were not refreshed this run.
+  console.log(`   \u2139\ufe0f  ${freshness.message}`);
+}

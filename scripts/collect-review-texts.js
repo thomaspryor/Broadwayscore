@@ -133,6 +133,10 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { resolveShowIdentity } = require('./lib/show-identity');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 const {
   isWithinPriorRun,
   isWithinTourLeg,
@@ -308,6 +312,15 @@ const CONFIG = {
   showFilterSet: new Set((process.env.SHOW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)),
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
+  // BRO-2983: throttles ONLY the public-repo push cadence (data/collection-state/),
+  // decoupled from pushEveryNBatches which still governs the private review-texts
+  // repo checkpoint. Was batch-count-based (every 5 batches), landing ~267
+  // separate "chore: Checkpoint" commits/day on main and starving other jobs'
+  // pushes. See commitChanges() below.
+  mainPushIntervalMs: (() => {
+    const n = parseInt(process.env.MAIN_PUSH_INTERVAL_MIN, 10);
+    return (Number.isFinite(n) && n > 0 ? n : 30) * 60 * 1000;
+  })(),
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
@@ -476,6 +489,7 @@ const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = requ
 const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2381,6 +2395,11 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
   stats.tier2Attempts++;
 
+  // Guards the catch block below: isBlocked()/insufficient-text throw AFTER a
+  // successful, already-billed API response — the catch's failure recorder
+  // must not also fire for those, or one billed call becomes two ledger rows.
+  let apiCallRecorded = false;
+
   // Forward subscriber cookies via ScrapingBee's header forwarding
   const cookieHeader = buildCookieHeaderForUrl(url);
   if (cookieHeader) {
@@ -2429,6 +2448,15 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
     stats.scrapingBeePageCredits += credits;
+    apiCallRecorded = true;
+    recordSbCall({
+      url,
+      fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+      success: true,
+      status: response.status,
+      credits,
+      purpose: 'review-text',
+    });
 
     const html = response.data;
 
@@ -2457,6 +2485,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+      if (!apiCallRecorded) {
+        recordSbCall({
+          url,
+          fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+          success: false,
+          status,
+          credits: sbBilledCredits(status, credits),
+          purpose: 'review-text',
+        });
+      }
 
       // Same trigger set as scraper.js's _scrapingBeePageExhausted and
       // url-discovery.js's _scrapingBeeSerpExhausted: auth/plan/rate-limit
@@ -2474,6 +2512,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       } else {
         throw new Error(`ScrapingBee error (${status}): ${message}`);
       }
+    }
+    if (!apiCallRecorded) {
+      recordSbCall({
+        url,
+        fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+        success: false,
+        status: 'error',
+        credits: sbBilledCredits('error', credits),
+        purpose: 'review-text',
+      });
     }
     throw error;
   }
@@ -3680,8 +3728,7 @@ function extractFromJsonLd(html) {
     let bestText = '';
     while ((match = ldRegex.exec(html)) !== null) {
       try {
-        const data = JSON.parse(match[1].trim());
-        const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
+        const items = parseJsonLd(match[1].trim());
         for (const item of items) {
           const body = item.articleBody || item.reviewBody || item.text;
           if (body && typeof body === 'string' && body.length > bestText.length) {
@@ -5372,14 +5419,33 @@ function _pushToRemote(processed) {
   } else {
     console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${stderr.split('\n').slice(-3).join(' ')}`);
   }
+  return ok;
 }
 
 /**
  * Commit changes to git (for incremental saving during long runs).
- * Local commits happen every batch (cheap). Remote pushes happen every
- * pushEveryNBatches to reduce git contention with other workflows.
+ *
+ * Local commit happens every batch, but AMENDS the not-yet-pushed commit
+ * instead of creating a new one each time. GH Actions runners are ephemeral —
+ * an unpushed local commit has no crash-safety edge over an uncommitted
+ * change, both vanish with the container — so batching several batches'
+ * worth of data/collection-state/ changes into one commit costs nothing on
+ * that front, while cutting what lands on origin/main once pushed. Before
+ * this, a fresh commit per batch was landing as ~267 separate "chore:
+ * Checkpoint" commits/day on main, starving other jobs' pushes (BRO-2983).
+ *
+ * The public-repo push (this script's only main-branch write) is throttled
+ * to a wall-clock interval (CONFIG.mainPushIntervalMs, default 30min)
+ * instead of a batch count. This is decoupled from the private review-texts
+ * repo checkpoint below, which keeps its existing every-pushEveryNBatches
+ * cadence — that one guards actual scraped review text, the crash-safety-
+ * relevant data; data/collection-state/ is just resume bookkeeping, and
+ * losing up to one throttle interval of it on a crash means some reviews
+ * get reprocessed on resume, not lost.
  */
 let _batchesSinceLastPush = 0;
+let _hasPendingMainCommit = false;
+let _lastMainPushAt = Date.now();
 
 function commitChanges(processed, forcePush = false) {
   const { execSync } = require('child_process');
@@ -5423,24 +5489,42 @@ function commitChanges(processed, forcePush = false) {
       const tierStr = tierInfo.length ? ` [${tierInfo.join(',')}]` : '';
       const failStr = failCount > 0 ? ` (${failCount} failed)` : '';
       const ctFilter = CONFIG.contentTierFilter ? ` (${CONFIG.contentTierFilter})` : '';
+      const msg = `chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}`;
 
-      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}"`, {
-        stdio: 'pipe'
-      });
+      if (_hasPendingMainCommit) {
+        execSync(`git commit --amend -m ${JSON.stringify(msg)}`, { stdio: 'pipe' });
+      } else {
+        execSync(`git commit -m ${JSON.stringify(msg)}`, { stdio: 'pipe' });
+        _hasPendingMainCommit = true;
+      }
 
       console.log(`  ✓ Committed checkpoint locally (${processed} reviews)`);
     } else {
       console.log('  (No changes to commit)');
     }
 
-    // Only push to remotes every N batches (or when forced, e.g. final commit)
-    // This reduces git contention — local commits are cheap, pushes cause conflicts
-    _batchesSinceLastPush++;
-    const shouldPush = forcePush || _batchesSinceLastPush >= CONFIG.pushEveryNBatches;
+    // Push to main at most every mainPushIntervalMs (or when forced, e.g. the
+    // final commit) — the amend above means at most one commit reaches
+    // origin/main per push cycle, regardless of how many batches ran since
+    // the last one.
+    const elapsedSinceMainPush = Date.now() - _lastMainPushAt;
+    if (_hasPendingMainCommit && (forcePush || elapsedSinceMainPush >= CONFIG.mainPushIntervalMs)) {
+      // Only clear the pending-commit flag / reset the clock on a CONFIRMED
+      // push. On failure, leave both as-is: the next batch's amend keeps
+      // accumulating on the same still-unpushed commit, and — since
+      // _lastMainPushAt was never bumped — the very next batch retries the
+      // push immediately rather than waiting out a fresh mainPushIntervalMs.
+      if (_pushToRemote(processed)) {
+        _hasPendingMainCommit = false;
+        _lastMainPushAt = Date.now();
+      }
+    }
 
-    if (shouldPush) {
+    // Private repo review-texts checkpoint: separate cadence (every
+    // pushEveryNBatches), unaffected by the main-repo throttle above.
+    _batchesSinceLastPush++;
+    if (forcePush || _batchesSinceLastPush >= CONFIG.pushEveryNBatches) {
       _batchesSinceLastPush = 0;
-      _pushToRemote(processed);
       pushReviewTextsCheckpoint(processed);
     }
 
@@ -6220,6 +6304,7 @@ function clearFailedFetch(reviewId) {
 // PROCESS REVIEW
 // ============================================================================
 
+
 async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
@@ -6355,8 +6440,8 @@ async function processReview(review) {
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
     // Content quality check - detect garbage/invalid content before saving
-    const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-    const qualityCheck = assessTextQuality(result.text, showTitle);
+    const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
       // Don't save garbage content as fullText - log as failed fetch
@@ -6643,8 +6728,8 @@ async function processReview(review) {
           // Check for garbage content BEFORE writing URL to file
           // (prevents cost leak: if we write the URL first and content is garbage,
           // future runs would re-discover the same URL and waste SERP credits)
-          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+          const qualityCheck = assessTextQuality(retryResult.text, qualityShowId, showTitle);
           if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
             console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
             review.url = originalUrl; // restore before failing

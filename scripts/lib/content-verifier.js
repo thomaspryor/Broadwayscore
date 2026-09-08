@@ -904,18 +904,25 @@ function quickValidityCheck(text, showTitle) {
  * known for long-biographical leads that resemble wrong-show content.
  *
  * Returns true only when ALL of:
- *   1. getCvStyle(outletId) === 'long-biographical'
- *   2. wordCount(fullText) > 500
- *   3. hasOpinionLanguage(fullText) is true
+ *   1. contentTier is NOT 'invalid'
+ *   2. getCvStyle(outletId) === 'long-biographical'
+ *   3. wordCount(fullText) > 500
+ *   4. hasOpinionLanguage(fullText) is true
+ *
+ * The guard exists to rescue real reviews the CV misread (e.g. a genuine
+ * Vulture review with a long essayistic lead) — an invalid-tier scrape is
+ * not a review the CV misread, so it must never qualify for deferral
+ * (BRO-2834: 114/118 historical predicate matches were invalid-tier junk).
  *
  * Safe defaults: returns false for missing outletId or fullText.
  *
- * @param {{ outletId?: string, fullText?: string }} reviewData
+ * @param {{ outletId?: string, fullText?: string, contentTier?: string }} reviewData
  * @returns {boolean}
  */
 function shouldDeferCvWrongShow(reviewData) {
-  const { outletId, fullText } = reviewData || {};
+  const { outletId, fullText, contentTier } = reviewData || {};
   if (!outletId || !fullText) return false;
+  if (contentTier === 'invalid') return false;
   if (getCvStyle(outletId) !== 'long-biographical') return false;
   const wordCount = fullText.split(/\s+/).filter(Boolean).length;
   if (wordCount <= 500) return false;

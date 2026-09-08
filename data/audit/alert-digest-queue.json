@@ -24,30 +24,6 @@
     "queuedAt": "2026-09-05T02:23:04.226Z"
   },
   {
-    "conditionKey": "dispatch-flow-dead",
-    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
-    "description": "Only 9 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 195). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T04:17:49.477Z"
-  },
-  {
-    "conditionKey": "cmux-launch:auth-preflight-failed",
-    "title": "cmux launch refused — claude auth preflight failed",
-    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T07:00:57.550Z"
-  },
-  {
     "conditionKey": "on-monitor-launched-on-monitor-2026-09-04",
     "title": "Opening-night monitor pass complete: holy-fool-off-west-end-2026",
     "description": "Pass 1, model opus, 11min, $1.09. Pass 1 complete — exited cleanly inside the 15-min budget, no report sent (parity not reached, window open until 22:59Z).\n\n**Holy Fool (Park Theatre, off-West-End) — press night 2026-09-04**\n\nLive on prod: **1 review** — WhatsOnStage / Miriam Sallon, score 38 (Negative). No composite score yet (1 review is below display threshold). Show status is already `open`.\n\nIndependent census found **9 outlets**, so the gap is large:\n- 6 never seen by the pipeline at all: The Stage, Everything Theatre, The Spy in the Stalls (4★), West End Best Friend, Jewish News, Theatre and Tonic\n- 2 discovered but text never collected (0-byte stubs): The Reviews Hub, readaboutstuff\n- 1 duplicate artifact: `whatsonstage--unknown.json` is a 0-byte stub of the same URL as the live WhatsOnStage file\n\nCaveat I recorded",
@@ -58,18 +34,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T12:31:04.933Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 16.7% of shows changed coverage state",
-    "description": "review-gap blast radius 16.7% (7/42 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, bigfoot-off-broadway-2026, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T14:19:28.044Z"
   },
   {
     "conditionKey": "opening-night-slug-mismatch-the-story-west-end-2026",
@@ -94,5 +58,251 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-05T15:24:59.114Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:holy-fool-off-west-end-2026",
+    "title": "Shipped review too short to verify on Holy Fool",
+    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.664Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:holy-fool-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Holy Fool",
+    "description": "thestage/Holly O'Mahony SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.666Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-holy-fool-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Holy Fool",
+    "description": "holy-fool-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=holy-fool-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.668Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 69.7% of shows changed coverage state",
+    "description": "review-gap blast radius 69.7% (62/89 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: a-month-in-the-country-west-end-2026, a-walk-on-the-moon-off-broadway-2026, all-my-sons-west-end-2025, all-nighter-off-broadway-2025, an-ark-off-broadway-2026, bigfoot-off-broadway-2026, buena-vista-social-club-off-broadway-2023, bughouse-off-broadway-2026, burlesque-west-end-2026, carmen-off-broadway-2025, caroline-off-broadway-2026, cats-the-jellicle-ball-off-broadway-2024, celebrity-autobiography-2026, chess-2025, data-off-broadway-2026, disruption-off-broadway-2026, dog-day-afternoon-2026, dracula-west-end-2025, electra-persona-west-end-2026, end-of-the-rainbow-west-end-2026, equus-west-end-2026, evita-west-end-2025, giant-royal-court-off-west-end-2024, giant-west-end-2025, grangeville-off-broadway-2026, holy-fool-off-west-end-2026, into-the-woods-west-end-2025, jajas-african-hair-braiding-west-end-2026, john-proctor-is-the-villain-west-end-2026, kinky-boots-the-musical-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:26.318Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.7% (373/486)\noff-broadway: 43.4% (131/302)\nwest-end: 73.5% (400/544)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (540h)\nA Midsummer Night's Dream — observer (540h)\nA Midsummer Night's Dream — standard (540h)\nA Midsummer Night's Dream — times-uk (540h)\nABBA Voyage — independent (540h)\n… 176 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (540h)\nThe Book of Mormon — usatoday (540h)\nBuena Vista Social Club — broadwaynews (540h)\nBuena Vista Social Club — nydailynews (540h)\nHadestown — nydailynews (540h)\n… 21 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:35.705Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "6/132 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nunreachable: 1\nMichael R. Jackson: Wake Up Call: unreachable\nA Month in the Country: score-drift\nCyrano de Bergerac: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T21:59:38.658Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "67 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Jesus Christ Superstar — telegraph (25h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"jesus-christ-superstar-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — i-paper (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — independent (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — times-uk (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "SIX the Musical — whatsonstage (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"six-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spamalot — chicago-sun-times (448h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spamalot-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spamalot — chicagotribune (448h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spamalot-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — standard (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — times-uk (72h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The 25th Annual Putnam County Spelling Bee — amny (540h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-05T21:59:38.763Z"
+  },
+  {
+    "conditionKey": "cmux-launch:auth-preflight-failed",
+    "title": "cmux launch refused — claude auth preflight failed",
+    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T23:00:06.190Z"
+  },
+  {
+    "conditionKey": "dispatch-flow-dead",
+    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
+    "description": "Only 8 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 197). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-06T04:32:22.232Z"
+  },
+  {
+    "conditionKey": "sd-circuit-breaker",
+    "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
+    "description": "Scrapingdog billed 35560 credits today against a ceiling of 21000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (717), collect-review-texts.js (300), collect-outlet-reviews.js (276).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-06T09:46:22.710Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1811/1500 reqs)",
+    "description": "Zone web_unlocker2 billed 1811 requests today against a ceiling of 1500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (117), gather-reviews.js (33), enrich-stubhub-prices.js (16).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-06T22:30:23.067Z"
+  },
+  {
+    "conditionKey": "watchdog-heartbeat-stale",
+    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
+    "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T12:51:57.071Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026",
+    "title": "Placeholder synopsis on Kimberly Akimbo",
+    "description": "synopsis for kimberly-akimbo-off-west-end-2026 is too thin (119 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.994Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:kimberly-akimbo-off-west-end-2026",
+    "title": "Pre-opening publishDate on Kimberly Akimbo",
+    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-30 (10d before openingDate 2026-09-09): https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.997Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
+    "title": "Zombie-tab sweep closed workspace:87",
+    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2569 No dispatcher path-checks the command it\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T22:06:55.537Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34182196261",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34182196261)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34181741092)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "5"
+      }
+    ],
+    "queuedAt": "2026-09-08T03:25:16.470Z"
   }
 ]

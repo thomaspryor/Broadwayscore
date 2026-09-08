@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 
 const {
-  resolveDailyCreditCeiling,
+  resolveCeilingForDay,
   resolveOpeningWindowReservePerShowCredits,
   shouldTripBreaker,
   computeTodayCredits,
@@ -44,7 +44,11 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 Env:
   SCRAPINGDOG_API_KEY                        required; without it the check no-ops
-  SD_BREAKER_CEILING                         daily credit ceiling (default 45000)
+  SD_BREAKER_CEILING                         daily credit ceiling override (operator pin). Unset = plan
+                                             fair share: (pack credits left at day start / days to renewal)
+                                             x 1.5, clamped to what is left; falls back to 45000 only when
+                                             the /account limit or renewal date is unavailable (BRO-2943)
+  SD_BREAKER_BURST_FACTOR                    multiplier on the plan fair share (default 1.5)
   SD_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS per-show ceiling reserve for opening-window shows (default 3000)
   SD_BREAKER_STATE_PATH                      override the state file location (tests)
 `);
@@ -84,22 +88,8 @@ async function main() {
   }
 
   const day = utcDay(new Date());
-  const ceiling = resolveDailyCreditCeiling();
   const prevState = loadState();
   const wasActive = isBreakerActive(prevState, day);
-
-  // #1330 (mirrors #1315's BD fix): shows within [today-1, today+3] get an
-  // absolute credit reserve carved out of the bulk (non-exempt) ceiling — a
-  // DIFFERENT, wider window than the severity check below (which asks "is a
-  // poller hammering this provider tonight"). Exempt opening-night callers
-  // never consult the breaker at all (scrapingdog-caps.js consultScrapingdog),
-  // so this only throttles the routine sweeps that were starving them.
-  const reserveShows = countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
-  const effectiveCeiling = effectiveCeilingForOpeningWindow({
-    ceiling,
-    openingWindowShows: reserveShows,
-    reservePerShow: resolveOpeningWindowReservePerShowCredits(),
-  });
 
   const account = await fetchSdAccount(apiKey);
   const cycleUsed = account ? account.cycleUsed : null;
@@ -110,7 +100,37 @@ async function main() {
     prevState: prevState && prevState.day ? prevState : null,
   });
 
-  console.log(`scrapingdog: ${dayCredits == null ? `${status} (cycle ${cycleUsed ?? 'unknown'})` : `${dayCredits} credits today`} — ceiling ${ceiling}`
+  // Ceiling is resolved AFTER computeTodayCredits so the plan fair share uses
+  // today's settled baseline (post day-rollover / mid-day-renewal clamp), not
+  // whatever prevState carried (BRO-2943 review finding).
+  const { ceiling, source: ceilingSource } = resolveCeilingForDay({
+    account,
+    dayBaseline: newState && Number.isFinite(newState.dayBaseline) ? newState.dayBaseline : null,
+  });
+
+  // #1330 (mirrors #1315's BD fix): shows within [today-1, today+3] get an
+  // absolute credit reserve carved out of the bulk (non-exempt) ceiling — a
+  // DIFFERENT, wider window than the severity check below (which asks "is a
+  // poller hammering this provider tonight"). Exempt opening-night callers
+  // never consult the breaker at all (scrapingdog-caps.js consultScrapingdog),
+  // so this only throttles the routine sweeps that were starving them.
+  if (ceilingSource === 'default' && account) {
+    // Billing answered but without a usable plan shape — the legacy 45K line
+    // is back in force and will trip most days. Loud, not silent.
+    console.warn(`  ⚠️  Scrapingdog /account lacks plan limit/validity (limit=${account.limit}, daysToRenewal=${account.daysToRenewal}) — falling back to the legacy ${ceiling} ceiling`);
+  }
+
+  const reserveShows = countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
+  const effectiveCeiling = effectiveCeilingForOpeningWindow({
+    ceiling,
+    openingWindowShows: reserveShows,
+    reservePerShow: resolveOpeningWindowReservePerShowCredits(),
+  });
+
+  const planNote = account && account.limit != null && account.daysToRenewal != null
+    ? `; pack ${account.limit} credits, ${account.daysToRenewal}d to renewal`
+    : '';
+  console.log(`scrapingdog: ${dayCredits == null ? `${status} (cycle ${cycleUsed ?? 'unknown'})` : `${dayCredits} credits today`} — ceiling ${ceiling} (${ceilingSource}${planNote})`
     + `${effectiveCeiling !== ceiling ? ` (ceiling ${ceiling}→${effectiveCeiling}: ${reserveShows} show(s) in the budget-reservation window)` : ''}`);
 
   if (status === 'unknown') {
@@ -135,6 +155,7 @@ async function main() {
     ...newState,
     trippedAt,
     ceiling: effectiveCeiling,
+    ceilingSource,
     dayCredits,
     status,
     updatedAt: new Date().toISOString(),
@@ -168,7 +189,7 @@ async function main() {
   const severity = breakerAlertSeverity({ tripped: true, openingWindowShows });
   const title = `Scrapingdog daily breaker TRIPPED: ${dayCredits}/${effectiveCeiling} credits`;
   const description = [
-    `Scrapingdog billed ${dayCredits} credits today against a ceiling of ${effectiveCeiling}.`,
+    `Scrapingdog billed ${dayCredits} credits today against a ceiling of ${effectiveCeiling} (${ceilingSource}).`,
     'Bulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.',
     openingWindowShows > 0
       ? `${openingWindowShows} show(s) are in an active opening window — bulk review collection for them is capped.`

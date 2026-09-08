@@ -3,12 +3,13 @@
     "invalid": [],
     "armedCount": 6
   },
-  "generatedAt": "2026-09-05T16:16:12.160Z",
+  "invalidRegistryFields": [],
+  "generatedAt": "2026-09-08T02:54:25.818Z",
   "summary": {
-    "totalOutletsInReviews": 700,
-    "inRegistry": 700,
+    "totalOutletsInReviews": 698,
+    "inRegistry": 698,
     "missing": 0,
-    "unused": 469
+    "unused": 475
   },
   "missingOutlets": [],
   "unusedInRegistry": [
@@ -965,6 +966,10 @@
       "displayName": "The Music.com"
     },
     {
+      "outletId": "different-descriptors-jump-to-mind",
+      "displayName": "Different Descriptors Jump To Mind"
+    },
+    {
       "outletId": "mammamiabwaycom",
       "displayName": "Mammamiabway.com"
     },
@@ -1789,6 +1794,10 @@
       "displayName": "Boston.com"
     },
     {
+      "outletId": "east-midlands-theatre",
+      "displayName": "East Midlands Theatre"
+    },
+    {
       "outletId": "acsntn",
       "displayName": "Acsntn"
     },
@@ -1829,8 +1838,20 @@
       "displayName": "raring2go"
     },
     {
+      "outletId": "marquee",
+      "displayName": "marquee"
+    },
+    {
       "outletId": "broadwayscorecard",
       "displayName": "broadwayscorecard"
+    },
+    {
+      "outletId": "visit-london",
+      "displayName": "Visit London"
+    },
+    {
+      "outletId": "soundsandstage",
+      "displayName": "soundsandstage"
     },
     {
       "outletId": "myshrewsbury",
@@ -1887,6 +1908,10 @@
     {
       "outletId": "sueterryvoices",
       "displayName": "Sueterryvoices"
+    },
+    {
+      "outletId": "baystatebanner",
+      "displayName": "Baystatebanner"
     }
   ],
   "suggestedAdditions": [],
@@ -2089,26 +2114,6 @@
       "canonicalId": "artsdesk",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/1536-west-end-2026/artsdesk--helen-hawkins.json"
-      ]
-    },
-    {
-      "showId": "1536-west-end-2026",
-      "outletId": "standard",
-      "currentDisplayName": "The Standard",
-      "expectedDisplayName": "Evening Standard",
-      "canonicalId": "standard",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/1536-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/grace-pervades-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/inter-alia-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/marie-and-rosetta-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/mass-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/please-please-me-west-end-2026/standard--unknown.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/standard--ghenet-pinderhughes-randall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-holy-rosenbergs-west-end-2026/standard--nick-curtis.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-oresteia-west-end-2026/standard--nick-curtis.json"
       ]
     },
     {
@@ -5639,18 +5644,6 @@
     },
     {
       "showId": "boop-2025",
-      "outletId": "suntimes",
-      "currentDisplayName": "suntimes",
-      "expectedDisplayName": "Suntimes",
-      "canonicalId": "suntimes",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/boop-2025/suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/little-bear-ridge-road-2025/suntimes--httpschicagosuntimescomsteven-oxman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json"
-      ]
-    },
-    {
-      "showId": "boop-2025",
       "outletId": "talkinbroadway",
       "currentDisplayName": "talkinbroadway",
       "expectedDisplayName": "Talkin' Broadway",
@@ -6828,16 +6821,6 @@
       ]
     },
     {
-      "showId": "girl-interrupted-off-broadway-2026",
-      "outletId": "vulture",
-      "currentDisplayName": "New York Notebook",
-      "expectedDisplayName": "Vulture",
-      "canonicalId": "vulture",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/girl-interrupted-off-broadway-2026/vulture--sandy-macdonald.json"
-      ]
-    },
-    {
       "showId": "glengarry-glen-ross-2012",
       "outletId": "telegraph",
       "currentDisplayName": "Daily Telegraph",
@@ -6894,6 +6877,25 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/oliver-west-end-2024/broadwayworld--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/tammy-faye-2024/broadwayworld--cindy-marcolina.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "outletId": "standard",
+      "currentDisplayName": "The Standard",
+      "expectedDisplayName": "Evening Standard",
+      "canonicalId": "standard",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/grace-pervades-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/inter-alia-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/marie-and-rosetta-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/mass-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/please-please-me-west-end-2026/standard--unknown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/standard--ghenet-pinderhughes-randall.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-holy-rosenbergs-west-end-2026/standard--nick-curtis.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-oresteia-west-end-2026/standard--nick-curtis.json"
       ]
     },
     {
@@ -7261,6 +7263,16 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/broadstreetreview--steve-cohen.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-father-2016/broadstreetreview--carol-rocamora.json"
+      ]
+    },
+    {
+      "showId": "holy-fool-off-west-end-2026",
+      "outletId": "arbuturian",
+      "currentDisplayName": "arbuturian",
+      "expectedDisplayName": "The Arbuturian",
+      "canonicalId": "arbuturian",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/holy-fool-off-west-end-2026/arbuturian--ruth-emery.json"
       ]
     },
     {
@@ -8351,6 +8363,26 @@
       "canonicalId": "timeout",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/relatively-speaking-2011/timeout--david-cote.json"
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "outletId": "netheatregeek",
+      "currentDisplayName": "netheatregeek",
+      "expectedDisplayName": "Netheatregeek",
+      "canonicalId": "netheatregeek",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/netheatregeek--eugene.json"
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "outletId": "newsbreak",
+      "currentDisplayName": "newsbreak",
+      "expectedDisplayName": "Newsbreak",
+      "canonicalId": "newsbreak",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/newsbreak--samantha-genzer.json"
       ]
     },
     {

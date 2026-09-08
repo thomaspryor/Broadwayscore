@@ -32,6 +32,8 @@ const {
   pruneStagedCandidates,
   referenceTitle,
   countDistinctReviewOutlets,
+  jsonLdItems,
+  isUnparsedQuestionTitle,
 } = require('./aggregator-candidate-extract.js');
 
 const html = (name) => fs.readFileSync(path.join(FIX, name), 'utf8');
@@ -816,4 +818,161 @@ test('countDistinctReviewOutlets: empty/null/unparseable html never throws, retu
   assert.equal(countDistinctReviewOutlets(null, 'bww-roundup'), 0);
   assert.equal(countDistinctReviewOutlets('', 'bww-roundup'), 0);
   assert.equal(countDistinctReviewOutlets('not html at all {{{', 'bww-roundup'), 0);
+});
+
+// --- Rhinoceros at A.R.T. regression (2026-08-24) -------------------------
+// The live Playbill Verdict article was rejected as reason='bot-shell' and
+// never became a candidate, so the show never reached shows.json. Two
+// independent defects in the same chain, both covered here:
+//   1. extractDateFromJsonLd() never descended into schema.org @graph, so
+//      Playbill's date was invisible and isBotShell() failed its date signal.
+//   2. the body headline kept Playbill's interrogative lead-in that the
+//      slug-derived reference title had already stripped, so the surviving
+//      candidate then died on classifyTitleDelta's 'mismatch' guard.
+
+test('jsonLdItems flattens bare nodes, arrays and @graph', () => {
+  assert.deepEqual(jsonLdItems({ a: 1 }), [{ a: 1 }]);
+  assert.deepEqual(jsonLdItems([{ a: 1 }, { b: 2 }]), [{ a: 1 }, { b: 2 }]);
+
+  const graph = { '@context': 'https://schema.org', '@graph': [{ '@type': 'NewsArticle' }] };
+  assert.deepEqual(jsonLdItems(graph), [graph, { '@type': 'NewsArticle' }]);
+
+  // A @graph nested inside an array element still yields its nodes.
+  assert.equal(jsonLdItems([{ '@graph': [{ x: 1 }] }]).length, 2);
+
+  // Junk never throws and never mints phantom nodes.
+  assert.deepEqual(jsonLdItems(null), []);
+  assert.deepEqual(jsonLdItems([null, 'str', 7]), []);
+  assert.deepEqual(jsonLdItems({ '@graph': 'not-an-array' }), [{ '@graph': 'not-an-array' }]);
+});
+
+test('a @graph-nested Playbill article is NOT a bot-shell', () => {
+  // Real Playbill shape: date only inside @graph, no published_time meta.
+  assert.equal(isBotShell(html('pv-rhinoceros-graph.html')), false);
+  // The generous synthetic shape must keep passing too.
+  assert.equal(isBotShell(html('pv-broken-snow.html')), false);
+  // And the guard still rejects genuine shells.
+  assert.equal(isBotShell(html('bot-shell-no-date.html')), true);
+});
+
+test("Playbill's interrogative lead-in is stripped from the body headline", () => {
+  const f = extractArticleFields(html('pv-rhinoceros-graph.html'));
+  assert.equal(f.title, 'Rhinoceros Starring Paul Giamatti and John Turturro');
+  assert.equal(f.venue, 'American Repertory Theater');
+  assert.equal(f.date, '2026-08-24T09:57:00-04:00');
+});
+
+test('slug-derived and body-derived titles agree for a Playbill Verdict article', () => {
+  // referenceTitle() is what classifyCandidate compares against; the two
+  // sides strip the SAME lead-in list, so a real article can never look
+  // like a scraper typo.
+  const bodyTitle = extractArticleFields(html('pv-rhinoceros-graph.html')).title;
+  const slugTitle = 'Rhinoceros Starring Paul Giamatti And John Turturro';
+  assert.equal(classifyTitleDelta(slugTitle, bodyTitle), 'match');
+});
+
+test('Rhinoceros at A.R.T. is accepted as a regional candidate', () => {
+  const record = {
+    url: 'https://playbill.com/article/reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro',
+    title: 'Rhinoceros Starring Paul Giamatti And John Turturro',
+    slug: 'reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro',
+    reason: 'no-match',
+  };
+  const r = classifyCandidate({
+    source: 'playbill-verdict',
+    record,
+    html: html('pv-rhinoceros-graph.html'),
+    shows: NO_SHOWS,
+  });
+  assert.equal(r.status, 'accept', `expected accept, got ${r.status}: ${r.reason || ''} ${r.detail || ''}`);
+  assert.equal(r.candidate.venue, 'American Repertory Theater');
+  assert.equal(r.candidate.category, 'regional');
+});
+
+test('a headline with no known lead-in is left untouched', () => {
+  // stripPvHeadFromHeadline must never shorten a title it does not recognise.
+  const f = extractArticleFields(html('pv-broken-snow.html'));
+  assert.equal(f.title, 'Broken Snow');
+});
+
+test('a trailing cast credit is stripped from the DISPLAY title only', () => {
+  // Playbill appends the stars with no comma, so TITLE_BOUNDARY_RE misses it.
+  assert.equal(
+    cleanCandidateTitle('Rhinoceros Starring Paul Giamatti and John Turturro'),
+    'Rhinoceros'
+  );
+  assert.equal(cleanCandidateTitle('Some Play Featuring A Famous Person'), 'Some Play');
+  // Existing behaviour is untouched.
+  assert.equal(cleanCandidateTitle('The Outsiders World Premiere'), 'The Outsiders');
+  assert.equal(cleanCandidateTitle('Broken Snow'), 'Broken Snow');
+  // "with" is NOT a credit marker - it is part of real titles.
+  assert.equal(
+    cleanCandidateTitle('Sunday in the Park with George'),
+    'Sunday in the Park with George'
+  );
+  // Degenerate input keeps the original rather than going blank.
+  assert.equal(cleanCandidateTitle('Starring'), 'Starring');
+});
+
+test('identity (slug) is NOT cleaned when the display title is', () => {
+  // collisionSlugSet indexes slugify(RAW headline); cleaning the slug too
+  // would make the nightly already-in-shows gate stop matching and re-stage
+  // the same article forever.
+  const r = classifyCandidate({
+    source: 'playbill-verdict',
+    record: {
+      url: 'https://playbill.com/article/reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro',
+      title: 'Rhinoceros Starring Paul Giamatti And John Turturro',
+      slug: 'reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro',
+      reason: 'no-match',
+    },
+    html: html('pv-rhinoceros-graph.html'),
+    shows: NO_SHOWS,
+  });
+  assert.equal(r.status, 'accept');
+  assert.equal(r.candidate.title, 'Rhinoceros', 'display title is cleaned');
+  assert.equal(
+    r.candidate.slug,
+    'rhinoceros-starring-paul-giamatti-and-john-turturro',
+    'slug stays raw-derived'
+  );
+});
+
+test('an unparsed question headline is refused, not minted as a show', () => {
+  // Playbill writes freeform interrogative headlines no closed lead-in list
+  // covers. Slug and body then carry the SAME question, so classifyTitleDelta
+  // sees 'match' and the symmetry check cannot catch it.
+  assert.ok(isUnparsedQuestionTitle("Were Reviewers 'Diggin' On' the TLC Musical CrazySexyCool"));
+  assert.ok(isUnparsedQuestionTitle('Did Critics Love the New Musical'));
+  assert.ok(isUnparsedQuestionTitle('What Do The Reviews Say'));
+
+  // Real show titles that OPEN with an interrogative must survive - the guard
+  // also requires the reviewers to be named within a short window.
+  for (const real of [
+    'How to Succeed in Business Without Really Trying',
+    'What the Constitution Means to Me',
+    'Is God Is',
+    'How I Learned to Drive',
+    'Are You There God? It\'s Me, Margaret',
+    'Rhinoceros',
+    "Cat Cohen's Broad Strokes",
+  ]) {
+    assert.equal(isUnparsedQuestionTitle(real), false, `false positive on "${real}"`);
+  }
+});
+
+test('classifyCandidate rejects an unparsed question headline with a nameable reason', () => {
+  const r = classifyCandidate({
+    source: 'playbill-verdict',
+    record: {
+      url: 'https://playbill.com/article/were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage',
+      title: 'Were Reviewers Diggin On The Tlc Musical Crazysexycool',
+      slug: 'were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage',
+      reason: 'no-match',
+    },
+    html: html('pv-unparsed-question.html'),
+    shows: NO_SHOWS,
+  });
+  assert.equal(r.status, 'reject');
+  assert.equal(r.reason, 'unparsed-headline');
 });

@@ -32,6 +32,7 @@
  */
 
 const fs = require('fs');
+const { classifyBroadcastState } = require('./lib/missed-broadcasts');
 const path = require('path');
 const https = require('https');
 
@@ -166,9 +167,16 @@ function thumbnailUrl(show) {
   return img.startsWith('http') ? img : `${SITE_URL}${img}`;
 }
 
+// classifyBroadcastState, not `.completed` (BRO-2934): `completed` is written at
+// DRAFT CREATION, not at send. The bare flag reported "sent" for three West End
+// shows whose drafts sat unsent in Resend for two months — and this function
+// feeds the owner's opening digest, so it must mean subscribers actually got it.
 function isBroadcastSent(sentData, market, showId) {
   const sent = sentData?.shows || {};
-  return !!(sent[showId]?.completed || sent[`${market}:${showId}`]?.completed);
+  return (
+    classifyBroadcastState(sent[showId]) === 'sent' ||
+    classifyBroadcastState(sent[`${market}:${showId}`]) === 'sent'
+  );
 }
 
 // ---------------------------------------------------------------------------

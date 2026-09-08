@@ -3,12 +3,20 @@
  *
  * Mirrors scripts/lib/outlet-registry-baseline.js (task #1666): a plain Set
  * is sufficient here, not a multiset/occurrence-count Map like
- * broadway-category-predicate-baseline.js needed. audit-duplicate-shows.js's
- * main title+year grouping loop visits each (i, j) show pair at most once
- * per run (nested loop over group members, i < j), and the title-fragment
- * pass (findTitleFragmentDupes) likewise visits each show pair at most once
- * — so a given (showId, showId) pair can appear at most once per scan. There
- * is no per-key duplicate-collapse hazard for a plain Set to hide behind.
+ * broadway-category-predicate-baseline.js needed — because a given
+ * (showId, showId) pair reaches the baseline diff at most once per scan, so
+ * there is no per-key duplicate-collapse hazard for a plain Set to hide behind.
+ *
+ * That used to be free: each detection pass visited any given show pair at most
+ * once (the title+year grouping loop runs i < j over group members, and
+ * findTitleFragmentDupes likewise), and no pass could reach a pair another pass
+ * could. The THIRD pass broke the second half of that — the ticketing-identity
+ * pass reaches exactly the shape the title+year pass is best at, so both can
+ * emit one pair. The invariant is now ENFORCED rather than assumed, by
+ * dedupeClustersByPair() below, which audit-duplicate-shows.js runs over the
+ * combined clusters before either the baseline write or the baseline diff.
+ * If you add a fourth pass, you need no new bookkeeping — but do not remove
+ * that call.
  *
  * Identity is the unordered pair of show ids, not the cluster `key` (which
  * is a normalized-title+year string or a title-fragment venue string) and
@@ -51,4 +59,35 @@ function computeNewViolators(clusters, baselineSet) {
     .filter((c) => c.pairs.length > 0);
 }
 
-module.exports = { pairKey, baselineKeySet, computeNewViolators };
+// Collapse clusters so each unordered show-id pair is reported at most ONCE
+// across every detection pass, keeping the FIRST occurrence.
+//
+// The Set-not-multiset choice documented at the top of this file rests on "a
+// given (showId, showId) pair can appear at most once per scan". That was true
+// only while each pass could reach pairs the others could not. The ticketing-
+// identity pass (scripts/lib/show-duplicate-detection.js) reaches exactly the
+// shape the title+year pass is best at — two same-titled entries at one venue
+// that also share a ticket listing — so both would emit it. The two older
+// passes can collide as well: normalizeTitle strips subtitles, so a raw-token
+// title-fragment pair can share a normalized title and land in the same group.
+//
+// A double emission never flips a --strict verdict, since the baseline filter
+// drops both copies alike. It DOES inflate the reported pair counts and make
+// --update-baseline write the same pair into the baseline JSON twice, which is
+// why this runs before both the baseline write and the baseline diff.
+function dedupeClustersByPair(clusters) {
+  const seen = new Set();
+  const out = [];
+  for (const c of clusters || []) {
+    const pairs = (c.pairs || []).filter((p) => {
+      const k = pairKey(p.a.id, p.b.id);
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+    if (pairs.length) out.push({ ...c, pairs });
+  }
+  return out;
+}
+
+module.exports = { pairKey, baselineKeySet, computeNewViolators, dedupeClustersByPair };

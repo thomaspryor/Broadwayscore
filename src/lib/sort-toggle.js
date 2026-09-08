@@ -54,4 +54,46 @@ function getSortArrow(baseValue, currentSort) {
   return '';
 }
 
-module.exports = { TOGGLE_PAIRS, isToggleable, normalizeSort, getNextSort, getSortArrow };
+// Same mapping shape as above, parameterized on a caller-supplied base->toggled
+// map. Lets a page whose sort values don't match the hardcoded TOGGLE_PAIRS
+// above (e.g. BrowseListClient's SortOption uses 'score'/'alpha' rather than
+// 'score_desc'/'alpha') opt into the same no-op-free toggle behavior without
+// colliding with the pairs above (a shared toggled-state string like
+// 'score_asc' used by two different base values would corrupt normalizeSort
+// for both — each caller gets its own closure instead).
+function createSortToggle(pairs) {
+  const baseForToggled = Object.entries(pairs).reduce((acc, [base, toggled]) => {
+    acc[toggled] = base;
+    return acc;
+  }, {});
+
+  function isToggleableLocal(sortValue) {
+    return Object.prototype.hasOwnProperty.call(pairs, sortValue);
+  }
+
+  function normalizeSortLocal(sortValue) {
+    return baseForToggled[sortValue] || sortValue;
+  }
+
+  function getNextSortLocal(clickedValue, currentSort) {
+    if (!isToggleableLocal(clickedValue)) return clickedValue;
+    return currentSort === clickedValue ? pairs[clickedValue] : clickedValue;
+  }
+
+  function getSortArrowLocal(baseValue, currentSort) {
+    if (!isToggleableLocal(baseValue)) return '';
+    if (currentSort === baseValue) return '↓';
+    if (currentSort === pairs[baseValue]) return '↑';
+    return '';
+  }
+
+  return {
+    pairs,
+    isToggleable: isToggleableLocal,
+    normalizeSort: normalizeSortLocal,
+    getNextSort: getNextSortLocal,
+    getSortArrow: getSortArrowLocal,
+  };
+}
+
+module.exports = { TOGGLE_PAIRS, isToggleable, normalizeSort, getNextSort, getSortArrow, createSortToggle };

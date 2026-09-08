@@ -42,6 +42,10 @@ const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-d
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
+const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
+
+// One-shot latch for the Guard F2 inert warning (see its call site).
+let _creditGuardInertWarned = false;
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
@@ -710,6 +714,37 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
     return { action: 'skipped', reason: 'empty-unknown: no URL, no text, unknown critic' };
   }
+  // --- Guard F2: credited-person-as-critic rejection ---
+  // A byline that is a CREATIVE TEAM member of this same show is not a review;
+  // it is a mis-parsed roundup row. how-to-dance-in-ohio-2023 produced exactly
+  // this file three times ("Sammi Cannold", the show's Director, with an article
+  // headline as outletId and null url/publishDate/fullText). validate-data.js
+  // already ERRORS on it, so each occurrence reddened main and was deleted by
+  // hand — twice — while the source archive kept the row and the next extraction
+  // re-wrote it. Detection after ingest cannot break that loop; refusing the
+  // WRITE can. Same predicate object as the validator (CLAUDE.md §15), so the
+  // two can never drift apart.
+  //
+  // Scoped to the CREATIVE match only, deliberately. The validator treats a CAST
+  // match as a WARNING, not an error, because performer-bylined pieces are a real
+  // (if rare) genre and a stricter save-time rule than the validation rule would
+  // silently discard data no gate ever objected to.
+  //
+  // Operator-supplied rows are exempt: a human who typed this in has already made
+  // the judgement, and BRO-2916's lesson is that manual entries must never be
+  // dropped by an automated dedup/rejection pass. The SOURCE is the load-bearing
+  // half of this test — scripts/ingest-manual-review.js sets only
+  // `source: 'manual-entry'` and its score is optional, so keying the exemption
+  // on humanReviewScore alone would exit(1) on an unscored operator ingest of a
+  // genuine dual-role author. A review round caught that; the test that "proved"
+  // the exemption had supplied a score and so could never have seen it.
+  // (the guard itself runs further down, in the NEW-file region beside Guard I —
+  // see "Guard F2" there. It must not reject MERGES into files that already
+  // exist: audit-show-review-gap.js re-ingests an empty-bodied flagged review
+  // under that file's own criticName specifically so the writer merges and the
+  // file self-heals, and rejecting there would burn all three recovery attempts
+  // in flagged-recovery.js without ever filling the body.)
+
   const criticSlug = normalizeCritic(criticName);
 
   // --- Guard G: Critic-registry misattribution detection ---
@@ -806,6 +841,56 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
       return _mergeIntoExisting(filepath, data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
     } catch { /* unreadable — fall through to create */ }
+  }
+
+  // --- Guard F2: credited-person-as-critic rejection (BRO-2915) ---
+  // A byline that is a CREATIVE TEAM member of this same show is not a review;
+  // it is a mis-parsed roundup row. how-to-dance-in-ohio-2023 produced exactly
+  // this file three times ("Sammi Cannold", the show's Director, with an article
+  // headline as outletId and null url/publishDate/fullText). validate-data.js
+  // already ERRORS on it, so each occurrence reddened main and was deleted by
+  // hand — twice — while the source archive kept the row and the next extraction
+  // re-wrote it. Detection after ingest cannot break that loop; refusing the
+  // CREATE can. Same predicate object as the validator (CLAUDE.md §15), so the
+  // two can never drift apart.
+  //
+  // NEW files only, like Guard I below: the resurrection is a re-CREATE after a
+  // delete, so blocking creates is sufficient, and blocking merges would stop
+  // the two existing matching files from ever self-healing.
+  //
+  // Scoped to the CREATIVE match only, deliberately. The validator treats a CAST
+  // match as a WARNING, not an error, and a save-time rule stricter than the
+  // validation rule would silently discard data no gate ever objected to.
+  //
+  // Operator-supplied rows are exempt. The SOURCE is the load-bearing half:
+  // ingest-manual-review.js sets only `source: 'manual-entry'` and its score is
+  // optional, so keying on humanReviewScore alone would exit(1) on an unscored
+  // operator ingest of a genuine dual-role author. (`fields.manualEntry` has no
+  // producer today and is kept only as forward compatibility.)
+  const _operatorSupplied = input.source === 'manual-entry'
+    || fields.humanReviewScore != null
+    || fields.manualEntry === true;
+  if (!_operatorSupplied) {
+    const creditVerdict = evaluateCreditedPersonAsCritic(_getShowById(showId), criticName);
+    // _getShowById swallows every load/parse error and caches {} for the life of
+    // the process, so a missing or briefly-unreadable shows.json turns this guard
+    // into a silent no-op that looks exactly like a clean pass. Fail OPEN is the
+    // right call (refusing every write because the catalogue is unreadable would
+    // be far worse), but it must not be SILENT. Warned once per process.
+    if (creditVerdict.reason === 'no-show-record' && !_creditGuardInertWarned) {
+      _creditGuardInertWarned = true;
+      console.warn(`  ⚠️  Credited-person guard inert: no show record for ${showId} (not in shows.json, or shows.json is missing/unreadable) — this write is not being checked against creative credits`);
+    }
+    if (creditVerdict.kind === 'creative') {
+      // Loud, like the misattribution guard above. A silent skip is how a
+      // wrongly-scraped creativeTeam credit would veto a real review forever
+      // with nobody ever seeing why.
+      console.warn(`  ⚠️  Credited-person guard: "${criticName}" is a creative team member of ${showId} — refusing the write`);
+      return {
+        action: 'skipped',
+        reason: `credited-person-as-critic: "${criticName}" is a creative team member of ${showId}`,
+      };
+    }
   }
 
   // --- Guard I: cross-show URL ownership (Notion 39a637c5-416f-8167) ---

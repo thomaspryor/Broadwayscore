@@ -187,3 +187,92 @@ test('validateContentMentionsShow: unrelated article hitting only generic idWord
   const result = validateContentMentionsShow(text, null, 'A Woman Among Women', 'a-woman-among-women-off-broadway-2026');
   assert.equal(result.valid, false, `expected generic idWords alone to fail the mention-count gate, got: ${JSON.stringify(result)}`);
 });
+
+// ============================================================================
+// detectMultiShowContent duplicate-title counting (Holy Fool, 2026-09-05)
+//
+// shows.json is a per-PRODUCTION list, so a revived title appears once per
+// staging ('macbeth' x8 as of 2026-09). detectMultiShowContent counted raw
+// filter output, so ONE mention of "Macbeth" registered as 8 different shows
+// and tripped the length-scaled threshold on its own. Combined with the
+// caller bug in collect-review-texts.js (a slug with its category suffix
+// passed into the showId slot, so the expected show read as "not mentioned"),
+// this classified two real London reviews — The Reviews Hub and Theatre Vibe
+// on Holy Fool at the Park Theatre — as garbage_content on every fetch. They
+// could then never be scored (is-scoreable.js hard-rejects scraper_garbage)
+// and never entered the corpus. The dedupe now happens at list construction.
+// ============================================================================
+
+const { detectMultiShowContent, CURRENT_BROADWAY_SHOWS } = require('./content-quality.js');
+
+test('CURRENT_BROADWAY_SHOWS is deduped at construction (one entry per distinct title)', () => {
+  const distinct = new Set(CURRENT_BROADWAY_SHOWS).size;
+  assert.equal(
+    CURRENT_BROADWAY_SHOWS.length,
+    distinct,
+    `expected no duplicate titles; got ${CURRENT_BROADWAY_SHOWS.length} entries for ${distinct} distinct titles`
+  );
+});
+
+// Mirrors the real Reviews Hub / Theatre Vibe copy: a single-show review whose
+// only outside reference is one frequently-revived title (Shostakovich's Lady
+// Macbeth of Mtsensk), repeated the way that piece naturally would be.
+function buildSingleShowReviewMentioningOneRevivedTitle() {
+  const body = 'The production traces the composer from the denunciation of his opera in 1936 through four decades of work under a state that could turn on him overnight. The staging is spare and the two performances hold it together. Macbeth is invoked again and again as the work that made him dangerous, and the score does the rest of the arguing. ';
+  let text = '';
+  while (text.length < 2600) text += body;
+  return text;
+}
+
+test('detectMultiShowContent: one revived title repeated in a single-show review is NOT multi-show', () => {
+  const text = buildSingleShowReviewMentioningOneRevivedTitle();
+  const result = detectMultiShowContent(text, 'holy-fool-off-west-end-2026');
+  const distinct = new Set(result.showsFound).size;
+  assert.equal(
+    result.detected,
+    false,
+    `one distinct outside title should not trip the threshold; showsFound=${JSON.stringify(result.showsFound)}`
+  );
+  assert.equal(
+    result.showsFound.length,
+    distinct,
+    `showsFound must carry distinct titles only, got ${JSON.stringify(result.showsFound)}`
+  );
+});
+
+test('detectMultiShowContent: a listing page naming many DIFFERENT shows is still multi-show', () => {
+  // Real nav-junk shape: a "more reviews" index, many distinct titles, short.
+  const titles = CURRENT_BROADWAY_SHOWS.filter(t => t.length > 8).slice(0, 12);
+  const text = 'More reviews from around the West End and Broadway this week: '
+    + titles.map(t => `${t} — read the review.`).join(' ');
+  const result = detectMultiShowContent(text, 'holy-fool-off-west-end-2026');
+  assert.equal(
+    result.detected,
+    true,
+    `a page naming ${titles.length} distinct shows should still be flagged; showsFound=${JSON.stringify(result.showsFound)}`
+  );
+});
+
+test('detectMultiShowContent: a category suffix in the showId does not exclude unrelated titles', () => {
+  // Every West End / Off-West-End / Off-Broadway / regional id carries a
+  // category suffix. Stripping only the year left 'west' in expectedWords for
+  // 'holy-fool-off-west-end-2026', and the bidirectional substring test then
+  // excluded 30 genuinely-different shows ('west side story', 'true west',
+  // 'the lonesome west', 'merrily we roll along' via 'we') from the mention
+  // count — weakening the junk-page detector on exactly the London ids this
+  // change is about.
+  const text = 'More reviews this week: West Side Story at the Palace. True West at the Vaudeville. '
+    + 'The Lonesome West at the Arcola. Merrily We Roll Along at the Sondheim. '
+    + 'Each production is reviewed in full by our critics on the pages linked above.';
+  const suffixed = detectMultiShowContent(text, 'holy-fool-off-west-end-2026');
+  const plain = detectMultiShowContent(text, 'holy-fool-2026');
+  assert.deepEqual(
+    [...suffixed.showsFound].sort(),
+    [...plain.showsFound].sort(),
+    `a category suffix must not change which shows are counted; suffixed=${JSON.stringify(suffixed.showsFound)} plain=${JSON.stringify(plain.showsFound)}`
+  );
+  assert.ok(
+    suffixed.showsFound.includes('west side story'),
+    `'west side story' is a different show and must still be counted; got ${JSON.stringify(suffixed.showsFound)}`
+  );
+});

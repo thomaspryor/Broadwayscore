@@ -2,6 +2,18 @@ import { test, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+// Redirect the durable spend ledger BEFORE loading the module under test:
+// every createBbSession() below records a row via provider-telemetry.js, and
+// without this the 'test-caller' rows landed in the REAL
+// data/audit/scraper-spend-ledger.jsonl (528 rows/week measured 2026-09-07),
+// making the daily digest report ~92% Browserbase attribution to a caller
+// that never opened a session. Same escape hatch provider-telemetry.js
+// documents for its own tests.
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bb-session-test-')), 'ledger.jsonl');
+
 const require = createRequire(import.meta.url);
 const { sanitizeMetadataValue, createBbSession, _resetDayCapCacheForTests } = require('./browserbase-session.js');
 const browserbaseLiveUsage = require('./browserbase-live-usage.js');

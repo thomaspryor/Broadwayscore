@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-05T15:32:22.689Z",
+    "generatedAt": "2026-09-08T02:48:28.133Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 90,
-    "highConfidence": 7,
-    "mediumConfidence": 83,
+    "totalFlagged": 91,
+    "highConfidence": 9,
+    "mediumConfidence": 82,
     "lowConfidence": 0,
-    "reassignable": 38
+    "reassignable": 39
   },
   "results": [
     {
@@ -132,22 +132,6 @@
         "modern references: masks"
       ],
       "textSnippet": "New York Times Arts & Leisure review of The Lion King >> NEW YORK -- Make no mistake: The Lion King is a rare theater experience. The musical, which opened this month at Disney's restored New Amsterda"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "ew--bruce-handy.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Bruce Handy",
-      "publishDate": "November 21, 1997",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: twitter"
-      ],
-      "textSnippet": "Image Credit: Joan MarcusAfter return looks at The Phantom of the Opera and Chicago over the past two days, EW’s march toward re-reviewing the five longest-running shows currently playing Broadway con"
     },
     {
       "showId": "the-lion-king-1997",
@@ -1065,6 +1049,38 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "nypost--johnny-oleksinski.json",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "publishDate": "1987-11-05",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, St. James Theatre",
+        "revival text signals: revival, new revival"
+      ],
+      "textSnippet": "The sublime new revival of the musical “Into The Woods” that opened Sunday night on Broadway is radical.\n\nBecause there is absolutely nothing radical about it.\n\nNew York audiences in recent years have"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "nysr--david-finkle.json",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "publishDate": "1987-11-05",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
+        "year 2022 in text matches revival into-the-woods-2022"
+      ],
+      "textSnippet": "The fabulously clever Stephen Sondheim-James Lapine Into the Woods, first seen in 1986, is so damn clever that it raises a question answered farther down in this enthusiastically positive review. The "
     },
     {
       "showId": "the-mystery-of-edwin-drood-1985",

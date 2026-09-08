@@ -146,7 +146,47 @@ jobs:
         continue-on-error: true
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-2943 rollback knobs, sourced from repo VARIABLES so an
+          # emergency pin needs `gh variable set SD_BREAKER_CEILING --body N`
+          # (or SD_BREAKER_BURST_FACTOR), not a workflow commit riding the
+          # same push path that loses races most hours. Unset → empty →
+          # ignored by the script (plan-derived fair share applies).
+          SD_BREAKER_CEILING: ${{ vars.SD_BREAKER_CEILING }}
+          SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
         run: node scripts/check-sd-breaker.js
+
+      - name: Commit breaker state
+        # BRO-2960: this job's "Commit data changes" step below (the big
+        # commercial-pending-review.json/commercial-rss-state.json commit)
+        # was losing its push race ~9 of the last 12 runs (2026-09-06/07),
+        # throwing away a freshly-computed BD/SD breaker verdict every time —
+        # the two checks above run continue-on-error so the verdict itself
+        # always succeeds, only the commit was silently lost. Giving the
+        # breaker state its OWN small, early commit+push means a later
+        # failure on the bigger commit no longer costs it: this step runs
+        # right after both breaker checks (and "Clear BD blacklist" above,
+        # which also calls routeAlert()) and before anything else touches
+        # data/audit/alert-ledger.json or alert-digest-queue.json this job,
+        # so staging those two here (not just the breaker files) captures
+        # every trip/clear alert from all three checks — the ledger only
+        # exists on this job's ephemeral runner disk and must be committed
+        # in the SAME job (owner-alert-router.js, card #618) or that alert
+        # state is silently lost. data-health-check.yml already establishes
+        # multiple push-with-retry.sh calls per job as a supported pattern
+        # (see its stranded-commit-cascade test). Not continue-on-error —
+        # a failed breaker-state push is exactly the bug this step exists to
+        # surface, unlike the billing-API-blip checks above it.
+        if: always() && inputs.dry_run != true
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json
+          if git diff --staged --quiet; then
+            echo "No breaker state changes to commit"
+          else
+            git commit -m "data: hourly poll — BD/SD breaker state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Commit data changes
         if: always() && inputs.dry_run != true
@@ -162,14 +202,7 @@ jobs:
           # real buffer against the job timeout.
           PUSH_DEADLINE_SEC: '420'
         run: |
-          # BRO-2795: bd-circuit-breaker.json/sd-circuit-breaker.json are also
-          # written by this job (steps above) and were already getting swept
-          # into this commit by stage-data-changes.sh's blanket data/ add —
-          # naming them here just makes that explicit so the Git Data API
-          # fallback's static writer-scan (findWritingWorkflows()) can see
-          # them; see core-data-merge-registry.js's apiFallbackSafe entries
-          # for both paths.
-          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"

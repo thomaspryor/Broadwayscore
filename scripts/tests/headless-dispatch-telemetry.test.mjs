@@ -221,6 +221,65 @@ test('runJob: a STALE lease (holder not alive) is stolen normally — no job-aba
     }
   });
 
+// ── BRO-2414: a pid:null holder (lease claimed, subprocess not spawned yet) ─
+// must never be stolen by a concurrent acquireLease for the same taskId.
+// runJob() always writes pid:null on its initial acquireLease call — the real
+// pid is only patched in later via onSpawn — so this is the actual shape a
+// double-dispatch race hits, not a synthetic edge case.
+
+test('acquireLease: a pid:null holder is treated as live, never stolen (BRO-2414)',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  () => {
+    const taskId = `test-2414-nullpid-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const holderJobId = `${taskId}-holder`;
+    // isAliveFn must never even need to answer truthfully for a null pid —
+    // pidLooksLikeClaude(null) itself returns false, which is exactly the bug.
+    const neverAlive = () => false;
+    let claimed = false;
+
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: holderJobId, subject: 'provisioning-holder', pid: null }, { isAliveFn: neverAlive });
+      assert.equal(claim.ok, true, 'setup: the pid:null holder must actually claim the lease');
+      claimed = true;
+
+      const stealAttempt = bscRunner.acquireLease(taskId, { jobId: 'double-dispatch-claimant', subject: 'x', pid: null }, { isAliveFn: neverAlive });
+      assert.equal(stealAttempt.ok, false, 'a pid:null holder must refuse a concurrent claim, not get stolen');
+      assert.match(stealAttempt.reason, /already has a live job/);
+      assert.equal(stealAttempt.holder.jobId, holderJobId, 'the reported holder must still be the ORIGINAL job, proving nothing was stolen');
+
+      const stillHeld = bscRunner.readLease(taskId);
+      assert.equal(stillHeld.jobId, holderJobId, 'the lease file on disk must be untouched by the failed steal attempt');
+    } finally {
+      if (claimed) bscRunner.releaseLease(taskId, holderJobId);
+    }
+  });
+
+test('acquireLease: a genuinely dead (non-null) pid holder is still stolen normally (BRO-2414 regression guard)',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  () => {
+    const taskId = `test-2414-deadpid-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const deadHolderJobId = `${taskId}-dead-holder`;
+    const neverAlive = () => false;
+    let claimed = false;
+
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: deadHolderJobId, subject: 'crashed-holder', pid: 999999 }, { isAliveFn: neverAlive });
+      assert.equal(claim.ok, true, 'setup: the dead-pid holder must claim the lease first');
+      claimed = true;
+
+      const stealAttempt = bscRunner.acquireLease(taskId, { jobId: 'reclaimer', subject: 'x', pid: 999998 }, { isAliveFn: neverAlive });
+      assert.equal(stealAttempt.ok, true, 'a holder with a genuinely dead (non-null) pid must still be stolen — this fix must not regress the existing crash-reclaim path');
+
+      const nowHeld = bscRunner.readLease(taskId);
+      assert.equal(nowHeld.jobId, 'reclaimer', 'the lease must now belong to the new claimant');
+      claimed = true; // ownership moved; release under the new jobId in finally
+      bscRunner.releaseLease(taskId, deadHolderJobId); // no-op: jobId mismatch guard should refuse this
+      assert.equal(bscRunner.readLease(taskId).jobId, 'reclaimer', 'release under the OLD jobId must not remove the new holder\'s lease');
+    } finally {
+      if (claimed) bscRunner.releaseLease(taskId, 'reclaimer');
+    }
+  });
+
 // ── ABANDONED must be visible to the completion guard (ship-check finding) ──
 // dispatch-dead-launch-guard.js's guardTaskCompletion trusts
 // isLatestDispatchDead() to decide "did the task's most recent dispatch

@@ -31,6 +31,9 @@ const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { writePrecursorJson } = require('./lib/precursor-wikipedia');
 const { JSDOM } = require('jsdom');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 const args = process.argv.slice(2);
 const WRITE = args.includes('--write');
@@ -135,8 +138,7 @@ function extractCeremonyYear(doc) {
   const ldScripts = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'));
   for (const s of ldScripts) {
     try {
-      const j = JSON.parse(s.textContent);
-      const dp = j.datePublished || (Array.isArray(j['@graph']) && j['@graph'].find((g) => g.datePublished)?.datePublished);
+      const dp = parseJsonLd(s.textContent).find((n) => n.datePublished)?.datePublished;
       if (dp) {
         const m = String(dp).match(/^(\d{4})/);
         if (m) {

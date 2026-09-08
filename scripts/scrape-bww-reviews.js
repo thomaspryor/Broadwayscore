@@ -42,10 +42,14 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
-const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -165,32 +169,86 @@ function buildTokenOverlapSiblingSet(shows) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
+// A provider that answers 200 with a stub is a MISS, not a hit. Verified live
+// (BRO-2955): Scrapingdog returns a 154-byte JS-redirect shell for some
+// aggregator pages, and isChallengeOrGarbage() only matches Cloudflare
+// challenge markers, so that stub sailed through as a successful fetch and
+// short-circuited the ScrapingBee/fetchPage tiers this helper is explicitly
+// documented to fall through to. Floor matches the callers' own
+// already-established "too short to be a real page" thresholds below.
+const SD_MIN_HTML_BYTES = 500;
+
+/**
+ * Fetch HTML with Scrapingdog (fast, no JS render) → ScrapingBee → shared
+ * fetchPage() fallback. Scrapingdog tried first (BRO-2930): this file was
+ * bypassing fetchPage()'s SD-first chokepoint entirely with a raw ScrapingBee
+ * call, so BWW's steady weekly volume never touched Scrapingdog even after the
+ * SD migration — one of the direct-provider-call sites in
+ * data/audit/direct-provider-calls-baseline.json. SD has ample headroom (SB
+ * was at 92% of its monthly cap, SD ~59%) so shifting this traffic reduces
+ * real cap-exhaustion risk. Purely additive: on any SD miss/failure this falls
+ * straight through to the pre-existing SB path, unchanged.
+ */
+async function fetchHtmlViaSD(url) {
+  if (!process.env.SCRAPINGDOG_API_KEY) return null;
+  try {
+    const raw = await fetchWithScrapingdog(url, { renderJs: false });
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    if (raw.content.length < SD_MIN_HTML_BYTES) return null;
+    return raw.content;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Fetch HTML with ScrapingBee (fast, no JS render) → shared fetchPage() fallback.
- * ScrapingBee is tried first for BWW because it's cheaper and BWW /reviews/ pages
- * don't need JS rendering. If SB is unavailable or fails, fetchPage() provides
- * BrightData → Playwright fallback chain.
+ * ScrapingBee is cheap and BWW /reviews/ pages don't need JS rendering. If SB
+ * is unavailable or fails, fetchPage() provides BrightData → Playwright fallback chain.
  */
 async function fetchHtmlViaSB(url) {
   if (!SCRAPINGBEE_KEY) return null;
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
   return new Promise((resolve, reject) => {
+    // recorded guards against a double ledger row for one billed call: after
+    // req.destroy() on timeout, the socket can still emit 'error', and a slow
+    // response can still land after the timeout fires — at most one of
+    // {response, error, timeout} may call recordSbCall.
+    let recorded = false;
+    const record = (opts) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: 'page', purpose: 'bww-reviews', ...opts, credits: sbBilledCredits(opts.status, 1) });
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        record({ success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) resolve(data);
         else if (res.statusCode === 404 || res.statusCode === 410) resolve(null);
         else reject(new Error(`SB HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
       });
     });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('SB Timeout')); });
+    req.on('error', (e) => {
+      record({ success: false, status: 'error' });
+      reject(e);
+    });
+    req.setTimeout(60000, () => {
+      req.destroy();
+      record({ success: false, status: 'timeout' });
+      reject(new Error('SB Timeout'));
+    });
   });
 }
 
 async function fetchHtml(url, maxRetries = 2) {
-  // Attempt 1: ScrapingBee (cheap, no JS render)
+  // Attempt 1: Scrapingdog (cheap, no JS render, ample cap headroom)
+  const sdHtml = await fetchHtmlViaSD(url);
+  if (sdHtml) return sdHtml;
+
+  // Attempt 2: ScrapingBee (cheap, no JS render)
   if (SCRAPINGBEE_KEY) {
     let lastError;
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -207,7 +265,7 @@ async function fetchHtml(url, maxRetries = 2) {
     console.log(`    [WARN] ScrapingBee exhausted for ${url.slice(0, 60)}: ${lastError.message.slice(0, 60)}`);
   }
 
-  // Attempt 2: Shared fetchPage() fallback chain (BrightData → Playwright)
+  // Attempt 3: Shared fetchPage() fallback chain (Scrapingdog → BrightData → Playwright)
   try {
     const result = await fetchPage(url);
     return result ? result.content : null;
@@ -458,9 +516,10 @@ function extractBwwReviewsPageData(html, showId) {
   let aggregateRating = null;
   try {
     $('script[type="application/ld+json"]').each((_, el) => {
-      const json = JSON.parse($(el).html());
-      if (json.aggregateRating && json.aggregateRating.ratingValue) {
-        aggregateRating = json.aggregateRating.ratingValue;
+      for (const json of parseJsonLd($(el).html())) {
+        if (json.aggregateRating && json.aggregateRating.ratingValue) {
+          aggregateRating = json.aggregateRating.ratingValue;
+        }
       }
     });
   } catch (e) { /* ignore JSON-LD parse errors */ }
@@ -927,15 +986,11 @@ function extractBwwRoundupData(html, showId) {
       let datePublished = '';
       $('script[type="application/ld+json"]').each((_, el) => {
         try {
-          const json = JSON.parse($(el).html());
-          if (json.articleBody) articleBodyText = json.articleBody;
-          if (json.datePublished) datePublished = json.datePublished;
-          // Also check @graph array
-          if (Array.isArray(json['@graph'])) {
-            for (const item of json['@graph']) {
-              if (item.articleBody) articleBodyText = item.articleBody;
-              if (item.datePublished) datePublished = item.datePublished;
-            }
+          // parseJsonLd yields the wrapper AND its @graph nodes, so the
+          // last-wins precedence of the old hand-rolled version is kept.
+          for (const json of parseJsonLd($(el).html())) {
+            if (json.articleBody) articleBodyText = json.articleBody;
+            if (json.datePublished) datePublished = json.datePublished;
           }
         } catch (e) { /* ignore */ }
       });

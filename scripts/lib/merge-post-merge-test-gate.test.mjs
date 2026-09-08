@@ -334,6 +334,100 @@ test('runTestGate: merged run exits non-zero but parses ZERO failures (crash/syn
   assert.match(result.output, /no individual test failure could be parsed/);
 });
 
+// BRO-2874. The gate's `reason` is the ONLY line an operator reads when
+// scripts/merge-worktree-to-main.sh dies, and it used to report `status=null`
+// for every spawn-layer failure — discarding `result.error`, the one field that
+// names the real cause. Four field reproductions blamed "a NEW-since-origin/main
+// colocated test failure" for runs where the tree was clean and the CHILD died.
+// Mutating the source proves each conjunct: dropping the `signal` push fails the
+// SIGTERM assertion, dropping the `error` push fails the ENOBUFS assertions in
+// BOTH the baseline and skip-baseline tests, and reverting describeExit at the
+// skip-baseline return fails only the fourth test.
+// Regression guard, NOT a proof of the BRO-2874 change: the pre-fix code
+// interpolated `status=${result.status}` and would have passed this too. It
+// exists so that a later refactor of describeExit cannot drop the status from
+// the baseline-path call site. The three tests below it are the ones that fail
+// against pre-fix code.
+test('runTestGate: a child that exits non-zero with unparseable output names its real exit status (BRO-2874 status=7)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({ status: 7, stdout: '', stderr: 'Segmentation fault\n' }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /status=7/);
+});
+
+test('runTestGate: a spawn-layer failure names the errno and the signal instead of "status=null" (BRO-2874)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: null,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /ENOBUFS/, 'the errno must survive into the reason — it was discarded before BRO-2874');
+  assert.match(result.reason, /SIGTERM/, 'a timeout kill must be named, not reported as status=null');
+});
+
+test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {
+  // The invariant that pins the BRO-2874 fix as message-only. `mergedPassed` is
+  // `result.status === 0`; if anyone later folds `result.error` into that
+  // predicate, this flips to false and this test fails.
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: 0,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, true, 'status===0 is the sole pass predicate; error/signal must not block');
+});
+
+test('runTestGate with baseline DISABLED (MERGE_TEST_GATE_SKIP_BASELINE=1) still names the real cause — the escape hatch the die text recommends must not be worse (BRO-2874)', () => {
+  // This return is the one the original fix missed: it reported `ran N file(s):`
+  // followed by every selected filename, with no exit detail at all.
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: null,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: null,
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /ENOBUFS/);
+  assert.match(result.reason, /SIGTERM/);
+});
+
 test('runTestGate baseline mode: a baseline run that exits non-zero with ZERO parsed failures (crash) is treated as baseline-unavailable, not "zero pre-existing failures" — fails SAFE', () => {
   const dir = makeScratchRepo();
   writeFailingTest(dir); // needs a real .test.mjs file so listColocatedTestFiles doesn't short-circuit; execFn below is mocked

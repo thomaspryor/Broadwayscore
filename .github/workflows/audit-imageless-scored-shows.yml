@@ -101,6 +101,42 @@ jobs:
       # cooldown/escalation state would silently never reach the repo, and
       # every run would start cold. Same pattern as discover-regional-serp-
       # reviews.yml's "Commit audit log" step.
+      #
+      # DO NOT SPLIT THIS STEP IN TWO. BRO-2683 did (merge 28431284988,
+      # 2026-09-07) on the theory that bundling the apiFallbackSafe file with
+      # alert-ledger.json/alert-router-attempts.jsonl defeats the Git Data API
+      # fallback. That was already false when it landed and the split was
+      # reverted the same day (BRO-2942). Three independent proofs:
+      #   1. Both telemetry files carry apiFallbackMerge:true as of BRO-2413
+      #      (core-data-merge-registry.js), and the disqualifier is
+      #      `(isManaged && !isApiFallbackMerge) || ...` — so they evaluate to
+      #      disqualifiesFallback:false. See classifyPushFallbackSafety() in
+      #      scripts/lib/audit-push-retry-budgets.js.
+      #   2. Auditing the PRE-split step directly reported mixedSafetyBundle:
+      #      false with disqualifyingFiles: [] — there was nothing to unblock.
+      #   3. The split actively broke this workflow UNDER PUSH CONTENTION. The
+      #      audit script writes alert-ledger.json/alert-router-attempts.jsonl
+      #      during "Run audit", so under a split they stay UNCOMMITTED while
+      #      the first step pushes, and push-with-retry.sh has zero autostash
+      #      or clean-tree guards. When that first push loses its race, the
+      #      rebase refuses ("cannot rebase: You have unstaged changes") and
+      #      the merge refuses ("would be overwritten by merge" — near-certain
+      #      here, since a dozen workflows write alert-ledger.json), so the
+      #      script reaches its reset+cherry-pick last resort and runs
+      #      `git reset --hard origin/$PULL_BRANCH`
+      #      (scripts/lib/push-with-retry.sh:1682), reverting both telemetry
+      #      files to the remote's content. The second step then reports
+      #      "No telemetry changes" and routeAlert's 7-day cooldown never
+      #      persists — the exact failure this step's staging exists to
+      #      prevent. Two later resets (:1938, :2114) would do the same; :1682
+      #      is simply the one reached first. On an uncontended run the first
+      #      push succeeds and nothing is lost, which is why this failed
+      #      intermittently rather than every time.
+      # Staging all three paths in ONE commit keeps them safe across the push.
+      # opening-night-checklist.yml IS legitimately split, because its second
+      # commit carries genuinely disqualifying files (remediation-log.jsonl,
+      # opening-night-latency-*.json); this workflow's does not.
+      # Guarded by tests/unit/audit-imageless-scored-shows-push.test.mjs.
       - name: Commit audit ledger
         if: always() && inputs.dry_run != true
         env:

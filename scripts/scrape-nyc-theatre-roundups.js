@@ -35,6 +35,8 @@ const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
 const { serpQuery } = require('./lib/url-discovery');
+const { fetchWithScrapingdog, isChallengeOrGarbage } = require('./lib/scraper');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `scrape-nyc-theatre-roundups.js — NYC Theatre Review Roundups Scraper.
@@ -58,12 +60,23 @@ async function fetchHtmlSingle(url, renderJs = true) {
   }
 
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}&wait=3000`;
+  const credits = renderJs ? 5 : 1;
 
   return new Promise((resolve, reject) => {
+    // recorded guards against a double ledger row for one billed call: after
+    // req.destroy() on timeout, the socket can still emit 'error' — at most
+    // one of {response, error, timeout} may call recordSbCall.
+    let recorded = false;
+    const record = (opts) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: renderJs ? 'render' : 'page', purpose: 'nyc-theatre-roundup', ...opts, credits: sbBilledCredits(opts.status, credits) });
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        record({ success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) {
           resolve(data);
         } else {
@@ -71,12 +84,50 @@ async function fetchHtmlSingle(url, renderJs = true) {
         }
       });
     });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.on('error', (e) => {
+      record({ success: false, status: 'error' });
+      reject(e);
+    });
+    req.setTimeout(60000, () => {
+      req.destroy();
+      record({ success: false, status: 'timeout' });
+      reject(new Error('Timeout'));
+    });
   });
 }
 
+// A provider that answers 200 with a stub is a MISS, not a hit. Verified live
+// (BRO-2955): Scrapingdog returns a 154-byte JS-redirect shell for some
+// aggregator pages, and isChallengeOrGarbage() only matches Cloudflare
+// challenge markers, so that stub sailed through as a successful fetch and
+// short-circuited the ScrapingBee/fetchPage tiers this helper is explicitly
+// documented to fall through to. Floor matches the callers' own
+// already-established "too short to be a real page" thresholds below.
+const SD_MIN_HTML_BYTES = 500;
+
+// Scrapingdog attempt before ScrapingBee (BRO-2930): this file called
+// ScrapingBee directly with no other tier, so NYC Theatre traffic never
+// touched Scrapingdog even after the SD migration — one of the
+// direct-provider-call sites in data/audit/direct-provider-calls-baseline.json.
+// Purely additive: any SD miss/failure falls straight through to the
+// pre-existing SB retry loop below, unchanged.
+async function fetchHtmlViaSD(url, renderJs) {
+  if (!process.env.SCRAPINGDOG_API_KEY) return null;
+  try {
+    const raw = await fetchWithScrapingdog(url, { renderJs });
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    if (raw.content.length < SD_MIN_HTML_BYTES) return null;
+    return raw.content;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchHtml(url, renderJs = true, maxRetries = 2) {
+  const sdHtml = await fetchHtmlViaSD(url, renderJs);
+  if (sdHtml) return sdHtml;
+
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {

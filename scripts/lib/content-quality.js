@@ -486,9 +486,27 @@ function loadBroadwayShows() {
     const showsPath = require('path').join(__dirname, '../../data/shows.json');
     const raw = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
     const shows = raw.shows || raw;
-    const titles = shows
-      .map(s => s.title ? s.title.toLowerCase() : null)
-      .filter(t => t && t.length > 3);
+    // shows.json is a per-PRODUCTION list, so a frequently-revived title
+    // appears once per staging ('macbeth' x8, 'a christmas carol' x7 — 314
+    // duplicated titles / 496 surplus entries as of 2026-09). Every consumer
+    // of this list counts MENTIONS of distinct shows, so the duplicates have
+    // to go at construction, not at each use site.
+    //
+    // Regression that found this: Holy Fool (Park Theatre) 2026-09-04. One
+    // mention of "Macbeth" in a review counted as 8 shows in
+    // detectMultiShowContent, tripping its length-scaled threshold on its
+    // own; the review was classified garbage_content on every fetch, so
+    // is-scoreable.js refused to score it and rebuild-all-reviews.js dropped
+    // it from the corpus. Two real London reviews (The Reviews Hub, Theatre
+    // Vibe) were missing from the live site as a result.
+    //
+    // Same idiom as excerpt-validation.js's title-set construction: dedupe
+    // once, at the source, so a later consumer can't rediscover this bug.
+    const titles = [...new Set(
+      shows
+        .map(s => s.title ? s.title.toLowerCase() : null)
+        .filter(t => t && t.length > 3)
+    )];
 
     if (titles.length > 0) {
       _cachedBroadwayShows = titles;
@@ -498,8 +516,11 @@ function loadBroadwayShows() {
     // Fall through to hardcoded
   }
 
-  // Hardcoded fallback
-  _cachedBroadwayShows = [
+  // Hardcoded fallback. Deduped like the shows.json branch above — this list
+  // has its own duplicates ('the notebook', 'the outsiders'), and every
+  // consumer counts DISTINCT titles, so the invariant has to hold on both
+  // branches rather than only when core data happens to be readable.
+  _cachedBroadwayShows = [...new Set([
     'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
     'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
     'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
@@ -514,7 +535,7 @@ function loadBroadwayShows() {
     'a beautiful noise', 'some like it hot', 'kimberly akimbo', 'parade',
     'shucked', 'new york new york', 'camelot', 'lempicka', 'the notebook',
     'days of wine and roses', 'pictures from home', 'the outsiders',
-  ];
+  ])];
   return _cachedBroadwayShows;
 }
 
@@ -737,13 +758,32 @@ function detectMultiShowContent(text, expectedShowId) {
   // downstream substring check matches the lowercase titles from shows.json —
   // a title-case showId like 'Hamilton' would otherwise fail to filter out the
   // 'hamilton' entry and show up as an unexpected additional mention.
+  //
+  // Strip the CATEGORY suffix as well as the year. These words are venue
+  // classification, not title, and they are generic enough to swallow real
+  // titles through the bidirectional substring test below: for
+  // 'holy-fool-off-west-end-2026' the bare year-strip yields
+  // ['holy','fool','west'], and 'west' then excludes 30 unrelated shows from
+  // the mention count ('west side story', 'true west', 'the lonesome west',
+  // and — via the substring test — 'merrily we roll along'). Excluding shows
+  // that ARE genuinely other shows makes the junk-page detector weaker on
+  // exactly the London ids that carry a suffix. Same strip order and category
+  // list as browser-recovery-helpers.js:168.
   const expectedWords = expectedShowId
-    ? expectedShowId.toLowerCase().replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
+    ? expectedShowId
+        .toLowerCase()
+        .replace(/-\d{4}$/, '')
+        .replace(/-(off-west-end|west-end|off-broadway|regional)$/, '')
+        .split('-')
+        .filter(w => w.length > 3)
     : [];
 
-  // Find which shows are mentioned, excluding common-word titles
+  // Find which shows are mentioned, excluding common-word titles.
   // Use word-boundary matching to prevent "elling" matching "compelling",
   // "sting" matching "interesting", "touch" matching "touching", etc.
+  // CURRENT_BROADWAY_SHOWS is deduped at construction (loadBroadwayShows), so
+  // one entry here == one distinct title, and foundShows.length is a count of
+  // DIFFERENT shows rather than of productions.
   const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
     // Skip common English words that happen to be show titles
     if (COMMON_WORD_SHOW_TITLES.has(show)) return false;

@@ -42,7 +42,7 @@
  */
 
 const {
-  cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, terminalSurfaceAliveIn, checkLiveness, pruneDone,
+  cmuxAvailable, listWorkspaces, listWorkspacesWithCwd, isDoneTitle, claudeAliveIn, terminalSurfaceAliveIn, checkLiveness, pruneDone,
   closeWorkspace, run: cmuxRun,
 } = require('./lib/cmux-workspaces.js');
 const fs = require('fs');
@@ -51,6 +51,17 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { hasAutoDispatchMarker, isCrownTab } = require('./lib/prune-closeable.js');
+const { detectDuplicateCrownTabs } = require('./lib/crown-duplicate-detector.js');
+// code-review catch (2026-09-07): a bare `path.join(__dirname, '..')`
+// resolves to whichever CHECKOUT's copy of this file is executing —
+// including a worktree's, since every worktree carries its own copy of
+// scripts/. Live Crown tabs always report the bare main checkout as their
+// cwd, so running this from a worktree (this repo's own mandatory workflow
+// for any tracked code edit) silently zeroed the crown-duplicate report:
+// `w.cwd === repoRoot` never matched. Same canonical-root resolver bsc-next.js
+// already uses for exactly this reason (BRO-2668).
+const { resolveCanonicalRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveCanonicalRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 const { isReclaimable } = require('./lib/prune-dead-autodispatch-tabs.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
@@ -78,6 +89,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const {
     cmuxAvailable: cmuxAvailableFn = cmuxAvailable,
     listWorkspaces: listWorkspacesFn = listWorkspaces,
+    // Card #1938: only ever called lazily, and only when there is >1 crown
+    // candidate in `all` — a no-op sweep (the common case, every 5 min) must
+    // not pay for the extra `cmux workspace list --json` call.
+    listWorkspacesWithCwd: listWorkspacesWithCwdFn = listWorkspacesWithCwd,
     pruneDone: pruneDoneFn = pruneDone,
     isDoneTitle: isDoneTitleFn = isDoneTitle,
     claudeAliveIn: claudeAliveInFn = claudeAliveIn,
@@ -120,7 +135,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     lockHeld = acquired === true;
   }
   try {
-    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } });
+    mainLocked({ dryRun, deps: { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } });
   } finally {
     if (lockHeld) releaseRunLockFn();
   }
@@ -153,7 +168,7 @@ function releaseRunLock(lockDir = LOCK_DIR) {
 }
 
 function mainLocked({ dryRun, deps }) {
-  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } = deps;
+  const { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } = deps;
 
   const all = listWorkspacesFn();
 
@@ -215,6 +230,54 @@ function mainLocked({ dryRun, deps }) {
   if (disagreements.length) {
     console.log(`\n⚠ Registry desync detected: ${disagreements.length} workspace(s) where claudeAliveIn() said dead but the terminal-surface signal said alive (would have been WRONGLY closed without the #559 fix):`);
     disagreements.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
+  }
+
+  // Card #1938 (2026-09-07 incident: 55 concurrent live duplicate Crown
+  // successors on the bare checkout, 323% CPU / 22.8GB RAM). Crown tabs are
+  // deliberately exempt from every close path in this file (isCrownTab), on
+  // the theory that closing an owner-loop tab needs a "periodic
+  // owner-approved manual sweep" — but nothing ever said a sweep was
+  // overdue, so they piled up silently for ~6 weeks. Report-only: this NEVER
+  // closes anything, it just makes the problem loud on every sweep instead
+  // of letting it reaccumulate unnoticed. Only pays for the extra
+  // `cmux workspace list --json` call when there's more than one crown
+  // candidate to begin with — the common case (0-1 crown tabs) is a no-op.
+  const crownCandidateCount = all.filter(w => isCrownTab(w.title)).length;
+  if (crownCandidateCount > 1) {
+    let crownWithCwd = [];
+    try { crownWithCwd = listWorkspacesWithCwdFn(); }
+    catch (e) { console.error(`[bsc-prune] WARN crown-duplicate cwd lookup failed (non-fatal, report skipped): ${e.message}`); }
+    // code-review catch (2026-09-07): parseWorkspacesJson fails safe to []
+    // on any malformed/truncated payload — correct for its OTHER caller
+    // (selfCloseAfterSuccession, where "can't confirm" must mean "don't
+    // close"), but here it would let the report go silently blank on the
+    // exact load conditions (cmux socket busy under a real pileup) most
+    // likely to produce a genuine duplicate. `all` already proved crown
+    // tabs exist via the plain-text listing moments ago — a zero-length
+    // JSON listing despite that is a signal worth surfacing, not silence.
+    if (!crownWithCwd.length) {
+      console.error(`[bsc-prune] WARN crown-duplicate report: 'cmux workspace list --json' returned no usable workspaces despite ${crownCandidateCount} crown tab(s) in the plain-text listing — duplicate report skipped, not confirmed clean`);
+    }
+    if (crownWithCwd.length) {
+      let crownEntries = [];
+      try { crownEntries = readLedgerEntriesFn(); } catch { crownEntries = []; }
+      const { duplicateGroups } = detectDuplicateCrownTabs({
+        workspaces: crownWithCwd, entries: crownEntries, repoRoot: REPO,
+        isCrownTab, launchByRef: dispatchLedger.launchByRef,
+        checkLivenessFn: checkLiveness, aliveFn: claudeAliveInFn, surfaceAliveFn: surfaceAliveInFn,
+      });
+      if (duplicateGroups.length) {
+        const totalStale = duplicateGroups.reduce((n, g) => n + g.stale.length, 0);
+        console.log(`\n👑⚠ ${totalStale} live duplicate Crown-family tab(s) across ${duplicateGroups.length} group(s) on the bare checkout — same mandate, multiple concurrent instances (never auto-closed; owner call, run by hand):`);
+        duplicateGroups.forEach(g => {
+          console.log(`  keep  ${g.keep.ref}  ${g.keep.title}`);
+          g.stale.forEach(s => {
+            if (s.selected) console.log(`  stale ${s.ref}  ${s.title}  [SELECTED — not suggesting a close command; close it yourself once you're done here]`);
+            else console.log(`  stale ${s.ref}  ${s.title}  ->  CMUX_CLOSE_OK=1 cmux workspace close ${s.ref}`);
+          });
+        });
+      }
+    }
   }
 
   // Journal the sweep (S4-T3) so the morning email can say "Closed N finished

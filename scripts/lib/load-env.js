@@ -149,4 +149,9 @@ function loadEnv(repoRoot) {
   return { loaded: true, path: envPath, keys };
 }
 
-module.exports = { loadEnv, readEnvKeys, parseEnvFile };
+// readEnvFile added to the exports 2026-09-05 (ship-check P2): callers that
+// report a ".env-sourced" result need to name WHICH .env answered — from a
+// worktree the CANONICAL_REPO fallback above means it can be a different
+// checkout than the caller is standing in. Additive only: a read-only reader
+// that touches no global state, so no existing caller changes behaviour.
+module.exports = { loadEnv, readEnvKeys, parseEnvFile, readEnvFile };

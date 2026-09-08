@@ -583,3 +583,37 @@ timestamps rather than requiring a score.
 
 **Detection rule:** when a review-text file is present but absent from reviews.json and every guard says
 includable, `grep incompleteReason` FIRST — the rebuild is not always the blocker.
+
+## Gate: hand-fixing review-texts in the WRONG private repo (2026-09-05, Holy Fool, cost 3 monitor passes)
+There are TWO private data repos and they are not interchangeable:
+- `thomaspryor/broadway-review-texts` — review-texts ONLY. Show dirs at repo ROOT (`<show-id>/<outlet>--<critic>.json`, no `data/` prefix).
+- `thomaspryor/broadway-scorecard-data` — `shows.json` / `reviews.json` / `outlet-registry.json` ONLY.
+`data/review-texts/` in the web repo is a real directory and is gitignored, so a local edit there is invisible to CI and silently does nothing.
+Two separate monitor passes cleared a blocking flag in `broadway-scorecard-data`, verified it on that repo's `origin/main`, and declared the fix landed. CI never reads review-texts from that repo, so the flag stayed set for three passes while each pass re-derived a new theory for why the file would not score.
+**Before hand-editing any review-text, confirm the target repo:** `grep -rhoE "thomaspryor/[a-z0-9-]+" .github/actions/*/action.yml` — `checkout-review-texts` / `push-review-texts` name it directly. Verifying your edit on the wrong repo's `origin/main` is not verification.
+Related: the `broadway-review-texts` local clone is frequently left dirty by other automation (346 unstaged deletions observed), so `git pull --rebase` refuses to run there; commit via `gh api PUT /repos/.../contents/<path>` instead of fighting the working tree.
+
+## Gate: `incompleteReason: "scraper_garbage"` is a hard scorer reject, and it false-positives on the macbeth token
+`scripts/llm-scoring/is-scoreable.ts` hard-rejects any review-text whose `incompleteReason === 'scraper_garbage'`. Such a file can sit with genuine full review prose, no `wrongProduction`/`isNonReview`/duplicate flag, and `isIncludableForRebuild()` returning TRUE — it will still never get an `llmScore`, so it never reaches the site. `llmScore === null` while every live sibling has one is the signature.
+The flag is set by a multiple-shows-mentioned heuristic that FPs hard: `incompleteDetail: "Multiple shows mentioned (10): macbeth, macbeth, macbeth, ..."` on pages whose actual `macbeth` token count is 1. Two Holy Fool reviews (The Reviews Hub, Theatre Vibe) were held out of a live show this way.
+Compounding trap: `clear-failure-flags.js` cannot clear it either — its generic predicate is `contentComplete || (textGood && (aggSignal || hasLlmScore))`, and a truncated+unscored file satisfies neither branch. Chicken-and-egg by construction; only a manual clear breaks it.
+
+## incompleteReason recompute-on-write erases manual clears (2026-09-05, Holy Fool)
+`scripts/lib/incomplete-reason.js` recomputes `incompleteReason` on EVERY review-texts write and
+overwrites a prior manual clear — it does not consult `manuallyVerified` / `manualVerifiedAt`.
+Observed three distinct values on the same two files with no manual action between them:
+`scraper_garbage` (attempts 1-8) -> hand-cleared to `null` (attempts 5, 9) -> back to
+`scraper_garbage` (attempt 10, textFetchedAt UNCHANGED, so not a refetch) -> `partial_text`
+(attempt 11). Ruled out: whole-file clobber (`manuallyVerified` survived) and the
+push-review-texts restore path (`review-write-guard.js` PROTECTED_FIELDS excludes
+incompleteReason/incompleteDetail).
+
+Why it is load-bearing: `scripts/llm-scoring/is-scoreable.ts` HARD-REJECTS
+`incompleteReason === 'scraper_garbage'`, so a truncated-but-genuine review pinned at that value
+can never be scored, and no manual clear survives long enough to unpin it. Three monitor passes
+were burned re-applying a clear that was structurally never durable.
+
+Diagnostic rule: if a hand-cleared flag reverts with `textFetchedAt` UNCHANGED and the other
+manual fields intact, stop looking at the restore/guard layer — it is a targeted recompute.
+Fix tracked as BRO-2890. Distinct from BRO-2858 (clear-failure-flags.js can never clear it in the
+first place); this one is that the clear cannot STAY cleared.

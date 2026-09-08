@@ -207,7 +207,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -2070,7 +2070,7 @@ async function main(argv = process.argv.slice(2)) {
   // again, from a different cause. This satisfies the plan's S0 acceptance
   // ("--show=X twice concurrently → no lost data"), proven by
   // scripts/lib/gap-audit-merge.concurrent.test.mjs.
-  const { audit, mergedResults, unknownOutlets, blast, lockHeld } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
+  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds, quarantined, outletsWritten } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
   let prevAudit = null;
   let prevUnreadable = null;
   if (fs.existsSync(AUDIT_PATH)) {
@@ -2132,40 +2132,85 @@ async function main(argv = process.argv.slice(2)) {
   // Rolled up over the MERGED results, not just this run's — same clobber class
   // as the audit file itself (#893): a `--show=X` run used to blank the
   // unknown-outlet list for every other show.
-  const unknownOutletHosts = new Map();
-  for (const r of mergedResults) {
-    for (const m of (r.missing || [])) {
-      if (m.knownOutletId) continue;
-      if (!unknownOutletHosts.has(m.host)) {
-        unknownOutletHosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
+  function computeUnknownOutlets(resultsArr) {
+    const hosts = new Map();
+    for (const r of resultsArr) {
+      for (const m of (r.missing || [])) {
+        if (m.knownOutletId) continue;
+        if (!hosts.has(m.host)) {
+          hosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
+        }
+        const e = hosts.get(m.host);
+        e.occurrences++;
+        if (e.sampleUrls.length < 3) e.sampleUrls.push(m.url);
+        e.shows.add(r.showId);
       }
-      const e = unknownOutletHosts.get(m.host);
-      e.occurrences++;
-      if (e.sampleUrls.length < 3) e.sampleUrls.push(m.url);
-      e.shows.add(r.showId);
     }
+    return [...hosts.values()].map(e => ({ ...e, shows: [...e.shows] })).sort((a, b) => b.occurrences - a.occurrences);
   }
-  const unknownOutlets = [...unknownOutletHosts.values()]
-    .map(e => ({ ...e, shows: [...e.shows] }))
-    .sort((a, b) => b.occurrences - a.occurrences);
+  const unknownOutlets = computeUnknownOutlets(mergedResults);
 
-  if (!dryRun && blast.ok) {
+  // BRO-3002: a batch that mixes a handful of genuinely-changed shows into a
+  // much larger set the checkpoint happened to select together must not have
+  // its ENTIRE write refused — see partitionAuditedResults's doc comment
+  // (gap-audit-merge.js) for the self-perpetuating loop this caused (the same
+  // ~9-show set recurred across three straight hourly runs, each rolling the
+  // WHOLE batch's checkpoint back to the identical stale baseline). Split the
+  // write: shows blastRadiusCheck did NOT flag persist and advance normally;
+  // the flagged subset falls back to its carried-forward prior entry (still
+  // parked, still re-selected, still alerting) instead of being lost.
+  // `prevUnreadable` stays an absolute block — merging fresh results against
+  // an unreadable prior would silently drop every OTHER show (#893) — and a
+  // batch where EVERY examined show is risky (safeResults empty) degrades to
+  // the same full-block behavior as before.
+  const { safe: safeResults, risky: riskyResults } = (!prevUnreadable && blast.changedIds.length > 0)
+    ? partitionAuditedResults(results, blast.changedIds)
+    : { safe: [], risky: [] };
+  const canPartialWrite = !blast.ok && !prevUnreadable && riskyResults.length > 0 && safeResults.length > 0;
+  // protectedIds (Codex adversarial review, BRO-3002): a quarantined show's
+  // carried-forward entry is otherwise just an ordinary stale row to
+  // mergeGapAudit's retention clock — its computedAt is frozen at the run
+  // BEFORE it got quarantined and never advances (it's excluded from
+  // freshIds every subsequent run for as long as it stays risky), so once
+  // real wall-clock time exceeds DEFAULT_RETENTION_DAYS it would silently
+  // get pruned — the exact "lost, not just parked" outcome this whole fix
+  // exists to prevent. Exempt it from the retention drop (still carried
+  // forward, still comparable, just never evicted purely for staleness).
+  const quarantined = canPartialWrite
+    ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }, { protectedIds: new Set(riskyResults.map(r => r.showId)) })
+    : null;
+
+  if (!dryRun && (blast.ok || canPartialWrite)) {
+    const toWrite = blast.ok ? audit : quarantined;
+    const outletsToWrite = blast.ok ? unknownOutlets : computeUnknownOutlets(quarantined.results);
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-    writeJsonAtomic(AUDIT_PATH, audit);
-    console.log(`\nWrote audit: ${AUDIT_PATH} (${audit.auditedThisRun} audited this run, ${audit.carriedForward} carried forward, ${audit.prunedStale} pruned >${audit.retentionDays}d)`);
+    writeJsonAtomic(AUDIT_PATH, toWrite);
+    if (blast.ok) {
+      console.log(`\nWrote audit: ${AUDIT_PATH} (${toWrite.auditedThisRun} audited this run, ${toWrite.carriedForward} carried forward, ${toWrite.prunedStale} pruned >${toWrite.retentionDays}d)`);
+    } else {
+      console.log(`\nWrote audit (PARTIAL — ${riskyResults.length} risky show(s) quarantined, not persisted): ${AUDIT_PATH} (${toWrite.auditedThisRun} audited this run, ${toWrite.carriedForward} carried forward, ${toWrite.prunedStale} pruned >${toWrite.retentionDays}d). Quarantined: ${riskyResults.map(r => r.showId).slice(0, 20).join(', ')}`);
+    }
     writeJsonAtomic(UNKNOWN_OUTLETS_PATH, {
-      generatedAt: audit.generatedAt,
-      count: unknownOutlets.length,
-      outlets: unknownOutlets,
+      generatedAt: toWrite.generatedAt,
+      count: outletsToWrite.length,
+      outlets: outletsToWrite,
     });
-    console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
+    console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${outletsToWrite.length} hosts)`);
+    return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: outletsToWrite };
   }
-  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held };
+  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: unknownOutlets };
   }); // end withFileLock
 
   if (!lockHeld) {
     console.error('::warning::gap-audit lock could not be acquired (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent audit run could have lost data.');
   }
+
+  // BRO-3002: true only when SOME (not all) of this run's examined shows were
+  // quarantined — i.e. the write above was a partial success, not a full
+  // block. Read at the exit-code line too: a partial write made real forward
+  // progress and must not keep the cron permanently red the way a genuine
+  // full block should.
+  const partial = !!(riskyShowIds && riskyShowIds.length && riskyShowIds.length < results.length);
 
   // Alerting is deliberately OUTSIDE the lock: routeAlert does network I/O and
   // must not hold the write lock across an await.
@@ -2177,7 +2222,7 @@ async function main(argv = process.argv.slice(2)) {
       await routeAlert({
         conditionKey: 'review-gap:blast-radius-refused',
         title: `Review-gap audit refused to write — ${blast.changedPct.toFixed(1)}% of shows changed coverage state`,
-        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\nThe previous ${AUDIT_PATH} is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
+        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\n${partial ? `PARTIAL write: the other ${results.length - riskyShowIds.length} show(s) audited this run were NOT risky and were persisted normally. Only the ${riskyShowIds.length} changed show(s) above were quarantined (kept at their prior entry).` : `The previous ${AUDIT_PATH} is intact — nothing was lost (every examined show this run was risky, so nothing could be safely split out).`} Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
         severity: 'error',
         disposition: 'human',
         cooldownHours: 6,
@@ -2197,24 +2242,41 @@ async function main(argv = process.argv.slice(2)) {
     // wholesale-overwrite bug this whole task exists to kill, reintroduced on
     // the sibling file). rollbackCheckpointEntries re-reads under the lock so
     // it merges against current state rather than our stale in-memory copy.
+    //
+    // BRO-3002: when the write above was a PARTIAL (quarantine) write, only
+    // the risky subset's stamps are suspect — the safe majority was just
+    // persisted with fresh data and must keep its advanced checkpoint entry,
+    // or the next run's least-recently-audited selection would immediately
+    // re-pick the same batch and reproduce the exact stuck loop this split
+    // exists to break. `riskyShowIds` is empty (falls back to the full
+    // audited set) whenever the write was a full block, matching prior
+    // behavior exactly.
     const auditedIds = results.map(r => r && r.showId).filter(Boolean);
-    if (useCheckpoint && checkpointAtStart && auditedIds.length) {
+    const rollbackIds = (riskyShowIds && riskyShowIds.length) ? riskyShowIds : auditedIds;
+    if (useCheckpoint && checkpointAtStart && rollbackIds.length) {
       try {
-        rollbackCheckpointEntries(CHECKPOINT_PATH, auditedIds, checkpointAtStart);
-        console.error(`::warning::rolled ${auditedIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.`);
+        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart);
+        console.error(`::warning::rolled ${rollbackIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.${rollbackIds.length < auditedIds.length ? ` (${auditedIds.length - rollbackIds.length} other audited show(s) were safe and persisted normally)` : ''}`);
       } catch (e) {
         console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
       }
     }
   }
   if (verbose) console.log(`Blast radius: ${blast.reason}`);
-  console.log(`Summary: ${audit.counts.withGap}/${mergedResults.length} shows on file with gaps (${results.length} audited this run) | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed) | ${unknownOutlets.length} unknown outlets`);
+  // BRO-3002: on a partial (quarantine) write, `audit`/`mergedResults` still
+  // describe the FULL unpartitioned merge — including the risky shows'
+  // rejected fresh data, which was never persisted. Report against
+  // `quarantined` (what's actually on disk) whenever it exists, so the CI log
+  // matches the file a reader would open to debug the discrepancy.
+  const reportedAudit = (partial && quarantined) ? quarantined : audit;
+  const reportedResults = reportedAudit.results;
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
-  if (verbose && unknownOutlets.length > 0) {
+  if (verbose && outletsWritten.length > 0) {
     console.log('\nUnknown outlets (not in outlet-registry.json):');
-    for (const u of unknownOutlets) {
+    for (const u of outletsWritten) {
       console.log(`  ${u.host} — ${u.occurrences} occurrence(s) across ${u.shows.length} show(s): ${u.sampleUrls[0]}`);
     }
   }
@@ -2318,11 +2380,20 @@ async function main(argv = process.argv.slice(2)) {
   // audit.counts here would redden CI on gaps this run never looked at — and
   // keep it red until every historical entry aged out.
   const runWithGap = countsFor(results).withGap;
-  // A refused write must redden the run. Exiting 0 would leave the workflow
-  // green while the audit file silently went stale — the same "green run,
-  // nobody notices" shape as the collector/discovery outage floors above,
-  // which both exit 1. The alert alone is not enough: it is cooldown'd and
-  // email-delivery can fail.
+  // A refused write — full OR partial (BRO-3002) — must redden the run.
+  // Exiting 0 would leave the workflow green while a real, unresolved issue
+  // (a show whose coverage state disagrees with its own recent history)
+  // sits quarantined indefinitely — the exact "green run, nobody notices"
+  // shape as the collector/discovery outage floors above, which both exit 1.
+  // The alert alone is not enough: it is cooldown'd and email-delivery can
+  // fail. Unlike the write/checkpoint split above, staying red here is
+  // deliberately NOT relaxed for a partial write (adversarial review, BRO-3002
+  // follow-up): the quarantined shows' underlying flag never heals on its
+  // own, so a green partial-write run would let check-cron-health's
+  // CRITICAL_CRONS entry report "healthy" while genuinely unresolved coverage
+  // sat parked — the workflow now makes real progress (the fix's whole
+  // point) but still surfaces loudly until a human resolves or overrides the
+  // specific quarantined shows.
   const exitCode = (!dryRun && !blast.ok) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);

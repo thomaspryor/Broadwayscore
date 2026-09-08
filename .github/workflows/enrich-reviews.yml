@@ -241,6 +241,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: enrich-reviews — audit-trail snapshots'
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: enrich-reviews
+
       # We do NOT trigger a deploy here. Flag changes don't surface on the public
       # site until the next rebuild reads them and regenerates reviews.json. The
       # 4 AM UTC scheduled rebuild + the auto-trigger from collect-review-texts

@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'YOUR_API_KEY';
@@ -54,6 +55,7 @@ function fetchViaScrapingBee(url) {
     const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
 
     https.get(scrapingBeeUrl, (response) => {
+      recordSbCall({ url, fn: 'page', success: response.statusCode === 200, status: response.statusCode, credits: sbBilledCredits(response.statusCode, 1), purpose: 'image-formats' });
       if (response.statusCode !== 200) {
         reject(new Error(`HTTP ${response.statusCode}`));
         return;
@@ -63,7 +65,10 @@ function fetchViaScrapingBee(url) {
       response.on('data', chunk => data += chunk);
       response.on('end', () => resolve(data));
       response.on('error', reject);
-    }).on('error', reject);
+    }).on('error', (e) => {
+      recordSbCall({ url, fn: 'page', success: false, status: 'error', credits: 0, purpose: 'image-formats' });
+      reject(e);
+    });
   });
 }
 

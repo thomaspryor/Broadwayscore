@@ -155,8 +155,9 @@ For each edition that has a draft, read the generated HTML file and check:
      Then that specific blocker is the one thing that goes in the email — with
      what failed, not a request to merge anything. Say the branch is on disk.
   If a fix is genuinely too large to land safely inside this run's wall clock,
-  do not park it on a branch: card it via `node scripts/notion-brain.js create
-  ...` at P1 and dispatch it per CLAUDE.md §6, then say in the email that it's
+  do not park it on a branch: card it via `node scripts/linear-brain.js create
+  "<title>" --priority 2 --dispatch --notes "..."` and dispatch it with
+  `node scripts/linear-next.js --id BRO-N` per CLAUDE.md §6, then say in the email that it's
   carded and dispatched. The owner never gets asked to review code.
 - After ANY fix, re-run `refresh-drafts.sh <weekStart>` and re-check the
   specific issue you fixed actually changed in the new HTML. Don't claim a

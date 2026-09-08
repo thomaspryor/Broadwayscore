@@ -24,6 +24,7 @@ const { execFileSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
 const ledger = require('./dispatch-ledger.js');
 
+const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX = cmuxws.CMUX;
 
 // Find the OS pid of the claude_code process for a workspace from `cmux top
@@ -117,7 +118,7 @@ function reviveSession(ref, opts = {}) {
     readLedgerEntriesFn = ledger.readEntries,
     launchByRefFn = ledger.launchByRef,
     listPaneSurfacesFn = (r) => cmuxws.run(['list-pane-surfaces', '--workspace', r]),
-    respawnFn = (r, surfaceRef, command) => execFileSync(CMUX, ['respawn-pane', '--workspace', r, '--surface', surfaceRef, '--command', command], { encoding: 'utf8', timeout: 5000 }),
+    respawnFn = (r, surfaceRef, command) => execFileSync(CMUX, ['respawn-pane', '--workspace', r, '--surface', surfaceRef, '--command', command], { encoding: 'utf8', timeout: 5000, env: cmuxSpawnEnv(process.env) }),
   } = deps;
 
   const detection = detectFn(ref, deps);

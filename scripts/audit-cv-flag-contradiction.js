@@ -47,7 +47,12 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { detectCvFlagContradiction } = require('./lib/flag-contradiction');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const {
+  assertCorpusScanned,
+  CorpusNotScannedError,
+  summarizeWindowCoverage,
+  shouldRefuseRedirectedGate,
+} = require('./lib/corpus-scan-guard');
 const { baselineKeySet, computeNewViolators } = require('./lib/cv-flag-contradiction-baseline');
 
 const USAGE = `audit-cv-flag-contradiction.js — flag-vs-CV contradiction detector (#651)
@@ -60,7 +65,22 @@ Usage:
   --window=N         only consider shows opened in the last N days (default 30)
 `;
 
-const ROOT = path.resolve(__dirname, '..');
+// BSC_AUDIT_ROOT exists so the coverage counting below can be proven against
+// a fixture corpus instead of asserted by eye — the counters are the whole
+// point of BRO-2348, and an uncounted counter is exactly the "absence of a
+// signal looks like the safe outcome" trap.
+//
+// A redirect that could PASS a gate is REFUSED in main(), via
+// shouldRefuseRedirectedGate(): a NON-EMPTY decoy root satisfies
+// assertCorpusScanned, so `--strict` once printed "0 contradiction(s)" and
+// exited 0 on this repo's own CI gate (test.yml:4485), which is also on the
+// autonomous-triage safe-check allowlist. An EMPTY redirected corpus is
+// deliberately allowed through, because it can only ever FAIL loudly at
+// assertCorpusScanned -- refusing it too made that guard untestable and let
+// its `gate:` argument be mutated to false with every suite still green.
+// Report-only runs may always redirect.
+const ROOT_OVERRIDE = process.env.BSC_AUDIT_ROOT || '';
+const ROOT = ROOT_OVERRIDE ? path.resolve(ROOT_OVERRIDE) : path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'cv-flag-contradiction-baseline.json');
@@ -70,7 +90,23 @@ function parseArgs(argv) {
   for (const a of argv) {
     if (a === '--strict') args.strict = true;
     else if (a === '--update-baseline') args.updateBaseline = true;
-    else if (a.startsWith('--window=')) args.window = parseInt(a.split('=')[1], 10);
+    else if (a.startsWith('--window')) {
+      // Keep the RAW token: parseInt truncates, so '1e9' becomes 1 and '30d'
+      // becomes 30 — nonsense silently turned into a plausible window
+      // (round 4 finding 3). main() validates the token, not just the number.
+      // slice, NOT split('=')[1]: split truncates at a SECOND '=', so
+      // '--window=1=e9' handed the regex just '1' and passed, running a
+      // one-day scan (round 5). That is the very bug round 4 filed --
+      // validating the truncation instead of the token -- reintroduced by
+      // round 4's own fix.
+      // Match '--window' broadly, then require the '=<digits>' form. Gating
+      // the branch on '--window=' meant a bare `--window 7` matched NOTHING,
+      // was silently dropped, and the sweep scanned the DEFAULT 30 days while
+      // printing "--window=30d" -- an operator asking for 7 got 30 and a
+      // clean exit 0. Same silent-wrong-window class as the tokens above.
+      args.windowRaw = a.startsWith('--window=') ? a.slice('--window='.length) : a;
+      args.window = parseInt(args.windowRaw, 10);
+    }
   }
   return args;
 }
@@ -87,6 +123,28 @@ function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
 
+  // An unusable --window is a vacuous PASS of the same class as the redirected
+  // root below: `--window=abc` made parseInt return NaN, every date comparison
+  // false, and `--strict` exit 0 having examined ZERO shows, while the
+  // coverage line laundered the NaN into a clean-looking "--window=0d"
+  // (round 3 finding 1). `--window=-5` passed too. Reject it outright rather
+  // than letting a downstream clamp turn nonsense into a plausible number.
+  if (args.windowRaw !== undefined && !/^\d+$/.test(args.windowRaw)) {
+    console.error(
+      `FAIL: --window must be a positive number of days, got "${args.windowRaw}". ` +
+        'Refusing rather than scanning an empty window and reporting it as clean.'
+    );
+    process.exit(2);
+  }
+  if (!Number.isFinite(args.window) || args.window <= 0) {
+    console.error(
+      `FAIL: --window must be a positive number of days, got "${args.window}". ` +
+        'Refusing rather than scanning an empty window and reporting it as clean.'
+    );
+    process.exit(2);
+  }
+
+
   // Corpus presence, checked independent of the date window below (#1063
   // ship-check finding): gating on the window-filtered per-file `scanned`
   // count conflated "corpus missing" with "0 shows opened in this window" —
@@ -95,6 +153,29 @@ function main() {
   // depending on which shows happen to fall inside --window.
   let corpusEntries = 0;
   try { corpusEntries = fs.readdirSync(REVIEW_TEXTS_DIR).length; } catch { corpusEntries = 0; }
+
+  // A redirected root may never produce a PASSING gate verdict, and may never
+  // rewrite the baseline (BASELINE_PATH follows ROOT too). The refusal is
+  // seated HERE rather than at the top of main() so that an EMPTY redirected
+  // corpus still reaches assertCorpusScanned below: that path can only ever
+  // FAIL loudly, so allowing it costs nothing and is the only way to test the
+  // gate wiring at all. Refusing it earlier made the #1063 vacuous-pass guard
+  // untestable from a fixture, which round 4 found had left `gate:` mutable
+  // to false with both suites still green.
+  if (shouldRefuseRedirectedGate({
+    rootOverride: ROOT_OVERRIDE,
+    corpusEntries,
+    strict: args.strict,
+    updateBaseline: args.updateBaseline,
+  })) {
+    console.error(
+      'FAIL: BSC_AUDIT_ROOT is set with a non-empty corpus, so --strict and ' +
+        '--update-baseline are refused. A redirected corpus would pass vacuously. ' +
+        'Use report-only mode.'
+    );
+    process.exit(2);
+  }
+
   try {
     assertCorpusScanned(corpusEntries, { gate: args.strict || args.updateBaseline });
   } catch (e) {
@@ -112,6 +193,18 @@ function main() {
     return !Number.isNaN(t) && t >= cutoff;
   });
 
+  // Coverage bookkeeping (BRO-2348). Counted, never inferred:
+  // `recentShows.length` is NOT what this sweep examines. A show can be
+  // selected by the window and still contribute nothing — no review-texts
+  // directory, an unreadable one, or one whose every file fails to parse.
+  // Measured on the real corpus 2026-09-07: 132 selected, 72 examined.
+  const eligibleShows = shows.filter(
+    (s) => s.openingDate && !Number.isNaN(Date.parse(s.openingDate))
+  ).length;
+  const openedShows = recentShows.filter((s) => Date.parse(s.openingDate) <= Date.now()).length;
+  let showsWithTexts = 0;
+  let filesParsed = 0;
+
   const hits = [];
   for (const show of recentShows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show.id);
@@ -121,6 +214,12 @@ function main() {
     } catch {
       continue;
     }
+    // Counted from what the loop ACTUALLY did, never from what it listed.
+    // `files.length` would count a corrupt file as parsed, and a show whose
+    // directory exists but holds no readable .json (a _pending/-only strand,
+    // for instance) would be reported as examined — in the one line whose
+    // whole purpose is honest coverage (ship-check findings 1 and 2).
+    let parsedThisShow = 0;
     for (const file of files) {
       let data;
       try {
@@ -128,19 +227,42 @@ function main() {
       } catch {
         continue;
       }
+      parsedThisShow++;
       const contradiction = detectCvFlagContradiction(data);
       if (contradiction) {
         hits.push({ showId: show.id, file, ...contradiction });
       }
     }
+    filesParsed += parsedThisShow;
+    if (parsedThisShow > 0) showsWithTexts++;
   }
 
-  console.log(`Flag-vs-CV contradiction sweep: ${recentShows.length} shows opened in the last ${args.window}d, ${hits.length} contradiction(s) found.`);
+  // "shows opened in the last Nd" was false: the window filter is a lower
+  // bound only, so 110 of the 132 it selected on 2026-09-07 had not opened.
+  console.log(`Flag-vs-CV contradiction sweep: ${recentShows.length} shows in the last ${args.window}d window, ${hits.length} contradiction(s) found.`);
   for (const h of hits) {
     // No cvReasoning in stdout: this repo is public and CV reasoning often
     // embeds verbatim quotes from copyrighted review text (CLAUDE.md §3) —
     // this script runs in CI (public Actions logs), not just locally.
     console.log(`  [${h.flag}] ${h.showId}/${h.file} (${h.wordCount}w)`);
+  }
+
+  // Printed before the --update-baseline branch exits and before the --strict
+  // verdict, so every path that REACHES the report carries it. (An empty
+  // corpus still exits earlier at the assertCorpusScanned guard above, which
+  // is a loud failure, not a misreadable clean result.) The misreading this
+  // prevents is of a CLEAN run: "(12 baselined, 0 new)" plus exit 0 reads as
+  // a healthy corpus when the sweep examined 72 of 2,943 shows (BRO-2348).
+  for (const line of summarizeWindowCoverage({
+    windowDays: args.window,
+    corpusShows: shows.length,
+    eligibleShows,
+    windowShows: recentShows.length,
+    openedShows,
+    showsWithTexts,
+    filesParsed,
+  }).lines) {
+    console.log(line);
   }
 
   // --update-baseline: regenerate the baseline from the current scan and exit

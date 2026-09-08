@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError } = require('./cmux-workspaces.js');
+const { parseWorkspaces, parseWorkspacesJson, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -12,6 +12,59 @@ const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
   workspace:27  ✳ CC improvements
   workspace:15  ✅ Backup check
 `;
+
+// Captured from `cmux workspace list --json` 2026-09-07 (card #1938 —
+// crown-duplicate-detector.js's only cwd/id source, and per adversarial
+// review, its only real-JSON test), trimmed to representative rows.
+const JSON_SAMPLE = JSON.stringify({
+  window_ref: 'window:1',
+  workspaces: [
+    {
+      id: '4647CB3E-3E38-402F-9743-6E136DCE8557', ref: 'workspace:1', index: 0,
+      current_directory: '/Users/tompryor', custom_title: null,
+      title: '✳ Write AI musical comedy for Edinburgh Fringe', selected: false, pinned: true,
+    },
+    {
+      id: 'A1B2C3D4-1111-2222-3333-444455556666', ref: 'workspace:111', index: 5,
+      current_directory: '/Users/tompryor/Broadwayscore', custom_title: null,
+      title: '👑 OWNER — Crown v46: BRO-343 P1 triage + dispatch loop', selected: true, pinned: false,
+    },
+    {
+      id: 'B2C3D4E5-2222-3333-4444-555566667777', ref: 'workspace:10', index: 9,
+      current_directory: '/Users/tompryor/Broadwayscore/.claude/worktrees/bro-525-dmarc-ingest',
+      custom_title: '❓ 👑 OWNER — Crown v45: BRO-343 P1 triage + dispatch loop', title: 'ignored when custom_title is set',
+      selected: false, pinned: false,
+    },
+  ],
+}, null, 2);
+
+test('parseWorkspacesJson: extracts ref, id, title (preferring custom_title), selected, cwd from real output', () => {
+  const ws = parseWorkspacesJson(JSON_SAMPLE);
+  assert.equal(ws.length, 3);
+  assert.deepEqual(ws[0], {
+    ref: 'workspace:1', id: '4647CB3E-3E38-402F-9743-6E136DCE8557',
+    title: '✳ Write AI musical comedy for Edinburgh Fringe', selected: false, cwd: '/Users/tompryor',
+  });
+  assert.equal(ws[1].selected, true);
+  assert.equal(ws[1].cwd, '/Users/tompryor/Broadwayscore');
+  // custom_title wins over title when both are present — matches the real
+  // cmux payload shape (title is the fallback, e.g. before a rename).
+  assert.equal(ws[2].title, '❓ 👑 OWNER — Crown v45: BRO-343 P1 triage + dispatch loop');
+  assert.equal(ws[2].cwd, '/Users/tompryor/Broadwayscore/.claude/worktrees/bro-525-dmarc-ingest');
+});
+
+test('parseWorkspacesJson: malformed/empty payload returns [] rather than throwing', () => {
+  assert.deepEqual(parseWorkspacesJson(''), []);
+  assert.deepEqual(parseWorkspacesJson('not json'), []);
+  assert.deepEqual(parseWorkspacesJson('{}'), []);
+  assert.deepEqual(parseWorkspacesJson('{"workspaces": "not an array"}'), []);
+});
+
+test('parseWorkspacesJson: a workspace with no id (older cmux payload shape) still parses, id is null', () => {
+  const ws = parseWorkspacesJson(JSON.stringify({ workspaces: [{ ref: 'workspace:5', title: 'no id here', selected: false }] }));
+  assert.equal(ws.length, 1);
+  assert.equal(ws[0].id, null);
+});
 
 test('parseWorkspaces extracts ref, title, selected from real output', () => {
   const ws = parseWorkspaces(LIST_SAMPLE);

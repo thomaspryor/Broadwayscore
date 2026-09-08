@@ -36,6 +36,9 @@ const { buildLondonSlugVariants } = require('./lib/show-matching');
 const { batchDiscoverSlugs } = require('./lib/serp-slug-discovery');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
@@ -193,11 +196,9 @@ function extractReviewData(html) {
 
   while ((match = jsonLdRegex.exec(html)) !== null) {
     try {
-      const parsed = JSON.parse(match[1]);
-      // JSON-LD can be a single object or an array of objects
-      const items = Array.isArray(parsed) ? parsed : [parsed];
+      const items = parseJsonLd(match[1]);
       for (const data of items) {
-        if (data['@type'] === 'Product' && data.aggregateRating) {
+        if (hasJsonLdType(data, 'Product') && data.aggregateRating) {
           const agg = data.aggregateRating;
           if (typeof agg.ratingValue === 'number' && typeof agg.reviewCount === 'number') {
             return {

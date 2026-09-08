@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-05T14:19:45.577Z",
+  "generatedAt": "2026-09-05T21:59:38.645Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 137,
-  "clean": 131,
+  "checked": 132,
+  "clean": 126,
   "defective": 6,
   "byType": {
     "score-drift": 5,
@@ -27,34 +27,34 @@
       "deployedCount": null
     },
     {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "openingDate": "2026-09-03",
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 58.44 vs local 58.88 (Δ0.44)"
+          "detail": "deployed cs 78.11 vs local 78.2 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-08-11",
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "title": "Cyrano de Bergerac",
+      "openingDate": "2026-06-25",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.42 vs local 72.75 (Δ0.33)"
+          "detail": "deployed cs 90.06 vs local 89.75 (Δ0.31)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34
+      "localCount": 30,
+      "deployedCount": 30
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -64,7 +64,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.59 vs local 78.5 (Δ0.09)"
+          "detail": "deployed cs 78.7 vs local 78.31 (Δ0.39)"
         }
       ],
       "missingFromProd": [],
@@ -72,34 +72,34 @@
       "deployedCount": 23
     },
     {
-      "showId": "operation-mincemeat-west-end-2024",
-      "title": "Operation Mincemeat",
-      "openingDate": "2023-05-09",
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 88.08 vs local 88.02 (Δ0.06)"
+          "detail": "deployed cs 75.76 vs local 75.63 (Δ0.13)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
-      "showId": "six-the-musical-west-end-2021",
-      "title": "SIX the Musical",
-      "openingDate": "2019-01-16",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.01 vs local 81.13 (Δ0.12)"
+          "detail": "deployed cs 81.1 vs local 81 (Δ0.1)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14
+      "localCount": 25,
+      "deployedCount": 25
     }
   ]
 }

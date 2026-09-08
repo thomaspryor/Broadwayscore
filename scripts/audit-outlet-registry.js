@@ -43,6 +43,20 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
+
+// Whole-registry sweep over the SAME per-entry decision validate-data.js uses.
+// Deliberately not a second copy of the rule: outlet-registry-field-shape.js
+// owns the contract and the message text, and this only walks the entries.
+function collectFieldShapeErrors(registry) {
+  const outlets = (registry && registry.outlets) || registry || {};
+  const errors = [];
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    errors.push(...outletFieldShapeErrors(id, entry));
+  }
+  return errors;
+}
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -602,9 +616,13 @@ function generateJsonOutput(auditResult) {
   // reason. Without this a red build ships a JSON document with zero findings
   // (code-review 2026-09-05).
   let cvStyleReport = { invalid: [], armedCount: 0 };
+  // Same reasoning for starScale/multiAuthor: --strict can now exit 1 on these,
+  // so a red build must not ship a findings-free JSON document.
+  let registryFieldsReport = [];
   try {
     const reg = loadRegistry();
     cvStyleReport = { invalid: findInvalidCvStyles(reg), armedCount: countArmedCvStyles(reg) };
+    registryFieldsReport = collectFieldShapeErrors(reg);
   } catch { /* registry unreadable is already fatal in loadRegistry() */ }
 
   // Transform missingFromRegistry to match spec format
@@ -623,6 +641,7 @@ function generateJsonOutput(auditResult) {
 
   return {
     cvStyle: cvStyleReport,
+    invalidRegistryFields: registryFieldsReport,
     generatedAt: new Date().toISOString(),
     summary: {
       totalOutletsInReviews,
@@ -913,6 +932,26 @@ function saveAuditResults(jsonOutput) {
 // Main
 async function main() {
   try {
+    // Field shapes FIRST, before the corpus guard below can exit.
+    //
+    // This check needs only data/outlet-registry.json — not data/review-texts.
+    // The corpus guard exits 1 whenever the private review-texts checkout is
+    // missing or empty, which is precisely the "an earlier step failed" case
+    // the `if: always()` on this step in test.yml exists to survive. Leaving
+    // the field-shape sweep below that guard meant a missing corpus silently
+    // took the registry diagnosis with it — the same shape of bug as the
+    // skipped step it was added to fix, one level down (code-review
+    // 2026-09-06).
+    //
+    // It reports and lets execution continue, so the corpus guard and the
+    // missing-outlet diagnostics still run and an operator sees every reason
+    // in one pass; the exit code is decided once, in the --strict block below.
+    const earlyFieldErrors = collectFieldShapeErrors(loadRegistry());
+    if (earlyFieldErrors.length > 0 && !JSON_OUTPUT) {
+      console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
+      for (const e of earlyFieldErrors) console.log(`  ${e}`);
+    }
+
     const auditResult = auditOutletRegistry();
 
     // FAIL LOUD on an empty corpus (task #1666, same pattern as
@@ -1015,6 +1054,7 @@ async function main() {
     const cvRegistry = loadRegistry();
     const badCvStyles = findInvalidCvStyles(cvRegistry);
     const armedCvStyles = countArmedCvStyles(cvRegistry);
+    const badRegistryFields = collectFieldShapeErrors(cvRegistry);
     if (!JSON_OUTPUT) {
       if (badCvStyles.length > 0) {
         console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
@@ -1031,6 +1071,22 @@ async function main() {
           `\n⚠️  cvStyle DISARMED: 0 outlets carry 'long-biographical', so ` +
             `shouldDeferCvWrongShow() cannot fire for any review (BRO-2776). ` +
             `This is how the 2026-05-16 silent merge loss presented.`
+        );
+      }
+      if (badRegistryFields.length > 0) {
+        // The list itself is printed early in main(), above the corpus guard,
+        // so a missing review-texts checkout cannot swallow it. Only the
+        // explanatory footer belongs here, next to the other --strict reasons —
+        // but it needs its own header and a back-reference, or it reads as a
+        // stray indented paragraph about "these" with no antecedent, hundreds
+        // of lines after the actual list (code-review 2026-09-06).
+        console.log(`\n⚠️  ${badRegistryFields.length} invalid starScale/multiAuthor field(s) — listed at the TOP of this report:`);
+        console.log(
+          `  validate-data.js fails on these too, at an EARLIER step of the same ` +
+            `Data Validation job. Until 2026-09-06 registering an outlet with an ` +
+            `invalid field passed HERE and broke the build THERE — and this step, ` +
+            `then lacking an if:, was skipped by that earlier failure, so the run ` +
+            `reported nothing about the registry (arbuturian/starScale:null).`
         );
       }
     }
@@ -1052,6 +1108,7 @@ async function main() {
       // regression it looks like it guards. Only a positive count sees it.
       const strictFail = badCvStyles.length > 0
         || armedCvStyles === 0
+        || badRegistryFields.length > 0
         || newViolators.length > 0
         || newJunkViolators.length > 0;
       if (newViolators.length > 0 || newJunkViolators.length > 0) {

@@ -122,6 +122,7 @@
 
 const { canonicalizeUrlForDedup } = require('./review-guards');
 const { criticKey } = require('./manual-entry-merge');
+const { isPlaceholderByline } = require('./placeholder-byline');
 
 const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
 
@@ -145,6 +146,56 @@ function urlKeyOf(review) {
   } catch {
     return null;
   }
+}
+
+/** Is this criticName the pipeline's no-byline sentinel rather than a person?
+ * rebuild-all-reviews.js and review-file-writer.js both normalise a missing
+ * byline to the literal string 'Unknown' (review-file-writer.js:707,
+ * `sanitizeCriticName(input.criticName) || 'Unknown'`), and null/'' reach
+ * reviews.json from older rows written before that default existed. Deliberately
+ * an exact match on the sentinel, NOT a fuzzy "looks anonymous" test: a real
+ * byline such as "Unknown Theatre Collective" must stay a distinct identity. */
+function isUnknownByline(criticName) {
+  if (criticName === null || criticName === undefined) return true;
+  const s = String(criticName).trim();
+  return s === '' || s.toLowerCase() === 'unknown';
+}
+
+/** May this record ANCHOR a fossil deletion — i.e. is its byline a real person?
+ * Three ways a name fails that, and isUnknownByline alone catches only the
+ * first: the sentinel itself; placeholder-byline.js's generic desk/staff terms
+ * AND its outlet-as-critic branch (which is only reachable when `outlet` is
+ * passed, so this must take the whole RECORD, not a bare name); and
+ * punctuation-only junk, since criticKey('—') is 'unknown' while
+ * isUnknownByline('—') is false.
+ *
+ * Module-scope and EXPORTED deliberately. The corpus tests need this exact
+ * predicate to reconstruct the anchor set over live reviews.json, and they
+ * previously kept their own hand-copied duplicate of it in two places — which
+ * CLAUDE.md rule 15 forbids ("never copy logic into test files — always
+ * require() the real function") for precisely the reason it nearly caused
+ * here: when production's definition changed, the copies did not, so the
+ * corpus assertion would have failed on rows production now correctly keeps.
+ * A copy that must be edited in lockstep is not a test of the real predicate.
+ *
+ * The name is deliberately narrow. This is NOT a general "is this a real
+ * byline" oracle and must not be reused as one: it omits opts.defaultCritic
+ * (see the pass below for why this module cannot read the registry), so it
+ * misclassifies a registry-confirmed self-branded critic. It answers exactly
+ * one question — may this record anchor a fossil deletion in THIS merge.
+ *
+ * Sharing it with the corpus test does make that ONE test partly self-
+ * referential: implementation and oracle move together, so it can no longer
+ * catch a novel misclassification. That is the accepted cost of rule 15, and
+ * the independent check lives in the targeted cases below (ordinary name,
+ * outlet-as-critic, self-branded critic, generic desk term, punctuation junk),
+ * which assert concrete expected outcomes rather than calling this at all.
+ * (Two rounds of Codex adversarial review.) */
+function isMergeFossilAnchor(rec) {
+  const name = rec && rec.criticName;
+  return !isUnknownByline(name)
+    && !isPlaceholderByline(name, rec && rec.outlet)
+    && criticKey(name) !== 'unknown';
 }
 
 function newerIso(a, b) {
@@ -305,6 +356,189 @@ function mergeReviewsJson(ours, remote) {
     }
   }
 
+  // Unknown-byline fossil rescue (BRO-2916). A THIRD narrow pass, same shape as
+  // the manual-entry rescue above but keyed on the no-byline sentinel instead of
+  // manualEntry. Every row in reviews.json is 1:1 with a review-texts file by
+  // construction — rebuild-all-reviews.js emits exactly one row per included
+  // file — so a second row for the same showId+URL can only have been minted by
+  // this merge: the clean side is OURS and the fossil is the REMOTE-only
+  // addition that the disjoint-identity union faithfully preserves.
+  //
+  // It is NOT permanent, and an earlier draft of this comment wrongly said it
+  // was. An UNCONTENDED rebuild does clear it — measured: the live
+  // into-the-woods-west-end-2025 Radio Times fossil was gone from reviews.json
+  // after the 2026-09-06T09:45:46Z rebuild, leaving one bylined row. That
+  // matches the union's KNOWN LIMITATION note above, which already says the
+  // resurrection is "bounded by eventually corrected by the next rebuild that
+  // isn't racing". What this pass buys is the interval: while pushes keep
+  // racing, the fossil is re-minted on every contended merge, and Data
+  // Validation reds main for the whole window — which is how it managed to red
+  // two consecutive runs before anyone looked.
+  //
+  // How the fossil is born: a review is first collected without a byline and
+  // written as criticName 'Unknown'; a later pass resolves the real byline. The
+  // primary key is showId|outlet|criticKey(criticName), so 'Unknown' and
+  // 'Olivia Garrett' are DIFFERENT identities for the same article and union
+  // rather than conflict. validate-data.js then errors with
+  // "duplicate URL(s) within same show+outlet" and Data Validation reds main on
+  // every subsequent run, for a reason unrelated to whatever that run changed.
+  //
+  // Safe where a bare same-URL rule is not (the same-URL/different-critic pairs
+  // the module comment describes, e.g. anastasia-2017's WSJ row carrying both
+  // Charles Isherwood and Edward Rothstein): this drops a row ONLY when its own
+  // byline is the sentinel and some other row for the same showId+URL carries a
+  // real one. Both sides of every legitimate pair are real bylines, so none of
+  // them is reachable.
+  //
+  // Measured 2026-09-06 against the live corpus, using urlKeyOf and
+  // isUnknownByline themselves rather than a hand-rolled probe: 7 same-showId+URL
+  // groups carry more than one DISTINCT critic. 1 is this fossil shape
+  // (into-the-woods-west-end-2025, Radio Times, "Olivia Garrett" vs "Unknown");
+  // 6 are two-real-byline pairs this pass cannot touch; 0 involve a manualEntry.
+  // Note for whoever reads the module comment above next: its "7 legitimate
+  // pairs" figure is that same group count as it stood on 2026-08-20, so the
+  // legitimate subset is 6 today — the 7th is the fossil this pass removes.
+  // A manualEntry row is NEVER dropped here, even when its own byline is the
+  // sentinel. DEFENCE IN DEPTH, not a live bug fix — be precise about which,
+  // because a guard whose comment overclaims is the same defect as a test that
+  // asserts less than its name. An adversarial review (gpt-5.4-mini) raised
+  // this as a P0: "a manualEntry row with criticName 'Unknown' would be dropped
+  // here, defeating the manualEntry priority the module guarantees". Checked
+  // rather than taken on trust, and it is NOT reachable today: the manual-entry
+  // rescue immediately above registers each manual row's urlKeyOf and then
+  // splices EVERY other row sharing that key, so by the time this pass runs a
+  // manualEntry row provably has no same-urlKey sibling and can never match.
+  // Verified directly: merging a bylined row against a manual sentinel-byline
+  // row on one URL returns 1 row (the manual one) with urlRescueConflicts 1 and
+  // unknownBylineFossilsDropped 0. The guard stays because it costs one boolean
+  // and it is what stops a future reordering of these two passes from silently
+  // deleting human corrections — the failure it prevents is a refactor's, not
+  // today's.
+  // SECOND CONDITION, beyond the shared canonical key: the two rows must also
+  // agree on the raw URL PATH, compared case-sensitively. Adversarial-review
+  // finding (Codex): canonicalizeUrlForDedup lowercases the WHOLE url, so on a
+  // host with case-sensitive paths two genuinely different articles can collapse
+  // to one canonical key, and this pass would then delete a real unbylined
+  // review. Measured on the live corpus: canonicalization merges distinct raw
+  // URLs in exactly 2 groups, and both are the same article differing only by
+  // tracking parameters (a WSJ `gaa_*` set, an NYT `?_r=1&`) — so the risk is
+  // real in principle and absent in fact today. Requiring identical raw paths
+  // keeps the tracking-parameter cases working (their paths are byte-identical)
+  // while making a case-only or query-only path collapse unable to authorise a
+  // deletion. Deleting derived rows deserves the stricter of two available
+  // tests, not the more convenient one.
+  const rawPathOf = (u) => {
+    try {
+      const parsed = new URL(String(u));
+      return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/+$/, '')}`;
+    } catch {
+      return null;
+    }
+  };
+
+  let unknownBylineFossilsDropped = 0;
+  // Provenance, not just a tally. A pass that DELETES rows must leave enough
+  // behind to answer "what went missing and why" without digging through
+  // history (adversarial-review finding, Codex: the first version recorded only
+  // a count, so a wrong deletion was undiagnosable from the merge result).
+  const unknownBylineFossilsDroppedKeys = [];
+  // What may ANCHOR a deletion is deliberately stricter than what may BE
+  // deleted. Widening the deleted side would remove more rows; narrowing the
+  // anchor side only ever removes fewer, so the asymmetry is the safe direction.
+  // Three ways a name fails to be a real byline, and isUnknownByline alone
+  // catches only the first (codebase-review finding, Claude):
+  //   - the sentinel itself;
+  //   - placeholder-byline.js's GENERIC_BYLINE_TERMS ('staff', 'news desk',
+  //     'editorial team', …) — that module is the repo's canonical predicate
+  //     for this same-URL duplicate class (card #1907), so reuse it rather than
+  //     grow a second, quietly divergent definition here (CLAUDE.md §15);
+  //   - punctuation-only junk. criticKey('—') is 'unknown' while
+  //     isUnknownByline('—') is false, so without this a junk em-dash row would
+  //     have counted as a real byline and taken out a genuine sentinel row.
+  //   - and the outlet's OWN NAME standing in for the critic. That is the very
+  //     case placeholder-byline.js was written for ("extraction fell back to
+  //     the outlet's own name"), but it is only reachable when the `outlet`
+  //     argument is actually supplied — called with the name alone, the
+  //     `norm === normOutlet` branch can never fire, so a record whose
+  //     criticName is literally its outlet ("Radio Times" at Radio Times)
+  //     counted as a real byline and could anchor the deletion of a genuine
+  //     sentinel row at that outlet. Passing `outlet` narrows the ANCHOR side,
+  //     which by the asymmetry noted above only ever deletes FEWER rows.
+  //     `opts.defaultCritic` is deliberately NOT resolved here: this module is
+  //     a merge driver wired into core-data-merge-registry.js:639 with a fixed
+  //     (ours, remote) signature and no I/O of its own, and reading
+  //     outlet-registry.json would break that purity. The cost is bounded and
+  //     one-directional — at an outlet named after its own sole critic
+  //     (placeholder-byline.js:52-61) that critic reads as a placeholder, so
+  //     the pass declines to anchor. That is safe against DELETION, not
+  //     against the duplicate gate: such a pair can then survive to
+  //     validate-data.js:2081 as a same-show+outlet duplicate URL. Do NOT read
+  //     that as self-clearing. Nothing in THIS module clears it. The nearest
+  //     thing that might, scripts/dedupe-same-url-bylines.js:237, is separately
+  //     scheduled, is the caller that CAN afford the registry lookup and does
+  //     pass defaultCritic — and even it only collapses groups its fingerprint
+  //     and text-similarity checks confirm are cohesive, merely triaging the
+  //     rest. So such a pair can sit red across runs. (Two rounds of Codex
+  //     adversarial review corrected this comment: the first version claimed
+  //     self-clearing outright, the second still overstated what the deduper
+  //     guarantees.) The trade is nonetheless the right way round: a surviving
+  //     duplicate is visible in a gate, a wrongly deleted review is not.
+  //     Closing the gap properly means injecting a registry-aware predicate at
+  //     registration time rather than reading the registry from in here.
+  // isMergeFossilAnchor is module-scope and exported so the corpus tests use THIS
+  // predicate rather than a copy of it (CLAUDE.md rule 15).
+  const bylinedByUrlKey = new Map();
+  for (const r of mergedReviews) {
+    if (!r || !isMergeFossilAnchor(r)) continue;
+    const uk = urlKeyOf(r);
+    if (!uk) continue;
+    if (!bylinedByUrlKey.has(uk)) bylinedByUrlKey.set(uk, []);
+    bylinedByUrlKey.get(uk).push(r);
+  }
+  if (bylinedByUrlKey.size) {
+    for (let i = mergedReviews.length - 1; i >= 0; i--) {
+      const r = mergedReviews[i];
+      if (!r || r.manualEntry === true || !isUnknownByline(r.criticName)) continue;
+      const uk = urlKeyOf(r);
+      if (!uk) continue;
+      const candidates = bylinedByUrlKey.get(uk);
+      if (!candidates) continue;
+      const myPath = rawPathOf(r.url);
+      // Only a candidate on the SAME raw path may win, and it must not be
+      // poorer than the row it replaces. Every other resolution path in this
+      // module falls back to tierRank when it has to choose (see
+      // resolveConflict); preferring a byline unconditionally would let a
+      // bylined `stub` evict a sentinel `complete` and lose the richer text and
+      // its score until the next uncontended rebuild (codebase-review finding,
+      // Claude — the original tests only exercised the favourable direction).
+      // A tie still deletes: same tier, and the bylined row is the better
+      // attributed of the two.
+      // SAME OUTLET, too. urlKeyOf deliberately carries no outlet, and the
+      // source writer documents that aggregator roundup URLs are legitimately
+      // shared ACROSS outlets — so on URL alone a named Guardian row and a
+      // genuinely unbylined FT row backed by one roundup page would collapse
+      // into one, silently removing an outlet from the show's composite
+      // (adversarial-review finding, Codex). Scoping to one outlet also makes
+      // this pass exactly as wide as the defect it exists for: validate-data.js
+      // reports "duplicate URL(s) within same show+outlet", not across outlets.
+      const myOutlet = String(r.outlet || '').toLowerCase().trim();
+      const winner = myPath && candidates.find(
+        (c) => rawPathOf(c.url) === myPath
+          && String(c.outlet || '').toLowerCase().trim() === myOutlet
+          && tierRank(c) >= tierRank(r),
+      );
+      if (!winner) continue; // different outlet or raw path, or no candidate at least as rich — not safe to delete
+      mergedReviews.splice(i, 1); // the bylined row is the real review
+      unknownBylineFossilsDropped++;
+      unknownBylineFossilsDroppedKeys.push({
+        showId: r.showId,
+        outlet: r.outlet,
+        url: r.url,
+        supersededBy: winner.criticName,
+      });
+    }
+  }
+
   const merged = { ...ours, reviews: mergedReviews };
   const oursLu = ours._meta && ours._meta.lastUpdated;
   const remoteLu = remote._meta && remote._meta.lastUpdated;
@@ -334,9 +568,14 @@ function mergeReviewsJson(ours, remote) {
       oursDuplicateKeysSkipped: oursDeduped.duplicateKeysSkipped,
       remoteDuplicateKeysSkipped: remoteDeduped.duplicateKeysSkipped,
       urlRescueConflicts,
+      unknownBylineFossilsDropped,
+      unknownBylineFossilsDroppedKeys,
       totalReviews: mergedReviews.length,
     },
   };
 }
 
-module.exports = { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank };
+module.exports = {
+  mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank,
+  isUnknownByline, isMergeFossilAnchor,
+};

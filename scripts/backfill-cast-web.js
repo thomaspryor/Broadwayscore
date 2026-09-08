@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   validateCastExtraction,
@@ -139,8 +140,16 @@ async function fetchPageText(url) {
   const renderParam = needsJs ? '&render_js=true&wait=3000' : '&render_js=false';
 
   const fetchUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(url)}${renderParam}&extract_rules=${encodeURIComponent(JSON.stringify(extractRules))}`;
+  const credits = needsJs ? 5 : 1;
 
-  const result = await httpRequest(fetchUrl, { timeout: 45000 });
+  let result;
+  try {
+    result = await httpRequest(fetchUrl, { timeout: 45000 });
+  } catch (e) {
+    recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: false, status: 'error', credits: sbBilledCredits('error', credits), purpose: 'cast-backfill' });
+    throw e;
+  }
+  recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: result.statusCode === 200, status: result.statusCode, credits: sbBilledCredits(result.statusCode, credits), purpose: 'cast-backfill' });
   if (result.statusCode !== 200) return null;
 
   try {
