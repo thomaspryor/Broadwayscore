@@ -18,7 +18,8 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { imagePresent } = require('./lib/show-image-presence');
-const { parseSbUsage } = require('./lib/provider-billing');
+const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
+const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -351,43 +352,23 @@ async function runChecks() {
   }
 
   // 10. ScrapingBee credits
-  const sbKey = process.env.SCRAPINGBEE_API_KEY;
-  if (sbKey) {
-    const sbRes = await httpsGet(`https://app.scrapingbee.com/api/v1/usage?api_key=${sbKey}`);
-    if (sbRes.status === 200) {
-      try {
-        // BRO-3032: this read `usage.used`, a field the /usage endpoint has
-        // never returned (it returns used_api_credit), so `used` was always
-        // undefined, `pct` always 0, and this check reported PASS "0% used"
-        // no matter how close to the cap the account actually was — a dead
-        // alarm inside a MANDATORY readiness checklist (CLAUDE.md rule 14).
-        // Parse through provider-billing.js's canonical parseSbUsage instead
-        // of hand-reading field names here: it is the one place that knows
-        // the payload shape, and it returns null on an unrecognized shape so
-        // a future rename fails loudly rather than silently scoring 0%.
-        const usage = parseSbUsage(JSON.parse(sbRes.body));
-        if (!usage || usage.cap == null) {
-          report(WARN, 'ScrapingBee credits', 'Usage response missing used_api_credit/max_api_credit');
-        } else {
-          const { cycleUsed: used, cap: limit } = usage;
-          const pct = limit > 0 ? Math.round((used / limit) * 100) : 100;
-          if (pct > 75) {
-            report(FAIL, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Opening nights at risk.`);
-          } else if (pct > 50) {
-            report(WARN, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Monitor.`);
-          } else {
-            report(PASS, 'ScrapingBee credits', `${pct}% used (${used}/${limit})`);
-          }
-        }
-      } catch {
-        report(WARN, 'ScrapingBee credits', 'Could not parse usage response');
-      }
-    } else {
-      report(WARN, 'ScrapingBee credits', `API returned ${sbRes.status}`);
-    }
-  } else {
-    report(SKIP, 'ScrapingBee credits', 'SCRAPINGBEE_API_KEY not set');
-  }
+  //
+  // BRO-3032: this block used to fetch /usage itself and read `usage.used` —
+  // a field that endpoint has never returned (it returns used_api_credit) —
+  // so the percentage was always 0 and this check reported PASS "0% used" at
+  // every real usage level, including an exhausted cycle. A dead alarm inside
+  // a MANDATORY readiness checklist (CLAUDE.md rule 14).
+  //
+  // Both halves now live where they can be tested and where the payload shape
+  // is already known: lib/check-sb-credits.js owns the fetch and classifies
+  // no-key / api-error / max_api_credit<=0, and lib/sb-credit-verdict.js owns
+  // the thresholds. Nothing here hand-reads a provider field name any more.
+  const sbVerdict = sbCreditVerdict(await fetchSBCreditStatus());
+  report(
+    { pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[sbVerdict.level],
+    'ScrapingBee credits',
+    sbVerdict.detail,
+  );
 
   // 11. Subscriber sync (Formspree vs Resend)
   const resendKey = process.env.RESEND_API_KEY;
