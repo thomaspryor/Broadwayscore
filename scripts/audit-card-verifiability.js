@@ -8,8 +8,13 @@
  * Cards written before "acceptance criteria must name a runnable command"
  * became a rule are silently stuck: bsc-next refuses to dispatch them
  * (correctly), but nothing surfaces how many are stuck or fixes them. This
- * script is read-only — it never touches Notion — and writes a report
- * consumed by health-check.js's warn row and by enrich-card-acceptance.js.
+ * script is read-only w.r.t. Notion/Linear — it never writes to either — and
+ * writes a report consumed by health-check.js's warn row and by
+ * enrich-card-acceptance.js. BRO-2977: when any card names a `node --test`
+ * path, it also does a local, depth-bound `git fetch origin main` (never a
+ * Notion/Linear write) to check that path's existence — see
+ * card-premises-auditor.js's header for why it must check origin/main and
+ * not this process's own checkout.
  *
  * task #1830: --source linear adds a second, independent sweep over open
  * Linear (BRO-*) issues (the same verify gate linear-next.js enforces at
@@ -56,8 +61,9 @@ Usage:
 
 Writes ${path.relative(REPO, REPORT_PATH)} for --source notion (default; consumed by
 health-check.js's warn row and by enrich-card-acceptance.js) or
-${path.relative(REPO, LINEAR_REPORT_PATH)} for --source linear. Read-only — never
-touches Notion or Linear.
+${path.relative(REPO, LINEAR_REPORT_PATH)} for --source linear. Read-only w.r.t.
+Notion/Linear (never writes to either) — but does a local git fetch of origin/main
+when a card names a node --test path, to check the path actually exists.
 `;
 
 function parseArgs(argv) {
@@ -284,9 +290,10 @@ function printReport(label, report, reportPath) {
     report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] [${c.kind || 'unknown'}] ${c.name} — ${c.reason}`));
   }
   const missingTestFiles = report.missingTestFiles || [];
-  console.log(`${label} armed but naming a missing test file (can never close): ${missingTestFiles.length}`);
+  console.log(`${label} armed but naming a node --test file absent from origin/main: ${missingTestFiles.length}`);
   if (missingTestFiles.length) {
-    console.log(`\n${label} cards naming a nonexistent test file:`);
+    console.log(`\n${label} cards naming a nonexistent test file — evidence, not proof: some are simply a card`);
+    console.log(`whose test hasn't been written yet; a reader should judge each before acting:`);
     missingTestFiles.forEach(c => console.log(`  ${c.id} ${c.name} — ${c.cmd} (missing: ${c.missingPaths.join(', ')})`));
   }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
@@ -321,7 +328,7 @@ async function main() {
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
-      `| Armed but missing test file (can never close) | ${(report.missingTestFiles || []).length} |`,
+      `| Armed but node --test file absent from origin/main | ${(report.missingTestFiles || []).length} |`,
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',

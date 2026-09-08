@@ -81,3 +81,16 @@ test('findCardsWithMissingTestFiles: skips the origin/main fetch entirely when n
   // real git. The empty result with no throw proves the fetch was skipped.
   assert.deepEqual(findCardsWithMissingTestFiles(cards), []);
 });
+
+test('findCardsWithMissingTestFiles: a failed origin/main fetch bails to [] rather than trusting a stale local ref', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  // A real (non-git) directory makes fetchOriginMain's `git fetch` fail
+  // deterministically, no network mocking needed — proving the CONFIRMED
+  // failure path never falls through to pathExistsOnOriginMain (which would
+  // read whatever origin/main happens to be cached, possibly stale).
+  const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'card-premises-not-a-repo-'));
+  const cards = [{ id: 'BRO-8', name: 'x', url: 'u8', cmd: 'node --test tests/unit/whatever.test.mjs', armed: true }];
+  assert.deepEqual(findCardsWithMissingTestFiles(cards, { repo: notARepo, log: () => {} }), []);
+});

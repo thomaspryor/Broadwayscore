@@ -109,12 +109,21 @@ function auditCardTestPaths(cards, existsFn) {
  * I/O wrapper: fetches origin/main once, then checks every armed card's
  * `node --test` path against it. Skips the fetch entirely when no card is a
  * `node --test`-shaped candidate (cheap common case).
+ *
+ * A failed fetch bails out to [] rather than falling through to whatever
+ * origin/main happens to be cached locally: `git cat-file -e` reads the
+ * local ref regardless of whether the fetch above actually refreshed it, so
+ * proceeding on a fetch failure could report a file that landed upstream
+ * SINCE the last successful fetch as "confirmed missing" — the exact false
+ * positive this whole module exists to avoid (adversarial review finding).
+ * Same fail-open contract as autofix-canary.js's markerExistsOnOriginMain:
+ * "could not resolve this run" is never scored as a defect.
  */
 function findCardsWithMissingTestFiles(evaluatedCards, opts = {}) {
   const candidates = (Array.isArray(evaluatedCards) ? evaluatedCards : [])
     .filter((c) => c && c.armed && isNodeTestCommand(c.cmd));
   if (!candidates.length) return [];
-  fetchOriginMain(opts);
+  if (!fetchOriginMain(opts)) return [];
   const cache = new Map();
   const existsFn = (p) => {
     if (!cache.has(p)) cache.set(p, pathExistsOnOriginMain(p, opts));
