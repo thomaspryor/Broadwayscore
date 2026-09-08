@@ -99,6 +99,7 @@ scripts/lib/prune-closeable.test.mjs
 scripts/lib/push-content-survival.test.mjs
 scripts/lib/scraper-playwright-missing-browser.test.mjs
 scripts/lib/serp-review-census.test.mjs
+scripts/lib/t1-sla.test.mjs
 scripts/lib/title-match.test.js
 scripts/lib/venue-date-compare.test.mjs
 scripts/lib/workspace-naming.test.mjs
@@ -623,6 +624,7 @@ tests/unit/restore-protected-fields-stale-checkout.test.mjs
 tests/unit/reverify-clear-guards.test.mjs
 tests/unit/reverify-stale-cv-title-mismatch-guard.test.mjs
 tests/unit/reverse-discovery-freshness.test.mjs
+tests/unit/review-completeness-monitor.test.mjs
 tests/unit/review-file-creation-same-url-check.test.mjs
 tests/unit/review-file-writer-preserves-flags-on-url-change.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs

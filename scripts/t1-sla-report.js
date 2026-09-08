@@ -106,6 +106,24 @@ function main() {
   if (sla.unmeasurableSample.length) {
     console.log(`Unmeasurable sample: ${sla.unmeasurableSample.slice(0, 8).map(u => `${u.outletId}(${u.reason})`).join(', ')}`);
   }
+  const byReason = sla.unmeasurableByReason || {};
+  if (Object.keys(byReason).length) {
+    const parts = Object.entries(byReason).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k}=${v}`);
+    console.log(`Unmeasurable by reason: ${parts.join(', ')}`);
+  }
+  const blindByPrecision = (byReason['date-only-publish-date'] || 0) + (byReason['shared-roundup-timestamp'] || 0);
+  if (blindByPrecision) {
+    console.log(`\n⚠ ${blindByPrecision} review(s) carry no usable publication CLOCK, so a 24h SLA`);
+    console.log(`  cannot be computed for them. They are excluded, NOT counted as breaches:`);
+    console.log(`   • date-only-publish-date  — day-resolution date; its clock start is midnight`);
+    console.log(`     UTC, but reviews drop in the evening, so a review scored the SAME NIGHT`);
+    console.log(`     measures ~26h. The imprecision (±24h) exceeds the threshold (24h).`);
+    console.log(`   • shared-roundup-timestamp — an HH:MM stamp shared by 2+ outlets of one show`);
+    console.log(`     (roundup bleed: one aggregator page's datePublished copied onto every`);
+    console.log(`     review extracted from it). Two outlets never publish in the same second.`);
+    console.log(`  To make these measurable, capture per-article publication times at COLLECTION`);
+    console.log(`  (JSON-LD datePublished, stamped with publishDateSource) — not at report time.`);
+  }
   if (sla.pct === 0 && sla.measured > 0) {
     console.log(`\n⚠ scoredAt is the EARLIEST 'scored' event in stage-latency.jsonl. If a bulk`);
     console.log(`  rescore (e.g. the 2026-07 NYC anchored-bands rollout) re-stamped older`);

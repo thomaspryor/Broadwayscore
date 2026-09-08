@@ -49,16 +49,107 @@ function isPublishDateSuspect(r) {
 }
 
 /**
+ * Does this publishDate carry a real time-of-day (HH:MM), or is it day-resolution?
+ * "2026-08-25T20:51:56-04:00" → true.  "2026-08-25", "August 25, 2026" → false.
+ * Mirrors lib/time-to-publish-sla.js parsePrecisePublishTime's HH:MM requirement so
+ * the two SLAs agree on what "precise" means.
+ * @param {*} v
+ * @returns {boolean}
+ */
+function hasPrecisePublishTime(v) {
+  return typeof v === 'string' && /T\d{2}:\d{2}/.test(v);
+}
+
+/**
+ * Roundup-timestamp bleed: the same instant stamped on many outlets of one show.
+ *
+ * An aggregator roundup page has ONE datePublished; an extractor that reads it while
+ * splitting out N per-outlet reviews writes that single instant onto all N files.
+ * Corpus-wide (2026-09-07) 450 of the 1,853 files carrying an HH:MM time — 24.3% —
+ * share their timestamp with another outlet of the same show, up to 26 outlets on one
+ * identical second (moulin-rouge-the-musical-west-end-2021, 2022-04-22T12:57:06-04:00).
+ * paranormal-activity-2026 has 13 outlets on 2026-08-25T20:51:56-04:00, including
+ * variety and vulture — two of the T1 rows this SLA reports on.
+ *
+ * Two different outlets publishing in the same SECOND is not a thing that happens, so
+ * a shared instant is provably not a publication time. Trusting it would hand the
+ * owner a confident, wrong number — the exact failure this metric exists to end — so
+ * these are demoted to day-resolution rather than used as a clock.
+ *
+ * Pure. Returns the set of `${showId}|${publishDate}` keys that are contaminated.
+ * @param {Array<{showId?:string, outletId?:string, publishDate?:string}>} rows
+ * @returns {Set<string>}
+ */
+function findSharedPublishTimestamps(rows) {
+  const outletsByStamp = new Map();
+  for (const r of rows || []) {
+    if (!r || !hasPrecisePublishTime(r.publishDate)) continue;
+    const key = `${r.showId}|${r.publishDate}`;
+    if (!outletsByStamp.has(key)) outletsByStamp.set(key, new Set());
+    outletsByStamp.get(key).add(r.outletId);
+  }
+  const shared = new Set();
+  for (const [key, outlets] of outletsByStamp) {
+    if (outlets.size > 1) shared.add(key);
+  }
+  return shared;
+}
+
+/**
  * Classify a review for the SLA. Pure.
  * @param {object} r { publishDate, firstSeenAt, publishDateSource? }
  * @param {string|null} showCreatedAt  ISO (shows.json discoveredAt / openingDate)
+ * @param {Set<string>} [sharedStamps]  from findSharedPublishTimestamps (optional)
  * @returns {{ measurable:boolean, reason?:string, clockStart:string|null }}
  */
-function classifyMeasurability(r, showCreatedAt) {
-  if (isPublishDateSuspect(r)) {
-    return { measurable: false, reason: !r || !r.publishDate ? 'no-publish-date' : 'publish-eq-fetch-date', clockStart: null };
+function classifyMeasurability(r, showCreatedAt, sharedStamps) {
+  if (!r || !r.publishDate) {
+    return { measurable: false, reason: 'no-publish-date', clockStart: null };
   }
-  const pubMs = new Date(r.publishDate).getTime();
+  const pubMsRaw = new Date(r.publishDate).getTime();
+  // An unparseable publishDate ("undefined", "not a date") used to fall through as NaN:
+  // clockStart became "Invalid Date", ageMs NaN, and `NaN <= 24h` is false — so it was
+  // silently counted as a BREACH instead of surfacing in the unmeasurable bucket. A
+  // metric that reports garbage as failure is worse than one that admits it cannot see.
+  if (!Number.isFinite(pubMsRaw)) {
+    return { measurable: false, reason: 'unparseable-publish-date', clockStart: null };
+  }
+  const contaminated = !!(sharedStamps && sharedStamps.has(`${r.showId}|${r.publishDate}`));
+  // Reported ahead of the fetch-date heuristic: bled stamps are same-second copies, so
+  // they usually ALSO trip day-equality, and 'publish-eq-fetch-date' would mask the
+  // real, fixable cause (an extractor copying a roundup's datePublished onto N files).
+  if (contaminated) {
+    return { measurable: false, reason: 'shared-roundup-timestamp', clockStart: null };
+  }
+  const precise = hasPrecisePublishTime(r.publishDate);
+  // A trustworthy per-article timestamp OVERRIDES the same-day fetch-date heuristic
+  // below. That heuristic exists only because, with day-resolution dates, a real
+  // same-day retrieval is indistinguishable from a scraper stamping "today" — so it
+  // conservatively excludes both. An unshared HH:MM instant IS that distinguisher (a
+  // fetch-date stamp writes a DATE, not a time of day), and it is precisely what the
+  // publishDateSource escape hatch was reserved for. Without this override the metric
+  // discards its own best rows: a review published 20:51 ET and scored 22:28 ET the
+  // same evening trips day-equality and the FASTEST retrievals vanish from the
+  // denominator — the metric would punish exactly the behaviour it rewards.
+  if (!precise && isPublishDateSuspect(r)) {
+    return { measurable: false, reason: 'publish-eq-fetch-date', clockStart: null };
+  }
+  const pubMs = pubMsRaw;
+  // Day-resolution publishDate cannot support a 24h SLA. Its clock start is midnight
+  // UTC, but reviews drop in the EVENING: a NYT review published ~21:00 ET on opening
+  // night and scored 22:28 ET the same evening reads as 26.5h — a breach — because the
+  // clock began 26.5h earlier at 00:00 UTC. Every measured row landed in a tight band
+  // just above the threshold (26.5/31.3/33.0/37.9/38.9h), the signature of a fixed
+  // offset rather than a slow pipeline, and the report printed a flat "SLA: 0%".
+  // The imprecision (±24h) is >= the threshold (24h), so these are UNMEASURABLE, not
+  // failures. They are surfaced in their own bucket instead of faking a 0%.
+  if (!precise) {
+    return {
+      measurable: false,
+      reason: contaminated ? 'shared-roundup-timestamp' : 'date-only-publish-date',
+      clockStart: null,
+    };
+  }
   const createdMs = showCreatedAt ? new Date(showCreatedAt).getTime() : NaN;
   const clockMs = Number.isFinite(createdMs) ? Math.max(pubMs, createdMs) : pubMs;
   return { measurable: true, clockStart: new Date(clockMs).toISOString() };
@@ -77,13 +168,19 @@ function classifyMeasurability(r, showCreatedAt) {
 function computeSla(reviews, opts = {}) {
   const withinHours = opts.withinHours != null ? opts.withinHours : 24;
   const tierOk = opts.tierFilter || ((t) => t === 1);
+  // Contamination is detected across ALL tiers before filtering: a T3 blog sharing an
+  // instant with a T1 is what proves the T1's stamp came off a roundup page, so
+  // narrowing to tier 1 first would hide the very evidence the guard needs.
+  const sharedStamps = findSharedPublishTimestamps(reviews);
   let measured = 0, withinSla = 0, unmeasurable = 0, unscored = 0;
   const unmeasurableSample = [];
+  const unmeasurableByReason = {};
   for (const r of reviews) {
     if (!tierOk(r.tier)) continue;
-    const m = classifyMeasurability(r, r.showCreatedAt);
+    const m = classifyMeasurability(r, r.showCreatedAt, sharedStamps);
     if (!m.measurable) {
       unmeasurable++;
+      unmeasurableByReason[m.reason] = (unmeasurableByReason[m.reason] || 0) + 1;
       if (unmeasurableSample.length < 25) unmeasurableSample.push({ showId: r.showId, outletId: r.outletId, reason: m.reason });
       continue;
     }
@@ -100,7 +197,15 @@ function computeSla(reviews, opts = {}) {
     unmeasurable,
     unscored,
     unmeasurableSample,
+    unmeasurableByReason,
   };
 }
 
-module.exports = { isPublishDateSuspect, classifyMeasurability, computeSla, DAY_MS };
+module.exports = {
+  isPublishDateSuspect,
+  classifyMeasurability,
+  computeSla,
+  hasPrecisePublishTime,
+  findSharedPublishTimestamps,
+  DAY_MS,
+};
