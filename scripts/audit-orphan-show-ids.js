@@ -46,10 +46,30 @@ const JSON_OUT = args.includes('--json');
 // (those need manual rename in upstream pollers).
 const STRICT = args.includes('--strict');
 
+// Refuse to run on an implausibly small shows.json rather than treat it as
+// ground truth (BRO-3001 cousin — same shape as audit-dispatch-outcomes.js's
+// liveWorkspaceRefs, but with teeth: an EMPTY validIds set makes every slim
+// show file look orphaned, and `--fix` unlinks all of them at line ~123).
+//
+// A truncated or mid-write shows.json parses fine and yields a small array, so
+// "did the read throw?" is not the question — "does this look like the real
+// corpus?" is. This repo carries 2,800+ shows; a floor of 100 is far below any
+// legitimate state and far above any partial write.
+const MIN_PLAUSIBLE_SHOWS = 100;
+
 function loadShowIds() {
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
   const arr = Array.isArray(shows) ? shows : (shows.shows || []);
-  return new Set(arr.map(s => s.id).filter(Boolean));
+  const ids = new Set(arr.map(s => s.id).filter(Boolean));
+  if (ids.size < MIN_PLAUSIBLE_SHOWS) {
+    throw new Error(
+      `refusing to run: ${SHOWS_PATH} yielded only ${ids.size} show id(s), below the ${MIN_PLAUSIBLE_SHOWS} floor. `
+      + 'Every slim show file would be reported orphaned and --fix would DELETE them all. '
+      + 'This usually means a truncated/mid-write shows.json or a stale local data clone — '
+      + 'run ./scripts/setup-local-data.sh and retry.',
+    );
+  }
+  return ids;
 }
 
 function scanSlimShowFiles(validIds) {
