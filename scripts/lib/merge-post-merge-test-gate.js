@@ -23,8 +23,8 @@
 //   branch intact instead of shipping it.
 //
 // SCOPE
-//   Two change classes, each mapped to the tests that can catch its
-//   collisions. A merge touching neither still runs nothing.
+//   Three change classes, each mapped to the tests that can catch its
+//   collisions. A merge touching none of them still runs nothing.
 //
 //   scripts/lib/**  -> scripts/lib/*.test.mjs (the same glob CI's "Run
 //   scripts/lib tests" step already runs). That's the shape most susceptible
@@ -47,6 +47,31 @@
 //   cannot pass locally are excluded by name — see EXCLUDED_WORKFLOW_GUARDS —
 //   so the normal case passes on the merged run and never builds a baseline
 //   checkout.
+//
+//   scripts/**/*.{js,mjs,cjs}  -> tests/unit/<basename>.test.mjs (BRO-3063). Added
+//   2026-09-08 after TWO merges in one session shipped this exact shape: (1)
+//   scripts/lib/landed-but-open-reconciler.js changed, its colocated
+//   scripts/lib/*.test.mjs suite passed, but tests/unit/landed-but-open-reconciler.test.mjs
+//   — outside that glob — broke, and the floor (armed, scoped to the glob
+//   only) reported green; CI caught it minutes later. (2)
+//   scripts/linear-drain-parked.js (a TOP-LEVEL scripts/ file, not
+//   scripts/lib/) changed and broke tests/unit/linear-drain-parked.test.mjs,
+//   but the floor never armed at all — "no scripts/lib/ or
+//   .github/workflows/ files changed" — because arming was scoped to
+//   scripts/lib/ specifically. Both incidents follow the same repo
+//   convention (source basename == test basename), so this floor closes both
+//   by basename correspondence rather than widening any glob: for every
+//   changed scripts/**/*.{js,mjs,cjs} file, run tests/unit/<basename>.test.mjs if
+//   it exists. No file mapping to nothing (no such test written yet) selects
+//   nothing and costs nothing — unlike the workflow class above, this one has
+//   no "must always find something" invariant, since a scripts/ file with no
+//   corresponding tests/unit test is a normal, unprotected case, not a
+//   discovery failure.
+//
+//   Two different files can share a basename (e.g. scripts/foo.js and
+//   scripts/lib/foo.js both map to tests/unit/foo.test.mjs) — selectTestFiles'
+//   existing de-dup means the test just runs once either way, which is
+//   correct: it's the same assertion regardless of which source triggered it.
 //
 //   KNOWN LIMIT — same-key masking on AGGREGATE guards. The baseline diff
 //   keys failures by <file>::<test name> (parseTapOutput), so a guard that
@@ -139,6 +164,18 @@ function safeRealpath(p) {
 // empty file list.
 const LIB_PREFIX = 'scripts/lib/';
 const WORKFLOW_PREFIX = '.github/workflows/';
+const SCRIPTS_PREFIX = 'scripts/';
+// The repo's real non-test script source extensions (BRO-3063 review found
+// scripts/newsletter/*.mjs, scripts/llm-scoring/*.mjs, scripts/visual-qa.mjs,
+// etc. — '.js'-only silently misses a whole class of scripts/ files). Test
+// files themselves are `*.test.mjs`, excluded explicitly below rather than by
+// extension, since ".test.mjs" ends in ".mjs" the same as a real source file.
+// '.cjs' included for parity with the post-merge SYNTAX floor in
+// merge-worktree-to-main.sh (`scripts/*.js|scripts/*.mjs|scripts/*.cjs`) even
+// though no .cjs file exists under scripts/ today (Codex adversarial review,
+// 2026-09-08) — the first one written should get semantic coverage from day
+// one, not silently pass syntax-only.
+const SCRIPT_SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs'];
 
 // Pure: did this change touch scripts/lib/ ? No I/O — trivially unit-testable.
 function touchesLib(changedFiles) {
@@ -152,10 +189,27 @@ function touchesWorkflows(changedFiles) {
   return (changedFiles || []).some((f) => f.startsWith(WORKFLOW_PREFIX));
 }
 
+// Pure: is `f` a real (non-test) scripts/ source file — anywhere under
+// scripts/, not just scripts/lib/ (BRO-3063's incident 2 was a top-level
+// scripts/*.js file, which this deliberately also matches; scripts/lib/*.js
+// files match too, and that overlap with touchesLib is intentional, not a
+// bug — see selectTestFiles).
+function isScriptSourceFile(f) {
+  if (!f.startsWith(SCRIPTS_PREFIX)) return false;
+  if (f.endsWith('.test.mjs')) return false;
+  return SCRIPT_SOURCE_EXTENSIONS.some((ext) => f.endsWith(ext));
+}
+
+// Pure: did this change touch any scripts/ source file, lib or top-level?
+// No I/O — trivially unit-testable.
+function touchesScripts(changedFiles) {
+  return (changedFiles || []).some(isScriptSourceFile);
+}
+
 // Pure: does this set of changed files require running the test floor at all?
 // No I/O — trivially unit-testable.
 function shouldRunTestGate(changedFiles) {
-  return touchesLib(changedFiles) || touchesWorkflows(changedFiles);
+  return touchesLib(changedFiles) || touchesWorkflows(changedFiles) || touchesScripts(changedFiles);
 }
 
 // List the scripts/lib/*.test.mjs files present in `cwd` (same glob as CI's
@@ -252,6 +306,31 @@ function listWorkflowGuardTestFiles(cwd) {
   return [...out].sort();
 }
 
+// Pure: the tests/unit/ path that corresponds to a scripts/ source file, by
+// basename alone (directory is deliberately ignored — this is the repo's
+// existing convention; both BRO-3063 incidents follow it exactly:
+// scripts/lib/landed-but-open-reconciler.js -> tests/unit/landed-but-open-reconciler.test.mjs,
+// scripts/linear-drain-parked.js -> tests/unit/linear-drain-parked.test.mjs).
+function correspondingUnitTestPath(scriptRelPath) {
+  const base = path.basename(scriptRelPath, path.extname(scriptRelPath));
+  return path.join('tests', 'unit', `${base}.test.mjs`);
+}
+
+// List the tests/unit/<basename>.test.mjs files that correspond to changed
+// scripts/ source files and actually exist in `cwd`. A source file with no
+// corresponding test contributes nothing — that's a normal, unprotected case,
+// not a discovery failure (contrast listWorkflowGuardTestFiles, which DOES
+// have a must-find-something invariant).
+function listCorrespondingUnitTestFiles(cwd, changedFiles) {
+  const out = new Set();
+  for (const f of changedFiles || []) {
+    if (!isScriptSourceFile(f)) continue;
+    const rel = correspondingUnitTestPath(f);
+    if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+  }
+  return [...out].sort();
+}
+
 // Pure-ish (fs reads only): the test files to run for this change set, in a
 // stable order with no duplicates.
 //
@@ -265,6 +344,7 @@ function selectTestFiles(cwd, changedFiles) {
   const files = [];
   if (touchesLib(changedFiles)) files.push(...listColocatedTestFiles(cwd));
   if (touchesWorkflows(changedFiles)) files.push(...listWorkflowGuardTestFiles(cwd));
+  files.push(...listCorrespondingUnitTestFiles(cwd, changedFiles));
   return [...new Set(files)].sort();
 }
 
@@ -368,7 +448,7 @@ function describeExit(result) {
 // never builds a baseline checkout.
 function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
-    return { ran: false, passed: true, output: '', reason: 'no scripts/lib/ or .github/workflows/ files changed' };
+    return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
   const testFiles = selectTestFiles(cwd, changedFiles);
   if (testFiles.length === 0) {
@@ -391,7 +471,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: false,
       passed: true,
       output: '',
-      reason: 'no test files found for changed paths (scripts/lib/*.test.mjs)',
+      reason: 'no test files found for changed paths (scripts/lib/*.test.mjs, tests/unit/<basename>.test.mjs)',
     };
   }
   const result = execFn(cwd, testFiles);
@@ -521,6 +601,9 @@ module.exports = {
   shouldRunTestGate,
   touchesLib,
   touchesWorkflows,
+  touchesScripts,
+  correspondingUnitTestPath,
+  listCorrespondingUnitTestFiles,
   listColocatedTestFiles,
   listWorkflowGuardTestFiles,
   selectTestFiles,
