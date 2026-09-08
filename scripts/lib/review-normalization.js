@@ -959,7 +959,17 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const cvSaysWrongProduction = !!cv
     && cv.wrongProduction === true
     && cv.confidence === 'high';
+  // A REFUSED url is not evidence of anything (BRO-3092 ship-check, Codex).
+  // This self-heal reads "a new URL arrived, so a URL-shaped wrong-production
+  // verdict about the OLD url is void" — but it only ever tested that
+  // incoming.url looks like an http url, never that the swap was accepted. All
+  // three refusal guards leave merged.url exactly as it was, so without this
+  // the rejected candidate still un-excludes the review: the record keeps the
+  // very URL the flag is about, minus the flag. urlSwapRegressed and
+  // urlFlipFlop had this hole before BRO-3092; urlCollidesWithSibling would
+  // have inherited it.
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && isUrlBasedWrongProd) {
@@ -2005,6 +2015,20 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     });
     if (owner) {
       console.warn(`[maybeUpgradeUrl] refused colliding swap for ${existingData.outletId || source || '?'}: ${newUrl} is already owned by ${owner.filename}`);
+      // Machine-readable trace, matching the mergeReviews twin. This is the
+      // higher-traffic writer path; a console.warn alone leaves refusals here
+      // invisible to every audit (BRO-3092 ship-check).
+      logExclusion({
+        script: source || 'maybeUpgradeUrl',
+        showId: existingData.showId || 'unknown',
+        file: opts.selfFilename || '-',
+        reason: 'skippedSiblingUrlCollision',
+        details: {
+          existingUrl: existingData.url, incomingUrl: newUrl,
+          outletId: existingData.outletId, criticName: existingData.criticName,
+          ownedBy: owner.filename,
+        },
+      });
       return false;
     }
   }

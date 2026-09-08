@@ -2046,6 +2046,11 @@ function validateReviewsJson() {
     // (BRO-3092) so the gate and the thing that prevents the gate tripping can
     // never disagree about what "the same URL" means.
     const key = sameUrlDuplicateKey(r.showId, r.url);
+    // The old inline expression THREW on a truthy non-string url (r.url.toLowerCase
+    // is not a function); the shared helper returns null instead. Skipping null
+    // keeps that input out of the map rather than letting every such record
+    // collide under one "null" key and report spurious duplicates.
+    if (key === null) continue;
     if (seenUrls[key]) {
       const prev = seenUrls[key];
       urlDuplicates.push({

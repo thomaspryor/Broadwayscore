@@ -60,6 +60,7 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
+const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
@@ -3443,9 +3444,28 @@ function createReviewFile(showId, reviewData, options = {}) {
             || existingWpNote.startsWith('Dateless show')
             || existingWpNote.startsWith('Tour transfer')
           );
+          // BRO-3092 ship-check: this branch bypasses mergeReviews entirely
+          // (it builds `replacement` and calls applyUrlChangeInvariant direct),
+          // so it also bypasses the sibling URL-collision guard there — and it
+          // fires ONLY on wrongShow/wrongProduction files, i.e. exactly the
+          // flagged population findExistingReviewFile's pass-0 URL dedup skips.
+          // Without this check it is the widest remaining route to a same-show
+          // duplicate URL. Refusing here just falls through to the merge branch
+          // below, which is guarded.
+          const replacementCollision = reviewData.url && findSiblingUrlOwner({
+            showDir,
+            url: reviewData.url,
+            selfOutletId: existingReview.outletId,
+            selfCriticName: existingReview.criticName,
+            selfFilename: existingFile,
+          });
+          if (replacementCollision) {
+            console.log(`    ⊘ url-collision guard: not replacing ${existingFile} with ${reviewData.url} — already owned by ${replacementCollision.filename}`);
+          }
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged
+              && !replacementCollision
               && !existingIsDateBasedWrongProd) {
             // A file with llmScore + fullText is real content — the wrongProduction flag may be
             // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).

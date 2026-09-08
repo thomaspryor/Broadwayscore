@@ -32,6 +32,7 @@ const {
   resolveOutletFromUrl,
   loadOutletRegistry,
 } = require('./review-normalization');
+const { findSiblingUrlOwner } = require('./review-url-collision');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
@@ -1091,8 +1092,24 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     const _swapVerdict = _show
       ? isUrlSwapRegression({ newUrl: input.url, show: _show, outletId: existing.outletId })
       : { regression: false };
+    // BRO-3092 ship-check (Codex): this first-set branch is a bypass of the
+    // maybeUpgradeUrl guard above, exactly as it was of the #1416 date-window
+    // guard. An empty-url record accepts the refusal silently and then falls
+    // through here, which only checked the cross-show slug + date guards — so a
+    // URL a sibling already owns lands on a brand-new/empty-url file and the
+    // duplicate is created anyway, with the operator having seen a "refused
+    // colliding swap" warning.
+    const _collisionOwner = findSiblingUrlOwner({
+      showDir: path.dirname(filepath),
+      url: input.url,
+      selfOutletId: existing.outletId,
+      selfCriticName: existing.criticName,
+      selfFilename: path.basename(filepath),
+    });
     if (_swapVerdict.regression) {
       console.warn(`  ⊘ url-downgrade guard: refusing first-set url on ${filepath}: ${_swapVerdict.reason}`);
+    } else if (_collisionOwner) {
+      console.warn(`  ⊘ url-collision guard: refusing first-set url on ${filepath}: ${input.url} is already owned by ${_collisionOwner.filename}`);
     } else {
       existing.url = input.url;
       changed = true;
