@@ -31,12 +31,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(import.meta.url);
+// resolveReviewTextsDir(), NOT path.join(REPO, 'data', 'review-texts'):
+// data/review-texts is gitignored and lives only in the main checkout, so a
+// hardcoded repo-relative path resolves to nothing inside a git worktree —
+// including the `git worktree add` sandbox acceptance-check-core.js's
+// makeFreshCheckout() builds. The test would then skip, exit 0, and
+// autonomous-acceptance-recheck.js would record PASS without ever reading the
+// corpus: a false all-clear from the very mechanism that is supposed to make
+// this claim durable. verify-frankie-2002-cleanup.test.mjs uses the resolver
+// for exactly this reason.
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir.js');
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 const SHOW = 'the-addams-family-2010';
-const SHOW_DIR = path.join(REPO, 'data', 'review-texts', SHOW);
+const SHOW_DIR = path.join(REVIEW_TEXTS_DIR, SHOW);
 const RESURRECTED = 'wsj--unknown.json';
+const BASELINE_PATH = path.resolve(
+  path.dirname(REVIEW_TEXTS_DIR), 'audit', 'same-url-duplicate-baseline.json',
+);
 
 function sameUrlKey(url) {
   if (!url || typeof url !== 'string') return null;
@@ -63,9 +77,24 @@ test('BRO-3092: the WSJ paywall-boilerplate record stays deleted, one URL one re
   );
 
   // 2. The general invariant it violated: within this show, no URL may be held
-  //    by more than one review file. This is the exact rule validate-data.js
-  //    errors on, asserted at the corpus level so it fails BEFORE a rebuild
-  //    promotes it into a red trunk.
+  //    by more than one review file — asserted at the corpus level so it fails
+  //    BEFORE a rebuild promotes it into a red trunk.
+  //
+  //    Scoped to MIRROR validate-data.js, never to exceed it. That validator
+  //    runs over reviews.json, from which isIncludableForRebuild has already
+  //    removed flagged records, and it exempts pairs frozen in
+  //    same-url-duplicate-baseline.json. A stricter rule here would red the
+  //    data-validation job while validate-data.js stayed green — and it would
+  //    do so the moment dedupe-same-url-bylines.js applies its own sanctioned
+  //    remedy, which stamps duplicateOf on the loser and KEEPS the file with
+  //    its url.
+  let baseline = new Set();
+  try {
+    // `pairs` is a flat array of `showId|url` strings — built exactly as
+    // validate-data.js builds it (`new Set(... .pairs || [])`), not keyed.
+    baseline = new Set(JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')).pairs || []);
+  } catch { /* no baseline file — treat every pair as new, which is stricter only in its absence */ }
+
   const byUrl = new Map();
   for (const f of fs.readdirSync(SHOW_DIR)) {
     if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
@@ -75,15 +104,21 @@ test('BRO-3092: the WSJ paywall-boilerplate record stays deleted, one URL one re
     } catch {
       continue;
     }
+    // Flagged records never reach reviews.json, so they cannot trip the
+    // validator and must not trip this test either.
+    if (data.duplicateOf || data.wrongShow === true || data.wrongProduction === true) continue;
     const key = sameUrlKey(data && data.url);
     if (!key) continue;
     if (!byUrl.has(key)) byUrl.set(key, []);
     byUrl.get(key).push(f);
   }
 
-  const dupes = [...byUrl.entries()].filter(([, files]) => files.length > 1);
+  const dupes = [...byUrl.entries()]
+    .filter(([, files]) => files.length > 1)
+    .filter(([url]) => !baseline.has(`${SHOW}|${url}`));
   assert.deepEqual(
     dupes.map(([url, files]) => `${url} -> ${files.join(', ')}`), [],
-    `${SHOW} has review files sharing a URL — one URL at one outlet for one show is one review`,
+    `${SHOW} has unflagged, non-baselined review files sharing a URL — `
+    + 'one URL at one outlet for one show is one review',
   );
 });

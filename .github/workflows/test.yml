@@ -1205,11 +1205,15 @@ on:
       - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-3092: regression guard for the-addams-family-2010's WSJ same-URL
+      # duplicate. The deleted paywall-boilerplate record was resurrected by a
+      # stale-checkout race 29 minutes after the delete; this asserts it stays
+      # deleted. Same corpus-presence gating as the frankie guard below.
+      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
       # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
       # real by the data-validation job's re-run below, after checkout-review-texts).
-      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
