@@ -151,7 +151,7 @@ test('obClosingBacklogResults: empty or absent report yields nothing', () => {
   assert.deepEqual(obClosingBacklogResults({ reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] } }), []);
 });
 
-test('obClosingBacklogResults: candidates warn with count and first show', () => {
+test('obClosingBacklogResults: single candidate warns with count and show', () => {
   const results = obClosingBacklogResults({
     reviewTextSweep: { candidates: [{ showId: 'clara-2026', proposedClosingDate: '2026-05-10', confidence: 'medium' }] },
     todaytixStaleness: { candidates: [] },
@@ -160,6 +160,31 @@ test('obClosingBacklogResults: candidates warn with count and first show', () =>
   assert.equal(results[0].status, 'warn');
   assert.match(results[0].message, /1 open Off-Broadway show/);
   assert.match(results[0].message, /clara-2026 → 2026-05-10 \[medium\]/);
+});
+
+test('obClosingBacklogResults: names the OLDEST todaytixStaleness candidate, not array position 0', () => {
+  const now = new Date('2026-09-05T00:00:00Z');
+  const results = obClosingBacklogResults({
+    reviewTextSweep: { candidates: [{ showId: 'newer-review-candidate-2026', proposedClosingDate: '2026-08-30', confidence: 'medium' }] },
+    todaytixStaleness: { candidates: [{ showId: 'are-you-now-or-have-you-ever-been-off-broadway-2026', consecutiveMissingChecks: 5, firstMissingDate: '2026-08-03' }] },
+  }, now);
+  assert.equal(results.length, 1);
+  // 2026-08-03 -> 2026-09-05 is 33 days, past the 21-day error threshold, and
+  // older than the reviewTextSweep candidate (which carries no age signal at all).
+  assert.equal(results[0].status, 'error');
+  assert.match(results[0].message, /2 open Off-Broadway show/);
+  assert.match(results[0].message, /are-you-now-or-have-you-ever-been-off-broadway-2026 \(missing 33d\)/);
+});
+
+test('obClosingBacklogResults: recent todaytixStaleness candidate stays warn', () => {
+  const now = new Date('2026-09-05T00:00:00Z');
+  const results = obClosingBacklogResults({
+    reviewTextSweep: { candidates: [] },
+    todaytixStaleness: { candidates: [{ showId: 'freshly-missing-2026', consecutiveMissingChecks: 1, firstMissingDate: '2026-09-01' }] },
+  }, now);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.match(results[0].message, /freshly-missing-2026 \(missing 4d\)/);
 });
 
 // --- neverRunWorkflowResults (task #737: workflows with zero lifetime runs) ---
