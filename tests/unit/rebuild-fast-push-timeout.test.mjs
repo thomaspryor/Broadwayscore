@@ -33,13 +33,14 @@ function findPushStep(doc) {
   return step;
 }
 
-test('rebuild-fast push step overrides GIT_NET_TIMEOUT_SEC below the 90s shared default', () => {
+test('rebuild-fast push step overrides GIT_NET_TIMEOUT_SEC to the shipped 30s value', () => {
   const step = findPushStep(loadWorkflow());
   const env = step.env || {};
   assert.ok('GIT_NET_TIMEOUT_SEC' in env, 'GIT_NET_TIMEOUT_SEC must be set on the push step');
-  const val = Number(env.GIT_NET_TIMEOUT_SEC);
-  assert.ok(Number.isFinite(val) && val > 0, 'GIT_NET_TIMEOUT_SEC must be a positive number');
-  assert.ok(val < 90, 'GIT_NET_TIMEOUT_SEC must be lower than push-with-retry.sh\'s 90s default — that headroom is the whole point of this override (more attempts inside PUSH_DEADLINE_SEC)');
+  // Pins the exact shipped value, not just "< 90" — a drift to e.g. 1s (still
+  // technically under the shared default) would pass a loose bound while
+  // silently starving every fetch/push of real transfer time.
+  assert.equal(env.GIT_NET_TIMEOUT_SEC, '30');
 });
 
 test('rebuild-fast push step still sets the existing deadline/reconcile overrides', () => {
