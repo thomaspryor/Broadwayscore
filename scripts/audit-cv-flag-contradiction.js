@@ -90,7 +90,7 @@ function parseArgs(argv) {
   for (const a of argv) {
     if (a === '--strict') args.strict = true;
     else if (a === '--update-baseline') args.updateBaseline = true;
-    else if (a.startsWith('--window=')) {
+    else if (a.startsWith('--window')) {
       // Keep the RAW token: parseInt truncates, so '1e9' becomes 1 and '30d'
       // becomes 30 — nonsense silently turned into a plausible window
       // (round 4 finding 3). main() validates the token, not just the number.
@@ -99,7 +99,12 @@ function parseArgs(argv) {
       // one-day scan (round 5). That is the very bug round 4 filed --
       // validating the truncation instead of the token -- reintroduced by
       // round 4's own fix.
-      args.windowRaw = a.slice('--window='.length);
+      // Match '--window' broadly, then require the '=<digits>' form. Gating
+      // the branch on '--window=' meant a bare `--window 7` matched NOTHING,
+      // was silently dropped, and the sweep scanned the DEFAULT 30 days while
+      // printing "--window=30d" -- an operator asking for 7 got 30 and a
+      // clean exit 0. Same silent-wrong-window class as the tokens above.
+      args.windowRaw = a.startsWith('--window=') ? a.slice('--window='.length) : a;
       args.window = parseInt(args.windowRaw, 10);
     }
   }
