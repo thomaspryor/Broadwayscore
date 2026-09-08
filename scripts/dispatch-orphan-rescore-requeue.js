@@ -118,12 +118,44 @@ async function run(showId) {
   // which is NOT the same as "a rescore dispatch would help". See
   // hasNoDispatchableOrphans() for the full rationale + the back-compat rule.
   if (hasNoDispatchableOrphans(marker)) {
+    // Escalate ONCE rather than returning 'wait' forever. Codex ship-check
+    // caught that a silent permanent 'wait' is its own failure: the broadcast
+    // stays blocked (correctly — the reviews really are missing) but nothing
+    // ever tells the operator WHY, and the 2-attempt budget that normally
+    // escalates is never consumed because no attempt is ever made. This is a
+    // dead end only a human can clear, so say so, once, with the specific
+    // files. routeAlert dedupes on conditionKey + cooldownHours.
+    const blocked = Array.isArray(marker.orphans)
+      ? marker.orphans
+          .filter((o) => o && o.dispatchActionable === false)
+          .map((o) => `${o.file || o.outletId} — ${o.skipReason || 'unknown'}`)
+      : [];
+    const routed = await routeAlert({
+      conditionKey: conditionKeyFor(showId),
+      title: `Orphan-unscored needs a DATA fix, not a rescore — ${showId}`,
+      description:
+        `${marker.orphanCount} review(s) for ${showId} have includable text but no score, ` +
+        `and the LLM ensemble's own selector would skip every one of them. Re-running ` +
+        `scoring cannot clear this — it just burns a runner (BRO-2985). A human has to ` +
+        `fix the underlying records.`,
+      hint:
+        `Inspect data/audit/orphan-unscored-${showId}.json. For each file: re-fetch the ` +
+        `text if it is a truncated/paywalled capture, or flag it (isNonReview / ` +
+        `wrongShow / contentTier=invalid) if it is not a review at all — the trigger for ` +
+        `BRO-2985 was a spectator.co.uk/submit contact page ingested as a review.`,
+      severity: 'error',
+      disposition: 'human',
+      cooldownHours: 24,
+      fields: [{ name: 'Not dispatchable', value: blocked.join('\n') || '(see marker file)' }],
+    });
     return {
       showId,
-      action: 'wait',
+      action: 'alert',
       orphanCount: marker.orphanCount,
       reason: 'no-dispatchable-orphans',
-      waitMs: 0,
+      // Informational only, same as the exhausted-budget branch below:
+      // may be 'silent'|'human'|'digest' after the allowlist gate (card #611).
+      alertRouted: routed.action,
     };
   }
 

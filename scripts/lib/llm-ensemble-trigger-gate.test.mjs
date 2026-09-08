@@ -163,12 +163,7 @@ test('auditShow: a show whose ONLY orphan is scorer-refused yields zero dispatch
       'the 49-runs-in-2-days loop.',
   );
   assert.equal(result.blockedOrphans.length, 1);
-  // Terminal, so the broadcast gate stops waiting on it too — the-story
-  // opened 2026-09-03 and was still gated on this file 5 days later.
-  assert.equal(result.terminallyBlockedOrphans.length, 1);
-  assert.equal(result.pendingOrphans.length, 0);
   assert.equal(result.orphans[0].dispatchActionable, false);
-  assert.equal(result.orphans[0].terminallyBlocked, true);
   assert.ok(result.orphans[0].skipReason, 'the skip reason must be recorded, not silently dropped');
   // opening-night-broadcast.yml:963 renders this field into the overdue alert.
   assert.equal(
@@ -177,13 +172,12 @@ test('auditShow: a show whose ONLY orphan is scorer-refused yields zero dispatch
   );
 });
 
-test('auditShow: a self-clearing backoff is NOT dispatchable but DOES still block the broadcast', (t) => {
+test('auditShow: a self-clearing backoff is not dispatchable, but is still counted as an orphan', (t) => {
   // Caught by running the fix against the real corpus: 28 of 173 blocked
   // orphans were in the manual-clear Haiku backoff (24h-7d,
-  // manual-clear-fallback-cooldown.js), not a dead end. Dispatching now is
-  // futile — but the file WILL score itself, so a send must keep waiting.
-  // Collapsing "don't dispatch" into "stop blocking" would broadcast a show
-  // while one of its reviews was genuinely mid-retry.
+  // manual-clear-fallback-cooldown.js). Dispatching now is futile, but the
+  // file WILL score itself — and it stays in `orphans`, so the broadcast gate
+  // (which counts orphans, never actionableOrphans) keeps blocking on it.
   t.after(() => fs.rmSync(SYNTHETIC_DIR, { recursive: true, force: true }));
   stage({
     'guardian--in-backoff.json': {
@@ -199,16 +193,6 @@ test('auditShow: a self-clearing backoff is NOT dispatchable but DOES still bloc
 
   assert.equal(result.orphans.length, 1);
   assert.equal(result.actionableOrphans.length, 0, 'a file in backoff must not be dispatched');
-  assert.equal(
-    result.terminallyBlockedOrphans.length,
-    0,
-    'a 24h backoff is NOT a dead end — classifying it terminal would unblock the broadcast early',
-  );
-  assert.equal(
-    result.pendingOrphans.length,
-    1,
-    'the broadcast gate must keep waiting on a file that will score itself',
-  );
   assert.equal(result.orphans[0].skipReason, 'manual_clear_fallback_cooldown');
 });
 

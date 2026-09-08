@@ -61,7 +61,7 @@ const { isIncludableForRebuild } = require('./lib/review-guards');
 // Used here ONLY to decide whether dispatching a rescore can accomplish
 // anything, never to decide whether a file is an orphan: see the long comment
 // on isDispatchActionable() below for why those two questions must stay apart.
-const { unscoredSkipReason, isTransientSkipReason } = require('./lib/scoring-queue-counts');
+const { unscoredSkipReason } = require('./lib/scoring-queue-counts');
 const { dispatchRescore: dispatchRescoreShared } = require('./lib/dispatch-rescore');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -185,36 +185,40 @@ function isScoreableSurvivor(data, show) {
  * excerpt appears, or a flag clears, this returns true again with no producer
  * needing to remember anything.
  *
- * TWO questions, not one. `actionable` answers "dispatch the scorer now?" and
- * is false for every skip reason. `terminal` answers "will this EVER resolve on
- * its own?" and is what the broadcast gate keys on — a file in the manual-clear
- * Haiku backoff (24h–7d) is not actionable this instant but WILL score itself,
- * so a send must keep waiting on it. Collapsing the two would let a broadcast
- * go out while a review was genuinely mid-retry. (Found by running this against
- * the real corpus: 28 of 173 blocked orphans were in that transient cooldown.)
+ * SCOPE — this answers "dispatch the scorer now?" and NOTHING else. It must
+ * never be used to decide whether an opening-night broadcast may send. A skip
+ * reason says what the selector does with the file TODAY; it is not a claim
+ * that the file will never be scoreable. no_scorable_text and
+ * terminal_text_gate_block both clear the moment a refetch supplies text, and
+ * the T1 sweep refetches on a budget. Treating them as permanent would let a
+ * broadcast go out without a paywalled review that was mid-recovery. The
+ * broadcast gate therefore still blocks on EVERY orphan (orphanCount), exactly
+ * as before this fix.
  *
- * @returns {{actionable: boolean, terminal: boolean, skipReason: string|null}}
+ * @returns {{actionable: boolean, skipReason: string|null}}
  */
-function isDispatchActionable(data, show, filePath) {
+function isDispatchActionable(data, show) {
   let skipReason;
   try {
+    // Deliberately NO filePath, matching isScoreableSurvivor's
+    // isIncludableForRebuild(data, show) call above. Ship-check found 3 files
+    // that are eligible without a filePath but excluded with one
+    // (knownSyndicationSecondary): passing it here would mark a file an orphan
+    // and then refuse to dispatch for it, on two different answers to the same
+    // question. Same args to both predicates, and the mismatch errs toward
+    // dispatching rather than toward silence.
     skipReason = unscoredSkipReason(data, {
       show: show || undefined,
       showTitle: show && show.title ? show.title : undefined,
-      filePath,
     });
   } catch {
     // Fail OPEN. A throw here (unreadable corpus, unexpected shape) must not
     // silently suppress a dispatch for a real orphan — that would turn this
     // loop fix into the very silence the guard was written to prevent. An
     // extra dispatch is cheap; a missed opening-night score is not.
-    return { actionable: true, terminal: false, skipReason: null };
+    return { actionable: true, skipReason: null };
   }
-  return {
-    actionable: skipReason === null,
-    terminal: skipReason !== null && !isTransientSkipReason(skipReason),
-    skipReason,
-  };
+  return { actionable: skipReason === null, skipReason };
 }
 
 function isInScoreRange(n) {
@@ -373,8 +377,6 @@ function auditShow(showId, show) {
     return {
       orphans: [],
       actionableOrphans: [],
-      terminallyBlockedOrphans: [],
-      pendingOrphans: [],
       blockedOrphans: [],
       totalScanned: 0,
       eligibleScanned: 0,
@@ -400,8 +402,6 @@ function auditShow(showId, show) {
         // scorer cannot repair it — it will fail to parse the file too. Report
         // and alert; never dispatch. (BRO-2985)
         dispatchActionable: false,
-        // A human must repair or delete the file; no timer clears this.
-        terminallyBlocked: true,
         skipReason: 'corrupt_json',
       });
       continue;
@@ -413,7 +413,7 @@ function auditShow(showId, show) {
 
     if (hasValidScore(data)) continue;
 
-    const { actionable, terminal, skipReason } = isDispatchActionable(data, show, filePath);
+    const { actionable, skipReason } = isDispatchActionable(data, show);
 
     orphans.push({
       file,
@@ -425,9 +425,6 @@ function auditShow(showId, show) {
       // `skipReason` is the scorer's own word for why not (UNSCORED_SKIP.*),
       // null when the scorer would take it.
       dispatchActionable: actionable,
-      // true = this will never resolve without a data fix, so the broadcast
-      // gate must stop waiting on it. false for a self-clearing backoff.
-      terminallyBlocked: terminal,
       skipReason,
       // opening-night-broadcast.yml:963 has always rendered
       // `o.rescoreBlockedReason` into the overdue-alert text, but auditShow
@@ -447,21 +444,13 @@ function auditShow(showId, show) {
     });
   }
 
-  // `orphans` stays the complete list — every consumer that reports or alerts
-  // wants all of them. The two subsets answer the two different questions
-  // (BRO-2985):
-  //   actionableOrphans   — dispatch the scorer NOW? (drives workflow_dispatch)
-  //   pendingOrphans      — should a broadcast keep waiting? (= actionable plus
-  //                         the self-clearing backoffs; excludes only dead ends)
+  // `orphans` stays the complete list and remains the ONLY thing the broadcast
+  // gate counts. `actionableOrphans` is the subset a rescore dispatch can move
+  // right now, and drives dispatch only (BRO-2985).
   const actionableOrphans = orphans.filter((o) => o.dispatchActionable);
-  const terminallyBlockedOrphans = orphans.filter((o) => o.terminallyBlocked);
   return {
     orphans,
     actionableOrphans,
-    terminallyBlockedOrphans,
-    pendingOrphans: orphans.filter((o) => !o.terminallyBlocked),
-    // Retained name for the human-facing log/alert: everything we will not
-    // dispatch for this run, transient or not.
     blockedOrphans: orphans.filter((o) => !o.dispatchActionable),
     totalScanned: files.length,
     eligibleScanned,
@@ -609,17 +598,30 @@ async function main() {
       // The blocked files stay fully visible in `orphans` + `blockedOrphanCount`
       // and still alert, so junk does not become invisible — it just stops
       // holding a send hostage.
-      orphanCount: result.pendingOrphans.length,
-      // Drives DISPATCH only (verify-all-scored above and
-      // dispatch-orphan-rescore-requeue.js). Distinct from orphanCount: a file
-      // in the manual-clear Haiku backoff is pending (keep waiting) but not
-      // dispatchable (a rescore now would just re-hit the cooldown).
+      // UNCHANGED semantics: every orphan, dispatchable or not. The broadcast
+      // gate (dispatch-orphan-rescore-requeue.js:101) keys on this, and it must
+      // keep meaning "reviews are missing from this show".
+      //
+      // An earlier revision of this fix narrowed orphanCount to the dispatchable
+      // subset so a permanently-unscoreable file would stop blocking a send.
+      // Codex adversarial review killed it, correctly: a skip reason is NOT a
+      // statement about permanence. no_scorable_text and terminal_text_gate_block
+      // both clear the instant a refetch supplies text (scorable-text.js
+      // selectScorableText is a pure function of the CURRENT text;
+      // rescore-lifecycle.js:92 unblocks on any fullText-length change), and the
+      // T1 sweep refetches on a budget. A paywalled NYT review mid-recovery
+      // would have silently stopped blocking and the broadcast would have sent
+      // without it — the exact failure the guard exists to prevent. Send-safety
+      // must not be inferred from today's scorer selector.
+      orphanCount: result.orphans.length,
+      // Drives DISPATCH ONLY — never the broadcast gate. 0 means no rescore can
+      // move any remaining orphan right now, so dispatching just burns a
+      // ~32-minute runner and re-triggers the chain (BRO-2985).
       dispatchableOrphanCount: result.actionableOrphans.length,
-      totalOrphanCount: result.orphans.length,
-      blockedOrphanCount: result.terminallyBlockedOrphans.length,
+      blockedOrphanCount: result.blockedOrphans.length,
       // Broadcast gate reads this file and refuses to send while orphans
       // exist on any pending show. See opening-night-broadcast.yml.
-      blockBroadcast: result.pendingOrphans.length > 0,
+      blockBroadcast: true,
       // Honest report of what verify-all-scored did this run. Possible values:
       //   'ok'         — workflow_dispatch succeeded; rescore is queued
       //   'failed:...' — dispatch attempted but errored
@@ -715,9 +717,10 @@ async function main() {
   const description =
     `${showsWithOrphans.length} show(s) in the ±${WINDOW_DAYS}d opening-night window have ` +
     `review files with includable text but no assignedScore. Marker files written to ` +
-    `data/audit/orphan-unscored-{showId}.json — broadcast is blocked until the LLM ensemble ` +
-    `fills in the dispatchable ones. Orphans marked BLOCKED below are excluded from that gate: ` +
-    `the scorer refuses them deterministically, so they need a data fix, not another rescore (BRO-2985).`;
+    `data/audit/orphan-unscored-{showId}.json — broadcast stays blocked until these are ` +
+    `filled in. Orphans marked BLOCKED below still block the send, but no rescore was ` +
+    `dispatched for them: the scorer's own selector would skip them, so they need a DATA fix ` +
+    `(re-fetch the text, or flag it if it is not a review) rather than another scoring run (BRO-2985).`;
 
   if (DRY_RUN) {
     console.log('\n[DRY RUN] Would send Discord alert:');
