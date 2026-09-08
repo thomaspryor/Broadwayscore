@@ -865,3 +865,21 @@ test('runTestGate: tests/unit/ correspondence already failing on the baseline sh
   assert.equal(result.passed, true, 'a tests/unit/ failure already red on origin/main must not block this merge');
   assert.match(result.output, /pre-existing on origin\/main/);
 });
+
+// Real-repo pin (mirrors the workflow-guard "live-API guard" pin above): the
+// workflow class has REQUIRED_WORKFLOW_GUARDS + content discovery to notice
+// if the guard set silently goes to zero (BRO-2785's own failure mode). The
+// scripts/**/*.{js,mjs,cjs} -> tests/unit/ correspondence has no such
+// invariant — it is pure basename lookup with no "must find something"
+// check — so a wholesale tests/unit/ restructure could silently zero out
+// this entire protection with no signal (Codex adversarial review,
+// 2026-09-08). This pin at least catches total mechanism death: if it ever
+// goes red, correspondence discovery broke for the ENTIRE real repo, not
+// just one file.
+test('listCorrespondingUnitTestFiles: the real repo has at least one live scripts/ -> tests/unit/ correspondence (mechanism-alive pin)', () => {
+  const found = listCorrespondingUnitTestFiles(REPO_ROOT, [
+    'scripts/linear-drain-parked.js',
+    'scripts/lib/landed-but-open-reconciler.js',
+  ]);
+  assert.ok(found.length > 0, 'correspondence discovery found nothing for two known real files — the mechanism may be silently dead');
+});
