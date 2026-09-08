@@ -68,7 +68,7 @@ const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
-const { summarizeCmuxFailures } = require('./lib/cmux-socket-auth.js');
+const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -620,12 +620,18 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   const entries = readLedgerEntriesFn();
   const trackedIds = new Set(entries.filter(e => e.taskId != null).map(e => String(e.taskId)));
   let workspaces = [];
-  // Degrading to skip-none is right for a cmux that is merely down, but the
-  // failure still has to be SEEN: this was the third blind spot in BRO-2959,
-  // where an auth rejection here produced literally no output at all.
+  // BRO-2993: a failed listing must NOT read the same as "cmux confirmed
+  // zero workspaces" — the two are opposite evidence for the liveTab guard
+  // below. `cmuxUnavailable` (set only in the catch) makes the distinction
+  // explicit so the guard can fail closed instead of silently becoming a
+  // no-op on an empty array. The failure still has to be SEEN either way:
+  // this was the third blind spot in BRO-2959, where an auth rejection here
+  // produced literally no output at all.
+  let cmuxUnavailable = null;
   try {
     workspaces = listWorkspacesFn() || [];
   } catch (e) {
+    cmuxUnavailable = classifyCmuxError(e);
     reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${e.message}` });
   }
 
@@ -672,7 +678,12 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
     if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
-    const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
+    // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
+    // authorize action, so treat every remaining candidate as if its tab
+    // were live rather than falling through with an unverified empty list.
+    const liveTab = cmuxUnavailable
+      ? { ref: `cmux-unavailable:${cmuxUnavailable}` }
+      : workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
     if (liveTab) { skipped.push({ id, why: `live-tab ${liveTab.ref}` }); continue; }
     const notionId = notionIdOfTask(task);
     if (!notionId) { skipped.push({ id, why: 'no-notion-id' }); continue; } // no timestamp source — too blind to flip
