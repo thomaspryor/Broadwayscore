@@ -68,6 +68,7 @@ const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-ef
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
+const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -348,7 +349,7 @@ function buildSubject({ health = null, autofixRows = null, now = new Date() } = 
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -465,6 +466,18 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       ? renderNamedDigestBlock('Trunk (main CI)', trunkLine)
       : `<p style="font-size:12px;color:#15803d;margin:0 0 12px;">${esc(trunkLine.text)}</p>`);
   }
+  // Backlog inflow (BRO-3017). A STANDING line, same as the trunk row above
+  // and for the same reason: this metric drifted to 3.3 issues filed per 1
+  // closed with 1,074 open precisely because nothing ever reported the rate.
+  // Rendered green when healthy rather than hidden — a row that only appears
+  // when it is angry teaches the reader that silence means "fine", which is
+  // indistinguishable from a dead collector. Colour by status; the verdict
+  // itself is decided in lib/backlog-inflow-ratio.js, never here.
+  if (inflow && inflow.message) {
+    const colour = inflow.status === 'error' ? '#b91c1c' : inflow.status === 'watch' ? '#b45309' : inflow.status === 'unknown' ? '#666' : '#15803d';
+    const prefix = inflow.status === 'error' || inflow.status === 'watch' ? '⚠️ ' : '';
+    blocks.push(`<p style="font-size:12px;color:${colour};margin:0 0 12px;">${prefix}${esc(inflow.message)}</p>`);
+  }
   if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
   // Waiting on your approval (BRO-282) — Linear issues carrying the
   // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
@@ -522,7 +535,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -554,7 +567,7 @@ function composeDigestEmail({
   }
 
   const subject = buildSubject({ health: sections.health, autofixRows, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
   return { subject, html };
 }
 
@@ -725,6 +738,27 @@ async function main() {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
+  // Live fetch, fail-soft, raced against a 20s timeout — the same shape as the
+  // awaiting-owner section above and for the same reason: a degraded Linear
+  // API must not delay the 7:30am send. 20s rather than that block's 15s
+  // because this walks four paginated counts, not one list; both are wrapped
+  // locally rather than by changing listOpenIssues()'s shared retry defaults.
+  let inflow = null;
+  try {
+    const { graphql } = require('./lib/linear-client.js');
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
+    // `new Date()` inline, NOT the `now` binding — that const is declared ~140
+    // lines below this block, so referencing it here is a TDZ ReferenceError
+    // that the catch would swallow into one WARN line and a row that never
+    // renders. Exactly the fail-soft-hides-breakage shape that let every
+    // consumer of the Notion read-only flip report success while dead.
+    const counts = await Promise.race([fetchInflowCounts({ graphql, now: new Date() }), timeout(20_000)]);
+    inflow = assessInflowRatio(counts);
+  } catch (err) {
+    console.error(`[digest] WARN backlog inflow ratio failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must
@@ -839,7 +873,7 @@ async function main() {
   } catch { /* optional */ }
 
   const now = new Date();
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
