@@ -46,6 +46,16 @@ jobs:
         run: |
           OUT=$(node scripts/linear-drain-parked.js --dry-run)
           echo "$OUT"
+          # ship-check finding (Codex adversarial review): the kill-switch
+          # early-return never prints a "DRY RUN: N candidate(s)" line, so
+          # without this check a flipped LINEAR_NEXT_DISABLED=1 would make
+          # the grep below default to N=0 and this monitor would silently
+          # report "healthy" while dispatch is actually off — the exact
+          # silent-starvation failure mode this workflow exists to catch.
+          if echo "$OUT" | grep -q 'LINEAR_NEXT_DISABLED=1'; then
+            echo "::warning::linear-drain-parked.js reports LINEAR_NEXT_DISABLED=1 — dispatch is switched off repo-wide"
+            exit 1
+          fi
           N=$(echo "$OUT" | grep -oE 'DRY RUN: [0-9]+ candidate' | grep -oE '[0-9]+' || true)
           N=${N:-0}
           echo "Eligible-but-undispatched parked issues: $N"
