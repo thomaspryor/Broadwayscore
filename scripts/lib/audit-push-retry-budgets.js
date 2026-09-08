@@ -412,15 +412,23 @@ function parseWorkflow(text) {
 
         const runText = runField ? scalarBlockText(lines, runField.idx, runField.inline) : '';
         let envDeadlineSec = null;
+        let envFallbackAfterAttempts = null;
+        let envFallbackDisabled = false;
         if (envField) {
           const envKids = childLines(lines, envField.idx);
           const deadlineField = findChildKey(envKids, 'PUSH_DEADLINE_SEC');
           if (deadlineField) envDeadlineSec = parseIntOrNull(deadlineField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackAfterField = findChildKey(envKids, 'PUSH_API_FALLBACK_AFTER_ATTEMPTS');
+          if (fallbackAfterField) envFallbackAfterAttempts = parseIntOrNull(fallbackAfterField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackDisableField = findChildKey(envKids, 'PUSH_API_FALLBACK_DISABLE');
+          if (fallbackDisableField) envFallbackDisabled = fallbackDisableField.inline.replace(/^['"]|['"]$/g, '').trim() === '1';
         }
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
         step.runText = runText;
         step.envDeadlineSec = envDeadlineSec;
+        step.envFallbackAfterAttempts = envFallbackAfterAttempts;
+        step.envFallbackDisabled = envFallbackDisabled;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
       }
@@ -586,6 +594,15 @@ function backoffForAttempt(i) {
   return 3 + 2 * i;
 }
 
+// push-with-retry.sh ~L594: _default_fallback_after=$(( (MAX_RETRIES + 1) / 2 )),
+// floored at 3, then PUSH_API_FALLBACK_AFTER_ATTEMPTS=${PUSH_API_FALLBACK_AFTER_ATTEMPTS:-$_default_fallback_after}.
+// Bash `/` on positive integers truncates toward zero, same as Math.floor here
+// since maxRetries+1 is always >= 0.
+function computeEffectiveFallbackAfter(maxRetries, explicitOverride) {
+  if (explicitOverride != null) return explicitOverride;
+  return Math.max(3, Math.floor((maxRetries + 1) / 2));
+}
+
 function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = MIN_TIMED_OUT_ATTEMPT_SEC) {
   if (!(maxRetries > 0) || !(deadlineSec > 0)) return 0;
   let elapsed = 0;
@@ -677,10 +694,14 @@ function estimateCronIntervalMinutes(text) {
  *   maxRetries: number, deadlineSec: number, backoffSum: number,
  *   retryDeadlineRatio: number, jobTimeoutSec: number, stepBudgetSec: number,
  *   otherStepsBudgetSec: number, marginSec: number, marginRatio: number,
+ *   fallbackAfterAttempts: number, fallbackReachable: boolean,
  *   flags: string[]
  * }}
  */
-function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0 }) {
+function evaluateStep({
+  maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0,
+  fallbackAfterAttemptsOverride = null, fallbackDisabled = false,
+}) {
   const backoffSum = computeBackoffSum(maxRetries);
   const retryDeadlineRatio = deadlineSec > 0 ? backoffSum / deadlineSec : Infinity;
   const jobTimeoutSec = (jobTimeoutMinutes == null ? DEFAULT_JOB_TIMEOUT_MIN : jobTimeoutMinutes) * 60;
@@ -689,6 +710,8 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
 
   const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
+  const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
+  const fallbackReachable = fallbackDisabled || fundableAttempts >= fallbackAfterAttempts;
 
   const flags = [];
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
@@ -703,11 +726,25 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   if (fundableAttempts < Math.min(maxRetries, MIN_FUNDABLE_ATTEMPTS)) {
     flags.push('deadline-cannot-fund-retries');
   }
+  // BRO-2811: same class as BRO-2370 DEFECT B, made systemic. push-with-retry.sh
+  // checks its loop-top deadline BEFORE an attempt starts (~L1091, the same
+  // control flow computeFundableAttempts models), so an attempt that would first
+  // reach PUSH_API_FALLBACK_AFTER_ATTEMPTS (explicit override, else floor(3,
+  // (MAX_RETRIES+1)/2) — mirrors push-with-retry.sh ~L594) never starts once
+  // fundableAttempts attempts have already exhausted the deadline. A step whose
+  // deadline cannot fund even MIN_FUNDABLE_ATTEMPTS is already caught above, but
+  // this catches the distinct case data-health-check.yml shipped with: 3+
+  // fundable attempts (so not flagged there), yet the fallback threshold itself
+  // sits past that count (fundable=5, fallbackAfter=13) — the Git Data API
+  // rescue path this exists for never engages.
+  if (!fallbackReachable) {
+    flags.push('fallback-threshold-unreachable');
+  }
 
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
-    fundableAttempts,
+    fundableAttempts, fallbackAfterAttempts, fallbackReachable,
     flags,
   };
 }
@@ -773,6 +810,8 @@ function auditWorkflowText(text, filePath) {
         deadlineSec,
         jobTimeoutMinutes: job.timeoutMinutes,
         otherStepsBudgetSec,
+        fallbackAfterAttemptsOverride: step.envFallbackAfterAttempts,
+        fallbackDisabled: step.envFallbackDisabled === true,
       });
 
       // A push wrapped in `|| echo`/`|| true` or a `continue-on-error: true`
@@ -841,6 +880,7 @@ module.exports = {
   MIN_FUNDABLE_ATTEMPTS,
   backoffForAttempt,
   computeFundableAttempts,
+  computeEffectiveFallbackAfter,
   parseWorkflow,
   findPushRetryCalls,
   countRawCallSites,

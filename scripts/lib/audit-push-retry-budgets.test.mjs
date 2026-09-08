@@ -19,6 +19,7 @@ const {
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
   computeFundableAttempts,
+  computeEffectiveFallbackAfter,
   backoffForAttempt,
   GIT_NET_TIMEOUT_SEC,
   MIN_TIMED_OUT_ATTEMPT_SEC,
@@ -703,4 +704,138 @@ test('evaluateStep: the new flag is independent of retries-undersized-vs-deadlin
   const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 60 });
   assert.ok(!r.flags.includes('retries-undersized-vs-deadline'));
   assert.ok(r.fundableAttempts < r.maxRetries);
+});
+
+// ── computeEffectiveFallbackAfter / fallback-threshold-unreachable (BRO-2811,
+// same class as BRO-2370 DEFECT B made systemic) ────────────────────────────
+// push-with-retry.sh derives PUSH_API_FALLBACK_AFTER_ATTEMPTS as
+// max(3, floor((MAX_RETRIES+1)/2)) unless a caller overrides it, then breaks
+// out of the local retry loop early once that many failed attempts have run
+// (~L1952) to try the Git Data API fallback. The deadline-cannot-fund-retries
+// flag above only catches a step that can't fund MIN_FUNDABLE_ATTEMPTS (3) —
+// this catches the DISTINCT, higher bar of the derived/explicit fallback
+// threshold itself being unreachable, which is exactly what BRO-2370 found on
+// data-health-check.yml: fundable=5 (well above 3, so NOT deadline-cannot-
+// fund-retries) yet fallbackAfter=13 (unreachable).
+
+test('computeEffectiveFallbackAfter: derives push-with-retry.sh\'s own floor(3, (N+1)/2) formula with no override', () => {
+  assert.equal(computeEffectiveFallbackAfter(7, null), 4); // (7+1)/2=4
+  assert.equal(computeEffectiveFallbackAfter(25, null), 13); // (25+1)/2=13 — the exact BRO-2370 number
+  assert.equal(computeEffectiveFallbackAfter(1, null), 3); // floors at 3 even for tiny MAX_RETRIES
+  assert.equal(computeEffectiveFallbackAfter(3, null), 3); // (3+1)/2=2, floored up to 3
+});
+
+test('computeEffectiveFallbackAfter: an explicit override always wins over the derived default', () => {
+  assert.equal(computeEffectiveFallbackAfter(25, 3), 3); // data-health-check.yml's actual BRO-2370 fix
+  assert.equal(computeEffectiveFallbackAfter(7, 1), 1); // even a value the derived formula would never produce
+});
+
+test('evaluateStep: flags fallback-threshold-unreachable on the exact BRO-2370 data-health-check.yml pre-fix shape (25 retries / 900s deadline, no override)', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40 });
+  assert.equal(r.fallbackAfterAttempts, 13);
+  assert.ok(r.fundableAttempts >= 4 && r.fundableAttempts <= 6, `expected the same 4-6 fundable range as the existing computeFundableAttempts test, got ${r.fundableAttempts}`);
+  assert.equal(r.fallbackReachable, false);
+  assert.ok(r.flags.includes('fallback-threshold-unreachable'));
+  // and NOT deadline-cannot-fund-retries — that flag's own bar (3) is cleared
+  // here, which is precisely why this is a DIFFERENT failure this flag alone
+  // catches.
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: the actual BRO-2370 fix (PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 override) clears the flag on the SAME 25/900 shape', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackAfterAttemptsOverride: 3 });
+  assert.equal(r.fallbackAfterAttempts, 3);
+  assert.equal(r.fallbackReachable, true);
+  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+});
+
+test('evaluateStep: fallbackDisabled short-circuits the check regardless of reachability', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackDisabled: true });
+  assert.equal(r.fallbackReachable, true);
+  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+});
+
+test('evaluateStep: a modest sizing where fundableAttempts already meets the derived fallback threshold is not flagged', () => {
+  // update-show-status.yml's real shape: 7 retries / 1200s deadline. Derived
+  // fallbackAfter = floor(8/2) = 4; fundableAttempts at 1200s comfortably
+  // clears that.
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 1200, jobTimeoutMinutes: 60 });
+  assert.equal(r.fallbackAfterAttempts, 4);
+  assert.ok(r.fundableAttempts >= 4);
+  assert.equal(r.fallbackReachable, true);
+  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+});
+
+test('parseWorkflow: PUSH_API_FALLBACK_AFTER_ATTEMPTS and PUSH_API_FALLBACK_DISABLE are read from the step env block', () => {
+  const text = `
+name: Fixture Fallback Env
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit digest snapshot
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+      - name: Commit disabled-fallback step
+        env:
+          PUSH_API_FALLBACK_DISABLE: '1'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const parsed = parseWorkflow(text);
+  const [stepA, stepB] = parsed.jobs[0].steps;
+  assert.equal(stepA.envFallbackAfterAttempts, 3);
+  assert.equal(stepA.envFallbackDisabled, false);
+  assert.equal(stepB.envFallbackDisabled, true);
+  assert.equal(stepB.envFallbackAfterAttempts, null);
+});
+
+test('auditWorkflowText: end-to-end, an explicit PUSH_API_FALLBACK_AFTER_ATTEMPTS override is honored and clears the flag (real data-health-check.yml shape)', () => {
+  const text = `
+name: Fixture Data Health Check Shape
+on:
+  workflow_dispatch: {}
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit digest snapshot
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-data-health-check-shape.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].fallbackAfterAttempts, 3);
+  assert.ok(!results[0].flags.includes('fallback-threshold-unreachable'));
+});
+
+test('auditWorkflowText: end-to-end, the SAME shape WITHOUT the override is flagged (the exact bug BRO-2370 found and BRO-2811 makes systemic)', () => {
+  const text = `
+name: Fixture Data Health Check Shape No Override
+on:
+  workflow_dispatch: {}
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit health check + triage data
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-data-health-check-shape-no-override.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].fallbackAfterAttempts, 13);
+  assert.ok(results[0].flags.includes('fallback-threshold-unreachable'));
 });
