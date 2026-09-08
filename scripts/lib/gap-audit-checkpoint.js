@@ -77,26 +77,60 @@ function saveCheckpointEntries(checkpointPath, entries) {
   });
 }
 
+// BRO-392: a rollback always restores the PRE-quarantine (arbitrarily old)
+// timestamp, so a chronically-risky show's checkpoint entry never advances —
+// it permanently reads as "most overdue" (compareAuditPriority sorts oldest
+// `at` first) and gets re-selected into nearly every subsequent hourly
+// batch, re-tripping the blast-radius guard and reddening the workflow every
+// single run it's picked (observed: the same ~9-10 off-broadway shows,
+// frozen at an early-August computedAt, recurred in nearly every run from
+// 2026-09-07 onward). This cap breaks that starvation loop: after
+// `DEFAULT_QUARANTINE_STREAK_CAP` consecutive rollbacks, the show's
+// freshly-audited stamp from THIS run is allowed to stand instead of being
+// rolled back again, so it falls back to its normal freshness cadence
+// (freshnessMsFor) rather than front-running the least-recently-audited
+// queue forever. It stays visibly quarantined in show-review-gap.json (a
+// separate file/lock) and keeps alerting via routeAlert's own cooldown —
+// only the CHECKPOINT stops starving.
+const DEFAULT_QUARANTINE_STREAK_CAP = 3;
+
 /**
  * Pure restore-vs-delete branching for a refused (blast-radius) run's
  * checkpoint rollback. For each id in `auditedIds`: if `checkpointAtStart`
  * had a pre-run entry for it, restore that entry (the show WAS audited
- * before, this run's stamp just isn't trustworthy); otherwise delete it
- * entirely (the show was never audited before this run, so leaving a stamp
- * behind — even a rolled-back one — would be inventing history). Extracted
- * per CLAUDE.md §15 so the branching is unit-testable without spinning up the
- * whole audit script.
+ * before, this run's stamp just isn't trustworthy) and bump its
+ * `quarantineStreak`; otherwise delete it entirely (the show was never
+ * audited before this run, so leaving a stamp behind — even a rolled-back
+ * one — would be inventing history). Once the streak exceeds `streakCap`
+ * (BRO-392), the restore is skipped for that id — this run's fresh stamp
+ * stands (with the streak reset to 0) so the checkpoint stops starving.
+ * Extracted per CLAUDE.md §15 so the branching is unit-testable without
+ * spinning up the whole audit script.
  *
  * @param {Object} current            checkpoint re-read fresh under the lock
  * @param {string[]} auditedIds       ids THIS run touched
  * @param {Object} checkpointAtStart  pre-run snapshot (may be null/{})
+ * @param {Object} [opts]
+ * @param {number} [opts.streakCap=DEFAULT_QUARANTINE_STREAK_CAP]
  */
-function applyCheckpointRollback(current, auditedIds, checkpointAtStart) {
+function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = {}) {
+  const streakCap = opts.streakCap == null ? DEFAULT_QUARANTINE_STREAK_CAP : opts.streakCap;
   const merged = { ...(current || {}) };
   const snapshot = checkpointAtStart || {};
   for (const id of auditedIds || []) {
-    if (Object.prototype.hasOwnProperty.call(snapshot, id)) merged[id] = snapshot[id];
-    else delete merged[id];
+    if (!Object.prototype.hasOwnProperty.call(snapshot, id)) {
+      delete merged[id];
+      continue;
+    }
+    const priorStreak = Number.isFinite(snapshot[id].quarantineStreak) ? snapshot[id].quarantineStreak : 0;
+    const nextStreak = priorStreak + 1;
+    if (nextStreak > streakCap) {
+      // Circuit breaker tripped: leave this run's fresh stamp (already in
+      // `current`/`merged`) in place instead of restoring the stale one.
+      if (merged[id]) merged[id] = { ...merged[id], quarantineStreak: 0 };
+      continue;
+    }
+    merged[id] = { ...snapshot[id], quarantineStreak: nextStreak };
   }
   return merged;
 }
@@ -105,13 +139,13 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart) {
  * Lock + re-read + applyCheckpointRollback + write, in one call — the
  * rollback call site's counterpart to saveCheckpointEntries.
  */
-function rollbackCheckpointEntries(checkpointPath, auditedIds, checkpointAtStart) {
+function rollbackCheckpointEntries(checkpointPath, auditedIds, checkpointAtStart, opts = {}) {
   withFileLock(`${checkpointPath}.lock`, (held) => {
     if (!held) {
       console.error(`::warning::gap-audit-checkpoint rollback lock could not be acquired for ${checkpointPath} (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent run could have lost data.`);
     }
     const current = loadCheckpoint(checkpointPath);
-    const merged = applyCheckpointRollback(current, auditedIds, checkpointAtStart);
+    const merged = applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts);
     writeJsonAtomic(checkpointPath, merged);
   });
 }
@@ -123,4 +157,5 @@ module.exports = {
   saveCheckpointEntries,
   applyCheckpointRollback,
   rollbackCheckpointEntries,
+  DEFAULT_QUARANTINE_STREAK_CAP,
 };

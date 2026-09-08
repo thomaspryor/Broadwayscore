@@ -6,7 +6,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeCheckpointEntries, applyCheckpointRollback } = require('./gap-audit-checkpoint.js');
+const { mergeCheckpointEntries, applyCheckpointRollback, DEFAULT_QUARANTINE_STREAK_CAP } = require('./gap-audit-checkpoint.js');
 
 test('mergeCheckpointEntries: writes only the touched ids, leaves others untouched', () => {
   const current = {
@@ -44,11 +44,11 @@ test('mergeCheckpointEntries: does not mutate its inputs', () => {
   assert.deepStrictEqual(entries, { a: { x: 2 }, b: { x: 3 } });
 });
 
-test('applyCheckpointRollback: restores the pre-run entry for a previously-audited show', () => {
+test('applyCheckpointRollback: restores the pre-run entry for a previously-audited show, stamping streak=1', () => {
   const current = { 'show-a': { at: 'NOW-refused-run', gaps: 0, uncollected: 0 } };
   const checkpointAtStart = { 'show-a': { at: 'PRE-RUN', gaps: 5, uncollected: 5 } };
   const rolled = applyCheckpointRollback(current, ['show-a'], checkpointAtStart);
-  assert.deepStrictEqual(rolled['show-a'], checkpointAtStart['show-a']);
+  assert.deepStrictEqual(rolled['show-a'], { ...checkpointAtStart['show-a'], quarantineStreak: 1 });
 });
 
 test('applyCheckpointRollback: deletes the entry for a show never audited before this run', () => {
@@ -73,8 +73,32 @@ test('applyCheckpointRollback: mixed batch — some restore, some delete, in one
   };
   const checkpointAtStart = { 'show-old': { at: 'PRE-RUN', gaps: 3 } }; // show-new absent
   const rolled = applyCheckpointRollback(current, ['show-old', 'show-new'], checkpointAtStart);
-  assert.deepStrictEqual(rolled['show-old'], { at: 'PRE-RUN', gaps: 3 });
+  assert.deepStrictEqual(rolled['show-old'], { at: 'PRE-RUN', gaps: 3, quarantineStreak: 1 });
   assert.strictEqual('show-new' in rolled, false);
+});
+
+test('applyCheckpointRollback: quarantineStreak accumulates across repeated rollbacks', () => {
+  const checkpointAtStart = { 'show-a': { at: 'PRE-RUN', gaps: 5, quarantineStreak: 1 } };
+  const current = { 'show-a': { at: 'NOW-refused-run-2', gaps: 0 } };
+  const rolled = applyCheckpointRollback(current, ['show-a'], checkpointAtStart);
+  assert.strictEqual(rolled['show-a'].quarantineStreak, 2);
+  assert.strictEqual(rolled['show-a'].at, 'PRE-RUN', 'still restores the stale timestamp below the cap');
+});
+
+test('applyCheckpointRollback: circuit breaker trips once streak exceeds the cap — this run\'s fresh stamp stands', () => {
+  const checkpointAtStart = { 'show-a': { at: 'PRE-RUN', gaps: 5, quarantineStreak: 3 } };
+  const current = { 'show-a': { at: 'NOW-refused-run-4', gaps: 0 } };
+  const rolled = applyCheckpointRollback(current, ['show-a'], checkpointAtStart, { streakCap: 3 });
+  assert.strictEqual(rolled['show-a'].at, 'NOW-refused-run-4', 'must NOT restore the stale PRE-RUN timestamp once the cap is exceeded');
+  assert.strictEqual(rolled['show-a'].quarantineStreak, 0, 'streak resets once the breaker trips');
+});
+
+test('applyCheckpointRollback: default streak cap matches the exported constant', () => {
+  assert.strictEqual(DEFAULT_QUARANTINE_STREAK_CAP, 3);
+  const checkpointAtStart = { 'show-a': { at: 'PRE-RUN', quarantineStreak: DEFAULT_QUARANTINE_STREAK_CAP } };
+  const current = { 'show-a': { at: 'NOW-fresh', gaps: 0 } };
+  const rolled = applyCheckpointRollback(current, ['show-a'], checkpointAtStart);
+  assert.strictEqual(rolled['show-a'].at, 'NOW-fresh', 'default cap must trip without passing opts.streakCap explicitly');
 });
 
 test('applyCheckpointRollback: null checkpointAtStart treated as "nothing was pre-existing" (all deletes)', () => {
