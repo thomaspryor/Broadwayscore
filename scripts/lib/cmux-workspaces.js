@@ -36,8 +36,16 @@ function cmuxAvailable() {
 // that would otherwise have been admitted by cmux-ancestry alone would now
 // fail on a credential it never needed. So on an auth rejection we re-read
 // the config once (picking up a rotation) and, failing that, try again with
-// no credential at all. Only auth failures retry — a refused connection is
-// left to the caller's own degraded path, unchanged.
+// no credential at all.
+//
+// Retrying ONLY on auth-denied is what makes this safe for the mutating
+// commands that also come through here (closing a workspace, respawn-pane,
+// workspace-action, creating a workspace). An auth rejection happens at the
+// connection handshake, BEFORE the daemon ever sees the command, so nothing
+// was applied and re-sending cannot double-apply it. A timeout is the
+// opposite — the command may well have landed and only the reply was lost —
+// which is exactly why timeouts (and refused connections) are re-thrown to
+// the caller's existing degraded path instead of being retried here.
 //
 // The timeout is new too: this call sits inside a 5-min launchd tick, and a
 // wedged socket previously blocked it indefinitely, silently disabling the

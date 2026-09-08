@@ -71,7 +71,19 @@ function extractSocketPassword(configText) {
     return typeof pw === 'string' && pw !== '' ? pw : null;
   } catch { /* JSONC — fall through to the targeted match */ }
 
-  const m = /"socketPassword"\s*:\s*"((?:[^"\\]|\\.)*)"/.exec(configText);
+  // Drop COMMENTED-OUT lines before matching. cmux ships a large commented
+  // template that contains its own `// "socketPassword" : "..."` line, and
+  // taking the first textual match would happily inject a credential the
+  // operator never enabled (ship-check finding). Only whole-line comments are
+  // removed — a line whose first non-whitespace characters are `//` — which
+  // deliberately leaves the "$schema": "https://..." value intact, since that
+  // "//" is mid-line and stripping it would corrupt the document.
+  const active = configText
+    .split('\n')
+    .filter((line) => !/^\s*\/\//.test(line))
+    .join('\n');
+
+  const m = /"socketPassword"\s*:\s*"((?:[^"\\]|\\.)*)"/.exec(active);
   if (!m) return null;
   try {
     const pw = JSON.parse(`"${m[1]}"`);
@@ -94,9 +106,15 @@ function extractSocketPassword(configText) {
  */
 function classifyCmuxError(err) {
   if (!err) return 'unknown';
+  // Deliberately does NOT read err.stdout. stdout carries COMMAND OUTPUT —
+  // workspace titles, `top` process tables — any of which could contain the
+  // literal words "Access denied" and be mistaken for a rejection (ship-check
+  // finding). Since the only mutating retry in the tree keys off this verdict,
+  // a content-driven false positive there would re-send a command that had
+  // already been applied. Diagnosis comes from the failure channels only.
   const text = typeof err === 'string'
     ? err
-    : `${err.message || ''}\n${err.stderr || ''}\n${err.stdout || ''}`;
+    : `${err.message || ''}\n${err.stderr || ''}`;
   if (!text.trim()) return 'unknown';
 
   // Both rejection shapes cmux emits: no credential offered, and a wrong one.

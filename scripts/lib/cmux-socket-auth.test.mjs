@@ -79,6 +79,40 @@ test('classifyCmuxError separates a permanent auth fault from a transient outage
   }
 });
 
+test('extractSocketPassword ignores a COMMENTED-OUT socketPassword', () => {
+  // cmux ships a commented template carrying its own socketPassword line.
+  // Picking that up would inject a credential the operator never enabled.
+  const commentedOnly = `{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+  //   "automation" : {
+  //     "socketPassword" : "TEMPLATE-VALUE-NOT-ACTIVE",
+  //   },
+}`;
+  assert.equal(auth.extractSocketPassword(commentedOnly), null);
+});
+
+test('extractSocketPassword picks the ACTIVE password even when a commented one precedes it', () => {
+  const commentedFirst = `{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  //     "socketPassword" : "COMMENTED-DECOY",
+  "automation": {
+    "socketPassword": "the-real-one"
+  },
+}`;
+  assert.equal(auth.extractSocketPassword(commentedFirst), 'the-real-one');
+});
+
+test('classifyCmuxError ignores stdout — command OUTPUT must never read as a rejection', () => {
+  // A workspace title or `top` table containing "Access denied" would
+  // otherwise be misread as an auth failure and trigger a mutating retry of a
+  // command that already applied.
+  const err = new Error('Command failed: cmux send');
+  err.stdout = 'workspace:7  Investigating the Access denied incident\n';
+  err.stderr = '';
+  assert.notEqual(auth.classifyCmuxError(err), 'auth-denied');
+});
+
 test('classifyCmuxError reads stderr off a real execFileSync-shaped error', () => {
   const err = new Error('Command failed: /Applications/cmux.app/.../cmux list-workspaces');
   err.stderr = 'Error: ERROR: Access denied - only processes started inside cmux can connect\n';

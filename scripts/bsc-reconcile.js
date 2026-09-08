@@ -103,6 +103,13 @@ const MAX_REVIVE_PER_TICK = 3;
 // end rather than paging per sweep (BRO-2959). Routing through report() means
 // all three sweep sites are covered by construction — including any added
 // later — instead of each remembering to escalate for itself.
+//
+// The '-error' suffix is deliberately broad (today it matches exactly the
+// three cmux sweep kinds: task-sweep-error, flagless-sweep-error,
+// untracked-sweep-error). It cannot over-page even if an unrelated '-error'
+// kind is added later, because escalation is gated a second time on
+// classifyCmuxError: anything that isn't recognisably a cmux auth rejection
+// classifies as 'unknown' and never escalates.
 const cmuxFailuresThisTick = [];
 
 function report(line) {

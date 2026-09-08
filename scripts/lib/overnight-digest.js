@@ -132,9 +132,18 @@ function gatherDigest({ repo, hours = 24 } = {}) {
   // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
   // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
   // morning email for minutes (codex ship-check). Coarse calls keep 30s.
-  // cmux calls need the socket credential like every other caller (BRO-2959);
-  // git/gh calls are unaffected by the extra variable.
-  const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, { cwd: cwd || repo, encoding: 'utf8', timeout: timeoutMs, stdio: ['ignore', 'pipe', 'pipe'], env: cmuxSpawnEnv(process.env) });
+  // Only cmux gets the socket credential (BRO-2959). This same helper also
+  // shells out to git and gh, and handing those children a plaintext password
+  // they have no use for widens the secret's blast radius for nothing
+  // (ship-check finding), so the credential is scoped to the one binary that
+  // actually authenticates with it.
+  const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, {
+    cwd: cwd || repo,
+    encoding: 'utf8',
+    timeout: timeoutMs,
+    stdio: ['ignore', 'pipe', 'pipe'],
+    env: cmd === CMUX_BIN ? cmuxSpawnEnv(process.env) : process.env,
+  });
 
   // 1. What landed on origin/main (fetch first so we see CI's commits, not
   //    the possibly-stale local main).
