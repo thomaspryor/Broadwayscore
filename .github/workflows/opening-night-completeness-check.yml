@@ -125,6 +125,20 @@ jobs:
 
       - name: Commit state file
         if: steps.rebuild_check.outputs.skip != 'true'
+        env:
+          # 120s, not the 240s default (BRO-345 what-else, 2026-09-08):
+          # this session registered both staged files apiFallbackSafe, making
+          # the Git Data API fallback reachable here for the first time — its
+          # own worst case (2 attempts x 90s cap) adds ~190s on top of
+          # whatever the local retry loop already spent. This step is
+          # soft-fail-tolerant BY DESIGN (see the `|| echo` below — the next
+          # 15min cron tick just re-snapshots), so it should fail fast rather
+          # than spend its full push budget chasing a recovery that isn't
+          # worth more than the job's own timeout margin. 120s local + ~190s
+          # fallback worst case (~310s) keeps the whole step's worst case
+          # comfortably inside the 15min job timeout alongside the observed
+          # ~7m47s baseline for the earlier steps.
+          PUSH_DEADLINE_SEC: '120'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
