@@ -17,7 +17,8 @@
  */
 
 const https = require('https');
-const { recordSbCall } = require('./provider-telemetry');
+const { recordSbCall, recordSdCall } = require('./provider-telemetry');
+const { consultScrapingdog } = require('./scrapingdog-caps');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
 const MAX_RETRIES = 3;
@@ -63,10 +64,12 @@ let scrapingDogDown = false; // Latched on 401/403 (bad key / no credits)
 // Stealth Mode" (2026-07-05 run: 41/41 plain requests refused). Escalate
 // plain → premium → stealth on that 400 and LATCH the tier for the rest of
 // the run so each request pays the working tier once, not 3 probe calls.
+// Credits mirror scraper.js's fetchWithScrapingdog cost model: dynamic=false
+// (reddit-api.js never sets dynamic=true) is 1cr plain, 10cr premium/stealth.
 const SD_TIERS = [
-  { name: 'plain', params: {} },
-  { name: 'premium', params: { premium: 'true' } },
-  { name: 'stealth', params: { stealth_mode: 'true' } },
+  { name: 'plain', params: {}, credits: 1 },
+  { name: 'premium', params: { premium: 'true' }, credits: 10 },
+  { name: 'stealth', params: { stealth_mode: 'true' }, credits: 10 },
 ];
 let sdTierIndex = 0;
 
@@ -191,6 +194,20 @@ async function fetchViaScrapingDog(url) {
     throw new Error('SCRAPINGDOG_API_KEY not set');
   }
 
+  // Daily circuit breaker (BRO-364) — this was the one SD chokepoint NOT
+  // consulting scrapingdog-caps.js (documented gap in that file's docstring),
+  // so a tripped breaker never throttled Reddit's SD traffic and every call
+  // here was invisible to check-provider-spend.js's attribution. Soft-fails
+  // (throws, doesn't latch scrapingDogDown) so callers fall through to SB
+  // exactly like a normal SD miss — mirrors fetchWithScrapingdog's shape.
+  const sdBreakerVerdict = consultScrapingdog();
+  if (!sdBreakerVerdict.allowed) {
+    if (sdBreakerVerdict.firstBlock) {
+      try { recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 }); } catch (_) {}
+    }
+    throw new Error('Scrapingdog daily breaker tripped — skipping for this call');
+  }
+
   while (true) {
     const tier = SD_TIERS[sdTierIndex];
     try {
@@ -206,7 +223,13 @@ async function fetchViaScrapingDog(url) {
   }
 }
 
-/** Single Scrapingdog API request at a given tier. */
+/**
+ * Single Scrapingdog API request at a given tier. Records exactly one ledger
+ * row per call (BRO-364) — this was the SD chokepoint the spend ledger never
+ * saw, so Reddit's credit spend (up to 10cr/call once escalated to
+ * premium/stealth, latched for the rest of the run) was invisible to
+ * check-provider-spend.js's attribution.
+ */
 function scrapingDogRequest(apiKey, url, tier) {
   stats.scrapingDog++;
 
@@ -214,11 +237,21 @@ function scrapingDogRequest(apiKey, url, tier) {
   const apiUrl = `${SCRAPINGDOG_BASE_URL}?${params}`;
   const client = apiUrl.startsWith('http:') ? require('http') : https;
 
+  const rec = (success, status, credits) => {
+    try { recordSdCall({ url, fn: tier.name, success, status, credits }); } catch (_) {}
+  };
+
   return new Promise((resolve, reject) => {
     client.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        // SD bills on any response it returns (200/400/401/403 alike) — the
+        // request reached its proxy and a page-fetch happened, whatever the
+        // outcome. Record once per response here so every branch below stays
+        // billing-neutral (only the parse outcome, not the credit amount, may
+        // still change per branch).
+        rec(res.statusCode === 200, res.statusCode, tier.credits);
         if (res.statusCode === 200) {
           try {
             resolve(JSON.parse(data));
@@ -262,7 +295,13 @@ function scrapingDogRequest(apiKey, url, tier) {
           reject(err);
         }
       });
-    }).on('error', reject);
+    }).on('error', (e) => {
+      // Connection-level failure — the request never reached SD's proxy, so
+      // (unlike every branch above, which got a real HTTP response) nothing
+      // was billed.
+      rec(false, 'error', 0);
+      reject(e);
+    });
   });
 }
 

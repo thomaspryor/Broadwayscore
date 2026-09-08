@@ -8,6 +8,12 @@ import path from 'node:path';
 import { EventEmitter } from 'node:events';
 import { createRequire } from 'node:module';
 
+// Isolate from the real SD circuit breaker (BRO-364 added a consultScrapingdog()
+// check to fetchViaScrapingDog) — same pattern as
+// scraper-sd-stealth-escalation.test.mjs (#1312): these tests must not
+// depend on data/audit/sd-circuit-breaker.json's live tripped/untripped state.
+process.env.SD_CAPS_DISABLED = '1';
+
 // Mock Scrapingdog endpoint — behavior keyed off the target url param
 const server = http.createServer((req, res) => {
   const u = new URL(req.url, 'http://localhost');
@@ -71,16 +77,26 @@ const server = http.createServer((req, res) => {
 });
 
 let baseUrl;
+// BRO-364 wired recordSdCall into scrapingDogRequest, so every fetchViaScrapingDog
+// call in this file now writes a ledger row — redirect ALL of them (not just the
+// dedicated ledger-attribution tests below) to a scratch path for the whole file,
+// or every test run would append real-looking rows to the committed
+// data/audit/scraper-spend-ledger.jsonl (caught: a first pass here polluted 40+
+// lines into that file on a single `node --test` run).
+const defaultLedgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-default-${process.pid}.jsonl`);
 before(async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}/scrape`;
   process.env.SCRAPINGDOG_BASE_URL = baseUrl;
   process.env.SCRAPINGDOG_API_KEY = 'test-key';
+  process.env.SCRAPER_SPEND_LEDGER_PATH = defaultLedgerPath;
 });
 after(() => {
   server.close();
   delete process.env.SCRAPINGDOG_BASE_URL;
   delete process.env.SCRAPINGDOG_API_KEY;
+  delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+  try { fs.unlinkSync(defaultLedgerPath); } catch { /* cleanup */ }
 });
 
 function load() {
@@ -169,6 +185,82 @@ test('fetchViaScrapingDog rejects when no key is configured', async () => {
     await assert.rejects(() => fetchViaScrapingDog('https://old.reddit.com/x.json'), /not set/);
   } finally {
     process.env.SCRAPINGDOG_API_KEY = saved;
+  }
+});
+
+// ---------- fetchViaScrapingDog ledger attribution + breaker gate (BRO-364) ----------
+//
+// Prior to BRO-364, scrapingDogRequest() never called recordSdCall — Reddit's
+// SD credit spend (up to 10cr/call once escalated) was invisible to
+// check-provider-spend.js's daily attribution, and fetchViaScrapingDog never
+// consulted the daily circuit breaker, so a tripped breaker never throttled
+// Reddit's SD traffic the way it does scraper.js's fetchWithScrapingdog.
+
+test('fetchViaScrapingDog writes one ledger row with the plain-tier credit cost', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-test-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  try {
+    const { fetchViaScrapingDog, resetFallbackState } = load();
+    resetFallbackState();
+    await fetchViaScrapingDog('https://old.reddit.com/r/broadway/search.json?q=good');
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    assert.equal(rows.length, 1, 'exactly one ledger row per SD call');
+    assert.equal(rows[0].provider, 'scrapingdog');
+    assert.equal(rows[0].success, true);
+    assert.equal(rows[0].credits, 1, 'plain tier bills 1 credit');
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
+  }
+});
+
+test('fetchViaScrapingDog ledger rows bill 10 credits once escalated to premium/stealth', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-test-esc-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  try {
+    const { fetchViaScrapingDog, resetFallbackState } = load();
+    resetFallbackState();
+    await fetchViaScrapingDog('https://old.reddit.com/r/broadway/needs-stealth.json');
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    // plain 400 (1cr) + premium 400 (10cr) + stealth 200 (10cr)
+    assert.deepEqual(rows.map(r => r.credits), [1, 10, 10]);
+    assert.deepEqual(rows.map(r => r.success), [false, false, true]);
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
+  }
+});
+
+test('fetchViaScrapingDog rejects (falls through to caller) when the daily breaker is tripped', async () => {
+  const savedCapsDisabled = process.env.SD_CAPS_DISABLED;
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sd-breaker-test-'));
+  const statePath = path.join(stateDir, 'state.json');
+  fs.writeFileSync(statePath, JSON.stringify({ day: new Date().toISOString().slice(0, 10), trippedAt: Date.now(), dayCredits: 999999, ceiling: 1 }));
+  delete process.env.SD_CAPS_DISABLED;
+  process.env.SD_BREAKER_STATE_PATH = statePath;
+  try {
+    const { fetchViaScrapingDog, getStats, resetFallbackState } = load();
+    resetFallbackState();
+    await assert.rejects(
+      () => fetchViaScrapingDog('https://old.reddit.com/r/broadway/search.json?q=good'),
+      /breaker/,
+    );
+    assert.equal(getStats().scrapingDog, 0, 'a breaker-blocked call must never reach the SD API');
+  } finally {
+    delete process.env.SD_BREAKER_STATE_PATH;
+    if (savedCapsDisabled) process.env.SD_CAPS_DISABLED = savedCapsDisabled;
+    fs.rmSync(stateDir, { recursive: true, force: true });
+    // scrapingdog-caps.js caches breaker state for 60s at module scope (not
+    // per env/path) — reset it so this test's tripped state can't leak into
+    // any other test file sharing this node:test process.
+    const require = createRequire(import.meta.url);
+    require('../../scripts/lib/scrapingdog-caps.js')._resetForTests();
   }
 });
 
