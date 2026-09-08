@@ -19,9 +19,15 @@
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 const { validateManifest } = require('./lib/test-manifest.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const repoRoot = path.join(__dirname, '..');
 const TEST_TIMEOUT_MS = '300000';
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/run-unit-tests.js\n\nRuns the same two manifests as CI\'s "unit-tests" job (tests/unit-test-manifest.txt under node --test, tests/unit-test-manifest-tsx.txt under npx tsx --test). Takes no arguments.');
+  process.exit(0);
+}
 
 const BATCHES = [
   {
