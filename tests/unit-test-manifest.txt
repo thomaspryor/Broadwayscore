@@ -444,6 +444,7 @@ tests/unit/ingest-bulk-drop-detection.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
+tests/unit/ingest-review-nytimes-an-american-daughter.test.mjs
 tests/unit/initialize-commercial-stub.test.mjs
 tests/unit/input-builder-market-label.test.mjs
 tests/unit/intentional-clear-breadcrumb.test.mjs
@@ -646,6 +647,7 @@ tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
+tests/unit/review-ingestion-gap.test.mjs
 tests/unit/review-normalization.maybeUpgradeUrl.test.mjs
 tests/unit/review-output-guard.test.mjs
 tests/unit/review-scoring-backfill.test.mjs

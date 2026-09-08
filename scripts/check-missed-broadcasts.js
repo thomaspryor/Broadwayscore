@@ -58,6 +58,14 @@ function fileExists(file) {
  */
 function remediationFor(m) {
   const checklist = `  node scripts/opening-night-checklist.js --show=${m.id}`;
+  if (m.state === 'covered-by-roundup') {
+    return (
+      'No individual opening-night email went out, but this West End show was already featured in the ' +
+      "Weekly Round-up for its opening week with the same Critics' Take/score/review-count content a " +
+      'force-sent individual broadcast would repeat (owner decision 2026-09-08). No action needed — ' +
+      'West End does not get an individual send as a matter of course once the Round-up has covered it.'
+    );
+  }
   if (m.state === 'draft-stuck') {
     return (
       'A Resend draft EXISTS for this show and was never sent — the pipeline did its job and the ' +
@@ -90,6 +98,7 @@ const STATE_LABEL = {
   'never-drafted': 'no draft ever created',
   'draft-stuck': 'draft created but never sent',
   'draft-unknown': 'draft 404s in Resend — may or may not have sent',
+  'covered-by-roundup': 'already covered by the West End Weekly Round-up — no send needed',
 };
 
 async function main() {
@@ -127,11 +136,18 @@ async function main() {
     process.exit(1);
   }
 
+  // Absent/unparseable is non-fatal here (unlike opening-night-sent.json above):
+  // worst case is treating no shows as round-up-covered, which just means this
+  // sweep behaves exactly as it did before this predicate existed.
+  const newsletterState = readJson('newsletter-state.json', null);
+  const newsletterIssues = (newsletterState && Array.isArray(newsletterState.issues)) ? newsletterState.issues : [];
+
   const missed = findMissedBroadcasts({
     shows: showsRaw.shows,
     sentShows: sentRaw.shows,
     reviews,
     now: Date.now(),
+    newsletterIssues,
   });
 
   const alertable = missed.filter((m) => m.alertable);
