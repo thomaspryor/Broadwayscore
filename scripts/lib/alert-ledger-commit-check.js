@@ -157,7 +157,18 @@ function findMissingLedgerCommits(workflowYamlText) {
     // that merely describes what the lint checks for (e.g. "Check
     // routeAlert() callers commit alert-ledger.json") is not itself a call
     // and would otherwise false-positive this very check on test.yml.
-    const body = job.lines.filter(l => !/^\s*-?\s*name:/.test(l)).join('\n');
+    // Also exclude full `#`-comment lines (BRO-3051): test.yml's own
+    // "page-worthy alert steps unreachable" audit step (BRO-2817) documents
+    // that OTHER checker's blind spot with a prose example — "# routeAlert
+    // (disposition:'human', conditionKey: <page-worthy>) alert" — which is
+    // not a call either, but was matched anyway because only step-name
+    // lines were stripped. jobStagesFile() already skips comment lines for
+    // the same reason (a commented-out `git add` mustn't read as real
+    // staging); call detection needs the same treatment for the same
+    // reason, in the opposite direction.
+    const body = job.lines
+      .filter(l => !/^\s*-?\s*name:/.test(l) && !COMMENT_LINE_RE.test(l))
+      .join('\n');
 
     if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, LEDGER_FILE)) {
       violations.push(

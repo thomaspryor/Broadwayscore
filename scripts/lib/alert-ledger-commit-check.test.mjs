@@ -206,6 +206,32 @@ jobs:
       - run: npm run build
 `;
 
+// BRO-3051: test.yml's own "page-worthy alert steps unreachable" audit step
+// (BRO-2817) documents a DIFFERENT checker's blind spot with a prose example
+// containing the literal text "routeAlert(" inside a `#` comment. No actual
+// call exists in the job. Comment lines were already excluded from
+// jobStagesFile()'s staging-detection scan for the same reason (a
+// commented-out `git add` isn't real staging) — this fixture pins the
+// opposite-direction case.
+const COMMENT_ONLY_MENTION_FIXTURE = `name: Comment Mention Only
+on:
+  push:
+jobs:
+  lint-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit — page-worthy alert steps unreachable (advisory)
+        # A hard-fail gate step upstream of a
+        # routeAlert(disposition:'human', conditionKey: <page-worthy>) alert
+        # step silently swallows that alert. Heuristic — it can't see
+        # routeAlert() calls made from inside an invoked scripts/*.js file.
+        run: node scripts/audit-alert-reachability.js
+`;
+
+test('no violation when routeAlert()/resolveCondition() only appears inside a # comment', () => {
+  assert.deepEqual(findMissingLedgerCommits(COMMENT_ONLY_MENTION_FIXTURE), []);
+});
+
 test('flags a job that calls routeAlert() with no ledger commit', () => {
   const violations = findMissingLedgerCommits(MISSING_COMMIT_FIXTURE);
   assert.equal(violations.length, 1);
