@@ -122,14 +122,11 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl, show) {
     // one matcher, not a second independently-drifting reimplementation.
     if (!titleMatches(r.title || '', showTitle, show.venue || '')) continue;
 
-    if (matched) {
-      const cleanUrl = url.replace(/^http:/, 'https:')
-        .replace('://ticketmaster.com', '://www.ticketmaster.com')
-        .replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
-      if (cleanUrl === existingUrl) {
-        return { status: 'ok' };
-      }
-      return { status: 'updated', newUrl: cleanUrl };
+    const cleanUrl = url.replace(/^http:/, 'https:')
+      .replace('://ticketmaster.com', '://www.ticketmaster.com')
+      .replace('://ticketmaster.co.uk', '://www.ticketmaster.co.uk');
+    if (cleanUrl === existingUrl) {
+      return { status: 'ok' };
     }
     return { status: 'updated', newUrl: cleanUrl };
   }

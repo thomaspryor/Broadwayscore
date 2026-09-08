@@ -2656,6 +2656,7 @@ jobs:
         run: node scripts/audit-review-texts-test-yml-coverage.js
 
       - name: Audit — top-level scripts/*.test files missing from test.yml push-path allowlist (advisory, BRO-172)
+        if: always() && steps.deps.outcome == 'success'
         # General version of the two guards directly above, for scripts/
         # (not scripts/lib/, not the review-texts migration list): a
         # manifest-registered scripts/*.test.mjs proves a test exists and is
