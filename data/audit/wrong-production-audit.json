@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-08T13:29:59.399Z",
+  "timestamp": "2026-09-08T13:49:27.298Z",
   "stats": {
-    "totalReviews": 42576,
-    "alreadyFlagged": 17786,
+    "totalReviews": 42574,
+    "alreadyFlagged": 17788,
     "dateGuardCatches": 235,
     "directorMismatch": 1046,
     "tvFilmSignals": 1251,
-    "londonSignals": 1031,
+    "londonSignals": 1032,
     "offBroadwaySignals": 497,
     "yearMismatch": 91,
-    "noPublishDate": 3645
+    "noPublishDate": 3641
   },
   "findings": [
     {
@@ -39280,6 +39280,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "vocaleyes--unknown.json",
+      "publishDate": null,
+      "url": "https://vocaleyes.co.uk/events/electra-persona-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
