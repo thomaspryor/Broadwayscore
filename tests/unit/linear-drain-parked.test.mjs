@@ -648,3 +648,58 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     }
   });
 });
+
+describe('readLedger dedupes exact-duplicate lines (merge=union safety)', () => {
+  // This ledger carries `merge=union` in .gitattributes, and union can leave
+  // the SAME row twice (sync-audit-checkout.sh's recovery re-appends the
+  // locally-saved rows over origin's). attempt-memory.js's checkPark() counts
+  // every 'card-fail' row in the failure streak with no dedupe of its own and
+  // parks at DEFAULT_MAX_FAILURES = 2, so ONE duplicated fail row is enough to
+  // strand a card that only failed once. Found by ship-check, 2026-09-08.
+  const fs = require('node:fs');
+  const os = require('node:os');
+  // Require the REAL readLedger, not the destructured subset at the top of
+  // this file (rule 15: the production function, never a restatement).
+  const { readLedger } = require(path.join(REPO, 'scripts', 'linear-drain-parked.js'));
+
+  function withLedger(lines, fn) {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'drain-ledger-'));
+    const file = path.join(dir, 'ledger.jsonl');
+    fs.writeFileSync(file, lines.join('\n') + '\n');
+    try { return fn(file); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  }
+
+  const FAIL = JSON.stringify({ ts: '2026-09-08T06:48:34.217Z', event: 'card-fail', cardId: 'BRO-1', contentHash: 'h1', note: 'fail: x' });
+  const OTHER = JSON.stringify({ ts: '2026-09-08T07:48:34.217Z', event: 'card-pass', cardId: 'BRO-1', contentHash: 'h1' });
+
+  test('a row duplicated by a union merge is read once, not twice', () => {
+    withLedger([FAIL, FAIL, OTHER], (file) => {
+      const rows = readLedger(file);
+      assert.equal(rows.length, 2, 'the duplicated fail row must collapse to one');
+      assert.equal(rows.filter((r) => r.event === 'card-fail').length, 1);
+    });
+  });
+
+  test('two genuinely distinct attempts are BOTH kept — dedupe must not eat real rows', () => {
+    const second = JSON.stringify({ ts: '2026-09-08T12:48:34.217Z', event: 'card-fail', cardId: 'BRO-1', contentHash: 'h1', note: 'fail: x' });
+    withLedger([FAIL, second], (file) => {
+      assert.equal(readLedger(file).length, 2, 'distinct ts means distinct attempt');
+    });
+  });
+
+  test('the duplicate cannot reach checkPark and force a false park', () => {
+    // End-to-end through the real attempt-memory predicate, not a restatement
+    // of it: one real failure plus its merge duplicate must NOT park.
+    const { checkPark } = require(path.join(REPO, 'scripts', 'lib', 'attempt-memory.js'));
+    withLedger([FAIL, FAIL], (file) => {
+      const entries = readLedger(file);
+      assert.equal(checkPark(entries, 'BRO-1', 'h1').parked, false, 'one failure + its duplicate must not park');
+    });
+    // And the guard is real: two DISTINCT failures still park, so dedupe has
+    // not disabled attempt-memory.
+    const second = JSON.stringify({ ts: '2026-09-08T12:48:34.217Z', event: 'card-fail', cardId: 'BRO-1', contentHash: 'h1', note: 'fail: y' });
+    withLedger([FAIL, second], (file) => {
+      assert.equal(checkPark(readLedger(file), 'BRO-1', 'h1').parked, true, 'two real failures must still park');
+    });
+  });
+});

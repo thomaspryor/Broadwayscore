@@ -136,13 +136,31 @@ function parseArgs(argv) {
   return a;
 }
 
+// Exact-duplicate lines are dropped, and that is load-bearing rather than
+// tidiness (ship-check finding, 2026-09-08). This ledger carries `merge=union`
+// so concurrent appends union instead of conflicting, and union can leave the
+// SAME row twice — sync-audit-checkout.sh's recovery stage re-appends the
+// locally-saved rows on top of origin's committed ones. attempt-memory.js's
+// checkPark() then counts every 'card-fail' row in the newest-to-oldest
+// streak with no dedupe of its own, and DEFAULT_MAX_FAILURES is 2 — so one
+// duplicated fail row is enough to turn a single failure into a park and
+// strand a card that only failed once. Stranded cards are the exact defect
+// BRO-3060 was filed for; re-introducing them through the merge driver would
+// be a poor trade.
+//
+// Exact-line equality is the right key: every row is stamped with an ISO
+// millisecond `ts` at append time, so two genuinely distinct attempts never
+// serialise identically, and appendLedger writes keys in a fixed order.
 function readLedger(p = LEDGER_PATH) {
   let raw;
   try { raw = fs.readFileSync(p, 'utf8'); } catch { return []; }
   const out = [];
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;
