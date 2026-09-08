@@ -29,19 +29,47 @@
 'use strict';
 
 /**
+ * Reasons a tier declined to make its call at all. Reported by the tier
+ * itself, per call — never inferred from shared module state. An earlier
+ * revision of this file derived the breaker case from a delta on
+ * scrapingdog-caps.js's module-global `blockedByBreaker` counter; that is
+ * unsound and was caught in review. The counter is shared with concurrent
+ * fetchPage() calls AND with url-discovery.js's SERP path, breaker state is
+ * cached for 60s while an SD tier can await ~135s (two 45s attempts plus the
+ * stealth retry), so a breaker that trips mid-await lets another caller's
+ * block increment the counter and stamp 'sd-breaker' on a Bright Data row
+ * whose Scrapingdog attempt actually ran and billed — corrupting exactly the
+ * signal on exactly the day BRO-3011 cares about.
+ */
+const SKIP_REASONS = new Set([
+  'sd-breaker',      // Scrapingdog daily circuit breaker (consultScrapingdog)
+  'sd-quota',        // account exhausted (shouldSkipScrapingdogAtRuntime latch)
+  'sd-budget',       // per-run SD_CREDIT_BUDGET spent
+  'sd-unavailable',  // flag off / no API key
+  'bd-budget',       // Bright Data daily cap (consultBrightData)
+]);
+
+/**
  * @param {string|null} prevTier  chain tier that ran immediately before the
  *   one about to be recorded — a pageChainOrder() name, or null for the first
  *   tier in the chain (nothing preceded it, so nothing to attribute).
- * @param {{breakerBlocked?: boolean}} [opts]  breakerBlocked: the previous
- *   tier returned no result because a circuit breaker refused the call, not
- *   because the provider was tried and missed.
+ * @param {{skipReason?: string|null}} [opts]  skipReason: set when the
+ *   previous tier declined to make the call at all, reported BY THAT TIER for
+ *   THIS call (see SKIP_REASONS). Overrides the plain tier name, because
+ *   "never attempted" and "attempted and missed" are opposite cost stories.
  * @returns {string|null} the `fallbackFrom` value to pass to recordBdCall /
  *   recordSbCall / recordSdCall, or null to leave the column empty.
  */
-function fallbackFromLabel(prevTier, { breakerBlocked = false } = {}) {
+function fallbackFromLabel(prevTier, { skipReason = null } = {}) {
   if (!prevTier) return null;
-  if (breakerBlocked && prevTier === 'scrapingdog') return 'sd-breaker';
-  return prevTier;
+  if (!skipReason) return prevTier;
+  if (!SKIP_REASONS.has(skipReason)) {
+    // Same principle as creditsFor(): an unrecognized value throws rather
+    // than leaking a typo into the ledger, where BRO-3011 would silently
+    // fail to match it and under-count the very windows it exists to find.
+    throw new Error(`fallbackFromLabel: unknown skipReason "${skipReason}"`);
+  }
+  return skipReason;
 }
 
-module.exports = { fallbackFromLabel };
+module.exports = { fallbackFromLabel, SKIP_REASONS };

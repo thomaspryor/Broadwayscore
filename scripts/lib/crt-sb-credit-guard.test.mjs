@@ -13,12 +13,14 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { sbPageBudgetDecision } = require('./crt-sb-credit-guard.js');
+const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./crt-sb-credit-guard.js');
 
-test('unknown proxyType THROWS instead of silently passing the budget check', () => {
-  // The regression this guard exists for: with no throw, credits would be
-  // undefined, `undefined + spent` is NaN, and `NaN > budget` is false — the
-  // call would proceed as if it were under budget, forever.
+test('unknown proxyType THROWS (inherited from creditsFor, pinned here)', () => {
+  // Not new in BRO-3009 — BRO-3057 already routed the credits side through
+  // creditsFor. Pinned so a future refactor of this guard cannot quietly
+  // reintroduce a lookup that returns undefined: `undefined + spent` is NaN,
+  // and `NaN > budget` is false, so the call would proceed as if under
+  // budget, forever.
   assert.throws(
     () => sbPageBudgetDecision({ spentCredits: 0, mode: 'no_such_proxy', budget: 200 }),
     /creditsFor: unknown provider\/mode "sb\/no_such_proxy"/,
@@ -30,8 +32,10 @@ test('unknown proxyType THROWS instead of silently passing the budget check', ()
   assert.equal(0 + credits > 200, false, 'NaN > budget is false — fails open');
 });
 
-test('malformed SB_PAGE_CREDIT_BUDGET (NaN) THROWS rather than disabling the cap', () => {
-  // parseInt('abc') === NaN at scripts/collect-review-texts.js:262.
+test('malformed budget (NaN) THROWS rather than disabling the cap — the genuinely new guard', () => {
+  // This is the hole BRO-3009 actually closed. Defence in depth: the env is
+  // now strictly parsed at startup (resolveSbPageCreditBudget), so a NaN
+  // should never reach here — but if it ever does, it must not fail open.
   assert.throws(
     () => sbPageBudgetDecision({ spentCredits: 0, mode: 'standard', budget: NaN }),
     /assertFiniteCost: sbPageBudgetDecision: budget/,
@@ -80,4 +84,28 @@ test('a zero budget blocks every call rather than being treated as "unset"', () 
     sbPageBudgetDecision({ spentCredits: 0, mode: 'standard', budget: 0 }).exhausted,
     true,
   );
+});
+
+// ---- startup env parsing -----------------------------------------------
+
+test('resolveSbPageCreditBudget: unset/empty falls back to the default', () => {
+  assert.equal(resolveSbPageCreditBudget(undefined, 200), 200);
+  assert.equal(resolveSbPageCreditBudget('', 200), 200);
+  assert.equal(resolveSbPageCreditBudget('   ', 200), 200);
+});
+
+test('resolveSbPageCreditBudget: a valid override parses', () => {
+  assert.equal(resolveSbPageCreditBudget('1000', 200), 1000);
+  assert.equal(resolveSbPageCreditBudget(' 1000 ', 200), 1000);
+  assert.equal(resolveSbPageCreditBudget('0', 200), 0);
+});
+
+test('resolveSbPageCreditBudget: partial garbage THROWS — parseInt would have read 200', () => {
+  // parseInt('200oops', 10) === 200, so a finite-number check alone would
+  // accept a value the operator never meant to type.
+  assert.equal(Number.parseInt('200oops', 10), 200, 'parseInt really is this lenient');
+  assert.throws(() => resolveSbPageCreditBudget('200oops', 200), /must be a non-negative integer/);
+  assert.throws(() => resolveSbPageCreditBudget('abc', 200), /must be a non-negative integer/);
+  assert.throws(() => resolveSbPageCreditBudget('-5', 200), /must be a non-negative integer/);
+  assert.throws(() => resolveSbPageCreditBudget('1e3', 200), /must be a non-negative integer/);
 });

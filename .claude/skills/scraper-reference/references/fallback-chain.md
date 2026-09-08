@@ -143,14 +143,29 @@ orders themselves against enumerated flag combinations.
 ## Why a tier ran: `fallback_from`
 
 Every spend-ledger row (`data/audit/scraper-spend-ledger.jsonl`) carries
-`fallback_from` — the tier that failed, or was breaker-blocked, immediately
-before this one. `fetchPage` threads it through the chain via
-`fallbackFromLabel()` in `scripts/lib/fallback-attribution.js`, using
-`pageChainOrder`'s own tier names, plus one special value: **`'sd-breaker'`**
-when Scrapingdog was never attempted because its daily circuit breaker was
-shut. "Never attempted, the day cap was closed" and "attempted and missed" are
-opposite cost stories, and the ledger has to tell them apart to explain a
-Bright Data spike. This is telemetry only — nothing routes on it.
+`fallback_from` — the tier that ran immediately before this one. `fetchPage`
+threads it through the chain via `fallbackFromLabel()` in
+`scripts/lib/fallback-attribution.js`, using `pageChainOrder`'s own tier names
+when the tier was tried and missed.
+
+A tier that **declined to call at all** reports its own reason instead, from
+the `SKIP_REASONS` vocabulary: `sd-breaker` (daily circuit breaker), `sd-quota`
+(account exhausted), `sd-budget` (per-run `SD_CREDIT_BUDGET` spent),
+`sd-unavailable` (flag off / no key), `bd-budget` (Bright Data daily cap). An
+unknown reason throws, the same way `creditsFor` does. "Never attempted" and
+"attempted and missed" are opposite cost stories, and the ledger has to tell
+them apart to explain a Bright Data spike.
+
+The reason is reported **per call**, by the tier itself, through an `onSkip`
+callback passed in options — never inferred from shared module state. Deriving
+it from a delta on `scrapingdog-caps.js`'s module-global `blockedByBreaker`
+counter looks equivalent and is not: that counter is shared with concurrent
+`fetchPage()` calls and with the SERP path, breaker state is cached 60s while
+an SD tier can await ~135s, so a breaker tripping mid-await would stamp
+`sd-breaker` on a row whose Scrapingdog attempt actually ran and billed.
+
+This is telemetry only — no tier reads `fallback_from`, and every tier returns
+exactly what it did before.
 
 ## The Architecture Rule
 

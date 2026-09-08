@@ -43,15 +43,21 @@ test('a breaker-blocked Scrapingdog is "sd-breaker", NOT "scrapingdog"', () => {
   // The whole point: BRO-3011 joins spend to breaker trip windows, so "never
   // attempted, the day cap was shut" must be distinguishable from "attempted
   // and missed" — they are opposite cost stories.
-  assert.equal(fallbackFromLabel('scrapingdog', { breakerBlocked: true }), 'sd-breaker');
-  assert.notEqual(fallbackFromLabel('scrapingdog', { breakerBlocked: true }), 'scrapingdog');
+  assert.equal(fallbackFromLabel('scrapingdog', { skipReason: 'sd-breaker' }), 'sd-breaker');
+  assert.notEqual(fallbackFromLabel('scrapingdog', { skipReason: 'sd-breaker' }), 'scrapingdog');
 });
 
-test('breakerBlocked does not rename any other tier', () => {
-  // The counter delta is read once per tier iteration; only the SD tier can
-  // legitimately be blocked by the SD breaker.
-  assert.equal(fallbackFromLabel('brightdata', { breakerBlocked: true }), 'brightdata');
-  assert.equal(fallbackFromLabel('playwright-first', { breakerBlocked: true }), 'playwright-first');
+test('the other never-attempted states are attributed too, not collapsed to the tier name', () => {
+  assert.equal(fallbackFromLabel('scrapingdog', { skipReason: 'sd-quota' }), 'sd-quota');
+  assert.equal(fallbackFromLabel('scrapingdog', { skipReason: 'sd-budget' }), 'sd-budget');
+  assert.equal(fallbackFromLabel('brightdata', { skipReason: 'bd-budget' }), 'bd-budget');
+});
+
+test('an unknown skipReason throws instead of leaking a typo into the ledger', () => {
+  assert.throws(
+    () => fallbackFromLabel('scrapingdog', { skipReason: 'sd-breakr' }),
+    /unknown skipReason "sd-breakr"/,
+  );
 });
 
 // ---------------------------------------------------------------- layer 2 --

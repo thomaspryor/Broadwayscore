@@ -93,12 +93,25 @@ jobs:
           # does the arithmetic so the printed figure is unchanged; only the
           # rate's source moved. Empty/zero rate fails the step loudly rather
           # than reporting $0.00 BD spend, which reads as "nothing to see".
-          BD_RATE=$(node -e "process.stdout.write(String(require('./scripts/config/provider-pricing.json').brightdata.usdPerUnit))")
-          if ! echo "$BD_RATE" | grep -qE '^0\.[0-9]+$'; then
-            echo "::error::scraper-cost-report: bad brightdata.usdPerUnit from provider-pricing.json ('$BD_RATE')"
-            exit 1
+          # Read through provider-pricing.js's usdFor() rather than reaching into
+          # the JSON shape from YAML — usdFor already validates the provider
+          # exists and the rate is finite and non-negative, so this step gets the
+          # same guarantee every JS caller gets instead of a second, weaker copy
+          # of it. `|| true` keeps `bash -e` from killing the step before the
+          # ::error:: annotation below can explain what went wrong.
+          BD_RATE=$(node -e "const {usdFor}=require('./scripts/lib/provider-pricing');process.stdout.write(String(usdFor('brightdata',1)))" 2>/dev/null || true)
+          if echo "$BD_RATE" | grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'; then
+            BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
+          else
+            # Report an unknown rate as unknown. Do NOT exit: this step's whole
+            # design (see `set +e` below) is that a partial report still sends,
+            # and killing it here would blank the Browserbase and ScrapingBee
+            # billing sections too. A visible "rate unavailable" is honest; a
+            # silent $0.00 BD line would read as "nothing to see", which is the
+            # exact under-report this rate move exists to prevent.
+            echo "::error::scraper-cost-report: could not read a usable brightdata rate via provider-pricing.js (got '$BD_RATE') — BD cost shown as unavailable"
+            BD_COST="rate unavailable"
           fi
-          BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
 
           # Disable `bash -e` for the rest of this step. Everything from here on is
           # observability — partial data is acceptable, but a failed report email is

@@ -386,6 +386,7 @@ async function fetchWithBrightData(url, opts = {}) {
   // blame in the spend ledger. Optional, so the direct callers outside
   // fetchPage (scrape-alltime.ts, fetchJSON) keep working unchanged.
   const fallbackFrom = opts.fallbackFrom || null;
+  const onSkip = typeof opts.onSkip === 'function' ? opts.onSkip : () => {};
   if (!BRIGHTDATA_TOKEN) {
     return null;
   }
@@ -404,6 +405,7 @@ async function fetchWithBrightData(url, opts = {}) {
     if (bdVerdict.firstBlock) {
       recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped', fallbackFrom });
     }
+    onSkip('bd-budget');
     return null;
   }
 
@@ -484,7 +486,14 @@ async function fetchWithBrightData(url, opts = {}) {
  * modes (budget/quota/network) where escalating tiers wouldn't help.
  */
 async function fetchWithScrapingdog(url, options = {}) {
+  // options.onSkip(reason) (BRO-3009 S1-T8) lets the caller learn WHY this
+  // function declined to make the call, without changing what it RETURNS —
+  // every path below still returns null exactly as before, so routing is
+  // untouched. Reported per call, so it cannot be confused with another
+  // concurrent request's skip the way a shared counter could.
+  const onSkip = typeof options.onSkip === 'function' ? options.onSkip : () => {};
   if (!SCRAPINGDOG_API_KEY) {
+    onSkip('sd-unavailable');
     return null;
   }
 
@@ -495,6 +504,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   // also trips the reactive HTTP-status latch below on the first failure.
   _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
+    onSkip('sd-quota');
     return null;
   }
 
@@ -507,6 +517,7 @@ async function fetchWithScrapingdog(url, options = {}) {
     if (sdBreakerVerdict.firstBlock) {
       recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
     }
+    onSkip('sd-breaker');
     return null;
   }
 
@@ -527,6 +538,7 @@ async function fetchWithScrapingdog(url, options = {}) {
       console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
     }
     _scraperStats.sdBudgetExceeded = true;
+    onSkip('sd-budget');
     return null;
   }
 
@@ -559,7 +571,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
       }
       _scraperStats.sdBudgetExceeded = true;
-      if (attemptsMade === 0) return null;
+      if (attemptsMade === 0) { onSkip('sd-budget'); return null; }
       break;
     }
     _scraperStats.sdRequests++;
@@ -1054,15 +1066,21 @@ async function fetchPage(url, options = {}) {
     },
     // A challenge/short response falls through to Bright Data, which keeps
     // its role as the strong unblocker for the hard sites Scrapingdog can't crack.
-    scrapingdog: async (fallbackFrom) => {
+    scrapingdog: async (fallbackFrom, onSkip) => {
       // Live re-check (see the comment above `chain`): the exact same
       // condition pageChainOrder was given, re-evaluated now instead of
       // trusting the snapshot from before the earlier tiers' awaits.
       if (!(USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded)) {
+        // Same three states fetchWithScrapingdog reports for itself, so this
+        // early return is attributed identically rather than collapsing to a
+        // plain "scrapingdog was tried and missed".
+        onSkip(_scraperStats.sdBudgetExceeded ? 'sd-budget'
+             : _sdQuotaExceeded ? 'sd-quota'
+             : 'sd-unavailable');
         return null;
       }
       console.log('  → Trying Scrapingdog...');
-      const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom });
+      const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom, onSkip });
       if (raw && raw.content && raw.content.length > 0) {
         if (_isChallengeOrGarbage(raw.content)) {
           console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
@@ -1073,9 +1091,9 @@ async function fetchPage(url, options = {}) {
       }
       return null;
     },
-    brightdata: async (fallbackFrom) => {
+    brightdata: async (fallbackFrom, onSkip) => {
       console.log('  → Trying Bright Data...');
-      const raw = await fetchWithBrightData(url, { fallbackFrom });
+      const raw = await fetchWithBrightData(url, { fallbackFrom, onSkip });
       if (raw && raw.content && raw.content.length > 0) {
         // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
         // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
@@ -1123,23 +1141,18 @@ async function fetchPage(url, options = {}) {
   };
 
   // BRO-3009 S1-T8: carry the previous tier's identity into the next tier's
-  // ledger row. `blockedByBreaker` is a cumulative per-run counter, so a
-  // delta across the tier call tells "the SD circuit breaker refused this"
-  // apart from "SD was tried and missed" — two very different cost stories
-  // that both surface here as a null return. Reading the counter rather than
-  // changing fetchWithScrapingdog's return contract keeps ROUTING untouched.
-  //
-  // The counter is module-level and so is shared with any concurrent
-  // fetchPage(), but it only ever increments while the breaker is actually
-  // tripped — and a tripped breaker blocks THIS call's SD tier too, so a
-  // cross-attributed delta still describes the true reason SD was skipped.
+  // ledger row, so the spend ledger records WHY a provider was reached and
+  // not just what it cost. A tier that declined to call at all reports its
+  // own reason through `onSkip` — scoped to THIS call, never inferred from
+  // shared module state (see SKIP_REASONS in fallback-attribution.js for why
+  // the counter-delta version of this was wrong). Telemetry only: no tier
+  // reads `fallbackFrom`, and every tier still returns exactly what it did.
   let fallbackFrom = null;
   for (const tierName of chain) {
-    const sdBlockedBefore = getScrapingdogCapStats().blockedByBreaker;
-    const result = await tiers[tierName](fallbackFrom);
+    let skipReason = null;
+    const result = await tiers[tierName](fallbackFrom, (reason) => { skipReason = reason; });
     if (result) return result;
-    const breakerBlocked = getScrapingdogCapStats().blockedByBreaker > sdBlockedBefore;
-    fallbackFrom = fallbackFromLabel(tierName, { breakerBlocked });
+    fallbackFrom = fallbackFromLabel(tierName, { skipReason });
   }
 
   throw new Error('All scraping methods failed');

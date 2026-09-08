@@ -57,7 +57,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
-const { sbPageBudgetDecision } = require('./lib/crt-sb-credit-guard.js');
+const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -259,7 +259,11 @@ const SB_PREMIUM_DOMAINS = new Set([
 
 // Per-run SB page credit budget — prevents runaway spending.
 // For bulk backfills, override: SB_PAGE_CREDIT_BUDGET=1000 node scripts/collect-review-texts.js ...
-const SB_PAGE_CREDIT_BUDGET = parseInt(process.env.SB_PAGE_CREDIT_BUDGET || '200', 10);
+// Strict parse at startup (BRO-3009 ship-check): a malformed value must kill
+// the run here, not surface later as a thrown tier error — the tier runner
+// catches those and falls through to Bright Data, turning an operator typo
+// into a silent, pricier reroute. parseInt alone would read '200oops' as 200.
+const SB_PAGE_CREDIT_BUDGET = resolveSbPageCreditBudget(process.env.SB_PAGE_CREDIT_BUDGET, 200);
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
