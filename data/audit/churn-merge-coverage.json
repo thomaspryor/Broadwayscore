@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-08T13:38:25.864Z",
+    "generatedAt": "2026-09-08T14:19:10.513Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/outlet-registry-gaps.json",
-      "churn": 83
+      "churn": 81
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/verify-merge-landed.log",
-      "churn": 54
+      "churn": 52
     },
     {
       "path": "data/audit/worktree-gc.log",
@@ -34,7 +34,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 115
+      "churn": 116
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
@@ -94,7 +94,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 66
+      "churn": 67
     },
     {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
@@ -122,22 +122,22 @@
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 47
+      "churn": 48
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 46
+      "churn": 47
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 46
-    },
-    {
-      "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
-      "churn": 46
+      "churn": 47
     },
     {
       "path": "public/data/stats-reviews.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
       "churn": 46
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 38
+      "churn": 39
     },
     {
       "path": "public/data/shows/teeth-n-smiles-west-end-2026.json",
@@ -184,27 +184,27 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 879,
+      "churn": 854,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 849,
+      "churn": 825,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 437,
+      "churn": 435,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 412,
+      "churn": 409,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 190,
+      "churn": 191,
       "mergeAttr": "ours"
     },
     {
@@ -214,37 +214,37 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 130,
+      "churn": 128,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-story-west-end-2026.json",
-      "churn": 38,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
@@ -264,7 +264,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 33,
+      "churn": 32,
       "mergeAttr": "union"
     },
     {
