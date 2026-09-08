@@ -391,6 +391,13 @@ on:
       # in the lib-test glob; path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-provider-spend.js'
+      # BRO-3057 what-else: scripts/config/provider-spend-thresholds.json is the
+      # exact same gap as scripts/config/provider-pricing.json fixed above in the
+      # same commit — check-provider-spend.js and scripts/lib/scrapingdog-caps.js
+      # both read it via fs, invisible to audit-test-yml-lib-deps.js. Its own
+      # header documents multiple owner-approved hand-edits (BRO-2943, BRO-2226),
+      # so a solo threshold change here was running ZERO CI.
+      - 'scripts/config/provider-spend-thresholds.json'
       # Task #752: Browserbase chokepoint + cross-provider ledger. bd-telemetry.js
       # was generalized into provider-telemetry.js (still re-exported for its 2
       # existing consumers); browserbase-session.js is the new createBbSession()
