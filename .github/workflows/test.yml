@@ -1203,6 +1203,7 @@ on:
       # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
       # real by the data-validation job's re-run below, after checkout-review-texts).
+      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
@@ -4592,6 +4593,20 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
+
+      - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
+        # Same corpus-missing trap as the frankie step above: registered in
+        # tests/unit-test-manifest.txt, but that batch runs in the unit-tests
+        # job which never checks out data/review-texts, so it would only ever
+        # exercise its own skip branch there. Re-run HERE with
+        # REQUIRE_REVIEW_CORPUS=1 so a re-resurrection of
+        # the-addams-family-2010/wsj--unknown.json — the stale-checkout race
+        # that survived the first two BRO-3092 fixes — actually fails CI
+        # instead of waiting for a rebuild to promote it into 4 red errors.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-addams-wsj-dedup-held.test.mjs
 
       - name: Run data validation
         if: always()
