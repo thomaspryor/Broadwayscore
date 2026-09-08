@@ -113,6 +113,29 @@ test('classifyCmuxError ignores stdout — command OUTPUT must never read as a r
   assert.notEqual(auth.classifyCmuxError(err), 'auth-denied');
 });
 
+test('classifyCmuxError ignores the ARGV embedded in execFileSync\'s message', () => {
+  // execFileSync sets message to "Command failed: <full argv>\n<stderr>", and
+  // run() carries mutating commands like `send --text '<arbitrary text>'`.
+  // Letting argv reach the matcher meant a message merely MENTIONING "Access
+  // denied" classified as auth-denied — the one class that retries — and the
+  // send would be replayed into a live pane.
+  const err = new Error("Command failed: /Applications/cmux.app/Contents/Resources/bin/cmux send --workspace workspace:7 --text 'investigating the Access denied incident'");
+  err.stderr = 'Error: Socket closed before reply';
+  assert.equal(auth.classifyCmuxError(err), 'unavailable',
+    'stderr is authoritative; argv must never decide the class');
+});
+
+test('classifyCmuxError falls back to the message but drops the argv line', () => {
+  const err = new Error("Command failed: /path/cmux send --text 'Access denied'\nError: Invalid password");
+  err.stderr = '';
+  assert.equal(auth.classifyCmuxError(err), 'auth-denied', 'real reason on a later line still classifies');
+
+  const argvOnly = new Error("Command failed: /path/cmux send --text 'Access denied'");
+  argvOnly.stderr = '';
+  assert.notEqual(auth.classifyCmuxError(argvOnly), 'auth-denied',
+    'argv alone must not manufacture an auth verdict');
+});
+
 test('classifyCmuxError reads stderr off a real execFileSync-shaped error', () => {
   const err = new Error('Command failed: /Applications/cmux.app/.../cmux list-workspaces');
   err.stderr = 'Error: ERROR: Access denied - only processes started inside cmux can connect\n';

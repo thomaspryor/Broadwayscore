@@ -115,9 +115,24 @@ function classifyCmuxError(err) {
   // finding). Since the only mutating retry in the tree keys off this verdict,
   // a content-driven false positive there would re-send a command that had
   // already been applied. Diagnosis comes from the failure channels only.
+  // stderr is the ONLY trustworthy channel, and it is preferred whenever it
+  // has content. execFileSync builds err.message as
+  //   "Command failed: <the full argv>\n<stderr>"
+  // so the ARGUMENTS are inside the message — and run() carries mutating
+  // commands like `send --text '<arbitrary text>'`. A message that merely
+  // mentions "Access denied" would classify as auth-denied, which is the one
+  // class that RETRIES, and the send would be replayed into a live pane
+  // (ship-check finding — reproduced: stderr said "Socket closed" while the
+  // argv made it read as auth-denied).
+  //
+  // Only when stderr is empty do we fall back to the message, and even then
+  // the "Command failed: <argv>" first line is dropped so arguments can never
+  // reach the matcher.
   const text = typeof err === 'string'
     ? err
-    : `${err.message || ''}\n${err.stderr || ''}`;
+    : String(err.stderr || '').trim()
+      ? String(err.stderr)
+      : String(err.message || '').split('\n').filter((l) => !/^Command failed:/.test(l)).join('\n');
   // A failure carrying NO diagnostic text is its own category, distinct from
   // one whose text we simply do not recognise. That distinction is
   // load-bearing: 'unknown' escalates (it is the "cmux reworded its error"

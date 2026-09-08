@@ -104,18 +104,22 @@ const MAX_REVIVE_PER_TICK = 3;
 // all three sweep sites are covered by construction — including any added
 // later — instead of each remembering to escalate for itself.
 //
-// The '-error' suffix is deliberately broad (today it matches exactly the
-// three cmux sweep kinds: task-sweep-error, flagless-sweep-error,
-// untracked-sweep-error). It cannot over-page even if an unrelated '-error'
-// kind is added later, because escalation is gated a second time on
-// classifyCmuxError: anything that isn't recognisably a cmux auth rejection
-// classifies as 'unknown' and never escalates.
+// Named explicitly rather than matched by an '-error' suffix. The suffix was
+// safe only while an unclassifiable failure stayed quiet; once 'unknown'
+// became page-worthy, ANY future '-error' kind whose detail did not match the
+// cmux taxonomy would have paged as a cmux socket incident. A comment
+// asserting the old safety property survived the change that falsified it,
+// which is precisely how a stale invariant becomes a bug — so the set is now
+// the thing enforced, not the prose.
+const CMUX_SWEEP_ERROR_KINDS = new Set([
+  'task-sweep-error', 'flagless-sweep-error', 'untracked-sweep-error',
+]);
 const cmuxFailuresThisTick = [];
 
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
   console.log(`[bsc-reconcile] ${entry.kind}: ${entry.detail}`);
-  if (typeof entry.kind === 'string' && entry.kind.endsWith('-error') && entry.detail) {
+  if (CMUX_SWEEP_ERROR_KINDS.has(entry.kind) && entry.detail) {
     cmuxFailuresThisTick.push(entry.detail);
   }
   if (DRY) return;
