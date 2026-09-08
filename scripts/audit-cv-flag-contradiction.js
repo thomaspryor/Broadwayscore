@@ -64,7 +64,14 @@ Usage:
   --window=N         only consider shows opened in the last N days (default 30)
 `;
 
-const ROOT = path.resolve(__dirname, '..');
+// BSC_AUDIT_ROOT exists so the coverage counting below can be proven against
+// a fixture corpus instead of asserted by eye — the counters are the whole
+// point of BRO-2348, and an uncounted counter is exactly the "absence of a
+// signal looks like the safe outcome" trap. Unset in every real invocation,
+// including CI, where this resolves to the repo root exactly as before.
+const ROOT = process.env.BSC_AUDIT_ROOT
+  ? path.resolve(process.env.BSC_AUDIT_ROOT)
+  : path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'cv-flag-contradiction-baseline.json');
@@ -116,10 +123,11 @@ function main() {
     return !Number.isNaN(t) && t >= cutoff;
   });
 
-  // Coverage bookkeeping (BRO-2348). These are counted, not inferred, because
-  // `recentShows.length` is NOT the number of shows this sweep looks at: a
-  // show with no data/review-texts/<id> directory hits the `continue` below
-  // and is never opened. Measured 2026-09-07: 132 selected, 72 examined.
+  // Coverage bookkeeping (BRO-2348). Counted, never inferred:
+  // `recentShows.length` is NOT what this sweep examines. A show can be
+  // selected by the window and still contribute nothing — no review-texts
+  // directory, an unreadable one, or one whose every file fails to parse.
+  // Measured on the real corpus 2026-09-07: 132 selected, 72 examined.
   const eligibleShows = shows.filter(
     (s) => s.openingDate && !Number.isNaN(Date.parse(s.openingDate))
   ).length;
@@ -136,8 +144,12 @@ function main() {
     } catch {
       continue;
     }
-    showsWithTexts++;
-    filesParsed += files.length;
+    // Counted from what the loop ACTUALLY did, never from what it listed.
+    // `files.length` would count a corrupt file as parsed, and a show whose
+    // directory exists but holds no readable .json (a _pending/-only strand,
+    // for instance) would be reported as examined — in the one line whose
+    // whole purpose is honest coverage (ship-check findings 1 and 2).
+    let parsedThisShow = 0;
     for (const file of files) {
       let data;
       try {
@@ -145,11 +157,14 @@ function main() {
       } catch {
         continue;
       }
+      parsedThisShow++;
       const contradiction = detectCvFlagContradiction(data);
       if (contradiction) {
         hits.push({ showId: show.id, file, ...contradiction });
       }
     }
+    filesParsed += parsedThisShow;
+    if (parsedThisShow > 0) showsWithTexts++;
   }
 
   // "shows opened in the last Nd" was false: the window filter is a lower
@@ -162,10 +177,12 @@ function main() {
     console.log(`  [${h.flag}] ${h.showId}/${h.file} (${h.wordCount}w)`);
   }
 
-  // Printed on EVERY path, before the --update-baseline branch exits, because
-  // the misreading this prevents is of a CLEAN run: "(12 baselined, 0 new)"
-  // followed by exit 0 reads as a healthy corpus when the sweep examined 72
-  // of 2,943 shows (BRO-2348).
+  // Printed before the --update-baseline branch exits and before the --strict
+  // verdict, so every path that REACHES the report carries it. (An empty
+  // corpus still exits earlier at the assertCorpusScanned guard above, which
+  // is a loud failure, not a misreadable clean result.) The misreading this
+  // prevents is of a CLEAN run: "(12 baselined, 0 new)" plus exit 0 reads as
+  // a healthy corpus when the sweep examined 72 of 2,943 shows (BRO-2348).
   for (const line of summarizeWindowCoverage({
     windowDays: args.window,
     corpusShows: shows.length,

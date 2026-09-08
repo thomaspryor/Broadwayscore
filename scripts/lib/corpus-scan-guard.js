@@ -84,15 +84,16 @@ function summarizeWindowCoverage({
   const skippedNoTexts = inWindow - withTexts;
 
   const lines = [
-    `Coverage: examined ${withTexts} of ${corpus} corpus shows ` +
+    `Coverage: examined ${withTexts} of ${corpus} corpus show(s) ` +
       `(${num(filesParsed)} review file(s) parsed).`,
     `  --window=${num(windowDays)}d selected ${inWindow} show(s): ` +
       `${opened} already opened, ${upcoming} not yet opened ` +
       '(the window filter has no upper bound).',
-    `  ${skippedNoTexts} selected show(s) had no data/review-texts directory ` +
-      'and were skipped.',
+    `  ${skippedNoTexts} selected show(s) yielded no readable review file ` +
+      '(directory missing, unreadable, empty, or every file failed to parse).',
     `  ${notExamined} corpus show(s) were NOT examined, of which ${ineligible} ` +
-      'carry no openingDate and are excluded at EVERY window.',
+      'carry no usable openingDate (missing or unparseable) and are excluded ' +
+      'at EVERY window.',
     '  A clean result above covers only the examined shows. It is not a ' +
       'statement about the corpus.',
   ];
