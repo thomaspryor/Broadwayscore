@@ -33,9 +33,14 @@ const path = require('path');
  * divergence one migration later, so both callers require() this instead.
  */
 
-// Diagnosis hints keyed by evaluateVerifiability()'s `kind`. Kept as data so a
-// new kind added to verify-gate.js shows up as a missing key in the test
-// rather than as a silently generic message.
+// Diagnosis hints keyed by evaluateVerifiability()'s `kind`. verify-gate.js's
+// header documents SEVEN: 'no-section' | 'no-command' | 'shape' |
+// 'path-prefix' | 'traversal' | 'mutating-script' | 'basename' (BRO-2570).
+// An earlier version of this file covered three, so a card refused for
+// 'path-prefix' or 'traversal' got the generic message with no explanation of
+// what was actually wrong — and the test meant to catch that hard-coded the
+// same three kinds, so it passed while 4 of 7 were unhandled. The test now
+// derives the list from verify-gate.js's own documented set.
 const KIND_HINTS = {
   'no-section': 'The card has no "## Acceptance criteria" section and no VERIFY: line at all.',
   'no-command':
@@ -44,6 +49,23 @@ const KIND_HINTS = {
     'The acceptance criteria DO name a command, but it matches none of the allowed safe forms, ' +
     'so the Done gate will refuse this card outright. This is the failure that is easiest to miss: ' +
     'the command can be perfectly correct and still be unusable here.',
+  'path-prefix':
+    'The command has an allowed SHAPE but points at a file outside the directories a check may ' +
+    'read. Acceptance commands may only name paths under tests/, scripts/ or src/ (plus docs/ and ' +
+    'memory/ for the `test -f` form) — a check that reads data/ or public/ would be measuring the ' +
+    'corpus rather than the work.',
+  traversal:
+    'The command contains a `..` path segment. It is refused whatever it resolves to, because an ' +
+    'acceptance command is re-run unattended by the nightly recheck and must not be able to reach ' +
+    'outside the repository.',
+  'mutating-script':
+    'The command has an allowed shape but names a script that WRITES to the corpus (shows.json, ' +
+    'reviews.json, review-texts). An acceptance check is re-run long after the card closes, so it ' +
+    'has to be read-only — otherwise verifying a card silently mutates production data.',
+  basename:
+    'The command names a script that is not on the vetted read-only allowlist. Only scripts ' +
+    'individually checked as corpus-safe may be used as acceptance checks; add yours to ' +
+    "autonomous-triage-core.js's list, with the reasoning, if it genuinely qualifies.",
 };
 
 const SAFE_FORM_EXAMPLES =
@@ -155,36 +177,23 @@ function armingWarning(notesStr, deps = {}) {
 
   const hint = KIND_HINTS[verdict.kind] || '';
 
-  // For kind 'shape' the offending command is the single most useful thing to
-  // print, so name it and say exactly which check it failed.
-  let offending = '';
-  if (verdict.kind === 'shape') {
-    let cmd = null;
-    try {
-      cmd = (gate.candidatesFrom(notesStr) || [])[0] || null;
-    } catch (e) {
-      cmd = null;
-    }
-    if (cmd) {
-      let why = null;
-      try {
-        why = gate.explainUnsafeCheckCommand(cmd);
-      } catch (e) {
-        why = null;
-      }
-      offending =
-        `\nThe command it found:  ${cmd}\n` +
-        `Rejected as:           ${(why && why.kind) || 'unsafe'}` +
-        (why && why.reason ? `\nReason:                ${why.reason}` : '') +
-        '\n';
-    }
-  }
+
+  // NOTE: do NOT re-derive the offending command here. An earlier version
+  // called candidatesFrom(notesStr), which is a raw backtick scanner over the
+  // WHOLE note (autonomous-verify-cmd.js:45) — the acceptance-section scoping
+  // lives in extractVerifyCmd, not in it. So a backticked span anywhere in
+  // "## Problem" was reported as the offender: a card whose real problem was
+  // `node scripts/linear-drain-parked.js --dry-run` printed
+  // "The command it found: npx tsc --noEmit" purely because its Problem
+  // section mentioned tsc. verdict.reason is built by verify-gate from the
+  // correctly SECTIONED candidates and already names the right one, so quote
+  // that and nothing else. Third time this session that re-deriving a value
+  // the canonical module already computed produced a wrong answer.
 
   return (
     '⚠️  ACCEPTANCE CRITERIA DO NOT ARM — this card cannot be closed as filed.\n\n' +
     `${verdict.reason}\n` +
     (hint ? `${hint}\n` : '') +
-    offending +
     `\n${SAFE_FORM_EXAMPLES}\n\n` +
     "If this card's outcome truly cannot be machine-checked (a decision, an email, a design),\n" +
     'add the line:\n' +

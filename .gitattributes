@@ -242,6 +242,17 @@ data/audit/dmarc-report-ledger.jsonl merge=union
 #       by ts (scripts/lib/attempt-memory.js:70) BEFORE walking the failure
 #       streak newest-to-oldest. That explicit re-sort is what makes the
 #       post-recovery append order harmless here.
+#   (c) A THIRD condition this file's own framework does not name, and which
+#       the first version of this entry got wrong: DUPLICATE IDENTITY. union
+#       can leave the SAME row twice (sync-audit-checkout.sh's recovery
+#       re-appends locally-saved rows over origin's committed ones), and
+#       checkPark() counts every 'card-fail' row in the streak with NO dedupe
+#       of its own against DEFAULT_MAX_FAILURES = 2 — so one duplicated row
+#       turns a single failure into a park and strands a card. The ts-sort in
+#       (b) does nothing about this; the actual protection is the exact-line
+#       dedupe in linear-drain-parked.js's readLedger(), added for exactly
+#       this reason. If you add a union driver to another ledger, check this
+#       third condition too — ordering safety is NOT duplicate safety.
 data/audit/linear-drain-parked-ledger.jsonl merge=union
 
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —

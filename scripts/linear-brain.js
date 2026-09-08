@@ -520,8 +520,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // purpose: automated filers (owner-alert-router.js, digest-autofix.js)
     // generate prose criteria, and a reject here would break the alert->card
     // chain. The hard stops stay downstream at dispatch and at the Done gate.
-    const warning = armingWarning(args.notes || '');
-    if (warning) console.error(`\n${warning}\n`);
+    //
+    // Wrapped in its own try (ship-check finding): this sits INSIDE the create
+    // try whose catch calls process.exit(2). Without this guard a throw in the
+    // advisory warning — after the issue was already created — would report
+    // the create as FAILED, and the caller would file it again. An advisory
+    // must never be able to invalidate the thing it is advising about.
+    try {
+      const warning = armingWarning(args.notes || '');
+      if (warning) console.error(`\n${warning}\n`);
+    } catch (e) {
+      console.error(`[linear-brain] acceptance-arming check failed (issue was still created): ${e.message}`);
+    }
   } catch (err) {
     console.error(`\n❌ ${err.message}\n`);
     process.exit(2);
