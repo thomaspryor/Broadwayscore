@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-09-08T01:28:37.658Z",
+  "generatedAt": "2026-09-08T01:31:48.585Z",
   "total": 896,
   "armedCount": 892,
   "refusedCount": 4,
   "byKind": {
-    "no-section": 2,
-    "path-prefix": 1,
-    "no-command": 1
+    "no-section": 1,
+    "no-command": 2,
+    "path-prefix": 1
   },
   "refused": [
     {
-      "id": "BRO-2995",
-      "name": "cmux-workspaces.js listWorkspaces() silently drops malformed/unparseable lines, indistinguishable from a genuinely empty cmux",
+      "id": "BRO-2997",
+      "name": "Wire audit-card-verifiability.js --source linear into a schedule to prevent regression",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2995/cmux-workspacesjs-listworkspaces-silently-drops-malformedunparseable",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2997/wire-audit-card-verifiabilityjs-source-linear-into-a-schedule-to",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
     },
     {
-      "id": "BRO-2994",
-      "name": "bsc-reconcile: untracked sweep's cadence gate stamps lastRunTs even after a cmux failure, masking outage recovery for the full 6h interval",
+      "id": "BRO-2996",
+      "name": "test.yml: 2 pre-existing failures in workflow-audit-steps-always.test.mjs (advisory, unrelated to BRO-2983)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2994/bsc-reconcile-untracked-sweeps-cadence-gate-stamps-lastrunts-even",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2996/testyml-2-pre-existing-failures-in-workflow-audit-steps-alwaystestmjs",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "BRO-2988",
