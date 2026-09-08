@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-08T11:37:53.984Z",
+    "generatedAt": "2026-09-08T12:16:25.591Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 37 exempt, 19 covered\n  ⚠️    91  data/audit/outlet-registry-gaps.json  — no merge driver; needs a decision\n  ⚠️    62  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    58  data/audit/verify-merge-landed.log  — no merge driver; needs a decision\n  ⚠️    40  data/audit/worktree-gc.log  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 37 exempt, 19 covered\n  ⚠️    90  data/audit/outlet-registry-gaps.json  — no merge driver; needs a decision\n  ⚠️    63  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    58  data/audit/verify-merge-landed.log  — no merge driver; needs a decision\n  ⚠️    40  data/audit/worktree-gc.log  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
