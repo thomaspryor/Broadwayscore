@@ -840,6 +840,16 @@ jobs:
             fi
           done
 
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (end)
+        if: always()
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
+
       # BRO-735 "Single integrated opening night pipeline": aggregates every
       # stage's real outcome (gather/collect/score/rebuild/deploy — all inline
       # in this one job above) and fails the JOB if any stage genuinely
@@ -908,16 +918,6 @@ jobs:
           DEPLOY_ATTEMPTED="$DEPLOY_ATTEMPTED" DEPLOY_DISPATCHED="$DEPLOY_DISPATCHED" \
           DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
           node scripts/opening-night-pipeline-verify.js
-
-      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (end)
-        if: always()
-        timeout-minutes: 1
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
-            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
-        continue-on-error: true
 
       - name: Notify on failure
         id: notify
