@@ -83,9 +83,9 @@ function shouldLaunchNewCrown(existingWorkspaces, title) {
       `a BRO-343 crown session is already running in ${existing.ref} ("${existing.title}") — ` +
       `refusing to launch a duplicate "${title}". Message the existing session to consolidate instead ` +
       `of spawning a sibling. If this IS a sanctioned successor hand-off, pass successorOf: ` +
-      `process.env.CMUX_WORKSPACE_ID (your own predecessor ref) so only your own predecessor is exempted ` +
-      `— any OTHER live crown still refuses. force:true is for a genuinely deliberate second, independent ` +
-      `crown; it also bypasses the terminal-capacity preflight, so prefer successorOf for a hand-off.`,
+      `process.env.CMUX_WORKSPACE_ID (your own predecessor's workspace id) so only your own predecessor ` +
+      `is exempted — any OTHER live crown still refuses. force:true is for a genuinely deliberate second, ` +
+      `independent crown; it also bypasses the terminal-capacity preflight, so prefer successorOf for a hand-off.`,
   };
 }
 

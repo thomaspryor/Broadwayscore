@@ -848,14 +848,18 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 the caller's own predecessor from the guard
  *                                 without also disabling the unrelated
  *                                 terminal-capacity preflight below.
- * @param {string}  [opts.successorOf] BRO-2953: the workspace ref of the
- *                                 CALLER's own predecessor in a crown
- *                                 succession hand-off (read
+ * @param {string}  [opts.successorOf] BRO-2953: the CALLER's own predecessor
+ *                                 in a crown succession hand-off — either its
+ *                                 workspace ref ("workspace:162") or its
+ *                                 CMUX_WORKSPACE_ID (a UUID, read from
  *                                 process.env.CMUX_WORKSPACE_ID inside the
  *                                 predecessor session before composing the
  *                                 successor's launch call — every
  *                                 cmux-launched session's env carries it).
- *                                 Exempts exactly that one ref from the
+ *                                 Both forms are matched (BRO-3064: a
+ *                                 ref-only comparison here could never match
+ *                                 the UUID the refusal message documents).
+ *                                 Exempts exactly that one predecessor from the
  *                                 crown-fanout guard so a sanctioned hand-off
  *                                 is not itself treated as the duplicate it
  *                                 exists to prevent; any OTHER live crown
@@ -1082,12 +1086,26 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   // no reason to pay a cmux round trip per listed crown tab on a launch this
   // guard is a no-op for anyway.
   if (!force && isCrownLaunchTitle(title) && process.env.CROWN_FANOUT_GUARD_DISABLED !== '1') {
-    const listWorkspacesFn = probes.listWorkspaces || cmuxws.listWorkspaces;
+    // listWorkspacesWithCwd (JSON-backed `cmux workspace list --json`), not
+    // listWorkspaces (text-backed `cmux list-workspaces`): the successorOf
+    // exemption below needs to match a workspace's `id` (a UUID), and only
+    // the JSON source carries that field — the plain-text `list-workspaces`
+    // output has no id column at all. Same source bsc-next.js's
+    // selfCloseAfterSuccession already uses for the identical
+    // CMUX_WORKSPACE_ID-vs-listed-workspace match (BRO-2953/2989 family).
+    const listWorkspacesFn = probes.listWorkspaces || cmuxws.listWorkspacesWithCwd;
     const crownAliveFn = probes.crownAlive || cmuxws.claudeAliveIn;
     let existingWorkspaces = [];
     try {
       existingWorkspaces = listWorkspacesFn().filter((w) => {
-        if (!w || w.ref === successorOf || !isCrownLaunchTitle(w.title)) return false;
+        // successorOf may be a workspace ref ("workspace:162") or the UUID
+        // from process.env.CMUX_WORKSPACE_ID (see the refusal message below
+        // and the @param doc above) — the documented contract is the UUID,
+        // and a ref-only comparison here can never match one (BRO-3064: this
+        // refused every sanctioned hand-off, since w.ref and successorOf were
+        // never the same shape).
+        const isSuccessor = w && successorOf && (w.ref === successorOf || w.id === successorOf);
+        if (!w || isSuccessor || !isCrownLaunchTitle(w.title)) return false;
         try { return crownAliveFn(w.ref); } catch { return true; } // uncertain → treat as alive (see header)
       });
     } catch (e) {
