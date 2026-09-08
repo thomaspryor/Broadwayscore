@@ -143,12 +143,6 @@ jobs:
           # the whole census. Both default to unset = current behavior.
           SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
           SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
-          # BRO-392 quarantine-starvation circuit breaker override — how many
-          # consecutive blast-radius rollbacks a show tolerates before its
-          # re-audit cadence (never its trusted gaps/uncollected counts) is
-          # allowed to advance. Unset uses the library default (3). Raise to
-          # a huge number to disable the breaker without a code deploy.
-          GAP_QUARANTINE_STREAK_CAP: ${{ vars.GAP_QUARANTINE_STREAK_CAP || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           # Default window widened to 3y + include-closed so the cron grinds the

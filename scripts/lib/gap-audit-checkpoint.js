@@ -44,9 +44,11 @@ function writeJsonAtomic(filePath, obj) {
 
 /**
  * Pure merge: fold `entries` ({showId: entryObject | undefined}) into
- * `current` ({showId: entryObject}). A value of `undefined` deletes that id
- * (used by rollback for "never audited before this run — leave no stamp").
- * No I/O — the caller supplies `current`, already read under the lock.
+ * `current` ({showId: entryObject}). A value of `undefined` deletes that id.
+ * Used by saveCheckpointEntries (the per-show stamp / WE-alert hash update
+ * paths) — rollback has its own branching in applyCheckpointRollback below,
+ * not this function. No I/O — the caller supplies `current`, already read
+ * under the lock.
  */
 function mergeCheckpointEntries(current, entries) {
   const merged = { ...(current || {}) };
@@ -77,108 +79,66 @@ function saveCheckpointEntries(checkpointPath, entries) {
   });
 }
 
-// BRO-392: a rollback always restores the PRE-quarantine (arbitrarily old)
-// timestamp, so a chronically-risky show's checkpoint entry never advances —
-// it permanently reads as "most overdue" (compareAuditPriority sorts oldest
-// `at` first) and gets re-selected into nearly every subsequent hourly
-// batch, re-tripping the blast-radius guard and reddening the workflow every
-// single run it's picked (observed: the same ~9-10 off-broadway shows,
-// frozen at an early-August computedAt, recurred in nearly every run from
-// 2026-09-07 onward). This cap breaks that starvation loop: after
-// `DEFAULT_QUARANTINE_STREAK_CAP` consecutive rollbacks, the show's re-audit
-// CADENCE is allowed to advance so it falls back to its normal freshness
-// window (freshnessMsFor) instead of front-running the least-recently-
-// audited queue forever. It stays visibly quarantined in
-// show-review-gap.json (a separate file/lock) and keeps alerting via
-// routeAlert's own cooldown — only the checkpoint's scheduling stops
-// starving.
+// BRO-392: a rollback used to restore the PRE-quarantine (arbitrarily old)
+// `at` wholesale, and `at` was the ONLY timestamp compareAuditPriority had to
+// sort on — so a chronically-risky show's scheduling priority never
+// advanced, it permanently read as "most overdue", and it got re-selected
+// into nearly every subsequent hourly batch, re-tripping the blast-radius
+// guard and reddening the workflow run after run (observed: the same ~9-10
+// off-broadway shows, frozen at an early-August `at`, recurred in nearly
+// every run from 2026-09-07 onward).
 //
-// Adversarial review finding (Codex, BRO-392): the FIRST version of this fix
-// let the show's entire refused-run stamp stand once the cap tripped —
-// including `gaps`/`uncollected`, THIS run's numbers, which the blast-radius
-// guard just finished declaring too risky to trust. newsletter-preflight.js
-// reads exactly those two fields off this file as a HARD completeness gate
-// (classifyGapEntry: fresh `at` + `uncollected === 0` reads 'ok' and clears a
-// show to send) — so escaping quarantine could have silently blessed a send
-// on the very lie the guard exists to catch. The breaker below advances ONLY
-// the timestamp; `gaps`/`uncollected` keep whatever was last genuinely
-// trusted (or are dropped entirely if nothing ever was, which
-// classifyGapEntry/newsletter-preflight already read as 'no-data' — a soft
-// warn, never a false 'ok').
-const DEFAULT_QUARANTINE_STREAK_CAP = 3;
+// Two earlier attempts at this fix (a per-show rollback streak cap that let
+// the timestamp advance after N strikes) each introduced a new way to leak
+// untrusted or stale data into newsletter-preflight.js's hard completeness
+// gate (classifyGapEntry reads `at` + `uncollected` off this exact file — a
+// fresh `at` next to a zero or stale `uncollected` reads 'ok' and clears a
+// show to send). The actual fix is simpler: SEPARATE the two concerns that
+// were sharing one field. `checkedAt` (gap-audit-freshness.js's
+// checkpointTs) is scheduling-only — stamped unconditionally by the per-show
+// audit loop every run, refused or not — and rollback here never touches it.
+// `at`/`gaps`/`uncollected` stay exactly what they always were: the last
+// genuinely TRUSTED snapshot, fully restored (or left absent) on a refused
+// run, exactly like the original #923/#893 design, with zero new leak
+// surface. A chronically-risky show's `checkedAt` still advances every run
+// it's examined, so it ages out of "most overdue" on its own — no cap, no
+// streak, no extra state to get wrong.
 
 /**
- * Pure branching for a refused (blast-radius) run's checkpoint rollback. For
- * each id in `auditedIds`, restore whatever was last genuinely trusted about
- * it (or nothing, if it's never been trusted) and bump its
- * `quarantineStreak`. Once the streak exceeds `streakCap` (BRO-392), the
- * show's `at` timestamp is advanced to THIS run's fresh stamp — breaking the
- * starvation loop — but `gaps`/`uncollected` are NEVER taken from the
- * refused run; only the last-trusted values (or none) ever persist, so a
- * quarantined show can never look more complete than it last verifiably was.
- * Extracted per CLAUDE.md §15 so the branching is unit-testable without
- * spinning up the whole audit script.
+ * Pure restore-vs-delete branching for a refused (blast-radius) run's
+ * checkpoint rollback. For each id in `auditedIds`: if `checkpointAtStart`
+ * had a pre-run entry for it, restore that entry (the show WAS audited
+ * before, this run's TRUSTED fields — `at`/`gaps`/`uncollected` — just
+ * aren't trustworthy this time); otherwise delete it entirely (the show was
+ * never trusted before this run, so leaving trusted-looking fields behind
+ * would be inventing history). Either way, `checkedAt` — this run's real
+ * audit-attempt timestamp, already stamped in `current` before the guard
+ * ever ran — is always preserved, so scheduling keeps moving even though the
+ * trusted snapshot doesn't. Extracted per CLAUDE.md §15 so the branching is
+ * unit-testable without spinning up the whole audit script.
  *
  * @param {Object} current            checkpoint re-read fresh under the lock
  * @param {string[]} auditedIds       ids THIS run touched
  * @param {Object} checkpointAtStart  pre-run snapshot (may be null/{})
- * @param {Object} [opts]
- * @param {number} [opts.streakCap=DEFAULT_QUARANTINE_STREAK_CAP]
  */
-function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = {}) {
-  const streakCap = opts.streakCap == null ? DEFAULT_QUARANTINE_STREAK_CAP : opts.streakCap;
+function applyCheckpointRollback(current, auditedIds, checkpointAtStart) {
   const merged = { ...(current || {}) };
   const snapshot = checkpointAtStart || {};
   for (const id of auditedIds || []) {
-    const hadTrustedEntry = Object.prototype.hasOwnProperty.call(snapshot, id);
-    // Null-safety: a persisted `null` entry is a valid (if odd) prior value —
-    // `{...null}` is a safe no-op spread, but reading `.quarantineStreak` off
-    // it would throw, so guard the property access itself (adversarial
-    // review finding).
-    const priorEntry = hadTrustedEntry ? snapshot[id] : null;
-    const priorStreak = Number.isFinite(priorEntry && priorEntry.quarantineStreak) ? priorEntry.quarantineStreak : 0;
-    const nextStreak = priorStreak + 1;
-    if (nextStreak > streakCap) {
-      // Circuit breaker tripped: advance the timestamp only (already in
-      // `current`/`merged` from this run's per-show stamp) — never adopt
-      // this run's untrusted gaps/uncollected. See the module comment above.
-      //
-      // Residual same-show concurrency gap (2nd Codex adversarial pass): the
-      // lock only covers THIS read-modify-write, not the whole multi-minute
-      // audit. If a DIFFERENT run legitimately re-stamped this exact id via
-      // its own, separate lock acquisition (e.g. saveCheckpointEntries)
-      // sometime between OUR run's start and THIS rollback call, `current`/
-      // `merged[id].at` here is that other run's real, trustworthy
-      // timestamp — but we still pair it with OUR OWN stale `priorEntry`
-      // gaps/uncollected, since we can't tell "our own untrusted stamp" from
-      // "a different run's trustworthy one" once it's landed as `current`.
-      // Result: a fresh timestamp next to stale counts. Requires two runs
-      // auditing the identical show around the same time, which the
-      // workflow's own concurrency group already prevents for the normal
-      // hourly cron; only a manual `--show=X` run racing the cron could
-      // trigger it. Same class of risk gap-audit-merge.js's own docstring
-      // already accepts for the sibling file ("a real cross-process lock is
-      // out of S0 scope") — not resolved here for the same reason: it needs
-      // cross-run bookkeeping neither file has.
-      const freshAt = (merged[id] && merged[id].at) || new Date().toISOString();
-      merged[id] = hadTrustedEntry
-        ? { ...priorEntry, at: freshAt, quarantineStreak: 0 }
-        : { at: freshAt, quarantineStreak: 0 };
-      continue;
+    const checkedAt = merged[id] && merged[id].checkedAt;
+    if (Object.prototype.hasOwnProperty.call(snapshot, id)) {
+      // Null-safety: a persisted `null` entry is a valid (if odd) prior
+      // value — `{...null}` is a safe no-op spread (adversarial review
+      // finding: guards against a future reader adding a property access
+      // here without re-deriving this).
+      merged[id] = { ...snapshot[id], ...(checkedAt ? { checkedAt } : {}) };
+    } else if (checkedAt) {
+      // Never trusted before, but this run's scheduling stamp must still
+      // survive so the show doesn't look perpetually never-audited.
+      merged[id] = { checkedAt };
+    } else {
+      delete merged[id];
     }
-    // Below the cap: restore whatever was last trusted (bumping the streak).
-    // A show with NO trusted history yet still needs its streak tracked
-    // across runs (adversarial review finding: without this, a show that's
-    // risky from its very first audit would hit the "no prior entry" branch
-    // every single run forever and never reach the cap at all) — persist a
-    // streak-only marker with no `at`/`gaps`/`uncollected` fields.
-    // checkpointTs() and classifyGapEntry() both already treat a missing
-    // `at`/`uncollected` as "never audited" / "no-data", so this is
-    // observationally identical to today's full delete for every existing
-    // reader, just durable enough to count.
-    merged[id] = hadTrustedEntry
-      ? { ...priorEntry, quarantineStreak: nextStreak }
-      : { quarantineStreak: nextStreak };
   }
   return merged;
 }
@@ -187,13 +147,13 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = 
  * Lock + re-read + applyCheckpointRollback + write, in one call — the
  * rollback call site's counterpart to saveCheckpointEntries.
  */
-function rollbackCheckpointEntries(checkpointPath, auditedIds, checkpointAtStart, opts = {}) {
+function rollbackCheckpointEntries(checkpointPath, auditedIds, checkpointAtStart) {
   withFileLock(`${checkpointPath}.lock`, (held) => {
     if (!held) {
       console.error(`::warning::gap-audit-checkpoint rollback lock could not be acquired for ${checkpointPath} (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent run could have lost data.`);
     }
     const current = loadCheckpoint(checkpointPath);
-    const merged = applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts);
+    const merged = applyCheckpointRollback(current, auditedIds, checkpointAtStart);
     writeJsonAtomic(checkpointPath, merged);
   });
 }
@@ -205,5 +165,4 @@ module.exports = {
   saveCheckpointEntries,
   applyCheckpointRollback,
   rollbackCheckpointEntries,
-  DEFAULT_QUARANTINE_STREAK_CAP,
 };

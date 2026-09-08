@@ -1606,6 +1606,16 @@ async function main(argv = process.argv.slice(2)) {
       const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
       checkpoint[s.id] = {
         at: new Date().toISOString(),
+        // checkedAt (BRO-392): scheduling-only "last audit ATTEMPT" clock,
+        // read by gap-audit-freshness.js's checkpointTs/compareAuditPriority.
+        // Stamped unconditionally, same as `at` — but unlike `at`, a refused
+        // (blast-radius) run's rollback never touches it (see
+        // applyCheckpointRollback in gap-audit-checkpoint.js), so a
+        // chronically-risky show still ages out of "most overdue" instead of
+        // dominating every subsequent hourly batch forever. `at` stays the
+        // TRUST timestamp newsletter-preflight.js's completeness gate reads,
+        // and rollback fully restores it (with gaps/uncollected) on refusal.
+        checkedAt: new Date().toISOString(),
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
         // uncollected: CURRENT-run reviews we literally do not have on disk
         // (aggregator lists a URL we never fetched, or cites an outlet with no
@@ -2253,16 +2263,9 @@ async function main(argv = process.argv.slice(2)) {
     // behavior exactly.
     const auditedIds = results.map(r => r && r.showId).filter(Boolean);
     const rollbackIds = (riskyShowIds && riskyShowIds.length) ? riskyShowIds : auditedIds;
-    // GAP_QUARANTINE_STREAK_CAP: operational override for the BRO-392 circuit
-    // breaker (scripts/lib/gap-audit-checkpoint.js) without a code deploy —
-    // set to a large number (e.g. 999999) to effectively disable it and
-    // restore the pre-fix "roll back forever" behavior, or lower it to break
-    // a stuck loop faster. Unset uses the library default.
-    const streakCapEnv = Number(process.env.GAP_QUARANTINE_STREAK_CAP);
-    const rollbackOpts = Number.isFinite(streakCapEnv) && streakCapEnv > 0 ? { streakCap: streakCapEnv } : {};
     if (useCheckpoint && checkpointAtStart && rollbackIds.length) {
       try {
-        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart, rollbackOpts);
+        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart);
         console.error(`::warning::rolled ${rollbackIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.${rollbackIds.length < auditedIds.length ? ` (${auditedIds.length - rollbackIds.length} other audited show(s) were safe and persisted normally)` : ''}`);
       } catch (e) {
         console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
