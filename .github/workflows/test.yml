@@ -2685,12 +2685,6 @@ jobs:
         # regress shows.json at least 6 times undetected. Heuristic
         # (manifest + push-path string matching, no dependency chasing),
         # non-blocking — always exits 0 (see script header for why).
-        # if: always() is required by tests/unit/workflow-audit-steps-always.test.mjs:
-        # without it an earlier failure in this job SKIPS the step, and the run then
-        # reports nothing about the coverage gaps it exists to surface — silently,
-        # which is the 2026-09-06 outlet-registry failure mode. Read-only, so it is
-        # safe to run unconditionally.
-        if: always()
         run: node scripts/audit-toplevel-script-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
