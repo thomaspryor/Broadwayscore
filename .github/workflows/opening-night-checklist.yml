@@ -76,7 +76,30 @@ concurrency:
 jobs:
   checklist:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # BRO-369: raised from 10 (2026-09-08) — the "Commit opening night state"
+    # step below now overrides PUSH_DEADLINE_SEC=360 + PUSH_API_MAX_RETRIES=2
+    # to fix 3 real conclusion=failure runs in 24h (33925219166, 33934756338,
+    # 33992585696), all the same shape: local push exhausted the shared 240s
+    # default after ~2 real fetch-rebase-merge cycles, then the Git Data API
+    # fallback ALSO timed out on both of its auto-scaled 2 attempts (90s cap
+    # each). Worst case with the new step budget, using the corrected cost
+    # model from opening-night-completeness-check.yml's same-day sizing
+    # (single network op can chain up to ~4x GIT_NET_TIMEOUT_SEC=360s, not
+    # the ~270s push-with-retry.sh's own older comment implies): baseline
+    # ~5min (checkouts + npm ci + checklist run + latency + SLA dispatch,
+    # measured from these same 3 failing runs) + up to ~360s local-loop
+    # overshoot past the 360s deadline + 2 x 360s bounded fallback attempts
+    # = ~25min worst case. Sized to that ceiling rather than the tighter
+    # number a naive PUSH_DEADLINE_SEC-only read would suggest, specifically
+    # so a genuine worst case exits the push step cleanly (failure + retry
+    # next hour) instead of being hard-killed by the job timeout — a
+    # job-timeout kill reports conclusion=cancelled, which
+    # repeatFailureResults() in scripts/health-check.js does NOT count,
+    # would starve the if:always() telemetry/notify-failure steps of time,
+    # and is the failure mode this fix must not silently trade into. 25min
+    # is negligible against this workflow's 3h CRITICAL_CRONS staleness band
+    # in check-cron-health.yml.
+    timeout-minutes: 25
 
     steps:
       - name: Checkout
@@ -221,6 +244,28 @@ jobs:
         # — see the sibling step's comment below for the full if:always()
         # rationale (unchanged from the original single-step version).
         if: always()
+        env:
+          # BRO-369: this step had NO override before — it ran on
+          # push-with-retry.sh's shared 240s default, which task #458's own
+          # sizing comment says fits only ~1.3 real fetch-rebase-merge
+          # cycles under this repo's high main-branch churn. All 3 real
+          # failures in 24h (33925219166, 33934756338, 33992585696) hit
+          # exactly that: local push bailed after ~2 attempts, then the Git
+          # Data API fallback ALSO timed out on both of its auto-scaled 2
+          # attempts. 360s (vs 240s) buys a meaningfully better shot at
+          # succeeding locally without ever reaching that flaky fallback.
+          # Do NOT raise the shared push-with-retry.sh default instead — its
+          # own comment explicitly says not to, since ~15 other callers with
+          # 5-10min job timeouts rely on the tight default to fail fast.
+          PUSH_DEADLINE_SEC: '360'
+          # Explicit bound (not left to push-with-retry.sh's auto-scaling)
+          # so the worst case here is calculable rather than assumed —
+          # same reasoning opening-night-completeness-check.yml's "Commit
+          # state file" step used for its own PUSH_API_MAX_RETRIES=1, sized
+          # up to 2 here because this ledger is NOT self-healing on the next
+          # tick the way that workflow's snapshot is (losing it re-dispatches
+          # remediation forever per the appendToHistory() comment below).
+          PUSH_API_MAX_RETRIES: '2'
         run: |
           # opening-night-history.json is the attempt-history ledger this
           # incident is actually about: if it is not committed, every hourly
