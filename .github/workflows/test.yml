@@ -78,6 +78,11 @@ on:
       # would report the whole in-flight fleet ABANDONED — worth CI on a solo
       # edit.
       - 'scripts/audit-dispatch-outcomes.js'
+      # Same gap shape: a top-level CLI outside scripts/lib/**. As of 2026-09-08
+      # it no longer just writes an audit report — it closes Off-Broadway shows
+      # in shows.json when two signals agree, so a solo edit to the apply path
+      # deserves CI even though its decision logic lives in scripts/lib/.
+      - 'scripts/detect-ob-closings.js'
       - 'vercel.json'
       # scripts/lib/freeze-ledgers.test.mjs requires ../freeze-ledgers.js (a
       # top-level scripts/ file, outside the glob above) — same gap shape as
