@@ -11,6 +11,7 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 // Off-Broadway / Regional = 3) from score-buckets.ts.
 import { getMarketMinReviews, hasReachedStage } from '@/lib/market-utils';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
+import { formatShowDate } from '@/lib/date-utils';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -316,8 +317,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'closing-date',
     sectionGroup: (show) => {
       if (!show.closingDate) return 'Closing Date TBD';
-      const closing = new Date(show.closingDate);
-      return closing.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      return formatShowDate(show.closingDate, { month: 'long', year: 'numeric' });
     },
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-for-tourists', 'best-broadway-show-right-now'],
   },
@@ -710,7 +710,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'opening-date',
     sectionGroup: (show) => {
-      const month = new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long' });
+      const month = formatShowDate(show.openingDate, { month: 'long' });
       return `Opened in ${month}`;
     },
     relatedPages: ['2025-2026-broadway-season', 'new-broadway-shows-2025', 'upcoming-broadway-shows', 'best-broadway-show-right-now'],

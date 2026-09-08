@@ -7,6 +7,7 @@ import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
+import { formatShowDate } from './date-utils';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -749,7 +750,7 @@ export function generateBrowseFAQSchema(
   });
   if (closingShows.length > 0) {
     const closingStr = closingShows.slice(0, 3).map(s =>
-      `${s.title} (closes ${new Date(s.closingDate!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })})`
+      `${s.title} (closes ${formatShowDate(s.closingDate, { month: 'long', day: 'numeric', year: 'numeric' })})`
     ).join(', ');
     faqs.push({
       question: `Which of these shows are closing soon?`,

@@ -108,6 +108,24 @@ export function formatOpeningDate(dateStr: string | null | undefined): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
+/**
+ * Format a bare "YYYY-MM-DD" show date field (openingDate, closingDate,
+ * previewsStartDate) for display, e.g. "Jul 26, 2026". `new Date(str)` parses
+ * as UTC midnight; without a UTC override, .toLocaleDateString() shifts the
+ * result to the viewer's local timezone, rendering one day early for every
+ * US timezone (BRO-3047). This always formats in UTC so the calendar date
+ * shown matches the stored value regardless of the viewer's timezone.
+ */
+export function formatShowDate(
+  dateStr: string | null | undefined,
+  options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
+): string {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });
+}
+
 /** Get the duration suffix for a market category */
 export function getDurationSuffix(category?: string): string {
   if (category === 'west-end' || category === 'off-west-end') return 'in London';
