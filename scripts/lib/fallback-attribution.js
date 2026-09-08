@@ -15,14 +15,17 @@
  * in scraper.js owns routing, and this function is called after that decision
  * has already been made and executed.
  *
- * The vocabulary is pageChainOrder's own tier names ('cookies-plain',
- * 'playwright-first', 'scrapingdog', 'brightdata', 'scrapingbee',
- * 'playwright-last'), deliberately not a second set of aliases — one
- * translation table is one place for the two to drift. The single exception is
- * the breaker case, which BRO-3009 specifies as the literal 'sd-breaker': a
- * tier that was never attempted is a materially different cost story from one
- * that was attempted and failed, and collapsing them would hide the very
- * signal Sprint 3 is built to read.
+ * A tier that was TRIED and missed is labelled with pageChainOrder's own tier
+ * name ('cookies-plain', 'playwright-first', 'scrapingdog', 'brightdata',
+ * 'scrapingbee', 'playwright-last') — deliberately not a second set of
+ * aliases, since one translation table is one place for the two to drift.
+ *
+ * A tier that was NEVER ATTEMPTED reports why instead, from SKIP_REASONS
+ * below — 'sd-breaker' (the case BRO-3009 specifies by name), plus the four
+ * sibling states that would otherwise be conflated with an ordinary miss.
+ * Never-attempted and attempted-and-failed are materially different cost
+ * stories, and collapsing them would hide the very signal Sprint 3 is built
+ * to read.
  *
  * Leaf module: no requires.
  */
