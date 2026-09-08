@@ -125,17 +125,26 @@ test('launchCmuxSession: an ordinary (non-crown) launch is never blocked, even w
   assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
 });
 
+// BRO-3064 what-else finding: `cmuxExists: () => false` short-circuits at
+// cmux-launch.js:988, BEFORE the crown-fanout guard's try/catch ever runs —
+// the listWorkspaces throw below was NEVER actually reached, so this test
+// previously passed unconditionally regardless of whether the fail-open
+// catch worked at all. Isolate with a controlled post-guard failure instead
+// (see the successorOf UUID tests above for the same technique).
 test('launchCmuxSession: a listWorkspaces failure fails OPEN (never blocks a launch on an unrelated cmux-socket error)', () => {
   const res = launchCmuxSession({
     title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
     seed: 'seed text', seedKey: 'k-bro-2953-d', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
     probes: {
-      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      cmuxExists: () => true,
       listWorkspaces: () => { throw new Error('cmux socket unavailable'); },
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
     },
   });
   assert.equal(res.ok, false);
-  assert.match(res.reason, /cmux CLI not found/); // proceeded past the guard despite the listWorkspaces throw
+  assert.equal(res.refusedForCrownFanout, undefined); // proceeded past the guard despite the listWorkspaces throw
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
 });
 
 test('launchCmuxSession: refusal carries refusedForCrownFanout so callers can distinguish it from a generic failure', () => {
@@ -152,19 +161,23 @@ test('launchCmuxSession: refusal carries refusedForCrownFanout so callers can di
   assert.equal(res.refusedForCrownFanout, true);
 });
 
+// Same BRO-3064 what-else finding as the listWorkspaces-failure test above —
+// this test's crownAlive:false claim was never actually exercised either.
 test('launchCmuxSession: a crown-titled workspace listed but with no live claude process (a corpse tab) does not block a new launch', () => {
-  const newWorkspaceMock = () => { throw new Error('do not go further — this test only cares whether the guard refused'); };
   const res = launchCmuxSession({
     title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
     seed: 'seed text', seedKey: 'k-bro-2953-f', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
     probes: {
-      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      cmuxExists: () => true,
       listWorkspaces: () => [{ ref: 'workspace:44', title: '👑 OWNER — Crown v40 (BRO-343 backlog triage + dispatch loop)' }],
       crownAlive: () => false, // corpse tab: listed, but no live claude process
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
     },
   });
   assert.equal(res.ok, false);
-  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason — the corpse never counted
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the corpse never counted
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
 });
 
 test('launchCmuxSession: successorOf exempts exactly the caller\'s own predecessor, but a THIRD unrelated crown still refuses', () => {
@@ -261,6 +274,11 @@ test('launchCmuxSession: successorOf given as the UUID exempts only that predece
   assert.match(res.reason, /workspace:11/);
 });
 
+// Same BRO-3064 what-else finding: cmuxExists:false meant listWorkspaces was
+// never reached regardless of the kill switch, so this test could not have
+// caught a regression that deleted the CROWN_FANOUT_GUARD_DISABLED check. A
+// REAL live crown is now present (which would refuse without the kill
+// switch) to prove the switch is what let the launch through, not mere luck.
 test('launchCmuxSession: CROWN_FANOUT_GUARD_DISABLED=1 skips the guard entirely (operational kill switch)', () => {
   const prev = process.env.CROWN_FANOUT_GUARD_DISABLED;
   process.env.CROWN_FANOUT_GUARD_DISABLED = '1';
@@ -268,13 +286,17 @@ test('launchCmuxSession: CROWN_FANOUT_GUARD_DISABLED=1 skips the guard entirely 
     const res = launchCmuxSession({
       title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
       seed: 'seed text', seedKey: 'k-bro-2953-i', cwd: os.tmpdir(),
+      skipAuthPreflight: true,
       probes: {
-        cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
-        listWorkspaces: () => { throw new Error('must not even be called with the kill switch on'); },
+        cmuxExists: () => true,
+        crownAlive: () => true,
+        listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }], // would refuse without the kill switch
+        terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
       },
     });
     assert.equal(res.ok, false);
-    assert.match(res.reason, /cmux CLI not found/);
+    assert.equal(res.refusedForCrownFanout, undefined); // the live crown above did NOT refuse it — the kill switch skipped the guard
+    assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
   } finally {
     if (prev === undefined) delete process.env.CROWN_FANOUT_GUARD_DISABLED;
     else process.env.CROWN_FANOUT_GUARD_DISABLED = prev;
