@@ -113,6 +113,16 @@ const CORE_DATA_MERGE_REGISTRY = [
     merge: mergeFeedbackLedger,
     format: 'json',
     newline: true,
+    // BRO-345: process-feedback.yml's push-contention-only failures (7x in
+    // 24h, all "All push attempts failed after N of 20 budgeted attempt(s)
+    // (deadline)") were disqualified from the Git Data API fallback with
+    // "touches a union-merge-MANAGED file (without apiFallbackMerge
+    // coverage)" — this was that file. It already had real per-key merge
+    // logic (mergeFeedbackLedger, task #1440) for the local rebase case-arm
+    // path; `apiFallbackMerge: true` opts the SAME merge fn into push-via-
+    // git-api.sh's fast path too, same pattern as audit/alert-ledger.json
+    // below (BRO-2413).
+    apiFallbackMerge: true,
     // Unlike the other public-repo entries, this file is reconciled ONLY via
     // push-with-retry.sh's resolve_conflicts() case arm (fires unconditionally
     // on an actual rebase/merge conflict) — it is NOT part of reconcile-
@@ -502,6 +512,35 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'commercial-data-write',
     verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "bd-circuit-breaker"/"check-bd-breaker.js" — sole writer is scripts/check-bd-breaker.js, invoked only by commercial-rss-poll.yml\'s "Bright Data daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so overlapping runs (its own cron racing a workflow_dispatch) queue rather than race. 2026-09-07 (BRO-2960): still sole writer/same concurrency group — the ONLY change is that commercial-rss-poll.yml now commits this file in its own earlier "Commit breaker state" step (a second push-with-retry.sh call in the same job, right after the two breaker checks) instead of bundling it into the later "Commit data changes" step, so a failure on that later, larger commit no longer costs the breaker verdict its push.',
+  },
+  // BRO-345 (process-feedback.yml repeat-failure, 7x/24h 2026-09-06→08): both
+  // files below are unaudited data/audit/ paths, sole writer process-
+  // feedback.yml, committed together with audit/feedback-request-ledger.json
+  // and audit/alert-ledger.json/alert-digest-queue.json (all already
+  // fallback-eligible) in the same "Commit tracking file" step — but these
+  // two, being unregistered, disqualified the Git Data API fallback for the
+  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch),
+  // leaving only the slow local fetch+rebase+push flow. That flow then lost
+  // its own race against main's commit churn on every attempt within the
+  // 600s budget (confirmed across all 7 failing runs — 4-6 attempts each,
+  // ending in "push-with-retry: overall deadline 600s exceeded"), hard-
+  // failing the job every ~10min cron tick. Registering these two as
+  // apiFallbackSafe restores the fallback for the whole commit.
+  {
+    file: 'audit/processed-feedback.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'process-feedback',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Sole writer script: scripts/process-feedback.js.',
+  },
+  {
+    file: 'audit/pending-bug-diagnoses.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'process-feedback',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Written by scripts/process-feedback.js and drained/rewritten by the same workflow\'s "Create Bug Diagnosis Issues" github-script step.',
   },
   {
     file: 'audit/sd-circuit-breaker.json',
