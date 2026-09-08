@@ -694,7 +694,7 @@ function estimateCronIntervalMinutes(text) {
  *   maxRetries: number, deadlineSec: number, backoffSum: number,
  *   retryDeadlineRatio: number, jobTimeoutSec: number, stepBudgetSec: number,
  *   otherStepsBudgetSec: number, marginSec: number, marginRatio: number,
- *   fallbackAfterAttempts: number, fallbackReachable: boolean,
+ *   fallbackAfterAttempts: number, fallbackEarlyTriggerReachable: boolean,
  *   flags: string[]
  * }}
  */
@@ -711,7 +711,7 @@ function evaluateStep({
 
   const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
   const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
-  const fallbackReachable = fallbackDisabled || fundableAttempts >= fallbackAfterAttempts;
+  const fallbackEarlyTriggerReachable = fallbackDisabled || fundableAttempts >= fallbackAfterAttempts;
 
   const flags = [];
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
@@ -731,20 +731,31 @@ function evaluateStep({
   // control flow computeFundableAttempts models), so an attempt that would first
   // reach PUSH_API_FALLBACK_AFTER_ATTEMPTS (explicit override, else floor(3,
   // (MAX_RETRIES+1)/2) — mirrors push-with-retry.sh ~L594) never starts once
-  // fundableAttempts attempts have already exhausted the deadline. A step whose
-  // deadline cannot fund even MIN_FUNDABLE_ATTEMPTS is already caught above, but
-  // this catches the distinct case data-health-check.yml shipped with: 3+
-  // fundable attempts (so not flagged there), yet the fallback threshold itself
-  // sits past that count (fundable=5, fallbackAfter=13) — the Git Data API
-  // rescue path this exists for never engages.
-  if (!fallbackReachable) {
-    flags.push('fallback-threshold-unreachable');
+  // fundableAttempts attempts have already exhausted the deadline.
+  //
+  // CORRECTNESS NOTE (Codex adversarial ship-check finding, 2026-09-07): this
+  // does NOT mean the Git Data API fallback "never engages" — push-with-
+  // retry.sh's post-loop fallback block (~L2005) runs on ANY loop exit
+  // (early-trigger break ~L1952 OR the deadline break ~L1255 OR full retry
+  // exhaustion) as long as `_PUSH_API_FALLBACK_ELIGIBLE=true`, independent of
+  // whether the early-trigger threshold itself was ever reached. What an
+  // unreachable early-trigger actually costs: the fallback only gets invoked
+  // LATE, after PUSH_DEADLINE_SEC is already exhausted, at which point
+  // `_api_remaining_sec` (~L2200) is ~0 and push-via-git-api.sh's own retry
+  // budget scales down to its minimum (2 attempts, vs up to 6 with time to
+  // spare) — a real degradation, but not "never". Flag name and this comment
+  // updated accordingly; see auditWorkflowText for the companion fix (this
+  // flag is additionally gated off when the call's own staged files already
+  // disqualify the fallback outright, in which case the trigger's
+  // reachability is moot).
+  if (!fallbackEarlyTriggerReachable) {
+    flags.push('fallback-early-trigger-unreachable');
   }
 
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
-    fundableAttempts, fallbackAfterAttempts, fallbackReachable,
+    fundableAttempts, fallbackAfterAttempts, fallbackEarlyTriggerReachable,
     flags,
   };
 }
@@ -837,6 +848,22 @@ function auditWorkflowText(text, filePath) {
       const mixedSafetyBundleDisqualifyingFiles = stagedPaths.filter((p) => classifyPushFallbackSafety(p).disqualifiesFallback);
       const mixedSafetyBundle = mixedSafetyBundleSafeFiles.length > 0 && mixedSafetyBundleDisqualifyingFiles.length > 0;
       if (mixedSafetyBundle) evaluation.flags.push('mixed-safety-bundle');
+
+      // BRO-2811 (Codex adversarial ship-check finding, 2026-09-07): a call
+      // whose OWN known staged files already disqualify the Git Data API
+      // fallback outright (classifyPushFallbackSafety's disqualifiesFallback —
+      // the SAME per-call staged-path evidence mixed-safety-bundle above
+      // already computes) would never get a working fallback regardless of
+      // whether PUSH_API_FALLBACK_AFTER_ATTEMPTS is reachable — the trigger's
+      // reachability is moot when the destination it triggers is disqualified
+      // on file-safety grounds alone. Only suppresses on POSITIVE evidence of
+      // disqualification (a known disqualifying path was actually staged);
+      // stagedPaths being empty (a bulk-stage idiom this parser can't resolve,
+      // see extractStagedPaths' documented blind spots) leaves the flag on
+      // rather than guessing safety from an absence of evidence.
+      if (mixedSafetyBundleDisqualifyingFiles.length > 0) {
+        evaluation.flags = evaluation.flags.filter((f) => f !== 'fallback-early-trigger-unreachable');
+      }
 
       let contentionScore = 0;
       if (managed) contentionScore += apiFallbackSafe ? 1 : 2;

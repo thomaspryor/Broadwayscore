@@ -706,7 +706,7 @@ test('evaluateStep: the new flag is independent of retries-undersized-vs-deadlin
   assert.ok(r.fundableAttempts < r.maxRetries);
 });
 
-// ── computeEffectiveFallbackAfter / fallback-threshold-unreachable (BRO-2811,
+// ── computeEffectiveFallbackAfter / fallback-early-trigger-unreachable (BRO-2811,
 // same class as BRO-2370 DEFECT B made systemic) ────────────────────────────
 // push-with-retry.sh derives PUSH_API_FALLBACK_AFTER_ATTEMPTS as
 // max(3, floor((MAX_RETRIES+1)/2)) unless a caller overrides it, then breaks
@@ -730,12 +730,12 @@ test('computeEffectiveFallbackAfter: an explicit override always wins over the d
   assert.equal(computeEffectiveFallbackAfter(7, 1), 1); // even a value the derived formula would never produce
 });
 
-test('evaluateStep: flags fallback-threshold-unreachable on the exact BRO-2370 data-health-check.yml pre-fix shape (25 retries / 900s deadline, no override)', () => {
+test('evaluateStep: flags fallback-early-trigger-unreachable on the exact BRO-2370 data-health-check.yml pre-fix shape (25 retries / 900s deadline, no override)', () => {
   const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40 });
   assert.equal(r.fallbackAfterAttempts, 13);
   assert.ok(r.fundableAttempts >= 4 && r.fundableAttempts <= 6, `expected the same 4-6 fundable range as the existing computeFundableAttempts test, got ${r.fundableAttempts}`);
-  assert.equal(r.fallbackReachable, false);
-  assert.ok(r.flags.includes('fallback-threshold-unreachable'));
+  assert.equal(r.fallbackEarlyTriggerReachable, false);
+  assert.ok(r.flags.includes('fallback-early-trigger-unreachable'));
   // and NOT deadline-cannot-fund-retries — that flag's own bar (3) is cleared
   // here, which is precisely why this is a DIFFERENT failure this flag alone
   // catches.
@@ -745,14 +745,14 @@ test('evaluateStep: flags fallback-threshold-unreachable on the exact BRO-2370 d
 test('evaluateStep: the actual BRO-2370 fix (PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 override) clears the flag on the SAME 25/900 shape', () => {
   const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackAfterAttemptsOverride: 3 });
   assert.equal(r.fallbackAfterAttempts, 3);
-  assert.equal(r.fallbackReachable, true);
-  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
 });
 
 test('evaluateStep: fallbackDisabled short-circuits the check regardless of reachability', () => {
   const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackDisabled: true });
-  assert.equal(r.fallbackReachable, true);
-  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
 });
 
 test('evaluateStep: a modest sizing where fundableAttempts already meets the derived fallback threshold is not flagged', () => {
@@ -762,8 +762,8 @@ test('evaluateStep: a modest sizing where fundableAttempts already meets the der
   const r = evaluateStep({ maxRetries: 7, deadlineSec: 1200, jobTimeoutMinutes: 60 });
   assert.equal(r.fallbackAfterAttempts, 4);
   assert.ok(r.fundableAttempts >= 4);
-  assert.equal(r.fallbackReachable, true);
-  assert.ok(!r.flags.includes('fallback-threshold-unreachable'));
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
 });
 
 test('parseWorkflow: PUSH_API_FALLBACK_AFTER_ATTEMPTS and PUSH_API_FALLBACK_DISABLE are read from the step env block', () => {
@@ -815,7 +815,7 @@ jobs:
   const results = auditWorkflowText(text, 'fixture-data-health-check-shape.yml');
   assert.equal(results.length, 1);
   assert.equal(results[0].fallbackAfterAttempts, 3);
-  assert.ok(!results[0].flags.includes('fallback-threshold-unreachable'));
+  assert.ok(!results[0].flags.includes('fallback-early-trigger-unreachable'));
 });
 
 test('auditWorkflowText: end-to-end, the SAME shape WITHOUT the override is flagged (the exact bug BRO-2370 found and BRO-2811 makes systemic)', () => {
@@ -837,5 +837,92 @@ jobs:
   const results = auditWorkflowText(text, 'fixture-data-health-check-shape-no-override.yml');
   assert.equal(results.length, 1);
   assert.equal(results[0].fallbackAfterAttempts, 13);
-  assert.ok(results[0].flags.includes('fallback-threshold-unreachable'));
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+// ── fallback-early-trigger-unreachable gated off by staged-file disqualification
+// (Codex adversarial ship-check finding, 2026-09-07) ────────────────────────
+// An unreachable early-trigger threshold is moot when the call's own staged
+// files already disqualify the Git Data API fallback outright on file-safety
+// grounds (classifyPushFallbackSafety) — fixing PUSH_API_FALLBACK_AFTER_
+// ATTEMPTS would not make the fallback usable there, so flagging it is noise.
+// This is the SAME staged-path evidence mixed-safety-bundle already computes.
+
+test('auditWorkflowText: fallback-early-trigger-unreachable is suppressed when the call stages an outright-disqualifying file (shows.json, NEVER_FALLBACK)', () => {
+  const text = `
+name: Fixture Fallback Disqualified By Staged File
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit shows.json
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/shows.json
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-fallback-disqualified.yml');
+  assert.equal(results.length, 1);
+  // The underlying structural computation still says unreachable...
+  assert.equal(results[0].fallbackEarlyTriggerReachable, false);
+  // ...but the flag itself is suppressed because the fallback could never
+  // engage for this diff regardless of trigger timing.
+  assert.ok(!results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('auditWorkflowText: fallback-early-trigger-unreachable still fires when NO staged file is known to disqualify (stagedPaths empty or all safe/neutral)', () => {
+  const text = `
+name: Fixture Fallback Not Disqualified
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit unregistered report
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/some-unregistered-report.json
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-fallback-not-disqualified.yml');
+  assert.equal(results.length, 1);
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('auditWorkflowText: real data-health-check.yml "Commit health check + triage data" shape (alert-ledger.json etc, all apiFallbackMerge-registered) is NOT suppressed — none of its known staged files disqualify the fallback', () => {
+  // This is the actual live shape (as of BRO-2413's apiFallbackMerge coverage
+  // for the 3 alert-* ledgers): the workflow's own inline comment claims this
+  // step's fallback is "disqualified on its own merits regardless", but that
+  // predates BRO-2413 — none of the 3 tracked staged files disqualify anymore
+  // (triage/ itself is an unresolvable bare-directory add, so it contributes
+  // no evidence either way). The flag correctly stays on.
+  const text = `
+name: Fixture Real Data Health Check Shape
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit health check + triage data
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/audit/triage/ 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-real-data-health-check-shape.yml');
+  assert.equal(results.length, 1);
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
 });
