@@ -4,8 +4,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  evaluateCard, buildReport, evaluateLinearIssue, attachMissingTestFiles,
-  reconcileMissingTestFilesWithComments,
+  evaluateCard, buildReport, evaluateLinearIssue, attachMissingCheckPaths,
+  reconcileMissingCheckPathsWithComments,
 } = require('./audit-card-verifiability.js');
 
 test('evaluateCard: armed card carries no reason', () => {
@@ -107,9 +107,9 @@ test('evaluateLinearIssue: missing description is refused, not a crash', () => {
   assert.equal(r.armed, false);
 });
 
-// ── BRO-2977: missing-test-file wiring ──────────────────────────────────────
+// ── BRO-2977/BRO-3076: missing-check-path wiring ────────────────────────────
 
-test('reconcileMissingTestFilesWithComments: a VERIFY comment naming a real file clears the flag (BRO-2796 correction path)', async () => {
+test('reconcileMissingCheckPathsWithComments: a VERIFY comment naming a real file clears the flag (BRO-2796 correction path)', async () => {
   const flagged = [{
     id: 'BRO-1', name: 'Phantom path', url: 'u1',
     cmd: 'node --test tests/unit/phantom.test.mjs', missingPaths: ['tests/unit/phantom.test.mjs'],
@@ -120,13 +120,13 @@ test('reconcileMissingTestFilesWithComments: a VERIFY comment naming a real file
     comments: { nodes: [{ body: 'VERIFY: node --test tests/unit/real.test.mjs', createdAt: '2026-09-01T00:00:00.000Z' }] },
   });
   const existsForOpts = (p) => p === 'tests/unit/real.test.mjs';
-  const stillMissing = await reconcileMissingTestFilesWithComments(flagged, {
+  const stillMissing = await reconcileMissingCheckPathsWithComments(flagged, {
     getIssue, pathExistsOnOriginMain: existsForOpts,
   });
   assert.deepEqual(stillMissing, []);
 });
 
-test('reconcileMissingTestFilesWithComments: no correcting comment leaves the card flagged', async () => {
+test('reconcileMissingCheckPathsWithComments: no correcting comment leaves the card flagged', async () => {
   const flagged = [{
     id: 'BRO-2', name: 'Still phantom', url: 'u2',
     cmd: 'node --test tests/unit/phantom.test.mjs', missingPaths: ['tests/unit/phantom.test.mjs'],
@@ -136,14 +136,14 @@ test('reconcileMissingTestFilesWithComments: no correcting comment leaves the ca
     description: '## Acceptance criteria\n`node --test tests/unit/phantom.test.mjs`',
     comments: { nodes: [] },
   });
-  const stillMissing = await reconcileMissingTestFilesWithComments(flagged, {
+  const stillMissing = await reconcileMissingCheckPathsWithComments(flagged, {
     getIssue, pathExistsOnOriginMain: () => false,
   });
   assert.equal(stillMissing.length, 1);
   assert.equal(stillMissing[0].id, 'BRO-2');
 });
 
-test('reconcileMissingTestFilesWithComments: a comment correcting to a NON-node-test command clears the flag', async () => {
+test('reconcileMissingCheckPathsWithComments: a comment correcting to a NON-node-test command clears the flag', async () => {
   const flagged = [{
     id: 'BRO-3', name: 'Corrected to a different safe form', url: 'u3',
     cmd: 'node --test tests/unit/phantom.test.mjs', missingPaths: ['tests/unit/phantom.test.mjs'],
@@ -153,25 +153,42 @@ test('reconcileMissingTestFilesWithComments: a comment correcting to a NON-node-
     description: '## Acceptance criteria\n`node --test tests/unit/phantom.test.mjs`',
     comments: { nodes: [{ body: 'VERIFY: npx tsc --noEmit', createdAt: '2026-09-01T00:00:00.000Z' }] },
   });
-  const stillMissing = await reconcileMissingTestFilesWithComments(flagged, { getIssue });
+  const stillMissing = await reconcileMissingCheckPathsWithComments(flagged, { getIssue });
   assert.deepEqual(stillMissing, []);
 });
 
-test('reconcileMissingTestFilesWithComments: a getIssue failure fails toward reporting, not silence', async () => {
+test('reconcileMissingCheckPathsWithComments: a getIssue failure fails toward reporting, not silence', async () => {
   const flagged = [{ id: 'BRO-4', name: 'Refetch fails', url: 'u4', cmd: 'node --test tests/unit/phantom.test.mjs', missingPaths: ['tests/unit/phantom.test.mjs'] }];
   const getIssue = async () => { throw new Error('network blip'); };
-  const stillMissing = await reconcileMissingTestFilesWithComments(flagged, { getIssue, log: () => {} });
+  const stillMissing = await reconcileMissingCheckPathsWithComments(flagged, { getIssue, log: () => {} });
   assert.equal(stillMissing.length, 1);
   assert.equal(stillMissing[0].id, 'BRO-4');
 });
 
-test('attachMissingTestFiles: no candidates means [] without touching git', () => {
-  // No card here is node --test shaped, so findCardsWithMissingTestFiles
+test('reconcileMissingCheckPathsWithComments: a test -f card is reconciled the same way (BRO-3076)', async () => {
+  const flagged = [{
+    id: 'BRO-5', name: 'Phantom doc', url: 'u5',
+    cmd: 'test -f docs/phantom.md', missingPaths: ['docs/phantom.md'],
+  }];
+  const getIssue = async (id) => ({
+    identifier: id,
+    description: '## Acceptance criteria\n`test -f docs/phantom.md`',
+    comments: { nodes: [{ body: 'VERIFY: test -f docs/real.md', createdAt: '2026-09-01T00:00:00.000Z' }] },
+  });
+  const existsForOpts = (p) => p === 'docs/real.md';
+  const stillMissing = await reconcileMissingCheckPathsWithComments(flagged, {
+    getIssue, pathExistsOnOriginMain: existsForOpts,
+  });
+  assert.deepEqual(stillMissing, []);
+});
+
+test('attachMissingCheckPaths: no candidates means [] without touching git', () => {
+  // No card here is node --test/test -f shaped, so findCardsWithMissingCheckPaths
   // short-circuits before any git fetch — this must never hang or throw in
   // an offline test runner.
   const report = buildReport([]);
-  attachMissingTestFiles(report, [{ id: 'a', cmd: 'npx tsc --noEmit', armed: true }]);
-  assert.deepEqual(report.missingTestFiles, []);
+  attachMissingCheckPaths(report, [{ id: 'a', cmd: 'npx tsc --noEmit', armed: true }]);
+  assert.deepEqual(report.missingCheckPaths, []);
 });
 
 test('buildReport works unchanged over evaluateLinearIssue output (shared shape)', () => {

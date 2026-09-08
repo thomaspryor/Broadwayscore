@@ -1,6 +1,7 @@
 /**
- * card-premises-auditor.js — does an armed card's `node --test`/`npx tsx
- * --test` acceptance command name a file that actually exists?
+ * card-premises-auditor.js — does an armed card's file-naming acceptance
+ * command (`node --test`/`npx tsx --test`/`test -f`) name a file that
+ * actually exists?
  *
  * BRO-2977: isSafeCheckCommand (autonomous-triage-core.js) only validates the
  * SHAPE of a command — never that the file it names is real — so a card
@@ -11,6 +12,13 @@
  * so they can never reach linear-brain.js's Done gate. This module turns
  * that silent starvation into a listed defect, wired into
  * audit-card-verifiability.js's existing sweep.
+ *
+ * BRO-3076: the exact same starvation is possible for `test -f <path>` —
+ * SAFE_CHECK_FORMS' other file-naming safe form (autonomous-triage-core.js's
+ * extractCheckPaths already extracts its path group; BRO-2977 just never
+ * looked at it, deliberately scoping isNodeTestCommand to the two `--test`
+ * forms only). A card whose acceptance is `test -f docs/hallucinated.md` is
+ * just as armed and just as unpassable, so it gets the same treatment here.
  *
  * MUST resolve against origin/main, not the caller's local checkout: a
  * worktree legitimately lacks gitignored paths, and a naive fs.existsSync
@@ -35,17 +43,31 @@ const { isPathAbsentFromTreeError } = require('./autofix-canary.js');
 
 const REPO = path.join(__dirname, '..', '..');
 
-// Narrows extractCheckPaths (which also matches `test -f <docs|memory path>`
-// — not a test file at all) down to the two forms whose path group names
+// Narrows extractCheckPaths down to the two forms whose path group names
 // actual runnable *.test.mjs/*.test.js/*.test.ts files.
 function isNodeTestCommand(cmd) {
   return /^(node --test|npx tsx --test)\b/.test(String(cmd || '').trim());
 }
 
+// The `test -f <docs|memory|tests|src|scripts path>` safe form (BRO-3076) —
+// same starvation risk, different file, so it gets the same existence check.
+function isTestFCommand(cmd) {
+  return /^test -f\b/.test(String(cmd || '').trim());
+}
+
+// Every SAFE_CHECK_FORMS shape whose path group names a file THIS card's own
+// work is responsible for (creating or already having created) — as opposed
+// to a fixed, already-vetted repo script name (the generic audit-/lint- form,
+// the bash *.test.sh form), which can never be a hallucinated path because
+// its basename is checked against an allowlist, not the filesystem.
+function isCheckPathCommand(cmd) {
+  return isNodeTestCommand(cmd) || isTestFCommand(cmd);
+}
+
 // Pure: reuses the SAME regex/path-group extraction isSafeCheckCommand
 // already validated the shape of, so there is no second parser to drift.
-function extractTestFilePaths(cmd) {
-  if (!isNodeTestCommand(cmd)) return [];
+function extractCheckFilePaths(cmd) {
+  if (!isCheckPathCommand(cmd)) return [];
   return extractCheckPaths(cmd);
 }
 
@@ -81,8 +103,8 @@ function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
 }
 
 /**
- * Pure core: which of these armed cards name a `node --test`/`npx tsx --test`
- * file that `existsFn` reports as confirmed-missing?
+ * Pure core: which of these armed cards name a `node --test`/`npx tsx
+ * --test`/`test -f` file that `existsFn` reports as confirmed-missing?
  *
  * A path `existsFn` returns null for (unresolved this run) is never counted
  * as missing — same fail-open contract as the git-backed existsFn itself, so
@@ -92,10 +114,10 @@ function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
  * @param {(relPath:string)=>boolean|null} existsFn
  * @returns {Array<{id,name,url,cmd,missingPaths:string[]}>}
  */
-function auditCardTestPaths(cards, existsFn) {
+function auditCardCheckPaths(cards, existsFn) {
   const flagged = [];
   for (const card of Array.isArray(cards) ? cards : []) {
-    const paths = extractTestFilePaths(card && card.cmd);
+    const paths = extractCheckFilePaths(card && card.cmd);
     if (!paths.length) continue;
     const missingPaths = paths.filter((p) => existsFn(p) === false);
     if (missingPaths.length) {
@@ -107,8 +129,8 @@ function auditCardTestPaths(cards, existsFn) {
 
 /**
  * I/O wrapper: fetches origin/main once, then checks every armed card's
- * `node --test` path against it. Skips the fetch entirely when no card is a
- * `node --test`-shaped candidate (cheap common case).
+ * `node --test`/`npx tsx --test`/`test -f` path against it. Skips the fetch
+ * entirely when no card is a file-naming-shaped candidate (cheap common case).
  *
  * A failed fetch bails out to [] rather than falling through to whatever
  * origin/main happens to be cached locally: `git cat-file -e` reads the
@@ -119,9 +141,9 @@ function auditCardTestPaths(cards, existsFn) {
  * Same fail-open contract as autofix-canary.js's markerExistsOnOriginMain:
  * "could not resolve this run" is never scored as a defect.
  */
-function findCardsWithMissingTestFiles(evaluatedCards, opts = {}) {
+function findCardsWithMissingCheckPaths(evaluatedCards, opts = {}) {
   const candidates = (Array.isArray(evaluatedCards) ? evaluatedCards : [])
-    .filter((c) => c && c.armed && isNodeTestCommand(c.cmd));
+    .filter((c) => c && c.armed && isCheckPathCommand(c.cmd));
   if (!candidates.length) return [];
   if (!fetchOriginMain(opts)) return [];
   const cache = new Map();
@@ -129,15 +151,17 @@ function findCardsWithMissingTestFiles(evaluatedCards, opts = {}) {
     if (!cache.has(p)) cache.set(p, pathExistsOnOriginMain(p, opts));
     return cache.get(p);
   };
-  return auditCardTestPaths(candidates, existsFn);
+  return auditCardCheckPaths(candidates, existsFn);
 }
 
 module.exports = {
   isNodeTestCommand,
-  extractTestFilePaths,
+  isTestFCommand,
+  isCheckPathCommand,
+  extractCheckFilePaths,
   pathExistsOnOriginMain,
   fetchOriginMain,
-  auditCardTestPaths,
-  findCardsWithMissingTestFiles,
+  auditCardCheckPaths,
+  findCardsWithMissingCheckPaths,
   REPO,
 };
