@@ -48,7 +48,7 @@ memory dir: /Users/tompryor/.claude/projects/-Users-tompryor-Broadwayscore/memor
 Non-UI code fixes are allowed and encouraged when a gap's root cause is a code bug: EnterWorktree first, all gates (tsc/lint; scoring-delta.js + temporal fixture for scoring-logic edits; audit-regex-patterns.js --full for content-quality regexes), merge to main, verify the fix live. If a fix would take >45 min or touches UI: work around via data tonight, file the card.
 
 ## New failure modes (encode-first — this is how the system compounds)
-Any gap whose cause is NOT in the catalog: fix it tonight, then file a P0/P1 Notion card for the systemic fix (`node scripts/notion-brain.js create` with full Problem/Evidence/Approach/Acceptance) and dispatch it (`node scripts/notion-tasks-sync.js pull` → `node scripts/bsc-next.js --id <n>`), and append the failure mode to memory/feedback_discovery_pipeline_silent_gates.md.
+Any gap whose cause is NOT in the catalog: fix it tonight, then file a P0/P1 Linear issue for the systemic fix (`node scripts/linear-brain.js create "<title>" --priority 2 --dispatch --notes "..."` with full Problem/Evidence/Approach/Acceptance) and dispatch it (`node scripts/linear-next.js --id BRO-N`), and append the failure mode to memory/feedback_discovery_pipeline_silent_gates.md.
 
 ## End of this pass
 The launcher owns the lock lifecycle (it releases `data/opening-night-monitor/monitor.lock/` the moment this process exits, success or failure) — you do not need to remove it or write a heartbeat yourself. Before you finish:
