@@ -1136,10 +1136,15 @@ async function escalateCmuxAuthFailures() {
     await Promise.race([
       routeAlert({
       // Stable key: one open incident for the whole outage, not one per tick.
-      conditionKey: 'cmux-socket:auth-denied',
-      title: 'cmux socket is rejecting automation — every self-heal sweep is down',
+      conditionKey: summary.authDenied > 0 ? 'cmux-socket:auth-denied' : 'cmux-socket:unclassified',
+      title: summary.authDenied > 0
+        ? 'cmux socket is rejecting automation — every self-heal sweep is down'
+        : 'cmux is failing in a way this code does not recognise — self-heal may be down',
       description:
-        `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n` +
+        (summary.authDenied > 0
+          ? `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n`
+          : `bsc-reconcile could not reach the cmux control socket on ${summary.unknown} sweep(s) this tick, and the failure matched NONE of the known shapes (auth, daemon-down, timeout, missing binary).\n\n`
+            + 'The likeliest cause is that cmux changed its error wording: the classifier recognises rejections by their English text, so a reworded message stops being detected as auth and would otherwise fail silently. Check the raw error below and update classifyCmuxError in scripts/lib/cmux-socket-auth.js.\n\n') +
         'This is a configuration state, not a blip: it does not clear on its own. While it holds, the cmux tab-lane self-heal, bsc-prune and dispatch-watchdog are all disabled simultaneously — dead workspaces stop being recovered and nothing else notices.\n\n' +
         'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.',
       hint:
