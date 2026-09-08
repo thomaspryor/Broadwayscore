@@ -35,6 +35,8 @@
 // Linear priorities are numeric: 0 none, 1 urgent, 2 high, 3 normal, 4 low.
 // Notion's vocabulary ("P1 Next" / "P2 Later") does not exist here, and
 // passing those strings through is a silent no-op on the wrong field.
+const { foldDiacritics } = require('./title-match.js');
+
 const PRIORITY_HIGH = 2;
 const PRIORITY_NORMAL = 3;
 
@@ -48,8 +50,15 @@ const MIN_AGREEMENT = 2;
 // anyone tuned.
 const DUPE_SIMILARITY = 0.6;
 
+// foldDiacritics BEFORE the ASCII class, never after. Stripping [^a-z0-9\s]
+// from an unfolded string destroys accented letters outright — "Café" becomes
+// "caf", "Lópezes" becomes "l pezes" — so two descriptions of the same defect
+// fold to different word sets and dedup silently misses, refiling the finding
+// every night. That is task #648's whole bug class, and the structural guard
+// in tests/unit/sibling-matchers-diacritics.test.mjs exists to stop a NEW
+// matcher reintroducing it. CI caught this file doing exactly that.
 function normalizeWords(s) {
-  return String(s == null ? '' : s)
+  return foldDiacritics(String(s == null ? '' : s))
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)

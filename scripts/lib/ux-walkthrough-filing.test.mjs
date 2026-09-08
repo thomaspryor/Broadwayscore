@@ -16,6 +16,7 @@ import {
   PRIORITY_NORMAL,
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
+  normalizeWords,
   similarity,
   titleFor,
   priorityFor,
@@ -100,6 +101,23 @@ test('titles are prefixed and length-capped', () => {
   assert.ok(t.startsWith('UX audit: '));
   assert.ok(t.length <= 120, t.length);
   assert.equal(titleFor({}), 'UX audit: ');
+});
+
+test('accented text folds before the ASCII strip, so dedup still matches', () => {
+  // Without foldDiacritics first, [^a-z0-9\s] destroys accented letters —
+  // "Café" becomes "caf" — so the same defect described with and without an
+  // accent lands in different word sets and gets refiled nightly. Task #648's
+  // bug class; tests/unit/sibling-matchers-diacritics.test.mjs caught this
+  // file reintroducing it in CI.
+  assert.deepEqual(normalizeWords('Café Lopez seating'), normalizeWords('Cafe Lopez seating'));
+  assert.ok(normalizeWords('Café seating').includes('cafe'), JSON.stringify(normalizeWords('Café seating')));
+  assert.equal(similarity('Café Müller seating broken', 'Cafe Muller seating broken'), 1);
+  // And a real dedup pass must skip the accented restatement.
+  const plan = planFilings({
+    findings: [model('Café Müller seating chart is unreadable')],
+    existing: okBoard([titleFor(model('Cafe Muller seating chart is unreadable'))]),
+  });
+  assert.equal(plan.toFile.length, 0, 'an accented restatement of an existing finding must not be refiled');
 });
 
 test('similarity is symmetric, bounded, and empty-safe', () => {
