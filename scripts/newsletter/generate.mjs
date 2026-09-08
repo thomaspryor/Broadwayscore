@@ -3000,7 +3000,7 @@ ${sectionOrder.join('')}
     </div>
     <div style="font-size:13px;color:#9ca3af;margin-top:10px;">Every show. Every review. One score.</div>
     <div style="font-size:11px;color:#6b7280;margin-top:18px;">
-      <a href="${SITE}${BRAND.primaryPath}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
+      <a href="${SITE}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
       <a href="${SITE}${BRAND.primaryPath}/methodology" style="color:#9ca3af;text-decoration:none;">Methodology</a> &nbsp;·&nbsp;
       <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#9ca3af;text-decoration:none;">Unsubscribe</a>
     </div>
