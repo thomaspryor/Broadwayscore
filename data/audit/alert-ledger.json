@@ -1491,7 +1491,7 @@
       "linearIdentifier": null
     },
     "cron-health:Opening Night Checklist": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
@@ -1500,8 +1500,7 @@
       "lastNotifiedAt": "2026-08-27T21:33:20.834Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-08T15:48:32.801Z"
+      "linearIdentifier": null
     },
     "health-check:Quality: coverageExpectation drift": {
       "status": "open",
@@ -1756,7 +1755,7 @@
       "resolvedAt": "2026-09-06T14:44:21.183Z"
     },
     "cron-health-chronic:Opening Night Checklist": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
@@ -1765,8 +1764,7 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2865",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-08T15:48:32.803Z"
+      "silentRefires": 1
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -1853,7 +1851,7 @@
       "silentRefires": 1
     },
     "cron-health:Process Feedback Submissions": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Process Feedback Submissions",
@@ -1862,8 +1860,7 @@
       "lastNotifiedAt": "2026-09-04T15:34:32.569Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-08T15:48:32.805Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Test Suite": {
       "status": "resolved",
@@ -1936,7 +1933,7 @@
       "linearIdentifier": "BRO-2653"
     },
     "cron-health-chronic:Process Feedback Submissions": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Process Feedback Submissions",
       "firstSeen": "2026-08-31T18:34:19.421Z",
@@ -1945,8 +1942,7 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2657",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-08T15:48:32.806Z"
+      "silentRefires": 1
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served": {
       "status": "open",
@@ -2205,12 +2201,12 @@
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 6 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
-      "lastSeen": "2026-09-08T01:51:05.876Z",
+      "lastSeen": "2026-09-08T15:35:01.412Z",
       "lastNotifiedAt": "2026-09-07T22:23:42.141Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2765",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",
@@ -2357,12 +2353,12 @@
       "disposition": "auto",
       "title": "Orlando still has no image after 5 self-heal attempts",
       "firstSeen": "2026-09-05T17:48:04.136Z",
-      "lastSeen": "2026-09-08T01:51:05.877Z",
+      "lastSeen": "2026-09-08T15:35:01.414Z",
       "lastNotifiedAt": "2026-09-07T22:23:43.725Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2837",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health-chronic:Scrape WestEndTheatre": {
       "status": "open",
@@ -2405,12 +2401,12 @@
       "disposition": "auto",
       "title": "Madama Butterfly still has no image after 3 self-heal attempts",
       "firstSeen": "2026-09-07T22:23:44.860Z",
-      "lastSeen": "2026-09-08T01:51:05.879Z",
+      "lastSeen": "2026-09-08T15:35:01.415Z",
       "lastNotifiedAt": "2026-09-07T22:23:44.860Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2927",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "feedback-outcomes:2026-09-08T12:26:05.880168+00:00": {
       "status": "open",
@@ -2467,6 +2463,28 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "imageless-scored-show:still-imageless:beetlejuice-2022": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Beetlejuice still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-09-08T15:35:01.416Z",
+      "lastSeen": "2026-09-08T15:35:01.416Z",
+      "lastNotifiedAt": "2026-09-08T15:35:01.416Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3103"
+    },
+    "imageless-scored-show:still-imageless:assassins-off-west-end-2014": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Assassins still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-09-08T15:35:04.931Z",
+      "lastSeen": "2026-09-08T15:35:04.931Z",
+      "lastNotifiedAt": "2026-09-08T15:35:04.931Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3104"
     },
     "cron-health:Check Opening Night Drift": {
       "status": "open",
