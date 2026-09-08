@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-08T03:01:33.220Z",
+  "updatedAt": "2026-09-08T03:03:21.040Z",
   "processed": 123,
-  "failed": 1677,
+  "failed": 1687,
   "successRate": "6.8%",
   "tierBreakdown": {
     "playwright": 56,
@@ -13,19 +13,8 @@
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-09-07T22:54:45.852Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-08T02:21:38.352Z",
-      "event": "bb-session",
-      "session": "60982519",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
     {
       "t": "2026-09-08T02:21:39.600Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-09-08T02:56:33.352Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-08T03:03:12.163Z",
+      "event": "bb-session",
+      "session": "c45228a7",
+      "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-"
+    },
+    {
+      "t": "2026-09-08T03:03:13.160Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
