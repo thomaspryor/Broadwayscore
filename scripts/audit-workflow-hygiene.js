@@ -132,6 +132,20 @@
  *     and the cron-health-chronic escalation condition could never self-clear
  *     (run 32253007200).
  *
+ * (l) PAID-PROVIDER-ON-PUSH (BRO-2984): a workflow that triggers `on: push:`
+ *     must not hand a paid provider's credentials to any step, and must not
+ *     invoke a known paid sweep command. test.yml's `data-validation` job ran
+ *     `validate-show-venue.js --all-provisional` with SCRAPINGBEE_API_KEY +
+ *     BRIGHTDATA_TOKEN in its step `env:` on EVERY push to main — 222 rows in
+ *     data/audit/scraper-spend-ledger.jsonl attributed to workflow "Test Suite"
+ *     in a ~2-day window, re-fetching ~86 Playbill pages per push. A unit-test
+ *     workflow must not spend money at paid providers on every push. Detector is
+ *     the pure scanWorkflow() in scripts/lib/paid-provider-push-scan.js, shared
+ *     with scripts/lib/test-yml-no-paid-providers.test.mjs so the blocking gate
+ *     and the unit test can never disagree about what counts as a violation.
+ *     A `secrets.X != ''` PRESENCE TEST is deliberately not a violation — it
+ *     decides whether to skip and never passes the value to a process.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -142,6 +156,7 @@
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
+ *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -160,6 +175,7 @@ const {
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
 } = require('./lib/audit-workflow-hygiene-rules');
+const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -514,6 +530,7 @@ async function main() {
     shortPushTimeout: [],
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
+    paidProviderOnPush: [],
   };
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
@@ -614,6 +631,16 @@ async function main() {
         violations.quoteApostrophe.push({ file, hits });
       }
     }
+
+    // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
+    // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
+    // returns zero violations when present), so no extra guard is needed here.
+    {
+      const paid = scanPaidProviders(raw, file);
+      if (paid.violations.length) {
+        violations.paidProviderOnPush.push({ file, hits: paid.violations });
+      }
+    }
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
@@ -648,7 +675,8 @@ async function main() {
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
     violations.shortBatchPollTimeout.length +
-    violations.quoteApostrophe.length;
+    violations.quoteApostrophe.length +
+    violations.paidProviderOnPush.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -830,6 +858,21 @@ async function main() {
     console.error('\nFix: reword the offending line to remove the embedded apostrophe/single-quote');
     console.error('(a rephrase, not an escape — bash single-quotes cannot escape anything).');
     console.error("Exempt (legitimate): add  # hygiene-quote-apostrophe-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.paidProviderOnPush.length) {
+    console.error('\u2500\u2500 (l) Paid-provider spend in a push-triggered workflow \u2500\u2500\u2500');
+    console.error('These workflows run on EVERY push and can bill a metered third-party API.');
+    console.error('BRO-2984: test.yml ran validate-show-venue.js --all-provisional with');
+    console.error('SCRAPINGBEE_API_KEY + BRIGHTDATA_TOKEN in scope on every push to main \u2014');
+    console.error('222 scraper-spend-ledger rows attributed to "Test Suite" in ~2 days.\n');
+    for (const { file, hits } of violations.paidProviderOnPush) {
+      console.error(`  \u2022 ${file}`);
+      for (const h of hits) console.error(`      ${h.message}`);
+    }
+    console.error('\nFix: move the work to a cron workflow (see');
+    console.error('.github/workflows/audit-provisional-venues.yml for the pattern).');
+    console.error('Exempt (legitimate): add  # paid-provider-ok: <reason>  anywhere in the file.\n');
   }
 
   process.exit(1);

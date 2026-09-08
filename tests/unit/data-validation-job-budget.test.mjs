@@ -1,8 +1,18 @@
 // TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the real
-// .github/workflows/test.yml CI config (not data/*.json derived data) to
-// regression-guard a workflow-timeout fix.
+// .github/workflows/audit-provisional-venues.yml CI config (not data/*.json
+// derived data) to regression-guard a workflow-timeout fix.
 /**
- * BRO-2627 — the `data-validation` job's step-time sum was measured (run
+ * RETARGETED BY BRO-2984 (2026-09-08). The steps this file models moved OUT of
+ * test.yml's `data-validation` job and into the daily
+ * `.github/workflows/audit-provisional-venues.yml`, because the Playbill sweep
+ * spent real ScrapingBee/Bright Data credits on EVERY push to main (222
+ * scraper-spend-ledger rows attributed to workflow "Test Suite" in a ~2-day
+ * window). The budget model below is unchanged in substance — it just points at
+ * the sweep's new home. Deleting this file instead would have dropped the
+ * BRO-2627/BRO-2706 timeout guard along with the move, which is the failure this
+ * whole card is about: relocating work must not quietly relocate its guards.
+ *
+ * BRO-2627 — the job's step-time sum was measured (run
  * 33410708893, 2026-08-31) at ~1816s, essentially AT its 30-minute
  * timeout-minutes budget, so ordinary per-run variance (mostly Checkout,
  * 569s that run) tipped it into CANCELLED before its final steps ran
@@ -38,27 +48,29 @@ const require = createRequire(import.meta.url);
 const { indentOf, findJobBoundaries } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TEST_YML = path.join(__dirname, '..', '..', '.github', 'workflows', 'test.yml');
+const SWEEP_YML = path.join(
+  __dirname, '..', '..', '.github', 'workflows', 'audit-provisional-venues.yml',
+);
 const PUSH_WITH_RETRY_SH = path.join(__dirname, '..', '..', 'scripts', 'lib', 'push-with-retry.sh');
 
-// Measured on run 33410708893 (2026-08-31, the exact cancelled run BRO-2627
-// cites): Checkout 569s + every OTHER step in the job except the budgeted
-// Playbill audit (checkout-core-data, checkout-review-texts, npm ci, 40+
-// fast structural/contamination audits, Commit scraper-spend ledger, etc.)
-// summed to ~366s. These are the job's fixed, not-separately-budgeted cost;
-// the Playbill step's own cost is bounded by its --time-budget-min flag
-// instead, checked separately below.
-//
-// This constant deliberately EXCLUDES the "Persist venue/date audit rotation
-// state (BRO-2695)" step: that step did not exist on run 33410708893 (BRO-2706
-// — it was added after this baseline was measured, and the constant here was
-// never revisited). Its cost is derived, not folded into this baseline —
-// see pushStepWorstCaseSec() below — specifically so that a FUTURE new step
-// carrying its own push-with-retry.sh budget doesn't repeat the same drift:
-// bumping the shared PUSH_DEADLINE_SEC/GIT_NET_TIMEOUT_SEC defaults, or
-// adding a per-step override, changes this test's model automatically instead
-// of requiring someone to remember to hand-edit a second number here.
-const MEASURED_FIXED_COST_SEC = 569 + 366;
+// The audit job's fixed, not-separately-budgeted cost. Rebuilt for this job's
+// actual step composition when the sweep moved here (BRO-2984) — the old
+// 569 + 366 figure described test.yml's data-validation job, which ran 40+ extra
+// audits this job does not, and did NOT run setup-playwright before its own
+// npm ci. Components, each sourced rather than guessed:
+//   569s  Checkout at fetch-depth 300 — measured on run 33410708893 (2026-08-31,
+//         the cancelled run BRO-2627 cites), same action and same repo size.
+//   480s  setup-playwright — its own composite action's hard `timeout` ceiling
+//         (.github/actions/setup-playwright, "Install Playwright browsers"), so
+//         this is a true upper bound, not an average.
+//   366s  everything else (setup-node, npm ci, checkout-core-data, the
+//         missing-secrets guard, the ledger commit). Deliberately reuses the
+//         whole non-Playbill bucket measured on that run even though this job
+//         does STRICTLY LESS of it — 40+ audits and a review-texts checkout are
+//         gone — so the number stays conservative while remaining sourced.
+// The sweep's own cost is bounded by --time-budget-min instead, and the persist
+// step's by pushStepWorstCaseSec(); both are checked separately below.
+const MEASURED_FIXED_COST_SEC = 569 + 480 + 366;
 // Require at least 15% slack between the fixed cost + the step's budget and
 // the job's declared ceiling — catches a future timeout-minutes cut or a
 // --time-budget-min raise that quietly re-creates a tight-budget flake,
@@ -66,10 +78,10 @@ const MEASURED_FIXED_COST_SEC = 569 + 366;
 const MIN_HEADROOM_FRACTION = 0.15;
 
 function readJobBlock(jobName) {
-  const raw = fs.readFileSync(TEST_YML, 'utf8');
+  const raw = fs.readFileSync(SWEEP_YML, 'utf8');
   const lines = raw.split('\n');
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
-  assert.notEqual(jobsIdx, -1, 'test.yml must have a top-level jobs: key');
+  assert.notEqual(jobsIdx, -1, 'audit-provisional-venues.yml must have a top-level jobs: key');
   const jobStarts = findJobBoundaries(lines, jobsIdx);
   for (let j = 0; j < jobStarts.length - 1; j++) {
     const start = jobStarts[j];
@@ -86,14 +98,45 @@ function jobTimeoutMinutes(jobLines) {
   const line = jobLines.find(
     (l) => indentOf(l) === headerIndent + 2 && /^\s*timeout-minutes\s*:\s*\d+/.test(l),
   );
-  assert.ok(line, 'data-validation job must declare an explicit timeout-minutes');
+  assert.ok(line, 'the audit job must declare an explicit timeout-minutes');
   return parseInt(line.trim().split(':')[1].trim(), 10);
 }
 
-function findVenueAuditRunLine(jobLines) {
-  return jobLines.find(
-    (l) => l.includes('scripts/validate-show-venue.js') && l.includes('--all-provisional'),
+// The sweep step builds its flags in a shell variable
+// (`FLAGS="--all-provisional --time-budget-min=$BUDGET_MIN"` … `node
+// scripts/validate-show-venue.js $FLAGS`) so that --fail-on-mismatch can be
+// toggled by a dispatch input and a non-numeric budget can be rejected before
+// it silently disables the budget. That means the invocation and its flags are
+// NOT on one physical line, so this returns the step's whole text rather than a
+// single line. Returns null when no step invokes the sweep at all.
+function findVenueAuditStepText(jobLines) {
+  const starts = findStepStarts(jobLines);
+  for (let i = 0; i < starts.length; i++) {
+    const end = i + 1 < starts.length ? starts[i + 1] : jobLines.length;
+    const block = jobLines.slice(starts[i], end);
+    const code = block.filter((l) => !/^\s*#/.test(l)).join('\n');
+    if (code.includes('scripts/validate-show-venue.js') && code.includes('--all-provisional')) {
+      return code;
+    }
+  }
+  return null;
+}
+
+// Read the effective time budget in minutes. Accepts either a literal
+// `--time-budget-min=25` on the command, or the indirected form this workflow
+// uses: `--time-budget-min=$BUDGET_MIN` with BUDGET_MIN's default supplied by
+// `BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '25' }}`. The default
+// is what a SCHEDULED run gets (github.event.inputs is null on `schedule`), and
+// the scheduled run is the one this budget model is about.
+function budgetMinutesFrom(stepText) {
+  const literal = stepText.match(/--time-budget-min=(\d+(?:\.\d+)?)\b/);
+  if (literal) return parseFloat(literal[1]);
+  const viaVar = stepText.match(/--time-budget-min=\$\{?([A-Z_][A-Z0-9_]*)\}?/);
+  if (!viaVar) return null;
+  const envDefault = stepText.match(
+    new RegExp(`${viaVar[1]}\\s*:\\s*\\$\\{\\{[^}]*?\\|\\|\\s*'(\\d+(?:\\.\\d+)?)'`),
   );
+  return envDefault ? parseFloat(envDefault[1]) : null;
 }
 
 // Step boundaries within a job are every `- name:` line at 6-space indent
@@ -192,36 +235,44 @@ function pushStepWorstCaseSec(stepLines, stepLabel) {
   return deadlineSec + netTimeoutSec;
 }
 
-test('data-validation job: the provisional-venue Playbill audit carries an explicit --time-budget-min', () => {
-  const jobLines = readJobBlock('data-validation');
-  assert.ok(jobLines, 'could not find the data-validation: job in test.yml');
+test('audit-provisional-venues: the Playbill sweep carries an explicit --time-budget-min', () => {
+  const jobLines = readJobBlock('audit');
+  assert.ok(jobLines, 'could not find the audit: job in audit-provisional-venues.yml');
 
-  const runLine = findVenueAuditRunLine(jobLines);
+  const stepText = findVenueAuditStepText(jobLines);
   assert.ok(
-    runLine,
-    'expected a run: line invoking validate-show-venue.js --all-provisional in the data-validation job',
+    stepText,
+    'expected a step invoking validate-show-venue.js --all-provisional in the audit job',
   );
 
-  const m = runLine.match(/--time-budget-min=(\d+(?:\.\d+)?)/);
   assert.ok(
-    m,
-    `validate-show-venue.js --all-provisional must carry --time-budget-min= (BRO-2627) — got: ${runLine.trim()}`,
+    budgetMinutesFrom(stepText) > 0,
+    `validate-show-venue.js --all-provisional must carry --time-budget-min= (BRO-2627) — got: ${stepText}`,
   );
 
   // Still a real gate — --fail-on-mismatch must not have been dropped while
-  // wiring the budget flag in.
-  assert.ok(runLine.includes('--fail-on-mismatch'), 'the audit must still fail the step on a real mismatch');
+  // wiring the budget flag in. It is now conditional on a dispatch input whose
+  // default is 'true', which is what a scheduled run always resolves to.
+  assert.ok(
+    stepText.includes('--fail-on-mismatch'),
+    'the audit must still fail on a real mismatch',
+  );
+  assert.match(
+    stepText,
+    /FAIL_ON_MISMATCH:\s*\$\{\{[^}]*\|\|\s*'true'/,
+    "the fail_on_mismatch input must DEFAULT to 'true' — a scheduled run must be strict",
+  );
 });
 
-test('data-validation job: fixed step cost + the budgeted step\'s own cap + the BRO-2695 persist step\'s push worst-case fit inside timeout-minutes with headroom', () => {
-  const jobLines = readJobBlock('data-validation');
-  assert.ok(jobLines, 'could not find the data-validation: job in test.yml');
+test('audit-provisional-venues: fixed step cost + the budgeted step\'s own cap + the BRO-2695 persist step\'s push worst-case fit inside timeout-minutes with headroom', () => {
+  const jobLines = readJobBlock('audit');
+  assert.ok(jobLines, 'could not find the audit: job in audit-provisional-venues.yml');
 
   const timeoutMin = jobTimeoutMinutes(jobLines);
-  const runLine = findVenueAuditRunLine(jobLines);
-  const m = runLine && runLine.match(/--time-budget-min=(\d+(?:\.\d+)?)/);
-  assert.ok(m, 'expected --time-budget-min= on the Playbill audit step (see the sibling test)');
-  const budgetSec = parseFloat(m[1]) * 60;
+  const stepText = findVenueAuditStepText(jobLines);
+  const budgetMin = stepText && budgetMinutesFrom(stepText);
+  assert.ok(budgetMin > 0, 'expected --time-budget-min= on the Playbill audit step (see the sibling test)');
+  const budgetSec = budgetMin * 60;
 
   // Sum the worst-case of EVERY inline push-with-retry.sh step not already
   // folded into MEASURED_FIXED_COST_SEC — not just the one BRO-2695 added —
