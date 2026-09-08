@@ -36,7 +36,20 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    # 15, not 8 (BRO-345 what-else, 2026-09-08): observed run 34174218685
+    # cancelled by this timeout BEFORE the same-session apiFallbackSafe fix
+    # even landed, and a "successful" run (22:44-22:52) took 7m47s — already
+    # dangerously close to 8min. The "Commit state file" step's own worst
+    # case (push-with-retry.sh 5 retries within its 240s deadline, THEN up to
+    # 2 Git Data API fallback attempts at a 90s cap each, now reachable since
+    # this session registered both audit files apiFallbackSafe) is ~430s
+    # alone, before Checkout/setup-node/npm ci/the actual completeness check.
+    # 15min matches this file's own soft-fail design intent (push-with-
+    # retry.sh's failure is `|| echo`'d — the NEXT 15-min cron tick
+    # re-snapshots) instead of cutting the job off mid-push into a silent
+    # `cancelled` conclusion that skips both `if: failure()` (Notify on
+    # failure) and notify-failure's own cancelled-conclusion exclusion.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
