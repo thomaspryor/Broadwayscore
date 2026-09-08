@@ -33,18 +33,38 @@ const TIMEOUT_RE = /(^|[;&|(]|\$\()\s*(?:env(?:\s+[A-Za-z_][A-Za-z0-9_]*=\S+)*\s
 // the identical shape.
 const DISPATCHER_RE = /\b(?:scripts\/)?(?:linear-next|bsc-next)\.js\b|\bscripts\/lib\/bsc-runner\.js\b/;
 
-const HEADLESS_RE = /(^|\s)--headless(\s|=|$)/;
-const DETACH_RE = /(^|\s)--detach(\s|$)|(^|\s)--detach=(?!0$|false$|$)/i;
+// A switch is ON if it appears bare, or with a value linear-next.js's
+// coerceFlagValue (scripts/linear-next.js:206) does NOT read as false.
+// `''`, `0` and `false` (any case) mean OFF there, so they must mean OFF here
+// too or the two disagree about what the command actually does.
+//
+// The value is terminated by whitespace, a quote, or end of string — NOT by
+// end of string alone. Anchoring the "is it off?" lookahead to `$` was a real
+// false negative: `--detach=0 --headless` (flag not last) read as detached and
+// sailed through, while coerceFlagValue read it as attached and the job died.
+// Both reviewers found this independently.
+const VALUE_END = '(?=$|[\\s\'"])';
+function switchOnRe(name) {
+  // bare `--name`, or `--name=<something that is not 0/false/empty>`
+  return new RegExp(`(^|[\\s'"])--${name}(${VALUE_END}|=(?!(?:0|false|FALSE|False)?${VALUE_END}))`);
+}
+
+// Case matters: parseArgs (scripts/linear-next.js:212) is case-SENSITIVE, so
+// `--DETACH` does NOT set args.detach — the job would run attached and die.
+// A case-insensitive DETACH_RE would have whitelisted exactly that command.
+const HEADLESS_RE = switchOnRe('headless');
+const DETACH_RE = switchOnRe('detach');
 
 /**
- * Split on the shell operators that start a new command, keeping it simple:
- * we only need segment boundaries good enough that `timeout 5 echo hi && node
- * scripts/linear-next.js --headless` is NOT flagged.
+ * Split on the shell operators that start a new command. `&&`, `||`, `;`,
+ * newline, and a single `&` (backgrounding) all begin a new command; a single
+ * `|` deliberately does NOT, because the six real killers piped the dispatch
+ * itself into `tail` and must stay in one segment.
  * @param {string} cmd
  * @returns {string[]}
  */
 function segments(cmd) {
-  return String(cmd || '').split(/&&|\|\||[;\n]/);
+  return String(cmd || '').split(/&&|\|\||(?<!&)&(?!&)|[;\n]/);
 }
 
 /**

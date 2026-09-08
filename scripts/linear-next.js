@@ -229,6 +229,19 @@ function parseArgs(argv) {
 
 function ledgerTaskId(identifier) { return `linear:${identifier}`; }
 
+// Last N lines of a detached child's log, for the --detach settle window's
+// refusal report. Best-effort: a missing/unreadable log must never turn a
+// refusal report into a crash, so it degrades to a one-line note.
+function readLogTail(logFile, lines = 40) {
+  try {
+    const txt = fs.readFileSync(logFile, 'utf8').trimEnd();
+    if (!txt) return '  (the child wrote nothing before exiting)';
+    return txt.split('\n').slice(-lines).map(l => `  ${l}`).join('\n');
+  } catch (e) {
+    return `  (could not read ${logFile}: ${e.message})`;
+  }
+}
+
 // Notion-mirror task dir (~/.claude/tasks/<list-id>/*.json) — the SAME
 // directory bsc-next.js's loadTasks() reads (task #1696). Duplicated here
 // (not required from bsc-next.js) rather than importing a CLI entry point
@@ -413,6 +426,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
   if (args.list) { await runList(); return; }
 
+  // Identifier validation runs BEFORE the --detach branch, not after it.
+  // Detaching first made `--detach` with a missing or malformed --id print
+  // "detached dispatcher started" and exit 0 while the child exited 1 into a
+  // log file — a success-looking silent failure, which is the exact class
+  // this change exists to remove (ship-check finding).
+  if (!args.id || typeof args.id !== 'string') {
+    console.error('[linear-next] --id <identifier> or --list is required (e.g. --id BRO-123).');
+    console.error(USAGE);
+    process.exit(1);
+  }
+  const identifier = String(args.id).trim().toUpperCase();
+  if (!/^[A-Z]+-\d+$/.test(identifier)) {
+    console.error(`[linear-next] "${args.id}" doesn't look like a Linear issue identifier (expected e.g. BRO-123).`);
+    process.exit(1);
+  }
+
   // BRO-3053: --detach re-execs this CLI in its OWN session and returns
   // immediately, so no signal on the caller's side can ever reach the job.
   //
@@ -429,31 +458,72 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // side effect the child will repeat (no lease, no dispatch claim, no
   // ledger row, not even an API call).
   if (args.detach) {
-    const { spawnDetachedDispatch, stripFlag } = require('./lib/spawn-detached-dispatch.js');
-    const idForLog = String(args.id || 'unknown').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '');
-    const logFile = path.join(__dirname, '..', 'data', 'audit', 'headless-logs', `detached-linear-next-${idForLog}-${Date.now()}.log`);
+    // --detach only means anything on the headless path. A cmux-tab launch
+    // already returns promptly and has no long-lived supervisor to protect,
+    // so detaching one would just hide its output for no benefit. Refuse
+    // loudly rather than silently doing something different from what was asked.
+    if (!args.headless || args.tab) {
+      console.error('[linear-next] --detach applies only to --headless (a cmux-tab launch already returns immediately and has no supervisor to protect).');
+      process.exit(1);
+    }
+    const { spawnDetachedDispatch, stripFlag, waitForSettle } = require('./lib/spawn-detached-dispatch.js');
+    const idForLog = identifier.replace(/[^A-Z0-9-]/g, '');
+    // Log OUTSIDE the repo, beside the job logs. data/audit/ is committed by
+    // several workflows (`git add data/audit/` in adjudicate-review-queue.yml
+    // and backfill-aggregators.yml) and headless-logs/ is not gitignored, so
+    // a per-dispatch Date.now() file there would be committed forever and
+    // nothing sweeps the directory (ship-check finding).
+    const logFile = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs', `detached-linear-next-${idForLog}-${Date.now()}.log`);
+    // REPO, not __dirname. This CLI is routinely run from a worktree, and the
+    // dispatcher must be the one canonical copy — the same doctrine the REPO
+    // constant already exists for (see its own comment). Re-execing the
+    // worktree's possibly half-edited copy is exactly what that rule forbids.
     const { pid } = spawnDetachedDispatch({
-      scriptPath: path.join(__dirname, 'linear-next.js'),
+      scriptPath: path.join(REPO, 'scripts', 'linear-next.js'),
       argv: stripFlag(argv, 'detach'),
       logFile,
+      cwd: REPO,
       label: 'linear-next',
     });
-    console.log(`[linear-next] detached dispatcher started (pid ${pid}) — this process is NOT the job's parent.`);
+    // SETTLE WINDOW — ship-check finding, and the sharpest one against this
+    // change. Detaching before the Linear fetch means the PARENT validates
+    // nothing, so every loud refusal this CLI is built to give (unknown
+    // --id, issue not found, parked sentinel, human-gate, verify gate,
+    // LINEAR_NEXT_DISABLED, terminal state, lease already held) would move
+    // into a detached child's log file that nobody is watching. That trades
+    // one silent failure for another, which is the whole bug class this
+    // change exists to close.
+    //
+    // Every one of those refusals exits within a couple of seconds; a real
+    // dispatch stays alive for the job's whole run. So: watch the child from
+    // OUTSIDE (kill(pid,0) — we are not its parent and cannot wait() on it)
+    // for a short window. Still alive at the end = dispatched. Gone = it
+    // refused, so print its log and exit non-zero, exactly as the attached
+    // path would have.
+    // 30s, not a guess: a real refusal on this machine takes ~10.3s measured
+    // end to end (`time node scripts/linear-next.js --id BRO-2694 --headless`
+    // → 10.285s), because the refusal path does the Linear fetch AND
+    // runOverlapCheck's branch scan before it can say no. A 6s window was
+    // tried first and reported a refusing dispatch as "running", which is the
+    // very failure this window exists to prevent. 30s is ~3x the measured
+    // worst case and trivial beside a 30-minute job. Set
+    // LINEAR_NEXT_DETACH_SETTLE_MS=0 to skip the watch in automation that
+    // reads the ledger instead.
+    const settleMs = Number(process.env.LINEAR_NEXT_DETACH_SETTLE_MS ?? 30000);
+    const settled = await waitForSettle(pid, settleMs);
+    if (!settled.alive) {
+      console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
+      console.error(readLogTail(logFile, 40));
+      console.error(`[linear-next] full log: ${logFile}`);
+      process.exit(1);
+    }
+    console.log(`[linear-next] detached dispatcher running (pid ${pid}) — this process is NOT the job's parent.`);
     console.log(`[linear-next] dispatcher output: ${logFile}`);
     console.log('[linear-next] the job survives this shell; watch the ledger, not this process.');
     return;
   }
 
-  if (!args.id || typeof args.id !== 'string') {
-    console.error('[linear-next] --id <identifier> or --list is required (e.g. --id BRO-123).');
-    console.error(USAGE);
-    process.exit(1);
-  }
-  const identifier = String(args.id).trim().toUpperCase();
-  if (!/^[A-Z]+-\d+$/.test(identifier)) {
-    console.error(`[linear-next] "${args.id}" doesn't look like a Linear issue identifier (expected e.g. BRO-123).`);
-    process.exit(1);
-  }
+  // (--id presence and shape were validated above, before the --detach branch.)
 
   let issue;
   try {

@@ -35,6 +35,18 @@
  * extracted so there is one copy to reason about. Those five sites are
  * deliberately NOT rewired here — they work, and converging them is its own
  * change with its own blast radius (tracked separately).
+ *
+ * RELATIONSHIP TO digest-autofix.js's dispatchDetached(). That helper does the
+ * same OS-level thing and is more hardened for its job (id-shape validation,
+ * a `sleep N &&` stagger so parallel spawns do not race the main repo's
+ * `git worktree add` lock, an --allow-autofix-filed opt-in). It is NOT reused
+ * here because it builds its own fixed argument list from a taskId — it can
+ * emit `--id X --headless [--model M] [--allow-autofix-filed]` and nothing
+ * else. `--detach` has to forward whatever the operator actually typed
+ * (--force, --allow-human-gated, --allow-unverifiable, --allow-reported-work,
+ * --model, ...), so it needs an argv-forwarding primitive, which is what this
+ * is. Programmatic callers that construct a dispatch should keep using
+ * dispatchDetached; this exists for the CLI's own re-exec.
  */
 
 const fs = require('fs');
@@ -71,6 +83,12 @@ function stripFlag(argv, flag) {
  * @param {string} o.scriptPath  absolute path to the dispatcher to re-exec
  * @param {string[]} o.argv      argv for it (already stripped of --detach)
  * @param {string} o.logFile     absolute path; parent dirs created if needed
+ * @param {string} [o.cwd]       working directory for the child; pass the
+ *                               CANONICAL repo root, never a worktree —
+ *                               bsc-reconcile.js:188, backlog-drain.js:588 and
+ *                               digest-autofix.js:418 all set cwd: REPO for
+ *                               the same reason (the dispatcher and its ledger
+ *                               must be the one canonical copy).
  * @param {string} [o.label]     used only in the spawn-error message
  * @param {function} [o.spawnFn] test seam
  * @param {function} [o.onError] test seam for the async spawn-error report
@@ -79,6 +97,7 @@ function spawnDetachedDispatch({
   scriptPath,
   argv,
   logFile,
+  cwd,
   label = 'dispatch',
   spawnFn = spawn,
   onError = (m) => console.error(m),
@@ -88,10 +107,17 @@ function spawnDetachedDispatch({
   try {
     fs.mkdirSync(path.dirname(logFile), { recursive: true });
     out = fs.openSync(logFile, 'a');
-  } catch { /* log loss must never block the dispatch — same as bsc-prune.js:741 */ }
+  } catch (e) {
+    // Log loss must never BLOCK the dispatch (same as bsc-prune.js:741) — but
+    // it must not be silent either. Falling through to stdio 'ignore' without
+    // saying so is how a refusal becomes invisible, which is the exact class
+    // this module exists to close (ship-check finding).
+    onError(`[${label}] WARNING: could not open ${logFile} (${e.message}) — dispatching with NO log. Any refusal from the child will be invisible.`);
+  }
   const child = spawnFn(process.execPath, [scriptPath, ...(argv || [])], {
     detached: true,
     stdio: ['ignore', out, out],
+    ...(cwd ? { cwd } : {}),
   });
   if (child && typeof child.on === 'function') {
     child.on('error', (e) => onError(`[${label}] detached spawn error: ${e.message} — nothing was dispatched.`));
@@ -103,4 +129,74 @@ function spawnDetachedDispatch({
   return { pid: child && child.pid, logFile };
 }
 
-module.exports = { spawnDetachedDispatch, stripFlag };
+/**
+ * Watch a detached child from OUTSIDE for `windowMs`, reporting whether it is
+ * still alive at the end.
+ *
+ * WHY THIS IS NEEDED. Detaching before any validation means the launcher
+ * validates nothing: every loud refusal the dispatcher exists to give
+ * (unknown issue, parked sentinel, human gate, verify gate, kill switch,
+ * terminal state, lease already held) would move into a log file nobody is
+ * watching — trading one silent failure for another. Those refusals all exit
+ * within a couple of seconds; a real dispatch stays alive for the job's whole
+ * run. So a short liveness watch cleanly separates the two.
+ *
+ * `process.kill(pid, 0)` is the only option here: we are deliberately NOT the
+ * child's parent, so there is nothing to wait() on. It throws ESRCH once the
+ * pid is gone. A detached child is reaped by init, so there is no zombie to
+ * mistake for a live process.
+ *
+ * @param {number} pid
+ * @param {number} windowMs  <= 0 disables the watch (returns alive: true)
+ * @param {object} [o]
+ * @param {number} [o.pollMs]
+ * @param {function} [o.isAlive] test seam
+ * @param {function} [o.sleep]   test seam
+ * @returns {Promise<{alive: boolean, waitedMs: number}>}
+ */
+async function waitForSettle(pid, windowMs, o = {}) {
+  const pollMs = o.pollMs || 250;
+  const isAlive = o.isAlive || defaultIsAlive;
+  const sleep = o.sleep || ((ms) => new Promise(r => setTimeout(r, ms)));
+  if (!Number.isFinite(windowMs) || windowMs <= 0) return { alive: true, waitedMs: 0 };
+  let waited = 0;
+  while (waited < windowMs) {
+    if (!isAlive(pid)) return { alive: false, waitedMs: waited };
+    await sleep(pollMs);
+    waited += pollMs;
+  }
+  return { alive: isAlive(pid), waitedMs: waited };
+}
+
+function defaultIsAlive(p) {
+  try { process.kill(p, 0); return true; } catch { return false; }
+}
+
+// True synchronous sleep — no busy-wait, no event loop. bsc-next.js's main()
+// is synchronous and making it async would change its contract for every
+// caller and for its own `require.main` handler, so it needs this form.
+function sleepSync(ms) {
+  try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
+  catch { /* SharedArrayBuffer unavailable — degrade to no wait */ }
+}
+
+/**
+ * Synchronous twin of waitForSettle, for a caller whose main() is not async.
+ * Same contract, same semantics; see waitForSettle for why this exists at all.
+ * @returns {{alive: boolean, waitedMs: number}}
+ */
+function waitForSettleSync(pid, windowMs, o = {}) {
+  const pollMs = o.pollMs || 250;
+  const isAlive = o.isAlive || defaultIsAlive;
+  const sleep = o.sleep || sleepSync;
+  if (!Number.isFinite(windowMs) || windowMs <= 0) return { alive: true, waitedMs: 0 };
+  let waited = 0;
+  while (waited < windowMs) {
+    if (!isAlive(pid)) return { alive: false, waitedMs: waited };
+    sleep(pollMs);
+    waited += pollMs;
+  }
+  return { alive: isAlive(pid), waitedMs: waited };
+}
+
+module.exports = { spawnDetachedDispatch, stripFlag, waitForSettle, waitForSettleSync };
