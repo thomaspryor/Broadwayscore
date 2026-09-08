@@ -28,6 +28,24 @@ function git(repo, ...args) {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' });
 }
 
+// CI-flake diagnostics (BRO-3055): the trailing-commit regression below fails
+// non-deterministically in CI (run 34186555347) and passes on an unmodified
+// re-run of that exact commit, but is not reproducible locally after 5x solo
+// runs, 56/56 pass across a 3-file batch, or a full 794-file manifest run at
+// CI-like concurrency=4 — so the actual commit shape a red run saw has never
+// been captured. This dumps the graph a failure actually observed so the
+// next red run is diagnosable instead of just "not ok".
+function describeCommitShape(repo) {
+  try {
+    const graph = git(repo, 'log', '--graph', '--oneline', '--all', '--decorate');
+    const parents = git(repo, 'rev-list', '--parents', '--all');
+    const gitVersion = execFileSync('git', ['--version'], { encoding: 'utf8' }).trim();
+    return `git version: ${gitVersion}\ncommit graph:\n${graph}\nrev-list --parents --all:\n${parents}`;
+  } catch (err) {
+    return `(failed to capture commit shape: ${err && err.message})`;
+  }
+}
+
 function makeRepo() {
   const repo = mkdtempSync(join(tmpdir(), 'review-gate-scope-test-'));
   git(repo, 'init', '-q', '-b', 'main');
@@ -185,6 +203,16 @@ test('REGRESSION: scoping survives a trailing non-merge commit on top of the mer
   const base = resolveBase(repo);
   const stats = gatedDiffStats(repo, base, 'HEAD');
   const paths = stats.files.map(f => f.path).sort();
-  assert.deepEqual(paths, ['scripts/session-b-followup.js', 'scripts/session-b.js'], JSON.stringify(stats.files));
-  assert.equal(stats.totalLines, 15, JSON.stringify(stats));
+  try {
+    assert.deepEqual(paths, ['scripts/session-b-followup.js', 'scripts/session-b.js'], JSON.stringify(stats.files));
+    assert.equal(stats.totalLines, 15, JSON.stringify(stats));
+  } catch (err) {
+    // AssertionError's `.stack` header is formatted at construction and does
+    // NOT pick up a later `err.message` mutation (verified locally: the TAP
+    // reporter prints the frozen `.stack` string, not live `.message`) — log
+    // the diagnostic to stderr instead, which node:test attaches to the
+    // failing test's output, then rethrow the original error unmodified.
+    console.error(`\nCI-flake diagnostics (BRO-3055) — resolveBase()=${base}\n${describeCommitShape(repo)}`);
+    throw err;
+  }
 });
