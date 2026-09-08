@@ -59,6 +59,7 @@
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
+ *   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only (not the wider --force set) for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
  *   node scripts/linear-next.js --help, -h                   show this message, do nothing else
  *
@@ -180,6 +181,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
+  node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
@@ -945,13 +947,29 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // sentinel is sticky and an unparked issue would be permanently
     // undispatchable headlessly, with only the differently-named
     // --allow-human-gated to escape. Caught in review of BRO-2753.
+    //
+    // --allow-automation-parked (BRO-3060) is a THIRD, narrower way past the
+    // same blocker — for the population --force and --allow-human-gated are
+    // both wrong tools for. digest-autofix.js/autofix-canary.js/linear-drain-
+    // parked.js park issues THEY filed via --park (linear-issue-create.js:141
+    // writes the same PARKED: prefix an owner's park uses), then dispatch
+    // those exact issues themselves. --force also waives terminal-state and
+    // the dispatch-claim/idempotency guard below (too broad — an automated
+    // drain has no business re-dispatching an already-Done issue or racing
+    // its own idempotency check); --allow-human-gated waives the ENTIRE
+    // human-gate block (also too broad — a card that's automation-parked AND
+    // touches a UI path should still trip VISUAL_QA_GATE). This flag waives
+    // PARKED_SENTINEL alone, nothing else, matching --force's own scope for
+    // that one blocker. Trusted per call site, not re-verified against the
+    // description — same convention as --allow-autofix-filed just above.
     const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
-      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && (args.force || args['allow-automation-parked'])));
     if (!hg.dispatchable && blocking.length) {
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
       for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
       console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
-      console.error(`  or re-run with --allow-human-gated if you know the gate does not apply.`);
+      console.error(`  or re-run with --allow-human-gated if you know the gate does not apply,`);
+      console.error(`  or --allow-automation-parked if the sentinel was filed by automation, not an owner.`);
       process.exit(1);
     }
   }

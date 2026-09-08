@@ -358,7 +358,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // exists only in the detached child's log file.
       // Passed here, at the call site that owns this population — not inside
       // dispatchDetached, which would waive it for every future caller too.
-      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): every candidate here passed
+      // isAutoFiledParked above, i.e. its description carries owner-alert-
+      // router's PARKED marker — a second, independent guard from
+      // autofixFiledIssueGuard that allowAutofixFiled does NOT waive. Without
+      // this every dispatch this drain ever attempted was refused inside the
+      // detached child (discovered live, 2026-09-08: all 3 of this run's
+      // candidates were refused before this fix).
+      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true, allowAutomationParked: true });
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),

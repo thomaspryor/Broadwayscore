@@ -413,7 +413,17 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   const safeModel = model && VALID_MODELS.has(model) ? model : null;
   const modelArg = safeModel ? ` --model ${safeModel}` : '';
   const autofixArg = linearMatch && opts && opts.allowAutofixFiled ? ' --allow-autofix-filed' : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}${autofixArg}`;
+  // opts.allowAutomationParked (BRO-3060): every issue digest-autofix.js/
+  // autofix-canary.js/linear-drain-parked.js dispatches through this
+  // function was parked by THAT SAME pipeline (via fileCard's --park), so
+  // it also carries the PARKED_SENTINEL headless-dispatchability.js refuses
+  // by default — a second, independent guard from the autofixFiledIssueGuard
+  // autofixArg above waives. Without this every one of those dispatches was
+  // spawned only to be refused inside the detached child (see linear-next.js's
+  // --allow-automation-parked doc comment for why --force/--allow-human-gated
+  // are each too broad to use here instead).
+  const parkedArg = linearMatch && opts && opts.allowAutomationParked ? ' --allow-automation-parked' : '';
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}${autofixArg}${parkedArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
@@ -660,7 +670,11 @@ function runAutofix({
       // THIS module filed moments ago (fileCard, above), so it is exactly the
       // population autofixFiledIssueGuard refuses — waived at the one call
       // site that legitimately owns it.
-      dispatchFn(row.taskId, log, (cap - budget) * 45, model, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): fileCard's --park also means every
+      // one of these rows carries PARKED_SENTINEL — a second, independent
+      // guard from autofixFiledIssueGuard. Without this every dispatch here
+      // was spawned only to be refused inside the detached child.
+      dispatchFn(row.taskId, log, (cap - budget) * 45, model, { allowAutofixFiled: true, allowAutomationParked: true });
       row.state = 'dispatched';
       row.attempt = attempt;
       if (model) row.model = model;

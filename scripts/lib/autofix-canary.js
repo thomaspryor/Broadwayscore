@@ -492,7 +492,10 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
       // (bsc-next path, where dispatchDetached never appends the flag) — so
       // if the sync-lag branch is ever repointed to a `linear:` id it stays
       // dispatchable instead of silently starting to refuse.
-      dispatchDetached(existingTask.id, log, 0, null, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): same reasoning, second guard —
+      // fileCard's --park also means this card carries PARKED_SENTINEL,
+      // which autofixFiledIssueGuard's waiver does NOT cover.
+      dispatchDetached(existingTask.id, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
       return { filed: true, dispatched: true, taskId: String(existingTask.id) };
     } catch (err) {
       log(`[autofix-canary] WARN dispatch spawn failed for canary #${existingTask.id}: ${String(err.message).slice(0, 120)}`);
@@ -514,7 +517,11 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
     // "CANARY: touch ..." and carries digest-autofix's PARKED provenance, so
     // autofixFiledIssueGuard would refuse it without this waiver. This is the
     // live path: without it the daily end-to-end canary never dispatches.
-    dispatchDetached(canaryTaskId, log, 0, null, { allowAutofixFiled: true });
+    // allowAutomationParked (BRO-3060) — that same PARKED provenance is ALSO
+    // headless-dispatchability.js's independent PARKED_SENTINEL blocker,
+    // which autofixFiledIssueGuard's waiver never covered: the canary was
+    // dispatching itself into a guaranteed refusal every day.
+    dispatchDetached(canaryTaskId, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
     appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: canaryTaskId });
     return { filed: true, dispatched: true, taskId: canaryTaskId };
   } catch (err) {

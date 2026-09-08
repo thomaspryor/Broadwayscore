@@ -565,6 +565,96 @@ test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outs
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called — this is BRO-2506 recurring');
 });
 
+// -- --allow-automation-parked wiring, BRO-3060 ------------------------------
+//
+// scripts/linear-drain-parked.js/digest-autofix.js/autofix-canary.js each
+// dispatch issues THEY themselves parked (via fileCard's --park), and were
+// passing --allow-autofix-filed to waive linear-dispatch.js's
+// autofixFiledIssueGuard — but PARKED_SENTINEL is a SECOND, independent
+// blocker on the exact same description, and nothing waived it. Every real
+// dispatch these three pipelines ever attempted was refused inside the
+// detached child, silently (the caller journals "attempted" regardless of
+// outcome) — discovered live 2026-09-08 running scripts/linear-drain-
+// parked.js for real: all 3 candidates were refused. Fixture description is
+// the real BRO-327 shape (owner-alert-router's park reason, verbatim).
+test('--allow-automation-parked wiring: a no-flag headless dispatch of an automation-parked issue is refused, real subprocess', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-automation-parked', identifier: 'BRO-9327',
+      title: 'Automation-parked regression fixture issue',
+      description: 'PARKED: Auto-filed by owner-alert-router (condition: fixture); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9327/automation-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (PARKED_SENTINEL refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /PARKED_SENTINEL/, 'must report the parked-sentinel refusal');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once PARKED_SENTINEL refuses');
+});
+
+test('--allow-automation-parked wiring: the SAME issue dispatches once the flag is passed (real subprocess)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-automation-parked-2', identifier: 'BRO-9328',
+      title: 'Automation-parked regression fixture issue',
+      description: 'PARKED: Auto-filed by owner-alert-router (condition: fixture); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9328/automation-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: {
+        createComment: async () => {},
+        getTeam: async () => ({ states: [] }),
+        getIssue: async () => null,
+        updateIssue: async () => {},
+        TEAM_KEY: 'BRO',
+      },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `--allow-automation-parked must let the dispatch reach runJob. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.doesNotMatch(res.stderr, /PARKED_SENTINEL/, 'the sentinel must not still be refusing once the flag is passed');
+});
+
 test('reportedOutcomeGuard wiring: it refuses BEFORE startedStateGuard, so the message never says "re-run with --force"', () => {
   // Ordering matters for behaviour, not just prose: startedStateGuard's own
   // remedy line is "Re-run with --force if you know this is a stalled issue

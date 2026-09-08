@@ -1,0 +1,65 @@
+name: Check Linear Drain Health
+
+# BRO-3060: scripts/linear-drain-parked.js exists to dispatch Linear issues
+# that owner-alert-router.js/digest-autofix.js park behind the repo's PARKED
+# sentinel, pending their own drain — but nothing ever ran it, so 126 open
+# issues sat untouched for weeks with no signal anywhere that the drain
+# itself was dead.
+#
+# This workflow is READ-ONLY monitoring, not the drain. The actual dispatch
+# (linear-drain-parked.js without --dry-run) spawns a detached
+# `node scripts/linear-next.js --id X --headless` child that needs a local
+# `claude`/cmux binary, a local git worktree, and the job-lease files under
+# data/audit/job-leases/ — none of which exist on a GitHub Actions runner
+# (see scripts/linear-drain-parked.js's own header). Real dispatch runs on
+# the Mac Studio only, via scripts/launchd/com.broadwayscore.linear-drain-
+# parked.plist (disabled by default — the owner must explicitly turn on
+# continuous unattended dispatch; see that plist's header for the gate).
+#
+# What THIS workflow catches: if the Mac-side drain stops running (machine
+# off, plist disabled, kill switch flipped) and eligible parked issues pile
+# back up, this job goes red — loud, in the daily digest — instead of the
+# silent multi-week starvation that caused BRO-3060 in the first place.
+
+on:
+  schedule:
+    - cron: '37 15 * * *'  # Daily 15:37 UTC — arbitrary offset, avoids round-minute cron contention
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Check linear-drain-parked backlog
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          OUT=$(node scripts/linear-drain-parked.js --dry-run)
+          echo "$OUT"
+          N=$(echo "$OUT" | grep -oE 'DRY RUN: [0-9]+ candidate' | grep -oE '[0-9]+' || true)
+          N=${N:-0}
+          echo "Eligible-but-undispatched parked issues: $N"
+          # More than one dispatch cap's worth (3) sitting idle means the
+          # Mac-side drain isn't running — the exact silent-starvation failure
+          # this workflow exists to surface instead of letting rot for weeks.
+          if [ "$N" -gt 3 ]; then
+            echo "::warning::linear-drain-parked.js has $N eligible parked issues waiting — the Mac-side drain (launchd) may not be running"
+            exit 1
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Linear Drain Health Failed'
+          severity: 'warning'
