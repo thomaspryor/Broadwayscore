@@ -91,6 +91,22 @@ function baseProbes(overrides = {}) {
     terminalCapacity: () => ({ hasCapacity: true, known: false, liveRuntimes: null, ceiling: null, reason: 'stubbed', surfaces: null }),
     // Nothing in this file should teach the real machine's ceiling file.
     recordCapacityOutcome: () => ({ ceiling: null, changed: false, reason: 'stubbed' }),
+    // BRO-3064 follow-up: the crown-fanout guard (cmux-launch.js) reads its
+    // workspace list from `probes.listWorkspaces || cmuxws.listWorkspacesWithCwd`
+    // and its liveness from `probes.crownAlive || cmuxws.claudeAliveIn`. The
+    // crown tests below used to mock only cmuxws.listWorkspaces (the
+    // text-backed helper), which the guard STOPPED calling when it moved to
+    // the JSON-backed listWorkspacesWithCwd for the successorOf id match — so
+    // the guard was silently shelling out to the real cmux binary. On this
+    // Mac that binary answers with the owner's genuinely-live crown tabs and
+    // the refusal assertion passed for the wrong reason; on a Linux CI runner
+    // /Applications/cmux.app does not exist, the call throws ENOENT, the guard
+    // logs a warning and proceeds with an EMPTY list, and the launch is
+    // allowed — reddening main on every merge. These are the source-agnostic
+    // seams cmux-launch.test.mjs already uses; a future change of list helper
+    // cannot silently un-mock them again.
+    listWorkspaces: () => [],
+    crownAlive: () => true,
     ...overrides,
   };
 }
@@ -181,9 +197,8 @@ test('launchCmuxSession: a crown-titled retry still RECLAIMS its own orphan inst
     state: 'injection-never-ran', timestamp: new Date(0).toISOString(),
   }, journalPath);
   const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9004\n', stderr: '' }));
-  const listMock = mock.method(cmuxws, 'listWorkspaces', () => [
-    { ref: 'workspace:9004', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
-  ]);
+  const liveCrowns = [{ ref: 'workspace:9004', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }];
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => liveCrowns);
 
   try {
     const res = launchCmuxSession({
@@ -191,7 +206,10 @@ test('launchCmuxSession: a crown-titled retry still RECLAIMS its own orphan inst
       seed: 'seed text', seedKey: 'reclaim-2953-a-retry', workKey: 'crown-bro-343',
       cwd: REPO_ROOT, model: 'opus', focus: false, skipAuthPreflight: true,
       verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
-      probes: { ...baseProbes(), newWorkspace: newWorkspaceMock, strictlyAlive: () => true },
+      probes: {
+        ...baseProbes(), newWorkspace: newWorkspaceMock, strictlyAlive: () => true,
+        listWorkspaces: () => liveCrowns, // the guard's own seam: its 9004 IS live here
+      },
     });
 
     assert.equal(res.ok, true, 'a confirmed-alive prior crown launch must be adopted, not refused as a duplicate');
@@ -210,9 +228,8 @@ test('launchCmuxSession: a crown-titled retry still RECLAIMS its own orphan inst
 test('launchCmuxSession: a genuinely fresh crown launch (no journal entry) is refused while another crown is live', () => {
   const journalPath = tmpJournalPath();
   const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9005\n', stderr: '' }));
-  const listMock = mock.method(cmuxws, 'listWorkspaces', () => [
-    { ref: 'workspace:9004', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
-  ]);
+  const liveCrowns = [{ ref: 'workspace:9004', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }];
+  const listMock = mock.method(cmuxws, 'listWorkspaces', () => liveCrowns);
 
   try {
     const res = launchCmuxSession({
@@ -220,7 +237,10 @@ test('launchCmuxSession: a genuinely fresh crown launch (no journal entry) is re
       seed: 'seed text', seedKey: 'fresh-2953-a', workKey: 'some-other-work-key',
       cwd: REPO_ROOT, model: 'opus', focus: false, skipAuthPreflight: true,
       verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
-      probes: { ...baseProbes(), newWorkspace: newWorkspaceMock },
+      probes: {
+        ...baseProbes(), newWorkspace: newWorkspaceMock,
+        listWorkspaces: () => liveCrowns, // the guard's own seam — NOT cmuxws.listWorkspaces
+      },
     });
 
     assert.equal(res.ok, false);
