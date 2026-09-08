@@ -64,10 +64,15 @@
  *
  * Wiring: NOT a data-health-check.yml step — the runner has no `claude`
  * binary to hand off to, so a headless dispatch can't run there. Real
- * dispatch is wired on the Mac side via its own launchd tick (scripts/launchd/
- * com.broadwayscore.linear-drain-parked.plist, disabled by default — see
- * that file's header for the install command), mirroring backlog-drain.js's
- * own launchd cadence rather than folding into send-morning-digest.js.
+ * dispatch runs on the Mac side via its own launchd tick (scripts/launchd/
+ * com.broadwayscore.linear-drain-parked.plist), mirroring backlog-drain.js's
+ * own launchd cadence rather than folding into send-morning-digest.js. That
+ * agent was BOOTSTRAPPED 2026-09-08 (BRO-3060) and ticks 10:30/14:30/18:30
+ * ET; before that it had never executed once, which is how 126 auto-filed
+ * issues accumulated with no dispatch-ledger row at all. Check liveness with
+ * `launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked`, not
+ * by reading the plist — ~/Library/LaunchAgents/ holds the installed copy
+ * and can drift from the one in this repo.
  * BRO-3060: .github/workflows/check-linear-drain-health.yml runs this file's
  * own --dry-run daily as a READ-ONLY CI monitor (Linear API read only, no
  * spawn) — it goes red if eligible candidates pile up past one dispatch cap,
