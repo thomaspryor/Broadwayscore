@@ -187,6 +187,21 @@ jobs:
             echo "has_pending=true" >> $GITHUB_OUTPUT
           fi
 
+      # Runs BEFORE "Commit and push changes" below — that step's own
+      # `git checkout -- data/audit/` (a pre-existing reset of dirty tracked
+      # files, unrelated to this action) would otherwise wipe this run's
+      # uncommitted scraper-spend-ledger.jsonl rows before they ever got
+      # committed (BRO-2961 ship-check finding, Codex adversarial review
+      # 2026-09-07). Committing the ledger here first means it's already
+      # part of HEAD by the time that checkout runs, so the reset is a no-op
+      # for this file.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: discover-historical-shows
+
       - name: Commit and push changes
         if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
         run: |
