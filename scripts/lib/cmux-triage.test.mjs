@@ -301,3 +301,88 @@ test('liveAgentIn requires a PROCESS row, not a bare tag row left by a crash', (
   const tagOnly = '0.0\t0\t0\ttag\tworkspace:AC08:tag:codex\tworkspace:100\tIdle';
   assert.equal(triage.liveAgentIn(tagOnly), null);
 });
+
+// ── ship-check findings, pinned so they cannot come back ────────────────────
+
+test('the issue-key regex is anchored to this team, not a generic KEY-N shape', () => {
+  // A generic /[A-Z]{2,5}-\d+/ matched plenty of non-issues that really do
+  // appear in titles, and each one produced a status verdict about unrelated
+  // work.
+  for (const notAKey of ['UTF-8 encoding fix', 'CVE-2024 patch', 'bump GPT-5 model', 'ENG-1234 upstream']) {
+    assert.equal(extractLinearKey(notAKey), null, notAKey);
+  }
+  const { TEAM_KEY } = require('./linear-client.js');
+  assert.equal(extractLinearKey(`Data·${TEAM_KEY}-2623 triage`), `${TEAM_KEY}-2623`);
+});
+
+test('a title-derived issue key never proves two tabs share work', () => {
+  // "fix BRO-123 link in BRO-456 report" is one tab's free text, not evidence
+  // about another tab. Only the dispatch record may establish a duplicate.
+  const buckets = triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '🤖 Data·BRO-123 fix the scraper' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '👑 OWNER — fix BRO-123 link in BRO-456 report' }],
+    ...NOTHING,
+  });
+  assert.equal(buckets.safeToClose.length, 0, 'must NOT be called a live duplicate');
+  assert.equal(buckets.needsOwnerCall[0].reason, 'unmapped');
+});
+
+test('a LEDGER-derived issue key does prove two tabs share work', () => {
+  const launches = {
+    'workspace:9': { taskId: 'linear:BRO-123' },
+    'workspace:12': { taskId: 'linear:BRO-123' },
+  };
+  const { bucket, entry } = only(triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '🤖 Data·some renamed tab' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '👑 OWNER — totally different title' }],
+    ...NOTHING,
+    launchByRef: (ref) => launches[ref] || null,
+  }));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'live-duplicate');
+});
+
+test('a lookup that THROWS is unverifiable, never "unmapped"', () => {
+  // Collapsing "the ledger read failed" into "this tab has no work attached"
+  // understates an outage as an absence — the exact conflation the
+  // unverifiable bucket exists to stop, leaking in through error handling.
+  const thrown = (over) => only(run([{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }], over));
+
+  assert.equal(thrown({ launchByRef: () => { throw new Error('ledger unreadable'); } }).entry.reason, 'unverifiable-lookup');
+  assert.equal(thrown({ linearStateByKey: () => { throw new Error('502'); } }).entry.reason, 'unverifiable-lookup');
+  assert.equal(thrown({
+    launchByRef: () => ({ taskId: 42 }),
+    taskStatusById: () => { throw new Error('EACCES'); },
+  }).entry.reason, 'unverifiable-lookup');
+
+  // ...and a tab that genuinely maps to nothing is still plain 'unmapped'.
+  assert.equal(only(run([{ ref: 'workspace:9', title: 'Domain Authority (recovered)' }])).entry.reason, 'unmapped');
+});
+
+test('a confirmed-finished verdict still wins over an unrelated failed lookup', () => {
+  // Linear answered "Done"; only the task-store read failed. Downgrading a
+  // confirmed answer to unverifiable would make every archived task noisy.
+  const { bucket } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    {
+      launchByRef: () => ({ taskId: 42 }),
+      taskStatusById: () => { throw new Error('EACCES'); },
+      linearStateByKey: () => ({ type: 'completed', name: 'Done' }),
+    },
+  ));
+  assert.equal(bucket, 'safeToClose');
+});
+
+test('the module closes nothing: no close path exists in the source at all', () => {
+  // An --apply flag was removed pre-ship: it had a TOCTOU close (verdict
+  // computed from a snapshot, several Linear round trips before the close)
+  // and took none of the single-writer lock bsc-prune uses to make concurrent
+  // sweeps safe. bsc-prune owns the only close path; this tool reports.
+  const fs = require('fs');
+  const src = fs.readFileSync(new URL('./cmux-triage.js', import.meta.url), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1');
+  assert.doesNotMatch(src, /closeWorkspace/, 'must not close workspaces');
+  assert.doesNotMatch(src, /appendEntry/, 'must not write to the dispatch ledger');
+  assert.doesNotMatch(src, /--apply/, 'the --apply flag must stay gone');
+});

@@ -63,12 +63,32 @@
  * existing trigger + `scripts/lib/*.test.mjs` glob. Everything above the
  * `── I/O half ──` divider is pure and is what the test exercises.
  *
+ * STRICTLY REPORT-ONLY — it closes nothing, and an --apply flag was
+ * deliberately removed before shipping after an adversarial review (Codex,
+ * 2026-09-07) found two P0s in it that are not worth solving twice:
+ *
+ *   TOCTOU. `autoActionAllowed` is computed from one snapshot, and several
+ *   Linear round trips happen before any close would fire. In that window a
+ *   ref can become selected, restart, or be recycled onto unrelated work.
+ *   bsc-prune closes safely only because it re-lists, re-verifies workspace
+ *   identity (cmux-workspaces.js) and re-probes two-signal liveness
+ *   IMMEDIATELY before each close.
+ *
+ *   No single-writer lock. bsc-prune's real sweeps take one (acquireRunLock)
+ *   precisely so two concurrent read-decide-act passes cannot act on each
+ *   other's stale snapshot. It runs on a 5-minute launchd tick AND on every
+ *   session Stop hook, so a collision is routine, not theoretical.
+ *
+ * Reimplementing that machinery here would mean a SECOND destructive close
+ * path over the same cmux socket and the same ledger — more surface, no more
+ * capability. bsc-prune already closes every tab that may be closed
+ * automatically; what was missing was the VERDICT, and a verdict is what this
+ * produces. Owner-only tabs were never auto-closable anyway, which is the
+ * whole reason this module exists.
+ *
  * Usage:
- *   node scripts/lib/cmux-triage.js            report (touches nothing)
- *   node scripts/lib/cmux-triage.js --json     machine-readable report
- *   node scripts/lib/cmux-triage.js --apply    additionally CLOSE the
- *                                              safeToClose tabs that
- *                                              isReclaimable() permits
+ *   node scripts/lib/cmux-triage.js              report (touches nothing)
+ *   node scripts/lib/cmux-triage.js --json       machine-readable report
  *   node scripts/lib/cmux-triage.js --no-linear  skip the Linear round trips
  */
 
@@ -81,6 +101,9 @@ const { isReclaimable } = require('./prune-dead-autodispatch-tabs.js');
 const { normalizeTitle } = require('./zombie-tab-sweep.js');
 const { titleFamilyKey } = require('./crown-duplicate-detector.js');
 const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-types.js');
+// The team key is imported, never spelled here: three modules already hold a
+// private copy of the literal 'BRO' and a fourth is how they drift apart.
+const { TEAM_KEY } = require('./linear-client.js');
 const { WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER } = require('./dispatch-watchdog-core.js');
 
 // Task-store statuses that mean the work is finished / still outstanding.
@@ -91,9 +114,15 @@ const OPEN_TASK_STATUSES = new Set(['pending', 'in_progress']);
 
 // Linear issue identifiers as they appear in a dispatched tab title
 // (bsc-next/linear-next buildAutoTitle stamps "Data·BRO-2623 <title>").
-// Anchored on a word boundary so a digit-run inside a longer token can't
-// masquerade as one.
-const LINEAR_KEY_RE = /\b([A-Z]{2,5}-\d+)\b/;
+//
+// Anchored to THIS team's key, not a generic /[A-Z]{2,5}-\d+/ shape. The
+// generic form matches plenty of things that are not Linear issues and that
+// really do appear in tab titles and dispatch subjects — "UTF-8", "CVE-2024",
+// "GPT-5", a release tag — and every one of them would then be looked up,
+// come back as no-such-issue or (worse) as a real issue on another team, and
+// contribute a status verdict about work the tab has nothing to do with
+// (Codex ship-check finding, 2026-09-07).
+const LINEAR_KEY_RE = new RegExp(String.raw`\b(${TEAM_KEY}-\d+)\b`);
 
 /**
  * Pull the Linear issue key out of a workspace title, if it carries one.
@@ -121,7 +150,31 @@ function extractLinearKey(title) {
  * @returns {string|null}
  */
 function linearKeyFor(title, taskId, subject) {
-  return extractLinearKey(title) || extractLinearKey(taskId) || extractLinearKey(subject);
+  return ledgerLinearKey(taskId, subject) || extractLinearKey(title);
+}
+
+/**
+ * The issue key with LEDGER provenance only — from the dispatch record, never
+ * from the tab's free-form title. This is the only key allowed to prove two
+ * tabs are doing the same work.
+ *
+ * A title is free text an owner may rename at will and may mention several
+ * issues: "fix BRO-123 link in BRO-456 report" yields whichever appears first,
+ * so two unrelated tabs can collide on a key neither of them is actually
+ * working (Codex ship-check finding, 2026-09-07). zombie-tab-sweep.js:88
+ * already sets this rule for its own duplicate test — the task id is the sole
+ * authority whenever the ledger has one — after shipping the inverse bug: a
+ * title-prefix match that closed a live sibling task as a false "duplicate".
+ *
+ * Title-derived keys stay perfectly good for the OTHER use, looking up a
+ * status to report; being wrong there costs one misleading line in a report a
+ * human reads, not a verdict about a second tab.
+ * @param {string|null} taskId
+ * @param {string|null} subject
+ * @returns {string|null}
+ */
+function ledgerLinearKey(taskId, subject) {
+  return extractLinearKey(taskId) || extractLinearKey(subject);
 }
 
 /**
@@ -186,7 +239,20 @@ const AGENT_TAG_RE = /:tag:([A-Za-z][A-Za-z0-9_-]*)(?:\.[0-9a-fA-F-]+)?$/;
  * Uses the same column layout as cmux-workspaces.hasLiveClaude — a process
  * row is col[3]==='process' with its parent tag in col[5] — and returns the
  * agent name so the report can say WHICH one is alive, not just that
- * something is.
+ * something is. Sharing that layout with hasLiveClaude is deliberate: if cmux
+ * changes its TSV schema, both break together and the existing sweep's tests
+ * catch it, which is strictly better than this module quietly disagreeing
+ * with the predicate it is extending.
+ *
+ * ACCEPTED LIMITATIONS, both erring toward "alive", which is the safe
+ * direction for a tool whose output is a recommendation to a human:
+ *   - a lingering child process under a matching tag reads as a live agent,
+ *     so a genuine corpse can be withheld from triage. The cost is one tab
+ *     the owner has to close by hand; the inverse — reporting a live session
+ *     as safe to close — is what this whole module exists to prevent.
+ *   - it requires a PROCESS row, not just a tag row, so a crashed agent that
+ *     left a stale tag behind stays prunable (the same rule
+ *     cmux-workspaces.hasLiveClaude states for itself).
  * @param {string} tsvText
  * @returns {string|null} agent tag name, or null when no agent process is live
  */
@@ -253,10 +319,11 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
   const liveTaskIds = new Set();
   const liveLinearKeys = new Set();
   for (const w of live) {
-    const launch = safeCall(() => launchByRef(w.ref));
+    const launch = value(safeCall(() => launchByRef(w.ref)));
     const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
     if (taskId) liveTaskIds.add(taskId);
-    const key = linearKeyFor(w.title, taskId, launch && launch.subject);
+    // Ledger provenance ONLY for duplicate matching — see ledgerLinearKey.
+    const key = ledgerLinearKey(taskId, launch && launch.subject);
     if (key) liveLinearKeys.add(key);
   }
 
@@ -274,11 +341,20 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
   }
 
   for (const w of deadTabs || []) {
-    const launch = safeCall(() => launchByRef(w.ref));
+    const launchRaw = safeCall(() => launchByRef(w.ref));
+    const launch = value(launchRaw);
     const taskId = launch && launch.taskId != null ? String(launch.taskId) : null;
-    const taskStatus = taskId ? safeCall(() => taskStatusById(taskId)) : null;
-    const linearKey = linearKeyFor(w.title, taskId, launch && launch.subject);
-    const linear = linearKey ? safeCall(() => linearStateByKey(linearKey)) : null;
+    const taskStatusRaw = taskId ? safeCall(() => taskStatusById(taskId)) : null;
+    const taskStatus = value(taskStatusRaw);
+    const ledgerKey = ledgerLinearKey(taskId, launch && launch.subject);
+    const linearKey = ledgerKey || extractLinearKey(w.title);
+    const linearRaw = linearKey ? safeCall(() => linearStateByKey(linearKey)) : null;
+    const linear = value(linearRaw);
+    // A collaborator that THREW, or one that answered `{error}`, are the same
+    // fact: this tab's status could not be established. Both must reach the
+    // unverifiable branch — never fall through to 'unmapped'.
+    const lookupFailure = failed(launchRaw) || failed(taskStatusRaw) || failed(linearRaw)
+      || Boolean(linear && linear.error);
     const isAutoDispatched = hasAutoDispatchMarker(w.title);
 
     const entry = {
@@ -312,9 +388,12 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
     // 1. The work is already running in another tab. Highest precedence: this
     //    must beat "Linear says open", because Linear saying In Progress is
     //    exactly what a live sibling session looks like.
+    // `ledgerKey`, not `linearKey`: only a key the DISPATCH RECORD vouches for
+    // may prove two tabs share work (see ledgerLinearKey). A title-derived key
+    // still feeds the status lookup above, it just never closes a tab here.
     const liveDup = (taskId && liveTaskIds.has(taskId))
-      || (linearKey && liveLinearKeys.has(linearKey))
-      || (!taskId && !linearKey && liveWorkKeys.has(workKeyForTitle(w.title)));
+      || (ledgerKey && liveLinearKeys.has(ledgerKey))
+      || (!taskId && !ledgerKey && liveWorkKeys.has(workKeyForTitle(w.title)));
     if (liveDup) { push(safeToClose, entry, 'live-duplicate'); continue; }
 
     // 2. Confirmed finished. Linear is the board of record (CLAUDE.md §6), so
@@ -331,7 +410,7 @@ function triageDeadTabs({ deadTabs, liveWorkspaces, launchByRef, taskStatusById,
     // 4. The lookup FAILED. An outage is not evidence of anything — least of
     //    all that the work is done. Never falls through to "unmapped", which
     //    would understate it as merely unknown rather than unverified.
-    if (linear && linear.error) { push(needsOwnerCall, entry, 'unverifiable-lookup'); continue; }
+    if (lookupFailure) { push(needsOwnerCall, entry, 'unverifiable-lookup'); continue; }
 
     // 5. Still open, terminal died. This is the re-dispatch bucket.
     if (linear && linear.type && !isTerminalStateType(linear.type)) { push(needsResuming, entry, 'linear-open'); continue; }
@@ -349,11 +428,23 @@ function push(bucket, entry, reason) {
   bucket.push({ ...entry, reason });
 }
 
+// Sentinel distinguishing "the lookup threw" from "the lookup answered, and
+// the answer was nothing". Collapsing the two was a shipped-and-caught bug
+// (Codex ship-check, 2026-09-07): a ledger read or a Linear call that FAILED
+// reported the tab as 'unmapped' — merely unknown — which reads as "no work is
+// attached to this tab" and understates an outage as an absence. That is the
+// same conflation this module's `unverifiable-lookup` bucket exists to stop,
+// and it was leaking in through the back door of its own error handling.
+const LOOKUP_FAILED = Symbol('lookup-failed');
+
 // Every collaborator is injected and may be a live network/fs call; a thrown
-// lookup must degrade that ONE fact to unknown, not abort the whole sweep.
+// lookup must degrade that ONE fact, not abort the whole sweep.
 function safeCall(fn) {
-  try { return fn() || null; } catch { return null; }
+  try { return fn() || null; } catch { return LOOKUP_FAILED; }
 }
+
+function failed(v) { return v === LOOKUP_FAILED; }
+function value(v) { return failed(v) ? null : v; }
 
 /**
  * Render the report. Pure (returns lines) so the test can assert on it without
@@ -367,7 +458,7 @@ function formatTriageReport({ safeToClose, needsResuming, needsOwnerCall }) {
   lines.push(`[cmux-triage] ${total} dead workspace(s): ${safeToClose.length} safe to close, ${needsResuming.length} need resuming, ${needsOwnerCall.length} need an owner call.`);
 
   section('SAFE TO CLOSE — work is finished or running elsewhere', safeToClose, e =>
-    e.autoActionAllowed ? '--apply will close this' : 'OWNER-ONLY: not 🤖-dispatched or is a crown tab — close it by hand');
+    e.autoActionAllowed ? 'bsc-prune will close this on its next sweep' : 'OWNER-ONLY: not 🤖-dispatched or is a crown tab — close it by hand');
   section('NEEDS RESUMING — work is still open, the terminal died', needsResuming, e =>
     e.linearKey ? `re-dispatch: node scripts/linear-next.js --id ${e.linearKey}` : 're-dispatch: no issue key in title, identify the work first');
   section('NEEDS AN OWNER CALL — not enough evidence, or your decision', needsOwnerCall, e => ({
@@ -451,11 +542,13 @@ async function main(argv = process.argv.slice(2)) {
     console.log([
       'cmux-triage — triage every dead cmux workspace, including owner and crown tabs.',
       '',
-      '  node scripts/lib/cmux-triage.js              report only (default, touches nothing)',
+      '  node scripts/lib/cmux-triage.js              report (this tool NEVER closes anything)',
       '  node scripts/lib/cmux-triage.js --json       machine-readable report',
-      '  node scripts/lib/cmux-triage.js --apply      also close the safeToClose tabs that',
-      '                                               prune-dead-autodispatch-tabs permits',
       '  node scripts/lib/cmux-triage.js --no-linear  skip Linear lookups (task store only)',
+      '',
+      'To actually close the tabs it clears: run bsc-prune, which owns the only',
+      'safe close path (single-writer lock + revalidation immediately before each',
+      'close). Owner-opened and crown tabs are closed by hand, by you, on purpose.',
       '',
       `Linear states treated as finished: ${TERMINAL_TYPES_FOR_HELP}.`,
     ].join('\n'));
@@ -468,7 +561,6 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const asJson = argv.includes('--json');
-  const apply = argv.includes('--apply');
   const useLinear = !argv.includes('--no-linear');
 
   const all = cmux.listWorkspacesWithCwd();
@@ -494,10 +586,22 @@ async function main(argv = process.argv.slice(2)) {
     console.log('');
   }
 
-  const entries = (() => { try { return dispatchLedger.readEntries(); } catch { return []; } })();
+  // A ledger read failure is NOT an empty ledger. Falling back to [] silently
+  // makes every dead tab look like it was never dispatched — 'unmapped' —
+  // which is the exact outage-as-absence conflation LOOKUP_FAILED exists to
+  // stop, so it has to be loud here too. The throwing accessor below is what
+  // routes affected tabs to 'unverifiable-lookup' rather than 'unmapped'.
+  let ledgerError = null;
+  let entries = [];
+  try { entries = dispatchLedger.readEntries(); }
+  catch (e) { ledgerError = e.message || String(e); }
+  if (ledgerError) console.error(`[cmux-triage] WARN dispatch ledger unreadable (${ledgerError}) — tab provenance cannot be established; every tab will report as unverifiable.`);
   // unreconciledLaunchForRef, NOT launchByRef — see triageDeadTabs's
   // @param note for the live misclassification a bare lookup produced.
-  const launchByRef = (ref) => dispatchLedger.unreconciledLaunchForRef(ref, entries);
+  const launchByRef = (ref) => {
+    if (ledgerError) throw new Error(`dispatch ledger unreadable: ${ledgerError}`);
+    return dispatchLedger.unreconciledLaunchForRef(ref, entries);
+  };
 
   let linearStates = new Map();
   if (useLinear) {
@@ -526,20 +630,6 @@ async function main(argv = process.argv.slice(2)) {
     console.log(formatTriageReport(buckets).join('\n'));
   }
 
-  if (apply) {
-    const closeable = buckets.safeToClose.filter(e => e.autoActionAllowed);
-    console.log(`\n[cmux-triage] --apply: closing ${closeable.length} tab(s).`);
-    for (const e of closeable) {
-      try {
-        cmux.closeWorkspace(e.ref);
-        console.log(`  closed ${e.ref}  ${e.title}`);
-        try { dispatchLedger.appendEntry({ event: 'dead', taskId: e.taskId || 'unknown', workspaceRef: e.ref, reason: `cmux-triage:${e.reason}` }); }
-        catch (err) { console.error(`  WARN ledger write failed for ${e.ref}: ${err.message}`); }
-      } catch (err) {
-        console.error(`  WARN close failed for ${e.ref}: ${err.message}`);
-      }
-    }
-  }
   return 0;
 }
 
