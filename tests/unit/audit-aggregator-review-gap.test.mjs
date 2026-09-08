@@ -86,6 +86,23 @@ test('before the fix: an un-capped rollback keeps a show permanently "most overd
   assert.ok(order < 0, 'the perpetually-stale show sorts ahead of a normally-audited peer, dominating every batch');
 });
 
+test('the breaker never lets a refused run\'s completeness numbers become trusted (Codex adversarial review finding)', () => {
+  // newsletter-preflight.js's classifyGapEntry() reads `at` + `uncollected`
+  // off this exact file as a HARD send-blocking gate: a fresh `at` with
+  // `uncollected: 0` reads as 'ok' and clears a show to send. The first cut
+  // of this fix let the circuit breaker adopt the refused run's own
+  // gaps/uncollected once it tripped — silently blessing a send on the very
+  // data the blast-radius guard just refused to trust. The fix must only
+  // ever advance the TIMESTAMP; the completeness fields must keep the last
+  // genuinely trusted values (or none).
+  const checkpointAtStart = { 'stuck-show': { at: '2026-08-17T00:00:00.000Z', gaps: 5, uncollected: 5, quarantineStreak: DEFAULT_QUARANTINE_STREAK_CAP } };
+  const refusedRunClaim = { at: new Date().toISOString(), gaps: 0, uncollected: 0 }; // the lie
+  const rolled = applyCheckpointRollback({ 'stuck-show': refusedRunClaim }, ['stuck-show'], checkpointAtStart);
+  assert.strictEqual(rolled['stuck-show'].at, refusedRunClaim.at, 'the timestamp does advance once the cap trips');
+  assert.strictEqual(rolled['stuck-show'].uncollected, 5, 'must NOT adopt the refused run\'s uncollected count');
+  assert.strictEqual(rolled['stuck-show'].gaps, 5, 'must NOT adopt the refused run\'s gaps count');
+});
+
 test('after the fix: the same scenario lets the show fall back behind a fresh peer once the cap trips', () => {
   const ancientStart = { 'stuck-show': { at: '2026-08-17T00:00:00.000Z', gaps: 3 } };
   let checkpoint = ancientStart;

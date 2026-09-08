@@ -2253,9 +2253,16 @@ async function main(argv = process.argv.slice(2)) {
     // behavior exactly.
     const auditedIds = results.map(r => r && r.showId).filter(Boolean);
     const rollbackIds = (riskyShowIds && riskyShowIds.length) ? riskyShowIds : auditedIds;
+    // GAP_QUARANTINE_STREAK_CAP: operational override for the BRO-392 circuit
+    // breaker (scripts/lib/gap-audit-checkpoint.js) without a code deploy —
+    // set to a large number (e.g. 999999) to effectively disable it and
+    // restore the pre-fix "roll back forever" behavior, or lower it to break
+    // a stuck loop faster. Unset uses the library default.
+    const streakCapEnv = Number(process.env.GAP_QUARANTINE_STREAK_CAP);
+    const rollbackOpts = Number.isFinite(streakCapEnv) && streakCapEnv > 0 ? { streakCap: streakCapEnv } : {};
     if (useCheckpoint && checkpointAtStart && rollbackIds.length) {
       try {
-        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart);
+        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart, rollbackOpts);
         console.error(`::warning::rolled ${rollbackIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.${rollbackIds.length < auditedIds.length ? ` (${auditedIds.length - rollbackIds.length} other audited show(s) were safe and persisted normally)` : ''}`);
       } catch (e) {
         console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);

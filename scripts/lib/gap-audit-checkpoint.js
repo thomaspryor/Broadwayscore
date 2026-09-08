@@ -85,25 +85,37 @@ function saveCheckpointEntries(checkpointPath, entries) {
 // single run it's picked (observed: the same ~9-10 off-broadway shows,
 // frozen at an early-August computedAt, recurred in nearly every run from
 // 2026-09-07 onward). This cap breaks that starvation loop: after
-// `DEFAULT_QUARANTINE_STREAK_CAP` consecutive rollbacks, the show's
-// freshly-audited stamp from THIS run is allowed to stand instead of being
-// rolled back again, so it falls back to its normal freshness cadence
-// (freshnessMsFor) rather than front-running the least-recently-audited
-// queue forever. It stays visibly quarantined in show-review-gap.json (a
-// separate file/lock) and keeps alerting via routeAlert's own cooldown —
-// only the CHECKPOINT stops starving.
+// `DEFAULT_QUARANTINE_STREAK_CAP` consecutive rollbacks, the show's re-audit
+// CADENCE is allowed to advance so it falls back to its normal freshness
+// window (freshnessMsFor) instead of front-running the least-recently-
+// audited queue forever. It stays visibly quarantined in
+// show-review-gap.json (a separate file/lock) and keeps alerting via
+// routeAlert's own cooldown — only the checkpoint's scheduling stops
+// starving.
+//
+// Adversarial review finding (Codex, BRO-392): the FIRST version of this fix
+// let the show's entire refused-run stamp stand once the cap tripped —
+// including `gaps`/`uncollected`, THIS run's numbers, which the blast-radius
+// guard just finished declaring too risky to trust. newsletter-preflight.js
+// reads exactly those two fields off this file as a HARD completeness gate
+// (classifyGapEntry: fresh `at` + `uncollected === 0` reads 'ok' and clears a
+// show to send) — so escaping quarantine could have silently blessed a send
+// on the very lie the guard exists to catch. The breaker below advances ONLY
+// the timestamp; `gaps`/`uncollected` keep whatever was last genuinely
+// trusted (or are dropped entirely if nothing ever was, which
+// classifyGapEntry/newsletter-preflight already read as 'no-data' — a soft
+// warn, never a false 'ok').
 const DEFAULT_QUARANTINE_STREAK_CAP = 3;
 
 /**
- * Pure restore-vs-delete branching for a refused (blast-radius) run's
- * checkpoint rollback. For each id in `auditedIds`: if `checkpointAtStart`
- * had a pre-run entry for it, restore that entry (the show WAS audited
- * before, this run's stamp just isn't trustworthy) and bump its
- * `quarantineStreak`; otherwise delete it entirely (the show was never
- * audited before this run, so leaving a stamp behind — even a rolled-back
- * one — would be inventing history). Once the streak exceeds `streakCap`
- * (BRO-392), the restore is skipped for that id — this run's fresh stamp
- * stands (with the streak reset to 0) so the checkpoint stops starving.
+ * Pure branching for a refused (blast-radius) run's checkpoint rollback. For
+ * each id in `auditedIds`, restore whatever was last genuinely trusted about
+ * it (or nothing, if it's never been trusted) and bump its
+ * `quarantineStreak`. Once the streak exceeds `streakCap` (BRO-392), the
+ * show's `at` timestamp is advanced to THIS run's fresh stamp — breaking the
+ * starvation loop — but `gaps`/`uncollected` are NEVER taken from the
+ * refused run; only the last-trusted values (or none) ever persist, so a
+ * quarantined show can never look more complete than it last verifiably was.
  * Extracted per CLAUDE.md §15 so the branching is unit-testable without
  * spinning up the whole audit script.
  *
@@ -118,19 +130,37 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = 
   const merged = { ...(current || {}) };
   const snapshot = checkpointAtStart || {};
   for (const id of auditedIds || []) {
-    if (!Object.prototype.hasOwnProperty.call(snapshot, id)) {
-      delete merged[id];
-      continue;
-    }
-    const priorStreak = Number.isFinite(snapshot[id].quarantineStreak) ? snapshot[id].quarantineStreak : 0;
+    const hadTrustedEntry = Object.prototype.hasOwnProperty.call(snapshot, id);
+    // Null-safety: a persisted `null` entry is a valid (if odd) prior value —
+    // `{...null}` is a safe no-op spread, but reading `.quarantineStreak` off
+    // it would throw, so guard the property access itself (adversarial
+    // review finding).
+    const priorEntry = hadTrustedEntry ? snapshot[id] : null;
+    const priorStreak = Number.isFinite(priorEntry && priorEntry.quarantineStreak) ? priorEntry.quarantineStreak : 0;
     const nextStreak = priorStreak + 1;
     if (nextStreak > streakCap) {
-      // Circuit breaker tripped: leave this run's fresh stamp (already in
-      // `current`/`merged`) in place instead of restoring the stale one.
-      if (merged[id]) merged[id] = { ...merged[id], quarantineStreak: 0 };
+      // Circuit breaker tripped: advance the timestamp only (already in
+      // `current`/`merged` from this run's per-show stamp) — never adopt
+      // this run's untrusted gaps/uncollected. See the module comment above.
+      const freshAt = (merged[id] && merged[id].at) || new Date().toISOString();
+      merged[id] = hadTrustedEntry
+        ? { ...priorEntry, at: freshAt, quarantineStreak: 0 }
+        : { at: freshAt, quarantineStreak: 0 };
       continue;
     }
-    merged[id] = { ...snapshot[id], quarantineStreak: nextStreak };
+    // Below the cap: restore whatever was last trusted (bumping the streak).
+    // A show with NO trusted history yet still needs its streak tracked
+    // across runs (adversarial review finding: without this, a show that's
+    // risky from its very first audit would hit the "no prior entry" branch
+    // every single run forever and never reach the cap at all) — persist a
+    // streak-only marker with no `at`/`gaps`/`uncollected` fields.
+    // checkpointTs() and classifyGapEntry() both already treat a missing
+    // `at`/`uncollected` as "never audited" / "no-data", so this is
+    // observationally identical to today's full delete for every existing
+    // reader, just durable enough to count.
+    merged[id] = hadTrustedEntry
+      ? { ...priorEntry, quarantineStreak: nextStreak }
+      : { quarantineStreak: nextStreak };
   }
   return merged;
 }
