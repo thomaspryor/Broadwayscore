@@ -36,22 +36,36 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    # 18, not 8 (BRO-345 what-else, 2026-09-08): observed run 34174218685
-    # cancelled by this timeout BEFORE the same-session apiFallbackSafe fix
-    # even landed, and a "successful" run (22:44-22:52) took 7m47s — already
-    # dangerously close to 8min. The "Commit state file" step below now
-    # bounds its own worst case (PUSH_DEADLINE_SEC=120 local retries + a
-    # single PUSH_API_MAX_RETRIES=1 fallback attempt at push-with-retry.sh's
-    # own documented pessimistic ~3*GIT_NET_TIMEOUT_SEC=270s/attempt cost
-    # model) to ~390s. 18min gives that ~390s step worst case + the observed
-    # ~467s baseline (checkout/setup-node/npm ci/the actual completeness
-    # check) a real margin (~223s / ~21%) instead of landing right at the
-    # cap, while still matching this file's soft-fail design intent
-    # (push-with-retry.sh's failure is `|| echo`'d — the NEXT 15-min cron
-    # tick re-snapshots) instead of cutting the job off mid-push into a
-    # silent `cancelled` conclusion that skips both `if: failure()` (Notify
-    # on failure) and notify-failure's own cancelled-conclusion exclusion.
-    timeout-minutes: 18
+    # 25, not 8 (BRO-345 what-else, 2026-09-08, tuned over 3 review rounds):
+    # observed run 34174218685 was cancelled by this timeout BEFORE the
+    # same-session apiFallbackSafe fix even landed, and a "successful" run
+    # (22:44-22:52) took 7m47s (~467s) — already dangerously close to 8min.
+    # The "Commit state file" step below bounds its OWN worst case
+    # (PUSH_DEADLINE_SEC=120 local retries + a single PUSH_API_MAX_RETRIES=1
+    # fallback attempt) — but per second-opinion review round 3, confirmed
+    # directly against push-with-retry.sh/push-via-git-api.sh's actual
+    # per-attempt network-call chains (not their own summary comments, which
+    # undercount): one local iteration can chain pre-push+2x-fetch+post-push
+    # (up to 4x GIT_NET_TIMEOUT_SEC=90s = 360s) before the 120s deadline
+    # check ever re-fires, and the single fallback attempt can likewise chain
+    # up to 360s (ls-remote + 2x-fetch + push). Confirmed worst case for the
+    # push step alone: ~720s. 25min (1500s) gives that ~720s + the ~467s
+    # baseline (~1187s) a real margin (~313s / ~21%) instead of the
+    # false-precision "~21%" claimed by two earlier, less-verified passes at
+    # 15min/18min. NOT fully closed: the earlier "Checkout core data" step's
+    # own git fetch/clone calls have no GIT_NET_TIMEOUT_SEC-style cap at all
+    # (confirmed by the same review round) — that is a separate, pre-existing,
+    # unbounded risk in .github/actions/checkout-core-data/action.yml
+    # (critical-tier per infra-review-scope.js, needs its own blocking
+    # pre-review, out of scope for this workflow-level fix) tracked as a
+    # follow-up rather than fixed here. This timeout reduces, not eliminates,
+    # cancellation exposure. Matches this file's soft-fail design intent
+    # either way (push-with-retry.sh's failure is `|| echo`'d — the NEXT
+    # 15-min cron tick re-snapshots) instead of cutting the job off mid-push
+    # into a silent `cancelled` conclusion that skips both `if: failure()`
+    # (Notify on failure) and notify-failure's own cancelled-conclusion
+    # exclusion.
+    timeout-minutes: 25
 
     steps:
       - name: Checkout
