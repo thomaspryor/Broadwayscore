@@ -570,8 +570,14 @@ jobs:
         # attempt/alert-ledger state this self-heal depends on, resetting the
         # 2-attempt/24h budget and re-arming an alert that already fired —
         # the exact "repeated forever" failure mode this fix closes.
-        # Committing right after the state is written removes that window;
-        # the late steps re-stage the same paths as defense-in-depth.
+        # Committing+pushing right after the state is written NARROWS that
+        # window; the late steps re-stage the same paths as defense-in-depth.
+        # It does not CLOSE it: only a successful push reaches origin, and if
+        # the job is cancelled or the runner dies before the late steps, an
+        # unpushed local commit dies with the runner (ship-check/Codex,
+        # 2026-09-08 — the earlier wording here claimed otherwise and was
+        # wrong). That residual window is identical whether this step is
+        # hard-fail or continue-on-error, so it is not a cost of this change.
         #
         # BRO-2435 (2026-08-26): this step used to bundle BOTH audit files
         # into one step under a shared PUSH_DEADLINE_SEC, and hard-failed on
@@ -613,6 +619,7 @@ jobs:
         # no job-timeout-margin-undersized flag (MARGIN_THRESHOLD 0.15; this
         # job sits at 0.167 and any net increase would trip it). Re-confirm
         # with `node scripts/audit-push-retry-budgets.js` before changing them.
+        id: commit_orphan_state_early
         if: steps.check.outputs.pending_shows != ''
         continue-on-error: true
         env:
@@ -650,6 +657,7 @@ jobs:
         # fallback AFTER the deadline expires, so this step's real worst case
         # is ~60s + up to 2 more capped API attempts — do not treat the freed
         # budget as spendable elsewhere.
+        id: commit_alert_ledger_early
         if: steps.check.outputs.pending_shows != ''
         continue-on-error: true
         env:
@@ -664,6 +672,33 @@ jobs:
           else
             git commit -m "chore: Update alert-ledger state [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Surface early-push failures (continue-on-error hides them from failure())
+        # BRO-2435 ship-check (Codex + gpt-5.4-mini, both flagged): under
+        # `continue-on-error: true` GitHub keeps `steps.<id>.outcome` as
+        # 'failure' but sets the effective conclusion to 'success', so a lost
+        # early push does NOT make failure() true and "Notify on failure"
+        # below never fires. That is deliberate — the late hard-fail steps are
+        # the real signal, and alerting on a transport blip the late step then
+        # recovers would be pure noise. But the blip must not be INVISIBLE:
+        # this echoes it into the run log and the job summary so an operator
+        # grepping a green run can still see the BRO-2373 wall was hit.
+        # Cannot fail (plain echoes), so it cannot re-introduce the cascade.
+        if: always() && steps.check.outputs.pending_shows != ''
+        run: |
+          ORPHAN='${{ steps.commit_orphan_state_early.outcome }}'
+          LEDGER='${{ steps.commit_alert_ledger_early.outcome }}'
+          if [ "$ORPHAN" = "failure" ]; then
+            echo "::warning::early orphan-rescore-requeue-state push failed (outcome=$ORPHAN) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early orphan-rescore-requeue-state push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$LEDGER" = "failure" ]; then
+            echo "::warning::early alert-ledger push failed (outcome=$LEDGER) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early alert-ledger push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$ORPHAN" != "failure" ] && [ "$LEDGER" != "failure" ]; then
+            echo "Both early state pushes OK (orphan=$ORPHAN, ledger=$LEDGER)"
           fi
 
       - name: Sync subscribers (Formspree → local)
@@ -1156,7 +1191,21 @@ jobs:
             git add data/audit/orphan-rescore-requeue-state.json
             echo "Staged orphan-rescore-requeue-state.json"
           fi
-          if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
             echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits — skipping push"
             exit 0
           fi
@@ -1216,7 +1265,21 @@ jobs:
           # The late orphan step above normally catches this first (it pushes
           # all of origin/main..HEAD); this is the second chance if that push
           # also failed. Same gate shape as that step, deliberately.
-          if git diff --cached --quiet && [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
             echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit and no unpushed local commits — skipping push"
             exit 0
           fi
