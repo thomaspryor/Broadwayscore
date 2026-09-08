@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { evaluateCard, buildReport, evaluateLinearIssue } = require('./audit-card-verifiability.js');
+const { evaluateCard, buildReport, evaluateLinearIssue, attachMissingTestFiles } = require('./audit-card-verifiability.js');
 
 test('evaluateCard: armed card carries no reason', () => {
   const card = {
@@ -102,6 +102,17 @@ test('evaluateLinearIssue: VERIFY: owner-judgment is armed with no command', () 
 test('evaluateLinearIssue: missing description is refused, not a crash', () => {
   const r = evaluateLinearIssue({ identifier: 'BRO-4', title: 'No description' });
   assert.equal(r.armed, false);
+});
+
+// ── BRO-2977: missing-test-file wiring ──────────────────────────────────────
+
+test('attachMissingTestFiles: no candidates means [] without touching git', () => {
+  // No card here is node --test shaped, so findCardsWithMissingTestFiles
+  // short-circuits before any git fetch — this must never hang or throw in
+  // an offline test runner.
+  const report = buildReport([]);
+  attachMissingTestFiles(report, [{ id: 'a', cmd: 'npx tsc --noEmit', armed: true }]);
+  assert.deepEqual(report.missingTestFiles, []);
 });
 
 test('buildReport works unchanged over evaluateLinearIssue output (shared shape)', () => {

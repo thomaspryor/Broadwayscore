@@ -36,6 +36,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+const { findCardsWithMissingTestFiles } = require('./lib/card-premises-auditor.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -112,6 +113,7 @@ function evaluateCard(card) {
     ownerJudgment: gate.ownerJudgment,
     reason: gate.reason,
     kind: gate.kind,
+    cmd: gate.cmd,
   };
 }
 
@@ -173,6 +175,7 @@ function evaluateLinearIssue(issue) {
     ownerJudgment: gate.ownerJudgment,
     reason: gate.reason,
     kind: gate.kind,
+    cmd: gate.cmd,
   };
 }
 
@@ -180,11 +183,26 @@ async function fetchLinearOpenIssuesWithDescriptions() {
   return linear.listOpenIssuesWithDescriptions();
 }
 
+// BRO-2977: an armed card's `node --test`/`npx tsx --test` command can still
+// name a file that does not exist anywhere — isSafeCheckCommand only checks
+// SHAPE, never existence — which permanently starves the card at
+// linear-brain.js's Done gate. Checked against origin/main (not this
+// process's local checkout — see card-premises-auditor.js's header for why),
+// so it's additive on top of buildReport rather than folded into
+// armed/refused: a card with a confirmed-missing test file is still "armed"
+// by the dispatch gate's own definition, just unable to ever pass its own
+// acceptance check.
+function attachMissingTestFiles(report, evaluated, opts) {
+  report.missingTestFiles = findCardsWithMissingTestFiles(evaluated, opts);
+  return report;
+}
+
 async function runLinearAudit(limit) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
+  attachMissingTestFiles(report, evaluated, { log: console.error });
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
@@ -202,6 +220,7 @@ function runNotionAudit(status, limit) {
   }
 
   const report = buildReport(evaluated);
+  attachMissingTestFiles(report, evaluated, { log: console.error });
   writeReport(report, REPORT_PATH);
   return report;
 }
@@ -218,6 +237,12 @@ function printReport(label, report, reportPath) {
   if (report.refused.length) {
     console.log(`\nFirst 15 ${label.toLowerCase()} refused:`);
     report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] [${c.kind || 'unknown'}] ${c.name} — ${c.reason}`));
+  }
+  const missingTestFiles = report.missingTestFiles || [];
+  console.log(`${label} armed but naming a missing test file (can never close): ${missingTestFiles.length}`);
+  if (missingTestFiles.length) {
+    console.log(`\n${label} cards naming a nonexistent test file:`);
+    missingTestFiles.forEach(c => console.log(`  ${c.id} ${c.name} — ${c.cmd} (missing: ${c.missingPaths.join(', ')})`));
   }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
 }
@@ -251,6 +276,7 @@ async function main() {
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
+      `| Armed but missing test file (can never close) | ${(report.missingTestFiles || []).length} |`,
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',
@@ -272,4 +298,6 @@ module.exports = {
   REPORT_PATH, DEFAULT_STATUS, DEFAULT_LIMIT, USAGE,
   // task #1830: Linear audit path — exported for unit coverage.
   evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
+  // BRO-2977: exported for unit coverage.
+  attachMissingTestFiles,
 };
