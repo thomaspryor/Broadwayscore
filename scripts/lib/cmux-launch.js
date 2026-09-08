@@ -29,6 +29,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
+const { shouldLaunchNewCrown } = require('./crown-fanout-guard.js');
 const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   shouldProbeSurface, shouldReprobeCapacity,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
@@ -788,6 +789,7 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
  *                                 wake, intervalSec, now, idleSec,
  *                                 strictlyAlive, cmuxExists, cwdIsDir,
+ *                                 listWorkspaces,
  *                                 newWorkspace} — never set in real use. Tests calling
  *                                 waitForLaunchOutcome directly MUST pass
  *                                 probes.wake (a no-op), or a local test run
@@ -836,6 +838,10 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 capacity estimate is not the same class of
  *                                 act as bypassing a liveness check, which is
  *                                 why one is forceable and the other is not.
+ *                                 It ALSO bypasses the BRO-2953 crown-fanout
+ *                                 guard (a genuinely deliberate second crown
+ *                                 is a real, if rare, use case) — see
+ *                                 crown-fanout-guard.js.
  * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
  *   seedFile/command are null only for the argument-validation refusals
  *   (BRO-2251) — those return before either is computed, since no seed/cmd
@@ -1001,6 +1007,45 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     };
   }
   if (journalEntry) clearLaunchJournalEntry(effectiveWorkKey, journalPath); // recorded failure is now confirmed dead (or unreachable) — stop tracking it
+
+  // BRO-2953: refuse a second concurrent BRO-343 "crown" launch. Every launch
+  // path (fresh dispatch, succession hand-off, manual scratchpad script)
+  // funnels through here, so this is the one chokepoint that sees every
+  // attempt regardless of caller. Deliberately placed AFTER the reclaim block
+  // above, not before it: reclaim's whole job is recognizing "the live
+  // workspace already out there IS this exact work's own prior attempt,
+  // adopt it" and returns before reaching here — putting this guard earlier
+  // would treat that legitimate self-reclaim as a duplicate sibling and
+  // refuse it outright, defeating task #1706's reclaim mechanism for every
+  // crown-titled launch. `force` is the caller's own escape hatch (same opt
+  // already used to bypass the terminal-capacity preflight below) — this
+  // also covers a SANCTIONED successor hand-off: the predecessor is still
+  // alive (by design) at the moment the successor launches and only
+  // self-closes once the successor is confirmed running, so that launch must
+  // pass force:true too. The guard has no reliable way to tell a coordinated
+  // hand-off from an independent duplicate start from launch args alone —
+  // requiring an explicit force either way is what makes the launcher state
+  // its intent, which is the exact thing missing in the incident this guard
+  // closes. A failure to list workspaces must never block a launch that
+  // might otherwise be fine (fail open, matching this file's other
+  // best-effort probes), so it logs and proceeds unchecked rather than
+  // refusing on an unrelated cmux-socket error.
+  if (!force) {
+    const listWorkspacesFn = probes.listWorkspaces || cmuxws.listWorkspaces;
+    let existingWorkspaces = [];
+    try {
+      existingWorkspaces = listWorkspacesFn();
+    } catch (e) {
+      console.error(`[cmux-launch] WARN could not list existing workspaces for the crown-fanout guard (${e.message}) — proceeding without a duplicate-crown check`);
+      existingWorkspaces = [];
+    }
+    const crownCheck = shouldLaunchNewCrown(existingWorkspaces, title);
+    if (!crownCheck.allow) {
+      const reason = crownCheck.reason;
+      console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+      return { ok: false, reason, seedFile, command };
+    }
+  }
 
   // Launcher auth pre-check (card #856, Session-system overhaul S3): 7 cmux
   // launches died to "Not logged in" in the 5 days before this fix, and

@@ -78,6 +78,66 @@ test('launchCmuxSession: refuses the literal stringified-undefined cwd (the exac
   assert.equal(newWorkspaceCalls, 0);
 });
 
+// BRO-2953: launchCmuxSession is the one chokepoint every launch path funnels
+// through (fresh dispatch, succession hand-off, manual) — the crown-fanout
+// guard belongs here, not in any one caller, so it sees every attempt.
+test('launchCmuxSession: refuses a duplicate crown launch without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-a', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: force:true bypasses the crown-fanout guard', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-b', cwd: os.tmpdir(), force: true,
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('listWorkspaces must not even be called when force:true'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
+test('launchCmuxSession: an ordinary (non-crown) launch is never blocked, even with 5 live crowns', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-c', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => [
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0' },
+        { ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
+});
+
+test('launchCmuxSession: a listWorkspaces failure fails OPEN (never blocks a launch on an unrelated cmux-socket error)', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-d', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('cmux socket unavailable'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // proceeded past the guard despite the listWorkspaces throw
+});
+
 // Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
 // exact template-literal formatting (would break on a harmless reformat while
 // the launched command stayed byte-identical — the #1432/#1434 fragile class).
