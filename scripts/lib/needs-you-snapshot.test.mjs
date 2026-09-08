@@ -100,3 +100,15 @@ test('collapseCrownLineages: a lone crown generation with no predecessor is unto
   assert.equal(collapsed[0].supersededCount, 0);
   assert.equal(formatDetail(collapsed[0]), 'ship or wait?');
 });
+
+test('collapseCrownLineages: a falsy ts on one crown item never corrupts pendingSinceTs (ship-check finding, BRO-2989)', () => {
+  const { collapseCrownLineages } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:1', title: '❓ 👑 OWNER — Crown v10: BRO-343 P1 triage', question: 'a', ts: undefined },
+    { ref: 'workspace:2', title: '❓ 👑 OWNER — Crown v11: BRO-343 P1 triage', question: 'b', ts: '2026-09-01T00:00:00.000Z' },
+    { ref: 'workspace:3', title: '❓ 👑 OWNER — Crown v12: BRO-343 P1 triage', question: 'c', ts: '2026-09-05T00:00:00.000Z' },
+  ];
+  const collapsed = collapseCrownLineages(pending);
+  assert.equal(collapsed.length, 1);
+  assert.equal(collapsed[0].pendingSinceTs, '2026-09-01T00:00:00.000Z');
+});

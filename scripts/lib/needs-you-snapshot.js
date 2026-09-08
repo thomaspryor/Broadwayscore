@@ -124,8 +124,13 @@ function collapseCrownLineages(pending) {
     return String(b.ts || '').localeCompare(String(a.ts || ''));
   });
   const [latest, ...superseded] = sorted;
+  // Falsy ts (missing/empty — defended against elsewhere in this file, e.g.
+  // the digest sort's `String(a.ts || '')`) is skipped rather than compared:
+  // an earlier version's `!min` sentinel check re-triggered on every falsy
+  // ts, silently overwriting the true earliest with whatever came next
+  // (ship-check finding).
   const earliestTs = crown.reduce(
-    (min, it) => (!min || String(it.ts || '') < String(min)) ? it.ts : min,
+    (min, it) => (it.ts && (min === null || it.ts < min)) ? it.ts : min,
     null,
   );
   return [...rest, { ...latest, supersededCount: superseded.length, pendingSinceTs: earliestTs }];
