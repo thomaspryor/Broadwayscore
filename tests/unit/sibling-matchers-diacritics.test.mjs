@@ -201,6 +201,12 @@ describe('deduplication.normalizeTitle', () => {
 // matches in content-verifier/score-input-validator/serp-slug-discovery) with
 // zero matches lost. See task #760 commit message for the per-file summary.
 const UNFOLDED_BASELINE = new Set([
+  // .mjs entries below became visible on 2026-09-08 when scanUnfolded was
+  // widened past .js (see its comment). They are PRE-EXISTING, not new — the
+  // guard simply could not see them before. Each still needs the per-file
+  // judgement of whether it matches show/critic titles at all; tracked as one
+  // issue rather than four, deliberately, on a board already at 1,080 open.
+  'transcript-scan.mjs',
   // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
   // ASCII by construction, not a show title. See inline comment at the call site.
   'autonomous-ui-capture.js',
@@ -245,6 +251,11 @@ const UNFOLDED_BASELINE = new Set([
 // these (audit-cross-production.js, audit-review-url-clusters.js) have a
 // coordinated venueSlug() fix tracked in task #783.
 const UNFOLDED_BASELINE_ROOT = new Set([
+  // Pre-existing .mjs offenders, newly visible now that scanUnfolded scans
+  // .mjs as well as .js. See the note in UNFOLDED_BASELINE above.
+  'capture-aggregate-catalog.mjs',
+  'capture-show-page-catalog.mjs',
+  'visual-qa.mjs',
   'adjudicate-review-queue.js',
   'analyze-reviews.js',
   'audit-closing-dates.js',
@@ -336,9 +347,20 @@ const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?/;
 // unbaselined, reddens CI) — noisy but never silent.
 const FOLDS = /foldDiacritics|normalize\((['"])NFK?D\1\)|\\p\{(Diacritic|M)\}/;
 
+// .mjs as well as .js. The guard globbed .js only until 2026-09-08, and that
+// blind spot has a demonstrated cost: it caught the unfolded normalizer in
+// scripts/lib/ux-walkthrough-filing.js and was structurally incapable of
+// seeing the byte-identical copy 150 lines away in scripts/ux-walkthrough.mjs,
+// which kept shredding accented text. There the damage was worse than a missed
+// dedup — "Amélie poster missing" and "Café poster missing" both reduced to
+// ["poster","missing"] (similarity 1.0), so two unrelated findings merged, one
+// summary was discarded, and the survivor inherited a fabricated
+// agreementCount of 2. A guard that only sees half the file types reports
+// stronger coverage than it has.
 function scanUnfolded(dir) {
   return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.js'))
+    .filter(f => f.endsWith('.js') || f.endsWith('.mjs'))
+    .filter(f => !f.endsWith('.test.mjs') && !f.endsWith('.test.js'))
     .filter(f => fs.statSync(path.join(dir, f)).isFile())
     .filter(f => {
       const src = fs.readFileSync(path.join(dir, f), 'utf8');
