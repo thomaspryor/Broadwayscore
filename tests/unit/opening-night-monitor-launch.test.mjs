@@ -56,6 +56,27 @@ test('a nightly USD spend cap overrides launch/reclaim-and-launch independently 
   assert.match(overrideBlock, /action:\s*'escalate'/, 'exceeding the cap must escalate (page + stop), not silently skip');
 });
 
+// BRO-3056 (BRO-3053 cousin): runClaudeCli's exitSignal only reaches the
+// owner-facing ledger/state if every projection in between re-adds it —
+// runMonitorPass's return object was fixed alongside this (see
+// scripts/lib/opening-night-monitor.test.mjs's real-SIGKILL integration
+// test), but the launcher's OWN two projections of that result — lastFailure
+// (persisted to night-state-*.json) and the launch-failed dispatch-ledger row
+// (what the escalation email points the owner at) — are separate allowlists
+// and were still silently dropping the field.
+test('the !result.ok branch carries exitSignal onto lastFailure', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const block = src.slice(src.indexOf('if (!result.ok) {'), src.indexOf('dispatchLedger.appendEntry({'));
+  assert.match(block, /lastFailure:\s*\{[^}]*exitSignal:\s*result\.exitSignal/, 'lastFailure must carry result.exitSignal, or an OS-killed pass is indistinguishable from any other failure in night-state.json');
+});
+
+test('the !result.ok branch carries exitSignal onto the launch-failed dispatch-ledger row', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const start = src.indexOf("dispatchLedger.appendEntry({\n      event: 'launch-failed'");
+  const block = src.slice(start, src.indexOf('});', start));
+  assert.match(block, /exitSignal:\s*result\.exitSignal/, "the launch-failed ledger row must carry result.exitSignal, or the escalation email's own audit trail cannot distinguish an OS kill from any other abrupt exit");
+});
+
 test('usdTonight accumulates across passes on both the success and failure write-back paths', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   const usdTonightLine = src.split('\n').find(l => l.includes('const usdTonight ='));
