@@ -6,7 +6,7 @@
 // screenshot matrix of the signed-in surfaces on demo.broadwayscorecard.com,
 // and runs the screenshots past three independent vision models (GPT-4o,
 // Gemini, Claude) for a holistic UX review. Findings two-or-more models agree
-// on get filed as Notion cards. The synthetic user is always torn down.
+// on get filed as Linear issues. The synthetic user is always torn down.
 //
 // This exists because narrow e2e assertions ("did the POST succeed") miss
 // what a human QA pass catches by looking: flow outcomes, cross-surface
@@ -1150,18 +1150,32 @@ function mergeFindingSources(modelFindings, deterministicFindings) {
   return merged;
 }
 
+// Dedup source. Was `notion-brain.js search`, which has refused every call
+// since the Notion read-only flip — and refused it into a `catch` that
+// returned [] , i.e. "no existing cards", i.e. dedup off. Combined with the
+// filing path below (also dead) the whole function was moot; fixing only the
+// filing path would have turned a silent no-op into a nightly duplicate
+// generator against a board already at 1,074 open issues.
+//
+// Returns {titles, ok}. `ok:false` means the read FAILED and the caller must
+// file nothing — see fileBoardIssues. Failing closed is the deliberate
+// choice: a night of missed findings is recoverable, a night of duplicates
+// filed against every prior finding is manual cleanup.
 async function existingCardTitles() {
   try {
-    // notion-brain.js --text only matches Name/Notes, NOT tags (ship-check
-    // finding, 2026-07-20) — searching the tag string 'ux-audit' silently
-    // matched zero cards every run, so dedup-vs-existing-cards never fired.
-    // Titles are literally "UX audit: ..." (titleFor below) — search that.
-    const out = execFileSync('node', ['scripts/notion-brain.js', 'search', '--text', 'UX audit', '--limit', '50'], { encoding: 'utf8' });
-    const cards = JSON.parse(out.slice(out.indexOf('[')));
-    return cards.map(c => c.name);
+    const { createRequire } = await import('node:module');
+    const require = createRequire(import.meta.url);
+    // Read through linear-client.js like everything else — a raw GraphQL call
+    // here fails scripts/audit-linear-issuecreate-chokepoint.js's CI gate.
+    // listOpenIssuesWithDescriptions paginates properly; the old Notion call
+    // was capped at --limit 50, which on a board this size silently compared
+    // each new finding against an arbitrary slice of the board.
+    const linear = require('./lib/linear-client.js');
+    const issues = await linear.listOpenIssuesWithDescriptions();
+    return { titles: (issues || []).map(i => i.title).filter(Boolean), ok: true };
   } catch (err) {
-    console.error(`[ux-walkthrough] could not fetch existing ux-audit cards: ${err.message}`);
-    return [];
+    console.error(`[ux-walkthrough] could not fetch existing UX-audit issues: ${err.message}`);
+    return { titles: [], ok: false };
   }
 }
 
@@ -1169,39 +1183,63 @@ function titleFor(finding) {
   return `UX audit: ${finding.summary}`.slice(0, 120);
 }
 
-async function fileNotionCards(deduped, existingTitles, respondingCount) {
+// Files agreed findings on the board. Renamed from fileNotionCards: it files
+// LINEAR issues now (Notion has been read-only since 2026-08-30 and
+// notion-brain.js create exits 6), and a name that still said "Notion" is how
+// this went unnoticed for a week.
+//
+// `existing` is existingCardTitles()'s {titles, ok}. ok:false stops filing
+// entirely rather than filing against an empty dedup set.
+async function fileBoardIssues(deduped, existing, respondingCount) {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const { planFilings } = require('./lib/ux-walkthrough-filing.js');
+
+  const plan = planFilings({ findings: deduped, existing });
+  if (plan.refused) {
+    console.error(`[ux-walkthrough] REFUSING to file: ${plan.reason}. Findings are in the run directory; fix the Linear read and re-run.`);
+    return [];
+  }
+  for (const t of plan.skippedDuplicate) console.error(`[ux-walkthrough] skip (existing issue match): ${t}`);
+
   const filed = [];
-  for (const f of deduped) {
-    // Deterministic findings (dead-control/probe/ios-quirk) are a hard
-    // measurement, not a model opinion — they don't need the 2+-model
-    // agreement gate that exists to filter out one-off model hallucination.
-    if (!f.deterministic && f.agreementCount < 2) continue;
-    const title = titleFor(f);
-    const dupe = existingTitles.some(t => similarity(t, title) >= 0.6);
-    if (dupe) {
-      console.error(`[ux-walkthrough] skip (existing card match): ${title}`);
-      continue;
-    }
+  const failed = [];
+  for (const item of plan.toFile) {
+    const { title, priority, finding: f } = item;
     const evidence = f.deterministic
       ? `Flagged by the automated ${f.models[0]} detector in the nightly signed-in UX walkthrough's interactive pass (deterministic — not a model opinion).`
       : `Flagged by ${f.agreementCount} of ${respondingCount} responding review models (${f.models.join(', ')}) in the nightly signed-in UX walkthrough.`;
     const notes = `## Problem\n${f.summary}\n\n## Evidence\n${evidence} Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
     try {
+      // linear-brain.js, NOT notion-brain.js: Notion has been read-only since
+      // 2026-08-30 and its create exits 6, so every finding this walkthrough
+      // produced was logged as a one-line failure and dropped. linear-brain
+      // is also the single creation chokepoint, so the duplicate gate and cap
+      // policy apply here for free. Linear priority is numeric 0-4 (2 high,
+      // 3 normal); there is no --status/--category/--type/--tags.
       execFileSync('node', [
-        'scripts/notion-brain.js', 'create', title,
-        '--status', 'Not started', '--priority', f.severity === 'high' ? 'P1 Next' : 'P2 Later',
-        '--category', 'Product', '--type', 'Fix', '--tags', 'ugc,ux-audit',
+        'scripts/linear-brain.js', 'create', title,
+        '--priority', String(priority),
         '--notes', notes,
-        // task #1310: nightly walkthrough filing isn't itself a dispatch —
-        // no cmux/bsc-next on this runner either, same as plan-refusal-
-        // escalation. State the reason on the card.
+        // Filing is not dispatching: there is no cmux/bsc-next on this
+        // runner, so say why it is parked rather than leaving it ambiguous.
         '--park', 'Auto-filed by the nightly UX walkthrough (CI, no cmux/bsc-next here); the priority auto-dispatch loop picks it up on its next pull.',
       ], { encoding: 'utf8' });
       filed.push(title);
       console.error(`[ux-walkthrough] filed: ${title}`);
     } catch (err) {
-      console.error(`[ux-walkthrough] Notion create failed for "${title}": ${err.message}`);
+      // Fail-soft per finding is right (one bad title must not lose the rest)
+      // but it must be LOUD — a silent per-item catch is what hid the dead
+      // Notion path for a week. The run summary counts these.
+      failed.push(title);
+      console.error(`[ux-walkthrough] Linear create FAILED for "${title}": ${err.message}`);
     }
+  }
+  // The summary line the old code never printed. "0 filed" from a healthy run
+  // with nothing to report and "0 filed" from a run where every create was
+  // refused looked identical in the log, which is why nobody noticed.
+  if (failed.length) {
+    console.error(`[ux-walkthrough] ${filed.length} filed, ${failed.length} FAILED to file — findings are in the run directory, not on the board.`);
   }
   return filed;
 }
@@ -1330,12 +1368,12 @@ async function main() {
           models: [`ux-walkthrough:${f.tag}`], agreementCount: 2, deterministic: true,
         }));
         const allFindings = mergeFindingSources(deduped, deterministicAsDeduped);
-        const existingTitles = await existingCardTitles();
+        const existing = await existingCardTitles();
         const respondingCount = panel.filter(p => !p.error).length;
-        const filed = args.noFile ? [] : await fileNotionCards(allFindings, existingTitles, respondingCount);
+        const filed = args.noFile ? [] : await fileBoardIssues(allFindings, existing, respondingCount);
 
         writeFileSync(join(outDir, 'review.json'), JSON.stringify({ panel, deduped, deterministicFindings, filed }, null, 2));
-        console.error(`[ux-walkthrough] ${deduped.length} model finding(s), ${deterministicFindings.length} deterministic finding(s), ${filed.length} filed to Notion`);
+        console.error(`[ux-walkthrough] ${deduped.length} model finding(s), ${deterministicFindings.length} deterministic finding(s), ${filed.length} filed to Linear`);
         console.log('━'.repeat(60));
         console.log(`UX WALKTHROUGH — ${shots.length} screenshots, ${deduped.length} model findings, ${deterministicFindings.length} deterministic findings, ${filed.length} filed`);
         for (const f of deduped) {
