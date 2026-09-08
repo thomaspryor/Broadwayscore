@@ -40,7 +40,7 @@ test('tests/unit/*.test.mjs selects tests-vs-derived-data + orphan-tests', () =>
 test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
   assert.deepEqual(
     listAudits(['scripts/recover-wsj-browser.js']),
-    ['help-flag-safety', 'unbounded-fetch', 'write-routing']
+    ['cmux-spawn-credential', 'help-flag-safety', 'unbounded-fetch', 'write-routing']
   );
 });
 
@@ -77,6 +77,7 @@ test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject gua
 // write-routing) — that overlap is correct, not a bug this card introduces.
 test('a change to workflow-line-length.js alone selects workflow-line-length (plus its own scripts/*.js triggers)', () => {
   assert.deepEqual(listAudits(['scripts/lib/workflow-line-length.js']), [
+    'cmux-spawn-credential',
     'unbounded-fetch',
     'workflow-actionlint',
     'workflow-concurrency',
@@ -86,6 +87,7 @@ test('a change to workflow-line-length.js alone selects workflow-line-length (pl
 
 test('a change to audit-workflow-concurrency.js alone selects workflow-concurrency (plus its own scripts/*.js triggers)', () => {
   assert.deepEqual(listAudits(['scripts/audit-workflow-concurrency.js']), [
+    'cmux-spawn-credential',
     'help-flag-safety',
     'unbounded-fetch',
     'workflow-actionlint',
@@ -102,6 +104,7 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     { encoding: 'utf8' }
   );
   assert.deepEqual(out.trim().split('\n').filter(Boolean).sort(), [
+    'cmux-spawn-credential',
     'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
@@ -113,14 +116,14 @@ test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', 
   // checks cover .js/.mjs/.ts writers; the local push-time trigger must be
   // able to fire on all three too, or a top-level .mjs/.ts writer silently
   // skips the local gate and is only caught later in CI (task #1826 review).
-  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['unbounded-fetch', 'write-routing']);
-  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
 });
 
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
-    ['help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
+    ['cmux-spawn-credential', 'help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
   );
 });
 

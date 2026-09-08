@@ -84,6 +84,27 @@ if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
 fi
 
+# Direct cmux spawns with no socket credential (BRO-3001). Push-time, not
+# CI-only, on purpose: the two sites this caught were merged to main and ran
+# for hours before anyone looked, and the failure mode is silent — the call is
+# simply denied and the caller degrades. Same trigger as unbounded-fetch since
+# a new spawn site can appear in any script.
+#
+# --scope-stdin for the same reason lint-write-routing uses it (see the block
+# below): the main checkout is shared by 20+ concurrent sessions, so an
+# unscoped scan here blocks whoever pushes next on someone else's violation.
+# Out-of-scope violations are still printed, just not fatal. CI's own call in
+# test.yml passes no flag and scans the whole tree, which is right there.
+# LIST_ONLY must skip the pipe entirely — same reason as orphan-tests below:
+# run_audit returns before reading stdin, leaving a writer with no reader.
+if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts)$"; then
+  if [ "$LIST_ONLY" = "1" ]; then
+    run_audit "cmux-spawn-credential" "scripts/audit-cmux-spawn-credential.js" --scope-stdin || FAIL=1
+  else
+    printf '%s\n' "$CHANGED_FILES" | run_audit "cmux-spawn-credential" "scripts/audit-cmux-spawn-credential.js" --scope-stdin || FAIL=1
+  fi
+fi
+
 # Workflow-subject guards (BRO-2785). tests/unit/workflow-line-length.test.mjs
 # (500-char cap on .github/workflows/*.yml lines) and
 # scripts/audit-workflow-concurrency.js (cancel-in-progress guard) both assert
