@@ -7,9 +7,10 @@
  * 1-6 week limited engagements, so a stale `status=open` is the common case,
  * not the exception (see memory/feedback_closing_date_audit_gaps.md).
  *
- * This script never writes to shows.json. It only produces a report at
- * data/audit/ob-closing-candidates.json for human review, using two signals
- * that require no new scraping:
+ * Produces a report at data/audit/ob-closing-candidates.json, and auto-applies
+ * the subset where both signals below agree (see selectAutoApplyClosures).
+ * Everything else stays alert-only for human review. Signals, both of which
+ * require no new scraping:
  *
  *   1. Review-text sweep — scans data/review-texts/<show>/*.json fullText
  *      for closing-date boilerplate, corroborated across reviews.
@@ -20,9 +21,8 @@
  * Usage:
  *   node scripts/detect-ob-closings.js [--dry-run]
  *
- * --dry-run is accepted for forward compatibility with a future write-mode;
- * this version has no write-to-shows.json path at all, so it has no effect
- * on behavior yet. The audit report is always written (that IS the alert).
+ * --dry-run reports what it would close without touching shows.json. The audit
+ * report is written either way.
  */
 
 const fs = require('fs');
@@ -34,7 +34,9 @@ const {
   shouldSuppressCandidate,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
+  selectAutoApplyClosures,
 } = require('./lib/ob-closing-detector');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -152,7 +154,33 @@ function runTodayTixStalenessDiff(obShows) {
   return { checked: candidateShowIds.length, candidates, skipped: false };
 }
 
+/**
+ * Writes the two-signal-confirmed closures to shows.json. Anything short of
+ * both signals is left for the alert path.
+ */
+function applyConfirmedClosures(showsData, candidates, dryRun) {
+  const showsById = Object.fromEntries((showsData.shows || []).map((s) => [s.id, s]));
+  const missingState = loadJson(STATE_PATH, {});
+  const selected = selectAutoApplyClosures(candidates, showsById, missingState, todayISO());
+  if (selected.length === 0 || dryRun) return selected;
+
+  const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+  const snapshot = loadShows();
+  const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
+  for (const closure of selected) {
+    const show = byId[closure.showId];
+    // Re-check under the write lock: a concurrent writer may have set a date
+    // between our read and this save.
+    if (!show || show.status !== 'open' || show.closingDate) continue;
+    show.status = 'closed';
+    show.closingDate = closure.closingDate;
+  }
+  saveShows(snapshot);
+  return selected;
+}
+
 function main() {
+  const dryRun = process.argv.includes('--dry-run');
   const showsData = loadJson(SHOWS_PATH, null);
   if (!showsData) {
     console.error(`::error::${SHOWS_PATH} not found — cannot run detector.`);
@@ -164,13 +192,12 @@ function main() {
 
   const reviewTextSweep = runReviewTextSweep(obShows);
   const todaytixStaleness = runTodayTixStalenessDiff(obShows);
+  const autoApplied = applyConfirmedClosures(showsData, reviewTextSweep.candidates, dryRun);
 
   const report = {
     generatedAt: new Date().toISOString(),
-    // Alert-only version: there is no write-to-shows.json path yet, so this is
-    // always 'dry-run' regardless of the --dry-run flag (accepted for forward
-    // compatibility with a future write-mode).
-    mode: 'dry-run',
+    mode: dryRun ? 'dry-run' : 'apply',
+    autoApplied,
     reviewTextSweep: {
       scanned: reviewTextSweep.scanned,
       showsWithNoTexts: reviewTextSweep.showsWithNoTexts,

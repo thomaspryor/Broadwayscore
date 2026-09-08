@@ -373,8 +373,60 @@ function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
   return null;
 }
 
+/**
+ * Chooses which review-text proposals are safe to write to shows.json without
+ * a human in the loop.
+ *
+ * A digest line is not a fix. `my-joy-is-heavy-off-broadway-2025` was flagged
+ * high-confidence on five agreeing outlets, surfaced in the daily health digest
+ * for five consecutive months (escalating to `error` at 21 days), and was still
+ * status=open when a reader emailed in about a different stale show entirely.
+ * Anything that relies on someone hand-editing shows.json will rot the same way.
+ *
+ * So auto-apply, but only where two INDEPENDENT signals agree — matching the
+ * Broadway audit's two-signal rule in closing-audit-classify.js:
+ *   1. >=2 distinct reviews state the same closing date (confidence 'high'), and
+ *   2. the show has dropped out of the TodayTix feed for >=2 consecutive checks.
+ *
+ * Either signal alone produces false closures on real data: Drunk Shakespeare
+ * has been absent from TodayTix for 9 checks and is open-ended, while Little
+ * Shop of Horrors carries agreeing "through Jan 19" quotes from 2020 and is
+ * still running. Requiring both, plus a past date and no stored closingDate,
+ * selects exactly the genuinely-closed shows.
+ *
+ * Medium/low-confidence proposals stay alert-only.
+ */
+const AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS = 2;
+
+function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, todayISO) {
+  const applied = [];
+  for (const candidate of candidates || []) {
+    if (candidate.confidence !== 'high') continue;
+
+    const show = showsById[candidate.showId];
+    if (!show || show.status !== 'open' || show.closingDate) continue;
+
+    // Never close a show on a date that has not happened yet.
+    if (!(candidate.proposedClosingDate < todayISO)) continue;
+
+    const missing = todaytixMissingState && todaytixMissingState[candidate.showId];
+    const missingChecks = (missing && missing.consecutiveMissingChecks) || 0;
+    if (missingChecks < AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS) continue;
+
+    applied.push({
+      showId: candidate.showId,
+      closingDate: candidate.proposedClosingDate,
+      reason: `${candidate.reason}; absent from TodayTix for ${missingChecks} consecutive checks`,
+      evidence: candidate.evidence,
+    });
+  }
+  return applied;
+}
+
 module.exports = {
   MONTH_NAMES,
+  AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS,
+  selectAutoApplyClosures,
   extractClosingDateMentions,
   resolveMentionDate,
   extractClosingDateCandidates,

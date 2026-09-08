@@ -13,6 +13,7 @@ const {
   decideTodayTixCandidates,
   shouldSuppressCandidate,
   findTitleOffsets,
+  selectAutoApplyClosures,
 } = require('./ob-closing-detector.js');
 
 // --- extractClosingDateMentions: date-pattern extraction ---
@@ -271,4 +272,47 @@ test('findTitleOffsets matches across punctuation and diacritics without shiftin
   const offsets = findTitleOffsets(text, 'Pied a Terre');
   assert.equal(offsets.length, 1);
   assert.equal(text.slice(offsets[0], offsets[0] + 12), 'Pied \u00e0 Terre');
+});
+
+// --- selectAutoApplyClosures: two independent signals required ---
+
+const HIGH = { showId: 's1', proposedClosingDate: '2026-04-05', confidence: 'high', reason: '4 reviews agree', evidence: [] };
+const OPEN_NO_DATE = { s1: { id: 's1', status: 'open' } };
+const MISSING_8 = { s1: { consecutiveMissingChecks: 8 } };
+
+test('auto-apply: high confidence + TodayTix-absent + past date + open/no-date is applied', () => {
+  const picked = selectAutoApplyClosures([HIGH], OPEN_NO_DATE, MISSING_8, '2026-09-08');
+  assert.equal(picked.length, 1);
+  assert.equal(picked[0].closingDate, '2026-04-05');
+  assert.match(picked[0].reason, /8 consecutive checks/);
+});
+
+test('auto-apply: review agreement alone is not enough (Little Shop class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, {}, '2026-09-08'), []);
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, { s1: { consecutiveMissingChecks: 1 } }, '2026-09-08'), []);
+});
+
+test('auto-apply: TodayTix absence alone is not enough (Drunk Shakespeare class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: medium confidence stays alert-only', () => {
+  const medium = { ...HIGH, confidence: 'medium' };
+  assert.deepEqual(selectAutoApplyClosures([medium], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never closes on a future date', () => {
+  const future = { ...HIGH, proposedClosingDate: '2026-12-01' };
+  assert.deepEqual(selectAutoApplyClosures([future], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never overwrites an existing closingDate or a closed show', () => {
+  const dated = { s1: { id: 's1', status: 'open', closingDate: '2026-11-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], dated, MISSING_8, '2026-09-08'), []);
+  const closed = { s1: { id: 's1', status: 'closed' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], closed, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: unknown show id is skipped rather than throwing', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], {}, MISSING_8, '2026-09-08'), []);
 });
