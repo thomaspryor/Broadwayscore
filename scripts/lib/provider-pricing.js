@@ -59,6 +59,9 @@ function usdFor(provider, units, pricingTable = loadProviderPricing(), { billing
     }
     perUnit = rate.paygUsdPerUnit;
   }
+  // Validate perUnit itself, not just the product — units=0 would otherwise
+  // let a negative configured rate produce -0 and pass unnoticed.
+  assertFiniteCost(perUnit, `usdFor(${provider}): perUnit`);
   assertFiniteCost(units, `usdFor(${provider}): units`);
   return assertFiniteCost(units * perUnit, `usdFor(${provider}): result`);
 }

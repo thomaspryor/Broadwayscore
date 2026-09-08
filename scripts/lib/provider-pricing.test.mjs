@@ -57,3 +57,8 @@ test('usdFor rejects an unrecognized billing value instead of silently falling b
   assert.throws(() => usdFor('scrapingdog', 1, real, { billing: 'PAYG' }));
   assert.throws(() => usdFor('scrapingdog', 1, real, { billing: 'prepaid' }));
 });
+
+test('usdFor rejects a negative configured rate even at units=0 (would otherwise pass as -0)', () => {
+  const badRate = { scrapingdog: { usdPerUnit: -0.0001, unit: 'credit', billing: 'prepaid' } };
+  assert.throws(() => usdFor('scrapingdog', 0, badRate));
+});
