@@ -5,7 +5,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   decideGateColdStartAlerts, ALERT_CAPTURES_PER_WEEK, CAPTURE_COLLAPSE_STREAK_WEEKS,
-  MIN_SHOWN_FOR_ALERT, IMPRESSION_SPLIT_MIN_SHOWN, IMPRESSION_SPLIT_MIN_RATIO, PRIMARY_MIN_DAYS,
+  MIN_SHOWN_FOR_ALERT, IMPRESSION_SPLIT_MIN_SHOWN, IMPRESSION_SPLIT_MIN_RATIO,
+  IMPRESSION_SPLIT_EXPECTED_RATIO, PRIMARY_MIN_DAYS,
 } = require('./gate-cold-start-rules.js');
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -121,9 +122,69 @@ test(`impression-split-broken fires when control:cold-start drifts toward parity
   assert.equal(alert.email, true);
 });
 
-test('impression-split-broken does not fire when the expected ~10:1 skew holds', () => {
+test('impression-split-broken does not fire when the split is well above the floor', () => {
   const r = decideGateColdStartAlerts(windows(), {}, NOW); // healthyRecent() control:40 cold-start:4 = 10:1
   assert.ok(!kinds(r).includes('impression-split-broken'));
+});
+
+// ─── BRO-2952 (2026-09-07): recalibration regression coverage ──────────────
+// The impression-split guardrail fired a false-positive P1 on 2026-08-31 and
+// 2026-09-07 against real production numbers (control:cold-start shown
+// 208:75, ratio ~2.8:1). Investigation found the client-side filter intact
+// and flag health fine — the "~10:1 expected" was an untested pre-launch
+// projection that real data (only visible after the HogQL row-cap bug fix,
+// 2026-08-26, b6d48ce42f5) never validated; every real measurement lands in
+// a stable ~2.6-2.8:1 band. See docs/experiments/gate-cold-start.md
+// "Amendments" for the full writeup. These tests pin the recalibrated
+// thresholds against the real incident numbers.
+
+test('BRO-2952: the real steady-state ratio (208:75 ≈ 2.8:1, and neighboring weekly snapshots) does NOT alert', () => {
+  const real = (controlShown, coldStartShown) => ({
+    control: { exposed: 1123, shown: controlShown, dismissed: 0, captured: 2 },
+    'cold-start': { exposed: 1153, shown: coldStartShown, dismissed: 0, captured: 0 },
+  });
+  assert.ok(!kinds(decideGateColdStartAlerts(windows({ arms: real(208, 75) }), {}, NOW)).includes('impression-split-broken'),
+    '2026-09-07 snapshot must not alert');
+  assert.ok(!kinds(decideGateColdStartAlerts(windows({ arms: real(230, 86) }), {}, NOW)).includes('impression-split-broken'),
+    '2026-08-31 snapshot must not alert');
+  assert.ok(!kinds(decideGateColdStartAlerts(windows({ arms: real(226, 86) }), {}, NOW)).includes('impression-split-broken'),
+    '2026-09-01 snapshot must not alert');
+});
+
+test('BRO-2952: a partial regression (ratio drops to ~2.0, not all the way to parity) still alerts', () => {
+  // A floor set too close to 1:1 would let the filter partially fail — still
+  // applying, but to a shrinking subset of visits — go undetected as long as
+  // SOME suppression remained. The floor must sit close enough under the
+  // observed ~2.6-2.8 band to catch this.
+  const arms = { control: { exposed: 1100, shown: 200, dismissed: 0, captured: 0 }, 'cold-start': { exposed: 1100, shown: 100, dismissed: 0, captured: 0 } };
+  const r = decideGateColdStartAlerts(windows({ arms }), {}, NOW);
+  assert.ok(kinds(r).includes('impression-split-broken'), 'a ~2.0:1 partial regression must still alert');
+  const alert = r.alerts.find(a => a.kind === 'impression-split-broken');
+  assert.match(alert.title, /drifted toward parity/);
+});
+
+test('BRO-2952: an INVERTED split (cold-start >= control) alerts regardless of magnitude', () => {
+  // The guardrail used to compute max(shown)/min(shown), discarding which
+  // arm is bigger — an inverted split (arms mislabeled, or the filter
+  // applied to the wrong arm) read as a healthy large ratio and never
+  // alerted. Cold-start meeting or exceeding control should never happen
+  // under a working filter and must always be caught.
+  const inverted = { control: { exposed: 1100, shown: 75, dismissed: 0, captured: 0 }, 'cold-start': { exposed: 1100, shown: 208, dismissed: 0, captured: 0 } };
+  const r = decideGateColdStartAlerts(windows({ arms: inverted }), {}, NOW);
+  assert.ok(kinds(r).includes('impression-split-broken'), 'cold-start > control must alert even though the magnitude "looks" like a healthy split');
+  assert.match(r.alerts.find(a => a.kind === 'impression-split-broken').description, /NOT smaller than control/);
+
+  const tied = { control: { exposed: 1100, shown: 100, dismissed: 0, captured: 0 }, 'cold-start': { exposed: 1100, shown: 100, dismissed: 0, captured: 0 } };
+  assert.ok(kinds(decideGateColdStartAlerts(windows({ arms: tied }), {}, NOW)).includes('impression-split-broken'),
+    'cold-start == control must alert too');
+});
+
+test('BRO-2952: thresholds track measured reality, not the untested pre-launch 10:1 projection', () => {
+  assert.ok(IMPRESSION_SPLIT_EXPECTED_RATIO <= 3 && IMPRESSION_SPLIT_EXPECTED_RATIO >= 2,
+    `expected ratio (${IMPRESSION_SPLIT_EXPECTED_RATIO}) should track the measured ~2.5-2.8:1 band, not the old unvalidated 10:1`);
+  assert.ok(IMPRESSION_SPLIT_MIN_RATIO < IMPRESSION_SPLIT_EXPECTED_RATIO, 'floor must sit below the expected ratio');
+  assert.ok(IMPRESSION_SPLIT_MIN_RATIO >= 2.0,
+    'floor must sit close under the measured ~2.6-2.8 band to catch a partial regression, not just a full collapse to 1:1');
 });
 
 test(`impression-split-broken does not judge off too little combined traffic (< ${IMPRESSION_SPLIT_MIN_SHOWN} shown)`, () => {

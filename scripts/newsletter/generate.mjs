@@ -2199,14 +2199,18 @@ function inBroadwayOpeningWindowForWE(s) {
 // reverse (a Broadway-run call polluting WE-only state), so self-gating is
 // the safer default even though today's call site already only needs the
 // WE-edition value.
+// Returns { html, list } — mirrors broadwayOpenings()/offBroadwayOpenings()'s
+// shape (BRO-2598) so the newsworthiness scorer's bwOpenings candidate feed
+// can consume the SAME shows this section renders (lede ⊆ body), the way
+// bwO.list already feeds the Broadway edition's own bwOpenings candidates.
 function weBroadwaySection() {
-  if (!IS_WE) return null;
+  if (!IS_WE) return { html: null, list: [] };
   const list = shows.filter(s => isBroadwayCategory(s) && inBroadwayOpeningWindowForWE(s) && notFeatured(s.id));
-  if (!list.length) return null;
+  if (!list.length) return { html: null, list: [] };
   const withScore = list
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
     .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
-  if (!withScore.length) return null;
+  if (!withScore.length) return { html: null, list: [] };
   // Sort: genuine in-week openings before grace-window catch-up shows, then
   // Gold first, then by score desc, ties broken by review count — same
   // ordering rules as londonSection() minus the WE-only tier split (this
@@ -2226,7 +2230,8 @@ function weBroadwaySection() {
   const cards = withScore.map(x => showRow(x.s)).join('');
   const seeAll = seeAllLink(SITE, 'Explore the full Broadway Scorecard', { color: '#d4a574' });
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+  const html = sectionWrap(sectionHeading('Opened on Broadway', null, { href: SITE }), cards + seeAllCard);
+  return { html, list: withScore.map(x => x.s) };
 }
 
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
@@ -2339,7 +2344,12 @@ const obO = IS_WE ? { html: null, list: [] } : offBroadwayOpenings();
 // the OB 14-day grace window. Recomputing with the strict in-week window
 // elsewhere was the bug that made the subject ignore Heated Rivalry (opened
 // May 12, shown in the body) and fall back to an obscure closing.
-const bwEvents = IS_WE ? [] : bwO.list.map(s => ({ show: s }));
+// `let`, not `const`: the IS_WE branch is reassigned once weBwO (weBroadwaySection's
+// own list) is available, a few dozen lines below (BRO-2598) — see that
+// reassignment for why. Stays `[]` here in the interim, which is correct for
+// quietBroadwayWeek immediately below (that flag is `!IS_WE && ...`, so the
+// WE-branch's value never affects it either way).
+let bwEvents = IS_WE ? [] : bwO.list.map(s => ({ show: s }));
 const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
 // A genuinely dead Broadway/Off-Broadway OPENINGS week (no new BW/OB show
 // this week — a closing, mover, or recoupment can still be real news and
@@ -2379,7 +2389,12 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 const cas  = sections.run('casting-updates', () => castingSection());
 
 const lon  = sections.run('london-openings', () => londonSection());
-const bwWe = sections.run('broadway-we', () => weBroadwaySection());
+// weBwO is captured as a side effect of the sections.run() call below rather
+// than computed beforehand — keeps weBroadwaySection() inside the runner's
+// try/catch (a thrown error degrades to one skipped section, same as every
+// other section here) instead of aborting the whole generate.mjs run.
+let weBwO = { html: null, list: [] };
+const bwWe = sections.run('broadway-we', () => { weBwO = weBroadwaySection(); return weBwO.html; });
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
@@ -2543,6 +2558,23 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // bwO/obO above — londonSection() and weOpeningStories() both read
 // quietBroadwayWeek and are called before this point in the file, so it has
 // to be defined that early or every such call throws a TDZ ReferenceError.)
+//
+// WE edition: reassign bwEvents to weBwO.list (weBroadwaySection's own
+// "Opened on Broadway" list, the SAME shows that section renders) as
+// SECONDARY candidates (BRO-2598) — never bwO.list, which is forced empty
+// for IS_WE (see bwO's own comment above) to avoid double-marking
+// Broadway/OB shows featured. weBwO is available here (computed above at the
+// broadway-we sections.run() call, well before this point).
+// Non-WE (primary) path: bwO.reopeningIds actually carries the flag this
+// comment block promises — the earlier declaration was dropping it
+// (pre-existing gap, found while wiring BRO-2598: a Broadway reopening's
+// subject/lede headline always said "opens", never "reopens", same bug
+// seasonStandings already works around via bwO.reopeningIds at line ~2444).
+// weBwO has no reopening concept (weBroadwaySection() doesn't track it), so
+// the WE-edition arm is unaffected either way.
+bwEvents = IS_WE
+  ? weBwO.list.map(s => ({ show: s }))
+  : bwO.list.map(s => ({ show: s, isReopening: bwO.reopeningIds.has(s.id) }));
 // West End openings that lead the subject/lede: Recommended-or-better (score
 // >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar
 // (75, Palladium, 19 reviews) is genuinely the week's biggest story and the
@@ -2599,7 +2631,14 @@ const newsworthyInputs = {
     s.closingDate && s.closingDate > weekEndStr && s.closingDate <= horizon7Str
     && s.status === 'open' && isPrimaryMarket(s) && !isOperaShow(s)
     && featuredShowIds.has(s.id) && _subjHasScore(s)),
-  announcedClosings: (() => {
+  // IS_WE-gated (lede ⊆ body invariant, card #482 — same fix as the
+  // recoupments/topMover gates above): announced-closings is Broadway-edition-
+  // only (`IS_WE ? null : sections.run(...)`, line ~2346) and this loop only
+  // ever considers `show.category === 'broadway'` shows, so an announced
+  // Broadway closing could win a quiet WE week's lede/subject while never
+  // appearing anywhere in that WE issue's body — pre-existing gap, found
+  // while auditing every newsworthyInputs feed for BRO-2598.
+  announcedClosings: IS_WE ? [] : (() => {
     // Mirror announcedClosingsSection exactly: closure events added IN THE
     // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
     // closures (Ragtime case, user-flagged 2026-05-24).
@@ -2961,7 +3000,7 @@ ${sectionOrder.join('')}
     </div>
     <div style="font-size:13px;color:#9ca3af;margin-top:10px;">Every show. Every review. One score.</div>
     <div style="font-size:11px;color:#6b7280;margin-top:18px;">
-      <a href="${SITE}${BRAND.primaryPath}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
+      <a href="${SITE}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
       <a href="${SITE}${BRAND.primaryPath}/methodology" style="color:#9ca3af;text-decoration:none;">Methodology</a> &nbsp;·&nbsp;
       <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#9ca3af;text-decoration:none;">Unsubscribe</a>
     </div>

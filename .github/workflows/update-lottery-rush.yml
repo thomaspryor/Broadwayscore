@@ -98,6 +98,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-lottery-rush'
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-lottery-rush
+
       - name: Dispatch deploy
         if: always()
         uses: ./.github/actions/dispatch-deploy

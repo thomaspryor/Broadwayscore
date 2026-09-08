@@ -362,6 +362,13 @@ check_ledger_coverage() {
   # or that job's SERP telemetry is silently discarded when the runner exits
   # (19/~40 SERP-calling workflows had this gap; 18 fixed by hand in
   # 436f4a24092/943bd4a9327, the remaining ~39 by BRO-163, 2026-08-15).
+  # BRO-2961 (2026-09-07) extended tracking to scraper.js's fetchPage() too —
+  # the deferred "separate, much larger sweep" ledger-coverage-check.js's own
+  # header comment flagged back in BRO-163. 12 real gaps found and fixed
+  # (aggregator-url-watcher, audit-reverse-discovery, backfill-review-dates,
+  # discover-historical-shows, enrich-reviews, enrich-runtimes,
+  # generate-theater-tips, ingest-urls, process-review-submission,
+  # update-broadway-com, update-commercial, update-lottery-rush).
   # Logic lives in scripts/lib/ledger-coverage-check.js (real acorn AST walk
   # — not text regex — because "requires url-discovery.js" != "calls its
   # SERP function"; see that file's header comment for the false-positive it
@@ -419,9 +426,9 @@ check_ledger_coverage() {
     echo "::error::ledger-coverage check could not run — acorn is not installed (run 'npm ci' first). This gate fails closed rather than silently reporting clean."
     FAILED=1
   elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
-    echo "All SERP-calling (url-discovery.js serpQuery/discoverCorrectUrl) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
+    echo "All ledger-reaching (url-discovery.js serpQuery/discoverCorrectUrl, scraper.js fetchPage) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
   else
-    echo "::error::Workflows call url-discovery.js's serpQuery()/discoverCorrectUrl() but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
+    echo "::error::Workflows call url-discovery.js's serpQuery()/discoverCorrectUrl() or scraper.js's fetchPage() but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
     echo "$OUT" | grep -vF '__CLEAN__'
     echo "Fix: add a 'Commit scraper-spend ledger' step (see audit-closing-dates.yml for the pattern) to the violating job."
     echo "If this is a known, tracked gap, add it to scripts/lib/ledger-coverage-exemptions.js with a dated reason."

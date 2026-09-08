@@ -1030,6 +1030,16 @@ on:
       # the scripts/lib/** glob above.
       - 'scripts/audit-stale-announced-shows.js'
       - 'scripts/audit-stale-announced-shows.test.mjs'
+      # Open-card premise re-check — the mirror of autonomous-acceptance-recheck.js
+      # (which re-verifies cards marked Done). Re-runs a still-OPEN card's own
+      # acceptance command and reports the ones that now pass, i.e. whose stated
+      # problem was fixed by somebody else in passing. Same root-level
+      # scripts/*.test.mjs gap as the pair above: registered in
+      # tests/unit-test-manifest.txt, so it RUNS in CI, but without its own entry
+      # a solo edit triggers zero CI — the blocking gate at
+      # scripts/audit-test-yml-manifest-paths.js (BRO-2647) fails on exactly that.
+      - 'scripts/audit-stale-open-premises.js'
+      - 'scripts/audit-stale-open-premises.test.mjs'
       # Scraping cost v3 S2 — Bright Data daily breaker + per-run budget, and
       # the failed-fetch policy that keeps a budget_capped miss from retiring a
       # live review URL. Both have colocated *.test.mjs that run in the

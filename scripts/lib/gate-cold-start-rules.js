@@ -55,7 +55,11 @@ const MIN_SHOWN_FOR_ALERT = 10; // combined control+cold-start gate impressions 
 // effect of the 2-page minimum, not a regression. See
 // docs/experiments/gate-cold-start.md "Amendments" for the full investigation.
 const IMPRESSION_SPLIT_EXPECTED_RATIO = 2.5; // control:cold-start, measured steady-state
-const IMPRESSION_SPLIT_MIN_RATIO = 1.5; // below this with meaningful traffic = filter probably broken
+// Floor set close under the observed 2.6-2.8 band (not down near 1.5) so a
+// real partial regression — e.g. the filter still applying but only to a
+// subset of visits, dropping the ratio to ~2.0 — still trips this, rather
+// than only catching a full collapse to parity (second-opinion catch, BRO-2952).
+const IMPRESSION_SPLIT_MIN_RATIO = 2.2; // below this with meaningful traffic = filter probably broken (partially or fully)
 const IMPRESSION_SPLIT_MIN_SHOWN = 30; // combined shown before judging the split
 const PRIMARY_MIN_DAYS = 28; // 4 weeks
 const COOLDOWN_MS = 6 * 24 * 60 * 60 * 1000;
@@ -137,18 +141,30 @@ function decideGateColdStartAlerts(windows = {}, state = {}, nowMs = 0) {
 
   // --- Impression-split guardrail ---
   if (combinedShown >= IMPRESSION_SPLIT_MIN_SHOWN) {
-    const bigger = Math.max(controlShown, coldStartShown);
-    const smaller = Math.max(Math.min(controlShown, coldStartShown), 1); // avoid /0
-    const ratio = bigger / smaller;
+    // Directional, not magnitude-only (BRO-2952 second-opinion catch, 2026-09-07):
+    // the previous max(shown)/min(shown) form discards WHICH arm is bigger, so an
+    // inverted split (cold-start showing MORE than control — arms mislabeled, or
+    // the filter applied to the wrong arm) reads as a "healthy" large ratio and
+    // never alerts. control is expected to be the bigger arm; treat cold-start
+    // ever meeting or exceeding control as its own failure, independent of the
+    // ratio floor below.
+    const inverted = coldStartShown >= controlShown;
+    const ratio = controlShown / Math.max(coldStartShown, 1); // avoid /0
     const cooledSplit = !next.lastSplitAlertAt || nowMs - next.lastSplitAlertAt >= COOLDOWN_MS;
-    if (ratio < IMPRESSION_SPLIT_MIN_RATIO && cooledSplit) {
+    if ((inverted || ratio < IMPRESSION_SPLIT_MIN_RATIO) && cooledSplit) {
       next.lastSplitAlertAt = nowMs;
       alerts.push({
         kind: 'impression-split-broken', severity: 'error', email: true, stampKey: 'lastSplitAlertAt',
-        title: 'gate-cold-start A/B: impression split drifted toward parity',
-        description: `control:cold-start shown = ${controlShown}:${coldStartShown} (ratio ${ratio.toFixed(1)}:1, expected roughly ` +
-          `${IMPRESSION_SPLIT_EXPECTED_RATIO}:1). Parity suggests the cold-start 2-page-minimum filter has stopped applying — ` +
-          `check the client-side gate logic, not just the flag.`,
+        title: inverted
+          ? 'gate-cold-start A/B: impression split INVERTED — cold-start showing as much or more than control'
+          : 'gate-cold-start A/B: impression split drifted toward parity',
+        description: inverted
+          ? `control:cold-start shown = ${controlShown}:${coldStartShown} — cold-start is NOT smaller than control, which ` +
+            `should never happen under a working 2-page-minimum filter. Check for mislabeled arms (getColdStartArm) or the ` +
+            `filter being applied to the wrong arm (coldStartCheckApplies), not just the flag.`
+          : `control:cold-start shown = ${controlShown}:${coldStartShown} (ratio ${ratio.toFixed(1)}:1, expected roughly ` +
+            `${IMPRESSION_SPLIT_EXPECTED_RATIO}:1). Parity suggests the cold-start 2-page-minimum filter has stopped applying — ` +
+            `check the client-side gate logic, not just the flag.`,
       });
     }
   }

@@ -20,7 +20,8 @@ name: Weekly A/B Monitors
 # Step 2 (gate-cold-start A/B): flag health (exists/active/50-50/100%
 # rollout), combined captures/week collapse (2 consecutive meaningful weeks
 # below ~1/wk vs a ~4/wk baseline), impression-split sanity (control:cold-start
-# should stay roughly 10:1 — parity means the 2-page-minimum filter stopped
+# should stay roughly in the measured ~2.5:1 band — BRO-2952, 2026-09-07;
+# a further drop toward parity means the 2-page-minimum filter stopped
 # applying), and a once-only "4 weeks elapsed — time to judge the ITT primary"
 # nudge. Never judges the primary itself. Pre-registration:
 # docs/experiments/gate-cold-start.md.

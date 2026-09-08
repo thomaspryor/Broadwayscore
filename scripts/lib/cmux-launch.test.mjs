@@ -78,6 +78,161 @@ test('launchCmuxSession: refuses the literal stringified-undefined cwd (the exac
   assert.equal(newWorkspaceCalls, 0);
 });
 
+// BRO-2953: launchCmuxSession is the one chokepoint every launch path funnels
+// through (fresh dispatch, succession hand-off, manual) — the crown-fanout
+// guard belongs here, not in any one caller, so it sees every attempt.
+test('launchCmuxSession: refuses a duplicate crown launch without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-a', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: force:true bypasses the crown-fanout guard', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-b', cwd: os.tmpdir(), force: true,
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('listWorkspaces must not even be called when force:true'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
+test('launchCmuxSession: an ordinary (non-crown) launch is never blocked, even with 5 live crowns', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-c', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => [
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0' },
+        { ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
+});
+
+test('launchCmuxSession: a listWorkspaces failure fails OPEN (never blocks a launch on an unrelated cmux-socket error)', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-d', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('cmux socket unavailable'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // proceeded past the guard despite the listWorkspaces throw
+});
+
+test('launchCmuxSession: refusal carries refusedForCrownFanout so callers can distinguish it from a generic failure', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-e', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => true,
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, true);
+});
+
+test('launchCmuxSession: a crown-titled workspace listed but with no live claude process (a corpse tab) does not block a new launch', () => {
+  const newWorkspaceMock = () => { throw new Error('do not go further — this test only cares whether the guard refused'); };
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-f', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => [{ ref: 'workspace:44', title: '👑 OWNER — Crown v40 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => false, // corpse tab: listed, but no live claude process
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason — the corpse never counted
+});
+
+test('launchCmuxSession: successorOf exempts exactly the caller\'s own predecessor, but a THIRD unrelated crown still refuses', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-g', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        { ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }, // my own predecessor — exempt
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0: unrelated independent start' }, // NOT my predecessor — still refuses
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.match(res.reason, /workspace:11/);
+});
+
+test('launchCmuxSession: successorOf lets a hand-off through when its own predecessor is the ONLY live crown', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-h', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      crownAlive: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
+});
+
+test('launchCmuxSession: CROWN_FANOUT_GUARD_DISABLED=1 skips the guard entirely (operational kill switch)', () => {
+  const prev = process.env.CROWN_FANOUT_GUARD_DISABLED;
+  process.env.CROWN_FANOUT_GUARD_DISABLED = '1';
+  try {
+    const res = launchCmuxSession({
+      title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+      seed: 'seed text', seedKey: 'k-bro-2953-i', cwd: os.tmpdir(),
+      probes: {
+        cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+        listWorkspaces: () => { throw new Error('must not even be called with the kill switch on'); },
+      },
+    });
+    assert.equal(res.ok, false);
+    assert.match(res.reason, /cmux CLI not found/);
+  } finally {
+    if (prev === undefined) delete process.env.CROWN_FANOUT_GUARD_DISABLED;
+    else process.env.CROWN_FANOUT_GUARD_DISABLED = prev;
+  }
+});
+
+test('launchCmuxSession: a non-crown launch never pays the listWorkspaces/crownAlive cost at all', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-j', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('must not be called for a non-crown launch'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
 // Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
 // exact template-literal formatting (would break on a harmless reformat while
 // the launched command stayed byte-identical — the #1432/#1434 fragile class).
