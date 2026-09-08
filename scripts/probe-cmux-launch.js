@@ -42,6 +42,7 @@ const os = require('os');
 const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
+const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
 const USAGE = `probe-cmux-launch.js — reproduce the dispatch false-negative on demand.
 
 Usage:
@@ -139,7 +140,8 @@ const title = `ZZ-probe-${stamp}`;
   // Cleanup
   if (result && result.ws && result.ws.ref) {
     spawnSync('/Applications/cmux.app/Contents/Resources/bin/cmux',
-      ['close-workspace', '--workspace', result.ws.ref], { timeout: 8000 });
+      ['close-workspace', '--workspace', result.ws.ref],
+      { timeout: 8000, env: cmuxSpawnEnv(process.env) });
   }
   try { fs.unlinkSync(marker); } catch { /* fine */ }
   process.exit(disagree ? 1 : 0);
