@@ -1,19 +1,21 @@
 {
-  "totalCandidates": 3,
-  "cdxFound": 0,
+  "totalCandidates": 16,
+  "cdxFound": 2,
   "cdxNotFound": 0,
-  "recovered": 0,
+  "recovered": 1,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 1
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "talkinbroadway.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 3,
+  "errors": 14,
   "notInArchive": 0,
   "domainSkipped": 0,
   "circuitBrokenDomains": []

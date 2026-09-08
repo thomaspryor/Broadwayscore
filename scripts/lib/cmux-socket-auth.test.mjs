@@ -71,8 +71,8 @@ test('classifyCmuxError separates a permanent auth fault from a transient outage
     ['Error: Command timed out', 'timeout'],
     ['spawn ENOENT', 'not-found'],
     ['something else entirely', 'unknown'],
-    ['', 'unknown'],
-    [null, 'unknown'],
+    ['', 'empty'],
+    [null, 'empty'],
   ];
   for (const [input, expected] of cases) {
     assert.equal(auth.classifyCmuxError(input), expected, `input: ${input}`);
@@ -111,6 +111,29 @@ test('classifyCmuxError ignores stdout — command OUTPUT must never read as a r
   err.stdout = 'workspace:7  Investigating the Access denied incident\n';
   err.stderr = '';
   assert.notEqual(auth.classifyCmuxError(err), 'auth-denied');
+});
+
+test('classifyCmuxError ignores the ARGV embedded in execFileSync\'s message', () => {
+  // execFileSync sets message to "Command failed: <full argv>\n<stderr>", and
+  // run() carries mutating commands like `send --text '<arbitrary text>'`.
+  // Letting argv reach the matcher meant a message merely MENTIONING "Access
+  // denied" classified as auth-denied — the one class that retries — and the
+  // send would be replayed into a live pane.
+  const err = new Error("Command failed: /Applications/cmux.app/Contents/Resources/bin/cmux send --workspace workspace:7 --text 'investigating the Access denied incident'");
+  err.stderr = 'Error: Socket closed before reply';
+  assert.equal(auth.classifyCmuxError(err), 'unavailable',
+    'stderr is authoritative; argv must never decide the class');
+});
+
+test('classifyCmuxError falls back to the message but drops the argv line', () => {
+  const err = new Error("Command failed: /path/cmux send --text 'Access denied'\nError: Invalid password");
+  err.stderr = '';
+  assert.equal(auth.classifyCmuxError(err), 'auth-denied', 'real reason on a later line still classifies');
+
+  const argvOnly = new Error("Command failed: /path/cmux send --text 'Access denied'");
+  argvOnly.stderr = '';
+  assert.notEqual(auth.classifyCmuxError(argvOnly), 'auth-denied',
+    'argv alone must not manufacture an auth verdict');
 });
 
 test('classifyCmuxError reads stderr off a real execFileSync-shaped error', () => {
@@ -176,6 +199,26 @@ test('summarizeCmuxFailures escalates on the FIRST auth denial, not after N', ()
   const one = auth.summarizeCmuxFailures(['Error: ERROR: Access denied - only processes started inside cmux can connect']);
   assert.equal(one.escalate, true);
   assert.equal(one.authDenied, 1);
+});
+
+test('an error with NO diagnostic text is "empty" and does NOT page', () => {
+  // Absence of evidence is not evidence of a reworded message. Paging here
+  // would page on any odd exec failure that produced no stderr.
+  const blank = new Error(''); blank.stderr = '';
+  assert.equal(auth.classifyCmuxError(blank), 'empty');
+  assert.equal(auth.summarizeCmuxFailures([blank]).escalate, false);
+  assert.equal(auth.classifyCmuxError(null), 'empty');
+  assert.equal(auth.classifyCmuxError(''), 'empty');
+});
+
+test('summarizeCmuxFailures escalates an UNCLASSIFIABLE cmux failure', () => {
+  // The taxonomy recognises auth rejections by their English prose, so the day
+  // cmux rewords them every rejection becomes 'unknown'. If that stayed quiet
+  // the fleet would lose its self-heal silently — the exact 2026-09-07 outage.
+  const reworded = auth.summarizeCmuxFailures(['Error: connection prohibited by policy']);
+  assert.equal(auth.classifyCmuxError('Error: connection prohibited by policy'), 'unknown');
+  assert.equal(reworded.escalate, true, 'an unrecognised cmux failure must fail loud');
+  assert.equal(reworded.unknown, 1);
 });
 
 test('summarizeCmuxFailures stays quiet for transient failures', () => {

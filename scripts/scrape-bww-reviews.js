@@ -42,7 +42,7 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
-const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
@@ -168,11 +168,43 @@ function buildTokenOverlapSiblingSet(shows) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
+// A provider that answers 200 with a stub is a MISS, not a hit. Verified live
+// (BRO-2955): Scrapingdog returns a 154-byte JS-redirect shell for some
+// aggregator pages, and isChallengeOrGarbage() only matches Cloudflare
+// challenge markers, so that stub sailed through as a successful fetch and
+// short-circuited the ScrapingBee/fetchPage tiers this helper is explicitly
+// documented to fall through to. Floor matches the callers' own
+// already-established "too short to be a real page" thresholds below.
+const SD_MIN_HTML_BYTES = 500;
+
+/**
+ * Fetch HTML with Scrapingdog (fast, no JS render) → ScrapingBee → shared
+ * fetchPage() fallback. Scrapingdog tried first (BRO-2930): this file was
+ * bypassing fetchPage()'s SD-first chokepoint entirely with a raw ScrapingBee
+ * call, so BWW's steady weekly volume never touched Scrapingdog even after the
+ * SD migration — one of the direct-provider-call sites in
+ * data/audit/direct-provider-calls-baseline.json. SD has ample headroom (SB
+ * was at 92% of its monthly cap, SD ~59%) so shifting this traffic reduces
+ * real cap-exhaustion risk. Purely additive: on any SD miss/failure this falls
+ * straight through to the pre-existing SB path, unchanged.
+ */
+async function fetchHtmlViaSD(url) {
+  if (!process.env.SCRAPINGDOG_API_KEY) return null;
+  try {
+    const raw = await fetchWithScrapingdog(url, { renderJs: false });
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    if (raw.content.length < SD_MIN_HTML_BYTES) return null;
+    return raw.content;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Fetch HTML with ScrapingBee (fast, no JS render) → shared fetchPage() fallback.
- * ScrapingBee is tried first for BWW because it's cheaper and BWW /reviews/ pages
- * don't need JS rendering. If SB is unavailable or fails, fetchPage() provides
- * BrightData → Playwright fallback chain.
+ * ScrapingBee is cheap and BWW /reviews/ pages don't need JS rendering. If SB
+ * is unavailable or fails, fetchPage() provides BrightData → Playwright fallback chain.
  */
 async function fetchHtmlViaSB(url) {
   if (!SCRAPINGBEE_KEY) return null;
@@ -193,7 +225,11 @@ async function fetchHtmlViaSB(url) {
 }
 
 async function fetchHtml(url, maxRetries = 2) {
-  // Attempt 1: ScrapingBee (cheap, no JS render)
+  // Attempt 1: Scrapingdog (cheap, no JS render, ample cap headroom)
+  const sdHtml = await fetchHtmlViaSD(url);
+  if (sdHtml) return sdHtml;
+
+  // Attempt 2: ScrapingBee (cheap, no JS render)
   if (SCRAPINGBEE_KEY) {
     let lastError;
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -210,7 +246,7 @@ async function fetchHtml(url, maxRetries = 2) {
     console.log(`    [WARN] ScrapingBee exhausted for ${url.slice(0, 60)}: ${lastError.message.slice(0, 60)}`);
   }
 
-  // Attempt 2: Shared fetchPage() fallback chain (BrightData → Playwright)
+  // Attempt 3: Shared fetchPage() fallback chain (Scrapingdog → BrightData → Playwright)
   try {
     const result = await fetchPage(url);
     return result ? result.content : null;

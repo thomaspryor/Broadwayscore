@@ -68,7 +68,7 @@ const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
-const { summarizeCmuxFailures } = require('./lib/cmux-socket-auth.js');
+const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -104,18 +104,22 @@ const MAX_REVIVE_PER_TICK = 3;
 // all three sweep sites are covered by construction — including any added
 // later — instead of each remembering to escalate for itself.
 //
-// The '-error' suffix is deliberately broad (today it matches exactly the
-// three cmux sweep kinds: task-sweep-error, flagless-sweep-error,
-// untracked-sweep-error). It cannot over-page even if an unrelated '-error'
-// kind is added later, because escalation is gated a second time on
-// classifyCmuxError: anything that isn't recognisably a cmux auth rejection
-// classifies as 'unknown' and never escalates.
+// Named explicitly rather than matched by an '-error' suffix. The suffix was
+// safe only while an unclassifiable failure stayed quiet; once 'unknown'
+// became page-worthy, ANY future '-error' kind whose detail did not match the
+// cmux taxonomy would have paged as a cmux socket incident. A comment
+// asserting the old safety property survived the change that falsified it,
+// which is precisely how a stale invariant becomes a bug — so the set is now
+// the thing enforced, not the prose.
+const CMUX_SWEEP_ERROR_KINDS = new Set([
+  'task-sweep-error', 'flagless-sweep-error', 'untracked-sweep-error',
+]);
 const cmuxFailuresThisTick = [];
 
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
   console.log(`[bsc-reconcile] ${entry.kind}: ${entry.detail}`);
-  if (typeof entry.kind === 'string' && entry.kind.endsWith('-error') && entry.detail) {
+  if (CMUX_SWEEP_ERROR_KINDS.has(entry.kind) && entry.detail) {
     cmuxFailuresThisTick.push(entry.detail);
   }
   if (DRY) return;
@@ -616,12 +620,18 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   const entries = readLedgerEntriesFn();
   const trackedIds = new Set(entries.filter(e => e.taskId != null).map(e => String(e.taskId)));
   let workspaces = [];
-  // Degrading to skip-none is right for a cmux that is merely down, but the
-  // failure still has to be SEEN: this was the third blind spot in BRO-2959,
-  // where an auth rejection here produced literally no output at all.
+  // BRO-2993: a failed listing must NOT read the same as "cmux confirmed
+  // zero workspaces" — the two are opposite evidence for the liveTab guard
+  // below. `cmuxUnavailable` (set only in the catch) makes the distinction
+  // explicit so the guard can fail closed instead of silently becoming a
+  // no-op on an empty array. The failure still has to be SEEN either way:
+  // this was the third blind spot in BRO-2959, where an auth rejection here
+  // produced literally no output at all.
+  let cmuxUnavailable = null;
   try {
     workspaces = listWorkspacesFn() || [];
   } catch (e) {
+    cmuxUnavailable = classifyCmuxError(e);
     reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${e.message}` });
   }
 
@@ -668,7 +678,12 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
     if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
-    const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
+    // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
+    // authorize action, so treat every remaining candidate as if its tab
+    // were live rather than falling through with an unverified empty list.
+    const liveTab = cmuxUnavailable
+      ? { ref: `cmux-unavailable:${cmuxUnavailable}` }
+      : workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
     if (liveTab) { skipped.push({ id, why: `live-tab ${liveTab.ref}` }); continue; }
     const notionId = notionIdOfTask(task);
     if (!notionId) { skipped.push({ id, why: 'no-notion-id' }); continue; } // no timestamp source — too blind to flip
@@ -1136,12 +1151,28 @@ async function escalateCmuxAuthFailures() {
     await Promise.race([
       routeAlert({
       // Stable key: one open incident for the whole outage, not one per tick.
-      conditionKey: 'cmux-socket:auth-denied',
-      title: 'cmux socket is rejecting automation — every self-heal sweep is down',
+      // ONE key for both shapes on purpose. The cooldown is per-key, so
+      // splitting auth-denied and unclassified would let a single ongoing
+      // outage page twice if the classification flapped tick to tick
+      // (ship-check finding). It is one incident — "the sweeps cannot reach
+      // cmux" — and the title/description below carry the distinction.
+      conditionKey: 'cmux-socket:unreachable',
+      title: summary.authDenied > 0
+        ? 'cmux socket is rejecting automation — every self-heal sweep is down'
+        : 'cmux is failing in a way this code does not recognise — self-heal may be down',
       description:
-        `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n` +
+        (summary.authDenied > 0
+          ? `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n`
+          : `bsc-reconcile could not reach the cmux control socket on ${summary.unknown} sweep(s) this tick, and the failure matched NONE of the known shapes (auth, daemon-down, timeout, missing binary).\n\n`
+            + 'The likeliest cause is that cmux changed its error wording: the classifier recognises rejections by their English text, so a reworded message stops being detected as auth and would otherwise fail silently. Check the raw error below and update classifyCmuxError in scripts/lib/cmux-socket-auth.js.\n\n') +
         'This is a configuration state, not a blip: it does not clear on its own. While it holds, the cmux tab-lane self-heal, bsc-prune and dispatch-watchdog are all disabled simultaneously — dead workspaces stop being recovered and nothing else notices.\n\n' +
-        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.',
+        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.\n\n' +
+        // Both shapes are stated unconditionally. The title above reflects
+        // whichever shape opened the incident, and one conditionKey means a
+        // later tick of the OTHER shape re-fires under that original wording
+        // (ship-check finding). Naming both counts here keeps the body honest
+        // whichever way round it happened.
+        `This tick: ${summary.authDenied} rejected outright, ${summary.unknown} unclassifiable. Full breakdown in the fields below.`,
       hint:
         'Check `automation.socketControlMode` in ~/.config/cmux/cmux.json. For launchd callers it must be "password" with a matching `automation.socketPassword` (scripts/lib/cmux-socket-auth.js reads it and injects CMUX_SOCKET_PASSWORD). Verify with: node -e "require(\'./scripts/lib/cmux-workspaces.js\').listWorkspaces()".',
         severity: 'error',

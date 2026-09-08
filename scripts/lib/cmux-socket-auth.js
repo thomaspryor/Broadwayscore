@@ -102,20 +102,44 @@ function extractSocketPassword(configText) {
  *
  * @param {Error|string|null|undefined} err an Error from execFileSync (whose
  *   .message carries the captured stderr) or a bare message string.
- * @returns {'auth-denied'|'unavailable'|'not-found'|'timeout'|'unknown'}
+ * @returns {'auth-denied'|'unavailable'|'not-found'|'timeout'|'unknown'|'empty'}
+ *   'unknown' means a real message we could not classify (the "cmux reworded
+ *   its error" signal, which escalates); 'empty' means no diagnostic text at
+ *   all, which does not.
  */
 function classifyCmuxError(err) {
-  if (!err) return 'unknown';
+  if (!err) return 'empty';
   // Deliberately does NOT read err.stdout. stdout carries COMMAND OUTPUT —
   // workspace titles, `top` process tables — any of which could contain the
   // literal words "Access denied" and be mistaken for a rejection (ship-check
   // finding). Since the only mutating retry in the tree keys off this verdict,
   // a content-driven false positive there would re-send a command that had
   // already been applied. Diagnosis comes from the failure channels only.
+  // stderr is the ONLY trustworthy channel, and it is preferred whenever it
+  // has content. execFileSync builds err.message as
+  //   "Command failed: <the full argv>\n<stderr>"
+  // so the ARGUMENTS are inside the message — and run() carries mutating
+  // commands like `send --text '<arbitrary text>'`. A message that merely
+  // mentions "Access denied" would classify as auth-denied, which is the one
+  // class that RETRIES, and the send would be replayed into a live pane
+  // (ship-check finding — reproduced: stderr said "Socket closed" while the
+  // argv made it read as auth-denied).
+  //
+  // Only when stderr is empty do we fall back to the message, and even then
+  // the "Command failed: <argv>" first line is dropped so arguments can never
+  // reach the matcher.
   const text = typeof err === 'string'
     ? err
-    : `${err.message || ''}\n${err.stderr || ''}`;
-  if (!text.trim()) return 'unknown';
+    : String(err.stderr || '').trim()
+      ? String(err.stderr)
+      : String(err.message || '').split('\n').filter((l) => !/^Command failed:/.test(l)).join('\n');
+  // A failure carrying NO diagnostic text is its own category, distinct from
+  // one whose text we simply do not recognise. That distinction is
+  // load-bearing: 'unknown' escalates (it is the "cmux reworded its error"
+  // signal), and an empty error is absence of evidence, not evidence of a
+  // rewording — paging on it would page on any odd exec failure that happened
+  // to produce no stderr (ship-check finding).
+  if (!text.trim()) return 'empty';
 
   // Both rejection shapes cmux emits: no credential offered, and a wrong one.
   if (/Access denied|Invalid password|only processes started inside cmux/i.test(text)) {
@@ -261,7 +285,19 @@ function summarizeCmuxFailures(failures) {
     counts[kind] = (counts[kind] || 0) + 1;
   }
   const authDenied = counts['auth-denied'] || 0;
-  return { escalate: authDenied > 0, authDenied, counts };
+  // 'unknown' escalates too, and that is the whole point of including it:
+  // classifyCmuxError recognises auth rejections by their English PROSE, so
+  // the day cmux rewords "Access denied" to something else, every rejection
+  // silently becomes 'unknown' — it would not retry and would not page, and
+  // the fleet would lose its self-heal exactly as it did on 2026-09-07 with
+  // nobody told (ship-check finding). Treating an unclassifiable cmux failure
+  // as page-worthy makes the taxonomy fail LOUD instead of silent.
+  //
+  // Safe against noise by measurement, not hope: over all 2600 cmux sweep
+  // failures recorded in reconcile-report.jsonl, exactly ONE classified as
+  // 'unknown' (0.04%) — the rest are unavailable/timeout, which stay quiet.
+  const unknown = counts.unknown || 0;
+  return { escalate: authDenied > 0 || unknown > 0, authDenied, unknown, counts };
 }
 
 module.exports = {
