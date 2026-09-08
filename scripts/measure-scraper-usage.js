@@ -31,11 +31,13 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// Pricing (USD). Keep in sync with scraper-cost-report.yml + scraper.js.
-const BD_PER_REQ = 0.0015;          // Bright Data Web Unlocker, per request
-const SD_CREDIT_PAYG = 0.0004;      // Scrapingdog PAYG: $10 / 25,000 credits
-const SD_CREDIT_PLAN = 0.00009;     // Scrapingdog Standard: $90 / 1,000,000
-const SB_CREDIT = 99 / 1_000_000;   // ScrapingBee Startup: $99 / 1,000,000
+// Pricing (USD) comes from scripts/config/provider-pricing.json via usdFor()
+// — BRO-3009 S1-T6. It used to be four literals here plus more in
+// scraper-cost-report.yml, "keep in sync" by comment only; the BD rate had
+// already drifted once (0.001 vs the real 0.0015, a 50% under-report). Rates
+// now live in one JSON file, and usdFor throws on an unpriced provider rather
+// than multiplying by undefined and printing $NaN.
+const { usdFor } = require('./lib/provider-pricing');
 
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
 
@@ -146,9 +148,9 @@ function usd(n) { return `$${n.toFixed(2)}`; }
 
   console.log(`\nScraper usage — ${totalEvents} telemetry events (last ${RUNS} runs/workflow)\n`);
   console.log('Provider      Reqs   Success   Credits   Cost');
-  console.log(`Scrapingdog  ${String(sd.reqs).padStart(5)}   ${pct(sd.ok, sd.reqs).padStart(6)}   ${String(sd.credits).padStart(7)}   PAYG ${usd(sd.credits * SD_CREDIT_PAYG)} / plan ${usd(sd.credits * SD_CREDIT_PLAN)}`);
-  console.log(`Bright Data  ${String(bd.reqs).padStart(5)}   ${pct(bd.ok, bd.reqs).padStart(6)}         —   ${usd(bd.reqs * BD_PER_REQ)}`);
-  console.log(`ScrapingBee  ${String(sb.reqs).padStart(5)}   ${pct(sb.ok, sb.reqs).padStart(6)}   ${String(sb.credits).padStart(7)}   ${usd(sb.credits * SB_CREDIT)}`);
+  console.log(`Scrapingdog  ${String(sd.reqs).padStart(5)}   ${pct(sd.ok, sd.reqs).padStart(6)}   ${String(sd.credits).padStart(7)}   PAYG ${usd(usdFor('scrapingdog', sd.credits, undefined, { billing: 'payg' }))} / plan ${usd(usdFor('scrapingdog', sd.credits))}`);
+  console.log(`Bright Data  ${String(bd.reqs).padStart(5)}   ${pct(bd.ok, bd.reqs).padStart(6)}         —   ${usd(usdFor('brightdata', bd.reqs))}`);
+  console.log(`ScrapingBee  ${String(sb.reqs).padStart(5)}   ${pct(sb.ok, sb.reqs).padStart(6)}   ${String(sb.credits).padStart(7)}   ${usd(usdFor('scrapingbee', sb.credits))}`);
 
   const topHosts = (prov, n = 8) => Object.entries(prov.hosts)
     .sort((a, b) => b[1].reqs - a[1].reqs).slice(0, n);
@@ -164,10 +166,10 @@ function usd(n) { return `$${n.toFixed(2)}`; }
 
   // What moving the still-on-BD traffic to Scrapingdog (plan rate) would save.
   if (bd.reqs) {
-    const bdCost = bd.reqs * BD_PER_REQ;
+    const bdCost = usdFor('brightdata', bd.reqs);
     // Assume rerouted at ~plan rate; page≈1cr, serp≈5cr — use observed SD avg if available, else 2cr.
     const sdAvgCr = sd.credits && sd.reqs ? sd.credits / sd.reqs : 2;
-    const ifMoved = bd.reqs * sdAvgCr * SD_CREDIT_PLAN;
+    const ifMoved = usdFor('scrapingdog', bd.reqs * sdAvgCr);
     console.log(`\nIf the ${bd.reqs} remaining BD reqs moved to Scrapingdog (plan rate, ~${sdAvgCr.toFixed(1)}cr/req):`);
     console.log(`  BD ${usd(bdCost)} → SD ${usd(ifMoved)}  (this window)`);
   }

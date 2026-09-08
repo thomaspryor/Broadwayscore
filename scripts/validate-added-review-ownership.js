@@ -46,6 +46,8 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { findSiblingUrlOwner } = require('./lib/review-url-collision.js');
+const { normalizeCritic } = require('./lib/review-normalization');
 
 const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
 
@@ -133,8 +135,66 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     const owners = findCrossShowOwners(data.url, showId, reviewTextsDir);
     const verdict = shouldBlockCrossShowCreate(owners);
     if (verdict.block) {
-      drops.push({ file: rel, showId, url: data.url, owner: verdict.owner });
+      drops.push({ file: rel, showId, url: data.url, owner: verdict.owner, kind: 'cross-show' });
+      continue;
     }
+
+    // SAME-SHOW sibling (BRO-3092). findCrossShowOwners is cross-show BY
+    // CONSTRUCTION — url-ownership.js filters `e.showId !== currentShowId`, and
+    // that filter is load-bearing for Guard I, so it must not be relaxed. The
+    // consequence is that this gate was blind to the identical race within one
+    // show, which is the one that actually reddened Data Validation:
+    //
+    //   2026-09-08. the-addams-family-2010/wsj--unknown.json was deleted as
+    //   worthless (its 6.6KB "fullText" is a WSJ registration interstitial) and
+    //   pushed at 14:50Z. enrich-reviews had already stamped that file's
+    //   classifiedAt at 14:46Z, so its runner held the file DIRTY; the push
+    //   action's `git pull --rebase --autostash` restored it and `git add -A`
+    //   staged it as an ADD, re-creating a same-URL duplicate of
+    //   wsj--terry-teachout.json 29 minutes after the delete. Deleting a
+    //   worthless review file simply did not stay deleted.
+    //
+    // Same race, same remedy: this gate already holds exactly the ADDED-file
+    // set at push time and already git-rm's violators. The incumbent sibling is
+    // by definition not in `newFiles`, so the survivor is the file that was
+    // already on origin — never the re-creation.
+    const showDir = path.join(reviewTextsDir, showId);
+    const selfFile = rel.split('/').slice(1).join('/');
+    const sibling = findSiblingUrlOwner({ showDir, url: data.url, selfFilename: selfFile });
+    if (!sibling) continue;
+
+    // DELIBERATELY NARROW: only the UNKNOWN-BYLINE loser is dropped.
+    //
+    // This gate deletes files, so a blanket "any added same-url file loses"
+    // rule would destroy a real review whose URL is merely wrong — precisely
+    // the non-cohesive group dedupe-same-url-bylines.js refuses to collapse
+    // ("two genuinely different reviews sharing one URL ... collapsing would
+    // DROP a real review"). Two NAMED critics at one URL is that ambiguous
+    // case and is left alone for adjudication; validate-data.js still reports
+    // it, which is the correct outcome for something a human must decide.
+    //
+    // An unnamed byline colliding with a named sibling is not ambiguous — it
+    // is the byline-explosion signature the corpus already treats as one
+    // review (findExistingReviewFile's pass-0 dedup, gather-reviews'
+    // "Unknown→named" merge). That is exactly the-addams-family-2010's
+    // wsj--unknown.json against wsj--terry-teachout.json.
+    let siblingData = null;
+    try {
+      siblingData = JSON.parse(fs.readFileSync(path.join(showDir, sibling.filename), 'utf8'));
+    } catch { /* unreadable incumbent — cannot establish it is the better record */ }
+    if (!siblingData) continue;
+
+    const addedIsUnknown = normalizeCritic(data.criticName) === 'unknown';
+    const siblingIsNamed = normalizeCritic(siblingData.criticName) !== 'unknown';
+    if (!(addedIsUnknown && siblingIsNamed)) continue;
+
+    drops.push({
+      file: rel,
+      showId,
+      url: data.url,
+      owner: { showId, file: sibling.filename },
+      kind: 'same-show',
+    });
   }
   return drops;
 }
@@ -208,11 +268,14 @@ function main() {
   _resetUrlOwnershipIndex();
   const drops = decideOwnershipDrops(candidates, cwd);
   if (drops.length === 0) {
-    console.log(`[ownership-gate] ${candidates.length} new file(s) — all pass cross-show ownership`);
+    console.log(`[ownership-gate] ${candidates.length} new file(s) — all pass cross-show + same-show URL ownership`);
     return;
   }
   for (const d of drops) {
-    console.log(`::warning::[ownership-gate] dropping ${d.file} — URL is live at ${d.owner.showId}/${d.owner.file} (stale-checkout race): ${d.url}`);
+    const where = d.kind === 'same-show'
+      ? `a sibling in the same show (${d.owner.file})`
+      : `${d.owner.showId}/${d.owner.file}`;
+    console.log(`::warning::[ownership-gate] dropping ${d.file} — URL is live at ${where} (stale-checkout race): ${d.url}`);
     if (dryRun) continue;
     if (base) {
       execSync(`git rm -f -q -- "${d.file}"`, { cwd });
@@ -223,7 +286,11 @@ function main() {
     }
   }
   if (base && !dryRun) {
-    execSync(`git commit -q -m "ownership-gate: drop ${drops.length} cross-show re-creation(s) (stale-checkout race)"`, { cwd });
+    const _ss = drops.filter(d => d.kind === 'same-show').length;
+    const _msg = _ss === 0
+      ? `ownership-gate: drop ${drops.length} cross-show re-creation(s) (stale-checkout race)`
+      : `ownership-gate: drop ${drops.length} URL re-creation(s) (${drops.length - _ss} cross-show + ${_ss} same-show, stale-checkout race)`;
+    execSync(`git commit -q -m "${_msg}"`, { cwd });
   }
   console.log(`[ownership-gate] dropped ${drops.length}/${candidates.length} new file(s)${dryRun ? ' (dry-run — not deleted)' : ''}`);
 }

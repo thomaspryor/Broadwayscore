@@ -38,6 +38,8 @@ const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrap
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
 const { creditsFor } = require('./provider-credits');
+const { usdFor } = require('./provider-pricing');
+const { fallbackFromLabel } = require('./fallback-attribution');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -378,7 +380,13 @@ function getScraperStats() {
 /**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
-async function fetchWithBrightData(url) {
+async function fetchWithBrightData(url, opts = {}) {
+  // opts.fallbackFrom (BRO-3009 S1-T8) is telemetry only — it never affects
+  // whether or how the request is made, just which tier's failure gets the
+  // blame in the spend ledger. Optional, so the direct callers outside
+  // fetchPage (scrape-alltime.ts, fetchJSON) keep working unchanged.
+  const fallbackFrom = opts.fallbackFrom || null;
+  const onSkip = typeof opts.onSkip === 'function' ? opts.onSkip : () => {};
   if (!BRIGHTDATA_TOKEN) {
     return null;
   }
@@ -395,8 +403,9 @@ async function fetchWithBrightData(url) {
     // attempt thousands, and each row would push a genuine spend row out of the
     // rotating ledger. Per-call totals live in getScraperStats().bdBlocked.
     if (bdVerdict.firstBlock) {
-      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' });
+      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped', fallbackFrom });
     }
+    onSkip('bd-budget');
     return null;
   }
 
@@ -449,7 +458,7 @@ async function fetchWithBrightData(url) {
     });
 
     _scraperStats.bdRequests++;
-    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status });
+    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status, fallbackFrom });
     return {
       content: response.data,
       format: 'html',
@@ -457,7 +466,7 @@ async function fetchWithBrightData(url) {
     };
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
-    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error' });
+    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error', fallbackFrom });
     return null;
   }
 }
@@ -477,7 +486,14 @@ async function fetchWithBrightData(url) {
  * modes (budget/quota/network) where escalating tiers wouldn't help.
  */
 async function fetchWithScrapingdog(url, options = {}) {
+  // options.onSkip(reason) (BRO-3009 S1-T8) lets the caller learn WHY this
+  // function declined to make the call, without changing what it RETURNS —
+  // every path below still returns null exactly as before, so routing is
+  // untouched. Reported per call, so it cannot be confused with another
+  // concurrent request's skip the way a shared counter could.
+  const onSkip = typeof options.onSkip === 'function' ? options.onSkip : () => {};
   if (!SCRAPINGDOG_API_KEY) {
+    onSkip('sd-unavailable');
     return null;
   }
 
@@ -488,6 +504,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   // also trips the reactive HTTP-status latch below on the first failure.
   _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
+    onSkip('sd-quota');
     return null;
   }
 
@@ -498,8 +515,9 @@ async function fetchWithScrapingdog(url, options = {}) {
   const sdBreakerVerdict = consultScrapingdog();
   if (!sdBreakerVerdict.allowed) {
     if (sdBreakerVerdict.firstBlock) {
-      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
     }
+    onSkip('sd-breaker');
     return null;
   }
 
@@ -520,6 +538,7 @@ async function fetchWithScrapingdog(url, options = {}) {
       console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
     }
     _scraperStats.sdBudgetExceeded = true;
+    onSkip('sd-budget');
     return null;
   }
 
@@ -552,7 +571,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
       }
       _scraperStats.sdBudgetExceeded = true;
-      if (attemptsMade === 0) return null;
+      if (attemptsMade === 0) { onSkip('sd-budget'); return null; }
       break;
     }
     _scraperStats.sdRequests++;
@@ -576,7 +595,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade });
+      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
       return {
         content: response,
         format: 'html',
@@ -591,7 +610,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -725,7 +744,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
-    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost });
+    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     return {
       content: response,
       format: 'html',
@@ -733,7 +752,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
+    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
     // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
@@ -1008,13 +1027,18 @@ async function fetchPage(url, options = {}) {
   // or null/undefined to fall through to the next tier in `chain`. Bodies are
   // copied verbatim from the branches pageChainOrder replaces — behavior is
   // unchanged, only the ordering/gating moved into the pure function above.
+  //
+  // Each takes `fallbackFrom`: the label of the tier that ran and came back
+  // empty immediately before it (BRO-3009 S1-T8). Purely a telemetry
+  // passenger — no tier branches on it — so the spend ledger can say WHY this
+  // provider was reached, not just what it cost.
   const tiers = {
     // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS
     // with subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even
     // with cookies, but plain HTTP + subscriber cookies bypasses it (the
     // recover-wsj-subscriber.js pattern). For non-WSJ cookie outlets this
     // just skips one proxy hop — cheap.
-    'cookies-plain': async () => {
+    'cookies-plain': async (fallbackFrom) => {
       console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
       const raw = await fetchWithCookiesPlain(url);
       if (raw && raw.content && raw.content.length > 0) {
@@ -1025,7 +1049,7 @@ async function fetchPage(url, options = {}) {
     },
     // Playwright-first for known public sites (free, fast with domcontentloaded).
     // Also for BroadwayWorld (complex JS) and explicit preferPlaywright.
-    'playwright-first': async () => {
+    'playwright-first': async (fallbackFrom) => {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
       const raw = await fetchWithPlaywright(url, {
@@ -1042,15 +1066,21 @@ async function fetchPage(url, options = {}) {
     },
     // A challenge/short response falls through to Bright Data, which keeps
     // its role as the strong unblocker for the hard sites Scrapingdog can't crack.
-    scrapingdog: async () => {
+    scrapingdog: async (fallbackFrom, onSkip) => {
       // Live re-check (see the comment above `chain`): the exact same
       // condition pageChainOrder was given, re-evaluated now instead of
       // trusting the snapshot from before the earlier tiers' awaits.
       if (!(USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded)) {
+        // Same three states fetchWithScrapingdog reports for itself, so this
+        // early return is attributed identically rather than collapsing to a
+        // plain "scrapingdog was tried and missed".
+        onSkip(_scraperStats.sdBudgetExceeded ? 'sd-budget'
+             : _sdQuotaExceeded ? 'sd-quota'
+             : 'sd-unavailable');
         return null;
       }
       console.log('  → Trying Scrapingdog...');
-      const raw = await fetchWithScrapingdog(url, options);
+      const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom, onSkip });
       if (raw && raw.content && raw.content.length > 0) {
         if (_isChallengeOrGarbage(raw.content)) {
           console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
@@ -1061,9 +1091,9 @@ async function fetchPage(url, options = {}) {
       }
       return null;
     },
-    brightdata: async () => {
+    brightdata: async (fallbackFrom, onSkip) => {
       console.log('  → Trying Bright Data...');
-      const raw = await fetchWithBrightData(url);
+      const raw = await fetchWithBrightData(url, { fallbackFrom, onSkip });
       if (raw && raw.content && raw.content.length > 0) {
         // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
         // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
@@ -1078,7 +1108,7 @@ async function fetchPage(url, options = {}) {
       }
       return null;
     },
-    scrapingbee: async () => {
+    scrapingbee: async (fallbackFrom) => {
       // Live re-check (see the comment above `chain`): the exact same
       // condition pageChainOrder was given, re-evaluated now instead of
       // trusting the snapshot from before the earlier tiers' awaits.
@@ -1086,7 +1116,7 @@ async function fetchPage(url, options = {}) {
         return null;
       }
       console.log('  → Trying ScrapingBee...');
-      const raw = await fetchWithScrapingBee(url, options);
+      const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom });
       if (raw) {
         const checked = _checkAndReturn(raw, 'ScrapingBee');
         if (checked) return checked;
@@ -1097,7 +1127,7 @@ async function fetchPage(url, options = {}) {
     // playwrightWaitForSelector pass-through is not needed here (that's only
     // for caller-explicit Playwright via preferPlaywright, above) — this
     // tier is "everything else failed" fallback, no specific selector.
-    'playwright-last': async () => {
+    'playwright-last': async (fallbackFrom) => {
       console.log('  → Trying Playwright (last resort)...');
       const raw = await fetchWithPlaywright(url);
       if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
@@ -1110,9 +1140,19 @@ async function fetchPage(url, options = {}) {
     },
   };
 
+  // BRO-3009 S1-T8: carry the previous tier's identity into the next tier's
+  // ledger row, so the spend ledger records WHY a provider was reached and
+  // not just what it cost. A tier that declined to call at all reports its
+  // own reason through `onSkip` — scoped to THIS call, never inferred from
+  // shared module state (see SKIP_REASONS in fallback-attribution.js for why
+  // the counter-delta version of this was wrong). Telemetry only: no tier
+  // reads `fallbackFrom`, and every tier still returns exactly what it did.
+  let fallbackFrom = null;
   for (const tierName of chain) {
-    const result = await tiers[tierName]();
+    let skipReason = null;
+    const result = await tiers[tierName](fallbackFrom, (reason) => { skipReason = reason; });
     if (result) return result;
+    fallbackFrom = fallbackFromLabel(tierName, { skipReason });
   }
 
   throw new Error('All scraping methods failed');
@@ -1129,7 +1169,10 @@ async function cleanup() {
     const parts = [];
     if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
     if (s.sdRequests > 0) parts.push(`${s.sdRequests} SD (${s.sdCredits} credits${s.sdBudgetExceeded ? ', BUDGET HIT' : ''})`);
-    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.0015).toFixed(3)})`);
+    // BRO-3009 S1-T6: rate from scripts/config/provider-pricing.json, not an
+    // inline 0.0015 — this string is what scraper-cost-report.yml re-prices,
+    // so a drift here silently skews the weekly spend report.
+    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${usdFor('brightdata', s.bdRequests).toFixed(3)})`);
     if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits${s.sbBudgetExceeded ? ', BUDGET HIT' : ''})`);
     console.log(`[Scraper Summary] ${parts.join(', ')}`);
   }
