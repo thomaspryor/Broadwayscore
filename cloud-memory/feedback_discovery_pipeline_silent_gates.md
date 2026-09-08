@@ -662,3 +662,63 @@ override"`), with a `serpRetryAfter` scheduled for the next morning.
   leave the adjudicated one as a tombstone on its original url.
 - **Corollary:** the pipeline's own SERP recovery falls for stale/soft-404 SERP
   slugs exactly like a human would. Verify every SERP-derived url by direct fetch.
+
+## A recreated review-text file does not inherit the flags you stamped on it (2026-09-08, Jane Eyre / London Box Office)
+
+Five times in one opening night, a London Box Office file for
+`jane-eyre-off-west-end-2026` was adjudicated (flagged or deleted) and then
+**recreated by a later pipeline pass in a materially different shape**. The
+recreate is non-deterministic across three independent axes:
+
+- **critic slug** — `london-box-office--stacey-tyler` → `--shehrazade-zafar-arif`
+  → `--unknown`. A fix keyed on the filename misses the next variant.
+- **body** — `fullText` len 0 (soft-404 / `url_dead`) on one recreate, a real
+  4937-char body on the next.
+- **blocking flags** — one recreate carried `wrongProduction=true` +
+  `contentTier=invalid`; another carried **no blocking flag at all**, having
+  silently dropped an earlier manual `wrongProduction` stamp, while still
+  carrying `aggregatorStars`/`originalScoreNormalized=80`.
+
+That last combination is the dangerous one: `contentTier=excerpt` +
+`fullText` len 0 + `aggregatorStars` is **scoreable** through the
+aggregator-stars fallback, with nothing suppressing it. It reached production —
+`https://broadwayscorecard.com/data/shows/jane-eyre-off-west-end-2026.json`
+served `rv=1` with an `s=80` from a **2017 National Theatre / Bristol Old Vic**
+review of the same title, on a show whose real production had zero published
+reviews. It self-healed on the next deploy (the data layer was correct
+throughout; the bad build was made inside the flag-stripped window), so the
+observable damage was ~20 minutes of a fabricated score on a live show page.
+
+**What this changes:**
+
+- **Never rely on a flag you stamped surviving a recreate.** For a contaminant
+  on an aggregator/roundup path, **delete the file**; do not flag it. Flags
+  either get stripped on recreate or strand as manual overrides that suppress
+  the real review later (the mirror failure — see BRO-3122 above).
+- **Never discriminate on body length.** Empty-body was the tell on one
+  recreate and absent on the next. The reliable discriminators are
+  **`publishDate`** and **venue named in the body**. For a revival or a
+  long-lived title, an aggregator's evergreen excerpts are from a *previous*
+  production and carry stars.
+- **Any writer that sets `aggregatorStars` with `contentTier='excerpt'` and an
+  empty `fullText` should require an explicit production match before writing.**
+  This is the injection mirror of the suppression bugs in this file: BRO-3116
+  hides a real review, this one invents a fake one.
+- **Watch a show's review-texts file COUNT as a tripwire.** "This dir had 12
+  files, now it has 13" caught two of tonight's five incidents within minutes.
+
+### Same class, different writer: the anticipatory gate poisons a reused canonical URL
+
+Not a London Box Office quirk. `timeout-london--unknown.json` was an
+anticipatory **listing** page (`articleType=preview`, 163 words, no star, no
+verdict) that `ingest-anticipatory-gate` correctly excluded — but it excluded it
+by stamping `wrongProduction=true` on **the same canonical URL Time Out reuses
+when it converts that listing into its actual review**. A same-URL refetch takes
+the merge path, and `applyUrlChangeInvariant` only clears blocking flags when
+`urlChanged`, so the stamp would have permanently suppressed the real review.
+
+**Rule:** an anticipatory/preview exclusion on a URL the outlet will *reuse*
+must be expressed as a non-sticky state (a stub with `not_attempted`, or a
+`pendingCorroboration` marker), never as `wrongProduction`. Outlets that
+publish a listing page and later overwrite it in place with the review include
+Time Out London and London Box Office.
